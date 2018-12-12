@@ -68,8 +68,6 @@ class Billing extends Component {
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
 
-        this.onOpenModal = this.onOpenModal.bind(this);
-        this.onCloseModal = this.onCloseModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.selectYearly = this.selectYearly.bind(this);
         this.selectMonthly = this.selectMonthly.bind(this);
@@ -122,16 +120,6 @@ class Billing extends Component {
         })
     } 
 
-    onOpenModal = () => {
-        this.setState({ modalIsOpen: true });
-    };
-
-    closeBuyFreePlanModal = () => {
-        this.setState({
-            buyFreePlanModalIsOpen: false
-        });
-    }
-
     afterOpenModal = () => {
         this.chargebeeInit();
         var elements = document.querySelectorAll('.km-subscription-buttons-container button');
@@ -139,10 +127,6 @@ class Billing extends Component {
             elements[i].cbProduct.planQuantity = this.state.seatsBillable;
         }
     }
-
-    onCloseModal = () => {
-        this.setState({ modalIsOpen: false });
-    };
 
     chargebeeInit() {
         let that = this;

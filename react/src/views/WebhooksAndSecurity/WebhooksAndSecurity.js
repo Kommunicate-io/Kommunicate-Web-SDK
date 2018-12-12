@@ -10,6 +10,8 @@ import {SettingsHeader} from '../../../src/components/SettingsComponent/Settings
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
+import Banner from '../../components/Banner/Banner';
+import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
 
 const links={
     applozic:{
@@ -51,7 +53,8 @@ export default class WebhooksAndSecurity extends Component {
             selectUndeliveredMsgTime: { value: 300, label: '5 minutes' },
             links: CommonUtils.isKommunicateDashboard() ? links.kommunicate : links.applozic,
             isTrialPlan: CommonUtils.isTrialPlan(),
-            isStartupPlan: CommonUtils.isStartupPlan()
+            isStartupPlan: CommonUtils.isStartupPlan(),
+            loggedInUserRoleType: CommonUtils.getUserSession().roleType
         }
 
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -165,13 +168,18 @@ export default class WebhooksAndSecurity extends Component {
 
         return(
             <div className="animated fadeIn webhooks-and-security-div">
+                <div className="km-settings-banner">
+                {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
+                    <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
+                }
+              </div>
                 <div className="km-heading-wrapper">
 					<SettingsHeader  />
                 </div>
                 <div className="row">
                     <div className=" col-md-10 col-sm-12">
                         <div className="webhooks-and-security-container">
-                            <h3>Webhooks:</h3>
+                            <h3>Webhooks: { !this.state.isTrialPlan && this.state.isStartupPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> } </h3>
 
 
                             <div className="webhooks-input-field-goup">
@@ -239,17 +247,13 @@ export default class WebhooksAndSecurity extends Component {
 
                             <div className="webhooks-action-buttons-container">
                             {
-                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button> : this.state.isStartupPlan ? <Fragment>
-                                    <Button fontSize={"15px"} disabled>Save changes</Button>
-                                    <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
-                                </Fragment> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
+                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button> : this.state.isStartupPlan || this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ? <Button fontSize={"15px"} disabled>Save changes</Button> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
                             }
-                                
                                 <Button secondary className="n-vis">Cancel</Button>
                             </div>
 
                             <hr/>
-                            <h3>Security:</h3>
+                            <h3>Security: { !this.state.isTrialPlan && this.state.isStartupPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> } </h3>
 
                             <div className="webhooks-input-field-goup">
                                 <p>URL for authorising users from your end:</p>
@@ -263,12 +267,8 @@ export default class WebhooksAndSecurity extends Component {
 
                             <div className="security-action-buttons-container">
                             {
-                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button> : this.state.isStartupPlan ? <Fragment>
-                                    <Button fontSize={"15px"} disabled>Save changes</Button>
-                                    <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
-                                </Fragment> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
+                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button> : this.state.isStartupPlan || this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ?  <Button fontSize={"15px"} disabled>Save changes</Button> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
                             }
-                                
                                 <Button secondary className="n-vis">Cancel</Button>
                             </div>
 

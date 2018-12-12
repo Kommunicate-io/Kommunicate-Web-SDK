@@ -153,3 +153,8 @@
   margin-left: 15px;
   vertical-align: middle;
 }
+
+.push-notification-ios-container, .push-notification-android-container {
+  margin-left: 15px;
+  margin-top: 25px;
+}

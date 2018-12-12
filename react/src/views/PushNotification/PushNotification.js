@@ -323,10 +323,14 @@ class PushNotification extends Component {
           <div className="col-md-12">
             <div className="card">
               <div className="card-header away-card-header km-div km-remove-border">
-                <div className="away-message-known-customers-wrapper">
+                <div className="push-notification-android-container">
                   <div className="">
 
-                    <div className="form-group fcm">For Android (GCM/FCM)<span className="customer-type"> </span></div>
+                    <div className="form-group fcm"><span>For Android (GCM/FCM)</span>
+                    {
+                        !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                      }
+                    </div>
                     <div className="row form-group">
 
                       <div className="fcm-key">GCM/FCM key :<span className="customer-type"> </span></div>
@@ -341,7 +345,7 @@ class PushNotification extends Component {
                             disableButtonForAndroid: true
                           }, this.submitGcmkey),
                           acEventTrigger("ac-android-push");
-                        }} >Save</Button> : this.state.isStartUpPlan ? <Fragment><Button primary disabled={true} className="save-changes-btn">Save</Button><LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/></Fragment> : <Button primary disabled={this.state.disableButtonForAndroid} className="save-changes-btn"
+                        }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForAndroid} className="save-changes-btn"
                         onClick={(e) => {
                           this.setState({
                             disableButtonForAndroid: true
@@ -361,10 +365,14 @@ class PushNotification extends Component {
           <div className="col-sm-12 col-md-12">
             <div className="card km-remove-border">
               <div className="card-header away-card-header km-remove-border km-div">
-                <div className="away-message-known-customers-wrapper">
+                <div className="push-notification-ios-container">
                   <div className="">
 
-                    <div className="form-group for-ios-apns">For iOS(APNS)<span className="customer-type"> </span></div>
+                    <div className="form-group for-ios-apns"><span>For iOS(APNS)</span>
+                    {
+                        !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                      }
+                    </div>
                     <div className="form-group for-distribution">For DISTRIBUTION<span className="customer-type"> </span></div>
                     <hr className="km-pushnotification-hr"></hr>
                     <div className="row form-group km-pushNotification-development">
@@ -387,7 +395,7 @@ class PushNotification extends Component {
                             disableButtonForIosDistribution: true
                           }, this.uploadDistributionapnsFile),
                           acEventTrigger("ac-ios-dist");
-                        }} >Save</Button> : this.state.isStartUpPlan ? <Fragment><Button primary disabled={true} className="save-changes-btn">Save</Button><LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/></Fragment> : <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn"
+                        }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn"
                         onClick={(e) => {
                           this.setState({
                             disableButtonForIosDistribution: true
@@ -421,7 +429,7 @@ class PushNotification extends Component {
                           disableButtonForIosDevelopment: true
                         }, this.uploadDevelopmentapnsFile),
                         acEventTrigger("ac-ios-dev");
-                      }} >Save</Button> : this.state.isStartUpPlan ? <Fragment><Button primary disabled={true} className="save-changes-btn">Save</Button> <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> </Fragment>: <Button primary disabled={this.state.disableButtonForIosDevelopment} className="save-changes-btn"
+                      }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDevelopment} className="save-changes-btn"
                       onClick={(e) => {
                         this.setState({
                           disableButtonForIosDevelopment: true
