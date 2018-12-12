@@ -65,7 +65,6 @@ exports.authCode = (req, res) => {
 
 	let authCode = req.query.code;
 	let user = {}
-	let customer = {}
 	let numOfApp = 1
 	let email = null
 	let name = null
@@ -76,14 +75,13 @@ exports.authCode = (req, res) => {
 		email = response.data.emails[0].value ? response.data.emails[0].value : null;
 		name = response.data.displayName ? response.data.displayName : null;
 
-		return Promise.all([customerService.getCustomerByUserName(email),userService.getUserByName(email)])
-	}).then( ([_customer,_user] ) => {
+		return Promise.resolve(userService.getUserByName(email))
+	}).then( (_user) => {
 		logger.info(1)
-		if (_customer || _user) {
+		if (_user) {
 			logger.info("Already exists");
 			// After successful OAuth, if user exists in the kommunicate db log in.
 			user = _user
-			customer = _customer.dataValues
 			// return Promise.resolve(getUserInfoByEmail({email: email, applicationId: customer.applicationId}))
 			return Promise.resolve(checkNumberOfApps(email))
 		} else {
@@ -103,13 +101,13 @@ exports.authCode = (req, res) => {
 		} else if(user.loginType === 'email' || user.loginType === null) {
 			logger.info("email email email email email email email email")
 			if(_numOfApp > 1){
-				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp+"&referrer="+referrer)
+				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType='oauth'" +"&numOfApp=" + _numOfApp+"&referrer="+referrer)
 				throw 'Ignore this error. It is present to by pass the promise chain'
 			} else {
 				const loginDetails = {
 					userName: user.userName,
 					password: user.accessToken,
-					applicationId: customer.applicationId
+					applicationId: user.applicationId
 				}
 				return Promise.resolve(loginService.login(loginDetails))
 			}
