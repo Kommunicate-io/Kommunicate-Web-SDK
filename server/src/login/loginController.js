@@ -10,6 +10,9 @@ exports.login = async function(req, res) {
   const applicationId =req.body.applicationId;
   let userDetail = req.body;
   console.log("request received to login : ", userName, "applicationName : ", applicationId);
+  if(userName && userName.toLowerCase()== "bot"){
+    return  res.status(200).json({code:"INVALID_CREDENTIALS", message:"wrong userName or password or applicationId"});
+  }
   if(req.query.loginType === 'oauth'){
     userDetail.password = 'mi8&zG#0rLyE^$1&MXSe';
     try{
