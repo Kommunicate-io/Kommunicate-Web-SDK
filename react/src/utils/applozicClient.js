@@ -66,7 +66,7 @@ updateUserDetail:function(params){
       'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
       'Of-User-Id':params.ofUserId
     }
-    var url = getConfig().applozicPlugin.updateApplozicUser+'?allowNull=true';
+    var url = getConfig().applozicPlugin.updateApplozicUser;
    
   return Promise.resolve(axios({
     method: 'post',

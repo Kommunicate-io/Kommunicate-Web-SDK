@@ -3845,7 +3845,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
-			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1} ${unreadCountClassExpr}" data-km-id="${contIdExpr}" data-km-tab-viewid="${tabViewIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
+			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1} ${unreadCountClassExpr} km-userId-${kmUserIdExpr}" data-km-id="${contIdExpr}" data-km-tab-viewid="${tabViewIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
 			var convbox = '<li id="km-li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-km-conversationid="${convIdExpr}" data-km-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-km-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="km-row km-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
 
@@ -5117,11 +5117,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var conversationId = "";
 				var isGroupTab = contact.isGroup;
 				MCK_CHAT_CONTACT_ARRAY.push(contact);
+				var kmUserId ;
 				if (typeof message === "object") {
 					emoji_template = _this.getMessageTextForContactPreview(message, contact, 100)
 					if (message.conversationId) {
 						conversationId = message.conversationId;
 						var conversationPxy = MCK_CONVERSATION_MAP[conversationId];
+					}
+				}
+				if (contact && contact.isGroup && contact.users) {
+					for (var i = 0; i < Object.keys(contact.users).length; i++) {
+						if (contact.users[Object.keys(contact.users)[i]].role === 3) {
+							kmUserId = contact.users[Object.keys(contact.users)[i]].userId;
+						}
 					}
 				}
 				var displayName = _this.getTabDisplayName(contact.contactId, isGroupTab);
@@ -5176,6 +5184,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					titleExpr: title,
 					contHtmlExpr1: contHtmlExpr,
 					tabViewIdExpr: $listId,
+					kmUserIdExpr:kmUserId,
 
 					msgCreatedDateExpr: message ? kmDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				}];

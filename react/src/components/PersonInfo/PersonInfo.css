@@ -135,7 +135,7 @@ transition: opacity 300ms ease-in;
     margin-bottom: 2px;
   }
 
-  .km-sidebar-user-email :focus ,.km-sidebar-user-number :focus, .km-sidebar-user-data-notfound :focus, .km-sidebar-user-data-found :focus,{
+  .km-sidebar-user-email input:focus ,.km-sidebar-user-number input:focus, .km-sidebar-user-data-notfound input:focus, .km-sidebar-user-data-found input:focus, .km-sidebar-display-name input:focus{
     border: 1px solid #5c5aa7;
     outline: none;
     border-radius: 2px;

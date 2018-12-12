@@ -13,6 +13,7 @@ class EditableText extends Component {
       isInEditMode: false,
       renderChild: this.props.children? true:false,
       inputBoxMouseDown:false,
+      style: this.props.style
     };
     this.changeEditMode = this.changeEditMode.bind(this);
     this.onKeyPressHandler = this.onKeyPressHandler.bind(this);
@@ -86,45 +87,54 @@ class EditableText extends Component {
     if (this.state.inputBoxMouseDown) {
       return;
     } else {
-    var text = this.refs[this.props.reference].value;
-    if (text && !this.isValid(this.props.reference, text)) {
+    var kmSidebarUserInfoInputFieldValue = this.refs[this.props.reference].value;
+    var kmSidebarUserInfoInputFieldName =this.props.reference ;
+    var userId = this.props.keyname;
+    if (kmSidebarUserInfoInputFieldValue && !this.isValid(this.props.reference, kmSidebarUserInfoInputFieldValue)) {
       return;
     }
     this.setState({
       isInEditMode: !this.state.isInEditMode,
       inputBoxMouseDown: false 
     });
-    if (text === this.state.value) {
+    if (kmSidebarUserInfoInputFieldValue === this.state.value) {
       return;
     }
     var params = {
       ofUserId: this.props.keyname,
       userDetails: {}
     };
-    params.userDetails[this.props.reference] = text;
+    params.userDetails[this.props.reference] = kmSidebarUserInfoInputFieldValue;
+    if(kmSidebarUserInfoInputFieldValue){
     ApplozicClient.updateUserDetail(params)
       .then(result => {
         if (result && result.data && result.data.status === "success") {
           this.setState({
-            value: text
+            value: (kmSidebarUserInfoInputFieldName === 'displayName' && !kmSidebarUserInfoInputFieldValue )?userId:kmSidebarUserInfoInputFieldValue
           })
-          if (this.props.reference === 'email' || this.props.reference === 'displayName') {
+          if (kmSidebarUserInfoInputFieldName === 'email' || kmSidebarUserInfoInputFieldName === 'displayName') {
             this.setState({
               renderChild: false
             })
           }
-          if (this.props.reference !== 'displayName') {
-            document.getElementById(this.props.id).classList.remove("km-sidebar-user-data-notfound");
-            document.getElementById(this.props.id).classList.add("km-sidebar-user-data-found");
+          if (kmSidebarUserInfoInputFieldName !== 'displayName') {
+            this.setState({
+              style: kmSidebarUserInfoInputFieldValue ? "km-sidebar-user-data-found km-edit" : "km-sidebar-user-data-notfound km-edit"
+            })
           }
-          var list = document.querySelectorAll(".person.active .name");
+          var list = document.querySelectorAll(".km-userId-"+ userId +" .name");
+          if (kmSidebarUserInfoInputFieldName === 'displayName') {
           for (var i = 0; i < list.length; i++) {
-            if(this.props.reference === 'displayName'){
-            list[i].innerText = document.getElementsByClassName("km-sidebar-display-name")[0].innerHTML;
+              if (kmSidebarUserInfoInputFieldValue) {
+                list[i].innerText = kmSidebarUserInfoInputFieldValue;
+              } else {
+                list[i].innerText = userId;
+              }
             }
           }
         }
       })
+    }
     }
   };
 
@@ -135,7 +145,7 @@ class EditableText extends Component {
       padding:"5px"
     };
     return (
-      <div className={this.props.style}>
+      <div className={this.state.style}>
         <input
           style={style}
           type= {this.props.inputType?this.props.inputType :"text" }
@@ -164,7 +174,7 @@ class EditableText extends Component {
     return (
       <div className={this.props.reference === "displayName" ? "km-dispalyname-wrapper" : ""}>
         <div onClick={this.changeEditMode} className={this.props.reference !== "displayName" ? "km-edit" : ""}>
-          <p id={this.props.id} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
+          <p id={this.props.id} className={this.state.style}>{this.state.value || this.props.placeholder}</p>
         </div>
         {this.state.renderChild ? this.props.children : null}
       </div>
