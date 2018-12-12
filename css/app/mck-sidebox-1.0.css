@@ -5776,3 +5776,6 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	width: 35px;
 	margin-top: 3px;
 }
+.km-iframe-sidebox-border-radius {
+	border-radius: 6px !important;
+}
