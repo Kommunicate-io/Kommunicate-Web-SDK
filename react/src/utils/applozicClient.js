@@ -330,15 +330,12 @@ updateUserDetail:function(params){
     var data = new FormData();
     var certificateUploadUrl = getConfig().applozicPlugin.certificateUpload
     var userSession = CommonUtils.getUserSession();
-    var headers = CommonUtils.isApplicationAdmin() ?
-      {
-        "Apz-AppId": userSession.application.applicationId,
-        "Apz-Token": 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64')
-      } :
-      {
-        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey,
-        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
-      }
+    let headers = {
+      'Content-Type': 'application/json',
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': true
+    }
     data.append("file", params.file);
     return axios({
       "method": 'POST',
