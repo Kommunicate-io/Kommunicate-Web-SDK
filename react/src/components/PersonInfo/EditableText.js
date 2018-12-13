@@ -127,7 +127,7 @@ class EditableText extends Component {
               style: kmSidebarUserInfoInputFieldValue ? "km-sidebar-user-data-found km-edit" : "km-sidebar-user-data-notfound km-edit"
             })
           }
-          var list = document.querySelectorAll(".km-userId-"+ userId +" .name");
+          var list = document.querySelectorAll("[data-kmUserId='"+userId+"'] .name");
           if (kmSidebarUserInfoInputFieldName === 'displayName') {
           for (var i = 0; i < list.length; i++) {
               if (kmSidebarUserInfoInputFieldValue) {
