@@ -11,6 +11,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^1.0.1",
     "file-loader": "^2.0.0",
@@ -25,6 +26,7 @@
     "style-loader": "^0.23.1",
     "svg-inline-loader": "^0.8.0",
     "webpack": "^4.27.0",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
   },
@@ -83,9 +85,10 @@
     "validator": "8.0.0"
   },
   "scripts": {
-    "build-prod": "webpack --env.REACT_APP_NODE_ENV='prod' --progress --mode production",
-    "build-test": "webpack --env.REACT_APP_NODE_ENV='test' --progress --mode production",
-    "build-stage": "webpack --env.REACT_APP_NODE_ENV='stage' --progress --mode production",
+    "build-prod-km": "webpack --env.REACT_APP_NODE_ENV=prod --env.BRAND=kommunicate --progress --mode production",
+    "build-prod-al": "webpack --env.REACT_APP_NODE_ENV=prod --env.BRAND=applozic --progress --mode production",
+    "build-test": "webpack --env.REACT_APP_NODE_ENV=test --progress --mode production",
+    "build-stage": "webpack --env.REACT_APP_NODE_ENV=stage --progress --mode production",
     "dev": "webpack-dev-server --open --mode development",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom",

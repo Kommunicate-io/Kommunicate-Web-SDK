@@ -28,10 +28,7 @@ import EmailNotifications from '../../views/EmailNotifications/EmailNotification
 import Conversation404 from '../../views/Pages/Page404/Conversation404'
 import EmailFallback from '../../views/EmailFallback/EmailFallback.js'
 import WebhooksAndSecurity from '../../views/WebhooksAndSecurity/WebhooksAndSecurity'
-
-import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
-import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
 import config from '../../config/index';

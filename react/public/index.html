@@ -7,7 +7,6 @@
     <meta name="description" content="Kommunicate">
     <meta name="author" content="Applozic Inc">
     <meta name="keyword" content="">
-    <link rel="shortcut icon" href="./favicon.ico">
     <!--
       Notice the use of . in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -17,7 +16,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Kommunicate</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <base href="/" />
 
     <!-- Icons -->
@@ -44,7 +43,7 @@
   -->
 
   <!-- Custom JS -->
-  <link rel="stylesheet" href="node_modules/applozic-chat/src/css/app/fullview/applozic.plugin.css">
+  <link rel="stylesheet" href="./applozic/css/app/fullview/applozic.plugin.css">
 
   <script type="text/javascript">
     var $original;
@@ -151,6 +150,5 @@
 <!--
   <script type="text/javascript" src="./js/chargebee.js" data-cb-site="kommunicate-test"></script>
 -->
-<script type="text/javascript" src="./bundle.js"></script>
   </body>
 </html>
