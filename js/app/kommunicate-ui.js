@@ -387,6 +387,10 @@ hideClosedConversationBanner : function(){
     conversationStatusDiv.classList.remove("vis");
     conversationStatusDiv.classList.add("n-vis");
     }
+},
+setAvailabilityStatus : function (status){
+    $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").addClass("mck-status--" + status);
+    $applozic("#mck-agent-status-text").text(MCK_LABELS[status]).addClass("vis").removeClass("n-vis");
 }
   
 }
