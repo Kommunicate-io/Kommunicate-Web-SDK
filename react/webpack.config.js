@@ -85,7 +85,7 @@ module.exports = env => {
             contentBase: './public',
             compress: true,
             historyApiFallback: true,
-            port: 9000
+            port: 3000
         },
         plugins: plugins
     }
