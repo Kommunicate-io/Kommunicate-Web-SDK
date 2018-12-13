@@ -3020,12 +3020,14 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     }
                 });
             };
+              // chat context can be any extra information i.e. groupId, formUserName etc.
             _this.getChatContext =  function(msgProxy){
-                // chat context can be any extra information i.e. groupId, formUserName etc. 
+                var existingContextFromMetadata = (msgProxy&& msgProxy.metadata && typeof msgProxy.metadata["KM_CHAT_CONTEXT"] == 'object')? msgProxy.metadata["KM_CHAT_CONTEXT"]:{};
+                // chat context in setting can be updated by user using Kommunicate.updateSetting() 
                 var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
                 chatContext = typeof chatContext == 'object'?chatContext : {};
                 MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
-                return $applozic.extend(MCK_DEFAULT_MESSAGE_METADATA,chatContext);
+                return $applozic.extend(MCK_DEFAULT_MESSAGE_METADATA,chatContext,existingContextFromMetadata);
             } 
 
             _this.submitMessage = function (messagePxy, optns) {
