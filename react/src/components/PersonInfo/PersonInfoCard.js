@@ -16,6 +16,8 @@ class PersonInfoCard extends Component {
             userMetadata: this.props.user && this.props.user.metadata ? this.props.user.metadata : null,
             pseudoUser: false,
             imageLink: "",
+            email:"",
+            phoneNumber:""
         }
     }
     componentWillReceiveProps(nextProps) {

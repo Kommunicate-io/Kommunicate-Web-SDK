@@ -24,7 +24,12 @@ class EditableText extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.value != nextProps.value) {
-      this.setState({ value: nextProps.value });
+      this.setState({ value: nextProps.value
+       });
+    }
+    if (this.props.style != nextProps.style) {
+      this.setState({ style: nextProps.style
+       });
     }
   }
 
@@ -140,7 +145,7 @@ class EditableText extends Component {
 
   renderEditView = () => {
     const style = {
-      width: "100%",
+      width: "95%",
       textAlign: "left",
       padding:"5px"
     };
