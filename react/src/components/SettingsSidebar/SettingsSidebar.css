@@ -73,7 +73,7 @@
 .sidebar-fixed .sidebar {
     z-index: 2;
     display: flex;
-    box-shadow: 1px 0 10px 0 rgba(0, 0, 0, 0.1);
+    /* box-shadow: 1px 0 10px 0 rgba(0, 0, 0, 0.1); */
 }
 
 .__react_component_tooltip {
