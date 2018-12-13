@@ -5540,3 +5540,10 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .km-iframe-sidebox-border-radius {
 	border-radius: 6px !important;
 }
+.km-iframe-badge-count {
+	min-width: 9px;
+    height: auto;
+    top: -4px;
+    line-height: 17px;
+    right: -5px;
+}
