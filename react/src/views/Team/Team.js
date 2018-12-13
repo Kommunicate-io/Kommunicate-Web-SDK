@@ -167,12 +167,13 @@ class Integration extends Component {
     
     if (!isUserExists && !isInvitationExists) {
       if (email.match(mailformat)) {
-        this.onCloseModal();
+        
         acEventTrigger('ac-added-agent');
           return Promise.resolve(notifyThatEmailIsSent({ to: email, isKommunicate:CommonUtils.isKommunicateDashboard(), templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
-            if (response && response.data === "success") {
+            if (response && response.data.code === "SUCCESS") {
+              this.onCloseModal();
               Notification.success('Invitation sent successfully');
-              //this.getInvitedUsers();
+              this.getInvitedUsers();
             }
           }).catch(err => {
             Notification.error("Something went wrong!")

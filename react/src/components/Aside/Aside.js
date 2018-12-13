@@ -15,7 +15,8 @@ import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
-import {PseudonymModal} from '../PersonInfo/MetaInfo'
+import {PseudonymModal} from '../PersonInfo/MetaInfo';
+import Button from '../Buttons/Button';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -623,7 +624,7 @@ class Aside extends Component {
                           </div>
                           <div className="introducing-text-container">
                             <p>Introducing Pseudonyms for anonymous users</p>
-                            <a href="#" onClick={this.onOpenModal}>Learn more</a>
+                            <Button secondary link onClick={this.onOpenModal}>Learn more</Button>
                             {
                               this.state.modalOpen ? <PseudonymModal modalOpen={this.state.modalOpen} onCloseModal={this.onCloseModal} /> : null
                             }

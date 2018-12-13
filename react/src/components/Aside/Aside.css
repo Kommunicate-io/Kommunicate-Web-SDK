@@ -599,6 +599,9 @@ ul#km-group-search-list li {
     pointer-events: all;
     cursor: pointer;
 }
+.introducing-text-container button {
+    padding: 0;
+}
 .introducing-text-box-main-container .introducing-close-icon-container {
     cursor: pointer;
 }
