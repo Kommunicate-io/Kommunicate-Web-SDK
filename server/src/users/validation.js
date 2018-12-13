@@ -101,5 +101,15 @@ module.exports.validateMetadata = {
   }
 }
 
+module.exports.validateUserUpdate = {
+  params: {
+    userId: joi.string().required(),
+  },
+  headers:{
+    'api-key': joi.string().required(),
+  }
+  
+}
+
 exports.getBusinessHours= getBusinessHours;
 exports.businessHoursInAday=businessHours;

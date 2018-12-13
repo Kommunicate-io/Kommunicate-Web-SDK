@@ -232,7 +232,7 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
 
 // v2 user router
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
-
+this.v2UserRouter.patch('/:userId', validate(userValidation.validateUserUpdate), userController.updateApplozicUser)
 
 
 //Cron Time Stamp Router

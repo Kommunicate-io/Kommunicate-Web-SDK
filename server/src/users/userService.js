@@ -669,6 +669,31 @@ const getUserByCriteria = async (criteria)=>{
   }
 }
 
+const updateApplozicUser = (userInfo, apiKey) => {
+  return applozicClient.getUserDetails([userInfo.userId], null, null, null, apiKey).then(result => {
+    let userDetail = result[0];
+    if (!userDetail) {
+      throw "user not found"
+    }
+    if (userInfo.metadata) {
+      var oldMetadata = {};
+      for (var key in userDetail.metadata) {
+        oldMetadata[key] = JSON.parse(userDetail.metadata[key])
+      }
+      userInfo.metadata = deepmerge(oldMetadata, userInfo.metadata);
+      for (var key in userInfo.metadata) {
+        (typeof userInfo.metadata[key] === "object" || typeof userInfo.metadata[key] === "array") && (userInfo.metadata[key] = JSON.stringify(userInfo.metadata[key]))
+      }
+    }
+    return applozicClient.updateApplozicUser(userInfo, { "Api-Key": apiKey }).then(response => {
+      return response
+    }).catch(error => {
+      throw error;
+    })
+  })
+}
+
+exports.updateApplozicUser = updateApplozicUser;
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
 exports.activateOrDeactivateUser = activateOrDeactivateUser;

@@ -90,7 +90,8 @@
     "build-prod-al": "webpack --env.REACT_APP_NODE_ENV=prod --env.BRAND=applozic --progress --mode production",
     "build-test": "webpack --env.REACT_APP_NODE_ENV=test --progress --mode production",
     "build-stage": "webpack --env.REACT_APP_NODE_ENV=stage --progress --mode production",
-    "dev": "webpack-dev-server --open --mode development",
+    "dev": "webpack-dev-server --open --env.REACT_APP_NODE_ENV=development --mode development",
+    "bundle-analyzer": "webpack-bundle-analyzer --host 0.0.0.0 --port 4545 build/stats.json",
     "start": "react-scripts start",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
