@@ -387,6 +387,21 @@ hideClosedConversationBanner : function(){
     conversationStatusDiv.classList.remove("vis");
     conversationStatusDiv.classList.add("n-vis");
     }
+},
+
+setOnlineStatus : function (){
+    $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");;
+    $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+},
+
+setOfflineStatus : function (){
+    $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online").removeClass("mck-status--away");
+    $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
+},
+
+setAwayStatus : function () {
+    $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--away").removeClass("mck-status--online").removeClass("mck-status--offline");
+    $applozic("#mck-agent-status-text").text(MCK_LABELS['away']).addClass("vis").removeClass("n-vis");
 }
   
 }
