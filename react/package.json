@@ -59,6 +59,7 @@
     "react-content-loader": "3.2.0",
     "react-dom": "16.4.1",
     "react-dropdown": "1.2.5",
+    "react-linkify": "^0.2.2",
     "react-modal": "3.1.6",
     "react-notifications": "1.4.3",
     "react-paginating": "1.0.1",

@@ -2,7 +2,9 @@ import React from 'react';
 import Labels from '../../utils/Labels';
 import { PseudoNameImage } from '../../views/Faq/LizSVG';
 import ReactModal from 'react-modal';
-import { CSSTransitionGroup } from 'react-transition-group'
+import { CSSTransitionGroup } from 'react-transition-group';
+import Linkify from 'react-linkify';
+
 const infoText = Labels["lastcontacted.tooltip"];
 
 
@@ -83,7 +85,9 @@ export const UserMetadata = (props) => {
                     transitionName="fade"
                     transitionEnterTimeout={500}
                     transitionLeaveTimeout={300}>
+                    <Linkify properties={{target: '_blank'}}>
                     {userMetaInfo}
+                    </Linkify>
                 </CSSTransitionGroup>
             </div>
         </div>
