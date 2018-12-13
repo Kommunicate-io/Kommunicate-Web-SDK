@@ -57,6 +57,16 @@ KommunicateConstants = {
         BLOCK_NOTIFY_MESSAGE: 13,
         AUDIO_VIDEO_CALL: 102,
         MISSED_CALL: 103
+    },
+    APPLOZIC_USER_ROLE_TYPE : {
+        BOT:1,
+        APPLICATION_ADMIN:2,
+        USER:3,
+        ADMIN:4,
+        BUSINESS:5,
+        APPLICATION_BROADCASTER:6,
+        SUPPORT:7,
+        APPLICATION_WEB_ADMIN:8
     }
 }
 

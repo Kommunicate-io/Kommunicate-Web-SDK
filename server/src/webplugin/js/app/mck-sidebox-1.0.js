@@ -3241,10 +3241,23 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     });
                 }
             };
+
+            // populate away messsage for support group..
+            _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
+                if (message.code === "AGENTS_ONLINE") {
+                    KommunicateUI.setAvailabilityStatus("online");
+                } else if (message.code === "SUCCESS" && !isAgentOffline) {
+                    KommunicateUI.setAvailabilityStatus("away");
+                }
+                KommunicateUI.populateAwayMessage(err, message);
+                KommunicateUI.updateLeadCollectionStatus(err, message, data.message)
+            };
+
             _this.loadMessageList = function (params, callback) {
                 var individual = false;
                 var isConvReq = false;
                 var reqData = '';
+                var isAgentOffline = false;
                 if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
                     reqData = (params.isGroup) ? "&groupId=" + params.tabId : "&userId=" + encodeURIComponent(params.tabId);
                     individual = true;
@@ -3281,14 +3294,20 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         var isMessages = true;
                         //Display/hide lead(email) collection template
                         if (params.isGroup) {
-                            Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, 
-                            function(err,message){
-                                // populate away messsage for support group..
-                                MCK_LABELS['away'] = message.code != 'AGENTS_ONLINE' ? 'Away' : null;
-                                KommunicateUI.populateAwayMessage(err,message);
-                                KommunicateUI.updateLeadCollectionStatus(err,message,data.message)       
+                            var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                            var conversationAssigneeRoleType = data.userDetails.filter(function (item) {
+                                return item.userId == conversationAssignee;
+                            })[0];
+                            if(conversationAssigneeRoleType.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
+                                Kommunicate.getAwayMessage({
+                                        "applicationId": MCK_APP_ID,
+                                        "conversationId": params.tabId
+                                    },
+                                    function (err, message) {
+                                        _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
+                                    }
+                                );
                             }
-                            );
                         }
                         
                         var currTabId = $mck_msg_inner.data('mck-id');
@@ -3580,20 +3599,15 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
                                     }
 
-                                    if(MCK_LABELS['away']){
-                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--away").removeClass("mck-status--online").removeClass("mck-status--offline");
-                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['away']).addClass("vis").removeClass("n-vis");
-                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === 1) {
+                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
-                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");
-                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
-                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === 8) {
+                                        KommunicateUI.setAvailabilityStatus("online");
+                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
                                         if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
-                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");
-                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                            KommunicateUI.setAvailabilityStatus("online");
                                         } else {
-                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online").removeClass("mck-status--away");
-                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
+                                            KommunicateUI.setAvailabilityStatus("offline");
+                                            isAgentOffline = true;
                                         }
                                     }
                                 }
