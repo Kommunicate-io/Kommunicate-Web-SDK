@@ -3303,7 +3303,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             var conversationAssigneeRoleType = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;
                             })[0];
-                            if(conversationAssigneeRoleType.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
+                            if(conversationAssigneeRoleType && conversationAssigneeRoleType.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({
                                         "applicationId": MCK_APP_ID,
                                         "conversationId": params.tabId
