@@ -743,7 +743,7 @@ class Billing extends Component {
                                                             <li>Agent apps</li>
                                                             <li>Basic reporting</li>
                                                             <li>Welcome messages</li>
-                                                            <li>90 days chat history</li>
+                                                            <li>30 days chat history</li>
                                                         </ul>
                                                     </div>
                                                 </div>
