@@ -47,7 +47,12 @@ module.exports = env => {
     ]
     if (env && env.REACT_APP_NODE_ENV == 'test') {
         console.log('bundle analyzer added')
-        plugins.push(new BundleAnalyzerPlugin({ analyzerPort: 4545, analyzerHost: "0.0.0.0" }))
+        plugins.push(new BundleAnalyzerPlugin(
+            {
+                analyzerMode: 'disabled',
+                generateStatsFile: true,
+                statsOptions: { source: false }
+            }))
     }
     return {
         entry: {
