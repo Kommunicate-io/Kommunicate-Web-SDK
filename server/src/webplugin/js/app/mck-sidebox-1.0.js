@@ -5526,6 +5526,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
                     var emoji_template = _this.getMessageTextForContactPreview(message, contact);
+                    if(typeof emoji_template =="undefined"){
+                        return;
+                    }
                     $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-date").html(typeof message.createdAtTime === 'undefined' ? '' : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : '', true));
                     var $messageText = $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-wrapper");
                     $messageText.html('');
@@ -5637,6 +5640,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
+               if(typeof emoji_template == "undefined") {
+                $textMessage.html("");  
+               }
             };
             _this.addContactsToContactSearchList = function () {
                 var contactsArray = [],
