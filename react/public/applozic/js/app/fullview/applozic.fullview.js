@@ -1346,7 +1346,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								apzCallback: mckGroupLayout.loadGroups
 							});
 							// dispatch fullView initilized Event
-                            window.dispatchEvent(new CustomEvent("kmFullViewInitilized",{detail:{"status": "success"},bubbles: true,cancelable: true}));
+							kmEvents.triggerCustomEvent("kmFullViewInitilized");
 							// kmUtils.manageIdleTime();
 						} else {
 							if (typeof MCK_ON_PLUGIN_INIT === 'function') {
@@ -1363,7 +1363,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							"pageSize": 15,
 							'callback': function(response) {
 								let userList = (response && response.response&& response.response.users)?response.response.users:[];
-								let appUsers = userList.filter(user=>!(user.metadata&&user.metadata['KM_SOURCE']=="KOMMUNICATE_DASHBOARD"));
+								var appUsers = userList.filter(function (user) {
+									return !(user.metadata && user.metadata['KM_SOURCE'] == "KOMMUNICATE_DASHBOARD");
+								});
 								MCK_INTEGRATION_STARTED = appUsers.length ? true : false;
 								mckMessageService.emptyStateChange();
 							}

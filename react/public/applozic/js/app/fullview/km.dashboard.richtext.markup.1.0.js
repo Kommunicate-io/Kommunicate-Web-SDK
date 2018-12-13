@@ -347,7 +347,7 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
             })
         }
         if(json.buttons&&json.buttons.length){
-        json.buttons=  json.buttons.map(button=>{
+        json.buttons=  json.buttons.map(function(button){
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
                 button.hadlerClass= "km-list-button-item-handler";

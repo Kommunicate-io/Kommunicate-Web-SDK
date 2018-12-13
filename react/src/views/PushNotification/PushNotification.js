@@ -16,10 +16,10 @@ import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
 
 
-const headers = {
-  "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName + ':' + CommonUtils.getUserSession().accessToken).toString('base64'),
+let headers = {
+  "Apz-Token": CommonUtils.getUserSession() && 'Basic ' + new Buffer(CommonUtils.getUserSession().userName + ':' + CommonUtils.getUserSession().accessToken).toString('base64'),
   "Content-Type": "application/json",
-  "Apz-AppId": CommonUtils.getUserSession().application.applicationId,
+  "Apz-AppId": CommonUtils.getUserSession() && CommonUtils.getUserSession().application.applicationId,
   "Apz-Product-App": true
 };
 
