@@ -74,6 +74,7 @@ Kommunicate.defaultLabels = {
     'private':'Private',
     'open':'Open',
     'you':'You',
+    'away':'Away',
     'closed.conversation.message':'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
     'search.faq':'Search in FAQs...',
     'looking.for.something.else':'Looking for something else?',
