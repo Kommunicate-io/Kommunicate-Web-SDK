@@ -16,6 +16,13 @@ import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
 
 
+const headers = {
+  "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName + ':' + CommonUtils.getUserSession().accessToken).toString('base64'),
+  "Content-Type": "application/json",
+  "Apz-AppId": CommonUtils.getUserSession().application.applicationId,
+  "Apz-Product-App": true
+};
+
 class PushNotification extends Component {
   constructor(props) {
     super(props);
@@ -175,11 +182,7 @@ class PushNotification extends Component {
       url: userDetailUrl,
       contentType: 'application/json',
       data: application,
-      headers: {
-        "Apz-Token": "Basic " +CommonUtils.isApplicationAdmin(userSession)? 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') : getConfig().adminDetails.kommunicateAdminApzToken,
-        "Content-Type": "application/json",
-        "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
-      }
+      headers: headers
     }).then(function (response) {
       if (response.status === 200) {
         Notification.info("GCM Key updated");
@@ -233,11 +236,7 @@ class PushNotification extends Component {
       url: userDetailUrl,
       contentType: 'application/json',
       data: application,
-      headers: {
-        "Apz-Token": "Basic " +CommonUtils.isApplicationAdmin(userSession)? 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') : getConfig().adminDetails.kommunicateAdminApzToken,
-        "Content-Type": "application/json",
-        "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
-      }
+      headers: headers
     }).then(function (response) {
       if (response.status === 200) {
         Notification.info("Apns Detail for distribution updated sucessfully");
@@ -291,11 +290,7 @@ class PushNotification extends Component {
       url: userDetailUrl,
       contentType: 'application/json',
       data: application,
-      headers: {
-        "Apz-Token": "Basic " +CommonUtils.isApplicationAdmin(userSession)? 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') : getConfig().adminDetails.kommunicateAdminApzToken,
-        "Content-Type": "application/json",
-        "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
-      }
+      headers: headers
     }).then(function (response) {
       if (response.status === 200) {
         Notification.info("Apns for development updated sucessfully");
