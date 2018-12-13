@@ -1634,7 +1634,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
 
                 var badgeCount = document.getElementById('applozic-badge-count');
-                badgeCount.setAttribute("style","min-width: 9px; height: auto;top: -4px;line-height: 17px;right: -5px;");
+                badgeCount.classList.add("km-iframe-badge-count");
 
                 // handle click events for openning and closing of sidebox
                 var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
