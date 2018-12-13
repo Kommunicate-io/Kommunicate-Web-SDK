@@ -58,7 +58,7 @@ KommunicateConstants = {
         AUDIO_VIDEO_CALL: 102,
         MISSED_CALL: 103
     },
-    ROLE_TYPE : {
+    APPLOZIC_USER_ROLE_TYPE : {
         BOT:1,
         APPLICATION_ADMIN:2,
         USER:3,

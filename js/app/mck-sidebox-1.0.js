@@ -3243,13 +3243,11 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             };
 
             // populate away messsage for support group..
-            _this.populateAwayMessage = function (data, isAgentOffline, err, message) {
+            _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
                 if (message.code === "AGENTS_ONLINE") {
-                    $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");;
-                    $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                    KommunicateUI.setOnlineStatus();
                 } else if (message.code === "SUCCESS" && !isAgentOffline) {
-                    $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--away").removeClass("mck-status--online").removeClass("mck-status--offline");
-                    $applozic("#mck-agent-status-text").text(MCK_LABELS['away']).addClass("vis").removeClass("n-vis");
+                    KommunicateUI.setAwayStatus();
                 }
                 KommunicateUI.populateAwayMessage(err, message);
                 KommunicateUI.updateLeadCollectionStatus(err, message, data.message)
@@ -3300,13 +3298,13 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             var conversationAssigneeRoleType = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;
                             })[0];
-                            if(conversationAssigneeRoleType.roleType !== KommunicateConstants.ROLE_TYPE.BOT){
+                            if(conversationAssigneeRoleType.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({
                                         "applicationId": MCK_APP_ID,
                                         "conversationId": params.tabId
                                     },
                                     function (err, message) {
-                                        _this.populateAwayMessage(data, isAgentOffline, err, message);
+                                        _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
                                     }
                                 );
                             }
@@ -3601,17 +3599,14 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
                                     }
 
-                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.ROLE_TYPE.BOT) {
+                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
-                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");
-                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
-                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.ROLE_TYPE.APPLICATION_WEB_ADMIN) {
+                                        KommunicateUI.setOnlineStatus();
+                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
                                         if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
-                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");
-                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                            KommunicateUI.setOnlineStatus();
                                         } else {
-                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online").removeClass("mck-status--away");
-                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
+                                            KommunicateUI.setOfflineStatus();
                                             isAgentOffline = true;
                                         }
                                     }
