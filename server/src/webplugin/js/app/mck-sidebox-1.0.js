@@ -3245,9 +3245,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
                 if (message.code === "AGENTS_ONLINE") {
-                    KommunicateUI.setOnlineStatus();
+                    KommunicateUI.setAvailabilityStatus("online");
                 } else if (message.code === "SUCCESS" && !isAgentOffline) {
-                    KommunicateUI.setAwayStatus();
+                    KommunicateUI.setAvailabilityStatus("away");
                 }
                 KommunicateUI.populateAwayMessage(err, message);
                 KommunicateUI.updateLeadCollectionStatus(err, message, data.message)
@@ -3601,12 +3601,12 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
                                     if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
-                                        KommunicateUI.setOnlineStatus();
+                                        KommunicateUI.setAvailabilityStatus("online");
                                     } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
                                         if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
-                                            KommunicateUI.setOnlineStatus();
+                                            KommunicateUI.setAvailabilityStatus("online");
                                         } else {
-                                            KommunicateUI.setOfflineStatus();
+                                            KommunicateUI.setAvailabilityStatus("offline");
                                             isAgentOffline = true;
                                         }
                                     }
