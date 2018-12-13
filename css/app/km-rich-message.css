@@ -77,7 +77,7 @@
     .mck-msg-box-rich-text-container{
         top: 0;
         float: left;
-        margin: 5px 0px 0px 0px;
+        margin: -3px 0px 0px 0px;
         color:#7766B5;
     }
     .km-guest-text-lable .km-children-text-lable{
@@ -378,7 +378,13 @@
     }
     .km-cta-multi-button-container .km-cta-button-2{
         margin-top: 10px;
-        width:33%;
+        width: auto;
+        margin-right: 10px;
+        padding: 6px 14px;
+        border-radius: 15px;
+        min-width: 35px;
+        font-size: 13px;
+        letter-spacing: 0.5px;
     }
     .km-cta-button {
         color: #5553b7!important;

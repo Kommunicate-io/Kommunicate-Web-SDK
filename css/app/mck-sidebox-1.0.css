@@ -1900,7 +1900,9 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-msg-avator-bubble .mck-msg-left-muted {
-	margin-left: 46px;
+    margin-left: 0;
+    padding: 0;
+    width: 100%;
 }
 
 .mck-msg-right-muted {
@@ -1911,6 +1913,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-msg-avator-bubble .mck-msg-right-muted {
 	/*margin-right: 44px;*/
 	position: relative;
+	width: 100%;
+    text-align: right;
 }
 
 .mck-msg-box .mck-attachment img {
@@ -4482,8 +4486,14 @@ color: rgba(0,0,0,0.5);
 	width:50%;
 }
 .km-cta-multi-button-container .km-cta-button-2{
-	margin-top: 10px;
-	width:33%;
+    margin-top: 10px;
+    width: auto;
+    margin-right: 10px;
+    padding: 6px 14px;
+    border-radius: 15px;
+    min-width: 35px;
+    font-size: 13px;
+    letter-spacing: 0.5px;
 }
 .km-cta-button {
 	color: #7766B5;
