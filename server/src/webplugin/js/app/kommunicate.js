@@ -59,7 +59,8 @@ $applozic.extend(true,Kommunicate,{
             "clientGroupId": params.clientGroupId,
             "isMessage": params.isMessage,
             "isInternal": params.isInternal,
-            "skipRouting": params.skipRouting
+            "skipRouting": params.skipRouting,
+            "metadata": (typeof params.metadata == "object"  && typeof params.metadata['KM_CHAT_CONTEXT'] == object) ? params.metadata['KM_CHAT_CONTEXT']:{}
         }
         Kommunicate.client.createConversation(conversationDetail, callback);
     },
