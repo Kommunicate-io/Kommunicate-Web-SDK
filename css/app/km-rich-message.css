@@ -724,6 +724,11 @@
         overflow: hidden;
         transition: all 0.3s ease-in-out;
     }
+    .km-faq-list--body_que-ans * {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
     .km-faq-list--body_list li>a:hover {
         background-color: #efefef;
         color: grey;
@@ -786,13 +791,12 @@
         border-bottom-right-radius: 18px;
     }
     .km-faq-list--footer_button-container button {
-        width: 100%;
+        width: 99.5%;
         outline: none;
         border: none;
         background: transparent;
-       
+        border-radius: 4px;
         letter-spacing: 1px;
-        font-family: Roboto;
         font-size: 15px;
         cursor: pointer;
         padding: 12px 0px;
