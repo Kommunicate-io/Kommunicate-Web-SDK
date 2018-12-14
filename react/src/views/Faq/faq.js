@@ -26,7 +26,7 @@ import IntegrationDescription from '../Integrations/IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CloseButton from './../../components/Modal/CloseButton.js';
-import {acEventTrigger} from '../../utils/AnalyticsEventTracking.js'
+import AnalyticsTracking from '../../utils/AnalyticsEventTracking.js'
 import ReactQuill from 'react-quill';
 import './ReactQuill.css';
 
@@ -177,7 +177,7 @@ class Tabs extends Component {
         }).catch(err => {
           console.log(err)
         })
-      acEventTrigger('ac-created-faq');
+      AnalyticsTracking.acEventTrigger('ac-created-faq');
   }
 
   toggleDeleteFaq = () => {

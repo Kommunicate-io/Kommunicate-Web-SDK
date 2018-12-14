@@ -3,7 +3,7 @@ import './IncomingEmailForward.css';
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
 import { Link } from 'react-router-dom';
-import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
@@ -29,7 +29,7 @@ export default class IncomingEmailForward extends Component {
         //     this.setState({ copySuccess: "Copy" }); 
         // }, 5000);
         Notification.info("Email copied successfully!");
-        acEventTrigger('ac-configure-mailbox');
+        AnalyticsTracking.acEventTrigger('ac-configure-mailbox');
       };
 
     render () {

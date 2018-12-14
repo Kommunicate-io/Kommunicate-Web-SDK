@@ -206,7 +206,7 @@ class Login extends Component {
 			});
 		
 		} else {
-			CommonUtils.analyticsIdentify(userName);
+			AnalyticsTracking.identify(userName);
 
 			if (this.state.loginType === 'oauth'){
 				loginUrl += "?loginType=oauth"

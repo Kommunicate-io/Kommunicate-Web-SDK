@@ -7,7 +7,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
-import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 import Button from '../../components/Buttons/Button';
@@ -101,7 +101,7 @@ class AutoSuggest extends Component {
 		else{
 			this._createSuggestion();
 		}
-		acEventTrigger('ac-created-quickreply');
+		AnalyticsTracking.acEventTrigger('ac-created-quickreply');
 	}
 	_createSuggestion = (e) => {
 		let index = this.state.activeTextField;

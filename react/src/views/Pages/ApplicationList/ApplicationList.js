@@ -102,9 +102,7 @@ class ApplicationList extends Component {
     var _this = this;
     let loginUrl = getConfig().kommunicateApi.login;
     var userName = this.state.userName, password = this.state.password, applicationName = this.state.applicationName, applicationId = key;
-    if (window.heap) {
-      window.heap.identify(userName);
-    }
+    AnalyticsTracking.identify(userName);
 
     if (this.state.loginType === 'oauth') {
       loginUrl += "?loginType=oauth"

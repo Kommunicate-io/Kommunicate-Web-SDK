@@ -35,7 +35,7 @@ import config from '../../config/index';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
-import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 
 
@@ -194,7 +194,7 @@ class Full extends Component {
 
   componentDidMount() {
     if(CommonUtils.getUserSession()){
-      CommonUtils.analyticsIdentify(CommonUtils.getUserSession().userName);
+      AnalyticsTracking.identify(CommonUtils.getUserSession().userName);
 
       let userSession = CommonUtils.getUserSession();
       let userProperties = {
@@ -206,22 +206,11 @@ class Full extends Component {
         "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
       };
 
-      if (window.heap) {
-        window.heap.addUserProperties(userProperties);
-      }
-      
-      if (window.mixpanel) {
-        window.mixpanel.register(userProperties);
-        window.mixpanel.people.set({
-            "$distinct_id": userSession.userName,
-            "$name": userSession.name,
-            "$created": userProperties.signup,
-            "$email": userProperties.email
-        });
+      AnalyticsTracking.addUserProperties(userProperties);
+      AnalyticsTracking.addPeopleProfile(userSession, userProperties);
 
-        if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
-          acEventTrigger("integrated");
-        }
+      if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
+        AnalyticsTracking.acEventTrigger("integrated");
       }
       
       // initilizing full view plugin for dashboard user
@@ -257,7 +246,7 @@ class Full extends Component {
       analyticsEvent = "/conversations/thread";
     }
     
-    acEventTrigger(analyticsEvent);
+    AnalyticsTracking.acEventTrigger(analyticsEvent);
     const settingStyle={'marginLeft': '280px'}
    
     return (

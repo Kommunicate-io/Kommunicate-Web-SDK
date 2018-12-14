@@ -9,7 +9,7 @@ import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
 import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
-import { acEventTrigger } from './AnalyticsEventTracking';
+import AnalyticsTracking from './AnalyticsTracking';
 
 
 
@@ -195,12 +195,10 @@ const callSendEmailAPI = (options) => {
   let roleType = options.roleType;
   let data = {};
 
-  if (window.mixpanel) {
-    if (options.templateName == "SEND_KOMMUNICATE_SCRIPT") {
-      acEventTrigger("integration.instructions.mail.sent");
-    } else {
-      acEventTrigger("mail." + options.templateName);
-    }
+  if (options.templateName == "SEND_KOMMUNICATE_SCRIPT") {
+    AnalyticsTracking.acEventTrigger("integration.instructions.mail.sent");
+  } else {
+    AnalyticsTracking.acEventTrigger("mail." + options.templateName);
   }
 
 let url = config.baseurl.kommunicateAPI+"/misc/mail";

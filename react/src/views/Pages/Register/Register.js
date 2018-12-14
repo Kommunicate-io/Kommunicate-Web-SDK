@@ -12,7 +12,7 @@ import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
-import { acEventTrigger } from '../../../utils/AnalyticsEventTracking.js';
+import AnalyticsTracking from '../../../utils/AnalyticsEventTracking.js';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
 
@@ -166,7 +166,7 @@ class Register extends Component {
     userInfo.token = this.state.token;
     userInfo.deviceType = "0";
 
-    CommonUtils.analyticsIdentify(email);
+    AnalyticsTracking.identify(email);
 
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
@@ -240,7 +240,7 @@ class Register extends Component {
 
   render() {
     
-    acEventTrigger("/signup");
+    AnalyticsTracking.acEventTrigger("/signup");
 
     console.log("invite",this.state.invitedUserEmail);
     return (

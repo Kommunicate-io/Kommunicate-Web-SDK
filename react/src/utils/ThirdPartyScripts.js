@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
-import {acEventTrigger} from './AnalyticsEventTracking';
+import AnalyticsTracking from './AnalyticsEventTracking';
 import axios from 'axios';
 // import Notification from '../views/model/Notification';
 
@@ -60,7 +60,7 @@ class ThirdPartyScripts extends Component {
                   }
 
                   mckSideboxLauncher.addEventListener("click",function(){
-                    acEventTrigger("initiateChatKMdashbaord");
+                    AnalyticsTracking.acEventTrigger("initiateChatKMdashbaord");
                   });
                 };
 

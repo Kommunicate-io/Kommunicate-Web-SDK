@@ -73,9 +73,7 @@ class App extends Component {
         mixpanelEvent = "/conversations/thread";
     }
 
-    if (window.mixpanel) {
-      window.mixpanel.track(mixpanelEvent);
-    }
+    AnalyticsTracking.trackURL(mixpanelEvent);
 
     const { loading } = this.state;
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 

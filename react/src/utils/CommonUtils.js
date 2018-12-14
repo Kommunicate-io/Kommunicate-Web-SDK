@@ -209,15 +209,6 @@ const CommonUtils = {
         return ((navigator.userAgent.indexOf('MSIE') !== -1 ||
         navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
-    analyticsIdentify: function(identity) {
-        if (window.heap) {
-            window.heap.identify(identity);
-          }
-      
-          if (window.mixpanel) {
-            window.mixpanel.identify(identity);
-          }
-    },
     isKommunicateDashboard: function() {
         let userSession = this.getUserSession();
         if(userSession) {

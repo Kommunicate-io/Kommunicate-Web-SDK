@@ -2,9 +2,50 @@ import CommonUtils from './CommonUtils';
 import axios from 'axios';
 import  { getConfig }  from '../config/config';
 
-export function acEventTrigger(trigger) {
 
-    if(!getConfig().thirdPartyIntegration.analytics.enable) {
+const AnalyticsTracking = {
+
+  isEnabled: function() {
+    return getConfig().thirdPartyIntegration.analytics.enable;
+  },
+
+  identify: function(identity) {
+    if(!AnalyticsTracking.isEnabled()) {
+      return;
+    }
+    window.heap && window.heap.identify(identity);
+    window.mixpanel && window.mixpanel.identify(identity);
+  },
+
+  trackMixpanel: function(event) {
+    if(!AnalyticsTracking.isEnabled()) {
+      return;
+    }
+    window.mixpanel && window.mixpanel.track(event);
+  },
+
+  addUserProperties: function(userProperties) {
+    if(!AnalyticsTracking.isEnabled()) {
+      return;
+    }
+    window.heap && window.heap.addUserProperties(userProperties);
+    window.mixpanel && window.mixpanel.register(userProperties);
+  },
+
+  addPeopleProfile: function(userSession, userProperties) {
+    if(!AnalyticsTracking.isEnabled()) {
+      return;
+    }
+    window.mixpanel && window.mixpanel.people.set({
+      "$distinct_id": userSession.userName,
+      "$name": userSession.name,
+      "$created": userProperties.signup,
+      "$email": userProperties.email
+    });
+  },
+
+  acEventTrigger: function(trigger) {
+    if(!AnalyticsTracking.isEnabled()) {
       return;
     }
     var event = trigger;
@@ -60,12 +101,9 @@ export function acEventTrigger(trigger) {
       case 'ac-ios-dev':
         event ="setupApplePushDis"
         break;
-     
     }
 
-    if (window.mixpanel) {
-      window.mixpanel.track(event);
-    }
+    window.mixpanel && window.mixpanel.track(event);
   
     //  ActiveCampaign id. 
     var actid = "66105982";
@@ -104,7 +142,8 @@ export function acEventTrigger(trigger) {
       })
       .catch((err) => {
         // console.log("AXIOS ERROR: ", err);
-      })
-  
+      });
   }
+};
 
+export default AnalyticsTracking;

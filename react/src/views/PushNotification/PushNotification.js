@@ -6,7 +6,7 @@ import axios from 'axios';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
-import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
 import ApplozicClient from '../../utils/applozicClient'
 import InputFile from '../.../../../components/InputFile/InputFile';
 import './pushNotification.css';
@@ -339,13 +339,13 @@ class PushNotification extends Component {
                           this.setState({
                             disableButtonForAndroid: true
                           }, this.submitGcmkey),
-                          acEventTrigger("ac-android-push");
+                          AnalyticsTracking.acEventTrigger("ac-android-push");
                         }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForAndroid} className="save-changes-btn"
                         onClick={(e) => {
                           this.setState({
                             disableButtonForAndroid: true
                           }, this.submitGcmkey),
-                          acEventTrigger("ac-android-push");
+                          AnalyticsTracking.acEventTrigger("ac-android-push");
                         }} >Save</Button>
                       }
                       
@@ -389,13 +389,13 @@ class PushNotification extends Component {
                           this.setState({
                             disableButtonForIosDistribution: true
                           }, this.uploadDistributionapnsFile),
-                          acEventTrigger("ac-ios-dist");
+                          AnalyticsTracking.acEventTrigger("ac-ios-dist");
                         }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn"
                         onClick={(e) => {
                           this.setState({
                             disableButtonForIosDistribution: true
                           }, this.uploadDistributionapnsFile),
-                          acEventTrigger("ac-ios-dist");
+                          AnalyticsTracking.acEventTrigger("ac-ios-dist");
                         }} >Save</Button>
                       }
                       
@@ -423,13 +423,13 @@ class PushNotification extends Component {
                         this.setState({
                           disableButtonForIosDevelopment: true
                         }, this.uploadDevelopmentapnsFile),
-                        acEventTrigger("ac-ios-dev");
+                        AnalyticsTracking.acEventTrigger("ac-ios-dev");
                       }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDevelopment} className="save-changes-btn"
                       onClick={(e) => {
                         this.setState({
                           disableButtonForIosDevelopment: true
                         }, this.uploadDevelopmentapnsFile),
-                        acEventTrigger("ac-ios-dev");
+                        AnalyticsTracking.acEventTrigger("ac-ios-dev");
                       }} >Save</Button>
                     }
                       

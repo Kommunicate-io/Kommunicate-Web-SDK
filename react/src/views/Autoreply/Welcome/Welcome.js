@@ -6,7 +6,7 @@ import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId, updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
-import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import Button from '../../../components/Buttons/Button';
@@ -119,7 +119,7 @@ class Welcome extends Component{
     } else {
       this.createWelcomeMessage(index);
     }
-    acEventTrigger('ac-welcome-message');
+    AnalyticsTracking.acEventTrigger('ac-welcome-message');
   }
   updateWelcomeMessage = (index) => {
     let welcomeMessages = Object.assign([], this.state.welcomeMessages);

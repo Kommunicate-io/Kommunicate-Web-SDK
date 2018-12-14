@@ -3,7 +3,7 @@ import MultiEmail from '../../MultiEmail/';
 import { getJsCode, getApplozicScript, getDocsLink } from '../../../utils/customerSetUp';
 import CommonUtils from "../../../utils/CommonUtils";
 import Notification from '../../model/Notification';
-import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
 import { SettingsHeader } from '../../../../src/components/SettingsComponent/SettingsComponents';
 import { ReactNative, NativeScript, Squarspace, Wordpress, WixIcon, Cordova, IOS, AndroidIcon } from '../../../../src/assets/svg/svgs'
 
@@ -68,7 +68,7 @@ class Install extends Component {
     e.target.focus();
     this.setState({ copySuccess: "Copy code" });
     Notification.info("Code copied successfully!");
-    acEventTrigger("integration.instructions.copycode");
+    AnalyticsTracking.acEventTrigger("integration.instructions.copycode");
   };
 
   hideJSInstructions = e => {

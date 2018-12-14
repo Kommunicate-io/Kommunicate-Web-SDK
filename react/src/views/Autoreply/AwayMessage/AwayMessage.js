@@ -7,7 +7,7 @@ import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, editInAppMsg, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId,updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import Checkbox from '../../../components/Checkbox/Checkbox';
-import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 import Button from '../../../components/Buttons/Button';
 
@@ -156,7 +156,7 @@ class AwayMessage extends Component{
     } else {
       this.createAwayMessageKnownCustomers(index);
     }
-    acEventTrigger('ac-away-message');
+    AnalyticsTracking.acEventTrigger('ac-away-message');
   }
   updateAwayMessageKnownCustomers = (index) => {
     let awayMessageKnownCustomers = Object.assign([], this.state.awayMessageKnownCustomers);
@@ -251,7 +251,7 @@ class AwayMessage extends Component{
     } else {
       this.createAwayMessageAnonymousCustomers(index);
     }
-    acEventTrigger('ac-away-message');
+    AnalyticsTracking.acEventTrigger('ac-away-message');
   }
   updateAwayMessageAnonymousCustomers = (index) => {
     let awayMessageAnonymousCustomers = Object.assign([], this.state.awayMessageAnonymousCustomers);

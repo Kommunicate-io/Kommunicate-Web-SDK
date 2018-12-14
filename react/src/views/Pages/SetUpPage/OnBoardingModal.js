@@ -6,7 +6,7 @@ import CardList from './CardList'
 import {SendEmailIcon, CodeIcon, BackIcon} from '../../../assets/svg/svgs'
 import './onBoardingModal.css'
 import { getJsCode} from '../../../utils/customerSetUp';
-import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
 import Notification from '../../model/Notification';
 import InputField from '../../../components/InputField/InputField'
 import { notifyThatEmailIsSent } from '../../../utils/kommunicateClient';
@@ -54,7 +54,7 @@ class OnBoardingModal extends Component {
         document.execCommand("copy");
         e.target.focus();
         Notification.info("Code copied successfully!");
-        acEventTrigger("integration.instructions.copycode");
+        AnalyticsTracking.acEventTrigger("integration.instructions.copycode");
         this.setState({copyText:"Copied"})
     };
     sendInstruction = () => {

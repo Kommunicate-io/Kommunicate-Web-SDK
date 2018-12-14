@@ -16,7 +16,7 @@ import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
-import { acEventTrigger } from '../../utils/AnalyticsEventTracking.js';
+import AnalyticsTracking from '../../utils/AnalyticsEventTracking.js';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
 
@@ -167,8 +167,7 @@ class Integration extends Component {
     
     if (!isUserExists && !isInvitationExists) {
       if (email.match(mailformat)) {
-        
-        acEventTrigger('ac-added-agent');
+        AnalyticsTracking.acEventTrigger('ac-added-agent');
           return Promise.resolve(notifyThatEmailIsSent({ to: email, isKommunicate:CommonUtils.isKommunicateDashboard(), templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
             if (response && response.data.code === "SUCCESS") {
               this.onCloseModal();
