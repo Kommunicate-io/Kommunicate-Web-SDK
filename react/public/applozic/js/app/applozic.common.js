@@ -231,7 +231,8 @@ function KmGroupUtils() {
         } else if (typeof KM_ASSIGNE_GROUP_MAP[groupId] === 'object') {
             return KM_ASSIGNE_GROUP_MAP[groupId];
         } else {
-            return;
+            kmGroupService.getGroupFeed({"groupId":groupId,"sync":false})
+            return KM_GROUP_MAP[groupId];
         }
     };
     _this.getGroupByClientGroupId = function(clientGroupId) {
@@ -513,6 +514,7 @@ function KmGroupService() {
             data: data,
             type: 'get',
             global: false,
+            async: !params.sync,
             success: function(data) {
                 if (data.status === "success") {
                     var groupFeed = data.response;
