@@ -41,6 +41,8 @@ Kommunicate.client={
      * @param {Boolean} conversationDetail.isInternal
      */
      createConversation : function(conversationDetail,callback){
+        let chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+
         $applozic.fn.applozic("createGroup", {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
@@ -66,7 +68,8 @@ Kommunicate.client={
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
                 HIDE: "true",
-                SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false"
+                SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
+                KM_CHAT_CONTEXT: JSON.stringify(chatContext)
             },
             callback: function (response) {
                 console.log("response", response);
