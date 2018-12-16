@@ -17,6 +17,7 @@ import { getConfig } from '../../config/config';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
 import {PseudonymModal} from '../PersonInfo/MetaInfo';
 import Button from '../Buttons/Button';
+import {KommunicateContactListLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -775,7 +776,8 @@ class Aside extends Component {
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
                                 <div id="km-contact-loading" className="km-loading">
-                                  <img src="/applozic/images/ring.gif"/>
+                                  {/* <img src="/applozic/images/ring.gif"/> */}
+                                  <KommunicateContactListLoader/>
                                 </div>
                                 <div id="km-no-contact-text"
                                   className="km-no-data-text km-text-muted n-vis">No
