@@ -3,11 +3,12 @@ import ContentLoader from "react-content-loader"
 
 export const UserSectionLoader = () =>(
 <ContentLoader 
+	className='km-user-section-loader'
     height={160}
     width={420}
     speed={2}
     primaryColor="#f3f3f3"
-    secondaryColor="#ecebeb"
+    secondaryColor="#C3BEC3"
 >
     <circle cx="10" cy="18" r="8" /> 
     <rect x="30" y="13" rx="0" ry="0" width="275" height="3.8" /> 
@@ -39,5 +40,30 @@ export const ALAnalyticsDashboardLoader = (props) =>(
 		<rect x="9" y="280.67" rx="4" ry="4" width="605" height="200" /> 
         <rect x="350" y="234" rx="4" ry="4" width="120" height="25" /> 
 		<rect x="495" y="234" rx="4" ry="4" width="120" height="25" />
+	</ContentLoader>
+)
+
+export const KommunicateContactListLoader = (props) =>(
+	<ContentLoader 
+		height={400}
+		width={400}
+		speed={2}
+		primaryColor="#f3f3f3"
+		secondaryColor="#C3BEC3"
+		{...props}
+	>
+		<rect x="90" y="35" rx="4" ry="4" width="90" height="12" /> 
+		<rect x="90" y="55" rx="3" ry="3" width="200" height="7" /> 
+		<rect x="90" y="120" rx="4" ry="4" width="90" height="12" />
+		<rect x="90" y="140" rx="4" ry="4" width="200" height="7" />	
+		<rect x="90" y="205" rx="4" ry="4" width="90" height="12" />
+		<rect x="90" y="225" rx="4" ry="4" width="200" height="7" />
+		<rect x="90" y="290" rx="4" ry="4" width="90" height="12" />
+		<rect x="90" y="310" rx="4" ry="4" width="200" height="7" />			 
+		<circle cx="50" cy="50" r="32" />
+		<circle cx="50" cy="135" r="32" />
+		<circle cx="50" cy="220" r="32" />
+		<circle cx="50" cy="305" r="32" />
+
 	</ContentLoader>
 )
