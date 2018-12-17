@@ -762,7 +762,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             MCK_CONTACT_NAME_MAP = new Array();
             MCK_UNREAD_COUNT_MAP = new Array();
             MCK_ON_PLUGIN_CLOSE = optns.onClose;
-            MCK_ACCESS_TOKEN = optns.accessToken;
+            MCK_ACCESS_TOKEN = optns.password||optns.accessToken;
             MCK_DISPLAY_TEXT = optns.displayText;
             MCK_CALLBACK = optns.readConversation;
             MCK_GROUPMAXSIZE = optns.maxGroupSize;
@@ -1333,7 +1333,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     userPxy.appModuleName = optns.appModuleName;
                 }
                 if (MCK_ACCESS_TOKEN) {
-                    userPxy.password = optns.accessToken;
+                    userPxy.password = optns.accessToken||optns.password;
                 }
                 if (AUTHENTICATION_TYPE_ID_MAP.indexOf(MCK_AUTHENTICATION_TYPE_ID) === -1) {
                     MCK_AUTHENTICATION_TYPE_ID = 0;
@@ -1599,7 +1599,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
-                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === appHeaders.accessToken) {
+                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (appHeaders.accessToken ||appHeaders.password)) {
                         _this.onInitApp(appHeaders);
                         return true;
                     }
