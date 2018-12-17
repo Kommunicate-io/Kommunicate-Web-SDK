@@ -1333,7 +1333,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     userPxy.appModuleName = optns.appModuleName;
                 }
                 if (MCK_ACCESS_TOKEN) {
-                    userPxy.password = optns.accessToken||optns.password;
+                    userPxy.password = optns.password||optns.accessToken;
                 }
                 if (AUTHENTICATION_TYPE_ID_MAP.indexOf(MCK_AUTHENTICATION_TYPE_ID) === -1) {
                     MCK_AUTHENTICATION_TYPE_ID = 0;
