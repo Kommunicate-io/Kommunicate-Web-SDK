@@ -6,6 +6,7 @@ import { MenuItem, DropdownButton} from 'react-bootstrap';
 import { resetPassword, getUserInfo } from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import './login.css';
 import ApplozicClient   from '../../../utils/applozicClient';
 import ValidationUtils from  '../../../utils/validationUtils';
@@ -22,6 +23,7 @@ import {KommunicateLogo, GoogleLogin}from '../../Faq/LizSVG'
 import { ApplozicLogo, ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
 import styled from 'styled-components';
 import Button from '../../../components/Buttons/Button';
+
 
 const Hr = styled.hr`
 	width: 12%;

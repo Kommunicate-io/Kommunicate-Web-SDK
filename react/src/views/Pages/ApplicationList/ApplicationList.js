@@ -12,7 +12,7 @@ import ApplozicClient from '../../../utils/applozicClient'
 import { KommunicateLogo } from '../../Faq/LizSVG';
 import { ApplozicLogo } from '../../../assets/svg/svgs';
 import styled from 'styled-components';
-
+import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 
 
 

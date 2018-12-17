@@ -16,7 +16,7 @@ import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
-import AnalyticsTracking from '../../utils/AnalyticsEventTracking.js';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
 
