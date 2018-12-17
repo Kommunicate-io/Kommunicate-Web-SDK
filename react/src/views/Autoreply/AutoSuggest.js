@@ -7,7 +7,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
-import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 import Button from '../../components/Buttons/Button';

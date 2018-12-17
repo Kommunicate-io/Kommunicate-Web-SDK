@@ -5,7 +5,7 @@ import { createAndUpdateThirdPArtyIntegration, deleteThirdPartyByIntegrationType
 import { thirdPartyList } from './ThirdPartyList'
 import Notification from '../model/Notification';
 import CommonUtils from '../../utils/CommonUtils';
-import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 class IntegrationDescription extends Component {
 

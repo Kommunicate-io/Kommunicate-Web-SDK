@@ -6,7 +6,7 @@ import CardList from './CardList'
 import {SendEmailIcon, CodeIcon, BackIcon} from '../../../assets/svg/svgs'
 import './onBoardingModal.css'
 import { getJsCode} from '../../../utils/customerSetUp';
-import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import Notification from '../../model/Notification';
 import InputField from '../../../components/InputField/InputField'
 import { notifyThatEmailIsSent } from '../../../utils/kommunicateClient';

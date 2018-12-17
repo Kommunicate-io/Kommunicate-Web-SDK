@@ -6,7 +6,7 @@ import axios from 'axios';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
-import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import ApplozicClient from '../../utils/applozicClient'
 import InputFile from '../.../../../components/InputFile/InputFile';
 import './pushNotification.css';

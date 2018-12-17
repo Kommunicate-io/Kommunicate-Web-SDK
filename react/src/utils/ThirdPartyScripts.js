@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
-import AnalyticsTracking from './AnalyticsEventTracking';
+import AnalyticsTracking from './AnalyticsTracking';
 import axios from 'axios';
 // import Notification from '../views/model/Notification';
 

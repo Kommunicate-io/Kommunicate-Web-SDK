@@ -7,7 +7,7 @@ import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, editInAppMsg, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId,updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import Checkbox from '../../../components/Checkbox/Checkbox';
-import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 import Button from '../../../components/Buttons/Button';
 

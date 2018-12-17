@@ -16,7 +16,7 @@ import Modal from 'react-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 import PlanView from '../.../../../components/PlanDetails/PlanView';
-import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
  
 import RadioButton from '../../components/RadioButton/RadioButton';
 // import {RadioGroup, Radio} from '../../components/Radio/Radio';
@@ -62,8 +62,7 @@ class Billing extends Component {
             totalPlanAmount: 0,
             disableSelectedPlanButton: false,
             clickedPlan:  'startup',
-            currentModal: "",
-            openCurrentModal: false
+            currentModal: ""
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -471,10 +470,6 @@ class Billing extends Component {
 		} else if(modal === "infoModal") {
             this.setState({
                 clickedPlan: event.getAttribute("data-cb-plan-id"),
-            });
-        } else if(modal === "") {
-            this.setState({
-                openCurrentModal: false
             });
         }
     }
@@ -908,7 +903,7 @@ class Billing extends Component {
                     </div>
                 </div>
 
-                <Modal isOpen={this.state.openCurrentModal} onAfterOpen={this.afterOpenModal} onRequestClose={() => this.openCurrentModal("")} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
+                <Modal isOpen={this.state.currentModal !== ""} onAfterOpen={this.afterOpenModal} onRequestClose={() => this.openCurrentModal("")} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
                     
                     {
                         this.state.currentModal === "seatSelection" ? SeatSelectionModalContent : this.state.currentModal === "infoModal" ? InfoModalContent : this.state.currentModal === "buyFreePlan" ? BuyFreePlanModalContent : ""

@@ -3,7 +3,7 @@ import './IncomingEmailForward.css';
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
 import { Link } from 'react-router-dom';
-import AnalyticsTracking from '../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 

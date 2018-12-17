@@ -12,7 +12,7 @@ import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
-import AnalyticsTracking from '../../../utils/AnalyticsEventTracking.js';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
 

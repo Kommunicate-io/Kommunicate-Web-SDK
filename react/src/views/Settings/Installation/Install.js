@@ -3,7 +3,7 @@ import MultiEmail from '../../MultiEmail/';
 import { getJsCode, getApplozicScript, getDocsLink } from '../../../utils/customerSetUp';
 import CommonUtils from "../../../utils/CommonUtils";
 import Notification from '../../model/Notification';
-import AnalyticsTracking from '../../../utils/AnalyticsEventTracking';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import { SettingsHeader } from '../../../../src/components/SettingsComponent/SettingsComponents';
 import { ReactNative, NativeScript, Squarspace, Wordpress, WixIcon, Cordova, IOS, AndroidIcon } from '../../../../src/assets/svg/svgs'
 
