@@ -1599,7 +1599,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
-                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (appHeaders.accessToken ||appHeaders.password)) {
+                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (appHeaders.password ||appHeaders.accessToken)) {
                         _this.onInitApp(appHeaders);
                         return true;
                     }
