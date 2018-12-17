@@ -4944,8 +4944,13 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 return contact.imageUrl? '<img src="' + contact.imageUrl + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
       			_this.getContactImageLink = function(contact, displayName) {
-      				var imgsrctag = '';
-              var contact;
+                        var imgsrctag = '';
+                        var contact;
+                        if (!contact.photoSrc && !contact.photoData && !contact.photoLink) {
+                            if (alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                                contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
+                            }
+                        }
       				if(contact.members && contact.type==10){
       					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
               }
