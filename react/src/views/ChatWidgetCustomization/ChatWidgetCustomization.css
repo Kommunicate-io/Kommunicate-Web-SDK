@@ -317,3 +317,32 @@
 .km-coming-soon-text div {
     margin-top: 20px;
 }
+
+.km-chat-customization-wrapper .km-settings-banner {
+    margin-left: 0px;
+}
+.km-chat-customization-wrapper {
+    margin-bottom: 50px;
+}
+
+.km-chat-customization-wrapper .inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.km-chat-customization-wrapper .inputfile + label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4831d9;
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: 0;
+    margin-right: 15px;
+}
+.km-chat-customization-wrapper .inputfile:disabled + label {
+    color: rgba(71, 49, 217, 0.5);
+    cursor: default;
+}

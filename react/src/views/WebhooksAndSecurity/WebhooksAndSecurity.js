@@ -11,7 +11,7 @@ import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import Banner from '../../components/Banner/Banner';
-import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
+import { ROLE_TYPE } from '../../utils/Constant';
 
 const links={
     applozic:{
@@ -164,13 +164,24 @@ export default class WebhooksAndSecurity extends Component {
         });
     }
 
+
+    renderSubmitButton = (value) => {
+        if(this.state.loggedInUserRoleType == ROLE_TYPE.AGENT || (!this.state.isTrialPlan && this.state.isStartupPlan)) {
+            return <Button disabled>Save changes</Button>;
+        } else {
+            if(this.state.isTrialPlan || !this.state.isStartupPlan) {
+                return <Button onClick={() => {this.submitWebhooksDetails(value)}}>Save changes</Button>;
+            }
+        } 
+    }
+
     render() {
 
         return(
             <div className="animated fadeIn webhooks-and-security-div">
                 <div className="km-settings-banner">
                 {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
-                    <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
+                    <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to change Webhooks & Security settings"} />
                 }
               </div>
                 <div className="km-heading-wrapper">
@@ -247,7 +258,7 @@ export default class WebhooksAndSecurity extends Component {
 
                             <div className="webhooks-action-buttons-container">
                             {
-                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button> : this.state.isStartupPlan || this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ? <Button fontSize={"15px"} disabled>Save changes</Button> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
+                                this.renderSubmitButton(false)
                             }
                                 <Button secondary className="n-vis">Cancel</Button>
                             </div>
@@ -267,7 +278,7 @@ export default class WebhooksAndSecurity extends Component {
 
                             <div className="security-action-buttons-container">
                             {
-                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button> : this.state.isStartupPlan || this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ?  <Button fontSize={"15px"} disabled>Save changes</Button> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
+                                this.renderSubmitButton(true)
                             }
                                 <Button secondary className="n-vis">Cancel</Button>
                             </div>
