@@ -21,7 +21,7 @@ After the gradle sync has finished with kommunicate dependency, you can initiali
  Kommunicate.init(context, Your APP_ID);
 ```
 
-You can get the Application Key by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).
+You can get the Application Id by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).
 
 
 ## Launch chat
