@@ -39,7 +39,7 @@ exports.createCustomer = customer => {
       customer.subscription = customer.subscription || subscriptionPlan.initialPlan;
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
-          console.log("persited in db", customer ? customer.dataValues : null);
+          console.log("persited in db", customer ? customer.id : null);
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
           let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password);
           // create default bot plateform
@@ -70,8 +70,7 @@ exports.createCustomer = customer => {
           });
           //insert appId in to application_settings table
           return userModel.bulkCreate([kmUser, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
-            console.log("user created", user ? user.dataValues : null);
-            console.log("created bot ", bot.dataValues);
+            console.log("user created,  id: ", user ? user.id : null);
             let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, applicationCreatedAt: customer.applications[0].created_at })
             return getResponse(signupUser, applozicCustomer, application);
           });

@@ -41,7 +41,7 @@ Kommunicate.client={
      * @param {Boolean} conversationDetail.isInternal
      */
      createConversation : function(conversationDetail,callback){
-        let chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+        var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
 
         $applozic.fn.applozic("createGroup", {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
