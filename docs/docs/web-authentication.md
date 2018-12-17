@@ -18,6 +18,7 @@ Here are the parameters you can pass in [initialization script](https://docs.kom
 |imageLink | This image will be visible to the user |
 |conversationTitle | Conversation Title|
 |defaultMessageMetaData |This will send defaultMessageMetaData with every message.|
+|authenticationTypeId |If you want to authenticate userId and password from your server [Set AccessToken Url](https://docs-test.kommunicate.io/docs/access-token-url-configuration) and pass authenticationTypeId 1. (Optional) |
 
 There are 3 ways to Login
 
