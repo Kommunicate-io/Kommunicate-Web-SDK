@@ -4361,7 +4361,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 
 				var emoji_template = "";
-				if (msg.message && msg.source !== 7) { // source type 7 is for emails
+				if (msg.message && !(msg.source === 7 && msg.contentType === 3)) { // source type 7 is for emails and contentType 3 is for html format
 					var msg_text = msg.message.replace(/\n/g, '<br/>');
 					if (w.kmemoji !== null && typeof w.kmemoji !== 'undefined') {
 						emoji_template = w.kmemoji.replace_unified(msg_text);
