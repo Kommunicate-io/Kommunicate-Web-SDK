@@ -62,7 +62,7 @@ class ThirdPartyScripts extends Component {
 
                 if(mckSideboxLauncher){
                   mckSideboxLauncher.addEventListener("click",function(){
-                    AnalyticsTracking.acEventTrigger("initiateChatKMdashbaord");
+                    AnalyticsTracking.acEventTrigger("initiateChatKMdashboard");
                   });
                 }
 
