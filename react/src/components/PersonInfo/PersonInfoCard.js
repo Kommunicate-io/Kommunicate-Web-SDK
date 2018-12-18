@@ -3,7 +3,7 @@ import './PersonInfo.css'
 import ClearBitInfo from './ClearbitInfo'
 import { UserMetadata, LastSeenSection, DisplayPseudoIcon, PseudonymModal } from './MetaInfo'
 import EditableText from './EditableText';
-
+import {KommunicateUserInfoPanelLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 
 
 class PersonInfoCard extends Component {
@@ -53,6 +53,9 @@ class PersonInfoCard extends Component {
         return (
             <div id="km-group-info-tab"
                 className="km-group-info-tab km-panel-sm km-panel">
+                {
+                    this.state.user ?
+                <div>
                 <div className="panel-content">
                     <div className="km-box-top">
                         <div className="km-group-icon-sec km-postion-relative">
@@ -108,7 +111,11 @@ class PersonInfoCard extends Component {
                             <ClearBitInfo userDetail={this.state.clearbitData} />: null
                     }
                 </div>
-                
+            </div> :
+            <div style={{width:"100%"}}> 
+                <KommunicateUserInfoPanelLoader/>
+            </div>
+            }
             </div>
         )
     }

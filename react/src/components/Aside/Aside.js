@@ -17,7 +17,7 @@ import { getConfig } from '../../config/config';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
 import {PseudonymModal} from '../PersonInfo/MetaInfo';
 import Button from '../Buttons/Button';
-import {KommunicateContactListLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
+import {KommunicateContactListLoader, KommunicateConversationLoader, KommunicateConversationDataLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -776,7 +776,6 @@ class Aside extends Component {
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
                                 <div id="km-contact-loading" className="km-loading">
-                                  {/* <img src="/applozic/images/ring.gif"/> */}
                                   <KommunicateContactListLoader/>
                                 </div>
                                 <div id="km-no-contact-text"
@@ -948,7 +947,10 @@ class Aside extends Component {
                             <div className="chat km-message-inner km-panel-inner"
                               data-km-id="${contIdExpr}"></div>
                             <div id="km-msg-loading" className="km-loading n-vis">
-                              <img src="/applozic/images/ring.gif"/>
+                              <div style= {{position:"relative"}}>
+                                <KommunicateConversationLoader/>
+                                <KommunicateConversationDataLoader/>
+                              </div>
                             </div>
                             <div id="km-no-more-messages"
                               className="km-no-more-messages km-show-more-icon n-vis">
