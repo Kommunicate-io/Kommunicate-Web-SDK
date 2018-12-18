@@ -8,7 +8,7 @@ const customerService=require('../customer/customerService');
 const appSetting = require("../setting/application/appSettingService");
 const GROUP_ROLE = require("../utils/constant").GROUP_ROLE;
 const DEFAULT_BOT = require("../register/bots").DEFAULT_BOT;
-
+const utils = require("./utils");
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");
     const appId= req.params.appId;
@@ -134,7 +134,7 @@ exports.disableInAppMessages=(req, res)=>{
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.disableInAppMessages(user.id, user.applicationId, category).then(response=>{
+        return inAppMsgService.updateInAppMessage({applicationId: user.applicationId, status: utils.EVENT_STATUS.ENABLED, category: category},{status: utils.EVENT_STATUS.DISABLED}).then(response=>{
             logger.info("in app messages is disabled successfully");
             res.status(200).json({code:"SUCCESS", message:"disabled", data: response});
         }).catch(err=>{
@@ -155,12 +155,12 @@ exports.enableInAppMessages=(req, res)=>{
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.enableInAppMessages(user.id, user.applicationId, category).then(response=>{
+        return inAppMsgService.updateInAppMessage({applicationId: user.applicationId, status: utils.EVENT_STATUS.DISABLED, category: category},{status: utils.EVENT_STATUS.ENABLED}).then(response=>{
             logger.info("in app messages is enabled successfully");
             res.status(200).json({code:"SUCCESS", message:"enabled", data: response});
         }).catch(err=>{
-            logger.info("err while diabling welcome message in db",err);
-            res.status(500).json({code:"ERROR",message:"created"});
+            logger.info("err while enabling welcome message in db",err);
+            res.status(500).json({code:"ERROR",message:""});
         })
 
     })

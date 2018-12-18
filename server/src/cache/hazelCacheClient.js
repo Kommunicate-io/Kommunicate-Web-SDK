@@ -50,3 +50,19 @@ exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
         return null;
     };
 };
+
+exports.deleteDataFromMap=(mapPrefix,key)=>{
+    if(client) {
+        return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
+            return map.delete(key).then(data=> {
+                console.log( "data from cache", data);
+                return data;
+            });
+        }).catch(e=>{
+            logger.info("error while deleting data from cache",e );
+        });
+    }else{
+        return null;
+    };
+
+}

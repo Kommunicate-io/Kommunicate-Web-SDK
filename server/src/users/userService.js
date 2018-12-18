@@ -31,7 +31,7 @@ const getUserByName = userName => {
   return new Promise((resolve, reject) => {
     console.log("fetching data for userName : ", userName);
     userModel.findOne({ where: { userName: userName } }).then(user => {
-      console.log("found data for user : ", user == null ? null : user.dataValues);
+      console.log("found data for user, id : ", user == null ? null : user.id);
       return user !== null ? resolve(user.dataValues) : resolve(null);
     }, err => {
       console.log("err", err);
@@ -281,7 +281,7 @@ const getAdminUserByAppId = (appId) => {
     throw new Error("application id is empty");
   }
   return userModel.findOne({ where: { applicationId: appId, type: 3 } }).then(user => {
-    console.log("found data for user : ", user == null ? null : user.dataValues);
+    console.log("found data for user, id : ", user == null ? null : user.id);
     return user !== null ? user.dataValues : null;
   });
 };
@@ -295,7 +295,7 @@ const getByUserNameAndAppId = (userName, appId) => {
     throw new Error("userName or application id is empty");
   }
   return userModel.findOne({ where: { userName: userName, applicationId: appId } }).then(user => {
-    console.log("found data for user : ", user == null ? null : user.dataValues);
+    console.log("found data for user, id : ", user == null ? null : user.id);
     return user !== null ? user.dataValues : null;
   });
 
