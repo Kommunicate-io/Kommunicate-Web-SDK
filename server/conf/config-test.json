@@ -47,7 +47,8 @@
         "url": "172.31.17.248",
         "port": "5701",
         "user": "dev",
-        "password": "dev"
+        "password": "dev",
+        "cachePrefix":"KM_TEST"
       }
     },
     "mailProvider":{

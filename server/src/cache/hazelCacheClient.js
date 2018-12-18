@@ -2,6 +2,7 @@ const HazelcastClient = require('hazelcast-client').Client;
 const Config = require('hazelcast-client').Config;
 let clientConfig = new Config.ClientConfig();
 const config = require("../../conf/config.js");
+const cachePrefix = config.cache.hazelCache.cachePrefix;
 
 clientConfig.networkConfig.addresses = [{host: config.getProperties().cache.hazelCache.url, port: config.getProperties().cache.hazelCache.port}];
 clientConfig.groupConfig.name="dev";
@@ -29,6 +30,7 @@ exports.getClientInstanse = ()=> {
 
 exports.getDataFromMap= (mapPrefix,key)=> {
     if(client) {
+        mapPrefix =   cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.get(key);
         });
@@ -40,6 +42,7 @@ exports.getDataFromMap= (mapPrefix,key)=> {
 
 exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
     if(client) {
+        mapPrefix = cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.put(key,value).then(oldValue=> {
                 console.log( mapPrefix," updated for Key ",key ,"new value :",value," old value :", oldValue);
@@ -53,6 +56,7 @@ exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
 
 exports.deleteDataFromMap=(mapPrefix,key)=>{
     if(client) {
+        mapPrefix = cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.delete(key).then(data=> {
                 console.log( "data from cache", data);

@@ -44,7 +44,8 @@
            "url": "172.31.3.41",
            "port": "5701",
            "user": "dev",
-           "password": "dev"
+           "password": "dev",
+           "cachePrefix":"KM_PROD_CA"
          }
        },
        "mailProvider":{

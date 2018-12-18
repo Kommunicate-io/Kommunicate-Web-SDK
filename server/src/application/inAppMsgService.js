@@ -319,9 +319,9 @@ exports.softDeleteInAppMsg=(id)=>{
 
 }
 
-exports.editInAppMsg=(body)=>{
-
- return this.updateInAppMessage({id: body.id},{message:body.message}).then(response => {
+exports.editInAppMsg=async (body)=>{
+let inAppMessage = await  this.getInAppMessagebyId(body.id);
+ return this.updateInAppMessage({id: body.id, applicationId: inAppMessage.applicationId},{message:body.message}).then(response => {
         response.message = "Edited"
         return response;    
       }).catch(err => {
@@ -367,7 +367,11 @@ return userService.getAdminUserByAppId(customer.applications[0].applicationId).t
     })
   })
 }
-
+exports.getInAppMessagebyId= (id)=>{
+  return db.InAppMsg.findOne({where: {id:id}}).then(inAppMessage=>{
+    return inAppMessage;
+  })
+}
 exports.removeWelcomeMessageFromCache=(applicationId)=>{
   cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessageStatus");
   cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessage");
