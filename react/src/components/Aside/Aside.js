@@ -775,7 +775,7 @@ class Aside extends Component {
                                   className="km-contact-list people km-assigned km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
-                                <div id="km-contact-loading" className="km-loading km-contanct-loading">
+                                <div id="km-contact-loading" className="km-loading km-contact-loading">
                                   <KommunicateContactListLoader/>
                                 </div>
                                 <div id="km-no-contact-text"

@@ -112,7 +112,7 @@ class PersonInfoCard extends Component {
                     }
                 </div>
             </div> :
-            <div style={{width:"100%"}}> 
+            <div className = "km-user-info-panel-loader"> 
                 <KommunicateUserInfoPanelLoader/>
             </div>
             }
