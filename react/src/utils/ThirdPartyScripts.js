@@ -58,11 +58,14 @@ class ThirdPartyScripts extends Component {
                     mckSideboxLauncher.classList.add('force-hide');
                     mckSideboxLauncher.classList.remove('vis');
                   }
+                };
 
+                if(mckSideboxLauncher){
                   mckSideboxLauncher.addEventListener("click",function(){
                     AnalyticsTracking.acEventTrigger("initiateChatKMdashbaord");
+                    console.log("clicked");
                   });
-                };
+                }
 
               };
               var s = document.createElement("script");
