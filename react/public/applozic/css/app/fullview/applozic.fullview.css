@@ -139,6 +139,7 @@
 
 .km-loading {
 	position: absolute;
+	background-color: rgba(0, 0, 0, 0.05);
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -3646,4 +3647,8 @@ ol, ul {
 }
 .mck-icon--email svg {
 	vertical-align: sub;
+}
+
+.km-contanct-loading {
+	background-color: transparent;
 }
