@@ -83,8 +83,8 @@ Sample JSON for location messages
 {
 	"attachments": [{
 		"payload": {
-			"lon": "latitude",
-			"lat": "Longitude"
+			"lat": "latitude",
+			"lon": "Longitude"
 		},
 		"type": "location"
 	}]
