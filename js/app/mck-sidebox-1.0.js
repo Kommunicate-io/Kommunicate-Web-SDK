@@ -1187,7 +1187,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    Kommunicate.startConversation({isMessage: false, isInternal: true}, function (response) {
+                    Kommunicate.startConversation({groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS, isMessage: false, isInternal: true}, function (response) {
                     });
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
             }
