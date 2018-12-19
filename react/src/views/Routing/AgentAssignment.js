@@ -27,8 +27,64 @@ import {
 } from '../../utils/kommunicateClient'
 import * as Actions from '../../actions/applicationAction'
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
+import styled, { css } from 'styled-components';
+import Banner from '../../components/Banner/Banner';
+import { LearnMore } from '../../views/Faq/LizSVG';
 
+const headingColor = css`
+    color: #666464;
+`;
+const subHeadingColor = css`
+    color: #9b9b9b;
+`;
+const lightColor = css`
+    color: #807d7d;
+`;
 
+const OptionsContainer = styled.div``;
+
+const OptionsWrapper = styled(OptionsContainer)`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    & .switch.switch-3d {
+        margin-bottom: 4px;
+    }
+`;
+
+const Headings = styled.h3`
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.3px;
+    ${headingColor}
+    margin-bottom: 25px;
+    margin-right: 25px;
+`;
+const SubHeadings = styled.h5`
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0.6px;
+    ${subHeadingColor}
+    margin-bottom: 25px;
+    margin-right: 25px;
+`;
+
+const TogglerHeading = styled(SubHeadings)`
+    ${headingColor}
+    margin-bottom: 0;
+`;
+const Hr = styled.hr`
+    width: 100%;
+    border-top: 1px solid;
+    border-top-color: #cacaca;
+    margin-bottom: 30px;
+`;
+const BannerContainer = styled.div`
+    width: 100%;
+    margin: 25px auto;
+`;
 
 class AgentAssignemnt extends Component{
     constructor(props) {
@@ -49,7 +105,8 @@ class AgentAssignemnt extends Component{
             currentSelectedBot: null,
             userList :[],
             notifyEveryBodyDefaultAssigneeInfo:{},
-            automaticAssignmentDefaultAssigneeInfo:{}
+            automaticAssignmentDefaultAssigneeInfo:{},
+            botInAgentAssignedConversation: false
         };
 
     }
@@ -141,7 +198,9 @@ getIntegratedBots = () => {
 }
 getRoutingState = () => {
     return Promise.resolve(getAgentandBotRouting()).then(response => {
-        response.data.response.botRouting && this.setState({assignConversationToBot:true})
+        let resp = response.data.response;
+        resp.botRouting && this.setState({assignConversationToBot:true});
+        resp.removeBotOnAgentHandOff && this.setState({botInAgentAssignedConversation: resp.removeBotOnAgentHandOff});
         if (response.data.response.agentRouting === 1) {
             this.setState({
                 checkedNotifyEverybody: false,
@@ -159,7 +218,7 @@ getRoutingState = () => {
             })
         }
     }).catch(err => {
-        console.log("error while fetching routing state/round roubin state", err);
+        console.log("error while fetching routing state/round robin state", err);
     })
 }
 handleRadioBtnNotifyEverybody = () => {
@@ -168,7 +227,7 @@ handleRadioBtnNotifyEverybody = () => {
         checkedAutomaticAssignemnt: false
     })
     if (this.state.preventMultiCallNotifyEverybody == false) {
-        return Promise.resolve(updateAgentAndBotRouting({ user:'agent', routingState: ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY }).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({agentRouting: ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
                 userSession.routingState = ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY;
@@ -190,7 +249,7 @@ handleRadioBtnAutomaticAssignment = () => {
         checkedAutomaticAssignemnt: true,
     })
     if (this.state.preventMultiCallAutoAssignment == false) {
-        return Promise.resolve(updateAgentAndBotRouting({ user:'agent',routingState: ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT }).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({agentRouting: ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
                 userSession.routingState = ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT;
@@ -223,7 +282,7 @@ toggleConversationAssignment = () => {
     //     }
     //     })
     // }
-    return Promise.resolve(updateAgentAndBotRouting({user:'bot' , routingState: status }).then(response => {
+    return Promise.resolve(updateAgentAndBotRouting({botRouting: status }).then(response => {
         if (response.status === 200 && response.data.code === "SUCCESS") {
             let userSession = CommonUtils.getUserSession();
             userSession.botRouting = status;
@@ -235,6 +294,17 @@ toggleConversationAssignment = () => {
 
 }
 
+    toggleBotInAgentAssignedConversation = () => {
+        return Promise.resolve(updateAgentAndBotRouting({removeBotOnAgentHandOff: !this.state.botInAgentAssignedConversation}).then(response => {
+            if (response.status === 200 && response.data.code === "SUCCESS") {
+                this.setState({
+                    botInAgentAssignedConversation: !this.state.botInAgentAssignedConversation
+                });
+            }
+        })).catch(err => {
+            console.log("error while updating bot routing", err);
+        });
+    }
 
   render() {
       const notifyEverybodyContainer = (
@@ -262,126 +332,126 @@ toggleConversationAssignment = () => {
     )
 
     return (
-        <div>
+        <div className="animated fadeIn km-conversation-rules-container">
             <div className="km-heading-wrapper">
-					<SettingsHeader  />
-				</div>
+                <SettingsHeader  />
+            </div>
             <div className=" agent-assignment-wrapper row">
-                <div className="card col-md-8 mb-3">
-                    <div className="row ">
-                        <div className="options-wrapper">
-                            <div className="row">
-                                <div className="col-md-8 col-sm-8">
-                                    <h4 className="options-wrapper-title">Assign new conversations to bot </h4>
-                                </div>
-                                <div className="col-md-4 col-sm-4 text-center">
-                                    <SliderToggle checked={this.state.assignConversationToBot} handleOnChange={this.toggleConversationAssignment} />
-                                </div>
-                            </div>
-                            <div className={this.state.assignConversationToBot ? "n-vis":"row"}>
-                                <div className="col-md-8 col-sm-8" style={{width: "70%", margin:"30px auto"}}>
-                                    <div style={this.state.botsAreAvailable ? { border: "1px dashed #c0c0c0", padding: "23px 17px", backgroundColor: "#cce7f8"}:{ border: "1px dashed #c0c0c0", padding: "23px 17px"}} className="text-center">
-                                        {
-                                            this.state.botsAreAvailable ?  <p className="km-routing-do-not-have-bots">You have bots available. Turn on this section to use them in conversations.</p> : <p className="km-routing-do-not-have-bots">You do not have any bots available. You may start with your <Link className="routing-bot-link" to="/bot">Bot Integration</Link> or set up your <Link className="routing-bot-link" to="/faq">FAQ</Link> section </p> 
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={!this.state.assignConversationToBot ? "n-vis":null}>
-                                <div className="row" style={{marginTop: "42px"}}>
-                                    <div className="col-md-10 col-sm-12">
-                                        <p className="km-routing-assign-bot-text-1">All new conversations will be assigned to a single bot only. Other available bots (if any) will remain idle.</p>
-                                    </div>
-                                </div>
-                                <div className="row" style={{marginTop: "28px"}}>
-                                    <div className="col-md-7 col-sm-12" style={{marginTop: "20px"}}>
-                                        <p className="km-routing-assign-bot-text-2">Select a bot to handle all new conversations: </p>
-                                    </div>
-                                    <div className="col-md-4 col-sm-12 drop-down-container" style={{ marginLeft: "-50px" }}>
-                                        <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots km-button km-button--secondary" id="#">
-                                              {
-                                                this.state.listOfBots.map( bot => {
-                                                    return (
-                                                        <MenuItem className="ul-list-of-bots" key={bot.id} onClick={()=>{
-                                                            if (parseInt(bot.bot_availability_status) === 1) {
-                                                                this.setState({"dropDownBoxTitle":bot.name}, () => {
-                                                                    if (bot.allConversations == 0) {
-                                                                        if(this.state.currentSelectedBot){
-                                                                            conversationHandlingByBot(this.state.currentSelectedBot, 0)
-                                                                        }
-                                                                        conversationHandlingByBot(bot.userName, 1).then(response => {
-                                                                            // console.log(response);
-                                                                            if(response.data.code === "success"){
-                                                                                Notification.info('Conversations assigned to ' + bot.name);
-                                                                                window.Aside.loadAgents();
-                                                                                this.getIntegratedBots();
-                                                                            } else {
-                                                                                 Notification.info('Conversations not assigned to ' + bot.name)
-                                                                            }
-                                                                        }).catch(err => {console.log(err)})
-                                                                    } else if (bot.allConversations == 1) {
-                                                                        Notification.info( bot.name + ' is already selected.')
-                                                                    }
-                                                                 })
-                                                            } else if (parseInt(bot.bot_availability_status) === 0) {
-                                                                Notification.warning( bot.name + ' is disabled')
-                                                            }
-                                                        }}>
-                                                            <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} />
-                                                            <span className="bot-name-drop-down-list">{bot.name}</span>
-                                                            {
-                                                                (parseInt(bot.bot_availability_status) === 1) ? <span style={{marginLeft: '5px'}} className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>:<span style={{marginLeft: '5px'}} className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
-                                                            }
-                                                        </MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </DropdownButton>
-                                    </div>
-                                </div>
-                                <div className="row" style={{marginTop: "73px"}}>
-                                    <div className="col-md-12">
-                                        <p style={{ border: "1px solid #c0c0c0", padding:"6px"}} className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank" >See Docs</a></p>
-                                    </div>
-                                </div>
-                            </div>
+                <div className="card col-md-8">
+                    <OptionsContainer className="options-wrapper">
+                        <Headings>Routing rules for agents</Headings>
+                        <SubHeadings>Select from one of the options below</SubHeadings>
+                        <form>
+                            <div className="km-agent-assignment-radio-container">
+                                <RadioButton idRadioButton={'notify-everybody-radio'} handleOnChange={this.handleRadioBtnNotifyEverybody}
+                                checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
+                                { this.state.checkedNotifyEverybody &&
+                                    <DefaultAssignee  userList = {this.state.userList} class = {"notify-everybody-dropdown"} name= {"notify-everybody-dropdown"} text = {"Initially assign all new conversations to:"} updateDefaultAssignee = {this.updateDefaultAssignee} selectedAssignee = {this.state.notifyEveryBodyDefaultAssigneeInfo} />
+                                }  
+                            </div>      
+                            <div className="km-agent-assignment-radio-container">
+                                    <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
+                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={(CommonUtils.isTrialPlan())?false: (CommonUtils.isStartupPlan()) ? true : false}/>
+                                {   this.state.checkedAutomaticAssignemnt &&
+                                    <DefaultAssignee  userList = {this.state.userList} class = {"automatic-assignment-dropdown"} name= {"automatic-assignment-dropdown"}
+                                    text = {"If nobody is in online, then assign all conversations to:"}updateDefaultAssignee = {this.updateDefaultAssignee} 
+                                    selectedAssignee = {this.state.automaticAssignmentDefaultAssigneeInfo}/> 
+                                }
+                            </div> 
+                        </form>
+                        <div className={this.state.openAgentRoutingRules ? "row":"n-vis"} style={{backgroundColor: "#cce7f8"}}>
+                            <span className="km-agent-routing-note-text"><strong>NOTE:</strong> An agent will also be assigned to every conversation irrespective of bot routing rules</span>
                         </div>
-                    </div>
+                    </OptionsContainer>
+                    <Hr />
                 </div>
                 <div className="card col-md-8">
-                    <div className="row">
-                        <div className="options-wrapper">
-                            <div className="row" onClick={() => {this.setState({openAgentRoutingRules:!this.state.openAgentRoutingRules})}} style={{cursor: "pointer"}}>
-                                <div className="col-md-8 col-sm-8">
-                                    <h4 className="options-wrapper-title">Routing rules for agents </h4>
-                                </div>
-                                <div className="col-md-4 col-sm-4 text-center">
-                                    <i className={this.state.openAgentRoutingRules ? "icon-arrow-up icons font-2xl d-blockx":"icon-arrow-down icons font-2xl d-blockx"}></i>
-                                </div>
-                            </div>
-                            <form className={this.state.openAgentRoutingRules ? null:"n-vis"}>
-                                <div className="km-agent-assigment-radio-container">
-                                    <RadioButton idRadioButton={'notify-everybody-radio'} handleOnChange={this.handleRadioBtnNotifyEverybody}
-                                    checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
-                                    { this.state.checkedNotifyEverybody &&
-                                        <DefaultAssignee  userList = {this.state.userList} class = {"notify-everybody-dropdown"} name= {"notify-everybody-dropdown"} text = {"Initially assign all new conversations to:"} updateDefaultAssignee = {this.updateDefaultAssignee} selectedAssignee = {this.state.notifyEveryBodyDefaultAssigneeInfo} />
-                                    }  
-                                </div>      
-                                <div className="km-agent-assigment-radio-container">
-                                     <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
-                                     checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={(CommonUtils.isTrialPlan())?false: (CommonUtils.isStartupPlan()) ? true : false}/>
-                                    {   this.state.checkedAutomaticAssignemnt &&
-                                        <DefaultAssignee  userList = {this.state.userList} class = {"automatic-assignment-dropdown"} name= {"automatic-assignment-dropdown"}
-                                        text = {"If nobody is in online, then assign all conversations to:"}updateDefaultAssignee = {this.updateDefaultAssignee} 
-                                        selectedAssignee = {this.state.automaticAssignmentDefaultAssigneeInfo}/> 
+                    <OptionsContainer>
+                        <Headings>Routing rules for bots</Headings>
+                        <OptionsWrapper>
+                            <TogglerHeading >Assign new conversations to bot</TogglerHeading>
+                            <SliderToggle checked={this.state.assignConversationToBot} handleOnChange={this.toggleConversationAssignment} />
+                        </OptionsWrapper>
+                        <div className={this.state.assignConversationToBot ? "n-vis":"vis"}>
+                            <BannerContainer>
+                                <div>
+                                    {
+                                        this.state.botsAreAvailable ?  <Banner indicator={"warning"} isVisible={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
+                                        <Banner indicator={"warning"} isVisible={false} text={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/> 
                                     }
-                                </div> 
-                            </form>
-                            <div className={this.state.openAgentRoutingRules ? "row":"n-vis"} style={{backgroundColor: "#cce7f8"}}>
-                                <span className="km-agent-routing-note-text"><strong>NOTE:</strong> An agent will also be assigned to every conversation irrespective of bot routing rules</span>
+                                </div>
+                            </BannerContainer>
+                        </div>
+                        <div className={!this.state.assignConversationToBot ? "n-vis":null}>
+                            <div style={{marginTop: "20px"}}>
+                                <p className="km-routing-assign-bot-text-1">All new conversations will be assigned to a single bot only. Other available bots (if any) will remain idle.</p>
+                            </div>
+                            <OptionsWrapper>
+                                <TogglerHeading>Select a bot to handle all new conversations: </TogglerHeading>
+                                <div className="drop-down-container">
+                                    <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots km-button km-button--dropdown" id="#">
+                                            {
+                                            this.state.listOfBots.map( bot => {
+                                                return (
+                                                    <MenuItem className="ul-list-of-bots" key={bot.id} onClick={()=>{
+                                                        if (parseInt(bot.bot_availability_status) === 1) {
+                                                            this.setState({"dropDownBoxTitle":bot.name}, () => {
+                                                                if (bot.allConversations == 0) {
+                                                                    if(this.state.currentSelectedBot){
+                                                                        conversationHandlingByBot(this.state.currentSelectedBot, 0)
+                                                                    }
+                                                                    conversationHandlingByBot(bot.userName, 1).then(response => {
+                                                                        // console.log(response);
+                                                                        if(response.data.code === "success"){
+                                                                            Notification.info('Conversations assigned to ' + bot.name);
+                                                                            window.Aside.loadAgents();
+                                                                            this.getIntegratedBots();
+                                                                        } else {
+                                                                                Notification.info('Conversations not assigned to ' + bot.name)
+                                                                        }
+                                                                    }).catch(err => {console.log(err)})
+                                                                } else if (bot.allConversations == 1) {
+                                                                    Notification.info( bot.name + ' is already selected.')
+                                                                }
+                                                                })
+                                                        } else if (parseInt(bot.bot_availability_status) === 0) {
+                                                            Notification.warning( bot.name + ' is disabled')
+                                                        }
+                                                    }}>
+                                                        <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} />
+                                                        <span className="bot-name-drop-down-list">{bot.name}</span>
+                                                        {
+                                                            (parseInt(bot.bot_availability_status) === 1) ? <span style={{marginLeft: '5px'}} className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>:<span style={{marginLeft: '5px'}} className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                                                        }
+                                                    </MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </DropdownButton>
+                                </div>
+                            </OptionsWrapper>
+                            <div style={{marginTop: "30px"}}>
+                                <div className="see-docs-link-container">
+                                    <p className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank" >See Docs <LearnMore color={"#5553B7"} /></a></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </OptionsContainer>
+                    <Hr />
+                </div>
+                <div className="col-md-8">
+                    <OptionsContainer>
+                        <Headings>Allow bot to be active in agent-assigned conversations</Headings>
+
+                        <OptionsWrapper>
+                            <TogglerHeading >Allow bot to reply even after the conversation is assigned to an agent</TogglerHeading>
+                            <SliderToggle checked={this.state.botInAgentAssignedConversation} handleOnChange={this.toggleBotInAgentAssignedConversation} />
+                        </OptionsWrapper>
+
+                        <BannerContainer>   
+                            <Banner indicator={"default"} isVisible={false} text={"NOTE: If enabled, the bot will reply to user messages even when the agent is replying."} />
+                        </BannerContainer>
+                    </OptionsContainer>
                 </div>
                 <div style={{width : "69.3%", marginLeft:"-15px"}} className="col-md-11"><LearnMoreButton url="https://www.kommunicate.io/blog/bots-and-automation-kommunicate-knowledge-base/" label ="Learn More"/></div>
             </div>

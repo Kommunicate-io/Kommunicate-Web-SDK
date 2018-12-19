@@ -709,16 +709,10 @@ const getIntegratedBots = () => {
 const updateAgentAndBotRouting = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/settings/application/" + userSession.application.applicationId;
-  var formdata = {};
-  if (data.user === 'bot') {
-    formdata.botRouting = data.routingState;
-  } else {
-    formdata.agentRouting = data.routingState;
-  }
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
-    data: formdata
+    data: data
   })).then(result => {
     return result;
   }).catch(err => { console.log(err) })
