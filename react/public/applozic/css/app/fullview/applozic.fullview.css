@@ -3648,3 +3648,7 @@ ol, ul {
 .mck-icon--email svg {
 	vertical-align: sub;
 }
+
+.km-contact-loading {
+	background-color: transparent;
+}

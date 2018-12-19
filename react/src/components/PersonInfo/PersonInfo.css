@@ -161,3 +161,6 @@ transition: opacity 300ms ease-in;
     background-color: #f4f5f7;
     cursor: text;
   }
+  .km-user-info-panel-loader {
+      width: 100%
+  }
