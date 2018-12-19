@@ -693,6 +693,35 @@ const updateApplozicUser = (userInfo, apiKey) => {
   })
 }
 
+
+const getAgentIdsStatusWise= async (applicationId)=> {
+  let awayAgents =[];
+  let availableAgentsInKommunicate = [];
+  let onlineAgent =[];
+  let superAdmin;
+  let agentList = []
+  try{
+  agentList = await this.getUsersByAppIdAndTypes(applicationId,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]);
+  agentList && agentList.forEach(element => {
+    element.status== CONST.USER_STATUS.AWAY && awayAgents.push(element.userName);
+    element.status== CONST.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
+    element.roleType == CONST.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
+  });
+  let apzToken = new Buffer( superAdmin.userName+":"+ superAdmin.accessToken).toString('base64');
+  let statusFromApplozic = await applozicClient.getUserDetails(availableAgentsInKommunicate,applicationId,apzToken);
+  statusFromApplozic&& statusFromApplozic.forEach(element => {
+    element.connected && onlineAgent.push(element.userId);
+  });
+  let response ={}
+  response["away"] = awayAgents;
+  response["online"] = onlineAgent;
+  return response; 
+}catch(e){
+  logger.info("error while fetching agent list state wise :", e);
+  return null;
+}
+}
+exports.getAgentIdsStatusWise = getAgentIdsStatusWise;
 exports.updateApplozicUser = updateApplozicUser;
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;

@@ -112,6 +112,7 @@ home.get('/seed/liz', seedLiz.seedLiz)
 userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);
 userRouter.get('/invite/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
+userRouter.get('/availability/status', userController.getAgentIdsStatusWise);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);

@@ -562,3 +562,13 @@ exports.updateApplozicUser = (req, res) => {
     });
   });
 };
+
+exports.getAgentIdsStatusWise= async (req,res)=>{
+  logger.info("request received to fetch user Ids status wise for appId: ", req.query.applicationId);
+  let userIdsStatusWise ={};
+    userIdsStatusWise = await userService.getAgentIdsStatusWise(req.query.applicationId);
+    if(userIdsStatusWise){
+      return res.status(200).json({code:"SUCCESS", response: userIdsStatusWise});
+    }
+    return res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"something went wrong"});
+}
