@@ -161,3 +161,4 @@ ALTER TABLE app_settings ADD COLUMN `remove_bot_on_agent_handoff` TINYINT(1) DEF
    -- KM-1655: Setting up default agent
 
 alter table app_settings add  column default_conversation_assignee JSON NULL DEFAULT NULL;
+ALTER TABLE `kommunicate_test`.`app_settings` CHANGE COLUMN `agent_routing` `agent_routing` INT(11) NULL DEFAULT 0 ;
