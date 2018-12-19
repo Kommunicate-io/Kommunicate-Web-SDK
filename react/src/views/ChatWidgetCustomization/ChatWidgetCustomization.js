@@ -185,14 +185,13 @@ class ChatWidgetCustomization extends Component {
     };
 
     setCurrentWidgetThemeValue = () => {
-        var widgetTheme = {
+        return {
             primaryColor: this.state.primaryColor,
             secondaryColor: this.state.secondaryColor,
             widgetImageLink: this.state.widgetImageLink,
             iconIndex: this.state.iconIndex,
             showPoweredBy: this.state.showPoweredBy
         }
-        return widgetTheme;
     };
 
     renderSubmitButton = () => {
@@ -204,28 +203,15 @@ class ChatWidgetCustomization extends Component {
     };
 
     checkAgentorNot = () => {
-        if(this.state.loggedInUserRoleType == ROLE_TYPE.AGENT) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return this.state.loggedInUserRoleType == ROLE_TYPE.AGENT;
     };
 
     checkCustomerPlanActive = () => {
         if (((CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) || (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()))) {
-            if(this.checkAgentorNot()) {
-                this.setState({
-                    sliderToggleDisabled: true,
-                    checkPayingCustomer: true
-                })
-            }
-            else {
-                this.setState({
-                    sliderToggleDisabled: false,
-                    checkPayingCustomer: true
-                });
-            }
+            this.setState({
+                sliderToggleDisabled: this.checkAgentorNot(),
+                checkPayingCustomer: true
+            });
         } else {
             this.setState({
                 sliderToggleDisabled: true,

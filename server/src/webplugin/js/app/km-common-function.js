@@ -15,11 +15,7 @@ function KommunicateCommonFunction() {
     };
 
     _this.isStartupPlan = function (data) {
-        if (data && data.pricingPackage && data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP) {
-            return true;
-        } else {
-            return false;
-        }
+        return (data && data.pricingPackage && data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP)
     };
 
     _this.isKommunicatePlanExpired = function (data) {
