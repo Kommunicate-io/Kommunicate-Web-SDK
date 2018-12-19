@@ -11,7 +11,6 @@ import CommonUtils from '../../utils/CommonUtils';
 import {Button, Modal as FaqModal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
-import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 import bot1x from './images/bot-icon.png';
 import bot2x from './images/bot-icon@2x.png';
 import bot3x from './images/bot-icon@3x.png';
@@ -29,6 +28,8 @@ import CloseButton from './../../components/Modal/CloseButton.js';
 import AnalyticsTracking from '../../utils/AnalyticsTracking.js'
 import ReactQuill from 'react-quill';
 import './ReactQuill.css';
+import './LizSVG';
+import { LearnMore } from './LizSVG';
 
 
 class Tabs extends Component {
@@ -263,7 +264,11 @@ class Tabs extends Component {
             <div style={styles}>
               <div className="row">
                 <div className="col-sm-12 km-bot-integration-heading">
-                  <p>FAQs help customers find answers faster through self service, and also reduce workload of your team</p>
+                  <p>FAQs help customers find answers faster through self service, and also reduce workload of your team &nbsp; 
+                     <a href="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" target="_blank" className="km-knowledge-base-link"> Learn More
+                    <LearnMore color="#4831d9" />
+                </a>
+               </p>
                 </div>
               </div>
               <div className="mt-4 km-faq-second-container">
@@ -335,7 +340,6 @@ class Tabs extends Component {
               </div>
             </div>
           </div>
-          <div style={{  margin: "0 auto" , width : "64%"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" label ="Learn More"/></div>
         </div>
         <FaqModal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog modal-dialog--add-faq-modal">          
             <h4 className="faq-modal-title km-faq-heading-section">FAQ</h4>      
@@ -636,7 +640,6 @@ class Tabs extends Component {
               </svg>
             </div>
          
-          <div style={{  margin: "0 auto"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" label ="Learn More"/></div>
         
           </div>
 

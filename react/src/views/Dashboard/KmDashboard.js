@@ -13,6 +13,7 @@ import Onboarding from '../../components/UserOnboarding/Onboarding';
 import Modal from 'react-modal';
 import OnBoardingModal from '../../views/Pages/SetUpPage/OnBoardingModal'
 import { connect } from 'react-redux'
+import {LearnMore} from '../Faq/LizSVG'
 
 
 // Main Chart
@@ -960,11 +961,14 @@ render() {
 
 
         </div>
+        <a href="https://www.kommunicate.io/blog/dashboard-analytics-kommunicate-knowledge-base/" target="_blank" className="km-dashboard-knowledge-base-link"> Learn More about Dashboard Analytics <LearnMore color="#4a4a4a"/>
+                </a>
 
       </div>
       { this.state.isChecked &&
         <div className="time-zone-wrapper"><p className="time-zone-text">Time zone : GMT</p></div>
       }
+
 
     </div>
   )

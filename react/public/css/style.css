@@ -10278,12 +10278,9 @@ input:required {
 .modal-dialog--add-faq-modal .modal-header button {
   visibility: hidden;
 }
-.km-bot-integration-heading {
+.km-bot-integration-heading p {
   font-size: 18px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  line-height: 1.4;
   letter-spacing: 1.3px;
   text-align: left;
   color: #515050;
