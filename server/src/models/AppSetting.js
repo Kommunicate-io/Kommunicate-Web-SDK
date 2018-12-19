@@ -12,7 +12,8 @@ let AppSetting= function(sequelize, DataTypes) {
         field: 'application_id'
       }, agentRouting: {
         type: DataTypes.INTEGER,
-        field: "agent_routing"
+        field: "agent_routing",
+        defaultValue: 0
       },
       botRouting: {
         type: DataTypes.BOOLEAN,
