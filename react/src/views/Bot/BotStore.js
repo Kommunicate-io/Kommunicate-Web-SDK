@@ -20,12 +20,28 @@ import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg} from '../../views/Faq/LizSVG.js';
-
+import BotIntegrationModal from 'react-modal';
+import {botIntegrationData} from './botIntegrationData'
+import BotIntegrationModalContent from './BotIntegrationModalContent'
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    width: '600px',
+    // maxWidth: '580px',
+    overflow: 'visible'
+  }
+};
 export default class BotStore extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+          openModal:false,
           botPlatformVersion :'DialogflowVersion1',
           activeTab: '1',
           descriptionType :"ADD_BOT",
@@ -77,7 +93,8 @@ export default class BotStore extends Component {
           conversationsAssignedToBot: null,
           hideIntegratedBots: true,
           defaultBotUrl:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png",
-          setbotImageLink:''
+          setbotImageLink:'',
+          botIntegrationType:""
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -91,6 +108,19 @@ export default class BotStore extends Component {
 
       componentDidMount=()=>{
         this.getIntegratedBotsWrapper()
+      }
+      modalViewControll = (e,value) => {
+        this.setState({
+          openModal: value
+        });
+        if (e && e.target.dataset && e.target.dataset.botIntegration) {
+          let botIntegrationType = e.target.dataset.botIntegration;
+          let botIntegrationContent = botIntegrationData[botIntegrationType];
+          this.setState({
+            botIntegrationType: botIntegrationType,
+            botIntegrationContent: botIntegrationContent
+          })
+        }
       }
 
       clearBotDetails = ()=>{
@@ -756,7 +786,11 @@ export default class BotStore extends Component {
             </ModalBody>
         </Modal>
 
-
+            <button data-bot-integration="custom" onClick={(e)=> {this.modalViewControll(e,true)}}>Modal</button>
+            <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.modalViewControll(false)}} style={customStyles} ariaHideApp={false}>
+              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} onClickCancel={()=>{this.modalViewControll(null,false)}}/>
+              <span onClick={()=>{this.modalViewControll(null,false)}}><CloseButton /></span>
+            </BotIntegrationModal>
             </div>
 
 
