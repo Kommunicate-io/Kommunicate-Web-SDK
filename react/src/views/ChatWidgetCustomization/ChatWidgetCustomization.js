@@ -221,8 +221,7 @@ class ChatWidgetCustomization extends Component {
     };
 
     handleToggleSwitch = () => {
-        var toggleBooleanValue = true;
-        this.state.toggleSwitchIsOn ? toggleBooleanValue = false :  toggleBooleanValue = true;
+        var toggleBooleanValue= !this.state.toggleSwitchIsOn;
         this.setState({
             toggleSwitchIsOn: !this.state.toggleSwitchIsOn
         })
