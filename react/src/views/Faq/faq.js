@@ -28,6 +28,8 @@ import CloseButton from './../../components/Modal/CloseButton.js';
 import AnalyticsTracking from '../../utils/AnalyticsTracking.js'
 import ReactQuill from 'react-quill';
 import './ReactQuill.css';
+import './LizSVG';
+import { LearnMore } from './LizSVG';
 
 
 class Tabs extends Component {
@@ -263,12 +265,8 @@ class Tabs extends Component {
               <div className="row">
                 <div className="col-sm-12 km-bot-integration-heading">
                   <p>FAQs help customers find answers faster through self service, and also reduce workload of your team &nbsp; 
-                     <a href="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" target="_blank" className="km-knowledge-base-link"> Learn More <svg viewBox="0 0 10 10" >
-                    <g fill="#4831d9">
-                      <path d="M8 5a.5.5 0 0 0-.5.5v3A.5.5 0 0 1 7 9H1.5a.5.5 0 0 1-.5-.5V3c0-.28.22-.5.5-.5h3a.5.5 0 0 0 0-1h-3C.67 1.5 0 2.17 0 3v5.5C0 9.33.67 10 1.5 10H7c.83 0 1.5-.67 1.5-1.5v-3A.5.5 0 0 0 8 5" />
-                      <path d="M9.96.3A.5.5 0 0 0 9.5 0h-3a.5.5 0 1 0 0 1h1.8L3.64 5.65a.5.5 0 1 0 .7.7L9 1.71V3.5a.5.5 0 1 0 1 0v-3a.5.5 0 0 0-.04-.2" />
-                    </g>
-                  </svg>
+                     <a href="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" target="_blank" className="km-knowledge-base-link"> Learn More
+                    <LearnMore color="#4831d9" />
                 </a>
                </p>
                 </div>

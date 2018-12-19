@@ -13,6 +13,7 @@ import Onboarding from '../../components/UserOnboarding/Onboarding';
 import Modal from 'react-modal';
 import OnBoardingModal from '../../views/Pages/SetUpPage/OnBoardingModal'
 import { connect } from 'react-redux'
+import {LearnMore} from '../Faq/LizSVG'
 
 
 // Main Chart
@@ -960,12 +961,7 @@ render() {
 
 
         </div>
-        <a href="https://www.kommunicate.io/blog/dashboard-analytics-kommunicate-knowledge-base/" target="_blank" className="km-dashboard-knowledge-base-link"> Learn More about Dashboard Analytics <svg viewBox="0 0 10 10" >
-                    <g fill="#4a4a4a">
-                      <path d="M8 5a.5.5 0 0 0-.5.5v3A.5.5 0 0 1 7 9H1.5a.5.5 0 0 1-.5-.5V3c0-.28.22-.5.5-.5h3a.5.5 0 0 0 0-1h-3C.67 1.5 0 2.17 0 3v5.5C0 9.33.67 10 1.5 10H7c.83 0 1.5-.67 1.5-1.5v-3A.5.5 0 0 0 8 5" />
-                      <path d="M9.96.3A.5.5 0 0 0 9.5 0h-3a.5.5 0 1 0 0 1h1.8L3.64 5.65a.5.5 0 1 0 .7.7L9 1.71V3.5a.5.5 0 1 0 1 0v-3a.5.5 0 0 0-.04-.2" />
-                    </g>
-                  </svg>
+        <a href="https://www.kommunicate.io/blog/dashboard-analytics-kommunicate-knowledge-base/" target="_blank" className="km-dashboard-knowledge-base-link"> Learn More about Dashboard Analytics <LearnMore color="#4a4a4a"/>
                 </a>
 
       </div>
