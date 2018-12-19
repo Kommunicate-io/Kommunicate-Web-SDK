@@ -375,3 +375,8 @@
     letter-spacing: 0.3px;
     color: #000000;
 }
+.km-division-between-widget-and-branding-customization{
+    padding-bottom: 25px;
+    border-width: 1px;
+    border-color: #cacaca;
+}

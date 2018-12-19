@@ -320,7 +320,7 @@ class ChatWidgetCustomization extends Component {
                     <ChatWidgetLivePreview primaryColor={this.state.primaryColor} currentIcon={this.state.currentIcon} hasCustomImage={this.state.hasCustomImage} changedLogoUrl={this.state.changedLogoUrl}/>
                 </div>
             </div>
-            <hr style={{ paddingBottom: "25px",borderWidth: "1px",borderColor: "#cacaca" }}></hr>
+            <hr className = "km-division-between-widget-and-branding-customization"></hr>
                 <div disabled = "true">
                     <div className="km-powered-by-customization">
                         <div className = "km-powered-by-customization-heading"> Show Kommunicate branding </div>
