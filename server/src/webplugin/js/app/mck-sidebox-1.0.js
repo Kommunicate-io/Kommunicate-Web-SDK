@@ -1333,7 +1333,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     userPxy.appModuleName = optns.appModuleName;
                 }
                 if (MCK_ACCESS_TOKEN) {
-                    userPxy.password = optns.password||optns.accessToken;
+                    userPxy.password = MCK_ACCESS_TOKEN;
                 }
                 if (AUTHENTICATION_TYPE_ID_MAP.indexOf(MCK_AUTHENTICATION_TYPE_ID) === -1) {
                     MCK_AUTHENTICATION_TYPE_ID = 0;
@@ -1466,7 +1466,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             if (typeof result === 'object' && result !== null && result.token) {
                                 result.appId = userPxy.applicationId;
                                 if (MCK_ACCESS_TOKEN) {
-                                    result.accessToken = userPxy.password;
+                                    result.accessToken = MCK_ACCESS_TOKEN;
                                 }
 
                                 _this.onInitApp(result);
@@ -1599,7 +1599,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
-                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (appHeaders.password ||appHeaders.accessToken)) {
+                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (MCK_ACCESS_TOKEN)) {
                         _this.onInitApp(appHeaders);
                         return true;
                     }
