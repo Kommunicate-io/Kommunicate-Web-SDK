@@ -346,3 +346,37 @@
     color: rgba(71, 49, 217, 0.5);
     cursor: default;
 }
+.km-powered-by-customization {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 630px;
+}
+.km-powered-by-customization-text {
+    font-size: 15px;
+    line-height: 1.13;
+    letter-spacing: 0.7px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 15px 0 15px 0;
+}
+.km-powered-by-customization-heading {
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    color: #272828;
+    margin-right: -15px;
+}
+.km-powered-by-logo {
+    padding: 0 0 7px;
+    vertical-align: middle;
+    color: #aeaaaa;
+}
+.km-powered-by-link {
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: #000000;
+}
+.km-division-between-widget-and-branding-customization{
+    padding-bottom: 25px;
+    border-width: 1px;
+    border-color: #cacaca;
+}

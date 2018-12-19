@@ -307,6 +307,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        var CUSTOMER_CREATED_AT = appOptions.customerCreatedAt;
         var OPEN_CONVERSATION_ON_NEW_MESSAGE = appOptions.openConversationOnNewMessage;
         var KOMMUNICATE_VERSION = appOptions.KM_VER ? appOptions.KM_VER : "";
         KOMMUNICATE_VERSION === "v2" && (parent.KommunicateGlobal = window);
@@ -410,6 +411,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var alMessageService = new AlMessageService();
         var alFileService = new AlFileService();
         var kmCustomTheme = new KmCustomTheme();
+        var kommunicateCommonFunction = new KommunicateCommonFunction();
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
@@ -492,6 +494,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             kmCustomTheme.init(appOptions);
+            kommunicateCommonFunction.init(appOptions);
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
             notificationtoneoption.loop = false;
@@ -1492,9 +1495,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     });
                     
             }
-            _this.shouldBrandingIncluded = function(data){
-                return !data  || !data.pricingPackage || USE_BRANDING && (data.pricingPackage !== KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY && KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY);
-            }
+
             _this.onInitApp = function (data) {
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
@@ -1538,7 +1539,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     }
                 });
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
-                if (_this.shouldBrandingIncluded(data)) {
+                var showPoweredBy = kommunicateCommonFunction.showPoweredBy(data);
+                if (showPoweredBy) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');

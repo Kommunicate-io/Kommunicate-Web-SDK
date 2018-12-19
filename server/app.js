@@ -93,6 +93,7 @@ compressor.minify({
   './src/webplugin/js/app/km-attachment-service.js',
   './src/webplugin/js/app/mck-sidebox-1.0.js',
   './src/webplugin/js/app/kommunicate.custom.theme.js',
+  './src/webplugin/js/app/km-common-function.js',
   './src/webplugin/js/app/km-rich-text-event-handler.js',
   './src/webplugin/js/app/kommunicate-ui.js',
   './src/webplugin/js/app/events/applozic-event-listener.js',
