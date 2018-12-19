@@ -10,6 +10,7 @@ import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
 import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
 import AnalyticsTracking from './AnalyticsTracking';
+import dateFormat from 'dateformat';
 
 
 
@@ -844,18 +845,6 @@ const updateZendeskIntegrationTicket = (data, ticketId) => {
 
 }
 
-const getConversationStats = (isCustomer) => {
-  let userSession = CommonUtils.getUserSession();
-  let query = isCustomer ? 'customerId=' + userSession.customerId : 'agentId' + userSession.id;
-  let url = getConfig().kommunicateBaseUrl + "/conversations?" + query;
-  return Promise.resolve(axios.get(url)).then(response => {
-    // console.log('filter: ', response);
-    return response;
-  }).catch(err => {
-    return;
-  });
-}
-
 const conversationHandlingByBot = (botId, status) => {
   let userSession = CommonUtils.getUserSession();
   const converstaionHandlingByBotUrl = getConfig().kommunicateApi.createUser + '/' + botId + '/' + userSession.application.applicationId + '/' + status;
@@ -866,11 +855,28 @@ const conversationHandlingByBot = (botId, status) => {
 
 }
 
+/**
+ * @param {Int} days 
+ * get timestamp between current date and past date
+ * ex. current date and 7 days back 
+ */
+const getTimestamps = days => {
+    days = parseInt(days, 10);
+    let toDate = new Date(dateFormat(new Date(), "yyyy-mm-dd 00:00:00"));
+    toDate.setDate(toDate.getDate() - days);
+    // days==1 ->only yesterday 24hrs data
+    let currentDate =
+        days !== 1
+            ? new Date()
+            : new Date(dateFormat(new Date(), "yyyy-mm-dd 00:00:00"));
+    return [currentDate.getTime(), toDate.getTime()];
+};
+
 const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution) => {
   let userSession = CommonUtils.getUserSession();
-  let customerId = userSession.customerId;
   let applicationId = userSession.application.applicationId;
   let query = { applicationId: applicationId, days: days, daily: true };
+  let timestamps = getTimestamps(days)
   const header = {
     'Content-Type': 'application/json',
     'Apz-AppId': applicationId,
@@ -885,7 +891,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
   else {
     query.daily = !hoursWiseDistribution;
   }
-  let url = getConfig().homeUrl + "/rest/ws/group/stats?"+"timestamp="+new Date().getTime() +"&applicationId=" + query.applicationId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
+  let url = getConfig().homeUrl + "/rest/ws/group/stats?timestamp="+timestamps[0] + "&toTimestamp="+timestamps[1] +"&applicationId=" + query.applicationId + "&daily=" + query.daily + "&agentId=";
 
   if (agentId && agentId != "allagents") {
     url = url.replace("&agentId=", '&agentId=' + agentId);
