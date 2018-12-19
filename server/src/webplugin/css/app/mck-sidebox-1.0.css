@@ -3668,6 +3668,7 @@ display: none;
 }
 .mck-icon--location svg, .mck-icon--email svg {
 	vertical-align: sub;
+	margin-right: 7px;
 }
 
 .mck-icon-delivered {

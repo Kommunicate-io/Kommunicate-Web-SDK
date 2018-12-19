@@ -2005,6 +2005,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         var groupId = result.response[0].id;
                         $applozic.fn.applozic("loadGroupTab", groupId,callback);
                     }else {
+                        if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                            ALStorage.clearMckMessageArray();
+                        }
                         $applozic.fn.applozic("loadTab",null,callback);
                         
                     }
@@ -4253,7 +4256,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         mckMessageLayout.addContactsFromMessageList({
                             message: mckMessageArray
                         }, params);
-
                          _this.openConversation();
                         CONTACT_SYNCING = false;
                         return;
