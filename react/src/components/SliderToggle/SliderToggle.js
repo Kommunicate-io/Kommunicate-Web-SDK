@@ -15,7 +15,7 @@ class SliderToggle extends Component {
     return (
       <div className="slider-toggle">
 		<label className="switch switch-3d switch-enable-automatic">
-            <input type="checkbox" className="switch-input" onChange={handleOnChange} checked={checked}/>
+            <input type="checkbox" className="switch-input" onChange={handleOnChange} checked={checked} disabled = {disabled}/>
             <span className="switch-label"></span>
             <span className="switch-handle"></span>
     </label>

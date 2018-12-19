@@ -514,8 +514,11 @@ exports.defaultPluginSettings=(req, res)=>{
       return getPseudoName().then(result=>{
         let response=Object.assign(result, {"agentId": user.userName, "agentName":user.name});
         return appSettingService.getAppSettingsByApplicationId({ applicationId: req.query.appId }).then(resp=>{
-          response.widgetTheme = resp.data.widgetTheme;
-          return res.status(200).json({ "code": "SUCCESS", "response": response });
+          response.widgetTheme = resp.data.widgetTheme; 
+          return customerService.getCustomerByUserName(user.userName).then(resp=>{
+            response.customerCreatedAt = resp.created_at;
+              return res.status(200).json({ "code": "SUCCESS", "response": response });
+          })
         })       
       })
     }

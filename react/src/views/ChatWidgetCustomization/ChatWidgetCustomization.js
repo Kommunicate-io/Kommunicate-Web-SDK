@@ -11,6 +11,7 @@ import ReactTooltip from 'react-tooltip';
 import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
+import SliderToggle from '../../components/SliderToggle/SliderToggle';
 
 const ChatWidgetLivePreview = (props) => {
     return (
@@ -68,17 +69,18 @@ class ChatWidgetCustomization extends Component {
             changedLogoUrl: "",
             isTrialPlan: CommonUtils.isTrialPlan(),
             isStartupPlan: CommonUtils.isStartupPlan(),
-            loggedInUserRoleType: CommonUtils.getUserSession().roleType
-        }
+            loggedInUserRoleType: CommonUtils.getUserSession().roleType,
+            toggleSwitchIsOn: true,
+            sliderToggleDisabled: true,
+            checkPayingCustomer: false,
+            showPoweredBy: true,
+            widgetThemeObject: {}
+        };
 
     }
     componentWillMount() {
         this.getwidgetSettings();
     }
-    componentDidMount() {
-        // this.setState(this.widgetTheme);
-    }
-
 
     handleClick = () => {
         this.setState({ displayColorPicker: !this.state.displayColorPicker })
@@ -99,7 +101,7 @@ class ChatWidgetCustomization extends Component {
         );
     };
     uploadImage = () => {
-        if ((CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) || (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan())) {
+        if (this.state.checkPayingCustomer) {
             let that = this;
             document.getElementById("km-upload-chatwidget-image").addEventListener("change", function (e) {
                 e.stopImmediatePropagation();
@@ -136,12 +138,15 @@ class ChatWidgetCustomization extends Component {
         }
     };
 
-    updateWidgetSettings = () => {
-        this.widgetTheme = {
-            primaryColor: this.state.primaryColor,
-            secondaryColor: this.state.secondaryColor,
-            widgetImageLink: this.state.widgetImageLink,
-            iconIndex: this.state.iconIndex
+    updateWidgetSettings = (calledFrom) => {
+        if (calledFrom === "submitButton"){
+            this.widgetTheme = this.setCurrentWidgetThemeValue()
+            this.setState({
+                widgetThemeObject : this.widgetTheme
+            })    
+        }
+        else {
+            this.widgetTheme = this.state.widgetThemeObject
         }
         var widgetSettingsJson = {
             "widgetTheme": this.widgetTheme
@@ -157,13 +162,19 @@ class ChatWidgetCustomization extends Component {
     };
 
     getwidgetSettings = () => {
+        this.checkCustomerPlanActive();
         return Promise.resolve(getAppSetting().then(response => {
             if (response.status == 200) {
                 if (response.data.response.widgetTheme === null) {
+                    this.setState({
+                        widgetThemeObject: this.setCurrentWidgetThemeValue()
+                    });
                     return;
                 }
                 var widgetThemeResponse = response.data.response.widgetTheme;
                 this.setState(widgetThemeResponse);
+                this.setState({widgetThemeObject:widgetThemeResponse})
+                typeof widgetThemeResponse.showPoweredBy !== "undefined" ? this.setState({toggleSwitchIsOn:widgetThemeResponse.showPoweredBy}) : this.setState({toggleSwitchIsOn:true});
                 widgetThemeResponse.iconIndex == "image" ? this.setState({ hasCustomImage: true }) : (document.getElementById("icon" + this.state.iconIndex).click());
                 this.setState({ changedLogoUrl: widgetThemeResponse.widgetImageLink })
                 this.setState({ changesMade: false });
@@ -171,18 +182,80 @@ class ChatWidgetCustomization extends Component {
         })).catch(err => {
             Notification.error("Unable to load custom widget settings, please try again.");
         })
-    }
+    };
+
+    setCurrentWidgetThemeValue = () => {
+        var widgetTheme = {
+            primaryColor: this.state.primaryColor,
+            secondaryColor: this.state.secondaryColor,
+            widgetImageLink: this.state.widgetImageLink,
+            iconIndex: this.state.iconIndex,
+            showPoweredBy: this.state.showPoweredBy
+        }
+        return widgetTheme;
+    };
 
     renderSubmitButton = () => {
-        if(this.state.loggedInUserRoleType == ROLE_TYPE.AGENT || (!this.state.isTrialPlan && this.state.isStartupPlan)) {
+        if(this.checkAgentorNot()) {
             return <Button disabled={true}>Save Changes</Button>;
         } else {
-            if(this.state.isTrialPlan || !this.state.isStartupPlan) {
-                return <Button onClick={this.updateWidgetSettings} disabled={!this.state.changesMade}>Save Changes</Button>;
-            }
+            return <Button onClick={(event) => this.updateWidgetSettings("submitButton")} disabled={!this.state.changesMade}>Save Changes</Button>;
         } 
-    }
+    };
 
+    checkAgentorNot = () => {
+        if(this.state.loggedInUserRoleType == ROLE_TYPE.AGENT) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
+
+    checkCustomerPlanActive = () => {
+        if (((CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) || (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()))) {
+            if(this.checkAgentorNot()) {
+                this.setState({
+                    sliderToggleDisabled: true,
+                    checkPayingCustomer: true
+                })
+            }
+            else {
+                this.setState({
+                    sliderToggleDisabled: false,
+                    checkPayingCustomer: true
+                });
+            }
+        } else {
+            this.setState({
+                sliderToggleDisabled: true,
+                checkPayingCustomer: false
+            })
+        }
+    };
+
+    handleToggleSwitch = () => {
+        var toggleBooleanValue = true;
+        if (!this.state.toggleSwitchIsOn) {
+            toggleBooleanValue = true;
+        } else {
+            toggleBooleanValue = false;
+        }
+        this.setState({
+            toggleSwitchIsOn: !this.state.toggleSwitchIsOn
+        })
+        this.handlePoweredByValue(toggleBooleanValue);
+    };
+
+    handlePoweredByValue = (toggleBooleanValue) => {
+        var updateWidgettheme = this.state.widgetThemeObject;
+        updateWidgettheme.showPoweredBy = toggleBooleanValue;
+        this.setState({
+            widgetThemeObject: updateWidgettheme,
+            showPoweredBy: toggleBooleanValue
+        })
+        this.updateWidgetSettings();
+    };
 
     render() {
 
@@ -247,6 +320,21 @@ class ChatWidgetCustomization extends Component {
                     <ChatWidgetLivePreview primaryColor={this.state.primaryColor} currentIcon={this.state.currentIcon} hasCustomImage={this.state.hasCustomImage} changedLogoUrl={this.state.changedLogoUrl}/>
                 </div>
             </div>
+            <hr style={{ paddingBottom: "25px",borderWidth: "1px",borderColor: "#cacaca" }}></hr>
+                <div disabled = "true">
+                    <div className="km-powered-by-customization">
+                        <div className = "km-powered-by-customization-heading"> Show Kommunicate branding </div>
+                        <SliderToggle checked={this.state.toggleSwitchIsOn} handleOnChange={this.handleToggleSwitch} disabled = {this.state.sliderToggleDisabled} />
+                        <div id="km-powered-by-customization-lock-badge" style={(this.state.checkPayingCustomer) ? {visibility:"hidden"}:{visibility:"visible"}}>
+                                <LockBadge className={"lock-with-text"} text={"Upgrade to Growth Plan to disable branding"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                        </div>
+                    </div>
+                    <div className = "km-powered-by-customization-text"> If this is enabled, then Kommunicate branding will be displayed at the bottom of your chat widget</div>
+                    <div className="km-powered-by-logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="17.5" style={{verticalAlign:"middle"}}><path fill="#513DD8" fillRule="nonzero" d="M7.69879975.54941587L5.81596948 6.3447902l3.87961917.47635733c.13377998.01642612.19891133.17720919.10092463.28401145l-7.24573967 7.4456573c-.05838132.06073652-.1713319.01291556-.14228864-.0853757l1.54838036-5.83643965-3.71239422-.45582469C.11069114 8.15675014.0455598 7.99596707.1435465 7.8891648L7.55445767.48076424c.06043478-.07746063.17133188-.01291553.14434208.06865163z"/></svg>
+                        <a className="km-powered-by-link" href="https://www.kommunicate.io" target="_blank"> by Kommunicate.io </a>
+                    </div>
+                </div>
             <ReactTooltip />
         </div>)
     }
