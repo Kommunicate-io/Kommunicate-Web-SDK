@@ -1605,6 +1605,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var $conversationAll = $kmApplozic("#km-contact-list");
 			var $conversationAssigned = $kmApplozic("#km-assigned-search-list");
 			var $conversationClosed = $kmApplozic("#km-closed-conversation-list");
+			var pressEnterToSendCheckbox = document.getElementById("km-press-enter-to-send-checkbox");
 
 			var $mck_msg_inner;
 			var MESSAGE_SEND_URL = "/rest/ws/message/send";
@@ -1671,6 +1672,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_search.focus();
 			};
 			_this.init = function () {
+				pressEnterToSendCheckbox.checked = true;
 				$kmApplozic.kmtemplate("KMoflTemplate", offlineblk);
 				mckMessageLayout.initSearchAutoType();
 				mckStorage.clearMckMessageArray();
@@ -1706,7 +1708,16 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if ($mck_write_box.hasClass('km-text-req')) {
 						$mck_write_box.removeClass('km-text-req');
 					}
-					if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
+					if(pressEnterToSendCheckbox.checked && e.keyCode === 13) {
+						if (typeof MCK_INIT_AUTO_SUGGESTION === "function" && $kmApplozic(".atwho-view:visible").length > 0) {
+							return;
+						}
+						e.preventDefault();
+						if (MCK_TYPING_STATUS === 1) {
+							mckInitializeChannel.sendTypingStatus(0, mckMessageLayout.getMckMessageInner().data('km-id'));
+						}
+						($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
+					} else if ((!pressEnterToSendCheckbox.checked && e.keyCode === 13) || (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) ) {
 						e.preventDefault();
 						if (w.getSelection) {
 							var selection = w.getSelection(),
@@ -1722,15 +1733,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							selection.addRange(range);
 							return false;
 						}
-					} else if (e.keyCode === 13) {
-						if (typeof MCK_INIT_AUTO_SUGGESTION === "function" && $kmApplozic(".atwho-view:visible").length > 0) {
-							return;
-						}
-						e.preventDefault();
-						if (MCK_TYPING_STATUS === 1) {
-							mckInitializeChannel.sendTypingStatus(0, mckMessageLayout.getMckMessageInner().data('km-id'));
-						}
-						($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
 					} else if (MCK_TYPING_STATUS === 0) {
 						mckInitializeChannel.sendTypingStatus(1, mckMessageLayout.getMckMessageInner().data('km-id'));
 					}
@@ -4120,17 +4122,24 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.setCaretPosition = function (el, pos) {
 				if(el.childNodes.length !== 0 ){ 
+					el.focus();
+					if (typeof window.getSelection != "undefined" &&
+					typeof document.createRange != "undefined") {
 					var range = document.createRange();
+					range.selectNodeContents(el);
+					range.collapse(false);
 					var sel = window.getSelection();
-					range.setStart(el.childNodes[0], pos);
-					range.collapse(true);
 					sel.removeAllRanges();
 					sel.addRange(range);
-					el.focus(); 
+					} else if (typeof document.body.createTextRange != "undefined") {
+					var textRange = document.body.createTextRange();
+					textRange.moveToElementText(el);
+					textRange.collapse(false);
+					textRange.select();
+					}
+				} else {
+					return false;
 				}
-				else {
-				return false;
-			}
 			
 			}
 			

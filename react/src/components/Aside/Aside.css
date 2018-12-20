@@ -421,7 +421,7 @@ ul#km-group-search-list li {
     padding: 1px;
 }
 .km-sidebox-tab{
-    border-bottom: 1px solid #dbd7d7;
+    /* border-bottom: 1px solid #dbd7d7; */
     /* margin-bottom: 14px; */
 }
 .active-tab-integration{
@@ -877,3 +877,93 @@ color: #595757;
     left: 60px;
     top: 10px;
 }
+
+
+.km-text-box-icons-container, .km-text-box-icons--first-half, .km-text-box-icons--second-half {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.km-text-box-icons-container {
+    width: 100%;
+}
+
+.km-expand-icon {
+    float: right;
+    cursor: pointer;
+}
+.km-container .right .write .write-link.send::before {
+    display: none;
+}
+.km-container .right .write .write-link.send {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #8a8989;
+    border: 1px solid #c1c1c6;
+    border-radius: 3px;
+    text-decoration: none;
+    padding: 4px 16px;
+}
+
+
+
+
+.km-enter-to-send-container {
+    margin-right: 20px;
+}
+.km-styled-checkbox {
+    position: absolute;
+    opacity: 0;
+    display: none;
+  }
+  .km-styled-checkbox + label {
+    position: relative;
+    cursor: pointer;
+    padding: 0;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    color: #848484;
+    margin: 0;
+  }
+  .km-styled-checkbox + label:before {
+    content: '';
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: text-top;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border: 2px solid #c1c1c6;
+    border-radius: 2px;
+  }
+  .km-styled-checkbox:hover + label:before {
+    background: #5553B7;
+  }
+  .km-styled-checkbox:focus + label:before {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  }
+  .km-styled-checkbox:checked + label:before {
+    border: none;
+    background: #5553B7;
+  }
+  .km-styled-checkbox:disabled + label {
+    color: #b8b8b8;
+    cursor: auto;
+  }
+  .km-styled-checkbox:disabled + label:before {
+    box-shadow: none;
+    background: #ddd;
+  }
+  .km-styled-checkbox:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 9.4px;
+    background: white;
+    width: 2px;
+    height: 2px;
+    box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
