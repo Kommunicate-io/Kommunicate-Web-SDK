@@ -1,7 +1,5 @@
 // Below added function are accessible in mck-sidebox-1.0.js but are not exposed globally.
 
-var kommunicateCommonFunction = new KommunicateCommonFunction();
-
 function KommunicateCommonFunction() {
     var _this = this;
     var CUSTOMER_CREATED_AT;
@@ -31,7 +29,7 @@ function KommunicateCommonFunction() {
     };
 
     _this.showPoweredBy = function(data){
-        var isKommunicateAccountExpired = kommunicateCommonFunction.isKommunicatePlanExpired(data);
+        var isKommunicateAccountExpired = _this.isKommunicatePlanExpired(data);
         // Preference given to use  paramater useBranding as some customers might be passing this parameter
         if(!USE_BRANDING){
             return false;
@@ -48,6 +46,6 @@ function KommunicateCommonFunction() {
         }
         else {
             return true;
-        }
+        } 
     };
 };
