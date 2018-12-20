@@ -28,6 +28,7 @@ import {
 import * as Actions from '../../actions/applicationAction'
 import Banner from '../../components/Banner/Banner';
 import { LearnMore } from '../../views/Faq/LizSVG';
+import styled, { css } from 'styled-components';
 
 const headingColor = css`
     color: #666464;
