@@ -5209,7 +5209,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
 				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
-				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
+				$textMessage && ((typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template);
 				if (!$kmApplozic(".left .person").length) {
 					/* Note; removing because of cyclic dependency where loadTab calls this back.
 					_this.loadTab({
