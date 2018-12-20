@@ -26,8 +26,6 @@ import {
     updateAppSetting
 } from '../../utils/kommunicateClient'
 import * as Actions from '../../actions/applicationAction'
-import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
-import styled, { css } from 'styled-components';
 import Banner from '../../components/Banner/Banner';
 import { LearnMore } from '../../views/Faq/LizSVG';
 
@@ -453,7 +451,6 @@ toggleConversationAssignment = () => {
                         </BannerContainer>
                     </OptionsContainer>
                 </div>
-                <div style={{width : "69.3%", marginLeft:"-15px"}} className="col-md-11"><LearnMoreButton url="https://www.kommunicate.io/blog/bots-and-automation-kommunicate-knowledge-base/" label ="Learn More"/></div>
             </div>
           </div>
     )
