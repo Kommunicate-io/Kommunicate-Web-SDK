@@ -571,8 +571,8 @@ exports.getAgentIdsStatusWise = async function(req,res){
     if(userIdsStatusWise){
       return res.status(200).json({code:"SUCCESS", response: userIdsStatusWise});
     } 
-    return res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"something went wrong"});
   } catch (error) {
+    console.log("error while getting agentIds :", error)
     return res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"something went wrong"});
   } 
 }
