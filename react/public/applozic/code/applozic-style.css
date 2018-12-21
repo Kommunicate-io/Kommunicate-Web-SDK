@@ -508,6 +508,9 @@ body {
 	background-repeat: no-repeat;
 	background-position: center;
 }
+.km-container .right .write .write-link.smiley {
+	margin-left: 5px;
+}
 
 .km-container .right .write .write-link.send:before {
 	display: inline-block;

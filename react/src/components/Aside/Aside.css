@@ -403,8 +403,8 @@ ul#km-group-search-list li {
     color: #969699;
     margin-right: 5px;
 }
-.km-sidebox-tab-reply {
-    font-size: 12px;
+.km-sidebox-tab-reply, .km-sidebox-forward-tab-integration {
+    font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.4px;
     color: #808081;
@@ -413,25 +413,17 @@ ul#km-group-search-list li {
 }
 .km-sidebox-forward-tab-integration{
     margin-left: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.4px;
-    color: #808081;
-    cursor: pointer;
-    padding: 1px;
 }
 .km-sidebox-tab{
     /* border-bottom: 1px solid #dbd7d7; */
     /* margin-bottom: 14px; */
 }
-.active-tab-integration{
-    color: #5c5aa7;
-    border-bottom: 2px solid #5c5aa7;
+.active-tab-integration, .active-tab-reply {
+    padding-bottom: 5px;
+    color: #5553B7;
+    border-bottom: 2px solid #5553B7;
 }
-.active-tab-reply{
-    color: #5c5aa7;
-    border-bottom: 2px solid #5c5aa7;
-}
+
 .km-fullview-integration-logo{
     height: 9px;
     margin-right: 8px;

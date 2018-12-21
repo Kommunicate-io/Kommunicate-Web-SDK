@@ -1708,16 +1708,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if ($mck_write_box.hasClass('km-text-req')) {
 						$mck_write_box.removeClass('km-text-req');
 					}
-					if(pressEnterToSendCheckbox.checked && e.keyCode === 13) {
-						if (typeof MCK_INIT_AUTO_SUGGESTION === "function" && $kmApplozic(".atwho-view:visible").length > 0) {
-							return;
-						}
-						e.preventDefault();
-						if (MCK_TYPING_STATUS === 1) {
-							mckInitializeChannel.sendTypingStatus(0, mckMessageLayout.getMckMessageInner().data('km-id'));
-						}
-						($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
-					} else if ((!pressEnterToSendCheckbox.checked && e.keyCode === 13) || (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) ) {
+					if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
 						e.preventDefault();
 						if (w.getSelection) {
 							var selection = w.getSelection(),
@@ -1733,6 +1724,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							selection.addRange(range);
 							return false;
 						}
+					} else if(pressEnterToSendCheckbox.checked && e.keyCode === 13) {
+						if (typeof MCK_INIT_AUTO_SUGGESTION === "function" && $kmApplozic(".atwho-view:visible").length > 0) {
+							return;
+						}
+						e.preventDefault();
+						if (MCK_TYPING_STATUS === 1) {
+							mckInitializeChannel.sendTypingStatus(0, mckMessageLayout.getMckMessageInner().data('km-id'));
+						}
+						($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
 					} else if (MCK_TYPING_STATUS === 0) {
 						mckInitializeChannel.sendTypingStatus(1, mckMessageLayout.getMckMessageInner().data('km-id'));
 					}

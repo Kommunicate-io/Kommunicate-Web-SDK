@@ -585,7 +585,10 @@ class Aside extends Component {
     textArea.classList.toggle("km-expand-text-area-box");
     this.setState({
       toggleExpandIcon: !this.state.toggleExpandIcon
-    })
+    }, () => {
+      document.getElementById("km-text-box").focus();
+    });
+    
   }
 
   render() {
