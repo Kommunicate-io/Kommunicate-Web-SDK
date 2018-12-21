@@ -10133,7 +10133,7 @@ input:required {
   position: relative;
   height: 100vh;
 }
-.loader:empty {
+.loader:empty::after {
   content: url(../img/km-loading-animation.svg);
   position: absolute;
   top: calc(50% - 4em);
