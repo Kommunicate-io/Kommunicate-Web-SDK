@@ -2985,7 +2985,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
 						}
 					}
-					$mck_msg_loading.removeClass('n-vis').addClass('vis');
+					if (params.notShowEmptyState){
+						document.getElementById("km-msg-loading-ring").classList.remove('n-vis');
+						document.getElementById("km-msg-loading-ring").classList.add('vis');
+					}
+					else {
+						$mck_msg_loading.removeClass('n-vis').addClass('vis');
+					}
 				} else {
 					CONTACT_SYNCING = true;
 					if (params.startTime) {
@@ -3242,14 +3248,25 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								}
 							}
 						}
+						if (params.notShowEmptyState){
+							document.getElementById("km-msg-loading-ring").classList.remove('vis');
+							document.getElementById("km-msg-loading-ring").classList.add('n-vis');
+						}
+						else {
+							$mck_msg_loading.removeClass('vis').addClass('n-vis');
+						}
 						$mck_loading.removeClass('vis').addClass('n-vis');
-						$mck_msg_loading.removeClass('vis').addClass('n-vis');
 					},
 					error: function () {
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
 						$mck_loading.removeClass('vis').addClass('n-vis');
+						if (params.notShowEmptyState){
+							document.getElementById("km-msg-loading-ring").classList.remove('vis');
+							document.getElementById("km-msg-loading-ring").classList.add('n-vis');
+						} else {
 						$mck_msg_loading.removeClass('vis').addClass('n-vis');
+						}
 						w.console.log('Unable to load messages. Please reload page.');
 					}
 				});
@@ -4066,7 +4083,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									'tabId': tabId,
 									'isGroup': isGroup,
 									'conversationId': conversationId,
-									'startTime': startTime
+									'startTime': startTime,
+									'notShowEmptyState':true
 								});
 							}
 						}

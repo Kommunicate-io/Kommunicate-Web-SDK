@@ -102,7 +102,7 @@ export const KommunicateConversationLoader = (props) => (
 	>
 		<circle cx="30" cy="40" r="17"/> 
 		<rect x="55" y="25" rx="4" ry="4" width="250" height="90" />
-		<rect x="230" y="140" rx="4" ry="4" width="250" height="90" />
+		<rect className="km-hide-bottom-box-on-max-height" x="230" y="140" rx="4" ry="4" width="250" height="90" />
 	</ContentLoader>
 )
 
@@ -119,8 +119,8 @@ export const KommunicateConversationDataLoader = (props) => (
 		<rect x="30" y="30" rx="2" ry="2" width="200" height="5" /> 
 		<rect x="30" y="45" rx="2" ry="2" width="200" height="5" /> 
 		<rect x="30" y="60" rx="2" ry="2" width="130" height="5" /> 
-		<rect x="230" y="145" rx="2" ry="2" width="200" height="5" /> 
-		<rect x="230" y="160" rx="2" ry="2" width="200" height="5" /> 
-		<rect x="300" y="175" rx="2" ry="2" width="130" height="5" />
+		<rect className="km-hide-bottom-box-on-max-height" x="230" y="145" rx="2" ry="2" width="200" height="5" /> 
+		<rect className="km-hide-bottom-box-on-max-height" x="230" y="160" rx="2" ry="2" width="200" height="5" /> 
+		<rect className="km-hide-bottom-box-on-max-height" x="300" y="175" rx="2" ry="2" width="130" height="5" />
 	</ContentLoader>
 )

@@ -959,3 +959,8 @@ color: #595757;
     -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
   }
+  @media only screen and (max-height:635px) { 
+    .km-hide-bottom-box-on-max-height {
+        display: none;
+    }
+  };

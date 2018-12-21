@@ -969,9 +969,12 @@ class Aside extends Component {
                               data-km-id="${contIdExpr}"></div>
                             <div id="km-msg-loading" className="km-loading n-vis">
                               <div style= {{position:"relative"}}>
-                                <KommunicateConversationLoader/>
+                                <KommunicateConversationLoader/> 
                                 <KommunicateConversationDataLoader/>
                               </div>
+                            </div>
+                            <div id="km-msg-loading-ring" className="km-loading n-vis">
+                            <img src="/applozic/images/ring.gif"/>
                             </div>
                             <div id="km-no-more-messages"
                               className="km-no-more-messages km-show-more-icon n-vis">
