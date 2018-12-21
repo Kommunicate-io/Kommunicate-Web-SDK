@@ -4949,8 +4949,10 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             };
       			_this.getContactImageLink = function(contact, displayName) {
                         var imgsrctag = '';
-                        if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                        if(!contact.isGroup){
+                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
                             contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
+                          }
                         }
       				if(contact.members && contact.type==10){
       					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
