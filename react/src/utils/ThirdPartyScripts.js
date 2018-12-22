@@ -17,10 +17,13 @@ class ThirdPartyScripts extends Component {
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
+
+            var kommunicateSupportChatUrl = getConfig().baseurl.komunicateSupportUrl|| getConfig().homeUrl;
             var support = isKommunicateDashboard ? {
               "appId": "kommunicate-support",
               "isAnonymousChat": true,
               "groupName": "Kommunicate Support",
+              "baseUrl":kommunicateSupportChatUrl,
               "googleApiKey": "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI",
               "googleMapScriptLoaded": true,
               "emojilibrary": false
@@ -29,6 +32,7 @@ class ThirdPartyScripts extends Component {
                 "appId": "applozic-sample-app",
                 "isAnonymousChat": true,
                 "groupName": "Applozic",
+                "baseUrl":kommunicateSupportChatUrl,
                 "googleApiKey": "AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw",
                 "googleMapScriptLoaded": true,
                 "emojilibrary": false
