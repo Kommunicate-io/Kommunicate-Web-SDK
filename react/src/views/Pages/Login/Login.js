@@ -76,6 +76,7 @@ class Login extends Component {
 		this.state=Object.assign({type: 'password'}, this.initialState);
 		this.submitForm = this.submitForm.bind(this);
 		this.websiteUrl = this.websiteUrl.bind(this);
+		this.isKommunicateBrand = getConfig().brand === "kommunicate";
 	}
 	
 	componentWillMount() {
@@ -425,7 +426,7 @@ class Login extends Component {
 
 	websiteUrl = (e) => {
 		e.preventDefault();
-		let websiteUrl = CommonUtils.isKommunicateDashboard() ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
+		let websiteUrl = this.isKommunicateBrand() ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
 		window.location = websiteUrl;
 	}
 
@@ -478,7 +479,7 @@ class Login extends Component {
 				<div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
 					<div className="container">
 						<div className="logo-container text-center">
-							<a href="#" onClick={this.websiteUrl}>  {CommonUtils.isKommunicateDashboard() ? <KommunicateLogo/> : <ApplozicLogo style={{ width: "auto", height: "55px"}} /> } </a>
+							<a href="#" onClick={this.websiteUrl}>  {this.isKommunicateBrand ? <KommunicateLogo/> : <ApplozicLogo style={{ width: "auto", height: "55px"}} /> } </a>
 						</div>
 						<div className="row justify-content-center login-form-div">
 							<div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
