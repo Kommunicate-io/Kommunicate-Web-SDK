@@ -116,11 +116,9 @@ export default class BotStore extends Component {
           openModal: value
         });
         if (e && e.target.dataset && e.target.dataset.botIntegration) {
-          let botIntegrationType = e.target.dataset.botIntegration;
-          let botIntegrationContent = botIntegrationData[botIntegrationType];
           this.setState({
-            botIntegrationType: botIntegrationType,
-            botIntegrationContent: botIntegrationContent
+            botIntegrationType: e.target.dataset.botIntegration,
+            botIntegrationContent: botIntegrationData[botIntegrationType]
           })
         }
       }

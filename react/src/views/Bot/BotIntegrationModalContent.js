@@ -186,11 +186,7 @@ class BotIntegrationModalContent extends Component {
 
     }
     isInputFieldEmpty = (value) => {
-       if (!value) {
-        return true
-       } else {
-           return false
-       }
+      return !value
     }
 render() {
     let instructions;
