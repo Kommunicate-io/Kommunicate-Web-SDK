@@ -129,14 +129,15 @@ const getEmailFormat = (options, custInfo) => {
                 case "APPLOZIC_SUPPORT_QUERY":
                     logger.info("APPLOZIC_SUPPORT_QUERY");
                     templatePath = path.join(__dirname, "/applozicSupportQueryTemplate.html");
-                    options.templatePath = path.join(__dirname, "/applozicSupportQuery.html");
-                    options.templateReplacement = { ":USER_NAME": options.userName, 
+                    options.templatePath = path.join(__dirname, "/applozicSupportQueryTemplate.html");
+                    options.templateReplacement = {  
                     ":QUERY_PLATFORM": options.queryPlatform,
                     ":QUERY_SDK":options.querySdk,":QUERY_APP_KEY":options.appKey,
                     ":QUERY_DESC":options.desc,":QUERY_ATTACHMENTS":options.attach,
+                    ":QUERY_ISSUE":options.issue,
                     ":CUSTOM_REPORT_REQUIREMENT_DURATION": options.customReportsDuration };
                     options.to = [...options.to];
-                    options.cc = [...options.cc, "akshat@kommunicate.com"]
+                    options.cc = [...options.cc, "support@applozic.com"]
                     break;
             }
         }
