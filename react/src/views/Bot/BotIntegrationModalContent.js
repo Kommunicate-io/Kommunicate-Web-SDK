@@ -100,20 +100,10 @@ class BotIntegrationModalContent extends Component {
             subTitle:this.props.integrationContent.step2.subTitle,
         })
     }
-    webhookUrl = (e) => {
-        let webhookUrl = this.state.webhookUrl;
-        webhookUrl = e.target.value;
-        this.setState({ webhookUrl: webhookUrl })
-    }
-    customBotKey = (e) => {
-        let customBotKey = this.state.customBotKey;
-        customBotKey = e.target.value;
-        this.setState({ customBotKey: customBotKey });
-    }
-    customBotValue = (e) => {
-        let customBotValue = this.state.customBotValue;
-        customBotValue = e.target.value;
-        this.setState({ customBotValue: customBotValue });
+    customBotIntegrationInputValue = (e,key) => {
+        let value = this.state[key];
+        value = e.target.value;
+        this.setState({[key] : value});
     }
     botName = (e) => {
         let botName = this.state.botName;
@@ -220,7 +210,7 @@ render() {
             <BotIntegrationTitle title={this.state.title} subTitle={this.state.subTitle}/>
             {this.state.step ==1 ? instructions: ""}
             {this.state.step ==1 && this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM &&
-                <CustomBotInputFields webhookUrl = {this.webhookUrl} customBotKey={this.customBotKey} customBotValue={this.customBotValue} />
+                <CustomBotInputFields customBotIntegrationInputValue = {this.customBotIntegrationInputValue} />
             }
             {this.state.step == 2 &&
                 <BotProfile  handleBotImageUpload= {this.uploadBotImage} botName={this.botName} botImage={this.state.selectedBotImage}/>
