@@ -20,6 +20,8 @@ import Button from '../Buttons/Button';
 import {KommunicateContactListLoader, KommunicateConversationLoader, KommunicateConversationDataLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 import { CollapseIcon, ExpandIcon, EmailIndicatorIcon } from "../../assets/svg/svgs";
 import styled from 'styled-components';
+import { connect } from 'react-redux'
+import * as SignUpActions from '../../actions/signupAction'
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -567,6 +569,7 @@ class Aside extends Component {
   }
 
   dismissInfo() {
+    this.props.updatPseudoBannerStatus(true);
     if (typeof(Storage) !== "undefined") {
       if(localStorage.getItem("KM_PSEUDO_INFO") === null) {
         localStorage.setItem("KM_PSEUDO_INFO", "true");
@@ -637,7 +640,7 @@ class Aside extends Component {
                         </div>
                       </div>
                       {/* Introducing Pseudonyms */}
-                      <div className="introducing-text-box-main-container" hidden={this.state.hideInfoBox}>
+                      <div className={this.props.kmOnBoarding ?"introducing-text-box-main-container" :"n-vis"} hidden={this.state.hideInfoBox}>
                         <div className="introducing-text-box-container">
                           <div className="introducing-info-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 20 20" style={{marginRight:"10px"}}>
@@ -1313,4 +1316,13 @@ const customStyles = {
   }
 };
 
-export default Aside;
+// export default Aside;
+const mapStateToProps = state => ({
+  kmOnBoarding:state.signUp.kmOnBoarding,
+})
+const mapDispatchToProps = dispatch => {
+  return {
+      updatPseudoBannerStatus: payload => dispatch(SignUpActions.updatePseudoNameBannerStatus(payload))
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Aside) 
