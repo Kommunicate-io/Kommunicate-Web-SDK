@@ -163,13 +163,14 @@ class BotIntegrationModalContent extends Component {
             roleType: ROLE_TYPE.BOT,
             imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : this.state.defaultBotUrl
         }
-        let botInfo = {
-            webHookUrl :  this.state.InputField1Value.trim(),
-            key : this.state.InputField2Value.trim(),
-            value:this.state.InputField3Value.trim(),
-            aiPlatform : "custom",
-            type:'KOMMUNICATE_SUPPORT'
-        }
+        let botInfo = {}
+        if (this.state.aiPlatform == "custom") {
+            botInfo["aiPlatform"] = this.state.aiPlatform
+            botInfo["webhook"] = this.state.InputField1Value.trim();
+            (this.state.InputField2Value.trim() || this.state.InputField3Value.trim()) && (botInfo ["webhookAuthentication"] = {});
+            this.state.InputField2Value.trim() &&(botInfo.webhookAuthentication["key"] = this.state.InputField2Value.trim());
+            this.state.InputField3Value.trim() && (botInfo.webhookAuthentication["value"] = this.state.InputField3Value.trim());  
+        }   
         let data = { "userIdList": [userId] }
         createCustomerOrAgent(userInfo, "BOT").then(bot => {
             var bot = bot.data.data;
