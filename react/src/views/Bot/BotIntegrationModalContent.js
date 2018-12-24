@@ -6,10 +6,11 @@ import {createCustomerOrAgent, sendProfileImage} from '../../utils/kommunicateCl
 import Notification from '../model/Notification';
 import ApplozicClient from '../../utils/applozicClient';
 import {createBot} from '../../utils/botPlatformClient';
-import { ROLE_TYPE } from '../../utils/Constant';
+import { ROLE_TYPE, SUPPORTED_PLATFORM } from '../../utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
+
 
 function BotIntegrationTitle(props) {
     return (
@@ -75,15 +76,14 @@ class BotIntegrationModalContent extends Component {
         this.state = {
             buttonText:"Next",
             step:1,
-            clickedButton:"",
             botImageUrl:defaultBotUrl,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
             aiPlatform:this.props.aiPlatform ,
-            InputField1Value:"",
-            InputField2Value:"",
-            InputField3Value:"",
+            webhookUrl:"",
+            customBotKey:"",
+            customBotValue:"",
             botName:"",
             selectedBotImage:""
 
@@ -91,12 +91,11 @@ class BotIntegrationModalContent extends Component {
         
     }
     onNext = (e) => {
-        let clickedButton = e.target.dataset.buttonText;
-        if (this.state.aiPlatform == "custom" && this.isInputFieldEmpty(this.state.InputField1Value.trim())){
-            Notification.warning(this.props.integrationContent.inputFields.field1.label+" is mandatory");
+        if (this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM && this.isInputFieldEmpty(this.state.webhookUrl.trim())){
+            Notification.warning("Webhook url is mandatory");
             return;
         }
-        clickedButton == "Next" && this.setState({
+        this.state.step == 1 && this.setState({
             step:2,
             buttonText:"Integrate",
             botImageFileObject:"",
@@ -104,20 +103,20 @@ class BotIntegrationModalContent extends Component {
             subTitle:this.props.integrationContent.step2.subTitle,
         })
     }
-    InputField1Value = (e) => {
-        let InputField1Value = this.state.InputField1Value;
-        InputField1Value = e.target.value;
-        this.setState({ InputField1Value: InputField1Value })
+    webhookUrl = (e) => {
+        let webhookUrl = this.state.webhookUrl;
+        webhookUrl = e.target.value;
+        this.setState({ webhookUrl: webhookUrl })
     }
-    InputField2Value = (e) => {
-        let InputField2Value = this.state.InputField2Value;
-        InputField2Value = e.target.value;
-        this.setState({ InputField2Value: InputField2Value });
+    customBotKey = (e) => {
+        let customBotKey = this.state.customBotKey;
+        customBotKey = e.target.value;
+        this.setState({ customBotKey: customBotKey });
     }
-    InputField3Value = (e) => {
-        let InputField3Value = this.state.InputField3Value;
-        InputField3Value = e.target.value;
-        this.setState({ InputField3Value: InputField3Value });
+    customBotValue = (e) => {
+        let customBotValue = this.state.customBotValue;
+        customBotValue = e.target.value;
+        this.setState({ customBotValue: customBotValue });
     }
     botName = (e) => {
         let botName = this.state.botName;
@@ -164,12 +163,12 @@ class BotIntegrationModalContent extends Component {
             imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : this.state.defaultBotUrl
         }
         let botInfo = {}
-        if (this.state.aiPlatform == "custom") {
+        if (this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM) {
             botInfo["aiPlatform"] = this.state.aiPlatform
-            botInfo["webhook"] = this.state.InputField1Value.trim();
-            (this.state.InputField2Value.trim() || this.state.InputField3Value.trim()) && (botInfo ["webhookAuthentication"] = {});
-            this.state.InputField2Value.trim() &&(botInfo.webhookAuthentication["key"] = this.state.InputField2Value.trim());
-            this.state.InputField3Value.trim() && (botInfo.webhookAuthentication["value"] = this.state.InputField3Value.trim());  
+            botInfo["webhook"] = this.state.webhookUrl.trim();
+            (this.state.customBotKey.trim() || this.state.customBotValue.trim()) && (botInfo ["webhookAuthentication"] = {});
+            this.state.customBotKey.trim() &&(botInfo.webhookAuthentication["key"] = this.state.customBotKey.trim());
+            this.state.customBotValue.trim() && (botInfo.webhookAuthentication["value"] = this.state.customBotValue.trim());  
         }   
         let data = { "userIdList": [userId] }
         createCustomerOrAgent(userInfo, "BOT").then(bot => {
@@ -223,14 +222,13 @@ render() {
         <div className="">
             <BotIntegrationTitle title={this.state.title} subTitle={this.state.subTitle}/>
             {this.state.step ==1 ? instructions: ""}
-            {this.state.step ==1 && this.state.step1InputField == "CustomBotInputFields" &&
-                <CustomBotInputFields InputField1Value = {this.InputField1Value} InputField2Value={this.InputField2Value} InputField3Value={this.InputField3Value} inputFields ={this.props.integrationContent.inputFields}/>
+            {this.state.step ==1 && this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM &&
+                <CustomBotInputFields webhookUrl = {this.webhookUrl} customBotKey={this.customBotKey} customBotValue={this.customBotValue} />
             }
-            {/* {this.state.step ==1 ? inputField: ""} */}
             {this.state.step == 2 &&
                 <BotProfile  handleBotImageUpload= {this.uploadBotImage} botName={this.botName} botImage={this.state.selectedBotImage}/>
             }
-            <BotIntegrationModalFooter onButtonClick ={this.state.buttonText == "Next" ? this.onNext : this.integrateBot} buttonText={this.state.buttonText} closeModal={this.props.closeModal} onClickIntegrate={this.integrateBot}/>
+            <BotIntegrationModalFooter onButtonClick ={this.state.step == 1 ? this.onNext : this.integrateBot} buttonText={this.state.buttonText} closeModal={this.props.closeModal} onClickIntegrate={this.integrateBot}/>
         </div>
 
     )

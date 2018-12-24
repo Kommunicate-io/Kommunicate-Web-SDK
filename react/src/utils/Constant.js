@@ -64,7 +64,10 @@ export const CONVERSATION_STATS_FILTER_KEY = {
     DAY_WISE_DISTRIBUTION : 2
    
 }
-
+export const SUPPORTED_PLATFORM = {
+    DIALOGFLOW:"dialogflow",
+    CUSTOM:"custom"
+}
 export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
 
 
