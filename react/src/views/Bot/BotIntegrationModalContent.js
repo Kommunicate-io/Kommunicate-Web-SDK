@@ -6,7 +6,7 @@ import {createCustomerOrAgent, sendProfileImage} from '../../utils/kommunicateCl
 import Notification from '../model/Notification';
 import ApplozicClient from '../../utils/applozicClient';
 import {createBot} from '../../utils/botPlatformClient';
-import { ROLE_TYPE, SUPPORTED_PLATFORM } from '../../utils/Constant';
+import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_URL } from '../../utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
@@ -67,16 +67,13 @@ function BotProfile(props) {
     )
 
 }
-
-const defaultBotUrl = "https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png";
-
 class BotIntegrationModalContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             buttonText:"Next",
             step:1,
-            botImageUrl:defaultBotUrl,
+            botImageUrl:DEFAULT_BOT_URL,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
