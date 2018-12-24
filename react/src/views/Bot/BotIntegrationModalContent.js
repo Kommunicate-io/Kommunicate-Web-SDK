@@ -101,14 +101,10 @@ class BotIntegrationModalContent extends Component {
         })
     }
     customBotIntegrationInputValue = (e,key) => {
-        let value = this.state[key];
-        value = e.target.value;
-        this.setState({[key] : value});
+        this.setState({[key] : e.target.value});
     }
     botName = (e) => {
-        let botName = this.state.botName;
-        botName = e.target.value;
-        this.setState({ botName: botName });
+        this.setState({ botName:  e.target.value });
     }
     uploadBotImage = (e) => {
         let botImageFile;
