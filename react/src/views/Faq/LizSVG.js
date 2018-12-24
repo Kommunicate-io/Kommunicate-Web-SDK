@@ -437,28 +437,59 @@ export const PseudoNameImage = () => (
   </svg>
 );
 export const BotDefaultImage = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48.2 48.204">
-<g id="Group_1" data-name="Group 1" transform="translate(-4607 -1289.8)">
-  <circle id="Ellipse_1" cx="24.1" cy="24.1" r="24.1" fill="#b1abd6" data-name="Ellipse 1" transform="translate(4607 1289.8)"/>
-  <path id="Path_1" d="M389.8 167h-6.4a3.3 3.3 0 0 1 6.4 0z" className="cls-2" fill="#eef" data-name="Path 1" transform="translate(4244.5 1135.3)"/>
-  <path id="Path_2" d="M599.1 277.275v.688a3.315 3.315 0 0 1-2.7 3.037c.5-1.205-.226-2.494-.2-3.8v-.3c-.026-1.306.7-2.595.2-3.8a3.4 3.4 0 0 1 2.7 3.2z" className="cls-2" fill="#eef" data-name="Path 2" transform="translate(4049.5 1036.1)"/>
-  <path id="hotel-path-rect_1" d="M0 0h.7v4.2H0z" className="cls-2" fill="#eef" data-name="hotel-path-rect 1" transform="translate(4630.7 1296.4)"/>
-  <path id="Path_4" d="M377 452.6a8.7 8.7 0 0 1 3.4.8v-4.2h-8.3v4.2a8.7 8.7 0 0 1 3.5-.8z" className="cls-3" fill="#e4e4f9" data-name="Path 4" transform="translate(4254.8 874.2)"/>
-  <path id="Path_5" d="M401.4 84.5a1.8 1.8 0 0 1 1 .3 1.9 1.9 0 1 0-2.6 2.6 1.9 1.9 0 0 1 1.6-3z" className="cls-3" fill="#e4e4f9" data-name="Path 5" transform="translate(4230.2 1209)"/>
-  <path id="Path_6" d="M407.7 90.8a1.9 1.9 0 1 0-1 1.7 1.8 1.8 0 0 0 1-1.7z" className="cls-2" fill="#eef" data-name="Path 6" transform="translate(4225.2 1204)"/>
-  <path id="Path_7" d="M246.4 210.7a10.961 10.961 0 0 1-8.4-10.553v-.4a10.961 10.961 0 0 1 8.4-10.553 11.147 11.147 0 0 1 2.8-.4h-.8a11.146 11.146 0 0 0-2.8.4 10.961 10.961 0 0 0-8.4 10.553v.4a10.961 10.961 0 0 0 8.4 10.553 11.145 11.145 0 0 0 2.8.4h.8a11.145 11.145 0 0 1-2.8-.4z" className="cls-3" fill="#e4e4f9" data-name="Path 7" transform="translate(4378.2 1113.2)"/>
-  <path id="Path_8" d="M308 487.3a9 9 0 0 1 5.6-8.4 9.2 9.2 0 0 1 3.5-.7h-.8a9.2 9.2 0 0 0-3.5.7 9 9 0 0 0-5.7 8.4s-.113.419.9.5 0-.5 0-.5z" className="cls-3" fill="#e4e4f9" data-name="Path 8" transform="translate(4314.2 848.5)"/>
-  <path id="Path_9" d="M276.6 204a10.9 10.9 0 0 0 .6-3.8v-.3a10.9 10.9 0 0 0-.6-3.9 11.1 11.1 0 0 0-10.4-7.2h-8.6a11.285 11.285 0 0 0-11.1 11.1v.3a11.287 11.287 0 0 0 11.1 11h8.6a11.1 11.1 0 0 0 10.4-7.2z" className="cls-2" fill="#eef" data-name="Path 9" transform="translate(4369.5 1113.1)"/>
-  <path id="Path_10" d="M335 487.3a9.28 9.28 0 0 0-9-9.1h-.6a8.976 8.976 0 0 0-9 9.1v.54a21.607 21.607 0 0 0 8.872 1.664 23.911 23.911 0 0 0 9.728-2.06z" className="cls-2" fill="#eef" data-name="Path 10" transform="translate(4305.8 848.5)"/>
-  <path id="Path_11" fill="#7878ba" d="M308.9 255.9v.1a5.9 5.9 0 0 1-5.9 5.9h-11.3a5.9 5.9 0 0 1-5.9-5.9v-.1a5.9 5.9 0 0 1 5.9-5.9H303a5.9 5.9 0 0 1 5.9 5.9z" data-name="Path 11" transform="translate(4333.8 1057.2)"/>
-  <circle id="Ellipse_2" cx="1.7" cy="1.7" r="1.7" className="cls-5" fill="#313444" data-name="Ellipse 2" transform="translate(4624 1311)"/>
-  <circle id="Ellipse_3" cx="1.7" cy="1.7" r="1.7" className="cls-5" fill="#313444" data-name="Ellipse 3" transform="translate(4634.8 1311)"/>
-  <circle id="Ellipse_4" cx="24.1" cy="24.1" r="24.1" fill="none" data-name="Ellipse 4" transform="translate(4607 1289.8)"/>
-  <path id="Path_2-2" d="M599.1 277.275v.688a3.315 3.315 0 0 1-2.7 3.037 10.4 10.4 0 0 0 .8-3.8v-.3a10.4 10.4 0 0 0-.8-3.8 3.4 3.4 0 0 1 2.7 3.2z" className="cls-3" fill="#e4e4f9" data-name="Path 2" transform="rotate(180 2606.5 795.1)"/>
-</g>
-</svg>
-
-
+  <svg
+    id="prefix__Layer_1"
+    data-name="Layer 1"
+    viewBox="0 0 563.66 738.04"
+  >
+    <defs>
+      <style>
+        {
+          '.prefix__cls-4{fill:#eef}.prefix__cls-5{fill:#e4e4f9}.prefix__cls-7{fill:#313444}'
+        }
+      </style>
+      <clipPath id="prefix__clip-path" transform="translate(-138.97 -46.42)">
+        <circle cx={420.8} cy={328.25} r={281.83} fill="none" />
+      </clipPath>
+    </defs>
+    <title>{'Bot DP'}</title>
+    <circle cx={281.83} cy={281.83} r={281.83} fill="#6353d8" />
+    <g clipPath="url(#prefix__clip-path)">
+      <path
+        className="prefix__cls-4"
+        d="M458.24 188.84h-74.87a41.06 41.06 0 0 1 74.87 0zM625.51 310.7v17.67a39 39 0 0 1-29.08 37.57 128 128 0 0 0 8-44.58v-3.7a127.93 127.93 0 0 0-8-44.58 39.12 39.12 0 0 1 29.08 37.62z"
+        transform="translate(-138.97 -46.42)"
+      />
+      <path className="prefix__cls-4" d="M277.75 77.19h8.16v49.67h-8.16z" />
+      <path
+        className="prefix__cls-5"
+        d="M216.09 310.7v17.67a39 39 0 0 0 29.09 37.57 127.75 127.75 0 0 1-8-44.58v-3.7a127.7 127.7 0 0 1 8-44.58 39.12 39.12 0 0 0-29.09 37.62zM428.68 478.21a104.77 104.77 0 0 1 40.83 8.26v-36.32H372.1v36.32a104.77 104.77 0 0 1 40.83-8.26zM426.24 89.46a21.62 21.62 0 0 1 12.4 3.91 21.73 21.73 0 1 0-30.24 30.23 21.71 21.71 0 0 1 17.84-34.14z"
+        transform="translate(-138.97 -46.42)"
+      />
+      <path
+        className="prefix__cls-4"
+        d="M442.55 105.77a21.62 21.62 0 0 0-3.91-12.4 21.71 21.71 0 0 0-30.24 30.23 21.72 21.72 0 0 0 34.15-17.83z"
+        transform="translate(-138.97 -46.42)"
+      />
+      <path
+        className="prefix__cls-5"
+        d="M343.34 446.11c-55.53-14.3-96.87-64.93-96.87-124.76v-3.7c0-59.83 41.34-110.47 96.87-124.76a126.55 126.55 0 0 1 31.9-4.07H366a126.61 126.61 0 0 0-31.9 4.07c-55.54 14.29-96.88 64.93-96.88 124.76v3.7c0 59.83 41.34 110.46 96.88 124.76a126.61 126.61 0 0 0 31.91 4h9.25a126.75 126.75 0 0 1-31.92-4zM316.39 678.67V584c0-43.73 26.89-81.47 65-97.53a104.74 104.74 0 0 1 40.83-8.26h-9.25a104.77 104.77 0 0 0-40.83 8.26c-38.06 16.06-65 53.8-65 97.53v94.67c0 49.39 34.36 91 80.32 102.54a105 105 0 0 0 25.47 3.25h9.25a105 105 0 0 1-25.47-3.25c-45.97-11.5-80.32-53.15-80.32-102.54z"
+        transform="translate(-138.97 -46.42)"
+      />
+      <path
+        className="prefix__cls-4"
+        d="M596.42 365.92a127.76 127.76 0 0 0 8-44.59v-3.69a127.66 127.66 0 0 0-8-44.58c-18.27-49-65.62-84.22-120.8-84.22H375.26a126.55 126.55 0 0 0-31.9 4.07c-55.53 14.29-96.87 64.93-96.87 124.76v3.7c0 59.83 41.34 110.46 96.87 124.76a126.75 126.75 0 0 0 31.92 4h100.34c55.18 0 102.53-35.13 120.8-84.21zM534.47 678.67V584c0-43.38-26.49-80.84-64.07-97.11-.3-.13-.59-.29-.89-.42a104.77 104.77 0 0 0-40.83-8.26h-6.5a104.74 104.74 0 0 0-40.83 8.26c-38.07 16.06-65 53.8-65 97.53v94.67c0 49.39 34.35 91 80.32 102.54a105 105 0 0 0 25.47 3.25h6.5c58.22 0 105.83-47.61 105.83-105.79z"
+        transform="translate(-138.97 -46.42)"
+      />
+      <path
+        d="M555.84 318.52v2A68.56 68.56 0 0 1 487.32 389h-133a68.72 68.72 0 0 1-68.52-68.52v-2A68.71 68.71 0 0 1 354.29 250h133a68.56 68.56 0 0 1 68.52 68.51z"
+        transform="translate(-138.97 -46.42)"
+        fill="#7878ba"
+      />
+      <circle className="prefix__cls-7" cx={218.64} cy={267.66} r={19.47} />
+      <circle className="prefix__cls-7" cx={345.03} cy={267.66} r={19.47} />
+    </g>
+  </svg>
 )
 export const ConversationsEmptyStateImage = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="396px" height="231px" viewBox="0 0 395.177 230.019">

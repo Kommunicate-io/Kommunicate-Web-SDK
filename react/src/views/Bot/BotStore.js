@@ -31,9 +31,11 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    width: '600px',
+    width: '650px',
     // maxWidth: '580px',
-    overflow: 'visible'
+    overflow: 'visible',
+    paddingLeft: '32px',
+    paddingRight: '32px'
   }
 };
 export default class BotStore extends Component {
@@ -786,9 +788,9 @@ export default class BotStore extends Component {
             </ModalBody>
         </Modal>
 
-            <button data-bot-integration="custom" onClick={(e)=> {this.modalViewControll(e,true)}}>Modal</button>
+            <button data-bot-integration="custom" onClick={(e)=> {this.modalViewControll(e,true)}}> Custom Bot Integration Modal - Test</button>
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.modalViewControll(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} onClickCancel={()=>{this.modalViewControll(null,false)}}/>
+              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.modalViewControll(null,false)}} aiPlatform = {this.state.botIntegrationType}/>
               <span onClick={()=>{this.modalViewControll(null,false)}}><CloseButton /></span>
             </BotIntegrationModal>
             </div>

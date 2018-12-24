@@ -1,90 +1,23 @@
 import React, { Component } from 'react'
 import styled, { withTheme } from 'styled-components'
-
-const CustomBotInputFieldsContainer = styled.div`
-    & > .input-field-title {
-        font-size: 17px;
-        letter-spacing: 0.3px;
-        color: #616366;
-        margin-top: 18.5px;
-    }
-    & > #input-bot-integration-webhook-url {
-        width: 99%;
-    }
-    & > #input-bot-integration-key , #input-bot-integration-value {
-        width: 41%;
-    }
-    & input {
-        height: 40px;
-        padding: 16px;
-    }
-    & input::placeholder  {
-        font-size: 14px;
-        color: #cacaca;
-    }
-    & label {
-        font-size: 15px;
-        letter-spacing: 0.3px;
-        color: #616366;
-        margin-right:6px;
-    }
-    & > .input-bot-integration-value-label {
-        margin-left: 20px;
-    }
-`;
-
+import { BotIntegrationInputFieldsContainer} from './BotStyle'
 function CustomBotInputFields(props) {
     return (
-        <CustomBotInputFieldsContainer>
-            <p className="input-field-title">Webhook URL</p>
-            <input type="text" id="input-bot-integration-webhook-url" placeholder="Enter webhook URL"
-                onChange={props.customBotWebHookUrl}
+        <BotIntegrationInputFieldsContainer>
+            <p className="input-field-title">{props.inputFields.field1.label}:</p>
+            <input type="text" id="bot-integration-input-field-1" placeholder={props.inputFields.field1.placeHolder}
+                onChange={props.InputField1Value}
             />
-            <p className="input-field-title">Request Header (optional):</p>
-            <label htmlFor="input-bot-integration-key">key</label>
-            <input type="text" id="input-bot-integration-key" placeholder="Enter Header Key (optional)"
-                onChange={props.customBotKey}
+            <p className="input-field-title">{props.inputFields.title}</p>
+            <label htmlFor="bot-integration-input-field-2">{props.inputFields.field2.label}:</label>
+            <input type="text" id="bot-integration-input-field-2" placeholder={props.inputFields.field2.placeHolder}
+                onChange={props.InputField2Value}
             />
-            <label className="input-bot-integration-value-label" htmlFor="input-bot-integration-value">value</label>
-            <input type="text" id="input-bot-integration-value" placeholder="Enter Header Value (optional)"
-                onChange={props.customBotValue}
+            <label className="bot-integration-input-field-3-label" htmlFor="bot-integration-input-field-3">{props.inputFields.field3.label}:</label>
+            <input type="text" id="bot-integration-input-field-3" placeholder={props.inputFields.field3.placeHolder}
+                onChange={props.InputField3Value}
             />
-        </CustomBotInputFieldsContainer>
+        </BotIntegrationInputFieldsContainer>
     )
 }
 export default CustomBotInputFields
-// class CustomBotInputFields extends Component {
-
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-            
-
-//         }
-        
-//     }  
-//     componentDidMount() {
-
-//     }
-//     render() {
-//         return (
-//             <CustomBotInputFieldsContainer>
-//                 <p className="input-field-title">Webhook URL</p>
-//                 <input type="text" id="input-bot-integration-webhook-url" placeholder="Enter webhook URL"
-//                     onChange={this.props.customBotWebHookUrl} 
-//                     />
-//                 <p className="input-field-title">Request Header (optional):</p>
-//                 <label htmlFor="input-bot-integration-key">key</label>
-//                 <input type="text" id="input-bot-integration-key" placeholder="Enter Header Key (optional)"
-//                     onChange={this.props.customBotKey}
-//                     />
-//                 <label className="input-bot-integration-value-label" htmlFor="input-bot-integration-value">value</label>
-//                 <input type="text" id="input-bot-integration-value" placeholder="Enter Header Value (optional)"
-//                     onChange={this.props.customBotValue}
-//                      />
-//             </CustomBotInputFieldsContainer>
-//         )
-//     }
-// }
-
-// export default CustomBotInputFields

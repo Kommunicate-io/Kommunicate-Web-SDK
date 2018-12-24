@@ -2,119 +2,15 @@ import React, { Component } from 'react';
 import styled, { withTheme } from 'styled-components';
 import { BotDefaultImage } from '../../views/Faq/LizSVG.js';
 import CustomBotInputFields from './CustomBotInputFields'
-import {createCustomerOrAgent} from '../../utils/kommunicateClient';
-const Title = styled.div`
-    & > .bot-integration-title {
-            font-size: 22px;
-            letter-spacing: 1.5px;
-            color: #242424;
-    }
-    & > hr {
-            margin-right: -1.2rem;
-            margin-left: -1.2rem;
-    }
-    & .bot-integration-sub-title {
-            font-size: 16px;
-            letter-spacing: 0.6px;
-            color: #4a4a4a;
-    }
-`;
-const Instruction = styled.div`
-    display: flex;
-    margin-bottom:15px;
-    
-    & > .instruction-order-circle {
-            width: 20px;
-            height: 20px;
-            border-radius: 11.5px;
-            background-color: #5553b7;
-            text-align: center;
-    }
-    & .instruction-order {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 0.2px;
-            text-align: center;
-            color: #ffffff;
-    }
-    & > .instruction {
-            margin-left: 11px;
-            font-size: 14px;
-            line-height: normal;
-            letter-spacing: 0.3px;
-            color: #666464;
-    }
-`;
-const Footer = styled.div`
-    text-align: right;
-    margin-top: 29px;
+import {createCustomerOrAgent, sendProfileImage} from '../../utils/kommunicateClient';
+import Notification from '../model/Notification';
+import ApplozicClient from '../../utils/applozicClient';
+import {createBot} from '../../utils/botPlatformClient';
+import { ROLE_TYPE } from '../../utils/Constant';
+import CommonUtils from '../../utils/CommonUtils';
+import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
+import Linkify from 'react-linkify';
 
-    & > .bot-integration-cancel-button {
-         margin-right: 16px;
-    }
-`;
-const BotProfileContainer = styled.div`
-    display: flex;
-    & > .bot-name-wrapper {
-            margin-left: 56px;
-    }
-    & > .km-edit-bot-image-wrapper {
-            overflow: hidden;
-            border-radius: 61%;
-            position: relative;
-            width: 105px;
-            height: 105px;
-            cursor: pointer;
-            margin-left:20px
-    }
-    & > .bot-name-wrapper > input {
-            height: 40px;
-            padding: 16px;
-    }
-    & > .bot-name-wrapper > input::placeholder  {
-            font-size: 14px;
-            color: #cacaca;
-    }
-    & > .bot-name-wrapper > p {
-            font-size: 17px;
-            letter-spacing: 0.3px;
-            color: #616366;
-    }
-    & .km-edit-bot-image-wrapper:hover, .bot-image-update {
-        opacity: 0.7;
-      }
-    & .bot-image-update {
-        text-align: center;
-        position: absolute;
-        background: black;
-        opacity: 0;
-        z-index: 100;
-        color: white;
-        bottom: -2px;
-        left: 50%;
-        display: block;
-        width: 100%;
-        transform: translate(-50%);
-        text-transform: capitalize;
-        height: 31px;
-        padding: 4px 0 0 0;
-        font-size: 14px;
-        transition: .3s;
-        letter-spacing: 0.8px;
-    }
-    & .km-hide-input-element {
-        opacity: 0.0;
-        position: absolute;
-        top:0;
-        left: 0;
-        bottom: 0;
-        right:0;
-        width:100%;
-        height:100%;
-        font-size: 0px;
-        cursor: pointer;
-    }   
-`;
 function BotIntegrationTitle(props) {
     return (
         <Title>
@@ -131,7 +27,10 @@ function BotIntegrationInstructions(props) {
             <div className="instruction-order-circle">
                 <span className="instruction-order">{props.order}</span>
             </div> 
-            <span className="instruction">{props.instruction}</span>
+            <Linkify properties={{target: '_blank'}}>
+                <span className="instruction">{props.instruction}</span>
+            </Linkify>
+            
         </Instruction>
         
     )
@@ -139,8 +38,8 @@ function BotIntegrationInstructions(props) {
 function BotIntegrationModalFooter(props) {
     return (
         <Footer>
-            <button data-button-text="Cancel" className="km-button km-button--secondary bot-integration-cancel-button" onClick={props.onClickCancel}>Cancel</button>
-            <button data-button-text={props.buttonText} className="km-button km-button--primary bot-integration-cancel-next" onClick={props.onNext}>{props.buttonText}</button>
+            <button data-button-text="Cancel" className="km-button km-button--secondary bot-integration-cancel-button" onClick={props.closeModal}>Cancel</button>
+            <button data-button-text={props.buttonText} className="km-button km-button--primary bot-integration-cancel-next" onClick={props.onButtonClick}>{props.buttonText}</button>
         </Footer>
     )
 }
@@ -148,13 +47,17 @@ function BotProfile(props) {
     return (
         <BotProfileContainer>
             <div className="km-edit-bot-image-wrapper">
-                <BotDefaultImage />
-                <label htmlFor="km-upload-bot-image-select" id="km-upload-bot-image-check" className="km-edit-section-hover bot-image-update" style={{ bottom: "-8px" }} onClick ={props.handleUpload} > Update
-                  <input className="km-hide-input-element" type="file" id="km-upload-bot-image-select" accept="image/png, image/jpeg" />
+                {props.botImage ?
+                    <img src={props.botImage} className="km-default-bot-dp km-bot-image-circle" />
+                    :
+                    <BotDefaultImage />
+                }
+                <label htmlFor="km-bot-integration-image-select" id="bot-integration-upload-bot-image-label" className="km-bot-integration-edit-section-hover bot-image-update" style={{ bottom: "-8px" }} onClick={props.handleBotImageUpload} > Update
+                  <input className="km-hide-input-element" type="file" id="km-bot-integration-image-select" accept="image/png, image/jpeg" />
                 </label>
             </div>
             <div className="bot-name-wrapper">
-                <p>Name</p>
+                <p>Bot Name:</p>
                 <input type="text" id="input-bot-integration-name" placeholder="Example: Alex, Bot"
                     onChange={props.botName}
                 />
@@ -176,59 +79,135 @@ class BotIntegrationModalContent extends Component {
             botImageUrl:defaultBotUrl,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
-            step1InputField:this.props.integrationContent.step1.inputFieldComponent
+            step1InputField:this.props.integrationContent.step1.inputFieldComponent,
+            aiPlatform:this.props.aiPlatform ,
+            InputField1Value:"",
+            InputField2Value:"",
+            InputField3Value:"",
+            botName:"",
+            selectedBotImage:""
 
         }
         
     }
     onNext = (e) => {
         let clickedButton = e.target.dataset.buttonText;
+        if (this.state.aiPlatform == "custom" && this.isInputFieldEmpty(this.state.InputField1Value.trim())){
+            Notification.warning(this.props.integrationContent.inputFields.field1.label+" is mandatory");
+            return;
+        }
         clickedButton == "Next" && this.setState({
             step:2,
             buttonText:"Integrate",
             botImageFileObject:"",
             title:this.props.integrationContent.step2.title,
             subTitle:this.props.integrationContent.step2.subTitle,
-            customBotWebHookUrl:"",
-            customBotKey:"",
-            customBotValue:"",
-            botName:""
-
         })
     }
-    customBotWebHookUrl = (e) => {
-        let customBotWebHookUrl = this.state.customBotWebHookUrl;
-        customBotWebHookUrl = e.target.value;
-        this.setState({ customBotWebHookUrl: customBotWebHookUrl })
+    InputField1Value = (e) => {
+        let InputField1Value = this.state.InputField1Value;
+        InputField1Value = e.target.value;
+        this.setState({ InputField1Value: InputField1Value })
     }
-    customBotKey = (e) => {
-        let customBotKey = this.state.customBotKey;
-        customBotKey = e.target.value;
-        this.setState({ customBotKey: customBotKey });
+    InputField2Value = (e) => {
+        let InputField2Value = this.state.InputField2Value;
+        InputField2Value = e.target.value;
+        this.setState({ InputField2Value: InputField2Value });
     }
-    customBotValue = (e) => {
-        let customBotValue = this.state.customBotValue;
-        customBotValue = e.target.value;
-        this.setState({ customBotValue: customBotValue });
+    InputField3Value = (e) => {
+        let InputField3Value = this.state.InputField3Value;
+        InputField3Value = e.target.value;
+        this.setState({ InputField3Value: InputField3Value });
     }
     botName = (e) => {
         let botName = this.state.botName;
         botName = e.target.value;
         this.setState({ botName: botName });
     }
-    handleUpload = (e) => {
-        let that = this;
-        document.getElementById("km-upload-bot-image-select").addEventListener("change", function () {
-            that.setState({
-                botImageFileObject: document.getElementById("km-upload-bot-image-select").files[0]
-            });
-            // document.getElementById("km-upload-bot-image-select").value = "";
-            // that.uploadBotProfileImage(that.state.botImageFileObject);
+    uploadBotImage = (e) => {
+        let botImageFile;
+        let that = this
+        document.getElementById("km-bot-integration-image-select").addEventListener("change", function () {
+            botImageFile = document.getElementById("km-bot-integration-image-select").files[0]
+            document.getElementById("km-bot-integration-image-select").value = "";
+           
+            botImageFile && sendProfileImage(botImageFile, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${botImageFile.name.split('.').pop()}`)
+                .then(response => {
+                    if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
+                        that.setState({ selectedBotImage: response.data.profileImageUrl });
+                    } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
+                        Notification.info(response.data.message)
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    Notification.info("Error while uploading")
+                })
         });
-        console.log(document.getElementById("km-upload-bot-image-select").files[0]);
     }
-    handleInput = (e) => {
+    integrateBot = (e) => {
+        let userId = this.state.botName.trim().toLowerCase().replace(/ /g, '-');
+        if (this.isInputFieldEmpty(this.state.botName.trim())) {
+            Notification.warning("Please enter a bot name !!");
+            return;
+        }
+        let userSession = CommonUtils.getUserSession();
+        let applicationId = userSession.application.applicationId;
+        let userInfo = {
+            userName: userId,
+            type: 2,
+            applicationId: applicationId,
+            password: userId,
+            name: this.state.botName.trim(),
+            aiPlatform: this.state.aiPlatform.trim(),
+            roleType: ROLE_TYPE.BOT,
+            imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : this.state.defaultBotUrl
+        }
+        let botInfo = {
+            webHookUrl :  this.state.InputField1Value.trim(),
+            key : this.state.InputField2Value.trim(),
+            value:this.state.InputField3Value.trim(),
+            aiPlatform : "custom",
+            type:'KOMMUNICATE_SUPPORT'
+        }
+        let data = { "userIdList": [userId] }
+        createCustomerOrAgent(userInfo, "BOT").then(bot => {
+            var bot = bot.data.data;
+            let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+            botAgentMap[bot.userName] = bot;
+            CommonUtils.setItemInLocalStorage("KM_BOT_AGENT_MAP", botAgentMap);
+            ApplozicClient.getUserDetails(data).then(response => {
+                if (response.data.response[0]) {
+                    let id = response.data.response[0].id;
+                    let data = { id: id, botInfo: botInfo };
+                    createBot(data).then(response => {
+                        this.props.closeModal();
+                        Notification.success("Bot successfully created");  
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
 
+            }).catch(err => {
+                console.log(err)
+            })
+
+        }).catch(err => {
+            if (err.code == "USER_ALREADY_EXISTS") {
+                Notification.info("Bot name taken. Try again.");
+            } else {
+                Notification.error("Something went wrong");
+                console.log("Error creating bot", err);
+            }
+        })
+
+    }
+    isInputFieldEmpty = (value) => {
+       if (!value) {
+        return true
+       } else {
+           return false
+       }
     }
 render() {
     let instructions;
@@ -238,24 +217,19 @@ render() {
         instructions = integration.step1.instructions.map((instruction, index) => {
             return <BotIntegrationInstructions key={index} instruction={instruction} order={index+1} />
         })
-        // inputField = integration.step1.InputFieldComponent;
     });
-    // (this.state.step == 2 && this.props.integrationContent) && [this.props.integrationContent].map((integration) => {
-    //     step2 = integration.step2;
-    //     this.setState()
-    //     }) 
     return (
         <div className="">
             <BotIntegrationTitle title={this.state.title} subTitle={this.state.subTitle}/>
             {this.state.step ==1 ? instructions: ""}
             {this.state.step ==1 && this.state.step1InputField == "CustomBotInputFields" &&
-                <CustomBotInputFields customBotWebHookUrl = {this.customBotWebHookUrl} customBotKey={this.customBotKey} customBotValue={this.customBotValue}/>
+                <CustomBotInputFields InputField1Value = {this.InputField1Value} InputField2Value={this.InputField2Value} InputField3Value={this.InputField3Value} inputFields ={this.props.integrationContent.inputFields}/>
             }
             {/* {this.state.step ==1 ? inputField: ""} */}
             {this.state.step == 2 &&
-                <BotProfile  handleUpload= {this.handleUpload} botName={this.botName}/>
+                <BotProfile  handleBotImageUpload= {this.uploadBotImage} botName={this.botName} botImage={this.state.selectedBotImage}/>
             }
-            <BotIntegrationModalFooter onNext ={this.onNext} buttonText={this.state.buttonText} onClickCancel={this.props.onClickCancel}/>
+            <BotIntegrationModalFooter onButtonClick ={this.state.buttonText == "Next" ? this.onNext : this.integrateBot} buttonText={this.state.buttonText} closeModal={this.props.closeModal} onClickIntegrate={this.integrateBot}/>
         </div>
 
     )
