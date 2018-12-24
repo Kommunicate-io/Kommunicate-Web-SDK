@@ -93,7 +93,7 @@ Example:
 
 
 
-## Update user's identity after plugin initialized
+## Update user details after plugin is initialized
 
 Once plugin is initialized and return success response, then you can use `Kommunicate.updateUser(userdetail)` method to update users identity.
 

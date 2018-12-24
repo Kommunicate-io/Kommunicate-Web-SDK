@@ -15,27 +15,27 @@ If you are in one of our paid plans, you can also upload your own image/icon and
 ![Chat_Widget_Customization.png](assets/Chat_Widget_Customization.png)
 
 
-## Sent messages color
-Add below code to change color of sent messages in your css file
-```
-.mck-msg-right .mck-msg-box{
-background-color: green;
-color:white;
-}
+## Customize chat widget by using css
+You can pass the css after stringifying it in Kommunicate.customizeWidgetCss() method.
+
+#### To change sent messages color
+```javascript
+Example : 
+
+var cssChanges = ".mck-msg-right .mck-msg-box{background-color: blue!important;color:yellow!important;}";
+Kommunicate.customizeWidgetCss(cssChanges);
 
 ```
 
+#### To change received messages color
 
-## Received messages color
-Add below code to change color of received messages in your css file
+```javascript
+Example :
+
+var cssChanges = ".mck-msg-left .mck-msg-box{background-color: blue!important;color:yellow!important;}";
+Kommunicate.customizeWidgetCss(cssChanges);
+
 ```
-.mck-msg-left .mck-msg-box{
-background-color: white;
-color:black;
-}
-
-```
-
 
 ## Default metadata 
 Add this metadata in kommunicate setting.This will send defaultMessageMetaData with every message.
