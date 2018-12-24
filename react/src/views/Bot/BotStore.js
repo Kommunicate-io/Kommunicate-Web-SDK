@@ -118,7 +118,7 @@ export default class BotStore extends Component {
         if (e && e.target.dataset && e.target.dataset.botIntegration) {
           this.setState({
             botIntegrationType: e.target.dataset.botIntegration,
-            botIntegrationContent: botIntegrationData[botIntegrationType]
+            botIntegrationContent: botIntegrationData[e.target.dataset.botIntegration]
           })
         }
       }
