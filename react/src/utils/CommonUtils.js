@@ -221,6 +221,28 @@ const CommonUtils = {
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
         return userSession.roleName === 'APPLICATION_ADMIN'
+    },
+    // below function when called will set cursor to end of the input string
+    setCursorAtTheEndOfInputString: function (el)  {
+        if(el.childNodes.length !== 0 ){ 
+          el.focus();
+          if (typeof window.getSelection != "undefined" &&
+          typeof document.createRange != "undefined") {
+          var range = document.createRange();
+          range.selectNodeContents(el);
+          range.collapse(false);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          } else if (typeof document.body.createTextRange != "undefined") {
+          var textRange = document.body.createTextRange();
+          textRange.moveToElementText(el);
+          textRange.collapse(false);
+          textRange.select();
+          }
+        } else {
+          return false;
+        }
     }
 }
 

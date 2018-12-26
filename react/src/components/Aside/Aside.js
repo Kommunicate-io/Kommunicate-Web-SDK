@@ -589,7 +589,7 @@ class Aside extends Component {
     this.setState({
       toggleExpandIcon: !this.state.toggleExpandIcon
     }, () => {
-      document.getElementById("km-text-box").focus();
+      CommonUtils.setCursorAtTheEndOfInputString(textArea);
     });
     
   }
