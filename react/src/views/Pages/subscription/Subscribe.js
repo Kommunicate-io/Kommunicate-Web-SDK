@@ -81,7 +81,7 @@ export const Unsubscribe = (props) => {
                 <div>
                     <SubscribeIcon />
                 </div>
-                <SubscribeText>You have successfully unsubscribed <span>Kommunicate</span></SubscribeText>
+                <SubscribeText>You have unsubscribed from weekly report emails</SubscribeText>
                 <UnsubscribeSubtext>You will no longer be receiving weekly report emails <span>from <strong>Kommunicate</strong></span></UnsubscribeSubtext>
             </SuccessContainer>
             <SubscribeAgain>Want to subscribe again?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<NavLink to={"/subscribe" + props.location.search}><SubscribeButton>Subscribe</SubscribeButton></NavLink></SubscribeAgain>
