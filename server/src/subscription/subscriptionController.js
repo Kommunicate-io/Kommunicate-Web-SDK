@@ -108,7 +108,7 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
             if (updated) {
                 subscribed ? customerService.reactivateAgents(applicationId) : "";
                 customerDetail.subscription && (customer.subscription = customerDetail.subscription);
-                customerService.updateApplicationInApplozic(customer);
+                await customerService.updateApplicationInApplozic(customer);
                 response.code = "SUCCESS";
                 response.message = { "subscription": req.body.subscription, "status": "updated" };
                 res.status(200).json(response);
@@ -119,7 +119,7 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
             }
         
     } catch (error) {
-        console.log("Error while updating kommunicate subscription details ", err);
+        console.log("Error while updating kommunicate subscription details ", error);
         res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });   
     }
 

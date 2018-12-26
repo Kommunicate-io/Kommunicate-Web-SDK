@@ -126,7 +126,6 @@ const reactivateAgents = async function (appId) {
 
 const updateApplicationInApplozic = async (customer) => {
     let application = {};
-    try {
         if (typeof customer == 'object') {
             let customerApplicationId = customer.applicationId || customer.applications[0].applicationId;
             let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
@@ -135,21 +134,15 @@ const updateApplicationInApplozic = async (customer) => {
             applozicPackage && (application.pricingPackage = applozicPackage);
             if (Object.keys(application).length > 0) {
                 application.applicationId = customerApplicationId;
-                applozicClient.updateApplication(application).catch(err => {
+                return await applozicClient.updateApplication(application).catch(err => {
                     console.log('error while updating application', err);
+                    throw err;
                 });
             }
         }
         else {
             logger.info("received empty customer object to update");
         }
-    } catch (error) {
-        console.log("err while fetching data for customer", err);
-        res.status(500).json({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "something went wrong"
-        });
-    }
 }
 
 module.exports = {
