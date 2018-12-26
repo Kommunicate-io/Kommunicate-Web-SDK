@@ -576,7 +576,7 @@ export default class BotStore extends Component {
 
             <div className="row km-bot-integration-boxes" >
                 <div onClick={this.toggleDialogFlowModalWrapper} className="col-sm-6 km-bot-integration-logo-container" >
-                  {/* <div className={(this.state.dialogFlowIntegrated || this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674", borderRadius:"4px 4px 0px 0px"}}></div> */}
+                 
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-type">Dialogflow <br /> 
                   <span>Dialogflow is a Google-owned chatbot builder </span>
@@ -590,7 +590,7 @@ export default class BotStore extends Component {
                 </div>
               
                 <div onClick={(e)=> {this.toggleBotIntegrationModal("custom",true)}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
-                  {/* <div className={(this.state.dialogFlowIntegrated || this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674", borderRadius:"4px 4px 0px 0px"}}></div> */}
+                  
                   <BotDefaultImage/>
                   <p className="km-bot-type">Other bot platforms <br /> 
                   <span>For bot platforms other than Dialogflow</span>
