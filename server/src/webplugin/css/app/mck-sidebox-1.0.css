@@ -1344,7 +1344,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-box-body .mck-tab-cell {
 	position: relative;
-	display: table;
+	/* display: table; */
 	width: 100%;
 	height: 100%;
 	overflow: auto;
