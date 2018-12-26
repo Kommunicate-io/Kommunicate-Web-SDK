@@ -168,7 +168,7 @@ class OnBoardingModal extends Component {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        updateModalStatus: payload => dispatch(SignUpActions.updateOnBoardingModalStatus(payload))
+        updateModalStatus: payload => dispatch(SignUpActions.updateDetailsOnSignup("UPDATE_KM_ON_BOARDING_MODAL_STATUS",payload))
     }
 }
 export default connect(null,mapDispatchToProps)(OnBoardingModal)

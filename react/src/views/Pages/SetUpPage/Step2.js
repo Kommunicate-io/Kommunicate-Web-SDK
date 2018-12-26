@@ -358,8 +358,8 @@ hideAllErrors (){
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateStatus: payload => dispatch(Actions.updateOnBoardingStatus(payload)),
-    updateModalStatus: payload => dispatch(Actions.updateOnBoardingModalStatus(payload))
+    updateStatus: payload => dispatch(Actions.updateDetailsOnSignup("UPDATE_KM_ON_BOARDING_STATUS",payload)),
+    updateModalStatus: payload => dispatch(Actions.updateDetailsOnSignup("UPDATE_KM_ON_BOARDING_MODAL_STATUS",payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Step2)

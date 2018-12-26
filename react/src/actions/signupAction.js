@@ -1,12 +1,8 @@
-const updateOnBoardingStatus = (payload) => ({ 
-    type: 'UPDATE_KM_ON_BOARDING_STATUS',
+const updateDetailsOnSignup = (type, payload) => ({
+    type: type,
     payload
-});
-const updateOnBoardingModalStatus = (payload) => ({ 
-    type: 'UPDATE_KM_ON_BOARDING_MODAL_STATUS',
-    payload
-});
+})
+
 export {
-    updateOnBoardingStatus,
-    updateOnBoardingModalStatus
+    updateDetailsOnSignup
 }
