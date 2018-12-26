@@ -201,7 +201,6 @@ const callSendEmailAPI = (options) => {
   } else {
     AnalyticsTracking.acEventTrigger("mail." + options.templateName);
   }
-
 let url = config.baseurl.kommunicateAPI+"/misc/mail";
 if(options.templateName == "INVITE_TEAM_MAIL"){
   url=  getConfig().kommunicateApi.sendMail;
@@ -224,6 +223,7 @@ if(options.templateName == "INVITE_TEAM_MAIL"){
       "agentName": userSession.name || userSession.name || userId,
       "agentId": userId,
       "roleType":roleType,
+      "resendMail":options.resendMail ?options.resendMail :false,
       "isApplozic": !CommonUtils.isKommunicateDashboard()
     }
   }
@@ -1004,6 +1004,26 @@ const deleteUserByUserId = (userNames) => {
     throw { message: err };
   })
 }
+const deleteInvitationByUserId = (params) => {
+
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let data = {};
+  let url =getConfig().kommunicateBaseUrl + "/users/invitation";
+  data.applicationId = appId;
+  data.invitedUser = params.invitedUser;
+  return Promise.resolve(axios({
+    method: 'delete',
+    url: url,
+    data: data
+  })).then(response => {
+    if (typeof response !== "undefined") {
+      return response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
 const getInvitedUserByApplicationId = () => {
   
   let userSession = CommonUtils.getUserSession();
@@ -1189,5 +1209,6 @@ export {
   getSubscriptionDetail,
   createIntegrySubscription,
   editApplicationDetails,
-  updateKommunicateCustomerSubscription
+  updateKommunicateCustomerSubscription,
+  deleteInvitationByUserId
 }

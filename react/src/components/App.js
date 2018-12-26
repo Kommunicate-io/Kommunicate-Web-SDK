@@ -82,6 +82,7 @@ class App extends Component {
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 
       return null; // render null when app is not ready
     }
+
     return <div>
             {!(currentPath.includes("/subscribe") || currentPath.includes("/unsubscribe")) ? <div>
                     <NotificationContainer />

@@ -528,6 +528,16 @@ exports.defaultPluginSettings=(req, res)=>{
   })
 }
 
+
+exports.deleteInvitation = (req, res) => {
+  return userService.deleteInvitation(req.body.applicationId, req.body.invitedUser).then(data => {
+    return res.status(200).json({ code: "SUCCESS", message: data });
+  }).catch(err => {
+    logger.error("error while deleting invitation", err);
+    return res.status(500).json({ code: "ERROR", message: "error" });
+  })
+}
+
 exports.updateApplozicUser = (req, res) => {
   let userId = req.params.userId
   let apiKey = req.headers['api-key'];

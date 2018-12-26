@@ -132,6 +132,7 @@ userRouter.patch('/status',userController.updateUserStatus);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
 userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
+userRouter.delete("/invitation",validate(userValidation.deleteInvitation), userController.deleteInvitation);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 //signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);

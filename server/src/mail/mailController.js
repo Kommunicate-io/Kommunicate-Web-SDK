@@ -40,7 +40,7 @@ exports.sendInvitationMail = (req, res) => {
         if (isDeleted) {
             return res.status(200).json({ "code": "USER_ALREADY_EXIST", "message": "activated existing user" });
         }
-        return userService.inviteTeam(options).then(data => {
+      return Promise.resolve(userService.inviteTeam(options)).then(data => {
             logger.info("Updated UserList", data);
             return data;
         }).then(data => {

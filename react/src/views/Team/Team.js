@@ -118,17 +118,22 @@ class Integration extends Component {
   getInvitedUsers = () => {
     let invitedUser = [];
     let invitedUsersEmail = [];
+    let invitedusersEmailWithoutDeletedInvitation =[];
     return Promise.resolve(getInvitedUserByApplicationId()).then(response => {
       response.forEach(item => {
         if (item.status == INVITED_USER_STATUS.INVITED) {
+          invitedusersEmailWithoutDeletedInvitation.push(item.invitedUser);
+          if(!item.deleted_at){
           invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status });
           invitedUsersEmail.push(item.invitedUser);
+          }
         }
          
       })
       this.setState({
         invitedUsersEmail:invitedUsersEmail, 
-        invitedUser: invitedUser
+        invitedUser: invitedUser,
+        invitedusersEmailWithoutDeletedInvitation:invitedusersEmailWithoutDeletedInvitation
          
       });
     }).catch(err => {
@@ -160,25 +165,27 @@ class Integration extends Component {
     let email = this.state.email.trim();
     let roleType = this.state.isAdminSelected ? ROLE_TYPE.ADMIN : ROLE_TYPE.AGENT;
     let activeUsers = this.state.activeUsers;
-    let invitedUsersEmail = this.state.invitedUsersEmail;
+    let invitedUsersEmail = this.state.invitedusersEmailWithoutDeletedInvitation;
     let isUserExists = activeUsers.indexOf(email) == -1 ? false : true ;
     let isInvitationExists = invitedUsersEmail.indexOf(email) == -1 ? false : true ;
     let mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     
-    if (!isUserExists && !isInvitationExists) {
+    if (!isUserExists) {
       if (email.match(mailformat)) {
+        this.onCloseModal();
         AnalyticsTracking.acEventTrigger('ac-added-agent');
-          return Promise.resolve(notifyThatEmailIsSent({ to: email, isKommunicate:CommonUtils.isKommunicateDashboard(), templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
-            if (response && response.data.code === "SUCCESS") {
-              this.onCloseModal();
-              Notification.success('Invitation sent successfully');
-              this.getInvitedUsers();
-            }
-          }).catch(err => {
-            Notification.error("Something went wrong!")
-            console.log("error while inviting an user", err.message.response.data);
-          })
-        
+        return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType,resendMail :isInvitationExists?true:false })).then(response => {
+          if (response.data && response.data.code === "SUCCESS") {
+            Notification.success('Invitation sent successfully');
+            this.getInvitedUsers();
+          } else if (response.data && response.data.code === "USER_ALREADY_EXIST") {
+            this.getUsers();
+            Notification.success(response.data.message);
+          }
+        }).catch(err => {
+          Notification.error("Something went wrong!")
+          console.log("error while inviting an user", err.message.response.data);
+        })
       } else {
         Notification.error(email + " is an invalid Email");
         return false;
@@ -355,7 +362,7 @@ class Integration extends Component {
       </div>
     )
     var invitedUserList = this.state.invitedUser.map((user, index) => {
-      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType}/>
+      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType} getInvitedUsers ={this.getInvitedUsers}/>
     })
     var disabledUsersList = this.state.disabledUsers.map((user, index) => {
       let moreUserInfo;

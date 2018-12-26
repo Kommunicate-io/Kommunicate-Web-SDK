@@ -43,13 +43,27 @@ const getUserByName = userName => {
   });
 };
 const getInvitedUser = (appId) => {
-
-    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
+let criteria = {
+  applicationId: appId
+}
+    return teammateInviteModel.findAll({ where: criteria, paranoid: false}).then(result => {
       return result;
   }).catch(err => {
     throw err;
   });
 };
+
+const getInvitedUserList = (inviteUser) => {
+  var  invitedUserList =[];
+  for (var i = 0; i < inviteUser.length; i++) {
+    invitedUserList[i] =inviteUser[i].invitedUser;
+  }
+  return teammateInviteModel.findAll({ where: { invitedUser: {$in: invitedUserList }}, paranoid: false }).then(result => {
+     return result;
+    }).catch(err => {
+      throw err;
+    });
+  };
 
 const getInvitedAgentDetail = (reqId) => {
   return teammateInviteModel.find({ where: { id: reqId } }).then(result => {
@@ -59,27 +73,53 @@ const getInvitedAgentDetail = (reqId) => {
   });
 };
 
+const updateDeletedInvitation = (inviteteam) => {
+  let criteria = {
+    applicationId: inviteteam.applicationId,
+      invitedUser: inviteteam.to[0],
+      deleted_at: {$ne:null}
+  }
+  return teammateInviteModel.update({ deleted_at: null }, { where: criteria, paranoid: false
+  }).then(result => {
+    return result})
+  .catch(err => {
+    throw err;
+  });
+}
+
 const inviteTeam = (inviteteam) => {
   return getByUserNameAndAppId(inviteteam.agentId, inviteteam.applicationId).then(user => {
-    var invites = []
+    var invites = [];
     inviteteam.invitedBy = user.userKey;
     inviteteam.status = 0;
-
     for (var i = 0; i < inviteteam.to.length; i++) {
       inviteteam.invitedUser = inviteteam.to[i];
       invites.push(inviteteam);
     }
-    if (invites.length > 0) {
-      return teammateInviteModel.bulkCreate(invites).then(result => {//spread
-        logger.info("error while creating bot", result);
-        return result;
-      }).catch(err => {
-        logger.error("error while creating bot", err);
-        throw err;
+    if (inviteteam.resendMail) {
+      return Promise.resolve(updateDeletedInvitation(inviteteam)).then(data => {
+        return teammateInviteModel.findAll({ where: { applicationId: inviteteam.applicationId, invitedUser: inviteteam.to[0] } });
       });
-    }
-    return invites;
-
+    } else {
+      return Promise.resolve(getInvitedUserList(invites)).then(dbResult => {
+        dbResult.find(function (item, i) {
+            var index = invites.findIndex(invite => (item.invitedUser));
+            if (index !== -1) {
+              invites.splice(index, 1);
+            }
+        });
+        if (invites.length > 0) {
+         return teammateInviteModel.bulkCreate(invites).then(result => {//spread
+            logger.info("error while creating bot", result);
+            return result;
+          }).catch(err => {
+            logger.error("error while creating bot", err);
+            throw err;
+          });
+        }
+        return dbResult;
+      })
+   }
   }).catch(err => {
     throw err;
   });
@@ -482,7 +522,7 @@ const getUsersByAppIdAndTypes = (applicationId, type, order) => {
     criteria.type = { $in: type };
   }
   order =  order ? order : [['name', 'ASC']];
-  return Promise.resolve(userModel.findAll({ where: criteria, order })).then(result => {
+  return Promise.resolve(userModel.findAll({ where: criteria, order})).then(result => {
     return result;
   }).catch(err => {
     logger.info('error while getting all users', err);
@@ -668,6 +708,13 @@ const getUserByCriteria = async (criteria)=>{
     return null;
   }
 }
+const deleteInvitation = (applicationId, invitedUser) => {
+  return teammateInviteModel.destroy({ where: { "applicationId": applicationId, "invitedUser": invitedUser } }).then(res => {
+    return res ? 'SUCCESS' : "Record Not found";
+  }).catch(err => {
+    throw err;
+  });
+}
 
 const updateApplozicUser = (userInfo, apiKey) => {
   return applozicClient.getUserDetails([userInfo.userId], null, null, null, apiKey).then(result => {
@@ -735,6 +782,7 @@ exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;
+exports.getInvitedUserList =getInvitedUserList;
 exports.inviteTeam = inviteTeam;
 exports.getInvitedAgentDetail = getInvitedAgentDetail;
 exports.getAdminUserByAppId = getAdminUserByAppId;
@@ -750,3 +798,4 @@ exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
 exports.updateUserStatus = updateUserStatus;
 exports.updateOnlyKommunicateUser = updateOnlyKommunicateUser;
 exports.getUserListByCriteria = getUserByCriteria;
+exports.deleteInvitation =deleteInvitation;

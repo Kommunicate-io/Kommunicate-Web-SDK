@@ -26,6 +26,7 @@ import {
     updateAppSetting
 } from '../../utils/kommunicateClient'
 import * as Actions from '../../actions/applicationAction'
+import styled, { css } from 'styled-components';
 import Banner from '../../components/Banner/Banner';
 import { LearnMore } from '../../views/Faq/LizSVG';
 import styled, { css } from 'styled-components';

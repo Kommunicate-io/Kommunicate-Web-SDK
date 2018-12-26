@@ -100,6 +100,13 @@ module.exports.validateMetadata = {
     userName: joi.string().required(),
   }
 }
+module.exports.deleteInvitation={
+  body:{
+    invitedUser: joi.string().required(),
+    applicationId: joi.string().required()
+  }
+}
+
 
 module.exports.validateUserUpdate = {
   params: {
