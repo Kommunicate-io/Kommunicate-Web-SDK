@@ -126,20 +126,23 @@ const reactivateAgents = async function (appId) {
 
 const updateApplicationInApplozic = async (customer) => {
     let application = {};
-    if (typeof customer == 'object') {
-        let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
-        customer.websiteUrl && (application.websiteUrl = customer.websiteUrl);
-        customer.companyName && (application.name = customer.companyName);
-        applozicPackage && (application.pricingPackage = applozicPackage);
-    } else {
-        logger.info("received empty customer object to update");
-    }
-    if (Object.keys(application).length > 0) {
-        application.applicationId = customer.applicationId;
-        applozicClient.updateApplication(application).catch(err => {
-            console.log('error while updating application', err);
-        });
-    }
+        if (typeof customer == 'object') {
+            let customerApplicationId = customer.applicationId || customer.applications[0].applicationId;
+            let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
+            customer.websiteUrl && (application.websiteUrl = customer.websiteUrl);
+            customer.companyName && (application.name = customer.companyName);
+            applozicPackage && (application.pricingPackage = applozicPackage);
+            if (Object.keys(application).length > 0) {
+                application.applicationId = customerApplicationId;
+                return await applozicClient.updateApplication(application).catch(err => {
+                    console.log('error while updating application', err);
+                    throw err;
+                });
+            }
+        }
+        else {
+            logger.info("received empty customer object to update");
+        }
 }
 
 module.exports = {
