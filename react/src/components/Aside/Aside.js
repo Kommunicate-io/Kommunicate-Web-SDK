@@ -1322,7 +1322,7 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
   return {
-      updatPseudoBannerStatus: payload => dispatch(SignUpActions.updatePseudoNameBannerStatus(payload))
+      updatPseudoBannerStatus: payload => dispatch(SignUpActions.updateDetailsOnSignup("UPDATE_PSEUDO_BANNER_STATUS",payload))
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Aside) 
