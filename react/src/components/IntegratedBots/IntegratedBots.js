@@ -63,7 +63,7 @@ export default class IntegratedBots extends Component {
           botNameAlreadyExists: false,
           disableIntegrateBotButton: false,
           listOfIntegratedBots: [],
-          botAiPlatform: {"api.ai": "DialogFlow", "dialogflow": "DialogFlow", "microsoft": "microsoft", "amazon": "amazon"},
+          botAiPlatform: {"api.ai": "DialogFlow", "dialogflow": "DialogFlow", "microsoft": "microsoft", "amazon": "amazon", "custom":"Custom"},
           editBotIntegrationModalHeader: 'Edit Bot Profile',
           botIdInUserTable: '',
           botKey: '',
