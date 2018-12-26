@@ -111,7 +111,7 @@ export default class BotStore extends Component {
       componentDidMount=()=>{
         this.getIntegratedBotsWrapper()
       }
-      modalViewControll = (e,value) => {
+      toggleBotIntegrationModal = (e,value) => {
         this.setState({
           openModal: value
         });
@@ -786,10 +786,10 @@ export default class BotStore extends Component {
             </ModalBody>
         </Modal>
 
-            <button data-bot-integration="custom" onClick={(e)=> {this.modalViewControll(e,true)}}> Custom Bot Integration Modal - Test</button>
-            <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.modalViewControll(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.modalViewControll(null,false)}} aiPlatform = {this.state.botIntegrationType}/>
-              <span onClick={()=>{this.modalViewControll(null,false)}}><CloseButton /></span>
+            <button data-bot-integration="custom" onClick={(e)=> {this.toggleBotIntegrationModal(e,true)}}> Custom Bot Integration Modal - Test</button>
+            <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
+              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(null,false)}} aiPlatform = {this.state.botIntegrationType}/>
+              <span onClick={()=>{this.toggleBotIntegrationModal(null,false)}}><CloseButton /></span>
             </BotIntegrationModal>
             </div>
 
