@@ -64,6 +64,11 @@ export const CONVERSATION_STATS_FILTER_KEY = {
     DAY_WISE_DISTRIBUTION : 2
    
 }
+export const SUPPORTED_PLATFORM = {
+    DIALOGFLOW:"dialogflow",
+    CUSTOM:"custom"
+}
+export const  DEFAULT_BOT_URL = "https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png";
 
 export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
 

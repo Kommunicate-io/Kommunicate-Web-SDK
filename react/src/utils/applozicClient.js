@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getConfig} from '../config/config';
+import {getConfig, getEnvironmentId} from '../config/config';
 import CommonUtils from '../utils/CommonUtils';
 
 const ApplozicClient ={
@@ -345,6 +345,31 @@ updateUserDetail:function(params){
     }).then(response => {
       return response;
     })
+  },
+  getUserDetails : function (data) {
+    let userSession = CommonUtils.getUserSession();
+    let applicationId = userSession.application.applicationId;
+    let url =getConfig().applozicPlugin.userDetailUrl;
+    let accessToken = userSession.accessToken;
+    let userName =userSession.userName
+    return axios({
+      method: 'post',
+      url:url,
+      data: data,
+      headers: {
+        "Apz-Product-App": true,
+        "Apz-Token": 'Basic ' + new Buffer(userName+':'+accessToken).toString('base64'),
+        "Content-Type": "application/json",
+        "Apz-AppId":applicationId
+      }}).then( response => {
+        if(response.status == 200) {
+          return response
+        } 
+      }).catch( err => {
+        console.log("error while fetching user details", err)
+        throw { message: err };
+      });
+
   }
 }
 
