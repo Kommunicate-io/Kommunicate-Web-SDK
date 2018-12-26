@@ -199,7 +199,7 @@ getRoutingState = () => {
     return Promise.resolve(getAgentandBotRouting()).then(response => {
         let resp = response.data.response;
         resp.botRouting && this.setState({assignConversationToBot:true});
-        resp.removeBotOnAgentHandOff && this.setState({botInAgentAssignedConversation: resp.removeBotOnAgentHandOff});
+        this.setState({botInAgentAssignedConversation: !resp.removeBotOnAgentHandOff})
         if (response.data.response.agentRouting === 1) {
             this.setState({
                 checkedNotifyEverybody: false,
