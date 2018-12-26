@@ -126,22 +126,22 @@ const reactivateAgents = async function (appId) {
 
 const updateApplicationInApplozic = async (customer) => {
     let application = {};
-    let customerApplicationId = customer.applicationId || customer.applications[0].applicationId;
-    let customerDetail = await getCustomerByApplicationId(customerApplicationId);
     try {
-        if (typeof customerDetail == 'object') {
-            let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customerDetail.subscription];
-            customerDetail.websiteUrl && (application.websiteUrl = customerDetail.websiteUrl);
-            customerDetail.companyName && (application.name = customerDetail.companyName);
+        if (typeof customer == 'object') {
+            let customerApplicationId = customer.applicationId || customer.applications[0].applicationId;
+            let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
+            customer.websiteUrl && (application.websiteUrl = customer.websiteUrl);
+            customer.companyName && (application.name = customer.companyName);
             applozicPackage && (application.pricingPackage = applozicPackage);
-        } else {
-            logger.info("received empty customer object to update");
+            if (Object.keys(application).length > 0) {
+                application.applicationId = customerApplicationId;
+                applozicClient.updateApplication(application).catch(err => {
+                    console.log('error while updating application', err);
+                });
+            }
         }
-        if (Object.keys(application).length > 0) {
-            application.applicationId = customerApplicationId;
-            applozicClient.updateApplication(application).catch(err => {
-                console.log('error while updating application', err);
-            });
+        else {
+            logger.info("received empty customer object to update");
         }
     } catch (error) {
         console.log("err while fetching data for customer", err);
