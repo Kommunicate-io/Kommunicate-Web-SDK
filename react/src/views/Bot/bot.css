@@ -329,7 +329,6 @@
   line-height: normal;
   letter-spacing: 0.3px;
   text-align: left;
-  color: #aeaeae;
   text-transform: capitalize;
 }
 .km-delete-box-header{
@@ -642,4 +641,20 @@ border-bottom: 1px solid #cfd8dc;
   font-size: 16px;
   color: #5553b7;
   font-weight: 500;
+}
+.bot-integration-info{
+  background: #e6f3fb;
+  padding: 9px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.bot-integration-info.warning{
+  background: #fce9b9;
+}
+.bot-integration-info span{ 
+ font-weight: 700;
+}
+.bot-integration-info svg{
+  margin: 3px 6px 0 0;
 }

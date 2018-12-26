@@ -19,7 +19,7 @@ import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
-import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg,BotSectionSvg} from '../../views/Faq/LizSVG.js';
+import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg,BotSectionSvg,InfoIcon,WarningIcon} from '../../views/Faq/LizSVG.js';
 import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
@@ -723,14 +723,19 @@ export default class BotStore extends Component {
           <Modal isOpen={this.state.botProfileModal} toggle={this.toggleBotProfileModal} className="modal-dialog">
             <div className="km-edit-section-header">
               <div>
-                <span className="km-bot-delete-bot-modal-heading">Bot profile - </span>
                 <span className="km-selected-bot-name">Give your bot a name and face</span>
               </div>
             </div>
-            <ModalBody>
-              <div className="km-bot-create-box-body">
-                You may use the default bot photo or use a custom one
+            <div className={ (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ?  "bot-integration-info" : "n-vis"}>
+            <div> <InfoIcon /> </div>
+            <div>Adding a bot will increase the number of seats in your plan <span>(1 bot = 1 seat)</span>. Your bill will be updated on pro rata basis.</div>
               </div>
+            <div className={ (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) ? "bot-integration-info warning" : "n-vis"}>
+            <div> <WarningIcon /> </div>
+            <div>Upgrade to a paid plan before your trial period ends <span>({CommonUtils.countDaysForward(30, 'days')})</span> to ensure that all bot related features continue to work</div>
+              </div>
+            <ModalBody>
+              
               <div className="km-edit-section-body" style={{borderBottom:"none", width:"100%"}}>
                 <div className="km-edit-bot-image">
                   { this.state.setbotImageLink!== "" ?
