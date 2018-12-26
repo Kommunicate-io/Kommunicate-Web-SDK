@@ -105,7 +105,7 @@ else {
        let o = {"appId":"kommunicate-support","conversationTitle":"Kommunicate Support"};
        o.onInit = function(response , data){
         if (response === "success"){
-          var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+          var mckSideboxLauncher = KommunicateGlobal.document.getElementById('mck-sidebox-launcher');
           mckSideboxLauncher.addEventListener("click",function(){
                       acEventTrigger("initiateChatKMWeb");
           });

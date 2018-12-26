@@ -39,7 +39,7 @@ if(window.location.search == "?ref=sifterydeals") {
 
 function acEventTrigger(event) {
 
-  if(!heap.identity){
+  if(!heap || !heap.identity){
     return;
   }
 
@@ -64,7 +64,7 @@ function acEventTrigger(event) {
   }
 
   // get the url of the page and send it as event data
-  var eventData = "kommunicate";
+  var eventData = "kommunicate-website";
 
   // build the eventString based on the variables you just edited above 
   var eventString = "actid=" + actid +
