@@ -637,3 +637,9 @@ border-bottom: 1px solid #cfd8dc;
   display: block;
   margin: 0 0 0 auto;
 }
+
+.km-integrated-bot-text {
+  font-size: 16px;
+  color: #5553b7;
+  font-weight: 500;
+}

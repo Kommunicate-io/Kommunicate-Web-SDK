@@ -111,7 +111,7 @@ export default class BotStore extends Component {
       componentDidMount=()=>{
         this.getIntegratedBotsWrapper()
       }
-      toggleBotIntegrationModal = (botPlatform,value) => {
+      toggleBotIntegrationModal = (value, botPlatform) => {
         this.setState({
           openModal: value
         })
@@ -581,7 +581,7 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Dialogflow <br /> 
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
-                  <p  style={{fontSize: "16px", color: "#5553b7",fontWeight:"500"}}>
+                  <p className="km-integrated-bot-text">
                   <span className={this.state.listOfIntegratedBots.length>1 ?  "" : "n-vis" } >INTEGRATE ANOTHER BOT</span>
                   <span className={this.state.listOfIntegratedBots.length>1 ?  "n-vis" : "" } >INTEGRATE BOT</span>
                   </p>
@@ -589,14 +589,14 @@ export default class BotStore extends Component {
                   onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.state.listOfIntegratedBots.length} bots integrated</p>
                 </div>
               
-                <div onClick={(e)=> {this.toggleBotIntegrationModal("custom",true)}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
+                <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom")}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
                   
                   <BotDefaultImage/>
                   <p className="km-bot-type">Other bot platforms <br /> 
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
 
-                  <p  style={{fontSize: "16px", color: "#5553b7",fontWeight:"500"}}>
+                  <p className="km-integrated-bot-text">
                   <span >INTEGRATE BOT</span></p>      
                 </div>
             
@@ -767,9 +767,9 @@ export default class BotStore extends Component {
         </Modal>
 
             
-            <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(null,false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(null,false)}} aiPlatform = {this.state.botIntegrationType}/>
-              <span onClick={()=>{this.toggleBotIntegrationModal(null,false)}}><CloseButton /></span>
+            <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
+              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType}/>
+              <span onClick={()=>{this.toggleBotIntegrationModal(false)}}><CloseButton /></span>
             </BotIntegrationModal>
             </div>
             
