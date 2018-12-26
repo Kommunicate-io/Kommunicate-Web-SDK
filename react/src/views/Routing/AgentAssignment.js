@@ -294,7 +294,7 @@ toggleConversationAssignment = () => {
 }
 
     toggleBotInAgentAssignedConversation = () => {
-        return Promise.resolve(updateAgentAndBotRouting({removeBotOnAgentHandOff: !this.state.botInAgentAssignedConversation}).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({removeBotOnAgentHandOff: this.state.botInAgentAssignedConversation}).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 this.setState({
                     botInAgentAssignedConversation: !this.state.botInAgentAssignedConversation
