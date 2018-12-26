@@ -199,7 +199,7 @@ getRoutingState = () => {
     return Promise.resolve(getAgentandBotRouting()).then(response => {
         let resp = response.data.response;
         resp.botRouting && this.setState({assignConversationToBot:true});
-        resp.removeBotOnAgentHandOff && this.setState({botInAgentAssignedConversation: resp.removeBotOnAgentHandOff});
+        this.setState({botInAgentAssignedConversation: !resp.removeBotOnAgentHandOff})
         if (response.data.response.agentRouting === 1) {
             this.setState({
                 checkedNotifyEverybody: false,
@@ -294,7 +294,7 @@ toggleConversationAssignment = () => {
 }
 
     toggleBotInAgentAssignedConversation = () => {
-        return Promise.resolve(updateAgentAndBotRouting({removeBotOnAgentHandOff: !this.state.botInAgentAssignedConversation}).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({removeBotOnAgentHandOff: this.state.botInAgentAssignedConversation}).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 this.setState({
                     botInAgentAssignedConversation: !this.state.botInAgentAssignedConversation
