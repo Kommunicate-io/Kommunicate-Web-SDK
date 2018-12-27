@@ -160,7 +160,7 @@ const sendWeeklyReport = (report, customer, appId) => {
             "weeklyReportIcon": weeklyReportIcon,
             "BILLINGURL": dashboardUrl + "/settings/billing",
             "DISPLAYGROWTHPLAN": (customer.subscription == subscription.initialPlan) ? "block" : "none",
-            "UNSUBSCRIBEURL": dashboardUrl + "/unsubscribe?appId=" + appId + "&email=" + customer.email
+            "UNSUBSCRIBEURL": dashboardUrl + "/unsubscribe?appId=" + appId + "&email=" + encodeURIComponent(customer.email)
         }
         Object.assign(templateReplacement, resolutionTime, { "RESPONSE_HOUR": responseTime.HOURS, "RESPONSE_MINUTE": responseTime.MINUTES, "RESPONSE_SECOND": responseTime.SECONDS });
 
