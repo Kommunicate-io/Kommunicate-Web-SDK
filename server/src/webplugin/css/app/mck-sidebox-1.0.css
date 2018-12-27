@@ -5016,6 +5016,7 @@ margin-top: 243px;
 #km-contact-search-input-box {
 	padding-top: 0px;
 	padding-left: 0px;
+	overflow: hidden;
 }
 
 /* #mck-btn-attach {
