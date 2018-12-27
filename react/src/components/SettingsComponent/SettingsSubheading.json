@@ -19,8 +19,8 @@
                 "subHeading":"See the list of all the team members, their roles, add new team members and edit member details.",
                 "knowledgeBaseLink":""
         },
-        "Conversation Routing":{
-                "subHeading":"Set up the way you want conversations to be assigned among your team members.",
+        "Conversation Rules":{
+                "subHeading":"Set up the way conversations are assigned to and handled by your agents and bots.",
                 "knowledgeBaseLink":"https://www.kommunicate.io/blog/bots-and-automation-kommunicate-knowledge-base/"
         },
         "Mailbox":{

@@ -336,7 +336,7 @@ toggleConversationAssignment = () => {
                 <SettingsHeader  />
             </div>
             <div className=" agent-assignment-wrapper row">
-                <div className="card col-md-8">
+                <div className="card col-md-9">
                     <OptionsContainer className="options-wrapper">
                         <Headings>Routing rules for agents</Headings>
                         <SubHeadings>Select from one of the options below</SubHeadings>
@@ -364,7 +364,7 @@ toggleConversationAssignment = () => {
                     </OptionsContainer>
                     <Hr />
                 </div>
-                <div className="card col-md-8">
+                <div className="card col-md-9">
                     <OptionsContainer>
                         <Headings>Routing rules for bots</Headings>
                         <OptionsWrapper>
@@ -438,17 +438,17 @@ toggleConversationAssignment = () => {
                     </OptionsContainer>
                     <Hr />
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-9">
                     <OptionsContainer>
-                        <Headings>Allow bot to be active in agent-assigned conversations</Headings>
+                        <Headings>Reply rules for unassigned bots</Headings>
 
                         <OptionsWrapper>
-                            <TogglerHeading >Allow bot to reply even after the conversation is assigned to an agent</TogglerHeading>
+                            <TogglerHeading >Allow other bots to reply even after the conversation is assigned to a specific bot or agent</TogglerHeading>
                             <SliderToggle checked={this.state.botInAgentAssignedConversation} handleOnChange={this.toggleBotInAgentAssignedConversation} />
                         </OptionsWrapper>
 
                         <BannerContainer>   
-                            <Banner indicator={"default"} isVisible={false} text={"NOTE: If enabled, the bot will reply to user messages even when the agent is replying."} />
+                            <Banner indicator={"default"} isVisible={false} text={"NOTE: If enabled, the unassigned bots will also reply to user messages."} />
                         </BannerContainer>
                     </OptionsContainer>
                 </div>

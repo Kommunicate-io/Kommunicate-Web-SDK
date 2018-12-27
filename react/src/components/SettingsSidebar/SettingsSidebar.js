@@ -108,7 +108,7 @@ class SettingsSidebar extends Component {
                         
                         {this.state.isKommunicateDashboard && 
                             <li className="ss-nav-item agent-assignment-link">
-                                <NavLink to={'/settings/agent-assignment'} className="ss-nav-link ac-trigger-links" id="ac-conversation-routing" activeClassName="active">Conversation Routing</NavLink>
+                                <NavLink to={'/settings/agent-assignment'} className="ss-nav-link ac-trigger-links" id="ac-conversation-routing" activeClassName="active">Conversation Rules</NavLink>
                             </li>
                         }
                         <li className="ss-nav-title">
