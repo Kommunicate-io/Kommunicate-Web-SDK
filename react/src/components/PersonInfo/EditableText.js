@@ -46,13 +46,14 @@ class EditableText extends Component {
     }
   }
   isValidDisplayName(value) {
-    if (/^ *$/.test(value)) {
+    if (value && value.trim()) {
+      return true;
+    } else {
       Notification.error("Name cannot be left blank");
       return false;
-    } else {
-      return true;
     }
   }
+
   isValidNo(value) {
     if (value.length > 40) {
       Notification.error("Number length should be less than 40");

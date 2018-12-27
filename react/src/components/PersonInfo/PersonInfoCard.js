@@ -33,7 +33,7 @@ class PersonInfoCard extends Component {
             this.setState({
                 user: user,
                 email:user.email,
-                displayName :user.userName && /\S/.test(user.userName) ? user.userName : user.userId,
+                displayName :user.userName && user.userName.trim() ? user.userName : user.userId,
                 phoneNumber:user.phoneNumber,
                 clearbitData: clearbitData,
                 userMetadata: metadata,
