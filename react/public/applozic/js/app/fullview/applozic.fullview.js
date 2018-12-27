@@ -4787,6 +4787,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.updateRecentConversationListSection = function (contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+				if (message.metadata && message.metadata.KM_STATUS && CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]) {
+					sectionId = CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS];
+				}
+				if ((message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN == MCK_USER_ID) && message.metadata.KM_STATUS && message.metadata.KM_STATUS == "Open") {
+					sectionId = "km-assigned-search-list";
+				} 
 				var section = CONVERSATION_SECTION_MAP[sectionId];
 				if ($kmApplozic("#" + sectionId + " li.km-li-" + section + "-" + contactHtmlExpr).length > 0) {
 					var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
