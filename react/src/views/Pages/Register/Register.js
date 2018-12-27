@@ -354,10 +354,9 @@ class Register extends Component {
   }
 
 
-renderDefaultView =()=>{
-  return this.state.isDataFetched ? this.renderSignUpView() : 
- <div className="app flex-row align-items-center applozic-user-signup"></div>
-};
+  renderDefaultView = () => {
+    return this.state.isInvited && !this.state.isDataFetched ? <div className="app flex-row align-items-center applozic-user-signup"></div> : this.renderSignUpView();
+  };
 
   renderInvitationRevoked =() =>{
     return (
