@@ -815,7 +815,7 @@ class Billing extends Component {
                                     
                                     <div className="col-lg-4 col-md-4 col-xs-12">
                                         <div className="pricing-table">
-                                            <div className="pricing-table-container enterprise">
+                                            <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
                                                     <div className="plan-breif-container">
                                                         <span>Advanced features</span>
@@ -823,11 +823,16 @@ class Billing extends Component {
                                                     <h2 className="pricing-table-plan-title">Enterprise</h2>
                                                     <h4 className="pricing-table-plan-subtitle">save big</h4>
                                                     <div className="price-image-container">
-                                                        <div className="pricing-value">
-                                                            <div>
-                                                                <h2> Custom </h2>
-                                                                <p style={{visibility:"hidden",marginTop:"0px"}} className="per-month-span">free forever</p>
-                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"5px",color: "#9b979b"}}>(Billed Annually)</p>
+                                                    <div className="pricing-value">
+                                                            <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
+                                                                <h2><sup>$</sup>30</h2>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
+                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
+                                                            </div>
+                                                            <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
+                                                                <h2><sup>$</sup>25</h2>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
                                                     </div>

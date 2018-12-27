@@ -310,7 +310,7 @@ toggleConversationAssignment = () => {
           <div className={this.state.checkedNotifyEverybody ? "row notify-everybody-wrapper active-agent-routing" : "row notify-everybody-wrapper non-active-agent-routing"}>
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
-              <div className="col-md-11 col-lg-11">
+              <div className="col-md-11 col-lg-11" style={{marginLeft : "-5px"}}>
                   <h4 className="routing-title">Notify everybody <span className="notify-everybody-sub-title">(recommended for small teams)</span></h4>
                   <p className="routing-description">All conversations will be first assigned to one particular agent by default. Conversation notifications will be sent to the entire team and whoever acts on it first can then take the conversation</p>
               </div>
@@ -375,7 +375,7 @@ toggleConversationAssignment = () => {
                             <BannerContainer>
                                 <div>
                                     {
-                                        this.state.botsAreAvailable ?  <Banner indicator={"warning"} isVisible={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
+                                        this.state.botsAreAvailable ?  <Banner indicator={"default"} isVisible={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
                                         <Banner indicator={"warning"} isVisible={false} text={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/> 
                                     }
                                 </div>
