@@ -19,10 +19,11 @@ import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
-import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg,BotSectionSvg,InfoIcon,WarningIcon} from '../../views/Faq/LizSVG.js';
+import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg,BotSectionSvg} from '../../views/Faq/LizSVG.js';
 import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
+import Banner from '../../components/Banner/Banner';
 const customStyles = {
   content: {
     top: '50%',
@@ -353,7 +354,6 @@ export default class BotStore extends Component {
             aiPlatform : aiPlatform,
             type:'KOMMUNICATE_SUPPORT'
           }
-          console.log(data);
         }
         // let uuid_holder = uuid();
 
@@ -382,7 +382,6 @@ export default class BotStore extends Component {
             "Apz-AppId":applicationId
           }}).then(function(response) {
             if(response.status==200 && response.data.response[0]){
-              console.log(response);
               console.log("success");
               axios({
                 method: 'post',
@@ -526,6 +525,16 @@ export default class BotStore extends Component {
         });
       };
 
+      integratedBotCount = (botPlatform,data) =>{
+        if(data){
+          var botList = data.filter(function(item){
+            return item.aiPlatform == botPlatform;
+          });
+          return botList.length;
+        }
+        return 0;
+      }
+
 
     render() {
         return(
@@ -572,9 +581,9 @@ export default class BotStore extends Component {
                 <div className="col-sm-2">
                 </div>
               </div> */}
-           
 
-            <div className="row km-bot-integration-boxes" >
+            <h4 className="km-bot-box-heading">Integrate your existing bot with Kommunicate</h4>
+           <div className="row km-bot-integration-boxes" >
                 <div onClick={this.toggleDialogFlowModalWrapper} className="col-sm-6 km-bot-integration-logo-container" >
                  
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
@@ -582,11 +591,11 @@ export default class BotStore extends Component {
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
                   <p className="km-integrated-bot-text">
-                  <span className={this.state.listOfIntegratedBots.length>1 ?  "" : "n-vis" } >INTEGRATE ANOTHER BOT</span>
-                  <span className={this.state.listOfIntegratedBots.length>1 ?  "n-vis" : "" } >INTEGRATE BOT</span>
+                  {this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
-                  <p className={this.state.listOfIntegratedBots.length ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.state.listOfIntegratedBots.length} bots integrated</p>
+                  <p className={this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('dialogflow',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                
                 </div>
               
                 <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom")}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
@@ -595,9 +604,13 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Other bot platforms <br /> 
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
-
                   <p className="km-integrated-bot-text">
-                  <span >INTEGRATE BOT</span></p>      
+                  {this.integratedBotCount("custom",this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
+                  </p>
+
+                  <p className={this.integratedBotCount("custom",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("custom",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('custom',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                
                 </div>
             
               
@@ -726,14 +739,13 @@ export default class BotStore extends Component {
                 <span className="km-selected-bot-name">Give your bot a name and face</span>
               </div>
             </div>
-            <div className={ (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ?  "bot-integration-info" : "n-vis"}>
-            <div> <InfoIcon /> </div>
-            <div>Adding a bot will increase the number of seats in your plan <span>(1 bot = 1 seat)</span>. Your bill will be updated on pro rata basis.</div>
-              </div>
-            <div className={ (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) ? "bot-integration-info warning" : "n-vis"}>
-            <div> <WarningIcon /> </div>
-            <div>Upgrade to a paid plan before your trial period ends <span>({CommonUtils.countDaysForward(30, 'days')})</span> to ensure that all bot related features continue to work</div>
-              </div>
+                {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
+                  <Banner indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of seats in your plan ",<strong key={1} >(1 bot = 1 seat).</strong>," Your bill will be updated on pro rata basis."]} />
+                }
+                {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
+                  <Banner indicator={"warning"} isVisible={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />
+                }
+                
             <ModalBody>
               
               <div className="km-edit-section-body" style={{borderBottom:"none", width:"100%"}}>

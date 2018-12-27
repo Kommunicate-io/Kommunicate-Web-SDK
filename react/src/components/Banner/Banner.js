@@ -31,10 +31,10 @@ export default class Banner extends Component {
                         indicator === 'error' ? "km-banner km-error-banner row" : "km-banner"
                         } >
 
-            <div className="col-lg-1">
+            <div className="col-sm-1">
               <BannerIcons />     
             </div>
-            <div className="col-lg-11">
+            <div className="col-sm-11">
               {text}
             </div>
         </div>

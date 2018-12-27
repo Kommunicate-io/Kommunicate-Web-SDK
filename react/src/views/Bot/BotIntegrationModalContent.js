@@ -10,6 +10,8 @@ import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_URL } from '../../utils/Cons
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
+import Banner from '../../components/Banner/Banner';
+
 
 
 function BotIntegrationTitle(props) {
@@ -45,8 +47,9 @@ function BotIntegrationModalFooter(props) {
     )
 }
 function BotProfile(props) {
-    return (
+    return (             
         <BotProfileContainer>
+          
             <div className="km-edit-bot-image-wrapper">
                 {props.botImage ?
                     <img src={props.botImage} className="km-default-bot-dp km-bot-image-circle" />
@@ -199,10 +202,23 @@ render() {
     });
     return (
         <div className="">
+       
             <BotIntegrationTitle title={this.state.title} subTitle={this.state.subTitle}/>
             {this.state.step ==1 ? instructions: ""}
             {this.state.step ==1 && this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM &&
                 <CustomBotInputFields customBotIntegrationInputValue = {this.customBotIntegrationInputValue} />
+            }
+           
+            {
+                this.state.step==2 &&
+                <div style={{margin:"-20px -33px"}}>
+                {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan())   &&
+                        <Banner style={{margin:"-20px -32px"}} indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of seats in your plan ",<strong key={1} >(1 bot = 1 seat).</strong>," Your bill will be updated on pro rata basis."]} />
+                    }
+                        {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
+                          <Banner indicator={"warning"} style={{margin:"-20px -32px"}} isVisible={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />
+                }
+                </div>
             }
             {this.state.step == 2 &&
                 <BotProfile  handleBotImageUpload= {this.uploadBotImage} botName={this.botName} botImage={this.state.selectedBotImage}/>
