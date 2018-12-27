@@ -691,7 +691,7 @@ const isDeletedUser= (userName, applicationId) => {
 }
 
 const updateSubscriptionQuantity = (user, count) => {
-  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)) {
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.BOT|| user.type == registrationService.USER_TYPE.ADMIN)) {
     return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
       if (customer.billingCustomerId) {
         return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
