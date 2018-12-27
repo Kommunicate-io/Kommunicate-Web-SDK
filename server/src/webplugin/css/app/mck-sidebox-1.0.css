@@ -289,7 +289,7 @@
 	font-stretch: normal;
 	letter-spacing: 0.8px;
 	color: #ffffff;
-	font-weight: 300 !important;
+	font-weight: 400 !important;
 }
 
 .mck-box .move-right {
@@ -4960,7 +4960,7 @@ margin-top: 243px;
 }
 #mck-tab-title.mck-tab-title-w-status {
 	font-size: 18px;
-	font-weight: 300;
+	font-weight: 400;
 	font-style: normal;
 	font-stretch: normal;
 	letter-spacing: 0.7px;
@@ -5439,8 +5439,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	display: table!important;
 }
 .mck-agent-status-text {
-	font-size: 12px;
-	font-weight: 300;
+	font-size: 13px;
+	font-weight: 400;
 	font-style: normal;
 	font-stretch: normal;
 	letter-spacing: 0.7px;
