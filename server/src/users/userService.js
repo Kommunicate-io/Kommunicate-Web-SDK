@@ -203,7 +203,7 @@ const createUser = (user, customer) => {
           "devToken": devToken,
           "aiPlatform": aiPlatform,
           "type": "KOMMUNICATE_SUPPORT",
-          "handlerModule": aiPlatform == "dialogflow" ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT"
+          "handlerModule":user.handlerModule?user.handlerModule:(aiPlatform ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT")
         }).catch(err => {
           logger.error("error while creating bot platform", err);
         })
