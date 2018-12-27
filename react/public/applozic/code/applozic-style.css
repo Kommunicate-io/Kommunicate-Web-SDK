@@ -610,6 +610,7 @@ body {
     border-radius: 4px;
     box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.09);
 	background-color: #ffffff;
+	min-height: 130px;
 }
 
 .km-panel-ft:before, .km-panel-ft:after, .km-row:before, .km-row:after
