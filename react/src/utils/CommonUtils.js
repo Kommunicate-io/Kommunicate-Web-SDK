@@ -53,8 +53,8 @@ const CommonUtils = {
             document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
     getDisplayName: function(user) {
-        // /\S/.test(user.displayName) -> string is not empty and is not just whitespace
-        if (user.displayName && /\S/.test(user.displayName)) {
+        // user.displayName.trim() -> this will check whether string is not just whitespace
+        if (user.displayName && user.displayName.trim()) {
           return user.displayName;
         } else if (user.email) {
           return user.email;
