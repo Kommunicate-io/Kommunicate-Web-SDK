@@ -265,7 +265,6 @@ export default class IntegratedBots extends Component {
        // updating  state
         let customBotInfo = {}
         let updatedState ={};
-        // bot && (updatedState.botPlatform = bot.aiPlatform ? bot.aiPlatform : "");
         (bot && bot.aiPlatform) ? updatedState.botPlatform = bot.aiPlatform : "";
 
         botUserName?updatedState.botUserName =botUserName:"";
@@ -317,33 +316,36 @@ export default class IntegratedBots extends Component {
         let botDetails = {
           id: this.state.botKey
         }
-        if (botPlatform == SUPPORTED_PLATFORM.DIALOGFLOW) {
-          if (this.state.editedBotName || this.state.editedClientToken || this.state.editedDevToken) {
+          if (botPlatform == SUPPORTED_PLATFORM.DIALOGFLOW) {
+            if (this.state.botPlatformVersion == "Dialogflow Version V1" && (!this.state.editedBotName.trim() || !this.state.editedClientToken.trim() || !this.state.editedDevToken.trim())) {
+              Notification.info("Client token, Dev token and Bot name are mandatory");
+              return
+            } else if (this.state.botPlatformVersion == "Dialogflow Version V2" && (!this.state.editedBotName)) {
+              Notification.info("Bot name mandatory");
+              return
+            }
             this.state.editedClientToken && (axiosPostData.clientToken = this.state.editedClientToken);
-            this.state.editedDevToken && (axiosPostData.editedDevToken = this.state.editedDevToken);
+            this.state.editedDevToken && (axiosPostData.devToken = this.state.editedDevToken);
             if (this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()) {
               botDetails["botInfo"] = axiosPostData
               this.updateBotInfo(patchUserData,botDetails)
             } else {
-              Notification.info("No Changes to be saved successfully")
+              Notification.info("Changes Saved successfully");
+              this.toggleEditBotIntegrationModal();
             }
-          }
-          
 
         } else if (botPlatform == SUPPORTED_PLATFORM.CUSTOM) {
-          if(this.state.webhookUrl.trim() && this.state.editedBotName.trim()) {
-            botDetails["botInfo"] = {}
-            botDetails.botInfo["webhook"] = this.state.webhookUrl.trim();
-            (this.state.customBotKey.trim() || this.state.customBotValue.trim()) && (botDetails.botInfo ["webhookAuthentication"] = {});
-            this.state.customBotKey.trim() &&(botDetails.botInfo.webhookAuthentication["key"] = this.state.customBotKey.trim());
-            this.state.customBotValue.trim() && (botDetails.botInfo.webhookAuthentication["value"] = this.state.customBotValue.trim());  
-            console.log(patchUserData);
-            console.log(botDetails);
-            this.updateBotInfo(patchUserData,botDetails)
-          } else {
-            Notification.info("Webhook url and bot name are mandatory")
+            if (this.state.webhookUrl.trim() && this.state.editedBotName.trim()) {
+              botDetails["botInfo"] = {}
+              botDetails.botInfo["webhook"] = this.state.webhookUrl.trim();
+              (this.state.customBotKey.trim() || this.state.customBotValue.trim()) && (botDetails.botInfo["webhookAuthentication"] = {});
+              this.state.customBotKey.trim() && (botDetails.botInfo.webhookAuthentication["key"] = this.state.customBotKey.trim());
+              this.state.customBotValue.trim() && (botDetails.botInfo.webhookAuthentication["value"] = this.state.customBotValue.trim());
+              this.updateBotInfo(patchUserData,botDetails)
+            } else {
+              Notification.info("Webhook url and bot name are mandatory")
+            }
           }
-        }
         
       }
 
