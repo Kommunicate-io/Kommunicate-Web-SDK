@@ -642,23 +642,14 @@ border-bottom: 1px solid #cfd8dc;
   color: #5553b7;
   font-weight: 500;
 }
-.bot-integration-info{
-  background: #e6f3fb;
-  padding: 9px 20px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-.bot-integration-info.warning{
-  background: #fce9b9;
-}
-.bot-integration-info span{ 
- font-weight: 700;
-}
-.bot-integration-info svg{
-  margin: 3px 6px 0 0;
-}
 
 .Linkify .instruction a{
   color:#5553b7;
+}
+
+.km-bot-box-heading{
+  font-size: 20px;
+  margin: 10px 0 -6px 0;
+  letter-spacing: 0.5px;
+  color: #535455;
 }
