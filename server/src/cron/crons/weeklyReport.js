@@ -48,14 +48,15 @@ const processOneApp = (app) => {
         let adminAgent = users.filter(user => {
             return user.type == 3
         });
+        if (adminAgent.length < 1) {
+            console.log("admin not found for app: ", app.applicationId)
+            return "No admin";
+        }
         if (!adminAgent[0].emailSubscription) {
             console.log("unsubscribed for user: ", adminAgent[0].userName)
             return;
         }
         return customerService.getCustomerByApplicationId(app.applicationId).then(customer => {
-            if (adminAgent.length < 1) {
-                return "No admin ";
-            }
             let headers = { "Apz-Token": "Basic " + new Buffer(adminAgent[0].userName + ":" + adminAgent[0].accessToken).toString('base64'), "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
             let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key" }
             return applozicClient.getConversationStats(params, headers).then(stats => {
