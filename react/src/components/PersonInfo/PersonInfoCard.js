@@ -33,6 +33,7 @@ class PersonInfoCard extends Component {
             this.setState({
                 user: user,
                 email:user.email,
+                displayName :user.userName && /\S/.test(user.userName) ? user.userName : user.userId,
                 phoneNumber:user.phoneNumber,
                 clearbitData: clearbitData,
                 userMetadata: metadata,
@@ -66,7 +67,7 @@ class PersonInfoCard extends Component {
                         </div>
                         {
                             this.state.user ?
-                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.user.userName || this.state.user.userId} >
+                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.displayName} >
                                 {
                                     this.state.pseudoUser ?
                                         <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null

@@ -5168,6 +5168,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 				var displayName = _this.getTabDisplayName(contact.contactId, isGroupTab);
+				if (!(displayName && /\S/.test(displayName))){
+                    displayName = kmUserId
+                };
 				var imgsrctag = _this.getContactImageLink(contact, displayName);
 				if (!prepend) {
 					prepend = false;

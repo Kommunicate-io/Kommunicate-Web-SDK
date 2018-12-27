@@ -38,9 +38,19 @@ class EditableText extends Component {
       case 'email':
         return this.isValidateEmail(value);
       case "phoneNumber":
-        return this.isValidNo(value)
+        return this.isValidNo(value);
+      case "displayName":
+        return this.isValidDisplayName(value);
       default:
         return true;
+    }
+  }
+  isValidDisplayName(value) {
+    if (/^ *$/.test(value)) {
+      Notification.error("Please enter a valid name");
+      return false;
+    } else {
+      return true;
     }
   }
   isValidNo(value) {
@@ -130,10 +140,10 @@ class EditableText extends Component {
           var list = document.querySelectorAll("[data-kmUserId='"+userId+"'] .name");
           if (kmSidebarUserInfoInputFieldName === 'displayName') {
           for (var i = 0; i < list.length; i++) {
-              if (kmSidebarUserInfoInputFieldValue) {
-                list[i].innerText = kmSidebarUserInfoInputFieldValue;
-              } else {
+              if (/^ *$/.test(kmSidebarUserInfoInputFieldValue)) {
                 list[i].innerText = userId;
+              } else {
+                list[i].innerText = kmSidebarUserInfoInputFieldValue;
               }
             }
           }
