@@ -1580,7 +1580,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
-                if(typeof KM_ASK_USER_DETAILS !== 'undefined'){
+                
+                if(KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0){
                   $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
