@@ -47,7 +47,7 @@ class EditableText extends Component {
   }
   isValidDisplayName(value) {
     if (/^ *$/.test(value)) {
-      Notification.error("Please enter a valid name");
+      Notification.error("Name cannot be left blank");
       return false;
     } else {
       return true;
@@ -140,11 +140,11 @@ class EditableText extends Component {
           var list = document.querySelectorAll("[data-kmUserId='"+userId+"'] .name");
           if (kmSidebarUserInfoInputFieldName === 'displayName') {
           for (var i = 0; i < list.length; i++) {
-              if (/^ *$/.test(kmSidebarUserInfoInputFieldValue)) {
-                list[i].innerText = userId;
-              } else {
-                list[i].innerText = kmSidebarUserInfoInputFieldValue;
-              }
+            if (kmSidebarUserInfoInputFieldValue) {
+              list[i].innerText = kmSidebarUserInfoInputFieldValue;
+            } else {
+              list[i].innerText = userId;
+            }
             }
           }
         }
