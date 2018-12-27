@@ -10,6 +10,7 @@ import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_URL } from '../../utils/Cons
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
+import {InfoIcon, WarningIcon} from '../Faq/LizSVG'
 
 
 function BotIntegrationTitle(props) {
@@ -47,6 +48,7 @@ function BotIntegrationModalFooter(props) {
 function BotProfile(props) {
     return (
         <BotProfileContainer>
+            
             <div className="km-edit-bot-image-wrapper">
                 {props.botImage ?
                     <img src={props.botImage} className="km-default-bot-dp km-bot-image-circle" />
@@ -199,8 +201,17 @@ render() {
     });
     return (
         <div className="">
+       
             <BotIntegrationTitle title={this.state.title} subTitle={this.state.subTitle}/>
             {this.state.step ==1 ? instructions: ""}
+            <div className={ (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) && this.state.step== 2 ?  "bot-integration-info" : "n-vis"} style={{margin:"-20px -32px"}} > 
+            <div> <InfoIcon /> </div>
+            <div>Adding a bot will increase the number of seats in your plan <span>(1 bot = 1 seat)</span>. Your bill will be updated on pro rata basis.</div>
+              </div>
+            <div className={ (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) && this.state.step== 2  ? "bot-integration-info warning" : "n-vis"}>
+            <div> <WarningIcon /> </div>
+            <div>Upgrade to a paid plan before your trial period ends <span>({CommonUtils.countDaysForward(30, 'days')})</span> to ensure that all bot related features continue to work</div>
+              </div>
             {this.state.step ==1 && this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM &&
                 <CustomBotInputFields customBotIntegrationInputValue = {this.customBotIntegrationInputValue} />
             }

@@ -658,3 +658,7 @@ border-bottom: 1px solid #cfd8dc;
 .bot-integration-info svg{
   margin: 3px 6px 0 0;
 }
+
+.Linkify .instruction a{
+  color:#5553b7;
+}

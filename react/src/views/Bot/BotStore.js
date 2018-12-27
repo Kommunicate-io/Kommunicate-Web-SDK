@@ -526,6 +526,13 @@ export default class BotStore extends Component {
         });
       };
 
+      integratedBotCount = (botPlatform,data) =>{
+        var botList = data.filter(function(item){
+          return item.aiPlatform == botPlatform;
+        });
+        return botList.length;
+      }
+
 
     render() {
         return(
@@ -582,11 +589,12 @@ export default class BotStore extends Component {
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
                   <p className="km-integrated-bot-text">
-                  <span className={this.state.listOfIntegratedBots.length>1 ?  "" : "n-vis" } >INTEGRATE ANOTHER BOT</span>
-                  <span className={this.state.listOfIntegratedBots.length>1 ?  "n-vis" : "" } >INTEGRATE BOT</span>
+                  <span className={this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>=1 ?  "" : "n-vis" } >INTEGRATE ANOTHER BOT</span>
+                  <span className={this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>=1 ?  "n-vis" : "" } >INTEGRATE BOT</span>
                   </p>
-                  <p className={this.state.listOfIntegratedBots.length ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.state.listOfIntegratedBots.length} bots integrated</p>
+                  <p className={this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('dialogflow',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                
                 </div>
               
                 <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom")}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
@@ -595,9 +603,14 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Other bot platforms <br /> 
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
-
                   <p className="km-integrated-bot-text">
-                  <span >INTEGRATE BOT</span></p>      
+                  <span className={this.integratedBotCount("custom",this.state.listOfIntegratedBots)>=1 ?  "" : "n-vis" } >INTEGRATE ANOTHER BOT</span>
+                  <span className={this.integratedBotCount("custom",this.state.listOfIntegratedBots)>=1 ?  "n-vis" : "" } >INTEGRATE BOT</span>
+                  </p>
+
+                  <p className={this.integratedBotCount("custom",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("custom",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('custom',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                
                 </div>
             
               
