@@ -19,7 +19,7 @@
     "axios": "0.16.2",
     "babel-minify": "0.4.3",
     "babel-preset-minify": "0.4.3",
-    "bcrypt": "3.0.2",
+    "bcrypt": "1.0.3",
     "body-parser": "1.17.2",
     "boom": "7.2.0",
     "chargebee": "2.3.5",
