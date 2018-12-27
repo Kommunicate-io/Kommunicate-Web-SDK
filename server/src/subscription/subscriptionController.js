@@ -106,7 +106,7 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
         let userId = customer.userName 
         let updated = await customerService.updateCustomer(userId, customerDetail);
             if (updated) {
-                subscribed ? customerService.reactivateAgents(applicationId) : "";
+                subscribed ? customerService.reactivateAccount(applicationId) : "";
                 customerDetail.subscription && (customer.subscription = customerDetail.subscription);
                 await customerService.updateApplicationInApplozic(customer);
                 response.code = "SUCCESS";

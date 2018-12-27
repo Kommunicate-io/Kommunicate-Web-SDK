@@ -1130,12 +1130,7 @@ const createIntegrySubscription = (subscriptionData) => {
 }
 
 const updateKommunicateCustomerSubscription = (data) => {
-  let url = getConfig().kommunicateBaseUrl + '/subscription/detail'
-  let subscriptionDetails = {
-    applicationId: data.applicationId,
-    billingCustomerId: data.billingCustomerId,
-    subscription: data.subscription
-  }
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail';
   return Promise.resolve(axios({
     method: 'PATCH',
     url: url,

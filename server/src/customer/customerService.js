@@ -99,27 +99,30 @@ const createApplication = (application) => {
     return applicationService.createApplication(application);
 }
 
-const reactivateAgents = async function (appId) {
+const reactivateAccount = async function (appId) {
     let customer = await getCustomerByApplicationId(appId);
     if (customer.subscription && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
         let users = [];
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
-        let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC']])
+        let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC'], ['id', 'ASC']])
         let admin = dbUsers.filter(user => { return user.type == 3 });
         let agents = dbUsers.filter(user => { return user.type == 1 });
-        let bots = dbUsers.filter(user => { return user.type == 2 && user.userName != 'bot' });
+        let bots = dbUsers.filter(user => { return user.type == 2 && user.userName != 'bot'});
         users.push(...admin, ...agents, ...bots);
-        for (var i = 0; i < result.subscription.plan_quantity; i++) {
-            let dataToBeUpdated = { status: 1 };
-            users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = 1)
+
+        for (var i = 0; i < users.length; i++) {
+            let userStatus = (i < result.subscription.plan_quantity || user.userName == 'liz') ? 1:2;
+            let dataToBeUpdated = { status: userStatus };
+            users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = userStatus);
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
-            applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE })
             try {
-                users[i].type == 2 && botClientService.updateBot({ 'key': users[i].userKey, 'status': 'enabled' })
+                users[i].type == 2 && botClientService.updateBot({ 'key': users[i].userKey, 'status': userStatus == 1 ? 'enabled' :'expired' })
             } catch (error) {
                 console.log("bot updation error", error)
             }
         }
+
+        applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE });
     }
     return "success";
 }
@@ -146,7 +149,7 @@ const updateApplicationInApplozic = async (customer) => {
 }
 
 module.exports = {
-    reactivateAgents: reactivateAgents,
+    reactivateAccount: reactivateAccount,
     createCustomer: createCustomer,
     updateCustomer: updateCustomer,
     getCustomerByUserName: getCustomerByUserName,
