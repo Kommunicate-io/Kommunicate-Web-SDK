@@ -224,10 +224,6 @@ class Billing extends Component {
                 step: function (value) {
                     // value -> which step in checkout
                     console.log(value);
-                    if (value == "thankyou_screen") {
-                        let plans = document.getElementsByClassName('checkout active');
-                        that.updateSubscription(plans[0].getAttribute('data-subscription'));
-                    }
                 },
                 visit: function (visit) {
                     // Optional
