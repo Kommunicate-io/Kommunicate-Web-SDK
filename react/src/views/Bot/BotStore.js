@@ -595,7 +595,7 @@ export default class BotStore extends Component {
                   {this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
                   <p className={this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('dialogflow',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots) + " bot") }  integrated</p>
                 
                 </div>
               
@@ -610,7 +610,7 @@ export default class BotStore extends Component {
                   </p>
 
                   <p className={this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('custom',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots) + " bot") }  integrated</p>
                 
                 </div>
             
