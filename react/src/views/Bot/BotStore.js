@@ -24,6 +24,7 @@ import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
 import Banner from '../../components/Banner/Banner';
+import {SUPPORTED_PLATFORM} from '../../utils/Constant.js'
 const customStyles = {
   content: {
     top: '50%',
@@ -591,10 +592,10 @@ export default class BotStore extends Component {
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
                   <p className="km-integrated-bot-text">
-                  {this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
+                  {this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
-                  <p className={this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('dialogflow',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                  <p className={this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('dialogflow',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
                 
                 </div>
               
@@ -605,11 +606,11 @@ export default class BotStore extends Component {
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
                   <p className="km-integrated-bot-text">
-                  {this.integratedBotCount("custom",this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
+                  {this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
 
-                  <p className={this.integratedBotCount("custom",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("custom",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('custom',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                  <p className={this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('custom',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
                 
                 </div>
             
@@ -740,7 +741,7 @@ export default class BotStore extends Component {
               </div>
             </div>
                 {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
-                  <Banner indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of seats in your plan ",<strong key={1} >(1 bot = 1 seat).</strong>," Your bill will be updated on pro rata basis."]} />
+                  <Banner indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                 }
                 {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
                   <Banner indicator={"warning"} isVisible={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />
