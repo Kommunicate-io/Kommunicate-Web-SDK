@@ -20,6 +20,8 @@ const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
+const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
+
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -207,6 +209,8 @@ const createUser = (user, customer) => {
         }).catch(err => {
           logger.error("error while creating bot platform", err);
         })
+      } else {
+        activeCampaignClient.addContact({ "email": user.email, "name": user.name, "orgname": customer.userName, "tags": "K-Team-Member" });
       }
       return user ? user.dataValues : null;
     }).catch(err => {
@@ -445,7 +449,7 @@ exports.updateUser = (userId, appId, userInfo) => {
             "key": userKey,
             "clientToken": userInfo.clientToken,
             "devToken": userInfo.devToken,
-
+            "deleted": userInfo.deleted_at != null
           }).catch(err => {
             logger.error("error while updating bot platform", err);
           });
