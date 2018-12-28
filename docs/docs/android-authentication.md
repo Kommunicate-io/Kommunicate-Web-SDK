@@ -65,3 +65,40 @@ You can start a visitor's chat by calling the below method from the SDK.
       }
   });
 ```
+
+## Passing additional details:
+Sometimes you would need to pass additional details for the user apart from the already existing properties of KMUser. You can pass the additional details in metadata of the KMUser object.
+
+```java
+Map<String, String> metadata = new HashMap<>();
+metadata.put("Department" , "Engineering");
+metadata.put("Designation" , "Software Engineer");
+metadata.put("Team" , "Device Team");
+
+kmUser.setMetadata(metadata);
+```
+
+## Updating logged in user details:
+Once the user has logged in, you can still update some of its properties like displayName, imageUrl, contactNumber, Metadata, and status.
+Create a KMUser object and set the property you want to update.
+```java
+KMUser kmUser = new KMUser();
+kmUser.setDisplayName("New display name");
+kmUser.setImageLink(<new image link>);
+
+Map<String, String> metadata = user.getMetadata();
+if(metadata == null){
+  metadata = new HashMap<String, String>();
+}
+
+metadata.put("Department" , "Mobility");
+metadata.put("Designation" , "Software Engineer II");
+
+kmUser.setMetadata(metadata);
+```
+
+Then call the below method in a background thread or Async task:
+
+```java
+ UserService.getInstance(context).updateLoggedInUser(kmUser);
+```
