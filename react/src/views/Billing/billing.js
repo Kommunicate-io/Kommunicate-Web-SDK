@@ -404,24 +404,20 @@ class Billing extends Component {
 
     getAgents() {
         var that = this;
-        let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN, USER_TYPE.BOT];
-        let disabledUsers = this.state.disabledUsers;
+        let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
+        let disabledUsers = this.state.disabledUsers || []; // this state is not defined, why are we using disabledUsers ?
         let kmActiveUsers =[];
         return Promise.resolve(getUsersByType(CommonUtils.getUserSession().application.applicationId, users)).then(data => {
           let usersList = data;
           data.map((user => {
-            if(user.userName == "bot" || user.userName == "liz" ){
-                return
-            }
             user.status == USER_STATUS.EXPIRED && disabledUsers.push(user);
             (user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE) && kmActiveUsers.push(user);
           }))
           this.setState({
-            kmActiveUsers: kmActiveUsers.length,
-            seatsBillable: kmActiveUsers.length
+            kmActiveUsers: kmActiveUsers.length
           });
         }).catch(err => {
-           console.log("err while fetching users list");
+           console.log("err while fetching users list", err);
         });
       }
 
@@ -482,9 +478,17 @@ class Billing extends Component {
         getIntegratedBots().then(response => {
           this.setState({
             numberOfIntegratedBots: (response && response.allBots) ? Math.max(response.allBots.length -1, 0): 0
-          })
+          }),
+          this.setBillableSeats()
         });
       }
+
+    setBillableSeats = () =>{
+        var totalSeatsBillable = this.state.numberOfIntegratedBots + this.state.kmActiveUsers;
+        this.setState({
+            seatsBillable:totalSeatsBillable
+        })
+    }
 
     render() {
         //Todo: set this dynamically based on current plan
@@ -523,7 +527,8 @@ class Billing extends Component {
                             <p>Number of seats:</p>
                         </div>
                         <div className="seat-selector--input">
-                            <input maxLength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
+                            <input maxLength="4" min="1" max="10000" type="number"  value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
+
                             <p>You have {this.state.kmActiveUsers+(this.state.numberOfIntegratedBots)} existing team {this.state.kmActiveUsers+this.state.numberOfIntegratedBots > 1 ? "members" : "member"} {this.state.numberOfIntegratedBots > 0 ? <strong>({this.state.kmActiveUsers} {this.state.kmActiveUsers>1?"humans":"human"} and {this.state.numberOfIntegratedBots} {this.state.numberOfIntegratedBots>1?"bots":"bot"})</strong> : null}. You may still buy lesser number of seats and delete the extra agents later.</p>
                         </div>
                     </div>
