@@ -89,3 +89,15 @@ Sample colors.xml file:
     <color name="default_start_new_button_color" tools:override="true">#FF4081</color>
 </resources>
 ```
+
+### Sending additional metadata with messages:
+If you need to send some additional data with all the messages sent from a device then you need to set a predefined metadata when logging in the user.
+For e.g If you need to send deviceInformation with all the messages sent from that device then call the below function in onSuccess of login or whatever initial method you are calling from Kommunicate:
+
+```java
+ Map<String, String> metadata = new HashMap<>();
+ metadata.put("deviceId", "Current Device ID");
+ metadata.put("deviceManufaturer", "Some manufacturer");
+ ApplozicClient.getInstance(context).setMessageMetaData(metadata);
+ ```
+ This data will be sent with all the messages sent from the device.

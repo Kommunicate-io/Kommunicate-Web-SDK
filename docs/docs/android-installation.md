@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-implementation 'io.kommunicate:kommunicate:1.6.3'
+implementation 'io.kommunicate:kommunicate:1.7'
 ```
 
 ## Initialise SDK
@@ -41,7 +41,7 @@ Below are the parameter's description:
 | kmUser | KMUser     |    Pass the details if you have the user details, null other wise. |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
 | isUnique | boolean      |    Pass true if you would like to create only one conversation for every user. The next time user starts the chat the same conversation would open |
-| agentList | List<String>      |    Pass the list of agents. The agent id would be the email id you used to register on kommunicate|
+| agentList | List<String>      |    Pass the list of agents. The agent id would be the email id you used to register on kommunicate. Leave null if you want to create conversation with default agent.|
 | botList | List<String>      |    Pass the list of bots. Leave null if you haven't integrated any bots |
 | callback | KmCallback      |    Callback to notify Success or Failure |
 
