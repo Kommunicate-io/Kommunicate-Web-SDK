@@ -37,8 +37,7 @@ if (MobiComUserPreference.getInstance(this).isRegistered()) {
 
 For Receiving FCM Notifications in your app, Add the following code in your FcmListenerService in onMessageReceived(RemoteMessage remoteMessage) method:
 ```java
-if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
-    MobiComPushReceiver.processMessageAsync(this, remoteMessage.getData());
+if (Kommunicate.isKmNotification(this, remoteMessage.getData())) {
     return;
 }
 ```
@@ -68,9 +67,8 @@ if (MobiComUserPreference.getInstance(this).isRegistered()) {
 ```
 For Receiving GCM Notifications in app, add the following code in your GcmListenerService in onMessageReceived method
 ```java
-if(MobiComPushReceiver.isMobiComPushNotification(data)) {            
-    MobiComPushReceiver.processMessageAsync(this, data);               
-    return;          
+if (Kommunicate.isKmNotification(this, remoteMessage.getData())) {
+    return;
 }
 ```
 
@@ -96,7 +94,7 @@ if you don't have the existing FCM related code, then copy the push notification
 ```
 Now Setup the PushNotificationTask by adding the below lines of code in onSuccess() method of Kommunicate.login
 ```java
-Kommunicate.registerForPushNotification(context, Applozic.getInstance(context).getDeviceRegistrationId() , new KmPushNotificationHandler() {
+Kommunicate.registerForPushNotification(context, Kommunicate.getDeviceToken(context) , new KmPushNotificationHandler() {
                     @Override
                     public void onSuccess(RegistrationResponse registrationResponse) {
 
