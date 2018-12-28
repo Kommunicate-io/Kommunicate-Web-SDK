@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { getConfig } from '../.../../../config/config.js';
-import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId, updateKommunicateCustomerSubscription } from '../../utils/kommunicateClient'
+import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId, updateKommunicateCustomerSubscription, getIntegratedBots } from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import { getResource } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
@@ -62,7 +62,9 @@ class Billing extends Component {
             totalPlanAmount: 0,
             disableSelectedPlanButton: false,
             clickedPlan:  'startup',
-            currentModal: ""
+            currentModal: "",
+            numberOfIntegratedBots:0
+
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -107,6 +109,9 @@ class Billing extends Component {
         this.chargebeeInit();
         this.getAgents();
         this.getPlanDetails();
+        this.getIntegratedBotsNumber();   
+        
+
     }
 
     buyThisPlanClick = () => {
@@ -399,12 +404,15 @@ class Billing extends Component {
 
     getAgents() {
         var that = this;
-        let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
+        let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN, USER_TYPE.BOT];
         let disabledUsers = this.state.disabledUsers;
         let kmActiveUsers =[];
         return Promise.resolve(getUsersByType(CommonUtils.getUserSession().application.applicationId, users)).then(data => {
           let usersList = data;
           data.map((user => {
+            if(user.userName == "bot" || user.userName == "liz" ){
+                return
+            }
             user.status == USER_STATUS.EXPIRED && disabledUsers.push(user);
             (user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE) && kmActiveUsers.push(user);
           }))
@@ -470,6 +478,14 @@ class Billing extends Component {
         }
     }
 
+    getIntegratedBotsNumber = () => {
+        getIntegratedBots().then(response => {
+          this.setState({
+            numberOfIntegratedBots: (response && response.allBots) ? Math.max(response.allBots.length -1, 0): 0
+          })
+        });
+      }
+
     render() {
         //Todo: set this dynamically based on current plan
         let currentPlanElems = document.querySelectorAll(".pricing-table-body button");
@@ -508,7 +524,7 @@ class Billing extends Component {
                         </div>
                         <div className="seat-selector--input">
                             <input maxLength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
-                            <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
+                            <p>You have {this.state.kmActiveUsers+(this.state.numberOfIntegratedBots)} existing team {this.state.kmActiveUsers+this.state.numberOfIntegratedBots > 1 ? "members" : "member"} {this.state.numberOfIntegratedBots > 0 ? <strong>({this.state.kmActiveUsers} {this.state.kmActiveUsers>1?"humans":"human"} and {this.state.numberOfIntegratedBots} {this.state.numberOfIntegratedBots>1?"bots":"bot"})</strong> : null}. You may still buy lesser number of seats and delete the extra agents later.</p>
                         </div>
                     </div>
                     <hr/>
