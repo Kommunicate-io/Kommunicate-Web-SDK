@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Mocha Tests",
+            "name": "Mocha",
             "program": "${workspaceFolder}/server/node_modules/mocha/bin/_mocha",
             "args": [
                 "-u",
@@ -22,7 +22,7 @@
          {
             "type": "node",
             "request": "launch",
-            "name": "Launch Webpack",
+            "name": "Webpack",
             "program": "${workspaceFolder}/react/node_modules/webpack/bin/webpack.js",
             "args": [
                 "--config", "${workspaceFolder}/react/webpack.config.js", "--env.REACT_APP_NODE_ENV=prod", "--env.BRAND=applozic", "--progress", "--mode", "production"
@@ -32,7 +32,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Server",
             "program": "${workspaceFolder}/server/app.js"
         }
     ]

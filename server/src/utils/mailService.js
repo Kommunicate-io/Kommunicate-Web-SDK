@@ -55,8 +55,12 @@ exports.sendMail= (options)=>{
                                 bcc:options.bcc,
                                 from:options.from,
                                 subject:options.subject,
-                                html:template};
-    
+                                };
+            if (options.sendAsText) {
+                mailOptions.text = template
+            } else {
+                mailOptions.html = template
+            }
             passwordResetMailTransporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
                     return reject(error);

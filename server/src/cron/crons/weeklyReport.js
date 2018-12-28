@@ -10,10 +10,33 @@ const dashboardUrl = config.getProperties().urls.dashboardHostUrl;
 const kmWebsiteLogoIconUrl = config.getCommonProperties().companyDetail.companyLogo;
 const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-icon.png";
 const subscription = require('../../utils/utils').SUBSCRIPTION_PLAN;
-
+var fs = require('fs');
+var util = require('util');
+var filePath = path.join(__dirname, "../../../logs/debug.log");
+var logFile = fs.createWriteStream(filePath, {flags : 'a'});
+console.report = function(d) { 
+    logFile.write(util.format(d) + '\n');
+};
+const sendCronCompletionReport=()=>{
+    try {
+        mailService.sendMail({            
+            to: "anand@applozic.com",
+            from: "Devashish From Kommunicate <support@kommunicate.io>",
+            subject: "Weekly cron processed",
+            templatePath: filePath,
+            sendAsText:true
+        }).then(result=>{
+                fs.writeFile(filePath," ", function(err) {
+                    if (err) console.log("err: ", err);
+                })
+            })
+    } catch (error) {
+       console.log("report sending error: ", err) 
+    }
+}
 
 exports.sendWeeklyReportsToCustomer = () => {
-    console.log("sendWeeklyReportsToCustomer cron started at: ", new Date());
+    console.report(`sendWeeklyReportsToCustomer cron started at: ${new Date()}`);
     getApplicationRecursively();
 }
 
@@ -25,11 +48,11 @@ const getApplicationRecursively = (criteria) => {
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
-            console.log("sendWeeklyReportsToCustomer : all application processed")
+            console.report(`sendWeeklyReportsToCustomer : all application processed ${new Date()}`)
+            sendCronCompletionReport();
             return;
         }
         let apps = applications.map((app, index) => {
-            console.log("weekly report processing for application: ", app.applicationId);
             return processOneApp(app);
         })
         return Promise.all(apps).then(result => {
@@ -64,7 +87,6 @@ const processOneApp = (app) => {
                     return "no stats for this app"
                 }
                 return generateReport(stats, users).then(report => {
-                    console.log("sending weekly report for application: ", app.applicationId);
                     if (report.overAllReport.newConversationCount >= 25) {
                         return sendWeeklyReport(report, customer, app.applicationId);
                     }
@@ -165,7 +187,7 @@ const sendWeeklyReport = (report, customer, appId) => {
         }
         Object.assign(templateReplacement, resolutionTime, { "RESPONSE_HOUR": responseTime.HOURS, "RESPONSE_MINUTE": responseTime.MINUTES, "RESPONSE_SECOND": responseTime.SECONDS });
 
-
+        console.report(`sending weekly report mail to: ${customer.email} for app ${app.applicationId}`);
         let mailOptions = {
             to: customer.email,
             from: "Devashish From Kommunicate <support@kommunicate.io>",
