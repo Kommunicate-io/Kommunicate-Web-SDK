@@ -213,7 +213,7 @@ const CommonUtils = {
     isKommunicateDashboard: function() {
         let userSession = this.getUserSession();
         if(userSession) {
-            return userSession.application.pricingPackage <= 200;
+            return userSession.application.pricingPackage >= 100 && userSession.application.pricingPackage < 200;
         } else {
             return window.location.hostname.includes("kommunicate");
         }
