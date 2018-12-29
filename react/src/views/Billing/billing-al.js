@@ -1,12 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import CommonUtils from '../../utils/CommonUtils';
 import './billing.css';
-import ApplozicClient, {SUBSCRIPTION_PACKAGES, PRICING_PLANS} from '../../utils/applozicClient';
-import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId, updateKommunicateCustomerSubscription } from '../../utils/kommunicateClient'
-import axios from 'axios';
-
-
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
+import ApplozicClient, {SUBSCRIPTION_PACKAGES, PRICING_PLANS} from '../../utils/applozicClient';
+import { getConfig } from '../../config/config';
 
 class BillingApplozic extends Component {
 
@@ -19,9 +16,8 @@ class BillingApplozic extends Component {
         }
 
         let that = this;
-        //Todo: fetch this key from properties file
         let handler = StripeCheckout.configure({
-            key: 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS',
+            key: getConfig().applozic.stripe,
             image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
             locale: 'auto',
             token: function(token) {
@@ -78,10 +74,11 @@ class BillingApplozic extends Component {
 
     render() {
         let status = SUBSCRIPTION_PACKAGES[CommonUtils.getUserSession().application.pricingPackage];
+        let planMAU = CommonUtils.getUserSession().application.supportedMAU;
 
         return (
             <div className="animated fadeIn billings-section">
-            Current plan: {status}
+            Current plan: {status} | MAU: {planMAU}
                <button type="submit" value="Buy" onClick={this.buy}>Buy</button>
             </div>
         );
