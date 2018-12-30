@@ -16,17 +16,18 @@ class BillingApplozic extends Component {
         }
 
         let that = this;
-        let handler = StripeCheckout.configure({
+        let stripeHandler = StripeCheckout.configure({
             key: getConfig().applozic.stripe,
             image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
             locale: 'auto',
             token: function(token) {
-              that.subscribe(token);
+                that.state.stripeHandlerCallback(token);
             }
           });
 
         this.state = {
-            handler: handler,
+            stripeHandler: stripeHandler,
+            stripeHandlerCallback: that.subscribe,
             modalIsOpen: false,
             subscription: subscription,
             currentPlan: '',
@@ -42,19 +43,18 @@ class BillingApplozic extends Component {
             currentModal: "",
         };
 
-        this.buy = this.buy.bind(this);
-
+        this.buyClick = this.buyClick.bind(this);
+        this.changeCardClick = this.changeCardClick.bind(this);
     };
 
     componentDidMount() {
           // Close Checkout on page navigation:
           window.addEventListener('popstate', function() {
-            this.state.handler.close();
+            this.state.stripeHandler.close();
           });
     }
 
-    subscribe(token) {
-
+    buy(token) {
         let value = 2; //index selected from the pricing slider;
         let pricingPackage = PRICING_PLANS[value].package;
         let quantity = 5; //selected number of MAU/1000
@@ -62,14 +62,23 @@ class BillingApplozic extends Component {
         ApplozicClient.subscribe(token, pricingPackage, quantity);
     }
 
-    buy(e) {
-        this.state.handler.open({
+    buyClick(e) {
+        this.state.stripeHandlerCallback = this.buy;
+        this.state.stripeHandler.open({
             name: 'Applozic, Inc',
             description: 'Chat SDK',
             amount: 12900
           });
         
         AnalyticsTracking.acEventTrigger("ac-choose-plan");  
+    }
+
+    changeCardClick(e) {
+        this.state.stripeHandlerCallback = ApplozicClient.changeCard;
+        this.state.stripeHandler.open({
+            name: 'Applozic, Inc',
+            description: 'Card Update',
+          });
     }
 
     render() {
@@ -79,7 +88,11 @@ class BillingApplozic extends Component {
         return (
             <div className="animated fadeIn billings-section">
             Current plan: {status} | MAU: {planMAU}
-               <button type="submit" value="Buy" onClick={this.buy}>Buy</button>
+                <br></br>
+               <button type="submit" value="Buy" onClick={this.buyClick}>Buy</button>
+                <br></br>
+               <button type="submit" value="Change Card" onClick={this.changeCardClick}>Change Card</button>
+
             </div>
         );
     }

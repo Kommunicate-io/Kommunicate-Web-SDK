@@ -394,6 +394,28 @@ updateUserDetail:function(params){
             return response;
         }
     });
+  },
+
+  changeCard: function(token) {
+    Promise.resolve(axios({
+        method: 'post',
+        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/card/update',
+        data: "stripeToken=" + token.id + "&appKey=" + CommonUtils.getUserSession().application.applicationId,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })).then(function (response) {
+        console.log(response);
+        if (response.status === 200 && response.data !== undefined) {
+            return response;
+        }
+
+        if (response.status === 404 && response.data !== undefined) {
+            console.log(response)
+            return response;
+        }
+    });
+
   }
 }
 
