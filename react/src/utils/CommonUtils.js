@@ -210,6 +210,14 @@ const CommonUtils = {
         return ((navigator.userAgent.indexOf('MSIE') !== -1 ||
         navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
+    isProductApplozic: function() {
+        let userSession = this.getUserSession();
+        if(userSession) {
+            return userSession.application.pricingPackage <= 100;
+        } else {
+            return window.location.hostname.includes("applozic");
+        }
+    },
     isKommunicateDashboard: function() {
         let userSession = this.getUserSession();
         if(userSession) {
@@ -217,7 +225,6 @@ const CommonUtils = {
         } else {
             return window.location.hostname.includes("kommunicate");
         }
-
     },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
