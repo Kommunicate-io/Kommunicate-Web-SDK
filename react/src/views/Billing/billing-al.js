@@ -67,6 +67,7 @@ class BillingApplozic extends Component {
         this.state.stripeHandler.open({
             name: 'Applozic, Inc',
             description: 'Chat SDK',
+            panelLabel: 'Pay',
             amount: 12900
           });
         
@@ -77,7 +78,8 @@ class BillingApplozic extends Component {
         this.state.stripeHandlerCallback = ApplozicClient.changeCard;
         this.state.stripeHandler.open({
             name: 'Applozic, Inc',
-            description: 'Card Update',
+            description: 'Update Card',
+            panelLabel: 'Update Card',
           });
     }
 

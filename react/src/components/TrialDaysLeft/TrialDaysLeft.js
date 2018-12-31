@@ -84,25 +84,37 @@ export default class TrialDaysLeft extends Component {
 
                 <div id="km-trial-days-left-popup-container" className="km-trial-days-left-popup-container text-center" hidden={this.state.showPopupBox}>
                     {
-                        (CommonUtils.isTrialPlan() && localStorage.getItem("KM_TRIAL_OVER") != "true") ?
+                        (CommonUtils.isTrialPlan() &&  localStorage.getItem("KM_TRIAL_OVER") != "true") ?
                             <div>
-                                <div className="km-trial-days-left-popup-demo">
-                                    <img src={trialDaysBannerEmployeeProfile.imageLink} alt="avatar_employee" />
-                                    <p className="km-person-name">
-                                        {trialDaysBannerEmployeeProfile.name}
-                                </p>
-                                    <p className="km-person-designation">
-                                       {trialDaysBannerEmployeeProfile.designation}
-                                </p>
-                                    <p className="km-quote first">Want to see how you can increase</p>
-                                    <p className="km-quote mid">your support efficiency by 27%?</p>
-                                    <p className="km-quote last">Schedule a demo with me!</p>
+                                { (CommonUtils.isKommunicateDashboard()) ?
+                                <div>
+                                    <div className="km-trial-days-left-popup-demo">
+                                        <img src={trialDaysBannerEmployeeProfile.imageLink} alt="avatar_employee" />
+                                        <p className="km-person-name">
+                                            {trialDaysBannerEmployeeProfile.name}
+                                    </p>
+                                        <p className="km-person-designation">
+                                        {trialDaysBannerEmployeeProfile.designation}
+                                    </p>
+                                        <p className="km-quote first">Want to see how you can increase</p>
+                                        <p className="km-quote mid">your support efficiency by 27%?</p>
+                                        <p className="km-quote last">Schedule a demo with me!</p>
 
-                                    <a href="https://calendly.com/kommunicate/15min" target="_blank" className="km-button km-button--secondary km-demo-btn" rel="noopener noreferrer">Get demo</a>
-                                </div>
+                                        <a href="https://calendly.com/kommunicate/15min" target="_blank" className="km-button km-button--secondary km-demo-btn" rel="noopener noreferrer">Get demo</a>
+                                    </div>
+                                </div> : ""
+                                }
 
                                 <div className="km-trial-days-left-popup-buy-plan">
-                                    <p>Ready to improve your customer support?</p>
+                                    { (CommonUtils.isKommunicateDashboard()) ?
+                                        <p>
+                                            Ready to improve your customer support?
+                                        </p>
+                                        :
+                                        <p>
+                                            Ready to increase user engagement in your platform?
+                                        </p>
+                                    }
                                     <Link to="/settings/billing" className="km-button km-button--primary km-demo-btn">See plans</Link>
                                 </div>
 

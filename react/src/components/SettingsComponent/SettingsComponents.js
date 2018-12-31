@@ -3,6 +3,7 @@ import './SettingsComponent.css';
 import routes from "../../../src/routes";
 import subHeadings from "./SettingsSubheading.json";
 import {LearnMore} from "../../views/Faq/LizSVG"
+import CommonUtils from '../../utils/CommonUtils';
 
 
 
@@ -11,8 +12,8 @@ const SettingsHeader = (props) =>{
     let currPath = routes[window.location.pathname];   
     let subHeading = subHeadings[currPath].subHeading;
     let knowledgeBaseLink = subHeadings[currPath].knowledgeBaseLink;
-    if(props.applozicDashboard){
-        subHeading=subHeading.replace('Kommunicate', 'Applozic')
+    if(props.applozicDashboard || CommonUtils.isProductApplozic()){
+        subHeading=subHeading.replace('Kommunicate', 'Applozic');
     }
      
    return(

@@ -11,7 +11,7 @@ class ThirdPartyScripts extends Component {
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
-          var isKommunicateDashboard = CommonUtils.isKommunicateDashboard()
+          var isKommunicateDashboard = CommonUtils.isKommunicateDashboard();
           // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {

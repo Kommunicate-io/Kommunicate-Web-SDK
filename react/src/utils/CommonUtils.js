@@ -226,6 +226,9 @@ const CommonUtils = {
             return window.location.hostname.includes("kommunicate");
         }
     },
+    getProductName: function() {
+        return CommonUtils.isKommunicateDashboard() ? "Kommunicate" : "Applozic";
+    },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
         return userSession.roleName === 'APPLICATION_ADMIN'
