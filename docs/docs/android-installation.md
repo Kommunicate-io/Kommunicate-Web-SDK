@@ -15,6 +15,13 @@ Add the following in your app build.gradle dependency:
 implementation 'io.kommunicate:kommunicate:1.7.1'
 ```
 
+## Initialise SDK
+After the gradle sync has finished with kommunicate dependency, you can initialise the SDK by calling the below method:
+```java
+ Kommunicate.init(context, Your APP_ID);
+```
+You can get the Application Id by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).
+
 ## Launch chat
 
 Kommunicate provides KMChatBuilder class to create and launch chat directly saving you the extra steps of authentication, creation, initialisation and launch. You can customise the process by building the launchChat object according to your requirements. Below are some examples of how you can customise the builder for launching a single chat:
@@ -24,7 +31,7 @@ Parmaters of KMChatBuilder:
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:| -----:|
 | context      | Activity | Only Activity Context is accepted. Excpetion is thrown otherwise  |
-| applicationId | String  | You can get the Application Id by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).|
+| applicationId | String  | Ignore if you have already initialised the SDK with Application ID |
 | chatName      | String      |   Optional, you can pass a chat name or null |
 | kmUser | KMUser     |    Pass the details if you have the user details, null other wise. |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
@@ -37,7 +44,7 @@ Parmaters of KMChatBuilder:
 If you would like to launch the chat directly without the visiting user entering any details, then use the builder as below:
 
 ```java
-       new KmChatBuilder(context).setApplicationId(<Your-app-ID>).launchChat(new KmCallback() {
+       new KmChatBuilder(context).launchChat(new KmCallback() {
                         @Override
                         public void onSuccess(Object message) {
                             Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
@@ -59,7 +66,7 @@ agentList.add("agent1@yourdomain.com"); //add your agentID
 List<String> botList = new ArrayList();
 botList.add("bot1"); //enter your integrated bot Ids
 
-      new KmChatBuilder(context).setApplicationId(<Your-app-ID>).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
+      new KmChatBuilder(context).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
                         @Override
                         public void onSuccess(Object message) {
                             Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
@@ -77,7 +84,7 @@ botList.add("bot1"); //enter your integrated bot Ids
 If you need the user to fill in details like phone number, emailId and name before starting the support chat then launch the chat with `withPreChat` flag as true. In this case you wouldn't need to pass the kmUser. A screen would open up for the user asking for details like emailId, phone number and name. Once the user fills the valid details (atleast emailId or phone number is required), the chat would be launched. Use the builder as below:
 
 ```java
-     new KmChatBuilder(MainActivity.this).setApplicationId(<Your-app-ID>).setWithPreChat(true).launchChat(new KmCallback() {
+     new KmChatBuilder(MainActivity.this).setWithPreChat(true).launchChat(new KmCallback() {
                         @Override
                         public void onSuccess(Object message) {
                             Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
@@ -103,7 +110,7 @@ If you already have the user details then create a KMUser object using the detai
 Then pass this user object to the `setKmUser` method as below:
 
 ```java
-new KmChatBuilder(MainActivity.this).setApplicationId(<Your-app-ID>).setKmUser(user).launchChat(new KmCallback() {
+new KmChatBuilder(MainActivity.this).setKmUser(user).launchChat(new KmCallback() {
                         @Override
                         public void onSuccess(Object message) {
                             Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
