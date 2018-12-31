@@ -29,7 +29,15 @@ export const ROLE_TYPE = {
     SUPER_ADMIN : "0",
     ADMIN : "1",
     AGENT : "2",
-    BOT : "3"
+    BOT : "3",
+    DEVELOPER: "11"
+}
+export const ROLE_NAME = {
+    0: "Super Admin",
+    1: "Admin",
+    2: "Agent",
+    3: "Bot",
+    11: "Developer"
 }
 export const GROUP_ROLE = { 
     ADMIN: "1", 
