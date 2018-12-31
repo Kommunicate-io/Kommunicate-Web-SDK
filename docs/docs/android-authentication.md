@@ -16,7 +16,6 @@ You can authorize a user as described below:
 ```java
         KMUser user = new KMUser();
         user.setUserId("reytum_01");  //unique userId
-        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your APP_ID
 ```
 Post this, call the method described below:
 ```java
@@ -50,7 +49,7 @@ To get the user details of logged in user, use this code snippet:
 ```java
 KMUser user = KMUser.getLoggedInUser(context);
 ```
-## Starting Visitor Chat:
+## Logging in as visitor:
 You can start a visitor's chat by calling the below method from the SDK.
 ```java
   Kommunicate.loginAsVisitor(this, new KMLoginHandler() {
@@ -86,11 +85,7 @@ KMUser kmUser = new KMUser();
 kmUser.setDisplayName("New display name");
 kmUser.setImageLink(<new image link>);
 
-Map<String, String> metadata = user.getMetadata();
-if(metadata == null){
-  metadata = new HashMap<String, String>();
-}
-
+Map<String, String> metadata = new HashMap<>();
 metadata.put("Department" , "Mobility");
 metadata.put("Designation" , "Software Engineer II");
 
