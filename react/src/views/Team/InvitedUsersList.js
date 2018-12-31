@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ROLE_TYPE } from '../../utils/Constant';
+import { ROLE_NAME } from '../../utils/Constant';
 import StatusIcon from '../../components/StatusIcon/StatusIcon'
 import DeleteInvitation from '../Team/DeleteInvitationModal.js';
 import Notification from '../model/Notification';
@@ -71,12 +71,7 @@ class invitedUsersList extends Component {
           </div>
         </td>
         <td>
-          {roleType == ROLE_TYPE.ADMIN &&
-            <div className="teammates-user-role tm-invite-user-role">Admin</div>
-          }
-          {roleType == ROLE_TYPE.AGENT &&
-            <div className="teammates-user-role tm-invite-user-role">Agent</div>
-          }
+        <div className="teammates-user-role tm-invite-user-role">{ROLE_NAME[roleType]}</div>
         </td>
         <td>
           <span className="tm-invite-status-havent-signed-up">Haven't signed up</span>
