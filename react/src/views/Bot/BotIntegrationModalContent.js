@@ -76,7 +76,6 @@ class BotIntegrationModalContent extends Component {
         this.state = {
             buttonText:"Next",
             step:1,
-            botImageUrl: DEFAULT_BOT_IMAGE_URL,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
