@@ -486,6 +486,7 @@ ul#km-group-search-list li {
 .km-sidebox-third-party-integration{
     margin-top: 11px;
     margin-bottom: 2px;
+    min-height: 73px;
 }
 .km-write-box {
     margin-top: 7px;
