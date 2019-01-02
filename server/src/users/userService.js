@@ -326,7 +326,7 @@ const getAdminUserByAppId = (appId) => {
   }
   return userModel.findOne({ where: { applicationId: appId, type: 3 } }).then(user => {
     console.log("found data for user, id : ", user == null ? null : user.id);
-    return user !== null ? user.dataValues : null;
+    return user !== null ? user : null;
   });
 };
 

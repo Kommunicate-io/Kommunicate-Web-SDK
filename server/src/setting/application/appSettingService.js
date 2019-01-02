@@ -19,3 +19,9 @@ exports.updateAppSettings = (settings, appId) => {
         return { message: "application settings updation error " }
     });
 }
+
+exports.getAppSettingByCriteria = (criteria) => {
+    return Promise.resolve(applicationSettingModel.findAll(criteria )).then(result=>{
+        return result;
+    });
+}

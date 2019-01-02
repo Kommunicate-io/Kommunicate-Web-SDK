@@ -1,7 +1,7 @@
 const { CronJob } = require('cron');
 const cronMapper = require('../cron/cronMapper').cronMapper;
 const crons = require('../../conf/config').getProperties().crons;
-const cronState = process.argv.indexOf('--cron') !== -1 ? process.argv[process.argv.indexOf('--cron') + 1] : "disable";
+var cronState = process.argv.indexOf('--cron') !== -1 ? process.argv[process.argv.indexOf('--cron') + 1] : "disable";
 cronState === 'enable' ? console.log("\x1b[41m ------Warning: cron is enabled -----\x1b[0m") :
     console.log("\x1b[41m ------Warning: cron is not enabled -----\x1b[0m");
 

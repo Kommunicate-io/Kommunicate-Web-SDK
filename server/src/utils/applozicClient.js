@@ -601,5 +601,15 @@ const sendMessageListRecursively = (msgList, groupId, headers) => {
   })
 }
 
+exports.closeConversation = (interval, headers) => {
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/close/" + interval;
+  return axios.post(url, {}, { headers: headers }).then(response => {
+    return response;
+  }).catch(error => {
+    console.log("Auto close conversation error: ", error)
+    return
+  })
+}
+
 exports.sendMessageListRecursively =sendMessageListRecursively
 exports.sendGroupMessage=sendGroupMessage
