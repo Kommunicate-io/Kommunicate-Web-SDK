@@ -7,6 +7,8 @@ const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
 const Sequelize = require("sequelize");
 const constant = require('./utils');
+const cacheClient =require("../cache/hazelCacheClient");
+const welcomeMessageMapPrefix ="KM_WELCOME_MESSAGE";
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{applicationId:options.customer.applications[0].applicationId}}).then(inAppMessage=>{
@@ -236,25 +238,16 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
       }).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.disableInAppMessages=(createdBy, appId, category)=>{
-    let criteria={applicationId: appId, status: 1, category: category};
-    // if(constant.CATEGORY.AWAY_MESSAGE == category){
-    //   //criteria.createdBy = createdBy
-    // }
-    return Promise.resolve(db.InAppMsg.update({status: 2}, { where: criteria})).catch(err => {
-      return { code: err.parent.code, message: err.parent.sqlMessage }
-    });
 
-}
 
-exports.enableInAppMessages=(createdBy, appId, category)=>{
-    let criteria={applicationId: appId, status: 2, category: category};
-    // if(constant.CATEGORY.AWAY_MESSAGE == category){
-    //   //criteria.createdBy = createdBy
-    // }
-    return Promise.resolve(db.InAppMsg.update({status: 1}, { where: criteria})).catch(err => {
-      return { code: err.parent.code, message: err.parent.sqlMessage }
-    });
+exports.updateInAppMessage =(criteria, inAppMessage)=>{
+  let _this =this;
+  return Promise.resolve(db.InAppMsg.update(inAppMessage, { where: criteria})).then(data =>{
+    _this.removeWelcomeMessageFromCache(criteria.applicationId);
+    return data;
+  }).catch(err => {
+   throw err;
+  });
 }
 
 exports.getInAppMessages2=(createdBy, appId)=>{
@@ -326,18 +319,13 @@ exports.softDeleteInAppMsg=(id)=>{
 
 }
 
-exports.editInAppMsg=(body)=>{
-
-  logger.info(body);
-  return Promise.resolve(db.InAppMsg.update({message:body.message}, {
-    where : {
-      id: body.id
-    }}).then(response => {
-        logger.info("response is...");
-        logger.info(response);
+exports.editInAppMsg=async (body)=>{
+let inAppMessage = await  this.getInAppMessagebyId(body.id);
+ return this.updateInAppMessage({id: body.id, applicationId: inAppMessage.applicationId},{message:body.message}).then(response => {
         response.message = "Edited"
         return response;    
-      })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+      }).catch(err => {
+        return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 /**
  * return 1st online user. return undefined if no agents are online. 
@@ -378,6 +366,15 @@ return userService.getAdminUserByAppId(customer.applications[0].applicationId).t
       })
     })
   })
+}
+exports.getInAppMessagebyId= (id)=>{
+  return db.InAppMsg.findOne({where: {id:id}}).then(inAppMessage=>{
+    return inAppMessage;
+  })
+}
+exports.removeWelcomeMessageFromCache=(applicationId)=>{
+  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessageStatus");
+  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessage");
 }
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;

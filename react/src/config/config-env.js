@@ -30,6 +30,11 @@ export default {
         'analytics' : {
             'enable': false
         }
+    },
+    'integryEnabled':true,
+    'enableDevTools':true,
+    "applozic": {
+        'stripe': 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS'
     }
 },
 
@@ -65,6 +70,11 @@ export default {
         'analytics' : {
             'enable': false
         }
+    },
+    'integryEnabled':true,
+    'enableDevTools':true,
+    "applozic": {
+        'stripe': 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS'
     }
 },
     
@@ -100,6 +110,11 @@ export default {
         'analytics' : {
             'enable': false
         }
+    },
+    'integryEnabled':true,
+    'enableDevTools':true,
+    "applozic": {
+        'stripe': 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS'
     }
 },
     
@@ -136,6 +151,11 @@ export default {
         'analytics' : {
             'enable': true
         }
+    },
+    'integryEnabled':false,
+    'enableDevTools':false,
+    "applozic": {
+        'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
     }
 },
     
@@ -171,8 +191,12 @@ export default {
         'enable': true
     }
        
-  }
-    
+  },
+    'integryEnabled': false,
+    'enableDevTools': false,
+    "applozic": {
+        'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
+    }
 },
  
 "prod_mzadqatar" :{
@@ -206,8 +230,12 @@ export default {
         'enable': true
     }
        
-   }
-        
+   },
+   'integryEnabled':false,
+   'enableDevTools':false,
+   "applozic": {
+        'stripe': 'pk_test_o9xv4TBvyXhccXEJWt9xF7le'
+    } 
  },
  "commonResources":{
     "docsLink" : {

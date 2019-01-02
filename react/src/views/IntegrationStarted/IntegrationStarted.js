@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CommonUtils from '../../utils/CommonUtils';
 import './IntegrationStarted.css';
 
 const NotificationIcon = props => (
@@ -72,7 +73,15 @@ export default class IntegrationStarted extends Component {
                   this.popupMenu = element;
                 }}>
             <IntegrationWarningIcon />
-            <p>You have not installed Kommunicate in your website</p>
+            { (CommonUtils.isKommunicateDashboard()) ?
+                <p>
+                    You have not installed Kommunicate in your website
+                </p>
+                :
+                <p>
+                    You have not installed Applozic in your mobile and web apps
+                </p>
+            }
             <button className="km-button km-button--primary" onClick={this.goToInstall}>See how to install</button>
         </div>
       </div>

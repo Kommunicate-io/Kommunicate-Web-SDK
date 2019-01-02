@@ -40,7 +40,7 @@ exports.sendInvitationMail = (req, res) => {
         if (isDeleted) {
             return res.status(200).json({ "code": "USER_ALREADY_EXIST", "message": "activated existing user" });
         }
-        return userService.inviteTeam(options).then(data => {
+      return Promise.resolve(userService.inviteTeam(options)).then(data => {
             logger.info("Updated UserList", data);
             return data;
         }).then(data => {
@@ -124,6 +124,20 @@ const getEmailFormat = (options, custInfo) => {
                     options.to = [...options.to];
                     options.cc = [...options.cc, "support@kommunicate.io"]
                     options.bcc = "techdisrupt@applozic.com";
+                    break;
+
+                case "APPLOZIC_SUPPORT_QUERY":
+                    logger.info("APPLOZIC_SUPPORT_QUERY");
+                    templatePath = path.join(__dirname, "/applozicSupportQueryTemplate.html");
+                    options.templatePath = path.join(__dirname, "/applozicSupportQueryTemplate.html");
+                    options.templateReplacement = {  
+                    ":QUERY_PLATFORM": options.queryPlatform,
+                    ":QUERY_SDK":options.querySdk,":QUERY_APP_KEY":options.appKey,
+                    ":QUERY_DESC":options.desc,":QUERY_ATTACHMENTS":options.attach,
+                    ":QUERY_ISSUE":options.issue,
+                    ":CUSTOM_REPORT_REQUIREMENT_DURATION": options.customReportsDuration };
+                    options.to = [...options.to];
+                    options.cc = [...options.cc, "support@applozic.com"]
                     break;
             }
         }

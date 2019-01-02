@@ -7,6 +7,7 @@ import configuration from "./config-env";
 
 const  env = process.env.REACT_APP_NODE_ENV || "development";
 let config = configuration[env];
+config["brand"] =  process.env.BRAND;
 const commonResource = configuration['commonResources'];
 
 function getEnvironmentId() {
@@ -68,6 +69,14 @@ function getEnvironmentId() {
   }
   config.googleApi = {
     "googleApiUrl": googleApiBaseUrl + "?scope=profile%20email&access_type=offline&redirect_uri=" + kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=660706316085-tt8berusqqdekmo22rdea2mc17bq17kp.apps.googleusercontent.com"
+  }
+  config.products = {
+    kommunicate: {
+      profitwell: '71e77c6a8d59f50233d1705120049bf1'
+    },
+    applozic: {
+      profitwell: '5b142e85e62527dc4ac03b209c0223f1'
+    }
   }
 
 export function get(env) {

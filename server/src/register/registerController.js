@@ -147,7 +147,7 @@ customerService.getCustomerByUserName(userId).then(async dbCustomer => {
   });
   registrationService.updateCustomer(userId, customer).then(isUpdated => {
     if (isUpdated) {
-      subscribed ? customerService.reactivateAgents(customer.applicationId) : "";
+      subscribed ? customerService.reactivateAccount(customer.applicationId) : "";
       response.code = "SUCCESS";
       response.message = "Updated";
       res.status(200).json(response);

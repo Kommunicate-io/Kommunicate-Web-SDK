@@ -1,6 +1,7 @@
 const initialState = {
   kmOnBoarding: false,
-  closeOnBoardingModalPermanently:false
+  closeOnBoardingModalPermanently:false,
+  closePseudoBanner:false
 };
 const signUpReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -13,6 +14,11 @@ const signUpReducer = (state = initialState, action) => {
       return {
         ...state,
         closeOnBoardingModalPermanently: action.payload
+      }
+    case 'UPDATE_PSEUDO_BANNER_STATUS':
+      return {
+        ...state,
+        closePseudoBanner: action.payload
       }
     default:
       return state

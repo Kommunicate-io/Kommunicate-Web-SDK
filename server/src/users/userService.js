@@ -20,6 +20,8 @@ const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
+const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
+
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -31,7 +33,7 @@ const getUserByName = userName => {
   return new Promise((resolve, reject) => {
     console.log("fetching data for userName : ", userName);
     userModel.findOne({ where: { userName: userName } }).then(user => {
-      console.log("found data for user : ", user == null ? null : user.dataValues);
+      console.log("found data for user, id : ", user == null ? null : user.id);
       return user !== null ? resolve(user.dataValues) : resolve(null);
     }, err => {
       console.log("err", err);
@@ -43,13 +45,27 @@ const getUserByName = userName => {
   });
 };
 const getInvitedUser = (appId) => {
-
-    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
+let criteria = {
+  applicationId: appId
+}
+    return teammateInviteModel.findAll({ where: criteria, paranoid: false}).then(result => {
       return result;
   }).catch(err => {
     throw err;
   });
 };
+
+const getInvitedUserList = (inviteUser) => {
+  var  invitedUserList =[];
+  for (var i = 0; i < inviteUser.length; i++) {
+    invitedUserList[i] =inviteUser[i].invitedUser;
+  }
+  return teammateInviteModel.findAll({ where: { invitedUser: {$in: invitedUserList }}, paranoid: false }).then(result => {
+     return result;
+    }).catch(err => {
+      throw err;
+    });
+  };
 
 const getInvitedAgentDetail = (reqId) => {
   return teammateInviteModel.find({ where: { id: reqId } }).then(result => {
@@ -59,27 +75,53 @@ const getInvitedAgentDetail = (reqId) => {
   });
 };
 
+const updateDeletedInvitation = (inviteteam) => {
+  let criteria = {
+    applicationId: inviteteam.applicationId,
+      invitedUser: inviteteam.to[0],
+      deleted_at: {$ne:null}
+  }
+  return teammateInviteModel.update({ deleted_at: null }, { where: criteria, paranoid: false
+  }).then(result => {
+    return result})
+  .catch(err => {
+    throw err;
+  });
+}
+
 const inviteTeam = (inviteteam) => {
   return getByUserNameAndAppId(inviteteam.agentId, inviteteam.applicationId).then(user => {
-    var invites = []
+    var invites = [];
     inviteteam.invitedBy = user.userKey;
     inviteteam.status = 0;
-
     for (var i = 0; i < inviteteam.to.length; i++) {
       inviteteam.invitedUser = inviteteam.to[i];
       invites.push(inviteteam);
     }
-    if (invites.length > 0) {
-      return teammateInviteModel.bulkCreate(invites).then(result => {//spread
-        logger.info("error while creating bot", result);
-        return result;
-      }).catch(err => {
-        logger.error("error while creating bot", err);
-        throw err;
+    if (inviteteam.resendMail) {
+      return Promise.resolve(updateDeletedInvitation(inviteteam)).then(data => {
+        return teammateInviteModel.findAll({ where: { applicationId: inviteteam.applicationId, invitedUser: inviteteam.to[0] } });
       });
-    }
-    return invites;
-
+    } else {
+      return Promise.resolve(getInvitedUserList(invites)).then(dbResult => {
+        dbResult.find(function (item, i) {
+            var index = invites.findIndex(invite => (item.invitedUser));
+            if (index !== -1) {
+              invites.splice(index, 1);
+            }
+        });
+        if (invites.length > 0) {
+         return teammateInviteModel.bulkCreate(invites).then(result => {//spread
+            logger.info("error while creating bot", result);
+            return result;
+          }).catch(err => {
+            logger.error("error while creating bot", err);
+            throw err;
+          });
+        }
+        return dbResult;
+      })
+   }
   }).catch(err => {
     throw err;
   });
@@ -163,10 +205,12 @@ const createUser = (user, customer) => {
           "devToken": devToken,
           "aiPlatform": aiPlatform,
           "type": "KOMMUNICATE_SUPPORT",
-          "handlerModule": aiPlatform == "dialogflow" ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT"
+          "handlerModule":user.handlerModule?user.handlerModule:(aiPlatform ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT")
         }).catch(err => {
           logger.error("error while creating bot platform", err);
         })
+      } else {
+        activeCampaignClient.addContact({ "email": user.email, "name": user.name, "orgname": customer.userName, "tags": "K-Team-Member" });
       }
       return user ? user.dataValues : null;
     }).catch(err => {
@@ -281,7 +325,7 @@ const getAdminUserByAppId = (appId) => {
     throw new Error("application id is empty");
   }
   return userModel.findOne({ where: { applicationId: appId, type: 3 } }).then(user => {
-    console.log("found data for user : ", user == null ? null : user.dataValues);
+    console.log("found data for user, id : ", user == null ? null : user.id);
     return user !== null ? user.dataValues : null;
   });
 };
@@ -295,7 +339,7 @@ const getByUserNameAndAppId = (userName, appId) => {
     throw new Error("userName or application id is empty");
   }
   return userModel.findOne({ where: { userName: userName, applicationId: appId } }).then(user => {
-    console.log("found data for user : ", user == null ? null : user.dataValues);
+    console.log("found data for user, id : ", user == null ? null : user.id);
     return user !== null ? user.dataValues : null;
   });
 
@@ -405,7 +449,7 @@ exports.updateUser = (userId, appId, userInfo) => {
             "key": userKey,
             "clientToken": userInfo.clientToken,
             "devToken": userInfo.devToken,
-
+            "deleted": userInfo.deleted_at != null
           }).catch(err => {
             logger.error("error while updating bot platform", err);
           });
@@ -482,7 +526,7 @@ const getUsersByAppIdAndTypes = (applicationId, type, order) => {
     criteria.type = { $in: type };
   }
   order =  order ? order : [['name', 'ASC']];
-  return Promise.resolve(userModel.findAll({ where: criteria, order })).then(result => {
+  return Promise.resolve(userModel.findAll({ where: criteria, order})).then(result => {
     return result;
   }).catch(err => {
     logger.info('error while getting all users', err);
@@ -651,7 +695,7 @@ const isDeletedUser= (userName, applicationId) => {
 }
 
 const updateSubscriptionQuantity = (user, count) => {
-  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)) {
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.BOT|| user.type == registrationService.USER_TYPE.ADMIN)) {
     return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
       if (customer.billingCustomerId) {
         return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
@@ -667,6 +711,13 @@ const getUserByCriteria = async (criteria)=>{
     }else{
     return null;
   }
+}
+const deleteInvitation = (applicationId, invitedUser) => {
+  return teammateInviteModel.destroy({ where: { "applicationId": applicationId, "invitedUser": invitedUser } }).then(res => {
+    return res ? 'SUCCESS' : "Record Not found";
+  }).catch(err => {
+    throw err;
+  });
 }
 
 const updateApplozicUser = (userInfo, apiKey) => {
@@ -693,6 +744,35 @@ const updateApplozicUser = (userInfo, apiKey) => {
   })
 }
 
+
+const getAgentIdsStatusWise= async (applicationId)=> {
+  let awayAgents =[];
+  let availableAgentsInKommunicate = [];
+  let onlineAgent =[];
+  let superAdmin;
+  let agentList = []
+  try{
+  agentList = await this.getUsersByAppIdAndTypes(applicationId,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]);
+  agentList && agentList.forEach(element => {
+    element.status== CONST.USER_STATUS.AWAY && awayAgents.push(element.userName);
+    element.status== CONST.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
+    element.roleType == CONST.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
+  });
+  let apzToken = new Buffer( superAdmin.userName+":"+ superAdmin.accessToken).toString('base64');
+  let statusFromApplozic = await applozicClient.getUserDetails(availableAgentsInKommunicate,applicationId,apzToken);
+  statusFromApplozic&& statusFromApplozic.forEach(element => {
+    element.connected && onlineAgent.push(element.userId);
+  });
+  let response ={}
+  response["away"] = awayAgents;
+  response["online"] = onlineAgent;
+  return response; 
+}catch(e){
+  logger.info("error while fetching agent list state wise :", e);
+  return null;
+}
+}
+exports.getAgentIdsStatusWise = getAgentIdsStatusWise;
 exports.updateApplozicUser = updateApplozicUser;
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
@@ -706,6 +786,7 @@ exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;
+exports.getInvitedUserList =getInvitedUserList;
 exports.inviteTeam = inviteTeam;
 exports.getInvitedAgentDetail = getInvitedAgentDetail;
 exports.getAdminUserByAppId = getAdminUserByAppId;
@@ -721,3 +802,4 @@ exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
 exports.updateUserStatus = updateUserStatus;
 exports.updateOnlyKommunicateUser = updateOnlyKommunicateUser;
 exports.getUserListByCriteria = getUserByCriteria;
+exports.deleteInvitation =deleteInvitation;

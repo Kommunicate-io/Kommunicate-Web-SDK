@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import {getBaseUrl} from '../config/config';
+import { getConfig } from '../config/config';
 
 const botPlatformClient = {
     /**
@@ -17,4 +18,23 @@ const botPlatformClient = {
         })
     }
 }
-export default botPlatformClient;
+const createBot = (data) => {
+    let url = getConfig().applozicPlugin.addBotUrl+"/"+data.id+'/configure'
+    return axios({
+        method: 'post',
+        url: url,
+        data:JSON.stringify(data.botInfo),
+        headers: {"Content-Type": "application/json",}
+    }).then(response => {
+        if (response.status == 200) {
+            return response
+        }
+    }).catch(err=>{
+        console.log("bot create error", err)
+        throw { message: err };
+    })
+}
+export {
+    botPlatformClient,
+    createBot
+}

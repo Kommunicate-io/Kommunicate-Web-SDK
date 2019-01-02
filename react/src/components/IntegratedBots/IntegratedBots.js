@@ -17,7 +17,9 @@ import Tick from '../../views/Bot/images/tick-icon.png'
 import KmIcon from '../../views/Bot/images/km-icon.png'
 import NoteIcon from '../../views/Bot/images/note-icon.png';
 import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg} from '../../views/Faq/LizSVG.js';
-
+import {SUPPORTED_PLATFORM} from '../../utils/Constant';
+import CustomBotInputFields from '../../views/Bot/CustomBotInputFields'
+import {createBot} from '../../utils/botPlatformClient';
 export default class IntegratedBots extends Component {
 
     constructor(props) {
@@ -63,7 +65,7 @@ export default class IntegratedBots extends Component {
           botNameAlreadyExists: false,
           disableIntegrateBotButton: false,
           listOfIntegratedBots: [],
-          botAiPlatform: {"api.ai": "DialogFlow", "dialogflow": "DialogFlow", "microsoft": "microsoft", "amazon": "amazon"},
+          botAiPlatform: {"api.ai": "DialogFlow", "dialogflow": "DialogFlow", "microsoft": "microsoft", "amazon": "amazon", "custom":"Custom"},
           editBotIntegrationModalHeader: 'Edit Bot Profile',
           botIdInUserTable: '',
           botKey: '',
@@ -75,6 +77,9 @@ export default class IntegratedBots extends Component {
           botAvailable: true,
           conversationsAssignedToBot: null,
           showLoader: false,
+          webhookUrl:"",
+          customBotKey:"",
+          customBotValue:"",
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -254,61 +259,94 @@ export default class IntegratedBots extends Component {
             console.log("error while fetching routing state/round roubin state", err);
         })
     }
-
-    toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable, botImageLink) => {
+    toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable, botImageLink, bot) => {
         console.log("toggleEditBotIntegrationModal")
         this.clearBotDetails();
        // updating  state
+        let customBotInfo = {}
         let updatedState ={};
-        updatedState.editBotIntegrationModal = !this.state.editBotIntegrationModal;
-        botIdInUserTable? updatedState.botIdInUserTable = botIdInUserTable:"";
-        botKey?updatedState.botKey=botKey:"";
-        botName?(updatedState.editBotIntegrationModalHeader = botName, updatedState.editedBotName = botName) :"";
-        botToken?updatedState.editedClientToken=botToken:"";
-        botDevToken?updatedState.editedDevToken=botDevToken:"";
-        (typeof botDevToken === 'undefined') ? updatedState.botPlatformVersion='Dialogflow Version V2':updatedState.botPlatformVersion='Dialogflow Version V1';
+        (bot && bot.aiPlatform) ? updatedState.botPlatform = bot.aiPlatform : "";
+
         botUserName?updatedState.botUserName =botUserName:"";
+        botKey ? updatedState.botKey = botKey : "";
         updatedState.botAvailable =Boolean(botAvailable);
         botImageLink?updatedState.setbotImageLink=botImageLink:"";
+        updatedState.editBotIntegrationModal = !this.state.editBotIntegrationModal;
+        botName?(updatedState.editBotIntegrationModalHeader = botName, updatedState.editedBotName = botName) :"";
+        botIdInUserTable? updatedState.botIdInUserTable = botIdInUserTable:"";
+        (typeof botDevToken === 'undefined') ? updatedState.botPlatformVersion = 'Dialogflow Version V2' : updatedState.botPlatformVersion = 'Dialogflow Version V1';
+        if (bot && bot.aiPlatform && bot.aiPlatform == SUPPORTED_PLATFORM.DIALOGFLOW) {
+
+          botToken ? updatedState.editedClientToken = botToken : "";
+          botDevToken ? updatedState.editedDevToken = botDevToken : "";
+      } else if (bot && bot.aiPlatform && bot.aiPlatform == SUPPORTED_PLATFORM.CUSTOM) {
+        customBotInfo.webhookUrl = bot.webhook;
+        bot.webhookAuthentication && bot.webhookAuthentication.key && (customBotInfo.customBotKey = bot.webhookAuthentication.key);
+        bot.webhookAuthentication && bot.webhookAuthentication.value && (customBotInfo.customBotValue = bot.webhookAuthentication.value);
+        this.setState(customBotInfo)
+      }
+        
 
         this.setState(updatedState)
       }
+      customBotIntegrationInputValue = (e,key) => {
+        this.setState({[key] : e.target.value});
+      }
 
+      updateBotInfo = (patchUserData, data) => {
+        Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId),createBot(data)])
+          .then(([patchUserInfoResponse, patchBotInfoResponse]) => {
+            if (patchUserInfoResponse.data.code === 'SUCCESS' && patchBotInfoResponse.status == 200) {
+              Notification.info("Changes Saved successfully")
+              this.toggleEditBotIntegrationModal()
+              this.getIntegratedBotsWrapper()
+            }
+            this.getIntegratedBotsWrapper()
+          }).catch(err => { console.log(err) })
 
-
-      saveEditedBotDetails = () => {
-        if (this.state.editedBotName || this.state.editedClientToken || this.state.editedDevToken) {
-          let patchUserData = {
-            name: this.state.editedBotName,
-          }
-          let axiosPostData ={
-            aiPlatform: "dialogflow",
-            type:"KOMMUNICATE_SUPPORT"
-          };
-          this.state.editedClientToken && (axiosPostData.clientToken = this.state.editedClientToken);
-          this.state.editedDevToken && (axiosPostData.editedDevToken = this.state.editedDevToken);
-
-          // let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
-          let url = getConfig().applozicPlugin.addBotUrl+"/"+this.state.botKey+'/configure'
-
-          console.log(this.state.botName.toLowerCase());
-          console.log(this.state.editedBotName.toLowerCase());
-
-          if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()){
-
-            Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
-              .then(([patchUserInfoResponse, axiosPostResponse]) => {
-                if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
-                  Notification.info("Changes Saved successfully")
-                  this.toggleEditBotIntegrationModal()
-                  this.getIntegratedBotsWrapper()
-                }
-                this.getIntegratedBotsWrapper()
-              }).catch(err => {console.log(err)})
-          }else{
-            Notification.info("No Changes to be saved successfully")
-          }
+      }
+      saveEditedBotDetails = (botPlatform) => {
+        let axiosPostData ={
+          aiPlatform: botPlatform,
+          type:"KOMMUNICATE_SUPPORT"
+        };
+        let patchUserData = {
+          name: this.state.editedBotName,
         }
+        let botDetails = {
+          id: this.state.botKey
+        }
+          if (botPlatform == SUPPORTED_PLATFORM.DIALOGFLOW) {
+            if (this.state.botPlatformVersion == "Dialogflow Version V1" && (!this.state.editedBotName.trim() || !this.state.editedClientToken.trim() || !this.state.editedDevToken.trim())) {
+              Notification.info("Client token, Dev token and Bot name are mandatory");
+              return
+            } else if (this.state.botPlatformVersion == "Dialogflow Version V2" && (!this.state.editedBotName)) {
+              Notification.info("Bot name mandatory");
+              return
+            }
+            this.state.editedClientToken && (axiosPostData.clientToken = this.state.editedClientToken);
+            this.state.editedDevToken && (axiosPostData.devToken = this.state.editedDevToken);
+            if (this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()) {
+              botDetails["botInfo"] = axiosPostData
+              this.updateBotInfo(patchUserData,botDetails)
+            } else {
+              Notification.info("Changes Saved successfully");
+              this.toggleEditBotIntegrationModal();
+            }
+
+        } else if (botPlatform == SUPPORTED_PLATFORM.CUSTOM) {
+            if (this.state.webhookUrl.trim() && this.state.editedBotName.trim()) {
+              botDetails["botInfo"] = {}
+              botDetails.botInfo["webhook"] = this.state.webhookUrl.trim();
+              (this.state.customBotKey.trim() || this.state.customBotValue.trim()) && (botDetails.botInfo["webhookAuthentication"] = {});
+              this.state.customBotKey.trim() && (botDetails.botInfo.webhookAuthentication["key"] = this.state.customBotKey.trim());
+              this.state.customBotValue.trim() && (botDetails.botInfo.webhookAuthentication["value"] = this.state.customBotValue.trim());
+              this.updateBotInfo(patchUserData,botDetails)
+            } else {
+              Notification.info("Webhook url and bot name are mandatory")
+            }
+          }
+        
       }
 
       deleteBot = () => {
@@ -631,7 +669,7 @@ export default class IntegratedBots extends Component {
                       </div>
 
                       <div className="col-md-2 col-sm-6 col-xs-12 km-bot-edit-delete">
-                            <span className="teammates-delete-wrapper" onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.userKey, bot.name, bot.userName, bot.token||bot.clientToken, bot.devToken, bot.bot_availability_status, bot.imageLink)}}>
+                            <span className="teammates-delete-wrapper" onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.userKey, bot.name, bot.userName, bot.token||bot.clientToken, bot.devToken, bot.bot_availability_status, bot.imageLink, bot)}}>
                               <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
                                   <g fill="#8B8888" fillRule="nonzero">
                                       <path d="M8.52 1.29l-.431.432-1.036 1.036-1.25 1.249-1.078 1.079c-.176.176-.356.347-.527.527l-.008.007.306-.126-.968.007-.139.001.432.432.008-.968v-.138c-.041.101-.083.204-.126.305l.434-.434 1.04-1.04 1.25-1.249 1.082-1.082c.173-.173.343-.348.518-.518a.36.36 0 0 1 .03-.027L7.97.85a.253.253 0 0 1 .053-.03l-.104.044A.368.368 0 0 1 7.977.85l-.115.015a.264.264 0 0 1 .058.002 4.149 4.149 0 0 0-.114-.015.27.27 0 0 1 .042.012L7.745.82a.245.245 0 0 1 .051.03L7.71.783c.102.083.192.188.286.282l.432.432c.037.038.078.073.112.116l-.068-.088a.253.253 0 0 1 .03.053l-.044-.104c.006.02.01.038.014.058a4.149 4.149 0 0 1-.015-.115.273.273 0 0 1-.002.06l.015-.115a.384.384 0 0 1-.017.057l.043-.103c-.008.014-.014.027-.024.039l.068-.088a.106.106 0 0 1-.018.023.45.45 0 0 0-.127.305.432.432 0 0 0 .737.305.677.677 0 0 0 .192-.469.67.67 0 0 0-.192-.453C9.106.95 9.078.924 9.05.896L8.64.486C8.543.39 8.447.29 8.348.195a.66.66 0 0 0-.935.012l-.321.322-.657.656-.852.853c-.302.3-.603.602-.904.903l-.808.809-.577.576-.155.155-.037.037a.47.47 0 0 0-.134.317c-.013.333-.005.666-.008.999l-.001.102c-.002.232.2.434.431.432l.784-.006c.106-.002.212 0 .317-.003a.488.488 0 0 0 .338-.154l.791-.791 1.408-1.408 1.381-1.381c.238-.238.479-.473.713-.712l.01-.01c.16-.16.171-.454 0-.611a.438.438 0 0 0-.611-.001z"/>
@@ -704,11 +742,13 @@ export default class IntegratedBots extends Component {
                   <ModalBody>
                   <div>
                     <div className="km-dialogflow-version-select-edit">
-                      <div>
-                        {this.state.botPlatformVersion}
-                      </div>
+                     {  this.state.botPlatform == SUPPORTED_PLATFORM.DIALOGFLOW &&
+                        <div>
+                        { this.state.botPlatformVersion}
+                        </div>
+                     }
                     </div>
-                  {  this.state.botPlatformVersion === "Dialogflow Version V1" ?
+                  { this.state.botPlatform == SUPPORTED_PLATFORM.DIALOGFLOW && this.state.botPlatformVersion === "Dialogflow Version V1" &&
                     <div>
                       <div className="km-edit-bot-credentials" style={{marginBottom: "20px"}}>
                         <label className="km-restrict-bootstrap-margin km-edit-bot-credentials-text">Client Token:</label>
@@ -723,7 +763,8 @@ export default class IntegratedBots extends Component {
                         </div>
                       </div>
                     </div>
-                    :
+                  }
+                  { this.state.botPlatform == SUPPORTED_PLATFORM.DIALOGFLOW && this.state.botPlatformVersion === "Dialogflow Version V2" &&
                     <div style={{display:"flex", alignItems:"center"}}>
                       <div className="km-dialogflowV2-key-file">Service account private key file :<span className="customer-type"> </span></div>
                       <label className="km-button km-button--secondary km-btn-file-label km-dialogflowV2-key-file-btn">
@@ -731,12 +772,17 @@ export default class IntegratedBots extends Component {
                       </label>
                     </div>
                   }
+                  { this.state.botPlatform == SUPPORTED_PLATFORM.CUSTOM &&
+                      <div>
+                        <CustomBotInputFields webhookUrl ={this.state.webhookUrl}  customBotKey ={this.state.customBotKey} customBotValue ={this.state.customBotValue} customBotIntegrationInputValue = {this.customBotIntegrationInputValue}/>
+                      </div>
+                  }
                     <div className="" style={{marginTop: "66px"}}>
                       <div className="km-cancel-delete">
                         <button className="km-button km-button--secondary " onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
                           Cancel
                         </button>
-                        <button className="km-button km-button--primary" onClick={this.saveEditedBotDetails}>
+                        <button className="km-button km-button--primary" onClick={()=> {this.saveEditedBotDetails(this.state.botPlatform)}}>
                           Save Changes
                         </button>
                       </div>

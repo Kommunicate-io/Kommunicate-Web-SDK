@@ -294,6 +294,31 @@
 	right: 10px;
 	z-index: 5;
 }
+.km-dashboard-knowledge-base-link{
+    color: #4a4a4a;
+    text-align: center;
+    width: 100%;
+    background: #eee;
+    display: block;
+    padding: 8px;
+    transition: all .3s;
+}
+
+.km-dashboard-knowledge-base-link:hover{
+    background: #ddd;
+    text-decoration: none;
+    color: #4a4a4a;
+}
+
+.km-dashboard-knowledge-base-link svg{
+    height:12px;
+    width:12px;
+    display: inline;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+.
 /* .tooltip-for-lock {
     position: relative;
 }

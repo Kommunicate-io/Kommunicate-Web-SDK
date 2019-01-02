@@ -11,16 +11,19 @@ class ThirdPartyScripts extends Component {
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
-          var isKommunicateDashboard = CommonUtils.isKommunicateDashboard()
+          var isKommunicateDashboard = CommonUtils.isKommunicateDashboard();
           // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
+
+            var kommunicateSupportChatUrl = getConfig().baseurl.komunicateSupportUrl|| getConfig().homeUrl;
             var support = isKommunicateDashboard ? {
               "appId": "kommunicate-support",
               "isAnonymousChat": true,
               "groupName": "Kommunicate Support",
+              "baseUrl":kommunicateSupportChatUrl,
               "googleApiKey": "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI",
               "googleMapScriptLoaded": true,
               "emojilibrary": false
@@ -29,6 +32,7 @@ class ThirdPartyScripts extends Component {
                 "appId": "applozic-sample-app",
                 "isAnonymousChat": true,
                 "groupName": "Applozic",
+                "baseUrl":kommunicateSupportChatUrl,
                 "googleApiKey": "AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw",
                 "googleMapScriptLoaded": true,
                 "emojilibrary": false
@@ -58,11 +62,13 @@ class ThirdPartyScripts extends Component {
                     mckSideboxLauncher.classList.add('force-hide');
                     mckSideboxLauncher.classList.remove('vis');
                   }
-
-                  mckSideboxLauncher.addEventListener("click",function(){
-                    AnalyticsTracking.acEventTrigger("initiateChatKMdashbaord");
-                  });
                 };
+
+                if(mckSideboxLauncher){
+                  mckSideboxLauncher.addEventListener("click",function(){
+                    AnalyticsTracking.acEventTrigger("initiateChatKMdashboard");
+                  });
+                }
 
               };
               var s = document.createElement("script");
@@ -127,7 +133,23 @@ class ThirdPartyScripts extends Component {
               var trackcmp_h = document.getElementsByTagName("head");
               trackcmp_h.length && trackcmp_h[0].appendChild(trackcmp);
             }
-    
+
+            //Profitwell Script
+            let profitWellUser = '';
+            if(CommonUtils.getUserSession()) {
+                profitWellUser = CommonUtils.getUserSession().adminUserName;
+            }
+
+            if (CommonUtils.isProductApplozic() && CommonUtils.getUserSession().application.stripeCustomerKey != null) {
+                profitWellUser = CommonUtils.getUserSession().application.stripeCustomerKey;
+            }
+
+            (function(i,s,o,g,r,a,m){i['ProfitWellObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
+                })(window,document,'script','https://dna8twue3dlxq.cloudfront.net/js/profitwell.js','profitwell');
+            profitwell('auth_token', CommonUtils.isKommunicateDashboard() ? getConfig().products.kommunicate.profitwell: getConfig().products.applozic.profitwell); // Your unique Profitwell public API token
+            profitwell('user_email', profitWellUser);
       }
 
       componentWillMount(){

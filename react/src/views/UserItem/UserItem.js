@@ -6,7 +6,8 @@ import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
 import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js';
-import { ROLE_TYPE } from '../../utils/Constant';
+import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
+import DeleteInvitation from '../Team/DeleteInvitationModal.js';
 
 
 
@@ -56,35 +57,16 @@ class UserItem extends Component {
       }
     }
     
-    deleteUser  = () => {
-      this.onCloseModal();
-      let userId = [];
-      userId.push(this.state.userToBeDeleted.userId);
-      return Promise.resolve(deleteUserByUserId(userId)).then(response => {
-        if(response && response.code == "SUCCESS") {
-          if (response.message.data[0].result === "DELETED SUCCESSFULLY"){
-            Notification.success('Agent Deleted Successfully');
-            this.props.getUsers();
-          } else if (response.message.data[0].result === "USER DOES NOT EXIST OR ALREADY DELETED") {
-            Notification.warning('Agent does not exist or already deleted');
-          }
-        }
-      }).catch(err => {
-        // console.log(err.message.response.data);
-        Notification.error('There was a problem while deleteing the agent');
-      })
-    }
     onOpenModal = (e) => {
       let index = e.target.dataset.index;
       index = parseInt(index.replace('delete', ''));
       let user = this.state.agentList[index].displayName || this.state.agentList[index].userId;
       let userToBeDeleted = {
-        displayName: this.state.agentList[index].displayName,
+        displayName: user,
         userId: this.state.agentList[index].userId
       }
       this.setState({ 
         modalIsOpen: true, 
-        userToBeDeleted:user,
         userToBeDeleted:userToBeDeleted 
       });
     };
@@ -136,15 +118,7 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td> */}
                     <td>
-                      { roleType == ROLE_TYPE.SUPER_ADMIN &&
-                        <div className="teammates-user-role">Super Admin</div>
-                      }
-                      { roleType == ROLE_TYPE.ADMIN &&
-                        <div className="teammates-user-role">Admin</div>
-                      }
-                      { roleType == ROLE_TYPE.AGENT &&
-                        <div className="teammates-user-role">Agent</div>
-                      }
+                      <div className="teammates-user-role">{ROLE_NAME[roleType]}</div>
                     </td>
                     <td>{ !isAway &&
                           <div className="small text-muted">  <StatusIndicator label = { isOnline ? "Online" : "Offline"} indicator={isOnline ? "success" : "muted"} /> </div>
@@ -182,31 +156,7 @@ class UserItem extends Component {
                         </span>
                       }
                     </td>
-                    <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
-                    <div>
-                      <div className="team-delete-modal-header">
-                        <p className="team-delete-modal-header-title" >Delete - <span className="team-delete-modal-header-title-user-name">{this.state.userToBeDeleted.displayName || this.state.userToBeDeleted.userId}</span></p>
-                      </div>
-                      <hr className="team-delete-modal-divider" />
-                      { !CommonUtils.isTrialPlan() &&
-                        <div className="teammates-billing-update-container">
-                          <div className="teammates-billing-update-text">
-                          Deleting a team member will automatically reduce the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
-                          </div>
-                        </div> 
-                      }
-                      <div className="team-delete-modal-content">
-                        <p>On deleting this account, the user will not be able to log into this Kommunicate account. Though, this profile shall be visible in all existing conversations this user has been a part of.</p>
-                        <p>Are you sure?</p>
-                        <div className="team-delete-modal-btn">
-                        <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</button>
-                        <button className="km-button km-button--primary" onClick= {this.deleteUser}>Yes, Delete</button>
-                        </div>
-                      </div>
-                      </div>
-                      <span onClick={this.onCloseModal}><CloseButton /></span>
-                    </Modal>
-
+                     <DeleteInvitation isOpen={this.state.modalIsOpen} userToBeDeleted={this.state.userToBeDeleted} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false}></DeleteInvitation>
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
                     </td>

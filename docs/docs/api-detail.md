@@ -66,8 +66,6 @@ POST Body:
 ## Send Message
 
 Send a message to a conversation/group. A group Id is assigned to every conversation when its created and can not be changed. If messages are received from webhook, every message will have the groupId parameter associated with them. Use this group Id to send the messages in the conversation. 
-You can also send [Actionable messages](actionable-messages.html) by adding a valid metadata. 
-
 
 ``` javascript
 POST  /rest/ws/message/v2/send HTTP/1.1
@@ -79,6 +77,21 @@ POST Body:
   "fromUserName":"userId of sender",
   "metadata":{     // optional. key-value pair for smart and actionable messages.    
       "category": "HIDDEN" // This message will not visible in chat widget.
+  }
+}
+```
+ You can also send [Actionable messages](actionable-messages.html) by adding a valid JSON in `metadata` field. The metadata accepts the key-value pair as string. The payload object in the actionable message should be converted into string before adding it into request payload. Below is the example of request body with Actionable message(Quick replies): 
+
+
+``` javascript
+{ 
+  "groupId": "group Unique Identifier", 
+  "message":"Do you want more updates?",
+  "fromUserName":"userId of sender",
+  "metadata":{       
+       "contentType": "300",
+        "templateId": "6",
+        "payload": "[{\"title\":\"Yes\",\"message\":\"Cool! send me more.\",{\"title\":\"No \",\"message\":\"Don't send it to me again\"}]"  // any object should be converted into string inside metadata.
   }
 }
 

@@ -10,6 +10,7 @@ import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
 import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
 import AnalyticsTracking from './AnalyticsTracking';
+import dateFormat from 'dateformat';
 
 
 
@@ -200,7 +201,6 @@ const callSendEmailAPI = (options) => {
   } else {
     AnalyticsTracking.acEventTrigger("mail." + options.templateName);
   }
-
 let url = config.baseurl.kommunicateAPI+"/misc/mail";
 if(options.templateName == "INVITE_TEAM_MAIL"){
   url=  getConfig().kommunicateApi.sendMail;
@@ -223,6 +223,7 @@ if(options.templateName == "INVITE_TEAM_MAIL"){
       "agentName": userSession.name || userSession.name || userId,
       "agentId": userId,
       "roleType":roleType,
+      "resendMail":options.resendMail ?options.resendMail :false,
       "isApplozic": !CommonUtils.isKommunicateDashboard()
     }
   }
@@ -709,16 +710,10 @@ const getIntegratedBots = () => {
 const updateAgentAndBotRouting = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/settings/application/" + userSession.application.applicationId;
-  var formdata = {};
-  if (data.user === 'bot') {
-    formdata.botRouting = data.routingState;
-  } else {
-    formdata.agentRouting = data.routingState;
-  }
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
-    data: formdata
+    data: data
   })).then(result => {
     return result;
   }).catch(err => { console.log(err) })
@@ -850,18 +845,6 @@ const updateZendeskIntegrationTicket = (data, ticketId) => {
 
 }
 
-const getConversationStats = (isCustomer) => {
-  let userSession = CommonUtils.getUserSession();
-  let query = isCustomer ? 'customerId=' + userSession.customerId : 'agentId' + userSession.id;
-  let url = getConfig().kommunicateBaseUrl + "/conversations?" + query;
-  return Promise.resolve(axios.get(url)).then(response => {
-    // console.log('filter: ', response);
-    return response;
-  }).catch(err => {
-    return;
-  });
-}
-
 const conversationHandlingByBot = (botId, status) => {
   let userSession = CommonUtils.getUserSession();
   const converstaionHandlingByBotUrl = getConfig().kommunicateApi.createUser + '/' + botId + '/' + userSession.application.applicationId + '/' + status;
@@ -872,11 +855,28 @@ const conversationHandlingByBot = (botId, status) => {
 
 }
 
+/**
+ * @param {Int} days 
+ * get timestamp between current date and past date
+ * ex. current date and 7 days back 
+ */
+const getTimestamps = days => {
+    days = parseInt(days, 10);
+    let toDate = new Date(dateFormat(new Date(), "yyyy-mm-dd 00:00:00"));
+    toDate.setDate(toDate.getDate() - days);
+    // days==1 ->only yesterday 24hrs data
+    let currentDate =
+        days !== 1
+            ? new Date()
+            : new Date(dateFormat(new Date(), "yyyy-mm-dd 00:00:00"));
+    return [currentDate.getTime(), toDate.getTime()];
+};
+
 const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution) => {
   let userSession = CommonUtils.getUserSession();
-  let customerId = userSession.customerId;
   let applicationId = userSession.application.applicationId;
   let query = { applicationId: applicationId, days: days, daily: true };
+  let timestamps = getTimestamps(days)
   const header = {
     'Content-Type': 'application/json',
     'Apz-AppId': applicationId,
@@ -891,7 +891,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
   else {
     query.daily = !hoursWiseDistribution;
   }
-  let url = getConfig().homeUrl + "/rest/ws/group/stats?"+"timestamp="+new Date().getTime() +"&applicationId=" + query.applicationId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
+  let url = getConfig().homeUrl + "/rest/ws/group/stats?timestamp="+timestamps[0] + "&toTimestamp="+timestamps[1] +"&applicationId=" + query.applicationId + "&daily=" + query.daily + "&agentId=";
 
   if (agentId && agentId != "allagents") {
     url = url.replace("&agentId=", '&agentId=' + agentId);
@@ -1004,6 +1004,26 @@ const deleteUserByUserId = (userNames) => {
     throw { message: err };
   })
 }
+const deleteInvitationByUserId = (params) => {
+
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let data = {};
+  let url =getConfig().kommunicateBaseUrl + "/users/invitation";
+  data.applicationId = appId;
+  data.invitedUser = params.invitedUser;
+  return Promise.resolve(axios({
+    method: 'delete',
+    url: url,
+    data: data
+  })).then(response => {
+    if (typeof response !== "undefined") {
+      return response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
 const getInvitedUserByApplicationId = () => {
   
   let userSession = CommonUtils.getUserSession();
@@ -1110,12 +1130,7 @@ const createIntegrySubscription = (subscriptionData) => {
 }
 
 const updateKommunicateCustomerSubscription = (data) => {
-  let url = getConfig().kommunicateBaseUrl + '/subscription/detail'
-  let subscriptionDetails = {
-    applicationId: data.applicationId,
-    billingCustomerId: data.billingCustomerId,
-    subscription: data.subscription
-  }
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail';
   return Promise.resolve(axios({
     method: 'PATCH',
     url: url,
@@ -1189,5 +1204,6 @@ export {
   getSubscriptionDetail,
   createIntegrySubscription,
   editApplicationDetails,
-  updateKommunicateCustomerSubscription
+  updateKommunicateCustomerSubscription,
+  deleteInvitationByUserId
 }

@@ -1605,6 +1605,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var $conversationAll = $kmApplozic("#km-contact-list");
 			var $conversationAssigned = $kmApplozic("#km-assigned-search-list");
 			var $conversationClosed = $kmApplozic("#km-closed-conversation-list");
+			var pressEnterToSendCheckbox = document.getElementById("km-press-enter-to-send-checkbox");
 
 			var $mck_msg_inner;
 			var MESSAGE_SEND_URL = "/rest/ws/message/send";
@@ -1671,6 +1672,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_search.focus();
 			};
 			_this.init = function () {
+				pressEnterToSendCheckbox.checked = true;
 				$kmApplozic.kmtemplate("KMoflTemplate", offlineblk);
 				mckMessageLayout.initSearchAutoType();
 				mckStorage.clearMckMessageArray();
@@ -1722,7 +1724,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							selection.addRange(range);
 							return false;
 						}
-					} else if (e.keyCode === 13) {
+					} else if(pressEnterToSendCheckbox.checked && e.keyCode === 13) {
 						if (typeof MCK_INIT_AUTO_SUGGESTION === "function" && $kmApplozic(".atwho-view:visible").length > 0) {
 							return;
 						}
@@ -2983,7 +2985,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
 						}
 					}
-					$mck_msg_loading.removeClass('n-vis').addClass('vis');
+					if (params.notShowEmptyState){
+						document.getElementById("km-msg-loading-ring").classList.remove('n-vis');
+						document.getElementById("km-msg-loading-ring").classList.add('vis');
+					}
+					else {
+						$mck_msg_loading.removeClass('n-vis').addClass('vis');
+					}
 				} else {
 					CONTACT_SYNCING = true;
 					if (params.startTime) {
@@ -3240,14 +3248,25 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								}
 							}
 						}
+						if (params.notShowEmptyState){
+							document.getElementById("km-msg-loading-ring").classList.remove('vis');
+							document.getElementById("km-msg-loading-ring").classList.add('n-vis');
+						}
+						else {
+							$mck_msg_loading.removeClass('vis').addClass('n-vis');
+						}
 						$mck_loading.removeClass('vis').addClass('n-vis');
-						$mck_msg_loading.removeClass('vis').addClass('n-vis');
 					},
 					error: function () {
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
 						$mck_loading.removeClass('vis').addClass('n-vis');
+						if (params.notShowEmptyState){
+							document.getElementById("km-msg-loading-ring").classList.remove('vis');
+							document.getElementById("km-msg-loading-ring").classList.add('n-vis');
+						} else {
 						$mck_msg_loading.removeClass('vis').addClass('n-vis');
+						}
 						w.console.log('Unable to load messages. Please reload page.');
 					}
 				});
@@ -4064,7 +4083,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									'tabId': tabId,
 									'isGroup': isGroup,
 									'conversationId': conversationId,
-									'startTime': startTime
+									'startTime': startTime,
+									'notShowEmptyState':true
 								});
 							}
 						}
@@ -4120,17 +4140,24 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.setCaretPosition = function (el, pos) {
 				if(el.childNodes.length !== 0 ){ 
+					el.focus();
+					if (typeof window.getSelection != "undefined" &&
+					typeof document.createRange != "undefined") {
 					var range = document.createRange();
+					range.selectNodeContents(el);
+					range.collapse(false);
 					var sel = window.getSelection();
-					range.setStart(el.childNodes[0], pos);
-					range.collapse(true);
 					sel.removeAllRanges();
 					sel.addRange(range);
-					el.focus(); 
+					} else if (typeof document.body.createTextRange != "undefined") {
+					var textRange = document.body.createTextRange();
+					textRange.moveToElementText(el);
+					textRange.collapse(false);
+					textRange.select();
+					}
+				} else {
+					return false;
 				}
-				else {
-				return false;
-			}
 			
 			}
 			
@@ -4760,6 +4787,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.updateRecentConversationListSection = function (contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+				if (message && message.metadata && message.metadata.KM_STATUS && CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]) {
+					sectionId = CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS];
+				}
+				if (message && (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN == MCK_USER_ID) && message.metadata.KM_STATUS && message.metadata.KM_STATUS == "Open") {
+					sectionId = "km-assigned-search-list";
+				} 
 				var section = CONVERSATION_SECTION_MAP[sectionId];
 				if ($kmApplozic("#" + sectionId + " li.km-li-" + section + "-" + contactHtmlExpr).length > 0) {
 					var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
@@ -5209,7 +5242,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
 				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
-				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
+				$textMessage && ((typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template);
 				if (!$kmApplozic(".left .person").length) {
 					/* Note; removing because of cyclic dependency where loadTab calls this back.
 					_this.loadTab({

@@ -289,7 +289,7 @@
 	font-stretch: normal;
 	letter-spacing: 0.8px;
 	color: #ffffff;
-	font-weight: 300 !important;
+	font-weight: 400 !important;
 }
 
 .mck-box .move-right {
@@ -1344,7 +1344,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-box-body .mck-tab-cell {
 	position: relative;
-	display: table;
+	/* display: table; */
 	width: 100%;
 	height: 100%;
 	overflow: auto;
@@ -1499,7 +1499,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	width: auto;
 	outline: none;
 	margin: 0px;
-	font-size: 15px;
+	font-size: 16px;
 	overflow: auto;
 	line-height: 1.2em;
 	overflow-x: hidden;
@@ -2329,8 +2329,8 @@ display: none;
 	bottom: 45px;
 	right: 35px;
 	-webkit-transform: translateZ(0);
-	height: 56px;
-	width: 56px;
+	height: 60px;
+	width: 60px;
 	border-radius: 50%;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.31);
 
@@ -3668,6 +3668,7 @@ display: none;
 }
 .mck-icon--location svg, .mck-icon--email svg {
 	vertical-align: sub;
+	margin-right: 7px;
 }
 
 .mck-icon-delivered {
@@ -4959,7 +4960,7 @@ margin-top: 243px;
 }
 #mck-tab-title.mck-tab-title-w-status {
 	font-size: 18px;
-	font-weight: 300;
+	font-weight: 400;
 	font-style: normal;
 	font-stretch: normal;
 	letter-spacing: 0.7px;
@@ -5015,6 +5016,7 @@ margin-top: 243px;
 #km-contact-search-input-box {
 	padding-top: 0px;
 	padding-left: 0px;
+	overflow: hidden;
 }
 
 /* #mck-btn-attach {
@@ -5216,8 +5218,8 @@ z-index: 2243000;
 bottom: 45px;
 right: 35px;
 -webkit-transform: translateZ(0);
-height: 56px;
-width: 56px;
+height: 60px;
+width: 60px;
 border-radius: 50%;
 box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
@@ -5438,8 +5440,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	display: table!important;
 }
 .mck-agent-status-text {
-	font-size: 12px;
-	font-weight: 300;
+	font-size: 13px;
+	font-weight: 400;
 	font-style: normal;
 	font-stretch: normal;
 	letter-spacing: 0.7px;

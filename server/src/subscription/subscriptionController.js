@@ -93,7 +93,7 @@ const getAppIdByAppKey =()=>{
     return "";
 }
 
-exports.updateKommunicateCustomerSubscription = (req, res) => {
+exports.updateKommunicateCustomerSubscription = async (req, res) => {
     let subscribed = req.body.subscription != "startup";
     let applicationId = req.body.applicationId;
     let response = {};
@@ -101,11 +101,14 @@ exports.updateKommunicateCustomerSubscription = (req, res) => {
         'subscription': req.body.subscription,
         'billingCustomerId': req.body.billingCustomerId
     }
-    customerService.getCustomerByApplicationId(applicationId).then(customer => {
-        let userId = customer.userName
-        customerService.updateCustomer(userId, customerDetail).then(updated => {
+    try {
+        let customer = await customerService.getCustomerByApplicationId(applicationId);
+        let userId = customer.userName 
+        let updated = await customerService.updateCustomer(userId, customerDetail);
             if (updated) {
-                subscribed ? customerService.reactivateAgents(applicationId) : "";
+                subscribed ? customerService.reactivateAccount(applicationId) : "";
+                customerDetail.subscription && (customer.subscription = customerDetail.subscription);
+                await customerService.updateApplicationInApplozic(customer);
                 response.code = "SUCCESS";
                 response.message = { "subscription": req.body.subscription, "status": "updated" };
                 res.status(200).json(response);
@@ -114,16 +117,11 @@ exports.updateKommunicateCustomerSubscription = (req, res) => {
                 response.message = "resource not found by userId " + userId;
                 res.status(404).json(response);
             }
-
-        }).catch(err => {
-            console.log("Error while updating kommunicate subscription details ", err);
-            res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
-        });
-
-    }).catch(err => {
-        console.log("err while fetching data for customer", err);
-        res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
-    })
+        
+    } catch (error) {
+        console.log("Error while updating kommunicate subscription details ", error);
+        res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });   
+    }
 
 }
 

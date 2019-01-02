@@ -514,13 +514,27 @@ exports.defaultPluginSettings=(req, res)=>{
       return getPseudoName().then(result=>{
         let response=Object.assign(result, {"agentId": user.userName, "agentName":user.name});
         return appSettingService.getAppSettingsByApplicationId({ applicationId: req.query.appId }).then(resp=>{
-          response.widgetTheme = resp.data.widgetTheme;
-          return res.status(200).json({ "code": "SUCCESS", "response": response });
+          response.widgetTheme = resp.data.widgetTheme; 
+          return customerService.getCustomerByUserName(user.userName).then(resp=>{
+            response.customerCreatedAt = resp.created_at;
+              return res.status(200).json({ "code": "SUCCESS", "response": response });
+          })
         })       
       })
     }
   }).catch(err=>{
+    console.log(err);
     return res.status(500).json({code: "ERROR", message: "error" });
+  })
+}
+
+
+exports.deleteInvitation = (req, res) => {
+  return userService.deleteInvitation(req.body.applicationId, req.body.invitedUser).then(data => {
+    return res.status(200).json({ code: "SUCCESS", message: data });
+  }).catch(err => {
+    logger.error("error while deleting invitation", err);
+    return res.status(500).json({ code: "ERROR", message: "error" });
   })
 }
 
@@ -559,3 +573,17 @@ exports.updateApplozicUser = (req, res) => {
     });
   });
 };
+
+exports.getAgentIdsStatusWise = async function(req,res){
+  logger.info("request received to fetch user Ids status wise for appId: ", req.query.applicationId);
+  let userIdsStatusWise ={};
+  try {
+    userIdsStatusWise = await userService.getAgentIdsStatusWise(req.query.applicationId);
+    if(userIdsStatusWise){
+      return res.status(200).json({code:"SUCCESS", response: userIdsStatusWise});
+    } 
+  } catch (error) {
+    console.log("error while getting agentIds :", error)
+    return res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"something went wrong"});
+  } 
+}

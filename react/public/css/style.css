@@ -10133,7 +10133,7 @@ input:required {
   position: relative;
   height: 100vh;
 }
-.loader:empty {
+.loader:empty::after {
   content: url(../img/km-loading-animation.svg);
   position: absolute;
   top: calc(50% - 4em);
@@ -10153,7 +10153,7 @@ input:required {
   background-color: #ffffff;
   border: solid 1px #e2e2e5;
   /* height: 223px; */
-  padding: 20px 40px;
+  padding: 20px 40px 20px 8px;
 }
 
 .km-bot-integration-second-container-text-container {
@@ -10202,12 +10202,26 @@ input:required {
 }
 
 .km-bot-integration-logo-container {
+  height: 282px;
+  width: 49%;
   border-radius: 4px;
   background-color: #ffffff;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-  padding-left: 0px;
-  padding-right: 0px;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+  padding:20px 0;
   text-align: center;
+  cursor:pointer;
+  transition: all .3s;
+  text-align: center;
+}
+.km-bot-integration-logo-container svg {
+  margin-top: 11px;
+  width: 80px;
+  height: 76px;
+  object-fit: contain;
+  margin-bottom: -13px;
+}
+.km-bot-integration-logo-container:hover {
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .km-bot-integration-amazon-icon {
@@ -10236,9 +10250,9 @@ input:required {
   height: 19px;
 }
 .km-bot-integration-dialogflow-icon {
-  margin-top: 9px;
-  width: 52px;
-  height: 50px;
+  margin-top: 7px;
+  width: 65px;
+  height: 70px;
   object-fit: contain;
 }
 .km-bot-platform-container {
@@ -10278,12 +10292,9 @@ input:required {
 .modal-dialog--add-faq-modal .modal-header button {
   visibility: hidden;
 }
-.km-bot-integration-heading {
+.km-bot-integration-heading p {
   font-size: 18px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  line-height: 1.4;
   letter-spacing: 1.3px;
   text-align: left;
   color: #515050;
@@ -10606,16 +10617,13 @@ input:required {
   margin: 0;
 }
 .km-bot-request-bot-heading {
-  font-size: 20px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  font-size: 23px;
+  padding-top: 25px;
   letter-spacing: 0.5px;
   color: #535455;
 }
 .km-bot-request-bot-sub-heading {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;

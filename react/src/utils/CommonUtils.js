@@ -53,7 +53,8 @@ const CommonUtils = {
             document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
     getDisplayName: function(user) {
-        if (user.displayName) {
+        // user.displayName.trim() -> this will check whether string is not just whitespace
+        if (user.displayName && user.displayName.trim()) {
           return user.displayName;
         } else if (user.email) {
           return user.email;
@@ -209,18 +210,50 @@ const CommonUtils = {
         return ((navigator.userAgent.indexOf('MSIE') !== -1 ||
         navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
+    isProductApplozic: function() {
+        let userSession = this.getUserSession();
+        if(userSession) {
+            return userSession.application.pricingPackage <= 100;
+        } else {
+            return window.location.hostname.includes("applozic");
+        }
+    },
     isKommunicateDashboard: function() {
         let userSession = this.getUserSession();
         if(userSession) {
-            return userSession.application.pricingPackage <= 200;
+            return userSession.application.pricingPackage >= 100 && userSession.application.pricingPackage < 200;
         } else {
             return window.location.hostname.includes("kommunicate");
         }
-
+    },
+    getProductName: function() {
+        return CommonUtils.isKommunicateDashboard() ? "Kommunicate" : "Applozic";
     },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
         return userSession.roleName === 'APPLICATION_ADMIN'
+    },
+    // below function when called will set cursor to end of the input string
+    setCursorAtTheEndOfInputString: function (el)  {
+        if(el.childNodes.length !== 0 ){ 
+          el.focus();
+          if (typeof window.getSelection != "undefined" &&
+          typeof document.createRange != "undefined") {
+          var range = document.createRange();
+          range.selectNodeContents(el);
+          range.collapse(false);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          } else if (typeof document.body.createTextRange != "undefined") {
+          var textRange = document.body.createTextRange();
+          textRange.moveToElementText(el);
+          textRange.collapse(false);
+          textRange.select();
+          }
+        } else {
+          return false;
+        }
     }
 }
 

@@ -2,23 +2,28 @@ import React, { Component, PropTypes } from 'react';
 import './SettingsComponent.css';
 import routes from "../../../src/routes";
 import subHeadings from "./SettingsSubheading.json";
+import {LearnMore} from "../../views/Faq/LizSVG"
+import CommonUtils from '../../utils/CommonUtils';
+
+
 
 const SettingsHeader = (props) =>{
 
-    let currPath = routes[window.location.pathname];    
-    let subHeading = subHeadings[currPath];
-    if(props.applozicDashboard){
-        subHeading=subHeading.replace('Kommunicate', 'Applozic')
+    let currPath = routes[window.location.pathname];   
+    let subHeading = subHeadings[currPath].subHeading;
+    let knowledgeBaseLink = subHeadings[currPath].knowledgeBaseLink;
+    if(props.applozicDashboard || CommonUtils.isProductApplozic()){
+        subHeading=subHeading.replace('Kommunicate', 'Applozic');
     }
      
    return(
         <div className="km-settings-heading-wrapper">
-            <div className={currPath == "Billing" ? "km-settings-component-heading km-settings-header-border" : "km-settings-component-heading"}>
+            <div className={!subHeading  ? "km-settings-component-heading km-settings-header-border" : "km-settings-component-heading"}>
                 <h1>{currPath}</h1>
             </div>
             
-            <div className={subHeading === "empty" ? "n-vis" : " km-settings-component-subheading"}>
-                <h2>{subHeading}</h2>
+            <div className={!subHeading  ? "n-vis" : " km-settings-component-subheading"}>
+                <h2>{subHeading} <a href={knowledgeBaseLink} target="_blank" className={knowledgeBaseLink == "" ? "n-vis" : "km-knowledge-base-link"}> Learn More <LearnMore color="#4831d9"/> </a></h2> 
             </div>
             </div>
    );

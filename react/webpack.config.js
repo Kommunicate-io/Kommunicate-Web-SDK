@@ -33,7 +33,8 @@ module.exports = env => {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'REACT_APP_NODE_ENV': env && env.REACT_APP_NODE_ENV ? JSON.stringify(env.REACT_APP_NODE_ENV) : JSON.stringify("development")
+                'REACT_APP_NODE_ENV': env && env.REACT_APP_NODE_ENV ? JSON.stringify(env.REACT_APP_NODE_ENV) : JSON.stringify("development"),
+                "BRAND":env && env.BRAND ? JSON.stringify(env.BRAND) : JSON.stringify('kommunicate')
             }
         }),
         new webpack.HotModuleReplacementPlugin(),
@@ -60,7 +61,7 @@ module.exports = env => {
         },
         output: {
             path: path.resolve(__dirname, 'build'),
-            filename: "[name].bundle.js",
+            filename: "[name].bundle-32.js",
             publicPath: '/'
         },
         devtool: 'source-map',

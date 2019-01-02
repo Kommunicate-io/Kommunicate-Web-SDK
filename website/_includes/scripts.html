@@ -91,7 +91,7 @@ else {
         (function(d, m){ 
       let o = {"appId":"e1318f3a9a2e51adfaf4b04f8b68cc7d","conversationTitle":"Kommunicate Support"};
       let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-      s.src = "https://api.kommunicate.io/kommunicate.app";
+      s.src = "https://api.kommunicate.io/v2/kommunicate.app";
       let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
       window.kommunicate = m; m._globals = o;
     })(document, window.kommunicate || {});
@@ -105,9 +105,9 @@ else {
        let o = {"appId":"kommunicate-support","conversationTitle":"Kommunicate Support"};
        o.onInit = function(response , data){
         if (response === "success"){
-          var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+          var mckSideboxLauncher = KommunicateGlobal.document.getElementById('mck-sidebox-launcher');
           mckSideboxLauncher.addEventListener("click",function(){
-                      acEventTrigger("initiateChatKMdashbaord");
+                      acEventTrigger("initiateChatKMWeb");
           });
         }
        };

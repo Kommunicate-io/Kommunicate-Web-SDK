@@ -39,29 +39,15 @@ const quickReply = {
             return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
           }
           document.addEventListener('click', function(e) {
-            if (hasClass(e.target, 'auto-suggest-pro')) {
+            if (hasClass(e.target, 'auto-suggest-pro') || hasClass(e.target, 'auto-suggest')) {
               e.preventDefault();
-              var data = e.target.id;
-
+              var data = (hasClass(e.target, 'auto-suggest-pro') && e.target.id) || (hasClass(e.target, 'auto-suggest') && e.target.parentElement.id);
               for (var i = 0; i < text.length; i++) {
                 if ((text[i].randomId.toString()).indexOf(data) !== -1) {
                   textBox.textContent = "";
                   textBox.textContent = (text[i].value);
                   dBox.style.display = 'none'; // hide dropup
-                  quickReply.setCursorToEnd(textBox);
-                  textBox.focus();
-                }
-              }
-            }
-            else if (hasClass(e.target, 'auto-suggest')){
-              e.preventDefault();
-              var data = e.target.parentElement.id;
-              for (var i = 0; i < text.length; i++) {
-                if ((text[i].randomId.toString()).indexOf(data) !== -1) {
-                  textBox.textContent = "";
-                  textBox.textContent = (text[i].value);
-                  dBox.style.display = 'none'; // hide dropup
-                  quickReply.setCursorToEnd(textBox);
+                  CommonUtils.setCursorAtTheEndOfInputString(textBox);
                   textBox.focus();
                 }
               }
@@ -93,24 +79,6 @@ const quickReply = {
         dBox.style.display = 'none';
       }
     });
-  },
-
-  setCursorToEnd: function(el) {
-    el.focus();
-    if (typeof window.getSelection != "undefined" &&
-      typeof document.createRange != "undefined") {
-      var range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      var sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-    } else if (typeof document.body.createTextRange != "undefined") {
-      var textRange = document.body.createTextRange();
-      textRange.moveToElementText(el);
-      textRange.collapse(false);
-      textRange.select();
-    }
   },
 
   loadQuickReplies: function() {

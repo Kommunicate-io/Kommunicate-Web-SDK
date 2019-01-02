@@ -3603,11 +3603,23 @@ ol, ul {
 	margin-bottom: 15px;
 }
 .write {
-	border-right: 1px solid #eaeaea;
+	background-color: #f4f5f6;
+}
+.write::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    background-color: #f4f5f6;
+    bottom: -7px;
+    z-index: -1;
 }
 .write .email-conversation-indicator {
-	background-color: #e7e7e7;
-	padding: 6px 10px;
+    background-color: #e7e7e7;
+    padding: 6px 10px;
+    margin: -10px -10px 10px;
+    position: relative;
+    border-radius: 4px 4px 0px 0px;
 }
 .km-dashboard-msg-box-rich-text-container .email-message-indicator span:first-child, .write .email-conversation-indicator span:first-child, .km-msg-box .email-message-indicator span:first-child {
 	margin-right: 10px;
@@ -3647,4 +3659,8 @@ ol, ul {
 }
 .mck-icon--email svg {
 	vertical-align: sub;
+}
+
+.km-contact-loading {
+	background-color: transparent;
 }

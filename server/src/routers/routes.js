@@ -112,6 +112,7 @@ home.get('/seed/liz', seedLiz.seedLiz)
 userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);
 userRouter.get('/invite/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
+userRouter.get('/availability/status', userController.getAgentIdsStatusWise);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
@@ -131,6 +132,7 @@ userRouter.patch('/status',userController.updateUserStatus);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
 userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
+userRouter.delete("/invitation",validate(userValidation.deleteInvitation), userController.deleteInvitation);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 //signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);

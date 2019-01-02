@@ -3,7 +3,7 @@ import './PersonInfo.css'
 import ClearBitInfo from './ClearbitInfo'
 import { UserMetadata, LastSeenSection, DisplayPseudoIcon, PseudonymModal } from './MetaInfo'
 import EditableText from './EditableText';
-
+import {KommunicateUserInfoPanelLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 
 
 class PersonInfoCard extends Component {
@@ -33,6 +33,7 @@ class PersonInfoCard extends Component {
             this.setState({
                 user: user,
                 email:user.email,
+                displayName :user.userName && user.userName.trim() ? user.userName : user.userId,
                 phoneNumber:user.phoneNumber,
                 clearbitData: clearbitData,
                 userMetadata: metadata,
@@ -53,6 +54,9 @@ class PersonInfoCard extends Component {
         return (
             <div id="km-group-info-tab"
                 className="km-group-info-tab km-panel-sm km-panel">
+                {
+                    this.state.user ?
+                <div>
                 <div className="panel-content">
                     <div className="km-box-top">
                         <div className="km-group-icon-sec km-postion-relative">
@@ -63,7 +67,7 @@ class PersonInfoCard extends Component {
                         </div>
                         {
                             this.state.user ?
-                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.user.userName || this.state.user.userId} >
+                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.displayName} >
                                 {
                                     this.state.pseudoUser ?
                                         <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
@@ -108,7 +112,11 @@ class PersonInfoCard extends Component {
                             <ClearBitInfo userDetail={this.state.clearbitData} />: null
                     }
                 </div>
-                
+            </div> :
+            <div className = "km-user-info-panel-loader"> 
+                <KommunicateUserInfoPanelLoader/>
+            </div>
+            }
             </div>
         )
     }

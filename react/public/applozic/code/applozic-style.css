@@ -457,21 +457,16 @@ body {
 }
 
 .km-container .right .write .km-write-box {
-	padding-left: 8px;
-	padding-right: 8px;
-	border: 1px solid #e6e6e6;
-	background-color: #eceff1;
 	border-radius: 5px;
 }
 
 .km-container .right .write input, .km-container .right .write .km-text-box
 	{
 	font-size: 16px;
-	float: left;
-	min-height: 18px;
-	max-height: 80px;
-	padding: 10px;
-	width: calc(100% - 80px);
+	min-height: 20px;
+	max-height: 260px;
+	padding: 10px 10px 10px 0px;
+	width: 100%;
 	color: #1a1a1a;
 	border: 0;
 	outline: none;
@@ -484,6 +479,11 @@ body {
 	overflow-x: hidden;
 	box-shadow: none !important;
 	-webkit-user-select: text;
+	transition: all 0.3s ease-in-out;
+}
+
+.km-container .right .write .km-text-box.km-expand-text-area-box {
+	height: 260px;
 }
 
 .km-container .right .write .write-link.attach:before {
@@ -495,6 +495,7 @@ body {
 	background-image: url("/img/attachemnt.png");
 	background-repeat: no-repeat;
 	background-position: center;
+	transform: rotate(35deg);
 }
 
 .km-container .right .write .write-link.smiley:before {
@@ -506,6 +507,9 @@ body {
 	background-image: url("/img/smiley.png");
 	background-repeat: no-repeat;
 	background-position: center;
+}
+.km-container .right .write .write-link.smiley {
+	margin-left: 5px;
 }
 
 .km-container .right .write .write-link.send:before {
@@ -601,6 +605,11 @@ body {
 .km-panel-ft {
 	text-align: left;
 	padding: 10px;
+	width: calc(100% - 10px);
+    margin: 0 auto 7px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px 1px rgba(0, 0, 0, 0.09);
+	background-color: #ffffff;
 }
 
 .km-panel-ft:before, .km-panel-ft:after, .km-row:before, .km-row:after

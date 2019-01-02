@@ -46,7 +46,8 @@
             "url": "localhost",
             "port": "5701",
             "user": "dev",
-            "password": "dev"
+            "password": "dev",
+            "cachePrefix":"KM_LOCAL"
         }
     },
     "mailProvider": {

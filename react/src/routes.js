@@ -15,7 +15,7 @@ const routes = {
   '/settings/welcome-message': 'Welcome Message',
   '/settings/away-message': 'Away Message',
   '/settings/agent-app': 'Agent App',
-  '/settings/agent-assignment':'Conversation Routing',
+  '/settings/conversation-rules':'Conversation Rules',
   '/faq':'FAQ',
   '/settings/billing': 'Billing',
   '/integrations': 'Integrations',

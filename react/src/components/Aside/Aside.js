@@ -17,12 +17,24 @@ import { getConfig } from '../../config/config';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
 import {PseudonymModal} from '../PersonInfo/MetaInfo';
 import Button from '../Buttons/Button';
+import {KommunicateContactListLoader, KommunicateConversationLoader, KommunicateConversationDataLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
+import { CollapseIcon, ExpandIcon, EmailIndicatorIcon } from "../../assets/svg/svgs";
+import styled from 'styled-components';
+import { connect } from 'react-redux'
+import * as SignUpActions from '../../actions/signupAction'
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
   "email": "km-sidebar-user-email",
   "phoneNumber": "km-sidebar-user-number",
 };
+
+const SubmitButton = styled(Button)`
+  &:hover, &:active, &:focus {
+    box-shadow: none;
+  }
+`;
+
 class Aside extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +63,7 @@ class Aside extends Component {
       hideInfoBox: false,
       trialDaysLeftComponent: "",
       userInfo: null,
+      toggleExpandIcon: false
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -556,6 +569,7 @@ class Aside extends Component {
   }
 
   dismissInfo() {
+    this.props.updatPseudoBannerStatus(true);
     if (typeof(Storage) !== "undefined") {
       if(localStorage.getItem("KM_PSEUDO_INFO") === null) {
         localStorage.setItem("KM_PSEUDO_INFO", "true");
@@ -567,6 +581,17 @@ class Aside extends Component {
         console.log("Please update your browser.");
     }
 
+  }
+
+  expandTextArea = () => {
+    var textArea = document.getElementById("km-text-box");
+    textArea.classList.toggle("km-expand-text-area-box");
+    this.setState({
+      toggleExpandIcon: !this.state.toggleExpandIcon
+    }, () => {
+      CommonUtils.setCursorAtTheEndOfInputString(textArea);
+    });
+    
   }
 
   render() {
@@ -615,7 +640,7 @@ class Aside extends Component {
                         </div>
                       </div>
                       {/* Introducing Pseudonyms */}
-                      <div className="introducing-text-box-main-container" hidden={this.state.hideInfoBox}>
+                      <div className={this.props.kmOnBoarding ?"introducing-text-box-main-container" :"n-vis"} hidden={this.state.hideInfoBox}>
                         <div className="introducing-text-box-container">
                           <div className="introducing-info-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 20 20" style={{marginRight:"10px"}}>
@@ -774,8 +799,8 @@ class Aside extends Component {
                                   className="km-contact-list people km-assigned km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
-                                <div id="km-contact-loading" className="km-loading">
-                                  <img src="/applozic/images/ring.gif"/>
+                                <div id="km-contact-loading" className="km-loading km-contact-loading">
+                                  <KommunicateContactListLoader/>
                                 </div>
                                 <div id="km-no-contact-text"
                                   className="km-no-data-text km-text-muted n-vis">No
@@ -946,7 +971,13 @@ class Aside extends Component {
                             <div className="chat km-message-inner km-panel-inner"
                               data-km-id="${contIdExpr}"></div>
                             <div id="km-msg-loading" className="km-loading n-vis">
-                              <img src="/applozic/images/ring.gif"/>
+                              <div style= {{position:"relative"}}>
+                                <KommunicateConversationLoader/> 
+                                <KommunicateConversationDataLoader/>
+                              </div>
+                            </div>
+                            <div id="km-msg-loading-ring" className="km-loading n-vis">
+                            <img src="/applozic/images/ring.gif"/>
                             </div>
                             <div id="km-no-more-messages"
                               className="km-no-more-messages km-show-more-icon n-vis">
@@ -968,15 +999,14 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="write">
-                        <div className="email-conversation-indicator n-vis">
-                            <span>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#949292" fillRule="nonzero" d="M0 3.64244378L4.17855719 0v2.08065889h.0112584c1.2252898.0458706 2.30872368.23590597 3.23022417.58877205 1.03614858.39436807 1.89047392.92952513 2.56710409 1.60169828.53552482.53356847.95771502 1.14100649 1.27501442 1.8173497.08349984.17792235.16437271.35624185.23304899.54349718.32987128.89954044.56029331 1.87632619.49311816 2.87991943-.01613705.24821756-.14560871.98810447-.2962837.98810447 0 0-.18801538-1.03695368-.94795775-2.22482365-.23267371-.36259621-.50437656-.70533502-.81698495-1.02186205l-.0350887.03038182v-.06533086c-.19420749-.19301397-.40079923-.37828356-.63497407-.54588006-.63272238-.45433742-1.40748832-.8141536-2.32279668-1.0796471-.74962217-.21763716-1.60432278-.34412883-2.54909064-.39019801h-.20809286l.00150112 2.08085746L0 3.64244378z"/></svg>
-                            </span>
-                            <span>
-                              Your message will also be sent as an email reply
-                            </span>
-                        </div>
+                        
                         <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">
+                          {/* Email Indicator Text below */}
+                          <div className="email-conversation-indicator n-vis">
+                            <span><EmailIndicatorIcon /></span>
+                            <span>Your message will also be sent as an email reply </span>
+                          </div>
+
                           <div className="km-box-form km-row n-vis">
                             <div className="blk-lg-12">
                               <p id="km-msg-error" className="km-sidebox-error n-vis"></p>
@@ -989,6 +1019,9 @@ class Aside extends Component {
                               onClick={this.changeTabToIntegration}>Reply</span>
                               <span className= {this.state.visibleIntegartion ? "km-sidebox-forward-tab-integration active-tab-integration" : "km-sidebox-forward-tab-integration"}
                               onClick={this.changeTabToReply}>Forward to integrations</span>
+                              <div onClick={this.expandTextArea} className={this.state.visibleReply ? "km-expand-icon": "n-vis"}>
+                                { !this.state.toggleExpandIcon ? <ExpandIcon /> : <CollapseIcon /> }
+                              </div>
                             </div>
                             <div className={this.state.visibleReply ? "n-vis" : "km-sidebox-third-party-integration"}>
                               <span className="inteagration-forward-text">Forward to:</span>
@@ -1004,33 +1037,9 @@ class Aside extends Component {
                                 </div>
                                 <input id="km-file-input" className="km-file-input n-vis"
                                   type="file" name="files[]"/>
-                                <div id="km-btn-attach" className="km-btn-attach">
-                                  <div className="km-dropdown-toggle" data-toggle="kmdropdown"
-                                    aria-expanded="true">
-                                    <a href="javascript:void(0)" type="button" id="km-btn-attach"
-                                      className="write-link attach km-btn-text-panel"
-                                      aria-expanded="true" title="Attach File"> </a>
-                                  </div>
-                                  <ul id="km-upload-menu-list"
-                                    className="km-dropup-menu km-upload-menu-list" role="menu">
-                                    <li><a id="km-file-up" href="javascript:void(0)"
-                                      className="km-file-upload menu-item" title="File &amp; Photos">
-
-                                        <img src="/applozic/images/mck-icon-photo.png"
-                                        className="menu-icon" alt="File &amp; Photos"/> <span>Files
-                                          &amp; Photos</span>
-                                    </a></li>
-                                    <li><a id="km-btn-loc" href="javascript:void(0)" className="menu-item"
-                                      title="Location"> <img
-                                        src="/applozic/images/mck-icon-marker.png" className="menu-icon"
-                                        alt="Location"/> <span>Location</span>
-                                    </a></li>
-
-                                  </ul>
-                                </div>
+                                
                                 <a href="javascript:void(0)" id="km-file-up2" type="button"
-                                  className="write-link attach n-vis km-file-upload km-btn-text-panel"
-                                  title="Attach File"> </a>
+                                  className="write-link attach n-vis km-file-upload km-btn-text-panel" title="Attach File"></a>
 
                                 <div id="dropup" className="dropup">
                                   <div id="d-box">
@@ -1039,12 +1048,51 @@ class Aside extends Component {
 
                                 <div id="km-text-box" contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required" data-text="Type your message..."></div>
 
-                                <a href="javascript:void(0)" type="button" id="km-btn-smiley"
-                                  className="write-link smiley km-btn-smiley km-btn-text-panel"
-                                  title="Smiley"></a> <a href="javascript:void(0)" type="submit"
-                                  id="km-msg-sbmt" className="write-link send km-btn-text-panel"
-                                  title="Send Message"></a>
                               </form>
+                            </div>
+
+                            <div className={this.state.visibleReply ? "km-text-box-icons-container": "n-vis"}>
+                              <div className="km-text-box-icons--first-half">
+                                {/* Attach File and Location Dropdown Container */}
+                                <div id="km-btn-attach" className="km-btn-attach">
+                                  <div className="km-dropdown-toggle" data-toggle="kmdropdown"
+                                    aria-expanded="true">
+                                    <a href="javascript:void(0)" type="button" id="km-btn-attach"
+                                      className="write-link attach km-btn-text-panel"
+                                      aria-expanded="true" title="Attach File">
+                                    </a>
+                                  </div>
+                                  <ul id="km-upload-menu-list" className="km-dropup-menu km-upload-menu-list" role="menu">
+                                    <li>
+                                      <a id="km-file-up" href="javascript:void(0)"
+                                      className="km-file-upload menu-item" title="File &amp; Photos">
+                                        <img src="/applozic/images/mck-icon-photo.png"
+                                        className="menu-icon" alt="File &amp; Photos"/> <span>Files
+                                          &amp; Photos</span>
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a id="km-btn-loc" href="javascript:void(0)" className="menu-item"
+                                      title="Location"> 
+                                        <img src="/applozic/images/mck-icon-marker.png" className="menu-icon" alt="Location"/> <span>Location</span>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </div>
+                                {/* Smiley Button */}
+                                <a href="javascript:void(0)" type="button" id="km-btn-smiley" className="write-link smiley km-btn-smiley km-btn-text-panel" title="Smiley"></a>
+                              </div>
+                              
+                              <div  className="km-text-box-icons--second-half">
+                                {/* Press Enter to Send */}
+                                <div className="km-enter-to-send-container">
+                                  <input className="km-styled-checkbox" id="km-press-enter-to-send-checkbox" type="checkbox" />
+                                  <label htmlFor="km-press-enter-to-send-checkbox">Press enter to send</label>
+                                </div>
+                                {/* Send Button */}
+                                <a href="javascript:void(0)" type="submit" id="km-msg-sbmt"  className="write-link send km-btn-text-panel" title="Send Message">Send</a>
+                              </div>
+                              
                             </div>
 
                             <div className="blk-lg-12">
@@ -1268,4 +1316,13 @@ const customStyles = {
   }
 };
 
-export default Aside;
+// export default Aside;
+const mapStateToProps = state => ({
+  kmOnBoarding:state.signUp.kmOnBoarding,
+})
+const mapDispatchToProps = dispatch => {
+  return {
+      updatPseudoBannerStatus: payload => dispatch(SignUpActions.updateDetailsOnSignup("UPDATE_PSEUDO_BANNER_STATUS",payload))
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Aside) 

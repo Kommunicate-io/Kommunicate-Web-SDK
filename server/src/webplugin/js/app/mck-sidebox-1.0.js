@@ -307,6 +307,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        var CUSTOMER_CREATED_AT = appOptions.customerCreatedAt;
         var OPEN_CONVERSATION_ON_NEW_MESSAGE = appOptions.openConversationOnNewMessage;
         var KOMMUNICATE_VERSION = appOptions.KM_VER ? appOptions.KM_VER : "";
         KOMMUNICATE_VERSION === "v2" && (parent.KommunicateGlobal = window);
@@ -410,6 +411,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var alMessageService = new AlMessageService();
         var alFileService = new AlFileService();
         var kmCustomTheme = new KmCustomTheme();
+        var kommunicateCommonFunction = new KommunicateCommonFunction();
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
@@ -492,6 +494,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             kmCustomTheme.init(appOptions);
+            kommunicateCommonFunction.init(appOptions);
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
             notificationtoneoption.loop = false;
@@ -762,7 +765,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             MCK_CONTACT_NAME_MAP = new Array();
             MCK_UNREAD_COUNT_MAP = new Array();
             MCK_ON_PLUGIN_CLOSE = optns.onClose;
-            MCK_ACCESS_TOKEN = optns.accessToken;
+            MCK_ACCESS_TOKEN = optns.password||optns.accessToken;
             MCK_DISPLAY_TEXT = optns.displayText;
             MCK_CALLBACK = optns.readConversation;
             MCK_GROUPMAXSIZE = optns.maxGroupSize;
@@ -1187,7 +1190,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    Kommunicate.startConversation({isMessage: false, isInternal: true}, function (response) {
+                    Kommunicate.startConversation({groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS, isMessage: false, isInternal: true}, function (response) {
                     });
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
             }
@@ -1333,7 +1336,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     userPxy.appModuleName = optns.appModuleName;
                 }
                 if (MCK_ACCESS_TOKEN) {
-                    userPxy.password = optns.accessToken;
+                    userPxy.password = MCK_ACCESS_TOKEN;
                 }
                 if (AUTHENTICATION_TYPE_ID_MAP.indexOf(MCK_AUTHENTICATION_TYPE_ID) === -1) {
                     MCK_AUTHENTICATION_TYPE_ID = 0;
@@ -1466,7 +1469,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             if (typeof result === 'object' && result !== null && result.token) {
                                 result.appId = userPxy.applicationId;
                                 if (MCK_ACCESS_TOKEN) {
-                                    result.accessToken = userPxy.password;
+                                    result.accessToken = MCK_ACCESS_TOKEN;
                                 }
 
                                 _this.onInitApp(result);
@@ -1492,9 +1495,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     });
                     
             }
-            _this.shouldBrandingIncluded = function(data){
-                return !data  || !data.pricingPackage || USE_BRANDING && (data.pricingPackage !== KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY && KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY);
-            }
+
             _this.onInitApp = function (data) {
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
@@ -1538,7 +1539,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     }
                 });
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
-                if (_this.shouldBrandingIncluded(data)) {
+                var showPoweredBy = kommunicateCommonFunction.showPoweredBy(data);
+                if (showPoweredBy) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
@@ -1578,7 +1580,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
-                if(typeof KM_ASK_USER_DETAILS !== 'undefined'){
+                
+                if(KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0){
                   $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
@@ -1599,7 +1602,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
-                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === appHeaders.accessToken) {
+                    if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (MCK_ACCESS_TOKEN)) {
                         _this.onInitApp(appHeaders);
                         return true;
                     }
@@ -2005,6 +2008,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         var groupId = result.response[0].id;
                         $applozic.fn.applozic("loadGroupTab", groupId,callback);
                     }else {
+                        if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                            ALStorage.clearMckMessageArray();
+                        }
                         $applozic.fn.applozic("loadTab",null,callback);
                         
                     }
@@ -4253,7 +4259,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         mckMessageLayout.addContactsFromMessageList({
                             message: mckMessageArray
                         }, params);
-
                          _this.openConversation();
                         CONTACT_SYNCING = false;
                         return;
@@ -4944,8 +4949,12 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 return contact.imageUrl? '<img src="' + contact.imageUrl + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
       			_this.getContactImageLink = function(contact, displayName) {
-      				var imgsrctag = '';
-              var contact;
+                        var imgsrctag = '';
+                        if(!contact.isGroup){
+                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                            contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
+                          }
+                        }
       				if(contact.members && contact.type==10){
       					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
               }

@@ -31,16 +31,6 @@ Kommunicate.startConversation(conversationDetail, function (response) {
 });                    
 ```
 
-### Example 
-```
-var conversationDetail = {
-    agentIds: ["debug6"],
-    botIds: ['botId1', 'botId2'] //optional
-};
-Kommunicate.startConversation(conversationDetail, function (response) {
-    console.log("new conversation created");
-});
-```
 ## Open a particular conversation
 You can open a particular conversation if you have the group ID of that particular conversation by this method:
 

@@ -45,9 +45,10 @@ const AnalyticsTracking = {
   },
 
   acEventTrigger: function(trigger) {
-    if(!AnalyticsTracking.isEnabled()) {
+    if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
       return;
     }
+
     var event = trigger;
 
     // Changing the event name 
@@ -107,15 +108,8 @@ const AnalyticsTracking = {
   
     //  ActiveCampaign id. 
     var actid = "66105982";
-  
     //  event key,
     var eventKey = "6fcd6450068b76b0eb4e03c32f22cedbd7c5b545";
-  
-  
-    var visit = {
-      email: CommonUtils.getUserSession() != null ? CommonUtils.getUserSession().email : "" // the user's email address
-    }
-  
     // get the url of the page and send it as event data
     var eventData = "kommunicate";
   
@@ -123,11 +117,20 @@ const AnalyticsTracking = {
     var eventString = "actid=" + actid +
       "&key=" + eventKey +
       "&event=" + event +
-      "&visit=" + encodeURIComponent(JSON.stringify(visit)) +
       "&eventdata=" + eventData;
       
-    // console.log(eventString)
-  
+    this.sendEventToActiveCampaign(eventString, CommonUtils.getUserSession().email);
+
+    if (CommonUtils.getUserSession().email != CommonUtils.getUserSession().adminUserName) {
+      this.sendEventToActiveCampaign(eventString, CommonUtils.getUserSession().adminUserName);
+    }
+  },
+
+  sendEventToActiveCampaign: function(eventString, email) {
+    let visit = {
+      email: email
+    };
+    eventString +="&visit=" + encodeURIComponent(JSON.stringify(visit));
     let axiosConfig = {
       headers: {
         "crossDomain": true,
@@ -135,15 +138,16 @@ const AnalyticsTracking = {
         "Content-Type": "application/x-www-form-urlencoded"
       }
     };
-    let trackingURL = getConfig().serviceUrl+"/track?";
-    axios.post(trackingURL, eventString, axiosConfig)
+
+    axios.post(getConfig().serviceUrl+"/track?", eventString, axiosConfig)
       .then((res) => {
-        // console.log("RESPONSE RECEIVED: ", res);
+         //console.log("RESPONSE RECEIVED: ", res);
       })
       .catch((err) => {
-        // console.log("AXIOS ERROR: ", err);
+         //console.log("AXIOS ERROR: ", err);
       });
   }
+
 };
 
 export default AnalyticsTracking;

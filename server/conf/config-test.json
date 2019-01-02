@@ -47,7 +47,8 @@
         "url": "172.31.17.248",
         "port": "5701",
         "user": "dev",
-        "password": "dev"
+        "password": "dev",
+        "cachePrefix":"KM_TEST"
       }
     },
     "mailProvider":{
@@ -118,7 +119,7 @@
     "chargebeeSite": "kommunicate-test",
     "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa",
     "crons":[
-      {"time": "0 0 10 * * 1", "job":"sendWeeklyReportsToCustomers", "enable":true },
+      {"time": "0 0 10 * * 5", "job":"sendWeeklyReportsToCustomers", "enable":true },
       {"time": "0 0 11 * * *", "job":"trialExpireCron", "enable":true }      
     ],
     "thirdPartyIntegration": {

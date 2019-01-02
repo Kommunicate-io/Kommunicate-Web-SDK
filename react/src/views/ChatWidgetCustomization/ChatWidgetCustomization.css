@@ -28,11 +28,10 @@
 
 .km-chat-customization-wrapper .km-color-picker {
     position: relative;
-    margin-top: 90px;
 }
 
 .km-chat-customization-wrapper .km-logo-picker {
-    margin-top: 50px;
+    margin-top: 54px;
 }
 
 .km-chat-customization-wrapper .logo-selection {
@@ -316,4 +315,68 @@
 }
 .km-coming-soon-text div {
     margin-top: 20px;
+}
+
+.km-chat-customization-wrapper .km-settings-banner {
+    margin-left: 0px;
+}
+.km-chat-customization-wrapper {
+    margin-bottom: 50px;
+}
+
+.km-chat-customization-wrapper .inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.km-chat-customization-wrapper .inputfile + label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4831d9;
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: 0;
+    margin-right: 15px;
+}
+.km-chat-customization-wrapper .inputfile:disabled + label {
+    color: rgba(71, 49, 217, 0.5);
+    cursor: default;
+}
+.km-powered-by-customization {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 630px;
+}
+.km-powered-by-customization-text {
+    font-size: 15px;
+    line-height: 1.13;
+    letter-spacing: 0.7px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 15px 0 15px 0;
+}
+.km-powered-by-customization-heading {
+    font-size: 16px;
+    letter-spacing: 0.3px;
+    color: #272828;
+    margin-right: -15px;
+}
+.km-powered-by-logo {
+    padding: 0 0 7px;
+    vertical-align: middle;
+    color: #aeaaaa;
+}
+.km-powered-by-link {
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    color: #000000;
+}
+.km-division-between-widget-and-branding-customization{
+    border-width: 1px;
+    border-color: #cacaca;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getConfig} from '../config/config';
+import {getConfig, getEnvironmentId} from '../config/config';
 import CommonUtils from '../utils/CommonUtils';
 
 const ApplozicClient ={
@@ -345,7 +345,147 @@ updateUserDetail:function(params){
     }).then(response => {
       return response;
     })
+  },
+  getUserDetails : function (data) {
+    let userSession = CommonUtils.getUserSession();
+    let applicationId = userSession.application.applicationId;
+    let url = getConfig().applozicPlugin.userDetailUrl;
+    let accessToken = userSession.accessToken;
+    let userName =userSession.userName
+    return axios({
+      method: 'post',
+      url:url,
+      data: data,
+      headers: {
+        "Apz-Product-App": true,
+        "Apz-Token": 'Basic ' + new Buffer(userName+':'+accessToken).toString('base64'),
+        "Content-Type": "application/json",
+        "Apz-AppId":applicationId
+      }}).then( response => {
+        if(response.status == 200) {
+          return response
+        } 
+      }).catch( err => {
+        console.log("error while fetching user details", err)
+        throw { message: err };
+      });
+  },
+
+  subscribe: function(token, pricingPackage, quantity) {
+    let userSession = CommonUtils.getUserSession();
+    let data = "stripeToken=" + token.id + "&email=" + encodeURIComponent(token.email) + "&appKey=" + userSession.application.applicationId + 
+    "&package=" + pricingPackage + "&quantity=" + quantity + "&payload=";
+
+    Promise.resolve(axios({
+        method: 'post',
+        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/subscription',
+        data: data,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded' 
+        }
+    })).then(function (response) {
+        console.log(response);
+        if (response.status === 200 && response.data !== undefined) {
+            return response;
+        }
+
+        if (response.status === 404 && response.data !== undefined) {
+            console.log(response)
+            return response;
+        }
+    });
+  },
+
+  changeCard: function(token) {
+    Promise.resolve(axios({
+        method: 'post',
+        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/card/update',
+        data: "stripeToken=" + token.id + "&appKey=" + CommonUtils.getUserSession().application.applicationId,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })).then(function (response) {
+        console.log(response);
+        if (response.status === 200 && response.data !== undefined) {
+            return response;
+        }
+
+        if (response.status === 404 && response.data !== undefined) {
+            console.log(response)
+            return response;
+        }
+    });
+
   }
 }
 
 export default ApplozicClient;
+
+
+exports.SUBSCRIPTION_PACKAGES = {'-1': "Closed", 0: "Beta", 1: "Starter", 2: "Launch", 3: "Growth", 4: "Enterprise", 5: "SANDBOX", 6: "UNSUBSCRIBED", 
+    7: "DISTRIBUTION_LAUNCH", 8: "DISTRIBUTION_GROWTH", 9: "DISTRIBUTION_ENTERPRISE1", 10: "DISTRIBUTION_ENTERPRISE2", 11: "LAUNCH_REVISE", 
+    12: "GROWTH_REVISE", 13: "PRO", 14: "ENTERPRISE_REVISE", 15: "FREE"};
+
+exports.SUB_PACKAGE_ARRAY = {0: 'launch_monthly', 1: 'launch_yearly', 2: 'growth_monthly', 3: 'growth_yearly', 4: 'enterprise_monthly', 5: 'enterprise_yearly', 7: "Starter_Monthly", 8: 'Starter_Yearly', 9: 'Starter_Quarterly'};
+
+exports.SUBSCRIPTION_PERIOD = {0: "m", 1: "hy", 2: "y", 3: "qr", 4: ""};
+
+exports.COUPONS = {1: '88800', 3: '358800',4:"149900"};
+
+exports.AMOUNTS = {1: '4900', 2: '9900', 3: '39900', 11: '12900', 12: '19900', 13: '39900'};
+
+exports.SUB_PLANS = {1: 'starter_monthly', 2: 'launch_monthly', 3: 'growth_monthly', 11: 'launch_monthly_revise', 12: 'growth_monthly_revise', 13: 'enterprise_monthly_revise'};
+
+exports.PRICING_PLANS = {
+    0: {
+        amount: "119200",
+        description: "Launch ($1192.00/y)",
+        package: "27"
+    },
+    1: {
+        amount: "32900",
+        description: "Launch ($329.00/qr)",
+        package: "26"
+    },
+    2: {
+        amount: "12900",
+        description: "Launch ($129.00/m)",
+        package: "10"
+    },
+    3: {
+        amount: "166800",
+        description: "Growth ($1668.00/y)",
+        package: "19"
+    },
+    4: {
+        amount: "47700",
+        description: "Growth ($477.00/qr)",
+        package: "18"
+    },
+    5: {
+        amount: "19900",
+        description: "Growth ($199.00/m)",
+        package: "12"
+    },
+    6: {
+        amount: "418800",
+        description: "Pro ($4188.00/y)",
+        package: "22"
+    },
+    7: {
+        amount: "119700",
+        description: "Pro ($1197.00/qr)",
+        package: "21"
+    },
+    8: {
+        amount: "49900",
+        description: "Pro ($499.00/m)",
+        package: "20"
+    },
+    9: {
+        amount: "149900",
+        description: "Enterprise ($1499.00/m)",
+        package: "10"
+    }
+};
+
