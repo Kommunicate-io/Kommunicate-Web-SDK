@@ -66,7 +66,8 @@ KommunicateConstants = {
         BUSINESS:5,
         APPLICATION_BROADCASTER:6,
         SUPPORT:7,
-        APPLICATION_WEB_ADMIN:8
+        APPLICATION_WEB_ADMIN:8,
+        DEVELOPER: 11
     }
 }
 
