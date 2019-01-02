@@ -34,7 +34,7 @@ export default {
     'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
-        'stripe': 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS'
+        'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     }
 },
 
@@ -74,7 +74,7 @@ export default {
     'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
-        'stripe': 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS'
+        'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     }
 },
     
@@ -114,7 +114,7 @@ export default {
     'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
-        'stripe': 'pk_test_9uFWGHHTl9Fcfgtq7G6K59jS'
+        'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     }
 },
     
@@ -234,7 +234,7 @@ export default {
    'integryEnabled':false,
    'enableDevTools':false,
    "applozic": {
-        'stripe': 'pk_test_o9xv4TBvyXhccXEJWt9xF7le'
+        'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     } 
  },
  "commonResources":{
