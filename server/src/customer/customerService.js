@@ -111,7 +111,7 @@ const reactivateAccount = async function (appId) {
         users.push(...admin, ...agents, ...bots);
 
         for (var i = 0; i < users.length; i++) {
-            let userStatus = (i < result.subscription.plan_quantity || user.userName == 'liz') ? 1:2;
+            let userStatus = (i < result.subscription.plan_quantity || users[i].userName == 'liz') ? 1:2;
             let dataToBeUpdated = { status: userStatus };
             users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = userStatus);
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
