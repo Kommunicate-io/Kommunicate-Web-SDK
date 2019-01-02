@@ -51,8 +51,7 @@ class Integration extends Component {
       applicationId: "",
       hideErrorMessage: true,
       activeUsers: [],
-      isAgentSelected: true,
-      isAdminSelected: false,
+      selectedRole: ROLE_TYPE.AGENT,
       invitedUser: [],
       isTrialPlan: null,
       isStartupPlan: null,
@@ -154,8 +153,7 @@ class Integration extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ modalIsOpen: false });
-    this.handleAgentRadioBtn();
+    this.setState({ modalIsOpen: false, selectedRole: ROLE_TYPE.AGENT });
   };
   showAndHideDisabledUsers = () => {
     let isDisabledUsersListHidden = this.state.isDisabledUsersListHidden
@@ -163,7 +161,7 @@ class Integration extends Component {
   }
   sendEmail = (e) => {
     let email = this.state.email.trim();
-    let roleType = this.state.isAdminSelected ? ROLE_TYPE.ADMIN : ROLE_TYPE.AGENT;
+    let roleType = this.state.selectedRole;
     let activeUsers = this.state.activeUsers;
     let invitedUsersEmail = this.state.invitedusersEmailWithoutDeletedInvitation;
     let isUserExists = activeUsers.indexOf(email) == -1 ? false : true ;
@@ -286,20 +284,12 @@ class Integration extends Component {
     this.setState({ multipleEmailAddress: filteredEmails })
     // console.log(this.state.multipleEmailAddress);
   }
-  handleAgentRadioBtn = (e) => {
-    // e.preventDefault();
+  handleRoleRadioBtn = (e) => {
     this.setState({
-      isAdminSelected: false,
-      isAgentSelected: true
+      selectedRole: e.target.getAttribute('data-value')
     })
   }
-  handleAdminRadioBtn = (e) => {
-    // e.preventDefault();
-    this.setState({
-      isAdminSelected: true,
-      isAgentSelected: false,
-    })
-  }
+
 
   render() {
     let userSession = CommonUtils.getUserSession();
@@ -421,9 +411,9 @@ class Integration extends Component {
                     </div>
                     <h5 className="teammates-add-member-modal-role">Role</h5>
                     <div className="teammates-add-member-modal-radio-btn-wrapper">
-                      <RadioButton idRadioButton={'teammates-admin-radio'} handleOnChange={this.handleAgentRadioBtn} checked={this.state.isAgentSelected} label={agentRadioBtnContainer} />
+                      <RadioButton idRadioButton={'teammates-admin-radio'} handleOnChange={this.handleRoleRadioBtn} dataValue={ROLE_TYPE.AGENT}  checked={this.state.selectedRole == ROLE_TYPE.AGENT} label={agentRadioBtnContainer} />
 
-                      <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={this.handleAdminRadioBtn} checked={this.state.isAdminSelected} label={adminRadioBtnContainer} />
+                      <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={this.handleRoleRadioBtn} dataValue={ROLE_TYPE.ADMIN}  checked={this.state.selectedRole == ROLE_TYPE.ADMIN} label={adminRadioBtnContainer} />
                     </div>
                     <div className="teammates-add-member-modal-btn">
                       <button className="km-button km-button--secondary teammates-add-member-modal-cancel-btn" onClick={this.onCloseModal}>Cancel</button>
