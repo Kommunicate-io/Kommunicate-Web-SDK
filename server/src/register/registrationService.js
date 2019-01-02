@@ -12,7 +12,7 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD = config.getProperties().kommunicateAdminPassword;
 const USER_TYPE = { "AGENT": 1, "BOT": 2, "ADMIN": 3 };
-const ROLE_TYPE ={"SUPER_ADMIN": 0,"ADMIN":1,"AGENT":2,"BOT":3};
+const COMMON_CONSTANTS = require("../users/constants.js");
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const appSetting = require("../setting/application/appSettingService")
@@ -124,7 +124,7 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   userObject.name = applozicUser.displayName;
   userObject.brokerUrl = applozicUser.brokerUrl;
   userObject.userKey = applozicUser.userKey;
-  type === 2? userObject.roleType = ROLE_TYPE.BOT :"";
+  type === 2? userObject.roleType = COMMON_CONSTANTS.ROLE_TYPE.BOT :"";
 
   return userObject;
 };
