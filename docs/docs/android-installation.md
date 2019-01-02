@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-implementation 'io.kommunicate:kommunicate:1.7'
+implementation 'io.kommunicate:kommunicate:1.7.1'
 ```
 
 ## Initialise SDK
@@ -20,56 +20,44 @@ After the gradle sync has finished with kommunicate dependency, you can initiali
 ```java
  Kommunicate.init(context, Your APP_ID);
 ```
-
 You can get the Application Id by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).
-
 
 ## Launch chat
 
-Launch the chat using the below method:
+Kommunicate provides KMChatBuilder class to create and launch chat directly saving you the extra steps of authentication, creation, initialisation and launch. You can customise the process by building the launchChat object according to your requirements. Below are some examples of how you can customise the builder for launching a single chat:
 
-```java
- Kommunicate.launchSingleChat(context, groupName, kmUser, withPreChat, isUnique, agentList, botList, callback);
-```
-
-Below are the parameter's description:
+Parmaters of KMChatBuilder:
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:| -----:|
 | context      | Activity | Only Activity Context is accepted. Excpetion is thrown otherwise  |
-| groupName      | String      |   Optional, you can pass a group name or null |
+| applicationId | String  | Ignore if you have already initialised the SDK with Application ID |
+| chatName      | String      |   Optional, you can pass a chat name or null |
 | kmUser | KMUser     |    Pass the details if you have the user details, null other wise. |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
-| isUnique | boolean      |    Pass true if you would like to create only one conversation for every user. The next time user starts the chat the same conversation would open |
+| isSingleChat | boolean      |    Pass false if you would like to create new conversation every time user starts a chat. This is true by default which means only one conversation will open for the user every time the user starts a chat. |
 | agentList | List<String>      |    Pass the list of agents. The agent id would be the email id you used to register on kommunicate. Leave null if you want to create conversation with default agent.|
 | botList | List<String>      |    Pass the list of bots. Leave null if you haven't integrated any bots |
 | callback | KmCallback      |    Callback to notify Success or Failure |
 
 ### Launching chat for visitor:
-If you would like to launch the chat directly without the visiting user entering any details, then use the method as below:
+If you would like to launch the chat directly without the visiting user entering any details, then use the builder as below:
 
 ```java
-List<String> agentList = new ArrayList();
-agentList.add("agent1@yourdomain.com"); //add your agentID
+       new KmChatBuilder(context).launchChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
+                        }
 
-List<String> botList = new ArrayList();
-botList.add("bot1"); //enter your integrated bot Ids
-
- Kommunicate.launchSingleChat(context, "Support", Kommunicate.getVisitor(), false, true, agentList, botList, new KmCallback(){
-                    @Override
-                    public void onSuccess(Object message) {
-                        Log.d(context, "ChatLaunch", "Success : " + message);
-                    }
-
-                    @Override
-                    public void onFailure(Object error) {
-                        Log.d(context, "ChatLaunch", "Failure : " + error);
-                    }
-                });
+                        @Override
+                        public void onFailure(Object error) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Failure : " + error);
+                        }
+                    });
 ```
 
-### Launching chat for visitor with lead collection:
-If you need the user to fill in details like phone number, emailId and name before starting the support chat then launch the chat with `withPreChat` flag as true. In this case you wouldn't need to pass the kmUser. A screen would open up for the user asking for details like emailId, phone number and name. Once the user fills the valid details (atleast emailId or phone number is required), the chat would be launched. Use the method as below:
+If you have your agentList and bot list then use the builder as below:
 
 ```java
 List<String> agentList = new ArrayList();
@@ -78,21 +66,39 @@ agentList.add("agent1@yourdomain.com"); //add your agentID
 List<String> botList = new ArrayList();
 botList.add("bot1"); //enter your integrated bot Ids
 
- Kommunicate.launchSingleChat(context, "Support", null, true, true, agentList, botList, new KmCallback(){
-                    @Override
-                    public void onSuccess(Object message) {
-                        Log.d(context, "ChatLaunch", "Success : " + message);
-                    }
+      new KmChatBuilder(context).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
+                        }
 
-                    @Override
-                    public void onFailure(Object error) {
-                        Log.d(context, "ChatLaunch", "Failure : " + error);
-                    }
-                });
+                        @Override
+                        public void onFailure(Object error) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Failure : " + error);
+                        }
+                    });
+```
+
+
+### Launching chat for visitor with lead collection:
+If you need the user to fill in details like phone number, emailId and name before starting the support chat then launch the chat with `withPreChat` flag as true. In this case you wouldn't need to pass the kmUser. A screen would open up for the user asking for details like emailId, phone number and name. Once the user fills the valid details (atleast emailId or phone number is required), the chat would be launched. Use the builder as below:
+
+```java
+     new KmChatBuilder(MainActivity.this).setWithPreChat(true).launchChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Failure : " + error);
+                        }
+                    });
 ```
 
 ### Launching chat with existing user:
-If you already have the user details then create a KMUser object using the details and launch the chat. Use the method as below to create KMUser with already existing details:
+If you already have the user details then create a KMUser object using the details and launch the chat. Use the builder as below to create KMUser object with already existing details:
 
 ```java
     KMUser user = new KMUser();
@@ -101,26 +107,20 @@ If you already have the user details then create a KMUser object using the detai
     user.setImageLink(image-url);
 ```
 
-Then pass this user object to the `launchSingleChat` method as below:
+Then pass this user object to the `setKmUser` method as below:
 
 ```java
-List<String> agentList = new ArrayList();
-agentList.add("agent1@yourdomain.com"); //add your agentID
+new KmChatBuilder(MainActivity.this).setKmUser(user).launchChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Success : " + message);
+                        }
 
-List<String> botList = new ArrayList();
-botList.add("bot1"); //enter your integrated bot Ids
-
- Kommunicate.launchSingleChat(context, "Support", user, false, true, agentList, botList, new KmCallback(){
-                    @Override
-                    public void onSuccess(Object message) {
-                        Log.d(context, "ChatLaunch", "Success : " + message);
-                    }
-
-                    @Override
-                    public void onFailure(Object error) {
-                        Log.d(context, "ChatLaunch", "Failure : " + error);
-                    }
-                });
+                        @Override
+                        public void onFailure(Object error) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Failure : " + error);
+                        }
+                    });
 ```
-
 If you have a different use-case and would like to customise the chat creation , user creation and chat launch, you can explore our docs further.
+
