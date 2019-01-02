@@ -8321,7 +8321,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 
 			_this.updateConversationList = function (group, metadata) {
-				if (!metadata.KM_STATUS) {
+				if (!metadata.messageMetadata.KM_STATUS) {
 					if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
 						$kmApplozic('#km-assigned').click();
 					}
