@@ -400,7 +400,7 @@ updateUserDetail:function(params){
     Promise.resolve(axios({
         method: 'post',
         url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/card/update',
-        data: "stripeToken=" + token.id + "&appKey=" + CommonUtils.getUserSession().application.applicationId,
+        data: "stripeToken=" + token.id + "&appKey=" + CommonUtils.getUserSession().application.applicationId + "&payload=",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
