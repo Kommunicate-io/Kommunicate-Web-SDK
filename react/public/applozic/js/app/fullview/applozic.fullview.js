@@ -8321,13 +8321,16 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 
 			_this.updateConversationList = function (group, metadata) {
-				if (!metadata.messageMetadata.KM_STATUS) {
+				if (metadata.messageMetadata.KM_STATUS === "Open" || metadata.messageMetadata.KM_ASSIGN) {
+
 					if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
 						$kmApplozic('#km-assigned').click();
 					}
 					else if (group.metadata.CONVERSATION_ASSIGNEE != MCK_USER_ID) {
 						$kmApplozic('#km-conversation').click();
 					}
+				} else {
+					$kmApplozic('#km-closed').click();				
 				}
 			}
 		}
