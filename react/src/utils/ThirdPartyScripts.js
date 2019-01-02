@@ -139,8 +139,7 @@ class ThirdPartyScripts extends Component {
             if(CommonUtils.getUserSession()) {
                 profitWellUser = CommonUtils.getUserSession().adminUserName;
             }
-
-            if (CommonUtils.isProductApplozic() && CommonUtils.getUserSession().application.stripeCustomerKey != null) {
+            if (CommonUtils.getUserSession() && CommonUtils.isProductApplozic() && CommonUtils.getUserSession().application.stripeCustomerKey != null) {
                 profitWellUser = CommonUtils.getUserSession().application.stripeCustomerKey;
             }
 
