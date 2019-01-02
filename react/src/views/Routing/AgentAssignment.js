@@ -431,7 +431,7 @@ toggleConversationAssignment = () => {
                             </OptionsWrapper>
                             <div style={{marginTop: "30px"}}>
                                 <div className="see-docs-link-container">
-                                    <p className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank" >See Docs <LearnMore color={"#5553B7"} /></a></p>
+                                    <p className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-conversation-assignment" target="_blank" >See Docs <LearnMore color={"#5553B7"} /></a></p>
                                 </div>
                             </div>
                         </div>
