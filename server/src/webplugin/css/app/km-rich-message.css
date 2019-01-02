@@ -791,7 +791,7 @@
         border-bottom-right-radius: 18px;
     }
     .km-faq-list--footer_button-container button {
-        width: 99.5%;
+        width: 99%;
         outline: none;
         border: none;
         background: transparent;
@@ -816,7 +816,7 @@
         border-bottom: 1px solid #e5e5e5;
     
     }
-    .km-faq-list, .km-dialog-box{
+    .km-dialog-box{
         /*width:96%;*/
     }
 
