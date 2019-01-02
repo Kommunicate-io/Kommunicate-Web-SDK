@@ -6,7 +6,7 @@ import {createCustomerOrAgent, sendProfileImage} from '../../utils/kommunicateCl
 import Notification from '../model/Notification';
 import ApplozicClient from '../../utils/applozicClient';
 import {createBot} from '../../utils/botPlatformClient';
-import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_URL } from '../../utils/Constant';
+import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL } from '../../utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
@@ -76,7 +76,6 @@ class BotIntegrationModalContent extends Component {
         this.state = {
             buttonText:"Next",
             step:1,
-            botImageUrl:DEFAULT_BOT_URL,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
@@ -146,7 +145,7 @@ class BotIntegrationModalContent extends Component {
             name: this.state.botName.trim(),
             aiPlatform: this.state.aiPlatform.trim(),
             roleType: ROLE_TYPE.BOT,
-            imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : this.state.defaultBotUrl
+            imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : DEFAULT_BOT_IMAGE_URL
         }
         let botInfo = {}
         if (this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM) {

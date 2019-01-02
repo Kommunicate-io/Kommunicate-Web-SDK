@@ -24,7 +24,7 @@ import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
 import Banner from '../../components/Banner/Banner';
-import {SUPPORTED_PLATFORM} from '../../utils/Constant.js'
+import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
 const customStyles = {
   content: {
     top: '50%',
@@ -96,7 +96,6 @@ export default class BotStore extends Component {
           botAvailable: true,
           conversationsAssignedToBot: null,
           hideIntegratedBots: true,
-          defaultBotUrl:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png",
           setbotImageLink:'',
           botIntegrationType:""
         };
@@ -470,7 +469,7 @@ export default class BotStore extends Component {
             name:this.state.botName,
             aiPlatform:aiPlatform,
             roleType: ROLE_TYPE.BOT,
-            imageLink: this.state.setbotImageLink ? this.state.setbotImageLink : this.state.defaultBotUrl
+            imageLink: this.state.setbotImageLink ? this.state.setbotImageLink : DEFAULT_BOT_IMAGE_URL
 
           },"BOT")).then( bot => {
             var bot = bot.data.data;
