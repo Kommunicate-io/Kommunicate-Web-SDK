@@ -1190,11 +1190,35 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    Kommunicate.startConversation({groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS, isMessage: false, isInternal: true}, function (response) {
-                    });
+                    _this.getLatestConversationForMsgTriggetTimerout();
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
             }
         }
+
+        _this.getLatestConversationForMsgTriggetTimerout = function () {
+            var params = {
+                'tabId': '',
+                'isGroup': false
+            }
+            mckMessageService.loadMessageList(params, function (data) {
+                if (data && data.groupFeeds && data.groupFeeds.length !== 0 && data.message && data.message.length !== 0) {
+                    var latestGroupId = data.groupFeeds[0].id;
+                    var latestGroupMessage = data.message.filter(function (item) { // added this check to get the latest group message from message array if one-to-one user chats are also present for the application
+                        return item.groupId == latestGroupId;
+                    })[0]; // It returns array of messages for the latestGroupId, so from array we're selecting the latest message for the group
+                    (latestGroupMessage.type !== KommunicateConstants.MESSAGE_TYPE.SENT) && mckNotificationService.notifyUser(latestGroupMessage);
+                } else {
+                    // startConversation function will create a new conversation.
+                    Kommunicate.startConversation({
+                        groupName: DEFAULT_GROUP_NAME,
+                        agentId: DEFAULT_AGENT_ID,
+                        botIds: DEFAULT_BOT_IDS,
+                        isMessage: false,
+                        isInternal: true
+                    });
+                }
+            });
+        };
 
         _this.initGroupTab = function (params) {
             if (typeof params === "object") {
