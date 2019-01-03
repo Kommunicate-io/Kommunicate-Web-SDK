@@ -2147,16 +2147,17 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 });
 
                 _this.showSendButton = function(){
-                    kommunicateCommonFunction.modifyClassList(["send-button-wrapper"], "vis","n-vis");
-                    kommunicateCommonFunction.modifyClassList(["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"], "n-vis" , "vis");
-                    IS_MCK_LOCSHARE ? "" :kommunicateCommonFunction.modifyClassList("mck-file-up2", "n-vis" , "vis");
+                    kommunicateCommonFunction.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
+                    kommunicateCommonFunction.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
+                    IS_MCK_LOCSHARE ? "" :kommunicateCommonFunction.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
                 }
 
                 _this.hideSendButton = function(){
-                    kommunicateCommonFunction.modifyClassList(["send-button-wrapper"], "n-vis","vis");
-                    kommunicateCommonFunction.modifyClassList(["mck-file-up"], "vis" , "n-vis");
-                    !IS_MCK_LOCSHARE ? kommunicateCommonFunction.modifyClassList(["mck-file-up2"], "vis" , "n-vis") : kommunicateCommonFunction.modifyClassList(["mck-btn-loc"], "vis" , "n-vis");
-                    !EMOJI_LIBRARY ? "" : kommunicateCommonFunction.modifyClassList(["mck-btn-smiley-box"], "vis" , "n-vis");
+                    kommunicateCommonFunction.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
+                    kommunicateCommonFunction.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                    !IS_MCK_LOCSHARE ? kommunicateCommonFunction.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommonFunction.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
+                    !EMOJI_LIBRARY ? "" : kommunicateCommonFunction.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
+                    kommunicateCommonFunction.modifyClassList({class:["vis"]},"n-vis","vis");
 
                 }
 
