@@ -230,7 +230,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						break;
 					case 'getLastSeenAtStatus':
 						oInstance.getLastSeenAtStatus(params);
-						break;
+						break;	
 				}
 			} else if ($kmApplozic.type(appOptions) === "object") {
 				oInstance.reInit(appOptions);
@@ -1847,6 +1847,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				});
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
+					_this.removeChatThreadSelection();
+					_this.clearConversationAssigneeAndStatus();
 					var emptyStateDiv = document.getElementById("empty-state-conversations-div");
 					//resetCustomerInfoTab();
 					//resetClearbitInfoAndUserInfo();
@@ -2275,6 +2277,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$kmApplozic('.mcktypeahead.km-dropdown-menu').hide();
 				});
 			};
+			_this.removeChatThreadSelection = function () {
+				$kmApplozic('.chat').removeClass('active-chat');
+				$kmApplozic('.left .person').removeClass('active');
+			}
+			_this.clearConversationAssigneeAndStatus = function () {
+				$kmApplozic("#assign").val("")
+				$kmApplozic("#conversation-status").val("");
+			}
 			_this.sendMessage = function (messagePxy) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				if (typeof messagePxy !== 'object') {
@@ -3093,6 +3103,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 										var conversationAssignee = "";
 										var conversationStatus = "";
 										$kmApplozic.each(data.groupFeeds, function (i, groupFeed) {
+											window.kmEvents.triggerCustomEvent("group-update", { data: { data: groupFeed } });
 											kmGroupUtils.addGroup(groupFeed);
 											conversationAssignee = groupFeed.metadata.CONVERSATION_ASSIGNEE
 											conversationStatus = groupFeed.metadata.CONVERSATION_STATUS
@@ -3907,8 +3918,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.loadTab = function (params, callback) {
 				// $kmApplozic('.km-user-info-tab').removeClass('vis').addClass("n-vis");
-				$kmApplozic('.chat').removeClass('active-chat');
-				$kmApplozic('.left .person').removeClass('active');
 				if (params.tabId) {
 					$mck_text_box.data("metadata", null);
 					if ($kmApplozic('.person[data-km-id ="' + params.tabId + '"][data-isgroup ="' + params.isGroup + '"]').length == 0 && kmGroupUtils.getGroup(params.tabId)) {

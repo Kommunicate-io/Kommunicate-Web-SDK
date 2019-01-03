@@ -95,4 +95,5 @@ export const  DEFAULT_BOT_IMAGE_URL = "https://applozicbucket.s3.amazonaws.com/A
 
 export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
 
+export const CONVERSATION_STATUS = window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE
 
