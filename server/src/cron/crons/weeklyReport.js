@@ -87,10 +87,8 @@ const processOneApp = (app) => {
                     return "no stats for this app"
                 }
                 return generateReport(stats, users).then(report => {
-                    if (report.overAllReport.newConversationCount >= 25) {
-                        return sendWeeklyReport(report, customer, app.applicationId);
-                    }
-                    return;
+                    report.growthPlanTemplate = (report.overAllReport.newConversationCount >= 25 && customer.subscription == subscription.initialPlan) ? "block" : "none";
+                    return sendWeeklyReport(report, customer, app.applicationId);
                 })
 
             })
@@ -182,7 +180,7 @@ const sendWeeklyReport = (report, customer, appId) => {
             "dashboardUrl": dashboardUrl,
             "weeklyReportIcon": weeklyReportIcon,
             "BILLINGURL": dashboardUrl + "/settings/billing",
-            "DISPLAYGROWTHPLAN": (customer.subscription == subscription.initialPlan) ? "block" : "none",
+            "DISPLAYGROWTHPLAN": report.growthPlanTemplate,
             "UNSUBSCRIBEURL": dashboardUrl + "/unsubscribe?appId=" + appId + "&email=" + encodeURIComponent(customer.email)
         }
         Object.assign(templateReplacement, resolutionTime, { "RESPONSE_HOUR": responseTime.HOURS, "RESPONSE_MINUTE": responseTime.MINUTES, "RESPONSE_SECOND": responseTime.SECONDS });
