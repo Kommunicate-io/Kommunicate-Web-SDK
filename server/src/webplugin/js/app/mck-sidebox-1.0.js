@@ -2093,6 +2093,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             });
 
             _this.init = function () {
+                var mck_text_box = document.getElementById("mck-text-box");
+              
                 $applozic.template("oflTemplate", offlineblk);
                 ALStorage.clearMckMessageArray();
                 $applozic(d).on("click", "." + MCK_LAUNCHER, function () {
@@ -2142,6 +2144,29 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
                 $mck_group_search.click(function () {
                     mckMessageLayout.addGroupsToGroupSearchList();
+                });
+
+                _this.showSendButton = function(){
+                    kommunicateCommonFunction.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
+                    kommunicateCommonFunction.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
+                    IS_MCK_LOCSHARE ? "" :kommunicateCommonFunction.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
+                }
+
+                _this.hideSendButton = function(){
+                    kommunicateCommonFunction.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
+                    kommunicateCommonFunction.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                    !IS_MCK_LOCSHARE ? kommunicateCommonFunction.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommonFunction.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
+                    !EMOJI_LIBRARY ? "" : kommunicateCommonFunction.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
+                    kommunicateCommonFunction.modifyClassList({class:["vis"]},"n-vis","vis");
+
+                }
+
+                mck_text_box.addEventListener("keyup",function(){
+                    if(mck_text_box.textContent == ""){
+                        _this.hideSendButton();
+                    }   else {
+                        _this.showSendButton();
+                    }
                 });
                 $mck_text_box.keydown(function (e) {
                     if ($mck_text_box.hasClass('mck-text-req')) {
@@ -2732,6 +2757,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             return false;
                         }
                     }
+                    _this.hideSendButton();
                     _this.sendMessage(messagePxy);
                     return false;
                 });
