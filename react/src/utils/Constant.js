@@ -33,11 +33,26 @@ export const ROLE_TYPE = {
     DEVELOPER: "11"
 }
 export const ROLE_NAME = {
-    0: "Super Admin",
-    1: "Admin",
-    2: "Agent",
-    3: "Bot",
-    11: "Developer"
+    0: {
+        name: "Super Admin",
+        description: "Have full access"
+    },
+    1: {
+        name: "Admin",
+        description: "Have full access to edit all the settings and features in the dashboard"
+    },
+    2: {
+        name: "Agent",
+        description: "Have access to only key features and information in the dashboard"
+    },
+    3: {
+        name: "Bot",
+        description: "Have access to read and respond to chats"
+    },
+    11: {
+        name: "Developer",
+        description: "Have access to edit all the settings and features in the dashboard"
+    }
 }
 export const GROUP_ROLE = { 
     ADMIN: "1", 

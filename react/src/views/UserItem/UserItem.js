@@ -118,7 +118,7 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td> */}
                     <td>
-                      <div className="teammates-user-role">{ROLE_NAME[roleType]}</div>
+                      <div className="teammates-user-role">{ROLE_NAME[roleType] && ROLE_NAME[roleType].name}</div>
                     </td>
                     <td>{ !isAway &&
                           <div className="small text-muted">  <StatusIndicator label = { isOnline ? "Online" : "Offline"} indicator={isOnline ? "success" : "muted"} /> </div>

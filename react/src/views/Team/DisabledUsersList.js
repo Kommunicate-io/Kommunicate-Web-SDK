@@ -124,7 +124,7 @@ class DisabledUsersList extends Component {
                     </div>
                   </td>
                   <td className="team-expired-data-td">
-                    <div className="teammates-user-role">{ROLE_NAME[roleType]}</div>
+                    <div className="teammates-user-role">{ROLE_NAME[roleType].name}</div>
                   </td>
                   <td className="teammates-delete-icon team-expired-data-td">
                     {/* show delete btn for agents and admins if loggedin user is an super admin */}

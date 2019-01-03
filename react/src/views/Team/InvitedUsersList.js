@@ -71,7 +71,7 @@ class invitedUsersList extends Component {
           </div>
         </td>
         <td>
-        <div className="teammates-user-role tm-invite-user-role">{ROLE_NAME[roleType]}</div>
+        <div className="teammates-user-role tm-invite-user-role">{ROLE_NAME[roleType].name}</div>
         </td>
         <td>
           <span className="tm-invite-status-havent-signed-up">Haven't signed up</span>
