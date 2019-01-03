@@ -77,11 +77,12 @@ var autoSuggestions = {};
             window.appHistory.replace('/conversations');
 
   					if(typeof tabDetail === 'object') {
+              window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
               if (tabDetail.isGroup) {
-                window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
+                $("#km-toolbar").find("input,button,textarea,select").removeAttr('disabled');
                 window.Aside.initConversation(tabDetail.tabId);
               } else {
-                window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+                $("#km-toolbar").find("input,button,textarea,select").attr("disabled", "disabled");
               }
             }
 					},
