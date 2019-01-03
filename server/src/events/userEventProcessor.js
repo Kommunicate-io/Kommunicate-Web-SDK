@@ -1,6 +1,7 @@
 const agileService= require('../agileCrm/agileService');
 const applozicClient = require('../utils/applozicClient');
 const logger = require('../utils/logger');
+const USER_CONSTANTS = require("../users/constants.js");
 
 const userService = require("../users/userService");
 const integryService = require("../thirdpartyintegrations/integry/integryService");
@@ -10,7 +11,7 @@ const integryService = require("../thirdpartyintegrations/integry/integryService
 exports.processUserCreatedEvent=(user)=>{
     logger.info('processing user created event', user);
     
-        if(user.roleName=="APPLICATION_WEB_ADMIN" ||user.roleName =="BOT"){
+        if(user.roleName != USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.USER.name){
                 logger.info('user identified as agent or bot. skipping record..'); 
                 return;
         }
@@ -49,7 +50,7 @@ exports.processUserCreatedEvent=(user)=>{
 exports.processUserUpdatedEvent= (user)=>{
     logger.info("processing user updated event.....",user);
    let agileCrm = user.metadata && user.metadata.KM_AGILE_CRM && JSON.parse(user.metadata.KM_AGILE_CRM);
-    if(user.roleName=="APPLICATION_WEB_ADMIN" ||user.roleName =="BOT"){
+    if(user.roleName != USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.USER.name){
         logger.info('user identified as agent or bot. skipping record..'); 
         return;
     }
