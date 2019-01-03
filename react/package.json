@@ -4,9 +4,11 @@
   "private": true,
   "homepage": ".",
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^7.1.5",
     "babel-plugin-styled-components": "^1.9.2",
+    "babel-plugin-syntax-class-properties": "^6.13.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -19,10 +21,13 @@
     "gulp-concat": "2.6.0",
     "gulp-sass": "3.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.6.0",
     "prop-types": "15.6.2",
     "react-overlays": "0.8.3",
     "react-scripts": "1.1.5",
+    "react-test-renderer": "^16.7.0",
     "redux-logger": "^3.0.6",
+    "regenerator-runtime": "^0.13.1",
     "style-loader": "^0.23.1",
     "svg-inline-loader": "^0.8.0",
     "webpack": "^4.27.0",
@@ -100,7 +105,13 @@
     "dev": "webpack-dev-server --open --env.REACT_APP_NODE_ENV=development --mode development",
     "bundle-analyzer": "webpack-bundle-analyzer --host 0.0.0.0 --port 4545 build/stats.json",
     "start": "react-scripts start",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
     "eject": "react-scripts eject"
+  },
+  "jest":{
+    "moduleNameMapper":{
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    }
   }
 }
