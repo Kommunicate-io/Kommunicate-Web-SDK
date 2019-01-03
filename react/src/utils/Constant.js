@@ -33,6 +33,11 @@ export const ROLE_TYPE = {
     DEVELOPER: "11"
 }
 export const ROLE_NAME = {
+    //Todo: figure out why role is coming as null in some cases, below is a temp fix to avoid UI side issue due to server returning null for role
+    null: {
+        name: '',
+        description: ''
+    },
     0: {
         name: "Super Admin",
         description: "Have full access"

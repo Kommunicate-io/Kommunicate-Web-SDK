@@ -53,7 +53,7 @@ exports.createCustomer = async (req, res) => {
             if (activeCampaignEnable) {
               activeCampaignClient.addContact({ "email": email })
                 .then(subscriberId => {
-                  return customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
+                  return subscriberId && customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
                 })
                 .catch(error => {
                   console.log("Error while sending Email to activeCampaign", error);
