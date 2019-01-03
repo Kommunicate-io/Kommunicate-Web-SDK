@@ -48,9 +48,9 @@ function KommunicateCommonFunction() {
             return true;
         } 
     };
-    // use this class instead of jquery method to manipulate classes. fir eg to display [vis] or hide [n-vis] an element
-    // addClass and removeClass to be passed as strings in the case of no classes pass "" elem will always be passed as an 
-    // array or strings containing IDs or Classes of which the classes need to be manipulated 
+    /* use this method instead of jquery method to manipulate classes. for eg to display [vis] or hide [n-vis] an element
+       addClass and removeClass to be passed as strings in the case of no classes pass "" elem will always be passed as an 
+       array or strings containing IDs or Classes on which the classes need to be manipulated */
 
     _this.modifyClassList = function(elem, addClass, removeClass){ 
          
