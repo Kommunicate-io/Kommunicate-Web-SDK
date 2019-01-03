@@ -15,13 +15,10 @@ function KmCustomTheme() {
     };
 
     _this.createCustomClasses = function (classSettings) {
-        // Make create custom classes compatible for creating multiple classes in one call.
-        for (var i = 0; i < classSettings.length; i++) {
-            var style = document.createElement('style');
-            style.type = 'text/css';
-            style.innerHTML = classSettings[i];
-            document.getElementsByTagName('head')[0].appendChild(style);
-        }
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        style.innerHTML = classSettings;
+        document.getElementsByTagName('head')[0].appendChild(style);
     };
 
     _this.customSideboxWidget = function () {
@@ -30,24 +27,25 @@ function KmCustomTheme() {
             primaryColor = (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) ? WIDGET_SETTINGS.primaryColor : DEFAULT_BACKGROUND_COLOR;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
-            var kmCustomWidgetBackgroundColor = '.km-custom-widget-background-color { background: ' + primaryColor + " !important" + '}';
-            var kmCustomWidgetBorderColor = '.km-custom-widget-border-color { border-color: ' + primaryColor + " !important" + '}';
-            var kmCustomWidgetTextColor = '.km-custom-widget-text-color { color: ' + primaryColor + " !important" + ';}';
+            var kmCustomWidgetCustomCSS = '.km-custom-widget-background-color { background: ' + primaryColor + ' !important;} '+
+            '.km-custom-widget-border-color { border-color: ' + primaryColor + ' !important;} '+
+            '.km-custom-widget-text-color { color: ' + primaryColor + ' !important;} '+
+            '.km-custom-widget-fill { fill: ' + primaryColor + ' !important;} ';
 
             // Pass all classes you want to create in a single array.
-            _this.createCustomClasses([kmCustomWidgetBackgroundColor, kmCustomWidgetBorderColor, kmCustomWidgetTextColor]);
+            _this.createCustomClasses(kmCustomWidgetCustomCSS);
         }
         else {
             var kmChatWidgetBackgroundColor = '.km-chat-widget-background-color { background: ' + primaryColor + " !important" + '}';
-            _this.createCustomClasses([kmChatWidgetBackgroundColor]);
+            _this.createCustomClasses(kmChatWidgetBackgroundColor);
         }
         return '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color">' +
-            _this.reutrnCutomWidget() +
+            _this.returnCustomWidget() +
             '</div>'
 
     };
 
-    _this.reutrnCutomWidget = function () {
+    _this.returnCustomWidget = function () {
         if (WIDGET_SETTINGS) {
             if ( WIDGET_SETTINGS.iconIndex === "image"){
                 return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);

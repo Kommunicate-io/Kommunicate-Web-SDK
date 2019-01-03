@@ -48,4 +48,32 @@ function KommunicateCommonFunction() {
             return true;
         } 
     };
+
+    _this.classListChanger = function(elem, add, remove){
+        add && elem.classList.add(add); 
+        remove && elem.classList.remove(remove); 
+    }
+    /* use this method instead of jquery method to manipulate classes. for eg to display [vis] or hide [n-vis] an element
+       addClass and removeClass to be passed as strings in the case of no classes pass "" elem will always be passed as an object
+       array of strings containing IDs or Classes on which the classes need to be manipulated infromt of respective object property*/
+
+    _this.modifyClassList = function(elem, addClass, removeClass){ 
+            var idList = elem.id,
+                classList = elem.class , list=[];
+            idList && idList.forEach(function(id){
+                list.push(document.getElementById(id));
+            })
+            classList && classList.forEach(function(className){
+				var el = document.getElementsByClassName(className);
+                for(var i=0; i<=el.length-1; i++){
+					list.push(el[i]);
+					}
+            })
+            list.forEach(function(node){
+             _this.classListChanger(node,addClass,removeClass);
+            })
+        
+    }
+
+
 };
