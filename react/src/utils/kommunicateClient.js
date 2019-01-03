@@ -405,7 +405,7 @@ const sendProfileImage = (imageFile, imageFileName) => {
   }))
     .then(response => {
 
-      window.$applozic.fn.applozic('updateUser', {
+      window.$kmApplozic.fn.applozic('updateUser', {
         data: { 'imageLink': response.data.profileImageUrl }, success: function (response) {
         }, error: function (error) {
           console.log(error);
