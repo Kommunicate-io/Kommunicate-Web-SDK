@@ -44,25 +44,26 @@ class ThirdPartyScripts extends Component {
                 o.password =CommonUtils.getUserSession().accessToken;
               }
               o.onInit=function(response) {
-                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+                var mckSideboxLauncher = KommunicateGlobal.document.getElementById('mck-sidebox-launcher');
+                var widgetCloseButton = KommunicateGlobal.document.querySelector(".mck-close-sidebox");
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
                   console.log("template not loaded");
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
                   window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
-                 }
+                };
 
                 if (currentPath.includes('/login') && mckSideboxLauncher) {
                   mckSideboxLauncher.classList.add('vis');
                   mckSideboxLauncher.classList.remove('n-vis');
-                }
+                };
 
-                document.querySelector(".mck-close-sidebox").onclick = function() {
+                widgetCloseButton && ( widgetCloseButton.onclick = function() {
                   if(mckSideboxLauncher) {
                     mckSideboxLauncher.classList.add('n-vis');
                     mckSideboxLauncher.classList.add('force-hide');
                     mckSideboxLauncher.classList.remove('vis');
                   }
-                };
+                });
 
                 if(mckSideboxLauncher){
                   mckSideboxLauncher.addEventListener("click",function(){
@@ -74,7 +75,7 @@ class ThirdPartyScripts extends Component {
               var s = document.createElement("script");
               s.type = "text/javascript";
               s.async = true;
-              s.src = getConfig().kommunicateApi.pluginUrl;
+              s.src = getConfig().kommunicateApi.pluginUrlV2;
               var h = document.getElementsByTagName("head")[0];
               h.appendChild(s);
               window.kommunicate = m;
