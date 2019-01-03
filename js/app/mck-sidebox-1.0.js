@@ -2157,7 +2157,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     kommunicateCommonFunction.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
                     !IS_MCK_LOCSHARE ? kommunicateCommonFunction.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommonFunction.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
                     !EMOJI_LIBRARY ? "" : kommunicateCommonFunction.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
-                    kommunicateCommonFunction.modifyClassList({class:["vis"]},"n-vis","vis");
 
                 }
 
