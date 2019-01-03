@@ -21,6 +21,7 @@ const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
+const USER_CONSTANTS = require("../users/constants.js");
 
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
@@ -148,7 +149,7 @@ let handleCreateUserError = (user, customer, err) => {
   if (err && err.code == "USER_ALREADY_EXISTS" && err.data) {
     console.log("updating role to application web admin");
     const data = err.data;
-    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: "APPLICATION_WEB_ADMIN" }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: USER_CONSTANTS.APPLICATION_WEB_ADMIN.name }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
       return err.data;
     })
   } else {
@@ -172,7 +173,7 @@ const createUser = (user, customer) => {
   let devToken = user.devToken;
   let userId = user.userId ? user.userId.toLowerCase() : "";
   user.userName ? (user.userName = user.userName.toLowerCase()) : "";
-  let role = user.type == 2 ? "BOT" : "APPLICATION_WEB_ADMIN";
+  let role = user.type == 2 ? USER_CONSTANTS.BOT.name : USER_CONSTANTS.APPLICATION_WEB_ADMIN.name;
   return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name, undefined, user.imageLink).catch(err => {
     if (user.type === registrationService.USER_TYPE.AGENT) {
       return handleCreateUserError(user, customer, err);
