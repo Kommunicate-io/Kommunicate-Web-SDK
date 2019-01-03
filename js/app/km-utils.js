@@ -68,6 +68,10 @@ KommunicateConstants = {
         SUPPORT:7,
         APPLICATION_WEB_ADMIN:8,
         DEVELOPER: 11
+    },
+    MESSAGE_TYPE: {
+        RECEIVED: 4,
+        SENT: 5,
     }
 }
 
