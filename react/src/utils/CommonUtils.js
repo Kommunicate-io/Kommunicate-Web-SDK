@@ -1,4 +1,4 @@
-import { getResource } from '../config/config.js'
+import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
 
 const CommonUtils = {
@@ -215,7 +215,7 @@ const CommonUtils = {
         if(userSession) {
             return userSession.application.pricingPackage <= 100;
         } else {
-            return window.location.hostname.includes("applozic");
+            return getConfig().brand === "applozic";
         }
     },
     isKommunicateDashboard: function() {
@@ -223,7 +223,7 @@ const CommonUtils = {
         if(userSession) {
             return userSession.application.pricingPackage >= 100 && userSession.application.pricingPackage < 200;
         } else {
-            return window.location.hostname.includes("kommunicate");
+            return getConfig().brand === "kommunicate";
         }
     },
     getProductName: function() {

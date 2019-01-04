@@ -8,6 +8,8 @@ import ApplozicClient   from '../../../utils/applozicClient';
 import Notification from '../../../views/model/Notification';
 import { ALAnalyticsDashboardLoader } from '../../../components/EmptyStateLoader/emptyStateLoader';
 import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentIcon } from '../../../assets/svg/svgs';
+import tinycolor from 'tinycolor2';
+import { getConfig } from '../../../config/config';
 
 
 const Container = styled.div`
@@ -140,7 +142,7 @@ const GraphColor = styled.div`
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    background-color: ${props => props.value ? Colors.ApplozicColors.primary : Colors.ApplozicColors.secondary};
+    background-color: ${props => props.value ? props.theme.primary : props.theme.secondary};
 `;
 const GraphTitle = styled.div`
     font-size: 13px;
@@ -282,15 +284,18 @@ class AlDashboard extends Component {
 
         var _this = this;
 
+        var gradientColorStopsPrimary = tinycolor(_this.props.theme.primary),
+            gradientColorStopsSecondary = tinycolor(_this.props.theme.secondary);
+
         const data = (canvas) => {
             const ctx = canvas.getContext("2d")
             const gradientForMsgSentGraph = ctx.createLinearGradient(0, 350, 0, 0);
             gradientForMsgSentGraph.addColorStop(0, "rgba(92, 90, 167, 0)");
-            gradientForMsgSentGraph.addColorStop(1, "rgba(3, 180, 155, 0.35)");
+            gradientForMsgSentGraph.addColorStop(1, gradientColorStopsPrimary.setAlpha(.35).toRgbString());
 
             const gradientForActiveUsersGraph = ctx.createLinearGradient(0, 350, 0, 0);
             gradientForActiveUsersGraph.addColorStop(0, "rgba(92, 90, 167, 0)");
-            gradientForActiveUsersGraph.addColorStop(1, "rgba(242, 199, 94, 0.35)");
+            gradientForActiveUsersGraph.addColorStop(1, gradientColorStopsSecondary.setAlpha(.35).toRgbString());
             return {
                 labels: this.state.monthsLabelForGraph,
                 datasets: [

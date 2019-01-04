@@ -4,6 +4,16 @@ import CommonUtils from '../utils/CommonUtils';
 
 const ApplozicClient ={
 
+  commonHeaders: () => {
+    let userSession = CommonUtils.getUserSession();
+    return {
+      'Content-Type': 'application/json',
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': true
+    };
+  },
+
     getUserInfoByEmail: (options)=>{
         let url = getConfig().applozicPlugin.applozicHosturl+"/rest/ws/user/data?email="+encodeURIComponent(options.email)+"&applicationId="+options.applicationId;
         return Promise.resolve(axios.get(url))
@@ -110,13 +120,7 @@ updateUserDetail:function(params){
   },
 
   searchContact : (data) => {
-    let userSession = CommonUtils.getUserSession();
-    var API_HEADERS = {
-      'Content-Type': 'application/json',
-      'Apz-AppId': userSession.application.applicationId,
-      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-      'Apz-Product-App': 'true',
-    }
+    var API_HEADERS = ApplozicClient.commonHeaders();
     var url = getConfig().applozicPlugin.searchContact;
   
     return Promise.resolve(axios({
@@ -131,13 +135,7 @@ updateUserDetail:function(params){
   },
 
   fetchContactsFromApplozic : (data) => {
-    let userSession = CommonUtils.getUserSession();
-    var API_HEADERS = {
-      'Content-Type': 'application/json',
-      'Apz-AppId': userSession.application.applicationId,
-      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-      'Apz-Product-App': 'true',
-    }
+    var API_HEADERS = ApplozicClient.commonHeaders();
     var url = getConfig().applozicPlugin.fetchContactsUrl;
   
     return Promise.resolve(axios({
@@ -154,13 +152,7 @@ updateUserDetail:function(params){
   }, 
   
   getGroupFeed : (data) => {
-    let userSession = CommonUtils.getUserSession();
-    var API_HEADERS = {
-      'Content-Type': 'application/json',
-      'Apz-AppId': userSession.application.applicationId,
-      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-      'Apz-Product-App': 'true',
-    }
+    var API_HEADERS = ApplozicClient.commonHeaders();
     var url = getConfig().applozicPlugin.groupFeedUrl;
   
     return Promise.resolve(axios({
@@ -175,13 +167,7 @@ updateUserDetail:function(params){
   }, 
   
   multipleGroupInfo : (data) => {
-    let userSession = CommonUtils.getUserSession();
-    var API_HEADERS = {
-      'Apz-AppId': userSession.application.applicationId,
-      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-      'Apz-Product-App': 'true',
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    var API_HEADERS = ApplozicClient.commonHeaders();
     var multipleGroup = {
       "groupIds": data 
     };
@@ -293,12 +279,7 @@ updateUserDetail:function(params){
     },
     getApplicationStats: function() {
       let userSession = CommonUtils.getUserSession();
-      let headers = {
-        'Content-Type': 'application/json',
-        'Apz-AppId': userSession.application.applicationId,
-        'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-        'Apz-Product-App': true
-      }
+      let headers = ApplozicClient.commonHeaders();
       const url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/stats/get?appKey=' + userSession.application.key;
       return Promise.resolve(axios.get(url, {"headers": headers})).then( response => {
         return response;
@@ -329,13 +310,7 @@ updateUserDetail:function(params){
   uploadCertificate: function (params) {
     var data = new FormData();
     var certificateUploadUrl = getConfig().applozicPlugin.certificateUpload
-    var userSession = CommonUtils.getUserSession();
-    let headers = {
-      'Content-Type': 'application/json',
-      'Apz-AppId': userSession.application.applicationId,
-      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-      'Apz-Product-App': true
-    }
+    let headers = ApplozicClient.commonHeaders();
     data.append("file", params.file);
     return axios({
       "method": 'POST',
@@ -347,21 +322,13 @@ updateUserDetail:function(params){
     })
   },
   getUserDetails : function (data) {
-    let userSession = CommonUtils.getUserSession();
-    let applicationId = userSession.application.applicationId;
     let url = getConfig().applozicPlugin.userDetailUrl;
-    let accessToken = userSession.accessToken;
-    let userName =userSession.userName
+    let headers = ApplozicClient.commonHeaders();
     return axios({
       method: 'post',
       url:url,
       data: data,
-      headers: {
-        "Apz-Product-App": true,
-        "Apz-Token": 'Basic ' + new Buffer(userName+':'+accessToken).toString('base64'),
-        "Content-Type": "application/json",
-        "Apz-AppId":applicationId
-      }}).then( response => {
+      headers: headers}).then( response => {
         if(response.status == 200) {
           return response
         } 
@@ -416,6 +383,21 @@ updateUserDetail:function(params){
         }
     });
 
+  },
+  getMessageGroups : (data) => {
+    var API_HEADERS = ApplozicClient.commonHeaders();
+    var url = getConfig().applozicPlugin.getMessageList;
+  
+    return Promise.resolve(axios({
+      method: 'get',
+      url: url,
+      headers: API_HEADERS,
+      params: data
+    })).then(response => {
+        return response;
+    }).catch( err => {
+      console.log(err);
+    })
   }
 }
 

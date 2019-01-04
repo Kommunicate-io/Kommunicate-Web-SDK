@@ -3,6 +3,7 @@ const routes = {
   '/dashboard': 'Dashboard',
   '/users': 'Users',
   '/conversations': 'Conversations',
+  '/message-groups': 'Message Groups',
   '/components': 'Components',
   '/reports': 'Reports',
   '/bot': 'Bot Integration',

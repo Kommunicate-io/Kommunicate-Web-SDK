@@ -36,6 +36,7 @@ import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
+import MessageGroups from '../../ALDashboard/views/Groups/MessageGroups';
 
 
 
@@ -265,6 +266,7 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" render={() => <Dashboard {...this.props} />} />
                 <Route exact path="/users" name="Tables" render={() => <Users {...this.props} />} />
                 <Route exact={false} path="/conversations" name="Conversations" render={() => <Conversations {...this.props} />} />
+                <Route exact path="/message-groups" name="Groups" render={() => <MessageGroups {...this.props} /> } />
                 <Route exact path="/reports" name="Reports" render={() => <Reports {...this.props} />} />
                 <Route exact path="/bot" name="Bot" render={() => <Bot {...this.props} />} />
                 <Route exact path="/settings/profile" name="Admin" render={() => {

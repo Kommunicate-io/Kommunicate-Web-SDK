@@ -18,7 +18,7 @@ const Colors = {
     KommunicateColors:  {
         primary: "#5553B7", 
         primaryLight: "#E5E4FF",
-        secondary: "#000",
+        secondary: "#5553B7",
         buttonSecondary: "#FFFFFF",
         buttonPrimaryColorText: "#FFFFFF",
         buttonSecondaryColorText: "#5553B7",
