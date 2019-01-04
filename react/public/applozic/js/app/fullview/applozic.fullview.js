@@ -1923,6 +1923,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
+						$kmApplozic(".km-typing-indicator-for-agent--container").addClass("n-vis").removeClass("vis");
 						//$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
 						//$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
 				});
@@ -7883,47 +7884,65 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.onTypingStatus = function (resp) {
-				$mck_message_inner = mckMessageLayout.getMckMessageInner();
-				var message = resp.body;
-				var publisher = message.split(",")[1];
-				var status = Number(message.split(",")[2]);
-				var tabId = resp.headers.destination.substring(resp.headers.destination.lastIndexOf("-") + 1, resp.headers.destination.length);
-				var currTabId = $mck_message_inner.data('km-id');
-				var isGroup = $mck_message_inner.data('isgroup');
-				if (!MCK_BLOCKED_TO_MAP[publisher] && !MCK_BLOCKED_BY_MAP[publisher]) {
-					if (status === 1) {
-						if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || currTabId === tabId)) {
-							var isGroup = $mck_message_inner.data('isgroup');
-							$mck_tab_title.addClass("km-tab-title-w-typing");
-							$mck_tab_status.removeClass('vis').addClass('n-vis');
-							if (isGroup) {
-								if (publisher !== MCK_USER_ID) {
-									var displayName = mckMessageLayout.getTabDisplayName(publisher, false);
-									displayName = displayName.split(" ")[0];
-									$mck_typing_box_text.html(displayName + " is ");
+				if (typingSubscriber != null && typingSubscriber.id === resp.headers.subscription) {
+					$mck_message_inner = mckMessageLayout.getMckMessageInner();
+					var message = resp.body;
+					var publisher = message.split(",")[1];
+					var status = Number(message.split(",")[2]);
+					var tabId = resp.headers.destination.substring(resp.headers.destination.lastIndexOf("-") + 1, resp.headers.destination.length);
+					var currTabId = $mck_message_inner.data('km-id');
+					var isGroup = $mck_message_inner.data('isgroup');
+					var displayName = mckMessageLayout.getTabDisplayName(publisher, false);
+					var contact = kmGroupUtils.getGroup(currTabId);
+					var imageLink = mckMessageLayout.getContactImageLink(contact, displayName);
+					var $mck_active_msg_inner = $kmApplozic(".chat.km-message-inner." + currTabId + ".active-chat.km-group-inner");
+					var $mck_agent_typing_indicator_container = $kmApplozic(".km-typing-indicator-for-agent--container");
+					var $mck_agent_typing_indicator_image = $kmApplozic(".km-typing-indicator-for-agent--image");
+					var scrollHeight = $mck_active_msg_inner.get(0).scrollHeight;
+					if (!MCK_BLOCKED_TO_MAP[publisher] && !MCK_BLOCKED_BY_MAP[publisher]) {
+						if (status === 1) {
+							if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || currTabId === tabId)) {
+								var isGroup = $mck_message_inner.data('isgroup');
+								$mck_tab_title.addClass("km-tab-title-w-typing");
+								$mck_tab_status.removeClass('vis').addClass('n-vis');
+								if (isGroup) {
+									if (publisher !== MCK_USER_ID) {
+										displayName = displayName.split(" ")[0];
+										$mck_typing_box_text.html(displayName + " is ");
+									}
+								} else {
+									$mck_typing_box_text.html("");
 								}
-							} else {
-								$mck_typing_box_text.html("");
+
+								$mck_agent_typing_indicator_container.addClass("vis").removeClass("n-vis");
+								$mck_agent_typing_indicator_image.html(imageLink);
+								if ($mck_active_msg_inner.height() < scrollHeight) {
+									$mck_active_msg_inner.animate({
+										scrollTop: $mck_active_msg_inner.prop("scrollHeight")
+									}, 0);
+								}
+
+								$mck_typing_box.removeClass('n-vis').addClass('vis');
+								setTimeout(function () {
+									$mck_agent_typing_indicator_container.addClass("n-vis").removeClass("vis");
+									$mck_tab_title.removeClass("km-tab-title-w-typing");
+									$mck_typing_box.removeClass('vis').addClass('n-vis');
+									if ($mck_tab_title.hasClass("km-tab-title-w-status")) {
+										$mck_tab_status.removeClass('n-vis').addClass('vis');
+									}
+									$mck_typing_box_text.html("");
+								}, 10000);
 							}
-							$mck_typing_box.removeClass('n-vis').addClass('vis');
-							setTimeout(function () {
-								$mck_tab_title.removeClass("km-tab-title-w-typing");
-								$mck_typing_box.removeClass('vis').addClass('n-vis');
-								if ($mck_tab_title.hasClass("km-tab-title-w-status")) {
-									$mck_tab_status.removeClass('n-vis').addClass('vis');
-								}
-								$mck_typing_box_text.html("");
-							}, 60000);
+						} else {
+							$mck_tab_title.removeClass("km-tab-title-w-typing");
+							$mck_typing_box.removeClass('vis').addClass('n-vis');
+							if ($mck_tab_title.hasClass("km-tab-title-w-status")) {
+								$mck_tab_status.removeClass('n-vis').addClass('vis');
+							}
+							$mck_typing_box_text.html("");
 						}
-					} else {
-						$mck_tab_title.removeClass("km-tab-title-w-typing");
-						$mck_typing_box.removeClass('vis').addClass('n-vis');
-						if ($mck_tab_title.hasClass("km-tab-title-w-status")) {
-							$mck_tab_status.removeClass('n-vis').addClass('vis');
-						}
-						$mck_typing_box_text.html("");
 					}
-				}
+				}	
 			};
 			_this.reconnect = function () {
 				console.log("socket trying to reconnect",new Date());

@@ -1002,6 +1002,10 @@ class Aside extends Component {
 
                         </div>
                       </div>
+                      <div className="km-typing-indicator-for-agent--container n-vis">
+                        <div className="km-typing-indicator-for-agent--image"></div>
+                        <div className="km-typing-indicator-for-agent--text">Typing...</div>
+                      </div>
                       <div className="write">
                         
                         <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">

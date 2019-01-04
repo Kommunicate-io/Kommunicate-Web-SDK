@@ -756,3 +756,42 @@ body {
 .km-lastseen-online{
 	color : #22d674 !important;
 }
+
+/* Styles for typing indicator on agent side */
+.km-typing-indicator-for-agent--container {
+	background-color: #f4f5f6;
+	padding: 10px 35px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.km-typing-indicator-for-agent--image  {
+	margin-right: 15px;
+}
+.km-typing-indicator-for-agent--image img  {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+}
+.km-typing-indicator-for-agent--text  {
+	font-size: 14px;
+	font-weight: normal;
+	font-style: italic;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.3px;
+	color: #4b4b4d;
+}
+.km-typing-indicator-for-agent--image .km-alpha-contact-image {
+	float: none;
+    width: 25px;
+    height: 25px;
+    line-height: 23px;
+	font-size: 20px;
+	margin-right: 0;
+}
+.km-typing-indicator-for-agent--image .km-alpha-contact-image .km-contact-icon {
+    height: 25px;
+    line-height: 26px;
+}
+/* Styles for typing indicator on agent side ends here*/
