@@ -158,7 +158,7 @@ const patchCustomerInfo = (customerInfo, customer) => {
 
 const patchUserInfo = (userInfo, userId, appId) => {
 
-  const patchUserUrl = getConfig().kommunicateApi.createUser + '/' + userId + '/' + appId;
+  const patchUserUrl = getConfig().kommunicateApi.createUser + '/' + encodeURIComponent(userId) + '/' + appId;
 
   return Promise.resolve(axios({
     method: 'patch',
@@ -847,7 +847,7 @@ const updateZendeskIntegrationTicket = (data, ticketId) => {
 
 const conversationHandlingByBot = (botId, status) => {
   let userSession = CommonUtils.getUserSession();
-  const converstaionHandlingByBotUrl = getConfig().kommunicateApi.createUser + '/' + botId + '/' + userSession.application.applicationId + '/' + status;
+  const converstaionHandlingByBotUrl = getConfig().kommunicateApi.createUser + '/' + encodeURIComponent(botId) + '/' + userSession.application.applicationId + '/' + status;
   return Promise.resolve(axios({
     method: 'patch',
     url: converstaionHandlingByBotUrl,
