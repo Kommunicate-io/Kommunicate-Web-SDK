@@ -187,7 +187,7 @@ const createUser = (user, customer) => {
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
     user.imageLink = applozicUser.imagelink;
-    user.roleType = (user.type === 2)? CONST.ROLE_TYPE.BOT:user.roleType;
+    user.roleType = (user.type === 2)? USER_CONSTANTS.ROLE_TYPE.BOT:user.roleType;
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
@@ -646,7 +646,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
       if (user !== null) {
-        return userModel.update({ deleted_at: new Date(), status: CONST.USER_STATUS.DELETED }, {
+        return userModel.update({ deleted_at: new Date(), status: USER_CONSTANTS.USER_STATUS.DELETED }, {
           where: {
             userName: userName,
             applicationId: applicationId
@@ -664,7 +664,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }
     })
   } else {
-    return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
+    return userModel.update({deleted_at: null, status:  USER_CONSTANTS.USER_STATUS.ONLINE}, {
         where: {
           userName: userName,
           applicationId: applicationId,
@@ -755,8 +755,8 @@ const getAgentIdsStatusWise= async (applicationId)=> {
   agentList = await this.getUsersByAppIdAndTypes(applicationId,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]);
   agentList && agentList.forEach(element => {
     element.status== USER_CONSTANTS.USER_STATUS.AWAY && awayAgents.push(element.userName);
-    element.status== CONST.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
-    element.roleType == CONST.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
+    element.status== USER_CONSTANTS.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
+    element.roleType == USER_CONSTANTS.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
   });
   let apzToken = new Buffer( superAdmin.userName+":"+ superAdmin.accessToken).toString('base64');
   let statusFromApplozic = await applozicClient.getUserDetails(availableAgentsInKommunicate,applicationId,apzToken);
