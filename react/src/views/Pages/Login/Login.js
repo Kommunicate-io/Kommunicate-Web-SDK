@@ -587,8 +587,8 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-	setLogInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
+    saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
+	setLogInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Login);
