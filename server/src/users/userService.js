@@ -16,7 +16,6 @@ const KOMMUNICATE_ADMIN_PASSWORD = config.getProperties().kommunicateAdminPasswo
 const cacheClient = require("../cache/hazelCacheClient");
 const logger = require('../utils/logger');
 const botPlatformClient = require("../utils/botPlatformClient");
-const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
@@ -149,7 +148,7 @@ let handleCreateUserError = (user, customer, err) => {
   if (err && err.code == "USER_ALREADY_EXISTS" && err.data) {
     console.log("updating role to application web admin");
     const data = err.data;
-    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: USER_CONSTANTS.APPLICATION_WEB_ADMIN.name }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
       return err.data;
     })
   } else {
@@ -173,7 +172,7 @@ const createUser = (user, customer) => {
   let devToken = user.devToken;
   let userId = user.userId ? user.userId.toLowerCase() : "";
   user.userName ? (user.userName = user.userName.toLowerCase()) : "";
-  let role = user.type == 2 ? USER_CONSTANTS.BOT.name : USER_CONSTANTS.APPLICATION_WEB_ADMIN.name;
+  let role = user.type == 2 ? USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name : USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name;
   return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name, undefined, user.imageLink).catch(err => {
     if (user.type === registrationService.USER_TYPE.AGENT) {
       return handleCreateUserError(user, customer, err);
@@ -755,7 +754,7 @@ const getAgentIdsStatusWise= async (applicationId)=> {
   try{
   agentList = await this.getUsersByAppIdAndTypes(applicationId,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]);
   agentList && agentList.forEach(element => {
-    element.status== CONST.USER_STATUS.AWAY && awayAgents.push(element.userName);
+    element.status== USER_CONSTANTS.USER_STATUS.AWAY && awayAgents.push(element.userName);
     element.status== CONST.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
     element.roleType == CONST.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
   });
