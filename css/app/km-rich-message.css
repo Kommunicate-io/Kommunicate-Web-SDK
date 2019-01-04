@@ -12,6 +12,7 @@
         border-radius: 10px;
         background-color: #fff;
         padding: 10px;
+	border: solid 1px #e5e5e5;
     }
     .km-room-person-selector-container .km-room-title-text {
     margin-top: 5px;
