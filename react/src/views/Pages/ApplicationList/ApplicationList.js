@@ -244,8 +244,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-    setLoginStatus: payload => dispatch(Actions.updateLogInStatus(payload))
+    saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
+    setLoginStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationList)

@@ -1,12 +1,8 @@
-const saveUserInfo = (payload) => ({
-  type: 'SAVE_USER_INFO',
+const updateDetailsOnLogin = (type, payload) => ({
+  type: type,
   payload
-});
-const updateLogInStatus = (payload) => ({
-  type:'UPDATE_LOGIN_STATUS',
-  payload
-});
+})
+
 export {
-  saveUserInfo,
-  updateLogInStatus
+  updateDetailsOnLogin
 }
