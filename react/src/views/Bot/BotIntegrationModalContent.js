@@ -130,7 +130,7 @@ class BotIntegrationModalContent extends Component {
         });
     }
     integrateBot = (e) => {
-        let userId = this.state.botName.trim().toLowerCase().replace(/ /g, '-');
+        let userId = CommonUtils.removeSpecialCharacters(this.state.botName);
         if (this.isInputFieldEmpty(this.state.botName.trim())) {
             Notification.warning("Please enter a bot name !!");
             return;

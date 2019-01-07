@@ -254,6 +254,9 @@ const CommonUtils = {
         } else {
           return false;
         }
+    },
+    removeSpecialCharacters: function (value) {
+        return value.replace(/[^A-Z0-9]+/ig, "-").toLowerCase();
     }
 }
 

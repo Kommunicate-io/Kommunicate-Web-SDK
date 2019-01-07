@@ -357,7 +357,7 @@ export default class BotStore extends Component {
         }
         // let uuid_holder = uuid();
 
-        let userId = this.state.botName.toLowerCase().replace(/ /g, '-')
+        let userId = CommonUtils.removeSpecialCharacters(this.state.botName);
 
         // this.setState({uuid: uuid_holder})
 
