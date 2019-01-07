@@ -80,6 +80,7 @@ const processOneApp = (app) => {
             return;
         }
         return customerService.getCustomerByApplicationId(app.applicationId).then(customer => {
+            if (!customer.email) return "customer email is empty";
             let headers = { "Apz-Token": "Basic " + new Buffer(adminAgent[0].userName + ":" + adminAgent[0].accessToken).toString('base64'), "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
             let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key" }
             return applozicClient.getConversationStats(params, headers).then(stats => {
@@ -156,6 +157,9 @@ const generateTemplate = (report) => {
             htmlTemplate += template;
         })
         return htmlTemplate;
+    }).catch(err=>{
+        console.log("Template generation error: ", err);
+        return;
     })
 }
 
@@ -185,7 +189,7 @@ const sendWeeklyReport = (report, customer, appId) => {
         }
         Object.assign(templateReplacement, resolutionTime, { "RESPONSE_HOUR": responseTime.HOURS, "RESPONSE_MINUTE": responseTime.MINUTES, "RESPONSE_SECOND": responseTime.SECONDS });
 
-        console.report(`sending weekly report mail to: ${customer.email} for app ${app.applicationId}`);
+        console.report(`sending weekly report mail to: ${customer.email} for app ${appId}`);
         let mailOptions = {
             to: customer.email,
             from: "Devashish From Kommunicate <support@kommunicate.io>",
@@ -194,6 +198,9 @@ const sendWeeklyReport = (report, customer, appId) => {
             templateReplacement: templateReplacement
         }
         return mailService.sendMail(mailOptions);
+    }).catch(error => {
+        console.log("weekly report sending error: ", error);
+        return;
     })
 }
 
