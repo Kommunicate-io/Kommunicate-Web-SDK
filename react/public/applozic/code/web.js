@@ -9,6 +9,42 @@ $(document).ready(function() {
     window.location = '/login.html';
   });
 
+  $kmApplozic(".km-group-search").on('click', function(e) {
+    $kmApplozic("#km-customers-cell-link").trigger('click');
+});
+
+$kmApplozic("#km-user-info-close").on('click', function(e) {
+    e.preventDefault();
+    // $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
+    $kmApplozic(".km-container").removeClass('km-panel-3');
+    $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
+    $kmApplozic('body').removeClass('km-panel-3');
+});
+
+$kmApplozic("#kommunicate-panel-tabs li a").on('click', function(e) {
+    var $this = $kmApplozic(this);
+    $kmApplozic("#kommunicate-panel-tabs li").toggleClass('active');
+    $kmApplozic("#kommunicate-panel-body .km-panel-cell").removeClass('vis').addClass('n-vis');
+    $kmApplozic("#" + $this.data('tab')).removeClass('n-vis').addClass('vis');
+
+    if ($this.data('tab') == "km-customers-cell") {
+        $kmApplozic(".km-contact-search").trigger('click');
+    }
+});
+
+
+$kmApplozic(".side-nav li a").click(function() {
+var $this = $kmApplozic(this);
+    if ($this.parent().hasClass('active')) {
+        return;
+    }
+    var tab = $this.data('tab');
+    $kmApplozic(".side-nav li").removeClass('active');
+    $this.parent().addClass('active');
+    $kmApplozic(".tabs").removeClass('show').addClass('hide');
+    $kmApplozic("#tab-" + tab).removeClass('hide').addClass('show');
+});
+
 });
 
 var autoSuggestions = {};
@@ -68,24 +104,41 @@ var autoSuggestions = {};
       // awsS3Server :true,
       onInit: onInitialize,
       maxHistory: userSession.subscription === "startup" ? 30 : "", // Number of days' history that needs to be restricted
-      onTabClicked : function(tabDetail) {
-            var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
-            $mck_group_info_btn.trigger('click');
-
-            window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
-
-            window.appHistory.replace('/conversations');
-
-  					if(typeof tabDetail === 'object') {
-              window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
-              if (tabDetail.isGroup) {
-                $("#km-toolbar").find("input,button,textarea,select").removeAttr('disabled');
-                window.Aside.initConversation(tabDetail.tabId);
-              } else {
-                $("#km-toolbar").find("input,button,textarea,select").attr("disabled", "disabled");
-              }
+      onTabClicked: function (tabDetail) {
+        var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
+        $mck_group_info_btn.trigger('click');
+        var tabId = tabDetail.tabId;
+        if (tabDetail.isGroup) {
+          group = kmGroupUtils.getGroup(tabId);
+          var keys = Object.keys(group.users);
+          keys.every(function (userId, index) {
+            var user = group.users[userId];
+            if (user.role == 3) {
+              getContactDetail(userId)
+              return false;
             }
-					},
+            else {
+              return true;
+            }
+          })
+        } else {
+          getContactDetail(tabId);
+        }
+
+        window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
+
+        window.appHistory.replace('/conversations');
+
+        if (typeof tabDetail === 'object') {
+          window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
+          if (tabDetail.isGroup) {
+            $("#km-toolbar").find("input,button,textarea,select").removeAttr('disabled');
+            window.Aside.initConversation(tabDetail.tabId);
+          } else {
+            $("#km-toolbar").find("input,button,textarea,select").attr("disabled", "disabled");
+          }
+        }
+      },
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: false,
@@ -96,6 +149,18 @@ var autoSuggestions = {};
     return false;
   //});
   }
+
+  function getContactDetail(contactId){
+        $kmApplozic.fn.applozic("fetchContacts", {
+            "roleNameList": ["USER"],
+            "userId": encodeURIComponent(contactId),
+            'callback': function(response) {
+        var user = response.response.users[0];
+        kmEvents.triggerCustomEvent("_userDetailUpdate", { 'data': { 'data': user } });
+        return;
+            }
+    });
+}
 
 function activeCampaign(email) {
   $.ajax({

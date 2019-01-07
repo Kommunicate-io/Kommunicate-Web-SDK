@@ -97,7 +97,7 @@ class CustomerListItem extends Component {
     var assignee = user.assignee
       ? user.assignee
       : "";
-    if (assignee !== (undefined || "" || null)) {
+    if (assignee) {
       if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
         return <span className="assignee-open">
           <strong>
@@ -109,7 +109,9 @@ class CustomerListItem extends Component {
             CLOSED -</strong>{assignee}
         </span>;
       }
-    } else
+    } else{
+      return <strong>{user.userId}</strong>;
+    }
       return "";
   }
 
