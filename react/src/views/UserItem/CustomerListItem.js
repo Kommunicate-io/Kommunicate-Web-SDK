@@ -94,9 +94,7 @@ class CustomerListItem extends Component {
     var user = this.props.user;
     var status = user.messagePxy.status;
     var convoStatus = user.convoStatus;
-    var assignee = user.assignee
-      ? user.assignee
-      : "";
+    var assignee = user.assignee? user.assignee: "";
     if (assignee) {
       if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
         return <span className="assignee-open">
@@ -110,7 +108,7 @@ class CustomerListItem extends Component {
         </span>;
       }
     } else{
-      return <strong>{user.userId}</strong>;
+      return <strong>ASSIGNED -{user.displayName||user.userId}</strong>;
     }
       return "";
   }
