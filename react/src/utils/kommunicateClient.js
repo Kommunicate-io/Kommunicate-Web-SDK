@@ -224,7 +224,7 @@ if(options.templateName == "INVITE_TEAM_MAIL"){
       "agentId": userId,
       "roleType":roleType,
       "resendMail":options.resendMail ?options.resendMail :false,
-      "isApplozic": !CommonUtils.isKommunicateDashboard()
+      "product": CommonUtils.getProduct()
     }
   }
   return Promise.resolve(axios({
