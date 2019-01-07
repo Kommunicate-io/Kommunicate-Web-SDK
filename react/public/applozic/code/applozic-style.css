@@ -795,3 +795,48 @@ body {
     line-height: 26px;
 }
 /* Styles for typing indicator on agent side ends here*/
+
+.emoji-image {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    border: 0 none;
+    background-image: url(https://www.applozic.com/resources/lib/emojify/images/sheet_emoji_64.png);
+}
+span.emoji-sizer {
+    line-height: 1.2!important;
+    font-size: 20px!important;
+    margin: -2px 0!important;
+}
+span.emoji-outer {
+    vertical-align: middle;
+    display: -moz-inline-box;
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+}
+span.emoji-inner {
+    display: -moz-inline-box;
+    display: inline-block;
+    text-indent: -9999px;
+    width: 100%;
+    height: 100%;
+    vertical-align: baseline;
+}
+.km-panel-3 .km-emoji-menu {
+	right: auto !important;
+}
+.km-emoji-menu {
+	height: auto !important;
+	right: auto !important;
+	left: 5px !important;
+	min-width: auto !important;
+    width: calc(100% - 10px);
+    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 4px 1px;
+}
+.km-emoji-menu .group-selector {
+	position: static;
+}
+.km-emoji-menu>div {
+	margin-top: 0px;
+}

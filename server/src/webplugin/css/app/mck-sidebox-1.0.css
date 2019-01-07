@@ -5010,6 +5010,18 @@ margin-top: 243px;
 	color: #9b9b9b;
 	margin-bottom: 0px;
 }
+.km-talk-to-human-div .talk-to-human-link {
+	border: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    line-height: normal;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none;
+}
 .km-talk-to-human-div .talk-to-human-link, .km-talk-to-human-div .talk-to-human-link:hover {
     font-size: 14px;
     font-weight: 600;
@@ -5019,7 +5031,8 @@ margin-top: 243px;
     letter-spacing: 0.7px;
     color: #5c5aa7;
     padding-left: 10px;
-    text-decoration: none;
+	text-decoration: none;
+	margin-left: 8px;
 }
 .km-contact-input-container {
 	position: relative;

@@ -216,7 +216,7 @@ KommunicateUI={
         e.preventDefault();
         window.open(e.target.href);
     });
-    $applozic("#km-faq-search-input").keydown(function (e) {
+    $applozic("#km-faq-search-input").keyup(function (e) {
         var searchQuery = e.target.value;
         if(searchQuery.length > 0) {
             $applozic(".km-clear-faq-search-icon").addClass("vis").removeClass("n-vis");
@@ -275,11 +275,12 @@ KommunicateUI={
 
     $applozic(d).on("click", ".km-clear-faq-search-icon", function() {
         $applozic("#km-faq-search-input").val("");
+        $applozic(".km-clear-faq-search-icon").addClass("n-vis").removeClass("vis");
         // this is being used to simulate an Enter Key Press on the search input.
-        var e = jQuery.Event("keydown");
+        var e = jQuery.Event("keyup");
         e.which = 13; 
-        $applozic("#km-faq-search-input").trigger(e);
-    })
+        $applozic("#km-faq-search-input").trigger(e);      
+    });
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");

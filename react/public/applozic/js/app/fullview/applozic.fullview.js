@@ -2097,7 +2097,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckGroupLayout.loadGroupInfo(params);
 					// setting emaji width
 					var width = $kmApplozic('#km-write-box').css('width');
-					$kmApplozic(".km-emoji-menu").css('width', width);
+					$kmApplozic(".km-emoji-menu").css('width', "calc(100% - 10px)");
 				});
 				$mck_group_add_member.on('click', function (e) {
 					e.preventDefault();
@@ -6251,7 +6251,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				e.preventDefault();
 				mckGroupLayout.loadCreateGroupTab();
 				var width = $kmApplozic('#km-write-box').css('width');
-				$kmApplozic(".km-emoji-menu").css('width', width);
+				$kmApplozic(".km-emoji-menu").css('width', "calc(100% - 10px)");
 			});
 			$mck_group_info_close.on('click', function (e) {
 				e.preventDefault();
@@ -6262,7 +6262,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_group_member_List.html('');
 				// setting emaji width
 				var width = $kmApplozic('#km-write-box').css('width');
-				$kmApplozic(".km-emoji-menu").css('width', width);
+				$kmApplozic(".km-emoji-menu").css('width', "calc(100% - 10px)");
 			});
 			$mck_group_create_close.on('click', function (e) {
 				e.preventDefault();
@@ -6271,7 +6271,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
 				$kmApplozic('body').removeClass('km-panel-3');
 				var width = $kmApplozic('#km-write-box').css('width');
-				$kmApplozic(".km-emoji-menu").css('width', width);
+				$kmApplozic(".km-emoji-menu").css('width', "calc(100% - 10px)");
 			});
 			var MAX_GROUP_NAME_SIZE = 30;
 			$kmApplozic('.km-group-name-box div[contenteditable]').keypress(function (e) {
