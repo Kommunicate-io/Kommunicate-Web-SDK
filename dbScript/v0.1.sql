@@ -165,3 +165,12 @@ ALTER TABLE app_settings CHANGE COLUMN agent_routing `agent_routing` INT(11) NUL
 
 --------------------------- Release-3.3 ------------------------
 alter table app_settings add  column conversation_close_time INTEGER DEFAULT 0;
+
+ALTER TABLE `users` 
+ADD INDEX `applicationId_type_deletedAt_idx` (`application_id` ASC, `type` ASC, `deleted_at` DESC);
+
+ALTER TABLE `app_settings` 
+ADD INDEX `applicationId_deletedAt_idx` (`application_id` ASC, `deleted_at` DESC);
+
+ALTER TABLE `applications` 
+ADD INDEX `application_id_idx` (`application_id`);

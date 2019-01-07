@@ -210,6 +210,18 @@ const CommonUtils = {
         return ((navigator.userAgent.indexOf('MSIE') !== -1 ||
         navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
+    getProduct: function() {
+        if (this.isKommunicateDashboard()) {
+            return "kommunicate";
+        }
+        if (this.isProductApplozic()) {
+            return "applozic";
+        }
+        return "kommunicate";
+    },
+    getProductName: function() {
+        return this.getProduct() == "applozic" ? "Applozic":"Kommunicate"
+    },
     isProductApplozic: function() {
         let userSession = this.getUserSession();
         if(userSession) {
@@ -225,9 +237,6 @@ const CommonUtils = {
         } else {
             return getConfig().brand === "kommunicate";
         }
-    },
-    getProductName: function() {
-        return CommonUtils.isKommunicateDashboard() ? "Kommunicate" : "Applozic";
     },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()

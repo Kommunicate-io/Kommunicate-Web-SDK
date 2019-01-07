@@ -63,15 +63,20 @@ const sendEmail = (options) => {
             options = getEmailFormat(options, agent);
             return mailService.sendMail(options);
         }).catch(err => {
+            console.log(err);
             throw err;
         });
 }
 
 const getEmailFormat = (options, custInfo) => {
     try {
+        if (options.product == null) {
+            options.product = "kommunicate";
+        } 
         let html = options.html;
         let templatePath = "";
         let templateReplacement = {};
+        let productName = options.product == "applozic" ? "Applozic":"Kommunicate";
         if (!html) {
             switch (options.templateName) {
                 case "SEND_KOMMUNICATE_SCRIPT":
@@ -89,20 +94,16 @@ const getEmailFormat = (options, custInfo) => {
                     break;
 
                 case "INVITE_TEAM_MAIL":
-                    var dashboardUrl = !options.isApplozic ? joinKommunicateUrl : applozicDashboardHostUrl
-                    templatePath = !options.isApplozic ? path.join(__dirname, "/inviteTeamTemplate.html"): path.join(__dirname, "/inviteApplozicTeamTemplate.html"),
+                    var dashboardUrl = options.product == "applozic" ? applozicDashboardHostUrl:joinKommunicateUrl
+                    templatePath = path.join(__dirname, "/" + options.product + "-inviteTeamTemplate.html"),
                         templateReplacement[":adminName"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? options.agentName + " from " + custInfo.companyName : options.agentName,
                         templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
                         templateReplacement[":joinKommunicateUrl"] = dashboardUrl.replace(":token", options.token).replace(":referer", options.agentId),
                         templateReplacement[":ORGANIZATION"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "from " + custInfo.companyName : "";
                     options.templatePath = templatePath,
-                        options.templateReplacement = templateReplacement;
-                        if(!options.isApplozic){
-                            options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on Kommunicate" : "Invitation to Join Kommunicate ";
-                        }else{
-                            options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on Applozic" : "Invitation to Join Applozic ";
-                        }
-                    options.bcc = "support@kommunicate.io";
+                    options.templateReplacement = templateReplacement;
+                    options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on " + productName : "Invitation to Join " + productName;
+                    options.bcc = options.product == "applozic" ? "support@applozic.com": "support@kommunicate.io";
                     break;
 
                 case "BOT_USE_CASE_EMAIL":

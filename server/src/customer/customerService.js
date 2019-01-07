@@ -31,19 +31,17 @@ const createCustomer = (customer, application, transaction) => {
     })
 }
 
-const getCustomerByApplicationId = (appId) => {
-    let settings = { applicationId: appId };
-    return Promise.resolve(customerModel.findOne({ include: [{ model: applicationModel, attributes: ['applicationId', 'created_at'], where: { 'applicationId': appId } }] })).then(customer => {
-        if (customer) {
-            return appSettingService.getAppSettingsByApplicationId(settings).then(response => {
-                customer.agentRouting = response.data.agentRouting;
-                customer.botRouting = response.data.botRouting;
-                customer.defaultConversationAssignee = response.data.defaultConversationAssignee;
-                return customer;
-            })
-        }
-        return null;
-    })
+const getCustomerByApplicationId = async (appId) => {
+    let app = await applicationModel.findOne({ where: { 'applicationId': appId } });
+    if (!app) throw new Error("application not found")
+    let customer = await customerModel.findOne({ where: { 'id': app.customerId } })
+    if (!customer) new Error("customer not found");
+    customer.applications = [{ 'applicationId': app.applicationId, 'created_at': app.created_at }]
+    let appSettings = await appSettingService.getAppSettingsByApplicationId({ applicationId: appId });
+    customer.agentRouting = appSettings.data.agentRouting;
+    customer.botRouting = appSettings.data.botRouting;
+    customer.defaultConversationAssignee = appSettings.data.defaultConversationAssignee;
+    return customer;
 }
 
 const getCustomerByEmail = (email) => {

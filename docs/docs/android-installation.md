@@ -15,6 +15,33 @@ Add the following in your app build.gradle dependency:
 implementation 'io.kommunicate:kommunicate:1.7.1'
 ```
 
+## Building with proguard
+If you are using proguard in your application then add the below rules to your proguard-rules.pro file:
+
+```
+#keep json classes                
+-keepclassmembernames class * extends com.applozic.mobicommons.json.JsonMarker {
+    !static !transient <fields>;
+}
+
+-keepclassmembernames class * extends com.applozic.mobicommons.json.JsonParcelableMarker {
+    !static !transient <fields>;
+}
+-keepclassmembernames class com.applozic.mobicomkit.api.people.ChannelInfo$GroupUser { *; }
+
+#GSON Config          
+-keepattributes Signature          
+-keep class sun.misc.Unsafe { *; }           
+-keep class com.google.gson.examples.android.model.** { *; }            
+-keep class org.eclipse.paho.client.mqttv3.logging.JSR47Logger { *; } 
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
+-dontwarn android.support.v4.**
+-keep public class com.google.android.gms.* { public *; }
+-dontwarn com.google.android.gms.**
+-keep class com.google.gson.** { *; }
+```
+
 ## Initialise SDK
 After the gradle sync has finished with kommunicate dependency, you can initialise the SDK by calling the below method:
 ```java
