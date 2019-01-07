@@ -225,14 +225,20 @@ function KmContactUtils() {
 }
 function KmGroupUtils() {
     var _this = this
-    _this.getGroup = function(groupId) {
+    _this.getGroup = function(groupId, callback) {
         if (typeof KM_GROUP_MAP[groupId] === 'object') {
+           typeof callback === 'function' && callback(KM_GROUP_MAP[groupId])
             return KM_GROUP_MAP[groupId];
+            
         } else if (typeof KM_ASSIGNE_GROUP_MAP[groupId] === 'object') {
+            typeof callback === 'function' && callback(KM_ASSIGNE_GROUP_MAP[groupId])
             return KM_ASSIGNE_GROUP_MAP[groupId];
+            
         } else {
-            kmGroupService.getGroupFeed({"groupId":groupId,"sync":false})
-            return KM_GROUP_MAP[groupId];
+            kmGroupService.getGroupFeed({"groupId":groupId, "callback":function(){
+                typeof callback === 'function' && callback(KM_GROUP_MAP[groupId])
+                return KM_GROUP_MAP[groupId];
+            } })
         }
     };
     _this.getGroupByClientGroupId = function(clientGroupId) {
@@ -502,7 +508,7 @@ function KmGroupService() {
             if (typeof params.callback === 'function') {
                 response.status = "error";
                 response.errorMessage = "GroupId or Client GroupId Required";
-                message.metadata ? params.callback(response,message.metadata): params.callback(response);
+                params.callback(response);
             }
             return;
         }
@@ -514,7 +520,6 @@ function KmGroupService() {
             data: data,
             type: 'get',
             global: false,
-            async: !params.sync,
             success: function(data) {
                 if (data.status === "success") {
                     var groupFeed = data.response;
