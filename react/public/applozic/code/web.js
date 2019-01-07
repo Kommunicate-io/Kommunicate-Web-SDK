@@ -13,13 +13,6 @@ $(document).ready(function() {
     $kmApplozic("#km-customers-cell-link").trigger('click');
 });
 
-$kmApplozic("#km-user-info-close").on('click', function(e) {
-    e.preventDefault();
-    // $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
-    $kmApplozic(".km-container").removeClass('km-panel-3');
-    $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
-    $kmApplozic('body').removeClass('km-panel-3');
-});
 
 $kmApplozic("#kommunicate-panel-tabs li a").on('click', function(e) {
     var $this = $kmApplozic(this);
@@ -114,7 +107,7 @@ var autoSuggestions = {};
           keys.every(function (userId, index) {
             var user = group.users[userId];
             if (user.role == 3) {
-              getContactDetail(userId)
+              displayUserInfo(userId)
               return false;
             }
             else {
@@ -122,7 +115,7 @@ var autoSuggestions = {};
             }
           })
         } else {
-          getContactDetail(tabId);
+          displayUserInfo(tabId);
         }
 
         window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
@@ -150,7 +143,7 @@ var autoSuggestions = {};
   //});
   }
 
-  function getContactDetail(contactId){
+  function displayUserInfo(contactId){
         $kmApplozic.fn.applozic("fetchContacts", {
             "roleNameList": ["USER"],
             "userId": encodeURIComponent(contactId),
