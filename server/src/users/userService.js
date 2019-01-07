@@ -772,6 +772,14 @@ const getAgentIdsStatusWise= async (applicationId)=> {
   return null;
 }
 }
+
+const isThirdPartyLogin = (loginVia) => {
+ return USER_CONSTANTS.THIRD_PARTY_LOGIN.some(function (el) {
+    return el === loginVia;
+  });
+};
+
+exports.isThirdPartyLogin = isThirdPartyLogin;
 exports.getAgentIdsStatusWise = getAgentIdsStatusWise;
 exports.updateApplozicUser = updateApplozicUser;
 exports.isDeletedUser = isDeletedUser;
