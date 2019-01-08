@@ -303,12 +303,14 @@ exports.patchUser = (req,res)=>{
 
 exports.updatePassword=(req,res)=>{
   logger.info("request received to update password");
+  let oldPassword =req.body.oldPassword;
   const newPassword = req.body.newPassword;
-  const oldPassword =req.body.oldPassword;
   const userName = req.body.userName;
   const applicationId = req.body.applicationId;
+  const loginVia = req.body.loginVia;
     return userService.getByUserNameAndAppId(userName,applicationId).then(user=>{
-      if(bcrypt.compareSync(oldPassword, user.password)){
+      (!oldPassword && userService.isThirdPartyLogin(loginVia)) && (oldPassword = user.accessToken);
+      if(oldPassword && bcrypt.compareSync(oldPassword, user.password)){
         return userService.updatePassword(newPassword,user).then(result=>{
           return res.status(200).json({code:"SUCCESS",message:"password updated"});
         })

@@ -14,15 +14,9 @@ exports.login = async function(req, res) {
     return  res.status(200).json({code:"INVALID_CREDENTIALS", message:"wrong userName or password or applicationId"});
   }
   if(req.query.loginType === 'oauth'){
-    userDetail.password = 'mi8&zG#0rLyE^$1&MXSe';
     try{
       let user = await userService.getByUserNameAndAppId(userName,applicationId);
-      if(user && user.loginType =="oauth"){
-        userDetail.password = 'mi8&zG#0rLyE^$1&MXSe';
-      }
-      else{
-        userDetail.password = user.accessToken;
-      }    
+      user && (userDetail.password = user.accessToken);
       userDetail.loginType='oauth';
     }
     catch(e){
