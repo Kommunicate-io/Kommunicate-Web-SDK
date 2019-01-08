@@ -89,6 +89,14 @@ a, a:hover, a:focus, a:active {
   max-height: 600px;
   margin: 0 auto;
 }
+.homepage-ab-beta-landing-page-section .bg-girl-img.mailbox-img {
+  max-height: 600px;
+  margin: 0 auto;
+  box-shadow: 0px 5px 30px 0px rgba(199,199,199,1);
+  background: #fff;
+  padding: 0 10px;
+  border-radius: 10px;
+}
 .hero-text {
   font-size: 40px;
   font-weight: 500;
@@ -2254,7 +2262,7 @@ input:-ms-input-placeholder {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  margin-top: 84px;
+  margin-top: 40px;
   text-align: center;
 }
 .mailbox-support-icon{
@@ -2285,7 +2293,6 @@ input:-ms-input-placeholder {
 }
 
 .row-mailbox{
-  margin-bottom: -80px;
   padding-top: 231px;
 }
 
@@ -2930,6 +2937,10 @@ ul.nacc li p {
   .homepage-ab-beta-landing-page-section .img-cont-pos-rel {
     position: relative;
     bottom:-85px;
+  }
+  .homepage-ab-beta-landing-page-section .img-cont-pos-rel.mailbox {
+    position: relative;
+    bottom:0;
   }
   .homepage-ab-beta-features-section .faqs-svg, .homepage-ab-beta-features-section .bot-integration-svg, .homepage-ab-beta-features-section .conversations-svg {
     max-height: 700px;
