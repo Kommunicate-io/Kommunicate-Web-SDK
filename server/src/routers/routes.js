@@ -121,6 +121,7 @@ userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.get('/chat/plugin/settings', userController.defaultPluginSettings);
+userRouter.get('/v2/chat/plugin/settings', userController.defaultPluginSettingsV2);
 //userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);

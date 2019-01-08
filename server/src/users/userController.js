@@ -510,23 +510,42 @@ exports.activateOrDeactivateUser = (req, res) => {
     });
 };
 
-exports.defaultPluginSettings=(req, res)=>{
-  return userService.getAdminUserByAppId(req.query.appId).then(user=>{
-    if(user){
-      return getPseudoName().then(result=>{
-        let response=Object.assign(result, {"agentId": user.userName, "agentName":user.name});
-        return appSettingService.getAppSettingsByApplicationId({ applicationId: req.query.appId }).then(resp=>{
-          response.widgetTheme = resp.data.widgetTheme; 
-          return customerService.getCustomerByUserName(user.userName).then(resp=>{
+const getPluginSettings = (appId) => {
+  return userService.getAdminUserByAppId(appId).then(user => {
+    if (user) {
+      return getPseudoName().then(result => {
+        let response = Object.assign(result, { "agentId": user.userName, "agentName": user.name });
+        return appSettingService.getAppSettingsByApplicationId({ applicationId: appId }).then(resp => {
+          response.widgetTheme = resp.data.widgetTheme;
+          return customerService.getCustomerByApplicationId(appId).then(resp => {
             response.customerCreatedAt = resp.created_at;
-              return res.status(200).json({ "code": "SUCCESS", "response": response });
+            return response;
           })
-        })       
+        })
       })
     }
-  }).catch(err=>{
+    throw new Error("user not found");
+  }).catch(error => {
+    throw error;
+  })
+}
+
+exports.defaultPluginSettings = (req, res) => {
+  return getPluginSettings(req.query.appId).then(response => {
+    response.widgetTheme = JSON.stringify(response.widgetTheme);
+    return res.status(200).json({ "code": "SUCCESS", "response": response });
+  }).catch(err => {
     console.log(err);
-    return res.status(500).json({code: "ERROR", message: "error" });
+    return res.status(500).json({ code: "ERROR", message: "error" });
+  })
+}
+
+exports.defaultPluginSettingsV2 = (req, res) => {
+  return getPluginSettings(req.query.appId).then(response => {
+    return res.status(200).json({ "code": "SUCCESS", "response": response });
+  }).catch(err => {
+    console.log(err);
+    return res.status(500).json({ code: "ERROR", message: "error" });
   })
 }
 
