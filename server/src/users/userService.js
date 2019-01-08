@@ -738,7 +738,7 @@ const updateSubscriptionQuantity = async function(user, count){
         let usersCount = await getUsersCountByTypes(user.applicationId, null) - FREE_BOTS_COUNT;
         
 
-        if ((count > 0 && result.subscription.plan_quantity >= usersCount) || (count < 0 && result.subscription.plan_quantity == (usersCount + 1))) {
+        if ((count > 0 && result.subscription.plan_quantity >= usersCount) || !(count < 0 && result.subscription.plan_quantity == (usersCount + 1))) {
           console.log("users count is less than the subscription quantity, skipping subscription update");
           return;
         }
