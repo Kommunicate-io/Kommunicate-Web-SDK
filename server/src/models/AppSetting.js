@@ -49,7 +49,7 @@ let AppSetting= function(sequelize, DataTypes) {
         field:'default_conversation_assignee'
       },
       domainUrl:{
-        type: DataTypes.TEXT("medium"),
+        type: DataTypes.STRING,
         field:'domain_url'
       },
       /**

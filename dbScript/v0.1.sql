@@ -177,4 +177,6 @@ ADD INDEX `application_id_idx` (`application_id`);
 
 --------------------------- Release-3.4 ------------------------
 
-ALTER TABLE app_settings ADD COLUMN domain_url MEDIUMTEXT DEFAULT Null;
+
+ALTER TABLE app_settings ADD COLUMN domain_url VARCHAR(255) DEFAULT Null;
+
