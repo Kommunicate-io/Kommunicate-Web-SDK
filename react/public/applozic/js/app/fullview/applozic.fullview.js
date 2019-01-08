@@ -606,7 +606,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		};
 
 		_this.reset = function (optns) {
-			mckStorage.resetStorage();
+			w.sessionStorage.clear();
 			MCK_TOKEN = '';
 			AUTH_CODE = '';
 			FILE_META = [];
@@ -1278,16 +1278,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								'photoLink': result.imageLink
 							});
 							if (result.imageLink && result.imageLink !== "") {
-								kmUtils.setItemInLocalStorage('userProfileUrl', result.imageLink);
-
-								let userSession = kmUtils.getItemFromLocalStorage('KM_USER_SESSION');
+								w.sessionStorage.setItem('userProfileUrl', result.imageLink);
+								let userSession = JSON.parse(w.localStorage.getItem('KM_USER_SESSION'));
 								userSession.imageLink=result.imageLink;
-								kmUtils.setItemInLocalStorage('KM_USER_SESSION', userSession);
+								w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
 							}
 
-							let userSession = kmUtils.getItemFromLocalStorage('KM_USER_SESSION');
+							let userSession = JSON.parse(w.localStorage.getItem('KM_USER_SESSION'));
 							userSession.notifyState=result.notifyState;
-							kmUtils.setItemInLocalStorage('KM_USER_SESSION', userSession);
+							w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
 
 							$kmApplozic.ajaxPrefilter(function (options) {
 								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
@@ -6970,39 +6969,31 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var MCK_MESSAGE_ARRAY = [];
 			var MCK_CONTACT_NAME_ARRAY = [];
 			var MCK_ASSIGNED_MESSAGE_ARRAY = [];
-			_this.resetStorage = function (){
-				_this.clearMckMessageArray();
-				_this.clearMckAssignedMessageArray();
-				_this.clearUserProfileUrl();
-			};
-			_this.clearUserProfileUrl = function (){
-				typeof (w.localStorage) !== "undefined" && kmUtils.removeItemInlocalStorage("userProfileUrl");
-			};
 			_this.getMckMessageArray = function () {
-				return (typeof (w.localStorage) !== "undefined") ? kmUtils.getItemFromLocalStorage("kmMessageArray") : MCK_MESSAGE_ARRAY;
-			}; 
+				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("kmMessageArray")) : MCK_MESSAGE_ARRAY;
+			};
 			_this.clearMckMessageArray = function () {
-				if (typeof (w.localStorage) !== "undefined") {
-					kmUtils.removeItemInlocalStorage("kmMessageArray")
+				if (typeof (w.sessionStorage) !== "undefined") {
+					w.sessionStorage.removeItem("kmMessageArray");
 				} else {
 					MCK_MESSAGE_ARRAY.length = 0;
 				}
 			};
 			_this.setMckMessageArray = function (messages) {
-				if (typeof (w.localStorage) !== "undefined") {
-					kmUtils.setItemInLocalStorage('kmMessageArray', messages);
+				if (typeof (w.sessionStorage) !== "undefined") {
+					w.sessionStorage.setItem('kmMessageArray', w.JSON.stringify(messages));
 				} else {
 					MCK_MESSAGE_ARRAY = messages;
 				}
 			};
 			_this.updateMckMessageArray = function (mckMessageArray) {
-				if (typeof (w.localStorage) !== "undefined") {
-					var mckLocalMessageArray = kmUtils.getItemFromLocalStorage('kmMessageArray');
+				if (typeof (w.sessionStorage) !== "undefined") {
+					var mckLocalMessageArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('kmMessageArray'));
 					if (mckLocalMessageArray !== null) {
 						mckLocalMessageArray = mckLocalMessageArray.concat(mckMessageArray);
-						kmUtils.setItemInLocalStorage('kmMessageArray', mckLocalMessageArray);
+						w.sessionStorage.setItem('kmMessageArray', w.JSON.stringify(mckLocalMessageArray));
 					} else {
-						kmUtils.setItemInLocalStorage('kmMessageArray', mckMessageArray);
+						w.sessionStorage.setItem('kmMessageArray', w.JSON.stringify(mckMessageArray));
 					}
 					return mckMessageArray;
 				} else {
@@ -7011,30 +7002,30 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.clearMckAssignedMessageArray = function () {
-				if (typeof (w.localStorage) !== "undefined") {
-					kmUtils.removeItemInlocalStorage("kmAssignedMessageArray");
+				if (typeof (w.sessionStorage) !== "undefined") {
+					w.sessionStorage.removeItem("kmAssignedMessageArray");
 				} else {
 					MCK_ASSIGNED_MESSAGE_ARRAY.length = 0;
 				}
 			};
 			_this.getMckAssignedMessageArray = function () {
-				return (typeof (w.localStorage) !== "undefined") ? kmUtils.getItemFromLocalStorage("kmMessageArray") : MCK_MESSAGE_ARRAY;
+				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("kmMessageArray")) : MCK_MESSAGE_ARRAY;
 			};
 			_this.setMckAssignedMessageArray = function (messages) {
-				if (typeof (w.localStorage) !== "undefined") {
-					kmUtils.setItemInLocalStorage('kmAssignedMessageArray', messages)
+				if (typeof (w.sessionStorage) !== "undefined") {
+					w.sessionStorage.setItem('kmAssignedMessageArray', w.JSON.stringify(messages));
 				} else {
 					MCK_ASSIGNED_MESSAGE_ARRAY = messages;
 				}
 			};
 			_this.updateMckAssignedMessageArray = function (mckMessageArray) {
-				if (typeof (w.localStorage) !== "undefined") {
-					var mckLocalMessageArray =   kmUtils.getItemFromLocalStorage("kmAssignedMessageArray");
+				if (typeof (w.sessionStorage) !== "undefined") {
+					var mckLocalMessageArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('kmAssignedMessageArray'));
 					if (mckLocalMessageArray !== null) {
 						mckLocalMessageArray = mckLocalMessageArray.concat(mckMessageArray);
-						kmUtils.setItemInLocalStorage('kmAssignedMessageArray', mckLocalMessageArray);
+						w.sessionStorage.setItem('kmAssignedMessageArray', w.JSON.stringify(mckLocalMessageArray));
 					} else {
-						kmUtils.setItem('kmAssignedMessageArray', mckMessageArray);
+						w.sessionStorage.setItem('kmAssignedMessageArray', w.JSON.stringify(mckMessageArray));
 					}
 					return mckMessageArray;
 				} else {
@@ -7044,22 +7035,22 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 
 			_this.getMckContactNameArray = function () {
-				return (typeof (w.localStorage) !== "undefined") ? kmUtils.getItemFromLocalStorage("kmContactNameArray") : MCK_CONTACT_NAME_ARRAY;
+				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("kmContactNameArray")) : MCK_CONTACT_NAME_ARRAY;
 			};
 			_this.setMckContactNameArray = function (mckContactNameArray) {
-				if (typeof (w.localStorage) !== "undefined") {
-					kmUtils.setItemInLocalStorage('kmContactNameArray',mckContactNameArray);
+				if (typeof (w.sessionStorage) !== "undefined") {
+					w.sessionStorage.setItem('kmContactNameArray', w.JSON.stringify(mckContactNameArray));
 				} else {
 					MCK_CONTACT_NAME_ARRAY = mckContactNameArray;
 				}
 			};
 			_this.updateMckContactNameArray = function (mckContactNameArray) {
-				if (typeof (w.localStorage) !== "undefined") {
-					var mckLocalcontactNameArray = kmUtils.getItemFromLocalStorage("kmContactNameArray");
+				if (typeof (w.sessionStorage) !== "undefined") {
+					var mckLocalcontactNameArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('kmContactNameArray'));
 					if (mckLocalcontactNameArray !== null) {
 						mckContactNameArray = mckContactNameArray.concat(mckLocalcontactNameArray);
 					}
-					kmUtils.setItemInLocalStorage('kmContactNameArray', mckContactNameArray);
+					w.sessionStorage.setItem('kmContactNameArray', w.JSON.stringify(mckContactNameArray));
 					return mckContactNameArray;
 				} else {
 					MCK_CONTACT_NAME_ARRAY = MCK_CONTACT_NAME_ARRAY.concat(mckContactNameArray);
@@ -8031,7 +8022,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var list = {};
 				// mckMessageService.emptyStateChange();
 				if (messageType === "APPLOZIC_34"){
-					kmUtils.removeItemInlocalStorage('KM_USER_SESSION');
+					w.localStorage.removeItem('KM_USER_SESSION');
 					location.reload();
 				}
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {

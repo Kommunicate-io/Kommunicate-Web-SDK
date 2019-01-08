@@ -328,10 +328,10 @@ class Aside extends Component {
         // console.log("err while fetching users list ", err);
       });
 
-      if (CommonUtils.getItemFromLocalStorage("userProfileUrl") != null) {
-                  that.props.updateProfilePicUrl(CommonUtils.getItemFromLocalStorage("userProfileUrl"));
+      if (sessionStorage.getItem("userProfileUrl") != null) {
+                  that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
                   let userSession = CommonUtils.getUserSession();
-                  userSession.imageLink = CommonUtils.getItemFromLocalStorage("userProfileUrl");
+                  userSession.imageLink = sessionStorage.getItem("userProfileUrl");
                   CommonUtils.setUserSession(userSession);
       }
 

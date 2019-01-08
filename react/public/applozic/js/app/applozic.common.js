@@ -208,26 +208,6 @@ function KmUtils() {
         return true;
     };
 
-    _this.setItemInLocalStorage= function(key,value){
-        if(key){
-            localStorage.setItem(key, JSON.stringify(value)); 
-        }
-    };
-    _this.getItemFromLocalStorage= function(key){
-        if(key){
-            let data =  localStorage.getItem(key); 
-            try{
-                data=  JSON.parse(data); 
-            }catch(e){
-                // its string
-            }
-            return data;
-        }
-    };
-    _this.removeItemInlocalStorage = function (key){
-        key && localStorage.removeItem(key);
-    }
-
 }
 function KmContactUtils() {
     var _this = this;
@@ -494,9 +474,10 @@ function KmGroupService() {
             },
             error: function(xhr, desc, err) {
                  if (xhr.status === 401) {
-                    console.log('Unable to load groups. Please reload page.');
-                    response.status = 'error';
+                    sessionStorage.clear();
                 }
+                console.log('Unable to load groups. Please reload page.');
+                response.status = 'error';
                 if (params.callback) {
                     params.callback(response);
                 }
