@@ -330,7 +330,7 @@ export default class BotStore extends Component {
 
       integrateBot = (aiPlatform) => {
 
-          if(!this.state.botName){
+          if(!this.state.botName.trim()){
             Notification.info("Bot name missing");
             return;
           }
@@ -411,7 +411,7 @@ export default class BotStore extends Component {
         }).catch( err => {
           if(err.code=="USER_ALREADY_EXISTS"){
             // _this.setState({botNameAlreadyExists:true})
-            Notification.info("Bot name taken. Try again.");
+            Notification.error("Bot name or bot ID already exists. Try again with a different name");
           }else{
             Notification.error("Something went wrong");
             console.log("Error creating bot", err);

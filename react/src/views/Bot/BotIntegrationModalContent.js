@@ -179,7 +179,7 @@ class BotIntegrationModalContent extends Component {
 
         }).catch(err => {
             if (err.code == "USER_ALREADY_EXISTS") {
-                Notification.info("Bot name taken. Try again.");
+                Notification.error("Bot name or bot ID already exists. Try again with a different name");
             } else {
                 Notification.error("Something went wrong");
                 console.log("Error creating bot", err);
