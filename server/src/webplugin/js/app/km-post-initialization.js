@@ -35,7 +35,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
     } else {
         Kommunicate.helpdocsInitialization(data, helpdocsAccessKey);
     }
-    // Kommunicate.isAnyActiveConversation() && Kommunicate.openActiveConversation(Kommunicate.isAnyActiveConversation().groupId)
+    // Kommunicate.isAnyActiveConversation() && Kommunicate.openConversation(Kommunicate.isAnyActiveConversation().groupId);
 }
 
 //faq plugin
@@ -59,8 +59,5 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
 
     Kommunicate.isAnyActiveConversation = function () {
         return ALStorage.getItem("mckActiveConversationInfo") ? ALStorage.getItem("mckActiveConversationInfo") : false;
-    }
-    Kommunicate.openActiveConversation = function (groupId) {
-        Kommunicate.openConversation(groupId);
     }
 }
