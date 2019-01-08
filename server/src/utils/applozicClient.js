@@ -308,17 +308,30 @@ const sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, h
 
 exports.updatePassword = (options) => {
   console.log("calling Applozic for update password with options: ", options);
-  const url = config.getProperties().urls.passwordResetUrl.replace(":oldPassword", options.oldPassword).replace(":newPassword", options.newPassword);
+  const url = config.getProperties().urls.passwordResetUrl;
   const apzToken = "Basic " + new Buffer(options.userName + ":" + options.oldPassword).toString('base64');
-  return axios.get(url, { headers: { "Apz-AppId": options.applicationId, "Apz-Product-App": true, "Apz-Token": apzToken } }).then(response => {
+  const params = {
+    "oldPassword": options.oldPassword,
+    "newPassword": options.newPassword
+  };
+  let headers = { 
+    "Apz-AppId": options.applicationId, 
+    "Apz-Product-App": true, 
+    "Apz-Token": apzToken ,
+    "conContent-Typet":"application/x-www-form-urlencoded"
+  };
+  return axios.get(url, { params: params, headers: headers}).then(response => {
     if (response.data && response.data.status == "success") {
       console.log("password upadted for user :", options.userName);
       return { code: "success" }
     } else {
       throw { code: "APPLOZIC_ERROR" }
     }
+  }).catch(err => {
+    console.log("error while updating password ", err);
+    throw err;
   });
-}
+};
 
 /**
  * update the user in applozic.

@@ -35,7 +35,7 @@
       "hostUrl": "https://api-test.kommunicate.io",
       "kmWebsiteUrl": "https://test.kommunicate.io",
       "updatePasswordPage" : "https://dashboard-test.kommunicate.io/password/update?code=:code",
-      "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
+      "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password",
       "dashboardHostUrl":"https://dashboard-test.kommunicate.io",
       "applozicDashboardHostUrl":"https://console-test.applozic.com",
       "applozicHostUrl": "https://apps-test.applozic.com",
