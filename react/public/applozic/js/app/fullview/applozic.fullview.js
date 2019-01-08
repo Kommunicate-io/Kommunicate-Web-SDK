@@ -4173,7 +4173,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.loadMessageList(params);
 					}
 				}
-				params.tabId && window.history.replaceState(null, null, "/conversations/"+params.tabId);
+				params.tabId && window.history.replaceState(null, null, "/conversations/" + params.tabId+"?isGroup="+params.isGroup);
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
