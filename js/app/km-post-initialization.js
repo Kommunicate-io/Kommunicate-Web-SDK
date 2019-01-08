@@ -57,7 +57,7 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
         }, error: function () { }
     });
 
-    Kommunicate.getActiveConversation = function () {
-        return ALStorage.getItem("mckActiveConversationInfo");
-    }
+}
+Kommunicate.getActiveConversation = function () {
+    return KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo");
 }

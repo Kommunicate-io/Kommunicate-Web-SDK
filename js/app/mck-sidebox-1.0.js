@@ -1678,7 +1678,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     kommunicateIframe.style.height="75px";
                     kommunicateIframe.style.boxShadow="none";
                     kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    ALStorage.removeItem("mckActiveConversationInfo");
+                    KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                 });
 
                 var iframeMedia = parent.window.matchMedia("(max-width: 600px)");
@@ -2839,7 +2839,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         'isMessage': false
                     });
                 } else {
-                    ALStorage.setItem("mckActiveConversationInfo",{groupId:tabId})
+                    KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:tabId})
                     mckMessageLayout.loadTab({
                         'tabId': tabId,
                         'isGroup': isGroup,
