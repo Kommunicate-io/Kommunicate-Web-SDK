@@ -190,6 +190,7 @@ KommunicateUI={
 
     // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
+        ALStorage.removeItem("mckActiveConversationInfo");
         KommunicateUI.showHeader();
         KommunicateUI.awayMessageScroll = true;
         MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "km-faq-list" && MCK_EVENT_HISTORY.push("km-faq-list");
@@ -284,6 +285,7 @@ KommunicateUI={
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
+        ALStorage.removeItem("mckActiveConversationInfo");
         KommunicateUI.awayMessageScroll = true;
         KommunicateUI.hideAwayMessage();
         KommunicateUI.hideLeadCollectionTemplate();
