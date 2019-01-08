@@ -190,7 +190,7 @@ KommunicateUI={
 
     // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
-        ALStorage.removeItem("mckActiveConversationInfo");
+        KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo");
         KommunicateUI.showHeader();
         KommunicateUI.awayMessageScroll = true;
         MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "km-faq-list" && MCK_EVENT_HISTORY.push("km-faq-list");
@@ -285,7 +285,7 @@ KommunicateUI={
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
-        ALStorage.removeItem("mckActiveConversationInfo");
+        KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
         KommunicateUI.awayMessageScroll = true;
         KommunicateUI.hideAwayMessage();
         KommunicateUI.hideLeadCollectionTemplate();
@@ -311,6 +311,7 @@ KommunicateUI={
                  $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
+                KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:elem.dataset.mckId})
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                 KommunicateUI.activateTypingField();
                 return;

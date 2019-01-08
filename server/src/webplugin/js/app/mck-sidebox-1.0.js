@@ -1678,7 +1678,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     kommunicateIframe.style.height="75px";
                     kommunicateIframe.style.boxShadow="none";
                     kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    ALStorage.removeItem("mckActiveConversationInfo");
+                    KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                 });
 
                 var iframeMedia = parent.window.matchMedia("(max-width: 600px)");
@@ -2839,7 +2839,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         'isMessage': false
                     });
                 } else {
-                    ALStorage.setItem("mckActiveConversationInfo",{groupId:tabId})
                     mckMessageLayout.loadTab({
                         'tabId': tabId,
                         'isGroup': isGroup,
@@ -4135,6 +4134,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
             _this.loadTab = function (params, callback) {
                 _this.handleLoadTab();
+                params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
