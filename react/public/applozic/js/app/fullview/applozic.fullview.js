@@ -3880,7 +3880,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
-			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1} ${unreadCountClassExpr}" data-kmUserId ="${kmUserIdExpr}" data-km-id="${contIdExpr}" data-km-tab-viewid="${tabViewIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
+			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1} ${unreadCountClassExpr}" data-kmUserId ="${kmUserIdExpr}" data-km-id="${contIdExpr}" data-km-tab-viewid="${tabViewIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-8 km-cont-msg-wrapper preview km-typing-indicator-in-preview n-vis"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
 			var convbox = '<li id="km-li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-km-conversationid="${convIdExpr}" data-km-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-km-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="km-row km-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
 
@@ -7908,7 +7908,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var $mck_active_msg_inner = $kmApplozic(".chat.km-message-inner." + currTabId + ".active-chat.km-group-inner");
 					var $mck_agent_typing_indicator_container = $kmApplozic(".km-typing-indicator-for-agent--container");
 					var $mck_agent_typing_indicator_image = $kmApplozic(".km-typing-indicator-for-agent--image");
+					var $mck_typing_indicator_in_list = $kmApplozic(".person." + tabId + " .km-typing-indicator-in-preview");
+					var $mck_message_preview = $kmApplozic(".person." + tabId + " .kmMsgTextExpr");
 					var scrollHeight = $mck_active_msg_inner.get(0).scrollHeight;
+
 					if (!MCK_BLOCKED_TO_MAP[publisher] && !MCK_BLOCKED_BY_MAP[publisher]) {
 						if (status === 1) {
 							if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || currTabId === tabId)) {
@@ -7926,6 +7929,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 								$mck_agent_typing_indicator_container.addClass("vis").removeClass("n-vis");
 								$mck_agent_typing_indicator_image.html(imageLink);
+								// This will show "Typing..." in the left side conversation list.
+								$mck_typing_indicator_in_list.addClass("vis").removeClass("n-vis");
+								$mck_typing_indicator_in_list.html(KM_LABELS['typing']);
+								$mck_message_preview.addClass("n-vis").removeClass("vis");
 								if ($mck_active_msg_inner.height() < scrollHeight) {
 									$mck_active_msg_inner.animate({
 										scrollTop: $mck_active_msg_inner.prop("scrollHeight")
@@ -7934,6 +7941,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 								$mck_typing_box.removeClass('n-vis').addClass('vis');
 								setTimeout(function () {
+									$mck_typing_indicator_in_list.addClass("n-vis").removeClass("vis");
+									$mck_message_preview.addClass("vis").removeClass("n-vis");
 									$mck_agent_typing_indicator_container.addClass("n-vis").removeClass("vis");
 									$mck_tab_title.removeClass("km-tab-title-w-typing");
 									$mck_typing_box.removeClass('vis').addClass('n-vis');
