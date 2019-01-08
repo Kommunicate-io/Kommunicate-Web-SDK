@@ -35,7 +35,7 @@
           "hostUrl": "https://api.kommunicate.io",
           "kmWebsiteUrl": "https://www.kommunicate.io",
           "updatePasswordPage": "http://dashboard.kommunicate.io/password/update?code=:code",
-          "passwordResetUrl": "https://chat.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
+          "passwordResetUrl": "https://chat.kommunicate.io/rest/ws/user/update/password",
           "dashboardHostUrl":"https://dashboard.kommunicate.io",
           "applozicDashboardHostUrl":"https://console.applozic.com",
           "applozicHostUrl" : "https://chat.kommunicate.io",

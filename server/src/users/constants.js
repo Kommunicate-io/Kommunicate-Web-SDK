@@ -20,3 +20,11 @@ exports. USER_STATUS = {
     EXPIRED:2,
     DELETED:3
 }
+
+/* 
+At the moment the only social service we're using for login is google, in future if we add 
+other services please add below.
+*/
+exports.THIRD_PARTY_LOGIN = [
+    "google"
+];

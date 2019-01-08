@@ -773,7 +773,7 @@ body {
 	height: 25px;
 	border-radius: 50%;
 }
-.km-typing-indicator-for-agent--text  {
+.km-typing-indicator-for-agent--text, .km-typing-indicator-in-preview  {
 	font-size: 14px;
 	font-weight: normal;
 	font-style: italic;
@@ -793,6 +793,9 @@ body {
 .km-typing-indicator-for-agent--image .km-alpha-contact-image .km-contact-icon {
     height: 25px;
     line-height: 26px;
+}
+.km-typing-indicator-in-preview {
+	text-transform: capitalize;
 }
 /* Styles for typing indicator on agent side ends here*/
 

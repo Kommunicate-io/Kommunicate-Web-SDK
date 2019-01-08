@@ -110,3 +110,93 @@ Pass any kind of Kommunicate supported <a href="actionable-messages" target="_bl
    }
 }
 ```
+## Wroking with Dialogflow fulfillment
+> This feature is only available with Dialogflow V2 APIs. 
+
+Fulfillment lets your Dialogflow agent call business logic on an intent-by-intent basis. Dialogflow supports two ways to configure the fulfillment for an agent. More information on the fulfillment configuration is available on Dialogflow [docs](https://dialogflow.com/docs/fulfillment/configure).
+
+1. Custom webhook
+2. Create a webhook with the inline editor
+
+### Custom webhook
+
+A webhook is a web server endpoint that you create and host. When an intent with fulfillment enabled is matched, Dialogflow will make an HTTP POST request to your webhook with a JSON object containing information about the matched intent. And your webhook should respond back with instructions for what Dialogflow should do next. More about the request and response format is available in Dialogflow [docs](https://dialogflow.com/docs/fulfillment/how-it-works). Then Dialogflow wraps webhook response into the [response object](https://dialogflow.com/docs/reference/api-v2/rest/v2/projects.agent.sessions/detectIntent#response-body) depending on the API version you are using and send it to the client. 
+
+Kommunicate look for the fulfillmentMessages array in webhook response. The element in this array can be a text message or an [actionable messages](actionable-messages) supported by kommunicate. Every element is treated as a independent message and rendered into UI according to the data present. 
+
+Below is the sample fullfilmentMessage array for Dialogflow V2 APIs:
+
+```js
+{
+	"fulfillmentMessages": [{
+		"payload": {
+			"message": "Object1- this object renders the link button on the UI",
+			"platform": "kommunicate",
+			"metadata": {
+				"contentType": "300",
+				"templateId": "3",
+				"payload": [{
+						"type": "link",
+						"url": "www.google.com",
+						"name": "Go To Google"
+					},
+					{
+						"type": "link",
+						"url": "www.facebook.com",
+						"name": "Go To Facebook"
+					}
+				]
+			}
+		}
+	}, {
+		"payload": {
+			"message": "Object2 - this object renders this text string on the UI",
+			"platform": "kommunicate"
+		}
+	}]
+}
+
+```
+
+### Create a webhook with the inline editor
+Dialogflow provides some libraries designed to assist with building a fulfillment webhook. Below is the node js function with dialogflow fulfillment library which render the specified actionable messages on kommunicate chat UI.
+
+``` js
+'use strict';
+ 
+const functions = require('firebase-functions');
+const {WebhookClient} = require('dialogflow-fulfillment');
+const {Payload} = require('dialogflow-fulfillment');
+ 
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+ 
+exports.dialogflowfullfilment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response }); 
+  function welcome(agent) {
+    agent.add(new Payload("PLATFORM_UNSPECIFIED", [{
+      "message": "Do you want more updates?",
+      "platform": "kommunicate",
+      "metadata": {
+        "contentType": "300",
+        "templateId": "6",
+        "payload": [
+          {
+            "title": "Yes",
+            "message": "Cool! send me more."
+          },
+          {
+            "title": "No ",
+            "message": "Don't send it to me again"
+          }
+        ]
+      }
+    }]));
+  }
+ 
+  let intentMap = new Map();
+  intentMap.set('Default Welcome Intent', welcome);
+  agent.handleRequest(intentMap);
+});
+
+```
+

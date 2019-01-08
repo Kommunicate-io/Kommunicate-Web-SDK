@@ -136,7 +136,7 @@ DROP COLUMN bot_routing;
 
 alter table applications add column status tinyint default 1;
 
-/* 
+/*
 KM-1489 Chat widget color and launcher icon setting
 When executed this script will add widget_theme column in app_setings table (kommunicate_test DB) with data-type JSON.
 */
@@ -166,11 +166,15 @@ ALTER TABLE app_settings CHANGE COLUMN agent_routing `agent_routing` INT(11) NUL
 --------------------------- Release-3.3 ------------------------
 alter table app_settings add  column conversation_close_time INTEGER DEFAULT 0;
 
-ALTER TABLE `users` 
+ALTER TABLE `users`
 ADD INDEX `applicationId_type_deletedAt_idx` (`application_id` ASC, `type` ASC, `deleted_at` DESC);
 
-ALTER TABLE `app_settings` 
+ALTER TABLE `app_settings`
 ADD INDEX `applicationId_deletedAt_idx` (`application_id` ASC, `deleted_at` DESC);
 
-ALTER TABLE `applications` 
+ALTER TABLE `applications`
 ADD INDEX `application_id_idx` (`application_id`);
+
+--------------------------- Release-3.4 ------------------------
+
+ALTER TABLE app_settings ADD COLUMN domain_url MEDIUMTEXT DEFAULT Null;

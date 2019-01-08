@@ -33,7 +33,7 @@
          "hostUrl": "https://api-ca.kommunicate.io",
          "kmWebsiteUrl": "https://www.kommunicate.io",
          "updatePasswordPage": "http://dashboard-ca.kommunicate.io/password/update?code=:code",
-         "passwordResetUrl": "https://chat-ca.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
+         "passwordResetUrl": "https://chat-ca.kommunicate.io/rest/ws/user/update/password",
          "dashboardHostUrl":"https://dashboard-ca.kommunicate.io",
          "applozicHostUrl" : "https://chat-ca.kommunicate.io",
          "getUserInfo": "https://chat-ca.kommunicate.io/rest/ws/user/v2/detail",
