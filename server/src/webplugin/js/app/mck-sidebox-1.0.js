@@ -2839,7 +2839,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         'isMessage': false
                     });
                 } else {
-                    KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:tabId})
                     mckMessageLayout.loadTab({
                         'tabId': tabId,
                         'isGroup': isGroup,
@@ -4135,6 +4134,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
             _this.loadTab = function (params, callback) {
                 _this.handleLoadTab();
+                params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
