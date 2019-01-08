@@ -159,5 +159,21 @@ KommunicateUtils = {
         var settings = KommunicateUtils.getDataFromKmSession("settings");
         settings=  settings?JSON.parse(settings):null;
         return key&&settings?settings[key]:(settings?settings:"");
+    },
+    getItemFromLocalStorage: function(key) {
+        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        return session ? JSON.parse(session)[key] : "";
+    },
+    removeItemFromLocalStorage: function(key) {
+        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        session = session ? JSON.parse(session) : {};
+        delete session[key];
+        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+    },
+    setItemToLocalStorage: function(key,data) {
+        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        session = session ? JSON.parse(session) : {};
+        session[key] = data;
+        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
     }
 }
