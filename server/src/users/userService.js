@@ -527,6 +527,26 @@ const getUsersCountByTypes = (applicationId, type) => {
   });
 }
 /**
+ * Get count of users 
+ * Specify type to filter users  1: Agents, 2: Bots
+ * @param {String} applicationId
+ * @param {Array} type
+ * @return {Number}
+ */
+const getUsersCountByTypes = (applicationId, type) => {
+  logger.info("fetching Users count for customer, ", applicationId);
+  let criteria = { applicationId: applicationId };
+  if (type) {
+    criteria.type = { $in: type };
+  }
+  return Promise.resolve(userModel.count({ where: criteria})).then(result => {
+    return result;
+  }).catch(err => {
+    logger.info('error while getting users count', err);
+    throw err;
+  });
+}
+/**
  * Get list of all users if type is not specified.
  * Specify type to filter users  1:Agents, 2: Bots
  * @param {String} applicationId
@@ -717,7 +737,8 @@ const updateSubscriptionQuantity = async function(user, count){
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let usersCount = await getUsersCountByTypes(user.applicationId, null) - FREE_BOTS_COUNT;
         
-        if (result.subscription.plan_quantity >= usersCount) {
+
+        if ((count > 0 && result.subscription.plan_quantity >= usersCount) || (count < 0 && result.subscription.plan_quantity == (usersCount + 1))) {
           console.log("users count is less than the subscription quantity, skipping subscription update");
           return;
         }
