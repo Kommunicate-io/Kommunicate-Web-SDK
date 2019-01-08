@@ -102,3 +102,14 @@ export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
 
 export const CONVERSATION_STATUS = window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE
 
+export const LOGIN_VIA = {
+    GOOGLE: "google",
+    DEFAULT: "email"
+}
+/* 
+At the moment the only social service we're using for login is google, in future if we add 
+other services please add below.
+*/
+export const THIRD_PARTY_LOGIN = [
+    "google"
+];

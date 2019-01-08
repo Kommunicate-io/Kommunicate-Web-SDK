@@ -474,19 +474,19 @@ const getUsersByType = (applicationId, userType) => {
  *
 */
 const changePassword = (option) => {
+  var data = {};
+  let userSession = CommonUtils.getUserSession();
+  data.userName = userSession.userName;
+  data.applicationId = userSession.application.applicationId;
+  option.oldPassword && (data.oldPassword = option.oldPassword);
+  data.newPassword = option.newPassword;
+  option.loginVia && (data.loginVia = option.loginVia);
 
   const patchClientUrl = getConfig().kommunicateBaseUrl + "/users/password/update";
-  let userSession = CommonUtils.getUserSession();
   return Promise.resolve(axios({
     method: 'post',
     url: patchClientUrl,
-    data: {
-      "userName": userSession.userName,
-      "applicationId": userSession.application.applicationId,
-      "oldPassword": option.oldPassword,
-      "newPassword": option.newPassword
-    }
-
+    data: data
   })).then((response) => {
     if (response.data.code === 'SUCCESS') {
       Notification.success('Password Changed Successfully');
@@ -496,7 +496,7 @@ const changePassword = (option) => {
       return "SUCCESS";
     }
     else {
-      Notification.success('Wrong current password');
+      Notification.error('Wrong current password');
     }
   })
     //.catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });

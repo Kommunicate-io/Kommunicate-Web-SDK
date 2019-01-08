@@ -1,5 +1,7 @@
 import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
+import crypto from 'crypto';
+import {THIRD_PARTY_LOGIN} from '../utils/Constant';
 
 const CommonUtils = {
     setUserSession: function(userSession) {
@@ -8,10 +10,10 @@ const CommonUtils = {
         if(userSession.password) {
             delete userSession.password;
         }
-        localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
+        CommonUtils.setItemInLocalStorage('KM_USER_SESSION', userSession);
     },
     getUserSession: function() {
-        return JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+        return CommonUtils.getItemFromLocalStorage("KM_USER_SESSION");
     },
     updateAvailabilityStatus: function(available) {
         let userSession = CommonUtils.getUserSession();
@@ -76,10 +78,10 @@ const CommonUtils = {
         return domain;
     },
     setApplicationIds: function(appID) {
-        localStorage.setItem('KM_USER_SESSION_APP_IDS', JSON.stringify(appID));
+        CommonUtils.setItemInLocalStorage('KM_USER_SESSION_APP_IDS', appID);
     },
     getApplicationIds: function() {
-        return JSON.parse(localStorage.getItem('KM_USER_SESSION_APP_IDS'));
+        return CommonUtils.getItemFromLocalStorage("KM_USER_SESSION_APP_IDS");
     },
     getDaysCount: function() {
         var now = new Date();
@@ -138,6 +140,18 @@ const CommonUtils = {
             return data;
         }
     },
+    updateItemInLocalStorage : function(data, storageItem){
+        let userSession = CommonUtils.getItemFromLocalStorage(storageItem);
+        if(typeof data =='object'){
+           for (const key in data) {
+               if (data.hasOwnProperty(key)) {
+                   const element = data[key];
+                   userSession[key] = data[key];
+               }
+           }
+        }
+        CommoneUtils.setItemInLocalStorage(storageItem, userSession);
+    },
     triggerCustomEvent: function(eventName, options) {
         options = typeof options != 'object' ? options : {}
         options.bubbles = options.bubbles || true;
@@ -193,7 +207,7 @@ const CommonUtils = {
             return calculatedDate;
         }
     },
-    updateUserSession : function(data){
+    updateUserSession : function(data,){
         if(typeof data =='object'){
             let userSession = CommonUtils.getUserSession()||{};
            for (const key in data) {
@@ -266,6 +280,11 @@ const CommonUtils = {
     },
     removeSpecialCharacters: function (value) {
         return value.replace(/[^A-Z0-9]+/ig, "-").toLowerCase();
+    },
+    isThirdPartyLogin: function (loginVia) {
+        return THIRD_PARTY_LOGIN.some(function (el) {
+            return el === loginVia;
+        });
     }
 }
 
