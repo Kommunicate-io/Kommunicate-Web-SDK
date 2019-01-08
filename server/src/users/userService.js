@@ -513,19 +513,6 @@ exports.goOnline = (userId, appId) => {
   //   }
   // });
 };
-const getUsersCountByTypes = (applicationId, type) => {
-  logger.info("fetching Users count for customer, ", applicationId);
-  let criteria = { applicationId: applicationId };
-  if (type) {
-    criteria.type = { $in: type };
-  }
-  return Promise.resolve(userModel.count({ where: criteria})).then(result => {
-    return result;
-  }).catch(err => {
-    logger.info('error while getting all users', err);
-    throw err;
-  });
-}
 /**
  * Get count of users 
  * Specify type to filter users  1: Agents, 2: Bots
