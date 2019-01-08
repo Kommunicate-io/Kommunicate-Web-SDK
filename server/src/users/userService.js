@@ -21,6 +21,7 @@ const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
 const USER_CONSTANTS = require("../users/constants.js");
+const FREE_BOTS_COUNT = 2; //'bot' and 'liz' are free
 
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
@@ -512,6 +513,19 @@ exports.goOnline = (userId, appId) => {
   //   }
   // });
 };
+const getUsersCountByTypes = (applicationId, type) => {
+  logger.info("fetching Users count for customer, ", applicationId);
+  let criteria = { applicationId: applicationId };
+  if (type) {
+    criteria.type = { $in: type };
+  }
+  return Promise.resolve(userModel.count({ where: criteria})).then(result => {
+    return result;
+  }).catch(err => {
+    logger.info('error while getting all users', err);
+    throw err;
+  });
+}
 /**
  * Get list of all users if type is not specified.
  * Specify type to filter users  1:Agents, 2: Bots
@@ -694,10 +708,20 @@ const isDeletedUser= (userName, applicationId) => {
   })
 }
 
-const updateSubscriptionQuantity = (user, count) => {
-  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.BOT|| user.type == registrationService.USER_TYPE.ADMIN)) {
-    return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+const updateSubscriptionQuantity = async function(user, count){  
+  console.log("processing subscription quanity: " + count);
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.BOT || user.type == registrationService.USER_TYPE.ADMIN)) {
+    return customerService.getCustomerByApplicationId(user.applicationId).then(async customer => {
       if (customer.billingCustomerId) {
+
+        let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
+        let usersCount = await getUsersCountByTypes(user.applicationId, null) - FREE_BOTS_COUNT;
+        
+        if (result.subscription.plan_quantity >= usersCount) {
+          console.log("users count is less than the subscription quantity, skipping subscription update");
+          return;
+        }
+
         return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
       }
       return;
@@ -807,6 +831,7 @@ exports.isIntervalExceeds = isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
+exports.getUsersCountByTypes = getUsersCountByTypes;
 exports.updateUserStatus = updateUserStatus;
 exports.updateOnlyKommunicateUser = updateOnlyKommunicateUser;
 exports.getUserListByCriteria = getUserByCriteria;
