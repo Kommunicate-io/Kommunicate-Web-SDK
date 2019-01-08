@@ -615,7 +615,7 @@ class Aside extends Component {
             <div id="sec-chat-box" className="col-lg-12 tab-box">
               <div id="chat-box-div" style={{height: '100vh'}}>
 
-                <div className="km-container">
+                <div className="km-container km-panel-3">
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
                     {/* conversation tab new design */}

@@ -9,11 +9,6 @@ $(document).ready(function() {
     window.location = '/login.html';
   });
 
-  $kmApplozic(".km-group-search").on('click', function(e) {
-    $kmApplozic("#km-customers-cell-link").trigger('click');
-});
-
-
 $kmApplozic("#kommunicate-panel-tabs li a").on('click', function(e) {
     var $this = $kmApplozic(this);
     $kmApplozic("#kommunicate-panel-tabs li").toggleClass('active');
@@ -98,25 +93,21 @@ var autoSuggestions = {};
       onInit: onInitialize,
       maxHistory: userSession.subscription === "startup" ? 30 : "", // Number of days' history that needs to be restricted
       onTabClicked: function (tabDetail) {
-        var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
-        $mck_group_info_btn.trigger('click');
         var tabId = tabDetail.tabId;
         if (tabDetail.isGroup) {
           group = kmGroupUtils.getGroup(tabId);
-          var keys = Object.keys(group.users);
-          keys.every(function (userId, index) {
+          var userIds = Object.keys(group.users);
+          userIds.every(function (userId, index) {
             var user = group.users[userId];
             if (user.role == 3) {
-              displayUserInfo(userId)
+              tabId = userId;
               return false;
-            }
-            else {
+            } else {
               return true;
             }
           })
-        } else {
-          displayUserInfo(tabId);
         }
+        fetchUserDetailAndUpdateProps(tabId);
 
         window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
 
@@ -125,10 +116,12 @@ var autoSuggestions = {};
         if (typeof tabDetail === 'object') {
           window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
           if (tabDetail.isGroup) {
-            $("#km-toolbar").find("input,button,textarea,select").removeAttr('disabled');
+            $(".km-new-conversation-header").removeClass('n-vis').addClass('vis');
+            $(".km-new-conversation-header-bot").removeClass('n-vis').addClass('vis');
             window.Aside.initConversation(tabDetail.tabId);
           } else {
-            $("#km-toolbar").find("input,button,textarea,select").attr("disabled", "disabled");
+            $(".km-new-conversation-header").removeClass('vis').addClass('n-vis');
+            $(".km-new-conversation-header-bot").removeClass('vis').addClass('n-vis');
           }
         }
       },
@@ -143,7 +136,7 @@ var autoSuggestions = {};
   //});
   }
 
-  function displayUserInfo(contactId){
+  function fetchUserDetailAndUpdateProps(contactId){
         $kmApplozic.fn.applozic("fetchContacts", {
             "roleNameList": ["USER"],
             "userId": encodeURIComponent(contactId),
