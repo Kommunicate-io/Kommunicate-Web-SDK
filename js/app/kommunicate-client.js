@@ -66,7 +66,6 @@ Kommunicate.client={
                 GROUP_META_DATA_UPDATED_MESSAGE: "",
                 CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
-                KM_ORIGNAL_TITLE:"true",
                 //ALERT: "false",
                 HIDE: "true",
                 SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
