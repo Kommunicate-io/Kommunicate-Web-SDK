@@ -211,13 +211,9 @@ class Login extends Component {
 		} else {
 			AnalyticsTracking.identify(userName);
 
-			if (this.state.loginType === 'oauth'){
-				_this.props.loginVia("google");
-				loginUrl += "?loginType=oauth"
-			} else if (this.state.loginType === 'email'){
-				_this.props.loginVia("email");
-				loginUrl += "?loginType=email"
-			}
+			loginUrl += "?loginType=" + this.state.loginType;
+			this.state.loginType === 'oauth' && _this.props.loginVia("google");
+			this.state.loginType === 'email' && _this.props.loginVia("email");
 
 			this.setState({loginButtonDisabled:true});
 			
