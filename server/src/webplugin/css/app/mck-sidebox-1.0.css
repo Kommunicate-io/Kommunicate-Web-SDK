@@ -2448,7 +2448,9 @@ display: none;
 }
 
 .mck-box-content.vis {
-	display: table !important;
+	/* display: table !important; */
+	display: flex;
+    flex-direction: column;
 }
 
 /*.mck-box input {
@@ -4489,7 +4491,8 @@ color: rgba(0,0,0,0.5);
     background-color: #fff !important;
 	text-decoration: none;
 	cursor: pointer;
-	margin: 0
+	margin: 0;
+	z-index: 10;
 }
 .km-faq-list:last-child{
 	margin-bottom: 72px;
