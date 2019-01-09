@@ -140,18 +140,6 @@ const CommonUtils = {
             return data;
         }
     },
-    updateItemInLocalStorage : function(data, storageItem){
-        let userSession = CommonUtils.getItemFromLocalStorage(storageItem);
-        if(typeof data =='object'){
-           for (const key in data) {
-               if (data.hasOwnProperty(key)) {
-                   const element = data[key];
-                   userSession[key] = data[key];
-               }
-           }
-        }
-        CommoneUtils.setItemInLocalStorage(storageItem, userSession);
-    },
     triggerCustomEvent: function(eventName, options) {
         options = typeof options != 'object' ? options : {}
         options.bubbles = options.bubbles || true;
