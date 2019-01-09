@@ -207,7 +207,7 @@ class AutoSuggest extends Component {
 		.then(response => {
 			console.log(response)
 			if(response.status === 200 && response.data.code === "SUGESSTION_DELETED_SUCCESSFULLY"){
-				Notification.info("Suggestion deleted")
+				Notification.info("Quick reply deleted")
 				this.getSuggestions();
 				quickReply.loadQuickReplies();
 				this.setState({
