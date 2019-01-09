@@ -8,5 +8,6 @@ KOMMUNICATE_CONSTANTS = {
         DUPLICATE: 4,
         ARCHIVE: 5,
         UNRESPONDED: 6
-    }
+    },
+     OPEN_CONVERSATION_ARRAY : ["-1", "0", "6", "1"]
 }
