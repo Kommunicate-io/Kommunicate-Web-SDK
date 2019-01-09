@@ -406,6 +406,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
       font-size: 16px;
       width: 100%;
   }
+  .form-submit-btn.mailbox {
+      width: auto;
+  }
   .cta-email-pre-signup {
       width: 100% !important;
   }
@@ -2377,6 +2380,7 @@ input:-ms-input-placeholder {
   }
   .mailbox-support-box{
     width: 90%;
+    margin: 0 auto;
   }
   .mailbox-support-wrapper{
     flex-direction: column;
@@ -2659,6 +2663,8 @@ input:-ms-input-placeholder {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  z-index: 10;
+  position: relative;
 }
 .free-forever >span{
   display: inline-block;
@@ -2730,7 +2736,7 @@ input:-ms-input-placeholder {
   width: 30%;
 }
 .mailbox-link{
-  padding-bottom: 350px;
+  margin-bottom: 350px;
   display: block;
   text-align: center;
   color: #5553b7;
