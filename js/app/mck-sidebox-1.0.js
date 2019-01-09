@@ -3355,10 +3355,10 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         //Display/hide lead(email) collection template
                         if (params.isGroup) {
                             var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                            var conversationAssigneeRoleType = data.userDetails.filter(function (item) {
+                            var conversationAssigneeDetails = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;
                             })[0];
-                            if(conversationAssigneeRoleType && conversationAssigneeRoleType.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
+                            if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({
                                         "applicationId": MCK_APP_ID,
                                         "conversationId": params.tabId
@@ -3639,12 +3639,11 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                         name = params.groupName;
                                     } else {
                                         name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, params.userName);
-                                    }
-                                    if(DEFAULT_GROUP_NAME == name) {
-                                        CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                                    } else {
-                                        CONVERSATION_ASSIGNEE = name;
-                                    }
+                                    };
+
+                                    CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    $mck_tab_title.html(name);
+                                    $mck_tab_title.attr('title', name);
 
                                     $applozic.each(data.userDetails, function (i, userDetail) {
                                         if(userDetail.userId == CONVERSATION_ASSIGNEE || userDetail.displayName == CONVERSATION_ASSIGNEE) {
@@ -3657,6 +3656,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
                                     if( typeof detailOfAssignedUser !== "undefined" && typeof detailOfAssignedUser.imageLink !== "undefined" ) {
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    } else {
+                                        //DEFAULT_PROFILE_IMAGE
+                                        $applozic(".mck-agent-image-container img").attr("src", KommunicateConstants.DEFAULT_PROFILE_IMAGE.URL);
                                     }
 
                                     if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
@@ -4250,14 +4252,11 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     /*if(IS_CALL_ENABLED) {
                         $applozic("#li-mck-video-call").removeClass("n-vis").addClass("vis");
                     }*/
-                    var name = _this.getTabDisplayName(params.tabId, params.isGroup, params.userName);
                     if (_this.isGroupDeleted(params.tabId, params.isGroup)) {
                         $mck_msg_error.html(MCK_LABELS['group.deleted']);
                         $mck_msg_error.removeClass('n-vis').addClass('vis').addClass('mck-no-mb');
                         $mck_msg_form.removeClass('vis').addClass('n-vis');
                     }
-                    $mck_tab_title.html(name);
-                    $mck_tab_title.attr('title', name);
                     $mck_tab_conversation.removeClass('vis').addClass('n-vis');
                     $mck_search_tabview_box.removeClass('vis').addClass('n-vis');
                     $mck_tab_individual.removeClass('n-vis').addClass('vis');
