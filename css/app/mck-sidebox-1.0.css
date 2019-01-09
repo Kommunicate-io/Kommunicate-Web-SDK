@@ -4704,18 +4704,18 @@ margin-top: 243px;
 } */
 
 .km-faqsearch-input {
-	padding: 1px 0px 1px 42px!important;
-    width: calc(100% - 70px) !important;
-    height: 38px!important;
-    background-color: #fff !important;
+	padding: 11px 37px 11px 35px!important;
+    width: calc(100% - 30px)!important;
+    height: auto;
+    background-color: #fff!important;
     color: #696464!important;
     box-shadow: none!important;
-    outline: none!important;
-    border: 1px solid #cecbcb !important;
-    margin: 0 15px!important;
+    outline: 0!important;
+    border: 1px solid #cecbcb!important;
+    margin: 0 0 0 15px !important;
     border-radius: 4px!important;
-    box-sizing: content-box !important;
-    line-height: 38px !important;
+    box-sizing: border-box!important;
+    line-height: normal;
 }
 .km-faqsearch-input:focus {
     box-shadow: none!important;
