@@ -20,7 +20,7 @@ Access to XMLHttpRequest at 'https://apps.applozic.com:15675/stomp/info?t=154705
 To resolve it, serve the html page through the web server such as Apache, Jekyll, Tomcat, etc.
 
 
-2. Verify if you are running it within a firewall network. Kommunicate uses port 15675 for establing a websocket connection. If your network have blocked port 15675 then Kommunicate web plugin will not be able to establish websocket connection with  Kommunicate's MQTT based real time update service.
+2. Verify if you are running it within a firewall network. Kommunicate uses port 15675 for establing a websocket connection. If your network have blocked port 15675, then Kommunicate web plugin will not be able to establish websocket connection with  Kommunicate's MQTT based real time update service.
 
 This error can be verified by looking into the browser's consle. Check if there are any errors similar to the following:
 
