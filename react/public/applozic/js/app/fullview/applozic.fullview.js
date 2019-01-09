@@ -4809,14 +4809,16 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.addOrUpdateContactList = function (contact, message, update, prepend, sectionId) {
 				var section = CONVERSATION_SECTION_MAP[sectionId];
-				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-				if ($kmApplozic("#" + sectionId + " li.km-li-" + section + "-" + contactHtmlExpr).length > 0) {
-					var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
-					if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
-						_this.updateContact(contact, message, sectionId);
+				if(contact){
+					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+					if ($kmApplozic("#" + sectionId + " li.km-li-" + section + "-" + contactHtmlExpr).length > 0) {
+						var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
+						if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
+							_this.updateContact(contact, message, sectionId);
+						}
+					} else {
+						_this.addContact(contact, sectionId, message, prepend);
 					}
-				} else {
-					_this.addContact(contact, sectionId, message, prepend);
 				}
 			}
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
