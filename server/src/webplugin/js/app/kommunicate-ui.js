@@ -330,6 +330,7 @@ KommunicateUI={
             $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
             $applozic('#km-faq').removeClass("n-vis").addClass("vis");
             $applozic("#mck-msg-new").attr("disabled", false);
+            document.getElementById("mck-tab-title").textContent = "";
             MCK_EVENT_HISTORY.length = 0 ;
             return;
         }

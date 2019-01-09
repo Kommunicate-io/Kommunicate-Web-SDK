@@ -72,6 +72,9 @@ KommunicateConstants = {
     MESSAGE_TYPE: {
         RECEIVED: 4,
         SENT: 5,
+    },
+    DEFAULT_PROFILE_IMAGE: {
+        URL: "https://s3.amazonaws.com/kommunicate.io/default-avatar-image.png"
     }
 }
 
