@@ -117,6 +117,8 @@ position: relative;
     min-height: 630px;
     position: relative;
     overflow: hidden;
+    height: 960px;
+
 }
 .pricing-table-header {
     /* border-bottom: 1px solid #dddcff;; */

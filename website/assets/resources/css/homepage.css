@@ -2749,6 +2749,9 @@ input:-ms-input-placeholder {
   .hero-section {
     margin-top: 90px;
   }
+  .homepage-ab-customer-testimonial-section .div-circle{
+    display: none;
+  }
 }
 
 @media only screen and (max-width:600px) {
