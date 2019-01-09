@@ -211,11 +211,9 @@ class Login extends Component {
 		} else {
 			AnalyticsTracking.identify(userName);
 
-			if (this.state.loginType === 'oauth'){
-				loginUrl += "?loginType=oauth"
-			} else if (this.state.loginType === 'email'){
-				loginUrl += "?loginType=email"
-			}
+			loginUrl += "?loginType=" + this.state.loginType;
+			this.state.loginType === 'oauth' && _this.props.loginVia("google");
+			this.state.loginType === 'email' && _this.props.loginVia("email");
 
 			this.setState({loginButtonDisabled:true});
 			
@@ -588,7 +586,8 @@ class Login extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
-	setLogInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload))
+	setLogInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload)),
+	loginVia: payload => dispatch(Actions.updateDetailsOnLogin("LOGIN_VIA", payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Login);

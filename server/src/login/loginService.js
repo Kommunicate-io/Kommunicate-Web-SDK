@@ -43,13 +43,16 @@ exports.login = (userDetail) => {
   });
 }
 
-exports.processLogin = (userDetail) => {
+exports.processLogin = async(userDetail) => {
   var userName = userDetail.userName;
   var applicationId = userDetail.applicationId;
+  let user = await userService.getByUserNameAndAppId(userName, applicationId);
+  if(userDetail.loginType === 'oauth'){
+      user && (userDetail.password = user.accessToken);
+  };
   var password = userDetail.password;
   return Promise.all([applozicClient.getApplication({ userName: userName, applicationId: applicationId, accessToken: password }, true),
-  userService.getByUserNameAndAppId(userName, applicationId),
-  applozicClient.applozicLogin(userDetail)]).then(([application, user, applozicUser]) => {
+  applozicClient.applozicLogin(userDetail)]).then(([application, applozicUser]) => {
     if (user && bcrypt.compareSync(password, user.password)) {
       // valid user credentials
       return Promise.resolve(customeService.getCustomerByApplicationId(applicationId)).then(customer => {

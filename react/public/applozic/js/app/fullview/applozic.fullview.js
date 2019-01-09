@@ -231,6 +231,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					case 'getLastSeenAtStatus':
 						oInstance.getLastSeenAtStatus(params);
 						break;	
+					case 'updateAccessTokenOnPasswordReset':
+						oInstance.updateAccessTokenOnPasswordReset(params);
+						break;
 				}
 			} else if ($kmApplozic.type(appOptions) === "object") {
 				oInstance.reInit(appOptions);
@@ -735,6 +738,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			return kmDateUtils.getLastSeenAtStatus(params.lastseenTime,params.dateFormat);
 		}
+		_this.updateAccessTokenOnPasswordReset = function (value){
+			MCK_ACCESS_TOKEN = value;
+		};
 		_this.getContactImage = function (user) {
 			var contact = mckMessageLayout.fetchContact(user.userId);
 			var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);

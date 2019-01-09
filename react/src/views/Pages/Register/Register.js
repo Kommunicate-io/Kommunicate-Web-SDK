@@ -14,8 +14,10 @@ import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 import { KommunicateLogoSvg } from '../../../assets/svg/svgs';
-import { connect } from 'react-redux'
-import * as Actions from '../../../actions/loginAction'
+import { connect } from 'react-redux';
+import * as Actions from '../../../actions/loginAction';
+import {LOGIN_VIA} from '../../../utils/Constant';
+
 
 class Register extends Component {
   constructor(props){
@@ -178,7 +180,7 @@ class Register extends Component {
     userInfo.deviceType = "0";
 
     AnalyticsTracking.identify(email);
-
+    this.state.googleOAuth ? _this.props.loginVia(LOGIN_VIA.GOOGLE) : _this.props.loginVia(LOGIN_VIA.DEFAULT);
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia)).then((response) => {
@@ -401,7 +403,8 @@ class Register extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
-    logInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload))
+    logInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload)),
+    loginVia: payload => dispatch(Actions.updateDetailsOnLogin("LOGIN_VIA", payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Register)

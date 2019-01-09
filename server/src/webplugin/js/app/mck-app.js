@@ -344,7 +344,7 @@ function ApplozicSidebox() {
     function loadPseudoName(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
-        // NOTE: Don't pass applozic._glbals as it is in data field of ajax call, pass only the fields which are required for this API call.
+        // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         $applozic.ajax({
             url: MCK_CONTEXTPATH + "/users/v2/chat/plugin/settings",
             method: 'GET',
