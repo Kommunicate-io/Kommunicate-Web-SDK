@@ -99,7 +99,7 @@ class SettingsSidebar extends Component {
                         }
                         {this.state.isKommunicateDashboard &&  
                             <li className="ss-nav-item message-shortcut-link">
-                                <NavLink to={'/settings/message-shortcuts'} className="ss-nav-link ac-trigger-links" id="ac-quick-replies" activeClassName="active">Quick Replies</NavLink>
+                                <NavLink to={'/settings/quick-replies'} className="ss-nav-link ac-trigger-links" id="ac-quick-replies" activeClassName="active">Quick Replies</NavLink>
                             </li>
                         }
                         <li className="ss-nav-item team-link">

@@ -12,7 +12,7 @@ const routes = {
   '/configuration':"Configuration",
   '/autoreply':"Configuration",
   '/settings/profile': "Profile",
-  '/settings/message-shortcuts': 'Quick Replies',
+  '/settings/quick-replies': 'Quick Replies',
   '/settings/welcome-message': 'Welcome Message',
   '/settings/away-message': 'Away Message',
   '/settings/agent-app': 'Agent App',

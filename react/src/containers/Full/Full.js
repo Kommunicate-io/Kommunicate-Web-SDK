@@ -278,7 +278,7 @@ class Full extends Component {
                 <Route exact path="/settings/autoreply" name="Autoreply" render={() => <Autoreply {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
                 <Route exact path="/settings/away-message" name="AwayMessage" render={() => <AwayMessage {...this.props} />} />
-                <Route exact path="/settings/message-shortcuts" name="AutoSuggest" render={() => <AutoSuggest {...this.props} />} />
+                <Route exact path="/settings/quick-replies" name="AutoSuggest" render={() => <AutoSuggest {...this.props} />} />
                 <Route exact path="/settings/install" name="Install" render={() => <Install {...this.props} />} />
                 <Route exact path="/settings/agent-app" name="Download" render={() => <Download {...this.props} />} />
                 <Route exact path="/settings/conversation-rules" name="ConversationRules" render={() => <AgentAssignemnt {...this.props} />} />
