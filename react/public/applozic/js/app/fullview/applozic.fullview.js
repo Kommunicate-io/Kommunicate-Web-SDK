@@ -396,9 +396,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
 		w.MCK_OL_MAP = new Array();
-		var OPEN_CONVERSATION_ARRAY = ["-1", "0", "6", "1"];
-        var CLOSED_CONVERSATION_ARRAY = ["2", "3", "4", "5"];
-
 
 		var CONVERSATION_SECTION_MAP = {
 			'km-contact-list': 'cs',
@@ -4798,7 +4795,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.updateRecentConversationList(group, message, update, false, list);
 			};
 			_this.checkSectionId = function (group) {
-				if (group.metadata && group.metadata.CONVERSATION_STATUS && OPEN_CONVERSATION_ARRAY.indexOf(group.metadata.CONVERSATION_STATUS) !== -1) {
+				if (group.metadata && group.metadata.CONVERSATION_STATUS && KOMMUNICATE_CONSTANTS.OPEN_CONVERSATION_ARRAY.indexOf(group.metadata.CONVERSATION_STATUS) !== -1) {
 					//open conversation
 					if (group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
 						return "km-assigned-search-list";
