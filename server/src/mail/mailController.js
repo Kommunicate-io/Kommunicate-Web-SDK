@@ -70,7 +70,7 @@ const sendEmail = (options) => {
 
 const getEmailFormat = (options, custInfo) => {
     try {
-        if (options.product == null) {
+        if (typeof options.product === "undefined" || options.product == null) {
             options.product = "kommunicate";
         } 
         let html = options.html;

@@ -18,7 +18,10 @@ function getNodeMailer(product){
 let mailTransporter = {
     applozic: getNodeMailer('applozic'),
     kommunicate: getNodeMailer('kommunicate'),
-    null: getNodeMailer('kommunicate')
+    null: getNodeMailer('kommunicate'), 
+    getTransporter: function(product) {
+        return this[product || "kommunicate"];
+    }
 };
 
 exports.sendPasswordResetMail = (mailOptions)=>{
@@ -31,7 +34,7 @@ exports.sendPasswordResetMail = (mailOptions)=>{
         html: '<b>Hello world?</b>' // html body
     };*/
     return new Promise(function(resolve, reject){
-        mailTransporter[mailOptions.product].sendMail(mailOptions, (error, info) => {
+        mailTransporter.getTransporter(mailOptions.product).sendMail(mailOptions, (error, info) => {
             if (error) {
                 return reject(error);
             }
@@ -72,7 +75,7 @@ exports.sendMail= (options)=>{
                 mailOptions.html = template
             }
           
-            mailTransporter[options.product].sendMail(mailOptions, (error, info) => {
+            mailTransporter.getTransporter(options.product).sendMail(mailOptions, (error, info) => {
                 if (error) {
                     return reject(error);
                 }
