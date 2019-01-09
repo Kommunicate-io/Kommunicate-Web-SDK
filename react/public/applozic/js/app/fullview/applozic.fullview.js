@@ -4803,34 +4803,39 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				_this.updateRecentConversationList(group, message, update, false, list);
 			};
-			_this.updateRecentConversationListSection = function (contact, message, update, prepend, sectionId) {
-				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-				if (message && message.metadata && message.metadata.KM_STATUS && CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]) {
-					sectionId = CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS];
-				}
-				if (message && (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN == MCK_USER_ID) && message.metadata.KM_STATUS && message.metadata.KM_STATUS == "Open") {
-					sectionId = "km-assigned-search-list";
-				} 
-				var section = CONVERSATION_SECTION_MAP[sectionId];
-				if ($kmApplozic("#" + sectionId + " li.km-li-" + section + "-" + contactHtmlExpr).length > 0) {
-					var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
-					if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
-						_this.updateContact(contact, message, sectionId);
+			_this.checkSectionId = function (group) {
+				if (group.metadata && group.metadata.CONVERSATION_STATUS && KOMMUNICATE_CONSTANTS.OPEN_CONVERSATION_ARRAY.indexOf(group.metadata.CONVERSATION_STATUS) !== -1) {
+					//open conversation
+					if (group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
+						return "km-assigned-search-list";
+					} else {
+						return "km-contact-list";
 					}
 				} else {
-					_this.addContact(contact, sectionId, message, prepend);
+					// closed conversation
+					return "km-closed-conversation-list";
+				}
+			}
+			_this.addOrUpdateContactList = function (contact, message, update, prepend, sectionId) {
+				var section = CONVERSATION_SECTION_MAP[sectionId];
+				if(contact){
+					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+					if ($kmApplozic("#" + sectionId + " li.km-li-" + section + "-" + contactHtmlExpr).length > 0) {
+						var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
+						if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
+							_this.updateContact(contact, message, sectionId);
+						}
+					} else {
+						_this.addContact(contact, sectionId, message, prepend);
 					}
-				// mckMessageService.emptyStateChange();
-			};
-			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {	
-				if (typeof list == "undefined") {
-					list = {};
 				}
-				if (typeof list.sectionId == "undefined" || list.sectionId == null) {
-					list.sectionId = "km-contact-list";
+			}
+			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
+				var sectionId = _this.checkSectionId(contact);
+				if (sectionId === "km-assigned-search-list") {
+					_this.addOrUpdateContactList(contact, message, update, prepend, "km-contact-list");
 				}
-
-				_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
+				_this.addOrUpdateContactList(contact, message, update, prepend, sectionId);
 
 			};
 			_this.updateSearchSourceMap = function () {
@@ -8262,16 +8267,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
 
-						var assignedToLoggedUser = false;
-						if (contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
-							assignedToLoggedUser = true;
-							list.sectionId = "km-assigned-search-list";
-
-							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
-								mckStorage.updateMckAssignedMessageArray(messageArray);
-							}
-						}
-
 						if (message.metadata) {
 							if(message.metadata.KM_STATUS || message.metadata.KM_ASSIGN ){
 								kmGroupService.getGroupFeed({
@@ -8283,13 +8278,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									}
 								})
 							}
-							if (message.metadata.KM_STATUS && CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]) {
-								list.sectionId = CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS];
-							}
-
-							if ((assignedToLoggedUser || (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN == MCK_USER_ID)) && message.metadata.KM_STATUS && message.metadata.KM_STATUS == "Open") {
-								list.sectionId = "km-assigned-search-list";
-							} 
 
 							if (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
 								//remove from assigned once its assigned to other agent
@@ -8325,7 +8313,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						if ((message && message.type !== 5) || ((message && message.metadata.KM_STATUS) && (message && message.metadata.KM_ASSIGN)) || (message && message.metadata.hide === true)) {
 							mckMessageService.tabviewUnreadIconUpdate(list);
 						}
-						//
 						if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
 							var messageFeed = mckMessageLayout.getMessageFeed(message);
 							events.onMessageReceived({
