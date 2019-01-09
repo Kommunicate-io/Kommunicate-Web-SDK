@@ -17,21 +17,7 @@
     margin-bottom: 0px;
     -webkit-backface-visibility: hidden;
 }
-.km-trial-days-left p>span {
-    font-size: 16px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 1.2px;
-    color: #d64444;
-    text-transform: uppercase;
-    padding-bottom: 2px;
-    border-bottom: 1.5px dashed;
-    margin-bottom: 0px;
-    cursor: pointer;
-    -webkit-backface-visibility: hidden;
-}
+
 .km-trial-days-left .trial-over>span {
     border: none;
 }
@@ -40,11 +26,7 @@
     padding-top: 25px;
     top: 15px;
     right: 0;
-    /* display: none; */
 }
-/* .km-trial-days-left-container:hover .km-trial-days-left-popup-container {
-    display: block;
-} */
 .km-trial-days-left-popup-container .triangle-before {
     border-color: transparent;
     border-style: dashed dashed solid;
@@ -77,7 +59,7 @@
     filter: blur(0px);
 }
 .km-trial-days-left-popup-demo, .km-trial-days-left-popup-buy-plan {
-    width: 400px;
+    width: 420px;
     border-radius: 4px;
     background-color: #ffffff;
     box-shadow: 0 2px 10px rgba(0,0,0,.2);
@@ -106,55 +88,25 @@
     color: #7f7b7b;
     margin-bottom: 20px;
 }
-.km-trial-days-left-popup-demo .km-quote {
-    font-size: 20px;
-    font-weight: normal;
-    font-style: italic;
-    font-stretch: normal;
-    line-height: 1.55;
-    letter-spacing: 0.4px;
-    color: #474747;
-    margin-bottom: 4px;
-    border-radius: 1px;
-    background-color: #e6e6e6;
-    width: 90%;
-    margin: 0px auto 4px;
-}
-.km-trial-days-left-popup-demo .km-quote.mid {
-    margin: 0px auto 4px;
-    max-width: 85%;
-}
-.km-trial-days-left-popup-demo .km-quote.last {
-    margin: 0px auto 4px;
-    max-width: 70%;
-}
 .km-trial-days-left-popup-demo .km-demo-btn, .km-trial-days-left-popup-buy-plan .km-demo-btn {
     display: block;
-    line-height: 36px;
+    line-height: 40px;
+    height: 40px;
     text-decoration: none;
     font-weight: 500;
-    max-width: 100px;
+    max-width: 140px;
     margin: 25px auto 0px;
 }
 .km-trial-days-left-container .km-trial-days-left .trial-over {
     display: block;
-    line-height: 36px;
+    line-height: 40px;
+    height: 40px;
     text-decoration: none;
     font-weight: 500;
     max-width: 100px;
     margin: 0px auto;
     min-width: 140px;
     text-transform: uppercase;
-}
-
-.km-trial-days-left-popup-buy-plan p {
-    font-size: 20px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.55;
-    letter-spacing: normal;
-    color: #848383;
 }
 
 .km-trial-days-left-popup-container .km-trial-days-left-close-btn {

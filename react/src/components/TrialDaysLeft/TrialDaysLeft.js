@@ -1,20 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import './TrialDaysLeft.css'
 import CommonUtils from '../../utils/CommonUtils';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as SignUpActions from '../../actions/signupAction'
+import styled, { css, withTheme } from 'styled-components';
+import tinycolor from 'tinycolor2';
+import moment from 'moment';
+import Colors from '../../assets/theme/colors';
+import { TrialDaysLeftImage } from '../../assets/svg/svgs';
+import Button from '../Buttons/Button';
 
-const trialDaysBannerEmployeeProfile = {
-    name: "Devashish Mamgain",
-    imageLink:"https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/154591304350622823b4a764f9944ad7913ddb3e43cae1-reytum%40live.com.image.jpg",
-    designation:"CEO"
-}
-export default class TrialDaysLeft extends Component {
+
+class TrialDaysLeft extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            showPopupBox: true
+            showPopupBox: true,
+            color: "",
+            renderHaveQueriesSection: "",
+            trialExpiryBannerMsg: "",
+            renderSections: {
+                haveQueries: "",
+                popupMainBox: ""
+            }
         };
 
         this.showPopup = this.showPopup.bind(this);
@@ -22,13 +33,12 @@ export default class TrialDaysLeft extends Component {
         this.showPopupContainer = this.showPopupContainer.bind(this);
     }
 
+    componentWillMount = () => {
+        this.daysRemaining();
+    }
+
     componentDidMount() {
-        if (typeof (Storage) !== "undefined") {
-            (localStorage.getItem("KM_TRIAL_OVER") === null) ?
-                this.setState({ showPopupBox: false }) : this.setState({ showPopupBox: true })
-        } else {
-            console.log("Please update your browser.");
-        }
+        this.props.trialDaysLeftOnboardingValue && this.props.closeTrialDaysLeftBanner && this.props.updateStatus(actionType.trailDaysLeftBanner, false);
     }
 
     showPopup(elem) {
@@ -36,37 +46,114 @@ export default class TrialDaysLeft extends Component {
     }
 
     showPopupContainer(elem) {
-        this.setState({
-            showPopupBox: false
-        })
-        localStorage.setItem("KM_TRIAL_OVER", null);
+        this.props.updateStatus(actionType.trailDaysLeftBanner, false);
     }
 
     hidePopup(elem) {
-        if (typeof (Storage) !== "undefined") {
-            if (localStorage.getItem("KM_TRIAL_OVER") === null) {
-                localStorage.setItem("KM_TRIAL_OVER", "true");
-                // document.querySelector(".km-trial-days-left-popup-container").style.display = "none";
-                this.setState({ showPopupBox: true })
+        this.props.updateStatus(actionType.trailDaysLeftBanner, true);
+        this.props.updateStatus(actionType.onboardingValueForTrialDaysLeft, false);
+    }
+
+    renderHaveQueriesSection = (render) => {
+        return ( render ? (
+                <Fragment>
+                    <P>Ready to improve your customer support?</P>
+                    <Link to="/settings/billing" className="km-button km-button--primary km-demo-btn">See plans</Link>
+                    <ButtonSubText>* We will not start charging you until your trial ends and you can cancel it anytime</ButtonSubText>
+                </Fragment> 
+            ) : (
+                <Fragment>
+                    <HaveQueriesText>Have any queries? <br/> Chat with us now or get on a call with us</HaveQueriesText>
+                    <ChatNowButton secondary onClick={() => {
+                        KommunicateGlobal.document.querySelector(".applozic-launcher").click();
+                    }}>Chat now</ChatNowButton>
+                    <Button secondary onClick={() => {
+                        window.open("https://calendly.com/kommunicate/15min", '_blank');
+                    }}>Schedule a call</Button>
+                </Fragment>
+            )
+        )
+    }
+
+    renderPopupBoxMainContent = (render) => {
+        return ( render ? (
+                <Fragment>
+                    <img src={trialDaysBannerEmployeeProfile.imageLink} alt="avatar_employee" />
+                    <p className="km-person-name">{trialDaysBannerEmployeeProfile.name}</p>
+                    <p className="km-person-designation">{trialDaysBannerEmployeeProfile.designation}</p>
+                    <QuotesContainer>
+                        <FirstQuote>Want to see how you can increase</FirstQuote>
+                        <MiddleQuote>your support efficiency by 27%?</MiddleQuote>
+                        <LastQuote>Schedule a demo with me!</LastQuote>
+                    </QuotesContainer>
+
+                    <Button secondary onClick={() => {
+                        window.open("https://calendly.com/kommunicate/15min", '_blank');
+                    }}>Get demo</Button>
+                    
+                </Fragment> 
+            ) : (
+                <Fragment>
+                    <CardPlaceholderImage />
+                    <QuotesContainer>
+                        <FirstQuote>Subscribe now to continue using all</FirstQuote>
+                        <MiddleQuote>features without interruption. We won’t</MiddleQuote>
+                        <LastQuote>charge you until your trial ends.</LastQuote>
+                    </QuotesContainer>
+                    <Link to="/settings/billing" className="km-button km-button--primary km-demo-btn">Subscribe now</Link>
+                    <ButtonSubText>* You can cancel anytime</ButtonSubText>
+                </Fragment>
+            )
+        )
+    }
+
+    daysRemaining = () => {
+        var _this = this;
+        let daysRemaining = 31 - CommonUtils.getDaysCount();
+        let applicationCreatedAtTime = CommonUtils.getUserSession().applicationCreatedAt.replace('Z','');
+        var trialExpiryDate = moment(applicationCreatedAtTime).add(30, 'days').format("DD MMM YYYY");
+
+        this.setState({renderSections: {
+                haveQueries: this.renderHaveQueriesSection(daysRemaining > 15),
+                popupMainBox: this.renderPopupBoxMainContent(daysRemaining > 15)
             }
-            else {
-                // document.querySelector(".km-trial-days-left-popup-container").style.display = "none";
-                this.setState({ showPopupBox: true })
-            }
+        })
+
+        if(daysRemaining <= 7) {
+            this.setState({
+                color: _this.props.theme.buttons.dangerBG,
+                trialExpiryBannerMsg: "Trial ending soon",
+            });
+        } else if(daysRemaining <= 15) {
+            this.setState({
+                color: Colors.ApplozicColors.secondary,
+                trialExpiryBannerMsg: "Trial ends on " + trialExpiryDate,
+            });
         } else {
-            console.log("Please update your browser.");
+            this.setState({
+                color: Colors.CommonColors.success,
+                trialExpiryBannerMsg: "",
+            });
+        }
+
+        if(daysRemaining === 7 || daysRemaining === 15) {
+            this.props.updateStatus(actionType.trailDaysLeftBanner, false);
+            this.props.updateStatus(actionType.onboardingValueForTrialDaysLeft, false);
         }
     }
 
 
+
+
     render() {
-        let currentPath = window.location.pathname;
+        
         let daysLeft;
         if (CommonUtils.isTrialPlan()) {
-            daysLeft = ["trial ", <span key="0" onClick={this.showPopupContainer}>{31 - CommonUtils.getDaysCount()} days</span>, " left"];
+            daysLeft = ["trial ", <Span key="0" onClick={this.showPopupContainer} color={this.state.color}>{31 - CommonUtils.getDaysCount()} days</Span>, " left"];
         } else {
             daysLeft = ["", <span key="0">upgrade plan</span>, ""];
         }
+        
 
         return (
             <div className={(CommonUtils.isTrialPlan() || CommonUtils.isStartupPlan()) ? "km-trial-days-left-container" : "n-vis"}
@@ -82,40 +169,35 @@ export default class TrialDaysLeft extends Component {
                     </div>
                 }
 
-                <div id="km-trial-days-left-popup-container" className="km-trial-days-left-popup-container text-center" hidden={this.state.showPopupBox}>
+                <div id="km-trial-days-left-popup-container" className="km-trial-days-left-popup-container text-center" hidden={this.props.closeTrialDaysLeftBanner} >
+
+                    
+
                     {
                         (CommonUtils.isTrialPlan() &&  localStorage.getItem("KM_TRIAL_OVER") != "true") ?
                             <div>
+                                <TrialDaysCountdownBannerContainer color={this.state.color} hidden={this.state.trialExpiryBannerMsg === ""}>
+                                    <TrialDaysCountdownBannerText color={this.state.color}>{this.state.trialExpiryBannerMsg}</TrialDaysCountdownBannerText>
+                                </TrialDaysCountdownBannerContainer>
                                 { (CommonUtils.isKommunicateDashboard()) ?
                                 <div>
                                     <div className="km-trial-days-left-popup-demo">
-                                        <img src={trialDaysBannerEmployeeProfile.imageLink} alt="avatar_employee" />
-                                        <p className="km-person-name">
-                                            {trialDaysBannerEmployeeProfile.name}
-                                    </p>
-                                        <p className="km-person-designation">
-                                        {trialDaysBannerEmployeeProfile.designation}
-                                    </p>
-                                        <p className="km-quote first">Want to see how you can increase</p>
-                                        <p className="km-quote mid">your support efficiency by 27%?</p>
-                                        <p className="km-quote last">Schedule a demo with me!</p>
-
-                                        <a href="https://calendly.com/kommunicate/15min" target="_blank" className="km-button km-button--secondary km-demo-btn" rel="noopener noreferrer">Get demo</a>
+                                        {this.state.renderSections.popupMainBox}
                                     </div>
                                 </div> : ""
                                 }
 
                                 <div className="km-trial-days-left-popup-buy-plan">
                                     { (CommonUtils.isKommunicateDashboard()) ?
-                                        <p>
-                                            Ready to improve your customer support?
-                                        </p>
+                                        this.state.renderSections.haveQueries
                                         :
-                                        <p>
-                                            Ready to increase user engagement in your platform?
-                                        </p>
+                                        <Fragment>
+                                            <P>
+                                                Ready to increase user engagement in your platform?
+                                            </P>
+                                            <Link to="/settings/billing" className="km-button km-button--primary km-demo-btn">See plans</Link>
+                                        </Fragment>  
                                     }
-                                    <Link to="/settings/billing" className="km-button km-button--primary km-demo-btn">See plans</Link>
                                 </div>
 
                                 <div className="km-trial-days-left-close-btn" onClick={this.hidePopup}>
@@ -135,3 +217,111 @@ export default class TrialDaysLeft extends Component {
         )
     }
 }
+
+
+const commonStyles = css`
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+`;
+const trialDaysBannerEmployeeProfile = {
+    name: "Devashish Mamgain",
+    imageLink:"https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/154591304350622823b4a764f9944ad7913ddb3e43cae1-reytum%40live.com.image.jpg",
+    designation:"CEO"
+}
+
+const TrialDaysCountdownBannerContainer = styled.div`
+    background-color: ${props => tinycolor(props.color).setAlpha(0.18).toRgbString()};
+    padding: 6px 10px;
+    position: absolute;
+    top: 35px;
+    left: 10px;
+`;
+const TrialDaysCountdownBannerText = styled.div`
+    font-size: 13px;
+    ${commonStyles}
+    letter-spacing: 0.1px;
+    color: ${props => props.color};
+`;
+const Span = styled.span`
+    font-size: 16px;
+    ${commonStyles}
+    letter-spacing: 1.2px;
+    color: ${props => props.color};
+    text-transform: uppercase;
+    padding-bottom: 2px;
+    border-bottom: 1.5px dashed;
+    margin-bottom: 0px;
+    cursor: pointer;
+    -webkit-backface-visibility: hidden;
+`;
+const ChatNowButton = styled(Button)`
+    margin-right: 15px;
+`;
+const P = styled.p`
+    font-size: 20px;
+    ${commonStyles}
+    color: #848383;
+    text-align: center;
+`;
+const HaveQueriesText = styled(P)`
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.72;
+    letter-spacing: 0.3px;
+    color: #474747;
+`;
+const ButtonSubText = styled(P)`
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.15;
+    letter-spacing: 0.2px;
+    color: #555252;
+    max-width: 80%;
+    margin: 12px auto 0;
+`;
+
+const QuotesContainer = styled.div`
+    margin-bottom: 20px;
+`;
+const FirstQuote = styled(P)`
+    display: inline-block;
+    font-size: 20px;
+    ${commonStyles}
+    font-style: italic;
+    line-height: 1.55;
+    letter-spacing: 0.4px;
+    color: #474747;
+    margin-bottom: 4px;
+    border-radius: 1px;
+    background-color: #e6e6e6;
+    margin: 0px auto 4px;
+    padding: 0 10px;
+`;
+const MiddleQuote = styled(FirstQuote)``;
+const LastQuote = styled(FirstQuote)``;
+
+const CardPlaceholderImage = styled(TrialDaysLeftImage)`
+    margin-top: 15px;
+`;
+
+const actionType = {
+    trailDaysLeftBanner: "UPDATE_TRIAL_DAYS_LEFT_BANNER_STATUS",
+    onboardingValueForTrialDaysLeft: "UPDATE_KM_TRIAL_DAYS_LEFT_ON_BOARDING_STATUS"
+}
+
+// export default KmDashboard;
+const mapStateToProps = state => ({
+    trialDaysLeftOnboardingValue: state.signUp.trialDaysLeftOnboardingValue,
+    closeTrialDaysLeftBanner: state.signUp.closeTrialDaysLeftBanner
+});
+const mapDispatchToProps = dispatch => {
+    return {
+        updateStatus: (type, payload) => dispatch(SignUpActions.updateDetailsOnSignup(type, payload))
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps) (withTheme(TrialDaysLeft));

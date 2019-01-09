@@ -30,61 +30,6 @@ import styled, { css } from 'styled-components';
 import Banner from '../../components/Banner/Banner';
 import { LearnMore } from '../../views/Faq/LizSVG';
 
-const headingColor = css`
-    color: #666464;
-`;
-const subHeadingColor = css`
-    color: #9b9b9b;
-`;
-const lightColor = css`
-    color: #807d7d;
-`;
-
-const OptionsContainer = styled.div``;
-
-const OptionsWrapper = styled(OptionsContainer)`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-
-    & .switch.switch-3d {
-        margin-bottom: 4px;
-    }
-`;
-
-const Headings = styled.h3`
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 1.3px;
-    ${headingColor}
-    margin-bottom: 25px;
-    margin-right: 25px;
-`;
-const SubHeadings = styled.h5`
-    font-size: 16px;
-    font-weight: normal;
-    letter-spacing: 0.6px;
-    ${subHeadingColor}
-    margin-bottom: 25px;
-    margin-right: 25px;
-`;
-
-const TogglerHeading = styled(SubHeadings)`
-    ${headingColor}
-    margin-bottom: 0;
-`;
-const Hr = styled.hr`
-    width: 100%;
-    border-top: 1px solid;
-    border-top-color: #cacaca;
-    margin-bottom: 30px;
-`;
-const BannerContainer = styled.div`
-    width: 100%;
-    margin: 25px auto;
-`;
-
 class AgentAssignemnt extends Component{
     constructor(props) {
         super(props);
@@ -443,7 +388,7 @@ toggleConversationAssignment = () => {
                         <Headings>Reply rules for unassigned bots</Headings>
 
                         <OptionsWrapper>
-                            <TogglerHeading >Allow other bots to reply even after the conversation is assigned to a specific bot or agent</TogglerHeading>
+                            <TogglerHeadingFixedWidth >Allow other bots to reply even after the conversation is assigned to a specific bot or agent</TogglerHeadingFixedWidth>
                             <SliderToggle checked={this.state.botInAgentAssignedConversation} handleOnChange={this.toggleBotInAgentAssignedConversation} />
                         </OptionsWrapper>
 
@@ -457,6 +402,70 @@ toggleConversationAssignment = () => {
     )
   }
 }
+
+
+const headingColor = css`
+    color: #666464;
+`;
+const subHeadingColor = css`
+    color: #9b9b9b;
+`;
+const lightColor = css`
+    color: #807d7d;
+`;
+
+const OptionsContainer = styled.div``;
+
+const OptionsWrapper = styled(OptionsContainer)`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    & .switch.switch-3d {
+        margin-bottom: 4px;
+    }
+`;
+
+const Headings = styled.h3`
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.3px;
+    ${headingColor}
+    margin-bottom: 25px;
+    margin-right: 25px;
+`;
+const SubHeadings = styled.h5`
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0.6px;
+    ${subHeadingColor}
+    margin-bottom: 25px;
+    margin-right: 25px;
+`;
+
+const TogglerHeading = styled(SubHeadings)`
+    ${headingColor}
+    margin-bottom: 0;
+`;
+
+const TogglerHeadingFixedWidth = styled(TogglerHeading)`
+        max-width: 89%;
+`;
+
+const Hr = styled.hr`
+    width: 100%;
+    border-top: 1px solid;
+    border-top-color: #cacaca;
+    margin-bottom: 30px;
+`;
+const BannerContainer = styled.div`
+    width: 100%;
+    margin: 25px auto;
+`;
+
+
+
 const mapStateToProps = state => ({
     appSettings : state.application 
   });
