@@ -465,7 +465,7 @@ footer .copyright {
     }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 860px) {
     .page-links-ul, .nav-signup-button, .nav-login-button {
         display: none;
     }
