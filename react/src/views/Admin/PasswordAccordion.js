@@ -104,10 +104,11 @@ class PasswordAccordion extends Component {
         newPassword: this.state.newPassword,
         loginVia : this.props.loginVia
       }).then(data => {
-        if (data === "SUCCESS")
-        CommonUtils.updateUserSession({"accessToken": this.state.newPassword});
-        $kmApplozic.updateAccessTokenOnPasswordReset(this.state.newPassword);
+        if (data === "SUCCESS"){
+          CommonUtils.updateUserSession({"accessToken": this.state.newPassword});
+          window.$kmApplozic.fn.applozic("updateAccessTokenOnPasswordReset", this.state.newPassword);
           this.clearPasswordfields(e);
+        }
       })
     }
   }
