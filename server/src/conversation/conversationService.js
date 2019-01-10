@@ -27,7 +27,8 @@ const addMemberIntoConversation = (data) => {
                                 return { code: "SUCCESS", data: agents }
                             }
                             if (customer.botRouting ) {
-                               // if assigned bot is already present in the conversation let the client know so that it can avoid the duplicate welcome messgaes. 
+                                /** UI: Assign new conversations to bot- enable  */ 
+                               // if assigned bot is already present in the conversation let the client know so that it can avoid the duplicate welcome messages. 
                      
                                 agents.assignedBotAlreadyPresent = isAssignedBotAlreadyPresentIngroup(group,userIds) && true; //converting to true false
                                 if (agents.assignTo != customer.userName) {
@@ -36,8 +37,11 @@ const addMemberIntoConversation = (data) => {
                                 }
                                 return { code: "SUCCESS", data: agents }
                             } else if (customer.agentRouting == ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY) {
-                                
-                                group.metadata.CONVERSATION_ASSIGNEE != customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header) : "";
+                                /** UI: Notify everybody  */ 
+                                group.metadata.CONVERSATION_ASSIGNEE != customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] ?
+                                    assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header)
+                                    .then(result => { sendAssigneeChangedNotification(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header.apzToken) })
+                                    : "";
                                 let groupInfo = { groupDetails: userIds };
                                 logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                                 return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
@@ -45,12 +49,13 @@ const addMemberIntoConversation = (data) => {
                                     return { code: "SUCCESS", data: agents };
                                 });
                             } else if (customer.agentRouting == ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT) {
+                                /** UI: Automatic assignment */ 
                                 logger.info("adding assignee in round robin fashion");
                                 return inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
                                     let onlineUser = onlineUsers.find(agent => agent.connected);
                                     if (onlineUser) {
                                         console.log("online user: ", onlineUser)
-                                        return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header, onlineUsers);
+                                        return assignConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header, onlineUsers);
                                     } else {
                                         return assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header)
                                     }
@@ -79,9 +84,9 @@ const addMemberIntoConversation = (data) => {
  * 2. Add the assignee into conversation.
  * 3. assign conversation to assignee
  */
-const assingConversationInRoundRobin = (groupId, userIds, appId, header, onlineUsers) => {
+const assignConversationInRoundRobin = (groupId, userIds, appId, header, onlineUsers) => {
     return getConversationAssigneeFromMap(userIds, appId, onlineUsers).then(assignTo => {
-        logger.info("got conversation agssignee : ", assignTo);
+        logger.info("got conversation assignee : ", assignTo);
         return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
             if (group.metadata.CONVERSATION_ASSIGNEE != assignTo) {
                 let params = { "clientGroupIds": [groupId], "userIds": [group.metadata.CONVERSATION_ASSIGNEE] }
@@ -144,15 +149,15 @@ const assignToDefaultAgent = (groupId, appId, userId, header) => {
  * shifting that to last item. then storing back to map.
  */
 const getConversationAssigneeFromMap = (userIds, key, users) => {
-    //store map of appid and userids
+    //store map of appId and userIds
     let assignee = [];
-    var mapPrifix = "userRoutingMap";
+    var mapPrefix = "userRoutingMap";
     let userIdsArray = [];
-    return cacheClient.getDataFromMap(mapPrifix, key).then(value => {
+    return cacheClient.getDataFromMap(mapPrefix, key).then(value => {
         if (value != null && value.userIds.length == userIds.length) {
             userIdsArray = value.userIds;
         } else {
-            logger.info("received nullfrom cache, adding default agent as assignee");
+            logger.info("received null from cache, adding default agent as assignee");
             userIdsArray = userIds;
         }
         for (var i = 0; i < userIdsArray.length; i++) {
@@ -168,7 +173,7 @@ const getConversationAssigneeFromMap = (userIds, key, users) => {
                 break;
             }
         }
-        cacheClient.setDataIntoMap(mapPrifix, key, { userIds: userIdsArray });
+        cacheClient.setDataIntoMap(mapPrefix, key, { userIds: userIdsArray });
         return assignee[0];
     });
 };
@@ -226,7 +231,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                 }
                 isValidUser = true;
             }
-            //swich acording to conditions of botRouting and agentRouting
+            //switch according to conditions of botRouting and agentRouting
             return applozicClient.getGroupInfo(groupId, appId, bot[0].apzToken, true).then(group => {
                 if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
                     return "ASSIGNMENT SKIPED";
@@ -246,7 +251,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                 let onlineUser = onlineUsers.find(agent => agent.connected);
                                 if (onlineUser) {
                                     console.log("online user: ", onlineUser)
-                                    assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers).then(assignTo => {
+                                    assignConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers).then(assignTo => {
                                         assignTo ? sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
                                     });
                                 } else {
