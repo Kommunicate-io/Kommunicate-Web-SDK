@@ -313,6 +313,18 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
   }
 
+  setUpAgentUI(group){
+    if(group){
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("n-vis");
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("vis");
+      document.getElementsByClassName("km-box-top")[0].classList.remove('km-conversation-header-without-border');
+    }else{
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("vis");
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("n-vis");
+      document.getElementsByClassName("km-box-top")[0].classList.add('km-conversation-header-without-border');
+    }
+  }
+
   setUpAgentTakeOver(group) {
     var takeOverEleContainer = document.getElementById("km-take-over-bot-container"),
       takeOverEleText = document.querySelector("#km-bot-active-text p>strong"),
@@ -320,10 +332,9 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
     //pseudoNameIcon.classList.remove("vis");
     //pseudoNameIcon.classList.add("n-vis");
+    this.setUpAgentUI(group);
     if (group) {
       let allBotsInGroup = [];
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("n-vis");
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("vis");
       for (var key in group.users) {
         if (group.users.hasOwnProperty(key)) {
           var groupUser = group.users[key];
@@ -347,10 +358,7 @@ class Aside extends Component {
         document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
       }
       // console.log(allBotsInGroup);
-    } else {
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("vis");
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("n-vis");
-    }
+    } 
   }
 
   changeAssignee(userId) {
