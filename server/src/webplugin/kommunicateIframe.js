@@ -48,6 +48,8 @@ function addKommunicatePluginToIframe() {
 var kommunicateIframe = document.createElement("iframe");
 kommunicateIframe.setAttribute("id", "kommunicate-widget-iframe");
 kommunicateIframe.setAttribute("class", "kommunicate-custom-iframe");
+kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
+kommunicateIframe.setAttribute('data-url', window.location.href);
 document.body.appendChild(kommunicateIframe);
 var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
 kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
