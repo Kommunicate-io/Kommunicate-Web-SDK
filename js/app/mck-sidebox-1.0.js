@@ -4141,6 +4141,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
             _this.loadTab = function (params, callback) {
                 _this.handleLoadTab();
+                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
