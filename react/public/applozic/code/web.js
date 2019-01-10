@@ -93,37 +93,7 @@ var autoSuggestions = {};
       onInit: onInitialize,
       maxHistory: userSession.subscription === "startup" ? 30 : "", // Number of days' history that needs to be restricted
       onTabClicked: function (tabDetail) {
-        var tabId = tabDetail.tabId;
-        if (tabDetail.isGroup) {
-          group = kmGroupUtils.getGroup(tabId);
-          var userIds = Object.keys(group.users);
-          userIds.every(function (userId, index) {
-            var user = group.users[userId];
-            if (user.role == 3) {
-              tabId = userId;
-              return false;
-            } else {
-              return true;
-            }
-          })
-        }
-        fetchUserDetailAndUpdateProps(tabId);
-
-        window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
-
-        window.appHistory.replace('/conversations');
-
-        if (typeof tabDetail === 'object') {
-          window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
-          if (tabDetail.isGroup) {
-            $(".km-new-conversation-header").removeClass('n-vis').addClass('vis');
-            $(".km-new-conversation-header-bot").removeClass('n-vis').addClass('vis');
-            window.Aside.initConversation(tabDetail.tabId);
-          } else {
-            $(".km-new-conversation-header").removeClass('vis').addClass('n-vis');
-            $(".km-new-conversation-header-bot").removeClass('vis').addClass('n-vis');
-          }
-        }
+        displayUserInfo(tabDetail);  
       },
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
@@ -146,6 +116,37 @@ var autoSuggestions = {};
         return;
             }
     });
+}
+
+function displayUserInfo(tabDetail){
+  var tabId = tabDetail.tabId;
+  if (tabDetail.isGroup) {
+    group = kmGroupUtils.getGroup(tabId);
+    var userIds = Object.keys(group.users);
+    userIds.every(function (userId, index) {
+      var user = group.users[userId];
+      if (user.role == 3) {
+        tabId = userId;
+        return false;
+      } else {
+        return true;
+      }
+    })
+  }
+  fetchUserDetailAndUpdateProps(tabId);
+
+  window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
+
+  window.appHistory.replace('/conversations');
+
+  if (typeof tabDetail === 'object') {
+    window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
+    if (tabDetail.isGroup) {
+      window.Aside.initConversation(tabDetail.tabId);
+    } else {
+      window.Aside.setUpAgentTakeOver();
+    }
+  }
 }
 
 function activeCampaign(email) {

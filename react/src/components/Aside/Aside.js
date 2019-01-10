@@ -66,12 +66,6 @@ class Aside extends Component {
       toggleExpandIcon: false
     };
     this.dismissInfo = this.dismissInfo.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onBlur = this.onBlur.bind(this);
-    this.validateAndUpdateUserDetail = this.validateAndUpdateUserDetail.bind(this);
-    this.onKeyDown =this.onKeyDown.bind(this);
-    this.onKeyPress =this.onKeyPress.bind(this);
-    this.setInputFlag=this.setInputFlag.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
     this.forwardMessageToZendesk = this.forwardMessageToZendesk.bind(this);
     this.handleUpdateUser = this.handleUpdateUser.bind(this);
@@ -201,113 +195,6 @@ class Aside extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   }
-  validateAndUpdateUserDetail = function (elem) {
-    if (elem === "email") {
-      this.validateEmail();
-    }
-    else if (elem === "phoneNumber" && document.getElementById("km-sidebar-user-number-edit").value.length > 20 ) {
-        Notification.error("Phone number length should be less than 20");
-        return;
-    } else {
-      this.updateUserDetail(elem);
-    }
-  }
-  onBlur = (elem) => {
-    if (this.state.inputBoxMouseDown) {
-      return;
-    } else {
-      this.validateAndUpdateUserDetail(elem);
-    }
-  }
-  onMouseDown = (elem) => {
-    this.setState({ inputBoxMouseDown: true })
-    this.validateAndUpdateUserDetail(elem);
-  }
-
-  validateEmail = (e) => {
-    var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (document.getElementById("km-sidebar-user-email-edit").value.length > 100) {
-      Notification.error("Email length should be less than 100");
-      return;
-    }
-    if(mailformat.test(document.getElementById("km-sidebar-user-email-edit").value)){
-      this.updateUserDetail("email");
-    }
-    else {
-      Notification.error("You have entered an invalid email address!");
-      return false;
-    }
-  }
-  setInputFlag(e){
-    this.setState({inputBoxMouseDown:false})
-     this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
-  }
-  onKeyDown = (e) => {
-    if (e.which === 101 || e.which === 69) {
-      e.preventDefault();
-    }
-    if (e.which == 13 && e.currentTarget.className == "km-sidebar-user-number") {
-      this.updateUserDetail('phoneNumber');
-    }
-  }
-  onKeyPress = (e) => {
-    if (e.which == 13 && e.target.dataset.kmEditfield == "displayName") {
-      this.updateUserDetail('displayName');
-    }
-    if(e.which == 13 && e.currentTarget.className == "km-sidebar-user-email"){
-      this.validateAndUpdateUserDetail("email");
-    }
-  }
-  
-  updateUserDetail = (params) => {
-    var userDetails = {};
-    var elemId = '';
-    var userId = document.getElementById("km-sidebar-userId").innerHTML;
-    var displayName = document.getElementById("km-sidebar-display-name").innerHTML;
-    var userDetails ={};
-    userDetails[params] = document.getElementById(userDetailMap[params]+"-edit").value;
-    elemId ="km-"+params+"-submit";
-
-    userDetails.callback = function (userDetails) {
-       document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").value;
-      var list = document.querySelectorAll(".person.active .name");
-      for (var i = 0; i < list.length; i++) {
-        if(userDetails.displayName){
-        list[i].innerText = document.getElementById("km-sidebar-display-name").innerHTML;
-        }
-      }
-    }
-    ApplozicClient.updateUserDetail({ "userDetails": userDetails, "ofUserId": userId });
-    this.hideEditUserDetailDiv(params);
-
-  }
-  cancelEdit = function (event,elemId) {
-    this.setState({inputBoxMouseDown:true});
-    event.stopPropagation();
-    this.hideEditUserDetailDiv(elemId);
-    document.getElementById(userDetailMap[elemId]+"-edit").innerHTML= document.getElementById(userDetailMap[elemId]).innerHTML;
-  }
-  showEditUserDetailDiv = function (elemId) {
-    document.getElementById(userDetailMap[elemId]).classList.remove("vis");
-    document.getElementById(userDetailMap[elemId]).classList.add("n-vis");
-    document.getElementById("km-"+elemId+"-submit").classList.remove("n-vis");
-    document.getElementById("km-"+elemId+"-submit").classList.add("vis");
-    if(document.getElementById(userDetailMap[elemId]+"-edit").classList.contains("vis")) {
-      document.getElementById(userDetailMap[elemId]+"-edit").focus();
-    }
-    document.getElementById("pseudo-name-icon").classList.add("n-vis");
-    document.getElementById("pseudo-name-icon").classList.remove("vis");
-  }
-  
-  hideEditUserDetailDiv = function (elemId) {
-    document.getElementById(userDetailMap[elemId]).classList.remove("n-vis");
-    document.getElementById(userDetailMap[elemId]).classList.add("vis");
-    document.getElementById("km-"+elemId+"-submit").classList.remove("vis");
-    document.getElementById("km-"+elemId+"-submit").classList.add("n-vis");
-    document.getElementById("pseudo-name-icon").classList.add("n-vis");
-    document.getElementById("pseudo-name-icon").classList.remove("vis");
-  }
-
 
   loadAgents() {
       var that = this;
@@ -433,30 +320,37 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
     //pseudoNameIcon.classList.remove("vis");
     //pseudoNameIcon.classList.add("n-vis");
-    let allBotsInGroup = [];
-    for (var key in group.users) {
-      if (group.users.hasOwnProperty(key)) {
-        var groupUser = group.users[key];
+    if (group) {
+      let allBotsInGroup = [];
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("n-vis");
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("vis");
+      for (var key in group.users) {
+        if (group.users.hasOwnProperty(key)) {
+          var groupUser = group.users[key];
 
-        let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+          let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
 
-        let groupUserDetail = botAgentMap && botAgentMap[groupUser.userId];
+          let groupUserDetail = botAgentMap && botAgentMap[groupUser.userId];
 
-        if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
-          allBotsInGroup.push(groupUserDetail.userName);
-          // takeOverEleText.innerHTML = user.displayName;
-          takeOverEleContainer.style.display = "flex";
-          // console.log(user.displayName);
+          if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
+            allBotsInGroup.push(groupUserDetail.userName);
+            // takeOverEleText.innerHTML = user.displayName;
+            takeOverEleContainer.style.display = "flex";
+            // console.log(user.displayName);
+          }
         }
       }
-  }
-    takeOverEleText.innerHTML = allBotsInGroup.join(', ');
-    if(allBotsInGroup.length>1) {
-      document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
+      takeOverEleText.innerHTML = allBotsInGroup.join(', ');
+      if (allBotsInGroup.length > 1) {
+        document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
+      } else {
+        document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
+      }
+      // console.log(allBotsInGroup);
     } else {
-      document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("vis");
+      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("n-vis");
     }
-    // console.log(allBotsInGroup);
   }
 
   changeAssignee(userId) {
