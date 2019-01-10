@@ -5220,6 +5220,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
+				$kmApplozic("."+$listId).each(function(){
+					$(this).html($(this).children('li').sort(function(a, b){
+						return ($(b).data('msg-time')) > ($(a).data('msg-time')) ? 1 : -1;
+					}));
+				  });
 
 				$kmApplozic("."+$listId).each(function(){
 					$kmApplozic(this).html($kmApplozic(this).children('li').sort(function(a, b){
