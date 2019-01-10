@@ -99,6 +99,7 @@ updateDefaultAssignee = (selectedAssignee) => {
         appSettings.defaultConversationAssignee = data.defaultConversationAssignee;
         //update store
         this.props.updateAssignee(appSettings);
+        Notification.success('Routing rules updated successfully.');
     })
     .catch(err => {
         Notification.warning('There was a problem. Please try again');

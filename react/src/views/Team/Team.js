@@ -332,7 +332,7 @@ class Integration extends Component {
       }
     });
     var invitedUserList = this.state.invitedUser.map((user, index) => {
-      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType} getInvitedUsers ={this.getInvitedUsers}/>
+      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType} getInvitedUsers ={this.getInvitedUsers} getUsers={this.getUsers}/>
     })
     var disabledUsersList = this.state.disabledUsers.map((user, index) => {
       let moreUserInfo;

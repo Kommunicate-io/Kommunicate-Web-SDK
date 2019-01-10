@@ -110,7 +110,8 @@ class TrialDaysLeft extends Component {
     daysRemaining = () => {
         var _this = this;
         let daysRemaining = 31 - CommonUtils.getDaysCount();
-        let applicationCreatedAtTime = CommonUtils.getUserSession().applicationCreatedAt.replace('Z','');
+        let applicationCreatedAtTime = CommonUtils.getUserSession().applicationCreatedAt || CommonUtils.getUserSession().created_at;
+        applicationCreatedAtTime = applicationCreatedAtTime.replace('Z','');
         var trialExpiryDate = moment(applicationCreatedAtTime).add(30, 'days').format("DD MMM YYYY");
 
         this.setState({renderSections: {

@@ -546,7 +546,7 @@ class Login extends Component {
 													</div>
 													<div className="row">
 														<div className="col-12 text-center">
-															<Button primary large fontSize={"16px"} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
+															<Button primary large fontSize={"16px"} style={{marginTop:"26px"}} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
 															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Link to={'/signup'}>Sign up</Link></p>
 														</div> 
 													</div>

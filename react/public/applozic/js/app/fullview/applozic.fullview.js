@@ -420,6 +420,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 		var MCK_MAX_HISTORY = appOptions.maxHistory;
 		var MCK_INTEGRATION_STARTED;
+		var MCK_CONVERSATIONS_DATA = {
+			allConversations: "",
+			assignedToMeConversations: "",
+			closedConversations: ""
+		}
 		var currentTimeStamp = Math.ceil(new Date().getTime());
 		var maxHistoryInMillisec = (!MCK_MAX_HISTORY == "") ? MCK_MAX_HISTORY * 24 * 60 * 60 * 1000 : currentTimeStamp; // value of inputed days (or number) converted to milliseconds. If MCK_MAX_HISTORY is empty string then currentTimeStamp value will taken to break the condition for loading messages.
 
@@ -1374,7 +1379,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									return !(user.metadata && user.metadata['KM_SOURCE'] == "KOMMUNICATE_DASHBOARD");
 								});
 								MCK_INTEGRATION_STARTED = appUsers.length ? true : false;
-								mckMessageService.emptyStateChange();
+								// mckMessageService.emptyStateChange();
 							}
 						});
 
@@ -1630,6 +1635,18 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var CONVERSATION_DELETE_URL = "/rest/ws/message/delete/conversation";
 			var CONVERSATION_READ_UPDATE_URL = "/rest/ws/message/read/conversation";
 			var offlineblk = '<div id="km-ofl-blk" class="km-m-b"><div class="km-clear"><div class="blk-lg-12 km-text-light km-text-muted km-test-center">${userIdExpr} is offline now</div></div></div>';
+
+			var CALLS_COMPLETED = 0,
+				TABS_COUNT = 3;
+
+			_this.checkEmptyState = function() {
+				CALLS_COMPLETED += 1;
+				if(TABS_COUNT === CALLS_COMPLETED) {
+					_this.emptyStateChange();
+					CALLS_COMPLETED = 0;
+				}
+			};
+
 			$kmApplozic(d).on("click", ".km-message-delete", function () {
 				_this.deleteMessage($kmApplozic(this).parents('.km-m-b').data("msgkey"));
 			});
@@ -2909,12 +2926,16 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL,
 					success: function (data) {
+						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.allConversations = data.response.groupFeeds.length);
 						 mckMessageService.addContactInConversationList(data, null, conversationList);
 						 mckMessageService.initSearch();
 						 if (!params.initialcall) {
 							mckMessageLayout.updateSearchSourceMap();
 						}
 						_this.tabViewUnreadCount(data, 'km-allconversation-unread-icon');
+						if (typeof callback === 'function') {
+							callback();
+						}
 					}
 				})
 			}
@@ -2929,11 +2950,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + "&status=2&status=3&status=4&status=5",
 					success: function (data) {
+						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.closedConversations = data.response.groupFeeds.length);
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-closed-conversation-list", list);
 						if (!params.initialcall) {
 							mckMessageLayout.updateSearchSourceMap();
+						}
+						if (typeof callback === 'function') {
+							callback();
 						}
 					}
 
@@ -2967,6 +2992,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL,
 					success: function (data) {
+						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.assignedToMeConversations = data.response.groupFeeds.length);
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-assigned-search-list", list);
@@ -2974,6 +3000,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							mckMessageLayout.updateSearchSourceMap();
 						}
 						_this.tabViewUnreadCount(data, 'km-assigned-unread-icon');
+
+						if (typeof callback === 'function') {
+							callback();
+						}
 					}
 
 				})
@@ -3766,33 +3796,21 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					activeAllConversationList = document.querySelector("#km-conversation"),
 					activeAssignedConversationList = document.querySelector("#km-assigned");
 
-				if(!MCK_INTEGRATION_STARTED) {
+
+				if(typeof MCK_INTEGRATION_STARTED !== "undefined" && !MCK_INTEGRATION_STARTED) {
 					if (emptyStateDiv.classList.contains("n-vis")) {
 						emptyStateDiv.classList.add("vis", "km-empty-state-not-integrated");
 						emptyStateDivFirstPara.innerHTML = "You have not installed Kommunicate in your website";
 						emptyStateDiv.classList.remove("n-vis");
 					}
-				} else if(assignedToMeList.getElementsByTagName("li").length === 0) {
-					if((activeAllConversationList.classList.contains("km-conversation-icon-active") && allConversationList.getElementsByTagName("li").length === 0) || (activeAssignedConversationList.classList.contains("km-conversation-icon-active") && allConversationList.getElementsByTagName("li").length !== 0)) {
-						emptyStateDiv.classList.add('vis', 'km-default-empty-state');
-						emptyStateDiv.classList.remove('n-vis', 'km-assigned-conv-empty-state');
-					} else {
-						emptyStateDiv.classList.add('n-vis');
-						emptyStateDiv.classList.remove('vis');
-					}
-					
-				} else if (assignedToMeList.getElementsByTagName("li").length !== 0 || allConversationList.getElementsByTagName("li").length !== 0 || closedConversationList.getElementsByTagName("li").length !== 0) {
-					if(activeConnversationBox.classList.contains("n-vis")) {
-						emptyStateDiv.classList.add("km-assigned-conv-empty-state", "vis");
-						emptyStateDiv.classList.remove("n-vis");
-						emptyStateDivFirstPara.innerHTML = "Select a conversation to interact with your customers";
-					} else {
-						emptyStateDiv.classList.add('n-vis');
-						emptyStateDiv.classList.remove('vis');
-					}
+				} else if(MCK_CONVERSATIONS_DATA.assignedToMeConversations !== 0 ) {
+					emptyStateDiv.classList.add("km-assigned-conv-empty-state", "vis");
+					emptyStateDiv.classList.remove("n-vis");
+					emptyStateDivFirstPara.innerHTML = "Select a conversation to interact with your customers";
 				} else {
-					emptyStateDiv.classList.add('n-vis');
-					emptyStateDiv.classList.remove('vis');
+					emptyStateDiv.classList.add('vis', 'km-default-empty-state');
+					emptyStateDiv.classList.remove('n-vis', 'km-assigned-conv-empty-state');
+					emptyStateDivFirstPara.innerHTML = "You have no pending conversations";
 				}
 			};
 		}
@@ -4142,9 +4160,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 				if (params.initialcall) {
-					mckMessageService.loadSupportGroup(params, callback);
-					mckMessageService.loadAssignedGroup(params, callback);
-					mckMessageService.loadCloseGroup(params, callback);
+					mckMessageService.loadSupportGroup(params, function() {
+						mckMessageService.checkEmptyState();
+					});
+					mckMessageService.loadAssignedGroup(params, function() {
+						mckMessageService.checkEmptyState();
+					});
+					mckMessageService.loadCloseGroup(params, function() {
+						mckMessageService.checkEmptyState();
+					});
 				} else {
 					if(mckMessageService.monthsDiffCalculator(params.lastContactedTime)) {
 						mckMessageService.upgradePlanContainer(params.tabId);
@@ -5682,6 +5706,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (!message.metadata || isValidMeta) {
 					(message.groupId) ? mckMessageLayout.addGroupFromMessage(message, true, list) : mckMessageLayout.addContactsFromMessage(message, true, list);
 				}
+				$kmApplozic(".km-typing-indicator-in-preview").removeClass("vis").addClass("n-vis");
+				$kmApplozic(".km-typing-indicator-for-agent--container").addClass("n-vis").removeClass("vis");
 				if (typeof tabId !== 'undefined' && tabId === contact.contactId && isGroupTab === contact.isGroup) {
 					if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
 						if (typeof contact !== 'undefined') {
@@ -7970,6 +7996,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								$mck_tab_status.removeClass('n-vis').addClass('vis');
 							}
 							$mck_typing_box_text.html("");
+							$mck_typing_indicator_in_list.addClass("n-vis").removeClass("vis");
+							$mck_agent_typing_indicator_container.addClass("n-vis").removeClass("vis");
+							$mck_message_preview.addClass("vis").removeClass("n-vis");
 						}
 					}
 				}	

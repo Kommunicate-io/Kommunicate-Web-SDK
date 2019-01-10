@@ -46,7 +46,8 @@ class DeleteInvitation extends Component {
     })
   }
     
-  deleteUser  = () => {
+  deleteUser () {
+    var _this = this;
     this.props.onRequestClose();
     let userId = [];
     if(this.props.deleteInvitation){
@@ -57,7 +58,7 @@ class DeleteInvitation extends Component {
       if(response && response.code == "SUCCESS") {
         if (response.message.data[0].result === "DELETED SUCCESSFULLY"){
           Notification.success('Agent Deleted Successfully');
-          this.props.getUsers();
+          _this.props.getUsers();
         } else if (response.message.data[0].result === "USER DOES NOT EXIST OR ALREADY DELETED") {
           Notification.warning('Agent does not exist or already deleted');
         }
