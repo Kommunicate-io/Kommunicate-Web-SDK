@@ -122,14 +122,12 @@ function getUserIdToShowUserInfo(tabDetail) {
   if (tabDetail.isGroup) {
     group = kmGroupUtils.getGroup(tabId);
     var userIds = Object.keys(group.users);
-    userIds.every(function (userId, index) {
+    userIds.filter(function (userId, index) {
       var user = group.users[userId];
       if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
         tabId = userId;
-        return false;
-      } else {
-        return true;
-      }
+        return ;
+      } 
     })
   }
   return tabId;
