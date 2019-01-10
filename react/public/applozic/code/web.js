@@ -92,9 +92,7 @@ var autoSuggestions = {};
       // awsS3Server :true,
       onInit: onInitialize,
       maxHistory: userSession.subscription === "startup" ? 30 : "", // Number of days' history that needs to be restricted
-      onTabClicked: function (tabDetail) {
-        displayUserInfo(tabDetail);  
-      },
+      onTabClicked:displayUserInfo,
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: false,
@@ -104,7 +102,7 @@ var autoSuggestions = {};
     });
     return false;
   //});
-  }
+  } 
 
   function fetchUserDetailAndTriggerCustomEvent(contactId){
         $kmApplozic.fn.applozic("fetchContacts", {
