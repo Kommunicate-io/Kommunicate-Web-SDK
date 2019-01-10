@@ -2160,7 +2160,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
 
                 mck_text_box.addEventListener("keyup",function(){
-                    if(mck_text_box.textContent == ""){
+                    if(mck_text_box.textContent == "" || !mck_text_box.textContent.replace(/\s/g, '').length){
                         _this.hideSendButton();
                     }   else {
                         _this.showSendButton();
