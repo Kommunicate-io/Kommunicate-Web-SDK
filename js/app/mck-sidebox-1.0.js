@@ -518,6 +518,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3", notificationtoneoption);
                 mckCallService.init();
             }
+            if (KOMMUNICATE_VERSION === "v2" && window.frameElement.getAttribute('data-protocol') == "file:") {
+                kommunicateCommonFunction.modifyClassList( {id : ["km-local-file-system-warning"]}, "vis","n-vis");
+              }
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.

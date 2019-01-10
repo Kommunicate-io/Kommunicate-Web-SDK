@@ -5618,3 +5618,35 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	animation-timing-function: cubic-bezier(.3,.61,.01,1.2);
 	-webkit-animation-timing-function: cubic-bezier(.3,.61,.01,1.2);
 }
+
+#km-local-file-system-warning {
+	background-color: rgb(230, 229, 236, .28);
+	text-align: center;
+	font-size: 16px;
+}
+
+#km-local-file-system-warning-description {
+	padding: 29px;
+	font-weight: 300;
+	display: block;
+}
+
+#km-local-file-system-warning .km-learn-more {
+    background-color: #5553b7;
+    color: #fff;
+    outline: 0;
+    border: none;
+    padding: 8px 16px 8px 16px;
+    border-radius: 4px;
+    box-shadow: 2px 2px 6px 1px rgba(24,23,23,.35);
+    min-width: 196px;
+    letter-spacing: .4px;
+    display: block;
+    max-width: 200px;
+	margin: 0px auto 0px;
+	text-decoration: none;
+}
+
+.km-learn-more-container {
+	padding-bottom: 20px;
+}
