@@ -24,7 +24,7 @@ const addMemberIntoConversation = (data) => {
                         header = agents.header;
                         return applozicClient.getGroupInfo(groupId, customer.applications[0].applicationId, header.apzToken, true).then(group => {
                             if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
-                                return { code: "SUCCESS", data: agents }
+                                return { code: "ASSIGNMENT_SKIPPED", data: agents }
                             }
                             if (customer.botRouting ) {
                                 /** UI: Assign new conversations to bot- enable  */ 
