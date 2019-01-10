@@ -297,7 +297,6 @@ function ApplozicSidebox() {
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
             options["widgetSettings"]=data.widgetTheme;
-            options["KM_VER"]=window.kommunicate.version;
             options["customerCreatedAt"]=data.customerCreatedAt;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
