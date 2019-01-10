@@ -106,7 +106,7 @@ var autoSuggestions = {};
   //});
   }
 
-  function fetchUserDetailAndUpdateProps(contactId){
+  function fetchUserDetailAndTriggerCustomEvent(contactId){
         $kmApplozic.fn.applozic("fetchContacts", {
             "roleNameList": ["USER"],
             "userId": encodeURIComponent(contactId),
@@ -117,8 +117,7 @@ var autoSuggestions = {};
             }
     });
 }
-
-function displayUserInfo(tabDetail){
+function getUserIdToShowUserInfo(tabDetail) {
   var tabId = tabDetail.tabId;
   if (tabDetail.isGroup) {
     group = kmGroupUtils.getGroup(tabId);
@@ -133,7 +132,13 @@ function displayUserInfo(tabDetail){
       }
     })
   }
-  fetchUserDetailAndUpdateProps(tabId);
+  return tabId;
+} 
+
+function displayUserInfo(tabDetail){
+  var userId = getUserIdToShowUserInfo(tabDetail);
+ 
+  fetchUserDetailAndTriggerCustomEvent(userId);
 
   window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
 

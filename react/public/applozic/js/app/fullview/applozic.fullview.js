@@ -1917,29 +1917,31 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'tabViewId': tabViewId,
 							'lastContactedTime': time,
 						}
-						kmGroupUtils.getGroup(tabId, function(groupInfo){
-							if (typeof groupInfo === 'object') {
-								var member = groupInfo.members.includes(MCK_USER_ID);
-								var group = {};
-								group.groupId = tabId;
-								group.userId = MCK_USER_ID;
-								group.role = 1; // adding agents as group admin
-								var conversationDetail = mckMessageService.checkForRoleType(group);
-								conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
-								conversationDetail.callback = function () {
-									mckMessageLayout.loadTab(groupDetail);
+						if (isGroup) {
+							kmGroupUtils.getGroup(tabId, function (groupInfo) {
+								if (typeof groupInfo === 'object') {
+									var member = groupInfo.members.includes(MCK_USER_ID);
+									var group = {};
+									group.groupId = tabId;
+									group.userId = MCK_USER_ID;
+									group.role = 1; // adding agents as group admin
+									var conversationDetail = mckMessageService.checkForRoleType(group);
+									conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
+									conversationDetail.callback = function () {
+										mckMessageLayout.loadTab(groupDetail);
+									}
+									if (!member) {
+										kmGroupService.addGroupMember(conversationDetail);
+									} else {
+										mckMessageLayout.loadTab(groupDetail);
+									}
+
 								}
-								if (!member) {
-									kmGroupService.addGroupMember(conversationDetail);
-								} else {
-									mckMessageLayout.loadTab(groupDetail);
-								}
-	
-							} else {
-								mckMessageLayout.loadTab(groupDetail);
-							}
-							$mck_search.val("");
-						});
+								$mck_search.val("");
+							})
+						} else {
+							mckMessageLayout.loadTab(groupDetail);
+						};
 					} 
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
@@ -4031,12 +4033,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							isGroup: params.isGroup
 						});
 					}
-					var section = CONVERSATION_SECTION_MAP[params.tabViewId];
+					    var section = CONVERSATION_SECTION_MAP[params.tabViewId];
 						var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 						var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-						$kmApplozic(".person."+params.tabId+" .km-unread-count-box").removeClass("vis").addClass("n-vis");
-						$kmApplozic(".person."+params.tabId).removeClass("km-unread-msg");
-							
+						$kmApplozic("#km-li-"+section+"-"+ contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");	
+						$kmApplozic("#km-li-"+section+"-"+ contactHtmlExpr).removeClass("km-unread-msg");		
 					$mck_msg_inner.bind('scroll', function () {
 						if ($mck_msg_inner.scrollTop() === 0) {
 							var tabId = $mck_msg_inner.data("km-id");
@@ -4788,8 +4789,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			}
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
-				var sectionId = _this.checkSectionId(contact,message);
-				if (sectionId === "km-assigned-search-list") {
+				var sectionId = _this.checkSectionId(contact);
+				if (contact.isGroup && sectionId === "km-assigned-search-list") {
 					_this.addOrUpdateContactList(contact, message, update, prepend, "km-contact-list");
 				}
 				_this.addOrUpdateContactList(contact, message, update, prepend, sectionId);
