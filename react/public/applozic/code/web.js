@@ -125,7 +125,7 @@ function displayUserInfo(tabDetail){
     var userIds = Object.keys(group.users);
     userIds.every(function (userId, index) {
       var user = group.users[userId];
-      if (user.role == 3) {
+      if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
         tabId = userId;
         return false;
       } else {
