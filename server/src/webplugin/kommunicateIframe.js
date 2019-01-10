@@ -22,7 +22,7 @@ var kmCustomIframe =
     '   max-height: 100% !important;' +
     ' } \n';
 
-createCustomClasses(kmCustomIframe);                             
+createCustomClasses(kmCustomIframe);              
 // Add class to document
 
 function createCustomClasses(classSettings) {
@@ -40,7 +40,7 @@ function addKommunicatePluginToIframe() {
     var kommunicateScript = iframeDocument.createElement("script");
     kommunicateScript.type = "text/javascript";
     kommunicateScript.async = true;
-    kommunicateScript.src = MCK_CONTEXTPATH + "/kommunicate.app";
+    kommunicateScript.src = MCK_CONTEXTPATH + "/kommunicate.app?version=v2";
     iframeDocument.body.appendChild(kommunicateScript);
 };
 
@@ -65,5 +65,3 @@ if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         addKommunicatePluginToIframe();
     }, 500);
 }
-
-localStorage.setItem("KM_VER","v2");

@@ -5,6 +5,7 @@ var MCK_CONTEXTPATH = ":MCK_CONTEXTPATH";
 var MCK_STATICPATH =":MCK_STATICPATH";
 var MCK_ONINIT = "";
 var KM_PLUGIN_SETTINGS=JSON.parse(':PLUGIN_SETTINGS');
+var MCK_PLUGIN_VERSION = ":MCK_PLUGIN_VERSION";
 var MCK_THIRD_PARTY_INTEGRATION =JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 //window.applozic.PRODUCT_ID= "${productId}"?"${productId}":"applozic-chat";
 window.applozic.PRODUCT_ID =":PRODUCT_ID";
@@ -12,9 +13,7 @@ window.applozic.PRODUCT_ID =":PRODUCT_ID";
 var options={};
 var options = applozic._globals;
 options.isAnonymousChat =options.isAnonymousChat;
-var KOMMUNICATE_VERSION = localStorage.getItem("KM_VER");
-localStorage.removeItem("KM_VER");
-window.kommunicate.version = KOMMUNICATE_VERSION;
+options.KM_VER = MCK_PLUGIN_VERSION; 
 if (typeof options !== 'undefined') {
   MCK_ONINIT = options.onInit;
 }
