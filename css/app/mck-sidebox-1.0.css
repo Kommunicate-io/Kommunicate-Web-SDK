@@ -2448,9 +2448,7 @@ display: none;
 }
 
 .mck-box-content.vis {
-	/* display: table !important; */
-	display: flex;
-    flex-direction: column;
+	display: table !important;
 }
 
 /*.mck-box input {
