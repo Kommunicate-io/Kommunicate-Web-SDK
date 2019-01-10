@@ -312,6 +312,24 @@ body {
 }
 
 
+/* ScrollSpy CSS */
+ul.toc-headings > li {
+    padding-bottom: 0px;
+}
+
+ .toc-headings > li > a {
+    display: block;
+    padding: 4px;
+}
+
+ .toc-headings > li > a.active {
+    background-color: rgba(27, 31, 35, 0.05);
+    border-radius: 5px;
+    font-weight: bold;
+}
+/* ScrollSpy CSS ends here */
+
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 @media only screen and (max-width:735px) {
