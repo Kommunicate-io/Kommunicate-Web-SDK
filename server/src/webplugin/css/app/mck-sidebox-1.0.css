@@ -5617,6 +5617,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	animation-fill-mode: both;
 	animation-timing-function: cubic-bezier(.3,.61,.01,1.2);
 	-webkit-animation-timing-function: cubic-bezier(.3,.61,.01,1.2);
+
 }
 
 #km-local-file-system-warning {
