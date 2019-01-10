@@ -1678,7 +1678,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     kommunicateIframe.style.height="75px";
                     kommunicateIframe.style.boxShadow="none";
                     kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
-                    KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                 });
 
                 var iframeMedia = parent.window.matchMedia("(max-width: 600px)");
@@ -2411,6 +2410,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 });
                 $applozic(d).on("click", ".mck-close-sidebox", function (e) {
                     e.preventDefault();
+                    KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
                     KommunicateUI.hideClosedConversationBanner();
