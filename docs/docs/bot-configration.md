@@ -110,7 +110,7 @@ Pass any kind of Kommunicate supported <a href="actionable-messages" target="_bl
    }
 }
 ```
-## Wroking with Dialogflow fulfillment
+## Working with Dialogflow fulfillment
 > This feature is only available with Dialogflow V2 APIs. 
 
 Fulfillment lets your Dialogflow agent call business logic on an intent-by-intent basis. Dialogflow supports two ways to configure the fulfillment for an agent. More information on the fulfillment configuration is available on Dialogflow [docs](https://dialogflow.com/docs/fulfillment/configure).

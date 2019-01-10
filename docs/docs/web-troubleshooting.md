@@ -15,11 +15,26 @@ This error can be verified by looking into the browser's console. Check if there
 
 ```
 Access to XMLHttpRequest at 'https://apps.applozic.com:15675/stomp/info?t=1547050628459' from origin 'null' has been blocked by CORS policy: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+
 ```
 
-To resolve it, serve the html page through the web server such as Apache, Jekyll, Tomcat, etc.
+To resolve it, serve the html page through the web server such as Apache, Jekyll, Tomcat, Python, Node etc.
 
+``` html
+Example : How to serve the html file via web server ?
 
+Solution :
+
+Step-1 Open Terminal.
+
+Step-2 Change the current working directory to the directory where HTML file is prsent.
+
+Step-3 If you are using Python 2 type command python -m SimpleHTTPServer 8000 
+for Python 3 python -m http.server 8000.
+
+Open your web browser and enter http://localhost:8000 to run the demo.
+
+```
 2. Verify if you are running it within a firewall network. Kommunicate uses port 15675 for establing a websocket connection. If your network have blocked port 15675, then Kommunicate web plugin will not be able to establish websocket connection with  Kommunicate's MQTT based real time update service.
 
 This error can be verified by looking into the browser's consle. Check if there are any errors similar to the following:

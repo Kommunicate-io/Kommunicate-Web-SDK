@@ -22,7 +22,7 @@ sidebar_label: Conversation Assignment
 
 
 # Bot to agent handoff
-There are multiple ways your can assign the conversation to agents. 
+There are multiple ways bot can assign the conversation to agents :
 
   1. Set action `input.unknown` in Dialogflow. If Default fallback intents are enabled, Dialogflow automatically adds this action in response. It means whenever fallback intent is triggered the conversation will be assigned to an agent according to your conversation routing settings. 
 

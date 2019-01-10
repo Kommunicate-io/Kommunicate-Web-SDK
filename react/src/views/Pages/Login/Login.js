@@ -239,9 +239,9 @@ class Login extends Component {
 						window.$applozic.fn.applozic('logout');
 					}
 
-					if (response.data.result.apzToken) {
-					} else {
-						var apzToken = new Buffer(userName + ":" + password).toString('base64');
+					if (!response.data.result.apzToken) {
+						var accessToken = response.data.result.accessToken;
+                		var apzToken = new Buffer(userName + ":" + accessToken).toString('base64');
 						response.data.result.apzToken = apzToken;
 					}
 
