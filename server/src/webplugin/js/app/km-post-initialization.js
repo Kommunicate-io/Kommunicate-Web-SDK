@@ -35,7 +35,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
     } else {
         Kommunicate.helpdocsInitialization(data, helpdocsAccessKey);
     }
-    Kommunicate.getActiveConversation() && Kommunicate.openConversation(Kommunicate.getActiveConversation().groupId);
+    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && Kommunicate.getActiveConversation() && Kommunicate.openConversation(Kommunicate.getActiveConversation().groupId);
 }
 
 //faq plugin

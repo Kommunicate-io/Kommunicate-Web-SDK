@@ -7,6 +7,7 @@ var count = 0 ;
 var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
+var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -387,6 +388,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var CONVERSATION_STATUS_MAP = ["DEFAULT", "NEW", "OPEN"];
         var BLOCK_STATUS_MAP = ["BLOCKED_TO", "BLOCKED_BY", "UNBLOCKED_TO", "UNBLOCKED_BY"];
         var MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT = (typeof appOptions.msgTriggerTimeout === "number") ? appOptions.msgTriggerTimeout : 0;
+        MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = (typeof appOptions.automaticChatOpenOnNavigation === "boolean") ? appOptions.automaticChatOpenOnNavigation : false;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -2413,7 +2415,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 });
                 $applozic(d).on("click", ".mck-close-sidebox", function (e) {
                     e.preventDefault();
-                    KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
+                    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
                     KommunicateUI.hideClosedConversationBanner();
@@ -4139,7 +4141,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
             _this.loadTab = function (params, callback) {
                 _this.handleLoadTab();
-                params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
+                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
