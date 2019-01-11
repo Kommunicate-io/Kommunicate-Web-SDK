@@ -289,4 +289,24 @@ API should return data in below format :
 }]
 ```
 
-  
+## Send HTML content 
+> HTML content will work with V2 APIs.
+
+You can send HTML content as a message and kommunicate will render the HTML into UI. Pass the property `messageType : html` in custom payload from Dialogflow. You can send stand alone html message or combine it with Actionable messages. Below is the sample JSON with quick replies:
+
+Sample JSON with HTML in quick replies :
+```
+{
+	"message": "<ul>Here is the city list we operate in: <li> Bangalore </li><li> California </li><li> Singapore </li><li>  London </li></ul>",
+	"platform": "kommunicate",
+	"messageType":"html",
+	"metadata": {
+		"contentType": "300",
+		"templateId": "6",
+		"payload": [{
+			"title": "Show More",
+			"message": "Show me more"
+		}]
+	}
+}
+```
