@@ -325,4 +325,5 @@ const mapDispatchToProps = dispatch => {
     }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps) (withTheme(TrialDaysLeft));
+export default withTheme(connect(mapStateToProps, mapDispatchToProps) (TrialDaysLeft));
+// withTheme is being is used for themeing Applozic and Kommunicate Dashboard.
