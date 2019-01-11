@@ -133,7 +133,7 @@ class Aside extends Component {
 }
   handleGroupUpdate(e) {
     e.preventDefault();
-    let activeConversationId = window.document.getElementsByClassName("active-chat")[0].dataset.kmId
+    let activeConversationId = window.document.getElementsByClassName("active-chat")[0] && window.document.getElementsByClassName("active-chat")[0].dataset.kmId
     let group = e.detail.data;
     !group.groupId && (group["groupId"] = group.id);
     !group.users && (group["users"] = group.groupUsers);
