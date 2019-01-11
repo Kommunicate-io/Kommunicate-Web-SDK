@@ -18,6 +18,8 @@ KOMMUNICATE_CONSTANTS = {
     },
     CONVERSATION_STATUS :{
         'Open': 0,
-        'Close':2
+        'Close':2,
+        'Spam':3,
+        'Duplicate':4
     }
 }
