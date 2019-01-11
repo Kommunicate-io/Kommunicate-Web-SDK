@@ -1405,20 +1405,16 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				});
+
 				$kmApplozic(d).on("click", ".km-conversation-tabView", function (e) {
-					var conversationTabViewMap = {
-						'km-conversation': 'km-allconversation',
-						'km-assigned': 'km-assigned',
-						'km-closed': 'km-closed'
-					};
 					$kmApplozic(".km-conversation-tabView").removeClass('km-conversation-icon-active');
 					$kmApplozic(this).addClass('km-conversation-icon-active');
 					$kmApplozic(".km-converastion").removeClass('vis').addClass('n-vis');
 					$kmApplozic(".km-conversation-tab-selected").removeClass('vis').addClass('n-vis');
 					var tabId = $(".km-conversation-icon-active")[0].id;
-					$kmApplozic("." + conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
-					$kmApplozic("." + conversationTabViewMap[tabId] + " .km-unread-icon").removeClass('n-vis').addClass('vis');
-					typeof e.originalEvent !== "undefined" && $kmApplozic("." + conversationTabViewMap[tabId] + " li:first-child").trigger("click");
+					$kmApplozic("." + KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[tabId]).removeClass('n-vis').addClass('vis');
+					$kmApplozic("." + KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[tabId] + " .km-unread-icon").removeClass('n-vis').addClass('vis');
+					typeof e.originalEvent !== "undefined" && $kmApplozic("." + KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child").trigger("click");
 				});
 				$kmApplozic(d).on("click", ".kmfancybox", function (e) {
 					var $this = $kmApplozic(this);
@@ -4827,17 +4823,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				_this.updateRecentConversationList(group, message, update, false, list);
 			};
-			_this.checkSectionId = function (group) {
-				if (group.metadata && group.metadata.CONVERSATION_STATUS && KOMMUNICATE_CONSTANTS.OPEN_CONVERSATION_ARRAY.indexOf(group.metadata.CONVERSATION_STATUS) !== -1) {
-					//open conversation
-					if (group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
-						return "km-assigned-search-list";
+			_this.checkSectionId = function (group, message) {
+				if (message && (message.metadata.KM_STATUS || message.metadata.KM_ASSIGN)) {
+					if (group.metadata && group.metadata.CONVERSATION_STATUS && (KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(group.metadata.CONVERSATION_STATUS))) {
+						// closed conversation
+						return "km-closed-conversation-list";
 					} else {
-						return "km-contact-list";
+						//open conversation
+						if (group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
+							return "km-assigned-search-list";
+						} else {
+							return "km-contact-list";
+						}
 					}
-				} else {
-					// closed conversation
-					return "km-closed-conversation-list";
 				}
 			}
 			_this.addOrUpdateContactList = function (contact, message, update, prepend, sectionId) {
@@ -4855,7 +4853,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			}
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
-				var sectionId = _this.checkSectionId(contact);
+				var sectionId = _this.checkSectionId(contact,message);
 				if (sectionId === "km-assigned-search-list") {
 					_this.addOrUpdateContactList(contact, message, update, prepend, "km-contact-list");
 				}
@@ -5286,6 +5284,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
+
+				$kmApplozic("."+$listId).each(function(){
+					$kmApplozic(this).html($kmApplozic(this).children('li').sort(function(a, b){
+						return ($kmApplozic(b).data('msg-time')) > ($kmApplozic(a).data('msg-time')) ? 1 : -1;
+					}));
+				  });
 
 				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
 				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
@@ -8092,6 +8096,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 			}
+		
 
 			_this.onMessage = function (obj) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
@@ -8287,7 +8292,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							contact && (KM_GROUP_MAP[contact.contactId]=contact);
 						}
 						if (contact && message.metadata && message.metadata.KM_STATUS) {
-							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_STATUS;
+							contact.metadata.CONVERSATION_STATUS = KOMMUNICATE_CONSTANTS.CONVERSATION_STATUS[message.metadata.KM_STATUS]+"";
 							contact && (KM_GROUP_MAP[contact.contactId]=contact);
 						}
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
@@ -8295,19 +8300,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						if (message && message.to && !message.groupId) {
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
-
 						if (message.metadata) {
 							if(message.metadata.KM_STATUS || message.metadata.KM_ASSIGN ){
+							   $kmApplozic("."+window.KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[$kmApplozic(".km-conversation-icon-active")[0].id] +" li.person.active").next().trigger('click');
 								kmGroupService.getGroupFeed({
 									groupId: message.groupId,
 									messageMetadata: message.metadata,
 									callback: function (response,metadata) {
 										kmEvents.triggerCustomEvent("group-update", { data: { data: response.data } });
-										_this.updateConversationList(response.data ,metadata);
 									}
 								})
 							}
-
 							if (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
 								//remove from assigned once its assigned to other agent
 								var asdiv = document.getElementById("km-li-as-group-" + contact.groupId);
@@ -8315,22 +8318,22 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									asdiv.remove();
 								}
 							}
-
+		
 							if (message.metadata.KM_STATUS && contact) {
 								var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-	
+		
 								if (message.metadata.KM_STATUS == "Open") {
 									//remove from closed
 									var cldiv = document.getElementById("km-li-cl-" + contactHtmlExpr);
 									cldiv && cldiv.remove();
 								} else {
 									//remove from assigned and all conversations
-
+		
 									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
 									if (asdiv != null) {
 										asdiv.remove();
 									}
-
+		
 									var csdiv = document.getElementById("km-li-cs-" + contactHtmlExpr);
 									if (csdiv != null) {
 										csdiv.remove();
@@ -8388,20 +8391,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 			};
-
-			_this.updateConversationList = function (group, metadata) {
-				if (metadata.messageMetadata.KM_STATUS === "Open" || metadata.messageMetadata.KM_ASSIGN) {
-
-					if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
-						$kmApplozic('#km-assigned').click();
-					}
-					else if (group.metadata.CONVERSATION_ASSIGNEE != MCK_USER_ID) {
-						$kmApplozic('#km-conversation').click();
-					}
-				} else {
-					$kmApplozic('#km-closed').click();				
-				}
-			}
 		}
 	}
 }($kmApplozic, window, document));
