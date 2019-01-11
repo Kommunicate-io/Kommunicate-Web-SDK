@@ -151,7 +151,7 @@ exports.createUser = function (req, res) {
         res.status(500).json(err).end();
       }
     }).catch(err => {
-      logger.error('user creation error', error)
+      logger.error('user creation error', err)
     });
 };
 
