@@ -4824,7 +4824,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.updateRecentConversationList(group, message, update, false, list);
 			};
 			_this.checkSectionId = function (group, message) {
-				if (message && (message.metadata.KM_STATUS || message.metadata.KM_ASSIGN)) {
 					if (group.metadata && group.metadata.CONVERSATION_STATUS && (KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(group.metadata.CONVERSATION_STATUS))) {
 						// closed conversation
 						return "km-closed-conversation-list";
@@ -4836,7 +4835,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							return "km-contact-list";
 						}
 					}
-				}
 			}
 			_this.addOrUpdateContactList = function (contact, message, update, prepend, sectionId) {
 				var section = CONVERSATION_SECTION_MAP[sectionId];
