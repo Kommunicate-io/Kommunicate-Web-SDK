@@ -424,7 +424,7 @@ class Login extends Component {
 
 	websiteUrl = (e) => {
 		e.preventDefault();
-		let websiteUrl = this.isKommunicateBrand() ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
+		let websiteUrl = this.isKommunicateBrand ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
 		window.location = websiteUrl;
 	}
 
