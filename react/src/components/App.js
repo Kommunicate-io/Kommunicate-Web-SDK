@@ -57,7 +57,7 @@ class App extends Component {
     var notfromLoginOrSignup = (currentPath.includes('/login') || currentPath.includes('/signup'));
     var releaseVersion = "3.3";
     (w.localStorage) !== "undefined" && (kommunicateVersion = window.localStorage.getItem("kommunicateVersion"));
-    (typeof kommunicateVersion !== "undefined" && kommunicateVersion !== releaseVersion && !notfromLoginOrSignup) ? this.logoutForOlderVersion(releaseVersion) : (this.props.logInStatus && this.getAppSettings());
+    (typeof kommunicateVersion !== "undefined" && CommonUtils.getUserSession() != null && kommunicateVersion !== releaseVersion && !notfromLoginOrSignup) ? this.logoutForOlderVersion(releaseVersion) : (this.props.logInStatus && this.getAppSettings());
   };
 
   logoutForOlderVersion = (releaseVersion) => {
