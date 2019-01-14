@@ -2702,10 +2702,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				});
 			};
-			this.getGroupIdFromUrl = function(url){
+			_this.getGroupIdFromUrl = function(url){
 				return url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
 			}
-			_this.addContactInConversationList = function (params, status, list) {
+			_this.addContactInConversationList = function (params, individual, status, list) {
 				var data = params.response;
 				var isMessages = true;
 				var currTabId = $mck_msg_inner.data('km-id');
@@ -2759,14 +2759,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
 				const url = window.location.href;
-				let groupId = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
-				var isGroup =kmUtils.getUrlParameter(url, "isGroup")+"";
-				if(isGroup ==="false"){
-					var params ={};
+				let groupId = _this.getGroupIdFromUrl(url);
+				var isGroup = kmUtils.getUrlParameter(url, "isGroup") + "";
+				if (isGroup === "false") {
+					var params = {};
 					params.tabId = groupId;
 					params.isGroup = false;
 					mckMessageLayout.loadTab(params);
-				}else{
+				} else {
 				var number = /^\d+$/.test(groupId)
 				if (status == "km-all-conversation-list" && number) {
 					kmGroupService.getGroupFeed({
