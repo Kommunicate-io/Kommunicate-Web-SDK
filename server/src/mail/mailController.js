@@ -6,8 +6,8 @@ const userService = require("../users/userService");
 const logger = require('../utils/logger');
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl + "/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl + "/assets/resources/images/km-logo-new.png";
-let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer"
-let applozicDashboardHostUrl = config.getProperties().urls.applozicDashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer"
+let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer&product=kommunicate"
+let applozicDashboardHostUrl = config.getProperties().urls.applozicDashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer&product=applozic"
 
 exports.sendMail = (req, res) => {
     console.log("received request to send mail", req.body.to);

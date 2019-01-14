@@ -2,6 +2,18 @@ import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
 import crypto from 'crypto';
 import {THIRD_PARTY_LOGIN} from '../utils/Constant';
+import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs.js';
+
+export const PRODUCTS = {
+    'applozic': {
+        title: 'Applozic',
+        logo: ApplozicLogo
+    }, 
+    'kommunicate': {
+        title: 'Kommunicate',
+        logo: KommunicateLogoSvg
+    }
+};
 
 const CommonUtils = {
     setUserSession: function(userSession) {
