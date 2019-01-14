@@ -115,21 +115,6 @@ var autoSuggestions = {};
             }
     });
 }
-function getUserIdToShowUserInfo(tabDetail) {
-  
-  if (tabDetail.isGroup) {
-    group = kmGroupUtils.getGroup(tabId);
-    var userIds = Object.keys(group.users);
-    userIds.filter(function (userId, index) {
-      var user = group.users[userId];
-      if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
-        tabId = userId;
-        return ;
-      } 
-    })
-  }
-  return tabId;
-} 
 function getUserIdFromGroup(groupId){
     group = kmGroupUtils.getGroup(groupId);
     var userIds = Object.keys(group.users);
