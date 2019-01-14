@@ -5652,3 +5652,13 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .km-learn-more-container {
 	padding-bottom: 20px;
 }
+
+#mck-autosuggest-search-input.km-auto-expand {  
+	box-sizing: border-box;
+	overflow: hidden;
+	width: calc(100% - 60px);
+	border-radius: 6px;
+	border: 0;
+	resize: none;
+	overflow-y: auto;
+}

@@ -4677,6 +4677,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
                     $mck_autosuggest_search_input.attr("placeholder", autosuggetionMetadata.placeholder ? autosuggetionMetadata.placeholder : "");
                     $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
+                    mckFileService.resizeTextarea($mck_autosuggest_search_input[0]);
                     if (autosuggetionMetadata.source.constructor==Array) {
                         $mck_autosuggest_search_input.data("origin", "KM_AUTO_SUGGEST");
                         autosuggetionMetadata.source.length && mckMessageLayout.populateAutoSuggest({ source: autosuggetionMetadata.source });
@@ -7801,9 +7802,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
 
-                $mck_autosuggest_search_input.on('input', function (e) {
-                    e.preventDefault();
+                $mck_autosuggest_search_input.on('keypress', function (e) {
                     $mck_text_box.text($mck_autosuggest_search_input.val());
+                    if(e.which === 13) {
+                        $mck_text_box.submit();
+                        e.preventDefault();
+                    }
+                    // This code is to auto resize a textarea as you go on typing text in it.
+                    _this.resizeTextarea(this); 
                     if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGEST") {
                         return;
                     }
@@ -7811,6 +7817,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         mckMessageLayout.populateAutoSuggest({sourceUrl:$mck_autosuggest_search_input.data('source-url') , method:$mck_autosuggest_search_input.data('method') , headers:$mck_autosuggest_search_input.data('headers')});
                     }
                 });
+            };
+
+            _this.resizeTextarea = function(el) {
+                var offset = el.offsetHeight - el.clientHeight;
+                $applozic(el).css('height', 'auto').css('height', el.scrollHeight + offset);
             };
             // _this.generateDataURl =function (params) {
 
