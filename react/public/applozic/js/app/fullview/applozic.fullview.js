@@ -1917,31 +1917,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'tabViewId': tabViewId,
 							'lastContactedTime': time,
 						}
-						if (isGroup) {
-							kmGroupUtils.getGroup(tabId, function (groupInfo) {
-								if (typeof groupInfo === 'object') {
-									var member = groupInfo.members.includes(MCK_USER_ID);
-									var group = {};
-									group.groupId = tabId;
-									group.userId = MCK_USER_ID;
-									group.role = 1; // adding agents as group admin
-									var conversationDetail = mckMessageService.checkForRoleType(group);
-									conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
-									conversationDetail.callback = function () {
-										mckMessageLayout.loadTab(groupDetail);
-									}
-									if (!member) {
-										kmGroupService.addGroupMember(conversationDetail);
-									} else {
-										mckMessageLayout.loadTab(groupDetail);
-									}
-
-								}
-								$mck_search.val("");
-							})
-						} else {
 							mckMessageLayout.loadTab(groupDetail);
-						};
 					} 
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
