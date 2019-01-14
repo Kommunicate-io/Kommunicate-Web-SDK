@@ -228,6 +228,15 @@ function KmUtils() {
         key && localStorage.removeItem(key);
     }
 
+     //search : Url
+    //name : parameter whose value you want to get
+    _this.getUrlParameter = function(search, name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(search);
+        return results === null ? '' : decodeURIComponent(results[1]);
+    }
+
 }
 function KmContactUtils() {
     var _this = this;

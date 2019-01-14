@@ -2782,11 +2782,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
-				let url = window.location.href;
-				let groupId = _this.getGroupIdFromUrl(url);
-				var isGroup = kmUtils.getUrlParameter(url, "isGroup") + "";
-				if (isGroup === "false") {
-					mckMessageLayout.loadTab({"tabId":groupId,"isGroup":false});
+				const url = window.location.href;
+				let groupId = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
+				var isGroup =kmUtils.getUrlParameter(url, "isGroup")+"";
+				if(isGroup ==="false"){
+					var params ={};
+					params.tabId = groupId;
+					params.isGroup = false;
+					mckMessageLayout.loadTab(params);
 				}else{
 				var number = /^\d+$/.test(groupId)
 				if (status == "km-all-conversation-list" && number) {
@@ -4033,7 +4036,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							isGroup: params.isGroup
 						});
 					}
-					    var section = CONVERSATION_SECTION_MAP[params.tabViewId];
+						var section = CONVERSATION_SECTION_MAP[params.tabViewId];
+						if(!params.isGroup){
+							section ="as";
+						}
 						var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 						var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 						$kmApplozic("#km-li-"+section+"-"+ contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");	
@@ -4111,7 +4117,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.loadMessageList(params);
 					}
 				}
-				params.tabId && window.history.replaceState(null, null, "/conversations/" + params.tabId+"?isGroup="+params.isGroup);
+					params.tabId && window.history.replaceState(null, null, "/conversations/" + params.tabId+"?isGroup="+params.isGroup);
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
