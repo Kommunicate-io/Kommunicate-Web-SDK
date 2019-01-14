@@ -2758,7 +2758,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
-				const url = window.location.href;
+				let url = window.location.href;
 				let groupId = _this.getGroupIdFromUrl(url);
 				var isGroup = kmUtils.getUrlParameter(url, "isGroup") + "";
 				if (isGroup === "false") {
