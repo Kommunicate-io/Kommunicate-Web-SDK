@@ -2,7 +2,7 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 .agent-assignment-wrapper{
-    margin-left: 15px;
+    margin-left: 0;
 }
 .agent-assignment-title{  
     font-size: 18px;
@@ -20,7 +20,7 @@ body {
   color: #908d8d;
 }
 .notify-everybody-sub-title{
-    font-size: 12px;
+    font-size: 14px;
     color: #7f7b7b;
     font-weight: normal;
 }

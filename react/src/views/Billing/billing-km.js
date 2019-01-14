@@ -529,7 +529,7 @@ class BillingKommunicate extends Component {
                         <div className="seat-selector--input">
                             <input maxLength="4" min="1" max="10000" type="number"  value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
 
-                            <p>You have {this.state.kmActiveUsers+(this.state.numberOfIntegratedBots)} existing team {this.state.kmActiveUsers+this.state.numberOfIntegratedBots > 1 ? "members" : "member"} {this.state.numberOfIntegratedBots > 0 ? <strong>({this.state.kmActiveUsers} {this.state.kmActiveUsers>1?"humans":"human"} and {this.state.numberOfIntegratedBots} {this.state.numberOfIntegratedBots>1?"bots":"bot"})</strong> : null}. You may still buy lesser number of seats and delete the extra agents later.</p>
+                            <p>You have {this.state.kmActiveUsers+(this.state.numberOfIntegratedBots)} existing team {this.state.kmActiveUsers+this.state.numberOfIntegratedBots > 1 ? "members" : "member"} {this.state.numberOfIntegratedBots > 0 ? <strong>({this.state.kmActiveUsers} {this.state.kmActiveUsers>1?"humans":"human"} and {this.state.numberOfIntegratedBots} {this.state.numberOfIntegratedBots>1?"bots":"bot"})</strong> : null}. You may still buy lesser number of seats and delete the extra team members later.</p>
                         </div>
                     </div>
                     <hr/>
@@ -587,7 +587,7 @@ class BillingKommunicate extends Component {
                 <div className="buy-free-plan-modal--body">
                     <p>You are about to subscribe to the <span>FREE FOREVER plan.</span>
                     <br/>
-                    You will have access to basic features and are allowed a maximum of 2 agents.</p>
+                    You will have access to basic features and are allowed a maximum of 2 team members.</p>
                     <p><span>Note: </span>You'll now be taken through our payment checkout flow, but we won’t be<br /> charging you </p>
                 </div>
                 <div className="buy-free-plan-modal--footer text-right">
@@ -659,10 +659,10 @@ class BillingKommunicate extends Component {
                                             </svg>
                                         </div>
                                         <div className="subscription-warning-detail">
-                                            <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of agents</p>
-                                            <p>To make sure all the right agents can log in to their Kommunicate account, delete the extra agents from <Link to="/settings/team">Teammates</Link> section.</p>
+                                            <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of team members</p>
+                                            <p>To make sure all the right team members can log in to their Kommunicate account, delete the extra ones from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
-                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p> : ""
+                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to <strong>add</strong> or <strong>delete</strong> team members in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p> : ""
                                     }
                                     
                                 </div>
@@ -688,7 +688,7 @@ class BillingKommunicate extends Component {
                                         </div>
                                         
                                     </div>
-                                    <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p>
+                                    <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> team members in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p>
                                 </div>) : ""
                                 }
 
@@ -733,7 +733,7 @@ class BillingKommunicate extends Component {
                                                         </div>
                                                     </div>
 
-                                                    <p className="plan-agent-details vis">Up to 2 agents</p>
+                                                    <p className="plan-agent-details vis">Up to 2 team members</p>
 
                                                 </div>
                                                 <div className="pricing-table-body">
@@ -749,7 +749,7 @@ class BillingKommunicate extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p style={{ opacity: 0 }}>Includes...</p>
                                                         <ul>
-                                                            <li>Up to 2 agents</li>
+                                                            <li>Up to 2 team members</li>
                                                             <li>Live Chat</li>
                                                             <li>Web SDK</li>
                                                             <li>Agent apps</li>
@@ -776,17 +776,17 @@ class BillingKommunicate extends Component {
                                                         <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
                                                                 <h2><sup>$</sup>10</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                             <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
                                                                 <h2><sup>$</sup>8</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
                                                                 <p style={{visibility:"visible",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details vis">Unlimited agents</p>
+                                                    <p className="plan-agent-details vis">Unlimited team members</p>
                                                 </div>
                                                 <div className="pricing-table-body">
                                                 {
@@ -847,17 +847,17 @@ class BillingKommunicate extends Component {
                                                     <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
                                                                 <h2><sup>$</sup>30</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                             <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
                                                                 <h2><sup>$</sup>25</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
                                                                 <p style={{visibility:"visible",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details vis">Unlimited agents</p>
+                                                    <p className="plan-agent-details vis">Unlimited team members</p>
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     <button className="km-button km-button--secondary" onClick={(event) => {this.openCurrentModal("seatSelection", event)}} data-choose-plan="enterprise">Choose Plan</button>
@@ -896,8 +896,8 @@ class BillingKommunicate extends Component {
                                     <p className="billings-faq-answer">You may add or delete agents any time from <Link to="/settings/team">Teammates</Link> section. The number of seats in your plan will be updated accordingly and the bill will be adjusted on a prorated basis.</p>
                                 </div>
                                 <div className="billings-faq-qa">
-                                    <h4 className="billings-faq-question">How many agents can I add in a particular plan?</h4>
-                                    <p className="billings-faq-answer">You can add as many agents in Kommunicate as you want in the Growth and Enterprise plans. You will be charged on the basis of the number of agents you have. In the Free plan, you can add a maximum of 2 agents.</p>
+                                    <h4 className="billings-faq-question">How many team members can I add in a particular plan?</h4>
+                                    <p className="billings-faq-answer">You can add as many team members in Kommunicate as you want in the Growth and Enterprise plans. You will be charged on the basis of the number of team members you have. In the Free plan, you can add a maximum of 2 team members.</p>
                                 </div>
                                 <div className="billings-faq-qa">
                                     <h4 className="billings-faq-question">How does the 30 day trial work?</h4>

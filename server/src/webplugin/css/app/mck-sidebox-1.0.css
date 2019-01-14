@@ -5583,7 +5583,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     right: -5px;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInScale {
 	from {
 	  opacity: 0;
 	  transform: scale3d(.8,.8,.8);
@@ -5595,7 +5595,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	}
   }
   
-@-webkit-keyframes fadeInUp {
+@-webkit-keyframes fadeInScale {
 	from {
 		opacity: 0;
 		transform: scale3d(.8,.8,.8);
@@ -5610,8 +5610,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
   
   
 #send-button-wrapper{
-	animation-name: fadeInUp;
-	-webkit-animation-name: fadeInUp;
+	animation-name: fadeInScale;
+	-webkit-animation-name: fadeInScale;
 	-webkit-animation-duration: .3s;
 	animation-duration: .3s;
 	-webkit-animation-fill-mode: both;

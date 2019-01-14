@@ -44,8 +44,8 @@ class ThirdPartyScripts extends Component {
                 o.password =CommonUtils.getUserSession().accessToken;
               }
               o.onInit=function(response) {
-                var mckSideboxLauncher = KommunicateGlobal.document.getElementById('mck-sidebox-launcher');
-                var widgetCloseButton = KommunicateGlobal.document.querySelector(".mck-close-sidebox");
+                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+                var widgetCloseButton = document.querySelector(".mck-close-sidebox");
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
                   console.log("template not loaded");
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
@@ -75,7 +75,7 @@ class ThirdPartyScripts extends Component {
               var s = document.createElement("script");
               s.type = "text/javascript";
               s.async = true;
-              s.src = getConfig().kommunicateApi.pluginUrlV2;
+              s.src = getConfig().kommunicateApi.pluginUrl;
               var h = document.getElementsByTagName("head")[0];
               h.appendChild(s);
               window.kommunicate = m;
