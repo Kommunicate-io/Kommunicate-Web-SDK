@@ -116,7 +116,7 @@ var autoSuggestions = {};
     });
 }
 function getUserIdToShowUserInfo(tabDetail) {
-  var tabId = tabDetail.tabId;
+  
   if (tabDetail.isGroup) {
     group = kmGroupUtils.getGroup(tabId);
     var userIds = Object.keys(group.users);
@@ -130,23 +130,26 @@ function getUserIdToShowUserInfo(tabDetail) {
   }
   return tabId;
 } 
+function getUserIdFromGroup(groupId){
+    group = kmGroupUtils.getGroup(groupId);
+    var userIds = Object.keys(group.users);
+    userIds.filter(function (userId, index) {
+      var user = group.users[userId];
+      if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
+        tabId = userId;
+        return tabId;
+      } 
+    })
+}
 
-function displayUserInfo(tabDetail){
-  var userId = getUserIdToShowUserInfo(tabDetail);
- 
-  fetchUserDetailAndTriggerCustomEvent(userId);
-
-  window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
-
-  window.appHistory.replace('/conversations');
-
+function displayUserInfo(tabDetail) {
   if (typeof tabDetail === 'object') {
+    var userId = !tabDetail.isGroup ? tabDetail.tabId : getUserIdFromGroup(tabDetail.tabId);
+    fetchUserDetailAndTriggerCustomEvent(userId);
+    window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
+    window.appHistory.replace('/conversations');
     window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
-    if (tabDetail.isGroup) {
-      window.Aside.initConversation(tabDetail.tabId);
-    } else {
-      window.Aside.setUpAgentTakeOver();
-    }
+    tabDetail.isGroup ? window.Aside.initConversation(tabDetail.tabId) :window.Aside.setUpAgentTakeOver();
   }
 }
 

@@ -265,7 +265,6 @@ class Full extends Component {
                 <Route exact path="/conversations/oops" name="" render={() => <Conversation404 {...this.props} />} />
                 <Route path="/dashboard" name="Dashboard" render={() => <Dashboard {...this.props} />} />
                 <Route exact path="/users" name="Tables" render={() => <Users {...this.props} />} />
-                <Route exact={false} path="/chat" name="chat" render={() => <Conversations {...this.props} />} />
                 <Route exact={false} path="/conversations" name="Conversations" render={() => <Conversations {...this.props} />} />
                 <Route exact path="/message-groups" name="Groups" render={() => <MessageGroups {...this.props} /> } />
                 <Route exact path="/reports" name="Reports" render={() => <Reports {...this.props} />} />
