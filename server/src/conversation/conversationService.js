@@ -243,8 +243,9 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                     if (assignee[0].type == 2) {
                         if (isValidUser || !customer.agentRouting) {
                             return assignToDefaultAgent(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header).then(res => {
-                                sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], assignee[0].apzToken);
-                                return "success";
+                                return sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], assignee[0].apzToken).then(response=>{
+                                    return "success";
+                                })
                             });
                         } else if (customer.agentRouting) {
                             inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
