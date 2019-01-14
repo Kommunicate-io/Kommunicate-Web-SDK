@@ -5,6 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const optimization = {
     splitChunks: {
@@ -14,6 +15,12 @@ const optimization = {
                 name: "common",
                 chunks: "all",
                 priority: 20,
+                enforce: true
+            },
+            styles: {
+                name: 'styles',
+                test: /\.css$/,
+                chunks: 'all',
                 enforce: true
             }
         }
@@ -44,7 +51,10 @@ module.exports = env => {
                 context: './public/', from: '**/*', to: './', ignore: ['index.html', 'favicon.ico']
             }
         ]),
-        new CleanWebpackPlugin('build/**/*')
+        new CleanWebpackPlugin('build/**/*'),
+        new MiniCssExtractPlugin({
+            filename: "[name].[hash].css",
+          })
     ]
     if (env && env.REACT_APP_NODE_ENV == 'test') {
         console.log('bundle analyzer added')
@@ -61,7 +71,7 @@ module.exports = env => {
         },
         output: {
             path: path.resolve(__dirname, 'build'),
-            filename: "[name].bundle-32.js",
+            filename: "[name].[hash].bundle.js",
             publicPath: '/'
         },
         devtool: 'source-map',
