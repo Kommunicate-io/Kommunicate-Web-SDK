@@ -7802,7 +7802,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
 
-                $mck_autosuggest_search_input.on('keypress', function (e) {
+                $mck_autosuggest_search_input.on('keydown input', function (e) {
                     $mck_text_box.text($mck_autosuggest_search_input.val());
                     if(e.which === 13) {
                         $mck_text_box.submit();
