@@ -2759,10 +2759,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				let groupId = _this.getGroupIdFromUrl(url);
 				var isGroup = kmUtils.getUrlParameter(url, "isGroup") + "";
 				if (isGroup === "false") {
-					var params = {};
-					params.tabId = groupId;
-					params.isGroup = false;
-					mckMessageLayout.loadTab(params);
+					mckMessageLayout.loadTab({"tabId":groupId ,"isGroup":false});
 				} else {
 				var number = /^\d+$/.test(groupId)
 				if (status == "km-all-conversation-list" && number) {
