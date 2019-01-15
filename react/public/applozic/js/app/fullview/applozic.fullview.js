@@ -4823,13 +4823,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				_this.updateRecentConversationList(group, message, update, false, list);
 			};
-			_this.checkSectionId = function (group, message) {
+			_this.checkSectionId = function (group) {
 					if (group.metadata && group.metadata.CONVERSATION_STATUS && (KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(group.metadata.CONVERSATION_STATUS))) {
 						// closed conversation
 						return "km-closed-conversation-list";
 					} else {
 						//open conversation
-						if (group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
+						if (group.metadata && group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
 							return "km-assigned-search-list";
 						} else {
 							return "km-contact-list";
@@ -4851,7 +4851,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			}
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
-				var sectionId = _this.checkSectionId(contact,message);
+				var sectionId = _this.checkSectionId(contact);
 				if (sectionId === "km-assigned-search-list") {
 					_this.addOrUpdateContactList(contact, message, update, prepend, "km-contact-list");
 				}
