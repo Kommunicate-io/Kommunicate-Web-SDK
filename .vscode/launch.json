@@ -12,10 +12,11 @@
             "args": [
                 "-u",
                 "tdd",
+                "--inspect",
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/server/test"
+                "${workspaceFolder}/server/test/**/*.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },
