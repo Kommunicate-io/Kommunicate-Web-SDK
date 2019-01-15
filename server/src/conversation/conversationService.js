@@ -211,7 +211,7 @@ const getAgentsList = (customer, users, groupId) => {
  * @param {String} appId 
  * @param {Integer} groupId 
  * @param {String} assignTo 
- * If assigTo (userId) prensent then conversation assign to userId.
+ * If assignTo (userId) present then conversation assign to userId.
  * Otherwise assign according to routing rules. 
  */
 const switchConversationAssignee = (appId, groupId, assignToUserId) => {
@@ -248,17 +248,16 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                 })
                             });
                         } else if (customer.agentRouting) {
-                            inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
+                            return inAppMessageService.checkOnlineAgents(customer).then( async onlineUsers => {
                                 let onlineUser = onlineUsers.find(agent => agent.connected);
                                 if (onlineUser) {
                                     console.log("online user: ", onlineUser)
-                                    assignConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers).then(assignTo => {
-                                        assignTo ? sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
-                                    });
+                                   let assignTo = await assignConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers);
+                                        assignTo ? await sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
                                 } else {
-                                    assignToDefaultAgent(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header).then(response => {
-                                    sendAssigneeChangedNotification(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], assignee[0].apzToken);
-                                    });
+                                   let response = await assignToDefaultAgent(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header);
+                                    await sendAssigneeChangedNotification(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], assignee[0].apzToken);
+                                
                                 }
                                 return "success";
                             });
