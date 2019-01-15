@@ -233,9 +233,6 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
             }
             //switch according to conditions of botRouting and agentRouting
             return applozicClient.getGroupInfo(groupId, appId, bot[0].apzToken, true).then(group => {
-                if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
-                    return "ASSIGNMENT SKIPED";
-                }
                 if (group && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
                     let assignee = users.filter(user => {
                         return user.userName == group.metadata.CONVERSATION_ASSIGNEE;
