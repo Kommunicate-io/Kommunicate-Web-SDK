@@ -3,8 +3,11 @@ import { ROLE_NAME } from '../../utils/Constant';
 import StatusIcon from '../../components/StatusIcon/StatusIcon'
 import DeleteInvitation from '../Team/DeleteInvitationModal.js';
 import Notification from '../model/Notification';
-import { DeleteIcon,ResendIcon } from '../../assets/svg/svgs';
+import { DeleteIcon,ResendIcon, CopyIcon } from '../../assets/svg/svgs';
 import { notifyThatEmailIsSent } from '../../utils/kommunicateClient';
+import CommonUtils from '../../utils/CommonUtils'
+import { getConfig } from '../../config/config';
+import copy from 'copy-to-clipboard';
 class invitedUsersList extends Component {
 
   constructor(props) {
@@ -55,6 +58,32 @@ class invitedUsersList extends Component {
   onCloseModal = () => {
     this.setState({ modalIsOpen: false });
   };
+
+  copyToClipboard = (e) => {
+    let product = CommonUtils.getProduct();
+    let userSession = CommonUtils.getUserSession();
+    let botAgentMap = Object.values(CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP"));
+    let invitedBy;
+
+    if(this.props.user.invitedBy === userSession.userKey) {
+      invitedBy = userSession.email;
+    } else {
+      for (var i=0, len = botAgentMap.length; i < len; i++) {
+        if(this.props.user.invitedBy === botAgentMap[i].userKey) {
+          invitedBy = botAgentMap[i].userKey;
+          return;
+        }
+      }
+    }
+
+    let inviteUrl = getConfig().kommunicateDashboardUrl + "/signup?invite=true&token=" + this.props.user.id + "&referer=" + invitedBy + "&product=" + product;
+
+    copy(inviteUrl);
+    Notification.success("Invite link copied successfully.");
+
+  };
+
+
   render() {
     var index = this.props.index;
     var deleteRef = "delete" + index;
@@ -82,6 +111,12 @@ class invitedUsersList extends Component {
             <ResendIcon/>
             Resend
                         </span>
+        </td>
+        <td className="teammates-resend-icon team-invite-list-delete" title="Copy Invite Link" >
+          <span onClick={this.copyToClipboard} className="teammates-delete-wrapper km-delete-invitation">
+            <CopyIcon/>
+            Invite link
+          </span>
         </td>
 
         <td className="team-invite-list-delete"  >

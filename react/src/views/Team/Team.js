@@ -123,7 +123,7 @@ class Integration extends Component {
         if (item.status == INVITED_USER_STATUS.INVITED) {
           invitedusersEmailWithoutDeletedInvitation.push(item.invitedUser);
           if(!item.deleted_at){
-          invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status });
+          invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status, invitedBy: item.invitedBy, id: item.id });
           invitedUsersEmail.push(item.invitedUser);
           }
         }
@@ -497,6 +497,7 @@ class Integration extends Component {
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>
+                      <th className="team-th-delete-edit">Copy Link</th>
                       <th className="n-vis">Activity</th>
                     </tr>
                   </thead>

@@ -38,6 +38,7 @@
     "bootstrap": "4.0.0-beta.2",
     "chart.js": "2.7.3",
     "chartjs-plugin-style": "^0.3.2",
+    "copy-to-clipboard": "^3.0.8",
     "core-js": "^2.5.7",
     "countries-and-timezones": "1.0.1",
     "crypto-js": "3.1.9-1",
