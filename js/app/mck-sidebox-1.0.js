@@ -8514,9 +8514,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     sendConnectedStatusIntervalId = setInterval(function () {
                         _this.sendStatus(1);
                     }, 1200000);
-                } else {
+                } 
                     _this.connectToSocket(isFetchMessages);
-                }
             };
             _this.connectToSocket = function (isFetchMessages) {
                 if (!stompClient.connected) {
