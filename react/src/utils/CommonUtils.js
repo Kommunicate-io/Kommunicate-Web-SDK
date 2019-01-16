@@ -105,8 +105,11 @@ const CommonUtils = {
     isStartupPlan: function() {
         return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
     },
+    isApplozicTrialPlan: function() {
+        return CommonUtils.getUserSession().application.pricingPackage == 0;
+    },
     isTrialPlan: function() {
-        return CommonUtils.getDaysCount() < 31 && CommonUtils.isStartupPlan();
+        return CommonUtils.getDaysCount() < 31 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan());
     },
     getApplicationExpiryDate () {
         var applicationCreatedAt = CommonUtils.getUserSession().applicationCreatedAt ;
