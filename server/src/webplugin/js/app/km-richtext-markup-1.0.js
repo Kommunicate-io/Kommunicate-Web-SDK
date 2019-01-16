@@ -250,11 +250,13 @@ getListMarkup:function(){
    </div>`
 },
 getCarouselTemplate: function() {
-return `<div class="km-carousel-card-template">
+return `<div class="mck-msg-box-rich-text-container km-card-message-container  km-div-slider">
             {{#payload}}
-                <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
-                <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
-                <div class="km-carousel-card-footer">{{{footer}}}</div>
+            <div class="km-carousel-card-template">
+            <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
+            <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
+            <div class="km-carousel-card-footer">{{{footer}}}</div>
+            </div>
             {{/payload}}
         </div>`
 },
@@ -445,7 +447,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             cardHtml.info = Kommunicate.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = Kommunicate.markup.listOfButtons(item));
 
-            cardList.push(cardHtml);
+            cardList.push(Object.assign({},cardHtml))
         }
     }
     let cardCarousel = {payload:cardList};
