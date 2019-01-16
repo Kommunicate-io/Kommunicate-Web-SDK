@@ -228,7 +228,7 @@ class DocsCards extends React.Component {
                 </div>
                 <div className="cards-footer">
                   <h3 className="cards-title">
-                    Platform Apis
+                    Platform APIs
                   </h3>
                 </div>
               </div>
