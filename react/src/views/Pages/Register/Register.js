@@ -16,7 +16,7 @@ import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 import { KommunicateLogoSvg, ApplozicLogo } from '../../../assets/svg/svgs';
 import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
-import {LOGIN_VIA} from '../../../utils/Constant';
+import {LOGIN_VIA, KM_RELEASE_VERSION} from '../../../utils/Constant';
 
 
 class Register extends Component {
@@ -199,6 +199,7 @@ class Register extends Component {
         });
       }
       response.data.data.displayName=response.data.data.name;
+      CommonUtils.setItemInLocalStorage("kommunicateVersion",KM_RELEASE_VERSION)
      saveToLocalStorage(email, password, name, response);
      _this.props.saveUserInfo(response.data.data);
      _this.props.logInStatus(true);

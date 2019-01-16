@@ -80,6 +80,7 @@ class Login extends Component {
 	}
 	
 	componentWillMount() {
+		CommonUtils.isLatestKmVersionOnLocalStorage() && CommonUtils.updateKommunicateVersion()
 		const search = this.props.location.search;
 		let referer = CommonUtils.getUrlParameter(search, 'referrer');
 		if(referer) {
