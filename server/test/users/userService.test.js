@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const userService = require('../../src/users/userService');
-const {user} = require('./user');
+const {user} = require('./mockUser');
 
 describe('should return user by userName', () => {
   it('Get a user by username', () => {

@@ -1,4 +1,4 @@
-const app = require('../app'),
+const app = require('../../app'),
   chai = require('chai'),
   request = require('supertest');
 const userId= "anand@applozic.com"

@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const app = require('../../app');
 const nock = require('nock');
 const applozicClient = require('../../src/utils/applozicClient');
-const { user } = require('../users/user');
+const { user } = require('../users/mockUser');
 
 describe('register client', () => {
   beforeEach(async () => {
