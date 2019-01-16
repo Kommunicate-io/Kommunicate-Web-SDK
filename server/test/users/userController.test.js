@@ -1,9 +1,9 @@
-const app = require('../app'),
+const app = require('../../app'),
   chai = require('chai'),
   request = require('supertest');
 const userId= "anand@applozic.com"
 /** Behavior-Driven Development */
-describe('Todo user get data', function () {
+describe('user get data', function () {
     this.timeout(50000);
     describe('#GET '+ userId, function () {
         it('should get user', function (done) {
