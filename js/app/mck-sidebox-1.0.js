@@ -457,7 +457,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         }
 
         _this.events = {
-            'onConnectFailed': function () { },
+            'onConnectFailed': function () {
+                console.log("onconnect failed");
+				if (navigator.onLine) {
+					mckInitializeChannel.reconnect();
+				}
+			 },
             'onConnect': function () { },
             'onMessageDelivered': function () { },
             'onMessageRead': function () { },
@@ -1593,6 +1598,13 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
                 mckInit.tabFocused();
+                w.addEventListener('online', function () {
+                    console.log("online")
+                    mckInitializeChannel.reconnect();
+                });
+                w.addEventListener('offline', function () {
+                    console.log("offline");
+                });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
                     $mckChatLauncherIcon.html(MCK_TOTAL_UNREAD_COUNT);
                 }
@@ -8674,6 +8686,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             };
             _this.reconnect = function () {
+                console.log("socket trying to reconnect",new Date());
                 _this.unsubscibeToTypingChannel();
                 _this.unsubscibeToNotification();
                 _this.disconnect();
@@ -8694,6 +8707,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             };
             _this.onConnect = function () {
+                console.log("inside onconnect");
                 if (stompClient.connected) {
                     if (subscriber) {
                         _this.unsubscibeToNotification();
