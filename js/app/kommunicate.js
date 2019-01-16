@@ -297,6 +297,7 @@ $applozic.extend(true,Kommunicate,{
                 // 2 for get room pax info template
                 case "2":
                 case "4":
+                case "10":
                     return "km-slick-container";
                     break;
                 case "6":
