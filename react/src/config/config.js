@@ -46,7 +46,8 @@ function getEnvironmentId() {
     "groupFeedUrl": applozicBaseUrl + url.applozic.GROUP_FEED_URL,
     "multipleGroupInfo": applozicBaseUrl + url.applozic.MULTIPLE_GROUP_INFO,
     "editApplication": applozicBaseUrl + url.applozic.EDIT_APPLICATION,
-    "searchContact": applozicBaseUrl +url.applozic.SEARCH_USER
+    "searchContact": applozicBaseUrl +url.applozic.SEARCH_USER,
+    "getMessageList": applozicBaseUrl + url.applozic.GET_MESSAGE_LIST
   };
   config.kommunicateApi = {
     "login": kommunicateBaseUrl + url.kommunicateApi.LOGIN,
@@ -69,6 +70,14 @@ function getEnvironmentId() {
   }
   config.googleApi = {
     "googleApiUrl": googleApiBaseUrl + "?scope=profile%20email&access_type=offline&redirect_uri=" + kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=660706316085-tt8berusqqdekmo22rdea2mc17bq17kp.apps.googleusercontent.com"
+  }
+  config.products = {
+    kommunicate: {
+      profitwell: '71e77c6a8d59f50233d1705120049bf1'
+    },
+    applozic: {
+      profitwell: '5b142e85e62527dc4ac03b209c0223f1'
+    }
   }
 
 export function get(env) {

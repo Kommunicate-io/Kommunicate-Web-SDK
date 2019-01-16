@@ -99,7 +99,7 @@ class SettingsSidebar extends Component {
                         }
                         {this.state.isKommunicateDashboard &&  
                             <li className="ss-nav-item message-shortcut-link">
-                                <NavLink to={'/settings/message-shortcuts'} className="ss-nav-link ac-trigger-links" id="ac-quick-replies" activeClassName="active">Quick Replies</NavLink>
+                                <NavLink to={'/settings/quick-replies'} className="ss-nav-link ac-trigger-links" id="ac-quick-replies" activeClassName="active">Quick Replies</NavLink>
                             </li>
                         }
                         <li className="ss-nav-item team-link">
@@ -108,7 +108,7 @@ class SettingsSidebar extends Component {
                         
                         {this.state.isKommunicateDashboard && 
                             <li className="ss-nav-item agent-assignment-link">
-                                <NavLink to={'/settings/agent-assignment'} className="ss-nav-link ac-trigger-links" id="ac-conversation-routing" activeClassName="active">Conversation Routing</NavLink>
+                                <NavLink to={'/settings/conversation-rules'} className="ss-nav-link ac-trigger-links" id="ac-conversation-routing" activeClassName="active">Conversation Rules</NavLink>
                             </li>
                         }
                         <li className="ss-nav-title">

@@ -66,7 +66,15 @@ KommunicateConstants = {
         BUSINESS:5,
         APPLICATION_BROADCASTER:6,
         SUPPORT:7,
-        APPLICATION_WEB_ADMIN:8
+        APPLICATION_WEB_ADMIN:8,
+        DEVELOPER: 11
+    },
+    MESSAGE_TYPE: {
+        RECEIVED: 4,
+        SENT: 5,
+    },
+    DEFAULT_PROFILE_IMAGE: {
+        URL: "https://s3.amazonaws.com/kommunicate.io/default-avatar-image.png"
     }
 }
 
@@ -154,5 +162,21 @@ KommunicateUtils = {
         var settings = KommunicateUtils.getDataFromKmSession("settings");
         settings=  settings?JSON.parse(settings):null;
         return key&&settings?settings[key]:(settings?settings:"");
+    },
+    getItemFromLocalStorage: function(key) {
+        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        return session ? JSON.parse(session)[key] : "";
+    },
+    removeItemFromLocalStorage: function(key) {
+        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        session = session ? JSON.parse(session) : {};
+        delete session[key];
+        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+    },
+    setItemToLocalStorage: function(key,data) {
+        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        session = session ? JSON.parse(session) : {};
+        session[key] = data;
+        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
     }
 }

@@ -46,7 +46,21 @@ let AppSetting= function(sequelize, DataTypes) {
       defaultConversationAssignee:{
         type: DataTypes.JSON,
         allowNull:false,
-        field:'default_conversation_assignee',
+        field:'default_conversation_assignee'
+      },
+      domainUrl:{
+        type: DataTypes.STRING,
+        field:'domain_url'
+      },
+      /**
+       * automatic conversation close after this time interval.
+       * will store time in sec.
+       */
+      conversationCloseTime:{
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull:false,
+        field:'conversation_close_time',
       }
     },
     

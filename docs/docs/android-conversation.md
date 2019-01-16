@@ -36,58 +36,124 @@ Then override the ```KmActionCallback```'s ```onReceive``` method :
 ```
 
 ## Open Conversation Screen:
-You can launch the chat screen (where all the conversations are listed in descending order of time of communication) by using this method:
+Launch the chat screen (where all the conversations are listed in descending order of time of communication) by using this method:
+
 ```java
 Kommunicate.openConversation(context);
 ```
-## Create a new Conversation: 
-You can create a new conversation as described below:
-```java
-            List<String> agentIds; //add agentIds to this list
-            List<String> botIds; //add botids to this list
-            Kommunicate.startNewConversation(context,
-                                             groupName, 
-                                             agentIds, 
-                                             botIds<null accepted>,
-                                             false,  //Pass this as false if you would like to start new Conversation
-                                             new KMStartChatHandler() {
-                    @Override
-                    public void onSuccess(Channel channel, Context context) {
-                        channel.getKey(); //get your group Id 
-                    }
 
-                    @Override
-                    public void onFailure(ChannelFeedApiResponse channelFeedApiResponse, Context context) {
-                    }
-                });
+If you need the callback for launchChat, then use the below method:
+```java
+Kommunicate.openConversation(context, null, new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Launch Success : " + message);
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+                            Utils.printLog(MainActivity.this, "ChatTest", "Launch Failure : " + error);
+                        }
+                    });
+```
+
+## Create a new Conversation: 
+You can create a new conversation as below:
+```java
+     new KmChatBuilder(MainActivity.this)
+                            .setChatName("Support")
+                            .setSingleChat(false)
+                            .createChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Integer chatId = (Integer) message;
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+                            Log.d("ChatTest", "Error : " + error);
+                        }
+                    });
+```
+
+If you have your agentList and botList and need to create conversation with them then use the builder as below:
+```java
+     List<String> agentIds = new ArrayList<>(); //add agentIds to this list
+     agentIds.add("agent1");
+     List<String> botIds = new ArrayList<>(); //add botids to this list
+     botIds.add("bot1");
+     
+     new KmChatBuilder(MainActivity.this)
+                            .setChatName("Support")
+                            .setSingleChat(false)
+                            .setAgentIds(agentIds)
+                            .setBotIds(botIds)
+                            .createChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+
+                        }
+                    });
 ```
 
 ## Create a Single unique conversation:
-You can create a unique conversation using the below method. A unique conversation is identified by the list of agentIds and botIds used to create the conversation. If the same set of Ids are passed to the below method, then the already created conversation would be returned instead of creating a new conversation:
+You can create a unique conversation using the below method. A unique conversation is identified by the list of agentIds and botIds used to create the conversation. If the same set of Ids are passed to the below method, then the already created conversation would be returned instead of creating a new conversation. If you dont pass the setSingleChat paramater in the builder, a single conversation would be created:
 
 ```java
-       List<String> agentIds; //add agentIds to this list
-       List<String> botIds; //add botids to this list
-       try {
-            Kommunicate.startOrGetConversation(context, groupName, agentIds, botIds, new KMStartChatHandler() {
-                @Override
-                public void onSuccess(Channel channel, Context context) {
-                    dialog.dismiss();
-                    Kommunicate.openParticularConversation(context, channel.getKey());
-                }
+       new KmChatBuilder(MainActivity.this)
+                            .setChatName("Support")
+                            .createChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                            Integer chatId = (Integer) message;
+                        }
 
-                @Override
-                public void onFailure(ChannelFeedApiResponse channelFeedApiResponse, Context context) {
-                
-                }
-            });
-        } catch (KmException e) {
-            e.printStackTrace();
-        }
+                        @Override
+                        public void onFailure(Object error) {
+                            Log.d("ChatTest", "Error : " + error);
+                        }
+                    });
 ```
-
-## Open a particular conversation thread:
-You can open a particular conversation if you have the group ID of that particular conversation by this method.
+If you have your agentList and botList and need to create conversation with them then use the builder as below:
 ```java
-Kommunicate.openParticularConversation(context, <Group Id (Integer)>);
+     List<String> agentIds = new ArrayList<>(); //add agentIds to this list
+     agentIds.add("agent1");
+     List<String> botIds = new ArrayList<>(); //add botids to this list
+     botIds.add("bot1");
+     
+     new KmChatBuilder(MainActivity.this)
+                            .setChatName("Support")
+                            .setAgentIds(agentIds)
+                            .setBotIds(botIds)
+                            .createChat(new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+
+                        }
+                    });
+```
+## Open a particular conversation thread:
+You can open a particular conversation if you have the chat ID of that particular conversation using the below method.
+```java
+Kommunicate.openParticularConversation(context, chatId, new KmCallback() {
+                        @Override
+                        public void onSuccess(Object message) {
+                              
+                        }
+
+                        @Override
+                        public void onFailure(Object error) {
+
+                        }
+                    });
 ```

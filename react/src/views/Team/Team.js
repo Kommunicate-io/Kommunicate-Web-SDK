@@ -13,7 +13,7 @@ import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import Banner from '../../components/Banner/Banner';
-import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
+import { ROLE_TYPE, ROLE_NAME, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
@@ -51,8 +51,7 @@ class Integration extends Component {
       applicationId: "",
       hideErrorMessage: true,
       activeUsers: [],
-      isAgentSelected: true,
-      isAdminSelected: false,
+      selectedRole: ROLE_TYPE.AGENT,
       invitedUser: [],
       isTrialPlan: null,
       isStartupPlan: null,
@@ -124,7 +123,7 @@ class Integration extends Component {
         if (item.status == INVITED_USER_STATUS.INVITED) {
           invitedusersEmailWithoutDeletedInvitation.push(item.invitedUser);
           if(!item.deleted_at){
-          invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status });
+          invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status, invitedBy: item.invitedBy, id: item.id });
           invitedUsersEmail.push(item.invitedUser);
           }
         }
@@ -154,8 +153,7 @@ class Integration extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ modalIsOpen: false });
-    this.handleAgentRadioBtn();
+    this.setState({ modalIsOpen: false, selectedRole: ROLE_TYPE.AGENT });
   };
   showAndHideDisabledUsers = () => {
     let isDisabledUsersListHidden = this.state.isDisabledUsersListHidden
@@ -163,7 +161,7 @@ class Integration extends Component {
   }
   sendEmail = (e) => {
     let email = this.state.email.trim();
-    let roleType = this.state.isAdminSelected ? ROLE_TYPE.ADMIN : ROLE_TYPE.AGENT;
+    let roleType = this.state.selectedRole;
     let activeUsers = this.state.activeUsers;
     let invitedUsersEmail = this.state.invitedusersEmailWithoutDeletedInvitation;
     let isUserExists = activeUsers.indexOf(email) == -1 ? false : true ;
@@ -286,20 +284,12 @@ class Integration extends Component {
     this.setState({ multipleEmailAddress: filteredEmails })
     // console.log(this.state.multipleEmailAddress);
   }
-  handleAgentRadioBtn = (e) => {
-    // e.preventDefault();
+  handleRoleRadioBtn = (e) => {
     this.setState({
-      isAdminSelected: false,
-      isAgentSelected: true
+      selectedRole: e.target.getAttribute('data-value')
     })
   }
-  handleAdminRadioBtn = (e) => {
-    // e.preventDefault();
-    this.setState({
-      isAdminSelected: true,
-      isAgentSelected: false,
-    })
-  }
+
 
   render() {
     let userSession = CommonUtils.getUserSession();
@@ -341,28 +331,8 @@ class Integration extends Component {
         }
       }
     });
-    const agentRadioBtnContainer = (
-      <div className="row">
-        <div className="col-radio-btn col-md-2 col-lg-2">
-        </div>
-      <div className="radion-btn-agent-wrapper col-md-9 col-lg-9">
-        <h5 className="radio-btn-agent-title">Agent</h5>
-        <p className="radio-btn-agent-description">Have access to only key features and information in the dashboard </p>
-      </div>
-      </div>
-    )
-    const adminRadioBtnContainer = (
-      <div className="row">
-        <div className="col-radio-btn col-md-1 col-lg-1">
-        </div>
-       <div className="radion-btn-admin-wrapper col-md-9 col-lg-9">
-        <h5 className="radio-btn-admin-title">Admin</h5>   
-        <p className="radio-btn-admin-description">Have full access to edit all the settings and features in the dashboard</p>
-      </div>
-      </div>
-    )
     var invitedUserList = this.state.invitedUser.map((user, index) => {
-      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType} getInvitedUsers ={this.getInvitedUsers}/>
+      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType} getInvitedUsers ={this.getInvitedUsers} getUsers={this.getUsers}/>
     })
     var disabledUsersList = this.state.disabledUsers.map((user, index) => {
       let moreUserInfo;
@@ -421,9 +391,16 @@ class Integration extends Component {
                     </div>
                     <h5 className="teammates-add-member-modal-role">Role</h5>
                     <div className="teammates-add-member-modal-radio-btn-wrapper">
-                      <RadioButton idRadioButton={'teammates-admin-radio'} handleOnChange={this.handleAgentRadioBtn} checked={this.state.isAgentSelected} label={agentRadioBtnContainer} />
+                      <RadioButton idRadioButton={'teammates-admin-radio'} handleOnChange={this.handleRoleRadioBtn} dataValue={ROLE_TYPE.AGENT}  checked={this.state.selectedRole == ROLE_TYPE.AGENT} label={<RoleContainer role={ROLE_TYPE.AGENT}/>} />
 
-                      <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={this.handleAdminRadioBtn} checked={this.state.isAdminSelected} label={adminRadioBtnContainer} />
+                      <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={this.handleRoleRadioBtn} dataValue={ROLE_TYPE.ADMIN}  checked={this.state.selectedRole == ROLE_TYPE.ADMIN} label={<RoleContainer role={ROLE_TYPE.ADMIN}/>} />
+
+                        {CommonUtils.isProductApplozic() ?                  
+                              <RadioButton idRadioButton={'teammates-developer-radio'} handleOnChange={this.handleRoleRadioBtn} dataValue={ROLE_TYPE.DEVELOPER}  checked={this.state.selectedRole == ROLE_TYPE.DEVELOPER} label={<RoleContainer role={ROLE_TYPE.DEVELOPER}/>} />
+                              :
+                              ""
+                        }
+
                     </div>
                     <div className="teammates-add-member-modal-btn">
                       <button className="km-button km-button--secondary teammates-add-member-modal-cancel-btn" onClick={this.onCloseModal}>Cancel</button>
@@ -520,6 +497,7 @@ class Integration extends Component {
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>
+                      <th className="team-th-delete-edit">Copy Link</th>
                       <th className="n-vis">Activity</th>
                     </tr>
                   </thead>
@@ -540,3 +518,16 @@ class Integration extends Component {
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const SUFFIX = ["th", "st", "nd", "rd"]
 export default Integration;
+
+
+class RoleContainer extends React.Component{
+  render() {
+     return <div className="row">
+     <div className="col-radio-btn col-md-2 col-lg-2"></div>
+     <div className="radion-btn-agent-wrapper col-md-9 col-lg-9">
+       <h5 className="radio-btn-agent-title">{ROLE_NAME[this.props.role].name}</h5>
+       <p className="radio-btn-agent-description">{ROLE_NAME[this.props.role].description}</p>
+     </div>
+  </div>
+     }
+};

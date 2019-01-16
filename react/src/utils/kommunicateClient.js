@@ -158,7 +158,7 @@ const patchCustomerInfo = (customerInfo, customer) => {
 
 const patchUserInfo = (userInfo, userId, appId) => {
 
-  const patchUserUrl = getConfig().kommunicateApi.createUser + '/' + userId + '/' + appId;
+  const patchUserUrl = getConfig().kommunicateApi.createUser + '/' + encodeURIComponent(userId) + '/' + appId;
 
   return Promise.resolve(axios({
     method: 'patch',
@@ -224,7 +224,7 @@ if(options.templateName == "INVITE_TEAM_MAIL"){
       "agentId": userId,
       "roleType":roleType,
       "resendMail":options.resendMail ?options.resendMail :false,
-      "isApplozic": !CommonUtils.isKommunicateDashboard()
+      "product": CommonUtils.getProduct()
     }
   }
   return Promise.resolve(axios({
@@ -405,7 +405,7 @@ const sendProfileImage = (imageFile, imageFileName) => {
   }))
     .then(response => {
 
-      window.$applozic.fn.applozic('updateUser', {
+      window.$kmApplozic.fn.applozic('updateUser', {
         data: { 'imageLink': response.data.profileImageUrl }, success: function (response) {
         }, error: function (error) {
           console.log(error);
@@ -474,19 +474,19 @@ const getUsersByType = (applicationId, userType) => {
  *
 */
 const changePassword = (option) => {
+  var data = {};
+  let userSession = CommonUtils.getUserSession();
+  data.userName = userSession.userName;
+  data.applicationId = userSession.application.applicationId;
+  option.oldPassword && (data.oldPassword = option.oldPassword);
+  data.newPassword = option.newPassword;
+  option.loginVia && (data.loginVia = option.loginVia);
 
   const patchClientUrl = getConfig().kommunicateBaseUrl + "/users/password/update";
-  let userSession = CommonUtils.getUserSession();
   return Promise.resolve(axios({
     method: 'post',
     url: patchClientUrl,
-    data: {
-      "userName": userSession.userName,
-      "applicationId": userSession.application.applicationId,
-      "oldPassword": option.oldPassword,
-      "newPassword": option.newPassword
-    }
-
+    data: data
   })).then((response) => {
     if (response.data.code === 'SUCCESS') {
       Notification.success('Password Changed Successfully');
@@ -496,7 +496,7 @@ const changePassword = (option) => {
       return "SUCCESS";
     }
     else {
-      Notification.success('Wrong current password');
+      Notification.error('Wrong current password');
     }
   })
     //.catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
@@ -847,7 +847,7 @@ const updateZendeskIntegrationTicket = (data, ticketId) => {
 
 const conversationHandlingByBot = (botId, status) => {
   let userSession = CommonUtils.getUserSession();
-  const converstaionHandlingByBotUrl = getConfig().kommunicateApi.createUser + '/' + botId + '/' + userSession.application.applicationId + '/' + status;
+  const converstaionHandlingByBotUrl = getConfig().kommunicateApi.createUser + '/' + encodeURIComponent(botId) + '/' + userSession.application.applicationId + '/' + status;
   return Promise.resolve(axios({
     method: 'patch',
     url: converstaionHandlingByBotUrl,

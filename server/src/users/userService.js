@@ -16,10 +16,13 @@ const KOMMUNICATE_ADMIN_PASSWORD = config.getProperties().kommunicateAdminPasswo
 const cacheClient = require("../cache/hazelCacheClient");
 const logger = require('../utils/logger');
 const botPlatformClient = require("../utils/botPlatformClient");
-const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
+const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
+const USER_CONSTANTS = require("../users/constants.js");
+const FREE_BOTS_COUNT = 2; //'bot' and 'liz' are free
+
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -146,7 +149,7 @@ let handleCreateUserError = (user, customer, err) => {
   if (err && err.code == "USER_ALREADY_EXISTS" && err.data) {
     console.log("updating role to application web admin");
     const data = err.data;
-    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: "APPLICATION_WEB_ADMIN" }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
       return err.data;
     })
   } else {
@@ -170,7 +173,7 @@ const createUser = (user, customer) => {
   let devToken = user.devToken;
   let userId = user.userId ? user.userId.toLowerCase() : "";
   user.userName ? (user.userName = user.userName.toLowerCase()) : "";
-  let role = user.type == 2 ? "BOT" : "APPLICATION_WEB_ADMIN";
+  let role = user.type == 2 ? USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name : USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name;
   return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name, undefined, user.imageLink).catch(err => {
     if (user.type === registrationService.USER_TYPE.AGENT) {
       return handleCreateUserError(user, customer, err);
@@ -185,7 +188,7 @@ const createUser = (user, customer) => {
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
     user.imageLink = applozicUser.imagelink;
-    user.roleType = (user.type === 2)? CONST.ROLE_TYPE.BOT:user.roleType;
+    user.roleType = (user.type === 2)? USER_CONSTANTS.ROLE_TYPE.BOT:user.roleType;
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
@@ -207,6 +210,8 @@ const createUser = (user, customer) => {
         }).catch(err => {
           logger.error("error while creating bot platform", err);
         })
+      } else {
+        activeCampaignClient.addContact({ "email": user.email, "name": user.name, "orgname": customer.userName, "tags": "K-Team-Member" });
       }
       return user ? user.dataValues : null;
     }).catch(err => {
@@ -322,7 +327,7 @@ const getAdminUserByAppId = (appId) => {
   }
   return userModel.findOne({ where: { applicationId: appId, type: 3 } }).then(user => {
     console.log("found data for user, id : ", user == null ? null : user.id);
-    return user !== null ? user.dataValues : null;
+    return user !== null ? user : null;
   });
 };
 
@@ -445,7 +450,7 @@ exports.updateUser = (userId, appId, userInfo) => {
             "key": userKey,
             "clientToken": userInfo.clientToken,
             "devToken": userInfo.devToken,
-
+            "deleted": userInfo.deleted_at != null
           }).catch(err => {
             logger.error("error while updating bot platform", err);
           });
@@ -508,6 +513,26 @@ exports.goOnline = (userId, appId) => {
   //   }
   // });
 };
+/**
+ * Get count of users 
+ * Specify type to filter users  1: Agents, 2: Bots
+ * @param {String} applicationId
+ * @param {Array} type
+ * @return {Number}
+ */
+const getUsersCountByTypes = (applicationId, type) => {
+  logger.info("fetching Users count for customer, ", applicationId);
+  let criteria = { applicationId: applicationId };
+  if (type) {
+    criteria.type = { $in: type };
+  }
+  return Promise.resolve(userModel.count({ where: criteria})).then(result => {
+    return result;
+  }).catch(err => {
+    logger.info('error while getting users count', err);
+    throw err;
+  });
+}
 /**
  * Get list of all users if type is not specified.
  * Specify type to filter users  1:Agents, 2: Bots
@@ -642,7 +667,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
       if (user !== null) {
-        return userModel.update({ deleted_at: new Date(), status: CONST.USER_STATUS.DELETED }, {
+        return userModel.update({ deleted_at: new Date(), status: USER_CONSTANTS.USER_STATUS.DELETED }, {
           where: {
             userName: userName,
             applicationId: applicationId
@@ -660,7 +685,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }
     })
   } else {
-    return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
+    return userModel.update({deleted_at: null, status:  USER_CONSTANTS.USER_STATUS.ONLINE}, {
         where: {
           userName: userName,
           applicationId: applicationId,
@@ -690,10 +715,21 @@ const isDeletedUser= (userName, applicationId) => {
   })
 }
 
-const updateSubscriptionQuantity = (user, count) => {
-  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)) {
-    return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+const updateSubscriptionQuantity = async function(user, count){  
+  console.log("processing subscription quanity: " + count);
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.BOT || user.type == registrationService.USER_TYPE.ADMIN)) {
+    return customerService.getCustomerByApplicationId(user.applicationId).then(async customer => {
       if (customer.billingCustomerId) {
+
+        let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
+        let usersCount = await getUsersCountByTypes(user.applicationId, null) - FREE_BOTS_COUNT;
+        
+        if ((count < 0 && (result.subscription.plan_quantity > (usersCount + count))) || 
+              (count > 0 && (result.subscription.plan_quantity >= usersCount))) {
+          console.log("users count is less than the subscription quantity, skipping subscription update");
+          return;
+        }
+
         return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
       }
       return;
@@ -750,9 +786,9 @@ const getAgentIdsStatusWise= async (applicationId)=> {
   try{
   agentList = await this.getUsersByAppIdAndTypes(applicationId,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]);
   agentList && agentList.forEach(element => {
-    element.status== CONST.USER_STATUS.AWAY && awayAgents.push(element.userName);
-    element.status== CONST.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
-    element.roleType == CONST.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
+    element.status== USER_CONSTANTS.USER_STATUS.AWAY && awayAgents.push(element.userName);
+    element.status== USER_CONSTANTS.USER_STATUS.ONLINE && availableAgentsInKommunicate.push(element.userName);
+    element.roleType == USER_CONSTANTS.ROLE_TYPE.SUPER_ADMIN && (superAdmin = element);
   });
   let apzToken = new Buffer( superAdmin.userName+":"+ superAdmin.accessToken).toString('base64');
   let statusFromApplozic = await applozicClient.getUserDetails(availableAgentsInKommunicate,applicationId,apzToken);
@@ -768,6 +804,14 @@ const getAgentIdsStatusWise= async (applicationId)=> {
   return null;
 }
 }
+
+const isThirdPartyLogin = (loginVia) => {
+ return USER_CONSTANTS.THIRD_PARTY_LOGIN.some(function (el) {
+    return el === loginVia;
+  });
+};
+
+exports.isThirdPartyLogin = isThirdPartyLogin;
 exports.getAgentIdsStatusWise = getAgentIdsStatusWise;
 exports.updateApplozicUser = updateApplozicUser;
 exports.isDeletedUser = isDeletedUser;
@@ -795,6 +839,7 @@ exports.isIntervalExceeds = isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
+exports.getUsersCountByTypes = getUsersCountByTypes;
 exports.updateUserStatus = updateUserStatus;
 exports.updateOnlyKommunicateUser = updateOnlyKommunicateUser;
 exports.getUserListByCriteria = getUserByCriteria;

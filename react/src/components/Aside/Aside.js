@@ -9,7 +9,7 @@ import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import Notification from '../../views/model/Notification';
 import ReactTooltip from 'react-tooltip';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT} from '../../utils/Constant';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS} from '../../utils/Constant';
 import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
@@ -132,9 +132,17 @@ class Aside extends Component {
     })
 }
   handleGroupUpdate(e) {
-    this.setState({ group: e.detail.data });
-    this.selectStatus();
-    this.selectAssignee();
+    e.preventDefault();
+    let activeConversationId = window.document.getElementsByClassName("active-chat")[0] && window.document.getElementsByClassName("active-chat")[0].dataset.kmId
+    let group = e.detail.data;
+    !group.groupId && (group["groupId"] = group.id);
+    !group.users && (group["users"] = group.groupUsers);
+    if(activeConversationId == group.groupId ) { 
+      this.setState({ group: group });
+      this.selectStatus();
+      this.selectAssignee();
+    }
+   
   }
   forwardMessageToZendesk(e) {
     var message = e.detail.data;
@@ -320,10 +328,10 @@ class Aside extends Component {
         // console.log("err while fetching users list ", err);
       });
 
-      if (sessionStorage.getItem("userProfileUrl") != null) {
-                  that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
+      if (CommonUtils.getItemFromLocalStorage("userProfileUrl") != null) {
+                  that.props.updateProfilePicUrl(CommonUtils.getItemFromLocalStorage("userProfileUrl"));
                   let userSession = CommonUtils.getUserSession();
-                  userSession.imageLink = sessionStorage.getItem("userProfileUrl");
+                  userSession.imageLink = CommonUtils.getItemFromLocalStorage("userProfileUrl");
                   CommonUtils.setUserSession(userSession);
       }
 
@@ -339,12 +347,9 @@ class Aside extends Component {
         groupId: groupId, callback: function(response) {
           if(response) {
             that.setState({
-              group: response,
               visibleIntegartion:false,
               visibleReply:true,
             });
-            that.selectAssignee();
-            that.selectStatus();
             that.setUpAgentTakeOver(response);
           }
           }
@@ -378,7 +383,6 @@ class Aside extends Component {
     if (assignee == userSession.userName && userSession.isAdmin) {
       //assignee = "agent";
     }
-
     window.$kmApplozic("#assign").val(assignee);
   }
 
@@ -898,10 +902,10 @@ class Aside extends Component {
                             <div className="">
                               <div className="select-container">
                                 <select id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
-                                  <option value="0">Open</option>
-                                  <option value="2">Close</option>
-                                  <option value="3">Spam</option>
-                                  <option value="4">Duplicate</option>
+                                  <option value={CONVERSATION_STATUS.OPEN}>Open</option>
+                                  <option value={CONVERSATION_STATUS.CLOSED}>Close</option>
+                                  <option value={CONVERSATION_STATUS.SPAM}>Spam</option>
+                                  <option value={CONVERSATION_STATUS.DUPLICATE}>Duplicate</option>
                                 </select>
                               </div>
                             </div>
@@ -997,6 +1001,10 @@ class Aside extends Component {
                             }}>See how to install</button>
 
                         </div>
+                      </div>
+                      <div className="km-typing-indicator-for-agent--container n-vis">
+                        <div className="km-typing-indicator-for-agent--image"></div>
+                        <div className="km-typing-indicator-for-agent--text">Typing...</div>
                       </div>
                       <div className="write">
                         

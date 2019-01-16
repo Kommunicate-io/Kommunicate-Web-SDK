@@ -28,6 +28,7 @@ import {setTag} from '../../src/sentry/sentry'
 import {getAppSetting} from '../../src/utils/kommunicateClient'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/applicationAction';
+import * as ClearReduxAction from '../actions/index'
 import {Subscribe, Unsubscribe} from '../views/Pages/subscription/Subscribe';
 
 
@@ -45,9 +46,33 @@ class App extends Component {
       }
   }
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 1500); // simulates an async action, and hides the spinner
-    this.props.logInStatus && this.getAppSettings()
+    setTimeout(() => this.setState({ loading: false }), 1500); 
+    // simulates an async action, and hides the spinner
+    this.isKommunicateVersionInStorage();
   }
+
+  isKommunicateVersionInStorage = () => {
+    const currentPath = window.location.pathname;
+    var kommunicateVersion;
+    var notfromLoginOrSignup = (currentPath.includes('/login') || currentPath.includes('/signup'));
+    var releaseVersion = "3.3";
+    (w.localStorage) !== "undefined" && (kommunicateVersion = window.localStorage.getItem("kommunicateVersion"));
+    (typeof kommunicateVersion !== "undefined" && kommunicateVersion !== releaseVersion && !notfromLoginOrSignup) ? this.logoutForOlderVersion(releaseVersion) : (this.props.logInStatus && this.getAppSettings());
+  };
+
+  logoutForOlderVersion = (releaseVersion) => {
+    this.props.resetStore();
+    sessionStorage.clear();
+    localStorage.clear();
+    // CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID);
+    this.props.resetStore();
+    window.localStorage.setItem("kommunicateVersion", releaseVersion);
+    window.history.pushState({
+      urlPath: '/login'
+    }, "", '/login');
+    return;
+  };
+
   getAppSettings = () => {
     return Promise.resolve(getAppSetting().then(response => {
       if(response.status == 200 && response.data.response) {
@@ -116,7 +141,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload))
+    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload)),
+    resetStore: payload => dispatch(ClearReduxAction.resetStore())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App)

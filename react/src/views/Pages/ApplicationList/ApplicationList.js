@@ -128,9 +128,9 @@ class ApplicationList extends Component {
                 window.$applozic.fn.applozic('logout');
               }
 
-              if (response.data.result.apzToken) {
-              } else {
-                var apzToken = new Buffer(userName + ":" + password).toString('base64');
+              if (!response.data.result.apzToken) {
+                var accessToken = response.data.result.accessToken;
+                var apzToken = new Buffer(userName + ":" + accessToken).toString('base64');
                 response.data.result.apzToken = apzToken;
               }
 
@@ -162,15 +162,16 @@ class ApplicationList extends Component {
 		  this.setState({
 			searchApplications: e.target.value
 		  })
-		var filter, mainContainer, div, p, i;
+		var filter, mainContainer, div, appName, appId, i;
             
 		filter = this.state.searchApplications.toUpperCase();
 		mainContainer = document.getElementById("application-list-main-container");
 		div = mainContainer.getElementsByTagName('div');
 		// Looping through all list items, and hiding those who don't match the search query
 		for (i = 0; i < div.length; i++) {
-			p = div[i].getElementsByTagName("p")[0];
-			if (p.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      appName = div[i].getElementsByTagName("p")[0],
+      appId = div[i].getElementsByTagName("p")[1];
+			if (appName.innerHTML.toUpperCase().indexOf(filter) > -1 || appId.innerHTML.toUpperCase().indexOf(filter) > -1) {
 				div[i].style.display = "";
 			} else {
 				div[i].style.display = "none";
@@ -244,8 +245,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-    setLoginStatus: payload => dispatch(Actions.updateLogInStatus(payload))
+    saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
+    setLoginStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationList)

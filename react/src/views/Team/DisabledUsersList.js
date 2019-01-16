@@ -5,7 +5,7 @@ import { deleteUserByUserId } from '../../utils/kommunicateClient';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
-import { ROLE_TYPE } from '../../utils/Constant';
+import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
 import './team.css';
 
@@ -124,17 +124,8 @@ class DisabledUsersList extends Component {
                     </div>
                   </td>
                   <td className="team-expired-data-td">
-                   { roleType == ROLE_TYPE.SUPER_ADMIN &&
-              <div className="teammates-user-role">Super Admin</div>
-            }
-            { roleType == ROLE_TYPE.ADMIN &&
-              <div className="teammates-user-role">Admin</div>
-            }
-            { roleType == ROLE_TYPE.AGENT &&
-              <div className="teammates-user-role">Agent</div>
-            } 
-                    
-          </td>
+                    <div className="teammates-user-role">{ROLE_NAME[roleType].name}</div>
+                  </td>
                   <td className="teammates-delete-icon team-expired-data-td">
                     {/* show delete btn for agents and admins if loggedin user is an super admin */}
                     { loggedInUserRoleType ==  ROLE_TYPE.SUPER_ADMIN && roleType != ROLE_TYPE.SUPER_ADMIN &&
@@ -150,7 +141,7 @@ class DisabledUsersList extends Component {
               </span>
             }
                     {/* show delete btn only for agents if loggedin user is an admin */}
-                    { loggedInUserRoleType ==  ROLE_TYPE.ADMIN && roleType != ROLE_TYPE.SUPER_ADMIN &&         roleType != ROLE_TYPE.ADMIN &&
+                    { loggedInUserRoleType ==  ROLE_TYPE.ADMIN && roleType != ROLE_TYPE.SUPER_ADMIN && roleType != ROLE_TYPE.ADMIN &&
               <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 10 12">
                   <g fill="#8B8888" fillRule="nonzero">

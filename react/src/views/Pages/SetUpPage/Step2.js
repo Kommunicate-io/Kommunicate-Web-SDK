@@ -186,8 +186,9 @@ hideAllErrors (){
   reDirectToDashboard() {
     window.location.assign("/dashboard");
     localStorage.setItem("KM_ONBOARDING","true");
-    this.props.updateStatus(true);
-    this.props.updateModalStatus(false);
+    this.props.updateStatus(actionType.onboardingStatus, true);
+    this.props.updateStatus(actionType.modalOnboardingStatus, false);
+    this.props.updateStatus(actionType.trialDaysLeftOnboardingStatus, true);
   }
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -356,10 +357,15 @@ hideAllErrors (){
   }
 }
 
+const actionType = {
+  onboardingStatus: "UPDATE_KM_ON_BOARDING_STATUS",
+  modalOnboardingStatus: "UPDATE_KM_ON_BOARDING_MODAL_STATUS",
+  trialDaysLeftOnboardingStatus: "UPDATE_KM_TRIAL_DAYS_LEFT_ON_BOARDING_STATUS"
+}
+
 const mapDispatchToProps = dispatch => {
   return {
-    updateStatus: payload => dispatch(Actions.updateDetailsOnSignup("UPDATE_KM_ON_BOARDING_STATUS",payload)),
-    updateModalStatus: payload => dispatch(Actions.updateDetailsOnSignup("UPDATE_KM_ON_BOARDING_MODAL_STATUS",payload))
+    updateStatus: (type, payload) =>  dispatch(Actions.updateDetailsOnSignup(type, payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Step2)

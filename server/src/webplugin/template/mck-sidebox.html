@@ -58,6 +58,16 @@
 					</button>
 				</div>
 			</div>
+			<div id="km-local-file-system-warning" class="n-vis">
+				<span id="km-local-file-system-warning-description">
+					Conversation will not be updated in real-time as you are running the installation script from your local file system.
+				</span>
+				<div class="km-learn-more-container">
+					<a href="https://docs.kommunicate.io/docs/web-troubleshooting" class="km-learn-more" target="_blank">					
+						Learn more about this
+					</a>
+				</div>			
+			</div>
 			<div id="mck-product-group" class="mck-tab-panel mck-btn-group mck-product-group">
 				<div id="mck-product-box" class="mck-product-box n-vis mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
 					<div class="mck-row">
@@ -171,12 +181,13 @@
 									</div>
 								</div>
 						<div id="km-faqdiv" class="mck-faq-inner km-faqdiv">
+							<ul id="km-faq-list-container" class="km-faq-list-container"></ul>
 						</div>
 						<div id="km-faqanswer" class="km-faqanswer"></div>
 						<div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
 							<div class="km-talk-to-human-div n-vis">
 								<p id= "mck-no-faq-found">Looking for something else?</p>
-								<a href="#" class="talk-to-human-link" id="talk-to-human-link">Talk to an agent</a>
+								<button class="talk-to-human-link" id="talk-to-human-link">Talk to an agent</button>
 							</div>
 							<div class="km-contact-input-container">
 								<span class="km-faqsearch-icon">
@@ -185,7 +196,15 @@
 											opacity=".618" /> 
 									</svg>
 								</span>
-								<input id="km-faq-search-input" class="km-faqsearch-input" type="text" data-provide="typeahead" placeholder="Search in FAQs..." class="mck-typeahead">
+								<input id="km-faq-search-input" class="km-faqsearch-input" type="text" data-provide="typeahead" placeholder="Search in FAQs..." class="mck-typeahead"  autocomplete="off">
+								<span class="km-clear-faq-search-icon n-vis">
+									<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+										<g fill="none" fill-rule="evenodd">
+											<circle cx="7" cy="7" r="7" fill="#B7B4B4" fill-rule="nonzero"/>
+											<path fill="#FFF" d="M6.814 6.26L4.502 3.945a.393.393 0 0 0-.555.555l2.313 2.313a.262.262 0 0 1 0 .371L3.946 9.498a.393.393 0 0 0 .555.555L6.814 7.74a.262.262 0 0 1 .371 0l2.313 2.314a.393.393 0 0 0 .556-.555L7.74 7.185a.262.262 0 0 1 0-.37L10.054 4.5a.393.393 0 0 0-.556-.555L7.185 6.259a.262.262 0 0 1-.37 0z"/>
+										</g>
+										</svg>
+								</span>
 							</div>
 						</div>
 
@@ -306,18 +325,22 @@
 											</button>
 										</div>
 									</div>
-
-									<input id="mck-autosuggest-search-input" type="text" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead"
-									 autocomplete="off">
-									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
-									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required notranslate" data-text="Type your message..."></div>
-									<div class="mck-blk-2 mck-text-box-panel move-right n-vis">
+									<div class="mck-blk-2 mck-text-box-panel move-right n-vis" id="send-button-wrapper"> 
 										<div class="mck-blk-12">
 											<button type="submit" id="mck-msg-sbmt" class="mck-btn mck-btn-text-panel" title="Send Message">
-												<span class="mck-icon-send"></span>
+												<span class="mck-icon-send">
+													<svg xmlns="http://www.w3.org/2000/svg"  width="15" height="15" viewBox="0 0 15 15">
+														<path class="km-custom-widget-fill" fill="#5553B7" fill-rule="evenodd" d="M7.878 7.858l-6.032.584-1.588 5.076a.787.787 0 0 0 1.097.944l13.22-6.401a.752.752 0 0 0 0-1.353L1.364.302a.787.787 0 0 0-1.096.944l1.587 5.077 6.021.584a.475.475 0 0 1 0 .946l.002.005z"/>
+													</svg>
+												</span>
 											</button>
 										</div>
 									</div>
+
+									<textarea id="mck-autosuggest-search-input" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead km-auto-expand" autocomplete="off" rows='1' data-autoresize form="mck-msg-form" method="post"  type="text"></textarea>
+									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
+									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required notranslate" data-text="Type your message..."></div>
+									
 									<input id="mck-file-input" class="mck-file-input n-vis" type="file" name="files[]">
 									<div id="mck-file-box" class="n-vis"></div>
 								</div>

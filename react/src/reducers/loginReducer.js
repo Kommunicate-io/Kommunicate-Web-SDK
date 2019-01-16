@@ -1,6 +1,7 @@
 const initialState = {
   userInfo: null,
-  logInStatus: false
+  logInStatus: false,
+  loginVia: null
 };
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -14,6 +15,11 @@ const loginReducer = (state = initialState, action) => {
         ...state,
         logInStatus: action.payload
 
+      }
+    case 'LOGIN_VIA':
+      return {
+        ... state,
+        loginVia: action.payload
       }
     default:
       return state

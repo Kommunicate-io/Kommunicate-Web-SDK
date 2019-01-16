@@ -1,5 +1,19 @@
-import { getResource } from '../config/config.js'
+import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
+import crypto from 'crypto';
+import {THIRD_PARTY_LOGIN} from '../utils/Constant';
+import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs.js';
+
+export const PRODUCTS = {
+    'applozic': {
+        title: 'Applozic',
+        logo: ApplozicLogo
+    }, 
+    'kommunicate': {
+        title: 'Kommunicate',
+        logo: KommunicateLogoSvg
+    }
+};
 
 const CommonUtils = {
     setUserSession: function(userSession) {
@@ -8,10 +22,10 @@ const CommonUtils = {
         if(userSession.password) {
             delete userSession.password;
         }
-        localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
+        CommonUtils.setItemInLocalStorage('KM_USER_SESSION', userSession);
     },
     getUserSession: function() {
-        return JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+        return CommonUtils.getItemFromLocalStorage("KM_USER_SESSION");
     },
     updateAvailabilityStatus: function(available) {
         let userSession = CommonUtils.getUserSession();
@@ -53,7 +67,8 @@ const CommonUtils = {
             document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
     getDisplayName: function(user) {
-        if (user.displayName) {
+        // user.displayName.trim() -> this will check whether string is not just whitespace
+        if (user.displayName && user.displayName.trim()) {
           return user.displayName;
         } else if (user.email) {
           return user.email;
@@ -75,10 +90,10 @@ const CommonUtils = {
         return domain;
     },
     setApplicationIds: function(appID) {
-        localStorage.setItem('KM_USER_SESSION_APP_IDS', JSON.stringify(appID));
+        CommonUtils.setItemInLocalStorage('KM_USER_SESSION_APP_IDS', appID);
     },
     getApplicationIds: function() {
-        return JSON.parse(localStorage.getItem('KM_USER_SESSION_APP_IDS'));
+        return CommonUtils.getItemFromLocalStorage("KM_USER_SESSION_APP_IDS");
     },
     getDaysCount: function() {
         var now = new Date();
@@ -90,8 +105,11 @@ const CommonUtils = {
     isStartupPlan: function() {
         return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
     },
+    isApplozicTrialPlan: function() {
+        return CommonUtils.getUserSession().application.pricingPackage == 0;
+    },
     isTrialPlan: function() {
-        return CommonUtils.getDaysCount() < 31 && CommonUtils.isStartupPlan();
+        return CommonUtils.getDaysCount() < 31 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan());
     },
     getApplicationExpiryDate () {
         var applicationCreatedAt = CommonUtils.getUserSession().applicationCreatedAt ;
@@ -192,7 +210,7 @@ const CommonUtils = {
             return calculatedDate;
         }
     },
-    updateUserSession : function(data){
+    updateUserSession : function(data,){
         if(typeof data =='object'){
             let userSession = CommonUtils.getUserSession()||{};
            for (const key in data) {
@@ -209,14 +227,33 @@ const CommonUtils = {
         return ((navigator.userAgent.indexOf('MSIE') !== -1 ||
         navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
+    getProduct: function() {
+        if (this.isKommunicateDashboard()) {
+            return "kommunicate";
+        }
+        if (this.isProductApplozic()) {
+            return "applozic";
+        }
+        return "kommunicate";
+    },
+    getProductName: function() {
+        return this.getProduct() == "applozic" ? "Applozic":"Kommunicate"
+    },
+    isProductApplozic: function() {
+        let userSession = this.getUserSession();
+        if(userSession) {
+            return userSession.application.pricingPackage <= 100;
+        } else {
+            return getConfig().brand === "applozic";
+        }
+    },
     isKommunicateDashboard: function() {
         let userSession = this.getUserSession();
         if(userSession) {
-            return userSession.application.pricingPackage <= 200;
+            return userSession.application.pricingPackage >= 100 && userSession.application.pricingPackage < 200;
         } else {
-            return window.location.hostname.includes("kommunicate");
+            return getConfig().brand === "kommunicate";
         }
-
     },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
@@ -243,6 +280,14 @@ const CommonUtils = {
         } else {
           return false;
         }
+    },
+    removeSpecialCharacters: function (value) {
+        return value.replace(/[^A-Z0-9]+/ig, "-").toLowerCase();
+    },
+    isThirdPartyLogin: function (loginVia) {
+        return THIRD_PARTY_LOGIN.some(function (el) {
+            return el === loginVia;
+        });
     }
 }
 

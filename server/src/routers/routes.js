@@ -38,6 +38,8 @@ const applicationSettingValidation = require("../setting/application/validation"
 const seedLiz = require('../users/seed')
 const subscriptionValidation = require("../subscription/subscriptionValidation");
 const subscriptionController = require("../subscription/subscriptionController");
+const metabaseController = require('../metabase/metabaseController');
+const metabaseValidator = require('../metabase/validation');
 
 
 
@@ -66,6 +68,7 @@ const thirdPartySettingRouter = express.Router();
 const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
 const subscriptionRouter = express.Router();
+const metabaseRouter = express.Router();
 
 
 //export routers
@@ -92,6 +95,7 @@ exports.googleAuth = googleAuthRouter;
 exports.subscription = subscriptionRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
+exports.metabaseRouter = metabaseRouter;
 
 //Cron Time Stamp Route
 exports.cronServiceRouter = express.Router();
@@ -117,6 +121,7 @@ userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.get('/chat/plugin/settings', userController.defaultPluginSettings);
+userRouter.get('/v2/chat/plugin/settings', userController.defaultPluginSettingsV2);
 //userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
@@ -236,6 +241,7 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
 this.v2UserRouter.patch('/:userId', validate(userValidation.validateUserUpdate), userController.updateApplozicUser)
 
+metabaseRouter.get('/', validate(metabaseValidator.queryParams), metabaseController.getData)
 
 //Cron Time Stamp Router
 this.cronServiceRouter.post('/', cronService.updateLastRunTime)

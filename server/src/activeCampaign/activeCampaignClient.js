@@ -3,8 +3,15 @@ const axios = require("axios");
 var request = require("request");
 const config = require("../../conf/config");
 const apiKey = config.getProperties().activeCampaignApiKey;
+const activeCampaignEnabled = config.getProperties().activeCampaignEnabled;
+
 exports.addContact = (options) => {
     return new Promise(function (resolve, reject) {
+        if (!activeCampaignEnabled) {
+            console.log("active campaign is disabled");
+            return resolve(null);
+        }
+
         var option = {
             method: 'POST',
             url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_add',
@@ -14,6 +21,9 @@ exports.addContact = (options) => {
                 api_key: apiKey,
                 api_output: 'json',
                 email: options.email,
+                name: options.name,
+                tags: options.tags,
+                orgname: options.orgname,
                 'p[1]': '7',
                 'status[1]': '1'
             }
@@ -29,7 +39,7 @@ exports.addContact = (options) => {
                 var activeCampaignResponse = JSON.parse(data);
                 subscriberId = activeCampaignResponse.subscriber_id;
                 console.log(subscriberId);
-                return resolve(subscriberId)
+                return resolve(subscriberId);
             }
 
         });
@@ -39,6 +49,9 @@ exports.addContact = (options) => {
 }
 
 exports.updateActiveCampaign = (options) => {
+    if (!activeCampaignEnabled) {
+        return;
+    }
 
     return new Promise(function (resolve, reject) {
         var option = {

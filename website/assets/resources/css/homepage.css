@@ -89,6 +89,14 @@ a, a:hover, a:focus, a:active {
   max-height: 600px;
   margin: 0 auto;
 }
+.homepage-ab-beta-landing-page-section .bg-girl-img.mailbox-img {
+  max-height: 600px;
+  margin: 0 auto;
+  box-shadow: 0px 5px 30px 0px rgba(199,199,199,1);
+  background: #fff;
+  padding: 0 10px;
+  border-radius: 10px;
+}
 .hero-text {
   font-size: 40px;
   font-weight: 500;
@@ -397,6 +405,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   .form-submit-btn {
       font-size: 16px;
       width: 100%;
+  }
+  .form-submit-btn.mailbox {
+      width: auto;
   }
   .cta-email-pre-signup {
       width: 100% !important;
@@ -2250,6 +2261,51 @@ input:-ms-input-placeholder {
   display: none;
 }
 
+.mailbox-support-wrapper{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-top: 40px;
+  text-align: center;
+}
+.mailbox-support-icon{
+  width: 60px;
+  height: 60px;
+  margin: 0 auto
+}
+.mailbox-support-icon svg{
+  width: 100%;
+  height: 100%;
+}
+
+.mailbox-support-box{
+  width: 33.3%;
+  padding: 20px 20px;
+}
+.mailbox-support-box h4{
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #3d3c3c;
+}
+.mailbox-support-box p{
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.45;
+  color: #4a4a4a;
+}
+
+.row-mailbox{
+  padding-top: 231px;
+}
+
+.mailbox-support{
+  position: relative;
+  margin-top: -181px;
+  margin-bottom: -202px;
+}
+
+
 @media screen and (max-width:630px) {
   .slider-container .slider-content .slider-single.preactive, .slider-container .slider-content .slider-single.proactive,   .slider-container .slider-content .slider-singlee.preactive, .slider-container .slider-content .slider-singlee.proactive {
     visibility: visible;
@@ -2322,6 +2378,31 @@ input:-ms-input-placeholder {
   .homepage-beta-landing-page-section .div-1, .homepage-beta-landing-page-section .div-2{
     display: none;
   }
+  .mailbox-support-box{
+    width: 90%;
+    margin: 0 auto;
+  }
+  .mailbox-support-wrapper{
+    flex-direction: column;
+  }
+
+  .mailbox-conversations-box, .mailbox-conversations-box.reverse{
+    flex-direction: column-reverse!important;
+    text-align: center;
+  }
+
+  .mailbox-conversation-text{
+    width: 100%!important;
+    padding: 0!important;
+  }
+  .mailbox-conversation-text p {
+    max-width: 100%!important;
+  }
+
+  .mailbox-support-wrapper:last-child{
+    margin-top: 0;
+  }
+
 }
 @media screen and (max-width:420px) {
   .homepage-beta-landing-page-section .bg-oval {
@@ -2331,6 +2412,11 @@ input:-ms-input-placeholder {
     position: absolute;
     bottom: 67%;
     right: -54%;
+  }
+}
+@media screen and (max-width:1200px) {
+  .homepage-ab-customer-testimonial-section.mailbox-support{
+    background-image: none;
   }
 }
 
@@ -2420,7 +2506,7 @@ input:-ms-input-placeholder {
 
 
 .slider-container .slider-content .slider-single.proactive, .slider-container .slider-content .slider-single.preactive, .slider-container .slider-left, .slider-container .slider-right, .slider-container .slider-content .slider-singlee.proactive, .slider-container .slider-content .slider-singlee.preactive, .slider-container .slider-left, .slider-container .slider-right {
-  display: none;
+  /* display: none; */
 }
 
 .slider-container .slider-content {
@@ -2556,8 +2642,8 @@ input:-ms-input-placeholder {
 .homepage-ab-beta-landing-page-section .img-customer-logos, .homepage-customer-logos-section .img-customer-logos {
   width: auto;
   height: 49px;
-  -webkit-filter: opacity(60%);
-  filter: opacity(60%);
+  -webkit-filter: opacity(80%);
+  filter: opacity(80%);
 }
 .img-customer-logos.active8me-logo {
   height: 36px;
@@ -2577,6 +2663,8 @@ input:-ms-input-placeholder {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  z-index: 10;
+  position: relative;
 }
 .free-forever >span{
   display: inline-block;
@@ -2588,13 +2676,81 @@ input:-ms-input-placeholder {
 
 }
 
+.hero-text.mailbox{
+  margin-bottom: 16px;
+  font-size: 38px;
+  letter-spacing: 0.5;
+}
+
+.img-cont-pos-rel.mailbox{
+  padding: 108px 0 180px 0;
+}
+
 .free-forever span span {
   font-weight: bolder;
 }
 
+.section-heading.mailbox{
+  max-width: 660px;
+  margin: 75px auto 40px auto;
+}
+
+.mailbox-conversations-box{
+  display: flex;
+  max-width: 90%;
+  align-items: center;
+  justify-content: center;
+  margin: 115px auto 0 auto;
+}
+.mailbox-conversations-box.reverse{
+  flex-direction: row-reverse;
+}
+.mailbox-conversations-box.reverse .mailbox-conversation-text {
+  padding: 0 0 0 160px;
+}
+
+.mailbox-conversation-text{
+  width: 70%;
+  padding: 0 160px 0 0;
+}
+.mailbox-conversation-text h4{
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: normal;
+  color: #3d3c3c;
+
+}
+.mailbox-conversation-text p{
+  font-size: 20px;
+  font-weight: 300;
+  max-width: 94%;
+  line-height: 1.45;
+  letter-spacing: normal;
+  color: #4a4a4a;
+}
+.mailbox-conversation-text{
+  width: 70%;
+}
+.mailbox-conversation-image{
+  width: 30%;
+}
+.mailbox-link{
+  margin-bottom: 350px;
+  display: block;
+  text-align: center;
+  color: #5553b7;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+
 @media only screen and (max-width:991px) {
   .hero-section {
     margin-top: 90px;
+  }
+  .homepage-ab-customer-testimonial-section .div-circle{
+    display: none;
   }
 }
 
@@ -2790,6 +2946,10 @@ ul.nacc li p {
   .homepage-ab-beta-landing-page-section .img-cont-pos-rel {
     position: relative;
     bottom:-85px;
+  }
+  .homepage-ab-beta-landing-page-section .img-cont-pos-rel.mailbox {
+    position: relative;
+    bottom:0;
   }
   .homepage-ab-beta-features-section .faqs-svg, .homepage-ab-beta-features-section .bot-integration-svg, .homepage-ab-beta-features-section .conversations-svg {
     max-height: 700px;

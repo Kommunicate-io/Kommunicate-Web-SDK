@@ -8,16 +8,16 @@
             <div class="col-lg-3 col-md-3 col-xs-12">
                 <h1 class="pricing-title">Incredible Plans &amp; Simple Pricing</h1>
                 <hr class="hr">
-                <h3 class="pricing-subtitle">Our custom pricing model can help you scale to your success.</h3>
+                <h3 class="pricing-subtitle">No credit card required for trial and Free plan.</h3>
 
                 <!-- Pricing Toggle -->
                 <div class="pricing-toggle">
-                    <label class="toggler" id="filt-monthly">Monthly</label>
+                    <label class="toggler toggler--is-active" id="filt-monthly">Monthly</label>
                     <div class="toggle">
-                        <input type="checkbox" id="switcher" class="check" checked>
+                        <input type="checkbox" id="switcher" class="check" >
                         <b class="b switch"></b>
                     </div>
-                    <label class="toggler toggler--is-active" id="filt-yearly">Yearly</label>
+                    <label class="toggler " id="filt-yearly">Yearly</label>
                 </div>
 
                 <div class="contact-us-div">
@@ -35,7 +35,7 @@
                                 <div class="pricing-value">
                                     <div>
                                         <h2> $0 </h2>
-                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px; color: #7b7b7b;" class="per-month-span">PER SEAT / MO</p>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px; color: #7b7b7b;" class="per-month-span">PER TEAM MEMBER / MO</p>
                                         <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:5px;margin-bottom:30px;">(Billed Annually)</p>
                                     </div>
                                     
@@ -45,20 +45,21 @@
                         </div>
                         
                         <div class="pricing-table-body">
-                            <div class="pricing-table-footer">
+                            <div class="pricing-table-footer" style="margin-bottom:17px ">
                                 <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialFree',1,{'nonInteraction': true});">Sign Up Now</a>
                                 <a href="https://calendly.com/kommunicate/15min"  target="_blank" class="calendly-url schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestFree',1,{'nonInteraction': true});">Schedule a demo</a>
                             </div>
                             <div class="pricing-table-body-footer">
                                 <p style="opacity:0;">Includes...</p>
                                 <ul>
-                                    <li>Up to 2 Team Members</li>
-                                    <li>Live Chat</li>
+                                    <li>Up to 2 team members</li>
+                                    <li>Live chat</li>
                                     <li>Web SDKs</li>
+                                    <li>Away messages</li>
                                     <li>Agent apps</li>
                                     <li>Basic reporting</li>
                                     <li>Welcome messages</li>
-                                    <li>90 days chat history</li>
+                                    <li>30 days chat history</li>
                                 </ul>
                             </div>
                         </div>
@@ -87,14 +88,14 @@
                             <h4 class="pricing-table-plan-subtitle">Room to Grow</h4>
                             <div class="price-image-container">
                                 <div class="pricing-value">
-                                    <div id="growth-pricing-monthly" class="a hide">
+                                    <div id="growth-pricing-monthly" class="a ">
                                         <h2> $10</h2>
-                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px;color: #7b7b7b;" class="per-month-span">PER SEAT / MO</p>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px;color: #7b7b7b;" class="per-month-span">PER TEAM MEMBER / MO</p>
                                         <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:5px;margin-bottom:30px;">(Billed Annually)</p>
                                     </div>
-                                    <div id="growth-pricing-yearly" class="a ">
+                                    <div id="growth-pricing-yearly" class="a hide">
                                         <h2>$8</h2>
-                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px; color: #7b7b7b;" class="per-month-span">PER SEAT / MO</p>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px; color: #7b7b7b;" class="per-month-span">PER TEAM MEMBER / MO</p>
                                         <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:5px;margin-bottom:30px;color: #7b7b7b;">(Billed Annually)</p>
                                     </div>
                                 </div>
@@ -111,15 +112,16 @@
                                     <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                 <ul style="    margin-top: 35px;">
                                 <li>Bot integrations</li>
-                                    <li>Quick Replies</li>
+                                    <li>Quick replies</li>
                                     <li>Mobile SDKs</li>
-                                    <li>Away Messages</li>
-                                    <li>Lead Collection</li>
+                                    <li>Lead collection</li>
+                                    <li>Push notifications</li>
+                                    <li>Webhooks and security</li>
                                     <li>Agent reporting</li>
-                                    <li>Support email integration</li>
+                                    <li>Mailbox</li>
                                     <li>Customizations</li>
                                     <li>Conversation routing</li>
-                                    <li>FAQ</li>
+                                    <li>FAQs</li>
                                     <li>All integrations</li>
                                     <li>Standard SLA</li>
                                 </ul>
@@ -174,7 +176,6 @@
                                     <li>Premium support</li>
                                     <li>Custom SLA</li>
                                     <li>Bot builder</li>
-                                    <li>Routing rules</li>
                                     <li>CSAT score</li>
                                     <li>Unlimited scaling</li>
                                     
@@ -188,12 +189,6 @@
             </div>
         </div>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440.621 634.931" class="middle-swirl">
-        <path fill="#fff" d="M.259 145.917s1025.426-308.765 1440.252-28c.137 18.35.126 24.949.074 33.888-106.435-45.472-275.736-81.984-502.92-26.7C570.903 214.357 242.427 558.136.002 634.932c-.026-35.503.257-489.015.257-489.015z" opacity=".8"/>
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440.256 272.21" class="bottom-shape">
-        <path fill="#fff" d="M0 260.216S358.262-43.172 815.955 5.232c285.143 30.155 463.641 98.226 624.1 61.953.068 38.741 0 105.657.2 204.811-289.873.432-49.464.08-1440.256.044z" data-name="Path 3"/>
-      </svg>
 </section>
 <script>
 

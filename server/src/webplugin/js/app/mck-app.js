@@ -140,7 +140,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckLoadStyle(url) {
         var head = document.getElementsByTagName('head')[0];
         var style = document.createElement('link');
@@ -148,7 +148,7 @@ function ApplozicSidebox() {
         style.rel = "stylesheet";
         style.href = url;
         head.appendChild(style);
-    }
+    };
     function mckLoadScript(url, callback) {
         try {
             var body = document.getElementsByTagName('body')[0];
@@ -178,7 +178,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckInitPluginScript() {
         try {
             if(applozic.PRODUCT_ID =='kommunicate'){
@@ -241,7 +241,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckLoadScript2() {
         try {
             $.each(mck_script_loader2, function(i, data) {
@@ -256,7 +256,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckLoadAppScript() {
         var userId = KommunicateUtils.getRandomId();
         try {
@@ -290,14 +290,13 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckInitSidebox(data, userId) {
         try {
             var options = applozic._globals;
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
             options["widgetSettings"]=data.widgetTheme;
-            options["KM_VER"]=window.kommunicate.version;
             options["customerCreatedAt"]=data.customerCreatedAt;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
@@ -340,12 +339,15 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function loadPseudoName(userId) {
+        var data = {};
+        data.appId = applozic._globals.appId;
+        // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         $applozic.ajax({
-            url: MCK_CONTEXTPATH + "/users/chat/plugin/settings",
+            url: MCK_CONTEXTPATH + "/users/v2/chat/plugin/settings",
             method: 'GET',
-            data: applozic._globals,
+            data: data,
             success: function (data) {
                 mckInitSidebox(data.response, userId);
             },
@@ -354,7 +356,7 @@ function ApplozicSidebox() {
             }
 
         })
-    }
+    };
     function loadErrorTracking(userId) {
         userId = KommunicateUtils.getCookie('kommunicate-id') || userId;
         Sentry.init({
@@ -367,6 +369,6 @@ function ApplozicSidebox() {
                 id: options.appId
             });
         });
-    }
+    };
 
 }

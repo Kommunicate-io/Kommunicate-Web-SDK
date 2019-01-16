@@ -211,11 +211,9 @@ class Login extends Component {
 		} else {
 			AnalyticsTracking.identify(userName);
 
-			if (this.state.loginType === 'oauth'){
-				loginUrl += "?loginType=oauth"
-			} else if (this.state.loginType === 'email'){
-				loginUrl += "?loginType=email"
-			}
+			loginUrl += "?loginType=" + this.state.loginType;
+			this.state.loginType === 'oauth' && _this.props.loginVia("google");
+			this.state.loginType === 'email' && _this.props.loginVia("email");
 
 			this.setState({loginButtonDisabled:true});
 			
@@ -241,9 +239,9 @@ class Login extends Component {
 						window.$applozic.fn.applozic('logout');
 					}
 
-					if (response.data.result.apzToken) {
-					} else {
-						var apzToken = new Buffer(userName + ":" + password).toString('base64');
+					if (!response.data.result.apzToken) {
+						var accessToken = response.data.result.accessToken;
+                		var apzToken = new Buffer(userName + ":" + accessToken).toString('base64');
 						response.data.result.apzToken = apzToken;
 					}
 
@@ -426,7 +424,7 @@ class Login extends Component {
 
 	websiteUrl = (e) => {
 		e.preventDefault();
-		let websiteUrl = this.isKommunicateBrand() ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
+		let websiteUrl = this.isKommunicateBrand ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
 		window.location = websiteUrl;
 	}
 
@@ -548,7 +546,7 @@ class Login extends Component {
 													</div>
 													<div className="row">
 														<div className="col-12 text-center">
-															<Button primary large fontSize={"16px"} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
+															<Button primary large fontSize={"16px"} style={{marginTop:"26px"}} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
 															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Link to={'/signup'}>Sign up</Link></p>
 														</div> 
 													</div>
@@ -587,8 +585,9 @@ class Login extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-	setLogInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
+    saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
+	setLogInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload)),
+	loginVia: payload => dispatch(Actions.updateDetailsOnLogin("LOGIN_VIA", payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Login);

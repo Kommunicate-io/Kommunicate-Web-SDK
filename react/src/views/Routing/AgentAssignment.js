@@ -30,61 +30,6 @@ import styled, { css } from 'styled-components';
 import Banner from '../../components/Banner/Banner';
 import { LearnMore } from '../../views/Faq/LizSVG';
 
-const headingColor = css`
-    color: #666464;
-`;
-const subHeadingColor = css`
-    color: #9b9b9b;
-`;
-const lightColor = css`
-    color: #807d7d;
-`;
-
-const OptionsContainer = styled.div``;
-
-const OptionsWrapper = styled(OptionsContainer)`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-
-    & .switch.switch-3d {
-        margin-bottom: 4px;
-    }
-`;
-
-const Headings = styled.h3`
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 1.3px;
-    ${headingColor}
-    margin-bottom: 25px;
-    margin-right: 25px;
-`;
-const SubHeadings = styled.h5`
-    font-size: 16px;
-    font-weight: normal;
-    letter-spacing: 0.6px;
-    ${subHeadingColor}
-    margin-bottom: 25px;
-    margin-right: 25px;
-`;
-
-const TogglerHeading = styled(SubHeadings)`
-    ${headingColor}
-    margin-bottom: 0;
-`;
-const Hr = styled.hr`
-    width: 100%;
-    border-top: 1px solid;
-    border-top-color: #cacaca;
-    margin-bottom: 30px;
-`;
-const BannerContainer = styled.div`
-    width: 100%;
-    margin: 25px auto;
-`;
-
 class AgentAssignemnt extends Component{
     constructor(props) {
         super(props);
@@ -154,6 +99,7 @@ updateDefaultAssignee = (selectedAssignee) => {
         appSettings.defaultConversationAssignee = data.defaultConversationAssignee;
         //update store
         this.props.updateAssignee(appSettings);
+        Notification.success('Routing rules updated successfully.');
     })
     .catch(err => {
         Notification.warning('There was a problem. Please try again');
@@ -310,7 +256,7 @@ toggleConversationAssignment = () => {
           <div className={this.state.checkedNotifyEverybody ? "row notify-everybody-wrapper active-agent-routing" : "row notify-everybody-wrapper non-active-agent-routing"}>
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
-              <div className="col-md-11 col-lg-11">
+              <div className="col-md-11 col-lg-11" style={{marginLeft : "-5px"}}>
                   <h4 className="routing-title">Notify everybody <span className="notify-everybody-sub-title">(recommended for small teams)</span></h4>
                   <p className="routing-description">All conversations will be first assigned to one particular agent by default. Conversation notifications will be sent to the entire team and whoever acts on it first can then take the conversation</p>
               </div>
@@ -336,7 +282,7 @@ toggleConversationAssignment = () => {
                 <SettingsHeader  />
             </div>
             <div className=" agent-assignment-wrapper row">
-                <div className="card col-md-8">
+                <div className="card col-md-9">
                     <OptionsContainer className="options-wrapper">
                         <Headings>Routing rules for agents</Headings>
                         <SubHeadings>Select from one of the options below</SubHeadings>
@@ -364,7 +310,7 @@ toggleConversationAssignment = () => {
                     </OptionsContainer>
                     <Hr />
                 </div>
-                <div className="card col-md-8">
+                <div className="card col-md-9">
                     <OptionsContainer>
                         <Headings>Routing rules for bots</Headings>
                         <OptionsWrapper>
@@ -375,7 +321,7 @@ toggleConversationAssignment = () => {
                             <BannerContainer>
                                 <div>
                                     {
-                                        this.state.botsAreAvailable ?  <Banner indicator={"warning"} isVisible={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
+                                        this.state.botsAreAvailable ?  <Banner indicator={"default"} isVisible={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
                                         <Banner indicator={"warning"} isVisible={false} text={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/> 
                                     }
                                 </div>
@@ -431,24 +377,24 @@ toggleConversationAssignment = () => {
                             </OptionsWrapper>
                             <div style={{marginTop: "30px"}}>
                                 <div className="see-docs-link-container">
-                                    <p className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank" >See Docs <LearnMore color={"#5553B7"} /></a></p>
+                                    <p className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-conversation-assignment" target="_blank" >See Docs <LearnMore color={"#5553B7"} /></a></p>
                                 </div>
                             </div>
                         </div>
                     </OptionsContainer>
                     <Hr />
                 </div>
-                <div className="col-md-8">
+                <div className="col-md-9">
                     <OptionsContainer>
-                        <Headings>Allow bot to be active in agent-assigned conversations</Headings>
+                        <Headings>Reply rules for unassigned bots</Headings>
 
                         <OptionsWrapper>
-                            <TogglerHeading >Allow bot to reply even after the conversation is assigned to an agent</TogglerHeading>
+                            <TogglerHeadingFixedWidth >Allow other bots to reply even after the conversation is assigned to a specific bot or agent</TogglerHeadingFixedWidth>
                             <SliderToggle checked={this.state.botInAgentAssignedConversation} handleOnChange={this.toggleBotInAgentAssignedConversation} />
                         </OptionsWrapper>
 
                         <BannerContainer>   
-                            <Banner indicator={"default"} isVisible={false} text={"NOTE: If enabled, the bot will reply to user messages even when the agent is replying."} />
+                            <Banner indicator={"default"} isVisible={false} text={"NOTE: If enabled, the unassigned bots will also reply to user messages."} />
                         </BannerContainer>
                     </OptionsContainer>
                 </div>
@@ -457,6 +403,70 @@ toggleConversationAssignment = () => {
     )
   }
 }
+
+
+const headingColor = css`
+    color: #666464;
+`;
+const subHeadingColor = css`
+    color: #9b9b9b;
+`;
+const lightColor = css`
+    color: #807d7d;
+`;
+
+const OptionsContainer = styled.div``;
+
+const OptionsWrapper = styled(OptionsContainer)`
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    & .switch.switch-3d {
+        margin-bottom: 4px;
+    }
+`;
+
+const Headings = styled.h3`
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 1.3px;
+    ${headingColor}
+    margin-bottom: 25px;
+    margin-right: 25px;
+`;
+const SubHeadings = styled.h5`
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0.6px;
+    ${subHeadingColor}
+    margin-bottom: 25px;
+    margin-right: 25px;
+`;
+
+const TogglerHeading = styled(SubHeadings)`
+    ${headingColor}
+    margin-bottom: 0;
+`;
+
+const TogglerHeadingFixedWidth = styled(TogglerHeading)`
+        max-width: 89%;
+`;
+
+const Hr = styled.hr`
+    width: 100%;
+    border-top: 1px solid;
+    border-top-color: #cacaca;
+    margin-bottom: 30px;
+`;
+const BannerContainer = styled.div`
+    width: 100%;
+    margin: 25px auto;
+`;
+
+
+
 const mapStateToProps = state => ({
     appSettings : state.application 
   });

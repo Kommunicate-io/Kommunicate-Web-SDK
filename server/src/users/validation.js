@@ -74,7 +74,6 @@ module.exports.updatePassword = {
   body:{
     userName:joi.string().required(),
     applicationId:joi.string().required(),
-    oldPassword:joi.string().required(),
     newPassword:joi.string().required()
   }
 }

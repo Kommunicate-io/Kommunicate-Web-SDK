@@ -8,6 +8,7 @@ import CloseButton from '../../components/Modal/CloseButton';
 import CommonUtils from '../../utils/CommonUtils';
 import './Admin.css';
 import Button from '../../components/Buttons/Button';
+import { connect } from 'react-redux';
 
 const customStyles = {
   content: {
@@ -18,7 +19,7 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     overflow: 'hidden',
-    height: '450px',
+    height: 'auto',
     maxWidth: '500px',
     overflow: 'visible'
   }
@@ -63,13 +64,13 @@ class PasswordAccordion extends Component {
 
     validatePassword(e) {
       e.preventDefault();
-      if(this.state.currentPassword.length < 1) {
-        Notification.info("Enter Your Current Password");
+      if(this.state.currentPassword.length < 1 && !CommonUtils.isThirdPartyLogin(this.props.loginVia)) {
+        Notification.error("Enter Your Current Password");
         console.log("Current password is not entered");
         return;
       }
-      else if(this.state.newPassword.length < 6) {
-        Notification.info("Your password must have at least 6 characters ");
+      else if(this.state.newPassword.length < 6 && !CommonUtils.isThirdPartyLogin(this.props.loginVia)) {
+        Notification.error("Your password must have at least 6 characters ");
         return;
       } else {
         this.handlePassword(e);
@@ -79,7 +80,7 @@ class PasswordAccordion extends Component {
   handlePassword(e) {
     e.preventDefault();
     if (this.state.newPassword !== this.state.repeatPassword) {
-      Notification.info("Password does not match");
+      Notification.error("Password does not match");
       return;
     } else if (CommonUtils.isApplicationAdmin()) {
       let userSession = CommonUtils.getUserSession();
@@ -95,15 +96,19 @@ class PasswordAccordion extends Component {
           this.clearPasswordfields(e);
           return;
         }
-        Notification.info("Wrong password");
+        Notification.error("Wrong password");
       })
     } else {
       changePassword({
         oldPassword: this.state.currentPassword,
         newPassword: this.state.newPassword,
+        loginVia : this.props.loginVia
       }).then(data => {
-        if (data === "SUCCESS")
+        if (data === "SUCCESS"){
+          CommonUtils.updateUserSession({"accessToken": this.state.newPassword});
+          window.$kmApplozic.fn.applozic("updateAccessTokenOnPasswordReset", this.state.newPassword);
           this.clearPasswordfields(e);
+        }
       })
     }
   }
@@ -141,8 +146,8 @@ class PasswordAccordion extends Component {
                       <div className="password-wrapper">
                         <div className="form-group row">
                           <div className="col-md-9">
-                            <label className="form-control-label">Current Password:</label>
-                            <input type="password" id="current-password-input" onKeyPress={this.handleKeyPress} name="current-password-input" className="form-control input-field" onChange = {(event) => this.setState({currentPassword:event.target.value})} value={this.state.currentPassword} placeholder="Enter your current password"/><br/>
+                            <label  className={!CommonUtils.isThirdPartyLogin(this.props.loginVia)? "form-control-label" :"n-vis"}>Current Password:</label>
+                            <input type="password" id="current-password-input" onKeyPress={this.handleKeyPress} name="current-password-input" className={!CommonUtils.isThirdPartyLogin(this.props.loginVia) ? "form-control input-field" :"n-vis"} onChange = {(event) => this.setState({currentPassword:event.target.value})} value={this.state.currentPassword} placeholder="Enter your current password"/><br/>
                           </div>
                           <div className="col-md-9">
                             <label className="form-control-label">New Password:</label>
@@ -174,4 +179,9 @@ class PasswordAccordion extends Component {
         );
        }    
 }
-export default PasswordAccordion;
+
+const mapStateToProps = state => ({
+  loginVia:state.login.loginVia
+})
+
+export default connect(mapStateToProps, null)(PasswordAccordion);

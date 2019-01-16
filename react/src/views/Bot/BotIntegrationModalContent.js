@@ -6,7 +6,7 @@ import {createCustomerOrAgent, sendProfileImage} from '../../utils/kommunicateCl
 import Notification from '../model/Notification';
 import ApplozicClient from '../../utils/applozicClient';
 import {createBot} from '../../utils/botPlatformClient';
-import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_URL } from '../../utils/Constant';
+import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL } from '../../utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
@@ -76,7 +76,6 @@ class BotIntegrationModalContent extends Component {
         this.state = {
             buttonText:"Next",
             step:1,
-            botImageUrl:DEFAULT_BOT_URL,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
@@ -131,7 +130,7 @@ class BotIntegrationModalContent extends Component {
         });
     }
     integrateBot = (e) => {
-        let userId = this.state.botName.trim().toLowerCase().replace(/ /g, '-');
+        let userId = CommonUtils.removeSpecialCharacters(this.state.botName);
         if (this.isInputFieldEmpty(this.state.botName.trim())) {
             Notification.warning("Please enter a bot name !!");
             return;
@@ -146,7 +145,7 @@ class BotIntegrationModalContent extends Component {
             name: this.state.botName.trim(),
             aiPlatform: this.state.aiPlatform.trim(),
             roleType: ROLE_TYPE.BOT,
-            imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : this.state.defaultBotUrl
+            imageLink: this.state.selectedBotImage ? this.state.selectedBotImage : DEFAULT_BOT_IMAGE_URL
         }
         let botInfo = {}
         if (this.state.aiPlatform == SUPPORTED_PLATFORM.CUSTOM) {
@@ -180,7 +179,7 @@ class BotIntegrationModalContent extends Component {
 
         }).catch(err => {
             if (err.code == "USER_ALREADY_EXISTS") {
-                Notification.info("Bot name taken. Try again.");
+                Notification.error("Bot name or bot ID already exists. Try again with a different name");
             } else {
                 Notification.error("Something went wrong");
                 console.log("Error creating bot", err);
@@ -213,7 +212,7 @@ render() {
                 this.state.step==2 &&
                 <div style={{margin:"-20px -33px"}}>
                 {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan())   &&
-                        <Banner style={{margin:"-20px -32px"}} indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of seats in your plan ",<strong key={1} >(1 bot = 1 seat).</strong>," Your bill will be updated on pro rata basis."]} />
+                        <Banner style={{margin:"-20px -32px"}} indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                     }
                         {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
                           <Banner indicator={"warning"} style={{margin:"-20px -32px"}} isVisible={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />

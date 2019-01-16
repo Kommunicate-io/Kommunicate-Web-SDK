@@ -193,7 +193,7 @@
     color: #fff !important;
     border: solid 1.4px #2dd35c;background-color: #2dd35c;
 }
-@media(max-width:767px) {
+@media(max-width:860px) {
     .page-links-ul, .nav-signup-button,
     .nav-login-button, .nav-signup-button.try-kommunicate {
         display: none !important;
@@ -465,7 +465,7 @@ footer .copyright {
     }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 860px) {
     .page-links-ul, .nav-signup-button, .nav-login-button {
         display: none;
     }

@@ -208,6 +208,26 @@ function KmUtils() {
         return true;
     };
 
+    _this.setItemInLocalStorage= function(key,value){
+        if(key){
+            localStorage.setItem(key, JSON.stringify(value)); 
+        }
+    };
+    _this.getItemFromLocalStorage= function(key){
+        if(key){
+            let data =  localStorage.getItem(key); 
+            try{
+                data=  JSON.parse(data); 
+            }catch(e){
+                // its string
+            }
+            return data;
+        }
+    };
+    _this.removeItemInlocalStorage = function (key){
+        key && localStorage.removeItem(key);
+    }
+
 }
 function KmContactUtils() {
     var _this = this;
@@ -225,14 +245,20 @@ function KmContactUtils() {
 }
 function KmGroupUtils() {
     var _this = this
-    _this.getGroup = function(groupId) {
+    _this.getGroup = function(groupId, callback) {
         if (typeof KM_GROUP_MAP[groupId] === 'object') {
+           typeof callback === 'function' && callback(KM_GROUP_MAP[groupId])
             return KM_GROUP_MAP[groupId];
+            
         } else if (typeof KM_ASSIGNE_GROUP_MAP[groupId] === 'object') {
+            typeof callback === 'function' && callback(KM_ASSIGNE_GROUP_MAP[groupId])
             return KM_ASSIGNE_GROUP_MAP[groupId];
+            
         } else {
-            kmGroupService.getGroupFeed({"groupId":groupId,"sync":false})
-            return KM_GROUP_MAP[groupId];
+            kmGroupService.getGroupFeed({"groupId":groupId, "callback":function(){
+                typeof callback === 'function' && callback(KM_GROUP_MAP[groupId])
+                return KM_GROUP_MAP[groupId];
+            } })
         }
     };
     _this.getGroupByClientGroupId = function(clientGroupId) {
@@ -474,10 +500,9 @@ function KmGroupService() {
             },
             error: function(xhr, desc, err) {
                  if (xhr.status === 401) {
-                    sessionStorage.clear();
+                    console.log('Unable to load groups. Please reload page.');
+                    response.status = 'error';
                 }
-                console.log('Unable to load groups. Please reload page.');
-                response.status = 'error';
                 if (params.callback) {
                     params.callback(response);
                 }
@@ -502,7 +527,7 @@ function KmGroupService() {
             if (typeof params.callback === 'function') {
                 response.status = "error";
                 response.errorMessage = "GroupId or Client GroupId Required";
-                message.metadata ? params.callback(response,message.metadata): params.callback(response);
+                params.callback(response);
             }
             return;
         }
@@ -514,7 +539,6 @@ function KmGroupService() {
             data: data,
             type: 'get',
             global: false,
-            async: !params.sync,
             success: function(data) {
                 if (data.status === "success") {
                     var groupFeed = data.response;

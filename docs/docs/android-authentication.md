@@ -16,7 +16,6 @@ You can authorize a user as described below:
 ```java
         KMUser user = new KMUser();
         user.setUserId("reytum_01");  //unique userId
-        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your APP_ID
 ```
 Post this, call the method described below:
 ```java
@@ -50,7 +49,7 @@ To get the user details of logged in user, use this code snippet:
 ```java
 KMUser user = KMUser.getLoggedInUser(context);
 ```
-## Starting Visitor Chat:
+## Logging in as visitor:
 You can start a visitor's chat by calling the below method from the SDK.
 ```java
   Kommunicate.loginAsVisitor(this, new KMLoginHandler() {
@@ -64,4 +63,37 @@ You can start a visitor's chat by calling the below method from the SDK.
             //do something in on failure
       }
   });
+```
+
+## Passing additional details:
+Sometimes you would need to pass additional details for the user apart from the already existing properties of KMUser. You can pass the additional details in metadata of the KMUser object.
+
+```java
+Map<String, String> metadata = new HashMap<>();
+metadata.put("Department" , "Engineering");
+metadata.put("Designation" , "Software Engineer");
+metadata.put("Team" , "Device Team");
+
+kmUser.setMetadata(metadata);
+```
+
+## Updating logged in user details:
+Once the user has logged in, you can still update some of its properties like displayName, imageUrl, contactNumber, Metadata, and status.
+Create a KMUser object and set the property you want to update.
+```java
+KMUser kmUser = new KMUser();
+kmUser.setDisplayName("New display name");
+kmUser.setImageLink(<new image link>);
+
+Map<String, String> metadata = new HashMap<>();
+metadata.put("Department" , "Mobility");
+metadata.put("Designation" , "Software Engineer II");
+
+kmUser.setMetadata(metadata);
+```
+
+Then call the below method in a background thread or Async task:
+
+```java
+ UserService.getInstance(context).updateLoggedInUser(kmUser);
 ```

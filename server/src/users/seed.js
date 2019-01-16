@@ -9,6 +9,7 @@ const userService = require('../users/userService');
 const LIZ = require("../register/bots.js").LIZ;
 const USER_TYPE = { "AGENT": 1, "BOT": 2, "ADMIN": 3 };
 const applicationService = require('../customer/applicationService');
+const USER_CONSTANTS = require("../users/constants.js");
 
 
 exports.seedLiz = () => {
@@ -42,7 +43,7 @@ const createLiz = (application) => {
     return userService.getByUserNameAndAppId('liz', application.applicationId).then(existingliz => {
         if (!existingliz) {
             // create liz
-            return Promise.resolve(applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, "BOT", null, LIZ.name, undefined, LIZ.imageLink).catch(e => {
+            return Promise.resolve(applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name, null, LIZ.name, undefined, LIZ.imageLink).catch(e => {
                 if (e.code == "USER_ALREADY_EXISTS") {
                     console.log("user already exists in applozic db");
                     return e.data;

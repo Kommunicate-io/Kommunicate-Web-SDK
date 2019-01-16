@@ -5,7 +5,7 @@ import {getConfig} from '../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
 import  {createCustomer, saveToLocalStorage,createCustomerOrAgent, getUserDetailsByToken} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification';
-import CommonUtils from '../../../utils/CommonUtils';
+import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import ApplozicClient from '../../../utils/applozicClient';
 import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
 import GoogleLogo from './logo_google.svg';
@@ -13,9 +13,11 @@ import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
-import { KommunicateLogoSvg } from '../../../assets/svg/svgs';
-import { connect } from 'react-redux'
-import * as Actions from '../../../actions/loginAction'
+import { KommunicateLogoSvg, ApplozicLogo } from '../../../assets/svg/svgs';
+import { connect } from 'react-redux';
+import * as Actions from '../../../actions/loginAction';
+import {LOGIN_VIA} from '../../../utils/Constant';
+
 
 class Register extends Component {
   constructor(props){
@@ -39,7 +41,8 @@ class Register extends Component {
       roleType:null,
       renderInvitationRevokedView :false,
       isDataFetched:false,
-      googleSignUpUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_up"
+      googleSignUpUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_up",
+      product: 'kommunicate'
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -64,6 +67,8 @@ class Register extends Component {
     const token = CommonUtils.getUrlParameter(search, 'token');
     const invitedBy = CommonUtils.getUrlParameter(search, 'referer')
     const email = CommonUtils.getUrlParameter(search, 'email');
+    const product = CommonUtils.getUrlParameter(search, 'product') || 'kommunicate';
+
     if (email) {
       this.setState({email:email});
     }
@@ -71,6 +76,7 @@ class Register extends Component {
       isInvited:isInvited,
       invitedBy:invitedBy,
       token:token,
+      product: product
     });
     
     const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp')
@@ -178,7 +184,7 @@ class Register extends Component {
     userInfo.deviceType = "0";
 
     AnalyticsTracking.identify(email);
-
+    this.state.googleOAuth ? _this.props.loginVia(LOGIN_VIA.GOOGLE) : _this.props.loginVia(LOGIN_VIA.DEFAULT);
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia)).then((response) => {
@@ -250,12 +256,16 @@ class Register extends Component {
   }
 
   renderSignUpView =() =>{
+
+    const productTitle = PRODUCTS[this.state.product].title;
+    const Logo = PRODUCTS[this.state.product].logo;
+
     return(
       <div> 
       <div className= {this.state.googleOAuth?"n-vis":"app flex-row align-items-center signup-app-div"}>
         <div className="container">
           <div className="logo-container text-center">
-          <KommunicateLogoSvg/>
+            <Logo/>
           </div>
           
           <div className="row justify-content-center signup-form-div">
@@ -264,7 +274,7 @@ class Register extends Component {
               <div className="card">
               <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
-                  <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
+                  <h1 className="login-signup-heading text-center">Sign up to {productTitle}</h1>
                   {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
                   {/* Signup with Google code STARTS here. */}
@@ -359,11 +369,13 @@ class Register extends Component {
   };
 
   renderInvitationRevoked =() =>{
+    const Logo = PRODUCTS[this.state.product].logo;
+
     return (
       <div className="app flex-row align-items-center applozic-user-signup">
         <div className="container km-delete-invitation-card">
           <div className="logo-container  text-center">
-            <KommunicateLogoSvg/>
+            <Logo/>
           </div>
           <div className="row justify-content-center">
             <div className="col-md-6">
@@ -400,8 +412,9 @@ class Register extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
+    saveUserInfo: payload => dispatch(Actions.updateDetailsOnLogin("SAVE_USER_INFO",payload)),
+    logInStatus: payload => dispatch(Actions.updateDetailsOnLogin("UPDATE_LOGIN_STATUS",payload)),
+    loginVia: payload => dispatch(Actions.updateDetailsOnLogin("LOGIN_VIA", payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Register)

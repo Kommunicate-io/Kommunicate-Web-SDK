@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
 import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js';
-import { ROLE_TYPE } from '../../utils/Constant';
+import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
 import DeleteInvitation from '../Team/DeleteInvitationModal.js';
 
 
@@ -118,15 +118,7 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td> */}
                     <td>
-                      { roleType == ROLE_TYPE.SUPER_ADMIN &&
-                        <div className="teammates-user-role">Super Admin</div>
-                      }
-                      { roleType == ROLE_TYPE.ADMIN &&
-                        <div className="teammates-user-role">Admin</div>
-                      }
-                      { roleType == ROLE_TYPE.AGENT &&
-                        <div className="teammates-user-role">Agent</div>
-                      }
+                      <div className="teammates-user-role">{ROLE_NAME[roleType].name}</div>
                     </td>
                     <td>{ !isAway &&
                           <div className="small text-muted">  <StatusIndicator label = { isOnline ? "Online" : "Offline"} indicator={isOnline ? "success" : "muted"} /> </div>
@@ -164,7 +156,7 @@ class UserItem extends Component {
                         </span>
                       }
                     </td>
-                     <DeleteInvitation isOpen={this.state.modalIsOpen} userToBeDeleted={this.state.userToBeDeleted} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false}></DeleteInvitation>
+                     <DeleteInvitation isOpen={this.state.modalIsOpen} userToBeDeleted={this.state.userToBeDeleted} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false}  getUsers={this.props.getUsers}/>
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
                     </td>

@@ -486,6 +486,7 @@ ul#km-group-search-list li {
 .km-sidebox-third-party-integration{
     margin-top: 11px;
     margin-bottom: 2px;
+    min-height: 73px;
 }
 .km-write-box {
     margin-top: 7px;
@@ -846,6 +847,11 @@ color: #595757;
 }
 
 /* For empty state when there are conversation present in Assigned to me tab but no conversation is selected for chatting. */
+
+.km-empty-state-not-integrated button {
+    display: inline-block;
+}
+
 .km-assigned-conv-empty-state #Oval-5, .km-assigned-conv-empty-state #_0, .km-assigned-conv-empty-state .km-empty-state-subheading, .km-assigned-conv-empty-state button {
     display: none;
 }
@@ -853,9 +859,6 @@ color: #595757;
 /* For empty state when Kommunicate script is not installed in the dashboard. */
 .km-empty-state-not-integrated .km-empty-state-subheading-1 {
     display: block
-}
-.km-empty-state-not-integrated button {
-    display: inline-block;
 }
 
 #km-text-box[contenteditable="true"]:empty:not(:focus)::before {

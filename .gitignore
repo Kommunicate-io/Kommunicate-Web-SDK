@@ -88,3 +88,4 @@ website/_site
 server/dist/build/
 website/package-lock.json
 react/public/icons/*
+Kommunicate-Agent/

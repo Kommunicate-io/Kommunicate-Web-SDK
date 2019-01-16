@@ -24,6 +24,7 @@ import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
 import Banner from '../../components/Banner/Banner';
+import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
 const customStyles = {
   content: {
     top: '50%',
@@ -95,7 +96,6 @@ export default class BotStore extends Component {
           botAvailable: true,
           conversationsAssignedToBot: null,
           hideIntegratedBots: true,
-          defaultBotUrl:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png",
           setbotImageLink:'',
           botIntegrationType:""
         };
@@ -330,7 +330,7 @@ export default class BotStore extends Component {
 
       integrateBot = (aiPlatform) => {
 
-          if(!this.state.botName){
+          if(!this.state.botName.trim()){
             Notification.info("Bot name missing");
             return;
           }
@@ -357,7 +357,7 @@ export default class BotStore extends Component {
         }
         // let uuid_holder = uuid();
 
-        let userId = this.state.botName.toLowerCase().replace(/ /g, '-')
+        let userId = CommonUtils.removeSpecialCharacters(this.state.botName);
 
         // this.setState({uuid: uuid_holder})
 
@@ -411,7 +411,7 @@ export default class BotStore extends Component {
         }).catch( err => {
           if(err.code=="USER_ALREADY_EXISTS"){
             // _this.setState({botNameAlreadyExists:true})
-            Notification.info("Bot name taken. Try again.");
+            Notification.error("Bot name or bot ID already exists. Try again with a different name");
           }else{
             Notification.error("Something went wrong");
             console.log("Error creating bot", err);
@@ -469,7 +469,7 @@ export default class BotStore extends Component {
             name:this.state.botName,
             aiPlatform:aiPlatform,
             roleType: ROLE_TYPE.BOT,
-            imageLink: this.state.setbotImageLink ? this.state.setbotImageLink : this.state.defaultBotUrl
+            imageLink: this.state.setbotImageLink ? this.state.setbotImageLink : DEFAULT_BOT_IMAGE_URL
 
           },"BOT")).then( bot => {
             var bot = bot.data.data;
@@ -591,10 +591,10 @@ export default class BotStore extends Component {
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
                   <p className="km-integrated-bot-text">
-                  {this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
+                  {this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
-                  <p className={this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("dialogflow",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('dialogflow',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                  <p className={this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots) + " bot") }  integrated</p>
                 
                 </div>
               
@@ -605,11 +605,11 @@ export default class BotStore extends Component {
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
                   <p className="km-integrated-bot-text">
-                  {this.integratedBotCount("custom",this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
+                  {this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
 
-                  <p className={this.integratedBotCount("custom",this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
-                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount("custom",this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount('custom',this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount('custom',this.state.listOfIntegratedBots) + " bot") }  integrated</p>
+                  <p className={this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
+                  onClick={()=>{document.getElementsByClassName('item')[1].click()}} >{this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>1 ? (this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots )+ " bots") : (this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots) + " bot") }  integrated</p>
                 
                 </div>
             
@@ -740,7 +740,7 @@ export default class BotStore extends Component {
               </div>
             </div>
                 {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
-                  <Banner indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of seats in your plan ",<strong key={1} >(1 bot = 1 seat).</strong>," Your bill will be updated on pro rata basis."]} />
+                  <Banner indicator={"default"} isVisible={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                 }
                 {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
                   <Banner indicator={"warning"} isVisible={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />

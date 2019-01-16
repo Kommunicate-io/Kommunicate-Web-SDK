@@ -35,7 +35,7 @@
       "hostUrl": "https://api-test.kommunicate.io",
       "kmWebsiteUrl": "https://test.kommunicate.io",
       "updatePasswordPage" : "https://dashboard-test.kommunicate.io/password/update?code=:code",
-      "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
+      "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password",
       "dashboardHostUrl":"https://dashboard-test.kommunicate.io",
       "applozicDashboardHostUrl":"https://console-test.applozic.com",
       "applozicHostUrl": "https://apps-test.applozic.com",
@@ -120,7 +120,8 @@
     "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa",
     "crons":[
       {"time": "0 0 10 * * 1", "job":"sendWeeklyReportsToCustomers", "enable":true },
-      {"time": "0 0 11 * * *", "job":"trialExpireCron", "enable":true }      
+      {"time": "0 0 11 * * *", "job":"trialExpireCron", "enable":true },
+      {"time": "0 10 * * * *", "job":"conversationAutoCloseCron", "enable":true }      
     ],
     "thirdPartyIntegration": {
       "sentry": {
@@ -133,5 +134,8 @@
           "enable": true
         }
       }
+    },
+    "metabase": { 
+      "userName": "techdisrupt@applozic.com", "password": "techdisrupt@123", "domainUrl": "https://metabase.applozic.com" 
     }
   }

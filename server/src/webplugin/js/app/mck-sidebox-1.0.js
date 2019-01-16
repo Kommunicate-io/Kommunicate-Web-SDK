@@ -7,6 +7,7 @@ var count = 0 ;
 var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
+var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -387,6 +388,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var CONVERSATION_STATUS_MAP = ["DEFAULT", "NEW", "OPEN"];
         var BLOCK_STATUS_MAP = ["BLOCKED_TO", "BLOCKED_BY", "UNBLOCKED_TO", "UNBLOCKED_BY"];
         var MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT = (typeof appOptions.msgTriggerTimeout === "number") ? appOptions.msgTriggerTimeout : 0;
+        MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = (typeof appOptions.automaticChatOpenOnNavigation === "boolean") ? appOptions.automaticChatOpenOnNavigation : false;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -455,7 +457,12 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         }
 
         _this.events = {
-            'onConnectFailed': function () { },
+            'onConnectFailed': function () {
+                console.log("onconnect failed");
+				if (navigator.onLine) {
+					mckInitializeChannel.reconnect();
+				}
+			 },
             'onConnect': function () { },
             'onMessageDelivered': function () { },
             'onMessageRead': function () { },
@@ -518,6 +525,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3", notificationtoneoption);
                 mckCallService.init();
             }
+            if (KOMMUNICATE_VERSION === "v2" && window.frameElement.getAttribute('data-protocol') == "file:") {
+                kommunicateCommonFunction.modifyClassList( {id : ["km-local-file-system-warning"]}, "vis","n-vis");
+              }
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
@@ -1190,11 +1200,35 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    Kommunicate.startConversation({groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS, isMessage: false, isInternal: true}, function (response) {
-                    });
+                    _this.getLatestConversationForMsgTriggetTimerout();
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
             }
         }
+
+        _this.getLatestConversationForMsgTriggetTimerout = function () {
+            var params = {
+                'tabId': '',
+                'isGroup': false
+            }
+            mckMessageService.loadMessageList(params, function (data) {
+                if (data && data.groupFeeds && data.groupFeeds.length !== 0 && data.message && data.message.length !== 0) {
+                    var latestGroupId = data.groupFeeds[0].id;
+                    var latestGroupMessage = data.message.filter(function (item) { // added this check to get the latest group message from message array if one-to-one user chats are also present for the application
+                        return item.groupId == latestGroupId;
+                    })[0]; // It returns array of messages for the latestGroupId, so from array we're selecting the latest message for the group
+                    (latestGroupMessage.type !== KommunicateConstants.MESSAGE_TYPE.SENT) && mckNotificationService.notifyUser(latestGroupMessage);
+                } else {
+                    // startConversation function will create a new conversation.
+                    Kommunicate.startConversation({
+                        groupName: DEFAULT_GROUP_NAME,
+                        agentId: DEFAULT_AGENT_ID,
+                        botIds: DEFAULT_BOT_IDS,
+                        isMessage: false,
+                        isInternal: true
+                    });
+                }
+            });
+        };
 
         _this.initGroupTab = function (params) {
             if (typeof params === "object") {
@@ -1564,6 +1598,13 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
                 mckInit.tabFocused();
+                w.addEventListener('online', function () {
+                    console.log("online")
+                    mckInitializeChannel.reconnect();
+                });
+                w.addEventListener('offline', function () {
+                    console.log("offline");
+                });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
                     $mckChatLauncherIcon.html(MCK_TOTAL_UNREAD_COUNT);
                 }
@@ -1580,7 +1621,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
-                if(typeof KM_ASK_USER_DETAILS !== 'undefined'){
+                
+                if(KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0){
                   $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
@@ -2068,6 +2110,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
             });
 
             _this.init = function () {
+                var mck_text_box = document.getElementById("mck-text-box");
+              
                 $applozic.template("oflTemplate", offlineblk);
                 ALStorage.clearMckMessageArray();
                 $applozic(d).on("click", "." + MCK_LAUNCHER, function () {
@@ -2117,6 +2161,27 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
                 $mck_group_search.click(function () {
                     mckMessageLayout.addGroupsToGroupSearchList();
+                });
+
+                _this.showSendButton = function(){
+                    kommunicateCommonFunction.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
+                    kommunicateCommonFunction.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
+                    IS_MCK_LOCSHARE ? "" :kommunicateCommonFunction.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
+                }
+
+                _this.hideSendButton = function(){
+                    kommunicateCommonFunction.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
+                    kommunicateCommonFunction.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                    !IS_MCK_LOCSHARE ? kommunicateCommonFunction.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommonFunction.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
+                    !EMOJI_LIBRARY ? "" : kommunicateCommonFunction.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
+                }
+
+                mck_text_box.addEventListener("keyup",function(){
+                    if(mck_text_box.textContent == "" || !mck_text_box.textContent.replace(/\s/g, '').length){
+                        _this.hideSendButton();
+                    }   else {
+                        _this.showSendButton();
+                    }
                 });
                 $mck_text_box.keydown(function (e) {
                     if ($mck_text_box.hasClass('mck-text-req')) {
@@ -2362,6 +2427,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 });
                 $applozic(d).on("click", ".mck-close-sidebox", function (e) {
                     e.preventDefault();
+                    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
                     KommunicateUI.hideClosedConversationBanner();
@@ -2707,6 +2773,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             return false;
                         }
                     }
+                    _this.hideSendButton();
                     _this.sendMessage(messagePxy);
                     return false;
                 });
@@ -3305,10 +3372,10 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         //Display/hide lead(email) collection template
                         if (params.isGroup) {
                             var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                            var conversationAssigneeRoleType = data.userDetails.filter(function (item) {
+                            var conversationAssigneeDetails = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;
                             })[0];
-                            if(conversationAssigneeRoleType && conversationAssigneeRoleType.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
+                            if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({
                                         "applicationId": MCK_APP_ID,
                                         "conversationId": params.tabId
@@ -3589,12 +3656,11 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                         name = params.groupName;
                                     } else {
                                         name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, params.userName);
-                                    }
-                                    if(DEFAULT_GROUP_NAME == name) {
-                                        CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                                    } else {
-                                        CONVERSATION_ASSIGNEE = name;
-                                    }
+                                    };
+
+                                    CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    $mck_tab_title.html(name);
+                                    $mck_tab_title.attr('title', name);
 
                                     $applozic.each(data.userDetails, function (i, userDetail) {
                                         if(userDetail.userId == CONVERSATION_ASSIGNEE || userDetail.displayName == CONVERSATION_ASSIGNEE) {
@@ -3607,6 +3673,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
                                     if( typeof detailOfAssignedUser !== "undefined" && typeof detailOfAssignedUser.imageLink !== "undefined" ) {
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    } else {
+                                        //DEFAULT_PROFILE_IMAGE
+                                        $applozic(".mck-agent-image-container img").attr("src", KommunicateConstants.DEFAULT_PROFILE_IMAGE.URL);
                                     }
 
                                     if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
@@ -4084,6 +4153,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
             _this.loadTab = function (params, callback) {
                 _this.handleLoadTab();
+                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
@@ -4199,14 +4270,11 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     /*if(IS_CALL_ENABLED) {
                         $applozic("#li-mck-video-call").removeClass("n-vis").addClass("vis");
                     }*/
-                    var name = _this.getTabDisplayName(params.tabId, params.isGroup, params.userName);
                     if (_this.isGroupDeleted(params.tabId, params.isGroup)) {
                         $mck_msg_error.html(MCK_LABELS['group.deleted']);
                         $mck_msg_error.removeClass('n-vis').addClass('vis').addClass('mck-no-mb');
                         $mck_msg_form.removeClass('vis').addClass('n-vis');
                     }
-                    $mck_tab_title.html(name);
-                    $mck_tab_title.attr('title', name);
                     $mck_tab_conversation.removeClass('vis').addClass('n-vis');
                     $mck_search_tabview_box.removeClass('vis').addClass('n-vis');
                     $mck_tab_individual.removeClass('n-vis').addClass('vis');
@@ -4621,6 +4689,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
                     $mck_autosuggest_search_input.attr("placeholder", autosuggetionMetadata.placeholder ? autosuggetionMetadata.placeholder : "");
                     $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
+                    mckFileService.resizeTextarea($mck_autosuggest_search_input[0]);
                     if (autosuggetionMetadata.source.constructor==Array) {
                         $mck_autosuggest_search_input.data("origin", "KM_AUTO_SUGGEST");
                         autosuggetionMetadata.source.length && mckMessageLayout.populateAutoSuggest({ source: autosuggetionMetadata.source });
@@ -7745,9 +7814,14 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     }
                 });
 
-                $mck_autosuggest_search_input.on('input', function (e) {
-                    e.preventDefault();
+                $mck_autosuggest_search_input.on('keydown input', function (e) {
                     $mck_text_box.text($mck_autosuggest_search_input.val());
+                    if(e.which === 13) {
+                        $mck_text_box.submit();
+                        e.preventDefault();
+                    }
+                    // This code is to auto resize a textarea as you go on typing text in it.
+                    _this.resizeTextarea(this); 
                     if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGEST") {
                         return;
                     }
@@ -7755,6 +7829,11 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         mckMessageLayout.populateAutoSuggest({sourceUrl:$mck_autosuggest_search_input.data('source-url') , method:$mck_autosuggest_search_input.data('method') , headers:$mck_autosuggest_search_input.data('headers')});
                     }
                 });
+            };
+
+            _this.resizeTextarea = function(el) {
+                var offset = el.offsetHeight - el.clientHeight;
+                $applozic(el).css('height', 'auto').css('height', el.scrollHeight + offset);
             };
             // _this.generateDataURl =function (params) {
 
@@ -8435,9 +8514,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     sendConnectedStatusIntervalId = setInterval(function () {
                         _this.sendStatus(1);
                     }, 1200000);
-                } else {
+                } 
                     _this.connectToSocket(isFetchMessages);
-                }
             };
             _this.connectToSocket = function (isFetchMessages) {
                 if (!stompClient.connected) {
@@ -8607,6 +8685,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
             };
             _this.reconnect = function () {
+                console.log("socket trying to reconnect",new Date());
                 _this.unsubscibeToTypingChannel();
                 _this.unsubscibeToNotification();
                 _this.disconnect();
@@ -8627,6 +8706,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
             };
             _this.onConnect = function () {
+                console.log("inside onconnect");
                 if (stompClient.connected) {
                     if (subscriber) {
                         _this.unsubscibeToNotification();

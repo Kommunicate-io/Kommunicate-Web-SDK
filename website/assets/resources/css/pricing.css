@@ -117,6 +117,8 @@ position: relative;
     min-height: 630px;
     position: relative;
     overflow: hidden;
+    height: 960px;
+
 }
 .pricing-table-header {
     /* border-bottom: 1px solid #dddcff;; */
@@ -795,7 +797,25 @@ position: relative;
     color: #9b9b9b;
     text-decoration: underline;
 }
-
+.free-forever{
+    display: none;
+}
+  .homepage-customer-logos-section{
+    margin-top: 80px;
+}
+  .slider-container .slider-content .slider-single.proactive, .slider-container .slider-content .slider-single.preactive, .slider-container .slider-left, .slider-container .slider-right, .slider-container .slider-content .slider-singlee.proactive, .slider-container .slider-content .slider-singlee.preactive, .slider-container .slider-left, .slider-container .slider-right {
+     display: none;
+}
+  .homepage-ab-customer-testimonial-section{
+    margin-bottom: 150px;
+    margin-top: 60px;
+}
+  .hr {
+    width: 10%;
+    margin: 0 auto;
+    border: none;
+    border-top: 3px solid #6556d7;
+}
 @media only screen and (max-width:1199px) and (min-width:992px) {
     .toggler {
         font-size: 16px;

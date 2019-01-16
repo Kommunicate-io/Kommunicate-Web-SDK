@@ -16,7 +16,8 @@
   outline: none;
 }
 .teammate-table {
-  margin-right: 140px;
+  margin: 0 auto 50px;
+  max-width: 1200px;
 }
 .teammate-table .thead-default th {
   background-color: #ffffff;
@@ -154,10 +155,11 @@
 }
 .team-name-avatar-wrapper {
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 .team-displayname {
   margin-left: 14px;
-  padding-top: 14px;
   display: flex;
 }
 .teammates-description {
@@ -385,4 +387,9 @@ padding-top: 60 px !important;
   visibility: visible!important;
   opacity:1!important;
 
+}
+
+#copy-to-clipboard {
+  position: absolute;
+  left: -9999px;
 }

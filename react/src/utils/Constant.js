@@ -29,7 +29,35 @@ export const ROLE_TYPE = {
     SUPER_ADMIN : "0",
     ADMIN : "1",
     AGENT : "2",
-    BOT : "3"
+    BOT : "3",
+    DEVELOPER: "11"
+}
+export const ROLE_NAME = {
+    //Todo: figure out why role is coming as null in some cases, below is a temp fix to avoid UI side issue due to server returning null for role
+    null: {
+        name: '',
+        description: ''
+    },
+    0: {
+        name: "Super Admin",
+        description: "Have full access"
+    },
+    1: {
+        name: "Admin",
+        description: "Have full access to edit all the settings and features in the dashboard"
+    },
+    2: {
+        name: "Agent",
+        description: "Have access to only key features and information in the dashboard"
+    },
+    3: {
+        name: "Bot",
+        description: "Have access to read and respond to chats"
+    },
+    11: {
+        name: "Developer",
+        description: "Have access to edit all the settings and features in the dashboard"
+    }
 }
 export const GROUP_ROLE = { 
     ADMIN: "1", 
@@ -68,8 +96,20 @@ export const SUPPORTED_PLATFORM = {
     DIALOGFLOW:"dialogflow",
     CUSTOM:"custom"
 }
-export const  DEFAULT_BOT_URL = "https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png";
+export const  DEFAULT_BOT_IMAGE_URL = "https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/6aebebe0a00f9fe634e3df9ac0f8a7448b0513ad_Bot%20DP.png";
 
 export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
 
+export const CONVERSATION_STATUS = window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE
 
+export const LOGIN_VIA = {
+    GOOGLE: "google",
+    DEFAULT: "email"
+}
+/* 
+At the moment the only social service we're using for login is google, in future if we add 
+other services please add below.
+*/
+export const THIRD_PARTY_LOGIN = [
+    "google"
+];

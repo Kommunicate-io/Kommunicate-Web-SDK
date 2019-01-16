@@ -649,7 +649,8 @@ border-bottom: 1px solid #cfd8dc;
 
 .km-bot-box-heading{
   font-size: 20px;
-  margin: 10px 0 -6px 0;
+  font-weight: 400;
+  margin: 35px 5px 1px 0;
   letter-spacing: 0.5px;
   color: #535455;
 }

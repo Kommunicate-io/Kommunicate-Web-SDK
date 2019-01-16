@@ -245,7 +245,7 @@ export default class WebhooksAndSecurity extends Component {
 
 
                             <div className="webhooks-input-field-goup">
-                                <p>Add an authentication layer for the API calls going from Kommunicate <br/> to your server:</p>
+                                <p>Add an authentication layer for the API calls going from {CommonUtils.getProductName()} <br/> to your server:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
                                         <InputFields id={"input-authentication-token"} value={this.state.authenticationToken} onChange={this.handleOnChange} label={"Enter your authentication token"} />

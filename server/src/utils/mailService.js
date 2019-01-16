@@ -2,15 +2,27 @@ const nodemailer = require("nodemailer");
 const emailConfig = require("../../conf/emailConfig");
 const fileService = require("../utils/fileService");
 const path = require("path");
-let passwordResetMailTransporter = nodemailer.createTransport({
+    
+function getNodeMailer(product){
+    return nodemailer.createTransport({
         host: emailConfig.getProperties().hostUrl,
         port: emailConfig.getProperties().port,
         secure: false, // true for 465, false for other ports
         auth: {
-            user: emailConfig.getProperties().auth.userName, // generated ethereal user
-            pass: emailConfig.getProperties().auth.password  // generated ethereal password
+            user: emailConfig.getProperties().auth[product].userName, // generated ethereal user
+            pass: emailConfig.getProperties().auth[product].password  // generated ethereal password
         }
     });
+}
+
+let mailTransporter = {
+    applozic: getNodeMailer('applozic'),
+    kommunicate: getNodeMailer('kommunicate'),
+    null: getNodeMailer('kommunicate'), 
+    getTransporter: function(product) {
+        return this[product || "kommunicate"];
+    }
+};
 
 exports.sendPasswordResetMail = (mailOptions)=>{
   console.log("sending mail to user", mailOptions.to);
@@ -22,7 +34,7 @@ exports.sendPasswordResetMail = (mailOptions)=>{
         html: '<b>Hello world?</b>' // html body
     };*/
     return new Promise(function(resolve, reject){
-        passwordResetMailTransporter.sendMail(mailOptions, (error, info) => {
+        mailTransporter.getTransporter(mailOptions.product).sendMail(mailOptions, (error, info) => {
             if (error) {
                 return reject(error);
             }
@@ -55,9 +67,15 @@ exports.sendMail= (options)=>{
                                 bcc:options.bcc,
                                 from:options.from,
                                 subject:options.subject,
-                                html:template};
-    
-            passwordResetMailTransporter.sendMail(mailOptions, (error, info) => {
+                                product: options.product
+                                };
+            if (options.sendAsText) {
+                mailOptions.text = template
+            } else {
+                mailOptions.html = template
+            }
+          
+            mailTransporter.getTransporter(options.product).sendMail(mailOptions, (error, info) => {
                 if (error) {
                     return reject(error);
                 }

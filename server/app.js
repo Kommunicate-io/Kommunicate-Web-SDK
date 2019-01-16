@@ -173,6 +173,7 @@ app.use('/subscription', routes.subscription);
 app.use('/agilecrm', routes.agile);
 app.use('/settings',routes.setting);
 app.use('/v2/users',routes.v2UserRouter);
+app.use('/metabase',routes.metabaseRouter);
 
 //Cron Time Stamp Route
 app.use('/crontime',routes.cronServiceRouter);

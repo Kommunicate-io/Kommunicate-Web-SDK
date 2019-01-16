@@ -12,12 +12,13 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD = config.getProperties().kommunicateAdminPassword;
 const USER_TYPE = { "AGENT": 1, "BOT": 2, "ADMIN": 3 };
-const ROLE_TYPE ={"SUPER_ADMIN": 0,"ADMIN":1,"AGENT":2,"BOT":3};
+const COMMON_CONSTANTS = require("../users/constants.js");
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const appSetting = require("../setting/application/appSettingService")
 const customerService = require('../customer/customerService.js');
 const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
+const USER_CONSTANTS = require("../users/constants.js");
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -25,11 +26,11 @@ exports.createCustomer = customer => {
   return Promise.resolve(applozicClient.createApplication(KOMMUNICATE_ADMIN_ID, KOMMUNICATE_ADMIN_PASSWORD, "km-" + customer.userName + "-" + Math.floor(new Date().valueOf() * Math.random()))).then(application => {
     console.log("successfully created ApplicationId: ", application.applicationId, " creating applozic client");
     customer.applicationId = application.applicationId;
-    //
-    customer.role = "APPLICATION_WEB_ADMIN";
+    
+    customer.role = USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name;
     return Promise.all([applozicClient.createUserInApplozic(customer),
-    applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, "BOT", null, LIZ.name, undefined, LIZ.imageLink),
-    applozicClient.createApplozicClient("bot", "bot", application.applicationId, null, "BOT")
+    applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name, null, LIZ.name, undefined, LIZ.imageLink),
+    applozicClient.createApplozicClient("bot", "bot", application.applicationId, null, USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name)
     ]).then(([applozicCustomer, liz, bot]) => {
 
       let kmUser = getUserObject(customer, applozicCustomer, application);
@@ -124,7 +125,7 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   userObject.name = applozicUser.displayName;
   userObject.brokerUrl = applozicUser.brokerUrl;
   userObject.userKey = applozicUser.userKey;
-  type === 2? userObject.roleType = ROLE_TYPE.BOT :"";
+  type === 2? userObject.roleType = COMMON_CONSTANTS.ROLE_TYPE.BOT :"";
 
   return userObject;
 };
@@ -208,13 +209,13 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
 exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
   options.email = options.email || options.userName;
   return applozicClient.getApplication({ "applicationId": options.applicationId, "userName": options.userName, "accessToken": options.password }, isApplicationWebAdmin).then(application => {
-    return Promise.all([applozicClient.applozicLogin({ "userName": options.userName, "password": options.password, "applicationId": options.applicationId, "roleName": "APPLICATION_WEB_ADMIN", "email": options.email }),
+    return Promise.all([applozicClient.applozicLogin({ "userName": options.userName, "password": options.password, "applicationId": options.applicationId, "roleName": USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name, "email": options.email }),
     applozicClient.applozicLogin({ "userName": "bot", "password": "bot", "applicationId": options.applicationId, "roleName": "BOT" }),
     applozicClient.applozicLogin({ "userName": LIZ.userName, "password": LIZ.password, "applicationId": application.applicationId, "roleName": "BOT", displayName: LIZ.name,imageLink: LIZ.imageLink })])
       .then(([customer, bot, liz]) => {
-        return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: "APPLICATION_WEB_ADMIN" }, null, false, isApplicationWebAdmin + '')
+        return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name }, null, false, isApplicationWebAdmin + '')
           .then(updatedUser => {
-            options.role = "APPLICATION_WEB_ADMIN";
+            options.role = USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name;
             // if(application.pricingPackage == 0 || application.pricingPackage == -1) {
             //   applozicClient.updateApplication({applicationId: application.applicationId, pricingPackage: 101})
             // }

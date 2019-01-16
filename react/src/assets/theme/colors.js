@@ -13,12 +13,13 @@ const Colors = {
         danger: "#ED222A",
         dangerHover: "#bf191f",
         disabledBG: "#bbbbbb",
-        disabledText: "#c4c6c8"
+        disabledText: "#c4c6c8",
+        success: "#2dd35c"
     },
     KommunicateColors:  {
         primary: "#5553B7", 
         primaryLight: "#E5E4FF",
-        secondary: "#000",
+        secondary: "#5553B7",
         buttonSecondary: "#FFFFFF",
         buttonPrimaryColorText: "#FFFFFF",
         buttonSecondaryColorText: "#5553B7",

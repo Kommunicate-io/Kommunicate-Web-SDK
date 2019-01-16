@@ -36,6 +36,7 @@ import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
+import MessageGroups from '../../ALDashboard/views/Groups/MessageGroups';
 
 
 
@@ -255,7 +256,7 @@ class Full extends Component {
           <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName} isIntegrationStarted={this.state.isIntegrationStarted}/>
           <main className="main" style={currentPath.includes('/settings')?settingStyle:null}>
             <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
-              <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
+              <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">{CommonUtils.getProductName()} Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
               <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
             </div>
             <Breadcrumb />
@@ -265,20 +266,22 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" render={() => <Dashboard {...this.props} />} />
                 <Route exact path="/users" name="Tables" render={() => <Users {...this.props} />} />
                 <Route exact={false} path="/conversations" name="Conversations" render={() => <Conversations {...this.props} />} />
+                <Route exact path="/message-groups" name="Groups" render={() => <MessageGroups {...this.props} /> } />
                 <Route exact path="/reports" name="Reports" render={() => <Reports {...this.props} />} />
                 <Route exact path="/bot" name="Bot" render={() => <Bot {...this.props} />} />
                 <Route exact path="/settings/profile" name="Admin" render={() => {
                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }} />
+                <Redirect from="/settings/agent-assignment" to="/settings/conversation-rules" />
                 <Route exact path="/faq" name="Faq" render={() => <Faq {...this.props} />} />
                 <Route exact path="/settings/team" name="Team" render={() => <Team {...this.props} />} />
                 <Route exact path="/settings/autoreply" name="Autoreply" render={() => <Autoreply {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
                 <Route exact path="/settings/away-message" name="AwayMessage" render={() => <AwayMessage {...this.props} />} />
-                <Route exact path="/settings/message-shortcuts" name="AutoSuggest" render={() => <AutoSuggest {...this.props} />} />
+                <Route exact path="/settings/quick-replies" name="AutoSuggest" render={() => <AutoSuggest {...this.props} />} />
                 <Route exact path="/settings/install" name="Install" render={() => <Install {...this.props} />} />
                 <Route exact path="/settings/agent-app" name="Download" render={() => <Download {...this.props} />} />
-                <Route exact path="/settings/agent-assignment" name="AgentAssignment" render={() => <AgentAssignemnt {...this.props} />} />
+                <Route exact path="/settings/conversation-rules" name="ConversationRules" render={() => <AgentAssignemnt {...this.props} />} />
                 <Route exact path="/settings/billing" name="Billing" render={() => <Billing {...this.props} />} />
                 <Route exact path="/integrations" name="Integrations" render={() => <Integrations {...this.props} />} />
                 <Route exact path="/settings/pushnotification" name="PushNotification" render={() => <PushNotification {...this.props} />} />
@@ -288,7 +291,7 @@ class Full extends Component {
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
 
-                <Redirect from="/" to="/dashboard" />
+                <Redirect from="/" to="/dashboard" />      
 
               </Switch>
             </div>

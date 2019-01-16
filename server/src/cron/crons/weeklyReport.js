@@ -10,10 +10,33 @@ const dashboardUrl = config.getProperties().urls.dashboardHostUrl;
 const kmWebsiteLogoIconUrl = config.getCommonProperties().companyDetail.companyLogo;
 const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-icon.png";
 const subscription = require('../../utils/utils').SUBSCRIPTION_PLAN;
-
+var fs = require('fs');
+var util = require('util');
+var filePath = path.join(__dirname, "../../../logs/debug.log");
+var logFile = fs.createWriteStream(filePath, {flags : 'a'});
+console.report = function(d) { 
+    logFile.write(util.format(d) + '\n');
+};
+const sendCronCompletionReport=()=>{
+    try {
+        mailService.sendMail({            
+            to: "anand@applozic.com",
+            from: "Devashish From Kommunicate <support@kommunicate.io>",
+            subject: "Weekly cron processed",
+            templatePath: filePath,
+            sendAsText:true
+        }).then(result=>{
+                fs.writeFile(filePath," ", function(err) {
+                    if (err) console.log("err: ", err);
+                })
+            })
+    } catch (error) {
+       console.log("report sending error: ", err) 
+    }
+}
 
 exports.sendWeeklyReportsToCustomer = () => {
-    console.log("sendWeeklyReportsToCustomer cron started at: ", new Date());
+    console.report(`sendWeeklyReportsToCustomer cron started at: ${new Date()}`);
     getApplicationRecursively();
 }
 
@@ -25,11 +48,11 @@ const getApplicationRecursively = (criteria) => {
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
-            console.log("sendWeeklyReportsToCustomer : all application processed")
+            console.report(`sendWeeklyReportsToCustomer : all application processed ${new Date()}`)
+            sendCronCompletionReport();
             return;
         }
         let apps = applications.map((app, index) => {
-            console.log("weekly report processing for application: ", app.applicationId);
             return processOneApp(app);
         })
         return Promise.all(apps).then(result => {
@@ -48,14 +71,16 @@ const processOneApp = (app) => {
         let adminAgent = users.filter(user => {
             return user.type == 3
         });
+        if (adminAgent.length < 1) {
+            console.log("admin not found for app: ", app.applicationId)
+            return "No admin";
+        }
         if (!adminAgent[0].emailSubscription) {
             console.log("unsubscribed for user: ", adminAgent[0].userName)
             return;
         }
         return customerService.getCustomerByApplicationId(app.applicationId).then(customer => {
-            if (adminAgent.length < 1) {
-                return "No admin ";
-            }
+            if (!customer.email) return "customer email is empty";
             let headers = { "Apz-Token": "Basic " + new Buffer(adminAgent[0].userName + ":" + adminAgent[0].accessToken).toString('base64'), "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
             let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key" }
             return applozicClient.getConversationStats(params, headers).then(stats => {
@@ -63,11 +88,8 @@ const processOneApp = (app) => {
                     return "no stats for this app"
                 }
                 return generateReport(stats, users).then(report => {
-                    console.log("sending weekly report for application: ", app.applicationId);
-                    if (report.overAllReport.newConversationCount >= 25) {
-                        return sendWeeklyReport(report, customer, app.applicationId);
-                    }
-                    return;
+                    report.growthPlanTemplate = (report.overAllReport.newConversationCount >= 25 && customer.subscription == subscription.initialPlan) ? "block" : "none";
+                    return sendWeeklyReport(report, customer, app.applicationId);
                 })
 
             })
@@ -135,6 +157,9 @@ const generateTemplate = (report) => {
             htmlTemplate += template;
         })
         return htmlTemplate;
+    }).catch(err=>{
+        console.log("Template generation error: ", err);
+        return;
     })
 }
 
@@ -159,12 +184,12 @@ const sendWeeklyReport = (report, customer, appId) => {
             "dashboardUrl": dashboardUrl,
             "weeklyReportIcon": weeklyReportIcon,
             "BILLINGURL": dashboardUrl + "/settings/billing",
-            "DISPLAYGROWTHPLAN": (customer.subscription == subscription.initialPlan) ? "block" : "none",
+            "DISPLAYGROWTHPLAN": report.growthPlanTemplate,
             "UNSUBSCRIBEURL": dashboardUrl + "/unsubscribe?appId=" + appId + "&email=" + encodeURIComponent(customer.email)
         }
         Object.assign(templateReplacement, resolutionTime, { "RESPONSE_HOUR": responseTime.HOURS, "RESPONSE_MINUTE": responseTime.MINUTES, "RESPONSE_SECOND": responseTime.SECONDS });
 
-
+        console.report(`sending weekly report mail to: ${customer.email} for app ${appId}`);
         let mailOptions = {
             to: customer.email,
             from: "Devashish From Kommunicate <support@kommunicate.io>",
@@ -173,6 +198,9 @@ const sendWeeklyReport = (report, customer, appId) => {
             templateReplacement: templateReplacement
         }
         return mailService.sendMail(mailOptions);
+    }).catch(error => {
+        console.log("weekly report sending error: ", error);
+        return;
     })
 }
 
