@@ -49,18 +49,8 @@ class App extends Component {
     this.props.logInStatus && this.getAppSettings()
     setTimeout(() => this.setState({ loading: false }), 1500); 
     // simulates an async action, and hides the spinner
-    // this.isKommunicateVersionInStorage();
     CommonUtils.isLatestKmVersionOnLocalStorage() && this.props.logInStatus && this.logoutForOlderVersion()
   }
-
-  isKommunicateVersionInStorage = () => {
-    const currentPath = window.location.pathname;
-    var kommunicateVersion;
-    var notfromLoginOrSignup = (currentPath.includes('/login') || currentPath.includes('/signup'));
-    var releaseVersion = "3.3";
-    (w.localStorage) !== "undefined" && (kommunicateVersion = window.localStorage.getItem("kommunicateVersion"));
-    (typeof kommunicateVersion !== "undefined" && CommonUtils.getUserSession() != null && kommunicateVersion !== releaseVersion && !notfromLoginOrSignup) ? this.logoutForOlderVersion(releaseVersion) : (this.props.logInStatus && this.getAppSettings());
-  };
 
   logoutForOlderVersion = () => {
     this.props.resetStore();
