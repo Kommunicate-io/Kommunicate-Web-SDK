@@ -1706,9 +1706,9 @@ ol, ul {
 
 .km-msg-avator-bubble .km-msg-avator {
 	display: block;
-	top : 15px;
+	/* top : 15px; */
 	position: absolute;
-	margin-top: -21.5px;
+	/* margin-top: -21.5px; */
 }
 
 .km-msg-avator-bubble.km-msg-right .km-msg-avator {

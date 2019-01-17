@@ -313,7 +313,7 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
   }
 
-  setUpAgentUI(group){
+  setUpConversationHeader(group){
     if(group){
       document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("n-vis");
       document.getElementsByClassName("km-new-conversation-header")[0].classList.add("vis");
@@ -332,7 +332,7 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
     //pseudoNameIcon.classList.remove("vis");
     //pseudoNameIcon.classList.add("n-vis");
-    this.setUpAgentUI(group);
+    this.setUpConversationHeader(group);
     if (group) {
       let allBotsInGroup = [];
       for (var key in group.users) {
