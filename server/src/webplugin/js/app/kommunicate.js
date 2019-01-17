@@ -295,9 +295,9 @@ $applozic.extend(true,Kommunicate,{
             switch (metadata.templateId) {
                 // add template Id to enable slick effect
                 // 2 for get room pax info template
-                case "2":
-                case "4":
-                case "10":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return "km-slick-container";
                     break;
                 case "6":
