@@ -199,7 +199,7 @@ class Register extends Component {
         });
       }
       response.data.data.displayName=response.data.data.name;
-      CommonUtils.setItemInLocalStorage("kommunicateVersion",KM_RELEASE_VERSION)
+      CommonUtils.updateKommunicateVersion();
      saveToLocalStorage(email, password, name, response);
      _this.props.saveUserInfo(response.data.data);
      _this.props.logInStatus(true);
