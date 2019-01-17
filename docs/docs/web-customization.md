@@ -37,6 +37,25 @@ Kommunicate.customizeWidgetCss(cssChanges);
 
 ```
 
+#### To show/hide the Chat Widget
+To hide the chat widget you can use the following CSS.
+
+```css
+/* To hide the Chat Widget */
+#kommunicate-widget-iframe {
+    display: none;
+}
+```
+
+To show the chat widget on click of a button use the following code.
+```javascript
+var btn = document.getElementById("button"); //Assuming this the button on your website from where you will trigger the click event to show the chat widget
+
+btn.addEventListener("click", function() {
+    document.getElementById("kommunicate-widget-iframe").style.display = 'block';
+});
+```
+
 ## Default metadata 
 Add this metadata in kommunicate setting.This will send defaultMessageMetaData with every message.
 
