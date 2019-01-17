@@ -2762,7 +2762,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageLayout.loadTab({"tabId":groupId ,"isGroup":false});
 				} else {
 				var number = /^\d+$/.test(groupId)
-				if (number) {
+				if (status == "km-all-conversation-list" && number) {
 					kmGroupService.getGroupFeed({
 						'groupId': groupId,
 						'callFromUrl': true,
@@ -2834,7 +2834,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL,
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.allConversations = data.response.groupFeeds.length);
-						 mckMessageService.addContactInConversationList(data, null, conversationList);
+						 mckMessageService.addContactInConversationList(data, conversationList);
 						 mckMessageService.initSearch();
 						 if (!params.initialcall) {
 							mckMessageLayout.updateSearchSourceMap();
@@ -2859,7 +2859,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.closedConversations = data.response.groupFeeds.length);
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
-						mckMessageService.addContactInConversationList(data, individual, "km-closed-conversation-list", list);
+						mckMessageService.addContactInConversationList(data, "km-closed-conversation-list", list);
 						if (!params.initialcall) {
 							mckMessageLayout.updateSearchSourceMap();
 						}
@@ -2900,7 +2900,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.assignedToMeConversations = data.response.groupFeeds.length);
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
-						mckMessageService.addContactInConversationList(data, individual, "km-assigned-search-list", list);
+						mckMessageService.addContactInConversationList(data, "km-assigned-search-list", list);
 						if (!params.initialcall) {
 							mckMessageLayout.updateSearchSourceMap();
 						}
