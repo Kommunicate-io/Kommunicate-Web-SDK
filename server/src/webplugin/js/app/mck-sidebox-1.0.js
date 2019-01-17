@@ -8518,7 +8518,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     _this.connectToSocket(isFetchMessages);
             };
             _this.connectToSocket = function (isFetchMessages) {
-                if (!stompClient.connected) {
                     if (isFetchMessages && $mck_sidebox.css('display') === 'block') {
                         var currTabId = $mck_message_inner.data('mck-id');
                         if (currTabId) {
@@ -8540,6 +8539,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             });
                         }
                     }
+                if (!stompClient.connected) {
                     _this.init();
                 }
             };
