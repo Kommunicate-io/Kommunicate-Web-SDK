@@ -715,26 +715,29 @@ const isDeletedUser= (userName, applicationId) => {
   })
 }
 
-const updateSubscriptionQuantity = async function(user, count){  
-  console.log("processing subscription quanity: " + count);
+const updateSubscriptionQuantity = async function (user, count) {
+  console.log("processing subscription quantity: " + count);
   if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.BOT || user.type == registrationService.USER_TYPE.ADMIN)) {
     return customerService.getCustomerByApplicationId(user.applicationId).then(async customer => {
       if (customer.billingCustomerId) {
 
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let usersCount = await getUsersCountByTypes(user.applicationId, null) - FREE_BOTS_COUNT;
-        
-        if ((count < 0 && (result.subscription.plan_quantity > (usersCount + count))) || 
-              (count > 0 && (result.subscription.plan_quantity >= usersCount))) {
+
+        if ((count < 0 && (result.subscription.plan_quantity > (usersCount + count))) ||
+          (count > 0 && (result.subscription.plan_quantity >= usersCount))) {
           console.log("users count is less than the subscription quantity, skipping subscription update");
           return;
         }
-
         return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
       }
       return;
+    }).catch(error => {
+      console.log(`error in updateSubscriptionQuantity : ${user} ${count} error: ${error}`)
+      return;
     });
   }
+  return;
 }
 const getUserByCriteria = async (criteria)=>{
   logger.info("fetching user by criteria", criteria);

@@ -59,8 +59,9 @@ const updateSubscription = (subscriptionId, options) => {
 const updateSubscriptionQuantity = (subscriptionId, planQuantity) => {
     return getSubscriptionDetail(subscriptionId).then(result => {
         return updateSubscription(result.subscription.customer_id, { "plan_quantity": planQuantity + result.subscription.plan_quantity });
-    })
-
+    }).catch(error=>{
+        throw error
+    });
 }
 module.exports = {
     getSubscriptionDetail,
