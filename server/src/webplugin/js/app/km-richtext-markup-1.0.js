@@ -248,6 +248,30 @@ getListMarkup:function(){
    </div>
    {{/payload}}
    </div>`
+},
+getCarouselTemplate: function() {
+return `<div class="km-carousel-card-template">
+            {{#payload}}
+                <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
+                <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
+                <div class="km-carousel-card-footer">{{{footer}}}</div>
+            {{/payload}}
+        </div>`
+},
+getButtonListTemplate: function() {
+    return `{{#buttons}}<button class="km-carousel-card-button">{{name}}</button>{{/buttons}}`
+},
+getCardHeaderTemplate: function() {
+    return `<img class="{{headerImageClass}}" src="{{imgSrc}}"></img>
+            <div class="{{headerOverlayTextClass}}">{{overlayText}}</div>`
+},
+getCardInfoTemplate: function() {
+    return `<div class="km-carousel-card-title-wrapper">
+                <div class="km-carousel-card-title">{{title}}</div>
+                <div class="km-carousel-card-title-extension">{{titleExt}}</div>
+            </div>
+            <div class="km-carousel-card-sub-title">{{subtitle}}</div>
+            <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`
 }
 
 };
@@ -395,4 +419,46 @@ Kommunicate.markup.getHtmlMessageMarkups = function (message) {
         return "<iframe class='km-mail-fixed-view' id=" + uniqueId + " ></iframe>";
     }
     return ""; 
+}
+Kommunicate.markup.getCarouselMarkup = function(options) {
+    var cardList =[]; 
+    var cardHtml= {}
+    var image = true
+    var footer,header,info;
+    var headerOverlayTextClass, headerImageClass, carouselHeaderClass, carouselInfoWrapperClass;
+    if (options && options.payload) {
+        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        for (var item of options.payload) {
+            item.header && (headerOverlayTextClass = item.header.overlayText ? (item.header.imgSrc ? "km-carousel-card-overlay-text ":"km-carousel-card-overlay-text  km-carousel-card-overlay-text-without-img") : "n-vis");     
+            carouselHeaderClass = item.header ? (item.header.imgSrc ? "":"km-carousel-card-header-without-img" ): "n-vis";  
+            carouselInfoWrapperClass = item.header ? "": "km-carousel-card-info-wrapper-without-header";
+            carouselInfoWrapperClass = item.buttons ? carouselInfoWrapperClass.concat(" km-carousel-card-info-wrapper-with-buttons"): "";
+            item.header && (headerImageClass = item.header.imgSrc ? "km-carousel-card-img": "n-vis");
+            item.header && (item.header["headerOverlayTextClass"] = headerOverlayTextClass);
+            item.header && (item.header["headerImageClass"] =headerImageClass);
+            item["cardDescriptionClass"] = item.description ? "km-carousel-card-description-wrapper" : "n-vis"
+            cardHtml["carouselHeaderClass"] = carouselHeaderClass;
+            cardHtml["carouselInfoWrapperClass"] = carouselInfoWrapperClass;
+
+            item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
+            cardHtml.info = Kommunicate.markup.cardInfo(item);
+            item.buttons && (cardHtml.footer = Kommunicate.markup.listOfButtons(item));
+
+            cardList.push(cardHtml);
+        }
+    }
+    let cardCarousel = {payload:cardList};
+
+    return Mustache.to_html(Kommunicate.markup.getCarouselTemplate(),cardCarousel)
+
+}
+Kommunicate.markup.listOfButtons = function(item) {
+    return Mustache.to_html(Kommunicate.markup.getButtonListTemplate(),item)
+}
+Kommunicate.markup.cardHeader = function(item) {
+    return Mustache.to_html(Kommunicate.markup.getCardHeaderTemplate(),item)
+}
+Kommunicate.markup.cardInfo= function(item) {
+    return Mustache.to_html(Kommunicate.markup.getCardInfoTemplate(),item)
 }

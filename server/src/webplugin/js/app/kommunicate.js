@@ -333,35 +333,37 @@ $applozic.extend(true,Kommunicate,{
         if (metadata.templateId) {
             switch (metadata.templateId) {
                 // 1 for get room pax info template
-                case "1":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_COUNT:
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
                     break;
                 //2 for hotel card template
-                case "2":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
 
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList || "[]"), metadata.sessionId);
                     break;
                 // 3 for button container
-                case "3":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LINK_BUTTON:
                     return Kommunicate.markup.buttonContainerTemplate(metadata);
-                    break;
-                case "5":
+                    break; 
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.PASSENGER_DETAIL:
                     return Kommunicate.markup.getPassangerDetail(metadata);
                     break;
-                case "4":
-                    return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
+                    return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId);
                     break;
-                case "6":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
                     return Kommunicate.markup.quickRepliesContainerTemplate(metadata);
                     break;
-                case "7":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
                     return Kommunicate.markup.getListContainerMarkup(metadata);
-                    
-                case "8":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.DIALOG_BOX:
                     return Kommunicate.markup.getDialogboxContainer(metadata);
-                case "9":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
                     return Kommunicate.markup.getImageContainer(metadata);
                     break;    
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
+                    return Kommunicate.markup.getCarouselMarkup(metadata);
+                    break;
                 default:
                     return "";
                     break;
