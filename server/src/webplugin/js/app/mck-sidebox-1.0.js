@@ -7508,13 +7508,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     $mck_group_name_save.removeClass('vis').addClass('n-vis');
                     $mck_group_name_edit.removeClass('n-vis').addClass('vis');
                     $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                    $mck_sidebox_content.removeClass('vis').addClass('n-vis');
                     $mck_sidebox_search.removeClass('vis').addClass('n-vis');
                     $mck_group_update_panel.removeClass('vis').addClass('n-vis');
                     $mck_group_create_tab.removeClass('vis').addClass('n-vis');
                     $mck_btn_group_icon_save.removeClass('vis').addClass('n-vis');
                     $mck_group_info_icon_loading.removeClass('vis').addClass('n-vis');
-                    $mck_group_info_tab.removeClass('n-vis').addClass('vis');
                     $mck_group_info_tab.data('mck-id', params.groupId);
                     $mck_group_info_icon.data('iconurl', '');
                     if (params.conversationId) {
