@@ -2762,7 +2762,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageLayout.loadTab({"tabId":groupId ,"isGroup":false});
 				} else {
 				var number = /^\d+$/.test(groupId)
-				if (status == "km-all-conversation-list" && number) {
+				if (number) {
 					kmGroupService.getGroupFeed({
 						'groupId': groupId,
 						'callFromUrl': true,
@@ -4003,9 +4003,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						});
 					}
 						var section = CONVERSATION_SECTION_MAP[params.tabViewId];
-						if(!params.isGroup){
-							section ="as";
-						}
 						var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 						var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 						$kmApplozic("#km-li-"+section+"-"+ contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");	
@@ -4733,7 +4730,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				_this.updateRecentConversationList(group, message, update, false, list);
 			};
-			_this.checkSectionId = function (group, message) {
+			_this.checkSectionId = function (group) {
+				var defaultList = group.isGroup ? "km-contact-list" :"km-assigned-search-list"; // check 1-1 chat or group chat
 					if (group.metadata && group.metadata.CONVERSATION_STATUS && (KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(group.metadata.CONVERSATION_STATUS))) {
 						// closed conversation
 						return "km-closed-conversation-list";
@@ -4742,7 +4740,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						if (group.metadata && group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
 							return "km-assigned-search-list";
 						} else {
-							return "km-contact-list";
+							return defaultList;
 						}
 					}
 			}
