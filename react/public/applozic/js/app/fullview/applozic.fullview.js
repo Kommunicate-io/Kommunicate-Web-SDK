@@ -2772,7 +2772,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				} else if (status == "km-all-conversation-list" && !window.location.pathname.indexOf("/conversations/") && groupId) {
 					renderConversation404();
 				} 
-			}
+			}}
 			_this.checkForRoleType = function (group) {
 				if (typeof group.groupId !== 'undefined' && typeof group.userId !== 'undefined') {
 					var conversationDetail = {
@@ -4739,7 +4739,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						return "km-closed-conversation-list";
 					} else {
 						//open conversation
-						if (group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
+						if (group.metadata && group.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
 							return "km-assigned-search-list";
 						} else {
 							return "km-contact-list";
@@ -5434,13 +5434,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								emoji_template = w.kmemoji.replace_unified(msg);
 								emoji_template = w.kmemoji.replace_colons(emoji_template);
 								emoji_template = (emoji_template.indexOf('</span>') !== -1) ? emoji_template.substring(0, emoji_template.lastIndexOf('</span>')) : emoji_template.substring(0, size);
-							}
-							if (!contact.isGroup) {
-								if (emoji_template.indexOf('emoji-inner') === -1 && message.contentType === 0) {
-									var x = d.createElement('p');
-									x.appendChild(d.createTextNode(emoji_template));
-									emoji_template = x;
-								}
 							}
 						}
 					} else if (message.fileMetaKey && typeof message.fileMeta === "object") {

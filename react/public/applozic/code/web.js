@@ -118,13 +118,15 @@ var autoSuggestions = {};
 function getUserIdFromGroup(groupId){
     group = kmGroupUtils.getGroup(groupId);
     var userIds = Object.keys(group.users);
+    var tabId;
     userIds.filter(function (userId, index) {
       var user = group.users[userId];
       if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
-        tabId = userId;
-        return tabId;
+         tabId =userId;
+         return;
       } 
     })
+      return tabId;
 }
 
 function displayUserInfo(tabDetail) {

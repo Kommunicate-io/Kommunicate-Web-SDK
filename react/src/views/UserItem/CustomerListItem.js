@@ -90,27 +90,13 @@ class CustomerListItem extends Component {
   }
 
   converastionAssignee() {
-    var displayIconColor;
     var user = this.props.user;
     var status = user.messagePxy.status;
     var convoStatus = user.convoStatus;
-    var assignee = user.assignee? user.assignee: "";
-    if (assignee) {
-      if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
-        return <span className="assignee-open">
-          <strong>
-            ASSIGNED -</strong>{assignee}
-        </span>;
-      } else if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.CLOSED) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.SPAM) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.DUPLICATE)) {
-        return <span className="assignee-closed">
-          <strong>
-            CLOSED -</strong>{assignee}
-        </span>;
-      }
-    } else{
-      return <strong>ASSIGNED -{user.displayName||user.userId}</strong>;
-    }
-      return "";
+    var assignee = user.assignee? user.assignee: user.displayName||user.userId;
+    var convoClass = KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)?"assignee-closed" :"assignee-open";
+    var initalText = KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? "CLOSED" :"ASSIGNED";
+    return <span className ={convoClass}><strong>{initalText} -</strong>{assignee} </span>; 
   }
 
   render() {
