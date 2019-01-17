@@ -160,7 +160,7 @@ const CommonUtils = {
     }, 
     isLatestKmVersionOnLocalStorage: function(){
         var kmSessionReleaseVersion =CommonUtils.getItemFromLocalStorage("kommunicateVersion")
-        return !(kmSessionReleaseVersion && (KM_RELEASE_VERSION == kmSessionReleaseVersion))
+        return (kmSessionReleaseVersion && (KM_RELEASE_VERSION == kmSessionReleaseVersion))
     },
     triggerCustomEvent: function(eventName, options) {
         options = typeof options != 'object' ? options : {}

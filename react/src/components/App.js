@@ -49,7 +49,7 @@ class App extends Component {
     this.props.logInStatus && this.getAppSettings()
     setTimeout(() => this.setState({ loading: false }), 1500); 
     // simulates an async action, and hides the spinner
-    CommonUtils.isLatestKmVersionOnLocalStorage() && this.props.logInStatus && this.logoutForOlderVersion()
+    !CommonUtils.isLatestKmVersionOnLocalStorage() && this.props.logInStatus && this.logoutForOlderVersion()
   }
 
   logoutForOlderVersion = () => {
