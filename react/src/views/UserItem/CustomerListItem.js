@@ -94,8 +94,8 @@ class CustomerListItem extends Component {
     var status = user.messagePxy.status;
     var convoStatus = user.convoStatus;
     var assignee = user.assignee? user.assignee: user.displayName||user.userId;
-    var convoClass = KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)?"assignee-closed" :"assignee-open";
-    var initalText = KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? "CLOSED" :"ASSIGNED";
+    var convoClass,initalText;
+    KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? (convoClass ="assignee-closed",initalText="CLOSED") :(convoClass ="assignee-open",initalText="ASSIGNED");
     return <span className ={convoClass}><strong>{initalText} -</strong>{assignee} </span>; 
   }
 
