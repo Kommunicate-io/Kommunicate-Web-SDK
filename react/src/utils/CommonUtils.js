@@ -1,7 +1,7 @@
 import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
 import crypto from 'crypto';
-import {THIRD_PARTY_LOGIN} from '../utils/Constant';
+import {THIRD_PARTY_LOGIN, KM_RELEASE_VERSION} from '../utils/Constant';
 import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs.js';
 
 export const PRODUCTS = {
@@ -154,6 +154,13 @@ const CommonUtils = {
             }
             return data;
         }
+    },
+    updateKommunicateVersion: function() {
+        CommonUtils.setItemInLocalStorage("kommunicateVersion",KM_RELEASE_VERSION)
+    }, 
+    isLatestKmVersionOnLocalStorage: function(){
+        var kmSessionReleaseVersion =CommonUtils.getItemFromLocalStorage("kommunicateVersion")
+        return (kmSessionReleaseVersion && (KM_RELEASE_VERSION == kmSessionReleaseVersion))
     },
     triggerCustomEvent: function(eventName, options) {
         options = typeof options != 'object' ? options : {}

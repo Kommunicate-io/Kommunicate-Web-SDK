@@ -30,7 +30,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions/applicationAction';
 import * as ClearReduxAction from '../actions/index'
 import {Subscribe, Unsubscribe} from '../views/Pages/subscription/Subscribe';
-
+import {KM_RELEASE_VERSION} from '../../src/utils/Constant'
 
 
 
@@ -46,27 +46,18 @@ class App extends Component {
       }
   }
   componentDidMount() {
+    this.props.logInStatus && this.getAppSettings()
     setTimeout(() => this.setState({ loading: false }), 1500); 
     // simulates an async action, and hides the spinner
-    this.isKommunicateVersionInStorage();
+    !CommonUtils.isLatestKmVersionOnLocalStorage() && this.props.logInStatus && this.logoutForOlderVersion()
   }
 
-  isKommunicateVersionInStorage = () => {
-    const currentPath = window.location.pathname;
-    var kommunicateVersion;
-    var notfromLoginOrSignup = (currentPath.includes('/login') || currentPath.includes('/signup'));
-    var releaseVersion = "3.3";
-    (w.localStorage) !== "undefined" && (kommunicateVersion = window.localStorage.getItem("kommunicateVersion"));
-    (typeof kommunicateVersion !== "undefined" && kommunicateVersion !== releaseVersion && !notfromLoginOrSignup) ? this.logoutForOlderVersion(releaseVersion) : (this.props.logInStatus && this.getAppSettings());
-  };
-
-  logoutForOlderVersion = (releaseVersion) => {
+  logoutForOlderVersion = () => {
     this.props.resetStore();
     sessionStorage.clear();
     localStorage.clear();
     // CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID);
     this.props.resetStore();
-    window.localStorage.setItem("kommunicateVersion", releaseVersion);
     window.history.pushState({
       urlPath: '/login'
     }, "", '/login');
