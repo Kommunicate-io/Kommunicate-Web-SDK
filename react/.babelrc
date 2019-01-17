@@ -1,4 +1,4 @@
 {
-    "plugins": ["babel-plugin-styled-components"],
+    "plugins": ["babel-plugin-styled-components", "syntax-class-properties", ["transform-class-properties", { "spec": true }]],
     "presets":["babel-preset-env", "react"]
 }

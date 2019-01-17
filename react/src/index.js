@@ -13,8 +13,9 @@ import * as Sentry from '@sentry/browser'
 import { getConfig } from '../src/config/config'
 import CommonUtils from '../src/utils/CommonUtils';
 import {setTag} from '../src/sentry/sentry'
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import theme from './assets/theme/theme';
+
 
 const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 
@@ -24,6 +25,16 @@ enableSentry && Sentry.init({
 enableSentry && Sentry.configureScope((scope) => {
   setTag(scope);
 });
+
+const GlobalStyle = createGlobalStyle`
+  .product {
+    display: none;
+  }
+  .product.product-${CommonUtils.getProduct()} {
+    display: block;
+  }
+`
+
 // const store = createStore(rootReducer, applyMiddleware(logger)
 
 ReactDOM.render(
@@ -31,6 +42,7 @@ ReactDOM.render(
     <PersistGate loading={null} persistor={persistor}>
       <ThemeProvider theme={theme}>
         <Fragment>
+          <GlobalStyle/>
           <App />
         </Fragment>
       </ThemeProvider>

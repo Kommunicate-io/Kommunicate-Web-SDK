@@ -154,8 +154,8 @@ class TrialDaysLeft extends Component {
         } else {
             daysLeft = ["", <span key="0">upgrade plan</span>, ""];
         }
+        //Note: For Applozic, once pricing is finalized, upgrade will come.
         
-
         return (
             <div className={(CommonUtils.isTrialPlan() || CommonUtils.isStartupPlan()) ? "km-trial-days-left-container" : "n-vis"}
             // onMouseOver={this.showPopup}
@@ -165,7 +165,7 @@ class TrialDaysLeft extends Component {
                         <p>{daysLeft}</p>
                     </div>
                     :
-                    <div className="km-trial-days-left">
+                    <div className={"km-trial-days-left product product-kommunicate"}>
                         <Link to="/settings/billing" className="km-button km-button--secondary trial-over">{daysLeft}</Link>
                     </div>
                 }
