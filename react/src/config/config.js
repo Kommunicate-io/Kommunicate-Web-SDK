@@ -73,10 +73,14 @@ function getEnvironmentId() {
   }
   config.products = {
     kommunicate: {
-      profitwell: '71e77c6a8d59f50233d1705120049bf1'
+      profitwell: '71e77c6a8d59f50233d1705120049bf1',
+      facebookPixel: '282023555639912',
+
     },
     applozic: {
-      profitwell: '5b142e85e62527dc4ac03b209c0223f1'
+      profitwell: '5b142e85e62527dc4ac03b209c0223f1',
+      facebookPixel: '601795446665318',
+
     }
   }
 

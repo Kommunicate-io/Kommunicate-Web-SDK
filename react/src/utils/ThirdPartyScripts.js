@@ -115,11 +115,12 @@ class ThirdPartyScripts extends Component {
            n.queue=[];t=b.createElement(e);t.async=!0;
            t.src=v;s=b.getElementsByTagName(e)[0];
            s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-            window.fbq('init', '282023555639912');
+            window.fbq('init', getConfig().products[CommonUtils.getProduct()].facebookPixel);
             window.fbq('track', 'PageView');
             if(currentPath.includes('/setUpPage')) {
               window.fbq('track', 'CompleteRegistration');
             }
+            
             
             //Active Campaign script
             var trackcmp_email = '';
@@ -148,11 +149,13 @@ class ThirdPartyScripts extends Component {
                 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
                 })(window,document,'script','https://dna8twue3dlxq.cloudfront.net/js/profitwell.js','profitwell');
-            profitwell('auth_token', CommonUtils.isKommunicateDashboard() ? getConfig().products.kommunicate.profitwell: getConfig().products.applozic.profitwell); // Your unique Profitwell public API token
+            profitwell('auth_token', getConfig().products[CommonUtils.getProduct()].profitwell); // Your unique Profitwell public API token
             profitwell('user_email', profitWellUser);
       }
 
       componentWillMount(){
+        
+
         // Google Remarketing Tags
         const script = document.createElement("script");
         script.src = "https://www.googletagmanager.com/gtag/js?id=AW-828526638";
@@ -172,8 +175,10 @@ class ThirdPartyScripts extends Component {
         return (
           <div>
             <noscript>
-                <img height="1" width="1"
-                    src="https://www.facebook.com/tr?id=282023555639912&ev=PageView&noscript=1"/>
+                <img height="1" width="1" style={{display: 'none'}} src={ `https://www.facebook.com/tr?id=${getConfig().products[CommonUtils.getProduct()].facebookPixel}&ev=PageView&noscript=1` }/>
+            </noscript>
+            <noscript>
+              <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MHX5FK" height="0" width="0" style={{display:'none', visibility:'hidden'}}></iframe>
             </noscript>
           </div>
         );
