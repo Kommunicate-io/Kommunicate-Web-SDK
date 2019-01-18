@@ -241,7 +241,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                     });
                     if (assignee[0].type == 2) {
                         if (isValidUser || !customer.agentRouting) {
-                            return assignConversationToUser(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header).then(res => {
+                            return assignConversationToUser(groupId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], appId, agents.header).then(res => {
                                 return sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], assignee[0].apzToken).then(response=>{
                                     return "success";
                                 })
@@ -254,7 +254,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                    let assignTo = await assignConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers);
                                         assignTo ? await sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
                                 } else {
-                                   let response = await assignConversationToUser(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header);
+                                   let response = await assignConversationToUser(groupId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], appId, agents.header);
                                     await sendAssigneeChangedNotification(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], assignee[0].apzToken);
                                 
                                 }
