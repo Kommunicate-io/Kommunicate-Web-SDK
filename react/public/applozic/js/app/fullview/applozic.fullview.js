@@ -1397,7 +1397,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic(w).on('resize', function () {
 					var $mck_msg_inner = mckMessageLayout.getMckMessageInner();
 					if ($kmApplozic('.chat.active-chat').length > 0) {
-						var scrollHeight = $mck_msg_inner && $mck_msg_inner.get(0).scrollHeight;
+						var scrollHeight = $mck_msg_inner.get(0) && $mck_msg_inner.get(0).scrollHeight;
 						if ($mck_msg_inner.height() < scrollHeight) {
 							$mck_msg_inner.animate({
 								scrollTop: $mck_msg_inner.prop("scrollHeight")
