@@ -92,10 +92,7 @@ a, a:hover, a:focus, a:active {
 .homepage-ab-beta-landing-page-section .bg-girl-img.mailbox-img {
   max-height: 600px;
   margin: 0 auto;
-  box-shadow: 0px 5px 30px 0px rgba(199,199,199,1);
-  background: #fff;
-  padding: 0 10px;
-  border-radius: 10px;
+
 }
 .hero-text {
   font-size: 40px;
