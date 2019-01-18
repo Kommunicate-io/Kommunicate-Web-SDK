@@ -970,3 +970,141 @@
 .mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email{
 	margin-left: 10px;
 }
+.km-carousel-card-template {
+    max-width: 244px;
+    /* border: 1px solid #e7e4e4; */
+}
+.km-carousel-card-img {
+    width: 100%;
+    height: 93px;
+    object-fit: cover;
+}
+.km-carousel-card-overlay-text {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    background-color: #ffffff;
+    padding: 10px;
+    color: #0d0d0e;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 0 4px 4px 0;
+    font-size: 16px;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.km-carousel-card-header {
+    position: relative;
+    height: 93px;
+}
+.km-carousel-card-title {
+    font-size: 18px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.6px;
+    color: #141313;
+}
+.km-carousel-card-sub-title {
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    color: #565454;
+    margin-top: 4px;
+    font-weight: 400;
+}
+.km-carousel-card-description {
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #797474;
+    margin-bottom: 4px;
+    height: 44px;
+    height: auto;
+}
+.km-carousel-card-content-wrapper {
+    padding-top: 6px;
+    padding-left: 9px;
+    padding-bottom: 6px;
+    border: 1px solid #e7e4e4;
+    border-top: 0;
+}
+.km-carousel-card-title-wrapper {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.km-carousel-card-button {
+    width: 228px;
+    height: 36px;
+    border-color: #e7e4e4;
+    border-bottom: none;
+}
+.km-carousel-card-img {
+    border-radius: 5px 5px 0 0;
+}
+.km-carousel-card-title {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 220px;
+    text-overflow: ellipsis;
+}
+.km-carousel-card-title-extension {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: #000000;
+    margin-right: 9px;
+    margin-left: 8px;
+    margin-top: 4px;
+}
+.km-carousel-card-description {
+  overflow: hidden;
+  position: relative; 
+  line-height: 14.4px;
+  max-height: 43.2px; 
+  text-align: justify;  
+  margin-right: 12px;
+  padding-right: 12px;
+  margin-top: 4px;
+}
+.km-carousel-card-description:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.km-carousel-card-description:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    margin-top: 2.4px;
+    background: white;
+  }
+.km-carousel-card-footer button:last-child{
+    border-bottom: 1px solid #e7e4e4; 
+    border-radius: 0 0 5px 5px;
+}
+.km-carousel-card-overlay-text-without-img {
+    position: static;
+    background-color: #d6d6d6;
+    border-radius: 0 0 4px 0;
+    box-shadow: none;
+}
+.km-carousel-card-header-without-img {
+    height: 37px;
+    border: 1px solid #e7e4e4;
+    border-bottom: 0;
+    border-radius: 2px;
+}
+.km-carousel-card-description-wrapper {
+    height: 44px;
+}
+.km-carousel-card-info-wrapper-without-header {
+    border-top: 1px solid #e7e4e4;
+    border-radius: 7px 7px 0 0;
+}
+.km-carousel-card-info-wrapper-with-buttons {
+    border-bottom: 0;
+}

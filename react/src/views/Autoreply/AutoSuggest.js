@@ -301,6 +301,28 @@ class AutoSuggest extends Component {
 
 	}
 
+	updateQuickReplyText = (e,index) => {
+		let userShortcuts = Object.assign([], this.state.userShortcuts);	
+		var quickReplyText =  e.target.innerHTML.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, "\n");
+		userShortcuts[index].messageField = quickReplyText;
+		this.setState({ 
+			userShortcuts: userShortcuts, 
+			visibleButtons:true
+		});
+	}
+	changeActiveField = (index) =>{
+		this.setState({ 
+			activeTextField: index, 
+			visibleButtons:true 
+		},this.removeEmptyInputField);
+	}
+	saveQuickReply = (e,messageRef) =>{
+		if (e.charCode === 13 && !e.shiftKey ) {   
+			this.refs[messageRef].blur(); 
+			this.suggestionMethod(e) 
+		} 
+		this.setState({visibleButtons:true});
+	}
 
 	render() {
 
@@ -331,19 +353,13 @@ class AutoSuggest extends Component {
 						</div>
 					</div>
 					<div className="col-md-1 input-link"></div>
-					<div className="col-md-4 message-col">
-						<input type="text" ref={messageRef} className="form-control message-field" id="message-field" value={this.state.userShortcuts[index].messageField}
-							onChange={(e) => {
-								let userShortcuts = Object.assign([], this.state.userShortcuts);
-								userShortcuts[index].messageField = e.target.value;
-								this.setState({ userShortcuts: userShortcuts, visibleButtons:true })
-							}} onFocus={(e) =>{
-								this.setState({ activeTextField: index, visibleButtons:true },this.removeEmptyInputField)
-
-							} }
-							onKeyPress={(e) => { if (e.charCode === 13) { this.suggestionMethod(e); this.refs[messageRef].blur(); } this.setState({visibleButtons:true}) }} placeholder="" />
-
-
+					<div className="col-md-7 message-col">
+						<div type="text" ref={messageRef} className="form-control message-field km-quick-reply-field" id="message-field" contentEditable="true"
+						suppressContentEditableWarning="true"
+							onBlur={(e) =>{this.updateQuickReplyText(e,index)}}
+						    onFocus={(e) =>{this.changeActiveField(index)}}
+							onKeyPress={(e) => {this.saveQuickReply(e,index)}}>
+								{this.state.userShortcuts[index].messageField}</div>
 						{
 							this.state.activeTextField === index &&
 							<div className="shortcut-button-group">
@@ -354,7 +370,7 @@ class AutoSuggest extends Component {
 
 					</div>
 
-					<div className="col-md-2 tooltip-wrapper">
+					<div className="col-md-1 ">
 						{ this.state.activeTextField === index &&
 						<p className="edit-tag" >Editing</p>
 						}

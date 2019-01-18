@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 const optimization = {
     splitChunks: {
@@ -31,6 +32,7 @@ module.exports = env => {
     console.log(`\x1b[41m------ Build is running on ${env && env.REACT_APP_NODE_ENV}----${env&&env.BRAND}-\x1b[0m`)
     let faviconIconPath = env && env.BRAND == "applozic" ? 'assets/favicon/applozic.ico' : 'assets/favicon/kommunicate.ico'
     let productTitle = env && env.BRAND == "applozic"? "Applozic": "Kommunicate";
+    let analyticsScripts = env && env.BRAND == "applozic" ? 'alAnalyticsScripts.js' : 'kmAnalyticsScripts.js';
     var plugins = [
         new HtmlWebpackPlugin({
             title: productTitle,
@@ -48,9 +50,20 @@ module.exports = env => {
         new webpack.NamedModulesPlugin(),
         new CopyWebpackPlugin([
             {
-                context: './public/', from: '**/*', to: './', ignore: ['index.html', 'favicon.ico']
+                context: './public/', from: '**/*', to: './', ignore: ['index.html', 'favicon.ico', '/js/heapAnalytics.js']
+            },
+            {
+                from: './assets/js/alAnalyticsScripts.js', to: './'
+            },
+            {
+                from: './assets/js/kmAnalyticsScripts.js', to: './'
             }
         ]),
+        new HtmlWebpackIncludeAssetsPlugin({
+            assets: [analyticsScripts],
+            append: false,
+            resolvePaths: true
+        }),
         new CleanWebpackPlugin('build/**/*'),
         new MiniCssExtractPlugin({
             filename: "[name].[hash].css",

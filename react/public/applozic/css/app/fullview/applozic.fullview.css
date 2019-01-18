@@ -3667,3 +3667,6 @@ ol, ul {
 .km-contact-loading {
 	background-color: transparent;
 }
+#km-text-box{
+	white-space: pre;
+}
