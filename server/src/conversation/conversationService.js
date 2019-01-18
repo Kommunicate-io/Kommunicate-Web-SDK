@@ -8,6 +8,7 @@ const cacheClient = require("../cache/hazelCacheClient");
 const inAppMessageService = require('../application/inAppMsgService');
 const { EMAIL_NOTIFY } = require('../users/constants');
 const {GROUP_ROLE, ROUTING_RULES_FOR_AGENTS} = require("../utils/constant");
+const stringUtils = require("underscore.string");
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -222,7 +223,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
         return getAgentsList(customer, users, groupId).then(agents => {
             //assign direct given userId 
             let isValidUser = false;
-            assignToUserId = assignToUserId != "" ? assignToUserId : null;
+            assignToUserId = stringUtils.isBlank(assignToUserId) ? null : assignToUserId;
             if (assignToUserId) {
                 let assignee = users.filter(user => {
                     return user.userName == assignToUserId;
@@ -240,7 +241,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                     });
                     if (assignee[0].type == 2) {
                         if (isValidUser || !customer.agentRouting) {
-                            return assignToDefaultAgent(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header).then(res => {
+                            return assignConversationToUser(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header).then(res => {
                                 return sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], assignee[0].apzToken).then(response=>{
                                     return "success";
                                 })
@@ -253,7 +254,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                    let assignTo = await assignConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers);
                                         assignTo ? await sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
                                 } else {
-                                   let response = await assignToDefaultAgent(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header);
+                                   let response = await assignConversationToUser(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header);
                                     await sendAssigneeChangedNotification(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], assignee[0].apzToken);
                                 
                                 }
