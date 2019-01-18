@@ -4764,7 +4764,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
 				var sectionId = _this.checkSectionId(contact);
-				if (contact.isGroup && sectionId === "km-assigned-search-list") {
+				if (contact && contact.isGroup && sectionId === "km-assigned-search-list") {
 					_this.addOrUpdateContactList(contact, message, update, prepend, "km-contact-list");
 				}
 				_this.addOrUpdateContactList(contact, message, update, prepend, sectionId);
