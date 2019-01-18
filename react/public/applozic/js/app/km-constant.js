@@ -21,5 +21,11 @@ KOMMUNICATE_CONSTANTS = {
         'Close':2,
         'Spam':3,
         'Duplicate':4
-    }
+    },
+      ROLE_IN_GROUP: {
+        USER: 0,
+        ADMIN: 1,
+        MODERATOR: 2,
+        MEMBER: 3
+     }
 }

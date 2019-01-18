@@ -90,27 +90,13 @@ class CustomerListItem extends Component {
   }
 
   converastionAssignee() {
-    var displayIconColor;
     var user = this.props.user;
     var status = user.messagePxy.status;
     var convoStatus = user.convoStatus;
-    var assignee = user.assignee
-      ? user.assignee
-      : "";
-    if (assignee !== (undefined || "" || null)) {
-      if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
-        return <span className="assignee-open">
-          <strong>
-            ASSIGNED -</strong>{assignee}
-        </span>;
-      } else if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.CLOSED) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.SPAM) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.DUPLICATE)) {
-        return <span className="assignee-closed">
-          <strong>
-            CLOSED -</strong>{assignee}
-        </span>;
-      }
-    } else
-      return "";
+    var assignee = user.assignee? user.assignee: user.displayName||user.userId;
+    var convoClass,initalText;
+    KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? (convoClass ="assignee-closed",initalText="CLOSED") :(convoClass ="assignee-open",initalText="ASSIGNED");
+    return <span className ={convoClass}><strong>{initalText} -</strong>{assignee} </span>; 
   }
 
   render() {
@@ -127,7 +113,8 @@ class CustomerListItem extends Component {
     var latestConversation = user.messagePxy || null;
     var lastMessageTime = user.messagePxy? (window.$kmApplozic.fn.applozic('getDateTime', user.messagePxy.createdAtTime)) : '';
     var asignee = user.assignee? user.assignee : "";
-    var groupId = user.messagePxy? user.messagePxy.groupId : "";
+    var isGroup = user.messagePxy && user.messagePxy.groupId ? true :false;
+    var groupId = isGroup ? user.messagePxy.groupId : user.userId;
     var image = (user.imageLink)? (user.imageLink) : '';
     var imageExpr = (user.imageLink)? 'img-avatar vis' : 'n-vis';
     var nameExpr = (user.imageLink)? 'n-vis': 'km-alpha-contact-image vis';
@@ -182,7 +169,7 @@ class CustomerListItem extends Component {
       {
         this.props.hideConversation == "true"
           ? null
-          : <td className="km-conversation-tab-link" data-km-id={groupId + ''} data-isgroup="true">
+          : <td className="km-conversation-tab-link" data-km-id={groupId + ''} data-isgroup= {isGroup + ''}>
               {
                 latestConversation == null
                   ? <button type="submit" className="km-button km-button--secondary" onClick={(event) => this.handleClick(event)}>Start Conversation</button>

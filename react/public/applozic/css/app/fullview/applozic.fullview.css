@@ -666,6 +666,9 @@ a:hover {
     border-right: 1px solid #e6e6e6;
 	overflow: hidden;
 }
+.km-conversation-header-without-border{
+	border-right: none!important;
+}
 
 .km-product-box {
 	min-height: 45px;
@@ -2409,7 +2412,8 @@ ol, ul {
 .km-text-user {
 	color: #DDA185;
 	margin-left: 57px;
-    font-size: 12px;
+	font-size: 12px;
+	min-height: 6px;
 }
 
 .km-text-a {

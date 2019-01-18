@@ -9,6 +9,30 @@ $(document).ready(function() {
     window.location = '/login.html';
   });
 
+$kmApplozic("#kommunicate-panel-tabs li a").on('click', function(e) {
+    var $this = $kmApplozic(this);
+    $kmApplozic("#kommunicate-panel-tabs li").toggleClass('active');
+    $kmApplozic("#kommunicate-panel-body .km-panel-cell").removeClass('vis').addClass('n-vis');
+    $kmApplozic("#" + $this.data('tab')).removeClass('n-vis').addClass('vis');
+
+    if ($this.data('tab') == "km-customers-cell") {
+        $kmApplozic(".km-contact-search").trigger('click');
+    }
+});
+
+
+$kmApplozic(".side-nav li a").click(function() {
+var $this = $kmApplozic(this);
+    if ($this.parent().hasClass('active')) {
+        return;
+    }
+    var tab = $this.data('tab');
+    $kmApplozic(".side-nav li").removeClass('active');
+    $this.parent().addClass('active');
+    $kmApplozic(".tabs").removeClass('show').addClass('hide');
+    $kmApplozic("#tab-" + tab).removeClass('hide').addClass('show');
+});
+
 });
 
 var autoSuggestions = {};
@@ -68,23 +92,7 @@ var autoSuggestions = {};
       // awsS3Server :true,
       onInit: onInitialize,
       maxHistory: userSession.subscription === "startup" ? 30 : "", // Number of days' history that needs to be restricted
-      onTabClicked : function(tabDetail) {
-            var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
-            $mck_group_info_btn.trigger('click');
-
-            window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
-
-            window.appHistory.replace('/conversations');
-
-  					if(typeof tabDetail === 'object') {
-              if (tabDetail.isGroup) {
-                window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
-                window.Aside.initConversation(tabDetail.tabId);
-              } else {
-                window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
-              }
-            }
-					},
+      onTabClicked:displayUserInfo,
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: false,
@@ -94,7 +102,43 @@ var autoSuggestions = {};
     });
     return false;
   //});
+  } 
+
+  function fetchUserDetailAndTriggerCustomEvent(contactId){
+        $kmApplozic.fn.applozic("fetchContacts", {
+            "roleNameList": ["USER"],
+            "userId": encodeURIComponent(contactId),
+            'callback': function(response) {
+        var user = response.response.users[0];
+        kmEvents.triggerCustomEvent("_userDetailUpdate", { 'data': { 'data': user } });
+        return;
+            }
+    });
+}
+function getUserIdFromGroup(groupId){
+    group = kmGroupUtils.getGroup(groupId);
+    var userIds = Object.keys(group.users);
+    var tabId;
+    userIds.filter(function (userId, index) {
+      var user = group.users[userId];
+      if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
+         tabId =userId;
+         return;
+      } 
+    })
+      return tabId;
+}
+
+function displayUserInfo(tabDetail) {
+  if (typeof tabDetail === 'object') {
+    var userId = !tabDetail.isGroup ? tabDetail.tabId : getUserIdFromGroup(tabDetail.tabId);
+    fetchUserDetailAndTriggerCustomEvent(userId);
+    window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
+    window.appHistory.replace('/conversations');
+    window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
+    tabDetail.isGroup ? window.Aside.initConversation(tabDetail.tabId) :window.Aside.setUpAgentTakeOver();
   }
+}
 
 function activeCampaign(email) {
   $.ajax({
