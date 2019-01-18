@@ -36,7 +36,7 @@ body{
 .sign-box {
     width: 28px;
     padding: 7px;
-    background-color: #d8d8d8;
+    background-color: #f5f5f5;
     text-align: center;
     border-radius: 4px 0 0 4px;
 }
@@ -52,14 +52,15 @@ body{
     padding: 5px 0;
 }
 .shortcut-field {
-    opacity: 0.63;
     border-radius: 0 4px 4px 0;
-    border: solid 1px #9cb3de;
+    border: solid 1px #d8d8d8;
+    border-left: none;
+    height: 38px;
 }
 .message-field {
-    opacity: 0.63;
     border-radius: 4px;
-    border: solid 1px #9cb3de;
+    border: solid 1px #d8d8d8;
+    padding: 12px 10px 0px;
 }
 .shortcut-field-wrapper{
     margin-left: 15px;
@@ -195,4 +196,18 @@ body{
 }
 .tab-content {
     padding-bottom: 55px;
+}
+.km-quick-reply-field{
+    white-space: pre-wrap;
+    max-height: 88px;
+    overflow: scroll;
+    box-shadow: 3px 3px 26px 0px rgba(0, 0, 0, 0);    
+    max-width: 627px;
+    transition: all .3s;
+}
+
+.form-control.km-quick-reply-field:focus{
+    opacity: 1;
+    box-shadow: 3px 3px 26px 0px rgba(0, 0, 0, 0.15);
+    border-color: #d8d8d8;
 }
