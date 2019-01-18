@@ -314,14 +314,16 @@ class Aside extends Component {
   }
 
   setUpConversationHeader(group){
+    let kmConversationHeader = document.getElementsByClassName("km-new-conversation-header")[0];
+    let kmBoxTop = document.getElementsByClassName("km-box-top")[0] ;
     if(group){
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("n-vis");
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("vis");
-      document.getElementsByClassName("km-box-top")[0].classList.remove('km-conversation-header-without-border');
+      kmConversationHeader.classList.remove("n-vis");
+      kmConversationHeader.classList.add("vis");
+      kmBoxTop.classList.remove('km-conversation-header-without-border');
     }else{
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.remove("vis");
-      document.getElementsByClassName("km-new-conversation-header")[0].classList.add("n-vis");
-      document.getElementsByClassName("km-box-top")[0].classList.add('km-conversation-header-without-border');
+      kmConversationHeader.classList.remove("vis");
+      kmConversationHeader.classList.add("n-vis");
+      kmBoxTop.classList.add('km-conversation-header-without-border');
     }
   }
 
