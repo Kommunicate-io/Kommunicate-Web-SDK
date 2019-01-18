@@ -32,11 +32,12 @@ class ImageUploader extends Component {
   }
 
   cropMethod = (e) => {
-    e.preventDefault()
+    e.preventDefault()    
     if (document.getElementById("hidden-image-input-element").value != "") {
        var _this = this;
       return Promise.resolve(_this.onClickSave()).then(res => {
         _this.uploadImageToS3()
+        _this.props.handleClose()
       }).catch(err => {
        console.log(err);
       })
@@ -73,7 +74,7 @@ class ImageUploader extends Component {
                 this.props.updateProfilePicUrl(imageUrl);
                 this.props.updateProfileImgUrl(imageUrl);
                 Notification.info("Successfully uploaded..")
-                this.props.handleClose();
+                this.props.hideLoader();
               }
 
               )

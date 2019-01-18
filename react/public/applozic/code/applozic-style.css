@@ -463,7 +463,7 @@ body {
 .km-container .right .write input, .km-container .right .write .km-text-box
 	{
 	font-size: 16px;
-	min-height: 20px;
+	height: 45px;
 	max-height: 260px;
 	padding: 10px 10px 10px 0px;
 	width: 100%;
@@ -479,7 +479,7 @@ body {
 	overflow-x: hidden;
 	box-shadow: none !important;
 	-webkit-user-select: text;
-	transition: all 0.3s ease-in-out;
+	transition: all .3s cubic-bezier(.1,.56,.45,.990);
 }
 
 .km-container .right .write .km-text-box.km-expand-text-area-box {
@@ -603,6 +603,8 @@ body {
 }
 
 .km-panel-ft {
+	z-index: 99999;
+	position: relative;
 	text-align: left;
 	padding: 10px;
 	width: calc(100% - 10px);

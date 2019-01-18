@@ -252,8 +252,7 @@ input[type="range"]::-ms-tooltip {
     padding: 5px;
 }
 .display-photo-wrapper {
-    padding: 4px 35px 35px;
-}
+    padding: 30px 38px 35px 60px;}
 
 .avatar-editor {
     margin-bottom: 15px;
@@ -275,10 +274,13 @@ input[type="number"]::-webkit-outer-spin-button {
     align-items: center;
     justify-content: space-between;
     max-width: 930px;
-    padding: 15px 20px;
+    padding: 15px 20px 15px 0px;
+    transition: all .3s;
 }
 .forgot-password-container:hover {
     background-color: #f0efff;
+    padding: 15px 10px 15px 10px;
+
 }
 .forgot-password-container .forgot-password-texts h2 {
     font-size: 18px;
@@ -311,4 +313,23 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .flexi-jc-sb {
     justify-content: space-between;
+}
+
+.display-photo-wrapper-container{
+    position: relative;
+    width: 285px;
+    height: 255px;
+}
+
+.loading.show-loader.profile-loader{
+    position: absolute;
+    left: 73px;
+    top: -10px;
+    height: 100px;
+    width: 141px;
+}
+
+.km-profile-wrapper{
+    max-width: 998px;
+    margin-left: 3px;
 }

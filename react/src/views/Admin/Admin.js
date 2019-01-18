@@ -41,7 +41,8 @@ class Forms extends Component {
       scale: 1.2,
       imageFile: CommonUtils.getUserSession().imageLink,
       fileObject: {},
-      hideRole:false
+      hideRole:false,
+      hideLoader:true,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -58,7 +59,10 @@ class Forms extends Component {
   }
 
   closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.setState({ 
+      modalIsOpen: false,
+      hideLoader : false 
+    });
   }
 
   handleKeyPress(event) {
@@ -208,6 +212,10 @@ class Forms extends Component {
     }
   }
 
+  hideLoader = () =>{
+    this.setState({ hideLoader:true });
+  }
+
   componentWillMount() {
     var userSession = CommonUtils.getUserSession();
     if (userSession.isAdmin) {
@@ -257,17 +265,12 @@ class Forms extends Component {
 					<SettingsHeader  />
 				</div>	
         <div className="row km-profile-wrapper">
-
-          <div className="col-md-12">
-
-            <div className="card">
-              <div className="card-block">
+          <div className="col-md-12">    
                 <form className="form-horizontal" autoComplete="off">
                   <div className="form-group row">
-                    
-                    <div className="col-md-6 col-sm-12">
+                    <div className="col-md-8 col-sm-12">
                       <div className="row">
-                        <div className="col-md-9 col-sm-12">
+                        <div className="col-sm-12">
                           <label className="form-control-label" htmlFor="admin-name">Name:</label>
                           <input type="text" id="admin-name" name="admin-name" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name} className="form-control input-field" placeholder="Enter your name" /><br />
 
@@ -289,7 +292,7 @@ class Forms extends Component {
                     <div className="col-md-4 display-photo-wrapper">
 
                       <div className="display-photo-wrapper-container text-center">
-
+                      <div className=" ui tab loading show-loader profile-loader" hidden={this.state.hideLoader}></div>
                         <img src={ this.props.profilePicUrl } className="default-dp change-courser"  onClick={this.invokeImageUpload}/> 
 
                         <div className="edit-dp-btn">
@@ -297,12 +300,12 @@ class Forms extends Component {
                           <div className="about-dp">Your customers will see this photo</div>
 
                           <input type="file" accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
-
                           <Modal
                             isOpen={this.state.modalIsOpen}
                             ariaHideApp={false}
                             onRequestClose={this.closeModal}
-                            style={customStyles} >
+                            style={customStyles} 
+                            >
                             <div>
                               <ImageUploader
                                 handleImageFiles={this.handleImageFiles}
@@ -311,6 +314,7 @@ class Forms extends Component {
                                 updateProfilePicUrl={this.props.updateProfilePicUrl}
                                 handleClose={this.closeModal}
                                 fileObject={this.state.fileObject}
+                                hideLoader={this.hideLoader}
                               />
                             </div>
                           </Modal>
@@ -327,11 +331,9 @@ class Forms extends Component {
                   <hr className="divider" />
 
                 </form>
-
                 <PasswordAccordion />
 
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

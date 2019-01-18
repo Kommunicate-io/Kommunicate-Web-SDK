@@ -2,7 +2,7 @@
     margin-top: -20px ;
     margin-bottom: 25px;
     width: auto;
-    max-width:930px;
+    max-width:998px;
 
 }
 .km-settings-banner{
@@ -17,10 +17,10 @@
     font-size: 24px;
     font-weight: normal;
     letter-spacing: 1.5px;
-    padding-bottom: 10px;
+    padding-bottom: 6px;
     color: #242424;   
     display: inline-block;
-    min-width: 600px;
+    width: 998px;
 
 }
 .km-settings-component-subheading h2{
@@ -29,16 +29,16 @@
     line-height: 1.6;
     font-weight: 300;
     color:  #615f5f;
-    padding-bottom: 25px;
+    padding-bottom: 15px;
     border-bottom: 1px solid #cacaca;
     display: inline-block;
-    min-width: 600px;
+    width: 998px;
 
 
 }
 .km-heading-wrapper{
     margin-left: 15px;
-    max-width: 930px;
+    max-width: 998px;
 }
 a.km-knowledge-base-link{
     display: inline-block;

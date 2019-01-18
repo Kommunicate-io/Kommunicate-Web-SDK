@@ -9832,6 +9832,7 @@ pointer-events: none;
 } */
 .message-shortcut-div {
   background-color: #fff;
+  max-width: 998px;
 }
 
 /****** New Design System Code ******/
@@ -11468,4 +11469,8 @@ border-left-color: #5e8631;
 }
 *::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.08);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0,0,0,0);
 }
