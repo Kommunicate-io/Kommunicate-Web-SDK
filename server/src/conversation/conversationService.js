@@ -222,7 +222,8 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
         return getAgentsList(customer, users, groupId).then(agents => {
             //assign direct given userId 
             let isValidUser = false;
-            if (assignToUserId && assignToUserId != "") {
+            assignToUserId = assignToUserId != "" ? assignToUserId : null;
+            if (assignToUserId) {
                 let assignee = users.filter(user => {
                     return user.userName == assignToUserId;
                 });
