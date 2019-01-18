@@ -211,7 +211,7 @@ const createUser = (user, customer) => {
           logger.error("error while creating bot platform", err);
         })
       } else {
-        activeCampaignClient.addContact({ "email": user.email, "name": user.name, "orgname": customer.userName, "tags": "K-Team-Member" });
+        activeCampaignClient.addContact({ "appId": customer.applications[0].applicationId, "email": user.email, "name": user.name, "orgname": customer.userName, "tags": "K-Team-Member" });
       }
       return user ? user.dataValues : null;
     }).catch(err => {

@@ -24,6 +24,7 @@ exports.addContact = (options) => {
                 name: options.name,
                 tags: options.tags,
                 orgname: options.orgname,
+                'field[20,0]': options.appId,
                 'p[1]': '7',
                 'status[1]': '1'
             }
