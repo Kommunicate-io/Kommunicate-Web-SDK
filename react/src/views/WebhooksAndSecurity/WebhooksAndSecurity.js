@@ -125,7 +125,7 @@ export default class WebhooksAndSecurity extends Component {
 
         if(!securitySectionDetail) {
             // New Messages Input Field Data
-            applicationData.applicationWebhookPxys.push(this.createApplicationWebhookPxy(this.state.newMessages, 300, FALLBACK_TYPE.UNANSWERED_MESSAGE, NOTIFY_VIA.MAIL));
+            applicationData.applicationWebhookPxys.push(this.createApplicationWebhookPxy(this.state.newMessages, 300, FALLBACK_TYPE.MESSAGE_FORWARDING, NOTIFY_VIA.MAIL));
                     
             // Unread Messages Input field Data
             applicationData.applicationWebhookPxys.push(this.createApplicationWebhookPxy(this.state.unreadMessages, this.state.selectUnredMsgTime.value, FALLBACK_TYPE.UNREAD_MESSAGE, NOTIFY_VIA.MAIL));
