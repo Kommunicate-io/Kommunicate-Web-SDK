@@ -1706,9 +1706,9 @@ ol, ul {
 
 .km-msg-avator-bubble .km-msg-avator {
 	display: block;
-	/* top : 15px; */
+	top : 15px;
 	position: absolute;
-	/* margin-top: -21.5px; */
+	margin-top: -21.5px;
 }
 
 .km-msg-avator-bubble.km-msg-right .km-msg-avator {
@@ -2412,7 +2412,8 @@ ol, ul {
 .km-text-user {
 	color: #DDA185;
 	margin-left: 57px;
-    font-size: 12px;
+	font-size: 12px;
+	min-height: 6px;
 }
 
 .km-text-a {
