@@ -308,7 +308,6 @@ const resetPassword = (options) => {
     if (!options || !options.userName || !options.applicationId) {
       throw new Error("mandetory fields are missing");
     }
-    //Todo: add product in url
     const url = getConfig().kommunicateApi.passwordResetUrl + "?product=" + CommonUtils.getProduct();
     return axios.post(url, { userName: options.userName, applicationId: options.applicationId });
   } catch (err) {
