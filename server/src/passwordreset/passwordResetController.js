@@ -4,6 +4,7 @@ const config = require("../../conf/config");
 exports.processPasswordResetRequest= (req,res)=>{
   const userName = req.body.userName;
   const applicationId = req.body.applicationId;
+  const product = req.body.product || "kommunicate";
   console.log("request received to reset password for user : ",userName," applicationId",applicationId);
   if(!userName|| !applicationId){
    res.status(400).json({code:"BAD_REQUEST",message:"userName or applicationId is empty"});
@@ -15,7 +16,7 @@ exports.processPasswordResetRequest= (req,res)=>{
         res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"email Id not exists for user ",userName});
         return;
        }
-       return passwordResetService.processPasswordResetRequest(user,applicationId).then(response=>{
+       return passwordResetService.processPasswordResetRequest(user,applicationId, product).then(response=>{
           res.status(200).json({code:"SUCCESS",data:response});
           return;
         })

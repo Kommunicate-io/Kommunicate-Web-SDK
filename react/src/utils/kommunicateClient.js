@@ -13,7 +13,6 @@ import AnalyticsTracking from './AnalyticsTracking';
 import dateFormat from 'dateformat';
 
 
-
 /**
  * Creates Customer /Bot/ Agent
  * @param {Object} userInfo
@@ -309,7 +308,8 @@ const resetPassword = (options) => {
     if (!options || !options.userName || !options.applicationId) {
       throw new Error("mandetory fields are missing");
     }
-    const url = getConfig().kommunicateApi.passwordResetUrl;
+    //Todo: add product in url
+    const url = getConfig().kommunicateApi.passwordResetUrl + "?product=" + CommonUtils.getProduct();
     return axios.post(url, { userName: options.userName, applicationId: options.applicationId });
   } catch (err) {
     return Promise.reject(err);

@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt');
 const logger = require("../utils/logger");
 const customerService = require('../customer/customerService');
 
-exports.processPasswordResetRequest = (user, applicationId)=>{
+exports.processPasswordResetRequest = (user, applicationId, product)=>{
   console.log("processing password reset request of user",user.userName);
   return Promise.resolve(getPendingRequestOfUser(user,applicationId)).then(passwordResetRequest=>{
     if(passwordResetRequest){
@@ -23,16 +23,14 @@ exports.processPasswordResetRequest = (user, applicationId)=>{
       return db.PasswordResetRequest.create(createPasswordResetRequest(user,applicationId));
     }
   }).then(passwordResetRequest=>{
-    return sendPasswordResetRequestInMail(passwordResetRequest,user)
+    return sendPasswordResetRequestInMail(passwordResetRequest,user, product)
   })
 }
 
-const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
+const sendPasswordResetRequestInMail = (passwordResetRequest,user, product)=>{
   let template= "";
   var prUrl = passwordResetUrl.replace(":code",passwordResetRequest.authenticationCode);
   console.log("&&&url",prUrl);
-
-  //Todo: get user's application package and product
 
   let templateValues = {
     ":passwordResetUrl":prUrl,
@@ -45,7 +43,7 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
     subject: "Reset Your Password", // Subject line
     text: template, // plain text body
     html: template, // html body
-    templatePath: path.join(__dirname,"/passwordResetTemplate.html"),
+    templatePath: path.join(__dirname,"/" + product + "-passwordResetTemplate.html"),
     templateReplacement: templateValues,
     product: "kommunicate"
     };
