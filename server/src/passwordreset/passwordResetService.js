@@ -7,16 +7,10 @@ const path = require("path");
 const mailService = require("../utils/mailService");
 const fileService = require("../utils/fileService");
 const applozicClient = require("../utils/applozicClient");
-const registrationService = require('../register/registrationService');
 const userService = require("../users/userService");
-const kommunicateLogoUrl =config.getProperties().urls.hostUrl+"/img/logo1.png";
 const passwordResetUrl =config.getProperties().urls.updatePasswordPage;
 const bcrypt = require('bcrypt');
 const logger = require("../utils/logger");
-const facebookLogoUrl = config.getProperties().urls.hostUrl+"/img/facebook-round32.png";
-const twitterLogourl = config.getProperties().urls.hostUrl + "/img/twitter-round32.png";
-const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
-const kmWebsiteLogoIconUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-icon.png";
 const customerService = require('../customer/customerService');
 
 exports.processPasswordResetRequest = (user, applicationId)=>{
@@ -37,31 +31,26 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
   let template= "";
   var prUrl = passwordResetUrl.replace(":code",passwordResetRequest.authenticationCode);
   console.log("&&&url",prUrl);
+
+  //Todo: get user's application package and product
+
   let templateValues = {
-    ":KommunicateLogoUrl": kommunicateLogoUrl, 
     ":passwordResetUrl":prUrl,
-    ":facebookLogoUrl":facebookLogoUrl,
-    ":twitterLogourl":twitterLogourl,
-    ":kmWebsiteLogoUrl":kmWebsiteLogoUrl,
-    ":kmWebsiteLogoIconUrl":kmWebsiteLogoIconUrl,
     ":kmUserName": userService.getUserDisplayName(user),
   }
-  return fileService.readFile(path.join(__dirname,"/passwordResetTemplate.html"),"utf8").then(data=>{
-    template= data.replace(new RegExp(Object.keys(templateValues).join("|"),"gi"),function(matched){
-      logger.info("matched: ",matched, "replaced with: ",templateValues[matched]);
-      return templateValues[matched];
-    });
-    //console.log(template);
 
    let mailOptions = {
     from: '"Kommunicate" <support@kommunicate.io>', // sender address
     to: user.email, // list of receivers
     subject: "Reset Your Password", // Subject line
     text: template, // plain text body
-    html: template // html body
+    html: template, // html body
+    templatePath: path.join(__dirname,"/passwordResetTemplate.html"),
+    templateReplacement: templateValues,
+    product: "kommunicate"
     };
-    return mailService.sendPasswordResetMail(mailOptions);
-  });
+
+    return mailService.sendMail(mailOptions);
 }
 
 const createPasswordResetRequest = (user,applicationId)=>{

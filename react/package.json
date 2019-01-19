@@ -57,6 +57,7 @@
     "moment": "2.22.2",
     "moment-timezone": "0.5.13",
     "node-sass": "^4.11.0",
+    "query-string": "6.2.0",
     "react": "16.4.1",
     "react-addons-css-transition-group": "15.5.2",
     "react-addons-transition-group": "15.5.2",
@@ -111,8 +112,8 @@
     "test": "jest",
     "eject": "react-scripts eject"
   },
-  "jest":{
-    "moduleNameMapper":{
+  "jest": {
+    "moduleNameMapper": {
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     }

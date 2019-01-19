@@ -1,6 +1,12 @@
 const nodemailer = require("nodemailer");
 const emailConfig = require("../../conf/emailConfig");
 const fileService = require("../utils/fileService");
+const config = require("../../conf/config");
+const kommunicateLogoUrl =config.getProperties().urls.hostUrl+"/img/logo1.png";
+const facebookLogoUrl = config.getProperties().urls.hostUrl+"/img/facebook-round32.png";
+const twitterLogourl = config.getProperties().urls.hostUrl + "/img/twitter-round32.png";
+const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
+const kmWebsiteLogoIconUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-icon.png";
 const path = require("path");
     
 function getNodeMailer(product){
@@ -52,22 +58,30 @@ exports.sendPasswordResetMail = (mailOptions)=>{
 
 exports.sendMail= (options)=>{
     let template="";
+    options.templateReplacement = options.templateReplacement || {};
+    options.templateReplacement[":KommunicateLogoUrl"] = kommunicateLogoUrl;
+    options.templateReplacement[":facebookLogoUrl"] = facebookLogoUrl;
+    options.templateReplacement[":twitterLogourl"] = twitterLogourl;
+    options.templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl;
+    options.templateReplacement[":kmWebsiteLogoIconUrl"] = kmWebsiteLogoIconUrl;
+
     return fileService.readFile(options.templatePath,"utf8").then(rawTemplate=>{
         if(options.templateReplacement){
-        template= rawTemplate.replace(new RegExp(Object.keys(options.templateReplacement).join("|"),"gi"),function(matched){
-           console.log("matched: ",matched, "replaced with: ",options.templateReplacement[matched]);
+            template= rawTemplate.replace(new RegExp(Object.keys(options.templateReplacement).join("|"),"gi"),function(matched){
+            console.log("matched: ",matched, "replaced with: ",options.templateReplacement[matched]);
             return options.templateReplacement[matched];
           });
         }else{
             template = rawTemplate;
         }
         return new Promise(function(resolve, reject){
-            const mailOptions = {to:options.to,
-                                 cc:options.cc,
-                                bcc:options.bcc,
-                                from:options.from,
-                                subject:options.subject,
-                                product: options.product
+            const mailOptions = {
+                                    to:options.to,
+                                    cc:options.cc,
+                                    bcc:options.bcc,
+                                    from:options.from,
+                                    subject:options.subject,
+                                    product: options.product
                                 };
             if (options.sendAsText) {
                 mailOptions.text = template

@@ -132,7 +132,6 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
 
 exports.sendWelcomeMail = (email, userName, agent, companyName) => {
   console.log("sending welcome mail to ", email, companyName);
-  let tamplatePath = '';
   let templateReplacement = '';
   let subject = "Welcome to Kommunicate";
   if (agent) {
