@@ -41,8 +41,7 @@ exports.processUpdatePasswordRequest= (req,res)=>{
   }else{
     Promise.resolve(passwordResetService.getPasswordResetRequestByCodeAndStatus(code,passwordResetService.PASSWORD_RESET_REQUEST_STATUS.PENDING)).then(prRequest=>{
       //redierct to the form with code
-      const updatePasswordPage = config.getProperties().urls.updatePasswordPage+"?code="+code;
-      res.redirect(updatePasswordPage);
+      res.redirect(passwordResetService.getPasswordResetUrl(req.query.product, code));
     })
   }
 }

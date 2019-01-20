@@ -32,12 +32,13 @@
          "sendMessageUrl": "https://mzadqatar.applozic.com/rest/ws/message/v2/send",
          "hostUrl": "https://api-mzadqatar.applozic.com",
          "kmWebsiteUrl": "https://www.kommunicate.io",
-         "updatePasswordPage": "http://dashboard-mzadqatar.applozic.com/password/update?code=:code",
          "passwordResetUrl": "https://mzadqatar.applozic.com/rest/ws/user/update/password",
          "dashboardHostUrl":"https://dashboard-mzadqatar.applozic.com",
+         "applozicDashboardHostUrl":"https://console-mzadqatar.applozic.com",
          "applozicHostUrl" : "https://mzadqatar.applozic.com",
          "getUserInfo": "https://mzadqatar.applozic.com/rest/ws/user/v2/detail",
-         "rasafaq":"https://rasa.kommunicate.io"
+         "rasafaq":"https://rasa.kommunicate.io",
+         "updatePasswordPage": "/password/update?code=:code&product=:product"
        },
        "cache": {
          "hazelCache": {

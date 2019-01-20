@@ -1,13 +1,12 @@
 const mailService = require('../utils/mailService');
 const config = require("../../conf/config");
 const path = require("path");
-const registrationService = require('../register/registrationService');
 const userService = require("../users/userService");
 const logger = require('../utils/logger');
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl + "/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl + "/assets/resources/images/km-logo-new.png";
 let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer&product=kommunicate"
-let applozicDashboardHostUrl = config.getProperties().urls.applozicDashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer&product=applozic"
+let joinApplozicUrl = config.getProperties().urls.applozicDashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer&product=applozic"
 
 exports.sendMail = (req, res) => {
     console.log("received request to send mail", req.body.to);
@@ -94,7 +93,7 @@ const getEmailFormat = (options, custInfo) => {
                     break;
 
                 case "INVITE_TEAM_MAIL":
-                    var dashboardUrl = options.product == "applozic" ? applozicDashboardHostUrl:joinKommunicateUrl
+                    var dashboardUrl = options.product == "applozic" ? joinApplozicUrl:joinKommunicateUrl
                     templatePath = path.join(__dirname, "/" + options.product + "-inviteTeamTemplate.html"),
                         templateReplacement[":adminName"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? options.agentName + " from " + custInfo.companyName : options.agentName,
                         templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,

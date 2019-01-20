@@ -60,7 +60,6 @@ exports.sendMail= (options)=>{
     let template="";
     options.templateReplacement = options.templateReplacement || {};
 
-    //Todo: set this according to product
     options.templateReplacement[":KommunicateLogoUrl"] = kommunicateLogoUrl;
     options.templateReplacement[":facebookLogoUrl"] = facebookLogoUrl;
     options.templateReplacement[":twitterLogourl"] = twitterLogourl;
