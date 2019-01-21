@@ -139,12 +139,6 @@ getButtonTemplate:function(options,requestType, buttonClass){
     }
 },
 getQuickRepliesTemplate:function(){
-    // return`<div class="km-cta-multi-button-container">
-    //         {{#payload}}
-    //              <button title='{{message}}' class="km-cta-button km-add-more-rooms km-quick-replies km-custom-widget-border-color km-custom-widget-text-color {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
-    //         {{/payload}}
-    //         </div>`;
-    var abc = "km-cta-button km-add-more-rooms km-custom-widget-border-color km-custom-widget-text-color"
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
                  <button title='{{message}}' class="km-quick-replies  {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
@@ -295,15 +289,6 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
         containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],requestType,buttonClass)
     }
     formData && (containerMarkup += Kommunicate.markup.getFormMarkup(options))
-    // if(formData){
-    //     containerMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+options.formAction+ ">";
-    //     for (var key in formData) {
-    //         if (formData.hasOwnProperty(key)) {
-    //             containerMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
-    //         }
-    //     } 
-    //     containerMarkup+='</form>';
-    // }
     containerMarkup+='</div>';
     return containerMarkup;
 }
@@ -456,14 +441,12 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         var cardFooter = "";
         var requestType;
         for (var i = 0; i < buttons.length; i++) { 
-            console.log(buttons[i]);
             if(buttons[i].action.type == "quickReply") {
                 buttons[i].action.payload["buttonClass"] = "km-carousel-card-button"
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload])
                 cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action))
             } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
                 requestType = buttons[i].action.payload.requestType ? buttons[i].action.payload.requestType :"";
-                // elemWidthClass = buttons[i].action.payload.elemWidthClass ? buttons[i].action.payload.elemWidthClass :"";
                 buttons[i].action.payload["type"] = buttons[i].action.type;
                 buttons[i].action.payload["buttonClass"] = "km-carousel-card-button";
                 buttons[i].action.payload["name"] = buttons[i].name;
@@ -492,15 +475,9 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             item["cardDescriptionClass"] = item.description ? "km-carousel-card-description-wrapper" : "n-vis"
             cardHtml["carouselHeaderClass"] = carouselHeaderClass;
             cardHtml["carouselInfoWrapperClass"] = carouselInfoWrapperClass;
-
             item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
             cardHtml.info = Kommunicate.markup.cardInfo(item);
-            
-            // item.buttons && item.buttons
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
-            // item.buttons && (cardHtml.footer = Kommunicate.markup.listOfButtons(item));
-            
-
             cardList.push(Object.assign({},cardHtml))
         }
     }
@@ -508,9 +485,6 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
 
     return Mustache.to_html(Kommunicate.markup.getCarouselTemplate(),cardCarousel)
 
-}
-Kommunicate.markup.listOfButtons = function(item) {
-    return Mustache.to_html(Kommunicate.markup.getButtonListTemplate(),item)
 }
 Kommunicate.markup.cardHeader = function(item) {
     return Mustache.to_html(Kommunicate.markup.getCardHeaderTemplate(),item)
