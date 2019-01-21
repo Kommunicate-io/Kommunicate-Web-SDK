@@ -133,9 +133,11 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
-    return'<button title= "'+ options.replyText +'" class= "km-cta-button km-undecorated-link '+buttonClass+' "><a href ="'+options.url+'" target="_blank" class="km-custom-widget-text-color km-undecorated-link">'+options.name+'</a></button>';
+        options.openLinkInNewTab = (typeof options.openLinkInNewTab  !='undefined' && !options.openLinkInNewTab ) ? options.openLinkInNewTab:true;
+        var target = options.openLinkInNewTab ? "_blank" : "_parent";
+        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'" data-target="'+target+'" ">'+options.name+'</button>';  
     }else{
-    return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
+        return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
