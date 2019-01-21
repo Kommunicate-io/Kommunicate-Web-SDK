@@ -33,13 +33,12 @@
       "sendMessageUrl": "https://apps-test.applozic.com/rest/ws/message/v2/send",
       "hostUrl": "https://api-staging.kommunicate.io",
       "kmWebsiteUrl": "https://test.kommunicate.io",
-      "updatePasswordPage" : "https://dashboard-staging.kommunicate.io/password/update?code=:code",
       "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password",
       "dashboardHostUrl":"https://dashboard-staging.kommunicate.io",
-      "applozicDashboardHostUrl":"https://console-test.applozic.com",
+      "applozicDashboardHostUrl":"https://console-staging.applozic.com",
       "applozicHostUrl": "https://apps-test.applozic.com",
-      "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail"
-      
+      "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail",
+      "updatePasswordPage": "/password/update?code=:code&product=:product"      
     },"cache": {
       "hazelCache": {
         "url": "172.31.17.248",

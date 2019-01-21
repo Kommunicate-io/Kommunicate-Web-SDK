@@ -1,19 +1,16 @@
 const PASSWORD_RESET_REQUEST_STATUS = {PENDING:"PENDING",PROCESSED:"PROCESSED"}
 const uuid = require('uuid/v1');
 const db = require("../models");
-const fs=require('fs');
 const config = require("../../conf/config");
 const path = require("path");
 const mailService = require("../utils/mailService");
-const fileService = require("../utils/fileService");
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
-const passwordResetUrl =config.getProperties().urls.updatePasswordPage;
 const bcrypt = require('bcrypt');
 const logger = require("../utils/logger");
 const customerService = require('../customer/customerService');
 
-exports.processPasswordResetRequest = (user, applicationId)=>{
+exports.processPasswordResetRequest = (user, applicationId, product)=>{
   console.log("processing password reset request of user",user.userName);
   return Promise.resolve(getPendingRequestOfUser(user,applicationId)).then(passwordResetRequest=>{
     if(passwordResetRequest){
@@ -23,16 +20,18 @@ exports.processPasswordResetRequest = (user, applicationId)=>{
       return db.PasswordResetRequest.create(createPasswordResetRequest(user,applicationId));
     }
   }).then(passwordResetRequest=>{
-    return sendPasswordResetRequestInMail(passwordResetRequest,user)
+    return sendPasswordResetRequestInMail(passwordResetRequest,user, product)
   })
 }
 
-const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
-  let template= "";
-  var prUrl = passwordResetUrl.replace(":code",passwordResetRequest.authenticationCode);
-  console.log("&&&url",prUrl);
+exports.getPasswordResetUrl = (product, code)=> {
+  return config.getProperties().urls[product == "applozic" ? "applozicDashboardHostUrl" : "dashboardHostUrl"] + config.getProperties().urls.updatePasswordPage.replace(":code",code).replace(":product", product);
+}
 
-  //Todo: get user's application package and product
+const sendPasswordResetRequestInMail = (passwordResetRequest, user, product)=>{
+  let template= "";
+  var prUrl = this.getPasswordResetUrl(product, passwordResetRequest.authenticationCode);
+  console.log("&&&url",prUrl);
 
   let templateValues = {
     ":passwordResetUrl":prUrl,
@@ -40,14 +39,13 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
   }
 
    let mailOptions = {
-    from: '"Kommunicate" <support@kommunicate.io>', // sender address
     to: user.email, // list of receivers
     subject: "Reset Your Password", // Subject line
     text: template, // plain text body
     html: template, // html body
-    templatePath: path.join(__dirname,"/passwordResetTemplate.html"),
+    templatePath: path.join(__dirname,"/" + product + "-passwordResetTemplate.html"),
     templateReplacement: templateValues,
-    product: "kommunicate"
+    product: product
     };
 
     return mailService.sendMail(mailOptions);

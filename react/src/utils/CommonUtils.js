@@ -241,6 +241,10 @@ const CommonUtils = {
         if (this.isProductApplozic()) {
             return "applozic";
         }
+
+        if (getConfig().brand) {
+            return getConfig().brand;
+        }
         return "kommunicate";
     },
     getProductName: function() {
