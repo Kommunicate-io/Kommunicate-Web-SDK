@@ -315,6 +315,7 @@ Kommunicate.markup.quickRepliesContainerTemplate= function(options){
     for(var i = 0;i<payload.length;i++){
         payload[i].replyMetadata = typeof  payload[i].replyMetadata =="object"? JSON.stringify(payload[i].replyMetadata):payload[i].replyMetadata;
         payload[i].elemWidthClass = elemWidthClass;
+        options.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY && (payload[i].buttonClass = "km-custom-widget-border-color");
     }
      return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {"payload":payload});
 }
