@@ -392,11 +392,11 @@
         padding: 8px 10px;
     }
     .km-cta-button {
-        color: #5553b7!important;
-        border: 1px solid #5553b7!important;
+        color: #5553b7;
+        border: 1px solid #5553b7;
     }
     .km-undecorated-link{
-        text-decoration:none !important;
+        text-decoration:none;
     }
     
     /********** Guest Details Form Starts Here ***********/
@@ -1037,12 +1037,12 @@
     justify-content:space-between;
     align-items: center;
 }
-.km-carousel-card-button {
+.km-carousel-card-footer .km-cta-button, .km-carousel-card-footer .km-cta-multi-button-container button {
     width: 100%;
     height: 36px;
-    border-color: #e7e4e4 !important;
-    border-bottom: none !important;
-    margin: 0 !important;
+    border-color: #e7e4e4 ;
+    border-bottom: none ;
+    margin: 0;
 }
 .km-carousel-card-img {
     border-radius: 5px 5px 0 0;
@@ -1087,8 +1087,8 @@
     background: white;
   }
 .km-carousel-card-footer button:last-child{
-    border-bottom: 1px solid #e7e4e4 !important; 
-    border-radius: 0 0 5px 5px !important;
+    border-bottom: 1px solid #e7e4e4 ; 
+    border-radius: 0 0 5px 5px;
 }
 .km-carousel-card-overlay-text-without-img {
     position: static;
