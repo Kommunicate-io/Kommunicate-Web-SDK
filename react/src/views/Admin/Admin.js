@@ -268,7 +268,7 @@ class Forms extends Component {
           <div className="col-md-12">    
                 <form className="form-horizontal" autoComplete="off">
                   <div className="form-group row">
-                    <div className="col-md-8 col-sm-12">
+                    <div className="col-md-7 col-sm-12">
                       <div className="row">
                         <div className="col-sm-12">
                           <label className="form-control-label" htmlFor="admin-name">Name:</label>
@@ -289,7 +289,7 @@ class Forms extends Component {
                     </div>
 
 
-                    <div className="col-md-4 display-photo-wrapper">
+                    <div className="col-md-5 display-photo-wrapper">
 
                       <div className="display-photo-wrapper-container text-center">
                       <div className=" ui tab loading show-loader profile-loader" hidden={this.state.hideLoader}></div>
@@ -333,7 +333,7 @@ class Forms extends Component {
                 </form>
                 <PasswordAccordion />
 
-           
+                <hr className="divider" />
           </div>
         </div>
       </div>
