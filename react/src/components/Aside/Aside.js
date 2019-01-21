@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
@@ -22,6 +21,9 @@ import { CollapseIcon, ExpandIcon, EmailIndicatorIcon } from "../../assets/svg/s
 import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
+import MultiSelectInput from './MultiSelectInput';
+import Banner from '../Banner/Banner';
+import { Link } from 'react-router-dom';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -63,7 +65,9 @@ class Aside extends Component {
       hideInfoBox: false,
       trialDaysLeftComponent: "",
       userInfo: null,
-      toggleExpandIcon: false
+      toggleExpandIcon: false,
+      toggleCcBccField: true,
+      warningBannerText: ''
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -353,14 +357,20 @@ class Aside extends Component {
           }
         }
       }
-      takeOverEleText.innerHTML = allBotsInGroup.join(', ');
-      if (allBotsInGroup.length > 1) {
-        document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
-      } else {
-        document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
-      }
-      // console.log(allBotsInGroup);
-    } 
+  }
+    takeOverEleText.innerHTML = allBotsInGroup.join(', ');
+    if(allBotsInGroup.length>1) {
+      document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
+    } else {
+      document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
+    }
+
+    if(allBotsInGroup.length > 0 && (!CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan())) {
+      this.setState({
+        warningBannerText: [<span className="km-bot-names">{allBotsInGroup.join(', ')} </span>, <span>will not work as your trial has ended. </span>,<Link key={1} to={'/settings/billing'} >Upgrade plan</Link>]
+      });
+    }
+    // console.log(allBotsInGroup);
   }
 
   changeAssignee(userId) {
@@ -826,13 +836,16 @@ class Aside extends Component {
                             </div>
                           </div>
                           <hr/>
-                          <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">
+                          <div className="km-new-conversation-header-bot" id="km-take-over-bot-container" hidden={this.state.warningBannerText !== ""}>
                             <div className="km-bot-active-text" id="km-bot-active-text">
                                 <p><span>&#9679;</span> Active bots <strong></strong></p>
                             </div>
                             <div className="">
                               <button id="takeover-from-bot" className="km-button km-button--secondary take-over-from-bot-btn" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
                             </div>
+                          </div>
+                          <div className="km-bots-warning-banner" id="km-bots-warning--banner">
+                            <Banner isVisible={this.state.warningBannerText === ""} indicator={'warning'} text={this.state.warningBannerText}/>
                           </div>
                       </div>
                       <div id="km-product-group"
