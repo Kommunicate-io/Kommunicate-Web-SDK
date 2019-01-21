@@ -822,6 +822,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             if (typeof mckInitializeChannel !== 'undefined') {
                 mckInitializeChannel.disconnect();
                 ALStorage.clearMckMessageArray();
+                KommunicateUtils.removeItemFromLocalStorage("kommunicate");
+                window.Applozic.ALApiService.setAjaxHeaders('','','','','');
+                ALStorage.clearMckMessageArray();
+                ALStorage.clearMckContactNameArray();
+                ALStorage.clearAppHeaders();
                 $applozic.fn.applozic("reset", appOptions);
                 $applozic("#mck-sidebox").hide();
                 $applozic("#mck-sidebox-launcher").hide();

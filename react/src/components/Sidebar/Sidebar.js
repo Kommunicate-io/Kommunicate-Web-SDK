@@ -128,17 +128,17 @@ class Sidebar extends Component {
             </li>
             }
             {/* Applozic Groups Link */
-            this.state.isApplozicDashboard &&<li className="nav-item">
-              <NavLink exact= {true} to={'/message-groups'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Groups" data-effect="solid" data-place="right">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <g data-name="Group 4">
-                      <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 2" />
-                      <path fill="#FFFFFF" d="M2 5.288v11.377a1.183 1.183 0 0 0 1.159 1.288h6.474l2.222 2.361a1.039 1.039 0 0 0 1.643 0l2.029-2.361h5.314A1.183 1.183 0 0 0 22 16.665V5.288A1.183 1.183 0 0 0 20.841 4H3.159A1.183 1.183 0 0 0 2 5.288zm11.111 9.66H4.319a.524.524 0 0 1-.483-.644.485.485 0 0 1 .483-.644h8.792c.29 0 .483.215.483.644a.667.667 0 0 1-.483.644zm6.377-3.542H4.319q-.58 0-.58-.644 0-.483.58-.644h15.266a.524.524 0 0 1 .483.644.588.588 0 0 1-.58.644zm0-3.435H4.319q-.58-.161-.58-.644c0-.322.193-.644.483-.644h15.266a.524.524 0 0 1 .483.644c.097.322-.193.537-.483.644z"
-                      data-name="Path 1" />
-                  </g>
-                </svg>
-              </NavLink>
-            </li>
+            // this.state.isApplozicDashboard &&<li className="nav-item">
+            //   <NavLink exact= {true} to={'/message-groups'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Groups" data-effect="solid" data-place="right">
+            //     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            //       <g data-name="Group 4">
+            //           <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 2" />
+            //           <path fill="#FFFFFF" d="M2 5.288v11.377a1.183 1.183 0 0 0 1.159 1.288h6.474l2.222 2.361a1.039 1.039 0 0 0 1.643 0l2.029-2.361h5.314A1.183 1.183 0 0 0 22 16.665V5.288A1.183 1.183 0 0 0 20.841 4H3.159A1.183 1.183 0 0 0 2 5.288zm11.111 9.66H4.319a.524.524 0 0 1-.483-.644.485.485 0 0 1 .483-.644h8.792c.29 0 .483.215.483.644a.667.667 0 0 1-.483.644zm6.377-3.542H4.319q-.58 0-.58-.644 0-.483.58-.644h15.266a.524.524 0 0 1 .483.644.588.588 0 0 1-.58.644zm0-3.435H4.319q-.58-.161-.58-.644c0-.322.193-.644.483-.644h15.266a.524.524 0 0 1 .483.644c.097.322-.193.537-.483.644z"
+            //           data-name="Path 1" />
+            //       </g>
+            //     </svg>
+            //   </NavLink>
+            // </li>
             }
             {/* Customers Link */}
             <li className="nav-item">
