@@ -16,8 +16,8 @@
 }
 .divider {
     border-top: 1px solid #e9e9e9;
-    max-width: 930px;
     margin-left: 0px;
+    margin: 0
 }
 .default-dp {
     width: 173px;
@@ -252,7 +252,8 @@ input[type="range"]::-ms-tooltip {
     padding: 5px;
 }
 .display-photo-wrapper {
-    padding: 30px 38px 35px 60px;}
+    padding: 30px 38px 35px 60px;
+}
 
 .avatar-editor {
     margin-bottom: 15px;
@@ -273,7 +274,7 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 930px;
+    max-width: 998px;
     padding: 15px 20px 15px 0px;
     transition: all .3s;
 }
@@ -331,5 +332,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .km-profile-wrapper{
     max-width: 998px;
-    margin-left: 3px;
+    margin-left: 15px;
+}
+.km-profile-wrapper >.col-md-12{
+    padding: 0;
 }
