@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import './LiveChatWidget.css';
 // import './LiveChatWidgetAssets';
-import { AgentIcon } from './LiveChatWidgetAssets';
+import { AgentIcon, KmDefaultIcon } from './LiveChatWidgetAssets';
 
 
 
@@ -28,14 +28,14 @@ const LiveChatWidget = (props) =>{
         <div className="km-chat-box-converstaions">
             <div className="km-message-left">
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">Hi, how may I help you?</div>
+                <div className="km-conversation-content">{props.firstMessage}</div>
             </div>
             <div className="km-message-right">
-                <div className="km-conversation-content" style={{ background: props.primaryColor }}>Hey, can I change the delivery address of my order? </div>
+                <div className={props.hasCustomerMessage ? "km-conversation-content" : "n-vis"} style={{ background: props.primaryColor }}>{props.customerMessage}</div>
             </div>
-            <div className="km-message-left">
+            <div className={props.hasSecondMessage ? "km-message-left" : "n-vis"}>
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">Sure, I can help you with this. Can you give me your updated delivery address?</div>
+                <div className="km-conversation-content">{props.secondMessage}</div>
             </div>
         </div>
         <div className={props.hasCustomImage ? "n-vis" : "km-chat-icon"} style={{ background: props.primaryColor }} >
@@ -47,6 +47,18 @@ const LiveChatWidget = (props) =>{
     </div>
    );
 }
+
+LiveChatWidget.defaultProps = {
+    primaryColor: '#5553b7',
+    hasCustomImage: false ,
+    firstMessage:"Hi, how may I help you?",
+    secondMessage:"Sure, I can help you with this. Can you give me your updated delivery address?",
+    customerMessage:"Hey, can I change the delivery address of my order? ",
+    currentIcon : <KmDefaultIcon />,
+    hasCustomerMessage : false,
+    hasSecondMessage:true
+}
+  
 
   
 

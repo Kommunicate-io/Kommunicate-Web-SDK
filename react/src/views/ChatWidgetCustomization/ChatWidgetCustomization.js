@@ -260,7 +260,7 @@ class ChatWidgetCustomization extends Component {
                     </div>
                 </div>
                 <div className="col-md-5">
-                    <LiveChatWidget primaryColor={this.state.primaryColor} currentIcon={this.state.currentIcon} hasCustomImage={this.state.hasCustomImage} changedLogoUrl={this.state.changedLogoUrl}/>
+                    <LiveChatWidget primaryColor={this.state.primaryColor} currentIcon={this.state.currentIcon} hasCustomImage={this.state.hasCustomImage} changedLogoUrl={this.state.changedLogoUrl} hasCustomerMessage={true}/>
                 </div>
             </div>
             <hr className = "km-division-between-widget-and-branding-customization"></hr>
