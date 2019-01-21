@@ -2,11 +2,14 @@
 .km-demo-chat-box {
     position: relative;
     width: 368px;
-    height: 382px;
+    height: auto;
     border-radius: 6px;
     background-color: #ffffff;
     box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
     margin-bottom: 69px;
+    padding-bottom: 20px;
+    max-height: 500px;
+    min-height: 390px;
 }
 
 .km-chat-box-header {

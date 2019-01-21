@@ -1,6 +1,7 @@
 
 .welcome-message-wrapper{
     margin-left: 15px;
+    max-width: 998px;
 }
 .welcome-message-title{
     font-size: 18px;
@@ -11,7 +12,7 @@
 }
 .welcome-message-action-wrapper{
     display: flex;
-    margin-bottom: 25px;
+    margin-bottom: 6px;
 }
 .welcome-message-description{
     font-size: 16px;
@@ -28,10 +29,7 @@
 
 }
 .welcome-card-header {
-    border-radius: 2px;
-    width: 60%;
-    background-color: #f4f5f7;
-    border:none!important;
+    width: 100%;
 }
 .welcome-msg-collect-email-checkbox .checkbox-input[type='checkbox']+.checkbox-label {
     margin: 0;
@@ -119,3 +117,13 @@ textarea::-webkit-input-placeholder {
     color:rgb(202, 206, 207);
 
     }
+.welcome-message-row{
+    max-width: 998px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.welcome-message-textboxes{
+    width: 60%;
+}

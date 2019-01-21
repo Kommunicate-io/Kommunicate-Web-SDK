@@ -10,6 +10,7 @@ import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import Button from '../../../components/Buttons/Button';
+import {LiveChatWidget} from '../../../components/LiveChatWidget/LiveChatWidget'
 
 class Welcome extends Component{
   constructor(props){
@@ -296,11 +297,10 @@ class Welcome extends Component{
           <h4 className="welcome-message-title">Show welcome message to users</h4>
           <SliderToggle checked={this.state.enableDisableCheckbox} handleOnChange={this.handleCheckboxChange} />
           </div>
-          <div className="row">
-          <div className="col-sm-12 col-md-12">
-              <div className="card-header welcome-card-header">
+          <div className="welcome-message-row">
+          <div className="welcome-message-textboxes">
+              <div className=" welcome-card-header">
                 <div className="message-wrapper">
-                <div className="km-welcome-messge-textarea-heading">Welcome message</div>
                    <div className="row welcome-msg-collect-email-checkbox">
                      <Checkbox idCheckbox={'welcome-msg-collect-email-checkbox'} label={'Collect email ID from anonymous users'}
                       checked = {this.state.checked} handleOnChange = {this.toggleChangeCheckbox} />
@@ -322,6 +322,14 @@ class Welcome extends Component{
                   <Button secondary disabled = {this.state.disableButton} className="discard-btn" onClick={this.discardWelcomeMessage}>Discard</Button>
                 </div>              
             </div>
+          </div>
+          <div className="welcome-message-preview" style={ {marginTop: "36px"}}>
+          <LiveChatWidget 
+          welcomeMessages={this.state.welcomeMessages}
+          hasFirstMessage = {false}
+          hasSecondMessage = {false}
+          hasThirdMessage = {false} 
+            />          
           </div>
         </div>
       </div>

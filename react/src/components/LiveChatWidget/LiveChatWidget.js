@@ -7,7 +7,19 @@ import { AgentIcon, KmDefaultIcon } from './LiveChatWidgetAssets';
 
 
 
-const LiveChatWidget = (props) =>{
+const LiveChatWidget =  (props) =>{
+
+    LiveChatWidget.defaultProps = {
+        primaryColor: '#5553b7',
+        hasCustomImage: false ,
+        agentMessages:["Hi, how may I help you?", "Sure, I can help you with this. Can you give me your updated delivery address?","Please wait our agents will be with you shortly."],
+        customerMessage:"Hey, can I change the delivery address of my order? ",
+        currentIcon : <KmDefaultIcon />,
+        hasCustomerMessage : false,
+        hasFirstMessage:true,
+        hasSecondMessage:true,
+        hasThirdMessage:true,
+    }
      
    return(
         <div className="km-demo-chat-box">
@@ -26,16 +38,29 @@ const LiveChatWidget = (props) =>{
             </div>
         </div>
         <div className="km-chat-box-converstaions">
-            <div className="km-message-left">
+        {/* //for mapping welcome messages */}
+        {
+                props.welcomeMessages && props.welcomeMessages.map((data, index) => (
+                    <div className="km-message-left" key={index}>
+                        <div className="km-conversation-img"><AgentIcon /></div>
+                        <div className="km-conversation-content">{data.messageField ? data.messageField : props.agentMessages[index]}</div>
+                    </div>
+                ))
+            }
+            <div className={props.hasFirstMessage ? "km-message-left" : "n-vis"}>
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">{props.firstMessage}</div>
+                <div className="km-conversation-content">{props.agentMessages[0]}</div>
             </div>
             <div className="km-message-right">
                 <div className={props.hasCustomerMessage ? "km-conversation-content" : "n-vis"} style={{ background: props.primaryColor }}>{props.customerMessage}</div>
             </div>
             <div className={props.hasSecondMessage ? "km-message-left" : "n-vis"}>
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">{props.secondMessage}</div>
+                <div className="km-conversation-content">{props.agentMessages[1]}</div>
+            </div>
+            <div className={props.hasThirdMessage ? "km-message-left" : "n-vis"}>
+                <div className="km-conversation-img"><AgentIcon /></div>
+                <div className="km-conversation-content">{props.agentMessages[2]}</div>
             </div>
         </div>
         <div className={props.hasCustomImage ? "n-vis" : "km-chat-icon"} style={{ background: props.primaryColor }} >
@@ -48,16 +73,7 @@ const LiveChatWidget = (props) =>{
    );
 }
 
-LiveChatWidget.defaultProps = {
-    primaryColor: '#5553b7',
-    hasCustomImage: false ,
-    firstMessage:"Hi, how may I help you?",
-    secondMessage:"Sure, I can help you with this. Can you give me your updated delivery address?",
-    customerMessage:"Hey, can I change the delivery address of my order? ",
-    currentIcon : <KmDefaultIcon />,
-    hasCustomerMessage : false,
-    hasSecondMessage:true
-}
+
   
 
   
