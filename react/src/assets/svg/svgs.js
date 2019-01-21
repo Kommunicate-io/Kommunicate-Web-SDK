@@ -533,3 +533,9 @@ export const CopyIcon = props => (
         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4l6 6v10c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h7zm-1 7h5.5L14 6.5V12z" fill="#969393" />
     </svg>
 )
+
+export const DownArrow = props => (
+    <svg width={7} height={10} viewBox="0 0 7 10" {...props}>
+        <path d="M6.911 6.155c.266-.288-.155-.687-.42-.421l-2.703 2.68v-7.31c0-.376-.598-.376-.598 0v7.31L.51 5.734c-.266-.288-.687.133-.421.42l3.19 3.19c.132.111.31.111.42 0l3.212-3.19z" fill="#FFF" fillRule="evenodd" />
+    </svg>
+)

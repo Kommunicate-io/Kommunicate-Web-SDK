@@ -1925,6 +1925,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						$kmApplozic(".km-typing-indicator-for-agent--container").addClass("n-vis").removeClass("vis");
 						//$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
 						//$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
+						mckMessageLayout.resetNewMessageCounter();
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();
@@ -3801,6 +3802,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
 			var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 			var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
+			var NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER = 0;
 
 
 			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear">'+ '<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>' +'<div class="blk-lg-12">'+
@@ -4030,6 +4032,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								});
 							}
 						}
+						
+						if((this.scrollTop + this.offsetHeight) === this.scrollHeight) {
+							mckMessageLayout.resetNewMessageCounter();
+						}
+
 					});
 					var kminputbox = document.getElementById('km-text-box');
 					if (kminputbox.value) {
@@ -5622,13 +5629,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								var currConvId = $mck_msg_inner.data('km-conversationid');
 								if (currConvId && currConvId.toString() === message.conversationId.toString()) {
 									if (!message.metadata || message.metadata.category !== 'HIDDEN') {
-										mckMessageLayout.addMessage(message, contact, true, true, true);
+										mckMessageLayout.addMessage(message, contact, true, false, true);
 									}
 									mckMessageService.sendReadUpdate(message.pairedMessageKey);
 								}
 							} else {
 								if (!message.metadata || message.metadata.category !== 'HIDDEN') {
-									mckMessageLayout.addMessage(message, contact, true, true, true);
+									mckMessageLayout.addMessage(message, contact, true, _this.shouldAutoScrollOnNewMessage(), true);
 								}
 								mckMessageService.sendReadUpdate(message.pairedMessageKey);
 							}
@@ -5653,7 +5660,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if (typeof contact !== 'undefined') {
 								if (typeof tabId !== 'undefined' && tabId === contact.contactId && isGroupTab === contact.isGroup) {
 									if (!message.metadata || message.metadata.category !== 'HIDDEN') {
-										mckMessageLayout.addMessage(message, contact, true, true, true);
+										!_this.shouldAutoScrollOnNewMessage() && _this.newMessagesCounter();
+										mckMessageLayout.addMessage(message, contact, true, _this.shouldAutoScrollOnNewMessage(), true);
 										if (message.type === 3) {
 											$kmApplozic("." + message.key + " .km-message-status").removeClass('km-icon-time').addClass('km-icon-sent');
 											mckMessageLayout.addTooltip(message.key);
@@ -5694,6 +5702,37 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				 * .km-message-status") .removeClass( 'km-icon-time') .addClass('km-icon-sent'); mckMessageLayout .addTooltip(message.key); } } } } } } }
 				 */
 				$mck_loading.removeClass('vis').addClass('n-vis');
+			};
+			_this.shouldAutoScrollOnNewMessage = function() {
+				var scrollHeight = $mck_msg_inner[0].scrollHeight;
+				var scrollTop = $mck_msg_inner[0].scrollTop;
+				var innerHeight = $mck_msg_inner[0].offsetHeight;
+				
+				return (innerHeight + scrollTop) == scrollHeight;
+			};
+			_this.newMessagesCounter = function() {
+				if(!_this.shouldAutoScrollOnNewMessage()) {
+					NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER += 1;
+					$kmApplozic(".km-new-messages-indicator--container").addClass('vis').removeClass('n-vis');
+					$kmApplozic(".km-new-messages-indicator--count").text(NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER);
+				} else {
+					_this.scrollToBottom();
+				}
+			};
+			_this.scrollToBottom = function() {
+				$mck_msg_inner.animate({
+					scrollTop: $mck_msg_inner.prop("scrollHeight")
+				}, 'slow');
+			};
+			$kmApplozic(d).on('click', '.km-new-messages-indicator--container', function() {
+				var len = $mck_msg_inner[0].children.length;
+				$mck_msg_inner[0].scrollTop = $mck_msg_inner[0].children[len - NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER].offsetTop;
+				_this.resetNewMessageCounter();
+			});
+			_this.resetNewMessageCounter = function() {
+				NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER = 0;
+				$kmApplozic(".km-new-messages-indicator--count").text(NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER);
+				$kmApplozic(".km-new-messages-indicator--container").addClass('n-vis').removeClass('vis');
 			};
 			_this.processNotification = function(message){
 				var groupDetail =  KM_GROUP_MAP[message.groupId];
@@ -7854,7 +7893,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var $mck_agent_typing_indicator_image = $kmApplozic(".km-typing-indicator-for-agent--image");
 					var $mck_typing_indicator_in_list = $kmApplozic(".person." + tabId + " .km-typing-indicator-in-preview");
 					var $mck_message_preview = $kmApplozic(".person." + tabId + " .kmMsgTextExpr");
-					var scrollHeight = $mck_active_msg_inner.get(0).scrollHeight;
 
 					if (!MCK_BLOCKED_TO_MAP[publisher] && !MCK_BLOCKED_BY_MAP[publisher]) {
 						if (status === 1) {
@@ -7877,11 +7915,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								$mck_typing_indicator_in_list.addClass("vis").removeClass("n-vis");
 								$mck_typing_indicator_in_list.html(KM_LABELS['typing']);
 								$mck_message_preview.addClass("n-vis").removeClass("vis");
-								if ($mck_active_msg_inner.height() < scrollHeight) {
-									$mck_active_msg_inner.animate({
-										scrollTop: $mck_active_msg_inner.prop("scrollHeight")
-									}, 0);
-								}
 
 								$mck_typing_box.removeClass('n-vis').addClass('vis');
 								setTimeout(function () {

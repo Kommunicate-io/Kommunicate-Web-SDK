@@ -17,7 +17,7 @@ import PersonInfoCard from '../PersonInfo/PersonInfoCard'
 import {PseudonymModal} from '../PersonInfo/MetaInfo';
 import Button from '../Buttons/Button';
 import {KommunicateContactListLoader, KommunicateConversationLoader, KommunicateConversationDataLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
-import { CollapseIcon, ExpandIcon, EmailIndicatorIcon } from "../../assets/svg/svgs";
+import { CollapseIcon, ExpandIcon, EmailIndicatorIcon, DownArrow } from "../../assets/svg/svgs";
 import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
@@ -100,7 +100,9 @@ class Aside extends Component {
     window.addEventListener("group-update", this.handleGroupUpdate);
     window.addEventListener("_sendMessageEvent", this.forwardMessageToZendesk);
     window.addEventListener("_userDetailUpdate", this.handleUpdateUser);
+
   }
+
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
     let applicationId = userSession.application.applicationId;
@@ -903,6 +905,15 @@ class Aside extends Component {
                               className="km-no-more-messages km-show-more-icon n-vis">
                               <h3>No more messages!</h3>
                             </div>
+
+                            <NewMessageIndicatorContainer className="km-new-messages-indicator--container n-vis">
+                              <NewMessageIndicatorText>
+                                <DownArrow />
+                              </NewMessageIndicatorText>
+                              <NewMessageIndicatorText className="km-new-messages-indicator--count"></NewMessageIndicatorText>
+                              <NewMessageIndicatorText>new messages</NewMessageIndicatorText>
+                            </NewMessageIndicatorContainer>
+
                           </div>
                         </div>
                         <div id="empty-state-conversations-div" className="empty-state-conversations-div text-center n-vis">
@@ -1239,6 +1250,35 @@ const customStyles = {
     overflowY             : 'auto'
   }
 };
+
+
+const NewMessageIndicatorContainer = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 142px;
+  height: 32px;
+  border-radius: 20px 0 0 20px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.28);
+  background-color: #5553b7;
+  padding:  0 5px;
+  z-index: 30;
+  bottom: 60px;
+  right: 0;
+  cursor: pointer;
+`;
+const NewMessageIndicatorText = styled.div`
+  font-size: 13px;
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  color: #ffffff;
+`;
+
+
 
 // export default Aside;
 const mapStateToProps = state => ({
