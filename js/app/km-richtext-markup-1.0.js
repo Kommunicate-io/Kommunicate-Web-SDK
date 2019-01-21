@@ -133,15 +133,15 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
-    return'<button title= "'+ options.replyText +'" class= "km-cta-button km-undecorated-link '+buttonClass+' "><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
+    return'<button title= "'+ options.replyText +'" class= "km-cta-button km-undecorated-link '+buttonClass+' "><a href ="'+options.url+'" target="_blank" class="km-custom-widget-text-color km-undecorated-link">'+options.name+'</a></button>';
     }else{
-    return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button '+buttonClass+' ">'+options.name+'</button>';
+    return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
-                 <button title='{{message}}' class="km-quick-replies  {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
+                 <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
             {{/payload}}
             </div>`;
 },
@@ -282,7 +282,7 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
     var formData= payload? JSON.parse(options.formData||"{}"):"";
-    var buttonClass = "km-custom-widget-text-color km-add-more-rooms ";
+    var buttonClass = "km-add-more-rooms ";
     buttonClass += payload.length==1?"km-cta-button-1 km-custom-widget-border-color":(payload.length==2?"km-cta-button-2 km-custom-widget-border-color":"km-cta-button-many km-custom-widget-border-color");
     var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
