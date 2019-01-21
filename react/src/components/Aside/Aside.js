@@ -21,7 +21,6 @@ import { CollapseIcon, ExpandIcon, EmailIndicatorIcon } from "../../assets/svg/s
 import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
-import MultiSelectInput from './MultiSelectInput';
 import Banner from '../Banner/Banner';
 import { Link } from 'react-router-dom';
 
@@ -336,11 +335,11 @@ class Aside extends Component {
       takeOverEleText = document.querySelector("#km-bot-active-text p>strong"),
       pseudoNameIcon = document.getElementById("pseudo-name-icon");
     takeOverEleContainer.style.display = "none";
+    var allBotsInGroup = [];
     //pseudoNameIcon.classList.remove("vis");
     //pseudoNameIcon.classList.add("n-vis");
     this.setUpConversationHeader(group);
     if (group) {
-      let allBotsInGroup = [];
       for (var key in group.users) {
         if (group.users.hasOwnProperty(key)) {
           var groupUser = group.users[key];
