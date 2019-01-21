@@ -971,8 +971,8 @@
 	margin-left: 10px;
 }
 .km-carousel-card-template {
-    max-width: 240;
-    width:240 !important;
+    max-width: 240px;
+    width:240px !important;
     margin-right: 4px;
     margin-left: 6px;
     /* border: 1px solid #e7e4e4; */
