@@ -288,7 +288,7 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
     var formData= payload? JSON.parse(options.formData||"{}"):"";
-    var buttonClass = "km-custom-widget-text-color km-add-more-rooms";
+    var buttonClass = "km-custom-widget-text-color km-add-more-rooms ";
     buttonClass += payload.length==1?"km-cta-button-1 km-custom-widget-border-color":(payload.length==2?"km-cta-button-2 km-custom-widget-border-color":"km-cta-button-many km-custom-widget-border-color");
     var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
