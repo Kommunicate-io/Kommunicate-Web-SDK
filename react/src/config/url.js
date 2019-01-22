@@ -35,6 +35,7 @@ export default {
         SUBSCRIPTION_COUNT: '/subscription/count',
         AUTO_REPLY: "/users/",
         TIME_ZONE: '/misc/tz',
+        METABASE: '/metabase',
     },
     botplateform: {
         ADD_BOT_URL: '/bot'
