@@ -1,5 +1,6 @@
 .email-fallback-div {
     margin-bottom: 60px; 
+    max-width: 998px;
 }
 .email-fallback-div .email-fallback--branding-container, .email-fallback-div .email-fallback--how-to-container {
     margin-left: 15px;
@@ -73,3 +74,7 @@
     width: 100%;
     height: auto;
 } 
+.email-fallback-toggle{
+    color:#2e2d2d;
+    font-size: 16px;
+}

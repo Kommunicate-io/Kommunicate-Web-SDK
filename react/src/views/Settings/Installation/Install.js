@@ -10,7 +10,7 @@ import { ReactNative, NativeScript, Squarspace, Wordpress, WixIcon, Cordova, IOS
 
 const DocsLink = (props, WrappedComponent) => {
   return (
-    <div className="code-container col-md-10">
+    <div className="code-container col-md-12">
       <a href={props.linkUrl} target="_blank" className="outer-box col-md-12 integration-font javascript-card">
         <div className="card-heading">
           <div className="image-svg-container">
@@ -101,7 +101,7 @@ class Install extends Component {
   render() {
     const currentPath = window.location.pathname;
     return (
-      <div className="animated fadeIn">
+      <div className="animated fadeIn install-section-wrapper">
         <div className="row">
           <div className="col-md-12">
             <div className="card">
@@ -114,7 +114,7 @@ class Install extends Component {
                   }
                 </div>
                 {
-                  (currentPath.includes('setUpPage')) ? " " : <div className="app-id-container col-md-10">
+                  (currentPath.includes('setUpPage')) ? " " : <div className="app-id-container col-md-12">
                     <div className="app-id-div">
                       <span className="app-id-sub-text">
                         Your App ID:
@@ -138,7 +138,7 @@ class Install extends Component {
                 }
 
 
-                <div className="code-container javascript col-md-10">
+                <div className="code-container javascript col-md-12">
                   <a href="#" className="outer-box col-md-12 integration-font javascript-card">
                     <div className="card-heading">
                       <div className="image-svg-container">
