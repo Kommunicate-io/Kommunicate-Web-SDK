@@ -303,7 +303,10 @@ class AutoSuggest extends Component {
 
 	updateQuickReplyText = (e,index) => {
 		let userShortcuts = Object.assign([], this.state.userShortcuts);	
-		var quickReplyText =  e.target.innerHTML.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, "\n");
+		var quickReplyText =  e.target.innerText.replace(/^\s*<br\s*\/?>|<br\s*\/?>\s*$/g, "\n");
+		quickReplyText = quickReplyText.replace("<br>","")
+		quickReplyText = quickReplyText.replace("<div>","")
+		quickReplyText = quickReplyText.replace("</div>","")
 		userShortcuts[index].messageField = quickReplyText;
 		this.setState({ 
 			userShortcuts: userShortcuts, 
@@ -318,7 +321,7 @@ class AutoSuggest extends Component {
 	}
 	saveQuickReply = (e,messageRef) =>{
 		if (e.charCode === 13 && !e.shiftKey ) {   
-			this.refs[messageRef].blur(); 
+			e.target.blur();
 			this.suggestionMethod(e) 
 		} 
 		this.setState({visibleButtons:true});
@@ -357,6 +360,11 @@ class AutoSuggest extends Component {
 						<div type="text" ref={messageRef} className="form-control message-field km-quick-reply-field" id="message-field" contentEditable="true"
 						suppressContentEditableWarning="true"
 							onBlur={(e) =>{this.updateQuickReplyText(e,index)}}
+							onPaste = {(e)=>{
+								e.preventDefault();
+								var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+								document.execCommand("insertHTML", false, text);
+							}}
 						    onFocus={(e) =>{this.changeActiveField(index)}}
 							onKeyPress={(e) => {this.saveQuickReply(e,index)}}>
 								{this.state.userShortcuts[index].messageField}</div>
