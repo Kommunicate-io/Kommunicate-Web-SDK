@@ -128,7 +128,7 @@ class UserItem extends Component {
                         }
                     </td>
                     
-                    <td className= "teammates-delete-icon"  >
+                    <td className= "teammates-delete-icon" colspan="3"  >
                       {/* show delete btn for agents and admins if loggedin user is an super admin */}
                       { loggedInUserRoleType ==  ROLE_TYPE.SUPER_ADMIN && roleType != ROLE_TYPE.SUPER_ADMIN &&
                         <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper km-teammates-delete-visibility">
