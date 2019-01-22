@@ -11,9 +11,9 @@ Kommunicate can also be used with any of [Website Builder](#install-on-website-b
 
 ## Install on web
 
-### Step 1 : Get the customized plugin script from [Kommunicate dashboard](https://dashboard.kommunicate.io/dashboard).
+### Step 1 : Get the customized plugin script from Kommunicate dashboard.
 
-Create your account by signing up for [Kommunicate](https://dashboard.kommunicate.io/signup). If you already have a Kommunicate account, log in to your account and go to `Settings -> Install` section and copy the script.
+Create your account by signing up for [Kommunicate](https://dashboard.kommunicate.io/signup). If you already have a Kommunicate account, log in to your account and go to [install](https://dashboard.kommunicate.io/settings/install) section and copy the script.
 
 Or
 

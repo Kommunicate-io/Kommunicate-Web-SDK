@@ -73,7 +73,7 @@ Kommunicate will send the data to your webhook in below format:
 	"createdAt": "message sent time"
 }
 ```
-3.  Kommunicate send the message to your webhook and wait for the response. The timeout limit for the webhook URL is set to the 30 seconds. Your webhook should return the array of message in response in below format:
+3.  Kommunicate sends the message to your webhook and waits for the response. The timeout limit for the webhook URL is set to the 30 seconds. Your webhook should return the array of message in response in below format:
 
 ```js
 [{
