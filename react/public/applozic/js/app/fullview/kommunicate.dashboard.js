@@ -67,34 +67,33 @@ kommunicateDashboard ={
         if (metadata.templateId){
             switch(metadata.templateId){
                 // 1 for get room pax info template
-                case "1":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_COUNT:
                     return kommunicateDashboard.markup.getHotelRoomPaxInfoTemplate();
                     break;
                 //2 for hotel card template
-                case "2":
-                    
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
                     return kommunicateDashboard.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
                     break;
                 // 3 for button container
-                case "3": 
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.LINK_BUTTON: 
                     return kommunicateDashboard.markup.buttonContainerTemplate(metadata); 
                     break;
-                case "5":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.PASSENGER_DETAIL:
                     return kommunicateDashboard.markup.getPassangerDetail(metadata);
                     break;
-                case "4":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
                     return kommunicateDashboard.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
                     break;
-                case "6":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
                     return kommunicateDashboard.markup.quickRepliesContainerTemplate(metadata);
                     break;
-                case "7":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
                     return kommunicateDashboard.markup.getListContainerMarkup(metadata);
                     break;
-                case "8":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.DIALOG_BOX:
                     return kommunicateDashboard.markup.getDialogboxContainer(metadata);
                     break;
-                case "9":
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
                     return kommunicateDashboard.markup.getImageContainer(metadata);
                     break;
                 default:

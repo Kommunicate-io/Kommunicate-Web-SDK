@@ -27,5 +27,17 @@ KOMMUNICATE_CONSTANTS = {
         ADMIN: 1,
         MODERATOR: 2,
         MEMBER: 3
-     }
+     },
+     ACTIONABLE_MESSAGE_TEMPLATE: {
+        ROOM_COUNT:"1",
+        HOTEL_BOOKING_CARD:"2",
+        LINK_BUTTON:"3",
+        ROOM_DETAIL:"4",
+        PASSENGER_DETAIL:"5",
+        QUICK_REPLY:"6",
+        LIST:"7",
+        DIALOG_BOX:"8",
+        IMAGE:"9",
+        CARD_CAROUSEL:"10"
+    }
 }
