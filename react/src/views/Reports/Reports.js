@@ -25,7 +25,6 @@ class Reports extends Component {
 			applicationCreatedAt: applicationCreatedAtTime,
 			value: moment.range(today.clone().subtract(7, "days"), today.clone()),
 			currentDate: today.format("DD MMM YYY"),
-
 		};
 	};
 
@@ -42,7 +41,7 @@ class Reports extends Component {
 	};
 
 	downloadReport = () => {
-		let url = getConfig().kommunicateApi.metabseUrl;
+		let url = getConfig().kommunicateApi.metabaseUrl;
 		url += `/?startDate=${this.state.value.start.format('x')}&endDate=${this.state.value.end.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`;
 		window.open(url);
 	}
@@ -75,6 +74,14 @@ class Reports extends Component {
 // Styles
 const Container = styled.div`
 
+	.DateRangePicker {
+		border: 1px solid #ebebeb;
+		border-radius: 5px;
+		padding: 15px;
+	}
+	.DateRangePicker__PaginationArrow {
+		top: 15px;
+	}
 	.DateRangePicker__CalendarSelection {
 		background-color: ${props => props.theme.primary};
     	border: 1px solid ${props => props.theme.primary};

@@ -64,7 +64,7 @@ function getEnvironmentId() {
     "autoSuggest": kommunicateBaseUrl + url.kommunicateApi.AUTO_SUGGEST,
     "profileImage": kommunicateBaseUrl + url.kommunicateApi.PROFILE_IMAGE,
     "subscriptionCount": kommunicateBaseUrl + url.kommunicateApi.SUBSCRIPTION_COUNT,
-    "metabseUrl": kommunicateBaseUrl + url.kommunicateApi.METABASE,
+    "metabaseUrl": kommunicateBaseUrl + url.kommunicateApi.METABASE,
   };  
   config.kommunicateWebsiteUrls = {
     "kmConversationsTestUrl": kmWebsiteUrl + url.kommunicateWebsite.KM_WEBSITE_CONVERSATIONS_TEST
