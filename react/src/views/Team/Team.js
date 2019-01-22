@@ -347,7 +347,7 @@ class Integration extends Component {
         loggedInUserRoleType={loggedInUserRoleType} disabledUsers={this.state.disabledUsers} isDisabledUsersListHidden={this.state.isDisabledUsersListHidden} getUsers={getUsers} />
     })
     return (
-      <div className="animated fadeIn ">
+      <div className="animated fadeIn teammate-wrapper ">
       <div className="km-settings-banner">
       {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
                 <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
@@ -437,7 +437,7 @@ class Integration extends Component {
           <div className="col-md-12 new">
             <div className="card">
               { !this.state.isTrialPlan && this.state.disabledUsers.length > 0 &&
-                <div className="card-block">
+                <div>
                   <div className="container disabled-account-info-container">
                     <div className="row">
                       <div className="col-lg-4 tm-disabled-accounts-icon">
@@ -480,7 +480,7 @@ class Integration extends Component {
           </div>
           <div className="col-md-12">
             <div className="card">
-              <div className="card-block">
+              <div>
                 {/* <label className="col-md-3 form-control-label invite-team" htmlFor="invite">Team</label> */}
                 <table className="table table-hover mb-0 hidden-sm-down teammates-table">
                   <thead className="thead-default">
@@ -490,15 +490,15 @@ class Integration extends Component {
                       <th>Email id</th>
                       <th>Role</th>
                       {/* <th>Last Activity</th> */}
-                      <th>Status</th>
-                      <th className="team-th-delete-edit">Delete</th>
+                      <th colSpan="4">Status</th>
+                      {/* <th className="team-th-delete-edit">Delete</th>
                       <th className="text-center n-vis">Add Info</th>
                       <th className="text-center n-vis">Actions</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>
                       <th className="team-th-delete-edit">Copy Link</th>
-                      <th className="n-vis">Activity</th>
+                      <th className="n-vis">Activity</th> */}
                     </tr>
                   </thead>
                   <tbody>
