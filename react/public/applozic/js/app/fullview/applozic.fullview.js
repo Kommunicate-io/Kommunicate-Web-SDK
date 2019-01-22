@@ -3855,6 +3855,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.loadTab = function (params, callback) {
 				// $kmApplozic('.km-user-info-tab').removeClass('vis').addClass("n-vis");
+				mckMessageService.removeChatThreadSelection();
+				mckMessageService.clearConversationAssigneeAndStatus();
 				if (params.tabId) {
 					$mck_text_box.data("metadata", null);
 					if ($kmApplozic('.person[data-km-id ="' + params.tabId + '"][data-isgroup ="' + params.isGroup + '"]').length == 0 && kmGroupUtils.getGroup(params.tabId)) {
