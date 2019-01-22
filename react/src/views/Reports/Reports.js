@@ -31,11 +31,6 @@ class Reports extends Component {
 
 	onSelect = (value, states) => {
 		this.setState({ value, states });
-		console.log("value " + value, "states ", states);
-		console.group("Values");
-		console.log(this.state.value.start.format('x'));
-		console.log(this.state.value.end.format('x'));
-		console.groupEnd();
 	};
 
 	renderSelectionValue = () => {
@@ -49,7 +44,6 @@ class Reports extends Component {
 	downloadReport = () => {
 		let url = getConfig().kommunicateApi.metabseUrl;
 		url += `/?startDate=${this.state.value.start.format('x')}&endDate=${this.state.value.end.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`;
-		console.log(url);
 		window.open(url);
 	}
 
@@ -70,8 +64,7 @@ class Reports extends Component {
 				</DatePickerContainer>
 
 				<ButtonContainer>
-					<DownloadButton as="a" href={`${getConfig().kommunicateApi.metabseUrl}/?startDate=${this.state.value.end.format('x')}&endDate=${this.state.value.start.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`} download >Download Report</DownloadButton>
-					{/* <A href={`${getConfig().kommunicateApi.metabseUrl}/?startDate=${this.state.value.start.format('x')}&endDate=${this.state.value.end.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`} download>Download Report</A> */}
+					<Button onClick={this.downloadReport}>Download Report</Button>
 				</ButtonContainer>
 
 			</Container>
@@ -101,16 +94,6 @@ const Heading = styled.h3`
 `;
 const Span = styled.span`
 	color: ${props  => props.theme.primary};
-`;
-const DownloadButton = styled(Button)`
-	display: block;
-	max-width: 180px;
-	margin: 0 auto;
-	line-height: 40px;
-
-	&:hover {
-		text-decoration: none;
-	}
 `;
 
 export default withTheme(Reports);
