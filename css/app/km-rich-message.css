@@ -679,6 +679,7 @@
         padding: 0px;
         background: transparent;
         width:100%;
+        box-sizing: border-box;
 
     }
     .km-faq-list--body, .km-faq-list--footer {
@@ -1118,4 +1119,7 @@
 }
 .km-carousel-card-footer form {
     margin: 0;
+}
+.km-list-container {
+    border: solid 1px #e5e5e5;
 }
