@@ -3669,5 +3669,5 @@ ol, ul {
 	background-color: transparent;
 }
 #km-text-box{
-	white-space: pre;
+	white-space: pre-line;
 }

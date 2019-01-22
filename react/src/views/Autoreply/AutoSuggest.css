@@ -199,7 +199,7 @@ body{
 }
 .km-quick-reply-field{
     white-space: pre-wrap;
-    height: 41px;
+    height: 42px;
     overflow: scroll;
     max-width: 627px;
     transition: all .3s ease-in-out;

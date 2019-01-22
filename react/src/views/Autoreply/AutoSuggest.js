@@ -326,6 +326,11 @@ class AutoSuggest extends Component {
 		} 
 		this.setState({visibleButtons:true});
 	}
+	formatHtmlToPlaintext = (e) =>{
+		e.preventDefault();
+		var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+		document.execCommand("insertHTML", false, text);
+	}
 
 	render() {
 
@@ -360,11 +365,7 @@ class AutoSuggest extends Component {
 						<div type="text" ref={messageRef} className="form-control message-field km-quick-reply-field" id="message-field" contentEditable="true"
 						suppressContentEditableWarning="true"
 							onBlur={(e) =>{this.updateQuickReplyText(e,index)}}
-							onPaste = {(e)=>{
-								e.preventDefault();
-								var text = (e.originalEvent || e).clipboardData.getData('text/plain');
-								document.execCommand("insertHTML", false, text);
-							}}
+							onPaste = {(e)=>{this.formatHtmlToPlaintext(e)}}
 						    onFocus={(e) =>{this.changeActiveField(index)}}
 							onKeyPress={(e) => {this.saveQuickReply(e,index)}}>
 								{this.state.userShortcuts[index].messageField}</div>
