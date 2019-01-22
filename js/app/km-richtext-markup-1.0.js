@@ -133,9 +133,7 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
-        options.openLinkInNewTab = (typeof options.openLinkInNewTab  !='undefined' && !options.openLinkInNewTab ) ? options.openLinkInNewTab:true;
-        var target = options.openLinkInNewTab ? "_blank" : "_parent";
-        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'" data-target="'+target+'" ">'+options.name+'</button>';  
+        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'</button>';  
     }else{
         return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
@@ -212,7 +210,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                          {{#buttons}}
-                         <button class="km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link km-custom-widget-text-color" href ="{{href}}" target="_blank">{{name}}</a></button>
+                         <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                          {{/buttons}}
                      
              </div>
@@ -351,6 +349,7 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
 Kommunicate.markup.getListContainerMarkup = function(metadata){
+    const buttonClass = {link:"km-link-button", submit:""}
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
@@ -387,6 +386,8 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
         }
         if(json.buttons&&json.buttons.length){
         json.buttons=  json.buttons.map(function (button){
+            button.target = Kommunicate.markup.getLinkTarget(button.action);
+            button.buttonClass = buttonClass[button.action.type];
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
                 button.hadlerClass= "km-list-button-item-handler";
@@ -494,4 +495,8 @@ Kommunicate.markup.cardHeader = function(item) {
 }
 Kommunicate.markup.cardInfo= function(item) {
     return Mustache.to_html(Kommunicate.markup.getCardInfoTemplate(),item)
+}
+Kommunicate.markup.getLinkTarget= function(buttonInfo) {
+    buttonInfo.openLinkInNewTab = (typeof buttonInfo.openLinkInNewTab  !='undefined' && !buttonInfo.openLinkInNewTab ) ? buttonInfo.openLinkInNewTab:true;
+    return buttonInfo.openLinkInNewTab ? "_blank" : "_parent";
 }
