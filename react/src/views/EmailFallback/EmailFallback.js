@@ -157,14 +157,14 @@ export default class EmailFallback extends Component {
                     <SettingsHeader />
                 </div>
                 <div className="row">
-                    <div className=" col-md-8 col-sm-12">
+                    <div className="col-sm-12">
 
                         <div className="email-fallback--branding-container">
                             <h3>Branding in fallback emails:</h3>
                             <p className="email-fallback--branding-description">We use the {CommonUtils.getProductName()} logo in the fallback emails by default. You can give the fallback emails your brand identity by replacing the below {CommonUtils.getProductName()} logo with your own.</p>
                             <div className="email-fallback--branding_logo-container">
                                 <div className="branding_logo--image-upload">
-                                    <p className="email-fallback--branding-description">Logo used in fallback mails:</p>
+                                    <p className="email-fallback--branding-description email-fallback-toggle">Logo used in fallback mails:</p>
                                     <div id={`branding_logo--image-placeholder`} className={`branding_logo--image-placeholder ${defaultLogoClass}`}>
                                         <img src={this.state.uploadedCompanyLogo} />
                                     </div>
@@ -186,7 +186,7 @@ export default class EmailFallback extends Component {
                         <div className="email-fallback--how-to-container">
                             <h3>How to send fallback emails?</h3>
                             <div className="email-fallback--how-to_toggle-switch">
-                                <div className="email-fallback--branding-description">
+                                <div className="email-fallback--branding-description email-fallback-toggle">
                                     Allow {CommonUtils.getProductName()} to send all fallback emails
                                 </div>
                                 <div>

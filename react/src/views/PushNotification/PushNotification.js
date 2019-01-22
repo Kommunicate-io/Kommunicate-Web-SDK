@@ -317,10 +317,9 @@ class PushNotification extends Component {
         <div className="row">
           <div className="col-md-12">
             <div className="card">
-              <div className="card-header away-card-header km-div km-remove-border">
+              <div>
                 <div className="push-notification-android-container">
-                  <div className="">
-
+                  <div>
                     <div className="form-group fcm"><span>For Android (GCM/FCM)</span>
                     {
                         !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
@@ -328,9 +327,9 @@ class PushNotification extends Component {
                     </div>
                     <div className="row form-group">
 
-                      <div className="fcm-key">GCM/FCM key :<span className="customer-type"> </span></div>
-                      <div className="col-sm-6 col-md-6">
-                        <input id="gcmKey" onChange={(e) => { this.setState({ gcmKey: e.target.value }) }} className="km-pushnotification-input" value={this.state.gcmKey} type="text" onFocus={(e) => { this.setState({ disableButtonForAndroid: false }) }}></input></div>
+                      <div className="fcm-key col-md-2">GCM/FCM key :<span className="customer-type"> </span></div>
+                      <div className="col-md-10">
+                        <input id="gcmKey" onChange={(e) => { this.setState({ gcmKey: e.target.value }) }} className="km-input-apns" value={this.state.gcmKey} type="text" onFocus={(e) => { this.setState({ disableButtonForAndroid: false }) }}></input></div>
                     </div>
                     <div>
                       {
@@ -359,38 +358,37 @@ class PushNotification extends Component {
         <div className="row">
           <div className="col-sm-12 col-md-12">
             <div className="card km-remove-border">
-              <div className="card-header away-card-header km-remove-border km-div">
+              <div>
                 <div className="push-notification-ios-container">
-                  <div className="">
+                  <div>
 
-                    <div className="form-group for-ios-apns"><span>For iOS(APNS)</span>
+                    <div className="form-group fcm" style={{marginTop:"20px"}}><span>For iOS(APNS)</span>
                     {
                         !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                       }
                     </div>
-                    <div className="form-group for-distribution">For DISTRIBUTION<span className="customer-type"> </span></div>
-                    <hr className="km-pushnotification-hr"></hr>
-                    <div className="row form-group km-pushNotification-development">
+                    <div className="form-group fcm pushnotifiction-sub">For DISTRIBUTION<span className="customer-type"> </span></div>
+                    <div className="row form-group km-pushNotification-development  pushnotifiction-sub">
 
                       <div className="apple-certificate">Apple Certificate :<span className="customer-type"> </span></div>
                       <div className="col-sm-6 col-md-6 km-input-component">
                         <InputFile id={'apnsUrl'} dataUrl={this.state.apnsProdUrl} className={'secondary'} text={this.state.apnsForDistribution} onBlur={(e) => { this.setState({ disableButtonForIosDistribution: false }) }} accept={'.p12'} />
                       </div>
                     </div>
-                    <div className="row form-group">
-                      <div className="apple-certificate ">Password :<span className="customer-type"> </span></div>
+                    <div className="row form-group  pushnotifiction-sub">
+                      <div className="apple-certificate second-option">Password :<span className="customer-type"> </span></div>
                       <div className="col-sm-6 col-md-6">
                         <input className="km-input-apns" value={this.state.apnsPassword} onChange={(e) => { this.setState({ disableButtonForIosDistribution: false, apnsPassword: e.target.value }) }} id="apnsPassword" type="password"></input></div>
                     </div>
                     <div>
                       {
-                        this.state.isTrialPlan ? <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn"
+                        this.state.isTrialPlan ? <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn  pushnotifiction-sub"
                         onClick={(e) => {
                           this.setState({
                             disableButtonForIosDistribution: true
                           }, this.uploadDistributionapnsFile),
                           AnalyticsTracking.acEventTrigger("ac-ios-dist");
-                        }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn"
+                        }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn  pushnotifiction-sub">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDistribution} className="save-changes-btn  pushnotifiction-sub"
                         onClick={(e) => {
                           this.setState({
                             disableButtonForIosDistribution: true
@@ -400,23 +398,22 @@ class PushNotification extends Component {
                       }
                       
                     </div>
-                    <div>
-                      <div className="form-group km-pushNotification-div">For DEVELOPMENT<span className="customer-type"> </span></div>
-                      <hr className="km-pushnotification-hr"></hr>
+                    <div className="pushnotifiction-sub">
+                      <div className="form-group km-pushNotification-div fcm">For DEVELOPMENT<span className="customer-type"> </span></div>
                       <div className="row form-group km-pushNotification-development">
 
-                        <div className="apple-certificate">Apple Certificate :<span className="customer-type"> </span></div>
-                        <div className="col-sm-6 col-md-6 km-input-component">
+                        <div className="apple-certificate col-sm-2 ">Apple Certificate :<span className="customer-type"> </span></div>
+                        <div className="col-sm-6 col-md-6 km-input-component" style={{marginLeft:"-20px"}}>
                           <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={this.state.apnsForDevelepment} onBlur={(e) => { this.setState({ disableButtonForIosDevelopment: false }) }} accept={'.p12'} />
                         </div>
                       </div>
-                      <div className="row form-group">
-                        <div className="apple-certificate">Password :<span className="customer-type"> </span></div>
-                        <div className="col-sm-6 col-md-6">
+                      <div className="row form-group" style={{marginLeft:"0"}}>
+                        <div className="apple-certificate second-option">Password :<span className="customer-type"> </span></div>
+                        <div className=" col-md-6">
                           <input className="km-input-apns" value={this.state.apnstestPassword} onChange={(e) => { this.setState({ disableButtonForIosDevelopment: false, apnstestPassword: e.target.value }) }} id="testApnsPassword" type="password"></input></div>
                       </div>
                     </div>
-                    <div>
+                    <div className="pushnotifiction-sub">
                     {
                       this.state.isTrialPlan ? <Button primary disabled={this.state.disableButtonForIosDevelopment} className="save-changes-btn"
                       onClick={(e) => {
@@ -424,7 +421,7 @@ class PushNotification extends Component {
                           disableButtonForIosDevelopment: true
                         }, this.uploadDevelopmentapnsFile),
                         AnalyticsTracking.acEventTrigger("ac-ios-dev");
-                      }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn">Save</Button> : <Button primary disabled={this.state.disableButtonForIosDevelopment} className="save-changes-btn"
+                      }} >Save</Button> : this.state.isStartUpPlan ? <Button primary disabled={true} className="save-changes-btn" >Save</Button> : <Button primary disabled={this.state.disableButtonForIosDevelopment} className="save-changes-btn"
                       onClick={(e) => {
                         this.setState({
                           disableButtonForIosDevelopment: true

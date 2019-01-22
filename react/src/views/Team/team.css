@@ -17,7 +17,8 @@
 }
 .teammate-table {
   margin: 0 auto 50px;
-  max-width: 1080px;
+  max-width: 1100px;
+  min-width: 1040px;
 }
 .teammate-table .thead-default th {
     background-color: #ffffff;

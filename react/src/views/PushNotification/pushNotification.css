@@ -7,11 +7,10 @@
 }
 
 .km-pushnotification-input {
-  width: 100%;
+  width: 80%;
   height: 36px;
   outline: none;
   object-fit: contain;
-  margin-top: 40px;
   padding: 15px;
   border-radius: 4px;
   background-color: #ffffff;
@@ -24,34 +23,20 @@
 }
 
 .fcm {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.6px;
-  text-align: left;
-  color: #656161;
+  letter-spacing: 1.3px;
+  color: #666464;
 }
 
 .fcm-key {
-  margin-top: 47px;
-  margin-left: 15px;
-  width: 119px;
-  height: 16px;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.6px;
-  text-align: left;
-  color: #656161;
+  height: 35px;
+  line-height: 37px;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  color: #4a4a4a;
 }
 
-.km-pushNotification-development {
-  margin-top: 15px;
-}
 
 .km-pushNotification-div {
   margin-top: 45px;
@@ -82,16 +67,17 @@
 }
 
 .apple-certificate {
-  margin-top: 29px;
+  margin-top: 19px;
   font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
   letter-spacing: 0.6px;
   text-align: left;
   color: #656161;
-  margin-left: 15px;
+  height: 38px;
+  line-height: 37px;
+
+}
+.apple-certificate.second-option {
+  margin-top: 0px;
 }
 
 .enabling-push-notification {
@@ -112,11 +98,14 @@
   outline: none;
   height: 36px;
   margin-left: 46px;
-  margin-top: 22px;
+  margin-top: 2px;
   border-radius: 4px;
   background-color: #ffffff;
-  border: solid 1px #a1a1a1;
+  border: solid 1px #e8e8e8;
 
+}
+.km-input-apns:focus {
+  border: solid 1px #bbb;
 }
 
 .km-input-component {
@@ -156,5 +145,18 @@
 
 .push-notification-ios-container, .push-notification-android-container {
   margin-left: 15px;
-  margin-top: 25px;
+  border-bottom: 1px solid #cacaca;
+  padding-bottom: 24px;
+  width:95%;
+  margin-bottom: 10px;
+}
+.km-push-notification-container{
+  width: 998px;
+}
+
+.pushnotifiction-sub{
+  margin-left: 30px;
+}
+.push-notification-ios-container:last-child {
+  border: none;
 }

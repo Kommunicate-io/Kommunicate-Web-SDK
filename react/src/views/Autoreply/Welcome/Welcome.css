@@ -2,6 +2,7 @@
 .welcome-message-wrapper{
     margin-left: 15px;
     max-width: 998px;
+    margin-bottom: 50px;
 }
 .welcome-message-title{
     font-size: 18px;
