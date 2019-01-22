@@ -195,8 +195,6 @@ exports.createApplication = (adminUserId, adminPassword, applicationName, pricin
           updateApplication({applicationId: response.data.applicationId, pricingPackage: 101})
           response.data.pricingPackage=101;
         }
-        console.log("###returning:");
-        console.log(response.data);
         return response.data;
       } else {
         console.error("applozic error response : ", applicationName);
@@ -204,7 +202,6 @@ exports.createApplication = (adminUserId, adminPassword, applicationName, pricin
         throw err;
       }
     } else {
-      console.log(response);
       console.error("received error code: ", response);
       err.code = "APPLOZIC_ERROR";
       throw err;
