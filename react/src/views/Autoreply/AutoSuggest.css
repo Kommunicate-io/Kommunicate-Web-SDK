@@ -199,15 +199,17 @@ body{
 }
 .km-quick-reply-field{
     white-space: pre-wrap;
-    max-height: 88px;
+    height: 42px;
     overflow: scroll;
-    box-shadow: 3px 3px 26px 0px rgba(0, 0, 0, 0);    
     max-width: 627px;
-    transition: all .3s;
+    transition: all .3s ease-in-out;
+    overflow: hidden;
+    line-height: 1.7;
 }
 
 .form-control.km-quick-reply-field:focus{
     opacity: 1;
-    box-shadow: 3px 3px 26px 0px rgba(0, 0, 0, 0.15);
     border-color: #d8d8d8;
+    height: 118px;
+    overflow: scroll;
 }
