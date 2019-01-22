@@ -50,28 +50,50 @@ Here is the list of supported platforms(we will add more platform in due course)
 
 On successful integration, the bot will be given an ID(botId) and will be listed under My Integrated Bots section. The botId will be used to identify the bot in the Kommunicate system.
 
-### To integrate your custom bot, follow the below steps:
+### To integrate with other bot platforms, follow the below steps:
 
 * * *
-1. Webhook API is required at your backend server so that all messages received by Kommunicate can be fowarded to your server.
-JSON format of the request body will contain the following:
+If you have any bot running on platform other than Dialogflow, you can integrate it with kommunicate by following below steps:
+1. Go to kommunicate [bot integration](https://dashboard.kommunicate.io/bot) and click on `Other bot platforms`.
 
-``` JS
+2. Kommunicate will ask you a webhook URL and request header for the webhook. Webhook URL is required at your backend server so that messages sent to bot can be forwarded to your server. You can use same webhook for multiple bots or can configure different webhook. 
+Kommunicate will send the data to your webhook in below format:
 
-{   
-    "key":"message key", 
-    "from":"sender unique id", 
-    "groupId": 123456, // In case of Group Chat 
-    "clientGroupId": "123456", // In case of Group Chat 
-    "groupName": "applozicGroup", // In case of Group Chat 
-    "conversationId": 23456, // In case of Contextual Chat 
-    "message":"message content", "timeStamp":1457958424000, // Long timestamp value 
-    "receiverConnected": true, // Boolean value 
-    "receiverLastSeenAtTime": 1457958424000 //Long timestamp value 
+```js
+{
+	"botId": "bot id who has received the message. This id is same as shown in dashboard.",
+	"key": "unique id for every message",
+	"from": "user id who has sent the message",
+	"message": "message sent by user to the bot",
+	"groupId": "conversation id",
+	"metadata": "extra information with message",
+	"contentType": "content type of the message (text, html, location, etc)",
+	"applicationKey": "your APP_ID shown in Dashboard Install section",
+	"source": "identifies if message is sent from web or mobile",
+	"createdAt": "message sent time"
 }
-
 ```
-2. Upon receiving the chat message in webhook API, call the bot platform api provided by Microsoft to get the response, send that response to  <a href="api-detail#send-message" target="_blank">Kommunicate send message API.</a>
+3.  Kommunicate send the message to your webhook and wait for the response. The timeout limit for the webhook URL is set to the 30 seconds. Your webhook should return the array of message in response in below format:
+
+```js
+[{
+	"message": "text message from webhook" // message without metadata
+}, {
+	"message": "message with metadata to render quick replies", // you can send any valid actionable message in metadata.
+	"metadata": {
+    "contentType": "300",
+        "templateId": "6",
+        "payload": [{
+            "title": "Quick reply button 1",
+            "message": "Quick reply button 1",
+        }, {
+            "title": "Quick reply button 2",
+            "message": "Quick reply button 2" 
+        }]
+	}
+}]
+```
+Each object in message array is rendered as separate message in Kommunicate chat widget.
 
 ## Use Actionable messages to make conversations interactive
 
