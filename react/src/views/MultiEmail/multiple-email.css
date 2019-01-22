@@ -65,18 +65,18 @@
 .script-text-area, .script-text-area:focus,.script-text-area:active{
 	width:100%;
 	padding: 20px;
-	border: 1px solid #dad6d6;
+	border: 1px solid #a1a1a1;
 	resize: none;
 	outline: none;
-	border-bottom: none;
 	color: #87888a;
+	margin-bottom: 20px;
+	border-radius: 4px;
 }
 .copy-code-button-div {
 	margin-top: -6px;
     background-color: #ffffff;
 	padding: 10px 0px 20px 20px;
-	border: 1px solid #dad6d6;
-	border-top: none;
+	width: 100%;
 }
 .instructions-link-div {
 	padding-top: 20px;
