@@ -503,7 +503,7 @@ cursor: pointer;
     transform: translateY(-50%);
 }
 .km-dashboard-msg-box-rich-text-container .tns-outer .tns-controls button:first-child{
-	left :-12px;
+	left :41px;
 }
 .km-dashboard-msg-box-rich-text-container .tns-outer .tns-controls button:last-child{
     right: 1px;
@@ -810,3 +810,153 @@ cursor: pointer;
         color: #6f6e6e;
         letter-spacing: 0.3px;
     }
+
+/******** Generic card carousel *************/   
+.km-dashboard-carousel-card-title-wrapper {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.km-dashboard-carousel-card-title {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 220px;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    color: #141313;
+}
+.km-dashboard-carousel-card-title-extension {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: #000000;
+    margin-right: 9px;
+    margin-left: 8px;
+    margin-top: 4px;
+}
+.km-dashboard-carousel-card-sub-title {
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    color: #565454;
+    margin-top: 4px;
+    font-weight: 400;
+}
+.km-dashboard-carousel-card-description {
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    color: #797474;
+    margin-bottom: 4px;
+    /* height: 44px; */
+    height: auto;
+    overflow: hidden;
+    position: relative; 
+    line-height: 14.4px;
+    max-height: 41.2px; 
+    text-align: justify;  
+    margin-right: 12px;
+    padding-right: 12px;
+    margin-top: 4px;
+}
+.km-dashboard-carousel-card-description-wrapper {
+    height: 44px;
+}
+.km-dashboard-carousel-card-description:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.km-dashboard-carousel-card-description:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    margin-top: 2.4px;
+    background: #f4f5f6;
+  }
+.km-dashboard-card-message-container {
+    display: flex;
+    margin: 0;
+    width: 315px;
+    padding-left: 0;
+    max-width: 100%;
+    transform: translateX(-10px);
+}
+.km-dashboard-carousel-card-template {
+    min-width: 240px;
+    width:240px !important;
+    margin-right: 4px;
+    margin-left: 6px;
+}
+.km-dashboard-carousel-card-header {
+    position: relative;
+    height: 93px;
+}
+.km-dashboard-carousel-card-content-wrapper {
+    padding-top: 6px;
+    padding-left: 9px;
+    padding-bottom: 6px;
+    border: 1px solid #e7e4e4;
+    border-top: 0;
+}
+.km-dashboard-carousel-card-footer .km-dashboard-cta-button, .km-carousel-card-footer .km-dashboard-cta-multi-button-container button{
+    width: 100%;
+    height: 36px;
+    border-color: #e7e4e4 ;
+    border-bottom: none ;
+    margin: 0;
+    border-radius: 0;
+}
+.km-dashboard-carousel-card-overlay-text {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    background-color: #ffffff;
+    padding: 10px;
+    color: #0d0d0e;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 0 4px 4px 0;
+    font-size: 16px;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.km-dashboard-carousel-card-overlay-text-without-img {
+    position: static;
+    background-color: #d6d6d6;
+    border-radius: 0 0 4px 0;
+    box-shadow: none;
+}
+.km-dashboard-carousel-card-header-without-img {
+    height: 37px;
+    border: 1px solid #e7e4e4;
+    border-bottom: 0;
+    border-radius: 2px;
+}
+.km-dashboard-carousel-card-info-wrapper-without-header {
+    border-top: 1px solid #e7e4e4;
+    border-radius: 7px 7px 0 0;
+}
+.km-dashboard-carousel-card-info-wrapper-with-buttons {
+    border-bottom: 0;
+}
+.km-dashboard-carousel-card-footer button {
+    width: 100% !important;
+    box-sizing: border-box;
+}
+.km-dashboard-carousel-card-footer form {
+    margin: 0;
+}
+.km-dashboard-carousel-card-img {
+    width: 100%;
+    height: 93px;
+    object-fit: cover;
+}
+
+.km-dashboard-carousel-card-footer button:last-child{
+    border-bottom: 1px solid #e7e4e4 ; 
+    border-radius: 0 0 5px 5px;
+}

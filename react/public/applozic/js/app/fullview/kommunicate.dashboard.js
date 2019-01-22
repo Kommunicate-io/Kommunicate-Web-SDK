@@ -96,6 +96,9 @@ kommunicateDashboard ={
                 case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
                     return kommunicateDashboard.markup.getImageContainer(metadata);
                     break;
+                case KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
+                    return kommunicateDashboard.markup.getCarouselMarkup(metadata);
+                    break;
                 default:
                     return "";
                     break;
