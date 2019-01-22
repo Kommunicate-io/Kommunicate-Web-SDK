@@ -328,7 +328,6 @@ class Welcome extends Component{
           welcomeMessages={this.state.welcomeMessages}
           hasFirstMessage = {false}
           hasSecondMessage = {false}
-          hasThirdMessage = {false} 
             />          
           </div>
         </div>

@@ -10,6 +10,8 @@ import Checkbox from '../../../components/Checkbox/Checkbox';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 import Button from '../../../components/Buttons/Button';
+import {LiveChatWidget} from '../../../components/LiveChatWidget/LiveChatWidget'
+
 
 
 class AwayMessage extends Component{
@@ -23,6 +25,7 @@ class AwayMessage extends Component{
      awayMessageAnonymousCustomers:[{messageField:''}],
      awayMessageCopyKnownCustomers:[{messageField:''}],
      awayMessageCopyAnonymousCustomers:[{messageField:''}],
+     liveAwayMessage:"",
      enableAddMsgLink: false,
      activeTextField: -1,
      disableButtonForKnownTextArea:true,
@@ -32,7 +35,7 @@ class AwayMessage extends Component{
   }
   componentDidMount(){
        this.getAwayMessages();
-       this.getStatusOfCollectEmailID();    
+       this.getStatusOfCollectEmailID();       
   }
   getStatusOfCollectEmailID = () => {
    return Promise.resolve(getAppSetting().then(response => {
@@ -77,7 +80,7 @@ class AwayMessage extends Component{
            })
           this.setState({
               awayMessageKnownCustomers: awayMessageKnownCustomers,
-              awayMessageCopyKnownCustomers: awayMessageCopyKnownCustomers
+              awayMessageCopyKnownCustomers: awayMessageCopyKnownCustomers,
             }, this.updateUserStatus);
           })
           
@@ -144,6 +147,10 @@ class AwayMessage extends Component{
         status:2
       })
     }
+
+    this.setState({
+      liveAwayMessage : this.state.awayMessageAnonymousCustomers[0].messageField ? this.state.awayMessageAnonymousCustomers[0].messageField : this.state.awayMessageKnownCustomers[0].messageField
+    })
     
   }
 
@@ -361,6 +368,7 @@ class AwayMessage extends Component{
               awayMessageKnownCustomers[index].messageField = e.target.value;
               this.setState({
                 awayMessageKnownCustomers:awayMessageKnownCustomers,
+                liveAwayMessage:awayMessageKnownCustomers[index].messageField,
                 disableButtonForKnownTextArea:false
               })
             }}
@@ -382,6 +390,7 @@ class AwayMessage extends Component{
                 awayMessageAnonymousCustomers[index].messageField = e.target.value;
                 this.setState({
                   awayMessageAnonymousCustomers:awayMessageAnonymousCustomers,
+                  liveAwayMessage:awayMessageAnonymousCustomers[index].messageField,
                   disableButtonForAnonymousTextArea:false
                 })
               }}
@@ -406,11 +415,9 @@ class AwayMessage extends Component{
             </div>
           </div>
         </div>
+        <div className="away-message-row">
+          <div className="away-message-textboxes">
         {/* Anonymous customers container */}
-        <div className="row">
-          <div className="col-sm-12 col-md-12">
-            <div className="card">
-              <div className="card-header away-card-header anonymous-wrapper  km-remove-border">
                 <div className="away-message-anonymous-customers-wrapper">
                   <div className="row">
                     <h5 className="customers-message-title">Away Message for<span className="customer-type"> anonymous </span>users
@@ -447,16 +454,8 @@ class AwayMessage extends Component{
                         },this.discardAwayMessageAnonymousCustomers)
                     }}>Discard</Button>
                 </div>
-              </div> 
-            </div>
-          </div>
-        </div>
         {/* Anonymous customers container end here */}
         {/* known customers container */}
-        <div className="row">
-          <div className="col-sm-12 col-md-12">
-            <div className="card">
-              <div className="card-header away-card-header  km-remove-border">
                 <div className="away-message-known-customers-wrapper">
                   <div className="row">
                     <h5 className="customers-message-title">Away Message for<span className="customer-type"> known </span>users
@@ -489,11 +488,16 @@ class AwayMessage extends Component{
                         },this.discardAwayMessageKnownCustomers)
                     }}>Discard</Button>
                 </div>
-              </div>          
-            </div>
+        {/* known customers container ends here */}</div>
+          <div className="away-message-preview">
+            <LiveChatWidget
+              hasTextBox={true}
+              hasAwayMessage={true}
+              awayMessage={this.state.liveAwayMessage || this.props.awayMessage}
+            />  
           </div>
         </div>
-        {/* known customers container ends here */}
+        
         <ReactTooltip />
       </div>
 

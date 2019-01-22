@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import './LiveChatWidget.css';
 // import './LiveChatWidgetAssets';
-import { AgentIcon, KmDefaultIcon } from './LiveChatWidgetAssets';
+import { AgentIcon, KmDefaultIcon, AttachmentIcon } from './LiveChatWidgetAssets';
 
 
 
@@ -14,11 +14,14 @@ const LiveChatWidget =  (props) =>{
         hasCustomImage: false ,
         agentMessages:["Hi, how may I help you?", "Sure, I can help you with this. Can you give me your updated delivery address?","Please wait our agents will be with you shortly."],
         customerMessage:"Hey, can I change the delivery address of my order? ",
+        awayMessage:"Hi, All our agents are away. Please leave a message we will get back to you as soon as possible",
         currentIcon : <KmDefaultIcon />,
         hasCustomerMessage : false,
         hasFirstMessage:true,
         hasSecondMessage:true,
-        hasThirdMessage:true,
+        hasThirdMessage:false,
+        hasAwayMessage:false,
+        hasTextBox:false
     }
      
    return(
@@ -43,24 +46,31 @@ const LiveChatWidget =  (props) =>{
                 props.welcomeMessages && props.welcomeMessages.map((data, index) => (
                     <div className="km-message-left" key={index}>
                         <div className="km-conversation-img"><AgentIcon /></div>
-                        <div className="km-conversation-content">{data.messageField ? data.messageField : props.agentMessages[index]}</div>
+                        <div className="km-conversation-content">{data.messageField ? data.messageField : (props.agentMessages ? props.agentMessages[index] : "")}</div>
                     </div>
                 ))
             }
             <div className={props.hasFirstMessage ? "km-message-left" : "n-vis"}>
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">{props.agentMessages[0]}</div>
+                <div className="km-conversation-content">{props.agentMessages ? props.agentMessages[0] : ""}</div>
             </div>
             <div className="km-message-right">
                 <div className={props.hasCustomerMessage ? "km-conversation-content" : "n-vis"} style={{ background: props.primaryColor }}>{props.customerMessage}</div>
             </div>
             <div className={props.hasSecondMessage ? "km-message-left" : "n-vis"}>
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">{props.agentMessages[1]}</div>
+                <div className="km-conversation-content">{props.agentMessages ? props.agentMessages[1] : ""}</div>
             </div>
             <div className={props.hasThirdMessage ? "km-message-left" : "n-vis"}>
                 <div className="km-conversation-img"><AgentIcon /></div>
-                <div className="km-conversation-content">{props.agentMessages[2]}</div>
+                <div className="km-conversation-content">{props.agentMessages ? props.agentMessages[2] : ""}</div>
+            </div>
+            <div className={props.hasAwayMessage ? "away-message--demo-wrapper" : "n-vis"}>
+                <hr style={{borderTop: "dotted 1px", borderColor : "#bbb"}} />
+                <div className="away-message-demo-">{props.awayMessage}</div>
+            </div>
+            <div  className={props.hasTextBox ? "live-chat-demo-textbox" : "n-vis"}>
+            <AttachmentIcon />
             </div>
         </div>
         <div className={props.hasCustomImage ? "n-vis" : "km-chat-icon"} style={{ background: props.primaryColor }} >

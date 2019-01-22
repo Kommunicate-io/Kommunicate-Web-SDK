@@ -9,7 +9,7 @@
     margin-bottom: 69px;
     padding-bottom: 20px;
     max-height: 500px;
-    min-height: 390px;
+    min-height: 445px;
 }
 
 .km-chat-box-header {
@@ -153,4 +153,21 @@
 .km-chat-icon svg {
     /* height: 30px; */
     width: 28px;
+}
+.away-message--demo-wrapper{
+    width: 90%;
+    margin: 90px auto 0;
+    text-align: center;
+    color: #9b9b9b;
+}
+.live-chat-demo-textbox{
+    width: 90%;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 0 auto;
+    padding: 12px 8px;
+    display: flex;
+    margin-top: 32px;
+    align-items: flex-start;
+    justify-content: flex-end;
 }

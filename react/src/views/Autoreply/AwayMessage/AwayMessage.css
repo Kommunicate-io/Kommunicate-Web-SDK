@@ -24,7 +24,7 @@ body {
 
 .away-msg-text-area {
     width: 100%;
-    border: 1px solid #eaeaea;
+    border: 1px solid #a1a1a1;
     border-radius: 2px;
     padding: 7px;
     background: none !important;
@@ -40,6 +40,11 @@ body {
 .away-message-known-customers-wrapper,
 .away-message-anonymous-customers-wrapper {
     margin-left: 15px;
+    margin-top: 30px;
+}
+
+.away-message-known-customers-wrapper{
+    margin-top: 40px;
 }
 
 .discard-btn {
@@ -119,4 +124,10 @@ textarea::-moz-placeholder {
 
 textarea:-ms-input-placeholder {
     color: rgb(202, 206, 207);
+}
+.away-message-row{
+    display: flex;
+    width: 998px;
+    align-items: flex-start;
+    justify-content: space-between;
 }

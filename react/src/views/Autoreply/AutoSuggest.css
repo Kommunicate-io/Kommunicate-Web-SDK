@@ -204,7 +204,7 @@ body{
     max-width: 627px;
     transition: all .3s ease-in-out;
     overflow: hidden;
-    line-height: 1.7;
+    line-height: 23px;
 }
 
 .form-control.km-quick-reply-field:focus{
