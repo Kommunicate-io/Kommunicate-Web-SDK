@@ -5,7 +5,6 @@ const db = require("../models");
 const applozicClient = require("../utils/applozicClient");
 const botPlatformClient = require("../utils/botPlatformClient");
 const userService = require('../users/userService');
-const fileService = require('../utils/fileService');
 const mailService = require('../utils/mailService');
 const path = require('path');
 const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
@@ -15,15 +14,30 @@ const USER_TYPE = { "AGENT": 1, "BOT": 2, "ADMIN": 3 };
 const COMMON_CONSTANTS = require("../users/constants.js");
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
-const appSetting = require("../setting/application/appSettingService")
 const customerService = require('../customer/customerService.js');
 const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
 const USER_CONSTANTS = require("../users/constants.js");
+const utils = require("../register/utils");
 
 exports.USER_TYPE = USER_TYPE;
 
-exports.createCustomer = customer => {
-  return Promise.resolve(applozicClient.createApplication(KOMMUNICATE_ADMIN_ID, KOMMUNICATE_ADMIN_PASSWORD, "km-" + customer.userName + "-" + Math.floor(new Date().valueOf() * Math.random()))).then(application => {
+exports.createCustomer = async customer => {
+  let adminId = KOMMUNICATE_ADMIN_ID;
+  let adminPasword = KOMMUNICATE_ADMIN_PASSWORD;
+  let pricingPackage = utils.APPLOZIC_SUBSCRIPTION.BETA;
+
+  if (customer.product && customer.product == "applozic") {
+    adminId = customer.userName;
+    adminPasword = customer.password;
+    console.log("registering for applozic");
+    pricingPackage = utils.APPLOZIC_PRICING_PACKAGE[utils.KOMMUNICATE_SUBSCRIPTION.STARTUP];
+    await applozicClient.register(customer.userName, customer.password, "");
+  }
+
+  return Promise.resolve(customer.product == "applozic" ? applozicClient.getApplications(customer.userName, customer.password) : applozicClient.createApplication(adminId, adminPasword, (customer.product == "applozic" ? "al": "km") + "-" + customer.userName + "-" + Math.floor(new Date().valueOf() * Math.random()), pricingPackage)).then(application => {
+    if (customer.product == "applozic") {
+      application = application.applications[0];
+    }
     console.log("successfully created ApplicationId: ", application.applicationId, " creating applozic client");
     customer.applicationId = application.applicationId;
     

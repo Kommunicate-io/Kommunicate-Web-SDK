@@ -113,13 +113,64 @@ exports.createUserInApplozic = (options) => {
 
 }
 
+exports.register = (userId, password, captcha) => {
+ return Promise.resolve(axios({
+      method: 'post',
+      url: config.getProperties().urls.applozicHostUrl + "/rest/ws/register/v2/admin",
+      data: "userName=" + encodeURIComponent(userId) + "&email=" + encodeURIComponent(userId) + "&password=" + password + "&companyName=", // + "&g-recaptcha-response=" + captcha,
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded' 
+      }
+  })).then(function (response) {
+      if (response.status === 200 && response.data !== undefined) {
+          return response;
+      }
+
+      if (response.status === 404 && response.data !== undefined) {
+          return response;
+      }
+  }).catch(err => {
+    console.error("Exception : ", err);
+    err.code = "INTERNAL_SERVER_ERROR";
+    throw err;
+  });;
+},
+
+exports.getApplications = (userName, password) => {
+  console.log("calling applicatin/list api");
+  const apzToken = "Basic " + new Buffer(userName + ":" + password).toString('base64');
+  return Promise.resolve(axios({
+       method: 'get',
+       url: config.getProperties().urls.applozicHostUrl + "/rest/ws/application/list",
+       data: "&emailId=" + encodeURIComponent(userName),
+       headers: {
+        "Apz-Token": apzToken
+      }
+   })).then(function (response) {
+       if (response.status === 200 && response.data !== undefined) {
+           return response.data;
+       }
+ 
+       if (response.status === 404 && response.data !== undefined) {
+           console.log(response)
+           return response.data;
+       }
+   }).catch(err => {
+     console.log(err);
+     console.error("Exception : ", err);
+     err.code = "INTERNAL_SERVER_ERROR";
+     throw err;
+   });;
+ },
+
 
 /*
 this method create an application in applozic db.
 */
-exports.createApplication = (adminUserId, adminPassword, applicationName) => {
+exports.createApplication = (adminUserId, adminPassword, applicationName, pricingPackage) => {
   console.log("going to call applozic url: ", config.getProperties().urls.createApplication, "applicationName:", applicationName);
   const apzToken = "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64');
+  console.log("apzToken: " + apzToken);
   let applicationPxy = {
     name: applicationName,
     companyLogo: config.getCommonProperties().companyDetail.companyLogo,
@@ -127,7 +178,7 @@ exports.createApplication = (adminUserId, adminPassword, applicationName) => {
     mailProviderPxy: config.getProperties().mailProvider,
     applicationWebhookPxys: config.getCommonProperties().applicationWebhooks,
     websiteUrl: config.getCommonProperties().companyDetail.websiteUrl,
-    pricingPackage: 101
+    pricingPackage: pricingPackage || 101
   }
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
@@ -144,6 +195,8 @@ exports.createApplication = (adminUserId, adminPassword, applicationName) => {
           updateApplication({applicationId: response.data.applicationId, pricingPackage: 101})
           response.data.pricingPackage=101;
         }
+        console.log("###returning:");
+        console.log(response.data);
         return response.data;
       } else {
         console.error("applozic error response : ", applicationName);
@@ -151,6 +204,7 @@ exports.createApplication = (adminUserId, adminPassword, applicationName) => {
         throw err;
       }
     } else {
+      console.log(response);
       console.error("received error code: ", response);
       err.code = "APPLOZIC_ERROR";
       throw err;

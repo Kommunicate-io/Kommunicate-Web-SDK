@@ -245,7 +245,28 @@ updateUserDetail:function(params){
 		).catch(err => {
 			return "error";
 		});
-	},
+    },
+    
+    register: function(userId, password, captcha) {
+        Promise.resolve(axios({
+            method: 'post',
+            url: getConfig().applozicPlugin.applozicHosturl + "/rest/ws/register/v2/account",
+            data: "userId=" + encodeURIComponent(userId) + "&userPassword=" + password + "&g-recaptcha-response=" + captcha,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded' 
+            }
+        })).then(function (response) {
+            console.log(response);
+            if (response.status === 200 && response.data !== undefined) {
+                return response;
+            }
+    
+            if (response.status === 404 && response.data !== undefined) {
+                console.log(response)
+                return response;
+            }
+        });
+    },
 
     applozicResetPassword: function(email) {
 		const url = getConfig().applozicPlugin.applozicHosturl + "/frgt/password.page";

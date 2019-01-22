@@ -21,6 +21,7 @@ exports.createCustomer = async (req, res) => {
   let name = req.body.name;
   let email = req.body.email || userName;
   let subscription = req.body.subscription || subscriptionPlan.initialPlan;
+  let product = req.body.product || "kommunicate";
   let response = {};
   userName = userName.toLowerCase();
   userName = userName.toLowerCase();
@@ -29,6 +30,7 @@ exports.createCustomer = async (req, res) => {
   userDetail.password = password;
   userDetail.userName = userName;
   userDetail.subscription = subscription;
+  userDetail.product = product;
   logger.info("userName:", userName, password, isPreSignUp, isOAuthSignUp);
   /*
   * When login is done via 'Sign in with Google' make password = 'mi8&zG#0rLyE^$1&MXSe' and loginType = 'oauth'.
