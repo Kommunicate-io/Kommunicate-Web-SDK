@@ -113,8 +113,8 @@ class CustomerListItem extends Component {
     var latestConversation = user.messagePxy || null;
     var lastMessageTime = user.messagePxy? (window.$kmApplozic.fn.applozic('getDateTime', user.messagePxy.createdAtTime)) : '';
     var asignee = user.assignee? user.assignee : "";
-    var isGroup = user.messagePxy && user.messagePxy.groupId ? true :false;
-    var groupId = isGroup ? user.messagePxy.groupId : user.userId;
+    var isGroup = !(user.messagePxy && user.messagePxy.groupId) && lastMessageTime.trim()? false :true;
+    var groupId = !isGroup ?  user.userId : user.messagePxy && user.messagePxy.groupId ||"" ;
     var image = (user.imageLink)? (user.imageLink) : '';
     var imageExpr = (user.imageLink)? 'img-avatar vis' : 'n-vis';
     var nameExpr = (user.imageLink)? 'n-vis': 'km-alpha-contact-image vis';
