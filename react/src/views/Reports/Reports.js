@@ -6,7 +6,8 @@ import originalMoment from "moment";
 import { extendMoment } from "moment-range";
 import CommonUtils from '../../utils/CommonUtils';
 import Button from '../../components/Buttons/Button';
-import { getConfig } from "../../config/config";
+import config from "../../config/index";
+import url from '../../config/url';
 
 const moment = extendMoment(originalMoment);
 
@@ -41,9 +42,9 @@ class Reports extends Component {
 	};
 
 	downloadReport = () => {
-		let url = getConfig().kommunicateApi.metabaseUrl;
-		url += `/?startDate=${this.state.value.start.format('x')}&endDate=${this.state.value.end.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`;
-		window.open(url);
+		let downloadUrl = config.baseurl.kommunicateAPI + url.kommunicateApi.METABASE;
+		downloadUrl += `/?startDate=${this.state.value.start.format('x')}&endDate=${this.state.value.end.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`;
+		window.open(downloadUrl);
 	}
 
 	render() {
