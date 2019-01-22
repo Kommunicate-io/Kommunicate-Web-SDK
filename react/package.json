@@ -55,7 +55,7 @@
     "lodash": "4.17.10",
     "memory-cache": "0.2.0",
     "moment": "2.22.2",
-    "moment-range": "^4.0.1",
+    "moment-range": "4.0.1",
     "moment-timezone": "0.5.13",
     "node-sass": "^4.11.0",
     "query-string": "6.2.0",
