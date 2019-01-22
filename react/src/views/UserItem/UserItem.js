@@ -93,7 +93,7 @@ class UserItem extends Component {
         var lastLoggedInAtTime = (typeof user.lastLoggedInAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastLoggedInAtTime)): '';
         var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastSeenAtTime)):lastLoggedInAtTime;
         return( 
-                  <tr className="team-data-allign" >
+                  <tr className="team-data-align" >
                     <td>
                       <div className="team-name-avatar-wrapper">
                         <div className="avatar">

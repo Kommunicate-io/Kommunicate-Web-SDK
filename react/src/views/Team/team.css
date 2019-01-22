@@ -20,19 +20,18 @@
   width: 1080px;
 }
 .teammate-table .thead-default th {
-  background-color: #ffffff;
-  text-transform: uppercase;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.4px;
-  text-align: left;
-  color: #97999b;
+    background-color: #ffffff;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 0.4px;
+    font-weight: 500;
+    text-align: left;
+    color: #666464;
+    border-bottom: 1px solid #cacaca!important;
 }
 
-.teammate-table .team-data-allign td div {
+
+.teammate-table .team-data-align td div {
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
@@ -65,10 +64,10 @@
   border-top: none;
   vertical-align: middle;
 }
-.team-data-allign .teammates-delete-icon span{
+.team-data-align .teammates-delete-icon span{
   display: none;
 }
-.team-data-allign:hover .teammates-delete-icon span{
+.team-data-align:hover .teammates-delete-icon span{
   display: block;
   width: 55px;
   
@@ -77,14 +76,14 @@
   visibility: visible;
   opacity: 1;
 }
-.team-data-allign:hover {
+.team-data-align:hover {
   border-radius: 3px;
   background-color: #ffffff;
   box-shadow: 0 2px 11px 3px rgba(171, 166, 166, 0.5);
   cursor: default;
   border-bottom: 1px solid #cfd8dc;
 }
-.team-data-allign{
+.team-data-align{
   border-bottom: 1px solid #cfd8dc;
   transition: all .3s;
 }
@@ -245,7 +244,7 @@
   border-radius: 2px;
   background-color: #f4d480;
 }
-.team-data-allign .km-icon-wrapper {
+.team-data-align .km-icon-wrapper {
   padding-bottom: 12px;
   padding-top: 12px;
   margin-left: 15px;

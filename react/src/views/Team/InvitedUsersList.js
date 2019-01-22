@@ -90,7 +90,7 @@ class invitedUsersList extends Component {
     let roleType = this.props.user.roleType;
     var emailId = this.props.user.userId;
     return (
-      <tr className="team-data-allign team-invite" >
+      <tr className="team-data-align team-invite" >
         <td>
           <StatusIcon label={"Invitaton sent"} indicator={"done"} />
         </td>

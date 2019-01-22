@@ -106,7 +106,7 @@ class DisabledUsersList extends Component {
     var nameExpr = (moreUserInfo.imageLink) ? 'n-vis' :'km-alpha-contact-image vis';
 
     return (    
-                <tr className="team-data-allign team-expired-data-allign" >
+                <tr className="team-data-align team-expired-data-allign" >
                   <td className="team-expired-data-td">
                     <div className="team-name-avatar-wrapper">
                       <div className="avatar">

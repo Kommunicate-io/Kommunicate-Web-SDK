@@ -490,15 +490,15 @@ class Integration extends Component {
                       <th>Email id</th>
                       <th>Role</th>
                       {/* <th>Last Activity</th> */}
-                      <th>Status</th>
-                      <th className="team-th-delete-edit">Delete</th>
+                      <th colSpan="4">Status</th>
+                      {/* <th className="team-th-delete-edit">Delete</th>
                       <th className="text-center n-vis">Add Info</th>
                       <th className="text-center n-vis">Actions</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>
                       <th className="team-th-delete-edit">Copy Link</th>
-                      <th className="n-vis">Activity</th>
+                      <th className="n-vis">Activity</th> */}
                     </tr>
                   </thead>
                   <tbody>
