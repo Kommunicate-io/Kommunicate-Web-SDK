@@ -43,7 +43,7 @@ export default class IncomingEmailForward extends Component {
 					<SettingsHeader  />
 				</div>
                 <div className="row">
-                    <div className="col-sm-12 col-md-8">
+                    <div className="col-sm-12">
                         <div className="incoming-email-forward-container">
                             <p className="incoming-email-forward-description">In your email service provider settings, set up email forwarding from your support email address (example: support@yourcompany.com) to this email address:</p>
                         </div>

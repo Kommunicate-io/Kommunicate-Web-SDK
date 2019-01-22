@@ -109,7 +109,7 @@ class Install extends Component {
                 <SettingsHeader applozicDashboard={this.state.showApplozicDashboard} />
                 <div className="intgration-card-header">
                   {
-                    ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) ? " " : this.state.showApplozicDashboard ? null : <h3>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
+                    ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) ? " " : this.state.showApplozicDashboard ? null : <h3 style={{color:"#616366"}}>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
                     </span> </h3>
                   }
                 </div>
