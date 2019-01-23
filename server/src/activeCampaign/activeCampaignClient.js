@@ -73,7 +73,8 @@ exports.updateActiveCampaign = (options) => {
                 'field[%industry%,0]': options.industry,
                 'field[%company_size%,0]': options.companySize,
                 'p[1]': '7',
-                'status[1]': '1'
+                'status[1]': '1',
+                'field[20,0]': options.appId
             }
         };
         if(options.tags){
