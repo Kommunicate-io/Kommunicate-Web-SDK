@@ -10,14 +10,14 @@ import CryptoJS from 'crypto-js'
 const INTEGRY_CONFIG = {
     appKey:"6ab3030f-cbcc-40c0-9e89-7bf33e71a4da", // provided by Integry
     appSecret: "aca6df89-4f9a-4d43-84cf-7199d6665ede", // provided by Integry
-    bundleId:"32", // from integry dashboard.
+    bundleId:"23", // from integry dashboard.
 
 }
 function initilizeIntegry(settings) {
     if(typeof settings !='object'){
       return;  
     }    
-    window.integryAppSDK.load({
+  window.integryAppSDK.load({
         app_key: INTEGRY_CONFIG.appKey,
         user_id: settings.applicationId,  // customer_Id kommunicate.  use applicationId here to share the integration with all agents within application 
         hash : CryptoJS.HmacSHA256(settings.applicationId,INTEGRY_CONFIG.appSecret),
@@ -33,7 +33,11 @@ function initilizeIntegry(settings) {
             view_url: '',
             app_auth: {
                // api_key: 'c690bd29-7987-4e02-8c34-09a1547477f8' // Kommunicate API key for customer. this wiil be used to access the kommunicate APIs from integry   
-               "api_key":  settings.apiKey|| "OTTHTvrCRR72YW93XlasZxa9UXHd9Mjx"
+               "api_key":  settings.apiKey,
+               extras: {
+                application_id: settings.applicationId
+             }
+
             }
         },
         x_custom_variables: {
@@ -41,6 +45,7 @@ function initilizeIntegry(settings) {
            "application_id": settings.applicationId
         }
     });
+  
 }
 
 function integrationSuccessCallback(data) {
@@ -55,12 +60,13 @@ function integrationSuccessCallback(data) {
        triggerUrl:data.endpoint
    }
 
+   /* 
    createIntegrySubscription(subscriptionData).then(response => {
     console.log("db updated", response)
    })
    .catch( err => {
        console.log(err)
-   })
+   })*/
    closeIntegrationPreview();
 }
 
