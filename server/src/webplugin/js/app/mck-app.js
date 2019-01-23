@@ -302,16 +302,16 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (!options.userId) {
-                    if (KommunicateUtils.getCookie('km_id')) {
-                        options.userId = KommunicateUtils.getCookie('km_id');
+                    if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID)) {
+                        options.userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                     } else {
                         options.userId = userId;
-                        KommunicateUtils.setCookie('km_id', userId, 1);
+                        KommunicateUtils.setCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, userId, 1);
                         if (pseudoNameEnabled) {
-                            if (KommunicateUtils.getCookie('km_user_name')) {
-                                options.userName = KommunicateUtils.getCookie('km_user_name');
+                            if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME)) {
+                                options.userName = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                             } else {
-                                KommunicateUtils.setCookie('km_user_name', data.userName, 1);
+                                KommunicateUtils.setCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, data.userName, 1);
                                 options.userName = data.userName;
                             }
                             options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
@@ -358,7 +358,7 @@ function ApplozicSidebox() {
         })
     };
     function loadErrorTracking(userId) {
-        userId = KommunicateUtils.getCookie('km_id') || userId;
+        userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
         Sentry.init({
             dsn: sentryConfig.dsn
         });
