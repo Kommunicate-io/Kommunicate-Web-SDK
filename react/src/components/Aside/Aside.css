@@ -996,6 +996,7 @@ color: #595757;
     line-height: 1.71;
     letter-spacing: normal;
     color: #4a4a4a;
+    margin-left: -17px;
 }
 .km-bots-warning-banner .km-banner .km-bot-names {
     font-weight: 500;

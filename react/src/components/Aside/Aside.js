@@ -337,6 +337,7 @@ class Aside extends Component {
       takeOverEleText = document.querySelector("#km-bot-active-text p>strong"),
       pseudoNameIcon = document.getElementById("pseudo-name-icon");
     takeOverEleContainer.style.display = "none";
+    document.querySelector("#km-bots-warning--banner").style.display = "none";
     var allBotsInGroup = [];
     //pseudoNameIcon.classList.remove("vis");
     //pseudoNameIcon.classList.add("n-vis");
@@ -358,8 +359,8 @@ class Aside extends Component {
           }
         }
       }
-  }
-    takeOverEleText.innerHTML = allBotsInGroup.join(', ');
+
+      takeOverEleText.innerHTML = allBotsInGroup.join(', ');
     if(allBotsInGroup.length>1) {
       document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
     } else {
@@ -367,11 +368,13 @@ class Aside extends Component {
     }
 
     if(allBotsInGroup.length > 0 && (!CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan())) {
+      document.querySelector("#km-bots-warning--banner").style.display = "block";
       this.setState({
         warningBannerText: [<span className="km-bot-names">{allBotsInGroup.join(', ')} </span>, <span>will not work as your trial has ended. </span>,<Link key={1} to={'/settings/billing'} >Upgrade plan</Link>]
       });
     }
-    // console.log(allBotsInGroup);
+  }
+    
   }
 
   changeAssignee(userId) {
