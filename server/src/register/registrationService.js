@@ -24,13 +24,13 @@ exports.USER_TYPE = USER_TYPE;
 exports.createCustomer = async customer => {
   let adminId = KOMMUNICATE_ADMIN_ID;
   let adminPasword = KOMMUNICATE_ADMIN_PASSWORD;
-  let pricingPackage = utils.APPLOZIC_SUBSCRIPTION.BETA;
+  let pricingPackage = utils.APPLOZIC_PRICING_PACKAGE[utils.KOMMUNICATE_SUBSCRIPTION.STARTUP];
 
   if (customer.product && customer.product == "applozic") {
     adminId = customer.userName;
     adminPasword = customer.password;
     console.log("registering for applozic");
-    pricingPackage = utils.APPLOZIC_PRICING_PACKAGE[utils.KOMMUNICATE_SUBSCRIPTION.STARTUP];
+    pricingPackage = utils.APPLOZIC_SUBSCRIPTION.BETA;
     await applozicClient.register(customer.userName, customer.password, "");
   }
 
