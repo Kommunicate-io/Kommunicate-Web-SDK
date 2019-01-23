@@ -73,10 +73,10 @@ const LiveChatWidget =  (props) =>{
             <AttachmentIcon />
             </div>
         </div>
-        <div className={props.hasCustomImage ? "n-vis" : "km-chat-icon"} style={{ background: props.primaryColor }} >
+        <div className={props.hasCustomImage ? "n-vis" : " km-chat-icon km-chat-icon-sidebox"} style={{ background: props.primaryColor }} >
             {props.currentIcon}
         </div>
-        <div className={props.hasCustomImage ? "km-chat-icon-img km-chat-icon" : "n-vis"} style={{ background: props.primaryColor }}>
+        <div className={props.hasCustomImage ? "km-chat-icon-img km-chat-icon-sidebox  km-chat-icon" : "n-vis"} style={{ background: props.primaryColor }}>
             <img src={props.changedLogoUrl} />
         </div>
     </div>
