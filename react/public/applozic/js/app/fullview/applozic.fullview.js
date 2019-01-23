@@ -8206,6 +8206,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				} else {
 					var message = resp.message;
 					var messageFromLoggedInUser = message.to && message.to === MCK_USER_ID;
+					var currentSelectedTab = $kmApplozic("." + window.KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[$kmApplozic(".km-conversation-icon-active")[0].id] + " li.person.active");
 					var conversationAssignedToLoggedInUser = (message.metadata && message.metadata.KM_ASSIGN) ? message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN === MCK_USER_ID:false;
 					// var userIdArray =
 					// mckMessageLayout.getUserIdFromMessage(message);
@@ -8242,7 +8243,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						if (message.metadata) {
 							if(message.metadata.KM_STATUS || message.metadata.KM_ASSIGN ){
-								messageFromLoggedInUser && !conversationAssignedToLoggedInUser && $kmApplozic("." + window.KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[$kmApplozic(".km-conversation-icon-active")[0].id] + " li.person.active").next().trigger('click');
+								if(currentSelectedTab.attr("data-km-id") == message.groupId){
+								messageFromLoggedInUser && !conversationAssignedToLoggedInUser && currentSelectedTab.next().trigger('click');
+								}
 								kmGroupService.getGroupFeed({
 									groupId: message.groupId,
 									messageMetadata: message.metadata,
