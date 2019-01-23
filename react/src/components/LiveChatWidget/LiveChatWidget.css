@@ -121,18 +121,18 @@
 }
 
 .km-chat-icon {
-    position: absolute;
+    position: relative;
     width: 54px;
     height: 54px;
     border-radius: 50%;
     float: right;
-    bottom: -69px;
+    bottom: 0px;
     box-shadow: 0 2px 5px 1px rgba(107, 104, 104, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    right: 0;
+    right: -3px;
 }
 
 .km-chat-icon-img img {
@@ -170,4 +170,10 @@
     margin-top: 32px;
     align-items: flex-start;
     justify-content: flex-end;
+}
+
+.km-chat-icon.km-chat-icon-sidebox{
+    position: absolute;
+    bottom: -69px;
+    right: 0;
 }
