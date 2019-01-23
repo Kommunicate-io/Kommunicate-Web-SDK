@@ -967,3 +967,6 @@ cursor: pointer;
 .tns-controls button[data-controls='next'] svg {
     transform: rotate(180deg);
 }
+.tns-controls:focus {
+    outline: none;
+}
