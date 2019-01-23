@@ -304,7 +304,7 @@ class PushNotification extends Component {
   render() {
 
     return (   
-      <div className="away-message-wrapper km-push-notification-container">
+      <div className="fadeIn animated km-push-notification-container">
          <div className="km-heading-wrapper">
          <div className="app-id-container " style={{margin: "-15px 0 50px 0"}}>
                 <div className="app-id-div">

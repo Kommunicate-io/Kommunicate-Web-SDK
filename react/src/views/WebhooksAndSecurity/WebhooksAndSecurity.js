@@ -188,7 +188,7 @@ export default class WebhooksAndSecurity extends Component {
 					<SettingsHeader  />
                 </div>
                 <div className="row">
-                    <div className=" col-md-10 col-sm-12">
+                    <div className="col-sm-12">
                         <div className="webhooks-and-security-container">
                             <h3>Webhooks: { !this.state.isTrialPlan && this.state.isStartupPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> } </h3>
 

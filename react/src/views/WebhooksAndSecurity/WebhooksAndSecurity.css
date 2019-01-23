@@ -10,7 +10,7 @@
 .webhooks-input-field-goup p:first-child {
     font-size: 15px;
     letter-spacing: 0.3px;
-    color: #85878a;
+    color: #616366;
     margin: 25px 0 10px;
 }
 .webhooks-input-field-goup .input-dropdown-container {
@@ -52,7 +52,7 @@
 .webhooks-input-field-goup .input-dropdown-container p {
     font-size: 14px;
     line-height: 1.36;
-    color: #b0aaaa;
+    color: #616366;
 } 
 .webhooks-input-field-goup p {
     font-size: 12px;
@@ -79,4 +79,8 @@
 .webhooks-and-security-div .lock-badge-container {
     margin-left: 15px;
     vertical-align: middle;
+  }
+
+  .webhooks-and-security-div{
+      max-width: 998px;
   }
