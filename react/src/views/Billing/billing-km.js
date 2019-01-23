@@ -85,8 +85,7 @@ class BillingKommunicate extends Component {
         /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
         Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
-
-        let userSession = CommonUtils.getUserSession();
+        document.getElementById("chargebee-portal").click();
 
         this.processSubscriptionPlanStatus();
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
@@ -99,7 +98,7 @@ class BillingKommunicate extends Component {
             // console.log(this.state.boughtSubscription);
         } 
 
-        document.getElementById("portal").addEventListener("click", function (event) {
+        document.getElementById("chargebee-portal").addEventListener("click", function (event) {
             if (event.target.classList.contains('n-vis')) {
                 event.target.classList.remove('n-vis');
                 return;
@@ -643,10 +642,17 @@ class BillingKommunicate extends Component {
                                                 <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent", paddingLeft: "0px"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> <span style={{textTransform: "uppercase"}}>{SUBSCRIPTION_PLANS[this.state.subscription].term} BILLING</span></p>
                                             </div>
                                             {this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly" ? "" :
-                                            <div className="subscription-success-purchased-plan-billing">
-                                                <p>Next billing:</p>
-                                                <p>You will be charged <strong>${this.state.totalPlanAmount / 100}</strong> on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
-                                            </div>
+                                                <div>
+                                                    <div className="subscription-success-purchased-plan-billing">
+                                                        <p>Next billing:</p>
+                                                        <p>You will be charged <strong>${this.state.totalPlanAmount / 100}</strong> on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
+                                                    </div>
+
+                                                    <div className="subscription-success-purchased-plan-billing">
+                                                        <p></p>
+                                                        <p><a id="chargebee-portal" className="vis" href="javascript:void(0)" data-cb-type="portal">Change Billing Info</a></p>
+                                                    </div>
+                                                </div>
                                             }
                                         </div>
                                         
@@ -696,10 +702,6 @@ class BillingKommunicate extends Component {
                                 Upgrade to scale your customer support
                                 </h2>
 
-
-                                <div className="manage-accountr">
-                                    <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
-                                </div>
                             </div>
 
                                 <div className="row text-center" style={{padding:"13px 13px 13px 0px",margin:"0px"}}>

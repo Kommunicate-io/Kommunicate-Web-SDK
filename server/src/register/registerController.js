@@ -108,7 +108,6 @@ customerService.getCustomerByUserName(userId).then(async dbCustomer => {
     console.log("got the user from db", dbCustomer);
     if (activeCampaignEnable) {
       activeCampaignClient.updateActiveCampaign({
-        "appId": customer.applicationId || dbCustomer.applications[0].applicationId,
         "email": userId,
         "subscriberId": dbCustomer.dataValues.activeCampaignId,
         "name": customer.name,

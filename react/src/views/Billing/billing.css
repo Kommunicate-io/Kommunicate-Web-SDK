@@ -801,6 +801,11 @@
 .subscription-success-purchased-plan-billing p {
     margin-bottom: 7px;
 }
+
+#chargebee-portal {
+    color: #5553b7;
+}
+
 .subscription-current-plan-warning-container {
     align-items: flex-start;
     background-color: #f9f9f9;
