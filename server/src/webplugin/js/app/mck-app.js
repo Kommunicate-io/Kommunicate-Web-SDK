@@ -259,6 +259,17 @@ function ApplozicSidebox() {
     };
     function mckLoadAppScript() {
         var userId = KommunicateUtils.getRandomId();
+        var mapCookies = [
+            {
+                oldName : 'kommunicate-id',
+                newName : KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+            },
+            {
+                oldName : "userName",
+                newName : KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
+            }
+        ];
+        
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
@@ -266,6 +277,7 @@ function ApplozicSidebox() {
             script.crossOrigin = "anonymous";
             script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.2.min.js";
             //script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
+            seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
@@ -340,6 +352,17 @@ function ApplozicSidebox() {
             return false;
         }
     };
+    
+    function seekReplaceDestroyCookies (mapCookies){
+        mapCookies && mapCookies.forEach(function(arrayItem){
+            if (KommunicateUtils.getCookie(arrayItem.oldName)) {
+                var value = KommunicateUtils.getCookie(arrayItem.newName);
+                KommunicateUtils.setCookie(arrayItem.newName, value, 1);
+                KommunicateUtils.deleteCookie(arrayItem.oldName);
+            }
+        })
+    };
+
     function loadPseudoName(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
