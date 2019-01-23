@@ -828,8 +828,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 ALStorage.clearMckContactNameArray();
                 ALStorage.clearAppHeaders();
                 $applozic.fn.applozic("reset", appOptions);
+                KommunicateUtils.deleteCookie('km_user_name');
+                KommunicateUtils.deleteCookie('km_id');
                 $applozic("#mck-sidebox").hide();
                 $applozic("#mck-sidebox-launcher").hide();
+                parent.document.getElementById("kommunicate-widget-iframe") && (parent.document.getElementById("kommunicate-widget-iframe").style.display = "none")
             }
             IS_LOGGED_IN = false;
         };
