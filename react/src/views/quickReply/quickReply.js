@@ -55,7 +55,7 @@ const quickReply = {
             else if (hasClass(e.target, 'km-quick-reply-link')){
               //  history.pushState('', 'New Page Title', newHREF);
               dBox.style.display = 'none';
-              window.appHistory.push("/settings/message-shortcuts");
+              window.appHistory.push("/settings/quick-replies");
             }
             else {
               dBox.style.display = 'none';

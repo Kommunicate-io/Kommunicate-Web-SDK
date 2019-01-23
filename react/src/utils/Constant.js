@@ -84,7 +84,7 @@ export let  getLoggedInCookieName =function(){
     return getEnvironmentId()+"_km_l_u_id";
 }
 export const COOKIES = {
-    "KM_ID": "kommunicate-id",
+    "KM_ID": "km_id",
     "KM_LOGGEDIN_USER_ID": getLoggedInCookieName()
 }
 

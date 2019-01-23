@@ -87,6 +87,10 @@ KommunicateConstants = {
         DIALOG_BOX:"8",
         IMAGE:"9",
         CARD_CAROUSEL:"10"
+    },
+    COOKIES : {
+        KOMMUNICATE_LOGGED_IN_ID: "km_id",
+        KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name"
     }
 }
 
@@ -129,6 +133,9 @@ KommunicateUtils = {
         var cookieMaxExpirationdate = "2038-01-19 04:14:07";
         var expires = "expires=" + new Date(cookieMaxExpirationdate).toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
+    deleteCookie(name) {
+        document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
     getRandomId: function () {
         var text = "";
