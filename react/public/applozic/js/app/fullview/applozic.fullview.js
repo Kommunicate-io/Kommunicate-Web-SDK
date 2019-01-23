@@ -3943,6 +3943,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$modal_footer_content.removeClass('n-vis').addClass('vis');
 					$mck_delete_button.removeClass('n-vis').addClass('vis');
 					$mck_group_menu_options.removeClass('vis').addClass('n-vis');
+					$kmApplozic('#chat-box-div .km-container').addClass('km-panel-3');
 					if (params.isGroup) {
 						$mck_msg_inner.addClass('km-group-inner');
 						$li_mck_block_user.removeClass('vis').addClass('n-vis');
