@@ -941,7 +941,7 @@ cursor: pointer;
     border-radius: 7px 7px 0 0;
 }
 .km-dashboard-carousel-card-info-wrapper-with-buttons {
-    border-bottom: 0;
+  border-bottom: 0;
 }
 .km-dashboard-carousel-card-footer button {
     width: 100% !important;
@@ -960,4 +960,10 @@ cursor: pointer;
     border-bottom: 1px outset rgba(255, 255, 255, 0.4);
     border-radius: 0px 0px 5px 5px;
     overflow: hidden;
+}
+.km-dashboard-msg-box-rich-text-container .tns-controls button svg {
+    height:11px;
+}
+.tns-controls button[data-controls='next'] svg {
+    transform: rotate(180deg);
 }

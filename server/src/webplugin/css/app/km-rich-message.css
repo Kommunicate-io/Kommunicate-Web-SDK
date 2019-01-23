@@ -1124,3 +1124,6 @@
 .km-list-container {
     border: solid 1px #e5e5e5;
 }
+.tns-controls button[data-controls='next'] svg {
+    transform: rotate(180deg);
+}

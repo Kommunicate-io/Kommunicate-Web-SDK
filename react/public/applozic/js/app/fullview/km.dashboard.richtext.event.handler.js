@@ -2,7 +2,11 @@
 /**
  * Attach all event listeners.
  */
-
+const svgs = {
+    arrow:{
+        left:'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19"><path fill="#5B5959" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>'
+    }
+}
 kommunicateDashboard.attachEvents = function($kmApplozic){
     // $kmApplozic("#km-message-cell").on('click','.km-dashboard-increment-guest-count',kommunicateDashboard.richMsgEventHandler.incrementGuestCount);
     // $kmApplozic("#km-message-cell").on('click','.km-dashboard-decrement-guest-count',kommunicateDashboard.richMsgEventHandler.decrementGuestCount);
@@ -38,8 +42,8 @@ kommunicateDashboard.richMsgEventHandler ={
                 "arrowKeys": true,
                 onInit: function () {
                     console.log("tiny-slider initilized");
-                    document.querySelector(".km-dashboard-msg-box-rich-text-container .tns-controls button:first-child").innerHTML = '<';
-                    document.querySelector(".km-dashboard-msg-box-rich-text-container .tns-controls button:last-child").innerHTML = '>';
+                    document.querySelector(".km-dashboard-msg-box-rich-text-container .tns-controls button:first-child").innerHTML = svgs.arrow.left;
+                    document.querySelector(".km-dashboard-msg-box-rich-text-container .tns-controls button:last-child").innerHTML = svgs.arrow.left;
 
                 }
             });
