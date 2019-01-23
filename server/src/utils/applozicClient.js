@@ -614,7 +614,9 @@ exports.updateApplozicUser = (user, headers) => {
 
 exports.getConversationStats = (params, headers) => {
   let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/stats?applicationId=" + params.applicationId;
-  url = params.days ? url + "&days=" + params.days : url;
+  // url = params.days ? url + "&days=" + params.days : url;
+  url = url + "&timestamp=" + params.startTimestamp;
+  url = url + "&toTimestamp=" + params.endTimestamp;
   url = params.groupBy ? url + "&groupBy=" + params.groupBy : url;
   return axios.get(url, { headers: headers }).then(result => {
     return result.data.response.response;

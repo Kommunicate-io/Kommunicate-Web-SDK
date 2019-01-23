@@ -180,3 +180,21 @@ ADD INDEX `application_id_idx` (`application_id`);
 
 ALTER TABLE app_settings ADD COLUMN domain_url VARCHAR(255) DEFAULT Null;
 
+CREATE TABLE user_preferences (
+    user_id INTEGER NOT NULL,
+    preference_id INTEGER NOT NULL,
+    value VARCHAR(200) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME,
+    PRIMARY KEY(user_id, preference_id)
+);
+
+CREATE TABLE preference (
+    id INTEGER NOT NULL  AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL UNIQUE,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME,
+    PRIMARY KEY(id)
+);

@@ -117,5 +117,38 @@ module.exports.validateUserUpdate = {
   
 }
 
+module.exports.createUserPreference= {
+  body:{
+    applicationId: joi.string().required(),
+    userName: joi.string().required(),
+    preference : joi.string().required(),
+    value: joi.string().required()
+	}
+}
+
+module.exports.updateUserPreference= {
+  body:{
+    applicationId: joi.string().required(),
+    userName: joi.string().required(),
+    preference : joi.string().required(),
+    value: joi.string().required()
+	}
+}
+
+module.exports.deleteUserPreference= {
+  body:{
+    applicationId: joi.string().required(),
+    userName: joi.string().required(),
+    preference : joi.string().required()
+	}
+}
+
+module.exports.getUserPreference= {
+  body:{
+    applicationId: joi.string().required(),
+    userName: joi.string().required()
+	}
+}
+
 exports.getBusinessHours= getBusinessHours;
 exports.businessHoursInAday=businessHours;

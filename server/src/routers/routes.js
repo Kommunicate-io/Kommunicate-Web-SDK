@@ -46,6 +46,9 @@ const metabaseValidator = require('../metabase/validation');
 //For Cron Time Features
 const cronService = require("../cron/cronService.js")
 
+// For user preference
+const userPreferenceController = require("../users/userPreferenceController.js")
+
 //router declaration
 const userRouter = express.Router();
 const applicationRouter = express.Router();
@@ -112,6 +115,12 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/v2/kommunicate.app',webpluginController.iframePlugin);
 home.get('/seed/liz', seedLiz.seedLiz)
 
+// requests for user preference service
+userRouter.post("/preference/add", validate(userValidation.createUserPreference), userPreferenceController.createUserPreference);
+userRouter.post("/preference/delete", validate(userValidation.deleteUserPreference), userPreferenceController.deleteUserPreference);
+userRouter.post("/preference/update", validate(userValidation.updateUserPreference), userPreferenceController.updateUserPreference);
+userRouter.get("/preference/get",  validate(userValidation.getUserPreference), userPreferenceController.getUserPreference);
+
 // requests to user router
 userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);
 userRouter.get('/invite/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
@@ -139,6 +148,8 @@ userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), us
 userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
 userRouter.delete("/invitation",validate(userValidation.deleteInvitation), userController.deleteInvitation);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
+
+
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 //signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
 customerRouter.post('/',validate(customerValidation.createCustomer),registerController.createCustomer);

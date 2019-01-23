@@ -30,7 +30,9 @@ const modules = [
   require('./application'),
   require('./cronLastRun'),
   require('./AppSubscription'),
-  require('./teammateInvite')
+  require('./teammateInvite'),
+  require('./UserPreferences'),
+  require('./Preference')
 ];
 
 modules.forEach(function (module) {

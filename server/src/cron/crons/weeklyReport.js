@@ -10,6 +10,7 @@ const dashboardUrl = config.getProperties().urls.dashboardHostUrl;
 const kmWebsiteLogoIconUrl = config.getCommonProperties().companyDetail.companyLogo;
 const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-icon.png";
 const subscription = require('../../utils/utils').SUBSCRIPTION_PLAN;
+const userPreferenceService = require('../../users/userPreferenceService');
 var fs = require('fs');
 var util = require('util');
 var filePath = path.join(__dirname, "../../../logs/debug.log");
@@ -82,16 +83,31 @@ const processOneApp = (app) => {
         return customerService.getCustomerByApplicationId(app.applicationId).then(customer => {
             if (!customer.email) return "customer email is empty";
             let headers = { "Apz-Token": "Basic " + new Buffer(adminAgent[0].userName + ":" + adminAgent[0].accessToken).toString('base64'), "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
-            let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key" }
-            return applozicClient.getConversationStats(params, headers).then(stats => {
-                if (!stats) {
-                    return "no stats for this app"
-                }
-                return generateReport(stats, users).then(report => {
-                    report.growthPlanTemplate = (report.overAllReport.newConversationCount >= 25 && customer.subscription == subscription.initialPlan) ? "block" : "none";
-                    return sendWeeklyReport(report, customer, app.applicationId);
-                })
+            return userPreferenceService.getUserPreference({applicationId:adminAgent[0].applicationId, userName:adminAgent[0].userName}).then(userPreferences => {
+                let timeZone = userPreferences.preferences.timeZone;
+                let fromDate = new Date();
+                let toDate = new Date(fromDate);
+                toDate.setDate(toDate.getDate() - 7);
 
+                fromDate = new Date(fromDate.toLocaleString("en-US", {timeZone:timeZone}));
+                toDate = new Date(toDate.toLocaleString("en-US", {timeZone:timeZone}));
+                
+                let dates = {
+                    from: fromDate,
+                    to: toDate
+                };
+                
+                let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key",
+                                "startTimestamp": fromDate.getTime(), "endTimestamp": toDate.getTime()}
+                return applozicClient.getConversationStats(params, headers).then(stats => {
+                    if (!stats) {
+                        return "no stats for this app"
+                    }
+                    return generateReport(stats, users, dates).then(report => {
+                        report.growthPlanTemplate = (report.overAllReport.newConversationCount >= 25 && customer.subscription == subscription.initialPlan) ? "block" : "none";
+                        return sendWeeklyReport(report, customer, app.applicationId);
+                    })
+                })
             })
         });
     }).catch(err => {
@@ -104,12 +120,11 @@ const processOneApp = (app) => {
  * 
  * @param {Object} stats 
  * @param {Array} users 
+ * @param {from: date, to: date} dates
  */
-const generateReport = (stats, users) => {
-    var date = new Date();
-    date.setDate(date.getDate() - 7);
+const generateReport = (stats, users, dates) => {
     let individualReportArray = [];
-    let overAllReport = { "newConversationCount": 0, "closedCount": 0, "avgResolutionTime": 0, "avgResponseTime": 0, "startTime": new Date(), "endTime": date }
+    let overAllReport = { "newConversationCount": 0, "closedCount": 0, "avgResolutionTime": 0, "avgResponseTime": 0, "startTime": dates.from, "endTime": dates.to }
     return new Promise((resolve, reject) => {
         users.map((user) => {
             let report = {};
