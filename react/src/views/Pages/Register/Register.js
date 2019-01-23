@@ -70,7 +70,7 @@ class Register extends Component {
     const token = CommonUtils.getUrlParameter(search, 'token');
     const invitedBy = CommonUtils.getUrlParameter(search, 'referer')
     const email = CommonUtils.getUrlParameter(search, 'email');
-    const product = CommonUtils.getUrlParameter(search, 'product') || 'kommunicate';
+    const product = CommonUtils.getUrlParameter(search, 'product') || CommonUtils.getProduct();
 
     if (email) {
       this.setState({email:email});
