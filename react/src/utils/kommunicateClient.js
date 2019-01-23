@@ -11,7 +11,7 @@ import cache from 'memory-cache';
 import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
 import AnalyticsTracking from './AnalyticsTracking';
 import dateFormat from 'dateformat';
-
+import ApplozicClient from '../utils/applozicClient';
 
 /**
  * Creates Customer /Bot/ Agent
@@ -25,7 +25,7 @@ import dateFormat from 'dateformat';
  * @param {String} userType
  */
 
-const createCustomerOrAgent = (userInfo, userType, signUpVia) => {
+const createCustomerOrAgent = (userInfo, userType, signUpVia, recaptchaValue, product) => {
   // signUpVia is the source from where you were redirected eg: google
   switch (userType) {
     case "AGENT":
@@ -33,14 +33,14 @@ const createCustomerOrAgent = (userInfo, userType, signUpVia) => {
     case "BOT":
       return createAgent(userInfo,userType);
     default:
-      return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName, signUpVia);
+      return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName, signUpVia, recaptchaValue, product);
   }
 }
-const createCustomer = function (email, password, name, userName, signUpVia ) {
+const createCustomer = function (email, password, name, userName, signUpVia, recaptchaValue, product) {
   // signUpVia is the source from where you were redirected eg: google
   let signUpUrl = getConfig().kommunicateApi.signup;
   let loginType = 'email';
-  let  roleType = ROLE_TYPE.SUPER_ADMIN ;
+  let roleType = ROLE_TYPE.SUPER_ADMIN ;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
@@ -57,7 +57,8 @@ const createCustomer = function (email, password, name, userName, signUpVia ) {
     name,
     email,
     loginType,
-    roleType 
+    roleType,
+    product
   }
 
   return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))

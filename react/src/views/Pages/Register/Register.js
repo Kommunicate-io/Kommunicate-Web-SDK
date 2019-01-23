@@ -17,7 +17,7 @@ import { KommunicateLogoSvg, ApplozicLogo } from '../../../assets/svg/svgs';
 import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
 import {LOGIN_VIA, KM_RELEASE_VERSION} from '../../../utils/Constant';
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 class Register extends Component {
   constructor(props){
@@ -42,10 +42,13 @@ class Register extends Component {
       renderInvitationRevokedView :false,
       isDataFetched:false,
       googleSignUpUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_up",
-      product: 'kommunicate'
+      product: 'kommunicate',
+      captcha: ''
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
+    this.recaptchaRef = React.createRef();
+
   }
   componentDidMount(){
     const search = this.props.location.search;
@@ -67,7 +70,7 @@ class Register extends Component {
     const token = CommonUtils.getUrlParameter(search, 'token');
     const invitedBy = CommonUtils.getUrlParameter(search, 'referer')
     const email = CommonUtils.getUrlParameter(search, 'email');
-    const product = CommonUtils.getUrlParameter(search, 'product') || 'kommunicate';
+    const product = CommonUtils.getUrlParameter(search, 'product') || CommonUtils.getProduct();
 
     if (email) {
       this.setState({email:email});
@@ -143,6 +146,10 @@ class Register extends Component {
       type: this.state.type === 'password' ? 'input' : 'password'
     })  
   }
+  
+  onCaptchaChange = (value)=> {
+    this.setState({captcha: value});
+  }
 
   setUserName= (event)=>{
    this.setState({name:event.target.value});
@@ -162,7 +169,6 @@ class Register extends Component {
     this.props.history.push('/login');
   }
   createAccountWithUserId=(_this)=>{
-
     var email = this.state.email;
     var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
@@ -186,8 +192,10 @@ class Register extends Component {
     AnalyticsTracking.identify(email);
     this.state.googleOAuth ? _this.props.loginVia(LOGIN_VIA.GOOGLE) : _this.props.loginVia(LOGIN_VIA.DEFAULT);
     this.setState({disableRegisterButton:true}); 
-    //Promise.resolve(applozic)
-    Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia)).then((response) => {
+
+    let product = CommonUtils.getUrlParameter(window.location.href, "product");
+
+    Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia, _this.state.captcha, product)).then((response) => {
       if (window.Kommunicate && window.$applozic) { 
         //window.Kommunicate.updateUserIdentity(userInfo.userName);
         let user = {'email': userInfo.email, 'displayName': userInfo.name};
@@ -227,8 +235,8 @@ class Register extends Component {
       }
       Notification.error(msg);
     });
-
   }
+
   createAccount=(event)=>{
     var email = this.state.email;
     var password =this.state.password;
@@ -340,6 +348,16 @@ class Register extends Component {
                   <div className="input-group mb-4" hidden={true}>
                     <input type="password" className="input" placeholder=" " onChange={ this.setRepeatPassword } required/>
                     <label className="label-for-input email-label">Repeat password</label>
+                  </div>
+                  <div className = "row">
+                    {/*
+                    <ReCAPTCHA
+                        sitekey="6LdzaCwUAAAAAAwNV-4Q-miCo6jWPTUvIF9nYu9z"
+                        ref={this.reCaptchaRef}
+                        onChange={this.onCaptchaChange}
+                      />
+                    */
+                   }
                   </div>
                   <div className="row signup-button-row">
                     <div className="col-lg-12 text-center">
