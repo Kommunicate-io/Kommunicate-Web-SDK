@@ -53,7 +53,7 @@ exports.createCustomer = async (req, res) => {
         return registrationService.createCustomer(userDetail)
           .then(async result => {
             if (activeCampaignEnable) {
-              activeCampaignClient.addContact({ "email": email })
+              activeCampaignClient.addContact({ "email": email, "appId": (result.application && result.application.applicationId) })
                 .then(subscriberId => {
                   return subscriberId && customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
                 })
@@ -108,7 +108,7 @@ customerService.getCustomerByUserName(userId).then(async dbCustomer => {
     console.log("got the user from db", dbCustomer);
     if (activeCampaignEnable) {
       activeCampaignClient.updateActiveCampaign({
-        "appId": dbCustomer.applications[0].applicationId,
+        "appId": customer.applicationId || dbCustomer.applications[0].applicationId,
         "email": userId,
         "subscriberId": dbCustomer.dataValues.activeCampaignId,
         "name": customer.name,
