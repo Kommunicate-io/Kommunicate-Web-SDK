@@ -1045,6 +1045,11 @@
     border-bottom: none ;
     margin: 0;
 }
+.km-carousel-card-footer {
+    border-bottom: 1px outset rgba(255, 255, 255, 0.4);
+    border-radius: 0px 0px 5px 5px;
+    overflow: hidden;
+}
 .km-carousel-card-img {
     border-radius: 5px 5px 0 0;
 }
@@ -1087,10 +1092,6 @@
     margin-top: 2.4px;
     background: white;
   }
-.km-carousel-card-footer button:last-child{
-    border-bottom: 1px solid #e7e4e4 ; 
-    border-radius: 0 0 5px 5px;
-}
 .km-carousel-card-overlay-text-without-img {
     position: static;
     background-color: #d6d6d6;
