@@ -103,7 +103,7 @@ $applozic.extend(true,Kommunicate,{
         }
         // max length of clientGroupId is 256 in db. 
         // default bot is not included in client groupId generation
-        var loggedInUserName= kommunicate._globals.userId || KommunicateUtils.getCookie("kommunicate-id");
+        var loggedInUserName= kommunicate._globals.userId || KommunicateUtils.getCookie("km_id");
         var agentsNameStr = agentList.join("_");
 
         var botsNameStr =  botList.join("_");
@@ -254,7 +254,7 @@ $applozic.extend(true,Kommunicate,{
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId, callback: function (response) {
-                KommunicateUtils.setCookie('kommunicate-id', newUserId);
+                KommunicateUtils.setCookie('km_id', newUserId);
                 if (response == 'success') {
                     window.$applozic.fn.applozic('reInitialize', { userId: newUserId });
                 }

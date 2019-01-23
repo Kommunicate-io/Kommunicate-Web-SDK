@@ -302,16 +302,16 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (!options.userId) {
-                    if (KommunicateUtils.getCookie('kommunicate-id')) {
-                        options.userId = KommunicateUtils.getCookie('kommunicate-id');
+                    if (KommunicateUtils.getCookie('km_id')) {
+                        options.userId = KommunicateUtils.getCookie('km_id');
                     } else {
                         options.userId = userId;
-                        KommunicateUtils.setCookie('kommunicate-id', userId, 1);
+                        KommunicateUtils.setCookie('km_id', userId, 1);
                         if (pseudoNameEnabled) {
-                            if (KommunicateUtils.getCookie('userName')) {
-                                options.userName = KommunicateUtils.getCookie('userName');
+                            if (KommunicateUtils.getCookie('km_user_name')) {
+                                options.userName = KommunicateUtils.getCookie('km_user_name');
                             } else {
-                                KommunicateUtils.setCookie('userName', data.userName, 1);
+                                KommunicateUtils.setCookie('km_user_name', data.userName, 1);
                                 options.userName = data.userName;
                             }
                             options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
@@ -358,7 +358,7 @@ function ApplozicSidebox() {
         })
     };
     function loadErrorTracking(userId) {
-        userId = KommunicateUtils.getCookie('kommunicate-id') || userId;
+        userId = KommunicateUtils.getCookie('km_id') || userId;
         Sentry.init({
             dsn: sentryConfig.dsn
         });
