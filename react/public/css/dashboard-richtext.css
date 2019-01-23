@@ -956,7 +956,8 @@ cursor: pointer;
     object-fit: cover;
 }
 
-.km-dashboard-carousel-card-footer button:last-child{
-    border-bottom: 1px solid #e7e4e4 ; 
-    border-radius: 0 0 5px 5px;
+.km-dashboard-carousel-card-footer{
+    border-bottom: 1px outset rgba(255, 255, 255, 0.4);
+    border-radius: 0px 0px 5px 5px;
+    overflow: hidden;
 }
