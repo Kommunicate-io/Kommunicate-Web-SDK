@@ -916,7 +916,10 @@ class Aside extends Component {
                               <NewMessageIndicatorText className="km-new-messages-indicator--count"></NewMessageIndicatorText>
                               <NewMessageIndicatorText>new messages</NewMessageIndicatorText>
                             </NewMessageIndicatorContainer>
-
+                            <div className="km-typing-indicator-for-agent--container n-vis">
+                        <div className="km-typing-indicator-for-agent--image"></div>
+                        <div className="km-typing-indicator-for-agent--text">Typing...</div>
+                      </div>
                           </div>
                         </div>
                         <div id="empty-state-conversations-div" className="empty-state-conversations-div text-center n-vis">
@@ -932,12 +935,9 @@ class Aside extends Component {
 
                         </div>
                       </div>
-                      <div className="km-typing-indicator-for-agent--container n-vis">
-                        <div className="km-typing-indicator-for-agent--image"></div>
-                        <div className="km-typing-indicator-for-agent--text">Typing...</div>
-                      </div>
+                     
                       <div className="write">
-                        
+                    
                         <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">
                           {/* Email Indicator Text below */}
                           <div className="email-conversation-indicator n-vis">
@@ -946,6 +946,7 @@ class Aside extends Component {
                           </div>
 
                           <div className="km-box-form km-row n-vis">
+                       
                             <div className="blk-lg-12">
                               <p id="km-msg-error" className="km-sidebox-error n-vis"></p>
                             </div>

@@ -11474,3 +11474,26 @@ border-left-color: #5e8631;
 ::-webkit-scrollbar-corner {
   background: rgba(0,0,0,0);
 }
+
+@keyframes dashboardfadeInUp {
+  from {
+      transform: translate3d(0,40px,0);
+  }
+
+  to {
+      transform: translate3d(0,0,0);
+      opacity: 1
+  }
+}
+
+@-webkit-keyframes dashboardfadeInUp {
+  from {
+      transform: translate3d(0,40px,0)
+  }
+
+  to {
+      transform: translate3d(0,0,0);
+      opacity: 1
+  }
+}
+

@@ -194,11 +194,13 @@ body {
 	outline: none;
 }
 
+
 .km-panel-body {
 	padding: 0;
 	position: relative;
 	display: table-row;
 	height: 100%;
+	transition: all .3s;
 }
 
 .km-panel-body .km-panel-cell {
@@ -761,11 +763,32 @@ body {
 
 /* Styles for typing indicator on agent side */
 .km-typing-indicator-for-agent--container {
-	background-color: #f4f5f6;
-	padding: 10px 35px;
+	bottom: 0;
+    background-color: #f4f5f6;
+    padding: 10px 35px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    animation-duration: .3s;
+    animation-fill-mode: both;
+    -webkit-animation-duration: .3s;
+    -webkit-animation-fill-mode: both;
+    opacity: 0;
+    animation-name: dashboardfadeInUp;
+    -webkit-animation-name: dashboardfadeInUp;
+    position: absolute;
+	height: 31px;
+    z-index: 1;
+    width: 25%;
+}
+.km-new-messages-indicator--container{
+	animation-duration: .3s;
+    animation-fill-mode: both;
+    -webkit-animation-duration: .3s;
+    -webkit-animation-fill-mode: both;
+    opacity: 0;
+    animation-name: dashboardfadeInUp;
+    -webkit-animation-name: dashboardfadeInUp;
 }
 .km-typing-indicator-for-agent--image  {
 	margin-right: 15px;
