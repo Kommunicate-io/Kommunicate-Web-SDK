@@ -4250,10 +4250,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var displayName = "";
 				var imgsrctag = "";
 				var nameTextExpr = "";
-				var showNameExpr = "n-vis";
+				var showNameExpr = "km-text-user km-visibility-hide";
 				var msgAvatorClassExpr = "";
 				if (msg.groupId && msg.contentType !== 4 && (msg.type === 0 || msg.type === 4 || msg.type === 6)||(msg.type === 5 && typeof msg.to!=="undefined"  && msg.to!==MCK_USER_ID)) {
-					showNameExpr = "vis";
+					showNameExpr = "km-visibility-show";
 					nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
 				}
 				if (typeof msg.fileMeta === "object") {

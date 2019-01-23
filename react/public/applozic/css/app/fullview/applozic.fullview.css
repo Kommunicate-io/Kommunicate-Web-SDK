@@ -3669,5 +3669,11 @@ ol, ul {
 	background-color: transparent;
 }
 #km-text-box{
-	white-space: pre-line;
+	white-space: pre;
+}
+.km-visibility-hide{
+	visibility: hidden;
+}
+.km-visibility-show{
+   visibility: visible;
 }
