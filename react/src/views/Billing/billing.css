@@ -766,7 +766,7 @@
 }
 
 .subscription-current-plan-container {
-    align-items: center;
+    align-items: flex-start;
 }
 .subscription-success-checkmark {
     margin-right: 20px;

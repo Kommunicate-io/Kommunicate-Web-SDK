@@ -85,7 +85,7 @@ class BillingKommunicate extends Component {
         /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
         Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
-        document.getElementById("chargebee-portal").click();
+        document.getElementById("chargebee-portal") && document.getElementById("chargebee-portal").click();
 
         this.processSubscriptionPlanStatus();
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
@@ -98,7 +98,7 @@ class BillingKommunicate extends Component {
             // console.log(this.state.boughtSubscription);
         } 
 
-        document.getElementById("chargebee-portal").addEventListener("click", function (event) {
+        document.getElementById("chargebee-portal") && document.getElementById("chargebee-portal").addEventListener("click", function (event) {
             if (event.target.classList.contains('n-vis')) {
                 event.target.classList.remove('n-vis');
                 return;
