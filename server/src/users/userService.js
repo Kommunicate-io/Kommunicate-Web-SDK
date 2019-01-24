@@ -56,12 +56,12 @@ let criteria = {
   });
 };
 
-const getInvitedUserList = (inviteUser) => {
+const getInvitedUserList = (inviteUser,appId) => {
   var  invitedUserList =[];
   for (var i = 0; i < inviteUser.length; i++) {
     invitedUserList[i] =inviteUser[i].invitedUser;
   }
-  return teammateInviteModel.findAll({ where: { invitedUser: {$in: invitedUserList }}, paranoid: false }).then(result => {
+  return teammateInviteModel.findAll({ where: { invitedUser: {$in: invitedUserList },applicationId:appId}, paranoid: false }).then(result => {
      return result;
     }).catch(err => {
       throw err;
@@ -104,7 +104,7 @@ const inviteTeam = (inviteteam) => {
         return teammateInviteModel.findAll({ where: { applicationId: inviteteam.applicationId, invitedUser: inviteteam.to[0] } });
       });
     } else {
-      return Promise.resolve(getInvitedUserList(invites)).then(dbResult => {
+      return Promise.resolve(getInvitedUserList(invites,inviteteam.applicationId)).then(dbResult => {
         dbResult.find(function (item, i) {
             var index = invites.findIndex(invite => (item.invitedUser));
             if (index !== -1) {
