@@ -454,9 +454,10 @@ kommunicateDashboard.markup.getCarouselMarkup = function(options) {
         return cardFooter;
     }
     if (options && options.payload) {
-        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
-        options.payload = payload;
-        for (var item of options.payload) {
+        let cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        options.payload = cards;
+        for (var i = 0; i < cards.length; i++) {
+            var item = cards[i];
             item.header && (headerOverlayTextClass = item.header.overlayText ? (item.header.imgSrc ? "km-dashboard-carousel-card-overlay-text ":"km-dashboard-carousel-card-overlay-text  km-dashboard-carousel-card-overlay-text-without-img") : "n-vis");     
             carouselHeaderClass = item.header ? (item.header.imgSrc ? "":"km-dashboard-carousel-card-header-without-img" ): "n-vis";  
             carouselInfoWrapperClass = item.header ? "": "km-dashboard-carousel-card-info-wrapper-without-header";
@@ -464,14 +465,14 @@ kommunicateDashboard.markup.getCarouselMarkup = function(options) {
             item.header && (headerImageClass = item.header.imgSrc ? "km-dashboard-carousel-card-img": "n-vis");
             item.header && (item.header["headerOverlayTextClass"] = headerOverlayTextClass);
             item.header && (item.header["headerImageClass"] =headerImageClass);
-            item["cardDescriptionClass"] = item.description ? "km-dashboard-carousel-card-description-wrapper" : "n-vis"
+            item["cardDescriptionClass"] = item.description ? "km-dashboard-carousel-card-description-wrapper" : "n-vis";
             cardHtml["carouselHeaderClass"] = carouselHeaderClass;
             cardHtml["carouselInfoWrapperClass"] = carouselInfoWrapperClass;
             item.header && (cardHtml.header = kommunicateDashboard.markup.cardHeader(item.header));
             cardHtml.info = kommunicateDashboard.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
             cardList.push(Object.assign({},cardHtml))
-        }
+        }    
     }
     let cardCarousel = {payload:cardList};
 

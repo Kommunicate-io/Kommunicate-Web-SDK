@@ -466,9 +466,10 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         return cardFooter;
     }
     if (options && options.payload) {
-        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
-        options.payload = payload;
-        for (var item of options.payload) {
+        let cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        options.payload = cards;
+        for (var i = 0; i < cards.length; i++) {
+            var item = cards[i];
             item.header && (headerOverlayTextClass = item.header.overlayText ? (item.header.imgSrc ? "km-carousel-card-overlay-text ":"km-carousel-card-overlay-text  km-carousel-card-overlay-text-without-img") : "n-vis");     
             carouselHeaderClass = item.header ? (item.header.imgSrc ? "":"km-carousel-card-header-without-img" ): "n-vis";  
             carouselInfoWrapperClass = item.header ? "": "km-carousel-card-info-wrapper-without-header";
