@@ -50,12 +50,13 @@ class AgentAssignemnt extends Component{
             userList :[],
             notifyEveryBodyDefaultAssigneeInfo:{},
             automaticAssignmentDefaultAssigneeInfo:{},
-            botInAgentAssignedConversation: false
+            botInAgentAssignedConversation: false,
+            appSettings:""
         };
 
     }
 componentWillMount (){
-    this.getRoutingState();
+    this.getAppSettings();
 }
 
 componentDidMount(){
@@ -64,7 +65,7 @@ componentDidMount(){
 }
 updateDefaultAssigneeDetails = (userList) => {
     //AssigneeInfo:key value pair for drop down
-    let appSettings = this.props.appSettings;
+    let appSettings = this.props.appSettings || this.state.appSettings;
     let notifyEveryBodyDefaultAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY];
     let automaticAssignmentAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT];
     let notifyEveryBodyDefaultAssigneeInfo = userList.find(result => {
@@ -98,7 +99,7 @@ updateDefaultAssignee = (selectedAssignee) => {
     .then(response => {
         appSettings.defaultConversationAssignee = data.defaultConversationAssignee;
         //update store
-        this.props.updateAssignee(appSettings);
+        this.props.updateAppSettings(appSettings);
         Notification.success('Routing rules updated successfully.');
     })
     .catch(err => {
@@ -107,7 +108,8 @@ updateDefaultAssignee = (selectedAssignee) => {
 }
 getAgents = () => {
     let userList = [];
-    return Promise.resolve(getUsersByType(this.props.appSettings.applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN]))
+    let userSession = CommonUtils.getUserSession();
+    return Promise.resolve(getUsersByType(this.props.appSettings.applicationId || userSession.application.applicationId , [USER_TYPE.AGENT, USER_TYPE.ADMIN]))
     .then(data => {
         data.map((user, index) => {
             let name = user.name ? user.name : user.email
@@ -141,9 +143,10 @@ getIntegratedBots = () => {
         }
     })
 }
-getRoutingState = () => {
+getAppSettings = () => {
     return Promise.resolve(getAgentandBotRouting()).then(response => {
         let resp = response.data.response;
+        response.data.response && this.setState({appSettings:response.data.response})
         resp.botRouting && this.setState({assignConversationToBot:true});
         this.setState({botInAgentAssignedConversation: !resp.removeBotOnAgentHandOff})
         if (response.data.response.agentRouting === 1) {
@@ -471,7 +474,7 @@ const mapStateToProps = state => ({
     appSettings : state.application 
   });
 const mapDispatchToProps = dispatch => ({
-    updateAssignee: payload => dispatch(Actions.saveAppSettings(payload))
+    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload))
 }) ;
   
 export default connect(mapStateToProps, mapDispatchToProps)(AgentAssignemnt)
