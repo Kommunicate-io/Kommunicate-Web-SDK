@@ -2,7 +2,7 @@
 /**
  * Attach all event listeners.
  */
-const svgs = {
+const mck_actionable_message_plugin_svgs = {
     arrow:{
         left:'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 19"><path fill="#5B5959" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>'
     }
@@ -150,13 +150,12 @@ Kommunicate.richMsgEventHandler = {
                 container: $cardMessageContainer[0],
                 items: 1,
                 slideBy: 'page',
+                loop: false,
+                controlsText:[mck_actionable_message_plugin_svgs.arrow.left, mck_actionable_message_plugin_svgs.arrow.left],
                 "mouseDrag": true,
                 "arrowKeys": true,
                 onInit : function(){
                     console.log("tiny-slider initilized");
-                   document.querySelector(".km-slick-container .tns-controls button:first-child").innerHTML= svgs.arrow.left;
-                   document.querySelector(".km-slick-container .tns-controls button:last-child").innerHTML=svgs.arrow.left;
-
                 }
               });
         }
