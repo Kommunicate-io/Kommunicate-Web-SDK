@@ -142,7 +142,7 @@ getButtonTemplate:function(options,requestType, buttonClass){
 getQuickRepliesTemplate:function(){
     return'<div class="km-dashboard-cta-multi-button-container">'+
             '{{#payload}}'+
-                 '<button title="{{message}}" class="km-dashboard-quick-replies km-dashboard-cta-button {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>'+
+                 '<button title="{{message}}" class="km-dashboard-quick-replies km-dashboard-add-more-rooms km-dashboard-cta-button {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>'+
             '{{/payload}}'+
             '</div>';
 },
