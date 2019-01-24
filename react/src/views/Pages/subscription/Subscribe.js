@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components'
+import CommonUtils from '../../../utils/CommonUtils';
 import {patchUserInfo} from '../../../utils/kommunicateClient';
-import queryString from 'query-string';
 import {SubscribeIcon} from '../../../assets/svg/svgs.js';
 import { Redirect,NavLink } from 'react-router-dom';
 import Button from '../../../components/Buttons/Button';
@@ -53,9 +53,14 @@ const SubscribeButton = styled(Button)`
     }
 `;
 
+const getParametersFromUrl = prop => ({
+    appId: CommonUtils.getUrlParameter(prop, "appId"),
+    email: CommonUtils.getUrlParameter(prop, "email")
+});
+
 export const Subscribe = (props) => {
     if (props && props.location.search) {
-        const values = queryString.parse(props.location.search)
+        let values = getParametersFromUrl(props.location.search);
         patchUserInfo({ emailSubscription: true }, values.email, values.appId);
     }
     return (
@@ -72,7 +77,7 @@ export const Subscribe = (props) => {
 
 export const Unsubscribe = (props) => {
     if (props && props.location.search) {
-        const values = queryString.parse(props.location.search)
+        let values = getParametersFromUrl(props.location.search);
         patchUserInfo({ emailSubscription: false }, values.email, values.appId);
     }
     return (
