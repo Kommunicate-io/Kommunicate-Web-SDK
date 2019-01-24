@@ -128,11 +128,24 @@ KommunicateUtils = {
         return "";
     },
     /* Method to set cookies*/
-    setCookie: function (cname, cvalue, exdays) {
-        var d = new Date();
-        var cookieMaxExpirationdate = "2038-01-19 04:14:07";
-        var expires = "expires=" + new Date(cookieMaxExpirationdate).toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        setCookie: function (cookie) {
+        var name = cookie.name;
+        var value =cookie.value;
+        var path = "/";
+        var secure = typeof cookie.secure == "undefined"?this.isHttpsEnabledConnection():cookie.secure;
+        var cookieExpiry= new Date("2038-01-19 04:14:07").toUTCString();
+        if(cookie.path){
+            path = cookie.path;
+        }
+        if(cookie.expiresInDays){
+            var today = new Date();
+            cookieExpiry = new Date(today.setDate(today.getDate()+cookie.expiresInDays)).toUTCString();
+        }
+
+        document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"");
+    },
+    isHttpsEnabledConnection : function(){
+         return window.location.protocal == "https:";
     },
     deleteCookie(name) {
         document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';

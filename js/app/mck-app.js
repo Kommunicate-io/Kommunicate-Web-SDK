@@ -318,12 +318,12 @@ function ApplozicSidebox() {
                         options.userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                     } else {
                         options.userId = userId;
-                        KommunicateUtils.setCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, userId, 1);
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30});
                         if (pseudoNameEnabled) {
                             if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME)) {
                                 options.userName = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                             } else {
-                                KommunicateUtils.setCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, data.userName, 1);
+                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30});
                                 options.userName = data.userName;
                             }
                             options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
