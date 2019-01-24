@@ -369,7 +369,16 @@
         flex-wrap: wrap;
     
     }
-    .km-cta-multi-button-container .km-cta-button-many {
+    .km-quick-rpy-btn {
+        width: auto;
+        padding: 6px 14px;
+        border-radius: 15px;
+        min-width: 35px;
+        font-size: 13px;
+        letter-spacing: .5px;
+    }
+
+    .km-cta-multi-button-container .km-cta-button-many, .km-cta-multi-button-container .km-cta-button-1 {
         margin-top: 10px;
         margin-right: 10px;
     }
@@ -379,13 +388,8 @@
     }
     .km-cta-multi-button-container .km-cta-button-2{
         margin-top: 10px;
-        width: auto;
         margin-right: 10px;
         padding: 6px 14px;
-        border-radius: 15px;
-        min-width: 35px;
-        font-size: 13px;
-        letter-spacing: 0.5px;
     }
     .km-cta-multi-button-container button a {
         margin: -6px -10px;
@@ -1044,6 +1048,7 @@
     border-color: #e7e4e4 ;
     border-bottom: none ;
     margin: 0;
+    background-color: white;
 }
 .km-carousel-card-footer {
     border-bottom: 1px outset rgba(255, 255, 255, 0.4);
@@ -1129,4 +1134,11 @@
 }
 .tns-controls:focus {
     outline: none;
+}
+.km-cta-multi-button-container button.km-quick-replies {
+    border: 1px solid #e7e4e4;
+    background-color: white;
+}
+.km-carousel-card-footer .km-cta-multi-button-container button.km-quick-replies {
+    border-bottom: none;
 }
