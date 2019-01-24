@@ -61,12 +61,12 @@ function KommunicateCommonFunction() {
             var idList = elem.id,
                 classList = elem.class , list=[];
             idList && idList.forEach(function(id){
-                list.push(document.getElementById(id));
+                document.getElementById(id)&&list.push(document.getElementById(id));
             })
             classList && classList.forEach(function(className){
 				var el = document.getElementsByClassName(className);
                 for(var i=0; i<=el.length-1; i++){
-					list.push(el[i]);
+					el && list.push(el[i]);
 					}
             })
             list.forEach(function(node){

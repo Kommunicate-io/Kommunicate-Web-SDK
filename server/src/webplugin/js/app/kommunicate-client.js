@@ -78,6 +78,7 @@ Kommunicate.client={
                         callback(response.data.value);
                     }
                     KommunicateUI.hideFaq();
+                    KommunicateUI.showClosedConversationBanner(false);
                        /* conversation table migrated to Applozic
                         Kommunicate.createNewConversation({
                             "groupId": response.data.value,
