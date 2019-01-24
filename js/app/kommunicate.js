@@ -348,7 +348,7 @@ $applozic.extend(true,Kommunicate,{
                     return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
-                    return Kommunicate.markup.quickRepliesContainerTemplate(metadata);
+                    return Kommunicate.markup.quickRepliesContainerTemplate(metadata, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
                     return Kommunicate.markup.getListContainerMarkup(metadata);

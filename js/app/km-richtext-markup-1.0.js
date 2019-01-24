@@ -141,7 +141,7 @@ getButtonTemplate:function(options,requestType, buttonClass){
 getQuickRepliesTemplate:function(){
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
-                 <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
+                 <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
             {{/payload}}
             </div>`;
 },
@@ -307,15 +307,18 @@ Kommunicate.markup.getFormMarkup = function(options) {
         return formMarkup
     }
 }
-Kommunicate.markup.quickRepliesContainerTemplate= function(options){
+Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
     var payload = JSON.parse(options.payload);
-    //var formData= payload? JSON.parse(options.formData||"{}"):"";
-    var elemWidthClass =  payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
+    let defaultButtonClass = { 
+        [KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY] : "km-quick-rpy-btn km-custom-widget-border-color ",
+        [KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL] : "km-carousel-card-button km-carousel-card-quick-rpy-button "
+    }
+    var buttonClass = defaultButtonClass[template];
+    template == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY && (buttonClass +=  payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many"));
     
     for(var i = 0;i<payload.length;i++){
         payload[i].replyMetadata = typeof  payload[i].replyMetadata =="object"? JSON.stringify(payload[i].replyMetadata):payload[i].replyMetadata;
-        payload[i].elemWidthClass = elemWidthClass;
-        options.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY && (payload[i].buttonClass = "km-custom-widget-border-color");
+        payload[i].buttonClass = buttonClass;
     }
      return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {"payload":payload});
 }
@@ -446,9 +449,8 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         var requestType;
         for (var i = 0; i < buttons.length; i++) { 
             if(buttons[i].action.type == "quickReply") {
-                buttons[i].action.payload["buttonClass"] = "km-carousel-card-button"
-                buttons[i].action.payload = JSON.stringify([buttons[i].action.payload])
-                cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action))
+                buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
+                cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL))
             } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
                 requestType = buttons[i].action.payload.requestType ? buttons[i].action.payload.requestType :"";
                 buttons[i].action.payload["type"] = buttons[i].action.type;
