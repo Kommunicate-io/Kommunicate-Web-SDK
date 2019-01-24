@@ -792,7 +792,7 @@
     
     .km-faq-list--footer {
         width: 100%;
-        min-height: 35px;
+        /* min-height: 35px; */
         border-bottom-left-radius: 18px;
         border-bottom-right-radius: 18px;
     }
