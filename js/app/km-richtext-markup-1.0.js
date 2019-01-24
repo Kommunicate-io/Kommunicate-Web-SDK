@@ -466,22 +466,22 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         return cardFooter;
     }
     if (options && options.payload) {
-        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
-        options.payload = payload;
-        for (var item of options.payload) {
-            item.header && (headerOverlayTextClass = item.header.overlayText ? (item.header.imgSrc ? "km-carousel-card-overlay-text ":"km-carousel-card-overlay-text  km-carousel-card-overlay-text-without-img") : "n-vis");     
-            carouselHeaderClass = item.header ? (item.header.imgSrc ? "":"km-carousel-card-header-without-img" ): "n-vis";  
-            carouselInfoWrapperClass = item.header ? "": "km-carousel-card-info-wrapper-without-header";
-            carouselInfoWrapperClass = item.buttons ? carouselInfoWrapperClass.concat(" km-carousel-card-info-wrapper-with-buttons"): "";
-            item.header && (headerImageClass = item.header.imgSrc ? "km-carousel-card-img": "n-vis");
-            item.header && (item.header["headerOverlayTextClass"] = headerOverlayTextClass);
-            item.header && (item.header["headerImageClass"] =headerImageClass);
-            item["cardDescriptionClass"] = item.description ? "km-carousel-card-description-wrapper" : "n-vis"
+        let cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        options.payload = cards;
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].header && (headerOverlayTextClass = cards[i].header.overlayText ? (cards[i].header.imgSrc ? "km-carousel-card-overlay-text ":"km-carousel-card-overlay-text  km-carousel-card-overlay-text-without-img") : "n-vis");     
+            carouselHeaderClass = cards[i].header ? (cards[i].header.imgSrc ? "":"km-carousel-card-header-without-img" ): "n-vis";  
+            carouselInfoWrapperClass = cards[i].header ? "": "km-carousel-card-info-wrapper-without-header";
+            carouselInfoWrapperClass = cards[i].buttons ? carouselInfoWrapperClass.concat(" km-carousel-card-info-wrapper-with-buttons"): "";
+            cards[i].header && (headerImageClass = cards[i].header.imgSrc ? "km-carousel-card-img": "n-vis");
+            cards[i].header && (cards[i].header["headerOverlayTextClass"] = headerOverlayTextClass);
+            cards[i].header && (cards[i].header["headerImageClass"] =headerImageClass);
+            cards[i]["cardDescriptionClass"] = cards[i].description ? "km-carousel-card-description-wrapper" : "n-vis"
             cardHtml["carouselHeaderClass"] = carouselHeaderClass;
             cardHtml["carouselInfoWrapperClass"] = carouselInfoWrapperClass;
-            item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
-            cardHtml.info = Kommunicate.markup.cardInfo(item);
-            item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
+            cards[i].header && (cardHtml.header = Kommunicate.markup.cardHeader(cards[i].header));
+            cardHtml.info = Kommunicate.markup.cardInfo(cards[i]);
+            cards[i].buttons && (cardHtml.footer = createCardFooter(cards[i].buttons));
             cardList.push(Object.assign({},cardHtml))
         }
     }
