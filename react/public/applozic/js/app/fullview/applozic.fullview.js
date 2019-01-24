@@ -3940,6 +3940,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$modal_footer_content.removeClass('n-vis').addClass('vis');
 					$mck_delete_button.removeClass('n-vis').addClass('vis');
 					$mck_group_menu_options.removeClass('vis').addClass('n-vis');
+					$kmApplozic('#chat-box-div .km-container').addClass('km-panel-3');
 					if (params.isGroup) {
 						$mck_msg_inner.addClass('km-group-inner');
 						$li_mck_block_user.removeClass('vis').addClass('n-vis');
@@ -4247,10 +4248,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var displayName = "";
 				var imgsrctag = "";
 				var nameTextExpr = "";
-				var showNameExpr = "n-vis";
+				var showNameExpr = "km-text-user invisible";
 				var msgAvatorClassExpr = "";
 				if (msg.groupId && msg.contentType !== 4 && (msg.type === 0 || msg.type === 4 || msg.type === 6)||(msg.type === 5 && typeof msg.to!=="undefined"  && msg.to!==MCK_USER_ID)) {
-					showNameExpr = "vis";
+					showNameExpr = "visible";
 					nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
 				}
 				if (typeof msg.fileMeta === "object") {
@@ -6884,7 +6885,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_group_name_save.removeClass('vis').addClass('n-vis');
 					$mck_group_name_edit.removeClass('n-vis').addClass('vis');
 					$mck_group_info_tab.data('km-id', params.groupId);
-					$mck_group_info_tab.addClass("km-visibility-shown").removeClass("km-visibility-hidden");
+					$mck_group_info_tab.addClass("visible").removeClass("invisible");
 					$mck_btn_group_icon_save.removeClass('vis').addClass('n-vis');
 					$mck_group_info_icon_loading.removeClass('vis').addClass('n-vis');
 					$mck_group_info_icon.data('iconurl', "");
@@ -8203,6 +8204,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				} else {
 					var message = resp.message;
 					var messageFromLoggedInUser = message.to && message.to === MCK_USER_ID;
+					var currentSelectedTab = $kmApplozic("." + window.KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[$kmApplozic(".km-conversation-icon-active")[0].id] + " li.person.active");
 					var conversationAssignedToLoggedInUser = (message.metadata && message.metadata.KM_ASSIGN) ? message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN === MCK_USER_ID:false;
 					// var userIdArray =
 					// mckMessageLayout.getUserIdFromMessage(message);
@@ -8239,7 +8241,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						if (message.metadata) {
 							if(message.metadata.KM_STATUS || message.metadata.KM_ASSIGN ){
-								messageFromLoggedInUser && !conversationAssignedToLoggedInUser && $kmApplozic("." + window.KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[$kmApplozic(".km-conversation-icon-active")[0].id] + " li.person.active").next().trigger('click');
+								if(currentSelectedTab.attr("data-km-id") == message.groupId){
+								messageFromLoggedInUser && !conversationAssignedToLoggedInUser && currentSelectedTab.next().trigger('click');
+								}
 								kmGroupService.getGroupFeed({
 									groupId: message.groupId,
 									messageMetadata: message.metadata,
