@@ -381,7 +381,7 @@ class Aside extends Component {
     var that = this;
     this.setState({assignee:userId});
     var groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.state.group.groupId ;
-    window.$kmApplozic.fn.applozic('updateGroupInfo',
+    that.state.group && window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': this.state.group.groupId,
                                       'metadata': {
