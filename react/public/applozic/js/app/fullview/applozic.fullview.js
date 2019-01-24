@@ -4251,10 +4251,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var displayName = "";
 				var imgsrctag = "";
 				var nameTextExpr = "";
-				var showNameExpr = "km-text-user km-visibility-hide";
+				var showNameExpr = "km-text-user invisible";
 				var msgAvatorClassExpr = "";
 				if (msg.groupId && msg.contentType !== 4 && (msg.type === 0 || msg.type === 4 || msg.type === 6)||(msg.type === 5 && typeof msg.to!=="undefined"  && msg.to!==MCK_USER_ID)) {
-					showNameExpr = "km-visibility-show";
+					showNameExpr = "visible";
 					nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
 				}
 				if (typeof msg.fileMeta === "object") {
@@ -6888,7 +6888,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_group_name_save.removeClass('vis').addClass('n-vis');
 					$mck_group_name_edit.removeClass('n-vis').addClass('vis');
 					$mck_group_info_tab.data('km-id', params.groupId);
-					$mck_group_info_tab.addClass("km-visibility-shown").removeClass("km-visibility-hidden");
+					$mck_group_info_tab.addClass("visible").removeClass("invisible");
 					$mck_btn_group_icon_save.removeClass('vis').addClass('n-vis');
 					$mck_group_info_icon_loading.removeClass('vis').addClass('n-vis');
 					$mck_group_info_icon.data('iconurl', "");

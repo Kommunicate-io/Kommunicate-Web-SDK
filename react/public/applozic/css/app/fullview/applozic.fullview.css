@@ -3671,9 +3671,3 @@ ol, ul {
 #km-text-box{
 	white-space: pre-line;
 }
-.km-visibility-hide{
-	visibility: hidden;
-}
-.km-visibility-show{
-   visibility: visible;
-}
