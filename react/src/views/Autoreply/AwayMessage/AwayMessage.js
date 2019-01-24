@@ -444,13 +444,15 @@ class AwayMessage extends Component{
                   <Button primary disabled={this.state.disableButtonForAnonymousTextArea} className="save-changes-btn"
                     onClick={(e) => {
                       this.setState({
-                        disableButtonForAnonymousTextArea: true
+                        disableButtonForAnonymousTextArea: true,
+                        liveAwayMessage : ""
                       }, this.awayMessageAnonymousCustomersMethod)
                     }} >Save</Button>
                   <Button secondary disabled = {this.state.disableButtonForAnonymousTextArea} className="discard-btn" 
                     onClick={(e) => {
                         this.setState({
-                          disableButtonForAnonymousTextArea: true
+                          disableButtonForAnonymousTextArea: true,
+                          liveAwayMessage : ""
                         },this.discardAwayMessageAnonymousCustomers)
                     }}>Discard</Button>
                 </div>
@@ -494,6 +496,8 @@ class AwayMessage extends Component{
               hasTextBox={true}
               hasAwayMessage={true}
               awayMessage={this.state.liveAwayMessage || this.props.awayMessage}
+              hasSecondMessage={false}
+              hideChatIcon={true}
             />  
           </div>
         </div>

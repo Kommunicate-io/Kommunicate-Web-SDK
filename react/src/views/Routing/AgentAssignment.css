@@ -47,7 +47,7 @@ body {
     left: 9px;
 }
 .automatic-assignemnt-content {
-    margin-left: -5px
+    margin-left: 10px
 }
 .default-assignee-container {
     margin-left: 44px;
@@ -219,9 +219,7 @@ div.drop-down-container ul {
 .km-conversation-rules-container{
     width: 998px;
 }
-.active-agent-routing{
-    width: 100%;
-}
+
 
 
 .km-conversation-rules-container .col-md-8 {
@@ -244,4 +242,7 @@ div.drop-down-container ul {
 .km-conversation-rules-container .see-docs-link-container svg {
     width: 11px;
     height: 11px;
+}
+.km-push-notification-container .save-changes-btn{
+    margin-top: 20px;
 }

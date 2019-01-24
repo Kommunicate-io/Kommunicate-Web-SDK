@@ -13,15 +13,17 @@ const LiveChatWidget =  (props) =>{
         primaryColor: '#5553b7',
         hasCustomImage: false ,
         agentMessages:["Hi, how may I help you?", "Sure, I can help you with this. Can you give me your updated delivery address?","Please wait our agents will be with you shortly."],
+        welcomeMessagesDefault:["This is an example of how a welcome message will look like","This is an example of how a second welcome message will look like","This is an example of how a third welcome message will look like"],
         customerMessage:"Hey, can I change the delivery address of my order? ",
-        awayMessage:"Hi, All our agents are away. Please leave a message we will get back to you as soon as possible",
+        awayMessage:"This is an example of how an away message will look like to your users",
         currentIcon : <KmDefaultIcon />,
         hasCustomerMessage : false,
         hasFirstMessage:true,
         hasSecondMessage:true,
         hasThirdMessage:false,
         hasAwayMessage:false,
-        hasTextBox:false
+        hasTextBox:false,
+        hideChatIcon:false
     }
      
    return(
@@ -46,7 +48,7 @@ const LiveChatWidget =  (props) =>{
                 props.welcomeMessages && props.welcomeMessages.map((data, index) => (
                     <div className="km-message-left" key={index}>
                         <div className="km-conversation-img"><AgentIcon /></div>
-                        <div className="km-conversation-content">{data.messageField ? data.messageField : (props.agentMessages ? props.agentMessages[index] : "")}</div>
+                        <div className="km-conversation-content">{data.messageField ? data.messageField : (props.welcomeMessagesDefault ? props.welcomeMessagesDefault[index] : "")}</div>
                     </div>
                 ))
             }
@@ -73,7 +75,7 @@ const LiveChatWidget =  (props) =>{
             <AttachmentIcon />
             </div>
         </div>
-        <div className={props.hasCustomImage ? "n-vis" : " km-chat-icon km-chat-icon-sidebox"} style={{ background: props.primaryColor }} >
+        <div className={props.hasCustomImage || props.hideChatIcon ? "n-vis" : " km-chat-icon km-chat-icon-sidebox"} style={{ background: props.primaryColor }} >
             {props.currentIcon}
         </div>
         <div className={props.hasCustomImage ? "km-chat-icon-img km-chat-icon-sidebox  km-chat-icon" : "n-vis"} style={{ background: props.primaryColor }}>

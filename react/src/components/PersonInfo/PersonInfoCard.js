@@ -4,7 +4,17 @@ import ClearBitInfo from './ClearbitInfo'
 import { UserMetadata, LastSeenSection, DisplayPseudoIcon, PseudonymModal } from './MetaInfo'
 import EditableText from './EditableText';
 import {KommunicateUserInfoPanelLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
+import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
+import {UserInfoEmptyStateSvg} from '../../assets/svg/svgs'
 
+const UserInfoEmptyState = (props) => {
+    return (
+        <div className="km-empty-user-info-wrapper">
+            <UserInfoEmptyStateSvg/>
+            <MoreInfoLink url={"https://docs.kommunicate.io/docs/api-detail#update-user-details"} descriptionLabel={"You can have your user details to show up here"} Linklabel={"Learn how"} />
+        </div>
+    )
+}
 
 class PersonInfoCard extends Component {
     constructor(props) {
@@ -49,6 +59,7 @@ class PersonInfoCard extends Component {
     onCloseModal = () => {
         this.setState({ modalOpen: false });
     }
+  
 
     render() {
         return (
@@ -103,10 +114,10 @@ class PersonInfoCard extends Component {
                     {/* last seen info */}
                     <LastSeenSection userInfo={this.state.user} />
                     {/* user metadata */}
+                    <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
                     {
-                        this.state.userMetadata ?
-                            <UserMetadata userInfo={this.state.userMetadata} /> : null
-                    }
+                        ( Object.keys(this.state.userMetadata).length > 1 && this.state.userMetadata.KM_PSEUDO_USER) ?
+                        <UserMetadata userInfo={this.state.userMetadata} /> : <UserInfoEmptyState />}
                     {/* user clearbit data */}
                     {this.state.clearbitData ?
                             <ClearBitInfo userDetail={this.state.clearbitData} />: null

@@ -191,20 +191,21 @@ body{
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 1px;
-    color: #4398d1;
+    color: #777;
     margin-top: 8px;
 }
 .tab-content {
     padding-bottom: 55px;
 }
 .km-quick-reply-field{
+    padding-top: 7px;
     white-space: pre-wrap;
-    height: 42px;
+    height: 40px;
     overflow: scroll;
     max-width: 627px;
     transition: all .3s ease-in-out;
     overflow: hidden;
-    line-height: 23px;
+    line-height: 25px;
 }
 
 .form-control.km-quick-reply-field:focus{
@@ -213,3 +214,9 @@ body{
     height: 118px;
     overflow: scroll;
 }
+
+
+.shortcut-field.form-control:focus{
+    border:  1px solid #d8d8d8;
+  }
+  

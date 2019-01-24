@@ -64,7 +64,7 @@
     letter-spacing: 0.6px;
     text-align: left;
     color: #5c5aa7;
-    padding-top: 5px;
+    margin-top: -18px;
     cursor: pointer;
     border: 0;
     background: none; 
@@ -84,7 +84,7 @@
 }
 .text-area-wrapper{
     margin-right: 1px;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     position: relative;
     background-color: #fff !important;
 }

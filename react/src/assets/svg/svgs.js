@@ -539,3 +539,138 @@ export const DownArrow = props => (
         <path d="M6.911 6.155c.266-.288-.155-.687-.42-.421l-2.703 2.68v-7.31c0-.376-.598-.376-.598 0v7.31L.51 5.734c-.266-.288-.687.133-.421.42l3.19 3.19c.132.111.31.111.42 0l3.212-3.19z" fill="#FFF" fillRule="evenodd" />
     </svg>
 )
+
+export const UserInfoEmptyStateSvg = props => (
+    <svg viewBox="0 0 115 81" width={115} height={81} {...props}>
+      <defs>
+        <linearGradient id="prefix__a" x1="50%" x2="50%" y1="100%" y2="0%">
+          <stop offset="0%" stopColor="gray" stopOpacity={0.3} />
+          <stop offset="54%" stopColor="gray" stopOpacity={0.1} />
+          <stop offset="100%" stopColor="gray" stopOpacity={0.1} />
+        </linearGradient>
+        <linearGradient id="prefix__b" x1="50%" x2="50%" y1="100%" y2="0%">
+          <stop offset="0%" stopColor="gray" stopOpacity={0.3} />
+          <stop offset="54%" stopColor="gray" stopOpacity={0.1} />
+          <stop offset="100%" stopColor="gray" stopOpacity={0.1} />
+        </linearGradient>
+        <linearGradient id="prefix__c" x1="50%" x2="50%" y1="100%" y2="0%">
+          <stop offset="0%" stopColor="gray" stopOpacity={0.3} />
+          <stop offset="54%" stopColor="gray" stopOpacity={0.1} />
+          <stop offset="100%" stopColor="gray" stopOpacity={0.1} />
+        </linearGradient>
+        <linearGradient id="prefix__d" x1="50%" x2="50%" y1="100%" y2="0%">
+          <stop offset="0%" stopColor="gray" stopOpacity={0.3} />
+          <stop offset="54%" stopColor="gray" stopOpacity={0.1} />
+          <stop offset="100%" stopColor="gray" stopOpacity={0.1} />
+        </linearGradient>
+      </defs>
+      <g fill="none" fillRule="evenodd">
+        <path
+          fill="#6C63FF"
+          d="M25.9 0a27 27 0 0 0-15.6 5.5c-3.9 3-6.6 8-6 12.8.9 5.7 6 9.9 7.9 15.4 1.2 3.5 1 7.4.2 11-.5 2.4-1.3 4.7-2.8 6.6-2.8 3.3-7.7 5-9 9-1.5 4.5 2.2 8.9 5.6 12C9 75 12 77.5 15.4 78.9c2.5 1 5.3 1.4 8 1.6a53.8 53.8 0 0 0 22.3-3.6c3.4-1.3 6.6-3 10.2-3.8 7.5-1.7 15.3.8 23 2a68.8 68.8 0 0 0 19.8 0c4.1-.6 8.4-1.7 11.5-4.5 3.2-2.8 4.7-7.2 4.6-11.4-.2-4.2-2-8.3-4.6-11.6-3.4-4.3-8.1-7.4-12.2-11a52.6 52.6 0 0 1-10.5-13c-1.6-2.8-3-5.8-5-8.2-3.2-3.8-8-6.1-12.6-7.9-10.9-4-22-4.9-33.4-6.7A51 51 0 0 0 26 .1z"
+          opacity={0.1}
+        />
+        <g transform="translate(25 14)">
+          <path
+            fill="url(#prefix__a)"
+            d="M0 0h27v37.3H0z"
+            opacity={0.5}
+            transform="translate(10.8 3.8)"
+          />
+          <path fill="#FFF" d="M11.1 4h26.3v36.5H11.1z" />
+          <path fill="url(#prefix__a)" d="M17.8 3h13v3.2h-13z" />
+          <path
+            fill="url(#prefix__b)"
+            fillRule="nonzero"
+            d="M24.3 0c-1 0-1.8.8-1.8 1.9 0 1 .8 1.8 1.8 1.8S26.1 3 26.1 2s-.8-2-1.8-2zm0 3a1 1 0 1 1 1-1.1 1 1 0 0 1-1 1z"
+          />
+          <path fill="#6C63FF" d="M18 3h12.7v3.1H17.9z" />
+          <path
+            fill="#6C63FF"
+            fillRule="nonzero"
+            d="M24.3.1a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6zm0 2.9a1 1 0 1 1 0-2.1 1 1 0 0 1 0 2z"
+          />
+          <path
+            fill="url(#prefix__a)"
+            d="M12.4 10H18v5.6h-5.6zm0 11.1H18v5.6h-5.6zm0 11H18v5.7h-5.6z"
+          />
+          <path fill="#69F0AE" d="M12.6 10.2h5.2v5.2h-5.2z" />
+          <path fill="#6C63FF" d="M12.6 21.2h5.2v5.2h-5.2zm0 11h5.2v5.3h-5.2z" />
+          <path fill="#E0E0E0" d="M21.2 11.8h7.2v1h-7.2z" />
+          <path fill="#E0E0E0" d="M21.2 12.5H33v1H21.2z" />
+          <path fill="#E0E0E0" d="M21.2 13.3h11v1h-11zm0 9.5h7.2v1h-7.2z" />
+          <path fill="#E0E0E0" d="M21.2 23.6H33v1H21.2z" />
+          <path fill="#E0E0E0" d="M21.2 24.3h11v1h-11zm0 9.6h7.2v1h-7.2z" />
+          <path fill="#E0E0E0" d="M21.2 34.6H33v1H21.2z" />
+          <path fill="#E0E0E0" d="M21.2 35.4h11v1h-11z" />
+          <path
+            fill="url(#prefix__c)"
+            d="M14 12.5l1 .8 1.3-2 .5.4-1.9 2.4-1.3-1.5z"
+          />
+          <path
+            fill="#FFF"
+            d="M14.1 12.5l.9.7 1.1-1.7.5.4-1.6 2-1.2-1.3zm0 11.1l.9.8 1.1-1.7.5.3-1.6 2-1.2-1.2zm0 11.1l.9.8 1.1-1.7.5.3-1.6 2-1.2-1.2z"
+          />
+          <g stroke="#69F0AE" strokeWidth={5} opacity={0.5}>
+            <path d="M38.7 24.1h.4" />
+            <path strokeDasharray="11.5" d="M39.9 24.1H49" />
+            <path d="M49.4 24.1h.4v-.4" />
+            <path strokeDasharray="11.4" d="M49.8 22.9v-7.5" />
+            <path d="M49.8 15v-.4" />
+          </g>
+          <path
+            stroke="#69F0AE"
+            strokeDasharray="12"
+            strokeWidth={5}
+            d="M9.9 12.5H.7v8.7M15.2 42v5h13.7"
+            opacity={0.5}
+          />
+          <path
+            fill="url(#prefix__a)"
+            d="M10.6 4.5L5.3 0 .1 4.5v5.9h10.5z"
+            opacity={0.5}
+            transform="translate(43.4 2.9)"
+          />
+          <path fill="#FFF" d="M53.8 13H43.7V7.4l5-4.3 5 4.3z" />
+          <path fill="#E0E0E0" d="M43.6 7.4l5 2.8 5-2.8" />
+          <path
+            fill="url(#prefix__a)"
+            d="M3 5.4l-3 2V0h6.1v3.7z"
+            opacity={0.5}
+            transform="translate(45.6 4.7)"
+          />
+          <path fill="#FAFAFA" d="M48.7 10.2l-3 1.9V4.9h5.9v3.6z" />
+          <path fill="#000" d="M43.6 13h10.1l-10-5.7z" opacity={0.1} />
+          <path fill="#F5F5F5" d="M43.6 13h10.1l-10-5.6z" />
+          <path fill="#FFF" d="M46.5 6h4.3v1h-4.3z" />
+          <path fill="#FFF" d="M46.5 6.5h4.3v1h-4.3z" />
+          <path fill="#6C63FF" d="M46.5 7h4.3v1h-4.3z" />
+          <path fill="#FFF" d="M46.5 7.6h4.3v1h-4.3z" />
+          <path fill="#6C63FF" d="M46.5 8.2h4.3v1h-4.3z" />
+          <path fill="#000" d="M51.6 8.6v-.2l-3 1.7z" opacity={0.1} />
+          <path
+            fill="url(#prefix__d)"
+            d="M0 0h12v12H0z"
+            opacity={0.5}
+            transform="translate(31.1 42.6)"
+          />
+          <path fill="#F5F5F5" d="M31.4 42.8h11.4v11.5H31.4z" />
+          <path fill="#FFF" d="M32.2 43.2h10V52h-10z" />
+          <path
+            fill="#E0E0E0"
+            d="M42.2 49.2c-2.8 0-5-.8-5-1.6-2.8 0-5 .6-5 1.3v3.3h10v-3z"
+          />
+          <circle cx={40.5} cy={45.1} r={1} fill="#6C63FF" />
+        </g>
+      </g>
+    </svg>
+  )
+  export const MoreInfoLinkSvg = props => (
+    <svg width={10} height={10} {...props}>
+      <path
+        fill="none"
+        stroke="#4831D9"
+        d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497"
+      />
+    </svg>
+  )

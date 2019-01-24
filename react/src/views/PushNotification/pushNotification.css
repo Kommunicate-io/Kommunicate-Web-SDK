@@ -155,8 +155,11 @@
 }
 
 .pushnotifiction-sub{
-  margin-left: 30px;
+  margin-left: 0px;
 }
 .push-notification-ios-container:last-child {
   border: none;
+}
+.km-input-apns.km-gcm-input{
+  margin-left: 2px;
 }

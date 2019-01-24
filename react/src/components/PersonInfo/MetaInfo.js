@@ -81,7 +81,6 @@ export const UserMetadata = (props) => {
     });
     return (
         <div id="km-sidebar-user-info-wrapper">
-            <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
             <div id="km-user-info-metadata-wrapper" className="km-user-info-metadata-wrapper">
                 <CSSTransitionGroup
                     transitionName="fade"

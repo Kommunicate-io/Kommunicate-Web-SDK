@@ -129,6 +129,10 @@ textarea:-ms-input-placeholder {
 .away-message-row{
     display: flex;
     width: 998px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
+}
+
+.away-message-preview .km-demo-chat-box{
+    margin-bottom: 0;
 }

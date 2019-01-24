@@ -81,6 +81,8 @@
 
 .km-chat-box-converstaions {
     padding-top: 28px;
+    overflow: scroll;
+    max-height: 400px;
 }
 
 .km-message-left {
@@ -109,6 +111,9 @@
     line-height: 1.36;
     letter-spacing: 0.5px;
     color: #646262;
+    word-break: break-word;
+    overflow: hidden;
+    white-space: pre-line;
 }
 
 .km-message-right {
@@ -156,9 +161,11 @@
 }
 .away-message--demo-wrapper{
     width: 90%;
-    margin: 90px auto 0;
+    margin: 161px auto 0;
     text-align: center;
     color: #9b9b9b;
+    word-break: break-word;
+    white-space: pre-line;
 }
 .live-chat-demo-textbox{
     width: 90%;
@@ -174,6 +181,6 @@
 
 .km-chat-icon.km-chat-icon-sidebox{
     position: absolute;
-    bottom: -69px;
+    bottom: -79px;
     right: 0;
 }

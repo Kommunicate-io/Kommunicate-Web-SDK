@@ -164,3 +164,25 @@ transition: opacity 300ms ease-in;
   .km-user-info-panel-loader {
       width: 100%
   }
+  .km-empty-user-info-wrapper{
+      text-align: center;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.32;
+      letter-spacing: 0.5px;
+      text-align: center;
+      color: #838080;
+      padding: 5px 40px; 
+  }
+  .km-empty-user-info-wrapper a{
+      display: block;
+      margin-top: 10px;
+      color:#5553b7;
+      font-weight: 400;
+  }
+  .km-empty-user-info-wrapper >svg{
+    width: 169px;
+    height: 120px;
+    display: block;
+    margin: 20px auto;
+  }

@@ -12,6 +12,7 @@ import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
+import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink'
 
 const links={
     applozic:{
@@ -29,15 +30,7 @@ const InputFields = (props) => {
         <label className="label-for-input email-label">{props.label}</label>
     </div> );
 }
-const MoreInfoLink = (props) => {
-    return ( <p>{props.descriptionLabel}  
-        <a href={props.url} target="_blank"> {props.Linklabel} 
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
-            </svg>
-        </a> 
-    </p> );
-}
+
 
 export default class WebhooksAndSecurity extends Component {
 

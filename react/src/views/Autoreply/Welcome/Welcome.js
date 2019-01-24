@@ -328,6 +328,7 @@ class Welcome extends Component{
           welcomeMessages={this.state.welcomeMessages}
           hasFirstMessage = {false}
           hasSecondMessage = {false}
+          hideChatIcon={true}
             />          
           </div>
         </div>
