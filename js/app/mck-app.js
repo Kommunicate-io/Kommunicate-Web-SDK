@@ -356,7 +356,7 @@ function ApplozicSidebox() {
     function seekReplaceDestroyCookies (mapCookies){
         mapCookies && mapCookies.forEach(function(arrayItem){
             if (KommunicateUtils.getCookie(arrayItem.oldName)) {
-                var value = KommunicateUtils.getCookie(arrayItem.newName);
+                var value = KommunicateUtils.getCookie(arrayItem.oldName);
                 KommunicateUtils.setCookie(arrayItem.newName, value, 1);
                 KommunicateUtils.deleteCookie(arrayItem.oldName);
             }
