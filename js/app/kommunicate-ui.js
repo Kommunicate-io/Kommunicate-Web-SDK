@@ -2,6 +2,7 @@
  * Add all Kommunicate UI Manipulation in this file.
  * 
  */
+var kommunicateCommonFunction = new KommunicateCommonFunction();
 KommunicateUI={
     awayMessageInfo : {},
     awayMessageScroll : true,
@@ -387,29 +388,21 @@ sendFaqQueryAsMsg: function(groupId){
 activateTypingField: function(){
         $applozic('#mck-text-box').focus();
 },
-showClosedConversationBanner  : function(){
-var messageText = MCK_LABELS["closed.conversation.message"];
-var messageFooterDiv= document.getElementById("mck-sidebox-ft");
-var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
-conversationStatusDiv.innerHTML= messageText;
-messageFooterDiv.classList.add("mck-closed-conv-banner");
-conversationStatusDiv.classList.add("vis");
-conversationStatusDiv.classList.remove("n-vis");
-
-},
-hideClosedConversationBanner : function(){
-    var messageFooterDiv = document.getElementById("mck-sidebox-ft");
-    var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
-    if(messageFooterDiv.classList.contains("mck-closed-conv-banner") ||conversationStatusDiv.classList.contains('vis') ){
-    
-    messageFooterDiv.classList.remove("mck-closed-conv-banner")
-    conversationStatusDiv.classList.remove("vis");
-    conversationStatusDiv.classList.add("n-vis");
-    }
-},
 setAvailabilityStatus : function (status){
     $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").addClass("mck-status--" + status);
     $applozic("#mck-agent-status-text").text(MCK_LABELS[status]).addClass("vis").removeClass("n-vis");
+},
+showClosedConversationBanner  : function(isConversationClosed){
+    var messageText = MCK_LABELS["closed.conversation.message"];
+    var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
+    if (isConversationClosed){
+        conversationStatusDiv && (conversationStatusDiv.innerHTML= messageText);
+        kommunicateCommonFunction.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
+        kommunicateCommonFunction.modifyClassList( {id : ["mck-conversation-status-box"]}, "vis", "n-vis");
+    }
+    else {
+        kommunicateCommonFunction.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
+        kommunicateCommonFunction.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
+    } 
 }
-  
 }

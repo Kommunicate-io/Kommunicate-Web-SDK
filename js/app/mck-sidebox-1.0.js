@@ -448,7 +448,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }, function (data) {
                     console.log("conversation created successfully");
                     KommunicateUI.activateTypingField();
-                    Kommunicate.conversation.processConversationOpenedFromList(data);
                 });
             ($applozic("#mck-msg-preview-visual-indicator").hasClass('vis')) ? $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis'):'';
         };
@@ -2351,7 +2350,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         } else {
                             // callback method 'Kommunicate.conversation.processConversationOpnedFromList' will be called when conversation clicked from the cpnversation list. 
                             // use this method to perform all post conversation opned operations i.e. populate welcome and away message, show lead collection template etc. 
-                            mckMessageService.openChat(elem, Kommunicate.conversation.processConversationOpenedFromList);
+                            mckMessageService.openChat(elem);
                         }
                         return;
                     }
@@ -2425,7 +2424,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     var isGroup = $mck_msg_inner.data("isgroup");
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
-                    KommunicateUI.hideClosedConversationBanner();
+                    KommunicateUI.showClosedConversationBanner(false);
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
@@ -2438,7 +2437,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
-                    KommunicateUI.hideClosedConversationBanner();
+                    KommunicateUI.showClosedConversationBanner(false);
                     $mck_sidebox.mckModal('hide');
                     $applozic('#mck-sidebox-launcher').removeClass('n-vis').addClass('vis');
                     if(document.getElementById('launcher-agent-img-container').classList.contains('vis')) {
@@ -3379,6 +3378,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         var isMessages = true;
                         //Display/hide lead(email) collection template
                         if (params.isGroup) {
+                            Kommunicate.conversation.processConversationOpenedFromList(data);
                             var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                             var conversationAssigneeDetails = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;

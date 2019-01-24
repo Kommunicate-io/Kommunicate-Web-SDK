@@ -12,7 +12,7 @@
         }
     },
     'onMessageSent': function(message){
-        KommunicateUI.hideClosedConversationBanner();
+        KommunicateUI.showClosedConversationBanner(false);
     }
 
 } 
