@@ -147,7 +147,7 @@ KommunicateUtils = {
     isHttpsEnabledConnection : function(){
          return window.location.protocal == "https:";
     },
-    deleteCookie(name) {
+    deleteCookie : function(name) {
         document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
     getRandomId: function () {
