@@ -711,7 +711,7 @@ body {
 	padding: 10px 14px 12px;
 	width: 100%;
 	border: none;
-	max-height: 100vh;
+	/* max-height: 100vh; */
 	white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;

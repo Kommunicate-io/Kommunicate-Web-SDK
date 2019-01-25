@@ -37,13 +37,18 @@ kommunicateDashboard ={
             var iframeID = "km-iframe-"+ message.groupId;
             var iframe = document.getElementById(iframeID);
             var doc = iframe.contentDocument || iframe.contentWindow.document;
+            var css = '' + '<style type="text/css">' +
+                        '*::-webkit-scrollbar { -webkit-appearance: none; } *::-webkit-scrollbar:vertical { width: 7px; } *::-webkit-scrollbar:horizontal { height: 9px; } *::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); border-radius: 4px; } *::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.08); } *::-webkit-scrollbar-corner {  background: rgba(0,0,0,0); }' +
+                        '</style>';
             doc.open();
             doc.write(message.message);
+            doc.write(css);
             doc.close();
             var anchors = doc.getElementsByTagName('a');
             for (var i=0; i<anchors.length; i++){
               anchors[i].setAttribute('target', '_blank');
             };
+            iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
         }
     },
     processPaymentRequest:function(options){
