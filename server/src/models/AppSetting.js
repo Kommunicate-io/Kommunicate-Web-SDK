@@ -61,6 +61,11 @@ let AppSetting= function(sequelize, DataTypes) {
         defaultValue: 0,
         allowNull:false,
         field:'conversation_close_time',
+      },
+      popupTemplateKey:{
+        type: DataTypes.TINYINT,
+        defaultValue: null,
+        field:'popup_template_key',
       }
     },
     

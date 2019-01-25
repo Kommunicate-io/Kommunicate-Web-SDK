@@ -10,6 +10,7 @@ const dashboardUrl = config.getProperties().urls.dashboardHostUrl;
 const kmWebsiteLogoIconUrl = config.getCommonProperties().companyDetail.companyLogo;
 const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-icon.png";
 const subscription = require('../../utils/utils').SUBSCRIPTION_PLAN;
+const moment = require('moment-timezone');
 const userPreferenceService = require('../../users/userPreferenceService');
 var fs = require('fs');
 var util = require('util');
@@ -88,17 +89,17 @@ const processOneApp = (app) => {
                 let fromDate = new Date();
                 let toDate = new Date(fromDate);
                 toDate.setDate(toDate.getDate() - 7);
+                fromDate = moment.tz(fromDate, timeZone);
+                toDate = moment.tz(toDate, timeZone);
 
-                fromDate = new Date(fromDate.toLocaleString("en-US", {timeZone:timeZone}));
-                toDate = new Date(toDate.toLocaleString("en-US", {timeZone:timeZone}));
-                
                 let dates = {
                     from: fromDate,
-                    to: toDate
+                    to: toDate,
+                    timeZone: timeZone
                 };
                 
                 let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key",
-                                "startTimestamp": fromDate.getTime(), "endTimestamp": toDate.getTime()}
+                                "startTimestamp": fromDate.format('x'), "endTimestamp": toDate.format('x')}
                 return applozicClient.getConversationStats(params, headers).then(stats => {
                     if (!stats) {
                         return "no stats for this app"
@@ -120,11 +121,11 @@ const processOneApp = (app) => {
  * 
  * @param {Object} stats 
  * @param {Array} users 
- * @param {from: date, to: date} dates
+ * @param {from: date, to: date, timeZone: string} dates
  */
 const generateReport = (stats, users, dates) => {
     let individualReportArray = [];
-    let overAllReport = { "newConversationCount": 0, "closedCount": 0, "avgResolutionTime": 0, "avgResponseTime": 0, "startTime": dates.from, "endTime": dates.to }
+    let overAllReport = { "newConversationCount": 0, "closedCount": 0, "avgResolutionTime": 0, "avgResponseTime": 0, "startTime": dates.from, "endTime": dates.to , "timeZone": dates.timeZone}
     return new Promise((resolve, reject) => {
         users.map((user) => {
             let report = {};
@@ -195,6 +196,7 @@ const sendWeeklyReport = (report, customer, appId) => {
             "ORGANIZATION": organization,
             "STARTDATE": dateformat(report.overAllReport.startTime, "longDate"),
             "ENDDATE": dateformat(report.overAllReport.endTime, "longDate"),
+            "TIMEZONE":report.overAllReport.timeZone,
             "kmWebsiteLogoIconUrl": kmWebsiteLogoIconUrl,
             "dashboardUrl": dashboardUrl,
             "weeklyReportIcon": weeklyReportIcon,
@@ -203,7 +205,7 @@ const sendWeeklyReport = (report, customer, appId) => {
             "UNSUBSCRIBEURL": dashboardUrl + "/unsubscribe?appId=" + appId + "&email=" + encodeURIComponent(customer.email)
         }
         Object.assign(templateReplacement, resolutionTime, { "RESPONSE_HOUR": responseTime.HOURS, "RESPONSE_MINUTE": responseTime.MINUTES, "RESPONSE_SECOND": responseTime.SECONDS });
-
+        
         console.report(`sending weekly report mail to: ${customer.email} for app ${appId}`);
         let mailOptions = {
             to: customer.email,

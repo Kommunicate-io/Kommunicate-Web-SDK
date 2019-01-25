@@ -180,6 +180,11 @@ ADD INDEX `application_id_idx` (`application_id`);
 
 ALTER TABLE app_settings ADD COLUMN domain_url VARCHAR(255) DEFAULT Null;
 
+
+
+--------------------------- Release-3.5 ------------------------
+
+
 CREATE TABLE user_preferences (
     user_id INTEGER NOT NULL,
     preference_id INTEGER NOT NULL,
@@ -196,5 +201,17 @@ CREATE TABLE preference (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at DATETIME,
+    PRIMARY KEY(id)
+);
+
+
+ALTER TABLE app_settings ADD COLUMN popup_template_key TINYINT DEFAULT NULL;
+
+CREATE TABLE chat_popup_messages (
+    id INTEGER NOT NULL AUTO_INCREMENT,
+    app_setting_id INTEGER NOT NULL,
+    message TEXT NOT NULL,
+    url TEXT NOT NULL,
+    delay INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY(id)
 );

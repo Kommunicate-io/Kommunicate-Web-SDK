@@ -32,7 +32,8 @@ const modules = [
   require('./AppSubscription'),
   require('./teammateInvite'),
   require('./UserPreferences'),
-  require('./Preference')
+  require('./Preference'),
+  require("./ChatPopupMessage")
 ];
 
 modules.forEach(function (module) {
