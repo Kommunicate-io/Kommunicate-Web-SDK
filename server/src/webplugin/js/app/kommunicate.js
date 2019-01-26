@@ -286,6 +286,8 @@ $applozic.extend(true,Kommunicate,{
     getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
         var metadata = message.metadata;
+        var sliderClass = "km-slick-container ";
+        ((metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL && metadata.payload && metadata.payload.length > 1) && (sliderClass += "km-slider-multiple-cards-container"));
         if (metadata.templateId) {
             switch (metadata.templateId) {
                 // add template Id to enable slick effect
@@ -293,7 +295,7 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
-                    return "km-slick-container";
+                    return sliderClass;
                     break;
                 case "6":
                     return "km-border-less-container";

@@ -534,6 +534,9 @@
     .km-slick-container .tns-controls button:last-child{
         right :0;
     }
+    .km-slider-multiple-cards-container .tns-controls button:first-child {
+        left: 0;
+    }
     
     /* Room Details after Blocking Room */
     .km-card-room-detail-container {
@@ -1141,4 +1144,7 @@
 }
 .km-carousel-card-footer .km-cta-multi-button-container button.km-quick-replies {
     border-bottom: none;
+}
+.km-slider-multiple-cards-container {
+    margin-left: -65px;
 }
