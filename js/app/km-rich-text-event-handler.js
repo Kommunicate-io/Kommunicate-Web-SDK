@@ -148,6 +148,7 @@ Kommunicate.richMsgEventHandler = {
         if ($cardMessageContainer.length > 0) {
             var slider = tns({
                 container: $cardMessageContainer[0],
+                "edgePadding": 60,
                 items: 1,
                 slideBy: 'page',
                 loop: false,
