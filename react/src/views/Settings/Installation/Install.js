@@ -114,7 +114,7 @@ class Install extends Component {
                   }
                 </div>
                 {
-                  (currentPath.includes('setUpPage')) ? " " : <div className="app-id-container col-md-12">
+                  (currentPath.includes('setUpPage')) ? " " : <div className="app-id-container">
                     <div className="app-id-div">
                       <span className="app-id-sub-text">
                         Your App ID:

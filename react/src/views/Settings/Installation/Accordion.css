@@ -176,7 +176,7 @@
   justify-content: center;
 }
 .app-id-container {
-  margin: 20px 0px 20px -15px;
+  margin: 20px 0;
 }
 .app-id-container.col-md-10 {
   padding: 0;
@@ -185,7 +185,7 @@
   border-radius: 2px;
   background-color: #cce7f8;
   padding: 16px 22px 0;
-  width: 974px;
+  width: 100%;
 }
 .app-id-div:last-child{
   padding-bottom: 16px;
@@ -262,5 +262,5 @@
   pointer-events: all;
 }
 .install-section-wrapper{
-  width: 998px;
+  width: 100%;
 }
