@@ -1,16 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
-import validator from 'validator';
 import  {getConfig} from '../../.../../../config/config.js';
-import CommonUtils from '../../../utils/CommonUtils';
+import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import Notification from '../../model/Notification';
 import './ApplicationList.css';
 import {USER_STATUS} from '../../../utils/Constant';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
-import ApplozicClient from '../../../utils/applozicClient'
-import { KommunicateLogo } from '../../Faq/LizSVG';
-import { ApplozicLogo } from '../../../assets/svg/svgs';
 import styled from 'styled-components';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 
@@ -194,12 +190,14 @@ class ApplicationList extends Component {
           });
         });
 
+        const Logo = PRODUCTS[CommonUtils.getProduct()].logo;
+
         return(
             <div className="app flex-row align-items-center app-list-div">
 				<div className="container">
                   	<div className="logo-container text-center">
                       	<a href="#/">
-					  		{ CommonUtils.isKommunicateDashboard() ? <KommunicateLogo /> : <ApplozicLogo/> }
+					  		<Logo/>
 						</a>
 					</div>
                     <div className="row justify-content-center app-list-form-div">

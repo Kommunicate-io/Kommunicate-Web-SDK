@@ -87,7 +87,7 @@ class Dashboard extends Component {
 					<CustomizableReports />
 				</KMDashboard>
 			);
-		} else if (pricingPackage >= 100 && pricingPackage < 200) {
+		} else if (CommonUtils.isKommunicateDashboard()) {
 			return (
 				<Fragment>
 					<KmDashboard />

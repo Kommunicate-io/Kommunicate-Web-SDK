@@ -44,10 +44,10 @@ class Install extends Component {
   }
 
   componentDidMount() {
-    if (!CommonUtils.isKommunicateDashboard()) {
+    if (CommonUtils.isProductApplozic()) {
       this.setState({
         script: getApplozicScript(),
-        yourApplicationId: this.props.application.applicationId,
+        yourApplicationId: getJsCode()[1],
         docsLink: getDocsLink('applozic'),
         showApplozicDashboard: true,
         brand: 'Applozic'
@@ -94,8 +94,7 @@ class Install extends Component {
   };
   getApiKey() {
     let apiKey = CommonUtils.getUserSession().apiKey;
-    return apiKey ? apiKey : "Please contact " + this.state.brand + " support to get API key";
-
+    return apiKey ? apiKey : "Please contact " + CommonUtils.getProductName() + " support to get API key";
   }
 
   render() {
@@ -109,7 +108,7 @@ class Install extends Component {
                 <SettingsHeader applozicDashboard={this.state.showApplozicDashboard} />
                 <div className="intgration-card-header">
                   {
-                    ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) ? " " : this.state.showApplozicDashboard ? null : <h3 style={{color:"#616366"}}>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
+                    ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) ? " " : <h3 style={{color:"#616366"}}>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="INSTALLATION_INSTRUCTIONS" />
                     </span> </h3>
                   }
                 </div>

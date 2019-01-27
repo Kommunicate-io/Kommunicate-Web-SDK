@@ -10,6 +10,9 @@ import { ALAnalyticsDashboardLoader } from '../../../components/EmptyStateLoader
 import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentIcon } from '../../../assets/svg/svgs';
 import tinycolor from 'tinycolor2';
 import { getConfig } from '../../../config/config';
+import Onboarding from '../../../components/UserOnboarding/Onboarding';
+import OnBoardingModal from '../../../views/Pages/SetUpPage/OnBoardingModal';
+import { connect } from 'react-redux'
 
 
 const Container = styled.div`
@@ -380,6 +383,12 @@ class AlDashboard extends Component {
                 { this.state.emptyState && <ALAnalyticsDashboardLoader /> }
                 <Container className="animated fadeIn" hidden={this.state.emptyState}>
 
+                <Onboarding />
+                { this.props.kmOnBoarding && !this.props.closeOnBoardingModalPermanently &&
+                    <OnBoardingModal />
+                }   
+
+
                     <H3>Analytics overview for {this.state.currentMonth}</H3>
 
                     <AnalyticsCardsContainer>
@@ -469,4 +478,9 @@ class AlDashboard extends Component {
     }
 }
 
-export default withTheme(AlDashboard);
+const mapStateToProps = state => ({
+    kmOnBoarding:state.signUp.kmOnBoarding,
+    closeOnBoardingModalPermanently:state.signUp.closeOnBoardingModalPermanently
+  });
+
+export default connect(mapStateToProps,null)(withTheme(AlDashboard));

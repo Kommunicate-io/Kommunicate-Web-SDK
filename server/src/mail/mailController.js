@@ -78,18 +78,18 @@ const getEmailFormat = (options, custInfo) => {
         let productName = options.product == "applozic" ? "Applozic":"Kommunicate";
         if (!html) {
             switch (options.templateName) {
-                case "SEND_KOMMUNICATE_SCRIPT":
-                    let installationInstruction = config.getProperties().urls.dashboardHostUrl + "/installation?applicationId=" + options.applicationId + "&agentId=" + options.agentId + "&agentName=" + options.agentName;
-                    templatePath = path.join(__dirname, "/emailInstructionTemplate.html");
+                case "INSTALLATION_INSTRUCTIONS":
+                    let installationInstruction = (options.product == "applozic" ? config.getProperties().urls.applozicDashboardHostUrl : config.getProperties().urls.dashboardHostUrl) + "/installation?product=" + options.product + "&applicationId=" + options.applicationId + "&agentId=" + options.agentId + "&agentName=" + options.agentName;
+                    templatePath = path.join(__dirname, "/" + options.product + "-emailInstructionTemplate.html");
                     templateReplacement[":kommunicateLogoUrl"] = kommunicateLogoUrl;
                     templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl;
                     templateReplacement[":adminName"] = options.from;
                     templateReplacement[":kommunicateScript"] = options.kommunicateScript;
                     templateReplacement[":installationInstructions"] = installationInstruction;
                     options.templatePath = templatePath;
-                    options.cc = ["support@kommunicate.io"],
-                        options.templateReplacement = templateReplacement;
-                    options.subject = "Let's start with Kommunicate!";
+                    options.cc = [options.product == "applozic" ? "support@applozic.com": "support@kommunicate.io"];
+                    options.templateReplacement = templateReplacement;
+                    options.subject = "Let's start with " + productName + "!";
                     break;
 
                 case "INVITE_TEAM_MAIL":

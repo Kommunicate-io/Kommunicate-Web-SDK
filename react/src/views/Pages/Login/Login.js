@@ -5,7 +5,7 @@ import {getConfig} from '../../.../../../config/config.js';
 import { MenuItem, DropdownButton} from 'react-bootstrap';
 import { resetPassword, getUserInfo } from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
-import CommonUtils from '../../../utils/CommonUtils';
+import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import './login.css';
 import ApplozicClient   from '../../../utils/applozicClient';
@@ -19,8 +19,8 @@ import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
 import * as signUpActions from '../../../actions/signupAction'
 import { persistor} from '../../../store/store';
-import {KommunicateLogo, GoogleLogin}from '../../Faq/LizSVG'
-import { ApplozicLogo, ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
+import {GoogleLogin}from '../../Faq/LizSVG'
+import {ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
 import styled from 'styled-components';
 import Button from '../../../components/Buttons/Button';
 
@@ -36,7 +36,10 @@ class Login extends Component {
 
 	constructor(props) {
 		super(props);
+		const product = CommonUtils.getUrlParameter(window.location.href, 'product') || CommonUtils.getProduct();
+		
 		this.initialState = {
+			product: product,
 			userName:'',
 			email:'',
 			password:'',
@@ -46,7 +49,7 @@ class Login extends Component {
 			hideUserNameInputbox:false,
 			hidePasswordInputbox:false,
 			hideAppListDropdown:true,
-			loginFormText:"Login to Kommunicate",
+			loginFormText:"Login to " + PRODUCTS[product].title,
 			loginFormSubText:'Sign In to your account',
 			loginButtonText:'Login',
 			loginButtonAction:'Login',
@@ -394,7 +397,7 @@ class Login extends Component {
 	}
 
 	register = (event) => {
-		this.props.history.push("/signup");
+		this.props.history.push("/signup?product=" + this.state.product);
 	}
 
 	initiateForgotPassword = (event) => {
@@ -473,12 +476,13 @@ class Login extends Component {
 
 
   	render() {
+		const Logo = PRODUCTS[CommonUtils.getProduct()].logo;
 		return (
 			<div>
 				<div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
 					<div className="container">
 						<div className="logo-container text-center">
-							<a href="#" onClick={this.websiteUrl}>  {this.isKommunicateBrand ? <KommunicateLogo/> : <ApplozicLogo style={{ width: "auto", height: "55px"}} /> } </a>
+							<a href="#" onClick={this.websiteUrl}><Logo style={{ width: "auto", height: "55px"}} /></a>
 						</div>
 						<div className="row justify-content-center login-form-div">
 							<div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
@@ -548,7 +552,7 @@ class Login extends Component {
 													<div className="row">
 														<div className="col-12 text-center">
 															<Button primary large fontSize={"16px"} style={{marginTop:"26px"}} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
-															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Link to={'/signup'}>Sign up</Link></p>
+															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Link to={'/signup?product=' + this.state.product}>Sign up</Link></p>
 														</div> 
 													</div>
 				

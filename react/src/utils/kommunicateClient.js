@@ -196,7 +196,7 @@ const callSendEmailAPI = (options) => {
   let roleType = options.roleType;
   let data = {};
 
-  if (options.templateName == "SEND_KOMMUNICATE_SCRIPT") {
+  if (options.templateName == "INSTALLATION_INSTRUCTIONS") {
     AnalyticsTracking.acEventTrigger("integration.instructions.mail.sent");
   } else {
     AnalyticsTracking.acEventTrigger("mail." + options.templateName);

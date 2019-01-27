@@ -235,40 +235,35 @@ const CommonUtils = {
         navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
     getProduct: function() {
-        if (this.isKommunicateDashboard()) {
-            return "kommunicate";
-        }
-        if (this.isProductApplozic()) {
-            return "applozic";
-        }
-
-        if (getConfig().brand) {
+        let userSession = this.getUserSession();
+        if (CommonUtils.getUrlParameter(window.location.href, 'product')) {
+            return CommonUtils.getUrlParameter(window.location.href, 'product');
+        } else if(userSession) {
+            if (userSession.application.pricingPackage <= 100) {
+                return "applozic";
+            } else if (userSession.application.pricingPackage <= 200) {
+                return "kommunicate";
+            } else {
+                return "kommunicate";
+            }
+        } else if (getConfig().brand) {
             return getConfig().brand;
         }
+
         return "kommunicate";
     },
     getProductName: function() {
-        return this.getProduct() == "applozic" ? "Applozic":"Kommunicate"
+        return this.getProduct() == "applozic" ? "Applozic":"Kommunicate";
     },
     isProductApplozic: function() {
-        let userSession = this.getUserSession();
-        if(userSession) {
-            return userSession.application.pricingPackage <= 100;
-        } else {
-            return getConfig().brand === "applozic";
-        }
+        return this.getProduct() == "applozic";
     },
     isKommunicateDashboard: function() {
-        let userSession = this.getUserSession();
-        if(userSession) {
-            return userSession.application.pricingPackage >= 100 && userSession.application.pricingPackage < 200;
-        } else {
-            return getConfig().brand === "kommunicate";
-        }
+        return this.getProduct() == "kommunicate";
     },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
-        return userSession.roleName === 'APPLICATION_ADMIN'
+        return userSession.roleName === 'APPLICATION_ADMIN';
     },
     // below function when called will set cursor to end of the input string
     setCursorAtTheEndOfInputString: function (el)  {

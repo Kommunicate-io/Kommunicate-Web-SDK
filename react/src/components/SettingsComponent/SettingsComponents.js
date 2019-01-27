@@ -12,8 +12,8 @@ const SettingsHeader = (props) =>{
     let currPath = routes[window.location.pathname], subHeading, knowledgeBaseLink;   
     currPath ? subHeading = subHeadings[currPath].subHeading :  "";
     currPath ? knowledgeBaseLink = subHeadings[currPath].knowledgeBaseLink :  "";
-    if(props.applozicDashboard || CommonUtils.isProductApplozic()){
-        subHeading=subHeading.replace('Kommunicate', 'Applozic');
+    if(subHeading && (props.applozicDashboard || CommonUtils.isProductApplozic())){
+        subHeading = subHeading.replace('Kommunicate', 'Applozic');
     }
      
    return(

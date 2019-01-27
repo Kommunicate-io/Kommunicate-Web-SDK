@@ -64,7 +64,7 @@ class Step3 extends Component {
           {/* <div className={this.props.hideSkipForNow? "n-vis" : "step-number-div" }>
             3/3
           </div> */}
-          <h1 className="setup-heading">{this.props.pageTitle}Add Kommunicate to your product</h1>
+          <h1 className="setup-heading">{this.props.pageTitle} Add {CommonUtils.getProductName()} to your product</h1>
           <h4 className={this.props.hideSkipForNow? "n-vis" : "setup-sub-heading"}>I will do it <a href="javascript:void(0);" onClick={this.jumpToDashboard}>later</a> </h4>
           {/* <h2 className="setup-integration-later-text">Installation instructions can also be found inside <span>Settings > CONFIGURATION > Install</span> later</h2> */}
         </div>
@@ -74,7 +74,7 @@ class Step3 extends Component {
             <div className="form-group text-center">
               <button className={this.props.hideSkipForNow? "n-vis" : "km-button km-button--primary step-1-submit-btn"} onClick={this.jumpToDashboard} hidden={this.state.hideNextBtn}>Go to dashboard</button>
               <div className="button-link-container text-center">
-                <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
+                <MultiEmail template="INSTALLATION_INSTRUCTIONS" />
               </div>
             </div>
           </div>
