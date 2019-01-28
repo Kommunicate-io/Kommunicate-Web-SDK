@@ -56,13 +56,14 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 		"templateId": "3",
 		"payload": [{
 				"type": "link",
-				"url": "www.google.com",
+				"url": "https://www.google.com",
 				"name": "Go To Google"
 			},
 			{
 				"type": "link",
-				"url": "www.facebook.com",
-				"name": "Go To Facebook"
+				"url": "https://www.facebook.com",
+				"name": "Go To Facebook",
+				"openLinkInNewTab": false //optional, use this to open the link in the same window
 			}
 		]
 	}
@@ -216,6 +217,102 @@ Here is the sample JSON for the list :
 }
 ```
 
+## Generic Card
+The card template is a list of structured items with title, subtitle, image, and buttons.
+![Generic Card Template](/img/generic-card.jpg)
+* **Components of card template** <br>
+ A card template may contain below items:
+    * Header
+		1. Image (optional)
+		2. Overlay text (optional)
+    * Card information section
+       1. Title
+	   2. Title extension (optional) 
+       3. Sub title
+	   4. Description
+    * Card footer may contain list of buttons, it can be:
+       1. Link button
+	   2. Submit button
+	   3. Quick reply
+
+* **Actions on the button** <br>
+ 	 * Link  - It will navigate user to the another page in new tab.
+	 * Submit button - Submit button allows you to post given data or redirect the user to a given URL. 
+     * Quick Reply - it will send a message with given text if passed. Default value will be title of list item or name of  button. Action is specified by the action object passed along with each item and buttons. <br>
+	 Here is the action for buttons.
+```javascript
+// for quick reply action object will be like this:  
+"action": {
+    "type": "quickReply",
+    "payload": {
+        "title": "Yes",
+        "message": "text will be sent as message",
+        }
+    }
+// for navigation link action object will look like this
+"action": {
+    "type": "link",
+    "payload": {
+        "url": "https://www.facebook.com"
+        }
+	}
+// for submit action object will be like this:			 
+"action": {
+    "type": "submit",
+    "payload": {
+        "text": "button text",
+        "formData": {
+            "amount": "1000",
+            "discription": "movie ticket"
+            },
+            "formAction": "https://example.com/book",
+            "requestType": "json"
+            }
+        }		  
+```
+Here is the sample JSON for the single card :
+
+```json
+{
+  "message": "This is the sample json for card template",
+  "platform": "kommunicate",
+  "metadata": {
+    "contentType": "300",
+    "templateId": "10",
+    "payload": [
+      {
+        "title": "Card Title",
+        "subtitle": "Card Subtitle ",
+        "header": {
+          "overlayText": "Overlay Text",
+          "imgSrc": "Header image for the card"
+        },
+        "description": "Description",
+        "titleExt": "title Extension",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+You can add any number of buttons in your card footer
+## Card Carousel
+
+The chat widget supports the sending of a horizontally scroll-able carousel of generic templates.
+
+![Card CarouselTemplate](/img/card-carousel.png)
+
+Payload is an array of objects, each object can be different cards. So you can pass multiple objects inside payload.
 
 
 ## Use autosuggestions in your chat box
