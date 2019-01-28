@@ -311,12 +311,12 @@ const createConversationFromMail = (req) => {
             let toUser = JSON.parse(tos);
             let userAdded = false;
             for (var user in users) {
-                if (toUser.address == user.userName) {
+                if (toUser == user.userName) {
                     groupInfo.users.push({ "userId": user.userName, "role": 1 })
                     userAdded = true;
                 }
             }
-            if (!userAdded) { groupInfo.users.push({ "userId": toUser.address, "role": 3 }) }
+            if (!userAdded) { groupInfo.users.push({ "userId": toUser, "role": 3 }) }
         });
         let adminUser = users.find(user => user.type == 3);
         return applozicClient.getUserDetails([fromEmail], adminUser.applicationId, adminUser.apzToken).then(userDetail => {
