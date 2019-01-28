@@ -426,6 +426,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var isUserDeleted = false;
         var mckVideoCallringTone = null;
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
+        var KM_PRELEAD_COLLECTION =appOptions.preLeadCollection ?appOptions.preLeadCollection:[];
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -439,7 +440,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         _this.mckLaunchSideboxChat = function() {
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
             KommunicateUI.showChat();
-            var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
                 mckMessageService.loadConversationWithAgents({
                     groupName: DEFAULT_GROUP_NAME,
@@ -1398,15 +1398,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 USER_DEVICE_KEY = '';
                 var isValidated = _this.validateAppSession(userPxy);
                 if (!isValidated) {
-                    var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
-                    if (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !==0 ) {
+                    if (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !==0 || KM_PRELEAD_COLLECTION.length !==0) {
                         $applozic("#km-userId").val(MCK_USER_ID);
-                        if (KM_ASK_USER_DETAILS.length > 0) {
-                            for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
-                                $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
-                                $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).prop('required',true);
-                            }
-                        }
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         
@@ -1416,7 +1409,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         }
 
                         $applozic('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
-                        _this.setLeadCollectionLabels();
+                        _this.addLeadCollectionInputDiv();
+                        _this.setLeadCollectionLabels();     
                         kmChatLoginModal.style.visibility='visible';
                         kmChatLoginModal.style.display='none';
                         kmAnonymousChatLauncher.classList.remove('n-vis');
@@ -1627,7 +1621,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     apzCallback: mckGroupLayout.loadGroups
                 });
                 
-                if(KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0){
+                if((KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0) || (KM_PRELEAD_COLLECTION && KM_PRELEAD_COLLECTION.length !==0)){
                   $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
@@ -1711,12 +1705,37 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
             };
+            _this.addLeadCollectionInputDiv = function() {
+                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
+                 var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
+                 if(KM_ASK_USER_DETAILS && KM_PRELEAD_COLLECTION.length === 0){
+                     for(var i=0; i<KM_ASK_USER_DETAILS.length; i++){
+                     var obj={};
+                     obj['field'] =KM_ASK_USER_DETAILS[i];
+                     obj['type'] =KM_USER_DETAIL_TYPE_MAP[KM_ASK_USER_DETAILS[i]] || "text";
+                     obj['placeholder'] =LEAD_COLLECTION_LABEL[KM_ASK_USER_DETAILS[i]]||"";
+                     obj['required'] =true;
+                     KM_PRELEAD_COLLECTION.push(obj);
+                     }
+                 }
+                for(var i=0; i<KM_PRELEAD_COLLECTION.length; i++){
+                     //Create dynamic input field  
+                     var kmChatInputDiv = document.createElement("div");
+                     kmChatInputDiv.setAttribute("class", "km-form-group km-form-group-container");
+                     var kmChatInput = document.createElement("input");
+                     kmChatInput.setAttribute("id", "km-"+KM_PRELEAD_COLLECTION[i].field);
+                     kmChatInput.setAttribute("type",KM_PRELEAD_COLLECTION[i].type||"text");
+                     kmChatInput.setAttribute("name", "km-"+KM_PRELEAD_COLLECTION[i].field);
+                     KM_PRELEAD_COLLECTION[i].required && kmChatInput.setAttribute("required", KM_PRELEAD_COLLECTION[i].required);
+                     kmChatInput.setAttribute("placeholder", KM_PRELEAD_COLLECTION[i].placeholder)||false;
+                     kmChatInput.setAttribute("class", "km-form-control km-input-width vis");
+                     $('.km-last-child').prepend(kmChatInputDiv);
+                     $(kmChatInputDiv).append(kmChatInput);
+                }
+            }
 
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
-                document.getElementById('km-email').setAttribute('placeholder', LEAD_COLLECTION_LABEL.email); 
-                document.getElementById('km-userName').setAttribute('placeholder', LEAD_COLLECTION_LABEL.name); 
-                document.getElementById('km-contact').setAttribute('placeholder', LEAD_COLLECTION_LABEL.contactNumber); 
                 document.getElementById('km-submit-chat-login').innerHTML= LEAD_COLLECTION_LABEL.submit;
                 document.getElementById('km-lead-collection-heading').innerHTML= LEAD_COLLECTION_LABEL.heading;           
             };
@@ -2028,6 +2047,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 return askUserDetails;
               }
             };
+            _this.getUserMetadata = function () {
+                var KM_USER_DETAIL = ['name', 'email', 'phone'];
+                var metadata = {};
+                KM_PRELEAD_COLLECTION.find(function (element) {
+                    if (!KM_USER_DETAIL.includes(element.field)) {
+                        metadata[element.field] = $applozic("#km-" + element.field).val();
+                    }
+                });
+                return metadata;
+            }
             _this.createNewConversation = function (params, callback) {
                 Kommunicate.startConversation(params,callback);
             }
@@ -2363,8 +2392,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     var $error_chat_login = $applozic("#km-error-chat-login");
                     var userId = $applozic("#km-userId").val();
                     var email = $applozic("#km-email").val();
-                    var userName = $applozic("#km-userName").val();
-                    var contactNumber = $applozic("#km-contact").val();
+                    var userName = $applozic("#km-name").val();
+                    var contactNumber = $applozic("#km-phone").val();
 
                     if(contactNumber){
                         userId =contactNumber;
@@ -2372,6 +2401,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     if(email){
                         userId = email;
                     }
+                    var metadata = mckMessageService.getUserMetadata();
                     $error_chat_login.removeClass('show').addClass('hide');
                     $error_chat_login.html('');
                     var options = {
@@ -2380,6 +2410,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         onInit: loadChat,
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
+                        metadata:metadata,
                         googleApiKey: MCK_GOOGLE_API_KEY,
                         chatNotificationMailSent: true
                     }
