@@ -103,7 +103,7 @@ class Step2 extends Component {
       companyName: this.state.company_name,
       companySize: this.state.company_size,
       industry: (this.state.industry === "Other") ? this.state.industryOthers : this.state.industry,
-      subscription: 'startup' //change this to subscription plan id if the subscription plan comes to signup flow in future
+      subscription: CommonUtils.isProductApplozic() ? 'applozic' : 'startup' //change this to subscription plan id if the subscription plan comes to signup flow in future
     }
     console.log(customerInfo);
     patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
