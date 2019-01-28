@@ -82,8 +82,7 @@ updateDefaultAssigneeDetails = (userList) => {
 updateDefaultAssignee = (selectedAssignee) => {
     let appSettings = this.props.appSettings
     let prevAssignee = appSettings.defaultConversationAssignee
-    // let assignee = `${selectedAssignee.value}`;
-    let assignee = {label : `${selectedAssignee.label}`, value: `${selectedAssignee.value}`};
+    let assignee = selectedAssignee;
     let selectedRouting = this.state.checkedNotifyEverybody ? ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY : ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT;
     let data ={'defaultConversationAssignee':{} }
     if(selectedRouting) {
@@ -293,15 +292,15 @@ toggleConversationAssignment = () => {
                             <div className="km-agent-assignment-radio-container">
                                 <RadioButton idRadioButton={'notify-everybody-radio'} handleOnChange={this.handleRadioBtnNotifyEverybody}
                                 checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
-                                { this.state.checkedNotifyEverybody &&
-                                    <DefaultAssignee  userList = {this.state.userList} class = {"notify-everybody-dropdown"} name= {"notify-everybody-dropdown"} text = {"Initially assign all new conversations to:"} updateDefaultAssignee = {this.updateDefaultAssignee} selectedAssignee = {this.state.notifyEveryBodyDefaultAssigneeInfo} />
+                                { this.state.checkedNotifyEverybody && Object.keys(this.state.notifyEveryBodyDefaultAssigneeInfo).length !== 0 &&
+                                    <DefaultAssignee  userList = {this.state.userList} className = {"notify-everybody-dropdown"} name= {"notify-everybody-dropdown"} text = {"Initially assign all new conversations to:"} updateDefaultAssignee = {this.updateDefaultAssignee} selectedAssignee = {this.state.notifyEveryBodyDefaultAssigneeInfo} />
                                 }  
                             </div>      
                             <div className="km-agent-assignment-radio-container">
                                     <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
                                     checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={(CommonUtils.isTrialPlan())?false: (CommonUtils.isStartupPlan()) ? true : false}/>
-                                {   this.state.checkedAutomaticAssignemnt &&
-                                    <DefaultAssignee  userList = {this.state.userList} class = {"automatic-assignment-dropdown"} name= {"automatic-assignment-dropdown"}
+                                {   this.state.checkedAutomaticAssignemnt && Object.keys(this.state.automaticAssignmentDefaultAssigneeInfo).length !== 0 &&
+                                    <DefaultAssignee  userList = {this.state.userList} className = {"automatic-assignment-dropdown"} name= {"automatic-assignment-dropdown"}
                                     text = {"If nobody is in online, then assign all conversations to:"}updateDefaultAssignee = {this.updateDefaultAssignee} 
                                     selectedAssignee = {this.state.automaticAssignmentDefaultAssigneeInfo}/> 
                                 }

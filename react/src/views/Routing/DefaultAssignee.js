@@ -1,5 +1,7 @@
 import React from "react";
 import Select from 'react-select';
+import UserDropdown from '../../components/Dropdown/UserDrodown'
+import { USER_TYPE } from '../../utils/Constant'
 function DefaultAssignee  (props) {
     // const userList = props.userList;
     return (
@@ -8,15 +10,12 @@ function DefaultAssignee  (props) {
                 <span className="default-assignee-description">{props.text}</span>
             </div>    
             <div className="default-assignee-dropdown-wrapper">
-                <Select
-                    className= {props.class}
+                 <UserDropdown
+                    className= {props.className} 
                     name={props.name}
-                    value={props.selectedAssignee}
-                    clearable={false}
-                    searchable={false}
-                    onChange={props.updateDefaultAssignee}
-                    options={props.userList}
-                    controlShouldRenderValue={false}
+                    handleDropDownChange = {props.updateDefaultAssignee} 
+                    userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
+                    defaultValue={props.selectedAssignee}
                 />
             </div>    
         </div>
