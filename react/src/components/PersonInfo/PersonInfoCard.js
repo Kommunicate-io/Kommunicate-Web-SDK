@@ -39,6 +39,7 @@ class PersonInfoCard extends Component {
             var clearbitData = user.metadata && user.metadata.kmClearbitData ? JSON.parse(user.metadata.kmClearbitData) : null
             var KM_PSEUDO_USER = user.metadata && user.metadata.KM_PSEUDO_USER ? JSON.parse(user.metadata.KM_PSEUDO_USER) : null
             var imageLink = window.$kmApplozic.fn.applozic("getContactImage", user);
+            var showMetadataEmptyState = this.checkForUserInfoEmptyState();
             imageLink = imageLink.replace('km-alpha-contact-image', 'km-alpha-group-contact-image').replace('km-contact-icon', 'km-group-contact-icon');
             this.setState({
                 user: user,
@@ -48,7 +49,8 @@ class PersonInfoCard extends Component {
                 clearbitData: clearbitData,
                 userMetadata: metadata,
                 pseudoUser: KM_PSEUDO_USER && (KM_PSEUDO_USER.hidden != "true" || KM_PSEUDO_USER.pseudoName == "true" && user.roleType === 3),
-                imageLink: imageLink
+                imageLink: imageLink,
+                showMetadataEmptyState : showMetadataEmptyState
             })
         }
     }
@@ -58,6 +60,15 @@ class PersonInfoCard extends Component {
     }
     onCloseModal = () => {
         this.setState({ modalOpen: false });
+    }
+    checkForUserInfoEmptyState = () => {
+        if(this.state.user){
+            var userMeta = this.state.user.metadata;
+            userMeta.KM_PSEUDO_USER && delete userMeta.KM_PSEUDO_USER;
+            userMeta.kmClearbitData && delete userMeta.kmClearbitData;
+            return Object.keys(userMeta).length > 0 ;
+        }
+        return false;
     }
   
 
@@ -116,8 +127,9 @@ class PersonInfoCard extends Component {
                     {/* user metadata */}
                     <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
                     {
-                        ( Object.keys(this.state.userMetadata).length > 1 && this.state.userMetadata.KM_PSEUDO_USER) ?
-                        <UserMetadata userInfo={this.state.userMetadata} /> : <UserInfoEmptyState />}
+                         this.state.showMetadataEmptyState ? 
+                        <UserMetadata userInfo={this.state.userMetadata} /> : <UserInfoEmptyState />
+                    }
                     {/* user clearbit data */}
                     {this.state.clearbitData ?
                             <ClearBitInfo userDetail={this.state.clearbitData} />: null
