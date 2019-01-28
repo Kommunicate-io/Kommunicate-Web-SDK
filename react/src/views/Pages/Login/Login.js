@@ -488,7 +488,7 @@ class Login extends Component {
 							<div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
 								<Hr />
 									<div className="card-group mb-0">
-										<div className="card p-4 login-card-block">
+										<div className="p-4 login-card-block">
 											<div className="card-block">
 												<div className="card-block-login-frgtpass-container" hidden={this.state.isLoginFrgtPassHidden}>
 													<h1 className="login-signup-heading text-center" style={{marginBottom: this.state.marginBottomFrgtPassHead}}>{this.state.loginFormText}</h1>

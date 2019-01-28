@@ -185,6 +185,7 @@
 }
 .signup-card-block, .login-card-block, .app-list-card-block {
     padding: 34px !important;
+    width: 100%;
 }
 .signup-button-row p, .applozic-user-signup-btn-row p {
     margin-top: 10px;
@@ -222,8 +223,10 @@
     color: #4285f4;
 }
 .signup-with-google-btn svg {
-    margin-bottom: -6px;
     margin-right: 15px;
+    vertical-align: text-top;
+    width: 18px;
+    height: 18px;
 }
  
 .or-seperator {
