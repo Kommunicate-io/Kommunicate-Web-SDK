@@ -1708,29 +1708,30 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.addLeadCollectionInputDiv = function() {
                  var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                  var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
-                 if(KM_ASK_USER_DETAILS && KM_PRELEAD_COLLECTION.length === 0){
+                 var preLeadCollection = KM_PRELEAD_COLLECTION;
+                 if(KM_ASK_USER_DETAILS && preLeadCollection.length === 0){
                      for(var i=0; i<KM_ASK_USER_DETAILS.length; i++){
                      var obj={};
                      obj['field'] =KM_ASK_USER_DETAILS[i];
                      obj['type'] =KM_USER_DETAIL_TYPE_MAP[KM_ASK_USER_DETAILS[i]] || "text";
                      obj['placeholder'] =LEAD_COLLECTION_LABEL[KM_ASK_USER_DETAILS[i]]||"";
                      obj['required'] =true;
-                     KM_PRELEAD_COLLECTION.push(obj);
+                     preLeadCollection.push(obj);
                      }
                  }
-                for(var i=0; i<KM_PRELEAD_COLLECTION.length; i++){
+                for(var i=0; i<preLeadCollection.length; i++){
                      //Create dynamic input field  
                      var kmChatInputDiv = document.createElement("div");
                      kmChatInputDiv.setAttribute("class", "km-form-group km-form-group-container");
                      var kmChatInput = document.createElement("input");
-                     kmChatInput.setAttribute("id", "km-"+KM_PRELEAD_COLLECTION[i].field);
-                     kmChatInput.setAttribute("type",KM_PRELEAD_COLLECTION[i].type||"text");
-                     kmChatInput.setAttribute("name", "km-"+KM_PRELEAD_COLLECTION[i].field);
-                     KM_PRELEAD_COLLECTION[i].required && kmChatInput.setAttribute("required", KM_PRELEAD_COLLECTION[i].required);
-                     kmChatInput.setAttribute("placeholder", KM_PRELEAD_COLLECTION[i].placeholder)||false;
+                     kmChatInput.setAttribute("id", "km-"+preLeadCollection[i].field);
+                     kmChatInput.setAttribute("type",preLeadCollection[i].type||"text");
+                     kmChatInput.setAttribute("name", "km-"+preLeadCollection[i].field);
+                     preLeadCollection[i].required && kmChatInput.setAttribute("required", preLeadCollection[i].required);
+                     kmChatInput.setAttribute("placeholder", preLeadCollection[i].placeholder)||false;
                      kmChatInput.setAttribute("class", "km-form-control km-input-width vis");
-                     $('.km-last-child').prepend(kmChatInputDiv);
-                     $(kmChatInputDiv).append(kmChatInput);
+                     $applozic('.km-last-child').prepend(kmChatInputDiv);
+                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
             }
 

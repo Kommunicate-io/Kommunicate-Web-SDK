@@ -98,7 +98,7 @@ Kommunicate.defaultLabels = {
     'lead.collection': {
                 'email':'Email',
                 'name':'Name',
-                'contactNumber':'Contact Number',
+                'phone':'Contact Number',
                 'heading':'Before starting, we just need a few details so that we may serve you better',
                 'submit':'Start Conversation',
     }
