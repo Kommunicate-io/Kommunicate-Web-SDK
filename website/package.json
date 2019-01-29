@@ -9,7 +9,8 @@
     "optimize-images": "gulp imageMinify",
     "minify-html": "gulp html",
     "minify-css": "gulp css-prod",
-    "web-deploy": "bundle exec jekyll serve --detach"
+    "web-deploy": "bundle exec jekyll serve --detach",
+    "netlify-deploy": "bundle exec jekyll serve"
   },
   "author": "Akshat Dhabi",
   "license": "MIT",

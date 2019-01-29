@@ -311,6 +311,9 @@ body {
     height: 60px !important;
 }
 
+.toc .toggleNav .navGroup .navGroupCategoryTitle {
+    font-weight: 400;
+}
 
 /* ScrollSpy CSS */
 ul.toc-headings > li {
