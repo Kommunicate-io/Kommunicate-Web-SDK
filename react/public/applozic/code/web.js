@@ -124,7 +124,9 @@ function getUserIdFromGroup(groupId){
       if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
          tabId =userId;
          return;
-      } 
+      } else if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['ADMIN']) {
+        tabId = userId;
+      }
     })
       return tabId;
 }

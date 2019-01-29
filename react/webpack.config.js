@@ -66,7 +66,7 @@ module.exports = env => {
         }),
         new CleanWebpackPlugin('build/**/*'),
         new MiniCssExtractPlugin({
-            filename: "[name].[hash].css",
+            filename: "[name].3.4.css",
           })
     ]
     if (env && env.REACT_APP_NODE_ENV == 'test') {

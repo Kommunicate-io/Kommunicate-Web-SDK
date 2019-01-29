@@ -8,6 +8,7 @@ const cacheClient = require("../cache/hazelCacheClient");
 const inAppMessageService = require('../application/inAppMsgService');
 const { EMAIL_NOTIFY } = require('../users/constants');
 const {GROUP_ROLE, ROUTING_RULES_FOR_AGENTS} = require("../utils/constant");
+const stringUtils = require("underscore.string");
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -90,7 +91,7 @@ const assignConversationInRoundRobin = (groupId, userIds, appId, header, onlineU
         return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
             if (group.metadata.CONVERSATION_ASSIGNEE != assignTo) {
                 let params = { "clientGroupIds": [groupId], "userIds": [group.metadata.CONVERSATION_ASSIGNEE] }
-                return assignConversationToUser(groupId, assignTo, appId, header).then(res => {
+                return assignConversationToUser(group, assignTo, appId, header).then(res => {
                     applozicClient.removeGroupMembers(params, appId, header.apzToken, assignTo);
                     return assignTo;
                 })
@@ -104,11 +105,18 @@ const assignConversationInRoundRobin = (groupId, userIds, appId, header, onlineU
 };
 
 
-const assignConversationToUser = (groupId, assignTo, appId, header) => {
-    let groupInfo = { groupDetails: [{ "groupId": groupId, "userId": assignTo, role: 1 }] };
-    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-    return applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId).then(result => {
-        applozicClient.updateGroup(
+const assignConversationToUser = async (group, assignTo, appId, header) => {
+    let groupId = group && group.id;
+    if(!groupId){
+        logger.info("empty groupId received");
+        return;
+    }
+    let groupInfo = { groupDetails: [{ "groupId":groupId, "userId": assignTo, role: 1 }] };
+    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId);
+    if(!findUserInGroup(assignTo, group)){
+        await applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId);
+    }
+    return applozicClient.updateGroup(
             {
                 groupId: groupId,
                 metadata: { CONVERSATION_ASSIGNEE: assignTo }
@@ -116,9 +124,21 @@ const assignConversationToUser = (groupId, assignTo, appId, header) => {
             appId,
             header.apzToken,
             header.ofUserId
-        );
-        return { code: "SUCCESS", data: 'success' };
-    })
+        ).then(data=>{
+            return { code: "SUCCESS", data: 'success' };
+        });
+        
+}
+const findUserInGroup = (userId, group)=>{
+    let groupUsers =group.groupUsers;
+    let user;
+    if(userId && groupUsers){
+        user = groupUsers.find(element => {
+            return element.userId ==userId;
+        });
+    }
+    return user;
+
 }
 /** 
  * @param {Integer} groupId 
@@ -222,7 +242,8 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
         return getAgentsList(customer, users, groupId).then(agents => {
             //assign direct given userId 
             let isValidUser = false;
-            if (assignToUserId && assignToUserId != "") {
+            assignToUserId = stringUtils.isBlank(assignToUserId) ? null : assignToUserId;
+            if (assignToUserId) {
                 let assignee = users.filter(user => {
                     return user.userName == assignToUserId;
                 });
@@ -239,7 +260,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                     });
                     if (assignee[0].type == 2) {
                         if (isValidUser || !customer.agentRouting) {
-                            return assignToDefaultAgent(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header).then(res => {
+                            return assignConversationToUser(group, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], appId, agents.header).then(res => {
                                 return sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], assignee[0].apzToken).then(response=>{
                                     return "success";
                                 })
@@ -252,7 +273,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                    let assignTo = await assignConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers);
                                         assignTo ? await sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
                                 } else {
-                                   let response = await assignToDefaultAgent(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header);
+                                   let response = await assignConversationToUser(group, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], appId, agents.header);
                                     await sendAssigneeChangedNotification(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], assignee[0].apzToken);
                                 
                                 }
@@ -311,12 +332,12 @@ const createConversationFromMail = (req) => {
             let toUser = JSON.parse(tos);
             let userAdded = false;
             for (var user in users) {
-                if (toUser.address == user.userName) {
+                if (toUser == user.userName) {
                     groupInfo.users.push({ "userId": user.userName, "role": 1 })
                     userAdded = true;
                 }
             }
-            if (!userAdded) { groupInfo.users.push({ "userId": toUser.address, "role": 3 }) }
+            if (!userAdded) { groupInfo.users.push({ "userId": toUser, "role": 3 }) }
         });
         let adminUser = users.find(user => user.type == 3);
         return applozicClient.getUserDetails([fromEmail], adminUser.applicationId, adminUser.apzToken).then(userDetail => {

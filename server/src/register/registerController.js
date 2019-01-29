@@ -53,7 +53,7 @@ exports.createCustomer = async (req, res) => {
         return registrationService.createCustomer(userDetail)
           .then(async result => {
             if (activeCampaignEnable) {
-              activeCampaignClient.addContact({ "email": email, "appId": (result.application && result.application.applicationId) })
+              activeCampaignClient.addContact({"product": product, "email": email, "appId": (result.application && result.application.applicationId) })
                 .then(subscriberId => {
                   return subscriberId && customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
                 })
@@ -100,11 +100,12 @@ exports.patchCustomer = (req, res) => {
   let response = {};
   let customer = req.body;
   let userId = req.params.userId;
-  let subscribed = customer.subscription && customer.subscription != "startup";
+  let subscribed = customer.subscription && customer.subscription != "startup" && customer.subscription != "applozic";  
   console.log("request recieved to update customer: ", userId, "body", customer);
   
   customerService.updateApplicationInApplozic(customer);
-customerService.getCustomerByUserName(userId).then(async dbCustomer => {
+  //Todo: set tags according to product
+  customerService.getCustomerByUserName(userId).then(async dbCustomer => {
     console.log("got the user from db", dbCustomer);
     if (activeCampaignEnable) {
       activeCampaignClient.updateActiveCampaign({
@@ -116,7 +117,7 @@ customerService.getCustomerByUserName(userId).then(async dbCustomer => {
         "contactNo": customer.contactNo,
         "industry": customer.industry,
         "companySize": customer.companySize,
-        "tags": subscribed || dbCustomer.isPaidCustomer ? "K-customer" : undefined
+        "tags": subscribed ? (dbCustomer.getProduct() + "-customer") : undefined
       }).catch(error => {
         console.log("Error while updating company URL to activeCampaign", error);
       });

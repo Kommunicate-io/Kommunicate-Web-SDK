@@ -219,7 +219,7 @@ input#search_input_react::-ms-input-placeholder {
 }
 .navSearchWrapper::after {
     background: rgba(0, 0, 0, 0.5);
-    left: 25px;
+    left: 35px;
 }
 footer .copyright {
     max-width: 1080px;
@@ -311,6 +311,9 @@ body {
     height: 60px !important;
 }
 
+.toc .toggleNav .navGroup .navGroupCategoryTitle {
+    font-weight: 400;
+}
 
 /* ScrollSpy CSS */
 ul.toc-headings > li {
@@ -329,6 +332,47 @@ ul.toc-headings > li {
 }
 /* ScrollSpy CSS ends here */
 
+/* Copy to Clipboard Button CSS starts here */
+pre {
+    position: relative;
+}
+  
+pre .btnIcon {
+    position: absolute;
+    top: 2px;
+    z-index: 2;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding: 0;
+    color: #fff;
+    background-color: transparent;
+    height: 30px;
+    transition: all .25s ease-out;
+}
+
+pre .btnIcon:hover {
+    text-decoration: none;
+}
+
+.btnIcon__body {
+    align-items: center;
+    display: flex;
+}
+
+.btnIcon svg {
+    fill: currentColor;
+    margin-right: .4em;
+}
+
+.btnIcon__label {
+    font-size: 11px;
+}
+
+.btnClipboard {
+    right: 10px;
+}
+
+/* Copy to Clipboard Button CSS ends here */
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
@@ -403,6 +447,9 @@ ul.toc-headings > li {
 }
 
 @media only screen and (min-width: 1024px) {
+    .separateOnPageNav .docsNavContainer {
+        flex: 0 0 255px;
+    }
 }
 
 @media only screen and (max-width: 1023px) {
@@ -412,4 +459,25 @@ ul.toc-headings > li {
 }
 
 @media only screen and (min-width: 1500px) {
+}
+
+
+*::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+*::-webkit-scrollbar:vertical {
+    width: 7px;
+}
+*::-webkit-scrollbar:horizontal {
+    height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px
+}
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+*::-webkit-scrollbar-corner {
+    background: rgba(0,0,0,0);
 }

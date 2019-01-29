@@ -8,7 +8,7 @@ const { SUBSCRIPTION_PLAN } = require('../utils/utils');
 const chargebeeService = require('../chargebee/chargebeeService');
 const userService = require('../users/userService');
 const botClientService = require('../utils/botPlatformClient');
-const utils = require("../register/utils");
+const subscriptionPlans = require("../register/subscriptionPlans");
 const applozicClient = require("../utils/applozicClient");
 const {ROUTING_RULES_FOR_AGENTS} = require("../utils/constant")
 const {appSettings}= require("../utils/constant");
@@ -99,7 +99,7 @@ const createApplication = (application) => {
 
 const reactivateAccount = async function (appId) {
     let customer = await getCustomerByApplicationId(appId);
-    if (customer.subscription && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
+    if (customer.subscription && !customer.isProductApplozic() && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
         let users = [];
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC'], ['id', 'ASC']])
@@ -129,7 +129,7 @@ const updateApplicationInApplozic = async (customer) => {
     let application = {};
         if (typeof customer == 'object') {
             let customerApplicationId = customer.applicationId || customer.applications[0].applicationId;
-            let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
+            let applozicPackage = subscriptionPlans.APPLOZIC_PRICING_PACKAGE[customer.subscription];
             customer.websiteUrl && (application.websiteUrl = customer.websiteUrl);
             customer.companyName && (application.name = customer.companyName);
             applozicPackage && (application.pricingPackage = applozicPackage);

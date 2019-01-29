@@ -96,6 +96,7 @@ class BillingKommunicate extends Component {
             this.updateSubscription(subscription, customerId);
             this.setState({hideSubscribedSuccess: false, boughtSubscription: subscription, boughtQuantity: quantity});
             // console.log(this.state.boughtSubscription);
+            this.sendSubscriptionInfo(this.state.subscription);
         } 
 
         document.getElementById("chargebee-portal") && document.getElementById("chargebee-portal").addEventListener("click", function (event) {
@@ -109,8 +110,10 @@ class BillingKommunicate extends Component {
         this.getAgents();
         this.getPlanDetails();
         this.getIntegratedBotsNumber();   
-        
+    }
 
+    sendSubscriptionInfo = (subscription)=>{
+        AnalyticsTracking.acEventTrigger(subscription);
     }
 
     buyThisPlanClick = () => {

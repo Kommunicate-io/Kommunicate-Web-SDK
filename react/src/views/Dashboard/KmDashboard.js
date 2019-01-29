@@ -4,7 +4,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
 // import ProductHuntOffer from '../.../../../components/EarlyBirdOffer/ProductHuntOffer';
 import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+// import 'react-select/dist/react-select.css';
 import { getUsersByType, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
 import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 // import Checkbox from '../../components/Checkbox/Checkbox'
@@ -14,6 +14,7 @@ import Modal from 'react-modal';
 import OnBoardingModal from '../../views/Pages/SetUpPage/OnBoardingModal'
 import { connect } from 'react-redux'
 import {LearnMore} from '../Faq/LizSVG'
+import UserDropdown from '../../components/Dropdown/UserDrodown'
 
 
 // Main Chart
@@ -774,14 +775,14 @@ secondsToHms = (seconds,key) => {
 }
 
 timeFilterHandleChange = (timeFilterSelectedOption) => {
-  let dataDay = `${timeFilterSelectedOption.value}`; // data-day is an HTML Attribute
+  let dataDay = timeFilterSelectedOption.value; // data-day is an HTML Attribute
   this.setState({ dataDay: dataDay });
-  if (`${timeFilterSelectedOption.value}` == this.state.timeFilterSelectedOption.value) {
+  if (timeFilterSelectedOption.value == this.state.timeFilterSelectedOption.value) {
 
-    return this.displayAllTotalCounts(`${timeFilterSelectedOption.value}`);
+    return this.displayAllTotalCounts(timeFilterSelectedOption.value);
 
   }
-  if (`${timeFilterSelectedOption.value}` != dayWiseFilterOptions.last7Days && `${timeFilterSelectedOption.value}` != dayWiseFilterOptions.last30Days) {
+  if (timeFilterSelectedOption.value != dayWiseFilterOptions.last7Days && timeFilterSelectedOption.value != dayWiseFilterOptions.last30Days) {
     //Today or Yesterday
     let isChecked = true
     this.setState({ timeFilterSelectedOption });
@@ -789,7 +790,7 @@ timeFilterHandleChange = (timeFilterSelectedOption) => {
       disableCheckbox: true,
       isChecked: isChecked
     });
-    return this.filterConversationDetails(`${timeFilterSelectedOption.value}`, this.state.agentFilterSelectedOption.value,isChecked);
+    return this.filterConversationDetails(timeFilterSelectedOption.value, this.state.agentFilterSelectedOption.value,isChecked);
   }
   else {
     let isChecked = false
@@ -808,12 +809,12 @@ agentFilterHandleChange = (agentFilterSelectedOption) => {
   if (this.state.timeFilterSelectedOption.value != dayWiseFilterOptions.last7Days && this.state.timeFilterSelectedOption.value != dayWiseFilterOptions.last30Days) {
     // Today or Yesterday
    this.setState({ agentFilterSelectedOption });
-   return this.filterConversationDetails(this.state.timeFilterSelectedOption.value, `${agentFilterSelectedOption.value}`, this.state.isChecked );
+   return this.filterConversationDetails(this.state.timeFilterSelectedOption.value, agentFilterSelectedOption.value, this.state.isChecked );
   }
   else {
     // 7 Days or 30 Days
    this.setState({ agentFilterSelectedOption });
-   return this.filterConversationDetails(dayWiseFilterOptions.last30Days, `${agentFilterSelectedOption.value}`, this.state.isChecked);
+   return this.filterConversationDetails(dayWiseFilterOptions.last30Days, agentFilterSelectedOption.value, this.state.isChecked);
 
   }
 
@@ -862,17 +863,13 @@ render() {
             />
           </div>
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
-
-            <Select
-              className={(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
+             <UserDropdown
+              className= {(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
+              handleDropDownChange = {this.agentFilterHandleChange} 
+              userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
+              defaultValue={{ label: "All agents", value: "allagents" }}
               name="km-dashboard-agent-filter"
-              value={agentFilterSelectedOption}
-              clearable={false}
-              searchable={false}
-              onChange={this.agentFilterHandleChange}
-              options={this.state.agentFilterOption}
-
-            />
+             />
             {/* <span id="tooltip-span" className="tooltip-span">
               Available in Growth Plan
             </span> */}

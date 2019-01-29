@@ -2,7 +2,6 @@ const logger = require("../utils/logger");
 const axios = require("axios");
 var request = require("request");
 const config = require("../../conf/config");
-const apiKey = config.getProperties().activeCampaignApiKey;
 const activeCampaignEnabled = config.getProperties().activeCampaignEnabled;
 
 exports.addContact = (options) => {
@@ -11,21 +10,21 @@ exports.addContact = (options) => {
             console.log("active campaign is disabled");
             return resolve(null);
         }
-
+        
         var option = {
             method: 'POST',
             url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_add',
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             form: {
                 api_action: 'contact_add',
-                api_key: apiKey,
+                api_key: getActiveCampaignKey(options.product),
                 api_output: 'json',
                 email: options.email,
                 name: options.name,
                 tags: options.tags,
                 orgname: options.orgname,
                 'field[20,0]': options.appId,
-                'p[1]': '7',
+                'p[1]': (options.product == "applozic" ? "1":"7"),
                 'status[1]': '1'
             }
         };
@@ -61,7 +60,7 @@ exports.updateActiveCampaign = (options) => {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             form: {
                 api_action: 'contact_edit',
-                api_key: apiKey,
+                api_key: getActiveCampaignKey(options.product),
                 api_output: 'json',
                 id: options.subscriberId,
                 email: options.email,
@@ -72,7 +71,7 @@ exports.updateActiveCampaign = (options) => {
                 'field[%role%,0]': options.role,
                 'field[%industry%,0]': options.industry,
                 'field[%company_size%,0]': options.companySize,
-                'p[1]': '7',
+                'p[1]': (options.product == "applozic" ? "1":"7"),
                 'status[1]': '1'
             }
         };
@@ -96,6 +95,10 @@ exports.updateActiveCampaign = (options) => {
 
 }
 
+const getActiveCampaignKey = (options) => {
+    return config.getProperties().activeCampaignApiKey[options.product || "kommunicate"];
+}
+
 const addTags = (options) => {
     return new Promise(function (resolve, reject) {
         var data = {
@@ -104,7 +107,7 @@ const addTags = (options) => {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             form: {
                 api_action: 'contact_tag_add',
-                api_key: apiKey,
+                api_key: getActiveCampaignKey(options.product),
                 api_output: 'json',
                 id: options.subscriberId,
                 email: options.email,

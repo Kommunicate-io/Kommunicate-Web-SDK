@@ -85,6 +85,12 @@ class OnBoardingModal extends Component {
         this.setState({ openModal: false });
         this.props.updateModalStatus(true);
     }
+    openInstallSection = (e) => {
+        if (CommonUtils.isProductApplozic()) {
+            this.closeModal();
+            window.location.assign("/settings/install");
+        }
+    }
     handleCardClick = (e) => {
         if (CommonUtils.isProductApplozic()) {
             this.closeModal();
@@ -110,7 +116,7 @@ class OnBoardingModal extends Component {
                 </div>
                 { this.state.selectedCard == "on-boarding-card-list" && // modal step-1
                     <div className="on-boarding-card-list" data-card="on-boarding-card-list">
-                        <CardList img ={<CodeIcon />} title={"Install the code myself"} content={CommonUtils.isProductApplozic() ? "You just need to copy and paste the code in your mobile and web apps":"You just need to copy and paste the Javascript code in your website"} handleClick ={this.handleCardClick} card={"install-myself"}/>
+                        <CardList img ={<CodeIcon />} title={"Install the code myself"} content={CommonUtils.isProductApplozic() ? "You just need to copy and paste the code in your mobile and web apps":"You just need to copy and paste the Javascript code in your website"} handleClick ={this.openInstallSection} card={"install-myself"}/>
                         <CardList img ={<SendEmailIcon />} title={"Ask a teammate to install the code"} content={"Send an email to your teammate with installation instructions"} card={"send-instruction"} handleClick ={this.handleCardClick}/>
                         <div className="skip-install-on-boarding-modal-wrapper">
                             <span className="skip-install-on-boarding-modal" onClick={this.closeModal}>I will do it later</span>

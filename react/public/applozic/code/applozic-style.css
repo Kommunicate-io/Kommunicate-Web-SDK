@@ -465,7 +465,7 @@ body {
 .km-container .right .write input, .km-container .right .write .km-text-box
 	{
 	font-size: 16px;
-	height: 45px;
+	min-height: 45px;
 	max-height: 260px;
 	padding: 10px 10px 10px 0px;
 	width: 100%;
@@ -485,7 +485,7 @@ body {
 }
 
 .km-container .right .write .km-text-box.km-expand-text-area-box {
-	height: 260px;
+	min-height: 260px;
 }
 
 .km-container .right .write .write-link.attach:before {
