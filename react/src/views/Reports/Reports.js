@@ -43,7 +43,7 @@ class Reports extends Component {
 
 	downloadReport = () => {
 		let downloadUrl = config.baseurl.kommunicateAPI + url.kommunicateApi.METABASE;
-		downloadUrl += `/?startDate=${this.state.value.start.format('x')}&endDate=${this.state.value.end.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`;
+		downloadUrl += `/?startDate=${this.state.value.end.format('x')}&endDate=${this.state.value.start.format('x')}&appKey=${CommonUtils.getUserSession().application.key}&format=xlsx`;
 		window.open(downloadUrl);
 	}
 
