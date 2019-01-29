@@ -70,7 +70,9 @@ class UserItem extends Component {
         userToBeDeleted:userToBeDeleted 
       });
     };
-
+    hasTeamEditAccess = (roleType) => {
+      return this.props.loggedInUserRoleType < roleType
+    }
     onCloseModal = () => {
       this.setState({ modalIsOpen: false });
     };
