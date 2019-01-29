@@ -1907,7 +1907,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'topicStatus': topicStatus,
 							'isMessage': false
 						});
-					} else {
+					} else if (isGroup) {
 						var groupDetail = {
 							'tabId': tabId,
 							'isGroup': isGroup,
@@ -1917,8 +1917,38 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'tabViewId': tabViewId,
 							'lastContactedTime': time,
 						}
-							mckMessageLayout.loadTab(groupDetail);
-					} 
+						kmGroupUtils.getGroup(tabId, function (groupInfo) {
+							if (typeof groupInfo === 'object') {
+								var member = groupInfo.members.includes(MCK_USER_ID);
+								var group = {};
+								group.groupId = tabId;
+								group.userId = MCK_USER_ID;
+								group.role = 1; // adding agents as group admin	
+								var conversationDetail = mckMessageService.checkForRoleType(group);
+								conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
+								conversationDetail.callback = function () {
+									mckMessageLayout.loadTab(groupDetail);
+								}
+								if (!member) {
+									kmGroupService.addGroupMember(conversationDetail);
+								} else {
+									mckMessageLayout.loadTab(groupDetail);
+								}
+
+							} else {
+								mckMessageLayout.loadTab(groupDetail);
+							}
+							$mck_search.val("");
+						});
+					} else {
+						mckMessageLayout.loadTab({
+							'tabId' : tabId,
+							'isGroup' : isGroup,
+							'userName' : userName,
+							'conversationId' : conversationId,
+							'topicId' : topicId
+						});
+					}
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
@@ -2704,8 +2734,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				});
 			};
 			_this.getGroupIdFromUrl = function(url){
-				return url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
+				return decodeURIComponent(url.split("/").pop());
 			}
+
 			_this.addContactInConversationList = function (params, status, list) {
 				var data = params.response;
 				var isMessages = true;
@@ -2757,8 +2788,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
 				let url = window.location.href;
-				let groupId = _this.getGroupIdFromUrl(url);
-				var isGroup = kmUtils.getUrlParameter(url, "isGroup") + "";
+				let groupId = _this.getGroupIdFromUrl(location.pathname);
+				var isGroup = kmUtils.getUrlParameter(url, "isGroup") !=""? kmUtils.getUrlParameter(url, "isGroup") + "":"true";
 				if (isGroup === "false") {
 					mckMessageLayout.loadTab({"tabId":groupId ,"isGroup":false});
 				} else {
@@ -4090,7 +4121,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.loadMessageList(params);
 					}
 				}
-					params.tabId && window.history.replaceState(null, null, "/conversations/" + params.tabId+"?isGroup="+params.isGroup);
+				if (params.tabId && !params.isGroup) {
+					params.tabId && window.history.replaceState(null, null, "/conversations/" + params.tabId + "?isGroup=" + params.isGroup);
+				} else {
+					params.tabId && window.history.replaceState(null, null, "/conversations/" + params.tabId);
+				}
+					
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
