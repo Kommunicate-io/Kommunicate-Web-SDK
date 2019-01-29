@@ -56,7 +56,8 @@ const siteConfig = {
   //   theme: 'vs',
   //   // themeUrl:['css/vs2015.css']
   // },
-  scripts: ['/js/thirdPartyScripts.js'],
+  scripts: ['/js/thirdPartyScripts.js', 'https://buttons.github.io/buttons.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js', '/js/copyToClipboard.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
   // repoUrl: 'https://github.com/facebook/test-site',
   onPageNav: 'separate',
@@ -65,6 +66,7 @@ const siteConfig = {
   //   zIndex: 100,
   // },
   cleanUrl: true,
+  docsSideNavCollapsible: true,
 };
 
 module.exports = siteConfig;

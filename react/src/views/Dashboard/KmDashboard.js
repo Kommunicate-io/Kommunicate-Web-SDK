@@ -4,7 +4,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
 // import ProductHuntOffer from '../.../../../components/EarlyBirdOffer/ProductHuntOffer';
 import Select from 'react-select';
-import 'react-select/dist/react-select.css';
+// import 'react-select/dist/react-select.css';
 import { getUsersByType, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
 import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 // import Checkbox from '../../components/Checkbox/Checkbox'
