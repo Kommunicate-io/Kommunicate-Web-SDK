@@ -1732,7 +1732,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                      kmChatInput.setAttribute("type",preLeadCollection.type||"text");
                      kmChatInput.setAttribute("name", "km-"+preLeadCollection.field);
                      preLeadCollection.required && kmChatInput.setAttribute("required", preLeadCollection.required);
-                     kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||false);
+                     kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||'');
                      kmChatInput.setAttribute("class", "km-form-control km-input-width vis");
                      $applozic('.km-last-child').prepend(kmChatInputDiv);
                      $applozic(kmChatInputDiv).append(kmChatInput);
