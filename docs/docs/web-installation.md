@@ -74,7 +74,7 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |locShare| Pass this parameter true if you want to enable location sharing in your chatwidget.|  
 |msgTriggerTimeout| This will automatically start conversation after the user has spent a certain amount of time on your page which you have passed. Example: "msgTriggerTimeout" : 10000 (Note: time is set in milliseconds)|
 |openConversationOnNewMessage | This will open the chat window when a new message comes. Pass this parameter true. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage </a>|
-|automaticChatOpenOnNavigation | Type Boolean <br> Default: false <br> If Chat widget is open and user navigate to some other section in the website or to some other tab, then keep chat widget open with the active conversation|  
+|automaticChatOpenOnNavigation | Type Boolean <br> Default: false <br> If the chat widget is open and the user navigates to some other section in the website or to some other tab, then keep the chat widget open with the current active conversation|  
 
 
 ## Install on website Builder
