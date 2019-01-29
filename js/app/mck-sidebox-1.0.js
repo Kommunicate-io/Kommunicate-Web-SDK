@@ -8561,10 +8561,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 _this.disconnect();
             };
             _this.disconnect = function () {
+                console.log("socket disconnect",new Date());
                 clearInterval(sendConnectedStatus);
-                if (stompClient && stompClient.connected) {
+                if (stompClient) {
                     _this.sendStatus(0);
-                    stompClient.disconnect();
+                    stompClient.connected && stompClient.disconnect();
                     SOCKET.close();
                     SOCKET = '';
                 }
