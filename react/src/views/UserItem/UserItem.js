@@ -71,24 +71,7 @@ class UserItem extends Component {
       });
     };
     hasTeamEditAccess = (roleType) => {
-      const editAccess = {
-        [ROLE_TYPE.SUPER_ADMIN]: {
-          [ROLE_TYPE.SUPER_ADMIN]: false,
-          [ROLE_TYPE.ADMIN]: true,
-          [ROLE_TYPE.AGENT]: true
-        },
-        [ROLE_TYPE.ADMIN]: {
-          [ROLE_TYPE.SUPER_ADMIN]: false,
-          [ROLE_TYPE.ADMIN]: false,
-          [ROLE_TYPE.AGENT]: true
-        },
-        [ROLE_TYPE.AGENT]: {
-          [ROLE_TYPE.SUPER_ADMIN]: false,
-          [ROLE_TYPE.ADMIN]: false,
-          [ROLE_TYPE.AGENT]: false
-        }
-      }
-      return editAccess[this.props.loggedInUserRoleType][roleType]
+      return this.props.loggedInUserRoleType < roleType
     }
     onCloseModal = () => {
       this.setState({ modalIsOpen: false });
