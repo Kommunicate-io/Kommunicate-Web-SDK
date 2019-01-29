@@ -8,7 +8,7 @@ import Notification from '../model/Notification';
 import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js';
 import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
 import DeleteInvitation from '../Team/DeleteInvitationModal.js';
-import {deleteIcon} from '../../../src/assets/svg/svgs'
+import {DeleteIcon} from '../../../src/assets/svg/svgs'
 
 
 
