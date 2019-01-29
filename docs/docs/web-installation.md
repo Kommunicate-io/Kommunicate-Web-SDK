@@ -62,6 +62,7 @@ You can customize the plugin by passing below parameters in the `kommunicateSett
 
 |Parameters|Descriptions|
 |---	   |---	    |
+
 |appId |A unique application ID assigned to your Kommunicate account.|
 |botIds|You can add bots to any conversation by passing an array of bot IDs. Example array: "botIds":["bot1","bot2"]. Bot IDs will be visible in the [Bot section](https://dashboard.kommunicate.io/bot) in the dashboard if you have created any bot.|
 |conversationTitle |All conversations will have this title.|
@@ -74,6 +75,8 @@ You can customize the plugin by passing below parameters in the `kommunicateSett
 |locShare| If you want to enable location sharing in the chat widget, set this parameter to ‘true’.|  
 |msgTriggerTimeout| This will automatically start a conversation with a user after the user has spent a certain amount of time on your website. You can define the trigger time like this: "msgTriggerTimeout": 10000 (Note: the time is set in milliseconds).|
 |openConversationOnNewMessage | If this parameter is set to ‘true’, the chat window will be opened whenever a new message comes in the chat widget. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage</a>.|
+|automaticChatOpenOnNavigation | Type: Boolean <br> Default: false <br> If the chat widget is open and the user navigates to some other section in the website or to some other tab, then keep the chat widget open with the current active conversation<br> Note:<a href="web-conversation#create-a-new-conversation" target="_blank"> Kommunicate.startConversation()</a> method and msgTriggerTimeout option won't be compatible with this option.|  
+
 
 
 ## Install on website builders or Content Management Systems (CMS)
