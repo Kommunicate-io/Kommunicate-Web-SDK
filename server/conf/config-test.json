@@ -112,7 +112,10 @@
     "KommonicateGCMKey": "AAAAeoKIKqc:APA91bGSCu3nUKOV3q0xpBmDl_f5VOfGhx-HI5TpnbefA3GzigMZf8Mp0ALz_WlWL3DZMM4ZzjC6z9CG-9fPwqoovcBgzCjgjXCG1Ktjwl2Q-a4XdfOjpNOaiLftUEi_9nzrE4c8jOaB",
     "defaultOffhoursMessage": "Thanks for your message. will call you back in our business hours.",
     "offBussinessHoursMessageInterval": 1,
-    "activeCampaignApiKey":"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+    "activeCampaignApiKey": {
+       "kommunicate": "79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+       "applozic": "aa87aefccdb0f33344e88fc6c8764df8512427a3a84fc0431c3fed9691dab83cac9394b3"
+    },
     "activeCampaignEnabled": false,
     "pipeDriveEnable":false,
     "chargebeeSite": "kommunicate-test",

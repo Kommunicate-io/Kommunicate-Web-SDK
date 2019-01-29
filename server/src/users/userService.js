@@ -20,6 +20,7 @@ const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
 const chargebeeService = require('../chargebee/chargebeeService');
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
+const subscriptionPlans = require('../register/subscriptionPlans');
 const USER_CONSTANTS = require("../users/constants.js");
 const FREE_BOTS_COUNT = 2; //'bot' and 'liz' are free
 
@@ -189,6 +190,7 @@ const createUser = (user, customer) => {
     user.password = bcrypt.hashSync(user.password, 10);
     user.imageLink = applozicUser.imagelink;
     user.roleType = (user.type === 2)? USER_CONSTANTS.ROLE_TYPE.BOT:user.roleType;
+    
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
@@ -211,7 +213,7 @@ const createUser = (user, customer) => {
           logger.error("error while creating bot platform", err);
         })
       } else {
-        activeCampaignClient.addContact({ "appId": customer.applications[0].applicationId, "email": user.email, "name": user.name, "orgname": customer.userName, "tags": "K-Team-Member" });
+        activeCampaignClient.addContact({"product": customer.getProduct(), "appId": customer.applications[0].applicationId, "email": user.email, "name": user.name, "orgname": customer.userName, "tags": product + "-Team-Member" });
       }
       return user ? user.dataValues : null;
     }).catch(err => {

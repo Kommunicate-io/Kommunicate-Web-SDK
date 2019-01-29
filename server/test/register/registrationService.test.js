@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const app = require('../../app');
 const registrationService = require('../../src/register/registrationService');
-const utils = require("../../src/register/utils");
+const subscriptionPlans = require("../../src/register/subscriptionPlans");
 const config = require("../../conf/config");
 
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
@@ -15,7 +15,7 @@ describe('register admin account', () => {
             console.log(response.application);
           expect(typeof response).to.equal('object');
           expect(typeof response.application).to.equal('object');
-          expect(response.application.pricingPackage).to.equal(utils.APPLOZIC_SUBSCRIPTION.BETA);
+          expect(response.application.pricingPackage).to.equal(subscriptionPlans.APPLOZIC_SUBSCRIPTION.BETA);
           expect(response.application.adminUser.userId).to.equal(userId);
         });
     });
@@ -27,7 +27,7 @@ describe('register admin account', () => {
             console.log(response.application);
           expect(typeof response).to.equal('object');
           expect(typeof response.application).to.equal('object');
-          expect(response.application.pricingPackage).to.equal(utils.APPLOZIC_PRICING_PACKAGE[utils.KOMMUNICATE_SUBSCRIPTION.STARTUP]);
+          expect(response.application.pricingPackage).to.equal(subscriptionPlans.APPLOZIC_PRICING_PACKAGE[subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP]);
           expect(response.application.adminUser.userId).to.equal(KOMMUNICATE_ADMIN_ID);
         });
     });
@@ -39,7 +39,7 @@ describe('register admin account', () => {
             console.log(response.application);
           expect(typeof response).to.equal('object');
           expect(typeof response.application).to.equal('object');
-          expect(response.application.pricingPackage).to.equal(utils.APPLOZIC_PRICING_PACKAGE[utils.KOMMUNICATE_SUBSCRIPTION.STARTUP]);
+          expect(response.application.pricingPackage).to.equal(subscriptionPlans.APPLOZIC_PRICING_PACKAGE[subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP]);
           expect(response.application.adminUser.userId).to.equal(KOMMUNICATE_ADMIN_ID);
         });
     });
