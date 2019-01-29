@@ -1705,30 +1705,34 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
             };
+            _this.getPreLeadDataForAskUserDetail = function(){
+                var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
+                var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
+                var preLeadCollection = KM_PRELEAD_COLLECTION;
+                if(KM_ASK_USER_DETAILS && preLeadCollection.length === 0){
+                    for(var i=0; i<KM_ASK_USER_DETAILS.length; i++){
+                    var obj={};
+                    obj['field'] =KM_ASK_USER_DETAILS[i];
+                    obj['type'] =KM_USER_DETAIL_TYPE_MAP[KM_ASK_USER_DETAILS[i]] || "text";
+                    obj['placeholder'] =LEAD_COLLECTION_LABEL[KM_ASK_USER_DETAILS[i]]||"";
+                    obj['required'] =true;
+                    KM_PRELEAD_COLLECTION.push(obj);
+                    }
+                }
+            }
             _this.addLeadCollectionInputDiv = function() {
-                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
-                 var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
-                 var preLeadCollection = KM_PRELEAD_COLLECTION;
-                 if(KM_ASK_USER_DETAILS && preLeadCollection.length === 0){
-                     for(var i=0; i<KM_ASK_USER_DETAILS.length; i++){
-                     var obj={};
-                     obj['field'] =KM_ASK_USER_DETAILS[i];
-                     obj['type'] =KM_USER_DETAIL_TYPE_MAP[KM_ASK_USER_DETAILS[i]] || "text";
-                     obj['placeholder'] =LEAD_COLLECTION_LABEL[KM_ASK_USER_DETAILS[i]]||"";
-                     obj['required'] =true;
-                     preLeadCollection.push(obj);
-                     }
-                 }
-                for(var i=0; i<preLeadCollection.length; i++){
+                    KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
+                for(var i=0; i<KM_PRELEAD_COLLECTION.length; i++){
                      //Create dynamic input field  
+                     var preLeadCollection = KM_PRELEAD_COLLECTION[i];
                      var kmChatInputDiv = document.createElement("div");
                      kmChatInputDiv.setAttribute("class", "km-form-group km-form-group-container");
                      var kmChatInput = document.createElement("input");
-                     kmChatInput.setAttribute("id", "km-"+preLeadCollection[i].field);
-                     kmChatInput.setAttribute("type",preLeadCollection[i].type||"text");
-                     kmChatInput.setAttribute("name", "km-"+preLeadCollection[i].field);
-                     preLeadCollection[i].required && kmChatInput.setAttribute("required", preLeadCollection[i].required);
-                     kmChatInput.setAttribute("placeholder", preLeadCollection[i].placeholder)||false;
+                     kmChatInput.setAttribute("id", "km-"+preLeadCollection.field);
+                     kmChatInput.setAttribute("type",preLeadCollection.type||"text");
+                     kmChatInput.setAttribute("name", "km-"+preLeadCollection.field);
+                     preLeadCollection.required && kmChatInput.setAttribute("required", preLeadCollection.required);
+                     kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||false);
                      kmChatInput.setAttribute("class", "km-form-control km-input-width vis");
                      $applozic('.km-last-child').prepend(kmChatInputDiv);
                      $applozic(kmChatInputDiv).append(kmChatInput);
@@ -2051,8 +2055,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.getUserMetadata = function () {
                 var KM_USER_DETAIL = ['name', 'email', 'phone'];
                 var metadata = {};
-                KM_PRELEAD_COLLECTION.find(function (element) {
-                    if (!KM_USER_DETAIL.includes(element.field)) {
+                KM_PRELEAD_COLLECTION.filter(function (element) {
+                    if (KM_USER_DETAIL.indexOf(element.field) === -1) {
                         metadata[element.field] = $applozic("#km-" + element.field).val();
                     }
                 });
