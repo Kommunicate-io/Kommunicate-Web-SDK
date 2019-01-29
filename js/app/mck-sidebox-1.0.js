@@ -8701,10 +8701,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.onNotificationEvent = function(msg){
                events.onMessageNotification(msg);
             }
-            _this.onError = function (err) {
-                w.console.log("Error in channel notification. " + err);
-                events.onConnectFailed();
-            };
+          _this.onError = function (err) {
+				w.console.log("Error in channel notification. " + err);
+				setTimeout(function () {
+					events.onConnectFailed();
+				}, 30000);
+			};
             _this.sendStatus = function (status) {
                 if (stompClient && stompClient.connected) {
                     stompClient.send('/topic/status-v2', {
