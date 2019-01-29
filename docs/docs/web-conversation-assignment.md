@@ -4,7 +4,7 @@ title: Conversation Assignment
 sidebar_label: Conversation Assignment
 ---
 
-# Dashboard: conversation routing rules
+## Dashboard: conversation routing rules
 
 ![List Template](/img/dashboard-conversation-assignment.png)
 
@@ -21,7 +21,7 @@ sidebar_label: Conversation Assignment
   - The **take over from bot** button will be displayed in the conversation, if agent takes over from bot, conversation will assign to that particular agent..
 
 
-# Bot to agent handoff
+## Bot to human handoff
 There are multiple ways bot can assign the conversation to agents :
 
   1. Set action `input.unknown` in Dialogflow. If Default fallback intents are enabled, Dialogflow automatically adds this action in response. It means whenever fallback intent is triggered the conversation will be assigned to an agent according to your conversation routing settings. 
@@ -37,3 +37,21 @@ There are multiple ways bot can assign the conversation to agents :
   }
 }
 ```
+
+### Handoff a conversation to another bot 
+If you have multiple bots running, you can hand off the conversation to another bot when specific intent is matched. You can trigger an event so that your bot will get exact context rather than starting from the beginning. Set the below JSON as custom payload to handoff the conversation to another bot.
+```js
+{
+	"platform": "kommunicate",
+	"message": "Forwarding your request to a teammate who is expert in this",
+	"metadata": {
+		"KM_ASSIGN_TO": "your-bot-id",
+		"event": {
+			"name": "WELCOME", // event to be triggered
+			"data": {} // data will be sent to your webhook in "originalDetectIntentRequest" parameter.
+		}
+	}
+}
+```
+
+
