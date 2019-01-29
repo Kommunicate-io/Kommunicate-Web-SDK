@@ -328,15 +328,14 @@ const createConversationFromMail = (req) => {
         return "INVALID_PARAMETERS"
     }
     return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
-        toAddresses.map(tos => {
-            let toUser = JSON.parse(tos);
+        toAddresses.map(toUser => {
             let userAdded = false;
-            for (var user in users) {
+             users.map(user=> {
                 if (toUser == user.userName) {
                     groupInfo.users.push({ "userId": user.userName, "role": 1 })
                     userAdded = true;
                 }
-            }
+            })
             if (!userAdded) { groupInfo.users.push({ "userId": toUser, "role": 3 }) }
         });
         let adminUser = users.find(user => user.type == 3);

@@ -115,20 +115,16 @@ var autoSuggestions = {};
             }
     });
 }
-function getUserIdFromGroup(groupId){
-    group = kmGroupUtils.getGroup(groupId);
-    var userIds = Object.keys(group.users);
-    var tabId;
-    userIds.filter(function (userId, index) {
-      var user = group.users[userId];
-      if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) {
-         tabId =userId;
-         return;
-      } else if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['ADMIN']) {
-        tabId = userId;
-      }
-    })
-      return tabId;
+function getUserIdFromGroup(groupId) {
+  group = kmGroupUtils.getGroup(groupId);
+  var userIds = Object.keys(group.users);
+  var tabId, adminUser;
+  userIds.filter(function (userId, index) {
+    var user = group.users[userId];
+    if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['ADMIN']) { adminUser = userId; }
+    if (user.role == KOMMUNICATE_CONSTANTS.ROLE_IN_GROUP['MEMBER']) { tabId = userId; }
+  })
+  return tabId || adminUser;
 }
 
 function displayUserInfo(tabDetail) {
