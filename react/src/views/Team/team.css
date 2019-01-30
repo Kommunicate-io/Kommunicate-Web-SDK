@@ -404,4 +404,8 @@ padding-top: 60 px !important;
 
 .teammates-add-member-btn {
   margin-bottom: 20px;
+  border-bottom: none; 
+}
+.teammates-modal-confirmation-text {
+  margin-top: 16px;
 }

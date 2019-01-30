@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ROLE_NAME } from '../../utils/Constant';
 import StatusIcon from '../../components/StatusIcon/StatusIcon'
-import DeleteInvitation from '../Team/DeleteInvitationModal.js';
+import UserUpdateModal from '../Team/UserUpdateModal.js';
 import Notification from '../model/Notification';
 import { DeleteIcon,ResendIcon, CopyIcon } from '../../assets/svg/svgs';
 import { notifyThatEmailIsSent } from '../../utils/kommunicateClient';
@@ -105,7 +105,7 @@ class invitedUsersList extends Component {
         <td>
           <span className="tm-invite-status-havent-signed-up">Haven't signed up</span>
         </td>
-        <DeleteInvitation isOpen={this.state.modalIsOpen} getInvitedUsers ={this.props.getInvitedUsers} agentList ={this.props.agentList}  userToBeDeleted ={this.state.userToBeDeleted}deleteInvitation ={true} onRequestClose={this.onCloseModal} ariaHideApp={false} getUsers={this.props.getUsers}/>
+        <UserUpdateModal isOpen={this.state.modalIsOpen} getInvitedUsers ={this.props.getInvitedUsers} agentList ={this.props.agentList}  userToBeDeleted ={this.state.userToBeDeleted}deleteInvitation ={true} onRequestClose={this.onCloseModal} modalType={"deleteInvite"} ariaHideApp={false} getUsers={this.props.getUsers}/>
         <td className="teammates-resend-icon team-invite-list-delete"  >
           <span onClick={this.sendMail} data-index={deleteRef} className="teammates-delete-wrapper km-delete-invitation">
             <ResendIcon/>

@@ -7,7 +7,7 @@ import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
 import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js';
 import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
-import DeleteInvitation from '../Team/DeleteInvitationModal.js';
+import UserUpdateModal from '../Team/UserUpdateModal.js';
 import {DeleteIcon, EditIcon} from '../../../src/assets/svg/svgs'
 
 
@@ -34,7 +34,8 @@ class UserItem extends Component {
        agentList: this.props.agentList,
        modalIsOpen:false,
        userToBeDeleted:{},
-       userStatus:""
+       userStatus:"",
+       selectedRole: ROLE_TYPE.AGENT
       };
       this.onOpenModal = this.onOpenModal.bind(this);
       this.onCloseModal = this.onCloseModal.bind(this);
@@ -51,16 +52,19 @@ class UserItem extends Component {
       var letters = /^[a-zA-Z0-9]+$/;
       if (first_alpha.match(letters)) {
         first_alpha = "alpha_" + first_alpha.toUpperCase();
-        return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>;
+        return <span className={'km-contact-icon ' + first_alpha}>{name}</span>;
       }
       else {
         return <span className="km-contact-icon alpha_user">{name}</span>;
       }
     }
-    
+    handleRoleRadioBtn = (e) => {
+      this.setState({
+        selectedRole: e.target.getAttribute('data-value')
+      })
+    }
     onOpenModal = (e) => {
-      let index = e.target.dataset.index;
-      index = parseInt(index.replace('delete', ''));
+      let index = parseInt(e.target.dataset.index);
       let user = this.state.agentList[index].displayName || this.state.agentList[index].userId;
       let userToBeDeleted = {
         displayName: user,
@@ -68,7 +72,8 @@ class UserItem extends Component {
       }
       this.setState({ 
         modalIsOpen: true, 
-        userToBeDeleted:userToBeDeleted 
+        userToBeDeleted:userToBeDeleted,
+        modalType: e.target.dataset.button
       });
     };
     hasTeamEditAccess = (roleType) => {
@@ -82,9 +87,8 @@ class UserItem extends Component {
           textDecoration: 'underline',
           color: '#0000EE'
         };
-        var index= this.props.index;
+        var ref= this.props.index;
         var loggedInUserRoleType = this.props.loggedInUserRoleType;
-        var deleteRef = "delete"+index;
         var user = this.props.user;
         let isOnline = this.props.isOnline;
         let isAway = this.props.isAway;
@@ -133,7 +137,7 @@ class UserItem extends Component {
                     
                     <td className= "teammates-row-icon-container" colSpan="1"  >
                       { this.hasTeamEditAccess(roleType) &&
-                        <span className="teammates-edit-wrapper km-teammates-icon-visibility">
+                        <span className="teammates-edit-wrapper km-teammates-icon-visibility" onClick ={this.onOpenModal} data-index= {ref} data-button= {"edit"}>
                          <EditIcon />
                           Edit
                         </span>
@@ -141,13 +145,15 @@ class UserItem extends Component {
                     </td>
                     <td className= "teammates-row-icon-container" colSpan="2"  >
                       { this.hasTeamEditAccess(roleType) &&
-                        <span onClick ={this.onOpenModal}  data-index= {deleteRef} className="teammates-delete-wrapper km-teammates-icon-visibility">
+                        <span onClick ={this.onOpenModal}  data-index= {ref} data-button= {"deleteUser"} className="teammates-delete-wrapper km-teammates-icon-visibility">
                          <DeleteIcon />
                           Delete
                         </span>
                       }
                     </td>
-                     <DeleteInvitation isOpen={this.state.modalIsOpen} userToBeDeleted={this.state.userToBeDeleted} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false}  getUsers={this.props.getUsers}/>
+                     { this.state.modalIsOpen &&
+                       <UserUpdateModal isOpen={this.state.modalIsOpen} userToBeDeleted={this.state.userToBeDeleted} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false} getUsers={this.props.getUsers} modalType={this.state.modalType} handleRoleRadioBtn={this.handleRoleRadioBtn} selectedRole={this.state.selectedRole} />
+                     }
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
                     </td>
