@@ -3,7 +3,10 @@ const Colors = {
         primary: "#03B49B",
         secondary: "#F2C75E",
         hover: "#0e907e",
-        primaryLight: "#DBF9F5"
+        primaryLight: "#DBF9F5",
+        gradient0: "#9ad4cb",
+        gradient1: "#4dd6c3",
+        gradient2: "#03b49b"
     },
     CommonColors: {
         White: "#FFFFFF",
@@ -23,7 +26,10 @@ const Colors = {
         buttonSecondary: "#FFFFFF",
         buttonPrimaryColorText: "#FFFFFF",
         buttonSecondaryColorText: "#5553B7",
-        success: "#2dd35c"
+        success: "#2dd35c",
+        gradient0: "#a6a8d3",
+        gradient1: "#6252d8",
+        gradient2: "#4831d9"
     }
 };
 

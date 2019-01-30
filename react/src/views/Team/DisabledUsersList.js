@@ -7,6 +7,7 @@ import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
 import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
 import StatusIcon from '../../components/StatusIcon/StatusIcon';
+import Button from '../../components/Buttons/Button';
 import './team.css';
 
 
@@ -164,8 +165,8 @@ class DisabledUsersList extends Component {
                         <p>On deleting this account, the user will not be able to log into this Kommunicate account. Though, this profile shall be visible in all existing conversations this user has been a part of.</p>
                         <p>Are you sure?</p>
                         <div className="team-delete-modal-btn">
-                        <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</button>
-                        <button className="km-button km-button--primary" onClick= {this.deleteUser}>Yes, Delete</button>
+                        <Button secondary className="team-delete-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</Button>
+                        <Button primary onClick= {this.deleteUser}>Yes, Delete</Button>
                         </div>
                       </div>
                       </div>

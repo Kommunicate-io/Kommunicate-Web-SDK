@@ -59,6 +59,71 @@
   <script type="text/javascript" src="./js/tiny-slider.js"></script>
 
   <script src="https://checkout.stripe.com/checkout.js"></script>
+
+  <style>
+    .app #root:empty {
+      position: relative;
+      height: 100vh;
+    }
+    .loader:empty::after {
+      position: absolute;
+      top: calc(50% - 4em);
+      left: calc(50% - 4em);
+      width: 6em;
+      height: 6em;
+    }
+  </style>
+
+  <% if (htmlWebpackPlugin.options.loadingAnimationPath) { %>
+    <style>
+      .loader:empty::after {
+        content: url('./<%= htmlWebpackPlugin.options.loadingAnimationPath %>');
+      }
+    </style>
+  <% } else { %>
+    <script>
+      var userSession;
+      // Function to capture parameters from URL
+      function getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split("&");
+          for (var i = 0; i < vars.length; i++) {
+              var pair = vars[i].split("=");
+              if (pair[0] == variable) {
+                  return pair[1];
+              }
+          }
+          return (false);
+      }
+
+      function getProduct() {
+        if(localStorage.getItem("KM_USER_SESSION") != null) {
+          userSession = localStorage.getItem("KM_USER_SESSION");
+        }
+        if (getQueryVariable('product')) {
+            return getQueryVariable('product');
+        } else if(userSession) {
+            if (userSession.application.pricingPackage <= 100) {
+                return "applozic";
+            } else if (userSession.application.pricingPackage <= 200) {
+                return "kommunicate";
+            } else {
+                return "kommunicate";
+            }
+        }
+        return "kommunicate";
+      }
+
+      var cssString;
+      if(getProduct() == "kommunicate") {
+        cssString = '<style>.loader:empty::after {content: url("./km-loading-animation.svg")}</style>';
+      } else {
+        cssString = '<style>.loader:empty::after {content: url("./al-loading-animation.svg")}</style>';
+      }
+      document.body.appendChild(cssString);
+    </script>
+  <% } %>
+  
   
   </head>
 

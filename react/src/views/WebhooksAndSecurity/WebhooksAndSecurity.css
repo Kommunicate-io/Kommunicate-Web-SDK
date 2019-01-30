@@ -19,6 +19,9 @@
     justify-content: flex-start;
     flex-wrap: wrap;
 }
+.webhooks-input-field-goup .input-dropdown-container .react-select-container {
+    min-width: 200px;
+}
 .webhooks-input-field-goup .input-dropdown-container .input-group{
     flex-basis: 40%
 }
@@ -59,11 +62,7 @@
     line-height: 1.58;
     color: #a1a1a1;
     margin: 3px 0 0;
-} 
-.webhooks-input-field-goup p>a {
-    color: #4831d9;
-    text-decoration: none;
-} 
+}
 .webhooks-input-field-goup p>a svg {
     margin-left: 3px;
     transform: translateY(7%);

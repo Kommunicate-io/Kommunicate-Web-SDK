@@ -18,7 +18,13 @@ const themes = {
             dangerBGHover: Colors.CommonColors.dangerHover,
             disabledBG: Colors.CommonColors.disabledBG,
             disabledText: Colors.CommonColors.disabledText
+        },
+        gradients: {
+            loginGradientColorStop0: Colors.ApplozicColors.gradient0,
+            loginGradientColorStop1: Colors.ApplozicColors.gradient1,
+            loginGradientColorStop2: Colors.ApplozicColors.gradient2
         }
+        
     },
     kommunicate: {
         primary: Colors.KommunicateColors.primary,
@@ -35,7 +41,13 @@ const themes = {
             dangerBGHover: Colors.CommonColors.dangerHover,
             disabledBG: Colors.CommonColors.disabledBG,
             disabledText: Colors.CommonColors.disabledText
+        },
+        gradients: {
+            loginGradientColorStop0: Colors.KommunicateColors.gradient0,
+            loginGradientColorStop1: Colors.KommunicateColors.gradient1,
+            loginGradientColorStop2: Colors.KommunicateColors.gradient2
         }
+        
     }
 };
 

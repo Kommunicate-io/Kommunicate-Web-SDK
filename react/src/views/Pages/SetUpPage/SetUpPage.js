@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import validator from 'validator';
-import axios from 'axios';
+import { withTheme } from 'styled-components';
 import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import Header from '../../../components/Header/';
 import SelectStep from './SelectSteps'
@@ -8,6 +7,7 @@ import Step3 from './Step3'
 import Step2 from './Step2'
 import Step1 from './Step1'
 import './setup.css'
+import { LoginSignupSvg } from '../../../assets/svg/svgs';
 
 
 
@@ -73,7 +73,7 @@ class SetUpPage extends Component {
 						</div>
 					</div>
 					<div className="bottom-shape-container">
-					
+						<LoginSignupSvg gradient0={this.props.theme.gradients.loginGradientColorStop0} gradient1={this.props.theme.gradients.loginGradientColorStop1} gradient2={this.props.theme.gradients.loginGradientColorStop2} />
 						{
 							this.state.step === 1 ? <div className="steps-container"> <div className="step-1 filled"><p>Step 1</p></div> <div className="step-2 empty"><p>Step 2</p></div>	<div className="step-3 empty n-vis"><p>Step 3</p></div> </div> : this.state.step === 2 ? <div className="steps-container"> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled"><p>Step 2</p></div>	<div className="step-3 empty n-vis"><p>Step 3</p></div> </div> : <div className={ this.props.hideSkipForNow ? "n-vis": "steps-container"}> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled visited"><p>Step 2</p></div>	<div className="step-3 filled"><p>Step 3</p></div> </div>
 						}
@@ -85,4 +85,4 @@ class SetUpPage extends Component {
 	}
 }
 
-export default SetUpPage;
+export default withTheme(SetUpPage);

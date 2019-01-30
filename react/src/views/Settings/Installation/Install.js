@@ -5,7 +5,8 @@ import CommonUtils from "../../../utils/CommonUtils";
 import Notification from '../../model/Notification';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking';
 import { SettingsHeader } from '../../../../src/components/SettingsComponent/SettingsComponents';
-import { ReactNative, NativeScript, Squarspace, Wordpress, WixIcon, Cordova, IOS, AndroidIcon } from '../../../../src/assets/svg/svgs'
+import { ReactNative, NativeScript, Squarspace, Wordpress, WixIcon, Cordova, IOS, AndroidIcon } from '../../../../src/assets/svg/svgs';
+import Button from '../../../components/Buttons/Button';
 
 
 const DocsLink = (props, WrappedComponent) => {
@@ -162,15 +163,11 @@ class Install extends Component {
                     
                     <div className="copy-code-button-div">
                       {document.queryCommandSupported("copy") && (
-                        <button
-                          type="button"
-                          className="copy-code-btn km-button km-button--primary"
-                          onClick={this.copyToClipboard}
-                        >
+                        <Button type="button" className="copy-code-btn" onClick={this.copyToClipboard}>
                           {this.state.copySuccess}
-                        </button>
+                        </Button>
                       )}
-                      <span className="identify-users">Want to identify your users? <a href={this.state.docsLink.installation} target="_blank">Read more here</a></span>
+                      <span className="identify-users">Want to identify your users? <a href={this.state.docsLink.installation} className="brand-color" target="_blank">Read more here</a></span>
                     </div>
                   </div>
                 </div>

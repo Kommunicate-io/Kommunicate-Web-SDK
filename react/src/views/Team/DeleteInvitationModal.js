@@ -6,6 +6,8 @@ import {deleteUserByUserId,deleteInvitationByUserId} from '../../utils/kommunica
 import Modal from 'react-modal';
 import Notification from '../model/Notification';
 import CloseButton from './../../components/Modal/CloseButton.js';
+import Button from '../../components/Buttons/Button';
+
 const customStyles = {
   content: {
       top: '50%',
@@ -89,8 +91,8 @@ class DeleteInvitation extends Component {
     <p>{deleteUserOrInvitationContent}</p>
     <p>Are you sure?</p>
     <div className="team-delete-modal-btn">
-    <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick = {this.props.onRequestClose}>Cancel</button>
-    <button className="km-button km-button--primary" onClick= {this.deleteUser}>Yes, Delete</button>
+      <Button secondary className="team-delete-modal-cancel-btn" onClick = {this.props.onRequestClose}>Cancel</Button>
+      <Button onClick= {this.deleteUser}>Yes, Delete</Button>
     </div>
   </div>
   </div>

@@ -33,7 +33,35 @@ const GlobalStyle = createGlobalStyle`
   .product.product-${CommonUtils.getProduct()} {
     display: block;
   }
-`
+  .km-button--primary, .km-button--primary a {
+    background-color: ${props => props.theme.buttons.primaryBG};
+  }
+  .km-button--secondary, .km-button--primary a {
+    border: solid 1px ${props => props.theme.buttons.secondaryText};
+    color: ${props => props.theme.buttons.secondaryText};
+  }
+  .km-button--primary:hover {
+    background-color: ${props => props.theme.buttons.hover};
+  }
+  .km-button--secondary:hover {
+    border: solid 1px ${props => props.theme.buttons.secondaryText};
+    color: ${props => props.theme.buttons.secondaryText};
+  }
+  .brand-color {
+    color: ${props => props.theme.primary} !important;
+  }
+  .brand-color:hover, .brand-color:focus {
+    color: ${props => props.theme.buttons.hover} !important;
+    outline: none;
+  }
+  .switch-enable-automatic > .switch-input:checked ~ .switch-label {
+    background: ${props => props.theme.primary} !important;
+    border-color: ${props => props.theme.primary};
+  }
+  .hr {
+    border-top: 4px solid ${props => props.theme.primary};
+  }
+`;
 
 // const store = createStore(rootReducer, applyMiddleware(logger)
 

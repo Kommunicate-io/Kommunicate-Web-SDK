@@ -239,7 +239,7 @@
   display: inline;
 }
 .multi-email-span-container>div a {
-  color:#4831d9!important ;
+  /* color:#4831d9!important ; */
   font-size: 17px;
   font-weight: 400;
 }

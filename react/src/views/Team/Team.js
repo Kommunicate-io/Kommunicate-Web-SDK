@@ -18,11 +18,8 @@ import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import Button from '../../components/Buttons/Button';
 import UserRoleRadioButtonsTemplate from './UserRoleRadioButtonsTemplate'
-
-
-
-
 
 const customStyles = {
   content: {
@@ -356,7 +353,7 @@ class Integration extends Component {
               </div>
         <div className="km-heading-wrapper">
           <SettingsHeader />
-          <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT && true}>+ Add a team member</button>
+          <Button className="teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT && true}>+ Add a team member</Button>
         </div>
         <div className="row teammate-table">
           <div className="col-md-12">
@@ -394,8 +391,8 @@ class Integration extends Component {
                       <UserRoleRadioButtonsTemplate handleOnChange={this.handleRoleRadioBtn} selectedRole={this.state.selectedRole}/>
                     </div>
                     <div className="teammates-add-member-modal-btn">
-                      <button className="km-button km-button--secondary teammates-add-member-modal-cancel-btn" onClick={this.onCloseModal}>Cancel</button>
-                      <button className="km-button km-button--primary teammates-add-member-modal-add-btn" onClick={this.sendEmail}>Add member</button>
+                      <Button secondary className="teammates-add-member-modal-cancel-btn" onClick={this.onCloseModal}>Cancel</Button>
+                      <Button className="teammates-add-member-modal-add-btn" onClick={this.sendEmail}>Add member</Button>
                     </div>
                   </div>
                 }
@@ -416,8 +413,9 @@ class Integration extends Component {
                     <span className="tm-upgrade-plan-description-pricing"> $8 per month per agent! </span>
                     </div>
                     <div className="tm-upgrade-plan-description-btn-set">
-                      <button className="km-button km-button--secondary teammates-add-member-modal-cancel-btn" onClick ={this.onCloseModal }>Cancel</button>
-                        <Link to="/settings/billing" className="km-button km-button--primary tm-upgrade-btn" >Upgrade plan</Link>
+                      <Button secondary className="teammates-add-member-modal-cancel-btn" onClick ={this.onCloseModal }>Cancel</Button>
+                      <Button as={Link} to="/settings/billing" className="tm-upgrade-btn">Upgrade plan</Button>
+                      
                     </div>
                   </div>  
                 }
@@ -441,7 +439,7 @@ class Integration extends Component {
                         <p className="tm-disabled-accounts-description-1">Their accounts have been temporarily disabled till you upgrade your plan.</p>
                         <p className="tm-disabled-accounts-description-2">Till then, they will not be able to sign in and conversations will not be assigned to them.</p><br />
                         <div className="tm-disabled-link-btn">
-                          <Link to="/settings/billing" className="km-button km-button--secondary tm-upgrade-btn" >Upgrade plan</Link>
+                          <Button secondary as={Link} to="/settings/billing" className="tm-upgrade-btn" >Upgrade plan</Button>
                           { !this.state.hideSeeDisabledAccounts && 
                             <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
                           }

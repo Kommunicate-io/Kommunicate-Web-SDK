@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-
 import { patchCustomerInfo } from '../../../utils/kommunicateClient'
-import { Link } from 'react-router-dom';
-import Notification from '../../model/Notification';
-import ImageUploader from '../../Admin/ImageUploader'
-import Modal from 'react-modal';
 import '../../Admin/Admin.css';
-import { getResource } from '../../../config/config.js';
 import isURL from 'validator/lib/isURL';
 import CommonUtils from '../../../utils/CommonUtils';
 import applozicClient from '../../../utils/applozicClient';
 import { connect } from 'react-redux'
-import * as Actions from '../../../actions/signupAction'
+import * as Actions from '../../../actions/signupAction';
+import Button from '../../../components/Buttons/Button';
 
 const customStyles = {
   content: {
@@ -344,7 +339,7 @@ hideAllErrors (){
                             </div> */}
                             <div className="form-group setup-btn-group">
                               <div>
-                                <button className="km-button km-button--primary step-1-submit-btn"onClick={this.finishSetUp}>Go to dashboard </button>
+                                <Button className="step-1-submit-btn"onClick={this.finishSetUp}>Go to dashboard </Button>
                                 {/* <a className="step2-skip-link" onClick={this.finishSetUp}>Skip for now</a> */}
                               </div>
                             </div>

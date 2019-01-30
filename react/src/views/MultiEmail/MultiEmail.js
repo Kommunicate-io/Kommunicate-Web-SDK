@@ -96,8 +96,7 @@ class MultiEmail extends Component {
         return (
             <div>
                 {CommonUtils.getUserSession() ? 
-                    <div className="form-group multi-email-install-link">
-                    
+                    <div className="form-group multi-email-install-link">                    
                         {(currentPath.includes('installation') && !currentPath.includes('setUpPage')) ?  <button
                             className={this.state.instructionButtonShow === true ?"km-button km-button--primary":"n-vis"}
                             onClick={this.showEmailInput}

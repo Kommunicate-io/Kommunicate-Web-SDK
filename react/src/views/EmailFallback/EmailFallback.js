@@ -12,7 +12,7 @@ const FallbackEnabled = (props) => {
     return (props.enabled) ? (
         <p className="email-fallback--branding-description">We will send fallback emails to your users and/or your team members if they miss any new messages. The emails will have your logo if you have enabled the company branding option above.</p>
     ) : (
-        <p className="email-fallback--branding-description">We will not send fallback emails to your users. Just set up the API URLs from the <Link to="/settings/webhooks-security">Webhook Setup</Link> section to get the relevant data from us and use it to send fallback notifications from your end.</p>
+        <p className="email-fallback--branding-description">We will not send fallback emails to your users. Just set up the API URLs from the <Link to="/settings/webhooks-security" className="brand-color">Webhook Setup</Link> section to get the relevant data from us and use it to send fallback notifications from your end.</p>
     );
 } 
 
@@ -133,7 +133,7 @@ export default class EmailFallback extends Component {
             this.editApplicationApiCall(fallbackSettingsData).then( response => {
                 userSession.application.applicationWebhookPxys = response.applicationWebhookPxys;
                 CommonUtils.setUserSession(userSession);
-                (this.checkForFallbackSettings()) ? Notification.info("Fallback emails disabled succesfully") : Notification.info("Fallback emails enabled succesfully");
+                (this.checkForFallbackSettings()) ? Notification.info("Fallback emails disabled successfully") : Notification.info("Fallback emails enabled successfully");
             });
         }
     }
@@ -170,10 +170,10 @@ export default class EmailFallback extends Component {
                                     </div>
                                     {(CommonUtils.isTrialPlan()) ? <div>
                                         <input type="file" name="file" id="email-fallback-file" className="inputfile" onChange={this.handleFileOnChange} accept=".jpg, .jpeg, .png" disabled={this.state.disableUploadBtn}/>
-                                        <label htmlFor="email-fallback-file">{this.state.uploadImageText}</label>
+                                        <label htmlFor="email-fallback-file" className="brand-color">{this.state.uploadImageText}</label>
                                     </div> : (CommonUtils.isStartupPlan()) ? <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"} /> : <div>
                                         <input type="file" name="file" id="email-fallback-file" className="inputfile" onChange={this.handleFileOnChange} accept=".jpg, .jpeg, .png" disabled={this.state.disableUploadBtn}/>
-                                        <label htmlFor="email-fallback-file">{this.state.uploadImageText}</label>
+                                        <label htmlFor="email-fallback-file" className="brand-color">{this.state.uploadImageText}</label>
                                     </div>}
                                 </div>
 

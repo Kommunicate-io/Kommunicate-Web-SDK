@@ -33,12 +33,15 @@ module.exports = env => {
     let faviconIconPath = env && env.BRAND == "applozic" ? 'assets/favicon/applozic.ico' : 'assets/favicon/kommunicate.ico'
     let productTitle = env && env.BRAND == "applozic"? "Applozic": "Kommunicate";
     let analyticsScripts = env && env.BRAND == "applozic" ? 'alAnalyticsScripts.js' : 'kmAnalyticsScripts.js';
+    loadingAnimation = env && env.BRAND == "applozic" ? 'al-loading-animation.svg' : 'km-loading-animation.svg';
+
     var plugins = [
         new HtmlWebpackPlugin({
             title: productTitle,
             template: 'public/index.html',
             filename: 'index.html',
             favicon: faviconIconPath,
+            loadingAnimationPath: loadingAnimation
         }),
         new webpack.DefinePlugin({
             'process.env': {
@@ -57,6 +60,12 @@ module.exports = env => {
             },
             {
                 from: './assets/js/kmAnalyticsScripts.js', to: './'
+            },
+            {
+                from: './assets/images/al-loading-animation.svg', to: './'
+            },
+            {
+                from: './assets/images/km-loading-animation.svg', to: './'
             }
         ]),
         new HtmlWebpackIncludeAssetsPlugin({

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import validator from 'validator';
+import { withTheme } from 'styled-components'
 import {getConfig} from '../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
 import  {saveToLocalStorage,createCustomerOrAgent, getUserDetailsByToken} from '../../../utils/kommunicateClient'
@@ -14,7 +15,9 @@ import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
 import {LOGIN_VIA} from '../../../utils/Constant';
 import { GoogleLogin }from '../../Faq/LizSVG'
+import { LoginSignupSvg } from '../../../assets/svg/svgs';
 import ReCAPTCHA from "react-google-recaptcha";
+import Button from '../../../components/Buttons/Button';
 
 class Register extends Component {
   constructor(props){
@@ -342,10 +345,10 @@ class Register extends Component {
                   </div>
                   <div className="row signup-button-row">
                     <div className="col-lg-12 text-center">
-                      <button id="create-button"type="button" className="km-button km-button--primary step-1-submit-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
+                      <Button id="create-button" type="button" className="step-1-submit-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</Button>
                       
                       <p className="have-need-account">
-                        Already have an account? <Link to={'/login'}>Sign In</Link>
+                        Already have an account? <Button link={"true"} as={Link} to={'/login'}>Sign In</Button>
                       </p>
                     </div>
                   </div>
@@ -395,7 +398,9 @@ class Register extends Component {
               </div>
             </div>
           </div>
-          <div className="bottom-shape-container"></div>
+          <div className="bottom-shape-container">
+            <LoginSignupSvg gradient0={this.props.theme.gradients.loginGradientColorStop0} gradient1={this.props.theme.gradients.loginGradientColorStop1} gradient2={this.props.theme.gradients.loginGradientColorStop2} />
+          </div>
         </div>
       </div>
     )
@@ -417,4 +422,4 @@ const mapDispatchToProps = dispatch => {
     loginVia: payload => dispatch(Actions.updateDetailsOnLogin("LOGIN_VIA", payload))
   }
 }
-export default connect(null, mapDispatchToProps)(Register)
+export default connect(null, mapDispatchToProps)(withTheme(Register));

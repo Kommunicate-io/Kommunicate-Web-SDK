@@ -335,7 +335,7 @@
     vertical-align: middle !important; 
 }
 .tm-upgrade-btn {
-  padding: 11px 25px;
+  padding: 11px 16px;
   text-decoration: none !important;
 }
 .tm-disabled-link-btn {
@@ -401,3 +401,7 @@ padding-top: 60 px !important;
 
 .teammate-wrapper .table thead th {
   border-bottom: none; }
+
+.teammates-add-member-btn {
+  margin-bottom: 20px;
+}

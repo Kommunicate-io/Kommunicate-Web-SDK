@@ -5,6 +5,7 @@ import Phone from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import Moment from 'moment-timezone';
 import countriesAndTimezones from 'countries-and-timezones';
+import Button from '../../../components/Buttons/Button';
 
 class Step1 extends Component {
     
@@ -283,7 +284,7 @@ getCoutryCodeFromTimezone() {
                             </div>
 
                 <div className="company-url-main-div text-center">
-                    <button id ="submit-btn"className="km-button km-button--primary step-1-submit-btn"onClick={this.submitCompanyUrlOnly}> Continue </button>
+                    <Button id ="submit-btn"className="step-1-submit-btn"onClick={this.submitCompanyUrlOnly}> Continue </Button>
                 </div>
             </div>
         </form>

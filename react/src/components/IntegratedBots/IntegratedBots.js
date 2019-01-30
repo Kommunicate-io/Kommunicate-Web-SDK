@@ -5,21 +5,14 @@ import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Notification from '../../views/model/Notification';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import SliderToggle from '../../components/SliderToggle/SliderToggle';
+import {Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import CloseButton from './../../components/Modal/CloseButton.js';
-import ImageUploader from '../../views/Admin/ImageUploader';
-import Cato from '../../views/Bot/images/cato-bot-integration.png'
-import Amazon from '../../views/Bot/images/amazon-icon.png'
-import Diaglflow from '../../views/Bot/images/dialogflow-icon.png'
-import Microsoft from '../../views/Bot/images/microsoft-icon.png'
-import Tick from '../../views/Bot/images/tick-icon.png'
-import KmIcon from '../../views/Bot/images/km-icon.png'
-import NoteIcon from '../../views/Bot/images/note-icon.png';
-import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg} from '../../views/Faq/LizSVG.js';
+import {LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg} from '../../views/Faq/LizSVG.js';
 import {SUPPORTED_PLATFORM} from '../../utils/Constant';
 import CustomBotInputFields from '../../views/Bot/CustomBotInputFields'
 import {createBot} from '../../utils/botPlatformClient';
+import Button from '../Buttons/Button';
+
 export default class IntegratedBots extends Component {
 
     constructor(props) {
@@ -779,12 +772,12 @@ export default class IntegratedBots extends Component {
                   }
                     <div className="" style={{marginTop: "66px"}}>
                       <div className="km-cancel-delete">
-                        <button className="km-button km-button--secondary " onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
+                        <Button secondary onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
                           Cancel
-                        </button>
-                        <button className="km-button km-button--primary" onClick={()=> {this.saveEditedBotDetails(this.state.botPlatform)}}>
+                        </Button>
+                        <Button onClick={()=> {this.saveEditedBotDetails(this.state.botPlatform)}}>
                           Save Changes
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -804,12 +797,12 @@ export default class IntegratedBots extends Component {
                         <p className="km-bot-integration-use-case-modal-text-style">Are you sure?  </p>
                     </div>
                     <div className="km-cancel-delete">
-                      <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick={this.onCloseModal}>
+                      <Button secondary className="team-delete-modal-cancel-btn" onClick={this.onCloseModal}>
                         Cancel
-                      </button>
-                      <button className="km-button km-button--primary" onClick={this.deleteBot}>
+                      </Button>
+                      <Button onClick={this.deleteBot}>
                         Yes, Delete
-                      </button>
+                      </Button>
                     </div>
                   </ModalBody>
                   <span onClick={this.onCloseModal}><CloseButton /></span>

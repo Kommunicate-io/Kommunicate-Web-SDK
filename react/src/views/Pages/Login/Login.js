@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import validator from 'validator';
+import { withTheme } from 'styled-components';
 import {getConfig} from '../../.../../../config/config.js';
 import { MenuItem, DropdownButton} from 'react-bootstrap';
 import { resetPassword, getUserInfo } from '../../../utils/kommunicateClient';
@@ -20,17 +21,9 @@ import * as Actions from '../../../actions/loginAction'
 import * as signUpActions from '../../../actions/signupAction'
 import { persistor} from '../../../store/store';
 import {GoogleLogin}from '../../Faq/LizSVG'
-import {ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
-import styled from 'styled-components';
+import {ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick, LoginSignupSvg } from '../../../assets/svg/svgs';
 import Button from '../../../components/Buttons/Button';
 
-
-const Hr = styled.hr`
-	width: 12%;
-    border-top: 4px solid ${props => props.theme.primary};
-    margin-top: 20px;
-    margin-bottom: 0;
-`;
 
 class Login extends Component {
 
@@ -486,7 +479,7 @@ class Login extends Component {
 						</div>
 						<div className="row justify-content-center login-form-div">
 							<div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
-								<Hr />
+								<hr className="hr" />
 									<div className="card-group mb-0">
 										<div className="p-4 login-card-block">
 											<div className="card-block">
@@ -546,13 +539,13 @@ class Login extends Component {
 													}
 													<div className="row">
 														<div className="col-12 text-right forgot-password-div">
-															<button type="button" id ="btn-forgot-password" className="btn btn-link px-0" hidden={this.state.isForgotPwdHidden}  onClick= { this.initiateForgotPassword }>Forgot password?</button>
+															<Button link type="button" id ="btn-forgot-password" className="btn-forgot-password" hidden={this.state.isForgotPwdHidden}  onClick= { this.initiateForgotPassword }>Forgot password?</Button>
 														</div>
 													</div>
 													<div className="row">
 														<div className="col-12 text-center">
-															<Button primary large fontSize={"16px"} style={{marginTop:"26px"}} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
-															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Link to={'/signup?product=' + this.state.product}>Sign up</Link></p>
+															<Button large fontSize={"16px"} style={{marginTop:"26px"}} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
+															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Button  as={Link} link={"true"} to={'/signup?product=' + this.state.product}>Sign up</Button></p>
 														</div> 
 													</div>
 				
@@ -577,7 +570,9 @@ class Login extends Component {
 									</button>
 								}
 							</div>
-						<div className="bottom-shape-container"></div>
+						<div className="bottom-shape-container">
+							<LoginSignupSvg gradient0={this.props.theme.gradients.loginGradientColorStop0} gradient1={this.props.theme.gradients.loginGradientColorStop1} gradient2={this.props.theme.gradients.loginGradientColorStop2} />
+						</div>
 					</div>
 				</div>
 				<div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
@@ -595,4 +590,4 @@ const mapDispatchToProps = dispatch => {
 	loginVia: payload => dispatch(Actions.updateDetailsOnLogin("LOGIN_VIA", payload))
   }
 }
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(withTheme(Login));

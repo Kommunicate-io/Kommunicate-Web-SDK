@@ -258,20 +258,22 @@
 
 .hr {
     width: 12%;
-    border-top: 4px solid #6556d7;
     margin-top: 20px;
     margin-bottom: 0;
 }
 
 .bottom-shape-container {
     position: absolute;
-    bottom: 0;
+    bottom: 2px;
     left: 0;
     width: 300px;
     height: 160px;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMzQ5Ljg2NCAxODguOTYiPiAgPGRlZnM+ICAgIDxzdHlsZT4gICAgICAuY2xzLTEgeyAgICAgICAgZmlsbDogdXJsKCNsaW5lYXItZ3JhZGllbnQpOyAgICAgIH0gICAgPC9zdHlsZT4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQiIHgxPSIxLjAyIiB5MT0iMS4wMjEiIHgyPSItMC4wODMiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4gICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNhNmE4ZDMiLz4gICAgICA8c3RvcCBvZmZzZXQ9IjAuNzI0IiBzdG9wLWNvbG9yPSIjNjI1MmQ4Ii8+ICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNDgzMWQ5Ii8+ICAgIDwvbGluZWFyR3JhZGllbnQ+ICA8L2RlZnM+ICA8cGF0aCBpZD0iUGF0aF8xMV9Db3B5IiBkYXRhLW5hbWU9IlBhdGggMTEgQ29weSIgY2xhc3M9ImNscy0xIiBkPSJNLTM4LjY3OSwyMDkuNkMtNzkuMDU1LDEwMi4wNTctMTM5Ljk2NywxMDEuMjc5LTIyMC4zNTIsODIuODc2Uy0zODguNDUsMjAuOC0zODguNDUsMjAuOGwzNDkuODY0LS4xNTdTLTM5LjA3MiwxNjYuMTUzLTM4LjY3OSwyMDkuNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zOC41ODYgMjA5LjYwMikgcm90YXRlKDE4MCkiLz48L3N2Zz4=);
     background-size: contain;
     background-repeat: no-repeat;
+}
+.bottom-shape-container svg {
+    width: 100%;
+    height: auto;
 }
 
 .signup-button-row p a{
@@ -294,6 +296,8 @@
     font-weight: 500;
     color: #5c5aa7;
     text-decoration: underline;
+    padding: 0 5px;
+    font-size: 14px;
 }
 
 .signup-form-div, .login-form-div, .app-list-form-div {
@@ -325,6 +329,11 @@
 
 .login-form-div .step-1-submit-btn {
     margin-top: 26px;
+}
+
+.btn-forgot-password {
+    padding: 0;
+    height: 35px;
 }
 
 @media(max-width:576px) {

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import './InputFile.css';
+import { withTheme, css } from 'styled-components';
 
-export default class InputFile extends Component {
+class InputFile extends Component {
 
     constructor(props)
     {
@@ -43,15 +44,16 @@ export default class InputFile extends Component {
     render () {
 
         const { id, dataUrl, text, multiple, accept, className, onBlur } = this.state;
+        const brandColor = this.props.theme.primary;
 
         return(
             <div style={{display: 'flex'}}>
                 <input id={id} data-url={dataUrl} type="file" className="km-btn-file" data-multiple-caption={this.state.message} multiple={multiple} onChange={this.getUploadedFileName} accept={accept} onBlur={onBlur}></input>
-                <label htmlFor={id} className={(className === 'primary') ? "km-button km-button--primary km-btn-file-label" : (className === 'secondary') ? "km-button km-button--secondary km-btn-file-label" : "km-button km-button--primary km-btn-file-label"}>
+                <label htmlFor={id} className={(className === 'secondary') ? "km-button km-button--secondary km-btn-file-label" : "km-button km-button--primary km-btn-file-label"}>
                     <span className={(text !== this.props.text) ? "pad-right-40" : " "}>{text}</span>
                 </label>
                 <span hidden={this.state.hideCloseBtn} onClick={() => this.removeSelectedFiles( id, text)} className="close-btn-container">
-                    <svg xmlns="http://www.w3.org/2000/svg"  fill={(className === 'primary') ? "#FFF" : (className === 'secondary') ? "#5C5AA7" : "#5C5AA7"} height="24" viewBox="0 0 24 24" width="24" style={{margin: "8px 10px -5px 10px", zIndex:20, width:"20px", height:"20px"}}>
+                    <svg xmlns="http://www.w3.org/2000/svg"  fill={(className === 'secondary') ? brandColor : "#FFF"} height="24" viewBox="0 0 24 24" width="24" style={{margin: "8px 10px -5px 10px", zIndex:20, width:"20px", height:"20px"}}>
                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
                         </path>
                         <path d="M0 0h24v24H0z" fill="none">
@@ -72,3 +74,5 @@ InputFile.propTypes = {
     className: PropTypes.string,
     onBlur: PropTypes.func,
 };
+
+export default withTheme(InputFile);

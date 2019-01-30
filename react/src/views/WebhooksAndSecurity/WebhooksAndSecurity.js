@@ -12,7 +12,8 @@ import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
-import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink'
+import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
+import { withTheme } from 'styled-components';
 
 const links={
     applozic:{
@@ -32,7 +33,7 @@ const InputFields = (props) => {
 }
 
 
-export default class WebhooksAndSecurity extends Component {
+class WebhooksAndSecurity extends Component {
 
     constructor(props) {
         super(props);
@@ -193,7 +194,7 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-new-messages"} value={this.state.newMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                            
                                 </div>
-                                <MoreInfoLink url={this.state.links.webhook} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={this.state.links.webhook} descriptionLabel={"For more information, see our "} Linklabel={"Docs"}  color={this.props.theme.primary}/>
                             </div>
 
 
@@ -204,16 +205,18 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-unread-messages"} value={this.state.unreadMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>
                                     <p>if message is unread for more than</p>
-                                    <Select
-                                        name="email-notifications-select"
-                                        clearable={false}
-                                        searchable={false}
-                                        value={this.state.selectUnredMsgTime}
-                                        onChange={selectUnredMsgTime => this.setState({ selectUnredMsgTime })}
-                                        options={options}
-                                    />                                 
+                                    <div className="react-select-container">
+                                        <Select
+                                            name="email-notifications-select"
+                                            clearable={false}
+                                            searchable={false}
+                                            value={this.state.selectUnredMsgTime}
+                                            onChange={selectUnredMsgTime => this.setState({ selectUnredMsgTime })}
+                                            options={options}
+                                        />     
+                                    </div>                    
                                 </div>
-                                <MoreInfoLink url={this.state.links.webhook} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={this.state.links.webhook} descriptionLabel={"For more information, see our "} Linklabel={"Docs"}  color={this.props.theme.primary}/>
                             </div>
 
 
@@ -224,16 +227,18 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-undelivered-messages"} value={this.state.undeliveredMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>
                                     <p>if message is undelivered for more than</p>
-                                    <Select
-                                        name="email-notifications-select"
-                                        clearable={false}
-                                        searchable={false}
-                                        value={this.state.selectUndeliveredMsgTime}
-                                        onChange={selectUndeliveredMsgTime => this.setState({ selectUndeliveredMsgTime })}
-                                        options={options}
-                                    />                                 
+                                    <div className="react-select-container">
+                                        <Select
+                                            name="email-notifications-select"
+                                            clearable={false}
+                                            searchable={false}
+                                            value={this.state.selectUndeliveredMsgTime}
+                                            onChange={selectUndeliveredMsgTime => this.setState({ selectUndeliveredMsgTime })}
+                                            options={options}
+                                        />
+                                    </div>                                
                                 </div>
-                                <MoreInfoLink url={this.state.links.accessToken} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={this.state.links.accessToken} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} color={this.props.theme.primary}/>
                             </div>
 
 
@@ -244,7 +249,7 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-authentication-token"} value={this.state.authenticationToken} onChange={this.handleOnChange} label={"Enter your authentication token"} />
                                     </div>                                
                                 </div>
-                                <MoreInfoLink url={this.state.links.accessToken} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={this.state.links.accessToken} descriptionLabel={"For more information, see our "} Linklabel={"Docs"}  color={this.props.theme.primary}/>
                             </div>
 
 
@@ -266,7 +271,7 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-authorization-url"} value={this.state.authorizationUrl} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                                
                                 </div>
-                                <MoreInfoLink url={this.state.links.accessToken} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={this.state.links.accessToken} descriptionLabel={"For more information, see our "} Linklabel={"Docs"}  color={this.props.theme.primary}/>
                             </div>
 
                             <div className="security-action-buttons-container">
@@ -292,3 +297,5 @@ const options = [
     { value: 1800, label: '30 minutes' },
     { value: 3600, label: '60 minutes' }
 ];
+
+export default withTheme(WebhooksAndSecurity);
