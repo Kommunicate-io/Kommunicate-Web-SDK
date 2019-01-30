@@ -49,6 +49,9 @@ const cronService = require("../cron/cronService.js")
 // For user preference
 const userPreferenceController = require("../users/userPreferenceController.js")
 
+// For Chat Popup Messages
+const chatPopupMessageController = require("../setting/application/chatPopupMessageController.js")
+
 //router declaration
 const userRouter = express.Router();
 const applicationRouter = express.Router();
@@ -103,6 +106,9 @@ exports.metabaseRouter = metabaseRouter;
 //Cron Time Stamp Route
 exports.cronServiceRouter = express.Router();
 
+
+//Chat Popup Route
+exports.chatPopupRouter = express.Router();
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -247,6 +253,15 @@ settingRouter.post('/application/insert', validate(applicationSettingValidation.
 settingRouter.patch('/application/:appId', validate(applicationSettingValidation.updateAppSettings),
   appSettingController.updateAppSettings);
 
+//chat popup settings route
+settingRouter.get('/popup/:appId', validate(applicationSettingValidation.getChatPopupMessage),
+  chatPopupMessageController.getChatPopupMessage);
+settingRouter.post('/popup/:appId', validate(applicationSettingValidation.createChatPopupMessage),
+  chatPopupMessageController.createChatPopupMessage);
+settingRouter.patch('/popup/:appId', validate(applicationSettingValidation.updateChatPopupMessage),
+  chatPopupMessageController.updateChatPopupMessage);
+settingRouter.delete('/popup/:appId', validate(applicationSettingValidation.deleteChatPopupMessage), 
+  chatPopupMessageController.deleteChatPopupMessage);
 
 // v2 user router
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);

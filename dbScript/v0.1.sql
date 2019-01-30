@@ -211,7 +211,8 @@ CREATE TABLE chat_popup_messages (
     id INTEGER NOT NULL AUTO_INCREMENT,
     app_setting_id INTEGER NOT NULL,
     message TEXT NOT NULL,
-    url TEXT NOT NULL,
+    url VARCHAR(300) NOT NULL,
     delay INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    UNIQUE KEY(app_setting_id, url)
 );

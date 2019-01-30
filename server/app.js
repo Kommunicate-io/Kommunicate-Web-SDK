@@ -178,6 +178,8 @@ app.use('/metabase',routes.metabaseRouter);
 //Cron Time Stamp Route
 app.use('/crontime',routes.cronServiceRouter);
 
+//Chat Popup Route
+app.use('/popup', routes.chatPopupRouter);
 
 function startApp() {
     app.listen(port, function () {
