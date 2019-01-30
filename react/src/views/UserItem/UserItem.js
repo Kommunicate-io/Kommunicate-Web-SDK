@@ -8,7 +8,7 @@ import Notification from '../model/Notification';
 import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js';
 import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
 import DeleteInvitation from '../Team/DeleteInvitationModal.js';
-import {DeleteIcon} from '../../../src/assets/svg/svgs'
+import {DeleteIcon, EditIcon} from '../../../src/assets/svg/svgs'
 
 
 
@@ -131,9 +131,17 @@ class UserItem extends Component {
                         }
                     </td>
                     
-                    <td className= "teammates-delete-icon" colSpan="3"  >
+                    <td className= "teammates-row-icon-container" colSpan="1"  >
                       { this.hasTeamEditAccess(roleType) &&
-                        <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper km-teammates-delete-visibility">
+                        <span className="teammates-edit-wrapper km-teammates-icon-visibility">
+                         <EditIcon />
+                          Edit
+                        </span>
+                      }
+                    </td>
+                    <td className= "teammates-row-icon-container" colSpan="2"  >
+                      { this.hasTeamEditAccess(roleType) &&
+                        <span onClick ={this.onOpenModal}  data-index= {deleteRef} className="teammates-delete-wrapper km-teammates-icon-visibility">
                          <DeleteIcon />
                           Delete
                         </span>

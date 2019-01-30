@@ -65,15 +65,15 @@
   border-top: none;
   vertical-align: middle;
 }
-.team-data-align .teammates-delete-icon span{
+.team-data-align .teammates-row-icon-container span{
   display: none;
 }
-.team-data-align:hover .teammates-delete-icon span{
+.team-data-align:hover .teammates-row-icon-container span{
   display: block;
   width: 55px;
   
 }
-.teammates-delete-icon .km-teammates-delete-visibility{
+.teammates-row-icon-container .km-teammates-icon-visibility{
   visibility: visible;
   opacity: 1;
 }
@@ -142,18 +142,18 @@
   border-top: 1px solid #a5b0bd;
   margin-bottom: 0;
 }
-.teammates-delete-wrapper {
+.teammates-delete-wrapper, .teammates-edit-wrapper {
   font-size: 14px;
   font-weight: 300;
   letter-spacing: 0.2px;
   color: #8b8c8e;
 }
-.teammates-delete-wrapper > svg {
+.teammates-delete-wrapper > svg, .teammates-edit-wrapper > svg {
   vertical-align: middle ;
   margin-bottom: 2px;
   margin-right: 4px;
 }
-.teammates-delete-wrapper:hover {
+.teammates-delete-wrapper:hover, .teammates-edit-wrapper:hover {
   cursor: pointer;
   color: #434344;
 }
