@@ -8602,7 +8602,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if (stompClient) {
                     _this.sendStatus(0);
                     stompClient.connected && stompClient.disconnect();
-                    if (SOCKET) {
+                    if (typeof SOCKET ==="object") {
 						SOCKET.close();
 						SOCKET = '';
 					}
