@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {configUrl, getEnvironment}  from '../config/config-env';
+import {config, getEnvironment}  from '../config/config-env';
 
 var env = getEnvironment();
-var testURL = configUrl[env].baseurl.kommunicateAPI;
+var testURL = config[env].baseurl.kommunicateAPI;
 
 
 class App extends Component {

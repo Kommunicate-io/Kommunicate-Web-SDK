@@ -1,4 +1,4 @@
-export const configUrl = {
+export const config = {
     "development": {
         "baseurl": {    
             "kommunicateAPI": "https://api-test.kommunicate.io",
