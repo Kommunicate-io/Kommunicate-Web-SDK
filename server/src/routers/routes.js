@@ -123,8 +123,8 @@ home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests for user preference service
 userRouter.post("/preference/add", validate(userValidation.createUserPreference), userPreferenceController.createUserPreference);
-userRouter.post("/preference/delete", validate(userValidation.deleteUserPreference), userPreferenceController.deleteUserPreference);
-userRouter.post("/preference/update", validate(userValidation.updateUserPreference), userPreferenceController.updateUserPreference);
+userRouter.delete("/preference/", validate(userValidation.deleteUserPreference), userPreferenceController.deleteUserPreference);
+userRouter.patch("/preference/", validate(userValidation.updateUserPreference), userPreferenceController.updateUserPreference);
 userRouter.get("/preference/get",  validate(userValidation.getUserPreference), userPreferenceController.getUserPreference);
 
 // requests to user router

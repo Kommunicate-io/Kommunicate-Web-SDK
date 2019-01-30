@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 const UserPreferencesModel = require("../models").UserPreferences;
 const PreferenceModel = require("../models").Preference;
 const userService =  require("./userService");
-UserPreferencesModel.belongsTo(PreferenceModel, {foreignKey:"preference_id"});
+UserPreferencesModel.belongsTo(PreferenceModel, {onDelete: 'cascade', hooks:true}, {foreignKey:"preference_id"} );
 /**
  * This Function is to add user's preference.
  * @param {applicationId : string, userName : string, preference : string, value : string} data
@@ -18,12 +18,13 @@ const createUserPreference = data => {
         value : data["value"]
       };
       logger.info("processing", preferenceData);
-      return UserPreferencesModel.create(preferenceData).then(data => {
+      return Promise.resolve(UserPreferencesModel.create(preferenceData)).then(data => {
         logger.info("Inserted data in db");
+        return;
       })
     })
   }).catch(err => {
-    logger.info('error while creating preference data : ' + userPreferences["user_id"]);
+    logger.info('error while creating preference data : ', data);
     throw err;
   });
 };

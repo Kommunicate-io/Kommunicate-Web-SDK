@@ -85,7 +85,7 @@ const processOneApp = (app) => {
             if (!customer.email) return "customer email is empty";
             let headers = { "Apz-Token": "Basic " + new Buffer(adminAgent[0].userName + ":" + adminAgent[0].accessToken).toString('base64'), "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
             return userPreferenceService.getUserPreference({applicationId:adminAgent[0].applicationId, userName:adminAgent[0].userName}).then(userPreferences => {
-                let timeZone = userPreferences.preferences.timeZone;
+                let timeZone = userPreferences.preferences.timeZone==null ? "Asia/Kolkata":userPreferences.preferences.timeZone;
                 let fromDate = new Date();
                 let toDate = new Date(fromDate);
                 toDate.setDate(toDate.getDate() - 7);

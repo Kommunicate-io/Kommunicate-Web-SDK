@@ -186,14 +186,18 @@ ALTER TABLE app_settings ADD COLUMN domain_url VARCHAR(255) DEFAULT Null;
 
 
 CREATE TABLE user_preferences (
+    id INTEGER NOT NULL AUTO_INCREMENT,
     user_id INTEGER NOT NULL,
     preference_id INTEGER NOT NULL,
     value VARCHAR(200) NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at DATETIME,
-    PRIMARY KEY(user_id, preference_id)
+    PRIMARY KEY(id), 
+    FOREIGN KEY(preference_id) REFERENCES preference(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+ALTER TABLE user_preferences ADD UNIQUE INDEX(user_id, preference_id);
 
 CREATE TABLE preference (
     id INTEGER NOT NULL  AUTO_INCREMENT,

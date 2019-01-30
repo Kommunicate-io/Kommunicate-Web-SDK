@@ -11,15 +11,13 @@
       userId: {
         type: DataTypes.INTEGER,
         field: 'user_id',
-        allowNull: false, 
+        allowNull: false 
         // uid <= appid + username
-        primaryKey: true
       },
       preferenceId: {
         type: DataTypes.INTEGER,
         field: 'preference_id',
-        allowNull: false,
-        primaryKey: true
+        allowNull: false
       },
       value: {
         type: DataTypes.STRING(200),
@@ -27,6 +25,9 @@
         allowNull: false
       }
     }, {
+      indexes: [
+        { fields: ['user_id', 'preference_id'], unique: true }
+       ],
         underscored: true,
         paranoid: true,
         setterMethods: {},
