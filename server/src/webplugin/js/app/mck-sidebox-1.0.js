@@ -8566,8 +8566,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if (stompClient) {
                     _this.sendStatus(0);
                     stompClient.connected && stompClient.disconnect();
-                    SOCKET.close();
-                    SOCKET = '';
+                    if (SOCKET) {
+						SOCKET.close();
+						SOCKET = '';
+					}
                 }
             };
             _this.unsubscibeToTypingChannel = function () {
