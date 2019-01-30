@@ -99,7 +99,6 @@ Kommunicate.defaultLabels = {
                 'email':'Email',
                 'name':'Name',
                 'phone':'Contact Number',
-                'contactNumber':'Contact Number',
                 'heading':'Before starting, we just need a few details so that we may serve you better',
                 'submit':'Start Conversation',
     }
