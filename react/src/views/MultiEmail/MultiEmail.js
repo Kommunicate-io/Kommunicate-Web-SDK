@@ -4,6 +4,7 @@ import isEmail from "validator/lib/isEmail";
 import ValidationUtils from '../../utils/validationUtils'
 import { notifyThatEmailIsSent } from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
+import CommonUtils from '../../utils/CommonUtils'
 
 import "./multiple-email.css";
 
@@ -94,18 +95,23 @@ class MultiEmail extends Component {
         const currentPath = window.location.pathname;
         return (
             <div>
-                {<div className="form-group multi-email-install-link">
-                {((currentPath.includes('installation')) && (!currentPath.includes('setUpPage'))) ?  <button
-                        className={this.state.instructionButtonShow === true ?"km-button km-button--primary":"n-vis"}
-                        onClick={this.showEmailInput}
-                    >
-                        {" "}
-                        Send instructions {" "}
-                    </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
-                        onClick={this.showEmailInput}>Send instructions </a>}
+                {CommonUtils.getUserSession() ? 
+                    <div className="form-group multi-email-install-link">
                     
-                    
-                </div>}
+                        {(currentPath.includes('installation') && !currentPath.includes('setUpPage')) ?  <button
+                            className={this.state.instructionButtonShow === true ?"km-button km-button--primary":"n-vis"}
+                            onClick={this.showEmailInput}
+                        >
+                            {" "}
+                            Send instructions {" "}
+                        </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
+                            onClick={this.showEmailInput}>Send instructions </a>}
+                        
+                        
+                    </div>
+                    :
+                    ""
+                }
                 <div className={
                     ((this.state.emailInstructions === true) && ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))))
                         ? "form-group flex-center" : ((this.state.emailInstructions === true))
