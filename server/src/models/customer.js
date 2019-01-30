@@ -57,7 +57,7 @@ let customer = function (sequelize, DataTypes) {
         isPaidCustomer: function () {
           return this.subscription != "startup";
         },
-        getProduct: function() {
+        product: function() {
           return this.subscription == "applozic" ? "applozic":"kommunicate";
         },
         isProductApplozic: function() {

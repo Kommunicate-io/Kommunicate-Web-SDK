@@ -99,7 +99,7 @@ const createApplication = (application) => {
 
 const reactivateAccount = async function (appId) {
     let customer = await getCustomerByApplicationId(appId);
-    if (customer.subscription && !customer.isProductApplozic() && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
+    if (customer.subscription && !customer.isProductApplozic && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
         let users = [];
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC'], ['id', 'ASC']])

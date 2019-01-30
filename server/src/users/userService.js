@@ -213,7 +213,7 @@ const createUser = (user, customer) => {
           logger.error("error while creating bot platform", err);
         })
       } else {
-        activeCampaignClient.addContact({"product": customer.getProduct(), "appId": customer.applications[0].applicationId, "email": user.email, "name": user.name, "orgname": customer.userName, "tags": product + "-Team-Member" });
+        activeCampaignClient.addContact({"product": customer.product, "appId": customer.applications[0].applicationId, "email": user.email, "name": user.name, "orgname": customer.userName, "tags": customer.product + "-Team-Member" });
       }
       return user ? user.dataValues : null;
     }).catch(err => {
