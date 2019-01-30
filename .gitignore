@@ -89,3 +89,8 @@ server/dist/build/
 website/package-lock.json
 react/public/icons/*
 Kommunicate-Agent/
+
+helpcenter/node_modules/*
+helpcenter/package-lock.json
+helpcenter/DS_Store/*
+helpcenter/.DS_Store
