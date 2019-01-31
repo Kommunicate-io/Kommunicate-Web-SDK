@@ -7779,7 +7779,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674":"15675";
 
 					if (typeof MCK_WEBSOCKET_PORT !== 'undefined') {
-						port = (!kmUtils.startsWith(MCK_WEBSOCKET_PORT, "https")) ? "8080":MCK_WEBSOCKET_PORT;
+						port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "8080":MCK_WEBSOCKET_PORT;
 					}
 
 					if (typeof w.SockJS === 'function') {
