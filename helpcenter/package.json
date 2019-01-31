@@ -1,21 +1,22 @@
 {
   "name": "helpcenter",
   "version": "1.0.0",
-  "description": "FAQ helpcenter powred by Kommunicate",
+  "description": "FAQ Help Center powered by Kommunicate",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "test-build": "webpack --mode development",
     "prod-build": "webpack --mode production"
   },
-  "author": "",
+  "author": "Akshat Dhabi",
   "license": "ISC",
   "dependencies": {
     "axios": "0.18.0",
-    "css-loader": "^2.1.0",
-    "node-sass": "^4.11.0",
+    "css-loader": "2.1.0",
+    "node-sass": "4.11.0",
     "react": "16.7.0",
     "react-dom": "16.7.0",
+    "react-router-dom": "4.3.1",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1"
   },
