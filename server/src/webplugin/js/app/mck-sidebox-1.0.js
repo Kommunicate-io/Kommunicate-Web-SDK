@@ -286,6 +286,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
     function Applozic(appOptions) {
         var _this = this;
+        var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
         var MCK_TOKEN;
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
@@ -1398,10 +1399,30 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
                 USER_DEVICE_KEY = '';
+                if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION) && !JSON.parse(KommunicateUtils.getCookie(KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION))&&  KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !==0){
+                    ALStorage.clearMckMessageArray();
+                    ALStorage.clearMckContactNameArray();
+                    ALStorage.clearAppHeaders();
+                };
                 var isValidated = _this.validateAppSession(userPxy);
                 if (!isValidated) {
                     if (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !==0 || KM_PRELEAD_COLLECTION.length !==0) {
                         $applozic("#km-userId").val(MCK_USER_ID);
+                        if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) && KommunicateUtils.getCookie(KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION) && JSON.parse(KommunicateUtils.getCookie(KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION))){
+                            var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+                            var options = {
+                                userId: userId,
+                                applicationId: MCK_APP_ID,
+                                onInit: MckMessageServices.loadChat,
+                                baseUrl: MCK_BASE_URL,
+                                locShare: IS_MCK_LOCSHARE,
+                                googleApiKey: MCK_GOOGLE_API_KEY,
+                                chatNotificationMailSent: true
+                            }
+                            PRE_CHAT_LEAD_COLLECTION_POPUP_ON = false;
+                            mckInit.initialize(options);
+                            return false;
+                        }
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         
@@ -1624,7 +1645,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 });
                 
                 if((KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0) || (KM_PRELEAD_COLLECTION && KM_PRELEAD_COLLECTION.length !==0)){
-                  $applozic.fn.applozic("mckLaunchSideboxChat");
+                    PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
                     if($mck_sidebox.css('display') === 'block') {
@@ -1645,6 +1666,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
                     if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === (MCK_ACCESS_TOKEN)) {
+                        PRE_CHAT_LEAD_COLLECTION_POPUP_ON = !(KM_ASK_USER_DETAILS !==0)
                         _this.onInitApp(appHeaders);
                         return true;
                     }
@@ -2408,6 +2430,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                     if(email){
                         userId = email;
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30});
                     }
                     var metadata = mckMessageService.getUserMetadata();
                     $error_chat_login.removeClass('show').addClass('hide');

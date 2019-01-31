@@ -90,7 +90,8 @@ KommunicateConstants = {
     },
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
-        KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name"
+        KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",
+        IS_USER_ID_FOR_LEAD_COLLECTION: "km_lead_collection"
     },
     MESSAGE_CLUBBING: {
         TIME_FRAME: 300000, // 5 minutes timestamp value in milliseconds.

@@ -329,13 +329,10 @@ function ApplozicSidebox() {
                             options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
                         }
                     }
-
-                } else {
-                    // ask for email id;
                 }
-               if(typeof options.metadata == 'object'){
-
-               }
+                if (!options.askUserDetails) {
+                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30});
+                }
             }
             if (typeof options !== 'undefined') {
                 options.ojq = $original;
