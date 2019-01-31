@@ -33,14 +33,12 @@ class UserItem extends Component {
        index:this.props.index,
        agentList: this.props.agentList,
        modalIsOpen:false,
-       userToBeDeleted:{},
+       userToBeUpdated:{},
        userStatus:"",
-       selectedRole: ROLE_TYPE.AGENT
       };
       this.onOpenModal = this.onOpenModal.bind(this);
       this.onCloseModal = this.onCloseModal.bind(this);
     }
-  
     getContactImageByAlphabet() {
       var user = this.props.user;
       var displayName = CommonUtils.getDisplayName(user);
@@ -58,21 +56,16 @@ class UserItem extends Component {
         return <span className="km-contact-icon alpha_user">{name}</span>;
       }
     }
-    handleRoleRadioBtn = (e) => {
-      this.setState({
-        selectedRole: e.target.getAttribute('data-value')
-      })
-    }
     onOpenModal = (e) => {
       let index = parseInt(e.target.dataset.index);
       let user = this.state.agentList[index].displayName || this.state.agentList[index].userId;
-      let userToBeDeleted = {
+      let userToBeUpdated = {
         displayName: user,
         userId: this.state.agentList[index].userId
       }
       this.setState({ 
         modalIsOpen: true, 
-        userToBeDeleted:userToBeDeleted,
+        userToBeUpdated:userToBeUpdated,
         modalType: e.target.dataset.button
       });
     };
@@ -152,7 +145,8 @@ class UserItem extends Component {
                       }
                     </td>
                      { this.state.modalIsOpen &&
-                       <UserUpdateModal isOpen={this.state.modalIsOpen} userToBeDeleted={this.state.userToBeDeleted} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false} getUsers={this.props.getUsers} modalType={this.state.modalType} handleRoleRadioBtn={this.handleRoleRadioBtn} selectedRole={this.state.selectedRole} />
+                       <UserUpdateModal isOpen={this.state.modalIsOpen} userToBeUpdated={this.state.userToBeUpdated} deleteInvitation={false} agentList ={this.props.agentList} onRequestClose={this.onCloseModal} onClickOfDelete={this.deleteUser} ariaHideApp={false} getUsers={this.props.getUsers} modalType={this.state.modalType} roleType= {roleType} updateUserRoleOnUI = {this.props.updateUserRoleOnUI}
+                       usersList={this.props.usersList} />
                      }
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>

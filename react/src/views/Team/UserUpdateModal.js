@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import CommonUtils from '../../utils/CommonUtils.js';
-import {deleteUserByUserId,deleteInvitationByUserId} from '../../utils/kommunicateClient';
+import {deleteUserByUserId,deleteInvitationByUserId, patchUserInfo} from '../../utils/kommunicateClient';
 import Modal from 'react-modal';
 import Notification from '../model/Notification';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import UserRoleRadioButtonsTemplate from './UserRoleRadioButtonsTemplate'
+import { ROLE_TYPE, ROLE_NAME } from '../../utils/Constant';
 const customStyles = {
   content: {
       top: '50%',
@@ -27,15 +28,27 @@ class UserUpdateModal extends Component {
      index:this.props.index,
      agentList: this.props.agentList,
      modalIsOpen:false,
-     userStatus:""
+     userStatus:"",
+     selectedRole: ROLE_TYPE.AGENT,
+     buttonDisabled: false,
     };
     this.deleteInvitation = this.deleteInvitation.bind(this);
     this.deleteUser = this.deleteUser.bind(this);
   }
+  componentDidMount = () => {
+    this.setState({selectedRole:this.props.roleType})
+    this.props.modalType == "edit" && this.setState({buttonDisabled:true})
 
+  }
+  handleRoleRadioBtn = (e) => {
+    this.setState({
+      buttonDisabled: this.props.roleType == e.target.getAttribute('data-value'),
+      selectedRole: e.target.getAttribute('data-value')
+    })
+  }
   deleteInvitation = () => {
     let params ={};
-    params.invitedUser = this.props.userToBeDeleted.userId;
+    params.invitedUser = this.props.userToBeUpdated.userId;
     return Promise.resolve(deleteInvitationByUserId(params)).then(response => {
       if (response && response.data.code == "SUCCESS") {
         this.props.getInvitedUsers();
@@ -46,15 +59,32 @@ class UserUpdateModal extends Component {
       Notification.error('There was a problem while deleting Invitation');
     })
   }
-    
-  deleteUser () {
-    var _this = this;
+  updateUserRole = (data) => {
+    let userSession = CommonUtils.getUserSession();
+    let appId = userSession.application.applicationId;
+    let users = this.props.usersList
+    patchUserInfo({ "roleType": this.state.selectedRole }, this.props.userToBeUpdated.userId, appId).then(response => {
+      users.find(result => {
+        if (result.userName == this.props.userToBeUpdated.userId){
+            result.roleType = this.state.selectedRole;
+            return users
+          }
+      });
+      this.props.updateUserRoleOnUI(users)
+    }).catch(err => {
+      console.log("Error while updating application settings", err)
+    })
+  }
+  updateUserInfo = () => {
     this.props.onRequestClose();
+    this.props.modalType == "deleteUser" && this.deleteUser();
+    this.props.modalType == "deleteInvite" && this.deleteInvitation();
+    this.props.modalType == "edit" && this.updateUserRole();
+  }
+  deleteUser = () => {
+    var _this = this;
     let userId = [];
-    if(this.props.deleteInvitation){
-      this.deleteInvitation();
-    }else{
-    userId.push(this.props.userToBeDeleted.userId);
+    userId.push(this.props.userToBeUpdated.userId);
     return Promise.resolve(deleteUserByUserId(userId)).then(response => {
       if(response && response.code == "SUCCESS") {
         if (response.message.data[0].result === "DELETED SUCCESSFULLY"){
@@ -67,16 +97,14 @@ class UserUpdateModal extends Component {
     }).catch(err => {
       Notification.error('There was a problem while deleting the agent');
     })
-    }
   }
-
   render() {
     const modalContent = {
       edit : {
         title:"Edit role of",
         buttonText:"Save",
         confirmationText:"",
-        content: <UserRoleRadioButtonsTemplate handleOnChange={this.props.handleRoleRadioBtn} selectedRole={this.props.selectedRole} />
+        content: <UserRoleRadioButtonsTemplate handleOnChange={this.handleRoleRadioBtn} selectedRole={this.state.selectedRole} />
        
       },
       deleteUser:{
@@ -96,7 +124,7 @@ class UserUpdateModal extends Component {
       <Modal isOpen={this.props.isOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
         <div>
           <div className="team-delete-modal-header">
-            <p className="team-delete-modal-header-title" >{ this.props.modalType && modalContent[this.props.modalType].title} <span className="team-delete-modal-header-title-user-name">{this.props.userToBeDeleted.displayName || this.props.userToBeDeleted.userId}</span></p>
+            <p className="team-delete-modal-header-title" >{ this.props.modalType && modalContent[this.props.modalType].title} <span className="team-delete-modal-header-title-user-name">{this.props.userToBeUpdated.displayName || this.props.userToBeUpdated.userId}</span></p>
           </div>
           <hr className="team-delete-modal-divider" />
           {!CommonUtils.isTrialPlan() && this.props.modalType == "deleteUser" &&
@@ -111,7 +139,7 @@ class UserUpdateModal extends Component {
             <p className="teammates-modal-confirmation-text">{this.props.modalType && modalContent[this.props.modalType].confirmationText}</p>
             <div className="team-delete-modal-btn">
               <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick={this.props.onRequestClose}>Cancel</button>
-              <button className="km-button km-button--primary" data-button ={this.props.modalType && modalContent[this.props.modalType]} onClick={this.deleteUser}>{this.props.modalType && modalContent[this.props.modalType].buttonText}</button>
+              <button className="km-button km-button--primary" disabled ={this.state.buttonDisabled} data-button ={this.props.modalType && modalContent[this.props.modalType]} onClick={this.updateUserInfo}>{this.props.modalType && modalContent[this.props.modalType].buttonText}</button>
             </div>
           </div>
         </div>
@@ -121,7 +149,7 @@ class UserUpdateModal extends Component {
 }
 
 UserUpdateModal.defaultProps={
-  userToBeDeleted:{}
+  userToBeUpdated:{}
 }
 
 export default UserUpdateModal;

@@ -17,7 +17,7 @@ class invitedUsersList extends Component {
       modalIsOpen: false,
       agentList: this.props.agentList,
       isDeleteInvitaion :true,
-      userToBeDeleted: this.props.user.userId
+      userToBeUpdated: this.props.user.userId
     };
     this.onOpenModal = this.onOpenModal.bind(this);
     this.onCloseModal = this.onCloseModal.bind(this);
@@ -45,13 +45,13 @@ class invitedUsersList extends Component {
     let index = e.target.dataset.index;
     index = parseInt(index.replace('delete', ''));
     let user = this.props.user.displayName || this.props.user.userId;
-    let userToBeDeleted = {
+    let userToBeUpdated = {
       displayName: user,
       userId: this.props.user.userId
     }
     this.setState({ 
       modalIsOpen: true,
-      userToBeDeleted:userToBeDeleted
+      userToBeUpdated:userToBeUpdated
     });
   };
 
@@ -105,7 +105,7 @@ class invitedUsersList extends Component {
         <td>
           <span className="tm-invite-status-havent-signed-up">Haven't signed up</span>
         </td>
-        <UserUpdateModal isOpen={this.state.modalIsOpen} getInvitedUsers ={this.props.getInvitedUsers} agentList ={this.props.agentList}  userToBeDeleted ={this.state.userToBeDeleted}deleteInvitation ={true} onRequestClose={this.onCloseModal} modalType={"deleteInvite"} ariaHideApp={false} getUsers={this.props.getUsers}/>
+        <UserUpdateModal isOpen={this.state.modalIsOpen} getInvitedUsers ={this.props.getInvitedUsers} agentList ={this.props.agentList}  userToBeUpdated ={this.state.userToBeUpdated}deleteInvitation ={true} onRequestClose={this.onCloseModal} modalType={"deleteInvite"} ariaHideApp={false} getUsers={this.props.getUsers}/>
         <td className="teammates-resend-icon team-invite-list-delete"  >
           <span onClick={this.sendMail} data-index={deleteRef} className="teammates-delete-wrapper km-delete-invitation">
             <ResendIcon/>
