@@ -303,6 +303,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var USER_DEVICE_KEY;
 		var USER_COUNTRY_CODE;
 		var MCK_WEBSOCKET_URL;
+		var MCK_WEBSOCKET_PORT;
 		var IS_LOGGED_IN = true;
 		var MCK_CONTACT_MAP = [];
 		KM_CLIENT_GROUP_MAP = [];
@@ -1278,6 +1279,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							USER_DEVICE_KEY = result.deviceKey;
 							USER_COUNTRY_CODE = result.countryCode;
 							MCK_WEBSOCKET_URL = result.websocketUrl;
+							MCK_WEBSOCKET_PORT = result.websocketPort;
 							IS_MCK_USER_DEACTIVATED = result.deactivated;
 							MCK_USER_TIMEZONEOFFSET = result.timeZoneOffset;
 							MCK_IDLE_TIME_LIMIT = result.websocketIdleTimeLimit;
@@ -7774,7 +7776,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var $mck_message_inner = $kmApplozic("#km-message-cell .km-message-inner-right");
 			_this.init = function () {
 				if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
-					var port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
+					var port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674":"15675";
+
+					if (typeof MCK_WEBSOCKET_PORT !== 'undefined') {
+						port = (!kmUtils.startsWith(MCK_WEBSOCKET_PORT, "https")) ? "8080":MCK_WEBSOCKET_PORT;
+					}
+
 					if (typeof w.SockJS === 'function') {
 						if (!SOCKET) {
 							SOCKET = new SockJS(MCK_WEBSOCKET_URL + ":" + port + "/stomp");
