@@ -3,6 +3,7 @@ const logger = require('../utils/logger');
 const UserPreferencesModel = require("../models").UserPreferences;
 const PreferenceModel = require("../models").Preference;
 const userService =  require("./userService");
+const {ERROR} = require('../Error/error');
 UserPreferencesModel.belongsTo(PreferenceModel, {onDelete: 'cascade', hooks:true}, {foreignKey:"preference_id"} );
 /**
  * This Function is to add user's preference.
@@ -12,6 +13,7 @@ const createUserPreference = data => {
   logger.info("request received to create : ", data, typeof(data));
   return Promise.resolve(preferenceId(data["preference"])).then(prefId => {
     return Promise.resolve(userService.getByUserNameAndAppId(data.userName, data.applicationId)).then(user =>{
+      if(!user) throw ERROR.USER_NOT_FOUND;
       let preferenceData = {
         userId : user.id,
         preferenceId : prefId,
