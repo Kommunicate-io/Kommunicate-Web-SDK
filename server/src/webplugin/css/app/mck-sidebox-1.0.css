@@ -1455,6 +1455,8 @@
 	border: 1px solid #FFCFCF;
 	font-size: 12px !important;
 	text-align: center;
+	margin: -10px -4px 5px 0;
+    border-radius: 4px;
 }
 
 .mck-no-mb {
@@ -2321,6 +2323,7 @@ display: none;
 .mck-created-at-time {
 	opacity: 0.4;
 	vertical-align: middle;
+	font-size: 11px;
 }
 
 .mck-sidebox-launcher {
@@ -5665,4 +5668,26 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-askuserdetail-inputdiv{
 	overflow-y: scroll;
 	height:200px;
+}
+
+/* Message Clubbing */
+.km-clubbing-first.mck-msg-avator-bubble .mck-msg-box {
+	/* margin-bottom: 2px; */
+	box-shadow: none;
+}
+.km-clubbing-first.mck-msg-avator-bubble {
+	margin-bottom: 3px;
+}
+.km-clubbing-last.mck-msg-avator-bubble {
+	margin: 3px 0;
+}
+.km-clubbing-first.mck-msg-avator-bubble .mck-msg-left-muted, .km-clubbing-first.mck-msg-avator-bubble .mck-msg-right-muted {
+	display: none;
+}
+.km-clubbing-first.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator, .km-clubbing-last.mck-msg-avator-bubble .mck-conversation-name {
+	display: none;
+}
+.km-clubbing-last.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
+	bottom: 22px;
+	top: auto;
 }
