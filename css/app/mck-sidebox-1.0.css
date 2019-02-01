@@ -5691,3 +5691,9 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	bottom: 22px;
 	top: auto;
 }
+button:focus, button:active, button:hover {
+	outline: none !important;
+}
+div[name="message"]:last-child {
+    margin-bottom: 30px;
+}
