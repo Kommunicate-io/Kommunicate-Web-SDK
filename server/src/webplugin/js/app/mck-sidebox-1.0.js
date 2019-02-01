@@ -294,6 +294,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var USER_DEVICE_KEY;
         var USER_COUNTRY_CODE;
         var MCK_WEBSOCKET_URL;
+        var MCK_WEBSOCKET_PORT;
         var IS_LOGGED_IN = true;
         var MCK_CONTACT_MAP = [];
         var MCK_TYPING_STATUS = 0;
@@ -1568,6 +1569,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 USER_COUNTRY_CODE = data.countryCode;
                 USER_DEVICE_KEY = data.deviceKey;
                 MCK_WEBSOCKET_URL = data.websocketUrl;
+                MCK_WEBSOCKET_PORT = data.websocketPort;
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;
                 MCK_USER_TIMEZONEOFFSET = data.timeZoneOffset;
                 MCK_FILE_URL = data.fileBaseUrl;
@@ -8577,6 +8579,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.init = function () {
                 if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
                     var port = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
+                    if (typeof MCK_WEBSOCKET_PORT !== 'undefined') {
+						port = MCK_WEBSOCKET_PORT;
+					}
+
                     if (typeof w.SockJS === 'function') {
                         if (!SOCKET) {
                             SOCKET = new SockJS(MCK_WEBSOCKET_URL + ":" + port + "/stomp");

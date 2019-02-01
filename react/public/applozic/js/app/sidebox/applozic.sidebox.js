@@ -6884,7 +6884,7 @@ var KM_CLIENT_GROUP_MAP = [];
                     var port = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674":"15675";
 
 					if (typeof MCK_WEBSOCKET_PORT !== 'undefined') {
-						port = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "8080":MCK_WEBSOCKET_PORT;
+						port = MCK_WEBSOCKET_PORT;
 					}
                     if (typeof w.SockJS === 'function') {
                         if (!SOCKET) {
