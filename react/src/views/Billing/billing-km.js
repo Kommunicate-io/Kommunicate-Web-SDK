@@ -722,7 +722,7 @@ class BillingKommunicate extends Component {
                                         <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly <span>(Save 20%)</span></label>
                                     </div>
 
-                                    <div className="col-lg-4 col-md-4 col-xs-12">
+                                    <div className="col-lg-5 col-md-5 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
@@ -792,7 +792,7 @@ class BillingKommunicate extends Component {
                                             Subscription={this.state.subscription} ShowFeatures={this.state.showFeatures} HideFeatureList={this.state.hideFeatureList}/>
                                     </div> */}
                                     
-                                    <div className="col-lg-4 col-md-4 col-xs-12">
+                                    <div className="col-lg-5 col-md-5 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">

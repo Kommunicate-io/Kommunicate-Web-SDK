@@ -880,7 +880,7 @@
 .km-pricing-toggle-heading{
     font-size: 18px;
     padding: 15px 0;
-    font-weight: 500;
+    margin-top: -10px;
 }
 .subscription-success-purchased-plan-billing-actions{
     display: flex;
@@ -918,6 +918,7 @@ p.km-startup-plan-billing-info {
     background: #ebebeb;
     flex-wrap: wrap;
     padding:15px;
+    border-radius: 4px;
 }
 .km-missing-out p{
     font-size: 14px;
