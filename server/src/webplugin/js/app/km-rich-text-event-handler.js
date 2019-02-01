@@ -398,12 +398,16 @@ Kommunicate.richMsgEventHandler = {
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
+        var metadata = {};
+        try{
+            metadata=  JSON.parse(target.dataset.metadata);
+        }catch(e){
+        }
+        metadata.KM_BUTTON_CLICKED =true;
         if(type && type =="quick_reply"){
             var messagePxy = {
                 'message': reply, //message to send 
-                'metadata': {
-                    "KM_BUTTON_CLICKED":true
-                }
+                'metadata': metadata
             };
     
             Kommunicate.sendMessage(messagePxy);
