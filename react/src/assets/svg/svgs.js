@@ -705,7 +705,6 @@ export const LoginSignupSvg = props => (
           </g>
         </svg>
     );
-  )
   export const FreePlanBullets = props => (
     <svg width={14} height={14} {...props}>
       <g fill="none" opacity={0.861}>
@@ -716,5 +715,5 @@ export const LoginSignupSvg = props => (
         />
       </g>
     </svg>
-  )
+  );
     
