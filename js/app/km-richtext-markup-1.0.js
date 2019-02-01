@@ -133,9 +133,9 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
-        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'</button>';  
+        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'</button>';  
     }else{
-        return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
+        return'<button title= "'+ options.replyText +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
@@ -286,6 +286,7 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     buttonClass += payload.length==1?"km-cta-button-1 km-custom-widget-border-color":(payload.length==2?"km-cta-button-2 km-custom-widget-border-color":"km-cta-button-many km-custom-widget-border-color");
     var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
+        payload[i].replyMetadata = typeof  payload[i].replyMetadata =="object"? JSON.stringify(payload[i].replyMetadata):payload[i].replyMetadata;
         containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],requestType,buttonClass)
     }
     formData && (containerMarkup += Kommunicate.markup.getFormMarkup(options))
