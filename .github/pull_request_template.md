@@ -5,9 +5,6 @@ Please fill these details, it will help the reviewers.
 ### What do you want to achieve?
 ->
 
-### Pull request description
-->
-
 ### What new thing you came across while writing this code? 
 ->
 
