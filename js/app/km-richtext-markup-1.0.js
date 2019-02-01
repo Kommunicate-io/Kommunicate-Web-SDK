@@ -186,7 +186,7 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link km-custom-widget-text-color" >
+                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
@@ -210,7 +210,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                          {{#buttons}}
-                         <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                         <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                          {{/buttons}}
                      
              </div>
@@ -367,6 +367,9 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 if(item.imgSrc){
                 item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
                }
+               if(item.action && item.action.replyMetadata){
+                 item.replyMetadata = typeof  item.action.replyMetadata =="object"? JSON.stringify(item.action.replyMetadata):item.action.replyMetadata;
+               }
                //checking for type
                if(item.action && item.action.type=="link"){
                 item.href = item.action.url;
@@ -391,6 +394,9 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
         json.buttons=  json.buttons.map(function (button){
             button.target = Kommunicate.markup.getLinkTarget(button.action);
             button.buttonClass = buttonClass[button.action.type];
+            if(button.action && button.action.replyMetadata){
+                button.replyMetadata = typeof  button.action.replyMetadata =="object"? JSON.stringify(button.action.replyMetadata):button.action.replyMetadata;
+              }
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
                 button.hadlerClass= "km-list-button-item-handler";
