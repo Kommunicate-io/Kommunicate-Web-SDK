@@ -1,17 +1,16 @@
 
 /**
- * all methods exposed to  users. 
+ * all methods exposed to  users.
  */
+
+// above code will expose below function from iframe window to browser window.
+var KOMMUNICATE_VERSION = "v2";
+// var KOMMUNICATE_VERSION = window.kommunicate.version;
+// KOMMUNICATE_VERSION === "v2" && (parent.Kommunicate = window.Kommunicate);
+
 $applozic.extend(true,Kommunicate,{
     getBaseUrl: function () {
-        switch (MCK_BASE_URL) {
-            case "https://apps-test.applozic.com/":
-            case "https://apps-test.applozic.com":
-                return "https://api-test.kommunicate.io";
-                //return "http://localhost:3999";
-            default:
-                return "https://api.kommunicate.io";
-        }
+       return "https://api-test.kommunicate.io";
     },
     setDefaultAgent: function (agentName) {
         //kommunicate.defaultAgent  = agentName;
@@ -33,28 +32,38 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
-        if(!params.agentId){
-            params.agentId  = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
+        params = typeof params == 'object' ? params : {};
+        if (!params.agentId && !params.agentIds) {
+            params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
-        var user=[{"userId":params.agentId,"groupRole":1},{"userId":"bot","groupRole":2}];
-    
-        if(params.botIds){
+        var user = [{ "userId": "bot", "groupRole": 2 }];
+        if (params.agentIds) {
+            for (var i = 0; i < params.agentIds.length; i++) {
+                user.push({ "userId": params.agentIds[i], "groupRole": 1 });
+            }
+        } else {
+            user.push({ "userId": params.agentId, "groupRole": 1 });
+        }
+        if (params.botIds) {
             for (var i = 0; i < params.botIds.length; i++) {
-                user.push({"userId":params.botIds[i],"groupRole":2});
+                user.push({ "userId": params.botIds[i], "groupRole": 2 });
             }
         }
-        var groupName = params.conversationTitle || params.groupName||kommunicate._globals.conversationTitle||kommunicate._globals.groupName||kommunicate._globals.agentId;
-       var assignee = params.assignee || params.agentId;
+        var groupName = params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
+        var assignee = params.assignee || params.agentId;
         var conversationDetail = {
-           "groupName": groupName,
-           "type":10,
-           "agentId":params.agentId,
-           "assignee":assignee,
-           "users": user,
-           "clientGroupId":params.clientGroupId
-       }
-       
-        Kommunicate.client.createConversation(conversationDetail,callback);
+            "groupName": groupName,
+            "type": 10,
+            "agentId": params.agentId,
+            "assignee": assignee,
+            "users": user,
+            "clientGroupId": params.clientGroupId,
+            "isMessage": params.isMessage,
+            "isInternal": params.isInternal,
+            "skipRouting": params.skipRouting,
+            "metadata": (typeof params.metadata == "object"  && typeof params.metadata['KM_CHAT_CONTEXT'] == object) ? params.metadata['KM_CHAT_CONTEXT']:{}
+        }
+        Kommunicate.client.createConversation(conversationDetail, callback);
     },
     openConversationList: function () {
         window.$applozic.fn.applozic('loadTab', '');
@@ -67,15 +76,15 @@ $applozic.extend(true,Kommunicate,{
     },
     openDirectConversation: function (userId) {
         window.$applozic.fn.applozic('loadTab', userId);
-        KommunicateUI.showChat(); 
+        KommunicateUI.showChat();
         KommunicateUI.hideFaq();
 
 
     },
     /**
-     * load conversation will open or create a conversation between existing users. 
+     * load conversation will open or create a conversation between existing users.
      * it generate clientGroupId from the given conversationDetail, if any group exists with that Id opens that otherwise it will call creatge group API.
-     * it will not open the group created by createConversation API. 
+     * it will not open the group created by createConversation API.
      * @param {Object}  conversationDetail
      * @param {Array} conversationDetail.agentIds required parameter
      * @param {Array} conversationDetail.botIds  optional parameter
@@ -88,14 +97,14 @@ $applozic.extend(true,Kommunicate,{
         });
         console.log("agent list ",agentList);
         var botList = conversationDetail.botIds||[];
-        
+
         if(agentList.length <1){
             var error ={code:"INVALID_PARAMETERS",message:"required parameter agentIds is missing."}
             return typeof callback == 'function'? callback(error):console.log("required parameter agentIds is missing.");
         }
-        // max length of clientGroupId is 256 in db. 
+        // max length of clientGroupId is 256 in db.
         // default bot is not included in client groupId generation
-        var loggedInUserName= kommunicate._globals.userId || KommunicateUtils.getCookie("kommunicate-id");
+        var loggedInUserName= kommunicate._globals.userId || KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         var agentsNameStr = agentList.join("_");
 
         var botsNameStr =  botList.join("_");
@@ -135,7 +144,7 @@ $applozic.extend(true,Kommunicate,{
                  $applozic.fn.applozic('loadGroupTab',groupId);
                  return callback(null, result);
                 }
-               
+
 
             }
         });
@@ -202,15 +211,10 @@ $applozic.extend(true,Kommunicate,{
             }
         });
     },
-    logout: function (event, options) {
-        if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" && typeof window.$kmApplozic.fn.applozic !== "undefined" && window.$kmApplozic.fn.applozic("getLoggedInUser")) {
-            window.$kmApplozic.fn.applozic('logout');
-        }
-        if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" && typeof window.$applozic.fn.applozic !== "undefined" && window.$applozic.fn.applozic("getLoggedInUser")) {
+    logout: function () {
+        if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" && typeof window.$applozic.fn.applozic !== "undefined") {
             window.$applozic.fn.applozic('logout');
-        }
-        sessionStorage.clear();
-        localStorage.clear();
+        };
     },
     launchConversation: function () {
         window.$applozic.fn.applozic("mckLaunchSideboxChat");
@@ -239,7 +243,7 @@ $applozic.extend(true,Kommunicate,{
             success: function (result) {
                 // console.log("got away message data");
                 typeof callback =='function'?callback(null,result):"";
-                
+
             },
             error: function (err) {
                 console.log("err while fetching away message");
@@ -251,7 +255,7 @@ $applozic.extend(true,Kommunicate,{
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId, callback: function (response) {
-                KommunicateUtils.setCookie('kommunicate-id', newUserId);
+                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": newUserId,expiresInDays:30});
                 if (response == 'success') {
                     window.$applozic.fn.applozic('reInitialize', { userId: newUserId });
                 }
@@ -262,15 +266,37 @@ $applozic.extend(true,Kommunicate,{
         // contentType should be 300 for rich text message in metadata
         return metadata && metadata.contentType == 300;
     },
-    getConatainerTypeForRichMessage: function (metadata) {
+    appendEmailToIframe:function (message){
+        var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
+        if(richText && message.source === 7){
+            var iframeID = "km-iframe-"+ message.groupId;
+            var iframe = document.getElementById(iframeID);
+            var doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(message.message);
+            doc.close();
+            var anchors = doc.getElementsByTagName('a');
+            for (var i=0; i<anchors.length; i++){
+              anchors[i].setAttribute('target', '_blank');
+            };
+        }
+    },
+    isAttachment: function(msg) {
+        return (typeof msg.fileMeta === "object" && msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) || msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION;
+    },
+    getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
-        if (metadata) {
+        var metadata = message.metadata;
+        var sliderClass = "km-slick-container ";
+        ((metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL && metadata.payload && metadata.payload.length > 1) && (sliderClass += "km-slider-multiple-cards-container"));
+        if (metadata.templateId) {
             switch (metadata.templateId) {
                 // add template Id to enable slick effect
                 // 2 for get room pax info template
-                case "2":
-                case "4":
-                    return "km-slick-container";
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
+                    return sliderClass;
                     break;
                 case "6":
                     return "km-border-less-container";
@@ -281,6 +307,8 @@ $applozic.extend(true,Kommunicate,{
                     break;
 
             }
+        }else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+            return "km-fixed-container";
         }
 
     },
@@ -296,54 +324,61 @@ $applozic.extend(true,Kommunicate,{
         } else {
             messagePxy.to = $mck_msg_to.val();
         }
-        var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
-        var metadata = messagePxy.metadata||{};
-        if(chatContext){
-            metadata ={"KM_CHAT_CONTEXT":chatContext}
-        }
-        messagePxy.metadata=metadata;
         $applozic.fn.applozic('sendGroupMessage', messagePxy);
 
     },
-    getRichTextMessageTemplate: function (metadata) {
-        if (metadata) {
+    getRichTextMessageTemplate: function (message) {
+        var metadata = message.metadata;
+        if (metadata.templateId) {
             switch (metadata.templateId) {
                 // 1 for get room pax info template
-                case "1":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_COUNT:
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
                     break;
                 //2 for hotel card template
-                case "2":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
 
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList || "[]"), metadata.sessionId);
                     break;
                 // 3 for button container
-                case "3":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LINK_BUTTON:
                     return Kommunicate.markup.buttonContainerTemplate(metadata);
                     break;
-                case "5":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.PASSENGER_DETAIL:
                     return Kommunicate.markup.getPassangerDetail(metadata);
                     break;
-                case "4":
-                    return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
+                    return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId);
                     break;
-                case "6":
-                    return Kommunicate.markup.quickRepliesContainerTemplate(metadata);
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
+                    return Kommunicate.markup.quickRepliesContainerTemplate(metadata, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY);
                     break;
-                case "7":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
                     return Kommunicate.markup.getListContainerMarkup(metadata);
-                    
-                case "8":
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.DIALOG_BOX:
                     return Kommunicate.markup.getDialogboxContainer(metadata);
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
+                    return Kommunicate.markup.getImageContainer(metadata);
+                    break;
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
+                    return Kommunicate.markup.getCarouselMarkup(metadata);
+                    break;
                 default:
                     return "";
                     break;
             }
-        } else {
+        }else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+            return Kommunicate.markup.getHtmlMessageMarkups(message);
+        }
+        else {
             return "";
         }
     },
     updateSettings:function(options){
+        let type = typeof options;
+        if(type !='object'){
+            throw new error("update settings expects an object, found "+type);
+        }
         var settings = KommunicateUtils.getDataFromKmSession("settings");
         settings=  settings?JSON.parse(settings):{}
 
@@ -353,9 +388,20 @@ $applozic.extend(true,Kommunicate,{
         KommunicateUtils.storeDataIntoKmSession("settings",JSON.stringify(settings));
     },
     getSettings:function(setting){
-        var settings = KommunicateUtils.getDataFromKmSession("settings");
-        settings=  settings?JSON.parse(settings):null;
-        return setting&&settings?settings[setting]:(settings?settings:"");
-    }
+        return KommunicateUtils.getSettings(setting);
+    },
+    setDefaultIframeConfigForOpenChat: function () {
+        var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        kommunicateIframe.style.width="390px";
+        kommunicateIframe.style.height="600px";
+        kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+    },
 
+    // add css to style component in window
+    customizeWidgetCss : function (classSettings) {
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = classSettings;
+            document.getElementsByTagName('head')[0].appendChild(style);
+    }
 });

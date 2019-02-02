@@ -131,15 +131,19 @@ getRoomDetailTemplate: function (options, sessionId) {
             </div>`;
 },
 
-getButtonTemplate:function(options,elemWidthClass){
+getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
-    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+'"><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
+        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'</button>';  
     }else{
-    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
+        return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
-getQuickRepliesTemplate:function(options,elemWidthClass){
-    return'<button title="'+options.message+'" class="km-cta-button km-add-more-rooms km-quick-replies '+elemWidthClass+'">'+options.title+'</button>';
+getQuickRepliesTemplate:function(){
+    return`<div class="km-cta-multi-button-container">
+            {{#payload}}
+                 <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
+            {{/payload}}
+            </div>`;
 },
 getPassangerDetail : function(options){
     if(!options.sessionId){
@@ -170,7 +174,7 @@ getPassangerDetail : function(options){
             `
 },
 getListMarkup:function(){
-    return `<div class="km-message km-received km-chat-faq-list" style="">
+    return `<div class="km-message km-received km-chat-faq-list km-list-container" style="">
      <div class="km-faq-list--container"  >
              <div class="km-faq-list--header">
                      {{{headerImgSrc}}}
@@ -182,16 +186,18 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
+                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
                          <div class="km-faq-list--body_que-ans">
-                                 <p class="km-faq-list--body_que">
+                                 <p class="km-faq-list--body_que km-custom-widget-text-color">
                                      {{title}}
                                  </p>
                                  <p class="km-faq-list--body_ans">
-                                     {{description}}
+                                     
+                                 
+                                 {{{description}}}
                                  </p>
                              </div>
                          </a>
@@ -204,7 +210,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                          {{#buttons}}
-                         <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
+                         <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                          {{/buttons}}
                      
              </div>
@@ -224,13 +230,51 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}">{{name}}</button>
+                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>
      </div>
  </div>`;
- }
+ },
+ getImageTemplate : function(){
+    return `<div>
+    {{#payload}}
+    <div class="km-image-template">
+       <img class="km-template-img" src="{{url}}"></img>
+       <div class="km-template-image-caption-wrapper">
+           <p class="km-template-img-caption">{{caption}}</p>
+       </div>
+   </div>
+   {{/payload}}
+   </div>`
+},
+getCarouselTemplate: function() {
+return `<div class="mck-msg-box-rich-text-container km-card-message-container  km-div-slider">
+            {{#payload}}
+            <div class="km-carousel-card-template">
+            <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
+            <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
+            <div class="km-carousel-card-footer">{{{footer}}}</div>
+            </div>
+            {{/payload}}
+        </div>`
+},
+getButtonListTemplate: function() {
+    return `{{#buttons}}<button class="km-carousel-card-button {{{class}}}">{{action.payload.title}}</button>{{/buttons}}`
+},
+getCardHeaderTemplate: function() {
+    return `<img class="{{headerImageClass}}" src="{{imgSrc}}"></img>
+            <div class="{{headerOverlayTextClass}}">{{overlayText}}</div>`
+},
+getCardInfoTemplate: function() {
+    return `<div class="km-carousel-card-title-wrapper">
+                <div class="km-carousel-card-title">{{title}}</div>
+                <div class="km-carousel-card-title-extension">{{titleExt}}</div>
+            </div>
+            <div class="km-carousel-card-sub-title">{{subtitle}}</div>
+            <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`
+}
 
 };
 
@@ -238,34 +282,45 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
     var formData= payload? JSON.parse(options.formData||"{}"):"";
-    var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
-
+    var buttonClass = "km-add-more-rooms ";
+    buttonClass += payload.length==1?"km-cta-button-1 km-custom-widget-border-color":(payload.length==2?"km-cta-button-2 km-custom-widget-border-color":"km-cta-button-many km-custom-widget-border-color");
+    var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
-        containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],elemWidthClass)
+        containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],requestType,buttonClass)
     }
-    if(formData){
-        containerMarkup+="<form method ='post'  target='_blank' class= km-btn-hidden-form action ="+options.formAction+">";
-        for (var key in formData) {
-            if (formData.hasOwnProperty(key)) {
-                containerMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
-            }
-        } 
-        containerMarkup+='</form>';
-    }
+    formData && (containerMarkup += Kommunicate.markup.getFormMarkup(options))
     containerMarkup+='</div>';
     return containerMarkup;
 }
-Kommunicate.markup.quickRepliesContainerTemplate= function(options){
-    var containerMarkup = '<div class="km-cta-multi-button-container">';
+Kommunicate.markup.getFormMarkup = function(options) {
     var payload = JSON.parse(options.payload);
-    //var formData= payload? JSON.parse(options.formData||"{}"):"";
-    var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
-
-    for(var i = 0;i<payload.length;i++){
-        containerMarkup+=  Kommunicate.markup.getQuickRepliesTemplate(payload[i],elemWidthClass)
+    var formData= payload? JSON.parse(options.formData||"{}"):"";
+    var formMarkup="";
+    if(formData){
+        formMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+options.formAction+ ">";
+        for (var key in formData) {
+            if (formData.hasOwnProperty(key)) {
+                formMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
+            }
+        } 
+        formMarkup+='</form>';
+        return formMarkup
     }
-    containerMarkup+='</div>';
-    return containerMarkup;
+}
+Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
+    var payload = JSON.parse(options.payload);
+    let defaultButtonClass = { 
+        [KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY] : "km-quick-rpy-btn km-custom-widget-border-color ",
+        [KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL] : "km-carousel-card-button km-carousel-card-quick-rpy-button "
+    }
+    var buttonClass = defaultButtonClass[template];
+    template == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY && (buttonClass +=  payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many"));
+    
+    for(var i = 0;i<payload.length;i++){
+        payload[i].replyMetadata = typeof  payload[i].replyMetadata =="object"? JSON.stringify(payload[i].replyMetadata):payload[i].replyMetadata;
+        payload[i].buttonClass = buttonClass;
+    }
+     return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {"payload":payload});
 }
 
 Kommunicate.markup.getHotelRoomPaxInfoTemplate= function(roomCount){
@@ -297,6 +352,7 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
 Kommunicate.markup.getListContainerMarkup = function(metadata){
+    const buttonClass = {link:"km-link-button", submit:""}
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
@@ -310,6 +366,9 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                // checking for image
                 if(item.imgSrc){
                 item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
+               }
+               if(item.action && item.action.replyMetadata){
+                 item.replyMetadata = typeof  item.action.replyMetadata =="object"? JSON.stringify(item.action.replyMetadata):item.action.replyMetadata;
                }
                //checking for type
                if(item.action && item.action.type=="link"){
@@ -332,7 +391,12 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
             json.elementClass ="n-vis"
         }
         if(json.buttons&&json.buttons.length){
-        json.buttons=  json.buttons.map(button=>{
+        json.buttons=  json.buttons.map(function (button){
+            button.target = Kommunicate.markup.getLinkTarget(button.action);
+            button.buttonClass = buttonClass[button.action.type];
+            if(button.action && button.action.replyMetadata){
+                button.replyMetadata = typeof  button.action.replyMetadata =="object"? JSON.stringify(button.action.replyMetadata):button.action.replyMetadata;
+              }
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
                 button.hadlerClass= "km-list-button-item-handler";
@@ -340,8 +404,8 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 button.href = button.action.url;
                }
                
-               button.dataType=button.action.type||"";
-               button.dataReply = button.action.text||button.name||"";
+               button.dataType=button.action? button.action.type:"";
+               button.dataReply = (button.action && button.action.text)? button.action.text: (button.name||"");
                // TODO : add post url in data.
                 return button;
         })
@@ -357,8 +421,91 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
     if(metadata && metadata.payload){
         var json = JSON.parse(metadata.payload);
         
+        json.buttons.length>0 && json.buttons.forEach(function(element) {
+            element.replyMetadata  = typeof element.replyMetadata == 'object'? JSON.stringify(element.replyMetadata): element.replyMetadata;
+        });
         return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
-     }else{
-         return "";
      }
+     return "";
+}
+Kommunicate.markup.getImageContainer = function(options) {
+    if (options && options.payload) {
+        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
+    }
+    return ""; 
+}
+Kommunicate.markup.getHtmlMessageMarkups = function (message) {
+    if (message && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+        var uniqueId = "km-iframe-" + message.groupId;
+        return "<iframe class='km-mail-fixed-view' id=" + uniqueId + " ></iframe>";
+    }
+    return ""; 
+}
+Kommunicate.markup.getCarouselMarkup = function(options) {
+    var cardList =[]; 
+    var cardHtml= {}
+    var image = true
+    var footer,header,info;
+    var buttonClass;
+    var headerOverlayTextClass, headerImageClass, carouselHeaderClass, carouselInfoWrapperClass;
+    var createCardFooter = function (buttons) {
+        var cardFooter = "";
+        var requestType;
+        for (var i = 0; i < buttons.length; i++) { 
+            if(buttons[i].action.type == "quickReply") {
+                buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
+                cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL))
+            } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
+                requestType = buttons[i].action.payload.requestType ? buttons[i].action.payload.requestType :"";
+                buttons[i].action.payload["type"] = buttons[i].action.type;
+                buttons[i].action.payload["buttonClass"] = "km-carousel-card-button";
+                buttons[i].action.payload["name"] = buttons[i].name;
+                cardFooter = cardFooter.concat(Kommunicate.markup.getButtonTemplate(buttons[i].action.payload,requestType,"km-carousel-card-button"))
+                let formData = buttons[i].action.payload.formData;
+                buttons[i].action.payload.formAction && (buttons[i].action["formAction"] = buttons[i].action.payload.formAction);
+                buttons[i].action.payload = JSON.stringify([buttons[i].action.payload])
+                formData && (buttons[i].action["formData"] = JSON.stringify(formData))
+                formData && (cardFooter = cardFooter.concat(Kommunicate.markup.getFormMarkup( buttons[i].action)));
+            }
+
+        } 
+        return cardFooter;
+    }
+    if (options && options.payload) {
+        let cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        options.payload = cards;
+        for (var i = 0; i < cards.length; i++) {
+            var item = cards[i];
+            item.header && (headerOverlayTextClass = item.header.overlayText ? (item.header.imgSrc ? "km-carousel-card-overlay-text ":"km-carousel-card-overlay-text  km-carousel-card-overlay-text-without-img") : "n-vis");     
+            carouselHeaderClass = item.header ? (item.header.imgSrc ? "":"km-carousel-card-header-without-img" ): "n-vis";  
+            carouselInfoWrapperClass = item.header ? "": "km-carousel-card-info-wrapper-without-header";
+            carouselInfoWrapperClass = item.buttons ? carouselInfoWrapperClass.concat(" km-carousel-card-info-wrapper-with-buttons"): "";
+            item.header && (headerImageClass = item.header.imgSrc ? "km-carousel-card-img": "n-vis");
+            item.header && (item.header["headerOverlayTextClass"] = headerOverlayTextClass);
+            item.header && (item.header["headerImageClass"] =headerImageClass);
+            item["cardDescriptionClass"] = item.description ? "km-carousel-card-description-wrapper" : "n-vis"
+            cardHtml["carouselHeaderClass"] = carouselHeaderClass;
+            cardHtml["carouselInfoWrapperClass"] = carouselInfoWrapperClass;
+            item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
+            cardHtml.info = Kommunicate.markup.cardInfo(item);
+            item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
+            cardList.push(Object.assign({},cardHtml))
+        }
+    }
+    let cardCarousel = {payload:cardList};
+
+    return Mustache.to_html(Kommunicate.markup.getCarouselTemplate(),cardCarousel)
+
+}
+Kommunicate.markup.cardHeader = function(item) {
+    return Mustache.to_html(Kommunicate.markup.getCardHeaderTemplate(),item)
+}
+Kommunicate.markup.cardInfo= function(item) {
+    return Mustache.to_html(Kommunicate.markup.getCardInfoTemplate(),item)
+}
+Kommunicate.markup.getLinkTarget= function(buttonInfo) {
+    buttonInfo.openLinkInNewTab = (typeof buttonInfo.openLinkInNewTab  !='undefined' && !buttonInfo.openLinkInNewTab ) ? buttonInfo.openLinkInNewTab:true;
+    return buttonInfo.openLinkInNewTab ? "_blank" : "_parent";
 }

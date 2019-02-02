@@ -37,8 +37,12 @@ Kommunicate.client={
      * @param {String} conversationDetail.agentId
      * @param {Object} conversationDetail.users
      * @param {String} conversationDetail.clientGroupId
+     * @param {Boolean} conversationDetail.isMessage
+     * @param {Boolean} conversationDetail.isInternal
      */
      createConversation : function(conversationDetail,callback){
+        var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+
         $applozic.fn.applozic("createGroup", {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
@@ -46,6 +50,8 @@ Kommunicate.client={
             admin: conversationDetail.agentId,
             users: conversationDetail.users,
             clientGroupId:conversationDetail.clientGroupId,
+            isMessage: conversationDetail.isMessage,
+            isInternal: conversationDetail.isInternal,
             metadata: {
                 CREATE_GROUP_MESSAGE: "",
                 REMOVE_MEMBER_MESSAGE: "",
@@ -61,7 +67,9 @@ Kommunicate.client={
                 CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
-                HIDE: "true"
+                HIDE: "true",
+                SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
+                KM_CHAT_CONTEXT: JSON.stringify(chatContext)
             },
             callback: function (response) {
                 console.log("response", response);
@@ -70,6 +78,7 @@ Kommunicate.client={
                         callback(response.data.value);
                     }
                     KommunicateUI.hideFaq();
+                    KommunicateUI.showClosedConversationBanner(false);
                        /* conversation table migrated to Applozic
                         Kommunicate.createNewConversation({
                             "groupId": response.data.value,

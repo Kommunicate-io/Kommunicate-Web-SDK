@@ -1,5 +1,6 @@
 var $original;
 var oModal = "";
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -10,6 +11,13 @@ if (typeof jQuery !== 'undefined') {
         jQuery.fn.modal = oModal;
     }
 }
+
+(function (window) {
+    if (typeof Applozic !== "undefined"){
+      throw new Error(" Kommunicate script is already loaded, please check if you're loading it more than once.");
+      return;
+    }
+})(window);
 
 var applozicSideBox = new ApplozicSidebox();
 applozicSideBox.load();
@@ -79,6 +87,7 @@ function ApplozicSidebox() {
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
+            script.crossOrigin = "anonymous";
             script.src = MCK_STATICPATH + "/lib/js/jquery-3.2.1.min.js";
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
@@ -131,7 +140,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckLoadStyle(url) {
         var head = document.getElementsByTagName('head')[0];
         var style = document.createElement('link');
@@ -139,13 +148,14 @@ function ApplozicSidebox() {
         style.rel = "stylesheet";
         style.href = url;
         head.appendChild(style);
-    }
+    };
     function mckLoadScript(url, callback) {
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = url;
+            url.indexOf("maps.google.com") == -1 && (script.crossOrigin = "anonymous")
             if (callback) {
                 if (script.readyState) { // IE
                     script.onreadystatechange = function() {
@@ -168,23 +178,22 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckInitPluginScript() {
         try {
-        	if(applozic.PRODUCT_ID =='kommunicate'){
-       		 //applozic._globals.locShare = ((applozic._globals.locShare)=== false) ? false : true;
-           if (typeof applozic._globals.locShare === 'undefined') {
-             applozic._globals.locShare = false;
-           } else if (typeof applozic._globals.locShare === 'string') {
-             throw new Error("locShare should be a boolean value");
-           }
-           if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
-             applozic._globals.excludeGoogleMap = true;
-           } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
-             throw new Error("excludeGoogleMap should be a boolean value");
-           }
-       		 applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-       	 }
+            if(applozic.PRODUCT_ID =='kommunicate'){
+                if (typeof applozic._globals.locShare === 'undefined') {
+                    applozic._globals.locShare = false;
+                } else if (typeof applozic._globals.locShare === 'string') {
+                    throw new Error("locShare should be a boolean value");
+                }
+                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
+                    applozic._globals.excludeGoogleMap = applozic._globals.locShare ? false : true;
+                } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
+                    throw new Error("excludeGoogleMap should be a boolean value");
+                }
+                    applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
+       	    }
             $.each(mck_script_loader1, function(i, data) {
                 if (data.name === "km-utils") {
                     try {
@@ -232,7 +241,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckLoadScript2() {
         try {
             $.each(mck_script_loader2, function(i, data) {
@@ -247,26 +256,42 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
+    };
     function mckLoadAppScript() {
+        var userId = KommunicateUtils.getRandomId();
+        var mapCookies = [
+            {
+                oldName : 'kommunicate-id',
+                newName : KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
+            },
+            {
+                oldName : "userName",
+                newName : KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
+            }
+        ];
+        
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
+            script.crossOrigin = "anonymous";
             script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.2.min.js";
             //script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
+            seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
-                        getPseudoName();
+                        sentryConfig.enable && loadErrorTracking(userId);
+                        loadPseudoName(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
-                     getPseudoName();
+                    sentryConfig.enable && loadErrorTracking(userId);
+                    loadPseudoName(userId);
                 };
             }
             body.appendChild(script);
@@ -277,33 +302,36 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
-    function mckInitSidebox(data) {
+    };
+    function mckInitSidebox(data, userId) {
         try {
             var options = applozic._globals;
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
+            options["widgetSettings"]=data.widgetTheme;
+            options["customerCreatedAt"]=data.customerCreatedAt;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            options.metadata = typeof options.metadata=='object'?options.metadata: {};
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (!options.userId) {
-                    if (KommunicateUtils.getCookie('kommunicate-id')) {
-                        options.userId = KommunicateUtils.getCookie('kommunicate-id');
+                    if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID)) {
+                        options.userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                     } else {
-                        options.userId = KommunicateUtils.getRandomId();
-                        KommunicateUtils.setCookie('kommunicate-id', options.userId, 1);
+                        options.userId = userId;
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30});
                         if (pseudoNameEnabled) {
-                            if (KommunicateUtils.getCookie('userName')) {
-                                options.userName = KommunicateUtils.getCookie('userName');
+                            if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME)) {
+                                options.userName = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                             } else {
-                                KommunicateUtils.setCookie('userName', data.userName, 1);
+                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30});
                                 options.userName = data.userName;
                             }
-                            options.metadata = {"KM_PSEUDO_USER":JSON.stringify({pseudoName: "true", hidden: "true" })};
+                            options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
                         }
                     }
-
-                } else {
-                    // ask for email id;
+                }
+                if (!options.askUserDetails) {
+                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30});
                 }
             }
             if (typeof options !== 'undefined') {
@@ -320,20 +348,47 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
-    function getPseudoName() {
+    };
+    
+    function seekReplaceDestroyCookies (mapCookies){
+        mapCookies && mapCookies.forEach(function(arrayItem){
+            if (KommunicateUtils.getCookie(arrayItem.oldName)) {
+                var value = KommunicateUtils.getCookie(arrayItem.oldName);
+                KommunicateUtils.setCookie(arrayItem.newName, value, 1);
+                KommunicateUtils.deleteCookie(arrayItem.oldName);
+            }
+        })
+    };
+
+    function loadPseudoName(userId) {
+        var data = {};
+        data.appId = applozic._globals.appId;
+        // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         $applozic.ajax({
-            url: MCK_CONTEXTPATH + "/users/chat/plugin/settings",
+            url: MCK_CONTEXTPATH + "/users/v2/chat/plugin/settings",
             method: 'GET',
-            data: applozic._globals,
+            data: data,
             success: function (data) {
-                mckInitSidebox(data.response);
+                mckInitSidebox(data.response, userId);
             },
             error: function (error) {
                 console.log(error);
             }
 
         })
-    }
+    };
+    function loadErrorTracking(userId) {
+        userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
+        Sentry.init({
+            dsn: sentryConfig.dsn
+        });
+        Sentry.configureScope(function (scope) {
+            scope.setTag("applicationId", options.appId);
+            scope.setTag("userId", userId);
+            scope.setUser({
+                id: options.appId
+            });
+        });
+    };
 
 }

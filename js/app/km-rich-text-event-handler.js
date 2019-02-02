@@ -2,7 +2,11 @@
 /**
  * Attach all event listeners.
  */
-
+const mck_actionable_message_plugin_svgs = {
+    arrow:{
+        left:'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 19"><path fill="#5B5959" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>'
+    }
+}
 Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-increment-guest-count',Kommunicate.richMsgEventHandler.incrementGuestCount);
     $applozic("#mck-message-cell").on('click','.km-decrement-guest-count',Kommunicate.richMsgEventHandler.decrementGuestCount);//
@@ -16,6 +20,8 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click', '.km-list-item-handler', Kommunicate.richMsgEventHandler.processClickOnListItem); 
     $applozic("#mck-message-cell").on('click', '.km-list-button-item-handler', Kommunicate.richMsgEventHandler.processClickOnButtonItem); 
     $applozic("#mck-message-cell").on('click', '.km-faq-dialog-button', Kommunicate.richMsgEventHandler.processClickOnDialogButton); 
+    $applozic("#mck-message-cell").on('click', ".km-progress-meter-container",Kommunicate.attachmentEventHandler.manageUploadAttachment);
+    $applozic("#mck-message-cell").on('click', ".km-link-button",Kommunicate.richMsgEventHandler.handleLinkButtonClick); 
     
     
 }
@@ -26,20 +32,131 @@ Kommunicate.attachEvents = function($applozic){
 /**
  * define your event listeners.
  */
+Kommunicate.attachmentEventHandler= {
+    manageUploadAttachment: function (e) {
+        var stopUploadIconHidden = $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon').hasClass('n-vis');
+        var uploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
+        var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
+        let msgkey = attachmentDiv[0].dataset.msgkey;
+        var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');      
+        if(Kommunicate.internetStatus) {
+            if(!stopUploadIconHidden && uploadIconHidden) {
+                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
+                Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
+                $applozic(".km-progress-stop-upload-icon-"+msgkey).removeClass("vis").addClass("n-vis");
+                $applozic(".km-progress-upload-icon-"+msgkey).removeClass("n-vis").addClass("vis");
+                Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
+                $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis"); 
+                deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
+          
+            } else {
+                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
+                let fileMetaKey = attachmentDiv[0].dataset.filemetakey;
+                let fileName = attachmentDiv[0].dataset.filename;
+                let fileSize = attachmentDiv[0].dataset.filesize;
+                let fileUrl = attachmentDiv[0].dataset.fileurl;
+                let fileType = attachmentDiv[0].dataset.filetype
+                let groupId = attachmentDiv[0].dataset.groupid;
+                let thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
+                if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) { 
+                    messagePxy = {
+                        contentType: 1,
+                        groupId:groupId,
+                        fileMeta:{
+                            blobKey:fileMetaKey, 
+                            url:fileUrl,
+                            contentType:fileType,
+                            size:fileSize,
+                            key:fileMetaKey,
+                            thumbnailUrl:fileUrl,
+                            name:fileName
+                        },
+                        message:"",
+                        type:5,
+                        metadata:{},
+                        key:msgkey
+                    }
+                    var optns = {
+                        tabId: groupId,
+                    };
+                    let params = {
+                        messagePxy: messagePxy,
+                        optns: optns
+                    };
+                    $applozic.fn.applozic("submitMessage",params);
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').children().removeClass('km-progress-meter-back-drop');
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').addClass("n-vis");
+                    $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis");
+                    deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";              
+                } 
+                else if (thumbnailUrl  && groupId  && msgkey ) {
+                    messagePxy = {
+                        contentType: 1,
+                        groupId:groupId,
+                        key:msgkey,
+                        fileMeta:{
+                            thumbnailUrl:thumbnailUrl,
+                            contentType:1,
+                            isUploaded:false
+                        },
+                        message:"",
+                        type:5,
+                        metadata:{}
+                    }
+                    let file = KM_PENDING_ATTACHMENT_FILE[msgkey];
+                    params = {
+                        params: {
+                            file: file,
+                            name: file.name
+                        },
+                        messagePxy: messagePxy
+                    };
+                    $applozic.fn.applozic("uploadAttachemnt", params);
+                    $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis");
+                    deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none"; 
+                    delete KM_PENDING_ATTACHMENT_FILE[msgkey];
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').children().removeClass('km-progress-meter-back-drop')
+                }
+            }
+
+        } else {
+            KommunicateUI.displayUploadIconForAttachment(msgkey, false);
+            KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
+        }
+            
+    },
+    progressMeter : function (value, key) {
+        var control = document.getElementById('km-progress-meter-input');
+        let selector = ".progress-meter-"+key+ " .km-progress-value";
+        let stopUpload = KommunicateUI.getAttachmentStopUploadStatus(key);
+        if(stopUpload) {
+            value = 100;
+        }
+        var progressValue = document.querySelector(selector);
+        if(progressValue) {
+        progressValue.style.strokeDasharray = KM_PROGRESS_METER_CIRCUMFERENCE;
+        var progress = value / 100;
+        var dashoffset = KM_PROGRESS_METER_CIRCUMFERENCE * (1 - progress);
+        progressValue.style.strokeDashoffset = dashoffset;
+        // value == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(key);
+        }      
+     }
+}
+
 Kommunicate.richMsgEventHandler = {
     initializeSlick: function ($cardMessageContainer) {
         if ($cardMessageContainer.length > 0) {
             var slider = tns({
                 container: $cardMessageContainer[0],
+                "edgePadding": 60,
                 items: 1,
                 slideBy: 'page',
+                loop: false,
+                controlsText:[mck_actionable_message_plugin_svgs.arrow.left, mck_actionable_message_plugin_svgs.arrow.left],
                 "mouseDrag": true,
                 "arrowKeys": true,
                 onInit : function(){
                     console.log("tiny-slider initilized");
-                   document.querySelector(".km-slick-container .tns-controls button:first-child").innerHTML='<';
-                   document.querySelector(".km-slick-container .tns-controls button:last-child").innerHTML='>';
-
                 }
               });
         }
@@ -159,14 +276,42 @@ Kommunicate.richMsgEventHandler = {
 
     handlleRichButtonClick: function (e) {
         //console.log("event generated: ", e);
-        var target = e.target || e.srcElement;
-        var eventHandlerId = target.dataset.eventhandlerid;
-        if (eventHandlerId == "km-eh-001") {
-            //var buttonContainer = target.parentElement;
-            var form = target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
-            // handling paymet gateway button callback
-            form.submit();
 
+        var target = e.target || e.srcElement;
+        var requestType = target.dataset.requesttype;
+        var replyText = target.title || target.innerHTML;
+        var buttonType = target.dataset.buttontype;
+        var data = {};
+        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
+       if(buttonType !="submit"){   
+        return ;
+       }
+        if (requestType == "json") {
+           var  inputs = form.getElementsByTagName('input');
+           for(var i = 0; i<inputs.length;i++){
+            data[inputs[i].name] = inputs[i].value; 
+           }  
+           window.Applozic.ALApiService.ajax({
+            url: form.action,
+            async: false,
+            type: "post",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            success: function (data) { 
+            },
+            error: function (xhr,desc, err) {
+               console.log("error while sending data ",err); 
+            }
+        })    
+        } else {
+            form.submit();
+        }
+        if(replyText){
+            var messagePxy = {
+                'message': replyText, //message to send 
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
         }
 
     },
@@ -211,11 +356,14 @@ Kommunicate.richMsgEventHandler = {
     },
     processQuickReplies : function(e){
        var message = e.target.title;
+       var metadata = {};
+        try{
+            metadata=  JSON.parse(e.target.dataset.metadata);
+        }catch(e){
+        }
         var messagePxy = {
             'message': message, //message to send 
-            'metadata': {
-
-            }
+            'metadata': metadata
         };
 
         Kommunicate.sendMessage(messagePxy);
@@ -227,13 +375,17 @@ Kommunicate.richMsgEventHandler = {
         var type = target.dataset.type;
         var articleId = target.dataset.articleid;
         var source = target.dataset.source;
+        var metadata = {};
+        try{
+            metadata=  JSON.parse(target.dataset.metadata);
+        }catch(e){
+        }
+        metadata.KM_FAQ_ID =articleId;
+        metadata.source= source;
         if(type && type =="quick_reply"){
             var messagePxy = {
                 'message': reply, //message to send 
-                'metadata': {
-                    "KM_FAQ_ID":articleId,
-                    "source":source
-                }
+                'metadata': metadata
             };
     
             Kommunicate.sendMessage(messagePxy);
@@ -263,14 +415,23 @@ Kommunicate.richMsgEventHandler = {
     processClickOnDialogButton:function(e){
         var target = e.currentTarget;
         var reply = target.dataset.reply;
+        var metadata = {};
+        try{
+            metadata=  JSON.parse(target.dataset.metadata);
+        }catch(e){
+        }
+        
+        // default value for  metadata.skipBot is true for backward compatibility
+        metadata.skipBot = typeof metadata.skipBot != 'undefined'?metadata.skipBot:true;
         var messagePxy = {
             'message': reply, //message to send 
-            'metadata': {
-                skipBot:true
-            }
+            'metadata': metadata
         };
 
         Kommunicate.sendMessage(messagePxy);
+    },
+    handleLinkButtonClick: function(e) {
+        window.open(e.target.dataset.url, e.target.dataset.target);
     }
 
 
