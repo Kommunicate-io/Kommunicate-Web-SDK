@@ -66,16 +66,26 @@ const getResultSet = async (cardId, updateQuery) => {
     let headers = await getAuthHeader();
     let card = await updateCard(cardId, updateQuery);
     let url = config.metabase.domainUrl + "/api/card/" + cardId + "/query/json";
-    return axios.post(url, {}, { headers: headers }).then(response => {
-        return response.data;
-    }).catch(error => {
+    let retry = true;
+    return getData(url, headers).catch(error => {
         if (error.response.status === 401) {
             authKey = null
         } else if (error.response.status === 500) {
+            if (retry) {
+                retry = false;
+                return getData(url, headers);
+            } 
             throw new Error("session expire")
         }
         console.log(`error while fetching result set: ${error}`)
         throw error;
     });
+}
+const getData = (url, headers) => {
+    return Promise.resolve(axios.post(url, {}, { headers: headers })).then(response => {
+        return response.data;
+    }).catch(error => {
+        throw error
+    })
 }
 exports.getResultSet = getResultSet;

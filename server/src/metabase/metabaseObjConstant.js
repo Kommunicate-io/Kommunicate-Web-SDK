@@ -45,3 +45,7 @@ exports.cardObj = {
     "description": "This card is using into kommunicate for getting group analytics between date.",
     "metadata_checksum": null
 }
+
+exports.retryTemplate = `
+<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>Download Report</title> <style>body{margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;}.bg{height: 100vh; background-color: #fff; display: flex; align-items: center; justify-content: center;}button{border: none; margin: 0; padding: 0; width: auto; overflow: visible; background: transparent; color: inherit; font: inherit; line-height: normal; -webkit-font-smoothing: inherit; -moz-osx-font-smoothing: inherit; -webkit-appearance: none;}button::-moz-focus-inner{border: 0; padding: 0;}.bg button{height: 40px; font-size: 16px; border-radius: 3px; padding: 0px 16px; font-weight: 400; text-align: center; min-width: 70px; background-color: #2dd35c; color: #fff; font-weight: 500; line-height: 40px; transition: all 0.3s ease-out;}.bg button:hover, .bg button:active, .bg button:focus{background-color: #29af4f;}</style></head><body> <div class="bg"> <button onclick="location.reload(true);">Try Again</button> </div></body></html>
+`

@@ -1,6 +1,7 @@
 const metabaseService = require('./metabaseService');
 const { getGroupAnalyticsQuery } = require('./metabaseQuery');
 const json2xls = require('json2xls');
+const {retryTemplate} = require('./metabaseObjConstant')
 const fs = require('fs');
 const groupAnalyticsCardId = 109;
 
@@ -34,6 +35,6 @@ exports.getData = (req, res) => {
         return res.status(200).json({ code: "success", message: response })
     }).catch(error => {
         console.log("metabase data fetching error: ", error);
-        return res.status(500).json({ code: "error", message:"error" })
+        return res.send(retryTemplate);
     });
 }

@@ -105,11 +105,16 @@ const reactivateAccount = async function (appId) {
         let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC'], ['id', 'ASC']])
         let admin = dbUsers.filter(user => { return user.type == 3 });
         let agents = dbUsers.filter(user => { return user.type == 1 });
-        let bots = dbUsers.filter(user => { return user.type == 2 && user.userName != 'bot'});
+        let bots = dbUsers.filter(user => { 
+            return (!(user.userName == 'bot' || user.userName == 'liz')&& user.type == 2);
+        });
+        let liz = dbUsers.find(user => { 
+            return  user.userName == 'liz';
+        });
         users.push(...admin, ...agents, ...bots);
 
         for (var i = 0; i < users.length; i++) {
-            let userStatus = (i < result.subscription.plan_quantity || users[i].userName == 'liz') ? 1:2;
+            let userStatus = (i < result.subscription.plan_quantity) ? 1 : 2;
             let dataToBeUpdated = { status: userStatus };
             users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = userStatus);
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
@@ -119,7 +124,8 @@ const reactivateAccount = async function (appId) {
                 console.log("bot updation error", error)
             }
         }
-
+        userService.updateOnlyKommunicateUser(liz.userName, appId, {"bot_availability_status":1, "status": 1 });
+        botClientService.updateBot({ 'key': liz.userKey, 'status': 'enabled' })
         applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE });
     }
     return "success";
