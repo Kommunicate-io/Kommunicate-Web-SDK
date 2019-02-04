@@ -1748,7 +1748,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             }
             _this.addLeadCollectionInputDiv = function() {
                     KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
-                for(var i=0; i<KM_PRELEAD_COLLECTION.length; i++){
+                for(var i=KM_PRELEAD_COLLECTION.length-1; i>=0; i--){
                      //Create dynamic input field  
                      var preLeadCollection = KM_PRELEAD_COLLECTION[i];
                      var kmChatInputDiv = document.createElement("div");
