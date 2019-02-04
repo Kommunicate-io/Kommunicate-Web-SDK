@@ -717,6 +717,9 @@ function KmGroupService() {
         if (typeof params.role !== 'undefined') {
             data += '&role=' + params.role;
         }
+        if(params.createNew) {
+            data += '&createNew=' + params.createNew;
+        }
         kmUtils.ajax({
             url: KM_BASE_URL + GROUP_ADD_MEMBER_URL,
             data: data,

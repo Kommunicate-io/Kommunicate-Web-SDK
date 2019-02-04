@@ -816,7 +816,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					group.userId = params.userId;
 					group.role = params.role;
 					var conversationDetail = mckMessageService.checkForRoleType(group);
-					if (!member) {
+					if (!member && !params.createNew) {
 						kmGroupService.addGroupMember(conversationDetail);
 						return;
 					}
@@ -1955,6 +1955,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDiv.classList.remove("vis");
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
 						$kmApplozic(".km-typing-indicator-for-agent--container").addClass("n-vis").removeClass("vis");
+						$kmApplozic(".km-cc-bcc-button-container").addClass("n-vis").removeClass("vis");
 						//$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
 						//$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
 						mckMessageLayout.resetNewMessageCounter();
@@ -4264,6 +4265,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				if(msg.source == 7) {
 					$kmApplozic(".email-conversation-indicator").addClass("vis").removeClass("n-vis");
+					$kmApplozic(".km-cc-bcc-button-container").addClass("vis").removeClass("n-vis");
 				} 
 
 				var messageClass = (msg.contentType == 3 && msg.source == 7) || (msg.contentType == 0 && typeof (msg.message) != "string") ? "n-vis" : 'vis';
