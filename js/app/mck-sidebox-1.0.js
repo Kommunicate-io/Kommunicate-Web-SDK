@@ -1760,7 +1760,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                      preLeadCollection.required && kmChatInput.setAttribute("required", preLeadCollection.required);
                      kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||'');
                      kmChatInput.setAttribute("class", "km-form-control km-input-width vis");
-                     $applozic('.km-last-child').prepend(kmChatInputDiv);
+                     $applozic('.km-last-child').append(kmChatInputDiv);
                      $applozic(kmChatInputDiv).append(kmChatInput);
                 }
             }
