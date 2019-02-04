@@ -25,57 +25,18 @@ function ApplozicSidebox() {
 	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
     var mck_style_loader = [
     {
-            "name": "mck-sidebox", "url": MCK_STATICPATH + "/css/kommunicatepluginrequirements.min.css"
-    } /*, {
-            "name": "mck-combined", "url": MCK_STATICPATH + "/lib/css/mck-combined.min.css"
-    }, {
-            "name": "mck-sidebox", "url": MCK_STATICPATH + "/css/app/mck-sidebox-1.0.css"
-    }, {
-            "name": "km-richmessages", "url": MCK_STATICPATH + "/css/app/km-rich-message.css"
-    }, {
-            "name": "robotocss", "url": "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700"
-    }, {
-   	 	"name": "km-login-model", "url": MCK_STATICPATH + "/css/app/km-login-model.css"
-    }, {
-       "name": "tiny-slider", "url": MCK_STATICPATH + "/lib/css/tiny-slider-2.4.0.css"
-    }*/ ];
+            "name": "mck-sidebox", 
+            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS
+    } ];
     var mck_script_loader1 = [
-      {
-            "name": "km-utils", "url": MCK_STATICPATH + "/js/kommunicatepluginrequirements.min.js"
+    {
+            "name": "km-utils", 
+            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
     },
-      /*    {
-            "name": "widget", "url": MCK_STATICPATH + "/lib/js/mck-ui-widget.min.js"
-    }, {
-            "name": "plugins", "url": MCK_STATICPATH + "/lib/js/mck-ui-plugins.min.js"
-    }, {
-            "name": "socket", "url": MCK_STATICPATH + "/lib/js/mqttws31.js"
-    },*/{
-            "name": "maps", "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
-    } /*, {
-            "name": "emojis", "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
-    }, {
-            "name": "video_howler", "url": MCK_STATICPATH + "/lib/js/howler-2.0.2.min.js"
-    }, {
-            "name": "tiny-slider", "url": MCK_STATICPATH + "/lib/js/tiny-slider-2.4.0.js"
-    }, {
-            "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
-    },*/
-    /* {
-           "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
-    }, {
-            "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
-    },*/
-    /*{
-            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js"
-    },*/
-  /*  {
-           "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
-    }, {
-        "name": "km-utils", "url": MCK_STATICPATH + "/js/app/km-utils.js"
-    }*/
-    /*, {
-            "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
-    }*/];
+    {
+            "name": "maps",
+            "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
+    }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     } ];
@@ -275,8 +236,7 @@ function ApplozicSidebox() {
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.crossOrigin = "anonymous";
-            script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.2.min.js";
-            //script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
+            script.src = KOMMUNICATE_PLUGIN_MIN_JS;
             seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
