@@ -1414,7 +1414,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             var options = {
                                 userId: userId,
                                 applicationId: MCK_APP_ID,
-                                onInit: MckMessageServices.loadChat,
+                                onInit: mckMessageService.loadChat,
                                 baseUrl: MCK_BASE_URL,
                                 locShare: IS_MCK_LOCSHARE,
                                 googleApiKey: MCK_GOOGLE_API_KEY,
