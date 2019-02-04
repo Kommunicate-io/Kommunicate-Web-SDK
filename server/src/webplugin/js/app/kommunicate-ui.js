@@ -2,7 +2,7 @@
  * Add all Kommunicate UI Manipulation in this file.
  * 
  */
-var kommunicateCommonFunction = new KommunicateCommonFunction();
+var kommunicateCommons = new KommunicateCommons();
 KommunicateUI={
     awayMessageInfo : {},
     awayMessageScroll : true,
@@ -397,12 +397,12 @@ showClosedConversationBanner  : function(isConversationClosed){
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
     if (isConversationClosed){
         conversationStatusDiv && (conversationStatusDiv.innerHTML= messageText);
-        kommunicateCommonFunction.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
-        kommunicateCommonFunction.modifyClassList( {id : ["mck-conversation-status-box"]}, "vis", "n-vis");
+        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
+        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "vis", "n-vis");
     }
     else {
-        kommunicateCommonFunction.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
-        kommunicateCommonFunction.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
+        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
+        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
     } 
 }
 }

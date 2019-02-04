@@ -415,7 +415,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var alMessageService = new AlMessageService();
         var alFileService = new AlFileService();
         var kmCustomTheme = new KmCustomTheme();
-        var kommunicateCommonFunction = new KommunicateCommonFunction();
+        var kommunicateCommons = new KommunicateCommons();
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
@@ -502,7 +502,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             kmCustomTheme.init(appOptions);
-            kommunicateCommonFunction.init(appOptions);
+            kommunicateCommons.init(appOptions);
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
             notificationtoneoption.loop = false;
@@ -527,7 +527,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 mckCallService.init();
             }
             if (KOMMUNICATE_VERSION === "v2" && window.frameElement.getAttribute('data-protocol') == "file:") {
-                kommunicateCommonFunction.modifyClassList( {id : ["km-local-file-system-warning"]}, "vis","n-vis");
+                kommunicateCommons.modifyClassList( {id : ["km-local-file-system-warning"]}, "vis","n-vis");
               }
         };
         _this.reInit = function (optns) {
@@ -1597,7 +1597,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
-                var showPoweredBy = kommunicateCommonFunction.showPoweredBy(data);
+                var showPoweredBy = kommunicateCommons.showPoweredBy(data);
                 if (showPoweredBy) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
@@ -2229,16 +2229,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 });
 
                 _this.showSendButton = function(){
-                    kommunicateCommonFunction.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
-                    kommunicateCommonFunction.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
-                    IS_MCK_LOCSHARE ? "" :kommunicateCommonFunction.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
+                    kommunicateCommons.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
+                    kommunicateCommons.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
+                    IS_MCK_LOCSHARE ? "" :kommunicateCommons.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
                 }
 
                 _this.hideSendButton = function(){
-                    kommunicateCommonFunction.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
-                    kommunicateCommonFunction.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
-                    !IS_MCK_LOCSHARE ? kommunicateCommonFunction.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommonFunction.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
-                    !EMOJI_LIBRARY ? "" : kommunicateCommonFunction.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
+                    kommunicateCommons.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
+                    kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                    !IS_MCK_LOCSHARE ? kommunicateCommons.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommons.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
+                    !EMOJI_LIBRARY ? "" : kommunicateCommons.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
                 }
 
                 mck_text_box.addEventListener("keyup",function(){
@@ -4627,7 +4627,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if (msg.contentType === 4 || msg.contentType === 10 || msg.contentType === 103) {
                     floatWhere = 'mck-msg-center';
                 }
-                if(floatWhere === "mck-msg-right" && WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor){
+                if(floatWhere === "mck-msg-right" && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.primaryColor){
                     msgBoxColorStyle = WIDGET_SETTINGS.primaryColor;
                 }
                 statusIcon = _this.getStatusIconName(msg);
