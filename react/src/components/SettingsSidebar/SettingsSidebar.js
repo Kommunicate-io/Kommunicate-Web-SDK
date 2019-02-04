@@ -86,6 +86,9 @@ class SettingsSidebar extends Component {
                                 TEAM
                             </li>
                         }
+                        <li className="ss-nav-item company-link product product-kommunicate">
+                            <NavLink to={'/settings/company'} className="ss-nav-link ac-trigger-links" activeClassName="active">Company</NavLink>
+                        </li>
                         {this.state.isKommunicateDashboard && 
                             <li className="ss-nav-item welcome-link">
                                 <NavLink to={'/settings/welcome-message'} className="ss-nav-link ac-trigger-links" activeClassName="active">Welcome Message</NavLink>

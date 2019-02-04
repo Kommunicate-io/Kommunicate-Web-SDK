@@ -54,6 +54,10 @@
         "Webhooks and Security": {
                 "subHeading":"Setting up the webhook URLs of your APIs here will allow us to notify your server for messages and send copies of these messages. Configuring the security settings will add a layer of authentication.",
                 "knowledgeBaseLink":""
+        },
+        "Company": {
+          "subHeading":"Edit your company details",
+          "knowledgeBaseLink":""      
         }
 
 }

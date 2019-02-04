@@ -16,6 +16,7 @@ import Admin from '../../views/Admin/'
 import Team from '../../views/Team/'
 import Autoreply from '../../views/Autoreply/'
 import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
+import Company from '../../views/Company/Company'
 import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
@@ -277,6 +278,7 @@ class Full extends Component {
                 <Route exact path="/settings/team" name="Team" render={() => <Team {...this.props} />} />
                 <Route exact path="/settings/autoreply" name="Autoreply" render={() => <Autoreply {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
+                <Route exact path="/settings/company" name="Company" render={() => <Company {...this.props} />} />
                 <Route exact path="/settings/away-message" name="AwayMessage" render={() => <AwayMessage {...this.props} />} />
                 <Route exact path="/settings/quick-replies" name="AutoSuggest" render={() => <AutoSuggest {...this.props} />} />
                 <Route exact path="/settings/install" name="Install" render={() => <Install {...this.props} />} />
