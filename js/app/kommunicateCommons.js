@@ -1,6 +1,6 @@
 // Below added function are accessible in mck-sidebox-1.0.js but are not exposed globally.
 
-function KommunicateCommonFunction() {
+function KommunicateCommons() {
     var _this = this;
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
@@ -38,7 +38,7 @@ function KommunicateCommonFunction() {
         else if(isKommunicateAccountExpired){
             return true;
         }
-        else if(WIDGET_SETTINGS && typeof WIDGET_SETTINGS.showPoweredBy !== "undefined"){
+        else if(kommunicateCommons.isObject(WIDGET_SETTINGS) && typeof WIDGET_SETTINGS.showPoweredBy !== "undefined"){
             return WIDGET_SETTINGS.showPoweredBy;
         }
         else if (data  &&  data.pricingPackage  && (data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY || data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY)){
@@ -73,7 +73,12 @@ function KommunicateCommonFunction() {
              _this.classListChanger(node,addClass,removeClass);
             })
         
-    }
+    };
 
+    /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
+     value passed is just a object or not. */
+    _this.isObject = function(o) {
+        return typeof o == 'object' && o.constructor == Object;
+    };
 
 };

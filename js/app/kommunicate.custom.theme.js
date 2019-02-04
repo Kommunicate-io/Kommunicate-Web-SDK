@@ -1,4 +1,4 @@
-var kmCustomTheme = new KmCustomTheme();
+var kommunicateCommons = new KommunicateCommons();
 
 function KmCustomTheme() {
     var _this = this;
@@ -23,7 +23,7 @@ function KmCustomTheme() {
 
     _this.customSideboxWidget = function () {
         var primaryColor = DEFAULT_BACKGROUND_COLOR;
-        if(WIDGET_SETTINGS){
+        if(kommunicateCommons.isObject(WIDGET_SETTINGS)){
             primaryColor = (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) ? WIDGET_SETTINGS.primaryColor : DEFAULT_BACKGROUND_COLOR;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
@@ -46,7 +46,7 @@ function KmCustomTheme() {
     };
 
     _this.returnCustomWidget = function () {
-        if (WIDGET_SETTINGS) {
+        if (kommunicateCommons.isObject(WIDGET_SETTINGS)) {
             if ( WIDGET_SETTINGS.iconIndex === "image"){
                 return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);
             }
