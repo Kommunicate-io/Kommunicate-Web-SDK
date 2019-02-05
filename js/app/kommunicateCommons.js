@@ -77,8 +77,9 @@ function KommunicateCommons() {
 
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
      value passed is just a object or not. */
-    _this.isObject = function(o) {
-        return typeof o == 'object' && o.constructor == Object;
+    _this.isObject = function(object) {
+        if (!object) return false;
+        return typeof object == 'object' && object.constructor == Object;
     };
 
 };
