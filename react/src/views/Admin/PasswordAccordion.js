@@ -9,6 +9,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import './Admin.css';
 import Button from '../../components/Buttons/Button';
 import { connect } from 'react-redux';
+import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFunctionComponents'
 
 const customStyles = {
   content: {
@@ -125,17 +126,8 @@ class PasswordAccordion extends Component {
 
     render () {
         return (
-          <div className="forgot-password-container change-courser" onClick={this.openForgotPasswordModal}>
-            <div className="forgot-password-texts">
-              <h2>Change Password</h2>
-              <p>Update your password</p>
-            </div>
-            <div className="forgot-password-arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path d="M9.29 15.88L13.17 12 9.29 8.12c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42z"/>
-              </svg>
-            </div>
-
+          <div className="km-change-password-container">
+              <BlockButton title = {"Change Password"} subTitle = {"Update your password"} onClickOfBlock = {this.openForgotPasswordModal} />
             <Modal isOpen={this.state.forgotPasswordModalOpen} ariaHideApp={false} onRequestClose={this.closeForgotPasswordModal} style={customStyles} shouldCloseOnOverlayClick={true}>
                   <div id="content-area" className="forgot-password-form-container"> 
 
