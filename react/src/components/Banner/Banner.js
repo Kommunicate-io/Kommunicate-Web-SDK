@@ -1,12 +1,12 @@
 //How to use Banner Component?
 
 //import Banner from '../../components/Banner/Banner';
-//Ex:  <Banner  indicator = {"warning"} isVisible= {true} text = {"You need Admin permissions to edit this section"}/>
+//Ex:  <Banner  indicator = {"warning"} hidden= {true} text = {"You need Admin permissions to edit this section"}/>
 
 //To display warning banner, indicator = "warning" and text = "banner text"
 //To display success banner, indicator = "success" and text = "banner text"
 //To display error banner, indicator = "error" and text = "banner text"
-//isVisible = false(hide)/true(visible) 
+//hidden = false(hide)/true(visible) 
 
 
 import React, { Component } from 'react';
@@ -17,14 +17,14 @@ import { BannerIcons } from '../../assets/svg/svgs';
 export default class Banner extends Component {
   static defaultProps = {
     indicator: 'default',
-    isVisible: false,
+    hidden: false,
   };
 
   render() {
-    const { indicator, text, isVisible } = this.props;
+    const { indicator, text, hidden } = this.props;
 
     return (
-      <div className="container km-banner-component" aria-hidden={!isVisible} hidden={isVisible} role="alert">
+      <div className="container km-banner-component" hidden={hidden} role="alert">
         <div className={indicator === 'default' ? "km-banner km-default-banner row" : 
                         indicator === 'success' ? "km-banner km-success-banner row" :
                         indicator === 'warning' ? "km-banner km-warning-banner row" :
@@ -45,5 +45,5 @@ export default class Banner extends Component {
 
 Banner.propTypes = {
     indicator: PropTypes.string.isRequired,
-    isVisible: PropTypes.bool,
+    hidden: PropTypes.bool,
 };

@@ -174,9 +174,7 @@ class WebhooksAndSecurity extends Component {
         return(
             <div className="animated fadeIn webhooks-and-security-div">
                 <div className="km-settings-banner">
-                {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
-                    <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to change Webhooks & Security settings"} />
-                }
+                    <Banner indicator={"warning"} hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} text={"You need admin permissions to change Webhooks & Security settings"} />
               </div>
                 <div className="km-heading-wrapper">
 					<SettingsHeader  />

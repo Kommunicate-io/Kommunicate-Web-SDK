@@ -91,7 +91,7 @@ class Company extends Component{
       return(
           <CompanyContainer>
               <CompanyRestrictionBannerContainer>
-                <Banner indicator={"warning"} isVisible={this.state.companyInfoEditable} text={"You need admin permissions to update your company details"} />
+                <Banner indicator={"warning"} hidden={this.state.companyInfoEditable} text={"You need admin permissions to update your company details"} />
               </CompanyRestrictionBannerContainer>
               <SettingsHeader />
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}

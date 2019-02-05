@@ -349,11 +349,9 @@ class Integration extends Component {
     })
     return (
       <div className="animated fadeIn teammate-wrapper ">
-      <div className="km-settings-banner">
-      {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
-                <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
-              }
-              </div>
+        <div className="km-settings-banner">
+            <Banner indicator={"warning"} hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} text={"You need admin permissions to manage your team"} />
+        </div>
         <div className="km-heading-wrapper">
           <SettingsHeader />
           <Button className="teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT && true}>+ Add a team member</Button>
@@ -369,9 +367,7 @@ class Integration extends Component {
                       <p className="teammates-add-member-modal-header-title" >Adding new team member</p>
                     </div>
                     <hr className="teammates-add-member-modal-divider" />
-                    { this.state.isTrialPlan &&
-                      <Banner indicator={"warning"} isVisible={false} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
-                    }
+                      <Banner indicator={"warning"} hidden={!this.state.isTrialPlan} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
                     { !this.state.isTrialPlan &&
                     <div className="teammates-billing-update-container">
                       <div className="teammates-billing-update-text">

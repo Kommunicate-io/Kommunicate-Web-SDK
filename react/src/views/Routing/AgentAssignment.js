@@ -323,8 +323,8 @@ toggleConversationAssignment = () => {
                             <BannerContainer>
                                 <div>
                                     {
-                                        this.state.botsAreAvailable ?  <Banner indicator={"default"} isVisible={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
-                                        <Banner indicator={"warning"} isVisible={false} text={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/> 
+                                        this.state.botsAreAvailable ?  <Banner indicator={"default"} hidden={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
+                                        <Banner indicator={"warning"} hidden={false} text={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/> 
                                     }
                                 </div>
                             </BannerContainer>
@@ -396,7 +396,7 @@ toggleConversationAssignment = () => {
                         </OptionsWrapper>
 
                         <BannerContainer>   
-                            <Banner indicator={"default"} isVisible={false} text={"NOTE: If enabled, the unassigned bots will also reply to user messages."} />
+                            <Banner indicator={"default"} hidden={false} text={"NOTE: If enabled, the unassigned bots will also reply to user messages."} />
                         </BannerContainer>
                     </OptionsContainer>
                 </div>

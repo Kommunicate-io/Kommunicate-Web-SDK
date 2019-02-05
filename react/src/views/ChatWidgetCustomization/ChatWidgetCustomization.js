@@ -205,9 +205,7 @@ class ChatWidgetCustomization extends Component {
         return (
             <div className="animated fadeIn km-chat-customization-wrapper">
                 <div className="km-settings-banner">
-                {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
-                    <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to change Chat Widget settings"} />
-                }
+                    <Banner indicator={"warning"} hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} text={"You need admin permissions to change Chat Widget settings"} />
                 </div>
             <SettingsHeader />
             <div className="row">
