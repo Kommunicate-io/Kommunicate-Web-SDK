@@ -448,6 +448,9 @@ exports.updateUser = (userId, appId, userInfo) => {
       }).then(function (updateResult) {
         if (user.type == registrationService.USER_TYPE.BOT) {
           // keeping it async for now.
+          if (userInfo.deleted_at != null) {
+            updateSubscriptionQuantity(user, -1);
+          }
           botPlatformClient.updateBot({
             "key": userKey,
             "clientToken": userInfo.clientToken,
@@ -726,7 +729,7 @@ const updateSubscriptionQuantity = async function (user, count) {
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let usersCount = await getUsersCountByTypes(user.applicationId, null) - FREE_BOTS_COUNT;
 
-        if ((count < 0 && (result.subscription.plan_quantity > (usersCount + count))) ||
+        if ((count < 0 && (result.subscription.plan_quantity <= usersCount)) ||
           (count > 0 && (result.subscription.plan_quantity >= usersCount))) {
           console.log("users count is less than the subscription quantity, skipping subscription update");
           return;

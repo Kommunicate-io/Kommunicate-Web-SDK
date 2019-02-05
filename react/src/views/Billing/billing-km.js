@@ -688,7 +688,7 @@ class BillingKommunicate extends Component {
                                         
                                     </div>
                                     }
-                                    {  this.state.kmActiveUsers > this.state.totalPlanQuantity ? <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? "n-vis" : "subscription-current-plan-warning-container"}>
+                                    {  this.state.seatsBillable > this.state.totalPlanQuantity ? <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? "n-vis" : "subscription-current-plan-warning-container"}>
                                         <div className="subscription-warning-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 512 512">
                                                 <path d="M507.494 426.066L282.864 53.537c-5.677-9.415-15.87-15.172-26.865-15.172s-21.188 5.756-26.865 15.172L4.506 426.066c-5.842 9.689-6.015 21.774-.451 31.625 5.564 9.852 16.001 15.944 27.315 15.944h449.259c11.314 0 21.751-6.093 27.315-15.944 5.564-9.852 5.392-21.936-.45-31.625zM256.167 167.227c12.901 0 23.817 7.278 23.817 20.178 0 39.363-4.631 95.929-4.631 135.292 0 10.255-11.247 14.554-19.186 14.554-10.584 0-19.516-4.3-19.516-14.554 0-39.363-4.63-95.929-4.63-135.292 0-12.9 10.584-20.178 24.146-20.178zm.331 243.791c-14.554 0-25.471-11.908-25.471-25.47 0-13.893 10.916-25.47 25.471-25.47 13.562 0 25.14 11.577 25.14 25.47 0 13.562-11.578 25.47-25.14 25.47z" fill="#f8ba36"/>
