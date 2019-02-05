@@ -295,6 +295,7 @@ KommunicateUI={
                 KommunicateUI.showHeader();
                 $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+                $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
                 $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
                 $applozic("#mck-msg-new").attr("disabled", false);
                 $applozic('.km-contact-input-container').removeClass("n-vis").addClass("vis");
@@ -327,6 +328,7 @@ KommunicateUI={
             $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
             $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
             $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+            $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
             $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
             $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
             $applozic('#km-faq').removeClass("n-vis").addClass("vis");
