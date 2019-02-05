@@ -24,7 +24,6 @@
     "boom": "7.2.0",
     "chargebee": "2.3.5",
     "clean-css": "4.1.11",
-    "concat-files": "0.1.1",
     "cors": "2.8.4",
     "cron": "^1.3.0",
     "dateformat": "^3.0.3",
