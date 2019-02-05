@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
 import {BlockButtonContainer, BlockButtonTextWrapper, BlockButtonArrowWrapper} from './GeneralFunctionComponentsStyle'
 import {RightArrow} from '../../../src/assets/svg/svgs'
 
