@@ -127,7 +127,7 @@ class UserItem extends Component {
                            <div className="small text-muted">  <StatusIndicator label = {"Away"} indicator={"warning"} /> </div>
                         }
                     </td>
-                    
+                    <td className= "teammates-row-icon-container" colSpan="1"></td>
                     <td className= "teammates-row-icon-container" colSpan="1"  >
                       { this.hasTeamEditAccess(roleType) &&
                         <span className="teammates-edit-wrapper km-teammates-icon-visibility" onClick ={this.onOpenModal} data-index= {ref} data-button= {"edit"}>
@@ -135,8 +135,8 @@ class UserItem extends Component {
                           Edit
                         </span>
                       }
-                    </td>
-                    <td className= "teammates-row-icon-container" colSpan="2"  >
+                    </td>  
+                    <td className= "teammates-row-icon-container" colSpan="1">
                       { this.hasTeamEditAccess(roleType) &&
                         <span onClick ={this.onOpenModal}  data-index= {ref} data-button= {"deleteUser"} className="teammates-delete-wrapper km-teammates-icon-visibility">
                          <DeleteIcon />

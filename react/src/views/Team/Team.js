@@ -478,7 +478,10 @@ class Integration extends Component {
                       <th>Email id</th>
                       <th>Role</th>
                       {/* <th>Last Activity</th> */}
-                      <th colSpan="4">Status</th>
+                      <th>Status</th>
+                      <th className="teammates-table-hide-coloumn">Edit</th>
+                      <th className="teammates-table-hide-coloumn">Delete</th>
+                      <th className="teammates-table-hide-coloumn">Invite</th>
                       {/* <th className="team-th-delete-edit">Delete</th>
                       <th className="text-center n-vis">Add Info</th>
                       <th className="text-center n-vis">Actions</th>
