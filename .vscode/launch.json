@@ -37,6 +37,14 @@
             "program": "${workspaceFolder}/server/app.js",
             "console":"externalTerminal"
     
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "plugin",
+            "program": "${workspaceFolder}/server/src/webplugin/pluginOptimizer.js",
+            "console":"externalTerminal"
+    
         }
     ]
 }

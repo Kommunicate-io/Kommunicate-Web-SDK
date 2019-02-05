@@ -375,13 +375,17 @@ Kommunicate.richMsgEventHandler = {
         var type = target.dataset.type;
         var articleId = target.dataset.articleid;
         var source = target.dataset.source;
+        var metadata = {};
+        try{
+            metadata=  JSON.parse(target.dataset.metadata);
+        }catch(e){
+        }
+        metadata.KM_FAQ_ID =articleId;
+        metadata.source= source;
         if(type && type =="quick_reply"){
             var messagePxy = {
                 'message': reply, //message to send 
-                'metadata': {
-                    "KM_FAQ_ID":articleId,
-                    "source":source
-                }
+                'metadata': metadata
             };
     
             Kommunicate.sendMessage(messagePxy);
@@ -394,12 +398,17 @@ Kommunicate.richMsgEventHandler = {
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
+        var metadata = {};
+        try{
+            metadata=  JSON.parse(target.dataset.metadata);
+        }catch(e){
+            console.log(e);
+        }
+        metadata.KM_BUTTON_CLICKED =true;
         if(type && type =="quick_reply"){
             var messagePxy = {
                 'message': reply, //message to send 
-                'metadata': {
-                    "KM_BUTTON_CLICKED":true
-                }
+                'metadata': metadata
             };
     
             Kommunicate.sendMessage(messagePxy);

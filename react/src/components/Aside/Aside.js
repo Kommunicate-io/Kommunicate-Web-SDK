@@ -23,6 +23,7 @@ import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
 import Banner from '../Banner/Banner';
 import { Link } from 'react-router-dom';
+import MultiSelectInput from './MultiSelectInput';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -66,7 +67,8 @@ class Aside extends Component {
       userInfo: null,
       toggleExpandIcon: false,
       toggleCcBccField: true,
-      warningBannerText: ''
+      warningBannerText: '',
+      toggleCcBccField: true
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -235,12 +237,16 @@ class Aside extends Component {
 
   initConversation(groupId) {
     var that = this;
+    var emptyState = document.getElementById("empty-state-conversations-div");
     window.$kmApplozic.fn.applozic("getGroup", {
         groupId: groupId, callback: function(response) {
           if(response) {
+            emptyState.classList.add('n-vis');
+            emptyState.classList.remove('vis');
             that.setState({
               visibleIntegartion:false,
               visibleReply:true,
+              toggleCcBccField: true
             });
             that.setUpAgentTakeOver(response);
           }
@@ -961,12 +967,22 @@ class Aside extends Component {
                               <div onClick={this.expandTextArea} className={this.state.visibleReply ? "km-expand-icon": "n-vis"}>
                                 { !this.state.toggleExpandIcon ? <ExpandIcon /> : <CollapseIcon /> }
                               </div>
+                              <div className={this.state.visibleReply ? "km-cc-bcc-button-container" : "n-vis" } onClick={() => {
+                                this.setState({
+                                  toggleCcBccField: !this.state.toggleCcBccField
+                                })
+                              }}>Cc</div>
                             </div>
                             <div className={this.state.visibleReply ? "n-vis" : "km-sidebox-third-party-integration"}>
                               <span className="inteagration-forward-text">Forward to:</span>
                               {thirdParty}
                             </div>
-
+                            <div className={this.state.visibleReply ?"km-cc-bcc-input-container" : "n-vis"} hidden={this.state.toggleCcBccField}>
+                              <div className="km-cc-text">Cc</div>
+                              <div className="km-cc-input-container">
+                                <MultiSelectInput group={this.state.group}/>
+                              </div>
+                            </div>
                             <div id="km-write-box" className={this.state.visibleReply ? "blk-lg-12 km-write-box":"n-vis" } >
                               <form id="km-msg-form" className="vertical km-msg-form">
                                 <div className="km-form-group n-vis">

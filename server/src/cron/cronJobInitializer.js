@@ -10,7 +10,7 @@ cronState === 'enable' ? console.log("\x1b[41m ------Warning: cron is enabled --
  * Initialize all enable cron
  */
 
-exports.initiatAllCron = () => {
+exports.initiateAllCron = () => {
     crons.map((cron, index) => {
         if (cronState === 'enable' && typeof cronMapper[cron.job] == "function") {
             const cronJob = new CronJob(cron.time, cronMapper[cron.job], null, false);

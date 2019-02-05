@@ -303,6 +303,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var USER_DEVICE_KEY;
 		var USER_COUNTRY_CODE;
 		var MCK_WEBSOCKET_URL;
+		var MCK_WEBSOCKET_PORT;
 		var IS_LOGGED_IN = true;
 		var MCK_CONTACT_MAP = [];
 		KM_CLIENT_GROUP_MAP = [];
@@ -815,7 +816,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					group.userId = params.userId;
 					group.role = params.role;
 					var conversationDetail = mckMessageService.checkForRoleType(group);
-					if (!member) {
+					if (!member && !params.createNew) {
 						kmGroupService.addGroupMember(conversationDetail);
 						return;
 					}
@@ -1278,6 +1279,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							USER_DEVICE_KEY = result.deviceKey;
 							USER_COUNTRY_CODE = result.countryCode;
 							MCK_WEBSOCKET_URL = result.websocketUrl;
+							MCK_WEBSOCKET_PORT = result.websocketPort;
 							IS_MCK_USER_DEACTIVATED = result.deactivated;
 							MCK_USER_TIMEZONEOFFSET = result.timeZoneOffset;
 							MCK_IDLE_TIME_LIMIT = result.websocketIdleTimeLimit;
@@ -1953,6 +1955,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDiv.classList.remove("vis");
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
 						$kmApplozic(".km-typing-indicator-for-agent--container").addClass("n-vis").removeClass("vis");
+						$kmApplozic(".km-cc-bcc-button-container").addClass("n-vis").removeClass("vis");
 						//$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
 						//$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
 						mckMessageLayout.resetNewMessageCounter();
@@ -4262,6 +4265,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				if(msg.source == 7) {
 					$kmApplozic(".email-conversation-indicator").addClass("vis").removeClass("n-vis");
+					$kmApplozic(".km-cc-bcc-button-container").addClass("vis").removeClass("n-vis");
 				} 
 
 				var messageClass = (msg.contentType == 3 && msg.source == 7) || (msg.contentType == 0 && typeof (msg.message) != "string") ? "n-vis" : 'vis';
@@ -4524,7 +4528,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
 						}
 					} else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
-						return '<a href= "#" target="_self"  ><video controls class="mck-video-player">' + '<source src="' + _this.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + _this.getFileurl(msg) + '" type="video/ogg"></video></a>';
+						return '<video controls class="mck-video-player">' + '<source src="' + _this.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + _this.getFileurl(msg) + '" type="video/ogg"></video>';
 						//    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
 					} else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
 						return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
@@ -7774,7 +7778,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var $mck_message_inner = $kmApplozic("#km-message-cell .km-message-inner-right");
 			_this.init = function () {
 				if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
-					var port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
+					var port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674":"15675";
+
+					if (typeof MCK_WEBSOCKET_PORT !== 'undefined') {
+						port = MCK_WEBSOCKET_PORT;
+					}
+
 					if (typeof w.SockJS === 'function') {
 						if (!SOCKET) {
 							SOCKET = new SockJS(MCK_WEBSOCKET_URL + ":" + port + "/stomp");

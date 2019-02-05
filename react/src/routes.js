@@ -14,6 +14,7 @@ const routes = {
   '/settings/profile': "Profile",
   '/settings/quick-replies': 'Quick Replies',
   '/settings/welcome-message': 'Welcome Message',
+  '/settings/company': 'Company',
   '/settings/away-message': 'Away Message',
   '/settings/agent-app': 'Agent App',
   '/settings/conversation-rules':'Conversation Rules',

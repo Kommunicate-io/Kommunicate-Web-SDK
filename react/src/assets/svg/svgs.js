@@ -705,3 +705,15 @@ export const LoginSignupSvg = props => (
           </g>
         </svg>
     );
+  export const FreePlanBullets = props => (
+    <svg width={14} height={14} {...props}>
+      <g fill="none" opacity={0.861}>
+        <circle cx={7} cy={7} r={7} fill="#F7A5A5" />
+        <path
+          fill="#FFF"
+          d="M6.828 6.31L4.674 4.158a.366.366 0 0 0-.517.517L6.31 6.828a.244.244 0 0 1 0 .344L4.157 9.326a.366.366 0 0 0 .517.517L6.828 7.69a.244.244 0 0 1 .344 0l2.154 2.154a.366.366 0 0 0 .517-.517L7.69 7.172a.244.244 0 0 1 0-.344l2.154-2.154a.366.366 0 0 0-.517-.517L7.172 6.31a.244.244 0 0 1-.344 0z"
+        />
+      </g>
+    </svg>
+  );
+    

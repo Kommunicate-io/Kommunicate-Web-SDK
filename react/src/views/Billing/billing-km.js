@@ -24,6 +24,22 @@ import CloseButton from '../../components/Modal/CloseButton';
 import { Link } from 'react-router-dom';
 import { USER_TYPE, USER_STATUS } from '../../utils/Constant';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import moment  from 'moment';
+import {FreePlanBullets} from '../../assets/svg/svgs';
+
+const MissingOutOnFreePlanBox = (props) => (
+     <div className="km-missing-out">
+     <p>MAJOR FEATURES YOU WILL MISS OUT ON:</p>
+     {
+         props.missingOut && props.missingOut.map((data, index) => (
+             <div className="km-missing-out-info" key={index}>
+                 <div className="km-missing-out-img"><FreePlanBullets /></div>
+                 <div className="km-missing-out-content">{ props.missingOut &&  props.missingOut[index]}</div>
+             </div>
+         ))
+     }
+     </div>
+    )
 
 
 class BillingKommunicate extends Component {
@@ -63,8 +79,8 @@ class BillingKommunicate extends Component {
             disableSelectedPlanButton: false,
             clickedPlan:  'startup',
             currentModal: "",
-            numberOfIntegratedBots:0
-
+            numberOfIntegratedBots:0,
+            missingOutOnFreePlan : ["Bot integrations","Lead collection","Conversation history beyond 30 days","Third party integrations","Mobile SDKs","Mailbox","Quick replies","FAQ Centre","Away messages","Automatic conversation assignment","Whitelabel chat widget","Chat widget icon customization"]
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -171,10 +187,6 @@ class BillingKommunicate extends Component {
                 }
             }
         } 
-
-        if(!CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) {
-            document.querySelector(".startup-plan-btn").innerHTML = "CURRENT PLAN";
-        }
 
     }
 
@@ -491,7 +503,6 @@ class BillingKommunicate extends Component {
             seatsBillable:totalSeatsBillable
         })
     }
-
     render() {
         //Todo: set this dynamically based on current plan
         let currentPlanElems = document.querySelectorAll(".pricing-table-body button");
@@ -574,7 +585,7 @@ class BillingKommunicate extends Component {
                 <div className="info-detail-container">
                     <p>You are currently in <strong><span>{SUBSCRIPTION_PLANS[this.state.subscription].name}</span> Plan.</strong> Your next billing date is on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
                     <br/>
-                    <p>If you want to downgrade your plan to the <strong><span>{SUBSCRIPTION_PLANS[this.state.clickedPlan].name}</span></strong> plan, just leave us a mail <br/> at support@kommunicate.io or start a conversation from the chat widget, and <br/> we will get back to you.</p>
+                    <p>If you want to downgrade your plan, just leave us a mail at <strong> support@kommunicate.io</strong> <br/> or start a conversation from the chat widget, and we will get back to you.</p>
                 </div>
             </Fragment>
         );
@@ -599,6 +610,25 @@ class BillingKommunicate extends Component {
                 </div>
             </Fragment>
         );
+        const MissingOutModal = (
+            <Fragment>
+                <div className="seat-selection-modal--header">
+                    <h2>FREE plan details</h2>
+                    <hr/>
+                </div>
+                <div className="km-free-plan-modal-text">
+                FREE plan comes with the basic live chat features and has a maximum limit of 2 human agents</div>
+                <MissingOutOnFreePlanBox missingOut={this.state.missingOutOnFreePlan} />    
+                <div className="buy-free-plan-modal--footer text-right">
+                    <button className="km-button km-button--primary" onClick={() => this.openCurrentModal("")}>Close</button>                                  
+                </div>     
+                
+            </Fragment>
+        );
+
+        let applicationCreatedAtTime = CommonUtils.getUserSession().applicationCreatedAt || CommonUtils.getUserSession().created_at;
+        applicationCreatedAtTime = applicationCreatedAtTime.replace('Z','');
+        var trialExpiryDate = moment(applicationCreatedAtTime).add(30, 'days').format("DD MMMM YYYY");
 
         return (
             <div className="animated fadeIn billings-section">
@@ -607,38 +637,35 @@ class BillingKommunicate extends Component {
                         <div className="card">
                             <div className="card-block">
 
+                            <SettingsHeader  />
+
                                 <button id="chargebee-init" hidden></button>
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ?
                                     (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
-                                        (<div className="info-bar-container">
-                                            <p className="info-bar-text"><strong>{this.state.trialLeft} days left of full feature trial.</strong> If no plan is chosen, you will be subscribed to the FREE PLAN at the end of the trial period.</p>
+                                        (<div className="subscription-current-plan-container">
+                                            <p className="km-startup-plan-billing-info">
+                                            <span>You are currently enjoying a trial version of the <strong>GROWTH PLAN</strong></span> 
+                                            <span>At the end of the trial period ({CommonUtils.countDaysForward(this.state.trialLeft, "days")}), you will be downgraded to the Free plan.<a href="javascript:void(0)"  className="km-free-plan-link" onClick={(event) => {this.openCurrentModal("missingOut", event)}}> See free plan details</a>  </span> </p>
                                         </div>
                                         )
                                         : (
-                                            <div className="info-bar-container info-bar--error">
-                                                <p className="info-bar-text"><strong>Trial period over.</strong> You have been subscribed to the Free Plan.</p>
-                                            </div>
+                                            <div className="subscription-current-plan-container">
+                                            <p className="km-startup-plan-billing-info">
+                                            <span>You are on the <strong>FREE PLAN</strong></span> 
+                                            <span>Your trial ended on {trialExpiryDate}. <a href="javascript:void(0)" className="km-free-plan-link"  onClick={(event) => {this.openCurrentModal("missingOut", event)}}> See free plan details</a> </span> </p>
+                                        </div>
                                         )
                                     )
                                     :
                                     null}
                                 
-				                       <SettingsHeader  />
+				                      
 				                    
                                 {/* Subscribe successfully box */}
 
                                 <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")): "subscription-complete-container"}>
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ? "" :
                                     <div className="subscription-current-plan-container">
-                                        <div className="subscription-success-checkmark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 56 56">
-                                                <g fill="#2DD35C" fillRule="nonzero">
-                                                    <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z"/>
-                                                    <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z"/>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                        
                                         <div className="subscription-success-plan-billing">
                                             <div className="subscription-success-purchased-plan-name">
                                                 <p>Your plan:</p>
@@ -651,9 +678,9 @@ class BillingKommunicate extends Component {
                                                         <p>You will be charged <strong>${this.state.totalPlanAmount / 100}</strong> on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
                                                     </div>
 
-                                                    <div className="subscription-success-purchased-plan-billing">
-                                                        <p></p>
+                                                    <div className="subscription-success-purchased-plan-billing-actions">
                                                         <p><a id="chargebee-portal" className="vis" href="javascript:void(0)" data-cb-type="portal">Change Billing Info</a></p>
+                                                        <p><a onClick={(event) => {this.openCurrentModal("infoModal", event)}} className="vis" href="javascript:void(0)">Downgrade plan</a></p>
                                                     </div>
                                                 </div>
                                             }
@@ -671,35 +698,10 @@ class BillingKommunicate extends Component {
                                             <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of team members</p>
                                             <p>To make sure all the right team members can log in to their Kommunicate account, delete the extra ones from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
-                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to <strong>add</strong> or <strong>delete</strong> team members in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p> : ""
+                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to add or delete agents in your current plan? Go to <Link to="/settings/team">Teammates section</Link></p> : ""
                                     }
                                     
                                 </div>
-
-                                {
-                                    this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? "" : 
-                                <div className="subscription-complete-container">
-                                    <div className="subscription-current-plan-container">
-                                        <div className="subscription-success-checkmark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 56 56">
-                                                <g fill="#2DD35C" fillRule="nonzero">
-                                                    <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z"/>
-                                                    <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z"/>
-                                                </g>
-                                            </svg>
-                                        </div>
-                                        
-                                        <div className="subscription-success-plan-billing">
-                                            <div className="subscription-success-purchased-plan-name">
-                                                <p>Your plan:</p>
-                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent", paddingLeft: "0px"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> </p>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> team members in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p>
-                                </div>) : ""
-                                }
 
                                 <h2 className="plan-agent-details upgrade-text n-vis">
                                 Upgrade to scale your customer support
@@ -707,7 +709,8 @@ class BillingKommunicate extends Component {
 
                             </div>
 
-                                <div className="row text-center" style={{padding:"13px 13px 13px 0px",margin:"0px"}}>
+                                <div className="row text-center pricing-container-wrapper" style={{padding:"13px 13px 13px 0px",margin:"0px"}}>
+                                <span className="km-pricing-toggle-heading">Upgrade to one of our paid plans for premium features</span>
 
                                     {/* <!-- Pricing Toggle --> */}
                                     <div className="pricing-toggle text-center">
@@ -719,61 +722,12 @@ class BillingKommunicate extends Component {
                                         <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly <span>(Save 20%)</span></label>
                                     </div>
 
-                                    <div className="col-lg-4 col-md-4 col-xs-12">
-                                        <div className="pricing-table">
-                                            <div className="pricing-table-container startup">
-                                                <div className="pricing-table-header">
-                                                    <div className="plan-breif-container">
-                                                        <span>Basic features</span>
-                                                    </div>
-                                                    <h2 className="pricing-table-plan-title">Free</h2>
-                                                    <h4 className="pricing-table-plan-subtitle">no credit card required</h4>
-                                                    <div className="price-image-container">
-                                                        <div className="pricing-value">
-                                                            <div>
-                                                                <h2> 0 </h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">free forever</p>
-                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <p className="plan-agent-details vis">Up to 2 team members</p>
-
-                                                </div>
-                                                <div className="pricing-table-body">
-                                                    
-                                                    { (this.state.subscription !== "startup") ?
-                                                         <button className=" chargebee km-button km-button--secondary" data-cb-plan-id="startup" onClick={(event) => {this.openCurrentModal("infoModal", event)}} data-choose-plan="startup">
-                                                            Choose Plan
-                                                        </button> : <button className="km-button km-button--secondary startup-plan-btn" onClick={(event) => {this.openCurrentModal("buyFreePlan", event)}}>Choose Plan</button>
-                                                    }
-                                                </div>
-                                                <div className="pricing-table-footer">
-                                                    <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
-                                                    <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p style={{ opacity: 0 }}>Includes...</p>
-                                                        <ul>
-                                                            <li>Up to 2 team members</li>
-                                                            <li>Live Chat</li>
-                                                            <li>Web SDK</li>
-                                                            <li>Agent apps</li>
-                                                            <li>Basic reporting</li>
-                                                            <li>Welcome messages</li>
-                                                            <li>30 days chat history</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-lg-4 col-md-4 col-xs-12">
+                                    <div className="col-lg-5 col-md-5 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
                                                     <div className="plan-breif-container">
-                                                        <span>Advanced features</span>
+                                                        <span>Advanced support features</span>
                                                     </div>
                                                     <h2 className="pricing-table-plan-title">Growth</h2>
                                                     <h4 className="pricing-table-plan-subtitle">most popular</h4>
@@ -791,7 +745,7 @@ class BillingKommunicate extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details vis">Unlimited team members</p>
+                                                    <p className="plan-agent-details vis">Unlimited humans & bots</p>
                                                 </div>
                                                 <div className="pricing-table-body">
                                                 {
@@ -811,7 +765,6 @@ class BillingKommunicate extends Component {
                                                 <div className="pricing-table-footer">
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                                         <ul>
                                                             <li>Bot integrations</li>
                                                             <li>Mobile SDKs</li>
@@ -839,12 +792,12 @@ class BillingKommunicate extends Component {
                                             Subscription={this.state.subscription} ShowFeatures={this.state.showFeatures} HideFeatureList={this.state.hideFeatureList}/>
                                     </div> */}
                                     
-                                    <div className="col-lg-4 col-md-4 col-xs-12">
+                                    <div className="col-lg-5 col-md-5 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
                                                     <div className="plan-breif-container">
-                                                        <span>Advanced features</span>
+                                                        <span>Full-fledged support solution</span>
                                                     </div>
                                                     <h2 className="pricing-table-plan-title">Enterprise</h2>
                                                     <h4 className="pricing-table-plan-subtitle">save big</h4>
@@ -862,7 +815,7 @@ class BillingKommunicate extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details vis">Unlimited team members</p>
+                                                    <p className="plan-agent-details vis">Unlimited humans & bots</p>
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     <button className="km-button km-button--secondary" onClick={(event) => {this.openCurrentModal("seatSelection", event)}} data-choose-plan="enterprise">Choose Plan</button>
@@ -880,7 +833,6 @@ class BillingKommunicate extends Component {
                                                             <li>Dedicated server</li>
                                                             <li>Premium support</li>
                                                             <li>Custom SLA</li>
-                                                            <li>Bot builder</li>
                                                             <li>Routing rules</li>
                                                             <li>CSAT score</li>
                                                             <li>Unlimited scaling</li>
@@ -892,33 +844,8 @@ class BillingKommunicate extends Component {
                                     </div>
                                 </div>
                         </div>
-
-                        {/* FAQs */}
-                        <div className="card">
-                            <div className="card-block billings-faq-container">
-                                <div className="billings-faq-qa">
-                                    <h4 className="billings-faq-question">How can I add or delete agents later?</h4>
-                                    <p className="billings-faq-answer">You may add or delete agents any time from <Link to="/settings/team">Teammates</Link> section. The number of seats in your plan will be updated accordingly and the bill will be adjusted on a prorated basis.</p>
-                                </div>
-                                <div className="billings-faq-qa">
-                                    <h4 className="billings-faq-question">How many team members can I add in a particular plan?</h4>
-                                    <p className="billings-faq-answer">You can add as many team members in Kommunicate as you want in the Growth and Enterprise plans. You will be charged on the basis of the number of team members you have. In the Free plan, you can add a maximum of 2 team members.</p>
-                                </div>
-                                <div className="billings-faq-qa">
-                                    <h4 className="billings-faq-question">How does the 30 day trial work?</h4>
-                                    <p className="billings-faq-answer">You can signup for free to avail the benefits of the full-fledged support platform for 30 days. Credit card details are not required for the trial period. Post the 30 days period, you can upgrade to your preferred plan or else you will be automatically downgraded to the free forever plan. We will not terminate the services.</p>
-                                </div>
-                                <div className="billings-faq-qa">
-                                    <h4 className="billings-faq-question">How to upgrade or downgrade the plan?</h4>
-                                    <p className="billings-faq-answer">You can upgrade your plan through the dashboard itself. Alternatively, you can drop us a line and we'll be happy to assist you in upgrading or downgrading your plan.</p>
-                                </div>
-                                <div className="billings-faq-qa">
-                                    {/* <h4 className="billings-faq-question">How many agents can I add in a particular plan?</h4> */}
-                                    <p className="billings-faq-answer">Have any more questions? Talk to us <a className="applozic-launcher">here</a></p>
-                                </div>
-                            </div>
-                        </div>
-
+                                    
+                                    
                         {/* Below div "km-subscription-buttons-container n-vis" is a hack to update the number of seats in the chargebee checkout modal. */}
                         <div className="km-subscription-buttons-container n-vis">
                             <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button>
@@ -933,7 +860,8 @@ class BillingKommunicate extends Component {
                 <Modal isOpen={this.state.currentModal !== ""} onAfterOpen={this.afterOpenModal} onRequestClose={() => this.openCurrentModal("")} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
                     
                     {
-                        this.state.currentModal === "seatSelection" ? SeatSelectionModalContent : this.state.currentModal === "infoModal" ? InfoModalContent : this.state.currentModal === "buyFreePlan" ? BuyFreePlanModalContent : ""
+                        this.state.currentModal === "seatSelection" ? SeatSelectionModalContent : this.state.currentModal === "infoModal" ? InfoModalContent :  this.state.currentModal === "buyFreePlan" ? BuyFreePlanModalContent : 
+                        this.state.currentModal === "missingOut" ? MissingOutModal : ""
                     }
 
                     <CloseButton onClick={() => this.openCurrentModal("")}/>

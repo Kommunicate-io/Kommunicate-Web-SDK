@@ -193,7 +193,7 @@ CREATE TABLE user_preferences (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at DATETIME,
-    PRIMARY KEY(id), 
+    PRIMARY KEY(id),
     FOREIGN KEY(preference_id) REFERENCES preference(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -220,3 +220,15 @@ CREATE TABLE chat_popup_messages (
     PRIMARY KEY(id),
     UNIQUE KEY(app_setting_id, url)
 );
+-- script to delete duplicate records in app_settings
+
+DELETE  a1 FROM app_settings a1
+        INNER JOIN
+    app_settings a2
+WHERE
+    a1.updated_at < a2.updated_at and a1.application_id = a2.application_id;
+
+-- script to add UNIQUE constraint for application_id
+
+ALTER TABLE app_settings
+ADD UNIQUE (application_id);

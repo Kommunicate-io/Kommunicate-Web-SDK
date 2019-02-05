@@ -510,24 +510,23 @@ exports.activateOrDeactivateUser = (req, res) => {
     });
 };
 
-const getPluginSettings = (appId) => {
-  return userService.getAdminUserByAppId(appId).then(user => {
+const getPluginSettings = async function(appId){
+    let user = await userService.getAdminUserByAppId(appId);
     if (user) {
-      return getPseudoName().then(result => {
-        let response = Object.assign(result, { "agentId": user.userName, "agentName": user.name });
-        return appSettingService.getAppSettingsByApplicationId({ applicationId: appId }).then(resp => {
-          response.widgetTheme = resp.data.widgetTheme;
-          return customerService.getCustomerByApplicationId(appId).then(resp => {
-            response.customerCreatedAt = resp.created_at;
-            return response;
-          })
-        })
-      })
+      let pseudoUser = await getPseudoName();
+        let response = Object.assign(pseudoUser, { "agentId": user.userName, "agentName": user.name });
+        try {
+          let appSettings = await appSettingService.getAppSettingsByApplicationId({ applicationId: appId });
+          (appSettings && appSettings.data) && (response.widgetTheme = appSettings.data.widgetTheme);
+          let customer = await customerService.getCustomerByApplicationId(appId);
+          response.customerCreatedAt = customer.created_at;
+          return response;
+        } catch (error) {
+          console.log(error);
+          return response;
+        }
     }
     throw new Error("user not found");
-  }).catch(error => {
-    throw error;
-  })
 }
 
 exports.defaultPluginSettings = (req, res) => {

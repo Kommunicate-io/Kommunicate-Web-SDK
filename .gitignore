@@ -94,3 +94,8 @@ helpcenter/node_modules/*
 helpcenter/package-lock.json
 helpcenter/DS_Store/*
 helpcenter/.DS_Store
+
+server/src/webplugin/build/*
+server/src/webplugin/js/app/mck-sidebox-1.0.min.css
+server/src/webplugin/js/app/km-chat-combined-0.1.min.js
+

@@ -1,5 +1,6 @@
 const userPreferenceService = require("./userPreferenceService");
 const logger = require('../utils/logger');
+const { errorHandler } = require('../Error/errorHandler');
 
 exports.createUserPreference = (req, res) =>{
   logger.info("request received to create user preference : ", req.body);
@@ -8,7 +9,7 @@ exports.createUserPreference = (req, res) =>{
     return res.status(200).json({ message: "SUCCESS" });
   }).catch(err => {
     logger.error("error while creating user preference :", err);
-    return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong" });
+    return errorHandler(req, res, err);
   })
 };
 

@@ -113,9 +113,6 @@
   text-align: left;
   color: #6c6a6a;
 }
-.team-delete-modal-header-title-user-name {
-  color: #aeaeae;
-}
 .team-delete-modal-content {
   font-size: 14px;
   font-weight: normal;
@@ -404,4 +401,8 @@ padding-top: 60 px !important;
 
 .teammates-add-member-btn {
   margin-bottom: 20px;
+  border-bottom: none; 
+}
+.teammates-modal-confirmation-text {
+  margin-top: 16px;
 }

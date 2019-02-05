@@ -275,7 +275,9 @@ class Integration extends Component {
     }
 
   }
-
+  updateUserRoleOnUI = (usersList) => {
+    this.setState({usersList:usersList})
+  }
   removeEmail = (removeEmail) => {
     // console.log(this.state.multipleEmailAddress);
     const filteredEmails = this.state.multipleEmailAddress.filter(email => email !== removeEmail)
@@ -293,6 +295,7 @@ class Integration extends Component {
     let userSession = CommonUtils.getUserSession();
     var agentList = this.state.result;
     var getUsers = this.getUsers;
+    var updateUserRoleOnUI = this.updateUserRoleOnUI;
     var loggedInUserId = this.state.loggedInUserId;
     var loggedInUserRoleType = this.state.loggedInUserRoleType;
     var usersList = this.state.usersList;
@@ -325,7 +328,7 @@ class Integration extends Component {
           }
         })
         if (status == USER_STATUS.ONLINE || status == USER_STATUS.AWAY) {
-          return <UserItem key={index} user={result} agentList={agentList} index={index} hideConversation="true" getUsers={getUsers} loggedInUserId={loggedInUserId} isOnline={isOnline} isAway={isAway} roleType={roleType} loggedInUserRoleType={loggedInUserRoleType} />
+          return <UserItem key={index} user={result} agentList={agentList} index={index} hideConversation="true" getUsers={getUsers} loggedInUserId={loggedInUserId} isOnline={isOnline} isAway={isAway} roleType={roleType} loggedInUserRoleType={loggedInUserRoleType} updateUserRoleOnUI = {updateUserRoleOnUI} usersList = {usersList}/>
         }
       }
     });
