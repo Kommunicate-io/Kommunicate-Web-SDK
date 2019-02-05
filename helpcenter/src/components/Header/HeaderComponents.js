@@ -10,11 +10,6 @@ export const HeaderWrapper = styled.div `
   background-color: ${props => props.theme.kommunicatePrimary};
   box-shadow: ${props => props.theme.boxShadowHeader};
 `
-HeaderWrapper.defaultProps = {
-    theme: {
-        headerBackground: "#5553b7"
-    }
-}
 
 export const HeaderTopbar = styled.div `
     overflow: hidden;
