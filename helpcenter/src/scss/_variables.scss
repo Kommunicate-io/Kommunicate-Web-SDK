@@ -1,0 +1,20 @@
+// All the variables will be defined here, whatever css values that will be used throughout the project multiple must be placed here and then called upon.
+
+//Use camel case for naming variables, avoid using "-" and Pascal case
+
+//Colors
+$kommunicatePrimary : #5553b7;
+$applozicPrimary : #11b8bb;
+
+//Typography
+$fontFamily : 'Lato', sans-serif;
+$fontLight: 300;
+$fontNormal: 400;
+$fontBold: 700;
+$fontBolder: 900;
+
+
+//Margins and Paddings
+
+//Misc.
+$boxShadowHeader :  0 4px 6px 0 rgba(0, 0, 0, 0.3);
