@@ -1,4 +1,4 @@
-import styled, { withTheme } from 'styled-components';
+import styled  from 'styled-components';
 
 const CompanyInfoContainer =  styled.div`
 & > .input-field-title {
@@ -31,6 +31,14 @@ const CompanyInfoContainer =  styled.div`
     margin-left: 12px;
 }
 `
+const CompanyRestrictionBannerContainer = styled.div` 
+    margin: -25px 0 30px 0px;
+`
+const CompanyContainer = styled.div`
+    max-width:998px;
+`
 export {
-    CompanyInfoContainer
+    CompanyInfoContainer,
+    CompanyRestrictionBannerContainer,
+    CompanyContainer
 }
