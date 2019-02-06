@@ -407,6 +407,7 @@ class Aside extends Component {
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : groupId,
                                             'message' : "Assigned to " + displayName,
+                                            'type': 10,
                                             'metadata':{
                                               'skipBot':true,
                                               'KM_ASSIGN' :userId,
