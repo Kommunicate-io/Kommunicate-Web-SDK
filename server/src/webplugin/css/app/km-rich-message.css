@@ -653,6 +653,9 @@
         width: 97%;
         background-color: white; */
     }  
+    #mck-away-msg {
+        white-space: pre;
+    }
     .mck-collect-email {
         font-size: 14px;
         font-weight: normal;
