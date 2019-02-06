@@ -5665,10 +5665,6 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	resize: none;
 	overflow-y: auto;
 }
-.mck-askuserdetail-inputdiv{
-	overflow-y: scroll;
-	height:200px;
-}
 
 /* Message Clubbing */
 .km-clubbing-first.mck-msg-avator-bubble .mck-msg-box {
