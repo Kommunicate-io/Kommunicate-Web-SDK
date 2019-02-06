@@ -307,13 +307,19 @@ const sendAssigneeChangedNotification = (groupId, appId, assignTo, apzToken) => 
         "Authorization": "Basic " + apzToken,
     }
     return userService.getByUserNameAndAppId(assignTo, appId).then(user => {
-        return applozicClient.sendGroupMessage(groupId, "Assigned to " + user.name || user.userName, null, null, {
-            BADGE_COUNT: false,
-            KM_ASSIGN: user.userName,
-            NO_ALERT: true,
-            category: "ARCHIVE",
-            skipBot: true
-        }, botHeaders);
+        let messagePxy = {
+            'groupId': groupId,
+            'message': "Assigned to " + user.name || user.userName,
+            'contentType': 10,
+            'metadata': {
+                'skipBot': true,
+                'KM_ASSIGN': user.userName,
+                'NO_ALERT': true,
+                'BADGE_COUNT': false,
+                'category': "ARCHIVE",
+            }
+        };
+        return applozicClient.sendGroupMessagePxy(messagePxy, botHeaders);
     }).catch(err => {
         return;
     });

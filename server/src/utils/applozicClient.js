@@ -342,8 +342,14 @@ const sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, h
   message = typeof message == "object" ? message : { "groupId": groupId, "message": message, "metadata": metadata }
   headers = headers ? headers : { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true }
   console.log("calling send Message API with info message", message, "headerd: ", headers);
+  return sendGroupMessagePxy(message, headers).catch(err=>{
+    throw err;
+  })
+};
+
+const sendGroupMessagePxy = (messagePxy, headers) => {
   let url = config.getProperties().urls.sendMessageUrl;
-  return Promise.resolve(axios.post(url, message,
+  return Promise.resolve(axios.post(url, messagePxy,
     { headers: headers })).then(response => {
       console.log("received response from applozic", response.status);
       if (response.status == 200) {
@@ -355,7 +361,7 @@ const sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, h
       console.log("error while sending message ", err);
       throw err;
     });
-};
+}
 
 exports.updatePassword = (options) => {
   console.log("calling Applozic for update password with options: ", options);
@@ -676,6 +682,6 @@ exports.closeConversation = (interval, headers) => {
     return
   })
 }
-
 exports.sendMessageListRecursively =sendMessageListRecursively
-exports.sendGroupMessage=sendGroupMessage
+exports.sendGroupMessage=sendGroupMessage;
+exports.sendGroupMessagePxy = sendGroupMessagePxy;
