@@ -15,6 +15,7 @@ import OnBoardingModal from '../../views/Pages/SetUpPage/OnBoardingModal'
 import { connect } from 'react-redux'
 import {LearnMore} from '../Faq/LizSVG'
 import UserDropdown from '../../components/Dropdown/UserDrodown'
+import {UserDropDownStyles} from '../../components/Dropdown/DropdownStyle'
 
 
 // Main Chart
@@ -851,7 +852,7 @@ render() {
             <Select
               name="km-dashboard-time-filter"
               clearable={false}
-              searchable={false}
+              isSearchable={false}
               value={timeFilterSelectedOption}
               onChange={this.timeFilterHandleChange}
               options={[
@@ -860,6 +861,8 @@ render() {
                 { label: 'Last 7 days', value: 7 },
                 { label: 'Last 30 days', value: 30 }
               ]}
+              styles={UserDropDownStyles}
+              components={{ IndicatorSeparator: null}}
             />
           </div>
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
@@ -869,6 +872,7 @@ render() {
               userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
               defaultValue={{ label: "All agents", value: "allagents" }}
               name="km-dashboard-agent-filter"
+              styles = {UserDropDownStyles}
              />
             {/* <span id="tooltip-span" className="tooltip-span">
               Available in Growth Plan

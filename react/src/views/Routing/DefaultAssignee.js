@@ -2,6 +2,8 @@ import React from "react";
 import Select from 'react-select';
 import UserDropdown from '../../components/Dropdown/UserDrodown'
 import { USER_TYPE } from '../../utils/Constant'
+import {  UserDropDownStyleOnAgentRouting } from '../../components/Dropdown/DropdownStyle'
+
 function DefaultAssignee  (props) {
     // const userList = props.userList;
     return (
@@ -16,6 +18,7 @@ function DefaultAssignee  (props) {
                     handleDropDownChange = {props.updateDefaultAssignee} 
                     userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
                     defaultValue={props.selectedAssignee}
+                    styles = {UserDropDownStyleOnAgentRouting}
                 />
             </div>    
         </div>

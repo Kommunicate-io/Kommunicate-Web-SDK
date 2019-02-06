@@ -3,7 +3,7 @@ import { getUsersByType } from '../../utils/kommunicateClient'
 import { USER_TYPE } from '../../utils/Constant'
 import AsyncSelect from 'react-select/lib/Async';
 import CommonUtils from '../../utils/CommonUtils';
-
+import {UserDropDownStyles} from './DropdownStyle'
 export default class UserDropDown extends Component {
     constructor(props) {
         super(props);
@@ -31,6 +31,12 @@ export default class UserDropDown extends Component {
         });
     }
     render() {
+        const LoadingIndicator = props => {
+            return (
+                <span></span>
+            );
+        };
+        
         const { handleDropDownChange } = this.props;
         const promiseOptions = () =>
             new Promise(resolve => {
@@ -51,6 +57,10 @@ export default class UserDropDown extends Component {
                     value={this.state.selectedItem} 
                     className={this.props.className}
                     name={this.props.name}
+                    styles={this.props.styles}
+                    components={{ IndicatorSeparator: null, LoadingIndicator}}
+                    isSearchable={false}
+                    isLoading = {false}
                 />
             </div>
         );
