@@ -55,7 +55,7 @@ class WebhooksAndSecurity extends Component {
         this.submitWebhooksDetails = this.submitWebhooksDetails.bind(this);
     };
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         let userSession = CommonUtils.getUserSession();
         let webhooks = userSession.application.applicationWebhookPxys;
         for(var i = 0 ; i < webhooks.length ; i++) {
@@ -69,7 +69,7 @@ class WebhooksAndSecurity extends Component {
                     unreadMessages: webhooks[i].url || '',
                     selectUnredMsgTime: {value: webhooks[i].fallbackTime, label: `${webhooks[i].fallbackTime / 60} minutes`} || ''
                 });
-            } else if(webhooks[i].type === 3) {
+            } else if(webhooks[i].type === 0) {
                 this.setState({
                     newMessages: webhooks[i].url || ''
                 });
