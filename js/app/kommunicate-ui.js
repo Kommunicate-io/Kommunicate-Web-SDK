@@ -305,6 +305,7 @@ KommunicateUI={
                 $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
                 $applozic('#mck-tab-conversation').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
+                $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
                 $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
