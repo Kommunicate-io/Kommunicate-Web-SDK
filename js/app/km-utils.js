@@ -149,7 +149,7 @@ KommunicateUtils = {
         document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"");
     },
     isHttpsEnabledConnection : function(){
-         return window.location.protocal == "https:";
+         return parent.window.location.protocol == "https:";
     },
     deleteCookie : function(name) {
         document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
