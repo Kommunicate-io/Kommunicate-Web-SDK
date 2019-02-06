@@ -38,7 +38,7 @@ kommunicateDashboard ={
             var iframe = document.getElementById(iframeID);
             var doc = iframe.contentDocument || iframe.contentWindow.document;
             var css = '' + '<style type="text/css">' +
-                        '*::-webkit-scrollbar { -webkit-appearance: none; } *::-webkit-scrollbar:vertical { width: 7px; } *::-webkit-scrollbar:horizontal { height: 9px; } *::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); border-radius: 4px; } *::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.08); } *::-webkit-scrollbar-corner {  background: rgba(0,0,0,0); }' +
+                        'body{margin: 0; padding: 10px 14px 12px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;} *::-webkit-scrollbar { -webkit-appearance: none; } *::-webkit-scrollbar:vertical { width: 7px; } *::-webkit-scrollbar:horizontal { height: 9px; } *::-webkit-scrollbar-thumb { background-color: rgba(0, 0, 0, 0.2); border-radius: 4px; } *::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.08); } *::-webkit-scrollbar-corner {  background: rgba(0,0,0,0); }' +
                         '</style>';
             doc.open();
             doc.write(message.message);
