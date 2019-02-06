@@ -290,7 +290,7 @@ function ApplozicSidebox() {
                         }
                     }
                 }
-                if (!options.askUserDetails) {
+                if (!options.askUserDetails || !options.preLeadCollection) {
                     KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30});
                 }
             }
