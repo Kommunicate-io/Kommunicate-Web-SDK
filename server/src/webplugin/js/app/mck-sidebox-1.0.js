@@ -428,7 +428,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var isUserDeleted = false;
         var mckVideoCallringTone = null;
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
-        var KM_PRELEAD_COLLECTION =appOptions.preLeadCollection ?appOptions.preLeadCollection:[];
+        var KM_PRELEAD_COLLECTION =mckMessageService.checkArray(appOptions.preLeadCollection) ? appOptions.preLeadCollection:[];
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
