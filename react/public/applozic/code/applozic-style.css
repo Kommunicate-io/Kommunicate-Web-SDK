@@ -708,7 +708,7 @@ body {
 .km-mail-fixed-view-iframe{
 	background-color: white;
 	border-radius: 5px;
-	padding: 10px 14px 12px;
+	padding: 0;
 	width: 100%;
 	border: none;
 	/* max-height: 100vh; */

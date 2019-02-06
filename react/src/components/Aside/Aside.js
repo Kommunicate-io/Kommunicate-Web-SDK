@@ -968,7 +968,7 @@ class Aside extends Component {
                               <div onClick={this.expandTextArea} className={this.state.visibleReply ? "km-expand-icon": "n-vis"}>
                                 { !this.state.toggleExpandIcon ? <ExpandIcon /> : <CollapseIcon /> }
                               </div>
-                              <div className={this.state.visibleReply ? "km-cc-bcc-button-container" : "n-vis" } onClick={() => {
+                              <div className="km-cc-bcc-button-container" onClick={() => {
                                 this.setState({
                                   toggleCcBccField: !this.state.toggleCcBccField
                                 })
