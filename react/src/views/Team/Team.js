@@ -72,8 +72,6 @@ class Integration extends Component {
     this.getInvitedUsers();
     this.getUsers();
     let userSession = CommonUtils.getUserSession();
-    let adminUserName = userSession.adminUserName;
-    let loggedInUserRoleType = userSession.roleType;
     let applicationId = userSession.application.applicationId;
     let isTrialPlan = CommonUtils.isTrialPlan();
     let isStartupPlan = userSession.subscription == "startup" ? true : false;
@@ -83,9 +81,8 @@ class Integration extends Component {
       applicationExpiryDate = DD + " " + MONTH_NAMES[applicationExpiryDate.getMonth()];
     }
     this.setState({
-      loggedInUserId: adminUserName,
+      loggedInUserId: userSession.userName,
       applicationId: applicationId,
-      loggedInUserRoleType: loggedInUserRoleType,
       isTrialPlan: isTrialPlan,
       isStartupPlan: isStartupPlan,
       applicationExpiryDate: applicationExpiryDate
@@ -243,6 +240,7 @@ class Integration extends Component {
     return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
       let usersList = data;
       data.map((user => {
+        user.userName == this.state.loggedInUserId  && this.setState({loggedInUserRoleType: user.roleType})
         user.status == USER_STATUS.EXPIRED && disabledUsers.push(user);
         (user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE) && kmActiveUsers.push(user);
       }))
