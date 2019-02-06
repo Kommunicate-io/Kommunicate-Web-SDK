@@ -186,7 +186,7 @@ background-color: #fff;
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 }
 input.km-form-control::placeholder {
-	color: #aeaaaa;
+	color: #BFBABA;
 }
 .km-form-control:focus{
 	outline:none;
