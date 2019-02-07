@@ -2,6 +2,8 @@ const logger = require("../utils/logger");
 const subscriptionService = require("./subscriptionService");
 const Boom = require('boom');
 const customerService = require('../customer/customerService')
+const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
+
 exports.createSubscription = async function (req,res) {
     logger.info("request received to create Subscription from : ",req.body);
     let response={};
@@ -96,6 +98,7 @@ const getAppIdByAppKey =()=>{
 exports.updateKommunicateCustomerSubscription = async (req, res) => {
     let subscribed = req.body.subscription != "startup";
     let applicationId = req.body.applicationId;
+    let product = req.body.product || "kommunicate";
     let response = {};
     let customerDetail = {
         'subscription': req.body.subscription,
@@ -105,18 +108,29 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
         let customer = await customerService.getCustomerByApplicationId(applicationId);
         let userId = customer.userName 
         let updated = await customerService.updateCustomer(userId, customerDetail);
-            if (updated) {
-                subscribed ? customerService.reactivateAccount(applicationId) : "";
-                customerDetail.subscription && (customer.subscription = customerDetail.subscription);
-                await customerService.updateApplicationInApplozic(customer);
-                response.code = "SUCCESS";
-                response.message = { "subscription": req.body.subscription, "status": "updated" };
-                res.status(200).json(response);
-            } else {
-                response.code = "NOT_FOUND";
-                response.message = "resource not found by userId " + userId;
-                res.status(404).json(response);
-            }
+        if (updated) {
+            subscribed ? customerService.reactivateAccount(applicationId) : "";
+            customerDetail.subscription && (customer.subscription = customerDetail.subscription);
+            await customerService.updateApplicationInApplozic(customer);
+            response.code = "SUCCESS";
+            response.message = { "subscription": req.body.subscription, "status": "updated" };
+            res.status(200).json(response);
+        } else {
+            response.code = "NOT_FOUND";
+            response.message = "resource not found by userId " + userId;
+            res.status(404).json(response);
+        }
+
+        if (customerDetail.billingCustomerId) {
+            activeCampaignClient.updateActiveCampaign({
+                "email": userId,
+                "subscriberId": customer.activeCampaignId,
+                "product": product,
+                "subscription": customerDetail.subscription
+              }).catch(error => {
+                console.log("Error while updating subscription plan to activeCampaign", error);
+              });;
+        }
         
     } catch (error) {
         console.log("Error while updating kommunicate subscription details ", error);

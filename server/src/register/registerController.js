@@ -101,6 +101,7 @@ exports.patchCustomer = (req, res) => {
   let customer = req.body;
   let userId = req.params.userId;
   let subscribed = customer.subscription && customer.subscription != "startup" && customer.subscription != "applozic";  
+  let product = customer.product || (customer.subscription && customer.subscription == "applozic" ? "applozic" : "kommunicate");
   console.log("request recieved to update customer: ", userId, "body", customer);
   
   customerService.updateApplicationInApplozic(customer);
@@ -117,7 +118,7 @@ exports.patchCustomer = (req, res) => {
         "contactNo": customer.contactNo,
         "industry": customer.industry,
         "companySize": customer.companySize,
-        "tags": subscribed ? (dbCustomer.product + "-customer") : undefined
+        "tags": subscribed ? (product + "-customer") : undefined
       }).catch(error => {
         console.log("Error while updating company URL to activeCampaign", error);
       });
