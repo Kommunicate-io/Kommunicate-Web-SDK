@@ -294,6 +294,9 @@ const CommonUtils = {
         return THIRD_PARTY_LOGIN.some(function (el) {
             return el === loginVia;
         });
+    },isObject: function(object) {
+        if (!object) return false;
+        return typeof object == 'object' && object.constructor == Object;
     }
 }
 
