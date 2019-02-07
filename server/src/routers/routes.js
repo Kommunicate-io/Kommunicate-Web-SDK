@@ -40,6 +40,7 @@ const subscriptionValidation = require("../subscription/subscriptionValidation")
 const subscriptionController = require("../subscription/subscriptionController");
 const metabaseController = require('../metabase/metabaseController');
 const metabaseValidator = require('../metabase/validation');
+const feedbackController = require('../feedback/feedbackController');
 
 
 
@@ -100,6 +101,7 @@ exports.subscription = subscriptionRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
 exports.metabaseRouter = metabaseRouter;
+exports.feedbackRouter = feedbackController.feedbackRouter;
 
 //Cron Time Stamp Route
 exports.cronServiceRouter = express.Router();
