@@ -62,7 +62,7 @@ export const ROLE_NAME = {
 }
 export const GROUP_ROLE = { 
     ADMIN: "1", 
-    MODERATOR: "2", 
+    MODERATOR: "2", // Bot is MODERATOR in Group
     MEMBER: "3" 
 };
 export const DEFAULT_BOT={

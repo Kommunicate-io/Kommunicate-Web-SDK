@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CreatableSelect from "react-select/lib/Creatable";
 import isEmail from "validator/lib/isEmail";
 import Notification from '../../views/model/Notification';
+import { GROUP_ROLE } from '../../utils/Constant';
 
 const components = {
     DropdownIndicator: null
@@ -81,7 +82,7 @@ export default class MultiSelectInput extends Component {
     addGroupMember = (groupId, userId, callback) => {
         window.$kmApplozic.fn.applozic('addGroupMember',{'groupId': groupId,
             'userId': userId,
-            'role': 1,
+            'role': GROUP_ROLE.MEMBER, 
             'createNew': true,
             'callback': function(response) {
                 if (typeof callback === 'function') {
