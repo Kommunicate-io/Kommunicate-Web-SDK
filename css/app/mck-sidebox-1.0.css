@@ -145,7 +145,7 @@
 
 .mck-powered-by:hover{
 	text-decoration:underline;
-	color: #5c5aa7 !important
+	color: #5553B7 !important
 }
 /* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
@@ -1868,7 +1868,7 @@
 
 .mck-msg-right .mck-msg-box:after {
 	border-color: transparent;
-	border-left-color: #5c5aa7;
+	border-left-color: #5553B7;
 	border-width: 11px;
 }
 
@@ -2657,7 +2657,7 @@ display: none;
 	padding: 10px 14px 10px;
 	position: relative;
 	color: rgba(255, 255, 255, 0.87);
-	background-color: #5c5aa7;
+	background-color: #5553B7;
 }
 
 .mck-msg-avator-bubble.mck-msg-right .mck-msg-box {
@@ -2966,7 +2966,7 @@ display: none;
 }
 
 .mck-text-v {
-	color: #5c5aa7;
+	color: #5553B7;
 }
 
 .mck-text-w {
@@ -4823,7 +4823,7 @@ margin-top: 243px;
 
 .faq-list--body_que-ans .faq-list--body_que {
     font-size: 15px;
-    color: #5c5aa7;
+    color: #5553B7;
     margin: 0px
 }
 .faq-list--body_que-ans .faq-list--body_ans {
@@ -5036,7 +5036,7 @@ margin-top: 243px;
     font-stretch: normal;
     line-height: normal;
     letter-spacing: 0.7px;
-    color: #5c5aa7;
+    color: #5553B7;
     padding-left: 10px;
 	text-decoration: none;
 	margin-left: 8px;
