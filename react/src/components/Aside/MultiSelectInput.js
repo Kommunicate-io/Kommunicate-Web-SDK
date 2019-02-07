@@ -3,6 +3,8 @@ import CreatableSelect from "react-select/lib/Creatable";
 import isEmail from "validator/lib/isEmail";
 import Notification from '../../views/model/Notification';
 import { GROUP_ROLE } from '../../utils/Constant';
+import applozicClient from '../../utils/applozicClient';
+import CommonUtils from '../../utils/CommonUtils';
 
 const components = {
     DropdownIndicator: null
@@ -80,16 +82,29 @@ export default class MultiSelectInput extends Component {
     };
 
     addGroupMember = (groupId, userId, callback) => {
-        window.$kmApplozic.fn.applozic('addGroupMember',{'groupId': groupId,
-            'userId': userId,
-            'role': GROUP_ROLE.MEMBER, 
-            'createNew': true,
-            'callback': function(response) {
-                if (typeof callback === 'function') {
-                    callback();
+        let user = {
+            "userId": userId ? userId.toLowerCase() : "",
+            "applicationId": CommonUtils.getUserSession().application.applicationId,
+            "authenticationTypeId": 1,
+            "email": userId,
+            "state": 1
+        }
+        applozicClient.createKommunicateSupportUser(user).catch(err => {
+            return err.code === "USER_ALREADY_EXISTS" ? err.data : null;
+        }).then(user => {
+            if (!user) return;
+            let role = user.roleType == 3 ? GROUP_ROLE.MEMBER : GROUP_ROLE.ADMIN
+            window.$kmApplozic.fn.applozic('addGroupMember', {
+                'groupId': groupId,
+                'userId': userId,
+                'role': role,
+                'callback': function (response) {
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
                 }
-            }
-        });  
+            });
+        });
     }
 
     removeGroupMember = (groupId, userId) => {
