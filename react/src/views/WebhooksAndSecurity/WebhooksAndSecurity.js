@@ -59,17 +59,17 @@ class WebhooksAndSecurity extends Component {
         let userSession = CommonUtils.getUserSession();
         let webhooks = userSession.application.applicationWebhookPxys;
         for(var i = 0 ; i < webhooks.length ; i++) {
-            if(webhooks[i].type === 1) {
+            if(webhooks[i].type === FALLBACK_TYPE.UNDELIVERED_MESSAGE) {
                 this.setState({
                     undeliveredMessages: webhooks[i].url || '',
                     selectUndeliveredMsgTime: {value: webhooks[i].fallbackTime, label: `${webhooks[i].fallbackTime / 60} minutes`}  || ''
                 });
-            } else if(webhooks[i].type === 2) {
+            } else if(webhooks[i].type === FALLBACK_TYPE.UNREAD_MESSAGE) {
                 this.setState({
                     unreadMessages: webhooks[i].url || '',
                     selectUnredMsgTime: {value: webhooks[i].fallbackTime, label: `${webhooks[i].fallbackTime / 60} minutes`} || ''
                 });
-            } else if(webhooks[i].type === 0) {
+            } else if(webhooks[i].type === FALLBACK_TYPE.MESSAGE_FORWARDING) {
                 this.setState({
                     newMessages: webhooks[i].url || ''
                 });
