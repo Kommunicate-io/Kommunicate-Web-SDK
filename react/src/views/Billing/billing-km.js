@@ -273,7 +273,8 @@ class BillingKommunicate extends Component {
         let userSession = CommonUtils.getUserSession();
         const customerInfo = {
             applicationId: userSession.application.applicationId,
-            subscription: subscription
+            subscription: subscription,
+            product: "kommunicate"
         };
         if (typeof billingCustomerId !== "undefined") {
             customerInfo.billingCustomerId = billingCustomerId;

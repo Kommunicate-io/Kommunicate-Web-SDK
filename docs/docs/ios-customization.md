@@ -61,6 +61,7 @@ If you want to send additional metadata with all the messages sent from a device
 
 ```
 // Add this in AppDelegate's `didFinishLaunchingWithOptions` method
-Kommunicate.defaultConfiguration.messageMetadata = ["KommunicateInfo":["custom-key":"value"]]
+let customData = ["custom-key": "value"]
+Kommunicate.defaultConfiguration.messageMetadata = ["KM_CHAT_CONTEXT":"\(customData)"]
 ```
 

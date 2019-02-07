@@ -38,7 +38,9 @@ In case of Objective-C we create a [wrapper file](https://github.com/Kommunicate
 
 ### Permissions
 
-Add permission for camera, photo library, Micro phone, contacts and location. </br>
+Add permissions for Camera, Photo Library, Microphone, Contacts and Location usage. </br>
+
+Note: We won't be asking the users for these permissions unless they use the respective feature. Due to Apple's requirement, we have to add these permissions if we are using any of their APIs related to Camera, Microphone etc.
 
 In your app's Info.plist file add below listed permissions:
 

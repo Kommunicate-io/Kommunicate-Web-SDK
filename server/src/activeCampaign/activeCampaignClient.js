@@ -71,6 +71,7 @@ exports.updateActiveCampaign = (options) => {
                 'field[%role%,0]': options.role,
                 'field[%industry%,0]': options.industry,
                 'field[%company_size%,0]': options.companySize,
+                'field[21,0]': options.subscription,
                 'p[1]': (options.product == "applozic" ? "1":"7"),
                 'status[1]': '1'
             }
@@ -95,8 +96,8 @@ exports.updateActiveCampaign = (options) => {
 
 }
 
-const getActiveCampaignKey = (options) => {
-    return config.getProperties().activeCampaignApiKey[options.product || "kommunicate"];
+const getActiveCampaignKey = (product) => {
+    return config.getProperties().activeCampaignApiKey[product || "kommunicate"];
 }
 
 const addTags = (options) => {

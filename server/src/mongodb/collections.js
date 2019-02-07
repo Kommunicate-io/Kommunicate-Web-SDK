@@ -1,4 +1,5 @@
 exports.COLLECTIONS={
     KNOWLEDGE_BASE:"knowledgebase",
-    COUNTER:"counter"
+    COUNTER:"counter",
+    FEEDBACK:"feedback"
 }

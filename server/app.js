@@ -12,7 +12,9 @@ var hazelCastClient= require("./src/cache/hazelCacheClient");
 const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
 const Sentry = require('@sentry/node');
-require('./src/webplugin/pluginOptimizer')
+require('./src/webplugin/pluginOptimizer');
+require('./src/database/mongoDataSource');
+
 global['__basedir'] = __dirname
 
 app.use(cors());
@@ -54,6 +56,7 @@ app.use('/agilecrm', routes.agile);
 app.use('/settings',routes.setting);
 app.use('/v2/users',routes.v2UserRouter);
 app.use('/metabase',routes.metabaseRouter);
+app.use('/feedback', routes.feedbackRouter);
 
 //Cron Time Stamp Route
 app.use('/crontime',routes.cronServiceRouter);
