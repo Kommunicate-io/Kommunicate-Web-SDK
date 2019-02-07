@@ -4,9 +4,9 @@ title: Conversation Assignment
 sidebar_label: Conversation Assignment
 ---
 
-## Dashboard: conversation routing rules
+## Dashboard: Conversation Rules
 
-![List Template](/img/dashboard-conversation-assignment.png)
+![List Template](/img/dashboard-conversation-rules.png)
 
 
 * In case: **Assign new conversations to bot** is enabled then irrespective of routing rules for agents, the conversation will be assigned to **selected bot**.
