@@ -2,7 +2,7 @@
 {
     "port": 3999,
     "db": {
-      "url": "mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
+      "url": "mysql://admin:adm1n2ol6@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
       "options": {
         "pool": {
           "threadPoolMax": 5,
