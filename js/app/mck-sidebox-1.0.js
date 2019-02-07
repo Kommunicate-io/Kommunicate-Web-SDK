@@ -1617,10 +1617,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 			                setStatus: true
 			            }): mckUserUtils.updateUserConnectedStatus();
 								});
-                if (typeof MCK_ON_PLUGIN_INIT === 'function') {
-                    // callback when plugin initilized successfully.
-                    MCK_ON_PLUGIN_INIT('success', data);
-                }
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
@@ -1659,6 +1655,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                  // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                 KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
+
+                if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                    // callback when plugin initilized successfully.
+                    MCK_ON_PLUGIN_INIT('success', data);
+                };
+
                 var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                 kmChatLoginModal.style.visibility='hidden';
             };
