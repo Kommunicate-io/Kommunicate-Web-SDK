@@ -5427,12 +5427,22 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         })
                     },
                     items: 8,
+                    highlight: true,
                     updater: function (metadataString) {
                         var metadataObj = JSON.parse(metadataString);
                         if (Object.keys(metadataObj.metadata).length != 0) {
                             $mck_autosuggest_metadata.val(JSON.stringify(metadataObj.metadata));
                         }
-                        $mck_text_box.text(metadataObj.displayMessage);
+                        $mck_text_box.val(metadataObj.displayMessage);
+                        
+                        // TODO: Need to improve this.
+                        $mck_autosuggest_search_input.on("keydown", function(e) {
+                            $mck_text_box.text($mck_autosuggest_search_input.val());
+                            if(e.which === 13 && metadataObj.displayMessage) {
+                                $mck_text_box.submit();  
+                                e.preventDefault(); 
+                            }
+                        });
                         return metadataObj.displayMessage;
                     },
                     matcher: function (item) {
@@ -5440,7 +5450,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         return matcher1.test(item.searchKey);
                     },
                     highlighter: function (item) {
-                        var metadata = JSON.parse(item.toString())
+                        var metadata = JSON.parse(item.toString());
                         return metadata.displayMessage;
                     }
                 });
@@ -7912,12 +7922,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
 
-                $mck_autosuggest_search_input.on('keydown input', function (e) {
-                    $mck_text_box.text($mck_autosuggest_search_input.val());
-                    if(e.which === 13) {
-                        $mck_text_box.submit();
-                        e.preventDefault();
-                    }
+                $mck_autosuggest_search_input.on('input', function (e) {
                     // This code is to auto resize a textarea as you go on typing text in it.
                     _this.resizeTextarea(this); 
                     if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGEST") {
