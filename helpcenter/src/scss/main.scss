@@ -1,6 +1,13 @@
 @import './reset';
 @import './variables';
+@import './animations';
 
 body{
     font-family: $fontFamily;
 }
+
+//Fix for jumping webpage becasue of scrollbar
+html {
+    overflow-y: scroll;
+}
+
