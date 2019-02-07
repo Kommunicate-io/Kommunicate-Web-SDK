@@ -19,7 +19,7 @@ Kommunicate.conversation = {
             return;
         }
        var conversationDetail = data && data.groupFeeds[0];
-        Kommunicate.conversationHelper.isConversationClosed(conversationDetail) && KommunicateUI.showClosedConversationBanner();
+        KommunicateUI.showClosedConversationBanner(Kommunicate.conversationHelper.isConversationClosed(conversationDetail));
 
         
 
