@@ -22,7 +22,7 @@ Currently we support two different types of users on our iOS SDK:
 
 ### 1. Visitors
 
-In this case you don't have any information of the users that can be used as an `userId`. In this case a randomId will be assigned as an `userId`. So first get the userId as described below and pass the same in registration process mentioned below.
+A random Id will be assigned as an `userId` if you don't have any information about the users. So first get the userId for an anonymous user as described below and pass the same in the registration process.
 
 `let userId = Kommunicate.randomId()`
 
