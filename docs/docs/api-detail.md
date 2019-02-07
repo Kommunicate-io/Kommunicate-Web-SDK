@@ -74,10 +74,7 @@ POST Body:
 { 
   "groupId": "group Unique Identifier", 
   "message":"Hi John",
-  "fromUserName":"userId of sender",
-  "metadata":{     // optional. key-value pair for smart and actionable messages.    
-      "category": "HIDDEN" // This message will not visible in chat widget.
-  }
+  "fromUserName":"userId of sender"
 }
 ```
  You can also send [Actionable messages](actionable-messages.html) by adding a valid JSON in `metadata` field. The metadata accepts the key-value pair as string. The payload object in the actionable message should be converted into string before adding it into request payload. Below is the example of request body with Actionable message(Quick replies): 

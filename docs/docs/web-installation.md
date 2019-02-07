@@ -62,7 +62,6 @@ You can customize the plugin by passing below parameters in the `kommunicateSett
 
 |Parameters|Descriptions|
 |---	   |---	    |
-
 |appId |A unique application ID assigned to your Kommunicate account.|
 |botIds|You can add bots to any conversation by passing an array of bot IDs. Example array: "botIds":["bot1","bot2"]. Bot IDs will be visible in the [Bot section](https://dashboard.kommunicate.io/bot) in the dashboard if you have created any bot.|
 |conversationTitle |All conversations will have this title.|
