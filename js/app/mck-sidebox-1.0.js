@@ -1228,13 +1228,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     (latestGroupMessage.type !== KommunicateConstants.MESSAGE_TYPE.SENT) && mckNotificationService.notifyUser(latestGroupMessage);
                 } else {
                     // startConversation function will create a new conversation.
-                    Kommunicate.startConversation({
-                        groupName: DEFAULT_GROUP_NAME,
-                        agentId: DEFAULT_AGENT_ID,
-                        botIds: DEFAULT_BOT_IDS,
-                        isMessage: false,
-                        isInternal: true
-                    });
+                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                    conversationDetail.isMessage = false;
+                    conversationDetail.isInternal = true;
+                    Kommunicate.startConversation(conversationDetail);
                 }
             });
         };
@@ -2107,7 +2104,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                          console.log("error while fetching group detail by type",err)
                          return;
                     }else if (result.response.length ==0) {
-                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function(groupId){
+                        var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                        mckMessageService.createNewConversation( conversationDetail , function(groupId){
                            /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
                             callback();
 
@@ -2191,7 +2189,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 $mck_contact_search.click(function () {
 
                     // mckMessageLayout.addContactsToContactSearchList();
-                    mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
+                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                    mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
@@ -2208,15 +2207,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         }
                   });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
+                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     if($applozic('#km-faq-search-input').val()=== "") {
-                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
+                        mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                         });
                         KommunicateUI.showChat();
                     } else {
-                        mckMessageService.createNewConversation({
-                            groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS
-                        }, function (conversationId) {
+                        mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             KommunicateUI.sendFaqQueryAsMsg(conversationId);
                             KommunicateUI.showChat();
                         });
@@ -7080,6 +7078,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.init = function() {
                 $applozic.template("groupMemberTemplate", groupContactbox);
                 $applozic.template("groupMemberSearchTemplate", groupMemberSearchContact);
+            };
+
+            _this.createGroupDefaultSettings = function() {
+                var defaultSettings = KommunicateUtils.getDataFromKmSession("settings");
+                 var conversationDetail = {
+                    groupName : ( defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
+                    agentId :  (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    botIds :  (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
+                };
+                return conversationDetail;
             };
 
             _this.submitCreateGroup = function () {

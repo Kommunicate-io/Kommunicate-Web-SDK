@@ -43,6 +43,29 @@ Kommunicate.client={
      createConversation : function(conversationDetail,callback){
         var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
 
+        var groupMetadata = {
+            CREATE_GROUP_MESSAGE: "",
+            REMOVE_MEMBER_MESSAGE: "",
+            ADD_MEMBER_MESSAGE: "",
+            JOIN_MEMBER_MESSAGE: "",
+            GROUP_NAME_CHANGE_MESSAGE: "",
+            GROUP_ICON_CHANGE_MESSAGE: "",
+            GROUP_LEFT_MESSAGE: "",
+            CONVERSATION_STATUS: 0,
+            DELETED_GROUP_MESSAGE: "",
+            GROUP_USER_ROLE_UPDATED_MESSAGE: "",
+            GROUP_META_DATA_UPDATED_MESSAGE: "",
+            CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
+            KM_CONVERSATION_TITLE: conversationDetail.groupName,
+            //ALERT: "false",
+            HIDE: "true",
+            SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
+            KM_CHAT_CONTEXT: JSON.stringify(chatContext)
+        };
+
+        // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
+        conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE)
+
         $applozic.fn.applozic("createGroup", {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
@@ -52,25 +75,7 @@ Kommunicate.client={
             clientGroupId:conversationDetail.clientGroupId,
             isMessage: conversationDetail.isMessage,
             isInternal: conversationDetail.isInternal,
-            metadata: {
-                CREATE_GROUP_MESSAGE: "",
-                REMOVE_MEMBER_MESSAGE: "",
-                ADD_MEMBER_MESSAGE: "",
-                JOIN_MEMBER_MESSAGE: "",
-                GROUP_NAME_CHANGE_MESSAGE: "",
-                GROUP_ICON_CHANGE_MESSAGE: "",
-                GROUP_LEFT_MESSAGE: "",
-                CONVERSATION_STATUS: 0,
-                DELETED_GROUP_MESSAGE: "",
-                GROUP_USER_ROLE_UPDATED_MESSAGE: "",
-                GROUP_META_DATA_UPDATED_MESSAGE: "",
-                CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
-                KM_CONVERSATION_TITLE:conversationDetail.groupName,
-                //ALERT: "false",
-                HIDE: "true",
-                SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
-                KM_CHAT_CONTEXT: JSON.stringify(chatContext)
-            },
+            metadata: groupMetadata,
             callback: function (response) {
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
