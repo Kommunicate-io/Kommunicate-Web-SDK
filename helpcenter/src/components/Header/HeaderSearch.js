@@ -8,7 +8,7 @@ const customStyles = {
     input: () => ({
         padding: '8px 0',
     }),
-    };
+};
 
 class HelpQuerySearch extends Component {
     constructor(props){
@@ -24,12 +24,13 @@ class HelpQuerySearch extends Component {
     }
     componentWillMount = () => {
         this.setState({
-            appID : CommonUtils.getUrlParameter(window.location.search,"appID")
+            appID : CommonUtils.getUrlParameter(window.location.search,"appId")
         })
     }
     getSearchResults = (inputValue) => {
+        var _this = this
         this.state.inputValue && CommonUtils.searchFaq(this.state.appID, this.state.inputValue).then(response=>{
-            response && this.setState({
+            response && _this.setState({
                 searchedFaqList : response.data,
             })
         })
@@ -54,10 +55,14 @@ class HelpQuerySearch extends Component {
         this.state.inputValue == "" ? this.setState({ isDropDownOpen: false }) : this.setState({ isDropDownOpen: true }) ;  
     }
 
-    getSelectedFaq = (x)=> {
-        this.setState({ isDropDownOpen: false })
-        // this.props.history.push("/article?appID="+this.state.appID);
-        console.log(this)
+    getSelectedFaq = (selectedFAQ)=> {
+        let searchQuery = '?appId='+this.state.appID+"&articleId="+selectedFAQ.id;
+        this.props.history.push({
+            pathname: '/article',
+            search: searchQuery,
+        });
+        this.setValue(null);
+        this.closeDropdownOnEmptyInput();
     }
 
   render() {
@@ -67,7 +72,7 @@ class HelpQuerySearch extends Component {
           styles={customStyles}
           menuIsOpen={this.state.isDropDownOpen}
           loadOptions={this.loadOptions}
-          noOptionsMessage={()=>"Search Helpcenter"}
+          noOptionsMessage={() => null}
           onInputChange={this.handleInputChange}
           getOptionLabel={({ name }) => name}
           getOptionValue={({ id }) => id}
@@ -75,7 +80,6 @@ class HelpQuerySearch extends Component {
           onCloseResetsInput={true}  
           cacheOptions={false}
           onChange={this.getSelectedFaq}
-          arrowRenderer={()=>{false}}
           blurInputOnSelect={false}
           components={{DropdownIndicator:null,clearIndicator:true}}
           isClearable = {true}

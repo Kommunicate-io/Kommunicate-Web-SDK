@@ -3,9 +3,7 @@ import styled, { css } from 'styled-components';
 
 export const HeaderComponent = styled.div `
     max-width: 100%;
-    /* height: 250px; */
     padding-bottom: 20px;
-    /* height: 250px; */
     background-image: url("/src/assets/svg/helpCenterBackgroundGraphic.svg");
     background-size: cover;
     padding-top: 20px;
@@ -19,7 +17,6 @@ export const HeaderWrapper = styled.div`
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
-    /* width: 100%; */
     transition: all 3s;
     min-height: 100px;
     backface-visibility: hidden;
@@ -36,7 +33,6 @@ export const HeaderTopbar = styled.div `
 export const TopbarLogoContainer = styled.div `
     width: 210px;
     height: auto;
-    /* border-right: 1px solid #fff; */
     padding-right: 10px;
     position: relative;
     &:after{
