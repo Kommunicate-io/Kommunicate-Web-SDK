@@ -31,7 +31,9 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
+
         params = typeof params == 'object' ? params : {};
+        params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds) {
             params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
@@ -49,7 +51,14 @@ $applozic.extend(true,Kommunicate,{
             }
         }
         var groupName = params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
-        var assignee = params.assignee || params.agentId;
+        var assignee = params.defaultAssignee || params.assignee || params.agentId;
+
+        var groupMetadata = {};
+
+        ((typeof params.metadata == "object"  && typeof params.metadata['KM_CHAT_CONTEXT'] == "object")) && (groupMetadata.KM_CHAT_CONTEXT = params.metadata['KM_CHAT_CONTEXT']);
+
+        params.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
+
         var conversationDetail = {
             "groupName": groupName,
             "type": 10,
@@ -60,9 +69,23 @@ $applozic.extend(true,Kommunicate,{
             "isMessage": params.isMessage,
             "isInternal": params.isInternal,
             "skipRouting": params.skipRouting,
-            "metadata": (typeof params.metadata == "object"  && typeof params.metadata['KM_CHAT_CONTEXT'] == object) ? params.metadata['KM_CHAT_CONTEXT']:{}
+            "metadata": groupMetadata
         }
         Kommunicate.client.createConversation(conversationDetail, callback);
+    },
+    updateConversationDetail: function(conversationDetail){
+        var kommunicateSettings = KommunicateUtils.getDataFromKmSession("settings");
+        if ((typeof kommunicateSettings === "undefined" || kommunicateSettings === null)) {
+            return conversationDetail;
+        };
+         // Update welcome message only if some value for it is coming in conversationDetails parameter or kommunicateSettings.
+        conversationDetail.WELCOME_MESSAGE = conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
+        conversationDetail.defaultAssignee = conversationDetail.assignee || kommunicateSettings.defaultAssignee;
+        conversationDetail.agentIds = conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
+        conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
+        conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
+
+        return conversationDetail;
     },
     openConversationList: function () {
         window.$applozic.fn.applozic('loadTab', '');
@@ -373,18 +396,27 @@ $applozic.extend(true,Kommunicate,{
             return "";
         }
     },
+    /*
+       updateSettings parameters 
+       1. defaultAssignee [single value]
+       2. defaultAgentIds [multiple values]
+       3. defaultBotIds [multiple values]
+       4. skipRouting [boolean]
+       5. KM_CHAT_CONTEXT
+       6. WELCOME_MESSAGE
+   */
     updateSettings:function(options){
         let type = typeof options;
         if(type !='object'){
             throw new error("update settings expects an object, found "+type);
         }
         var settings = KommunicateUtils.getDataFromKmSession("settings");
-        settings=  settings?JSON.parse(settings):{}
+        settings=  settings?settings:{}
 
         for (var key in options){
             settings[key]= options[key];
         }
-        KommunicateUtils.storeDataIntoKmSession("settings",JSON.stringify(settings));
+        KommunicateUtils.storeDataIntoKmSession("settings",settings);
     },
     getSettings:function(setting){
         return KommunicateUtils.getSettings(setting);
