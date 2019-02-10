@@ -65,7 +65,7 @@ You can customize the plugin by passing below parameters in the `kommunicateSett
 |appId |A unique application ID assigned to your Kommunicate account.|
 |botIds|You can add bots to any conversation by passing an array of bot IDs. Example array: "botIds":["bot1","bot2"]. Bot IDs will be visible in the [Bot section](https://dashboard.kommunicate.io/bot) in the dashboard if you have created any bot.|
 |conversationTitle |All conversations will have this title.|
-|askUserDetails| This will enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a> in chat. Users will be asked to enter the name, email and phone number when they start a conversation.|
+|preLeadCollection| This will enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a> in chat. Users will be asked to enter the name, email and phone number when they start a conversation.|
 |userId| This is your user’s/visiter's user ID. Kommunicate will generate a random ID if this is not defined.|
 |userName | This is the display name of the user. Agents will identify users by this display name.|
 |email | Email ID of the user. If not online, the user will be notified by fallback emails sent to this email ID.|
