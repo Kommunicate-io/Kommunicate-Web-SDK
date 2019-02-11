@@ -6,6 +6,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../model/Notification';
 import Banner from '../../components/Banner/Banner';
 import {ROLE_TYPE} from '../../utils/Constant'
+import isURL from 'validator/lib/isURL';
 
 const CompanyInfo = props => (
     <CompanyInfoContainer >
@@ -63,6 +64,13 @@ class Company extends Component{
   }
   updateCustomerInfo = () => {
       let userSession = CommonUtils.getUserSession();
+      if( !this.state.companyName || !this.state.companyUrl) {
+        Notification.error("Company Name and URL is mandatory")
+        return
+      } else if(!isURL(this.state.companyUrl)) {
+        Notification.error("Invalid URL");
+        return
+      }
       let customerInfo = {
           applicationId: userSession.application.applicationId,
           companyName: this.state.companyName,
@@ -72,6 +80,13 @@ class Company extends Component{
           .then(response => {
               if (response.data.code === 'SUCCESS') {
                   Notification.success("Company details updated");
+                  this.setState({
+                    companyName:this.state.companyName,
+                    companyUrl:this.state.companyUrl,
+                    companyNameCopy:this.state.companyName,
+                    companyUrlCopy:this.state.companyUrl,
+                    buttonDisabled:true
+                  })
                   userSession.application.websiteUrl = this.state.companyUrl;
                   CommonUtils.setUserSession(userSession)
               }
