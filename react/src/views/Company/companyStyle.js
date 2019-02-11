@@ -13,6 +13,13 @@ const CompanyInfoContainer =  styled.div`
     border:1px solid #a1a1a1;
     padding: 16px;
     margin-bottom: 28px;
+    color: #4a4a4a;
+    font-size: 0.875rem;
+}
+& input:focus {
+    border: solid 1px #5553b7;
+    color: #4a4a4a;
+    outline:none
 }
 & input::placeholder  {
     font-size: 14px;
@@ -37,8 +44,18 @@ const CompanyRestrictionBannerContainer = styled.div`
 const CompanyContainer = styled.div`
     max-width:998px;
 `
+const Divider1 = styled.hr`
+    margin-top: 24px;
+    margin-bottom: 8px;
+`
+const Divider2 = styled.hr`
+    margin-top: 8px;
+    margin-bottom: 0px;
+`
 export {
     CompanyInfoContainer,
     CompanyRestrictionBannerContainer,
-    CompanyContainer
+    CompanyContainer,
+    Divider1,
+    Divider2
 }
