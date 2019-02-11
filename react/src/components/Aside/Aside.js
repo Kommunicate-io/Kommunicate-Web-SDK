@@ -1046,7 +1046,7 @@ class Aside extends Component {
                                   <label htmlFor="km-press-enter-to-send-checkbox">Press enter to send</label>
                                 </div>
                                 {/* Send Button */}
-                                <a href="javascript:void(0)" type="submit" id="km-msg-sbmt"  className="write-link send km-btn-text-panel" title="Send Message">Send</a>
+                                <button type="submit" id="km-msg-sbmt" className="write-link send km-btn-text-panel" title="Send Message">Send</button>
                               </div>
                               
                             </div>
