@@ -557,7 +557,7 @@ export default class IntegratedBots extends Component {
             <div className=" ui tab loading show-loader" hidden={this.state.showLoader}></div>
             <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
 
-                <div style={{padding: "10px"}} className={this.state.conversationsAssignedToBot ? null:"n-vis"}>
+                <div style={{padding: "10px"}} className={this.state.conversationsAssignedToBot ? "product product-kommunicate":"n-vis"}>
                     <div className="banner-container">
                       <div className="banner-div">
                         <span className="banner-sub-text">All new conversations are assigned to: </span>
@@ -567,7 +567,7 @@ export default class IntegratedBots extends Component {
                     </div>
 
                 </div>
-                <div className={this.state.conversationsAssignedToBot ? "n-vis":null}>
+                <div className={this.state.conversationsAssignedToBot ? "n-vis":"product product-kommunicate"}>
                   <div className="banner-container">
                     <div className="banner-div banner-div--warning">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -579,7 +579,7 @@ export default class IntegratedBots extends Component {
                   </div>
                 </div>
 
-                 <div className="container km-liz-container">
+                 <div className="container km-liz-container product product-kommunicate">
                   <div className="km-liz-section-wrapper row ">
                       <div className="km-liz-img col-md-5"><LizBotSvg /></div>
                       <div className="km-liz-section-content col-md-7">
