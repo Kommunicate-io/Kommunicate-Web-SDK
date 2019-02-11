@@ -38,7 +38,7 @@ exports.updateUserPreference = (req, res) =>{
 
 
 exports.getUserPreference = (req, res) =>{
-  logger.info("request received to update user preference : ", req.body);
+  logger.info("request received to get user preference : ", req.body);
   return Promise.resolve(userPreferenceService.getUserPreference(req.body)).then(data => {
     logger.info("Sending response success");
     data = data ? data : [];
