@@ -91,7 +91,7 @@ class Sidebar extends Component {
           <ul className="nav">
 
             <li className="nav-item logo-nav">
-            <NavLink to={this.state.isKommunicateDashboard ?'/conversations':'/dashboard'} className="nav-link" activeClassName="active" data-rh="Conversations" data-rh-at="right" data-tip="Conversations" data-effect="solid" data-place="right">
+            <NavLink to={this.state.isKommunicateDashboard ?'/conversations':'/dashboard'} className="nav-link" activeClassName="active" data-rh="Conversations" data-rh-at="right" data-tip={this.state.isKommunicateDashboard ? "Conversations":"Dashboard"} data-effect="solid" data-place="right">
               <div className="km-logo-circle-bg">
                 { CommonUtils.isKommunicateDashboard() ? <KommunicateLogoSymbol /> : <ApplozicLogoSymbol /> }
               </div>
@@ -147,7 +147,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Bot Link */}
-            {this.state.isKommunicateDashboard && <li className="nav-item">
+            {<li className="nav-item">
               <NavLink to={'/bot'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-bot-integrations" data-tip="Bot Integration" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 9">

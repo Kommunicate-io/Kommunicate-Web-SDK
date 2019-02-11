@@ -208,7 +208,8 @@ class Full extends Component {
         "billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
         "signup": userSession.created_at !== null ? userSession.created_at: "",
         "industry": userSession.industry !== null ? userSession.industry : "",
-        "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
+        "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending",
+        "product": CommonUtils.getProduct()
       };
 
       AnalyticsTracking.addUserProperties(userProperties);
