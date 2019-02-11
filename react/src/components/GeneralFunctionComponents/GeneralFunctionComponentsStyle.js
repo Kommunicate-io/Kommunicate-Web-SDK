@@ -1,7 +1,10 @@
 
 
-import styled  from 'styled-components'
+import styled, {css}  from 'styled-components'
 
+const subTitleFontSize = css`
+    font-size: 14px;
+`
 const BlockButtonContainer =  styled.div`
     display: flex;
     align-items: center;
@@ -27,14 +30,14 @@ const BlockButtonArrowWrapper =styled.div`
 
 `
 const BlockButtonSubTitle = styled.p`
-    font-size: 14px;
+    ${subTitleFontSize}
     color: #adabab;
     margin-bottom: 0px;
     color: #6c6d6e;
 
 `
 const BlockButtonDescription = styled.p`
-    font-size: 14px;
+    ${subTitleFontSize}
     font-weight: 300;
     font-style: italic;
     color: #5b5c5d;

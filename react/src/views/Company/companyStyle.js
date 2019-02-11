@@ -1,12 +1,24 @@
-import styled  from 'styled-components';
+import styled, {css}  from 'styled-components';
+
+const borderBottom = css`
+    border-bottom: 1px solid #c3bfbf;
+`
+const inputFieldFontSize = css`
+    font-size:14px;
+`
 
 const CompanyInfoContainer =  styled.div`
+ ${borderBottom}
+
+ padding-bottom: 24px;
+
 & > .input-field-title {
-  font-size: 17px;
+  font-size: 18px;
   letter-spacing: 1.3px;
-  color: #616366;
+  color: #625f5f;
 }
 & input {
+    ${inputFieldFontSize}
     width: 35%;
     border-radius: 4px;
     height: 40px;
@@ -14,7 +26,6 @@ const CompanyInfoContainer =  styled.div`
     padding: 16px;
     margin-bottom: 28px;
     color: #4a4a4a;
-    font-size: 0.875rem;
 }
 & input:focus {
     border: solid 1px #5553b7;
@@ -22,14 +33,8 @@ const CompanyInfoContainer =  styled.div`
     outline:none
 }
 & input::placeholder  {
-    font-size: 14px;
+    ${inputFieldFontSize}
     color: #cacaca;
-}
-& label {
-    font-size: 15px;
-    letter-spacing: 0.3px;
-    color: #616366;
-    margin-right:6px;
 }
 & > .km-company-btn-wrapper {
     display: flex;
@@ -38,24 +43,19 @@ const CompanyInfoContainer =  styled.div`
     margin-left: 12px;
 }
 `
+const CompanyBlockButtonContainer = styled.div`
+    ${borderBottom}
+    padding: 8px 0px 8px 0px;
+`
 const CompanyRestrictionBannerContainer = styled.div` 
     margin: -25px 0 30px 0px;
 `
 const CompanyContainer = styled.div`
     max-width:998px;
 `
-const CompanyInfoDivider = styled.hr`
-    margin-top: 24px;
-    margin-bottom: 8px;
-`
-const CustomUrlDivider = styled.hr`
-    margin-top: 8px;
-    margin-bottom: 0px;
-`
 export {
     CompanyInfoContainer,
     CompanyRestrictionBannerContainer,
     CompanyContainer,
-    CompanyInfoDivider,
-    CustomUrlDivider
+    CompanyBlockButtonContainer
 }
