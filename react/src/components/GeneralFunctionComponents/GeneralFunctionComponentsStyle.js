@@ -22,18 +22,30 @@ const BlockButtonTextWrapper =  styled.div`
         color: #242424;
         font-weight: 400;
     }
-    & > p {
-        font-size: 16px;
-        color: #adabab;
-        margin-bottom: 0px;
-    } 
 ` 
 const BlockButtonArrowWrapper =styled.div`
 
 `
+const BlockButtonSubTitle = styled.p`
+    font-size: 14px;
+    color: #adabab;
+    margin-bottom: 0px;
+    color: #6c6d6e;
+
+`
+const BlockButtonDescription = styled.p`
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    color: #5b5c5d;
+    margin-bottom:0px;
+`
+
 
 export {
     BlockButtonContainer,
     BlockButtonTextWrapper,
-    BlockButtonArrowWrapper
+    BlockButtonArrowWrapper,
+    BlockButtonSubTitle,
+    BlockButtonDescription
 }

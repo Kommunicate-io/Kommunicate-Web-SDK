@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {BlockButtonContainer, BlockButtonTextWrapper, BlockButtonArrowWrapper} from './GeneralFunctionComponentsStyle'
+import {BlockButtonContainer, BlockButtonTextWrapper, BlockButtonArrowWrapper, BlockButtonSubTitle, BlockButtonDescription} from './GeneralFunctionComponentsStyle'
 import {RightArrow} from '../../../src/assets/svg/svgs'
 
 const BlockButton = props => (
     <BlockButtonContainer onClick = {props.onClickOfBlock}>
         <BlockButtonTextWrapper>
             <h2>{props.title}</h2>
-            <p>{props.subTitle}</p>
+            <BlockButtonSubTitle>{props.subTitle}</BlockButtonSubTitle>
+            <BlockButtonDescription>{props.description}</BlockButtonDescription>
         </BlockButtonTextWrapper>
         <BlockButtonArrowWrapper>
             <RightArrow />
