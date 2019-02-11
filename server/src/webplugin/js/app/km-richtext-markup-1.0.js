@@ -133,9 +133,9 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
-        return'<button title= "'+ options.replyText +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+options.url+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'</button>';  
+        return'<button title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'</button>';  
     }else{
-        return'<button title= "'+ options.replyText +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
+        return'<button title= "'+ (options.replyText || options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
@@ -310,11 +310,15 @@ Kommunicate.markup.getFormMarkup = function(options) {
 }
 Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
     var payload = JSON.parse(options.payload);
-    let defaultButtonClass = { 
-        [KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY] : "km-quick-rpy-btn km-custom-widget-border-color ",
-        [KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL] : "km-carousel-card-button km-carousel-card-quick-rpy-button "
+    var buttonClass;
+    switch (template) {
+        case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
+            buttonClass = "km-quick-rpy-btn km-custom-widget-border-color "
+            break;
+        case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
+            buttonClass = "km-carousel-card-button km-carousel-card-quick-rpy-button "
+            break;
     }
-    var buttonClass = defaultButtonClass[template];
     template == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY && (buttonClass +=  payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many"));
     
     for(var i = 0;i<payload.length;i++){
@@ -402,7 +406,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 button.href = "javascript:void(0)";
                 button.hadlerClass= "km-list-button-item-handler";
                }else{
-                button.href = button.action.url;
+                button.href = encodeURI(button.action.url);
                }
                
                button.dataType=button.action? button.action.type:"";
@@ -492,7 +496,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
             cardHtml.info = Kommunicate.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
-            cardList.push(Object.assign({},cardHtml))
+            cardList[i] = cardHtml; 
         }
     }
     let cardCarousel = {payload:cardList};

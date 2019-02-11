@@ -195,8 +195,8 @@ KommunicateUtils = {
         }
     },
     getSettings:function(key){
-        var settings = KommunicateUtils.getDataFromKmSession("settings");
-        settings=  settings?JSON.parse(settings):null;
+        var settings = KommunicateUtils.getDataFromKmSession("settings"); 
+        settings=  settings?settings:null;
         return key&&settings?settings[key]:(settings?settings:"");
     },
     getItemFromLocalStorage: function(key) {

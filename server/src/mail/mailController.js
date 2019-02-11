@@ -73,20 +73,18 @@ const getEmailFormat = (options, custInfo) => {
             options.product = "kommunicate";
         } 
         let html = options.html;
-        let templatePath = "";
         let templateReplacement = {};
         let productName = options.product == "applozic" ? "Applozic":"Kommunicate";
         if (!html) {
             switch (options.templateName) {
                 case "INSTALLATION_INSTRUCTIONS":
                     let installationInstruction = (options.product == "applozic" ? config.getProperties().urls.applozicDashboardHostUrl : config.getProperties().urls.dashboardHostUrl) + "/installation?product=" + options.product + "&applicationId=" + options.applicationId + "&agentId=" + options.agentId + "&agentName=" + options.agentName;
-                    templatePath = path.join(__dirname, "/" + options.product + "-emailInstructionTemplate.html");
+                    options.templatePath = path.join(__dirname, "/" + options.product + "-emailInstructionTemplate.html");
                     templateReplacement[":kommunicateLogoUrl"] = kommunicateLogoUrl;
                     templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl;
                     templateReplacement[":adminName"] = options.from;
                     templateReplacement[":kommunicateScript"] = options.kommunicateScript;
                     templateReplacement[":installationInstructions"] = installationInstruction;
-                    options.templatePath = templatePath;
                     options.cc = [options.product == "applozic" ? "support@applozic.com": "support@kommunicate.io"];
                     options.templateReplacement = templateReplacement;
                     options.subject = "Let's start with " + productName + "!";
@@ -94,12 +92,11 @@ const getEmailFormat = (options, custInfo) => {
 
                 case "INVITE_TEAM_MAIL":
                     var dashboardUrl = options.product == "applozic" ? joinApplozicUrl:joinKommunicateUrl
-                    templatePath = path.join(__dirname, "/" + options.product + "-inviteTeamTemplate.html"),
+                    options.templatePath  = path.join(__dirname, "/" + options.product + "-inviteTeamTemplate.html"),
                         templateReplacement[":adminName"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? options.agentName + " from " + custInfo.companyName : options.agentName,
                         templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
                         templateReplacement[":joinKommunicateUrl"] = dashboardUrl.replace(":token", options.token).replace(":referer", options.agentId),
                         templateReplacement[":ORGANIZATION"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "from " + custInfo.companyName : "";
-                    options.templatePath = templatePath,
                     options.templateReplacement = templateReplacement;
                     options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on " + productName : "Invitation to Join " + productName;
                     options.bcc = options.product == "applozic" ? "support@applozic.com": "support@kommunicate.io";
@@ -107,29 +104,30 @@ const getEmailFormat = (options, custInfo) => {
 
                 case "BOT_USE_CASE_EMAIL":
                     logger.info("BOT_USE_CASE_EMAIL");
-                    templatePath = path.join(__dirname, "/botUseCaseTemplate.html");
-                    options.templatePath = path.join(__dirname, "/botUseCaseTemplate.html");
-                    options.templateReplacement = { ":USER_NAME": options.userName, ":BOT_USE_CASE": options.botUseCase };
+                    options.templatePath  = path.join(__dirname, "/botUseCaseTemplate.html");
+                    options.templateReplacement = { 
+                        ":PRODUCT_NAME": productName,
+                        ":USER_NAME": options.userName, ":BOT_USE_CASE": options.botUseCase };
                     options.to = [...options.to];
-                    options.cc = [...options.cc, "support@kommunicate.io"]
+                    options.cc = [...options.cc, options.product == "applozic" ? "support@applozic.com": "support@kommunicate.io"];
                     options.bcc = "techdisrupt@applozic.com";
                     break;
                 
                 case "CUSTOM_REPORTS_REQUIREMENT":
                     logger.info("CUSTOM_REPORTS_REQUIREMENT");
-                    templatePath = path.join(__dirname, "/customReportRequirementTemplate.html");
-                    options.templatePath = path.join(__dirname, "/customReportRequirementTemplate.html");
-                    options.templateReplacement = { ":USER_NAME": options.userName, ":CUSTOM_REPORT_REQUIREMENT_DESCRIPTION": options.customReportsDescription,
-                    ":CUSTOM_REPORT_REQUIREMENT_DURATION": options.customReportsDuration };
+                    options.templatePath  = path.join(__dirname, "/customReportRequirementTemplate.html");
+                    options.templateReplacement = { 
+                        ":PRODUCT_NAME": productName,
+                        ":USER_NAME": options.userName, ":CUSTOM_REPORT_REQUIREMENT_DESCRIPTION": options.customReportsDescription,
+                        ":CUSTOM_REPORT_REQUIREMENT_DURATION": options.customReportsDuration };
                     options.to = [...options.to];
-                    options.cc = [...options.cc, "support@kommunicate.io"]
+                    options.cc = [...options.cc, options.product == "applozic" ? "support@applozic.com": "support@kommunicate.io"];
                     options.bcc = "techdisrupt@applozic.com";
                     break;
 
                 case "APPLOZIC_SUPPORT_QUERY":
                     logger.info("APPLOZIC_SUPPORT_QUERY");
-                    templatePath = path.join(__dirname, "/applozicSupportQueryTemplate.html");
-                    options.templatePath = path.join(__dirname, "/applozicSupportQueryTemplate.html");
+                    options.templatePath  = path.join(__dirname, "/applozicSupportQueryTemplate.html");
                     options.templateReplacement = {  
                     ":QUERY_PLATFORM": options.queryPlatform,
                     ":QUERY_SDK":options.querySdk,":QUERY_APP_KEY":options.appKey,
@@ -141,7 +139,7 @@ const getEmailFormat = (options, custInfo) => {
                     break;
             }
         }
-        if (!templatePath) {
+        if (!options.templatePath ) {
             res.status(400).json({ code: "BAD_REQUEST", message: "Invalid template" });
             return;
         }

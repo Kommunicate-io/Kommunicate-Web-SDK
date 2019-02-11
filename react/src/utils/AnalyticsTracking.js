@@ -40,7 +40,8 @@ const AnalyticsTracking = {
       "$distinct_id": userSession.userName,
       "$name": userSession.name,
       "$created": userProperties.signup,
-      "$email": userProperties.email
+      "$email": userProperties.email,
+      "$product": userProperties.product
     });
   },
 

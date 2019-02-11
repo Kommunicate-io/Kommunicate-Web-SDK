@@ -20,6 +20,8 @@
     <script src="https://cdn.applozic.com/applozic/applozic.chat-5.1.min.js"></script>
 
     <script type="text/javascript">
+      var socketConnected = false;
+
       var events = {
         'onMessageReceived': function(resp) {
           //will trigger when you will receive a new msg
@@ -32,7 +34,12 @@
           $('#messages').append($('<li>').text("you: " + resp.message.message));
         },
         'onConnectFailed': function(resp) {},
-        'onConnect': function(resp) {},
+        'onConnect': function(resp) {
+          socketConnected = true;
+          if (groupId) {
+            window.Applozic.ALSocket.subscibeToTypingChannel(groupId);
+          }
+        },
         'onMessageDelivered': function(resp) {},
         'onMessageRead': function(resp) {
           // will trigger when another user chat is open and you send a msg
@@ -54,7 +61,14 @@
         'onMessage': function(resp) { 
           //console.log(resp); //Will trigger for every   message 
         },
-        'onTypingStatus': function(resp) {}
+        'onTypingStatus': function(resp) {
+          var typingData = resp.body.split(",");
+          if (typingData[2] == "1") {
+            document.getElementById("typing-status").innerHTML = (typingData[1] + " is typing...");
+          } else {
+            document.getElementById("typing-status").innerHtml = "";
+          }
+        }
     };
     
     var APP_ID = "kommunicate-support";
@@ -64,6 +78,9 @@
     <script>
 
     var groupId;
+    var userId = 'debug4'; //Todo: replace with your userId and password
+    var password = 'debug4';
+    var botId = 'kommunicate-support-bot';
 
     $(function () {
       Applozic.ALApiService.login(
@@ -72,8 +89,8 @@
           baseUrl: 'https://chat.kommunicate.io',
           alUser:
           {
-            userId: 'debug4', //Logged in user's id, a unique identifier for user
-            password: 'debug4',//Enter password here for the userId passed above, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
+            userId: userId, //Logged in user's id, a unique identifier for user
+            password: password,//Enter password here for the userId passed above, read this if you want to add additional security by verifying password from your server https://www.applozic.com/docs/configuration.html#access-token-url
             imageLink: '', //User's profile picture url
             email: '', //optional
             contactNumber: '', //optional, pass with internationl code eg: +13109097458
@@ -95,8 +112,8 @@
                   {
                       group: {
                           "groupName": "Support",
-                          "users": [{ 'userId': 'kommunicate-support-bot' },
-                          { 'userId': 'debug4' }],
+                          "users": [{ 'userId': botId, 'groupRole': 2},
+                                    { 'userId': userId, 'groupRole': 1 }],
                           "type": 10,      //(required) 1:private, 2:public, 5:broadcast, 7:GroupofTwo, 10:Support Chat
                           "metadata":{
                             "CONVERSATION_ASSIGNEE":"kommunicate-support-bot",
@@ -112,6 +129,11 @@
                     console.log("group created, groupId" + response.response.id);
                     console.log(response); 
                     groupId = response.response.id;
+
+                    if (socketConnected) {
+                      console.log("subscribing to typing event for groupId: " + groupId);
+                      window.Applozic.ALSocket.subscibeToTypingChannel(groupId);
+                    }
                   },
               error: function () { }
           });
@@ -145,6 +167,16 @@
         $('#m').val('');
         return false;
       });
+    
+      
+      //Typing indicator
+      document.getElementById("m").addEventListener("keyup", function() {
+        console.log("#sending typing event for userId: " + userId + ", groupId: " + groupId);
+        window.Applozic.ALSocket.sendTypingStatus("1", "1", userId, groupId);
+      }, false);
+
+      //window.Applozic.ALSocket.unsubscibeToTypingChannel();
+
     });
   </script>
 
@@ -154,5 +186,6 @@
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
+    <span id="typing-status">Typing indicator</span>
   </body>
 </html>

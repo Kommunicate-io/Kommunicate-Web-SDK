@@ -292,14 +292,14 @@ toggleConversationAssignment = () => {
                             <div className="km-agent-assignment-radio-container">
                                 <RadioButton idRadioButton={'notify-everybody-radio'} handleOnChange={this.handleRadioBtnNotifyEverybody}
                                 checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
-                                { this.state.checkedNotifyEverybody && Object.keys(this.state.notifyEveryBodyDefaultAssigneeInfo).length !== 0 &&
+                                { this.state.checkedNotifyEverybody && CommonUtils.isObject( this.state.notifyEveryBodyDefaultAssigneeInfo) && Object.keys(this.state.notifyEveryBodyDefaultAssigneeInfo).length !== 0 &&
                                     <DefaultAssignee  userList = {this.state.userList} className = {"notify-everybody-dropdown"} name= {"notify-everybody-dropdown"} text = {"Initially assign all new conversations to:"} updateDefaultAssignee = {this.updateDefaultAssignee} selectedAssignee = {this.state.notifyEveryBodyDefaultAssigneeInfo} />
                                 }  
                             </div>      
                             <div className="km-agent-assignment-radio-container">
                                     <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
                                     checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={(CommonUtils.isTrialPlan())?false: (CommonUtils.isStartupPlan()) ? true : false}/>
-                                {   this.state.checkedAutomaticAssignemnt && Object.keys(this.state.automaticAssignmentDefaultAssigneeInfo).length !== 0 &&
+                                { this.state.checkedAutomaticAssignemnt && CommonUtils.isObject(this.state.automaticAssignmentDefaultAssigneeInfo) && Object.keys(this.state.automaticAssignmentDefaultAssigneeInfo).length !== 0 &&
                                     <DefaultAssignee  userList = {this.state.userList} className = {"automatic-assignment-dropdown"} name= {"automatic-assignment-dropdown"}
                                     text = {"If nobody is in online, then assign all conversations to:"}updateDefaultAssignee = {this.updateDefaultAssignee} 
                                     selectedAssignee = {this.state.automaticAssignmentDefaultAssigneeInfo}/> 

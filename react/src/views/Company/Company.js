@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import {SettingsHeader} from '../../components/SettingsComponent/SettingsComponents';
-import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContainer} from './companyStyle'
+import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContainer, CompanyBlockButtonContainer} from './companyStyle'
 import { getCustomerInfo, patchUserInfo, patchCustomerInfo } from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../model/Notification';
 import Banner from '../../components/Banner/Banner';
 import {ROLE_TYPE} from '../../utils/Constant'
+import isURL from 'validator/lib/isURL';
+import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFunctionComponents'
+import CompanySectionModal from './CompanySectionModal'
 
 const CompanyInfo = props => (
     <CompanyInfoContainer >
@@ -31,8 +34,8 @@ class Company extends Component{
         companyUrlCopy:"",
         buttonDisabled:true,
         companyInfoEditable:true,
+        openModal:false
     };
-    
   }
   componentDidMount = () => {
     let userSession = CommonUtils.getUserSession();
@@ -63,6 +66,13 @@ class Company extends Component{
   }
   updateCustomerInfo = () => {
       let userSession = CommonUtils.getUserSession();
+      if( !this.state.companyName || !this.state.companyUrl) {
+        Notification.error("Company Name and URL is mandatory")
+        return
+      } else if(!isURL(this.state.companyUrl)) {
+        Notification.error("Invalid URL");
+        return
+      }
       let customerInfo = {
           applicationId: userSession.application.applicationId,
           companyName: this.state.companyName,
@@ -72,6 +82,13 @@ class Company extends Component{
           .then(response => {
               if (response.data.code === 'SUCCESS') {
                   Notification.success("Company details updated");
+                  this.setState({
+                    companyName:this.state.companyName,
+                    companyUrl:this.state.companyUrl,
+                    companyNameCopy:this.state.companyName,
+                    companyUrlCopy:this.state.companyUrl,
+                    buttonDisabled:true
+                  })
                   userSession.application.websiteUrl = this.state.companyUrl;
                   CommonUtils.setUserSession(userSession)
               }
@@ -87,6 +104,9 @@ class Company extends Component{
           buttonDisabled:true
       })
   }
+  controlModal = () => {
+    this.setState({ openModal: !this.state.openModal });
+  }
   render() {
       return(
           <CompanyContainer>
@@ -96,6 +116,10 @@ class Company extends Component{
               <SettingsHeader />
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}
               buttonDisabled = {this.state.buttonDisabled} companyInfoEditable = {this.state.companyInfoEditable}/>
+                <CompanyBlockButtonContainer>
+                    <BlockButton title = {"Get a custom domain URL"} subTitle = {"Get a custom domain URL for your Kommunicate account."} description={"Example: kommunicate.yourwebsite.com"} onClickOfBlock = {this.controlModal} />
+                </CompanyBlockButtonContainer>
+              <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal}/>
           </CompanyContainer>
       )
   }

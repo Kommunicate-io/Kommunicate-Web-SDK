@@ -330,6 +330,7 @@ The format of the message is as below:
  ```javascript
 {
 	"message": "Where you wanna go this summer?",
+	"platform":"kommunicate",
 	"metadata": {
 		"KM_AUTO_SUGGESTION": {
 			"placeholder": "enter city name ", //optional, this will apear in chat box as placeholder

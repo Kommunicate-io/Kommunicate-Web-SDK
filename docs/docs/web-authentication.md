@@ -44,13 +44,29 @@ Example:
 
 ## 2. Pre chat Lead Collection
 
-For collecting user contact information before initiating chat, use the following setting 'askUserDetails':
+For collecting user contact information before initiating chat, use the following setting 'preLeadCollection':
 
 Once configured, user will see the form on click of the chat widget launch icon
-
-|parameters | description| required |
-|---    |---    |---    |
-|askUserDetails  | ["name", "email", "phone"]| atleast one is required |
+```javascript
+ preLeadCollection: [{
+    "field": "name",                          // Whatever column you want to add
+    "required": true,                         //make it true if you want to make it mandatory
+    "placeholder": "enter your name"          // add whatever text you want to show in placeholder
+},
+{
+    "field": "email",
+    "type": "email",
+    "required": true,
+    "placeholder": "enter your email"
+}, 
+{
+    "field": "phone",
+    "type": "number",
+    "required": true,
+    "placeholder": "enter your phone number"
+}]
+```
+atleast One of above field is required.
 
 
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
@@ -58,10 +74,27 @@ Once configured, user will see the form on click of the chat widget launch icon
 ### Example:
 ```javascript
 
-    var kommunicateSettings = {"appId": applicationId,
-            "conversationTitle":conversationTitle,
-            "askUserDetails":['name', 'email', 'phone']
-            };
+   var kommunicateSettings = {
+    "appId": applicationId,
+    "conversationTitle": conversationTitle,
+    "preLeadCollection": [{
+    "field": "name",
+    "required": true,
+    "placeholder": "enter your name"
+},
+{
+    "field": "email",
+    "type": "email",
+    "required": true,
+    "placeholder": "enter your email"
+},
+{
+    "field": "phone",
+    "type": "number",
+    "required": true,
+    "placeholder": "enter your phone number"
+}]
+};
 
 ```
 

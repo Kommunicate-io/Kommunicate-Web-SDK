@@ -14,15 +14,31 @@ const createUserPreference = data => {
   return Promise.resolve(preferenceId(data["preference"])).then(prefId => {
     return Promise.resolve(userService.getByUserNameAndAppId(data.userName, data.applicationId)).then(user =>{
       if(!user) throw ERROR.USER_NOT_FOUND;
+      let criteria = {
+        userId : user.id,
+        preferenceId : prefId
+      }
       let preferenceData = {
         userId : user.id,
         preferenceId : prefId,
         value : data["value"]
       };
-      logger.info("processing", preferenceData);
-      return Promise.resolve(UserPreferencesModel.create(preferenceData)).then(data => {
-        logger.info("Inserted data in db");
-        return;
+      return Promise.resolve(UserPreferencesModel.findOne({where:criteria, paranoid:false})).then(foundData => {
+        if(foundData == null){
+          logger.info("processing", preferenceData);
+          return Promise.resolve(UserPreferencesModel.create(preferenceData)).then(data => {
+            logger.info("Inserted data in db");
+            return;
+          })
+        }
+        else{
+          logger.info("Updating soft deleted data : ", preferenceData);
+          preferenceData["deleted_at"] = null;
+          return Promise.resolve(UserPreferencesModel.update(preferenceData, {where:criteria, paranoid:false})).then(data => {
+            logger.info("Updated deleted data in db");
+            return;
+          })
+        }
       })
     })
   }).catch(err => {
@@ -71,12 +87,13 @@ const updateUserPreference = data => {
         userId : user.id,
         preferenceId : prefId
       }
-      return UserPreferencesModel.findOne({where:criteria}).then(data => {
+      return UserPreferencesModel.findOne({where:criteria, paranoid:false}).then(data => {
         if(data == null){
           UserPreferencesModel.create(userPreferences);
         }
         else{
-          UserPreferencesModel.update(userPreferences, {where:criteria});
+          userPreferences["deleted_at"] = null;
+          UserPreferencesModel.update(userPreferences, {where:criteria, paranoid:false});
         }  
       })
     })

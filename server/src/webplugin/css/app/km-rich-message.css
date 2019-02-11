@@ -654,7 +654,7 @@
         background-color: white; */
     }  
     #mck-away-msg {
-        white-space: pre;
+        white-space: pre-line;
     }
     .mck-collect-email {
         font-size: 14px;
@@ -1035,6 +1035,7 @@
     margin-bottom: 4px;
     height: 44px;
     height: auto;
+    white-space: pre;
 }
 .km-carousel-card-content-wrapper {
     padding-top: 6px;
@@ -1133,6 +1134,7 @@
     margin: 0;
 }
 .km-list-container {
+    margin-top: 8px;
     border: solid 1px #e5e5e5;
 }
 .tns-controls button[data-controls='next'] svg {

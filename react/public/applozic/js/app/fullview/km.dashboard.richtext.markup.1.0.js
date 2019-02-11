@@ -195,7 +195,7 @@ getListMarkup:function(){
                                      '{{title}}'+
                                  '</p>'+
                                  '<p class="km-dash-faq-list--body_ans">'+
-                                     '{{description}}'+
+                                     '{{{description}}}'+
                                  '</p>'+
                              '</div>'+
                          '</a>'+
