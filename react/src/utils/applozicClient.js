@@ -33,7 +33,7 @@ const ApplozicClient ={
    createKommunicateSupportUser:function(user){
     return Promise.resolve(axios.post(getConfig().applozicPlugin.applozicHosturl+"/rest/ws/register/client",user )).then(response=>{
         let err = {};
-        console.log("Applozic server returned : ",response.status);
+        // console.log("Applozic server returned : ",response.status);
         if (response.status == 200) {
           if (response.data.message == "INVALID_PARAMETER") {
             console.log("INVALID_PARAMETER received from applozic Server");

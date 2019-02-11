@@ -59,9 +59,23 @@ export default class MultiSelectInput extends Component {
         }
     };
 
-    handleKeyDown = event => {
+    createValidOption = () => {
         let groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.props.group.groupId;
         const { inputValue, value } = this.state;
+        if (!inputValue) return;
+        if(isEmail(this.state.inputValue)) {
+            this.setState({
+                inputValue: "",
+                value: [...value, createOption(inputValue)]
+            });
+             this.addGroupMember(groupId, this.state.inputValue, function(resp) {});
+        } else {
+            Notification.error("Please enter a valid email address.");
+        }
+    }
+
+    handleKeyDown = event => {
+        const { inputValue } = this.state;
         if (!inputValue) return;
         switch (event.keyCode) {
             case 9: // TAB
@@ -69,15 +83,7 @@ export default class MultiSelectInput extends Component {
             case 32: // SPACE
             case 188: // COMMA
                 event.preventDefault();
-                if(isEmail(this.state.inputValue)) {
-                    this.setState({
-                        inputValue: "",
-                        value: [...value, createOption(inputValue)]
-                    });
-                     this.addGroupMember(groupId, this.state.inputValue, function(resp) {});
-                } else {
-                    Notification.error("Please enter a valid email address.");
-                }
+                this.createValidOption();
          }
     };
 
@@ -138,6 +144,10 @@ export default class MultiSelectInput extends Component {
         });
     }
 
+    handleCreate = (e) => {
+        this.createValidOption();
+    }
+
     render() {
         const { inputValue, value } = this.state;
         return (
@@ -153,6 +163,7 @@ export default class MultiSelectInput extends Component {
                 onChange={this.handleChange}
                 onInputChange={this.handleInputChange}
                 onKeyDown={this.handleKeyDown}
+                onBlur={this.handleCreate}
                 placeholder=""
                 value={value}
                 styles={colourStyles}

@@ -5700,7 +5700,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if (typeof contact !== 'undefined') {
 								if (typeof tabId !== 'undefined' && tabId === contact.contactId && isGroupTab === contact.isGroup) {
 									if (!message.metadata || message.metadata.category !== 'HIDDEN') {
-										!_this.shouldAutoScrollOnNewMessage() && _this.newMessagesCounter();
+										!_this.shouldAutoScrollOnNewMessage() && _this.newMessagesCounter(message);
 										mckMessageLayout.addMessage(message, contact, true, _this.shouldAutoScrollOnNewMessage(), true);
 										if (message.type === 3) {
 											$kmApplozic("." + message.key + " .km-message-status").removeClass('km-icon-time').addClass('km-icon-sent');
@@ -5750,8 +5750,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				
 				return (innerHeight + scrollTop) == scrollHeight;
 			};
-			_this.newMessagesCounter = function() {
-				if(!_this.shouldAutoScrollOnNewMessage()) {
+			_this.newMessagesCounter = function(message) {
+				if(!_this.shouldAutoScrollOnNewMessage() && message.contentType != 10) {
 					NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER += 1;
 					$kmApplozic(".km-new-messages-indicator--container").addClass('vis').removeClass('n-vis');
 					$kmApplozic(".km-new-messages-indicator--count").text(NEW_MESSAGE_IN_ACTIVE_CHAT_COUNTER);
