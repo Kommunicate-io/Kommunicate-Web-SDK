@@ -5713,7 +5713,7 @@ button:focus, button:active, button:hover {
 div[name="message"]:last-child {
     margin-bottom: 30px;
 }
-.mck-preleadcollection-textarea{
+.mck-preleadcollection-textarea {
 	overflow-y: scroll;
 	height: 50px;
-	}
+}
