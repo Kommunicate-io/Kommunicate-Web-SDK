@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {SettingsHeader} from '../../components/SettingsComponent/SettingsComponents';
-import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContainer, Divider1, Divider2} from './companyStyle'
+import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContainer, CompanyInfoDivider, CustomUrlDivider} from './companyStyle'
 import { getCustomerInfo, patchUserInfo, patchCustomerInfo } from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../model/Notification';
@@ -116,9 +116,9 @@ class Company extends Component{
               <SettingsHeader />
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}
               buttonDisabled = {this.state.buttonDisabled} companyInfoEditable = {this.state.companyInfoEditable}/>
-              <Divider1 />
+              <CompanyInfoDivider />
                 <BlockButton title = {"Get a custom domain URL"} subTitle = {"Get a custom domain URL for your Kommunicate account."} description={"Example: kommunicate.yourwebsite.com"} onClickOfBlock = {this.controlModal}/>
-                <Divider2 />
+                <CustomUrlDivider />
               <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal}/>
           </CompanyContainer>
       )

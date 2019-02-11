@@ -44,11 +44,11 @@ const CompanyRestrictionBannerContainer = styled.div`
 const CompanyContainer = styled.div`
     max-width:998px;
 `
-const Divider1 = styled.hr`
+const CompanyInfoDivider = styled.hr`
     margin-top: 24px;
     margin-bottom: 8px;
 `
-const Divider2 = styled.hr`
+const CustomUrlDivider = styled.hr`
     margin-top: 8px;
     margin-bottom: 0px;
 `
@@ -56,6 +56,6 @@ export {
     CompanyInfoContainer,
     CompanyRestrictionBannerContainer,
     CompanyContainer,
-    Divider1,
-    Divider2
+    CompanyInfoDivider,
+    CustomUrlDivider
 }
