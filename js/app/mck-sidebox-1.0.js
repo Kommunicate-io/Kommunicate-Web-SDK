@@ -1751,7 +1751,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                      //Create dynamic input field  
                      var preLeadCollection = KM_PRELEAD_COLLECTION[i];
                      var kmChatInputDiv = document.createElement("div");
-                     var preLeadCollectionClass =preLeadCollection.element ==="textarea" ? "km-form-control mck-preleadcollection-textarea" :"km-form-control km-input-width vis";
+                     var preLeadCollectionClass ="km-form-control "+ (preLeadCollection.element ==="textarea" ? "mck-preleadcollection-textarea" :"km-input-width");
                     if (preLeadCollection.class) {
                         preLeadCollectionClass = preLeadCollectionClass +" "+ preLeadCollection.class;
                     }
