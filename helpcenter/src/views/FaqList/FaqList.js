@@ -23,13 +23,15 @@ export default class FaqList extends Component {
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     };
 
-
-    componentDidMount = () => {
+    populateFaq = () =>{
         this.setState({appId : CommonUtils.getUrlParameter(window.location.search,"appId") },()=>{
             CommonUtils.getAllFaq(this.state.appId).then(response=>{
                 this.setState({faqList : response})
             })
         })
+    }
+    componentDidMount = () => {
+       this.populateFaq();
     }
     
     render() {
