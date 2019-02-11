@@ -1228,13 +1228,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     (latestGroupMessage.type !== KommunicateConstants.MESSAGE_TYPE.SENT) && mckNotificationService.notifyUser(latestGroupMessage);
                 } else {
                     // startConversation function will create a new conversation.
-                    Kommunicate.startConversation({
-                        groupName: DEFAULT_GROUP_NAME,
-                        agentId: DEFAULT_AGENT_ID,
-                        botIds: DEFAULT_BOT_IDS,
-                        isMessage: false,
-                        isInternal: true
-                    });
+                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                    conversationDetail.isMessage = false;
+                    conversationDetail.isInternal = true;
+                    Kommunicate.startConversation(conversationDetail);
                 }
             });
         };
@@ -1617,10 +1614,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 			                setStatus: true
 			            }): mckUserUtils.updateUserConnectedStatus();
 								});
-                if (typeof MCK_ON_PLUGIN_INIT === 'function') {
-                    // callback when plugin initilized successfully.
-                    MCK_ON_PLUGIN_INIT('success', data);
-                }
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
@@ -1659,6 +1652,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                  // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                 KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
+
+                if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                    // callback when plugin initilized successfully.
+                    MCK_ON_PLUGIN_INIT('success', data);
+                };
+
                 var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                 kmChatLoginModal.style.visibility='hidden';
             };
@@ -2105,7 +2104,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                          console.log("error while fetching group detail by type",err)
                          return;
                     }else if (result.response.length ==0) {
-                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function(groupId){
+                        var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                        mckMessageService.createNewConversation( conversationDetail , function(groupId){
                            /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
                             callback();
 
@@ -2189,7 +2189,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 $mck_contact_search.click(function () {
 
                     // mckMessageLayout.addContactsToContactSearchList();
-                    mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
+                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
+                    mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
@@ -2206,15 +2207,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         }
                   });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
+                    var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     if($applozic('#km-faq-search-input').val()=== "") {
-                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
+                        mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                         });
                         KommunicateUI.showChat();
                     } else {
-                        mckMessageService.createNewConversation({
-                            groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS
-                        }, function (conversationId) {
+                        mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             KommunicateUI.sendFaqQueryAsMsg(conversationId);
                             KommunicateUI.showChat();
                         });
@@ -5035,7 +5035,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         }
                       }
                   } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
-                      return '<a href= "#" target="_self"  ><video controls class="mck-video-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/ogg"></video></a>';
+                      return '<video controls class="mck-video-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/ogg"></video>';
                       //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + alFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
                   } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
                       return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + alFileService.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
@@ -5425,12 +5425,22 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         })
                     },
                     items: 8,
+                    highlight: true,
                     updater: function (metadataString) {
                         var metadataObj = JSON.parse(metadataString);
                         if (Object.keys(metadataObj.metadata).length != 0) {
                             $mck_autosuggest_metadata.val(JSON.stringify(metadataObj.metadata));
                         }
-                        $mck_text_box.text(metadataObj.displayMessage);
+                        $mck_text_box.val(metadataObj.displayMessage);
+                        
+                        // TODO: Need to improve this.
+                        $mck_autosuggest_search_input.on("keydown", function(e) {
+                            $mck_text_box.text($mck_autosuggest_search_input.val());
+                            if(e.which === 13 && metadataObj.displayMessage) {
+                                $mck_text_box.submit();  
+                                e.preventDefault(); 
+                            }
+                        });
                         return metadataObj.displayMessage;
                     },
                     matcher: function (item) {
@@ -5438,7 +5448,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         return matcher1.test(item.searchKey);
                     },
                     highlighter: function (item) {
-                        var metadata = JSON.parse(item.toString())
+                        var metadata = JSON.parse(item.toString());
                         return metadata.displayMessage;
                     }
                 });
@@ -7070,6 +7080,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 $applozic.template("groupMemberSearchTemplate", groupMemberSearchContact);
             };
 
+            _this.createGroupDefaultSettings = function() {
+                var defaultSettings = KommunicateUtils.getDataFromKmSession("settings");
+                 var conversationDetail = {
+                    groupName : ( defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
+                    agentId :  (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    botIds :  (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
+                };
+                return conversationDetail;
+            };
+
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();
@@ -7910,12 +7930,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
 
-                $mck_autosuggest_search_input.on('keydown input', function (e) {
-                    $mck_text_box.text($mck_autosuggest_search_input.val());
-                    if(e.which === 13) {
-                        $mck_text_box.submit();
-                        e.preventDefault();
-                    }
+                $mck_autosuggest_search_input.on('input', function (e) {
                     // This code is to auto resize a textarea as you go on typing text in it.
                     _this.resizeTextarea(this); 
                     if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGEST") {

@@ -4740,7 +4740,7 @@ margin-top: 243px;
 	line-height: normal;
 	letter-spacing: 0.6px;
 	text-align: left;
-	color: #696464!important;
+	color: #949494!important;
     /* Firefox */
 }
 #km-faq-search-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -4765,7 +4765,7 @@ margin-top: 243px;
 	line-height: normal;
 	letter-spacing: 0.6px;
 	text-align: left;
-	color: #696464!important;
+	color: #949494!important;
 }
 
 #km-faq-search-input::-ms-input-placeholder { /* Microsoft Edge */
@@ -4777,8 +4777,28 @@ margin-top: 243px;
 	line-height: normal;
 	letter-spacing: 0.6px;
 	text-align: left;
-	color: #696464!important;
+	color: #949494!important;
 }
+textarea::-webkit-input-placeholder {
+	color: #949494!important;
+}
+  
+textarea:-moz-placeholder { /* Firefox 18- */
+	color: #949494!important;
+}
+  
+textarea::-moz-placeholder {  /* Firefox 19+ */
+	color: #949494!important;
+}
+  
+textarea:-ms-input-placeholder {
+	color: #949494!important;
+}
+  
+textarea::placeholder {
+	color: #949494!important;
+}
+
 
 #mck-away-msg-box{
 	border-top: dashed 1px #bebbbb;
