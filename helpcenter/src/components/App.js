@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import {Header} from './Header/Header';
-import {FaqList} from '../views/FaqList/FaqList';
-import {Article} from '../views/Article/Article';
+import  FaqList from '../views/FaqList/FaqList';
+import  Article from '../views/Article/Article';
 import { ThemeProvider } from 'styled-components';
 import  '../scss/main.scss'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'

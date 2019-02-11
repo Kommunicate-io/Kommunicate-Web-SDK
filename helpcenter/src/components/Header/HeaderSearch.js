@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {CommonUtils} from '../../utils/CommonUtils';
 import AsyncSelect from 'react-select/lib/Async';
 import { withRouter } from 'react-router-dom';
-import { isAbsolute } from 'path';
 
 const customStyles = {
     input: () => ({
@@ -15,21 +14,18 @@ class HelpQuerySearch extends Component {
         super(props);
         this.state = { 
             inputValue: '',
-            appID : '',
+            appId : '',
             searchQuery : '',
             faqList: '',
             searchedFaqList: '',
-            isDropDownOpen: false
+            isDropDownOpen: false,
+            value: ''
         };
     }
-    componentWillMount = () => {
-        this.setState({
-            appID : CommonUtils.getUrlParameter(window.location.search,"appId")
-        })
-    }
+
     getSearchResults = (inputValue) => {
         var _this = this
-        this.state.inputValue && CommonUtils.searchFaq(this.state.appID, this.state.inputValue).then(response=>{
+        this.state.inputValue && CommonUtils.searchFaq(this.state.appId, this.state.inputValue).then(response=>{
             response && _this.setState({
                 searchedFaqList : response.data,
             })
@@ -52,17 +48,31 @@ class HelpQuerySearch extends Component {
     };
 
     closeDropdownOnEmptyInput = ()=>{
-        this.state.inputValue == "" ? this.setState({ isDropDownOpen: false }) : this.setState({ isDropDownOpen: true }) ;  
+        this.setState({ isDropDownOpen: this.state.inputValue });  
     }
 
     getSelectedFaq = (selectedFAQ)=> {
-        let searchQuery = '?appId='+this.state.appID+"&articleId="+selectedFAQ.id;
-        this.props.history.push({
+        this.setState({ inputValue: "null" })
+        if(selectedFAQ == null){
+            let searchQuery = '?appId='+this.state.appId;
+            this.props.history.push({
+            pathname: '/',
+            search: searchQuery,
+        });
+        }else{
+            let searchQuery = '?appId='+this.state.appId+"&articleId="+selectedFAQ.id;
+            this.props.history.push({
             pathname: '/article',
             search: searchQuery,
         });
-        this.setValue(null);
+        }        
         this.closeDropdownOnEmptyInput();
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            appId : CommonUtils.getUrlParameter(window.location.search,"appId")
+        })
     }
 
   render() {
@@ -84,6 +94,7 @@ class HelpQuerySearch extends Component {
           components={{DropdownIndicator:null,clearIndicator:true}}
           isClearable = {true}
           placeholder="Search Helpcenter"
+          handleOnChange={this.handleSearchbarChange}
         />
       </div>
     );

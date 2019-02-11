@@ -6,31 +6,29 @@ import {CommonUtils} from '../../utils/CommonUtils'
 
 
 
-export class FaqList extends Component {
+export default class FaqList extends Component {
     constructor(props){
         super(props);
         this.state = {
             faqList : [],
-            appID : ""
+            appId : ""
         };
     };
 
-    componentWillMount(){
-        this.setState({appID : CommonUtils.getUrlParameter(window.location.search,"appId") })
-    }
 
+    //Following function will remove all the html tags and will return plain text
     stripHtml = (html) => {
-         // Create a new div element
-        var temporalDivElement = document.createElement("div");
-        // Set the HTML content with the providen
+        let temporalDivElement = document.createElement("div");
         temporalDivElement.innerHTML = html;
-        // Retrieve the text property of the element (cross-browser support)
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     };
 
+
     componentDidMount = () => {
-        CommonUtils.getAllFaq(this.state.appID).then(response=>{
-            this.setState({faqList : response})
+        this.setState({appId : CommonUtils.getUrlParameter(window.location.search,"appId") },()=>{
+            CommonUtils.getAllFaq(this.state.appId).then(response=>{
+                this.setState({faqList : response})
+            })
         })
     }
     
@@ -43,7 +41,7 @@ export class FaqList extends Component {
                                 <FaqListItem key={index.id}>
                                     <FaqListTitle>{index.name}</FaqListTitle>
                                     <FaqListContent>{this.stripHtml(index.content )}</FaqListContent>
-                                </FaqListItem>
+                            </FaqListItem>
                         
                     ))
                 }

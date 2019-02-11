@@ -13,8 +13,8 @@ export const CommonUtils = {
         return results === null ? '' : decodeURIComponent(results[1]);
     },
 
-    getAllFaq : (userAppID)=>{
-        let searchQuery = {appId:userAppID},
+    getAllFaq : (userappId)=>{
+        let searchQuery = {appId:userappId},
             headers = {
                 'Content-Type': "application/x-www-form-urlencoded; charset=UTF-8" 
             },
@@ -34,12 +34,30 @@ export const CommonUtils = {
 
     },
 
-    searchFaq : (appID, searchQuery)=>{
+    searchFaq : (appId, searchQuery)=>{
         searchQuery.replace(" ","-");
         let queryUrl = kmApiUrl+url["kommunicateApi"].search, faqList,
         params =  {
-            appId: appID,
+            appId: appId,
             query:searchQuery
+        }
+        return (axios.get(queryUrl,
+            {'params':params } 
+            )).then(response =>{
+                faqList = response;
+                return faqList.data;
+            }
+            ).catch(err =>{
+                console.log(err)
+            })
+
+    },
+
+    getSelectedFaq : (appId, faqId)=>{
+        let queryUrl = kmApiUrl+url["kommunicateApi"].search, faqList,
+        params =  {
+            appId: appId,
+            articleId:faqId
         }
         return (axios.get(queryUrl,
             {'params':params } 

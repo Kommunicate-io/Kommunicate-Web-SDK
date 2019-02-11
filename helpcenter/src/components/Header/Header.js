@@ -14,7 +14,7 @@ export const Header =  (props)=>  (
               </TopbarLogoContainer>
                 <Button>{props.contactSupportButtonText}</Button>
             </HeaderTopbar >
-                <HelpcenterHeading headingVisible={location.pathname.includes('article') ? false : true }>{props.HelpcenterHeadingText}</HelpcenterHeading>
+                <HelpcenterHeading headingVisible={!location.pathname.includes('article')}>{props.HelpcenterHeadingText}</HelpcenterHeading>
             <SearchBarContainer>
                 <HelpQuerySearch/>
             </SearchBarContainer>
@@ -26,5 +26,5 @@ export const Header =  (props)=>  (
 Header.defaultProps = {
   logoUrl : "/src/assets/svg/kommunicateLogoWhite.svg",
   contactSupportButtonText: "Contact Support",
-  HelpcenterHeadingText:"Hi. How can we help ?"
+  HelpcenterHeadingText:"Hi. How can we help?"
 }

@@ -1,40 +1,59 @@
 import React, { Component } from 'react';
 import {Container} from '../../components/Container/Container';
-import {CommonUtils} from '../../utils/CommonUtils'
+import {CommonUtils} from '../../utils/CommonUtils';
+import {ArticleWrapper, ArticleHeading, ArticleContent} from './ArticleComponents';
 
 
 
 
-export class Article extends Component {
+export default class Article extends Component {
     constructor(props){
         super(props);
         this.state = {
-            appID : ""
+            appId : '',
+            faqIdentifier: '',
+            faqHeading: '',
+            faqId: ''
         };
     };
-
-    componentWillMount(){
-        this.setState({appID : CommonUtils.getUrlParameter(window.location.search,"appId") })
+    
+    getFaqArticle = ()=>{
+        this.setState({
+            appId : CommonUtils.getUrlParameter(window.location.search,"appId"),
+            faqId : CommonUtils.getUrlParameter(window.location.search,"articleId")
+        },()=>{
+            CommonUtils.getSelectedFaq(this.state.appId, this.state.faqId).then(response=>{
+                this.setState({
+                    faqHeading : response.data[0].name,
+                    faqContent: response.data[0].content,
+                    faqId : response.data[0].id
+                })
+            })
+        })
     }
-
-    stripHtml = (html) => {
-         // Create a new div element
-        var temporalDivElement = document.createElement("div");
-        // Set the HTML content with the providen
-        temporalDivElement.innerHTML = html;
-        // Retrieve the text property of the element (cross-browser support)
-        return temporalDivElement.textContent || temporalDivElement.innerText || "";
-    };
 
     componentDidMount = () => {
-       
+        this.getFaqArticle();
     }
-    
+
+    componentDidUpdate(prevProps, prevState) {
+        let faqId = CommonUtils.getUrlParameter(window.location.search,"articleId");    
+        this.state.faqId !== faqId ? this.getFaqArticle() : "";
+    }
+     
     render() {
         return (
                 <Container className="animated slide-animated">
-                    Articles go here.
+                    {
+                        this.state.faqId ? 
+                        <ArticleWrapper className="animated slide-animated">
+                            <ArticleHeading>{this.state.faqHeading}</ArticleHeading>
+                                <ArticleContent dangerouslySetInnerHTML={{__html: this.state.faqContent}} />
+                        </ArticleWrapper> : ""
+                    }
                 </Container>
         )
     }
 }
+
+
