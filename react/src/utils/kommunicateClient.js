@@ -207,6 +207,7 @@ if(options.templateName == "INVITE_TEAM_MAIL"){
   };
   if (options.templateName === "BOT_USE_CASE_EMAIL" || options.templateName === "CUSTOM_REPORTS_REQUIREMENT") {
     data = {
+      "product": CommonUtils.getProduct(),
       to: [userSession.email],
       from: "hello@kommunicate.io",
       cc: [],
