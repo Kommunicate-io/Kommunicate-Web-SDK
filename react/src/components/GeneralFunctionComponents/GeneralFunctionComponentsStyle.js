@@ -1,7 +1,10 @@
 
 
-import styled  from 'styled-components'
+import styled, {css}  from 'styled-components'
 
+const subTitleFontSize = css`
+    font-size: 14px;
+`
 const BlockButtonContainer =  styled.div`
     display: flex;
     align-items: center;
@@ -22,18 +25,30 @@ const BlockButtonTextWrapper =  styled.div`
         color: #242424;
         font-weight: 400;
     }
-    & > p {
-        font-size: 16px;
-        color: #adabab;
-        margin-bottom: 0px;
-    } 
 ` 
 const BlockButtonArrowWrapper =styled.div`
 
 `
+const BlockButtonSubTitle = styled.p`
+    ${subTitleFontSize}
+    color: #adabab;
+    margin-bottom: 0px;
+    color: #6c6d6e;
+
+`
+const BlockButtonDescription = styled.p`
+    ${subTitleFontSize}
+    font-weight: 300;
+    font-style: italic;
+    color: #5b5c5d;
+    margin-bottom:0px;
+`
+
 
 export {
     BlockButtonContainer,
     BlockButtonTextWrapper,
-    BlockButtonArrowWrapper
+    BlockButtonArrowWrapper,
+    BlockButtonSubTitle,
+    BlockButtonDescription
 }
