@@ -31,7 +31,7 @@ exports.getSuggestionsByAppId = (req, res) => {
 				}
 			})
 			.catch(err => {
-				logger.info("error while fetching autosugesstion", err);
+				logger.info("error while fetching auto suggestion", err);
 				res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
 	}else{
 		autosuggestService.getSuggestionsByAppId(req.params.applicationId, req.query.type)
@@ -70,11 +70,11 @@ exports.createSuggestion = (req, res) => {
 	autosuggestService.createSuggestion(suggestion)
 		.then(response => {
 			console.log(response)
-			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
+			res.status(200).json({code:"SUGGESTION_CREATED", data:response})
 			logger.log("FAQ added to the bot")
 		})
 		.catch(err => {
-			logger.error("error detail for create suggetion: ", err)
+			logger.error("error detail for create suggestion: ", err)
 			res.status(500).json({
 				code:"INTERNAL_SERVER_ERROR",
 				message:"Something in auto suggest went wrong!",
@@ -99,14 +99,14 @@ exports.updateSuggestion = (req, res) => {
 	if (null !== req.body.status) {
 		suggestion['status'] = req.body.status
 	}
-	// To update updated_at attribute in Knowledgebase
+	// To update updated_at attribute in Knowledge base
 	suggestion['updated_at'] = new Date().getTime()
 
-	autosuggestService.updateSuggetion(suggestion).then(response => {
+	autosuggestService.updateSuggestion(suggestion).then(response => {
 		logger.info("FAQ updated in db")
-		res.status(200).json({ code: "SUGESSTION_UPDATED_SUCCESSFULLY", data: "success" })
+		res.status(200).json({ code: "SUGGESTION_UPDATED_SUCCESSFULLY", data: "success" })
 	}).catch(err => {
-		logger.error("error detail for update suggetion: ", err)
+		logger.error("error detail for update suggestion: ", err)
 		res.status(500).json({
 			code: "INTERNAL_SERVER_ERROR",
 			message: "Something in auto suggest went wrong!",
@@ -115,15 +115,15 @@ exports.updateSuggestion = (req, res) => {
 	})
 }
 
-exports.deleteSuggetion = (req, res) => {
+exports.deleteSuggestion = (req, res) => {
 	logger.info("delete req: ",req)
 	const suggestion = req.body;
 	
-	autosuggestService.deleteSuggetion(suggestion).then(response => {
+	autosuggestService.deleteSuggestion(suggestion).then(response => {
 		logger.info("FAQ deleted from db")
-		res.status(200).json({ code: "SUGESSTION_DELETED_SUCCESSFULLY", data: "success" })
+		res.status(200).json({ code: "SUGGESTION_DELETED_SUCCESSFULLY", data: "success" })
 	}).catch(err => {
-		logger.error("error detail for delete suggetion: ", err)
+		logger.error("error detail for delete suggestion: ", err)
 		res.status(500).json({
 			code: "INTERNAL_SERVER_ERROR",
 			message: "Something in auto suggest went wrong!",
@@ -141,4 +141,34 @@ exports.searchFAQ=(req,res)=>{
 		logger.error("error while fetching data from db",e);
 		return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message:"something went wrong" });
 	});
+}
+
+exports.fetchFAQs = (req, res) => {
+	let pageNumber = parseInt(req.query.page) || 1;
+	let pageSize = parseInt(req.query.pageSize) || 100;
+	let criteria = { deleted: false, applicationId: req.params.appId };
+	if (req.query.referenceId) {
+		criteria.referenceId = parseInt(req.query.referenceId);
+	}
+	if (req.query.id) {
+		criteria.id = parseInt(req.query.id);
+	}
+	if (req.query.type) {
+		criteria.type = req.query.type;
+	}
+	if (req.query.status) {
+		criteria.status = req.query.status;
+	}
+	if (req.query.category) {
+		criteria.category = req.query.category;
+	}
+	if (req.query.userName) {
+		criteria.user_name = req.query.userName;
+	}
+	return autosuggestService.fetchFAQs(pageNumber, pageSize, criteria).then(result => {
+		return res.status(200).json({ code: "SUCCESS", data: result });
+	}).catch(error => {
+		console.log(`error in fetchFAQs ${error}`)
+		return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
+	})
 }

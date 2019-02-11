@@ -14,7 +14,7 @@ module.exports.updateSuggestion = {
 	}
 }
 
-module.exports.deleteSuggetion = {
+module.exports.deleteSuggestion = {
 	body:{
 		id:joi.number().required(),
 		applicationId: joi.string().required()
@@ -27,5 +27,10 @@ module.exports.searchFAQ = {
 		query:joi.string(),
 		articleId:joi.string(),
 		referenceId:joi.number()
+	}
+}
+module.exports.fetchSuggestion = {
+	params:{
+		appId: joi.string().required()
 	}
 }
