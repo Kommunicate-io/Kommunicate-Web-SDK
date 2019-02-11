@@ -6,6 +6,9 @@
 $kommunicatePrimary : #5553b7;
 $applozicPrimary : #03b49b;
 
+$buttonTextColor: #fff;
+$ctaButtonBackground:#2dd35c;
+
 //Typography
 $fontFamily : 'Lato', sans-serif;
 $fontLight: 300;
@@ -14,7 +17,20 @@ $fontBold: 700;
 $fontBolder: 900;
 
 
+$buttonFontSize: 16px;
+$faqListContentFontSize: 18px;
+$faqListTitleFontSize: 21px;
+
+$helpcenterHeadingFontSize: 45px;
+$helpcenterHeadingFontColor: #fff;
+
+$articleHeadingFontSize: 34px;
+
 //Margins and Paddings
 
 //Misc.
 $boxShadowHeader :  0 4px 6px 0 rgba(0, 0, 0, 0.3);
+$borderRadius: 4px;
+
+$faqListBoxBg:  #fff;
+
