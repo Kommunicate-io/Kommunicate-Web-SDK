@@ -5401,7 +5401,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 $mck_autosuggest_search_input.mcktypeahead({
                     order: 'desc',
                     hint: false,
-                    minLength: 3,
+                    minLength: 2,
                     wrapper: ".mck-sidebox",
                     backdropOnFocus: true,
                     menu: '<ul class="mcktypeahead mck-auto-suggest-menu mck-dropup-menu"></ul>',
@@ -5452,6 +5452,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         return metadata.displayMessage;
                     }
                 });
+                $mck_autosuggest_search_input.focus();
             };
 
             _this.processAutosuggestData = function (data) {
@@ -5480,81 +5481,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 return items;
             }
 
-           /* _this.searchCity = function () {
-                $mck_autosuggest_search_input.mcktypeahead({
-                    order: 'desc',
-                    hint: false,
-                    minLength: 3,
-                    items: 8,
-                    wrapper:".mck-sidebox",
-                    backdropOnFocus: true,
-                    menu: '<ul class="mcktypeahead mck-auto-suggest-menu mck-dropup-menu"></ul>',
-                    show: function() {
-                        var t = e.extend({}, this.$element.offset(), {
-                            height: this.$element[0].offsetHeight
-                        });
-                        return this.$menu.css({
-                            left: t.left
-                        }), this.$menu.show(), this.shown = !0, this
-                    },
-                    dynamic: true,
-                    source: function (query, process) {
-                        mckUtils.ajax({
-                            url: SEARCH_URL+ query,
-                            type: 'get',
-                            success: (data) => {
-                                //console.log('data: ', data);
-                                var items = new Array();
-
-                                data.data.map(function (city) {
-                                    var group;
-                                    group = {
-                                        CityId: city.CityId,
-                                        CityName: city.CityName,
-                                        CountryName: city.CountryName,
-                                        toString: function () {
-                                            return JSON.stringify(city);
-                                        },
-                                        toLowerCase: function () {
-                                            return city.CityName.toLowerCase();
-                                        },
-                                        indexOf: function (string) {
-                                            return String.prototype.indexOf.apply(city.CityName, arguments);
-                                        },
-                                        replace: function (string) {
-                                            var value = '';
-                                            value += city.CityName;
-                                            // if (typeof (city.level) != 'undefined') {
-                                            //     value += ' <span class="pull-right muted">';
-                                            //     value += city.level;
-                                            //     value += '</span>';
-                                            // }
-                                            return String.prototype.replace.apply('<div style="padding: 10px; font-size: 1.5em;">' + value + '</div>', arguments);
-                                        }
-                                    };
-                                    items.push(group);
-                                });
-                                process(items);
-                            }
-                        })
-                    },
-                    //property: 'CityName',
-                    updater: function (item) {
-                        var city = JSON.parse(item);
-                        console.log(city.CityName);
-                        $mck_autosuggest_metadata.val(item);
-                        $mck_text_box.text(city.CityName+', '+city.CountryName);
-                        return city.CityName + ', ' + city.CountryName;
-                    },
-                    matcher: function (city) {
-                        var matcher1 = new RegExp(this.query, "i");
-                        return matcher1.test(city.CityName);
-                    },
-                    highlighter: function (city) {
-                        return city.CityName + ', ' + city.CountryName;
-                    }
-                });
-            };*/
 
             _this.initAutoSuggest = function (params) {
                 var contactsArray = params.contactsArray;
