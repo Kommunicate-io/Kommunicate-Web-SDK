@@ -5442,8 +5442,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
-						mckContactService.getSenderDisplayName([contact.users[message.senderName].userId], function(data) {
-							senderName = data[message.senderName];
+						mckContactService.getSenderDisplayName(message.senderName, function(data) {
+							senderName = data[message.senderName] || message.senderName;
 						});
 						(senderName) ? senderName = senderName.split(" ")[0] + ": " : "";
 					}
@@ -6032,7 +6032,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 
 			_this.fetchContacts = function (params) {
-				var response = new Object();
 				var roleNameListParam = "";
 				if (params.roleNameList) {
 					for (var i = 0; i < params.roleNameList.length; i++) {
@@ -6045,9 +6044,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					type: 'get',
 					global: false,
 					success: function (response) {
-						for (var i = 0; i < response.response.users.length; i++) {
-							MCK_CONTACT_ARRAY[response.response.users[i].userId] = response.response.users[i];
-							MCK_GROUP_ADDMEMBER_ARRAY[i] = response.response.users[i].userId;
+						if (response && response.response && response.response.users) {
+							for (var i = 0; i < response.response.users.length; i++) {
+								MCK_CONTACT_ARRAY[response.response.users[i].userId] = response.response.users[i];
+								MCK_GROUP_ADDMEMBER_ARRAY[i] = response.response.users[i].userId;
+							}
 						}
 						if (params.callback) {
 							params.callback(response);

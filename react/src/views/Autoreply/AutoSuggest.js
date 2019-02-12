@@ -123,7 +123,7 @@ class AutoSuggest extends Component {
 			createSuggestions(suggestion)
 				.then(response => {
 					console.log(response)
-					if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
+					if (response.status === 200 && response.data.code === "SUGGESTION_CREATED") {
 						Notification.info("Quick reply created")
 						this.refs[shortcutRef].blur();
 						this.refs[messageRef].blur();
@@ -177,7 +177,7 @@ class AutoSuggest extends Component {
 			updateSuggestionsById(updatedSuggestion)
 			.then(response => {
 				console.log(response)
-				if(response.status === 200 && response.data.code === "SUGESSTION_UPDATED_SUCCESSFULLY"){
+				if(response.status === 200 && response.data.code === "SUGGESTION_UPDATED_SUCCESSFULLY"){
 					Notification.info("Quick reply updated")
 					this.getSuggestions();
 					quickReply.loadQuickReplies();
@@ -206,7 +206,7 @@ class AutoSuggest extends Component {
 		deleteSuggestionsById(suggestionId)
 		.then(response => {
 			console.log(response)
-			if(response.status === 200 && response.data.code === "SUGESSTION_DELETED_SUCCESSFULLY"){
+			if(response.status === 200 && response.data.code === "SUGGESTION_DELETED_SUCCESSFULLY"){
 				Notification.info("Quick reply deleted")
 				this.getSuggestions();
 				quickReply.loadQuickReplies();

@@ -167,7 +167,7 @@ class Tabs extends Component {
 
     createSuggestions(suggestion)
       .then(response => {
-        if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
+        if (response.status === 200 && response.data.code === "SUGGESTION_CREATED") {
           Notification.info("FAQ created")
         } else {
           Notification.info("There was problem in creating the faq.");
