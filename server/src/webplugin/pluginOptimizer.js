@@ -1,7 +1,8 @@
 const compressor = require('node-minify');
 const path = require('path');
 const fs = require('fs');
-const version = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+const date = new Date(`${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`);
+const version = date.getTime().toString(36);
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../../conf/config");
 const MCK_CONTEXT_PATH = config.getProperties().urls.hostUrl;
