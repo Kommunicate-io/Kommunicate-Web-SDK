@@ -216,7 +216,12 @@ class Sidebar extends Component {
             </li> */}
 
             {/* IntegrationStarted icon */}
-            { !this.props.isIntegrationStarted &&
+            { this.props.isIntegrationStarted ?
+              <li>
+                <noticeable-widget access-token="HZtim7bdyESbHo1opoc4" project-id="9e7IrkNtr4EfHhBkp6Hg" popup-backdrop="false">
+                </noticeable-widget>
+              </li>
+            :
               <li className="nav-item">
                 <IntegrationStarted />
               </li>
