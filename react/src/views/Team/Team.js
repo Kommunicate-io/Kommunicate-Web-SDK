@@ -254,7 +254,7 @@ class Integration extends Component {
     });
   }
   restrictInvite = () => {
-    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >= 2) {
+    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >= 2 && CommonUtils.isKommunicateDashboard()) {
       this.setState({restrictInvite:true})
     }
   }
@@ -367,7 +367,7 @@ class Integration extends Component {
                     <hr className="teammates-add-member-modal-divider" />
                       <Banner indicator={"warning"} hidden={!this.state.isTrialPlan} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
                     { !this.state.isTrialPlan &&
-                    <div className="teammates-billing-update-container">
+                    <div className="teammates-billing-update-container product product-kommunicate">
                       <div className="teammates-billing-update-text">
                       Adding a team member will automatically increase the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
                       </div>

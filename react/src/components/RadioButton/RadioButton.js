@@ -13,12 +13,13 @@ class RadioButton extends Component {
         const { label } = this.props;
         const { dataValue } = this.props;
         const { idRadioButton } = this.props;
+        const { cssClass } = this.props;
         const { checked } = this.props;
         const { handleOnChange } = this.props;
         const currentpath = window.location.pathname;
 
         return (
-            <div className="radiobutton">
+            <div className={cssClass + " radiobutton"}>
                 <label className="radio-button-container" htmlFor={idRadioButton} >
                     <input id={idRadioButton} type='radio' value={label} data-value={dataValue} checked={checked} disabled={disabled} onChange={handleOnChange} />
                     <div className="radio-wrapper">

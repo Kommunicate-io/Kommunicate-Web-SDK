@@ -111,6 +111,9 @@ const CommonUtils = {
     isTrialPlan: function() {
         return CommonUtils.getDaysCount() < 31 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan());
     },
+    hasFeatureAccess: function() {
+        return CommonUtils.isTrialPlan() || !CommonUtils.isStartupPlan();
+    },
     getApplicationExpiryDate () {
         var applicationCreatedAt = CommonUtils.getUserSession().applicationCreatedAt ;
         if (applicationCreatedAt) {
