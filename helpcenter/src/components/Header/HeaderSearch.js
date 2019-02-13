@@ -5,8 +5,14 @@ import { withRouter } from 'react-router-dom';
 
 const customStyles = {
     input: () => ({
-        padding: '8px 0',
+        padding: '12px 0',
+        maxWidth: '952px',
+        overflow: 'hidden'
     }),
+    valueContainer: () =>({
+        paddingLeft:'40px',
+        overflow: 'hidden'
+    })
 };
 
 class HelpQuerySearch extends Component {
@@ -18,7 +24,7 @@ class HelpQuerySearch extends Component {
             searchQuery : '',
             faqList: '',
             searchedFaqList: '',
-            isDropDownOpen: false,
+            isDropDownOpen: true,
             value: ''
         };
     }
@@ -41,10 +47,8 @@ class HelpQuerySearch extends Component {
     };
     
     handleInputChange = (newValue) => {
-        const inputValue = newValue.replace(/\W/g, '');
-        this.setState({ inputValue: inputValue });
+        this.setState({ inputValue: newValue });
         this.closeDropdownOnEmptyInput();
-        return inputValue;
     };
 
     closeDropdownOnEmptyInput = ()=>{
@@ -86,12 +90,12 @@ class HelpQuerySearch extends Component {
           onInputChange={this.handleInputChange}
           getOptionLabel={({ name }) => name}
           getOptionValue={({ id }) => id}
-          onBlurResetsInput={true}
-          onCloseResetsInput={true}  
+          onBlurResetsInput={false}
+          onCloseResetsInput={false}  
           cacheOptions={false}
           onChange={this.getSelectedFaq}
           blurInputOnSelect={false}
-          components={{DropdownIndicator:null,clearIndicator:true}}
+          components={{DropdownIndicator:null,clearIndicator:true }}
           isClearable = {true}
           placeholder="Search Helpcenter"
           handleOnChange={this.handleSearchbarChange}

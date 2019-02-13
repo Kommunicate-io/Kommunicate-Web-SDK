@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 export const HeaderComponent = styled.div `
     max-width: 100%;
-    padding-bottom: 20px;
+    padding-bottom: 50px;
     background-image: url("/src/assets/svg/helpCenterBackgroundGraphic.svg");
     background-size: cover;
     padding-top: 20px;
@@ -28,6 +28,7 @@ export const HeaderTopbar = styled.div `
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    padding: 0 30px;
 `
 
 export const TopbarLogoContainer = styled.div `
@@ -50,6 +51,7 @@ export const TopbarLogoContainer = styled.div `
 export const HelpcenterHeading = styled.h1 `
     height: ${props => props.headingVisible ? '80px' :  '0px'};
     margin-top: ${props => props.headingVisible ? '50px' :  '0'};
+    margin-bottom: ${props => props.headingVisible ? '-20px' :  '0'};
     font-size: ${props => props.theme.helpcenterHeadingFontSize};
     font-weight: 700;
     transition: all .3s ease-in-out;
@@ -80,5 +82,16 @@ export const SearchBarContainer = styled.div`
     max-width: 992px;
     margin: 0 auto;
     width: 100%;
+    opacity: .95;
+    box-shadow: 3px 11px 25px 0 rgba(0, 0, 0, 0.3);
+    margin-top: 50px;
+    position: relative;
+`
+export const SearchIconContainer = styled.div`
+    position: absolute;
+    z-index: 100;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-45%);
 `
 

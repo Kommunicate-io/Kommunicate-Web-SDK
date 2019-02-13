@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import {Container} from '../../components/Container/Container';
 import {FaqListItem, FaqListContent, FaqListTitle} from './FaqListComponents'
 import {CommonUtils} from '../../utils/CommonUtils'
+import { withRouter } from 'react-router-dom';
 
-
-
-
-export default class FaqList extends Component {
+class FaqList extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -30,6 +28,14 @@ export default class FaqList extends Component {
             })
         })
     }
+    openFaqArticle = (e) =>{
+        // console.log(e)
+        let searchQuery = '?appId='+this.state.appId+"&articleId="+e;
+        this.props.history.push({
+        pathname: '/article',
+        search: searchQuery, 
+        });
+    }
     componentDidMount = () => {
        this.populateFaq();
     }
@@ -40,7 +46,7 @@ export default class FaqList extends Component {
                 {
                     this.state.faqList && this.state.faqList.map((index,data)=> (
                             
-                                <FaqListItem key={index.id}>
+                                <FaqListItem key={index.id} onClick={e=>{this.openFaqArticle(index.id)}}>
                                     <FaqListTitle>{index.name}</FaqListTitle>
                                     <FaqListContent>{this.stripHtml(index.content )}</FaqListContent>
                             </FaqListItem>
@@ -51,3 +57,4 @@ export default class FaqList extends Component {
         )
     }
 }
+export default withRouter(FaqList);

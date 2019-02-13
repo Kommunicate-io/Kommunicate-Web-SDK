@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {HeaderComponent, HeaderTopbar, TopbarLogoContainer, TopbarLogo, HelpcenterHeading, SearchBarContainer, HeaderWrapper} from './HeaderComponents';
+import {HeaderComponent, HeaderTopbar, TopbarLogoContainer, TopbarLogo, HelpcenterHeading, SearchBarContainer, HeaderWrapper, SearchIconContainer} from './HeaderComponents';
 import { Container } from '../Container/Container';
 import  Button  from '../Button/Button';
 import HelpQuerySearch from './HeaderSearch'
+import { SearchLogo } from '../../assets/svg/svgAssets'
+
 
 export const Header =  (props)=>  (
       <HeaderComponent >
@@ -15,7 +17,10 @@ export const Header =  (props)=>  (
                 <Button>{props.contactSupportButtonText}</Button>
             </HeaderTopbar >
                 <HelpcenterHeading headingVisible={!location.pathname.includes('article')}>{props.HelpcenterHeadingText}</HelpcenterHeading>
-            <SearchBarContainer>
+            <SearchBarContainer >
+              <SearchIconContainer>
+                <SearchLogo/>
+              </SearchIconContainer>
                 <HelpQuerySearch/>
             </SearchBarContainer>
           </HeaderWrapper>

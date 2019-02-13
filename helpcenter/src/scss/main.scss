@@ -1,13 +1,17 @@
 @import './reset';
 @import './variables';
 @import './animations';
+@import './scrollbar';
+@import './faqThemingSupport';
 
 body{
     font-family: $fontFamily;
+    background-color: $helpcenterDefaultBackground;
 }
 
 //Fix for jumping webpage because of scrollbar
 html {
     overflow-y: scroll;
 }
+
 
