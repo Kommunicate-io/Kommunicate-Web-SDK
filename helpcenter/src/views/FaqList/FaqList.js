@@ -28,9 +28,8 @@ class FaqList extends Component {
             })
         })
     }
-    openFaqArticle = (e) =>{
-        // console.log(e)
-        let searchQuery = '?appId='+this.state.appId+"&articleId="+e;
+    openFaqArticle = (indexId) =>{
+        let searchQuery = '?appId='+this.state.appId+"&articleId="+indexId;
         this.props.history.push({
         pathname: '/article',
         search: searchQuery, 

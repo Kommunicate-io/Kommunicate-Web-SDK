@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
-
+import { StyleUtils } from '../../assets/styles/StyleUtils'
+ 
 export const FaqListItem = styled.div`
     max-width: 992px;
     width: 100%;
@@ -14,6 +15,10 @@ export const FaqListItem = styled.div`
     &:hover{
         box-shadow: 0 2px 14px 0 rgba(0,0,0,0.4);
     }
+
+    ${StyleUtils.mediaQuery.tablet`
+        padding:25px;
+    `}
 `
 
 export const FaqListTitle = styled.h2`

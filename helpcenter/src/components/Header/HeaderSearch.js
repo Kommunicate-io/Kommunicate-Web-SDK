@@ -5,15 +5,22 @@ import { withRouter } from 'react-router-dom';
 
 const customStyles = {
     input: () => ({
-        padding: '12px 0',
-        maxWidth: '952px',
+        padding: '16px 0',
+        maxWidth: '992px',
         overflow: 'hidden'
     }),
-    valueContainer: () =>({
-        paddingLeft:'40px',
-        overflow: 'hidden'
+    valueContainer: (provided) =>({
+        ...provided,
+        paddingLeft:'45px',
+        overflow: 'hidden',
+    }),
+    singleValue: (provided) =>({
+        ...provided,
+        maxWidth: 'calc(100% - 44px)',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
     })
-};
+}
 
 class HelpQuerySearch extends Component {
     constructor(props){
@@ -28,8 +35,7 @@ class HelpQuerySearch extends Component {
             value: ''
         };
     }
-
-    getSearchResults = (inputValue) => {
+    getFaqListFromServer = () => {
         var _this = this
         this.state.inputValue && CommonUtils.searchFaq(this.state.appId, this.state.inputValue).then(response=>{
             response && _this.setState({
@@ -37,12 +43,15 @@ class HelpQuerySearch extends Component {
             })
         })
         this.closeDropdownOnEmptyInput();
+    }
+    filterFaqList = (inputValue) => {
         return this.state.searchedFaqList
     };
       
     loadOptions = (inputValue, callback) => {
+        this.getFaqListFromServer();
         setTimeout(() => {
-            callback(this.getSearchResults());
+            callback(this.filterFaqList());
         }, 1000);
     };
     
@@ -83,6 +92,7 @@ class HelpQuerySearch extends Component {
     return (
       <div>
         <AsyncSelect
+          key={this.state.faqList}
           styles={customStyles}
           menuIsOpen={this.state.isDropDownOpen}
           loadOptions={this.loadOptions}
@@ -98,7 +108,7 @@ class HelpQuerySearch extends Component {
           components={{DropdownIndicator:null,clearIndicator:true }}
           isClearable = {true}
           placeholder="Search Helpcenter"
-          handleOnChange={this.handleSearchbarChange}
+          filterOptions= {false}
         />
       </div>
     );

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
+import { StyleUtils } from '../../assets/styles/StyleUtils';
 
 export const HeaderComponent = styled.div `
     max-width: 100%;
     padding-bottom: 50px;
-    background-image: url("/src/assets/svg/helpCenterBackgroundGraphic.svg");
+    background-image:  url("/src/assets/svg/helpCenterBackgroundGraphic.svg"), linear-gradient(51deg, ${props=> props.theme.gradientColor}, ${props=> props.theme.headerBackground});
     background-size: cover;
     padding-top: 20px;
-    background-color: ${props => props.theme.kommunicatePrimary};
+    /* background-color: ${props => props.theme.headerBackground}; */
     box-shadow: ${props => props.theme.boxShadowHeader};
     transition: all .3s;
 
@@ -26,9 +27,8 @@ export const HeaderTopbar = styled.div `
     overflow: hidden;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
-    padding: 0 30px;
 `
 
 export const TopbarLogoContainer = styled.div `
@@ -46,6 +46,11 @@ export const TopbarLogoContainer = styled.div `
         transform: translate(0% , -62%);
         font-size: 18px;
     }
+    ${StyleUtils.mediaQuery.phone`
+            &:after{
+               display: none;
+            }
+    `}
 `
 
 export const HelpcenterHeading = styled.h1 `
@@ -58,9 +63,16 @@ export const HelpcenterHeading = styled.h1 `
     text-align: center;
     color: ${props => props.theme.helpcenterHeadingFontColor};
     overflow: hidden;
+
+    ${StyleUtils.mediaQuery.tablet`
+        font-size: ${props => props.theme.helpcenterHeadingFontSizeTablet};    
+    `}
+    ${StyleUtils.mediaQuery.phone`
+        font-size: ${props => props.theme.helpcenterHeadingFontSizeMobile};    
+    `}
 `
 
-export const TopbarLogo = styled.a `
+export const TopbarLogo = styled.span `
     width: 100%;
     height: 100%;
     display: inline-block;
@@ -76,6 +88,11 @@ export const TopbarLogo = styled.a `
         transform: translate(0% , -62%);
         font-size: 30px;
     }
+    ${StyleUtils.mediaQuery.phone`
+            &:after{
+               display: none;
+            }
+    `}
 `
 
 export const SearchBarContainer = styled.div`
@@ -90,8 +107,13 @@ export const SearchBarContainer = styled.div`
 export const SearchIconContainer = styled.div`
     position: absolute;
     z-index: 100;
-    left: 12px;
+    left: 16px;
     top: 50%;
     transform: translateY(-45%);
+    
+    & svg{
+        height: 20px;
+        width: 22px;
+    } 
 `
 
