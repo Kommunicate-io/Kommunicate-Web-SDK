@@ -1751,14 +1751,15 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                      //Create dynamic input field  
                      var preLeadCollection = KM_PRELEAD_COLLECTION[i];
                      var kmChatInputDiv = document.createElement("div");
+                     var preLeadCollectionClass ="km-form-control "+ (preLeadCollection.element ==="textarea" ? "mck-preleadcollection-textarea" :"km-input-width");
                      kmChatInputDiv.setAttribute("class", "km-form-group km-form-group-container");
-                     var kmChatInput = document.createElement("input");
+                     var kmChatInput = document.createElement(preLeadCollection.element||"input");
                      kmChatInput.setAttribute("id", "km-"+preLeadCollection.field);
                      kmChatInput.setAttribute("type",preLeadCollection.type||"text");
                      kmChatInput.setAttribute("name", "km-"+preLeadCollection.field);
                      preLeadCollection.required && kmChatInput.setAttribute("required", preLeadCollection.required);
                      kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||'');
-                     kmChatInput.setAttribute("class", "km-form-control km-input-width vis");
+                     kmChatInput.setAttribute("class",preLeadCollectionClass);
                      $applozic('.km-last-child').append(kmChatInputDiv);
                      $applozic(kmChatInputDiv).append(kmChatInput);
                 }
