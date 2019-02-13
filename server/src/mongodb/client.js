@@ -220,7 +220,7 @@ const fetchPages = (query) => {
     return getDb(mongoURL).then(client => {
         let db = client.db(DEFAULT_SCHEMA);
         return new Promise((resolve, reject) => {
-            db.collection(query.collectionName).find(query.criteria).skip((query.pageNumber - 1) * query.pageSize).limit(query.pageSize).sort(query.order).toArray((err, data) => {
+            db.collection(query.collectionName).find(query.criteria, {projection:{_id:0}}).skip((query.pageNumber - 1) * query.pageSize).limit(query.pageSize).sort(query.order).toArray((err, data) => {
                 if (err) {
                     return reject(err);
                 }
