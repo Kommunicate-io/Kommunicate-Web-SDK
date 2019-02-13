@@ -53,9 +53,33 @@ const CompanyRestrictionBannerContainer = styled.div`
 const CompanyContainer = styled.div`
     max-width:998px;
 `
+const CompanyModalTitleContainer= styled.div`
+
+    & > p {
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        color: #6c6a6a;
+    }
+
+    & > hr {
+        border-color: #d8d8d8;
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+`
+const CompanyModalFooterContainer = styled.div`
+    text-align: right;
+    & button:last-child {
+        margin-left: 16px;
+    }
+`
+
 export {
     CompanyInfoContainer,
     CompanyRestrictionBannerContainer,
     CompanyContainer,
-    CompanyBlockButtonContainer
+    CompanyBlockButtonContainer,
+    CompanyModalTitleContainer,
+    CompanyModalFooterContainer
 }

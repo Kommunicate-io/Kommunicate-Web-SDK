@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {SettingsHeader} from '../../components/SettingsComponent/SettingsComponents';
-import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContainer, CompanyBlockButtonContainer} from './companyStyle'
+import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContainer, CompanyBlockButtonContainer, CompanyModalTitleContainer} from './companyStyle'
 import { getCustomerInfo, patchUserInfo, patchCustomerInfo } from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../model/Notification';
@@ -34,7 +34,8 @@ class Company extends Component{
         companyUrlCopy:"",
         buttonDisabled:true,
         companyInfoEditable:true,
-        openModal:false
+        openModal:false,
+        modal:""
     };
   }
   componentDidMount = () => {
@@ -104,7 +105,8 @@ class Company extends Component{
           buttonDisabled:true
       })
   }
-  controlModal = () => {
+  controlModal = (e) => {
+    !this.state.openModal && this.setState({modal: e.target.dataset.blockButton})
     this.setState({ openModal: !this.state.openModal });
   }
   render() {
@@ -117,9 +119,11 @@ class Company extends Component{
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}
               buttonDisabled = {this.state.buttonDisabled} companyInfoEditable = {this.state.companyInfoEditable}/>
                 <CompanyBlockButtonContainer>
-                    <BlockButton title = {"Get a custom domain URL"} subTitle = {"Get a custom domain URL for your Kommunicate account."} description={"Example: kommunicate.yourwebsite.com"} onClickOfBlock = {this.controlModal} />
+                    <BlockButton title = {"Get a custom domain URL"} subTitle = {"Get a custom domain URL for your Kommunicate account."} description={"Example: kommunicate.yourwebsite.com"} onClickOfBlock = {this.controlModal} name="customUrl"/>
                 </CompanyBlockButtonContainer>
-              <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal}/>
+             { this.state.openModal &&
+                  <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal} modal={this.state.modal} />
+             }
           </CompanyContainer>
       )
   }

@@ -127,7 +127,7 @@ class PasswordAccordion extends Component {
     render () {
         return (
           <div className="km-change-password-container">
-              <BlockButton title = {"Change Password"} subTitle = {"Update your password"} onClickOfBlock = {this.openForgotPasswordModal} />
+              <BlockButton title = {"Change Password"} subTitle = {"Update your password"} onClickOfBlock = {this.openForgotPasswordModal} name="change-password"/>
             <Modal isOpen={this.state.forgotPasswordModalOpen} ariaHideApp={false} onRequestClose={this.closeForgotPasswordModal} style={customStyles} shouldCloseOnOverlayClick={true}>
                   <div id="content-area" className="forgot-password-form-container"> 
 

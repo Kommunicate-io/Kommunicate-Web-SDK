@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {BlockButtonContainer, BlockButtonTextWrapper, BlockButtonArrowWrapper, BlockButtonSubTitle, BlockButtonDescription} from './GeneralFunctionComponentsStyle'
+import {BlockButtonContainer, BlockButtonTextWrapper, BlockButtonArrowWrapper, BlockButtonSubTitle, BlockButtonDescription,BlockButtonWrapper} from './GeneralFunctionComponentsStyle'
 import {RightArrow} from '../../../src/assets/svg/svgs'
 
 const BlockButton = props => (
-    <BlockButtonContainer onClick = {props.onClickOfBlock}>
+    <BlockButtonContainer>
         <BlockButtonTextWrapper>
             <h2>{props.title}</h2>
             <BlockButtonSubTitle>{props.subTitle}</BlockButtonSubTitle>
@@ -11,7 +11,8 @@ const BlockButton = props => (
         </BlockButtonTextWrapper>
         <BlockButtonArrowWrapper>
             <RightArrow />
-        </BlockButtonArrowWrapper>  
+        </BlockButtonArrowWrapper>
+        <BlockButtonWrapper data-block-button ={props.name} onClick = {props.onClickOfBlock}/>  
     </BlockButtonContainer> 
 )
 
