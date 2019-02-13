@@ -1,5 +1,5 @@
 let Feedback = function (sequelize, DataTypes) {
-    return sequelize.define("Feedback", {
+    return sequelize.define("feedback", {
         groupId: {
             type: DataTypes.INTEGER,
             primaryKey: true,
