@@ -128,9 +128,8 @@ If you already have the user details then create a KMUser object using the detai
 
 ```java
     KMUser user = new KMUser();
-    user.setUserId(userId); //Mandatory unique field
-    user.setPassword(password)
-    user.setImageLink(image-url);
+    user.setUserId(userId); // Pass a unique key
+    user.setImageLink(image-url); // Optional
 ```
 
 Then pass this user object to the `setKmUser` method as below:
