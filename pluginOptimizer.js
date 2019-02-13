@@ -1,7 +1,7 @@
 const compressor = require('node-minify');
 const path = require('path');
 const fs = require('fs');
-const date = new Date(`${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`);
+const date = new Date(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`);
 const version = date.getTime().toString(36);
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../../conf/config");
