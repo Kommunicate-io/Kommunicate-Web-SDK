@@ -539,7 +539,7 @@ export default class BotStore extends Component {
     render() {
         return(
             <div className="km-bot-store-main-container">
-                <div className={this.state.listOfIntegratedBots.length >0 ?"banner-container" : "banner-container n-vis"}>
+                <div className={this.state.listOfIntegratedBots.length > (CommonUtils.isProductApplozic() ? 1:0) ?"banner-container" : "banner-container n-vis"}>
                   <div className="banner-div">
                     <span className="banner-sub-text">You have <span className="banner-main-text" style={{marginRight:"0px", paddingLeft:"0px"}}>{this.state.listOfIntegratedBots.length} bots</span>  integrated</span>
 

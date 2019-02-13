@@ -180,7 +180,7 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
   kmUser.password = bcrypt.hashSync(options.password, 10);
   kmUser.authorization = new Buffer(options.userName + ":" + applozicCustomer.deviceKey).toString('base64');
   kmUser.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
-  kmUser.roleType = USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE[options.role].id;
+  kmUser.roleType = USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE[options.role].kmRoleTypeId;
 
   return db.sequelize.transaction(t => {
     return customerService.createCustomer(kmCustomer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {

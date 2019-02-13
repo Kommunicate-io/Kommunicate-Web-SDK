@@ -362,10 +362,10 @@ class Integration extends Component {
                 { !this.state.restrictInvite &&
                   <div className="teammates-add-member-modal-wrapper">
                     <div className="teammates-add-member-modal-header">
-                      <p className="teammates-add-member-modal-header-title" >Adding new team member</p>
+                      <p className="teammates-add-member-modal-header-title">Adding new team member</p>
                     </div>
-                    <hr className="teammates-add-member-modal-divider" />
-                      <Banner indicator={"warning"} hidden={!this.state.isTrialPlan} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
+                    <hr className="teammates-add-member-modal-divider product product-kommunicate" />
+                      <Banner indicator={"warning"} hidden={!(CommonUtils.isKommunicateDashboard() && this.state.isTrialPlan)} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
                     { !this.state.isTrialPlan &&
                     <div className="teammates-billing-update-container product product-kommunicate">
                       <div className="teammates-billing-update-text">
