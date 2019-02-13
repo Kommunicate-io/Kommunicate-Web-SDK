@@ -163,7 +163,7 @@ exports.fetchFAQs = (req, res) => {
 		criteria.category = req.query.category;
 	}
 	if (req.query.userName) {
-		criteria.user_name = req.query.userName;
+		criteria.$or = [{ userName: req.query.userName}, {user_name: req.query.userName }]
 	}
 	return autosuggestService.fetchFAQs(pageNumber, pageSize, criteria).then(result => {
 		return res.status(200).json({ code: "SUCCESS", data: result });
