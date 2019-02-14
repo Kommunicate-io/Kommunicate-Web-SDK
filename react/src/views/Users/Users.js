@@ -361,7 +361,7 @@ class Users extends Component {
                           </g>
                         </svg>
                       </th>
-                      <th>Latest Conversation</th>
+                      <th className="product product-kommunicate">Latest Conversation</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>

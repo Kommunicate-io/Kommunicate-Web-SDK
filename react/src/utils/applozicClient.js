@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {getConfig, getEnvironmentId} from '../config/config';
 import CommonUtils from '../utils/CommonUtils';
+import config from "../config/index";
+import url from '../config/url';
 
 const ApplozicClient ={
 
@@ -405,13 +407,31 @@ updateUserDetail:function(params){
     });
 
   },
-  getMessageGroups : (data) => {
+  getMessageGroups : (params, headers) => {
     var API_HEADERS = ApplozicClient.commonHeaders();
+    delete API_HEADERS["Apz-Product-App"];
+    API_HEADERS["Of-User-Id"] = headers["Of-User-Id"];
     var url = getConfig().applozicPlugin.getMessageList;
   
     return Promise.resolve(axios({
       method: 'get',
       url: url,
+      headers: API_HEADERS,
+      params: params
+    })).then(response => {
+        return response;
+    }).catch( err => {
+      console.log(err);
+    })
+  },
+  getAllGroupsAndMessages : (data) => {
+    var API_HEADERS = ApplozicClient.commonHeaders();
+    delete API_HEADERS["Apz-Product-App"];
+    var apiUrl = config.baseurl.applozicAPI + url.applozic.GROUP_ALL;
+  
+    return Promise.resolve(axios({
+      method: 'get',
+      url: apiUrl,
       headers: API_HEADERS,
       params: data
     })).then(response => {

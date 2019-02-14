@@ -2,17 +2,6 @@
     position: relative;
 }
 
-.km-notification-pulsing-icon {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border: solid 1px #5c5aa7;
-    background-color: #f1290f;
-    top: -3px;
-    right: 2px;
-    border-radius: 50%;
-} 
-
 .km-integration-popup-container {
     position: fixed;
     transform: translate3d(70px, -15px, 0px);

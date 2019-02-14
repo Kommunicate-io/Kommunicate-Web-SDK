@@ -115,3 +115,19 @@ other services please add below.
 export const THIRD_PARTY_LOGIN = [
     "google"
 ];
+
+export const GROUP_TYPE = {
+    VIRTUAL: 0, //1-1 Chat
+    PRIVATE: 1,
+    PUBLIC: 2,
+    SELLER: 3,
+    SELF: 4,
+    BROADCAST: 5,
+    OPEN: 6,
+    GROUPOFTWO: 7,
+    APPLOZIC_INTERNAL: 8,
+    APPLICATION_LEVEL: 9,
+    SUPPORT: 10,
+    SKIP_DELIVERED_READ: 11,
+    ANNOUNCEMENT_GROUP: 12
+};

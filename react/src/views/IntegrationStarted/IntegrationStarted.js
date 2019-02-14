@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
+import styled, { withTheme } from 'styled-components';
 import CommonUtils from '../../utils/CommonUtils';
 import './IntegrationStarted.css';
+
+const PulseIcon = styled.div`
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: solid 1px ${props => props.theme.primary};
+    background-color: #f1290f;
+    top: -3px;
+    right: 2px;
+    border-radius: 50%;
+`;
 
 const NotificationIcon = props => (
     <svg width={24} height={24} viewBox="0 0 21 21" {...props}>
@@ -20,7 +32,7 @@ const IntegrationWarningIcon = props => (
     </svg>
   )
 
-export default class IntegrationStarted extends Component {
+class IntegrationStarted extends Component {
 
     constructor(props) {
         super(props);
@@ -66,7 +78,7 @@ export default class IntegrationStarted extends Component {
       <div className="km-integration-started-component">
         <div className={`km-integration-notificationn-icon-container ${this.state.activeClass}`} onClick={this.togglePopup}>
             <NotificationIcon />
-            <div className="km-notification-pulsing-icon km-pulse"></div>
+            <PulseIcon />
         </div>
 
         <div tabIndex="-1" aria-hidden="false" role="menu"  className="km-integration-popup-container" hidden={this.state.hidePopup} ref={(element) => {
@@ -88,3 +100,5 @@ export default class IntegrationStarted extends Component {
     )
   }
 }
+
+export default withTheme(IntegrationStarted);

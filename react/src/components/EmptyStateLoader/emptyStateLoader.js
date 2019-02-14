@@ -124,3 +124,77 @@ export const KommunicateConversationDataLoader = (props) => (
 		<rect className="km-hide-bottom-box-on-max-height" x="300" y="175" rx="2" ry="2" width="130" height="5" />
 	</ContentLoader>
 )
+
+export const ApplozicMessageLogsLoader = props => (
+	<ContentLoader 
+		height={2800}
+		width={4220}
+		speed={2}
+		primaryColor="#f3f3f3"
+		secondaryColor="#ecebeb"
+		{...props}
+	>
+		<rect x="102.41" y="30.67" rx="4" ry="4" width="370" height="33.49" />  
+		<circle cx="57.67" cy="45.64" r="27.97" />
+		<rect x="102.41" y="30.67" rx="4" ry="4" width="370" height="33.49" />
+		<circle cx="57.67" cy="45.64" r="27.97" />
+
+	</ContentLoader>
+)
+
+const Loader = props => {
+	const random = Math.random() * (1 - 0.7) + 0.7
+	return (
+	  <ContentLoader
+		height={50}
+		width={1060}
+		speed={2}
+		primaryColor="#d9d9d9"
+		secondaryColor="#ecebeb"
+		{...props}
+	  >
+		<rect x="0" y="4" rx="35" ry="35" width="35" height="35" />
+		<rect x="40" y="8" rx="6" ry="6" width={300 * random} height="10" />
+		<rect x="40" y="26" rx="6" ry="6" width={150 * random} height="8" />
+		<rect x="630" y="17" rx="6" ry="6" width={117 * random} height="10" />
+		<rect x="800" y="8" rx="6" ry="6" width={180 * random} height="10" />
+		<rect x="800" y="26" rx="6" ry="6" width={80 * random} height="8" />
+  
+		<rect x="0" y="48" rx="6" ry="6" width="1060" height=".3" />
+	  </ContentLoader>
+	)
+}
+  
+export const MyLoader = () => (
+	<React.Fragment>
+	  {Array(10)
+		.fill("")
+		.map((e, i) => (
+		  <Loader key={i} style={{ opacity: Number(2 / i).toFixed(1) }} />
+		))}
+	</React.Fragment>
+)
+
+export const MessageLogsDetailsLoader = props => (
+	<ContentLoader 
+		height={500}
+		width={700}
+		speed={2}
+		primaryColor="#f3f3f3"
+		secondaryColor="#ecebeb"
+		{...props}
+	>
+		<circle cx="159.15" cy="50.23" r="31.56" /> 
+		<rect x="46.69" y="94.67" rx="0" ry="0" width="242.95" height="20.02" /> 
+		<rect x="48.23" y="159.67" rx="0" ry="0" width="82.14" height="18" /> 
+		<rect x="161.23" y="158.67" rx="0" ry="0" width="129" height="19" /> 
+		<rect x="48.23" y="197.67" rx="0" ry="0" width="82.14" height="18" /> 
+		<rect x="47.23" y="237.67" rx="0" ry="0" width="82.14" height="18" /> 
+		<rect x="160.23" y="200.67" rx="0" ry="0" width="129" height="19" /> 
+		<rect x="159.23" y="237.67" rx="0" ry="0" width="129" height="19" /> 
+		<circle cx="370.73" cy="40.17" r="21.5" /> 
+		<rect x="402.23" y="18.67" rx="0" ry="0" width="270" height="106" /> 
+		<circle cx="374.73" cy="182.17" r="21.5" /> 
+		<rect x="405.23" y="161.67" rx="0" ry="0" width="270" height="60.42" />
+	</ContentLoader>
+)

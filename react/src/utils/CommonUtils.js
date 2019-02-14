@@ -297,6 +297,25 @@ const CommonUtils = {
         return THIRD_PARTY_LOGIN.some(function (el) {
             return el === loginVia;
         });
+    },
+    getContactImageByAlphabet: function(name) {
+        var displayName = name;
+        var name = displayName.charAt(0).toUpperCase();
+        var className = "alpha_user";
+
+        if (typeof name !== "string" || typeof name === 'undefined' || name === "") {
+            className = "km-icon-user km-alpha-user";
+            return [name, className];
+        }
+        var first_alpha = name.charAt(0);
+        var letters = /^[a-zA-Z0-9]+$/;
+        if (first_alpha.match(letters)) {
+            first_alpha = "alpha_" + first_alpha.toUpperCase();
+            return [name, first_alpha];
+        }
+        else {
+            return [name, className];
+        }
     },isObject: function(object) {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
