@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { StyleUtils } from '../../assets/styles/StyleUtils'
+import { StyleUtils } from '../../utils/StyleUtils'
  
 export const FaqListItem = styled.div`
     max-width: 992px;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PoweredBy, PoweredByLink } from './PoweredByKommunicateComponents';
-import { KommunicateLogo } from '../../assets/svg/svgAssets';
+import { KommunicateLogo } from '../../assets/svgAssets';
 import { CommonUtils } from '../../utils/CommonUtils';
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { StyleUtils } from '../../assets/styles/StyleUtils';
+import { StyleUtils } from '../../utils/StyleUtils';
 
 export const Container = styled.div`
     max-width: 1440px;

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import { StyleUtils } from '../../assets/styles/StyleUtils';
+import { StyleUtils } from '../../utils/StyleUtils';
 
 export const HeaderComponent = styled.div `
     max-width: 100%;
     padding-bottom: 50px;
-    background-image:  url("/src/assets/svg/helpCenterBackgroundGraphic.svg"), linear-gradient(51deg, ${props=> props.theme.gradientColor}, ${props=> props.theme.headerBackground});
+    background-image:  url("./assets/svg/helpCenterBackgroundGraphic.svg"), linear-gradient(51deg, ${props=> props.theme.gradientColor}, ${props=> props.theme.headerBackground});
     background-size: cover;
     padding-top: 20px;
     /* background-color: ${props => props.theme.headerBackground}; */

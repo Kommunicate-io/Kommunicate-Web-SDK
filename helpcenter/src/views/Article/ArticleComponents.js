@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
-import { StyleUtils } from '../../assets/styles/StyleUtils'
+import { StyleUtils } from '../../utils/StyleUtils'
 
 export const ArticleWrapper = styled.div`
     width: 100%;
     max-width: 992px;
     background-color: #fff;
-    background-image: url("/src/assets/svg/ArticlePageTag.svg");
+    background-image: url("./assets/svg/ArticlePageTag.svg");
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
     margin: 22px auto;
     padding: 40px 60px;

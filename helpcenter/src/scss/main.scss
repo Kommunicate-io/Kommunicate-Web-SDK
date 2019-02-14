@@ -3,8 +3,9 @@
 @import './animations';
 @import './scrollbar';
 @import './faqThemingSupport';
+@import './cloudsAnim';
 
-body{
+body {
     font-family: $fontFamily;
     background-color: $helpcenterDefaultBackground;
 }

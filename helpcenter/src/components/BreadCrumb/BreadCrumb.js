@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KommunicateLogo } from '../../assets/svg/svgAssets';
+import { KommunicateLogo } from '../../assets/svgAssets';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { withRouter } from 'react-router-dom';
 import { BreadCrumbWrapper, BreadCrumbItem, BreadCrumbArrow } from './BreadCrumbComponents';

@@ -3,7 +3,7 @@ import {HeaderComponent, HeaderTopbar, TopbarLogoContainer, TopbarLogo, Helpcent
 import { Container } from '../Container/Container';
 import  Button  from '../Button/Button';
 import HelpQuerySearch from './HeaderSearch'
-import { SearchLogo } from '../../assets/svg/svgAssets';
+import { SearchLogo } from '../../assets/svgAssets';
 import { withRouter } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils'
 
@@ -58,7 +58,7 @@ class Header extends Component {
 }
 
 Header.defaultProps = {
-  logoUrl : "/src/assets/svg/kommunicateLogoWhite.svg",
+  logoUrl : "./assets/svg/kommunicateLogoWhite.svg",
   contactSupportButtonText: "Contact Support",
   HelpcenterHeadingText:"Hi. How can we help?"
 }

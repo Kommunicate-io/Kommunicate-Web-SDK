@@ -6,7 +6,8 @@ import { ThemeProvider } from 'styled-components';
 import  '../scss/main.scss'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import  PoweredByKommunicate  from '../components/PoweredByKommunicate/PoweredByKomunnicate'
-import {StyleUtils} from '../assets/styles/StyleUtils'
+import {StyleUtils} from '../utils/StyleUtils'
+import  PageNotFound  from '../views/PageNotFound/PageNotFound'
 
 //Converting the sass variables files to JSON to be used throughout the project, no need to import the variables file in any jsx file, all the variables will work out of the box.
 const theme = require('sass-extract-loader?{"plugins": ["sass-extract-js"]}!../scss/_variables.scss');
@@ -19,15 +20,22 @@ class App extends Component {
         <div>
             <ThemeProvider theme={theme}>
                 <Fragment>
-                    <Header/>  
-                       <Route exact path='/'  component={FaqList}/>
-                       <Route exact path='/article'  component={Article}/>
-                    <PoweredByKommunicate fillcolor={"#cacaca"} />
+                    {
+                        !location.pathname.includes('404') ? <Header/> : ""
+                    }
+                        <Switch>
+                            <Route exact path='/'  component={FaqList}/>
+                            <Route path='/article'  component={Article}/>
+                            <Route component={PageNotFound} />
+                        </Switch>
+                    {
+                        !location.pathname.includes('404') ? <PoweredByKommunicate fillcolor={"#cacaca"} /> : ""
+                    }
+                    
                 </Fragment>
             </ThemeProvider>    
         </div>
         )
     } 
 }
-
 export default App;
