@@ -39,13 +39,13 @@
   margin-left: 10px;
 }
 .bot-routing-link {
-  color: #5C5AA7!important;
+  /* color: #5C5AA7!important; */
   text-decoration: underline !important;
   font-weight: 500;
   cursor: pointer;
 }
 .bot-routing-link:hover {
-  color: #5C5AA7!important;
+  /* color: #5C5AA7!important; */
 }
 
 .rrui__segmented-control__option {
@@ -641,10 +641,6 @@ border-bottom: 1px solid #cfd8dc;
   font-size: 16px;
   color: #5553b7;
   font-weight: 500;
-}
-
-.Linkify .instruction a{
-  color:#5553b7;
 }
 
 .km-bot-box-heading{
