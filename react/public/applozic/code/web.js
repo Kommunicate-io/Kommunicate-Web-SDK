@@ -109,9 +109,11 @@ var autoSuggestions = {};
             "roleNameList": ["USER"],
             "userId": encodeURIComponent(contactId),
             'callback': function(response) {
-        var user = response.response.users[0];
-        kmEvents.triggerCustomEvent("_userDetailUpdate", { 'data': { 'data': user } });
-        return;
+              if(response && response.response){
+                var user = response.response.users[0];
+                kmEvents.triggerCustomEvent("_userDetailUpdate", { 'data': { 'data': user } });
+                return;
+              }
             }
     });
 }
