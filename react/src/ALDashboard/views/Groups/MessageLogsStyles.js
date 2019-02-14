@@ -16,6 +16,49 @@ const textOverflowEllipsis = css`
     overflow: hidden;
 `;
 
+const placeholderProfileBG = css`
+    & .alpha_0 {
+        background-color: #FCA6A2;
+        color: rgba(255,255,255,.7);
+    }
+    & .alpha_1 {
+        background-color: #FFA750;
+        color: rgba(255,255,255,.7);
+    }
+    & .alpha_2 {
+        background-color: #FCDB51;
+        color: rgba(0,0,0,.5);
+    }
+    & .alpha_3 {
+        background-color: #C4FF43;
+        color: rgba(0,0,0,.5);
+    }
+    & .alpha_4 {
+        background-color: #75FCA2;
+        color: rgba(0,0,0,.5);
+    }
+    & .alpha_5 {
+        background-color: #34F2F7;
+        color: rgba(0,0,0,.5);
+    }
+    & .alpha_6 {
+        background-color: #32B2F9;
+        color: rgba(255,255,255,.7);
+    }
+    & .alpha_7 {
+        background-color: #9F80FF;
+        color: rgba(255,255,255,.7);
+    }
+    & .alpha_8 {
+        background-color: #CE77FC;
+        color: rgba(255,255,255,.7);
+    }
+    & .alpha_9 {
+        background-color: #F998F0;
+        color: rgba(255,255,255,.7);
+    }
+`;
+
 const Container = styled.div`
     width: 98%;
     margin: 25px auto 50px;
@@ -44,6 +87,7 @@ const TableRow = styled.tr`
     border-radius: 3px;
     box-shadow: 0 2px 5px 0 rgba(172, 170, 170, 0.5);
     cursor: pointer;
+    ${placeholderProfileBG}
     transition: all 0.3s ease-in-out;
 
     &:hover {
@@ -160,7 +204,6 @@ const ExportDataText = styled.span`
     color: #9b9c9e;
 `;
 
-
 const GroupDetailContainer = styled(FlexContainer)`
     align-items: flex-start;
     justify-content: space-between;
@@ -269,9 +312,7 @@ const GroupDetailMetadataPercentage = styled.div`
     color: ${props => props.theme.primary};
 `;
 
-const Hr = styled.hr`
-
-`;
+const Hr = styled.hr``;
 
 const GroupMetadataMessageSource = styled(GroupTitle)`
     font-size: 16px;

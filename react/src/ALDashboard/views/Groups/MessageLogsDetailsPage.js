@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import moment from 'moment';
 import * as MessageLogsStyles from './MessageLogsStyles';
-import { SearchIcon } from '../../../assets/svg/svgs';
+import { SearchIcon, EncryptedLockIcon } from '../../../assets/svg/svgs';
 
 const MessageLogsDetailsPage = (props) =>  {
 
@@ -145,7 +145,7 @@ const MessageLogsDetailsPage = (props) =>  {
                         </MessageLogsStyles.GroupMessagesContainer>
                     </Fragment> :
                     <MessageLogsStyles.EncryptedMessageLogoContainer>
-                        <MessageLogsStyles.EncryptedLockIcon />
+                        <EncryptedLockIcon />
                         <MessageLogsStyles.EncryptedMessageLogoText>This conversation is encrypted</MessageLogsStyles.EncryptedMessageLogoText>
                     </MessageLogsStyles.EncryptedMessageLogoContainer>
                 }
