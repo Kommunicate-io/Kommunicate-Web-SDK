@@ -739,10 +739,10 @@ export default class BotStore extends Component {
                 <span className="km-selected-bot-name">Give your bot a name and face</span>
               </div>
             </div>
-                {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
+                {  (CommonUtils.isKommunicateDashboard() && !CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
                   <Banner indicator={"default"} hidden={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                 }
-                {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
+                {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
                   <Banner indicator={"warning"} hidden={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 
