@@ -550,7 +550,7 @@ export default class BotStore extends Component {
                 <div className="col-sm-6 km-bot-integration-second-container-text-container">
                   <p className="km-bot-request-bot-heading">Want a custom bot made for you?</p>
                   <p className="km-bot-request-bot-sub-heading">Tell us your bot use-case and we will take care of everything else</p>
-                  <p style={{fontSize : "16px"}} onClick={this.toggleUseCaseModal}>REQUEST CUSTOM BOT</p>
+                  <p className="brand-color" style={{fontSize : "16px"}} onClick={this.toggleUseCaseModal}>REQUEST CUSTOM BOT</p>
                 </div>
                 <div className="col-sm-6 km-bot-section-image" >
                 <BotSectionSvg />
@@ -590,7 +590,7 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Dialogflow <br /> 
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
-                  <p className="km-integrated-bot-text">
+                  <p className="km-integrated-bot-text brand-color">
                   {this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
                   <p className={this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
@@ -604,7 +604,7 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Other bot platforms <br /> 
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
-                  <p className="km-integrated-bot-text">
+                  <p className="km-integrated-bot-text brand-color">
                   {this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
 
