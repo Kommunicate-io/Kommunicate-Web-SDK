@@ -6,7 +6,7 @@ import axios from 'axios';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
@@ -25,6 +25,26 @@ import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
 import Banner from '../../components/Banner/Banner';
 import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
+import Button from '../../components/Buttons/Button';
+import styled, { withTheme } from 'styled-components';
+
+const TextArea = styled.textarea`
+    resize: none;
+    border-radius: 4px;
+    border: solid 1px #e1dbdb;
+    width: 100%;
+    font-size: 14px;
+    outline: 0;
+    background: transparent;
+    margin: 10px auto;
+    padding: 10px;
+
+    &:focus {
+        border: solid 1px ${props => props.theme.primary};
+        outline: 0;
+    }
+`;
+
 const customStyles = {
   content: {
     top: '50%',
@@ -40,7 +60,7 @@ const customStyles = {
     paddingRight: '32px'
   }
 };
-export default class BotStore extends Component {
+class BotStore extends Component {
     constructor(props) {
         super(props);
 
@@ -543,7 +563,7 @@ export default class BotStore extends Component {
                   <div className="banner-div">
                     <span className="banner-sub-text">You have <span className="banner-main-text" style={{marginRight:"0px", paddingLeft:"0px"}}>{this.state.listOfIntegratedBots.length} bots</span>  integrated</span>
 
-                    <a className="bot-routing-link" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
+                    <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
                 <div className={!this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
@@ -632,14 +652,14 @@ export default class BotStore extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-                <textarea rows="5" className="form-control" style={{resize: "none"}} placeholder="Example: I need a bot for hotel booking. It should be able to manage bookings." onChange={(event) => this.setState({botUseCaseText: event.target.value})} value={this.state.botUseCaseText} />
+                <TextArea rows="5" placeholder="Example: I need a bot for hotel booking. It should be able to manage bookings." onChange={(event) => this.setState({botUseCaseText: event.target.value})} value={this.state.botUseCaseText} />
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={ () => {this.submitEmail("USE_CASE_REQUEST")} }>
+                <Button onClick={ () => {this.submitEmail("USE_CASE_REQUEST")} }>
                   Submit Usecase
-                </button>
+                </Button>
               </div>
             </div>
           </ModalBody>
@@ -662,9 +682,9 @@ export default class BotStore extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={ () => {this.submitEmail("BOT_PLATFORM_REQUEST")}}>
+                <Button onClick={ () => {this.submitEmail("BOT_PLATFORM_REQUEST")}}>
                   Submit Platform Request
-                </button>
+                </Button>
               </div>
             </div>
           </ModalBody>
@@ -723,9 +743,9 @@ export default class BotStore extends Component {
             }
               <div className="row" style={{marginTop: "66px"}}>
                 <div className="col-sm-12 text-right">
-                  <button className="btn btn-primary" onClick={this.openBotProfileModal} disabled={this.state.enableButton}>
+                  <Button onClick={this.openBotProfileModal} disabled={this.state.enableButton}>
                     Next
-                  </button>
+                  </Button>
                 </div>
               </div>
           </ModalBody>
@@ -772,12 +792,10 @@ export default class BotStore extends Component {
               </div>
               <div className="" style={{marginTop: "20px"}}>
                 <div className="km-cancel-delete">
-                  <button className="km-button km-button--secondary " onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
-                    Cancel
-                  </button>
-                  <button className="km-button km-button--primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
+                  <Button secondary onClick={this.onCloseModal} style={{marginRight: "16px"}}>Cancel</Button>
+                  <Button onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
                     Integrate bot
-                  </button>
+                  </Button>
                 </div>
               </div>
             </ModalBody>
@@ -795,3 +813,5 @@ export default class BotStore extends Component {
         );
     }
 }
+
+export default withTheme(BotStore);

@@ -438,7 +438,7 @@ class Integration extends Component {
                         <div className="tm-disabled-link-btn">
                           <Button secondary as={Link} to="/settings/billing" className="tm-upgrade-btn" >Upgrade plan</Button>
                           { !this.state.hideSeeDisabledAccounts && 
-                            <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
+                            <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn brand-color">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
                           }
                         </div>
                       </div>

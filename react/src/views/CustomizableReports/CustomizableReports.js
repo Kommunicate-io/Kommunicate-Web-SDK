@@ -242,7 +242,7 @@ class CustomizableReports extends Component {
 
                         <ModalButtons>
                             <Button secondary onClick={this.closeModal}>Cancel</Button>
-                            <Button primary onClick={this.submitRequirement}>Submit Requirement</Button>
+                            <Button onClick={this.submitRequirement}>Submit Requirement</Button>
                         </ModalButtons>
                     </RequirementForm>
 
@@ -251,7 +251,7 @@ class CustomizableReports extends Component {
                         <ModalHeading>We have received your custom reports requirement</ModalHeading>
                         <ModalDescription>Our team will go through your requirements and will be in touch with you soon</ModalDescription>
                         <ModalButtons>
-                            <Button primary onClick={this.closeModal}>Okay</Button>
+                            <Button onClick={this.closeModal}>Okay</Button>
                         </ModalButtons>
                     </RequirementSubmitted>
 

@@ -278,7 +278,7 @@
 
 .signup-button-row p a{
     text-decoration: underline;
-    color: #5c5aa7;
+    /* color: #5c5aa7; */
 }
 
 .have-need-account {
@@ -294,7 +294,7 @@
 }
 .have-need-account a {
     font-weight: 500;
-    color: #5c5aa7;
+    /* color: #5c5aa7; */
     text-decoration: underline;
     padding: 0 5px;
     font-size: 14px;

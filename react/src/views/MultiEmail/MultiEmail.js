@@ -5,6 +5,7 @@ import ValidationUtils from '../../utils/validationUtils'
 import { notifyThatEmailIsSent } from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
 import CommonUtils from '../../utils/CommonUtils'
+import Button from '../../components/Buttons/Button';
 
 import "./multiple-email.css";
 
@@ -103,7 +104,7 @@ class MultiEmail extends Component {
                         >
                             {" "}
                             Send instructions {" "}
-                        </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
+                        </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link brand-color":"n-vis"}
                             onClick={this.showEmailInput}>Send instructions </a>}
                         
                         
@@ -119,7 +120,7 @@ class MultiEmail extends Component {
                     style={{ marginLeft: "0" }}>
                     <div className="form-group group multiple-email-container">
                     <input
-                            className="input"
+                            className="input brand-color--border"
                             value={this.state.emailAddress}
                             onKeyDown={this.checkForSpace}
                             onChange={this.multipleEmailHandler}
@@ -144,13 +145,13 @@ class MultiEmail extends Component {
                         <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space </p></div>
                     </div> 
                     <div>
-                        <button
+                        <Button
                             className="btn btn-primary px-5 btn-primary-custom br-custom"
                             onClick={this.sendMail}
                         >
                             {" "}
                             Send{" "}
-                        </button>
+                        </Button>
                     </div>
                     {/* <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space </p></div> */}
                 </div>

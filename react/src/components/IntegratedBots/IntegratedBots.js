@@ -772,7 +772,7 @@ export default class IntegratedBots extends Component {
                   }
                     <div className="" style={{marginTop: "66px"}}>
                       <div className="km-cancel-delete">
-                        <Button secondary onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
+                        <Button secondary onClick={this.onCloseModal} style={{marginRight: "16px"}}>
                           Cancel
                         </Button>
                         <Button onClick={()=> {this.saveEditedBotDetails(this.state.botPlatform)}}>
