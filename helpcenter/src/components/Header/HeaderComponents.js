@@ -5,10 +5,9 @@ import { StyleUtils } from '../../utils/StyleUtils';
 export const HeaderComponent = styled.div `
     max-width: 100%;
     padding-bottom: 50px;
-    background-image:  url("./assets/svg/helpCenterBackgroundGraphic.svg"), linear-gradient(51deg, ${props=> props.theme.gradientColor}, ${props=> props.theme.headerBackground});
+    background-image:  url("./assets/svg/helpCenterBackgroundGraphic.svg"), linear-gradient(51deg, ${props=> props.theme.gradientColor}, ${props=> props.theme.primaryColor});
     background-size: cover;
     padding-top: 20px;
-    /* background-color: ${props => props.theme.headerBackground}; */
     box-shadow: ${props => props.theme.boxShadowHeader};
     transition: all .3s;
 
