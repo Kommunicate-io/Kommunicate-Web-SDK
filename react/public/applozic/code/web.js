@@ -109,7 +109,7 @@ var autoSuggestions = {};
             "roleNameList": ["USER"],
             "userId": encodeURIComponent(contactId),
             'callback': function(response) {
-              if(response.response){
+              if(response && response.response){
                 var user = response.response.users[0];
                 kmEvents.triggerCustomEvent("_userDetailUpdate", { 'data': { 'data': user } });
                 return;
