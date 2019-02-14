@@ -272,6 +272,7 @@ function ApplozicSidebox() {
             options["customerCreatedAt"]=data.customerCreatedAt;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
+            KommunicateUtils.deleteDataFromKmSession("settings");
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (!options.userId) {
                     if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID)) {
