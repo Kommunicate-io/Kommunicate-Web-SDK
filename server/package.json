@@ -1,5 +1,6 @@
 {
   "name": "kommunicate-server",
+  "pluginVersion":"2019/2/14",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
