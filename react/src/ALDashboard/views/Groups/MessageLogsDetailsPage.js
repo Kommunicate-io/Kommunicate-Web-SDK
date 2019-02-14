@@ -68,14 +68,16 @@ const MessageLogsDetailsPage = (props) =>  {
                                 {!oneToOneChat ? groupFeed.userCount : <Fragment><span>{props.userCount}</span><span> (1 to 1 chat)</span></Fragment>}
                             </MessageLogsStyles.GroupDetailMetadataValue>
                         </MessageLogsStyles.GroupDetailMetadata>
-                        <MessageLogsStyles.GroupDetailMetadata>
-                            <MessageLogsStyles.GroupDetailMetadataKey>
-                                Last message: 
-                            </MessageLogsStyles.GroupDetailMetadataKey>
-                            <MessageLogsStyles.GroupDetailMetadataValue>
-                            {moment(message[0].createdAtTime).format("DD MMM YYYY, hh:mm A")}
-                            </MessageLogsStyles.GroupDetailMetadataValue>
-                        </MessageLogsStyles.GroupDetailMetadata>
+                        { message.length > 0 &&
+                            <MessageLogsStyles.GroupDetailMetadata>
+                                <MessageLogsStyles.GroupDetailMetadataKey>
+                                    Last message: 
+                                </MessageLogsStyles.GroupDetailMetadataKey>
+                                <MessageLogsStyles.GroupDetailMetadataValue>
+                                {moment(message[0].createdAtTime).format("DD MMM YYYY, hh:mm A")}
+                                </MessageLogsStyles.GroupDetailMetadataValue>
+                            </MessageLogsStyles.GroupDetailMetadata>
+                        }
                         <MessageLogsStyles.GroupDetailMetadata>
                             <MessageLogsStyles.GroupDetailMetadataKey>
                                 Group created: 

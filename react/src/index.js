@@ -50,6 +50,9 @@ const GlobalStyle = createGlobalStyle`
   .brand-color {
     color: ${props => props.theme.primary} !important;
   }
+  .brand-color--border, .ui.secondary.pointing.menu .active.item {
+    border-color: ${props => props.theme.primary} !important;
+  }
   .brand-color:hover, .brand-color:focus {
     color: ${props => props.theme.buttons.hover} !important;
     outline: none;

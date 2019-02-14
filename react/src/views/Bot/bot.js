@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import './bot.css';
-// import { Tab } from 'semantic-ui-react';
-// import IntegratedBots from '../../components/IntegratedBots/IntegratedBots';
-// import BotStore from '../../views/Bot/BotStore';
 import TabsComponent from '../../components/TabsComponent/TabsComponent';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CommonUtils from '../../utils/CommonUtils';
 
-// const panes = [
-//   { menuItem: 'Bot Store', render: () => <Tab.Pane attached={false}><BotStore /></Tab.Pane> },
-//   { menuItem: 'Integrated Bots', render: () => <Tab.Pane attached={false} ><IntegratedBots/></Tab.Pane> },
-// ]
 
 class Tabs extends Component {
   render() {

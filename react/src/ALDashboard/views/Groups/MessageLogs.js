@@ -31,31 +31,13 @@ class MessageLogs extends Component {
         this.fetchMessages(this.state.lastFetchTime);
     }
 
-    getContactImageByAlphabet(groupName) {
-        var displayName = groupName;
-        var name = displayName.charAt(0).toUpperCase();
-        var className = "alpha_user";
-
-        if (typeof name !== "string" || typeof name === 'undefined' || name === "") {
-            className = "km-icon-user km-alpha-user";
-            return [name, className];
-        }
-        var first_alpha = name.charAt(0);
-        var letters = /^[a-zA-Z0-9]+$/;
-        if (first_alpha.match(letters)) {
-            first_alpha = "alpha_" + first_alpha.toUpperCase();
-            return [name, first_alpha];
-        }
-        else {
-            return [name, className];
-        }
-    }
-
     fetchMessages = (lastFetchTime) => {
         let params = {
             'pageSize': 60,
         };
-        if(lastFetchTime !== 0) {
+        if(typeof lastFetchTime === 'undefined') {
+            return;
+        } else if(lastFetchTime !== 0) {
             params.lastFetchTime = lastFetchTime;
         }
         ApplozicClient.getAllGroupsAndMessages(params).then(response => {
@@ -163,6 +145,10 @@ class MessageLogs extends Component {
             }
         }
     }
+
+    getContactImageByAlphabet = (name) => {
+        return CommonUtils.getContactImageByAlphabet(name);
+    }
     
     render() {
 
@@ -182,7 +168,7 @@ class MessageLogs extends Component {
                     </MessageLogsStyles.ExportDataContainer> */}
                 </MessageLogsStyles.GroupDetailHeaderButtonContainer>
 
-                { this.state.showGroupDetailData && <MessageLogsDetailsPage getContactImageByAlphabet={CommonUtils.getContactImageByAlphabet} searchValue={this.state.searchMessages} onChange={this.searchMessagesOnChange} encryptedApp={isEncryptedApp} {...this.state.groupData} />  }
+                { this.state.showGroupDetailData && <MessageLogsDetailsPage getContactImageByAlphabet={this.getContactImageByAlphabet} searchValue={this.state.searchMessages} onChange={this.searchMessagesOnChange} encryptedApp={isEncryptedApp} {...this.state.groupData} />  }
 
                 { !this.state.emptyState ?
                 <MessageLogsStyles.Table hidden={this.state.showGroupDetailData}>
