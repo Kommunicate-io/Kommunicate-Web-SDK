@@ -27,7 +27,7 @@ const getFormatedData=(data,eventName)=>{
     formatedInfo.id = data.id;
     formatedInfo.userId  = data.userId;
     formatedInfo.applicationId = data.applicationId;
-    data.displayName &&  (formatedInfo.name = data.displayName);
+    formatedInfo.displayName = data.displayName || data.email || data.userId;
     data.companyName && (formatedInfo.companyName = data.companyName);
     data.email && (formatedInfo.email = data.email);
     data.phoneNumber && (formatedInfo.phoneNumber = data.phoneNumber);
