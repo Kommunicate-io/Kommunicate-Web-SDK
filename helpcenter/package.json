@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "test-build": "webpack --mode development",
-    "prod-build": "webpack --mode production"
+    "prod-build": "webpack --mode production && cp dist/index.html dist/404.html"
   },
   "author": "Akshat Dhabi",
   "license": "ISC",
