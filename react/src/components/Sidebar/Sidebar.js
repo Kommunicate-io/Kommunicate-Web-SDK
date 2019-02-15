@@ -74,13 +74,6 @@ class Sidebar extends Component {
     )
   }
 
-  launchSideboxChat() {
-    window.$applozic.fn.applozic('mckLaunchSideboxChat');
-    document.querySelector('.faq-common').classList.add('n-vis');
-    document.getElementById('mck-away-msg-box').classList.remove('vis');
-    document.getElementById('mck-away-msg-box').classList.add('n-vis');
-  }
-
   render() {
 
     const currentPath = window.location.pathname;
@@ -193,21 +186,6 @@ class Sidebar extends Component {
           </ul>
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
           <ul className="nav">
-            
-            {/* Help Link */}
-            {/* <li className="nav-item">
-            <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
-            onClick={this.launchSideboxChat} 
-                className="nav-link  n-vis" data-tip="Help" data-effect="solid" data-place="right">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g data-name="Group 2">
-                  <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 8" />
-                  <path fill="#fff" d="M12 22A10.011 10.011 0 0 1 2 12 10.011 10.011 0 0 1 12 2a10.011 10.011 0 0 1 10 10 10.011 10.011 0 0 1-10 10zm0-5a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1zm0-5a1 1 0 0 0-1 .985V15a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-.782a.5.5 0 0 1 .35-.472 3.981 3.981 0 0 0 2.535-4.7 3.952 3.952 0 0 0-2.957-2.942 4.3 4.3 0 0 0-.95-.108 3.989 3.989 0 0 0-3.983 3.949v.148a.988.988 0 0 0 .982.9 1 1 0 0 0 1-1 2.015 2.015 0 0 1 2-1.96 2.017 2.017 0 0 1 2 1.958A2 2 0 0 1 12 12z"
-                  data-name="Exclusion 1" />
-                </g>
-              </svg>
-            </a>
-            </li> */}
 
             {/* IntegrationStarted icon */}
             { !this.props.isIntegrationStarted &&
