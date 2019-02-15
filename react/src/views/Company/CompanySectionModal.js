@@ -7,6 +7,7 @@ import { ConfirmationTick, CopyIcon } from '../../assets/svg/svgs';
 import { getConfig } from '../../../src/config/config'
 import copy from 'copy-to-clipboard';
 import Notification from '../model/Notification';
+import isURL from 'validator/lib/isURL';
 
 const customStyles = {
     content: {
@@ -59,7 +60,7 @@ const SetUpYourDomain = props => (
             </tr>
             <tr>
                 <td>CNAME</td>
-                <td>www</td>
+                <td>{props.customUrl}</td>
                 <td>{props.value}</td>
                 <td><span onClick = {props.copyToClipboard}><CopyIcon/> Copy</span></td>
             </tr>
@@ -79,7 +80,8 @@ class CompanySectionModal extends Component {
     constructor(props){ 
         super(props);
         this.state = {
-            step:1
+            step:1,
+            customUrl: this.props.customUrl
         }
     }
     onButtonClick = (e) => {
@@ -87,11 +89,15 @@ class CompanySectionModal extends Component {
             this.props.controlModal();
             return
         }
+        e.target.dataset.button == "Continue" && this.updateCustomUrl(e.target.dataset.button);  
+        e.target.dataset.button == "I’ve done this" && this.goToNextStep(e.target.dataset.button);     
+    }
+    goToNextStep = (step) => {
         const stepsData = {
             "Continue":2,
             "I’ve done this":3,
         }
-        this.setState({step: stepsData[e.target.dataset.button] })        
+        this.setState({step: stepsData[step] })
     }
     customUrlInputValue = (e,key) => {
         this.setState({[key] : e.target.value});
@@ -100,6 +106,14 @@ class CompanySectionModal extends Component {
         copy(getConfig().loadBalancerDnsValue);
         Notification.success("Domain value copied");
     }
+    updateCustomUrl = (step) => {
+        if (!isURL(this.state.customUrl)) {
+            Notification.error("Invalid URL");
+            return
+        }
+        this.props.updateSettings({domainUrl: this.state.customUrl})
+        this.goToNextStep(step)
+    }
 
     render() {
         const modalContent = {
@@ -107,14 +121,14 @@ class CompanySectionModal extends Component {
                 1:{
                     step:1,
                     title:"Step 1 - Enter the domain address",
-                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue}/>,
+                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue} customUrl = {this.state.customUrl}/>,
                     buttonText:"Continue",
                     showCancelButton: true
                 },
                 2:{
                     step:2,
                     title:"Step 2 - Set up your domain",
-                    content:<SetUpYourDomain value = {getConfig().loadBalancerDnsValue} copyToClipboard = {this.copyToClipboard}/>,
+                    content:<SetUpYourDomain value = {getConfig().loadBalancerDnsValue} copyToClipboard = {this.copyToClipboard} customUrl = {this.state.customUrl}/>,
                     buttonText:"I’ve done this",
                     showCancelButton: false
                 },
