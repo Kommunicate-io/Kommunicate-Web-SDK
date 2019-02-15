@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import CloseButton from '../../components/Modal/CloseButton.js'
-import {CompanyModalTitleContainer, CompanyModalFooterContainer} from './companyStyle'
+import {CompanyModalTitleContainer, CompanyModalFooterContainer, CustomUrlStep1InputFieldContainer, SetUpYourDomainContainer,DomainTable, SetUpCompleteContainer} from './companyStyle'
 import Button from '../../components/Buttons/Button';
+import { ConfirmationTick, CopyIcon } from '../../assets/svg/svgs';
+import { getConfig } from '../../../src/config/config'
+import copy from 'copy-to-clipboard';
+import Notification from '../model/Notification';
 
 const customStyles = {
     content: {
@@ -12,7 +16,7 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
-        width: '650px',
+        width: '600px',
         overflow: 'visible'
     }
 };
@@ -30,6 +34,46 @@ const ModalFooter = props => (
          <Button data-button= {props.buttonText} onClick={props.onButtonClick} >{props.buttonText}</Button>
     </CompanyModalFooterContainer>
 
+)
+const CustomUrlStep1InputField = props => (
+    <CustomUrlStep1InputFieldContainer>
+        <p>https://</p>
+        <input type="text" id="custom-url" placeholder="kommunicate.yourcompany.com or dashboard.domain.com"
+            value={props.customUrl} onChange={(e) => { props.customUrlInputValue(e, "customUrl") }}
+        />
+    </CustomUrlStep1InputFieldContainer>
+)
+const SetUpYourDomain = props => (
+    <SetUpYourDomainContainer>
+        <ol>
+            <li>Login to your<span> domain administration panel </span>and find <span>DNS records management panel</span> for the domain: <span>abcdefgh.com</span> </li>
+            <li>Then add new records</li>
+        </ol>
+        <DomainTable>
+            <tbody>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Value</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>CNAME</td>
+                <td>www</td>
+                <td>{props.value}</td>
+                <td><span onClick = {props.copyToClipboard}><CopyIcon/> Copy</span></td>
+            </tr>
+            </tbody>
+        </DomainTable>
+        <p>If you have any problems with the setup, please contact your domain admin support team. They will be able to help you out</p>
+    </SetUpYourDomainContainer>
+)
+const SetUpComplete = props => (
+    <SetUpCompleteContainer>
+        <ConfirmationTick />
+        <h5>The setup of your custom domain URL is successful  </h5>
+        <p>The domain should be connected in a few hours if the information you entered in your panel were correct</p>
+    </SetUpCompleteContainer>
 )
 class CompanySectionModal extends Component {
     constructor(props){ 
@@ -49,27 +93,35 @@ class CompanySectionModal extends Component {
         }
         this.setState({step: stepsData[e.target.dataset.button] })        
     }
+    customUrlInputValue = (e,key) => {
+        this.setState({[key] : e.target.value});
+    }
+    copyToClipboard = () => {
+        copy(getConfig().loadBalancerDnsValue);
+        Notification.success("Domain value copied");
+    }
+
     render() {
         const modalContent = {
             "customUrl" : {
                 1:{
                     step:1,
                     title:"Step 1 - Enter the domain address",
-                    content:"",
+                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue}/>,
                     buttonText:"Continue",
                     showCancelButton: true
                 },
                 2:{
                     step:2,
                     title:"Step 2 - Set up your domain",
-                    content:"",
+                    content:<SetUpYourDomain value = {getConfig().loadBalancerDnsValue} copyToClipboard = {this.copyToClipboard}/>,
                     buttonText:"I’ve done this",
                     showCancelButton: false
                 },
                 3:{
                     step:3,
                     title:"Step 3 - Setup complete",
-                    content:"",
+                    content:<SetUpComplete />,
                     buttonText:"Close",
                     showCancelButton: false
                 }
@@ -80,6 +132,9 @@ class CompanySectionModal extends Component {
                  <Modal isOpen={this.props.openModal} onRequestClose={this.props.controlModal} style={customStyles} ariaHideApp={false} >
                     <div>
                       <ModalTitle title={modalContent[this.props.modal][this.state.step].title}/>
+                     
+                      {modalContent[this.props.modal][this.state.step].content}
+
                       <ModalFooter onCancelClick = {this.props.controlModal} buttonText={modalContent[this.props.modal][this.state.step].buttonText}  onButtonClick={this.onButtonClick} showCancelButton = {modalContent[this.props.modal][this.state.step].showCancelButton} />
                     </div>    
                     <CloseButton onClick={this.props.controlModal}/>
