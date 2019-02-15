@@ -3,44 +3,48 @@ id: web-conversation
 title: Conversation
 sidebar_label: Conversation
 ---
+## Overview
+This section is dedicated to launching and managing conversations in the chat widget on certain triggers. For example, the chat widget will only appear on the website on click of a specific button. This could be useful if you wish to show support chat only on certain triggers and not all the time.
 
-## Launch conversation List
-To launch the conversation list use the following method.
+
+### Launch conversation List
+To launch the chat widget and conversation list, use the following method.
+
 ```
 Kommunicate.launchConversation();
 ```
-## Show conversation list
-To show the conversation list use the following method.
+### Show conversation list
+To show the conversation list, use the following method.
 
 ```
 Kommunicate.openConversationList();
 ```
 
-## Create a new Conversation
+## Create a new conversation
+A conversation can be created using `startConversation` method. Below is the example code for the same. You can choose to define certain parameters to profile this conversation and allot assignee.
 
-A conversation can be created using `startConversation` method.
 ```javascript
 var conversationDetail = {
-    "agentIds": ["agentId"], // optinal, if you dont pass agent Id, default agent will automatically get selected.
-    "botIds": ["bot1"], // optional, pass bot Ids you want to add in conversation.
-    "skipRouting":"true", //optional, skip routing rules for this conversation.
-    "assignee":"bot1 or agentId" // optional, who you want to assign this conversation. If not passed conversation will assigned to default agent. if you an bot or agentId,  that bot or agent must be present in conversation.  
+    "agentIds": ["agentId"], // Optional. If you do not pass any agent ID, the default agent will automatically get selected.
+    "botIds": ["bot1"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
+    "skipRouting":"true", // Optional. If this parameter is set to 'true', then routing rules will be skipped for this conversation.
+    "assignee":"bot1 or agentId" // Optional. You can asign this conversation to any agent or bot. If you do not pass the ID. the conversation will assigned to the default agent.
 };
 Kommunicate.startConversation(conversationDetail, function (response) {
     console.log("new conversation created");
 });                    
 ```
 
-## Open a particular conversation
-You can open a particular conversation if you have the group ID of that particular conversation by this method:
+### Open a particular conversation
+If you wish to open a particular conversation, pass the group ID of that conversation by using the method mentioned below:
 
 ```
 Kommunicate.openConversation(groupId);
 ```
 
-## Open chat window when a new message comes
-Add "openConversationOnNewMessage:true" in Kommunicate settings. This will open chat window when a new message comes.
-### Example
+### Open chat window when a new message comes
+If you want the chat window to pop open when a new conversation comes, add `"openConversationOnNewMessage": true` in `kommunicateSettings` object. This will open the chat window when a new message comes.
+
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
