@@ -32,15 +32,18 @@ const ModalTitle = props => (
 const ModalFooter = props => (
     <CompanyModalFooterContainer>
          <Button hidden = {!props.showCancelButton} secondary data-button= {"cancel"} onClick= {props.onCancelClick} >Cancel</Button>
-         <Button data-button= {props.buttonText} onClick={props.onButtonClick} >{props.buttonText}</Button>
+         <Button data-button= {props.buttonText} onClick={() => {props.onButtonClick(props.buttonText) }} >{props.buttonText}</Button>
     </CompanyModalFooterContainer>
 
 )
 const CustomUrlStep1InputField = props => (
     <CustomUrlStep1InputFieldContainer>
         <p>https://</p>
-        <input type="text" id="custom-url" placeholder="kommunicate.yourcompany.com or dashboard.domain.com"
-            value={props.customUrl} onChange={(e) => { props.customUrlInputValue(e, "customUrl") }}
+        <input autoFocus type="text" id="custom-url" placeholder="kommunicate.yourcompany.com or dashboard.domain.com"
+            value={props.customUrl} 
+            onChange={(e) => { props.customUrlInputValue(e, "customUrl") }}
+            onKeyDown={(e) => {
+                if (e.keyCode === 13) { props.onButtonClick(props.buttonText); }}}
         />
     </CustomUrlStep1InputFieldContainer>
 )
@@ -84,13 +87,13 @@ class CompanySectionModal extends Component {
             customUrl: this.props.customUrl
         }
     }
-    onButtonClick = (e) => {
-        if(e.target.dataset.button == "Close"){
+    onButtonClick = (button) => {
+        if(button == "Close"){
             this.props.controlModal();
             return
         }
-        e.target.dataset.button == "Continue" && this.updateCustomUrl(e.target.dataset.button);  
-        e.target.dataset.button == "I’ve done this" && this.goToNextStep(e.target.dataset.button);     
+        button == "Continue" && this.updateCustomUrl(button);  
+        button == "I’ve done this" && this.goToNextStep(button);        
     }
     goToNextStep = (step) => {
         const stepsData = {
@@ -121,7 +124,7 @@ class CompanySectionModal extends Component {
                 1:{
                     step:1,
                     title:"Step 1 - Enter the domain address",
-                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue} customUrl = {this.state.customUrl}/>,
+                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue} customUrl = {this.state.customUrl} onButtonClick={this.onButtonClick} buttonText={"Continue"} />,
                     buttonText:"Continue",
                     showCancelButton: true
                 },

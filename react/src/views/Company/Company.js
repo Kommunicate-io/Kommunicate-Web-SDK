@@ -66,7 +66,7 @@ class Company extends Component{
 
   updateSettings = (data) => {
     updateAppSetting(null, data).then(response => {
-        if(response.status == 200 && response.data.response) {
+        if(response.status == 200 && response.data.code == "SUCCESS") {
             data.domainUrl && this.setState({customUrl: data.domainUrl})
         }
       }).catch(err => {
