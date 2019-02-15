@@ -95,12 +95,12 @@ class CompanySectionModal extends Component {
         button == "Continue" && this.updateCustomUrl(button);  
         button == "I’ve done this" && this.goToNextStep(button);        
     }
-    goToNextStep = (step) => {
+    goToNextStep = (button) => {
         const stepsData = {
             "Continue":2,
             "I’ve done this":3,
         }
-        this.setState({step: stepsData[step] })
+        this.setState({step: stepsData[button] })
     }
     customUrlInputValue = (e,key) => {
         this.setState({[key] : e.target.value});
