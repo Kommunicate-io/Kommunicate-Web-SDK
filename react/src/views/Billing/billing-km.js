@@ -568,7 +568,7 @@ class BillingKommunicate extends Component {
                         </div>
                         <div className="renewal-date-container flexi">
                             <p>Auto renewal date:</p>
-                            <p>{(!this.state.toggleSlider) ? CommonUtils.countDaysForward(30, "days") : CommonUtils.countDaysForward(365, "days")}</p>
+                            <p>{(!this.state.toggleSlider) ? CommonUtils.countDaysForward(1, "month") : CommonUtils.countDaysForward(1, "year")}</p>
                         </div>
                     </div>
                 </div>
