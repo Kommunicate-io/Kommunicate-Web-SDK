@@ -79,12 +79,16 @@ class MessageLogs extends Component {
     }
 
     openGroupDetails = (data) => {
+        let userSession = CommonUtils.getUserSession();
         var params = {
             "startIndex" : 0,
             "pageSize" : 100,
             "orderBy" : 1
         };
         var headers = {
+            'Content-Type': 'application/json',
+            'Apz-AppId': userSession.application.applicationId,
+            'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
             "Of-User-Id": data.membersId[0]
         }
 

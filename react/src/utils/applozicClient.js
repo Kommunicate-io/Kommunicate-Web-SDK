@@ -408,15 +408,12 @@ updateUserDetail:function(params){
 
   },
   getMessageGroups : (params, headers) => {
-    var API_HEADERS = ApplozicClient.commonHeaders();
-    delete API_HEADERS["Apz-Product-App"];
-    API_HEADERS["Of-User-Id"] = headers["Of-User-Id"];
     var url = getConfig().applozicPlugin.getMessageList;
   
     return Promise.resolve(axios({
       method: 'get',
       url: url,
-      headers: API_HEADERS,
+      headers: headers,
       params: params
     })).then(response => {
         return response;
