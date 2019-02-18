@@ -10,6 +10,7 @@ import isURL from 'validator/lib/isURL';
 import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFunctionComponents'
 import CompanySectionModal from './CompanySectionModal'
 import {getAppSetting, updateAppSetting} from '../../utils/kommunicateClient'
+import LockBadge from '../../components/LockBadge/LockBadge';
 
 const CompanyInfo = props => (
     <CompanyInfoContainer >
@@ -67,7 +68,8 @@ class Company extends Component{
   updateSettings = (data) => {
     updateAppSetting(null, data).then(response => {
         if(response.status == 200 && response.data.code == "SUCCESS") {
-            data.domainUrl && this.setState({customUrl: data.domainUrl})
+            typeof data.domainUrl != "undefined" && this.setState({customUrl: data.domainUrl})
+            Notification.success("Custom URL updated")
         }
       }).catch(err => {
         console.log(err);
@@ -128,9 +130,13 @@ class Company extends Component{
           buttonDisabled:true
       })
   }
+  isCustomUrlFeatureRestricted = () => {
+      return (!CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
+  }
+
   controlModal = (e) => {
-    !this.state.openModal && this.setState({modal: e.target.dataset.blockButton})
-    this.setState({ openModal: !this.state.openModal });
+    !this.state.openModal && this.setState({modal: e.target.dataset.blockButton}) 
+    this.setState({ openModal: this.isCustomUrlFeatureRestricted() ? false : !this.state.openModal });
   }
   render() {
       return(
@@ -142,7 +148,11 @@ class Company extends Component{
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}
               buttonDisabled = {this.state.buttonDisabled} companyInfoEditable = {this.state.companyInfoEditable}/>
                 <CompanyBlockButtonContainer>
+                    { this.isCustomUrlFeatureRestricted() &&
+                        <LockBadge className={"lock-with-text"} text={"Available in Enterprise plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                    }
                     <BlockButton title = {"Get a custom domain URL"} subTitle = {"Get a custom domain URL for your Kommunicate account."} description={"Example: kommunicate.yourwebsite.com"} onClickOfBlock = {this.controlModal} name="customUrl"/>
+                    
                 </CompanyBlockButtonContainer>
              { this.state.openModal &&
                   <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal} modal={this.state.modal} customUrl = {this.state.customUrl} updateSettings = {this.updateSettings} />
