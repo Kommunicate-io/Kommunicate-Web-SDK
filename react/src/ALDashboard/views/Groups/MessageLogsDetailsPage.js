@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import moment from 'moment';
+import Linkify from 'react-linkify';
 import * as MessageLogsStyles from './MessageLogsStyles';
 import { SearchIcon, EncryptedLockIcon } from '../../../assets/svg/svgs';
 
@@ -140,7 +141,7 @@ const MessageLogsDetailsPage = (props) =>  {
                             { message.length > 0 && message.filter(item => item.metadata && item.metadata.hide !== "true" && item.metadata.show !== "false").slice(0).reverse().map((data, index) => {
                             
                                 return (
-                                    <MessageList key={index} data={data} image={image}/>
+                                    <MessageList key={index} data={data} image={props.getContactImageByAlphabet}/>
                                 )
                             })
                             }    
@@ -160,13 +161,15 @@ const MessageLogsDetailsPage = (props) =>  {
 
 
 const MessageList = (props) => {
-    let data = props.data;
+    let data = props.data,
+        displayName = data.to,
+        image = props.image(displayName);
 
     return (
         <MessageLogsStyles.MessagesDataContainer className="al-messages-list-sections--blocks">
             <MessageLogsStyles.MessagesProfileImageContainer>
                 {
-                    (data.imageUrl) ? <MessageLogsStyles.Image src={data.imageUrl}/> : <MessageLogsStyles.ContactIcon className={`${props.image[1]}`}>{props.image[0]}</MessageLogsStyles.ContactIcon>
+                    (data.imageUrl) ? <MessageLogsStyles.Image src={data.imageUrl}/> : <MessageLogsStyles.ContactIcon className={`${image[1]}`}>{image[0]}</MessageLogsStyles.ContactIcon>
                 }
             </MessageLogsStyles.MessagesProfileImageContainer>
             <MessageLogsStyles.MessagesContainer>
@@ -180,7 +183,9 @@ const MessageList = (props) => {
                     </MessageFromMetadataText> */}
                 </MessageLogsStyles.MessageFromContainer>
                 <MessageLogsStyles.MessagesTextContainer>
+                    <Linkify properties={{target: '_blank'}}>
                     <MessageLogsStyles.MessagesText className="al-messages-list-section--messages">{data.message}</MessageLogsStyles.MessagesText>
+                    </Linkify>
                     { Object.keys(data.metadata).length > 0 ?
                         <MessageLogsStyles.MessagesMetadata> {JSON.stringify(data.metadata)}</MessageLogsStyles.MessagesMetadata> : 
                         ""
