@@ -10,7 +10,8 @@ class PersonConversationHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            conversations: []
+            conversations: [],
+            hideTitle: true
         };
     };
 
@@ -40,14 +41,22 @@ class PersonConversationHistory extends Component {
         }
         ApplozicClient.getMessageGroups(params, headers).then(response => {
             if(response && response.status === 200) {
-                let groupFeeds = response.data.groupFeeds,
-                    messages = response.data.message;
-
-                for(var i = 0, _len = groupFeeds.length; i < _len; i++) {
-                    groupFeeds[i].lastMessageTime = messages[i].createdAtTime;
+                var message = response.data.message,
+                    map = [],
+                    group = response.data.groupFeeds;
+                for(var i=0; i<message.length; i++){
+                    map[message[i].groupId] = message[i];
+                }
+                for (var j=0; j<group.length; j++){
+                    if(map[group[j].id]){
+                        group[j].lastMessageTime = map[group[j].id].createdAtTime;  
+                    } else {
+                        group[j].lastMessageTime = group[j].createdAtTime;
+                    }  
                 }
                 this.setState({
-                    conversations: groupFeeds
+                    conversations: group,
+                    hideTitle: false
                 });
             }
         }).catch(err => {
@@ -56,16 +65,19 @@ class PersonConversationHistory extends Component {
     }
 
     render() {
+
+        let activeGroup = decodeURIComponent(window.location.pathname.split("/").pop());
+
         return (
             <Container>
-                <SectionHeading>Conversation History</SectionHeading>
+                <SectionHeading hidden={this.state.hideTitle}>Conversation History</SectionHeading>
                 <Section>
                     {
-                        this.state.conversations.length !== 0 && this.state.conversations.map( (data, index) => {
+                        this.state.conversations.length !== 0 && this.state.conversations.filter((grp) => typeof grp !== 'undefined' && (!activeGroup.includes("conversations") && grp.id !== parseInt(activeGroup))).map( (data, index) => {
                             let status = Object.keys(CONVERSATION_STATUS).find(key => CONVERSATION_STATUS[key] === parseInt(data.metadata.CONVERSATION_STATUS));
                             return (
                                 <ConversationDataContainer key={index}>
-                                    <ConversationTitle onClick={() => window.Aside.initConversation(data.id)}>Conversation #{data.id}</ConversationTitle>
+                                    <ConversationTitle className="km-conversation-tab-link"  data-km-id={data.id} data-isgroup={true}>Conversation #{data.id}</ConversationTitle>
                                     <ConversationStatus>Status: <strong>{status} - </strong><span>{data.name}</span></ConversationStatus>
                                     <ConversationDate>Last Contacted: <span>{moment(data.lastMessageTime).format("DD MMM YYYY")}</span></ConversationDate>
                                 </ConversationDataContainer>

@@ -53,13 +53,6 @@
     padding: 8px 14px 5px 14px;
     flex-direction: column;
 }
-.km-clearbit-title-panel {
-    background-color: #d8d8d8;
-    font-size: 12px;
-    letter-spacing: 0.4px;
-    color: #5a5858;
-    padding-left: 13px;
-}
 .fade-enter {
 opacity: 0.01;
 }
