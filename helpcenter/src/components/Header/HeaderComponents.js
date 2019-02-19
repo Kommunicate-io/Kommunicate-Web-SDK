@@ -35,7 +35,6 @@ export const TopbarLogoContainer = styled.div `
     height: auto;
     padding-right: 10px;
     position: relative;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-around;

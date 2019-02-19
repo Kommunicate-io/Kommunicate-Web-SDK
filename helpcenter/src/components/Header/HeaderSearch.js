@@ -81,9 +81,11 @@ class HelpQuerySearch extends Component {
         }, 1000);
     };
     
-    handleInputChange = (newValue,e,q) => {
-        this.setState({ isDropDownOpen: newValue })
-        this.setState({ inputValue: newValue });
+    handleInputChange = (newValue) => {
+        this.setState({
+            isDropDownOpen: newValue,
+            inputValue: newValue
+        })
     };
  
     getSelectedFaq = (selectedFAQ)=> {
