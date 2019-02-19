@@ -115,3 +115,15 @@ other services please add below.
 export const THIRD_PARTY_LOGIN = [
     "google"
 ];
+
+export const NOTICEABLE_CREDENTIALS = {
+    /*
+    // Below credentials are for kommunicate account
+    // ACCESS_TOKEN: "nSoxbruxKBWyRDraIQND",
+    // PROJECT_ID: "lwxQBJuL2eWfCJkZ6py0"
+    */
+
+    // Remove below code and uncomment above lines when noticeable widget implementation is completed.
+    ACCESS_TOKEN: "HZtim7bdyESbHo1opoc4",
+    PROJECT_ID: "9e7IrkNtr4EfHhBkp6Hg"
+};

@@ -7,6 +7,7 @@ import IntegrationStarted from '../../views/IntegrationStarted/IntegrationStarte
 import CommonUtils from '../../utils/CommonUtils';
 import { withTheme } from 'styled-components';
 import { KommunicateLogoSymbol, ApplozicLogoSymbol } from '../../assets/svg/svgs';
+import {NOTICEABLE_CREDENTIALS} from '../../utils/Constant';
 
 const UserIcon = ()=>{
   return(
@@ -81,6 +82,14 @@ class Sidebar extends Component {
     document.getElementById('mck-away-msg-box').classList.add('n-vis');
   }
 
+  addNoticeableWidget () {
+    NOTICEABLE_CREDENTIALS;
+    return <noticeable-widget 
+              access-token= {NOTICEABLE_CREDENTIALS.ACCESS_TOKEN} 
+              project-id= {NOTICEABLE_CREDENTIALS.PROJECT_ID} 
+              popup-backdrop="false">
+           </noticeable-widget>
+  };
   render() {
 
     const currentPath = window.location.pathname;
@@ -218,8 +227,7 @@ class Sidebar extends Component {
             {/* IntegrationStarted icon */}
             { this.props.isIntegrationStarted ?
               <li>
-                <noticeable-widget access-token="HZtim7bdyESbHo1opoc4" project-id="9e7IrkNtr4EfHhBkp6Hg" popup-backdrop="false">
-                </noticeable-widget>
+                {this.addNoticeableWidget()}
               </li>
             :
               <li className="nav-item">
