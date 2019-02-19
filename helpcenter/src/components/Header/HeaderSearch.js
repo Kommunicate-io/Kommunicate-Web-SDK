@@ -82,8 +82,7 @@ class HelpQuerySearch extends Component {
     };
     
     handleInputChange = (newValue,e,q) => {
-        // window.location.pathname.includes("article") && this.state.inputValue? this.setState({key : new Date().getTime()}) : console.log("object");
-        !newValue ? this.closeDropdown(): this.openDropdown();
+        this.setState({ isDropDownOpen: newValue })
         this.setState({ inputValue: newValue });
     };
  
@@ -109,11 +108,8 @@ class HelpQuerySearch extends Component {
             appId : CommonUtils.getUrlParameter(window.location.search,"appId")
         })
     }
-    openDropdown() {
-        this.state.inputValue && this.setState({ isDropDownOpen: true })
-    }
-    closeDropdown = () => {
-        this.setState({ isDropDownOpen: false });
+    toggleDropdown = () => {
+        this.state.inputValue && this.setState({ isDropDownOpen: !this.state.isDropDownOpen });
     }
     componentDidUpdate = (prevProps) => {
         this.props.location.pathname !== prevProps.location.pathname && !this.state.inputValue && !window.location.pathname.includes("article") ? this.setState({
@@ -142,8 +138,8 @@ class HelpQuerySearch extends Component {
           isClearable = {true}
           placeholder="Search Helpcenter"
           filterOptions= {false}
-          onBlur={() => this.closeDropdown()}
-          onFocus={()=> this.openDropdown()}/>
+          onBlur={() => this.toggleDropdown()}
+          onFocus={()=> this.toggleDropdown()}/>
       </div>
     );
   }
