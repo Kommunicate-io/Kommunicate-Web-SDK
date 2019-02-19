@@ -35,6 +35,11 @@ export const TopbarLogoContainer = styled.div `
     height: auto;
     padding-right: 10px;
     position: relative;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    cursor: pointer;
     &:after{
         content: "Help Center";
         position: absolute;
@@ -115,4 +120,21 @@ export const SearchIconContainer = styled.div`
         width: 22px;
     } 
 `
+export const BackButtonContainer = styled.span`
+    margin-right: 20px;
+    margin-top: -5px;
+    padding-left: 10px;
+    display: none;
+    ${StyleUtils.mediaQuery.phone`
+            display: inline;
+    `}
+`
 
+export const ClearButtonWrapper = styled.div`
+    transition: all .3s;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover{
+        background: #eee;
+    }
+`
