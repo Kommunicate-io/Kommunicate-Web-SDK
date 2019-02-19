@@ -526,9 +526,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3", notificationtoneoption);
                 mckCallService.init();
             }
-            if (KOMMUNICATE_VERSION === "v2" && window.frameElement.getAttribute('data-protocol') == "file:") {
+            if (KOMMUNICATE_VERSION === "v2" && window.frameElement.getAttribute('data-protocol') == "file:" && !window.top.hasOwnProperty('cordova')) {
                 kommunicateCommons.modifyClassList( {id : ["km-local-file-system-warning"]}, "vis","n-vis");
-              }
+            }
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
@@ -8769,6 +8769,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }, 5000);
                 }
                 events.onConnect();
+                kommunicateCommons.modifyClassList( {id : ["km-local-file-system-warning"]}, "n-vis","vis");
             };
             _this.onOpenGroupMessage = function (obj) {
                 if (openGroupSubscriber.indexOf(obj.headers.subscription) !== -1) {
