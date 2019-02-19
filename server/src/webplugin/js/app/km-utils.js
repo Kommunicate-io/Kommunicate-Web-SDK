@@ -172,6 +172,12 @@ KommunicateUtils = {
         sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
 
     },
+    deleteDataFromKmSession : function (key) {
+        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+        session = session ? JSON.parse(session) : {};
+        delete session[key];
+        sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+    },
     triggerCustomEvent: function(eventName, options) {
 
         options = typeof options == 'object' ? options : {}

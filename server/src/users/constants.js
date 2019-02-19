@@ -2,15 +2,15 @@ exports.AVAIBILITY_STATUS = { "AVAILABLE": 1, "AWAY": 2 }
 exports.ROLE_TYPE = { "SUPER_ADMIN": 0, "ADMIN": 1, "AGENT": 2, "BOT": 3, "DEVELOPER": 11 };
 
 exports.APPLOZIC_USER_ROLE_TYPE = {
-    BOT: {id: 1, name: "BOT"},
-    APPLICATION_ADMIN: {id: 2, name: "APPLICATION_ADMIN"},
-    USER:{id: 3, name: "USER"},
-    ADMIN:{id: 4, name: "ADMIN"},
-    BUSINESS:{id: 5, name: "BUSINESS"},
-    APPLICATION_BROADCASTER:{id: 6, name: "APPLICATION_BROADCASTER"},
-    SUPPORT:{id: 7, name: "SUPPORT"},
-    APPLICATION_WEB_ADMIN:{id: 8, name: "APPLICATION_WEB_ADMIN"},
-    DEVELOPER: {id: 11, name: "DEVELOPER"}
+    BOT: {id: 1, name: "BOT", kmRoleTypeId: 3},
+    APPLICATION_ADMIN: {id: 2, name: "APPLICATION_ADMIN", kmRoleTypeId: 1},
+    USER:{id: 3, name: "USER", kmRoleTypeId: null},
+    ADMIN:{id: 4, name: "ADMIN", kmRoleTypeId: 1},
+    BUSINESS:{id: 5, name: "BUSINESS", kmRoleTypeId: null},
+    APPLICATION_BROADCASTER:{id: 6, name: "APPLICATION_BROADCASTER", kmRoleTypeId: null},
+    SUPPORT:{id: 7, name: "SUPPORT", kmRoleTypeId: 2},
+    APPLICATION_WEB_ADMIN:{id: 8, name: "APPLICATION_WEB_ADMIN", kmRoleTypeId: 0},
+    DEVELOPER: {id: 11, name: "DEVELOPER", kmRoleTypeId: 11}
 };
 
 exports.EMAIL_NOTIFY = { "UNSUBSCRIBE_ALL": 0, "SUBSCRIBE_ALL": 1, "ONLY_ASSIGNED_CONVERSATION": 4 };

@@ -200,17 +200,14 @@ class ProfileImageName extends Component {
                   <p className="switch-app-text km-text-overflow-ellipsis">Switch Application</p>
                 </button>                
 
-                {
-                  CommonUtils.isKommunicateDashboard() ? 
-                <button className="dropdown-item" type="button" tabIndex="0" id="go-away" onClick={this.toggleStatus}>
+                
+                <button className="dropdown-item product product-kommunicate" type="button" tabIndex="0" id="go-away" onClick={this.toggleStatus}>
                   {CommonUtils.getUserStatus() === 1 ? <div><TurnOnAwayMode className="vis" /><TurnOnOnlineMode className="n-vis" /></div> : <div><TurnOnAwayMode className="n-vis" /><TurnOnOnlineMode className="vis" /></div>}
                 </button>
-                : ""
-                }
 
                 {/* <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}> Profile </button> */}
 
-                <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToBilling}> Billing </button>
+                <button className="dropdown-item product product-kommunicate" type="button" tabIndex="0" onClick={this.goToBilling}> Billing </button>
 
                 <button className="dropdown-item" type="button" tabIndex="0"  onClick={this.logout} id="logout"> Logout </button>
               </div>

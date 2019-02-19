@@ -201,3 +201,32 @@ exports.searchFAQ=(options)=>{
         });
 
     }
+
+/**
+ * 
+ * @param {*} query 
+ * @param {String} query.collectionName required,
+ * @param {Integer} query.pageNumber 
+ * @param {Integer} query.pageSize 
+ * @param {object} query.criteria 
+ * @param {object} query.order 
+ * 
+ */
+const fetchPages = (query) => {
+    query.pageNumber = Math.abs(parseInt(query.pageNumber || 1));
+    query.pageSize = Math.abs(parseInt(query.pageSize || 100));
+    query.order = query.order ? query.order : null;
+    if (!query.collectionName) throw "COLLECTION_NAME_REQUIRED";
+    return getDb(mongoURL).then(client => {
+        let db = client.db(DEFAULT_SCHEMA);
+        return new Promise((resolve, reject) => {
+            db.collection(query.collectionName).find(query.criteria, {projection:{_id:0}}).skip((query.pageNumber - 1) * query.pageSize).limit(query.pageSize).sort(query.order).toArray((err, data) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(data);
+            })
+        })
+    });
+}
+exports.fetchPages = fetchPages;

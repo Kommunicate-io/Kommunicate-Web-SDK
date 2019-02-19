@@ -94,6 +94,7 @@ helpcenter/node_modules/*
 helpcenter/package-lock.json
 helpcenter/DS_Store/*
 helpcenter/.DS_Store
+helpcenter/dist
 
 server/src/webplugin/build/*
 server/src/webplugin/js/app/mck-sidebox-1.0.min.css

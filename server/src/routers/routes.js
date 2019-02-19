@@ -171,7 +171,7 @@ autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
 autoSuggestRouter.get('/:applicationId', autoSuggestController.getSuggestionsByAppId);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion), autoSuggestController.createSuggestion);
 autoSuggestRouter.patch('/',validate(autoSuggestValidation.updateSuggestion), autoSuggestController.updateSuggestion)
-autoSuggestRouter.delete('/',validate(autoSuggestValidation.deleteSuggetion), autoSuggestController.deleteSuggetion)
+autoSuggestRouter.delete('/',validate(autoSuggestValidation.deleteSuggestion), autoSuggestController.deleteSuggestion)
 chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
 
@@ -230,6 +230,8 @@ thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidat
  * Faq search
  */
 faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
+faqRouter.get("/list/:appId", validate(autoSuggestValidation.fetchSuggestion),autoSuggestController.fetchFAQs);
+
 
 /**
  * Agile CRM APIs

@@ -9,7 +9,7 @@ const platform ={INTEGRY:"integry"}
  */
 exports.sendUserEventToIntegry = async function(eventName, data){
     logger.info('sending event to integry', eventName );
-    let subscription = await subscriptionService.getSubscription({platform:platform.INTEGRY,eventType:"USER_CREATED",applicationId:data.applicationId});
+    let subscription = await subscriptionService.getSubscription({platform:platform.INTEGRY,eventType:eventName,applicationId:data.applicationId});
     if(!subscription || ! subscription.triggerUrl){
         logger.info('No subscription found for event ', eventName ,"applicationId :",data.applicationId);
         return;
@@ -27,10 +27,10 @@ const getFormatedData=(data,eventName)=>{
     formatedInfo.id = data.id;
     formatedInfo.userId  = data.userId;
     formatedInfo.applicationId = data.applicationId;
-    data.displayName &&  (formatedInfo.name = data.displayName);
+    formatedInfo.displayName = data.displayName || data.email || data.userId;
     data.companyName && (formatedInfo.companyName = data.companyName);
     data.email && (formatedInfo.email = data.email);
-    data.phoneNumber && (formatedInfo.phoneNumber = data.phoneNumber);
+    (data.phoneNumber || data.contactNumber)&& (formatedInfo.phoneNumber = data.phoneNumber || data.contactNumber);
 
     if(data.metadata){
         let formatedMetadata ={};

@@ -15,6 +15,7 @@ const {appSettings}= require("../utils/constant");
 
 
 const createCustomer = (customer, application, transaction) => {
+     delete customer["role"];
     return Promise.resolve(customerModel.findOrCreate({ where: { userName: customer.userName }, defaults: customer })).then((customer) => {
         let userId = customer[0].userName;
         let conversationAssignee = {};

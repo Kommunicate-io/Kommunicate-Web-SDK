@@ -17,7 +17,8 @@ export default {
         MULTIPLE_GROUP_INFO : "/rest/ws/group/v3/info",
         EDIT_APPLICATION:"/rest/ws/application/v2/edit",
         SEARCH_USER:"/rest/ws/user/search/contact",
-        GET_MESSAGE_LIST: "/rest/ws/message/list"
+        GET_MESSAGE_LIST: "/rest/ws/message/list",
+        GROUP_ALL: "/rest/ws/group/all"
     }, 
     kommunicateApi: {
         LOGIN: "/login",

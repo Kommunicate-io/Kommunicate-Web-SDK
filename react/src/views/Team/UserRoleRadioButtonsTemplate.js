@@ -19,7 +19,7 @@ const UserRoleRadioButtonsTemplate = props => (
         <div className="km-teammates-user-role-container">
             <h5 className="teammates-add-member-modal-role">Role</h5>
             <div className="teammates-add-member-modal-radio-btn-wrapper">
-                <RadioButton idRadioButton={'teammates-admin-radio'} handleOnChange={props.handleOnChange} dataValue={ROLE_TYPE.AGENT} checked={props.selectedRole == ROLE_TYPE.AGENT} label={<RoleContainer role={ROLE_TYPE.AGENT} />} />
+                <RadioButton cssClass="product product-kommunicate" idRadioButton={'teammates-admin-radio'} handleOnChange={props.handleOnChange} dataValue={ROLE_TYPE.AGENT} checked={props.selectedRole == ROLE_TYPE.AGENT} label={<RoleContainer role={ROLE_TYPE.AGENT} />} />
 
                 <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={props.handleOnChange} dataValue={ROLE_TYPE.ADMIN} checked={props.selectedRole == ROLE_TYPE.ADMIN} label={<RoleContainer role={ROLE_TYPE.ADMIN} />} />
 

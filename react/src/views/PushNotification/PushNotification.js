@@ -322,7 +322,7 @@ class PushNotification extends Component {
                   <div>
                     <div className="form-group fcm"><span>For Android (GCM/FCM)</span>
                     {
-                        !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                        CommonUtils.isKommunicateDashboard() && !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                       }
                     </div>
                     <div className="row form-group">
@@ -364,7 +364,7 @@ class PushNotification extends Component {
 
                     <div className="form-group fcm" style={{marginTop:"20px"}}><span>For iOS(APNS)</span>
                     {
-                        !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                        CommonUtils.isKommunicateDashboard() && !this.state.isTrialPlan && this.state.isStartUpPlan && <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                       }
                     </div>
                     <div className="form-group fcm ">For DISTRIBUTION<span className="customer-type"> </span></div>

@@ -3,6 +3,7 @@ import React from 'react';
 import {updatePassword} from '../../../utils/kommunicateClient';
 import {getConfig} from '../../../config/config';
 import CommonUtils from '../../../utils/CommonUtils';
+import Button from '../../../components/Buttons/Button';
 
 class PasswordReset extends React.Component{
 
@@ -86,7 +87,7 @@ class PasswordReset extends React.Component{
                     </div>
                     <div className="row">
                       <div className="col-3">
-                        <button id="submit-button" type="button" className="btn btn-primary px-3 km-login-btn" onClick={(event) => this.updatePassword(event)}>Submit</button>
+                        <Button id="submit-button" type="button" autoFocus={true} className="btn btn-primary px-3 km-login-btn" onClick={(event) => this.updatePassword(event)}>Submit</Button>
                       </div>
                     </div>
                   </div>

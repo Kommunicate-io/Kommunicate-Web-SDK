@@ -105,11 +105,17 @@ const CommonUtils = {
     isStartupPlan: function() {
         return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
     },
+    isEnterprisePlan: function() {
+        return typeof CommonUtils.getUserSession().subscription != 'undefined' || CommonUtils.getUserSession().subscription.indexOf("enterprise") != -1;
+    },
     isApplozicTrialPlan: function() {
         return CommonUtils.getUserSession().application.pricingPackage == 0;
     },
     isTrialPlan: function() {
         return CommonUtils.getDaysCount() < 31 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan());
+    },
+    hasFeatureAccess: function() {
+        return CommonUtils.isTrialPlan() || !CommonUtils.isStartupPlan();
     },
     getApplicationExpiryDate () {
         var applicationCreatedAt = CommonUtils.getUserSession().applicationCreatedAt ;
@@ -192,20 +198,10 @@ const CommonUtils = {
     },
     //pass number of days you want to calculate forward to in countTo variable.
     countDaysForward: function(countTo, type) {
-        var currentDate = new Date();
         var numberOfDaysToAdd, timeStamp, diff, now;
         var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
-        if(type === "days") {
-            numberOfDaysToAdd = countTo;
-            currentDate.setDate(currentDate.getDate() + numberOfDaysToAdd);
-            var dd = currentDate.getDate();
-            var mm = currentDate.getMonth() + 1;
-            mm = months[mm - 1];
-            var y = currentDate.getFullYear();
-            var calculatedDate = dd + ' ' + mm + ', '+ y;
-            return calculatedDate;
-        } else if(type === "timestamp") {
+        if(type === "timestamp") {
             countTo = countTo*1000;
             var date = new Date(countTo)
             date.setDate(date.getDate());
@@ -215,6 +211,9 @@ const CommonUtils = {
             var y = date.getFullYear();
             var calculatedDate = dd + ' ' + mm + ', '+ y;
             return calculatedDate;
+        }
+        else {
+            return moment().add(countTo, type).format("D MMMM, YYYY");;
         }
     },
     updateUserSession : function(data,){
@@ -239,21 +238,24 @@ const CommonUtils = {
         if (CommonUtils.getUrlParameter(window.location.href, 'product')) {
             return CommonUtils.getUrlParameter(window.location.href, 'product');
         } else if(userSession) {
-            if (userSession.application.pricingPackage <= 100) {
-                return "applozic";
-            } else if (userSession.application.pricingPackage <= 200) {
+            if (userSession.application.pricingPackage >= 100) {
                 return "kommunicate";
             } else {
-                return "kommunicate";
+                return getConfig().brand ? getConfig().brand : "applozic";
             }
-        } else if (getConfig().brand) {
-            return getConfig().brand;
         }
 
-        return "kommunicate";
+        return getConfig().brand ? getConfig().brand : "kommunicate";
     },
     getProductName: function() {
         return this.getProduct() == "applozic" ? "Applozic":"Kommunicate";
+    },
+    hasApplozicAccess: function() {
+        let userSession = this.getUserSession();
+        if (userSession) {
+            return userSession.application.pricingPackage < 100 || userSession.application.pricingPackage >= 200;
+        }
+        return this.isProductApplozic();
     },
     isProductApplozic: function() {
         return this.getProduct() == "applozic";
@@ -294,6 +296,25 @@ const CommonUtils = {
         return THIRD_PARTY_LOGIN.some(function (el) {
             return el === loginVia;
         });
+    },
+    getContactImageByAlphabet: function(name) {
+        var displayName = name;
+        var name = displayName.charAt(0).toUpperCase();
+        var className = "alpha_user";
+
+        if (typeof name !== "string" || typeof name === 'undefined' || name === "") {
+            className = "km-icon-user km-alpha-user";
+            return [name, className];
+        }
+        var first_alpha = name.charAt(0);
+        var letters = /^[a-zA-Z0-9]+$/;
+        if (first_alpha.match(letters)) {
+            first_alpha = "alpha_" + first_alpha.toUpperCase();
+            return [name, first_alpha];
+        }
+        else {
+            return [name, className];
+        }
     },isObject: function(object) {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {getConfig, getEnvironmentId} from '../config/config';
 import CommonUtils from '../utils/CommonUtils';
+import config from "../config/index";
+import url from '../config/url';
 
 const ApplozicClient ={
 
@@ -69,13 +71,8 @@ const ApplozicClient ={
    },
 
 updateUserDetail:function(params){
-  let userSession = CommonUtils.getUserSession();
-  let headers = {
-    'Content-Type': 'application/json',
-      'Apz-AppId': userSession.application.applicationId,
-      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-      'Of-User-Id':params.ofUserId
-    }
+    var headers = ApplozicClient.commonHeaders();
+    headers['Of-User-Id'] = params.ofUserId;
     var url = getConfig().applozicPlugin.updateApplozicUser;
    
   return Promise.resolve(axios({
@@ -405,13 +402,31 @@ updateUserDetail:function(params){
     });
 
   },
-  getMessageGroups : (data) => {
+  getMessageGroups : (params, headers) => {
     var API_HEADERS = ApplozicClient.commonHeaders();
+    delete API_HEADERS["Apz-Product-App"];
+    API_HEADERS["Of-User-Id"] = headers["Of-User-Id"];
     var url = getConfig().applozicPlugin.getMessageList;
   
     return Promise.resolve(axios({
       method: 'get',
       url: url,
+      headers: API_HEADERS,
+      params: params
+    })).then(response => {
+        return response;
+    }).catch( err => {
+      console.log(err);
+    })
+  },
+  getAllGroupsAndMessages : (data) => {
+    var API_HEADERS = ApplozicClient.commonHeaders();
+    delete API_HEADERS["Apz-Product-App"];
+    var apiUrl = config.baseurl.applozicAPI + url.applozic.GROUP_ALL;
+  
+    return Promise.resolve(axios({
+      method: 'get',
+      url: apiUrl,
       headers: API_HEADERS,
       params: data
     })).then(response => {

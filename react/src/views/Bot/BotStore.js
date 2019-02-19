@@ -6,7 +6,7 @@ import axios from 'axios';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
@@ -25,6 +25,26 @@ import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
 import Banner from '../../components/Banner/Banner';
 import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
+import Button from '../../components/Buttons/Button';
+import styled, { withTheme } from 'styled-components';
+
+const TextArea = styled.textarea`
+    resize: none;
+    border-radius: 4px;
+    border: solid 1px #e1dbdb;
+    width: 100%;
+    font-size: 14px;
+    outline: 0;
+    background: transparent;
+    margin: 10px auto;
+    padding: 10px;
+
+    &:focus {
+        border: solid 1px ${props => props.theme.primary};
+        outline: 0;
+    }
+`;
+
 const customStyles = {
   content: {
     top: '50%',
@@ -40,7 +60,7 @@ const customStyles = {
     paddingRight: '32px'
   }
 };
-export default class BotStore extends Component {
+class BotStore extends Component {
     constructor(props) {
         super(props);
 
@@ -539,18 +559,18 @@ export default class BotStore extends Component {
     render() {
         return(
             <div className="km-bot-store-main-container">
-                <div className={this.state.listOfIntegratedBots.length >0 ?"banner-container" : "banner-container n-vis"}>
+                <div className={this.state.listOfIntegratedBots.length > (CommonUtils.isProductApplozic() ? 1:0) ?"banner-container" : "banner-container n-vis"}>
                   <div className="banner-div">
                     <span className="banner-sub-text">You have <span className="banner-main-text" style={{marginRight:"0px", paddingLeft:"0px"}}>{this.state.listOfIntegratedBots.length} bots</span>  integrated</span>
 
-                    <a className="bot-routing-link" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
+                    <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
                 <div className={!this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
                 <div className="col-sm-6 km-bot-integration-second-container-text-container">
                   <p className="km-bot-request-bot-heading">Want a custom bot made for you?</p>
                   <p className="km-bot-request-bot-sub-heading">Tell us your bot use-case and we will take care of everything else</p>
-                  <p style={{fontSize : "16px"}} onClick={this.toggleUseCaseModal}>REQUEST CUSTOM BOT</p>
+                  <p className="brand-color" style={{fontSize : "16px"}} onClick={this.toggleUseCaseModal}>REQUEST CUSTOM BOT</p>
                 </div>
                 <div className="col-sm-6 km-bot-section-image" >
                 <BotSectionSvg />
@@ -590,7 +610,7 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Dialogflow <br /> 
                   <span>Dialogflow is a Google-owned chatbot builder </span>
                   </p>
-                  <p className="km-integrated-bot-text">
+                  <p className="km-integrated-bot-text brand-color">
                   {this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
                   <p className={this.integratedBotCount(SUPPORTED_PLATFORM.DIALOGFLOW,this.state.listOfIntegratedBots)>0 ? "km-integrated-bot-info":"n-vis" } 
@@ -604,7 +624,7 @@ export default class BotStore extends Component {
                   <p className="km-bot-type">Other bot platforms <br /> 
                   <span>For bot platforms other than Dialogflow</span>
                   </p>
-                  <p className="km-integrated-bot-text">
+                  <p className="km-integrated-bot-text brand-color">
                   {this.integratedBotCount(SUPPORTED_PLATFORM.CUSTOM,this.state.listOfIntegratedBots)>=1 ?  "INTEGRATE ANOTHER BOT" : "INTEGRATE BOT" } 
                   </p>
 
@@ -632,14 +652,14 @@ export default class BotStore extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-                <textarea rows="5" className="form-control" style={{resize: "none"}} placeholder="Example: I need a bot for hotel booking. It should be able to manage bookings." onChange={(event) => this.setState({botUseCaseText: event.target.value})} value={this.state.botUseCaseText} />
+                <TextArea rows="5" placeholder="Example: I need a bot for hotel booking. It should be able to manage bookings." onChange={(event) => this.setState({botUseCaseText: event.target.value})} value={this.state.botUseCaseText} />
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={ () => {this.submitEmail("USE_CASE_REQUEST")} }>
+                <Button onClick={ () => {this.submitEmail("USE_CASE_REQUEST")} }>
                   Submit Usecase
-                </button>
+                </Button>
               </div>
             </div>
           </ModalBody>
@@ -662,9 +682,9 @@ export default class BotStore extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={ () => {this.submitEmail("BOT_PLATFORM_REQUEST")}}>
+                <Button onClick={ () => {this.submitEmail("BOT_PLATFORM_REQUEST")}}>
                   Submit Platform Request
-                </button>
+                </Button>
               </div>
             </div>
           </ModalBody>
@@ -723,9 +743,9 @@ export default class BotStore extends Component {
             }
               <div className="row" style={{marginTop: "66px"}}>
                 <div className="col-sm-12 text-right">
-                  <button className="btn btn-primary" onClick={this.openBotProfileModal} disabled={this.state.enableButton}>
+                  <Button onClick={this.openBotProfileModal} disabled={this.state.enableButton}>
                     Next
-                  </button>
+                  </Button>
                 </div>
               </div>
           </ModalBody>
@@ -739,11 +759,12 @@ export default class BotStore extends Component {
                 <span className="km-selected-bot-name">Give your bot a name and face</span>
               </div>
             </div>
-                {  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
+                {  (CommonUtils.isKommunicateDashboard() && !CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
                   <Banner indicator={"default"} hidden={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                 }
-                {  (CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
-                  <Banner indicator={"warning"} hidden={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(30, 'days')})</strong>," to ensure that all bot related features continue to work"]} />
+
+                {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
+                  <Banner indicator={"warning"} hidden={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 
             <ModalBody>
@@ -772,12 +793,10 @@ export default class BotStore extends Component {
               </div>
               <div className="" style={{marginTop: "20px"}}>
                 <div className="km-cancel-delete">
-                  <button className="km-button km-button--secondary " onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
-                    Cancel
-                  </button>
-                  <button className="km-button km-button--primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
+                  <Button secondary onClick={this.onCloseModal} style={{marginRight: "16px"}}>Cancel</Button>
+                  <Button onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
                     Integrate bot
-                  </button>
+                  </Button>
                 </div>
               </div>
             </ModalBody>
@@ -795,3 +814,5 @@ export default class BotStore extends Component {
         );
     }
 }
+
+export default withTheme(BotStore);

@@ -163,12 +163,15 @@ class ThirdPartyScripts extends Component {
         document.body.appendChild(script);
 
 
-        //Start of HubSpot Embed Code
-         const hubSpotScript = document.createElement("script");
-         hubSpotScript.src = "//js.hs-scripts.com/4025922.js";
-         hubSpotScript.async = true;
-         hubSpotScript.defer =true;
-        document.body.appendChild(hubSpotScript);
+        if(CommonUtils.isKommunicateDashboard()) {
+          //Start of HubSpot Embed Code
+          const hubSpotScript = document.createElement("script");
+          hubSpotScript.src = "//js.hs-scripts.com/2593340.js";
+          hubSpotScript.id = "hs-script-loader";
+          hubSpotScript.async = true;
+          hubSpotScript.defer =true;
+          document.body.appendChild(hubSpotScript);
+        }
     }
 
     render(){

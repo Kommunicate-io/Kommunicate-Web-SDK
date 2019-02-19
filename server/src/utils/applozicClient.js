@@ -364,6 +364,8 @@ const sendGroupMessagePxy = (messagePxy, headers) => {
 }
 
 exports.updatePassword = (options) => {
+  //Todo: check if the same email is registered as Admin in Applozic for the same applicationId then update Applozic password for it.
+
   console.log("calling Applozic for update password with options: ", options);
   const url = config.getProperties().urls.passwordResetUrl;
   const apzToken = "Basic " + new Buffer(options.userName + ":" + options.oldPassword).toString('base64');
@@ -375,7 +377,7 @@ exports.updatePassword = (options) => {
     "Apz-AppId": options.applicationId, 
     "Apz-Product-App": true, 
     "Apz-Token": apzToken ,
-    "conContent-Typet":"application/x-www-form-urlencoded"
+    "Content-Type":"application/x-www-form-urlencoded"
   };
   return axios.get(url, { params: params, headers: headers}).then(response => {
     if (response.data && response.data.status == "success") {

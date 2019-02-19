@@ -6,8 +6,8 @@ import ProfileImageName from '../Header/ProfileImageName';
 import IntegrationStarted from '../../views/IntegrationStarted/IntegrationStarted';
 import CommonUtils from '../../utils/CommonUtils';
 import { withTheme } from 'styled-components';
-import { KommunicateLogoSymbol, ApplozicLogoSymbol } from '../../assets/svg/svgs';
 import {NOTICEABLE_CREDENTIALS} from '../../utils/Constant';
+import { KommunicateLogoSymbol, ApplozicLogoSymbol, MessageLogs } from '../../assets/svg/svgs';
 
 const UserIcon = ()=>{
   return(
@@ -75,13 +75,6 @@ class Sidebar extends Component {
     )
   }
 
-  launchSideboxChat() {
-    window.$applozic.fn.applozic('mckLaunchSideboxChat');
-    document.querySelector('.faq-common').classList.add('n-vis');
-    document.getElementById('mck-away-msg-box').classList.remove('vis');
-    document.getElementById('mck-away-msg-box').classList.add('n-vis');
-  }
-
   addNoticeableWidget () {
     NOTICEABLE_CREDENTIALS;
     return <noticeable-widget 
@@ -90,6 +83,7 @@ class Sidebar extends Component {
               popup-backdrop="false">
            </noticeable-widget>
   };
+
   render() {
 
     const currentPath = window.location.pathname;
@@ -136,19 +130,13 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             }
-            {/* Applozic Groups Link */
-            // this.state.isApplozicDashboard &&<li className="nav-item">
-            //   <NavLink exact= {true} to={'/message-groups'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Groups" data-effect="solid" data-place="right">
-            //     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            //       <g data-name="Group 4">
-            //           <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 2" />
-            //           <path fill="#FFFFFF" d="M2 5.288v11.377a1.183 1.183 0 0 0 1.159 1.288h6.474l2.222 2.361a1.039 1.039 0 0 0 1.643 0l2.029-2.361h5.314A1.183 1.183 0 0 0 22 16.665V5.288A1.183 1.183 0 0 0 20.841 4H3.159A1.183 1.183 0 0 0 2 5.288zm11.111 9.66H4.319a.524.524 0 0 1-.483-.644.485.485 0 0 1 .483-.644h8.792c.29 0 .483.215.483.644a.667.667 0 0 1-.483.644zm6.377-3.542H4.319q-.58 0-.58-.644 0-.483.58-.644h15.266a.524.524 0 0 1 .483.644.588.588 0 0 1-.58.644zm0-3.435H4.319q-.58-.161-.58-.644c0-.322.193-.644.483-.644h15.266a.524.524 0 0 1 .483.644c.097.322-.193.537-.483.644z"
-            //           data-name="Path 1" />
-            //       </g>
-            //     </svg>
-            //   </NavLink>
-            // </li>
-            }
+            {/* Message Logs Link */}
+            <li className="nav-item product product-applozic">
+              <NavLink exact= {true} to={'/message-logs'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Logs" data-effect="solid" data-place="right">
+                <MessageLogs />
+              </NavLink>
+            </li>
+            
             {/* Customers Link */}
             <li className="nav-item">
               <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Users" data-effect="solid" data-place="right">
@@ -208,21 +196,6 @@ class Sidebar extends Component {
           </ul>
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
           <ul className="nav">
-            
-            {/* Help Link */}
-            {/* <li className="nav-item">
-            <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
-            onClick={this.launchSideboxChat} 
-                className="nav-link  n-vis" data-tip="Help" data-effect="solid" data-place="right">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g data-name="Group 2">
-                  <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 8" />
-                  <path fill="#fff" d="M12 22A10.011 10.011 0 0 1 2 12 10.011 10.011 0 0 1 12 2a10.011 10.011 0 0 1 10 10 10.011 10.011 0 0 1-10 10zm0-5a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1zm0-5a1 1 0 0 0-1 .985V15a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-.782a.5.5 0 0 1 .35-.472 3.981 3.981 0 0 0 2.535-4.7 3.952 3.952 0 0 0-2.957-2.942 4.3 4.3 0 0 0-.95-.108 3.989 3.989 0 0 0-3.983 3.949v.148a.988.988 0 0 0 .982.9 1 1 0 0 0 1-1 2.015 2.015 0 0 1 2-1.96 2.017 2.017 0 0 1 2 1.958A2 2 0 0 1 12 12z"
-                  data-name="Exclusion 1" />
-                </g>
-              </svg>
-            </a>
-            </li> */}
 
             {/* IntegrationStarted icon */}
             { this.props.isIntegrationStarted ?

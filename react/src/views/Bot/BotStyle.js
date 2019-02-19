@@ -24,7 +24,7 @@ const Instruction = styled.div`
             width: 20px;
             height: 20px;
             border-radius: 11.5px;
-            background-color: #5553b7;
+            background-color: ${props => props.theme.primary};
             text-align: center;
             margin-right: 11px;
     }
@@ -44,6 +44,9 @@ const Instruction = styled.div`
     }
     & .Linkify {
         max-width: 90%;
+    }
+    & .Linkify a {
+        color: ${props => props.theme.primary};
     }
 `;
 const Footer = styled.div`

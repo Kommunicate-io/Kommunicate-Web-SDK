@@ -1,29 +1,9 @@
-const routes = require("../routers/routes.js");
-const autoSuggestModel = require("../models").AutoSuggest;
-const db = require("../models");
-const stringUtils = require("underscore.string");
-const config = require("../../conf/config");
-const Sequelize= require("sequelize");
-const Op = Sequelize.Op;
 const logger = require("../utils/logger");
 const mongoClient = require("../mongodb/client");
 const collections = require("../mongodb/collections").COLLECTIONS;
 
 const getAllSuggestions = () => {
 		return mongoClient.find({"collectionName":collections.KNOWLEDGE_BASE});
-}
-
-const getSuggestionsByUser = (userName) => {
-	return autoSuggestModel.findAll({
-		where: {
-			userName: userName,
-			deleted:false,
-			status:{'$nin':['un_answered']}
-		}})
-		.then(suggestions => {
-			return suggestions
-		})
-		.catch(err => err);
 }
 
 const getSuggestionsByAppId = (applicationId, type) => {
@@ -57,13 +37,13 @@ const createSuggestion = (suggestion) => {
 	})
 }
 
-const updateSuggetion = (suggestion) => {
+const updateSuggestion = (suggestion) => {
 	return mongoClient.updateOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id},update:suggestion}).then(mongoResult=>{
 		return mongoResult;
 	})
 }
 
-const deleteSuggetion = (suggestion) => {
+const deleteSuggestion = (suggestion) => {
 	// todo needto restrict delete on customer basic
 	//  return mongoClient.deleteOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id,applicationId:suggestion.applicationId}})
 	// .then(deleteResult=>{
@@ -100,9 +80,23 @@ exports.searchFAQ =(options)=>{
 	return data;
 }
 
+const fetchFAQs = (pageNumber, pageSize, criteria) => {
+	let query = {
+		'collectionName': collections.KNOWLEDGE_BASE,
+		'pageNumber': pageNumber,
+		'pageSize': pageSize,
+		'criteria': criteria,
+		'order': { id: 1 } // order by id ASC
+	}
+	return mongoClient.fetchPages(query).catch(error => {
+		throw error;
+	});
+}
+
+exports.fetchFAQs = fetchFAQs;
 exports.getAllSuggestions = getAllSuggestions
 exports.createSuggestion = createSuggestion
 exports.getSuggestionsByAppId = getSuggestionsByAppId
-exports.updateSuggetion = updateSuggetion
-exports.deleteSuggetion = deleteSuggetion
+exports.updateSuggestion = updateSuggestion
+exports.deleteSuggestion = deleteSuggestion
 exports.getSuggestionsByCriteria = getSuggestionsByCriteria

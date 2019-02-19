@@ -254,7 +254,7 @@ class Integration extends Component {
     });
   }
   restrictInvite = () => {
-    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >= 2) {
+    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >= 2 && CommonUtils.isKommunicateDashboard()) {
       this.setState({restrictInvite:true})
     }
   }
@@ -362,12 +362,12 @@ class Integration extends Component {
                 { !this.state.restrictInvite &&
                   <div className="teammates-add-member-modal-wrapper">
                     <div className="teammates-add-member-modal-header">
-                      <p className="teammates-add-member-modal-header-title" >Adding new team member</p>
+                      <p className="teammates-add-member-modal-header-title">Adding new team member</p>
                     </div>
-                    <hr className="teammates-add-member-modal-divider" />
-                      <Banner indicator={"warning"} hidden={!this.state.isTrialPlan} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
+                    <hr className="teammates-add-member-modal-divider product product-kommunicate" />
+                      <Banner indicator={"warning"} hidden={!(CommonUtils.isKommunicateDashboard() && this.state.isTrialPlan)} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
                     { !this.state.isTrialPlan &&
-                    <div className="teammates-billing-update-container">
+                    <div className="teammates-billing-update-container product product-kommunicate">
                       <div className="teammates-billing-update-text">
                       Adding a team member will automatically increase the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
                       </div>
@@ -438,7 +438,7 @@ class Integration extends Component {
                         <div className="tm-disabled-link-btn">
                           <Button secondary as={Link} to="/settings/billing" className="tm-upgrade-btn" >Upgrade plan</Button>
                           { !this.state.hideSeeDisabledAccounts && 
-                            <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
+                            <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn brand-color">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
                           }
                         </div>
                       </div>

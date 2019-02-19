@@ -169,7 +169,7 @@ class CustomerListItem extends Component {
       {
         this.props.hideConversation == "true"
           ? null
-          : <td className="km-conversation-tab-link" data-km-id={groupId + ''} data-isgroup= {openGroupChat + ''}>
+          : <td className="km-conversation-tab-link product product-kommunicate" data-km-id={groupId + ''} data-isgroup= {openGroupChat + ''}>
               {
                 latestConversation == null
                   ? <button type="submit" className="km-button km-button--secondary" onClick={(event) => this.handleClick(event)}>Start Conversation</button>

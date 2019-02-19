@@ -5,9 +5,22 @@ import { withRouter } from 'react-router-dom';
 
 const customStyles = {
     input: () => ({
-        padding: '8px 0',
+        padding: '16px 0',
+        maxWidth: '992px',
+        overflow: 'hidden'
     }),
-};
+    valueContainer: (provided) =>({
+        ...provided,
+        paddingLeft:'45px',
+        overflow: 'hidden',
+    }),
+    singleValue: (provided) =>({
+        ...provided,
+        maxWidth: 'calc(100% - 44px)',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
+    })
+}
 
 class HelpQuerySearch extends Component {
     constructor(props){
@@ -18,12 +31,11 @@ class HelpQuerySearch extends Component {
             searchQuery : '',
             faqList: '',
             searchedFaqList: '',
-            isDropDownOpen: false,
+            isDropDownOpen: true,
             value: ''
         };
     }
-
-    getSearchResults = (inputValue) => {
+    getFaqListFromServer = () => {
         var _this = this
         this.state.inputValue && CommonUtils.searchFaq(this.state.appId, this.state.inputValue).then(response=>{
             response && _this.setState({
@@ -31,20 +43,21 @@ class HelpQuerySearch extends Component {
             })
         })
         this.closeDropdownOnEmptyInput();
+    }
+    filterFaqList = (inputValue) => {
         return this.state.searchedFaqList
     };
       
     loadOptions = (inputValue, callback) => {
+        this.getFaqListFromServer();
         setTimeout(() => {
-            callback(this.getSearchResults());
+            callback(this.filterFaqList());
         }, 1000);
     };
     
     handleInputChange = (newValue) => {
-        const inputValue = newValue.replace(/\W/g, '');
-        this.setState({ inputValue: inputValue });
+        this.setState({ inputValue: newValue });
         this.closeDropdownOnEmptyInput();
-        return inputValue;
     };
 
     closeDropdownOnEmptyInput = ()=>{
@@ -79,6 +92,7 @@ class HelpQuerySearch extends Component {
     return (
       <div>
         <AsyncSelect
+          key={this.state.faqList}
           styles={customStyles}
           menuIsOpen={this.state.isDropDownOpen}
           loadOptions={this.loadOptions}
@@ -86,15 +100,15 @@ class HelpQuerySearch extends Component {
           onInputChange={this.handleInputChange}
           getOptionLabel={({ name }) => name}
           getOptionValue={({ id }) => id}
-          onBlurResetsInput={true}
-          onCloseResetsInput={true}  
+          onBlurResetsInput={false}
+          onCloseResetsInput={false}  
           cacheOptions={false}
           onChange={this.getSelectedFaq}
           blurInputOnSelect={false}
-          components={{DropdownIndicator:null,clearIndicator:true}}
+          components={{DropdownIndicator:null,clearIndicator:true }}
           isClearable = {true}
           placeholder="Search Helpcenter"
-          handleOnChange={this.handleSearchbarChange}
+          filterOptions= {false}
         />
       </div>
     );

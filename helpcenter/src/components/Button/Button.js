@@ -36,6 +36,21 @@ const buttonDisabledState = (prop) => {
     }
 
 }
+const brandedButton = (prop) => {
+    if (prop.branded) {
+        return css `
+        border-color:${props=> props.theme.primaryColor};
+        background-color:${props=> props.theme.primaryColor};
+        border-width: 2px;
+        font-weight: ${props=> props.theme.fontBold};
+        color:#fff;
+        letter-spacing: .8px;
+        font-size: 18px;
+        box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.3);
+    `;
+    }
+
+}
 const buttonHoverState = (prop) => {
     return css `
     &:after {
@@ -59,7 +74,7 @@ const Button = styled.button `
     border: 1px solid;
     overflow: hidden;
     position: relative;
-    padding: 10px 20px;
+    padding: 11px 25px;
     cursor: pointer;
 
   &:after {
@@ -82,5 +97,6 @@ const Button = styled.button `
   &:disabled{
     ${buttonDisabledState} 
   }
+  ${brandedButton}
 `
 export default Button;
