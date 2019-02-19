@@ -238,21 +238,24 @@ const CommonUtils = {
         if (CommonUtils.getUrlParameter(window.location.href, 'product')) {
             return CommonUtils.getUrlParameter(window.location.href, 'product');
         } else if(userSession) {
-            if (userSession.application.pricingPackage <= 100) {
-                return "applozic";
-            } else if (userSession.application.pricingPackage <= 200) {
+            if (userSession.application.pricingPackage >= 100) {
                 return "kommunicate";
             } else {
-                return "kommunicate";
+                return getConfig().brand ? getConfig().brand : "applozic";
             }
-        } else if (getConfig().brand) {
-            return getConfig().brand;
         }
 
-        return "kommunicate";
+        return getConfig().brand ? getConfig().brand : "kommunicate";
     },
     getProductName: function() {
         return this.getProduct() == "applozic" ? "Applozic":"Kommunicate";
+    },
+    hasApplozicAccess: function() {
+        let userSession = this.getUserSession();
+        if (userSession) {
+            return userSession.application.pricingPackage < 100 || userSession.application.pricingPackage >= 200;
+        }
+        return this.isProductApplozic();
     },
     isProductApplozic: function() {
         return this.getProduct() == "applozic";
