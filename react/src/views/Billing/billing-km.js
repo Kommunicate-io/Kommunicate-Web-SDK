@@ -831,13 +831,13 @@ class BillingKommunicate extends Component {
                                                             <li>Analytics APIs</li>
                                                             <li>Downloadable reports</li>
                                                             <li>Advanced reporting</li>
-                                                            <li>Custom bots</li>
+                                                            <li>Conversation auto-closing</li>
                                                             <li>Whitelabel</li>
                                                             <li>Dedicated server</li>
                                                             <li>Premium support</li>
                                                             <li>Custom SLA</li>
                                                             <li>Routing rules</li>
-                                                            <li>CSAT score</li>
+                                                            <li>Custom domain mapping</li>
                                                             <li>Unlimited scaling</li>
                                                         </ul>
                                                     </div>
