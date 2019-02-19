@@ -698,7 +698,7 @@ class BillingKommunicate extends Component {
                                             </svg>
                                         </div>
                                         <div className="subscription-warning-detail">
-                                            <p>You have added {this.state.disabledUsers + this.state.kmActiveUsers} team members but have bought the plan for only {this.state.totalPlanQuantity} team members</p>
+                                            <p>You have added {this.state.seatsBillable + this.state.disabledUsers} team members (humans + bots) but have bought the plan for only {this.state.totalPlanQuantity} team members</p>
                                             <p>To make sure all the right team members can log in to their Kommunicate account, delete the extra ones from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
                                     </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to add or delete agents in your current plan? Go to <Link to="/settings/team">Teammates section</Link></p> : ""
