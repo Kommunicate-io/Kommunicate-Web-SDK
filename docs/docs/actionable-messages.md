@@ -38,7 +38,9 @@ Here is a list of available Actionable Messages:
 * Quick Replies
 * Images
 * List
-* Cards (coming soon)
+* Cards
+	* Generic Card
+	* Card Carousel
 
 ## Buttons 
 
