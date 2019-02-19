@@ -412,6 +412,10 @@
     letter-spacing: .4px;
     margin-bottom: 20px;
     color: #4a4a4a;
+
+    @media (max-width: 600px){
+        font-size: 14px;
+    }
 }
 
 /* FAQ CSS STYLES ENDS HERE */

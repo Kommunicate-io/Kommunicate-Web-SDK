@@ -332,3 +332,25 @@ export const FourOhFourThree = props => (
     </g>
   </svg>
 )
+
+export const BackButton = props => (
+  <svg width={10} height={17} {...props}>
+    <title>{'Triangle 3'}</title>
+    <path
+      d="M8.5 1.5l-7 7h0l7 7"
+      stroke="#FFF"
+      strokeWidth={2}
+      fill="none"
+      fillRule="evenodd"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+export const ClearButton = props => (
+  <svg width={24} height={24} {...props}>
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="#858585" />
+    <path d="M0 0h24v24H0z" fill="none" />
+  </svg>
+)

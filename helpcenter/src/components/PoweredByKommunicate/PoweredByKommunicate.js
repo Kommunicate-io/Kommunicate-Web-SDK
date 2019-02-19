@@ -8,7 +8,7 @@ export default class PoweredByKommunicate extends Component {
     render() {
         return (
                <PoweredBy>
-                   <PoweredByLink href={CommonUtils.getKommunicateWebsiteUrl()} target="_blank"> <KommunicateLogo  fillcolor={"#cacaca"}/> Powered by Kommunicate </PoweredByLink>
+                   <PoweredByLink href={CommonUtils.getKommunicateWebsiteUrl()} target="_blank"> <KommunicateLogo  fillcolor={this.props.fill}/> <span style={{color:this.props.textColor}}>Powered by Kommunicate</span> </PoweredByLink>
                </PoweredBy>
         )
     }

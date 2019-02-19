@@ -22,18 +22,24 @@ export const FaqListItem = styled.div`
 `
 
 export const FaqListTitle = styled.h2`
-    white-space: pre;
+    white-space: pre-line;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 6px 0;
     font-size: ${props => props.theme.faqListTitleFontSize};
     color: #4a4a4a;
+    ${StyleUtils.mediaQuery.tablet`
+        font-size: 16px;
+    `}
 `
 export const FaqListContent = styled.div`
-    white-space: pre;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 6px 0;
     font-size: ${props => props.theme.faqListContentFontSize};
     color: #858585;
+    ${StyleUtils.mediaQuery.tablet`
+        font-size: 14px;
+    `}
 `
