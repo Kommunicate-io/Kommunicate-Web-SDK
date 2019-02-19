@@ -125,8 +125,7 @@ class BillingKommunicate extends Component {
 
         this.chargebeeInit();
         this.getAgents();
-        this.getPlanDetails();
-        this.getIntegratedBotsNumber();   
+        this.getPlanDetails(); 
     }
 
     sendSubscriptionInfo = (subscription)=>{
@@ -432,7 +431,7 @@ class BillingKommunicate extends Component {
           this.setState({
             kmActiveUsers: kmActiveUsers.length,
             disabledUsers: disabledUsers.length
-          });
+          }, () => this.getIntegratedBotsNumber());
         }).catch(err => {
            console.log("err while fetching users list", err);
         });
@@ -495,8 +494,7 @@ class BillingKommunicate extends Component {
         getIntegratedBots().then(response => {
           this.setState({
             numberOfIntegratedBots: (response && response.allBots) ? Math.max(response.allBots.length -1, 0): 0
-          }),
-          this.setBillableSeats()
+          }, () => this.setBillableSeats());
         });
       }
 
