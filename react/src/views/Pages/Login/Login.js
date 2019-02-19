@@ -83,13 +83,13 @@ class Login extends Component {
 			var url = this.state.googleLoginUrl + "&state=" + referer;
 			this.setState({next:referer, googleLoginUrl:url});
 		}
-
-		if(CommonUtils.getUserSession()) {
-			window.location = this.state.next;
-		}
+		this.autoLoginViaEmailAndPassInUrl(function (forceLogin, that) {
+			if (CommonUtils.getUserSession() && !forceLogin) {
+				window.location = that.state.next; 
+			}
+		});
 
 		const googleLogin = CommonUtils.getUrlParameter(search, 'googleLogin');
-
 		if(googleLogin === 'true'){
 			const email = CommonUtils.getUrlParameter(search, 'email')
 			const loginType = CommonUtils.getUrlParameter(search, 'loginType')
@@ -132,6 +132,26 @@ class Login extends Component {
 
 	}
 
+	autoLoginViaEmailAndPassInUrl = (callback) => {
+		var forceLogin = false;
+		const search = this.props.location.search;
+		let emailUrl = CommonUtils.getUrlParameter(search, 'email');
+		let passUrl = CommonUtils.getUrlParameter(search, 'password');
+		if (emailUrl && passUrl){
+			forceLogin = true;
+			this.setState({
+				userName :emailUrl,
+				password: passUrl
+			},()=> {
+				this.submitForm();
+			}
+			);
+		};
+		if(typeof callback =="function"){
+			var that = this;
+			callback(forceLogin, that);
+	}
+	};
 
 	onKeyPress(e) {
 		if (e.charCode == 13) {
