@@ -20,7 +20,7 @@ class PersonConversationHistory extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        if (this.props.user.userId !== prevProps.user.userId) {
+        if (prevProps.group && (this.props.group.id !== prevProps.group.id)) {
             this.fetchUserConversations();
         }
     }

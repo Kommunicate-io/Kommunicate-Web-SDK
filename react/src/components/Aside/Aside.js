@@ -1134,7 +1134,7 @@ class Aside extends Component {
                       </div>
                     </div>
                   </div>
-                  <PersonInfoCard user={this.state.userInfo}/>
+                  <PersonInfoCard user={this.state.userInfo} group={this.state.group}/>
                   </div>
                 <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">
