@@ -330,7 +330,7 @@ Here is the sample JSON for card carousel:
         "title": "OYO Rooms 1",
         "subtitle": "Kundanahalli road turn.",
         "header": {
-          "overlayText": "Rs. 4000",
+          "overlayText": "$400",
           "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
         },
         "description": "Bharathi Road \n Near Head Post Office",
@@ -365,7 +365,7 @@ Here is the sample JSON for card carousel:
               "payload": {
                 "text": "acknowledgement text",
                 "formData": {
-                  "amount": "1000",
+                  "amount": "$55",
                   "discription": "movie ticket"
                 },
                 "formAction": "https://example.com/book",
@@ -379,7 +379,7 @@ Here is the sample JSON for card carousel:
         "title": "OYO Rooms 2",
         "subtitle": "Kundanahalli ",
         "header": {
-          "overlayText": "Rs. 4000",
+          "overlayText": "$360",
           "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
         },
         "description": "Bharathi Road | Near Head Post Office, Cuddalore 607001",
@@ -401,7 +401,7 @@ Here is the sample JSON for card carousel:
               "payload": {
                 "text": "acknowledgement text",
                 "formData": {
-                  "amount": "1000",
+                  "amount": "$22",
                   "discription": "movie ticket"
                 },
                 "formAction": "https://example.com/book",
@@ -428,7 +428,7 @@ Here is the sample JSON for card carousel:
         "title": "OYO Rooms 3",
         "subtitle": "Kundanahalli ",
         "header": {
-          "overlayText": "Rs. 4000",
+          "overlayText": "$750",
           "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
         },
         "description": "Bharathi Road | Near Head Post Office, Cuddalore 607001",
@@ -450,7 +450,7 @@ Here is the sample JSON for card carousel:
               "payload": {
                 "text": "acknowledgement text",
                 "formData": {
-                  "amount": "1000",
+                  "amount": "$45",
                   "discription": "movie ticket"
                 },
                 "formAction": "https://example.com/book",
