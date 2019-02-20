@@ -40,9 +40,9 @@ Whenever users come to your website, they are assigned a random ID by default. T
 Example:
 ```javascript
 
-    var kommunicateSettings = {"appId": applicationId,
-            "userName": userName,
-            "conversationTitle":conversationTitle
+    var kommunicateSettings = {"appId": APPLICATION_ID,
+            "userName": USER_NAME,
+            "conversationTitle":CONVERSATION_TITLE
             };
 
 ```
@@ -53,39 +53,18 @@ For collecting user contact information before initiating chat, use the followin
 
 Once configured, user will see the form on click of the chat widget launch icon.
 
-#### NOTE : Atleast one field is required.
-
-```javascript
- preLeadCollection: [{
-    "field": "name",                          // Whatever column you want to add
-    "required": true,                         //make it true if you want to make it mandatory
-    "placeholder": "enter your name"          // add whatever text you want to show in placeholder
-},
-{
-    "field": "email",
-    "type": "email",
-    "required": true,
-    "placeholder": "enter your email"
-}, 
-{
-    "field": "phone",
-    "type": "number",
-    "required": true,
-    "placeholder": "enter your phone number"
-}]
-```
-
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
 
-### Example:
+#### NOTE : Atleast one field is required.
+ Example:
 ```javascript
 
    var kommunicateSettings = {
-    "appId": applicationId,
-    "conversationTitle": conversationTitle,
+    "appId": APPLICATION_ID,
+    "conversationTitle": CONVERSATION_TITLE,
     "preLeadCollection": [{
-    "field": "name",
-    "required": true,
+    "field": "name",                          // Whatever column you want to add
+    "required": true,                         // add whatever text you want to show in placeholder
     "placeholder": "enter your name"
 },
 {
@@ -138,14 +117,14 @@ Once the chat plugin is initialized and has returned success response, then you 
 
 ```
 var kommunicateSettings = {
-    "appId": appId,
-    "conversationTitle": conversationTitle,
+    "appId": APPLICATION_ID,
+    "conversationTitle": CONVERSATION_TITLE,
     "onInit": function () {
         // paste your code here
         var userdetail = {
-            "email": email,
-            "displayName": displayName,
-            "imageLink": profileImageUrl,
+            "email": EMAIL,
+            "displayName": DISPLAYNAME,
+            "imageLink": PROFILE_IMAGE_URL,
             "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
                 "companyName": value1,
                 "designation": value2,
