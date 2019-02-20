@@ -135,7 +135,7 @@ class PersonInfoCard extends Component {
                     {this.state.clearbitData ?
                             <ClearBitInfo userDetail={this.state.clearbitData} />: null
                     }
-                    <PersonConversationHistory user={this.props.user} />
+                    <PersonConversationHistory user={this.props.user} group={this.props.group} />
                 </div>
             </div> :
             <div className = "km-user-info-panel-loader"> 
