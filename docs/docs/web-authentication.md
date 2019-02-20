@@ -40,7 +40,7 @@ Whenever users come to your website, they are assigned a random ID by default. T
 Example:
 ```javascript
 
-    var kommunicateSettings = {"appId": APPLICATION_ID,
+    var kommunicateSettings = {"appId": APP_ID,
             "userName": USER_NAME,
             "conversationTitle":CONVERSATION_TITLE
             };
@@ -60,7 +60,7 @@ Once configured, user will see the form on click of the chat widget launch icon.
 ```javascript
 
    var kommunicateSettings = {
-    "appId": APPLICATION_ID,
+    "appId": APP_ID,
     "conversationTitle": CONVERSATION_TITLE,
     "preLeadCollection": [{
     "field": "name",                          // Whatever column you want to add
@@ -99,7 +99,7 @@ If the user has already logged into your website previously, then pass the user 
 Example:
 ```javascript
 
-    var kommunicateSettings = {"appId": applicationId,
+    var kommunicateSettings = {"appId": APP_ID,
             "userId": userId,
             "agentId": agentId,
             "userName": userName,
