@@ -9,7 +9,7 @@ A pure textual experience is not enough to make a conversation interactive, frui
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Quick Replies along with the message:
 
- ``` js
+ ```json
  {
 	"message":"Do you want more updates?",
 	"ignoreTextResponse": false, // pass true if you want to hide the text response which you're passing along with custom payload in intent. 
@@ -49,10 +49,10 @@ You can add any number of Button in your conversations for faster navigation. Th
 * **Link Button** 
 Link Button redirects users to a given URL in a new tab. Use below metadata to render the Link Buttons:
 
-``` JSON
+```json
 {
-    "message": "click on the buttons",
-    "platform":"kommunicate",
+	"message": "click on the buttons",
+	"platform":"kommunicate",
 	"metadata": {
 		"contentType": "300",
 		"templateId": "3",
@@ -65,7 +65,7 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 				"type": "link",
 				"url": "https://www.facebook.com",
 				"name": "Go To Facebook",
-				"openLinkInNewTab": false //optional, use this to open the link in the same window
+				"openLinkInNewTab": false //Optional. Use this to open the link in the same window
 			}
 		]
 	}
@@ -76,7 +76,7 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 Submit button allows you to post given data or redirect the user to a given URL. If parameter `requestType:json` is included it will post the data with content type `application/json` on the `formAction` url and `replyText` will be used as acknowledgement message. Default value for `replyText` is same as the value passed in `name` parameter. <br><br>
 If `requestType` parameter is not passed, it will submit the `formData` with contentType `application/x-www-form-urlencoded` and redirect the user on `formAction` url. The response will be rendered in new tab.
   
-``` JSON 
+```json 
 {
 	"message": "click the pay button",
 	"platform": "kommunicate",
@@ -101,7 +101,7 @@ If `requestType` parameter is not passed, it will submit the `formData` with con
 
 Quick Replies provides a way to send messages on a click without typing them all out manually. You can add any number of Quick Replies by passing values in the metadata as described below:
 
-``` JSON
+```json
 {
 	"message": "Do you want more updates?",
 	"platform": "kommunicate",
@@ -169,7 +169,7 @@ The list template is a list of  structured items  with a optional header image a
 
 
 
-```javascript
+```json
 // for quick reply action object will be like this:  
 "action": {
 	"type": "quick_reply",
@@ -242,7 +242,7 @@ The card template is a list of structured items with title, subtitle, image, and
 	 * Submit button - Submit button allows you to post given data or redirect the user to a given URL. 
      * Quick Reply - it will send a message with given text if passed. Default value will be title of list item or name of  button. Action is specified by the action object passed along with each item and buttons. <br>
 	 Here is the action for buttons.
-```javascript
+```json
 // for quick reply action object will be like this:  
 "action": {
     "type": "quickReply",
@@ -307,7 +307,8 @@ Here is the sample JSON for the single card :
   }
 }
 ```
-You can add any number of buttons in your card footer
+You can add any number of buttons in your card footer.
+
 ## Card Carousel
 
 The chat widget supports the sending of a horizontally scroll-able carousel of generic templates.
@@ -315,6 +316,167 @@ The chat widget supports the sending of a horizontally scroll-able carousel of g
 ![Card CarouselTemplate](/img/card-carousel.png)
 
 Payload is an array of objects, each object can be different cards. So you can pass multiple objects inside payload.
+
+Here is the sample JSON for card carousel:
+```json
+{
+  "message": "Carousel",
+  "platform": "kommunicate",
+  "metadata": {
+    "contentType": "300",
+    "templateId": "10",
+    "payload": [
+      {
+        "title": "OYO Rooms 1",
+        "subtitle": "Kundanahalli road turn.",
+        "header": {
+          "overlayText": "Rs. 4000",
+          "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
+        },
+        "description": "Bharathi Road \n Near Head Post Office",
+        "titleExt": "4.2/5",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          },
+          {
+            "name": "Quick",
+            "action": {
+              "type": "quickReply",
+              "payload": {
+                "title": "Yes",
+                "message": "text will be sent as message",
+                "replyMetadata": {
+                  "key1": "value1"
+                }
+              }
+            }
+          },
+          {
+            "name": "Submit button",
+            "action": {
+              "type": "submit",
+              "payload": {
+                "text": "acknowledgement text",
+                "formData": {
+                  "amount": "1000",
+                  "discription": "movie ticket"
+                },
+                "formAction": "https://example.com/book",
+                "requestType": "json"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "OYO Rooms 2",
+        "subtitle": "Kundanahalli ",
+        "header": {
+          "overlayText": "Rs. 4000",
+          "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
+        },
+        "description": "Bharathi Road | Near Head Post Office, Cuddalore 607001",
+        "titleExt": "4.2/5",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          },
+          {
+            "name": "Submit button",
+            "action": {
+              "type": "submit",
+              "payload": {
+                "text": "acknowledgement text",
+                "formData": {
+                  "amount": "1000",
+                  "discription": "movie ticket"
+                },
+                "formAction": "https://example.com/book",
+                "requestType": "json"
+              }
+            }
+          },
+          {
+            "name": "Quick",
+            "action": {
+              "type": "quickReply",
+              "payload": {
+                "title": "Yes",
+                "message": "text will be sent as message",
+                "replyMetadata": {
+                  "key1": "value1"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "OYO Rooms 3",
+        "subtitle": "Kundanahalli ",
+        "header": {
+          "overlayText": "Rs. 4000",
+          "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
+        },
+        "description": "Bharathi Road | Near Head Post Office, Cuddalore 607001",
+        "titleExt": "4.2/5",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          },
+          {
+            "name": "Submit button",
+            "action": {
+              "type": "submit",
+              "payload": {
+                "text": "acknowledgement text",
+                "formData": {
+                  "amount": "1000",
+                  "discription": "movie ticket"
+                },
+                "formAction": "https://example.com/book",
+                "requestType": "json"
+              }
+            }
+          },
+          {
+            "name": "Quick",
+            "action": {
+              "type": "quickReply",
+              "payload": {
+                "title": "Yes",
+                "message": "text will be sent as message",
+                "replyMetadata": {
+                  "key1": "value1"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 
 ## Use autosuggestions in your chat box
@@ -329,7 +491,7 @@ The format of the message is as below:
 
  * MESSAGE FORMAT
  
- ```javascript
+ ```json
 {
 	"message": "Where you wanna go this summer?",
 	"platform":"kommunicate",
@@ -381,11 +543,11 @@ The source can be any one of the below formats:
 ```
 API should return data in below format : 
 
-```javascript
+```json
 [{
     "searchKey": "searchable value",
     "name": "text message which you want display/send into conversation.",
-    "metadata": {"key":"value"}//optional, any extra information you want to send with message
+    "metadata": {"key":"value"} //optional, any extra information you want to send with message
 }]
 ```
 
@@ -395,7 +557,7 @@ API should return data in below format :
 You can send HTML content as a message and kommunicate will render the HTML into UI. Pass the property `messageType : html` in custom payload from Dialogflow. You can send stand alone html message or combine it with Actionable messages. Below is the sample JSON with quick replies:
 
 Sample JSON with HTML in quick replies :
-```
+```json
 {
 	"message": "<ul>Here is the city list we operate in: <li> Bangalore </li><li> California </li><li> Singapore </li><li>  London </li></ul>",
 	"platform": "kommunicate",
