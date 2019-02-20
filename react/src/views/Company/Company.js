@@ -9,6 +9,8 @@ import {ROLE_TYPE} from '../../utils/Constant'
 import isURL from 'validator/lib/isURL';
 import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFunctionComponents'
 import CompanySectionModal from './CompanySectionModal'
+import {getAppSetting, updateAppSetting} from '../../utils/kommunicateClient'
+import LockBadge from '../../components/LockBadge/LockBadge';
 
 const CompanyInfo = props => (
     <CompanyInfoContainer >
@@ -35,13 +37,15 @@ class Company extends Component{
         buttonDisabled:true,
         companyInfoEditable:true,
         openModal:false,
-        modal:""
+        modal:"",
+        customUrl:"",
     };
   }
   componentDidMount = () => {
     let userSession = CommonUtils.getUserSession();
     this.setState({companyInfoEditable : userSession.roleType != ROLE_TYPE.AGENT })  
     this.getUserInfo();
+    this.getAppSettings();
   }
   companyInputValue = (e,key) => {  
     this.setState({
@@ -51,6 +55,27 @@ class Company extends Component{
   updateButtonStatus = (inputValue, key) => {
     this.setState({buttonDisabled:inputValue == this.state[key+"Copy"] })
   }
+  getAppSettings = () => {
+    getAppSetting().then(response => {
+      if(response.status == 200 && response.data.response) {
+        this.setState({customUrl:response.data.response.domainUrl})
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  updateSettings = (data) => {
+    updateAppSetting(null, data).then(response => {
+        if(response.status == 200 && response.data.code == "SUCCESS") {
+            typeof data.domainUrl != "undefined" && this.setState({customUrl: data.domainUrl})
+            Notification.success("Custom URL updated")
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+  }
+
   getUserInfo = () => {
     let userSession = CommonUtils.getUserSession();
     getCustomerInfo(userSession.adminUserName)
@@ -105,9 +130,13 @@ class Company extends Component{
           buttonDisabled:true
       })
   }
+  isCustomUrlFeatureRestricted = () => {
+      return (!CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
+  }
+
   controlModal = (e) => {
-    !this.state.openModal && this.setState({modal: e.target.dataset.blockButton})
-    this.setState({ openModal: !this.state.openModal });
+    !this.state.openModal && this.setState({modal: e.target.dataset.blockButton}) 
+    this.setState({ openModal: this.isCustomUrlFeatureRestricted() ? false : !this.state.openModal });
   }
   render() {
       return(
@@ -119,10 +148,14 @@ class Company extends Component{
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}
               buttonDisabled = {this.state.buttonDisabled} companyInfoEditable = {this.state.companyInfoEditable}/>
                 <CompanyBlockButtonContainer>
+                    { this.isCustomUrlFeatureRestricted() &&
+                        <LockBadge className={"lock-with-text"} text={"Available in Enterprise plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                    }
                     <BlockButton title = {"Get a custom domain URL"} subTitle = {"Get a custom domain URL for your Kommunicate account."} description={"Example: kommunicate.yourwebsite.com"} onClickOfBlock = {this.controlModal} name="customUrl"/>
+                    
                 </CompanyBlockButtonContainer>
              { this.state.openModal &&
-                  <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal} modal={this.state.modal} />
+                  <CompanySectionModal openModal = {this.state.openModal} controlModal = {this.controlModal} modal={this.state.modal} customUrl = {this.state.customUrl} updateSettings = {this.updateSettings} />
              }
           </CompanyContainer>
       )

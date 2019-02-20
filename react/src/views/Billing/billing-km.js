@@ -80,6 +80,7 @@ class BillingKommunicate extends Component {
             clickedPlan:  'startup',
             currentModal: "",
             numberOfIntegratedBots:0,
+            disabledUsers: [],
             missingOutOnFreePlan : ["Bot integrations","Lead collection","Conversation history beyond 30 days","Third party integrations","Mobile SDKs","Mailbox","Quick replies","FAQ Centre","Away messages","Automatic conversation assignment","Whitelabel chat widget","Chat widget icon customization"]
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
@@ -124,8 +125,7 @@ class BillingKommunicate extends Component {
 
         this.chargebeeInit();
         this.getAgents();
-        this.getPlanDetails();
-        this.getIntegratedBotsNumber();   
+        this.getPlanDetails(); 
     }
 
     sendSubscriptionInfo = (subscription)=>{
@@ -429,8 +429,9 @@ class BillingKommunicate extends Component {
             (user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE) && kmActiveUsers.push(user);
           }))
           this.setState({
-            kmActiveUsers: kmActiveUsers.length
-          });
+            kmActiveUsers: kmActiveUsers.length,
+            disabledUsers: disabledUsers.length
+          }, () => this.getIntegratedBotsNumber());
         }).catch(err => {
            console.log("err while fetching users list", err);
         });
@@ -493,8 +494,7 @@ class BillingKommunicate extends Component {
         getIntegratedBots().then(response => {
           this.setState({
             numberOfIntegratedBots: (response && response.allBots) ? Math.max(response.allBots.length -1, 0): 0
-          }),
-          this.setBillableSeats()
+          }, () => this.setBillableSeats());
         });
       }
 
@@ -696,7 +696,7 @@ class BillingKommunicate extends Component {
                                             </svg>
                                         </div>
                                         <div className="subscription-warning-detail">
-                                            <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of team members</p>
+                                            <p>You have added {this.state.seatsBillable + this.state.disabledUsers} team members (humans + bots) but have bought the plan for only {this.state.totalPlanQuantity} team members</p>
                                             <p>To make sure all the right team members can log in to their Kommunicate account, delete the extra ones from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
                                     </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to add or delete agents in your current plan? Go to <Link to="/settings/team">Teammates section</Link></p> : ""
@@ -829,13 +829,13 @@ class BillingKommunicate extends Component {
                                                             <li>Analytics APIs</li>
                                                             <li>Downloadable reports</li>
                                                             <li>Advanced reporting</li>
-                                                            <li>Custom bots</li>
+                                                            <li>Conversation auto-closing</li>
                                                             <li>Whitelabel</li>
                                                             <li>Dedicated server</li>
                                                             <li>Premium support</li>
                                                             <li>Custom SLA</li>
                                                             <li>Routing rules</li>
-                                                            <li>CSAT score</li>
+                                                            <li>Custom domain mapping</li>
                                                             <li>Unlimited scaling</li>
                                                         </ul>
                                                     </div>

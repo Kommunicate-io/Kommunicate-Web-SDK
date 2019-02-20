@@ -2,6 +2,8 @@ import {getConfig} from '../../config/config';
 import CommonUtils from '../../utils/CommonUtils';
 import './quickReply.css';
 import { getAllSuggestions, getSuggestionsByAppId} from '../../utils/kommunicateClient';
+import AnalyticsTracking from '../../utils/AnalyticsTracking'
+
 const quickReply = {
 
   edValueKeyPress: function(quickReplyIndex) {
@@ -49,6 +51,7 @@ const quickReply = {
                   dBox.style.display = 'none'; // hide dropup
                   CommonUtils.setCursorAtTheEndOfInputString(textBox);
                   textBox.focus();
+                  AnalyticsTracking.acEventTrigger('UsedQuickReplies');
                 }
               }
             }

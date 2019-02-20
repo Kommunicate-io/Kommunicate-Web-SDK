@@ -29,7 +29,7 @@ class App extends Component {
                             <Route component={PageNotFound} />
                         </Switch>
                     {
-                        !location.pathname.includes('404') && <PoweredByKommunicate fillcolor={"#cacaca"} />
+                        !location.pathname.includes('404') && <PoweredByKommunicate fill={"#cacaca"} textColor={"#cacaca"} />
                     }
                     
                 </Fragment>

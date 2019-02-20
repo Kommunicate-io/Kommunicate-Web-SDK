@@ -55,7 +55,14 @@ class PageNotFound extends Component {
             }) :
             window.location.assign(CommonUtils.getKommunicateWebsiteUrl())
     }
-    
+    componentDidUpdate(prevProps, prevState) {
+        var that = this;
+        window.onpopstate = function (event) {
+            that.props.history.push({
+                pathname: '/404'
+            })
+        };
+    }
     render() {
         return (
         <PageNotFoundComponents.PageNotFoundWrapper>
@@ -94,7 +101,7 @@ class PageNotFound extends Component {
                     <Button onClick={this.returnHome} branded>Return Home</Button>
                 </PageNotFoundComponents.PageNotFoundCtaContainer>
                 <PageNotFoundComponents.PoweredByContainer>
-                    <PoweredByKommunicate/>
+                    <PoweredByKommunicate fill={"#fff"} textColor={"#fff"}/>
                 </PageNotFoundComponents.PoweredByContainer>
             </PageNotFoundComponents.FooterContainer>
         </PageNotFoundComponents.PageNotFoundWrapper>

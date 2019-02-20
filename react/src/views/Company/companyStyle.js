@@ -55,6 +55,14 @@ const CompanyInfoContainer =  styled.div`
 const CompanyBlockButtonContainer = styled.div`
     ${borderBottom}
     padding: 8px 0px 8px 0px;
+    position: relative;
+
+    & .lock-badge-container {
+        position: absolute;
+        left: 230px;
+        top: 20px;
+        z-index: 1000;    
+    }
 `
 const CompanyRestrictionBannerContainer = styled.div` 
     margin: -25px 0 30px 0px;

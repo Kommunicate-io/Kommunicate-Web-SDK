@@ -7,6 +7,7 @@ import { ConfirmationTick, CopyIcon } from '../../assets/svg/svgs';
 import { getConfig } from '../../../src/config/config'
 import copy from 'copy-to-clipboard';
 import Notification from '../model/Notification';
+import isURL from 'validator/lib/isURL';
 
 const customStyles = {
     content: {
@@ -31,15 +32,18 @@ const ModalTitle = props => (
 const ModalFooter = props => (
     <CompanyModalFooterContainer>
          <Button hidden = {!props.showCancelButton} secondary data-button= {"cancel"} onClick= {props.onCancelClick} >Cancel</Button>
-         <Button data-button= {props.buttonText} onClick={props.onButtonClick} >{props.buttonText}</Button>
+         <Button data-id = {props.buttonId} onClick={(e) => {props.onButtonClick(e) }} >{props.buttonText}</Button>
     </CompanyModalFooterContainer>
 
 )
 const CustomUrlStep1InputField = props => (
     <CustomUrlStep1InputFieldContainer>
         <p>https://</p>
-        <input type="text" id="custom-url" placeholder="kommunicate.yourcompany.com or dashboard.domain.com"
-            value={props.customUrl} onChange={(e) => { props.customUrlInputValue(e, "customUrl") }}
+        <input  autoFocus type="text" id="custom-url" data-id = {props.inputFieldId} placeholder="kommunicate.yourcompany.com or dashboard.domain.com"
+            value={props.customUrl} 
+            onChange={(e) => { props.customUrlInputValue(e, "customUrl") }}
+            onKeyDown={(e) => {
+                if (e.keyCode === 13) { props.onButtonClick(e); }}}
         />
     </CustomUrlStep1InputFieldContainer>
 )
@@ -59,7 +63,7 @@ const SetUpYourDomain = props => (
             </tr>
             <tr>
                 <td>CNAME</td>
-                <td>www</td>
+                <td>{props.customUrl}</td>
                 <td>{props.value}</td>
                 <td><span onClick = {props.copyToClipboard}><CopyIcon/> Copy</span></td>
             </tr>
@@ -79,19 +83,25 @@ class CompanySectionModal extends Component {
     constructor(props){ 
         super(props);
         this.state = {
-            step:1
+            step:1,
+            customUrl: this.props.customUrl
         }
     }
     onButtonClick = (e) => {
-        if(e.target.dataset.button == "Close"){
+        let buttonIdInfo = {
+            step1:1,
+            step2:2,
+            step3:3
+        }
+        if(buttonIdInfo.step3 == e.target.dataset.id){
             this.props.controlModal();
             return
         }
-        const stepsData = {
-            "Continue":2,
-            "I’ve done this":3,
-        }
-        this.setState({step: stepsData[e.target.dataset.button] })        
+        buttonIdInfo.step1 == e.target.dataset.id && this.updateCustomUrl(e.target.dataset.id);  
+        buttonIdInfo.step2 == e.target.dataset.id && this.goToNextStep(e.target.dataset.id);        
+    }
+    goToNextStep = (buttonId) => {
+        this.setState({step: parseInt(buttonId)+1 })
     }
     customUrlInputValue = (e,key) => {
         this.setState({[key] : e.target.value});
@@ -100,6 +110,14 @@ class CompanySectionModal extends Component {
         copy(getConfig().loadBalancerDnsValue);
         Notification.success("Domain value copied");
     }
+    updateCustomUrl = (step) => {
+        if (this.state.customUrl && !isURL(this.state.customUrl)) {
+            Notification.error("Invalid URL");
+            return
+        }
+        this.props.updateSettings({domainUrl: this.state.customUrl.trim()})
+        this.goToNextStep(step)
+    }
 
     render() {
         const modalContent = {
@@ -107,35 +125,39 @@ class CompanySectionModal extends Component {
                 1:{
                     step:1,
                     title:"Step 1 - Enter the domain address",
-                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue}/>,
+                    content: <CustomUrlStep1InputField customUrlInputValue = {this.customUrlInputValue} customUrl = {this.state.customUrl} onButtonClick={this.onButtonClick} inputFieldId={1} />,
                     buttonText:"Continue",
-                    showCancelButton: true
+                    showCancelButton: true,
+                    buttonId:1
                 },
                 2:{
                     step:2,
                     title:"Step 2 - Set up your domain",
-                    content:<SetUpYourDomain value = {getConfig().loadBalancerDnsValue} copyToClipboard = {this.copyToClipboard}/>,
+                    content:<SetUpYourDomain value = {getConfig().loadBalancerDnsValue} copyToClipboard = {this.copyToClipboard} customUrl = {this.state.customUrl}/>,
                     buttonText:"I’ve done this",
-                    showCancelButton: false
+                    showCancelButton: false,
+                    buttonId:2
                 },
                 3:{
                     step:3,
                     title:"Step 3 - Setup complete",
                     content:<SetUpComplete />,
                     buttonText:"Close",
-                    showCancelButton: false
+                    showCancelButton: false,
+                    buttonId:3
                 }
             }
         }
+        let item = modalContent[this.props.modal][this.state.step]
         return(
             <div>
                  <Modal isOpen={this.props.openModal} onRequestClose={this.props.controlModal} style={customStyles} ariaHideApp={false} >
                     <div>
-                      <ModalTitle title={modalContent[this.props.modal][this.state.step].title}/>
+                      <ModalTitle title={item.title}/>
                      
-                      {modalContent[this.props.modal][this.state.step].content}
+                      {item.content}
 
-                      <ModalFooter onCancelClick = {this.props.controlModal} buttonText={modalContent[this.props.modal][this.state.step].buttonText}  onButtonClick={this.onButtonClick} showCancelButton = {modalContent[this.props.modal][this.state.step].showCancelButton} />
+                      <ModalFooter onCancelClick = {this.props.controlModal} buttonText={item.buttonText} buttonId ={item.buttonId}  onButtonClick={this.onButtonClick} showCancelButton = {item.showCancelButton} />
                     </div>    
                     <CloseButton onClick={this.props.controlModal}/>
                  </Modal>
