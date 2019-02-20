@@ -5727,10 +5727,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     $applozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
                 }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
-                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
-               if(typeof emoji_template == "undefined") {
-                $textMessage.html("");  
-               }
+                emoji_template = _this.getScriptMessagePreview(message, emoji_template);
+                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template): $textMessage.html(emoji_template);
+                if (typeof emoji_template == "undefined") {
+                    $textMessage.html("");
+                }
             };
             _this.addContactsToContactSearchList = function () {
                 var contactsArray = [],
@@ -5979,6 +5980,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 }
             };
+            _this.getScriptMessagePreview = function(message,emoji_template){
+				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
+						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+					}
+				}
+				return emoji_template;
+			}
             _this.getMessageTextForContactPreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
@@ -6026,9 +6035,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }else if(message.metadata && message.metadata.messagePreview ){
                         emoji_template =message.metadata.messagePreview;
                     }
-                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7 && contact.type !== 10) {
+                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
-                        if (message.contentType !== 10) {
+                        if (message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE && contact.type !== KommunicateConstants.GROUP_TYPE.SUPPORT) {
                             emoji_template = msgFrom + ": " + emoji_template;
                         }
                         if (emoji_template.indexOf('emoji-inner') === -1 && message && message.message && message.contentType === 0) {
