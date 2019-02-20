@@ -5,7 +5,8 @@ import { UserMetadata, LastSeenSection, DisplayPseudoIcon, PseudonymModal } from
 import EditableText from './EditableText';
 import {KommunicateUserInfoPanelLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
-import {UserInfoEmptyStateSvg} from '../../assets/svg/svgs'
+import {UserInfoEmptyStateSvg} from '../../assets/svg/svgs';
+import PersonConversationHistory from './PersonConversationHistory';
 
 const UserInfoEmptyState = (props) => {
     return (
@@ -134,6 +135,7 @@ class PersonInfoCard extends Component {
                     {this.state.clearbitData ?
                             <ClearBitInfo userDetail={this.state.clearbitData} />: null
                     }
+                    <PersonConversationHistory user={this.props.user} />
                 </div>
             </div> :
             <div className = "km-user-info-panel-loader"> 

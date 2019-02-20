@@ -275,6 +275,7 @@ const GroupTitle = styled.h4`
     letter-spacing: 0.5px;
     color: #414243;
     margin-bottom: 25px;
+    padding: 0 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
