@@ -97,8 +97,8 @@ KommunicateConstants = {
         TIME_FRAME: 300000, // 5 minutes timestamp value in milliseconds.
     },
     SETTINGS : {
-        // chat context parameters are  dynamic and defined by customers while some of them are used define system settings.
-        // these parameters should not be overriden by customers defined parameters
+        // chat context parameters are  dynamic and defined by customers while some of them are used to define system settings.
+        // these parameters should not be overridden by customer defined parameters
         KM_CHAT_CONTEXT: "KM_CHAT_CONTEXT",
         KM_USER_LANGUAGE_CODE:"kmUserLanguageCode"
     }
