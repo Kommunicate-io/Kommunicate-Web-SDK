@@ -78,7 +78,7 @@ class PersonConversationHistory extends Component {
                             return (
                                 <ConversationDataContainer key={index}>
                                     <ConversationTitle className="km-conversation-tab-link"  data-km-id={data.id} data-isgroup={true}>Conversation #{data.id}</ConversationTitle>
-                                    <ConversationStatus>Status: <strong>{status} - </strong><span>{data.name}</span></ConversationStatus>
+                                    <ConversationStatus>Status: <strong>{status === "UNRESPONDED" ? "OPEN" : status} - </strong><span>{data.name}</span></ConversationStatus>
                                     <ConversationDate>Last Contacted: <span>{moment(data.lastMessageTime).format("DD MMM YYYY")}</span></ConversationDate>
                                 </ConversationDataContainer>
                             )
