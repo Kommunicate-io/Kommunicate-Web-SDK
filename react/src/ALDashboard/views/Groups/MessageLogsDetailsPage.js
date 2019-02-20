@@ -175,12 +175,12 @@ const MessageList = (props) => {
             <MessageLogsStyles.MessagesContainer>
                 <MessageLogsStyles.MessageFromContainer>
                     <MessageLogsStyles.MessageFromText>{data.to}</MessageLogsStyles.MessageFromText>
-                    {/* <MessageFromMetadataText>
-                        <MessageFromMetadataPlaceholder>Message contains metadata</MessageFromMetadataPlaceholder>
-                        <InfoContainer>
-                            <InfoIcon className="info-icon">?</InfoIcon>
-                        </InfoContainer>
-                    </MessageFromMetadataText> */}
+                    { Object.keys(data.metadata).length > 0 && <MessageLogsStyles.MessageFromMetadataText>
+                        <MessageLogsStyles.MessageFromMetadataPlaceholder>Message contains metadata</MessageLogsStyles.MessageFromMetadataPlaceholder>
+                        <MessageLogsStyles.InfoContainer>
+                            <MessageLogsStyles.InfoIcon className="info-icon">?</MessageLogsStyles.InfoIcon>
+                        </MessageLogsStyles.InfoContainer>
+                    </MessageLogsStyles.MessageFromMetadataText> }
                 </MessageLogsStyles.MessageFromContainer>
                 <MessageLogsStyles.MessagesTextContainer>
                     <Linkify properties={{target: '_blank'}}>

@@ -423,7 +423,6 @@ updateUserDetail:function(params){
   },
   getAllGroupsAndMessages : (data) => {
     var API_HEADERS = ApplozicClient.commonHeaders();
-    delete API_HEADERS["Apz-Product-App"];
     var apiUrl = config.baseurl.applozicAPI + url.applozic.GROUP_ALL;
   
     return Promise.resolve(axios({

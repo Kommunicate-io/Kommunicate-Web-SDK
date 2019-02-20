@@ -89,6 +89,7 @@ class MessageLogs extends Component {
             'Content-Type': 'application/json',
             'Apz-AppId': userSession.application.applicationId,
             'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+            'Apz-Product-App': true,
             "Of-User-Id": data.membersId[0]
         }
 
