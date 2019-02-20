@@ -9,7 +9,8 @@ class FaqList extends Component {
         super(props);
         this.state = {
             faqList : [],
-            appId : ""
+            appId : "",
+            companyName: "Kommunicate"
         };
     };
 
@@ -27,6 +28,7 @@ class FaqList extends Component {
                 this.setState({faqList : response})
             })
         })
+        document.title = this.state.companyName + " | Helpcenter";
     }
     openFaqArticle = (indexId) =>{
         let searchQuery = '?appId='+this.state.appId+"&articleId="+indexId;

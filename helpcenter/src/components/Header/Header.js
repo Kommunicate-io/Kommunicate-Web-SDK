@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {HeaderComponent, HeaderTopbar, TopbarLogoContainer, TopbarLogo, HelpcenterHeading, SearchBarContainer, HeaderWrapper, SearchIconContainer} from './HeaderComponents';
+import {HeaderComponent, HeaderTopbar, TopbarLogoContainer, TopbarLogo, HelpcenterHeading, SearchBarContainer, HeaderWrapper, SearchIconContainer, BackButtonContainer} from './HeaderComponents';
 import { Container } from '../Container/Container';
 import  Button  from '../Button/Button';
 import HelpQuerySearch from './HeaderSearch'
-import { SearchLogo } from '../../assets/svgAssets';
+import { SearchLogo, BackButton } from '../../assets/svgAssets';
 import { withRouter } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils'
 
@@ -38,8 +38,11 @@ class Header extends Component {
         <Container>
           <HeaderWrapper >
             <HeaderTopbar>
-              <TopbarLogoContainer>
-                <TopbarLogo onClick={this.navigateHome} ><img src={this.props.logoUrl} alt=""/></TopbarLogo>
+              <TopbarLogoContainer onClick={this.navigateHome} >
+               {
+                 window.location.pathname.includes('article') &&  <BackButtonContainer> <BackButton/> </BackButtonContainer>
+               }
+                <TopbarLogo ><img src={this.props.logoUrl} alt=""/></TopbarLogo>
               </TopbarLogoContainer>
                 {/* <Button>{props.contactSupportButtonText}</Button> */}
               </HeaderTopbar >

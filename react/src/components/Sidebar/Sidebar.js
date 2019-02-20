@@ -6,6 +6,7 @@ import ProfileImageName from '../Header/ProfileImageName';
 import IntegrationStarted from '../../views/IntegrationStarted/IntegrationStarted';
 import CommonUtils from '../../utils/CommonUtils';
 import { withTheme } from 'styled-components';
+import {NOTICEABLE_CREDENTIALS} from '../../utils/Constant';
 import { KommunicateLogoSymbol, ApplozicLogoSymbol, MessageLogs } from '../../assets/svg/svgs';
 
 const UserIcon = ()=>{
@@ -73,6 +74,15 @@ class Sidebar extends Component {
       {displayName:name}
     )
   }
+
+  addNoticeableWidget () {
+    NOTICEABLE_CREDENTIALS;
+    return <noticeable-widget 
+              access-token= {NOTICEABLE_CREDENTIALS.ACCESS_TOKEN} 
+              project-id= {NOTICEABLE_CREDENTIALS.PROJECT_ID} 
+              popup-backdrop="false">
+           </noticeable-widget>
+  };
 
   render() {
 
@@ -188,7 +198,11 @@ class Sidebar extends Component {
           <ul className="nav">
 
             {/* IntegrationStarted icon */}
-            { !this.props.isIntegrationStarted &&
+            { this.props.isIntegrationStarted ?
+              <li>
+                {this.addNoticeableWidget()}
+              </li>
+            :
               <li className="nav-item">
                 <IntegrationStarted />
               </li>
