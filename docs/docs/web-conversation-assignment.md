@@ -13,18 +13,18 @@ Here are the guidelines on how to use conversation rules for humans and bots:
 
 ## Routing rules for human agents
 
-**Automatic assignment**<br>
+### Automatic assignment
 If the automatic assignment is enabled, all the incoming conversation will be assigned to the human agents in a round robin manner. All the human agents who are offline or in 'Away' mode will be skipped in the routing. In case all the human agents are offline, the conversation will be assigned to the Default agent. You can set the default agent from the same section.
 
-**Notify everybody**<br>
+### Notify everybody
 If notify everybody is enabled, then the conversation will be assigned to a default agent and notifications will be sent to everybody. Anybody can assign that conversation to themselves after that.
 
-**Note: In case 'Assign new conversations to bot' is enabled, then irrespective of the routing rules for human agents, the conversation will be assigned to the 'selected bot'.
+>Note: In case 'Assign new conversations to bot' is enabled, then irrespective of the routing rules for human agents, the conversation will be assigned to the 'selected bot'.
 
 
 ## Routing rules for bots
 
-**Assign new conversations to bot**<br>
+### Assign new conversations to bot
 If enabled, all the incoming conversations will be assigned to the selected bot. You can choose the selected bot from the drop down.
 
 A few points to note when the conversations are assigned to a bot:
@@ -33,7 +33,7 @@ A few points to note when the conversations are assigned to a bot:
  	- The conversation will be assigned to default human agent if  **Notify everybody** is selected in the agent routing rules.
  	- The conversation will be assigned to the human agent present in the conversation for **Automatic assignment**.
  
- - The Welcome and Away messages will not come.
+ - The Welcome and Away messages configured from the Dashboard will not come. The welcome messages configured by the bot will come here. 
  - The **Take over from bot** button will be displayed in the the conversation, if the human agent takes over from the bot, conversation will assign to that particular agent.
 
 
