@@ -19,7 +19,7 @@ Or
 
 You can copy the below script and replace required parameters manually.
 
-**Note:** `Use web server to view HTML files as real-time updates will not work if you directly open the HTML file in the browser.`
+> **Note**: Use web server to view HTML files as real-time updates will not work if you directly open the HTML file in the browser.
 
 #### Script
 ```javascript
@@ -64,7 +64,7 @@ You can customize the plugin by passing below parameters in the `kommunicateSett
 |---	   |---	   |---	    |
 |appId |String| A unique application ID assigned to your Kommunicate account.|
 |botIds|Array of strings| You can add bots to any conversation by passing an array of bot IDs. Example array: "botIds":["bot1","bot2"]. Bot IDs will be visible in the [Bot section](https://dashboard.kommunicate.io/bot) in the dashboard if you have created any bot.|
-|conversationTitle |String | All conversations will have this title.|
+|conversationTitle |String | All conversations will have this title until the conversation gets assigned to the bot/agent. After conversation assignment, the conversation title will be the name of bot/agent whom the conversation is assigned.|
 |preLeadCollection| Array of objects| This will enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a> in chat. Users will be asked to enter the name, email and phone number when they start a conversation.|
 |userId| String| This is your user’s/visiter's user ID. Kommunicate will generate a random ID if this is not defined.|
 |userName | String| This is the display name of the user. Agents will identify users by this display name.|
