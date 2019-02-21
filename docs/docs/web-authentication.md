@@ -60,8 +60,6 @@ Once configured, user will see the form on click of the chat widget launch icon.
 ```javascript
 
    var kommunicateSettings = {
-    "appId": <APP_ID>,
-    "conversationTitle": <CONVERSATION_TITLE>,
     "preLeadCollection": [{
     "field": "name",                          // Whatever column you want to add
     "required": true,                         // add whatever text you want to show in placeholder
@@ -99,12 +97,11 @@ If the user has already logged into your website previously, then pass the user 
 Example:
 ```javascript
 
-    var kommunicateSettings = {"appId": <APP_ID>,
-            "userId": userId,
-            "agentId": agentId,
-            "userName": userName,
-            "conversationTitle":conversationTitle,
-            "email": emailId
+    var kommunicateSettings = {
+            "userId": <USERID>,
+            "agentId": <AGENTID>,
+            "userName": <USERNAME>,
+            "email": <EMAIL>
             };
 
 ```
@@ -117,8 +114,6 @@ Once the chat plugin is initialized and has returned success response, then you 
 
 ```
 var kommunicateSettings = {
-    "appId": <APP_ID>,
-    "conversationTitle": <CONVERSATION_TITLE>,
     "onInit": function () {
         // paste your code here
         var userdetail = {
