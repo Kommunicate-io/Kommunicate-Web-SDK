@@ -16,7 +16,17 @@ If you are in one of our paid plans, you can also upload your own image/icon and
 
 
 ## Customize chat widget by using css
-You can pass the css after stringifying it in Kommunicate.customizeWidgetCss() method.
+You can pass the css in `Kommunicate.customizeWidgetCss()` method as a string like shown in the example below.
+```javascript
+var kommunicateSettings = {
+    ...
+    "onInit": function() {
+        var css = "<YOUR_CSS_CODE_HERE>";        // Replace <YOUR_CSS_CODE_HERE> with the CSS you want to override.
+        Kommunicate.customizeWidgetCss(css);
+    },
+    ...
+}
+```
 
 #### To change sent messages color
 ```javascript
@@ -38,7 +48,7 @@ Kommunicate.customizeWidgetCss(cssChanges);
 ```
 
 #### To show/hide the Chat Widget
-To hide the chat widget you can use the following CSS.
+To hide the chat widget you can add the following CSS in you website's CSS file.
 
 ```css
 /* To hide the Chat Widget */
@@ -57,17 +67,16 @@ btn.addEventListener("click", function() {
 ```
 
 ## Default metadata 
-Add this metadata in kommunicate setting.This will send defaultMessageMetaData with every message.
+Add `defaultMessageMetaData` parameter in `kommunicateSettings` variable. This will be sent with every message.
 
 Example
 
-```
-var kommunicateSettings = {"appId": appId,
-            "isAnonymousChat": true,
-            "agentId": agentId,
-            "defaultMessageMetaData":{"hide":"true"}
-            "groupName": groupName,
-            "email":email
-            };
+```javascript
+var kommunicateSettings = {
+    ...
+    "defaultMessageMetaData":{"key1":"value1", "key2":"value2", ...}
+    ...
+};
 
 ```
+> *Note:* You can also update metadata using [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform).

@@ -4,15 +4,15 @@ title: Actionable Messages
 sidebar_label: Actionable Message
 ---
 
-
+## Overview
 A pure textual experience is not enough to make a conversation interactive, fruitful, and easy to act upon. Kommunicate allows you to add several other interactive components in conversations such as Images, Audios, and Video in the form of Message Templates, Quick Replies, Buttons, Cards, Lists and other actionable items to provide a rich messaging experience.
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Quick Replies along with the message:
 
- ``` js
+ ```json
  {
 	"message":"Do you want more updates?",
-	"ignoreTextResponse": false, // pass true if you want to hide the text response which you're passing along with custom payload in intent. 
+	"ignoreTextResponse": false,
     "platform":"kommunicate",
     "metadata": {
         "contentType": "300",
@@ -27,8 +27,7 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
     }
 }
 ```
-If you're passing both text response and custom payload in intent and want to hide the text response you can pass 
-**ignoreTextResponse : true**. 
+If you're passing both text response and custom payload in intent and want to hide the text response you can pass `ignoreTextResponse : true`. 
 
 Here is a list of available Actionable Messages:
 
@@ -46,13 +45,13 @@ Here is a list of available Actionable Messages:
 
 You can add any number of Button in your conversations for faster navigation. There are two type of Buttons supported in Kommunicate:
 
-* **Link Button** 
+### Link Button
 Link Button redirects users to a given URL in a new tab. Use below metadata to render the Link Buttons:
 
-``` JSON
+```json
 {
-    "message": "click on the buttons",
-    "platform":"kommunicate",
+	"message": "click on the buttons",
+	"platform":"kommunicate",
 	"metadata": {
 		"contentType": "300",
 		"templateId": "3",
@@ -65,18 +64,20 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 				"type": "link",
 				"url": "https://www.facebook.com",
 				"name": "Go To Facebook",
-				"openLinkInNewTab": false //optional, use this to open the link in the same window
+				"openLinkInNewTab": false
 			}
 		]
 	}
 }
 ```
+Use `openLinkInNewTab: true` to open any link in new tab. Default is `false` which will open the links in same window.
+s
 
-* **Submit Button** 
+### Submit Button 
 Submit button allows you to post given data or redirect the user to a given URL. If parameter `requestType:json` is included it will post the data with content type `application/json` on the `formAction` url and `replyText` will be used as acknowledgement message. Default value for `replyText` is same as the value passed in `name` parameter. <br><br>
 If `requestType` parameter is not passed, it will submit the `formData` with contentType `application/x-www-form-urlencoded` and redirect the user on `formAction` url. The response will be rendered in new tab.
   
-``` JSON 
+```json 
 {
 	"message": "click the pay button",
 	"platform": "kommunicate",
@@ -89,7 +90,7 @@ If `requestType` parameter is not passed, it will submit the `formData` with con
 		}],
 		"formData": {
 			"amount": "1000",
-			"discription": "movie ticket"
+			"description": "movie ticket"
 		},
 		"formAction": "https://example.com/book",
 		"requestType":"json"   
@@ -101,7 +102,7 @@ If `requestType` parameter is not passed, it will submit the `formData` with con
 
 Quick Replies provides a way to send messages on a click without typing them all out manually. You can add any number of Quick Replies by passing values in the metadata as described below:
 
-``` JSON
+```json
 {
 	"message": "Do you want more updates?",
 	"platform": "kommunicate",
@@ -154,7 +155,7 @@ The list template is a list of  structured items  with a optional header image a
     * Header Image
     * Header text
     * List of items- one item may contain below components:
-       1. Thumbline image
+       1. Thumbnail image
        2. Title 
        3. Description
        4. Action of Item
@@ -169,21 +170,20 @@ The list template is a list of  structured items  with a optional header image a
 
 
 
-```javascript
+```json
 // for quick reply action object will be like this:  
 "action": {
 	"type": "quick_reply",
 	"text": "text will be sent as message" 
-       	}
+}
 
 // for navigation link action object will look like this
 "action": {
 	"type": "link",	
-       "url": "url to navigate other page" 
-       // page will be opened in new tab 
-     	} 
-  ```
-
+	"url": "url to navigate other page"
+} 
+```
+> **Note:** Any URL provided in `url` key above will open that URL in a new tab.
 
 
 Here is the sample JSON for the list :
@@ -219,8 +219,12 @@ Here is the sample JSON for the list :
 }
 ```
 
-## Generic Card
-The card template is a list of structured items with title, subtitle, image, and buttons.
+## Cards
+The card template is a list of structured items with title, subtitle, image, and buttons. There are two type of Cards supported in Kommunicate:
+* Generic Card
+* Carousel Card
+
+### Generic Card
 ![Generic Card Template](/img/generic-card.jpg)
 * **Components of card template** <br>
  A card template may contain below items:
@@ -238,39 +242,46 @@ The card template is a list of structured items with title, subtitle, image, and
 	   3. Quick reply
 
 * **Actions on the button** <br>
- 	 * Link  - It will navigate user to the another page in new tab.
-	 * Submit button - Submit button allows you to post given data or redirect the user to a given URL. 
-     * Quick Reply - it will send a message with given text if passed. Default value will be title of list item or name of  button. Action is specified by the action object passed along with each item and buttons. <br>
+	* Link  - It will navigate user to the another page in new tab.
+	* Submit button - Submit button allows you to post given data or redirect the user to a given URL. 
+	* Quick Reply - it will send a message with given text if passed. Default value will be title of list item or name of  button. Action is specified by the action object passed along with each item and buttons. <br>
 	 Here is the action for buttons.
-```javascript
-// for quick reply action object will be like this:  
+
+Sample `"action"` object for quick reply:
+```json 
 "action": {
-    "type": "quickReply",
-    "payload": {
-        "title": "Yes",
-        "message": "text will be sent as message",
-        }
-    }
-// for navigation link action object will look like this
-"action": {
-    "type": "link",
-    "payload": {
-        "url": "https://www.facebook.com"
-        }
+	"type": "quickReply",
+	"payload": {
+		"title": "Yes",
+		"message": "text will be sent as message",
 	}
-// for submit action object will be like this:			 
+}
+```
+
+Sample `"action"` object for navigation link:
+```json
 "action": {
-    "type": "submit",
-    "payload": {
-        "text": "button text",
-        "formData": {
-            "amount": "1000",
-            "discription": "movie ticket"
-            },
-            "formAction": "https://example.com/book",
-            "requestType": "json"
-            }
-        }		  
+	"type": "link",
+	"payload": {
+		"url": "https://www.facebook.com"
+	}
+}
+```
+
+Sample `"action"` object for submit:
+```json	 
+"action": {
+	"type": "submit",
+	"payload": {
+		"text": "button text",
+		"formData": {
+			"amount": "1000",
+			"description": "movie ticket"
+		},
+		"formAction": "https://example.com/book",
+		"requestType": "json"
+	}
+}		  
 ```
 Here is the sample JSON for the single card :
 
@@ -307,14 +318,176 @@ Here is the sample JSON for the single card :
   }
 }
 ```
-You can add any number of buttons in your card footer
-## Card Carousel
+You can add any number of buttons in your card footer.
+
+### Card Carousel
 
 The chat widget supports the sending of a horizontally scroll-able carousel of generic templates.
 
 ![Card CarouselTemplate](/img/card-carousel.png)
 
 Payload is an array of objects, each object can be different cards. So you can pass multiple objects inside payload.
+
+Here is the sample JSON for card carousel:
+```json
+{
+  "message": "Carousel",
+  "platform": "kommunicate",
+  "metadata": {
+    "contentType": "300",
+    "templateId": "10",
+    "payload": [
+      {
+        "title": "OYO Rooms 1",
+        "subtitle": "Kundanahalli road turn.",
+        "header": {
+          "overlayText": "$400",
+          "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
+        },
+        "description": "Bharathi Road \n Near Head Post Office",
+        "titleExt": "4.2/5",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          },
+          {
+            "name": "Quick",
+            "action": {
+              "type": "quickReply",
+              "payload": {
+                "title": "Yes",
+                "message": "text will be sent as message",
+                "replyMetadata": {
+                  "key1": "value1"
+                }
+              }
+            }
+          },
+          {
+            "name": "Submit button",
+            "action": {
+              "type": "submit",
+              "payload": {
+                "text": "acknowledgement text",
+                "formData": {
+                  "amount": "$55",
+                  "description": "movie ticket"
+                },
+                "formAction": "https://example.com/book",
+                "requestType": "json"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "OYO Rooms 2",
+        "subtitle": "Kundanahalli ",
+        "header": {
+          "overlayText": "$360",
+          "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
+        },
+        "description": "Bharathi Road | Near Head Post Office, Cuddalore 607001",
+        "titleExt": "4.2/5",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          },
+          {
+            "name": "Submit button",
+            "action": {
+              "type": "submit",
+              "payload": {
+                "text": "acknowledgement text",
+                "formData": {
+                  "amount": "$22",
+                  "description": "movie ticket"
+                },
+                "formAction": "https://example.com/book",
+                "requestType": "json"
+              }
+            }
+          },
+          {
+            "name": "Quick",
+            "action": {
+              "type": "quickReply",
+              "payload": {
+                "title": "Yes",
+                "message": "text will be sent as message",
+                "replyMetadata": {
+                  "key1": "value1"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "title": "OYO Rooms 3",
+        "subtitle": "Kundanahalli ",
+        "header": {
+          "overlayText": "$750",
+          "imgSrc": "http://www.tollesonhotels.com/wp-content/uploads/2017/03/hotel-room.jpg"
+        },
+        "description": "Bharathi Road | Near Head Post Office, Cuddalore 607001",
+        "titleExt": "4.2/5",
+        "buttons": [
+          {
+            "name": "Link Button",
+            "action": {
+              "type": "link",
+              "payload": {
+                "url": "https://www.facebook.com"
+              }
+            }
+          },
+          {
+            "name": "Submit button",
+            "action": {
+              "type": "submit",
+              "payload": {
+                "text": "acknowledgement text",
+                "formData": {
+                  "amount": "$45",
+                  "description": "movie ticket"
+                },
+                "formAction": "https://example.com/book",
+                "requestType": "json"
+              }
+            }
+          },
+          {
+            "name": "Quick",
+            "action": {
+              "type": "quickReply",
+              "payload": {
+                "title": "Yes",
+                "message": "text will be sent as message",
+                "replyMetadata": {
+                  "key1": "value1"
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 
 ## Use autosuggestions in your chat box
@@ -329,20 +502,20 @@ The format of the message is as below:
 
  * MESSAGE FORMAT
  
- ```javascript
+ ```json
 {
 	"message": "Where you wanna go this summer?",
 	"platform":"kommunicate",
 	"metadata": {
 		"KM_AUTO_SUGGESTION": {
-			"placeholder": "enter city name ", //optional, this will apear in chat box as placeholder
-			"source": []  // check the supported format below 
+			"placeholder": "enter city name ",
+			"source": []
 		}
 	}
 }
 ```
 
-The source can be any one of the below formats:
+`"placeholder"` (optional) will appear in chat input field as placeholder text. The `"source"` can be any one of the below formats:
 
  * **Array of string**
  ```json
@@ -381,13 +554,14 @@ The source can be any one of the below formats:
 ```
 API should return data in below format : 
 
-```javascript
+```json
 [{
     "searchKey": "searchable value",
     "name": "text message which you want display/send into conversation.",
-    "metadata": {"key":"value"}//optional, any extra information you want to send with message
+    "metadata": {"key":"value"} //optional, any extra information you want to send with message
 }]
 ```
+`"metadata"` is any extra information you want to send with message. This field is optional.
 
 ## Send HTML content 
 > HTML content will work with V2 APIs.
@@ -395,9 +569,9 @@ API should return data in below format :
 You can send HTML content as a message and kommunicate will render the HTML into UI. Pass the property `messageType : html` in custom payload from Dialogflow. You can send stand alone html message or combine it with Actionable messages. Below is the sample JSON with quick replies:
 
 Sample JSON with HTML in quick replies :
-```
+```json
 {
-	"message": "<ul>Here is the city list we operate in: <li> Bangalore </li><li> California </li><li> Singapore </li><li>  London </li></ul>",
+	"message": "<ul><li> Bangalore </li><li> California </li><li> Singapore </li><li> London </li></ul>",
 	"platform": "kommunicate",
 	"messageType":"html",
 	"metadata": {

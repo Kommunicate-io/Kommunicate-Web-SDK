@@ -7,7 +7,7 @@ sidebar_label: Installation
 ## Overview
 Kommunicate is live-chat and chatbots powered customer support software. Kommunicate allows you to add live chat on your website that enables you to chat with your website visitors and customers using a beautiful chat widget.
 
-Installing Kommunicate is fast and easy. Just add a few lines of code in your website and you can start answering your support queries within a few minutes. Kommunicate can also be used with any of [Website Builder](#install-on-website-builder).
+Installing Kommunicate is fast and easy. Just add a few lines of code in your website and you can start answering your support queries within a few minutes. Kommunicate can also be used with any of [Website Builder](#install-on-website-builders-or-content-management-systems-cms).
 
 ## Web installation
 
