@@ -5728,7 +5728,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 emoji_template = _this.getScriptMessagePreview(message, emoji_template);
-                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template): $textMessage.html(emoji_template);
+                (kommunicateCommons.isObject(emoji_template)) ? $textMessage.append(emoji_template): $textMessage.html(emoji_template);
                 if (typeof emoji_template == "undefined") {
                     $textMessage.html("");
                 }
