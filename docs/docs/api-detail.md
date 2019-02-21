@@ -97,11 +97,10 @@ POST Body:
 
 ``` javascript
 POST /rest/ws/group/update HTTP/1.1
-headers: {
-      Content-Type:application/json,
-      Of-User-Id:your userId,
-      Api-Key: your api key
-}
+
+Content-Type: application/json,
+Of-User-Id: your userId,
+Api-Key: your api key
 
 Body:
     {
