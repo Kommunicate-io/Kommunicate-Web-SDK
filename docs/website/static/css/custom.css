@@ -374,6 +374,25 @@ pre .btnIcon:hover {
 
 /* Copy to Clipboard Button CSS ends here */
 
+/* JSON Code Highlighting Code  */
+.token.property {
+    color: #9CDCFE;
+}
+.token.string {
+    color: #D69D85;
+}
+.token.comment {
+    color: #57A64A;
+    font-style: italic;
+}
+.token.operator, .token.punctuation {
+    color: #FFF;
+}
+.token.boolean {
+    color: #569cd6;
+}
+/* JSON Code Highlighting Code  */
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 @media only screen and (max-width:735px) {

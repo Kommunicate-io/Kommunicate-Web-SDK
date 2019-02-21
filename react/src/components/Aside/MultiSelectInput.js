@@ -61,6 +61,8 @@ export default class MultiSelectInput extends Component {
 
     createValidOption = () => {
         let groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.props.group.groupId;
+        var sendButton = document.getElementById('km-msg-sbmt'),
+            pressEnterToSendCheckbox = document.getElementById("km-press-enter-to-send-checkbox");
         const { inputValue, value } = this.state;
         if (!inputValue) return;
         if(isEmail(this.state.inputValue)) {
@@ -68,7 +70,17 @@ export default class MultiSelectInput extends Component {
                 inputValue: "",
                 value: [...value, createOption(inputValue)]
             });
-             this.addGroupMember(groupId, this.state.inputValue, function(resp) {});
+            sendButton.disabled = true;
+            pressEnterToSendCheckbox.checked = false;
+            pressEnterToSendCheckbox.disabled = true;
+            this.addGroupMember(groupId, this.state.inputValue, function(resp) {
+                sendButton.disabled = false;
+                pressEnterToSendCheckbox.checked = true;
+                pressEnterToSendCheckbox.disabled = false;
+                if(resp.status === "error") {
+                    Notification.error("Error in adding CC email. Please edit/re-enter the email.");                    
+                }
+            });
         } else {
             Notification.error("Please enter a valid email address.");
         }
@@ -106,7 +118,7 @@ export default class MultiSelectInput extends Component {
                 'role': role,
                 'callback': function (response) {
                     if (typeof callback === 'function') {
-                        callback();
+                        callback(response);
                     }
                 }
             });

@@ -97,13 +97,17 @@ POST Body:
 
 ``` javascript
 POST /rest/ws/group/update HTTP/1.1
-Content-Type: application/json
+
+Content-Type: application/json,
+Of-User-Id: your userId,
+Api-Key: your api key
+
 POST Body:
-{
-        "groupId": "group Unique Identifier",
-        "metadata":{
-        "CONVERSATION_STATUS": "0" // possible value { OPEN: 0,CLOSED: 2,SPAM: 3,DUPLICATE: 4}
-        }
+    {
+      "groupId": "group Unique Identifier",
+      "metadata":{
+          "CONVERSATION_STATUS": "0" // possible values { OPEN: 0,CLOSED: 2,SPAM: 3,DUPLICATE: 4}
+      }
     }
 ```
 
