@@ -102,7 +102,7 @@ Content-Type: application/json,
 Of-User-Id: your userId,
 Api-Key: your api key
 
-Body:
+POST Body:
     {
       "groupId": "group Unique Identifier",
       "metadata":{
