@@ -149,6 +149,6 @@ When user click on this button kommunicate will send the action response as belo
 Possible values for availability status are:
 * `online` - if at least one agent is online
 * `away` - if no agent is online and at least one agent is away
-* `offline` - if non of agent is neither online nor away.
+* `offline` - if none of agent is neither online nor away.
 
 Dialogflow, further, send this data to your web hook as part of `originalDetectIntentRequest`. You can get this information and decide wether handover the conversation to agents or send any other message.  
