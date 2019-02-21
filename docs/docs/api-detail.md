@@ -106,7 +106,7 @@ POST Body:
     {
       "groupId": "group Unique Identifier",
       "metadata":{
-          "CONVERSATION_STATUS": "0" // possible value { OPEN: 0,CLOSED: 2,SPAM: 3,DUPLICATE: 4}
+          "CONVERSATION_STATUS": "0" // possible values { OPEN: 0,CLOSED: 2,SPAM: 3,DUPLICATE: 4}
       }
     }
 ```
