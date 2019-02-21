@@ -95,6 +95,21 @@ KommunicateConstants = {
     },
     MESSAGE_CLUBBING: {
         TIME_FRAME: 300000, // 5 minutes timestamp value in milliseconds.
+    },
+    GROUP_TYPE:{
+        VIRTUAL:0,
+        PRIVATE:1,
+        PUBLIC:2,
+        SELLER:3,
+        SELF:4,
+        BROADCAST:5,
+        OPEN:6,
+        GROUP_OF_TWO:7,
+        APPLOZIC_INTERNAL:8,
+        APPLICATION_LEVEL:9,
+        SUPPORT:10,
+        SKIP_DELIVERED_READ:11,
+        ANNOUNCEMENT_GROUP:12
     }
 }
 

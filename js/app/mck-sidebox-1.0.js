@@ -5998,9 +5998,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         if(message.metadata && (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
                             return;
                         }
-                        if (message.contentType === 2) {
+                        if (message.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
                             emoji_template = '<span class="mck-icon--location"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="rgba(38,50,56,.52)"/><path d="M0 0h24v24H0z" fill="none"/></svg></span><span>Location</span>';
-                        } else if(message.contentType === 3 && message.source === 7) {
+                        } else if(message.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source === 7) {
                             var s = message.message;
                             var result = s.match(/<b>(.*?)<\/b>/g).map(function(val){
                                 return val.replace(/<\/?b>/g,'');
@@ -6023,7 +6023,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                 }
                             }
                             if (!contact.isGroup) {
-                                if (emoji_template.indexOf('emoji-inner') === -1 && message.contentType === 0) {
+                                if (emoji_template.indexOf('emoji-inner') === -1 && message.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
                                     var x = d.createElement('p');
                                     x.appendChild(d.createTextNode(emoji_template));
                                     emoji_template = x;
@@ -6035,12 +6035,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }else if(message.metadata && message.metadata.messagePreview ){
                         emoji_template =message.metadata.messagePreview;
                     }
-                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7) {
+                    if (contact.isGroup && contact.type !== KommunicateConstants.GROUP_TYPE.SELLER && contact.type !== KommunicateConstants.GROUP_TYPE.GROUP_OF_TWO) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
                         if (message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE && contact.type !== KommunicateConstants.GROUP_TYPE.SUPPORT) {
                             emoji_template = msgFrom + ": " + emoji_template;
                         }
-                        if (emoji_template.indexOf('emoji-inner') === -1 && message && message.message && message.contentType === 0) {
+                        if (emoji_template.indexOf('emoji-inner') === -1 && message && message.message && message.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
                             var x = d.createElement('p');
                             x.appendChild(d.createTextNode(emoji_template));
                             emoji_template = x;
