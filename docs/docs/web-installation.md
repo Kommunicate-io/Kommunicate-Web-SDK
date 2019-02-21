@@ -19,9 +19,9 @@ Or
 
 You can copy the below script and replace required parameters manually.
 
-**Note:** `Use web server to view HTML files as real-time updates will not work if you directly open the HTML file in the browser.`
+> **Note**: Use web server to view HTML files as real-time updates will not work if you directly open the HTML file in the browser.
 
-Script
+#### Script
 ```javascript
 <script type="text/javascript">
     (function(d, m){
@@ -60,21 +60,21 @@ We recommend adding the plugin script to your website template so that it automa
 
 You can customize the plugin by passing below parameters in the `kommunicateSettings` object. Visit `Settings -> Install` section in Kommunicate dashboard to get default values for your account.
 
-|Parameters|Descriptions|
-|---	   |---	    |
-|appId |A unique application ID assigned to your Kommunicate account.|
-|botIds|You can add bots to any conversation by passing an array of bot IDs. Example array: "botIds":["bot1","bot2"]. Bot IDs will be visible in the [Bot section](https://dashboard.kommunicate.io/bot) in the dashboard if you have created any bot.|
-|conversationTitle |All conversations will have this title.|
-|preLeadCollection| This will enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a> in chat. Users will be asked to enter the name, email and phone number when they start a conversation.|
-|userId| This is your user’s/visiter's user ID. Kommunicate will generate a random ID if this is not defined.|
-|userName | This is the display name of the user. Agents will identify users by this display name.|
-|email | Email ID of the user. If not online, the user will be notified by fallback emails sent to this email ID.|
-|onInit| This function will be called after the chat plugin is initialized. Here, you can define the actions to be done after the plugin is initialized.|
-|emojilibrary| Emoticons library will be available in the chat widget if this parameter is set to ‘true’.|
-|locShare| If you want to enable location sharing in the chat widget, set this parameter to ‘true’.|  
-|msgTriggerTimeout| This will automatically start a conversation with a user after the user has spent a certain amount of time on your website. You can define the trigger time like this: "msgTriggerTimeout": 10000 (Note: the time is set in milliseconds).|
-|openConversationOnNewMessage | If this parameter is set to ‘true’, the chat window will be opened whenever a new message comes in the chat widget. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage</a>.|
-|automaticChatOpenOnNavigation | Type: Boolean <br> Default: false <br> If the chat widget is open and the user navigates to some other section in the website or to some other tab, then keep the chat widget open with the current active conversation<br> Note:<a href="web-conversation#create-a-new-conversation" target="_blank"> Kommunicate.startConversation()</a> method and msgTriggerTimeout option won't be compatible with this option.|  
+|Parameters|Type|Descriptions|
+|---	   |---	   |---	    |
+|appId |String| A unique application ID assigned to your Kommunicate account.|
+|botIds|Array of strings| You can add bots to any conversation by passing an array of bot IDs. Example array: "botIds":["bot1","bot2"]. Bot IDs will be visible in the [Bot section](https://dashboard.kommunicate.io/bot) in the dashboard if you have created any bot.|
+|conversationTitle |String | All conversations will have this title until the conversation gets assigned to the bot/agent. After conversation assignment, the conversation title will be the name of bot/agent whom the conversation is assigned.|
+|preLeadCollection| Array of objects| This will enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a> in chat. Users will be asked to enter the name, email and phone number when they start a conversation.|
+|userId| String| This is your user’s/visiter's user ID. Kommunicate will generate a random ID if this is not defined.|
+|userName | String| This is the display name of the user. Agents will identify users by this display name.|
+|email | String| Email ID of the user. If not online, the user will be notified by fallback emails sent to this email ID.|
+|onInit| Function| This function will be called after the chat plugin is [initialized](/docs/web-installation#script). Here, you can define the actions to be done after the plugin is initialized.|
+|emojilibrary| Boolean| Default: false <br> Emoticons library will be available in the chat widget if this parameter is set to ‘true’.|
+|locShare| Boolean| Default: false <br> If you want to enable location sharing in the chat widget, set this parameter to ‘true’.|  
+|msgTriggerTimeout| Integer| This will automatically start a conversation with a user after the user has spent a certain amount of time on your website. You can define the trigger time like this: "msgTriggerTimeout": 10000 (Note: the time is set in milliseconds).|
+|openConversationOnNewMessage | Boolean| Default: false <br> If this parameter is set to ‘true’, the chat window will be opened whenever a new message comes in the chat widget. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage</a>.|
+|automaticChatOpenOnNavigation | Boolean| Default: false <br> If the chat widget is open and the user navigates to some other section in the website or to some other tab, then keep the chat widget open with the current active conversation<br> Note:<a href="web-conversation#create-a-new-conversation" target="_blank"> Kommunicate.startConversation()</a> method and msgTriggerTimeout option won't be compatible with this option.|  
 
 
 
