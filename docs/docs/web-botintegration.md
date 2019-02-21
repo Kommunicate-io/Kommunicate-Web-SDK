@@ -91,3 +91,64 @@ Sample JSON for location messages
 }
 
 ```
+
+## Make your bot multilingual
+ Kommunicate allow you to integrate your multilingual bot so that your bot can reply in user's languages. You need to pass the user's language tag to kommunicate. Language tags follow the [HTTP/1.1 specification, section 3.10](https://tools.ietf.org/html/rfc2616#section-3.10). Kommunicate will send this information along with every message to the integrated bot platform. You can use below method to update user's langauge:
+
+```js
+
+Kommunciate.updateUserLanguage("en-US"); 
+
+``` 
+You can call this method when kommunicate SDK initialized. For example if you are using web SDK you can put this inside `onInit` callback function in Kommunicate installation [script](web-installation#web-installation). 
+
+### Multilingual dialogflow agents: 
+When you integrate a Dialogflow bot, Kommunicate sets English(en-US) the default language for bot. This setting will be overriden by user's language. Here is the [list of languages](https://dialogflow.com/docs/reference/language) supported by dialogflow. You need to pass the appropriate language tag in `Kommunciate.updateUserLanguage("languageTag")` method. Once this is set, only intents created in this language will be matched against user query. If none of the intents is matched `Default Fallback Intent` will be triggered. Here is the more information on creating [multilingual agent in Dialogflow](https://dialogflow.com/docs/agents/multilingual).      
+
+
+## Working with custom actions
+Actions are the triggers which tell the Kommunciate to perform certain tasks. A bot can request an action to kommunicate to perform below task:
+
+### Fetch the agent's availability status
+your bot can make a request to fetch the agent's availability status. This information can be useful to decide if there are any agents available to respond to a user's query. Bot can handover the conversation based on this information.     
+Bot make this request by passing `actionRequest` parameter along with the action name `fetchAgentAvailability` in custom payload. This parameter should be used with `replyMetadata` so that your bot will get the action response along with the message reply. 
+** Here is an example to understand this: **  
+Assume, you have designed a button `talk to Human`. when user click on this button you want to handover the conversation only if support agents are online. If none of agents are online you want to display some other message:
+Here is the custom payload for this kind of button.  
+
+```json
+{
+	"platform": "kommunicate",
+	"metadata": {
+		"contentType": "300",
+		"templateId": "6",
+		"payload": [{
+			"title": "Talk to Human",
+			"message": "I want to talk to a human",
+			"replyMetadata": {
+				"actionRequest": "fetchAgentAvailability"
+			}
+		}]
+	}
+}
+```
+
+When user click on this button kommunicate will send the action response as below to your bot platform: 
+
+```js
+{
+"actionResponse": [{
+        "payload": {
+          "availabilityStatus": "away" // possible values - online, offline, away
+        },
+        "name": "fetchAgentAvailability"
+      }],
+}
+
+```
+Possible values for availability status are:
+* `online` - if at least one agent is online
+* `away` - if no agent is online and at least one agent is away
+* `offline` - if non of agent is neither online nor away.
+
+Dialogflow, further, send this data to your web hook as part of `originalDetectIntentRequest`. You can get this information and decide wether handover the conversation to agents or send any other message.  
