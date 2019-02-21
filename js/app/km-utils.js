@@ -110,6 +110,12 @@ KommunicateConstants = {
         SUPPORT:10,
         SKIP_DELIVERED_READ:11,
         ANNOUNCEMENT_GROUP:12
+    },
+    SETTINGS : {
+        // chat context parameters are  dynamic and defined by customers while some of them are used to define system settings.
+        // these parameters should not be overridden by customer defined parameters
+        KM_CHAT_CONTEXT: "KM_CHAT_CONTEXT",
+        KM_USER_LANGUAGE_CODE:"kmUserLanguageCode"
     }
 }
 

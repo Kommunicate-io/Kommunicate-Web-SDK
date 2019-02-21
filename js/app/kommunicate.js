@@ -421,6 +421,22 @@ $applozic.extend(true,Kommunicate,{
     getSettings:function(setting){
         return KommunicateUtils.getSettings(setting);
     },
+    updateChatContext : function(options){
+        if(typeof options == 'object'){
+            var chatContext = KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
+            for (var key in options){
+                chatContext[key]= options[key];
+            }
+        Kommunicate.updateSettings({"KM_CHAT_CONTEXT": chatContext});
+        }else{
+            console.info("can not update chat context, expected data type is 'object', found ",(typeof chatContext));
+        }
+    },
+    updateUserLanguage: function(languageCode){
+        var chatContext = KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
+        chatContext[KommunicateConstants.SETTINGS.KM_USER_LANGUAGE_CODE] =languageCode;
+        Kommunicate.updateChatContext(chatContext);
+    },
     setDefaultIframeConfigForOpenChat: function () {
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
         kommunicateIframe.style.width="390px";
