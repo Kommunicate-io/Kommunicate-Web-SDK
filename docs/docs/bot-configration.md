@@ -79,16 +79,16 @@ Kommunicate will send the data to your webhook in below format:
 [{
 	"message": "text message from webhook" // message without metadata
 }, {
-	"message": "message with metadata to render quick replies", // you can send any valid actionable message in metadata.
+	"message": "message with metadata to Suggested Replies", // you can send any valid actionable message in metadata.
 	"metadata": {
     "contentType": "300",
         "templateId": "6",
         "payload": [{
-            "title": "Quick reply button 1",
-            "message": "Quick reply button 1",
+            "title": "Suggested Reply button 1",
+            "message": "Suggested Reply button 1",
         }, {
-            "title": "Quick reply button 2",
-            "message": "Quick reply button 2" 
+            "title": "Suggested Reply button 2",
+            "message": "Suggested Reply button 2" 
         }]
 	}
 }]
@@ -115,7 +115,7 @@ When setting an intent [response](https://dialogflow.com/docs/intents#response) 
 
 Pass any kind of Kommunicate supported <a href="actionable-messages" target="_blank">actionable messages</a>
 
-* ### Example: Sample JSON for Quick Replies
+* ### Example: Sample JSON for Suggested Replies
 ``` JSON
 {
    "platform": "kommunicate",
