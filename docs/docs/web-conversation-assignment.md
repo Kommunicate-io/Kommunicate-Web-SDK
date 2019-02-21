@@ -4,29 +4,50 @@ title: Conversation Assignment
 sidebar_label: Conversation Assignment
 ---
 
-## Dashboard: Conversation Rules
+## Overview
+Conversation Assignment is the set of rules you can apply to manage conversations among your team members(humans and bots). You can assign and route conversations between your team members to effectively manage all the incoming conversations. You can find these rules in [Conversation Rules](https://dashboard.kommunicate.io/settings/conversation-rules) section in the Dashboard.
 
 ![List Template](/img/dashboard-conversation-rules.png)
 
+Here are the guidelines on how to use conversation rules for humans and bots:
 
-* In case: **Assign new conversations to bot** is enabled then irrespective of routing rules for agents, the conversation will be assigned to **selected bot**.
-* In case: **Assign new conversations to bot** is disabled then conversation assignment depends on Routing rules for agents.
-  -  If **Routing rules for agents** is set to **Automatic assignment** then conversation will be assigned to agents in round robin manner.
-  - If **Routing rules for agents** is set to **Notify everybody** then conversation will be assigned to a default admin/agent and notification will be sent to everybody. Anybody can assign that conversation to themself after that.
-* If conversation assignee is bot :
-  - If bot is not able to answer:
-    - Conversation will be assigned to default agent if  **Notify everybody** is selected in agent routing rules.
-    - Conversation will be assigned to the agent present in conversation for **Automatic assignment**.
-  - Welcome message and away message will not come.
-  - The **take over from bot** button will be displayed in the conversation, if agent takes over from bot, conversation will assign to that particular agent..
+### Routing rules for human agents:
+
+**Automatic assignment**<br>
+If the automatic assignment is enabled, all the incoming conversation will be assigned to the human agents in a round robin manner. All the human agents who are offline or in 'Away' mode will be skipped in the routing. In case all the human agents are offline, the conversation will be assigned to the Default agent. You can set the default agent from the same section.
+
+**Notify everybody**<br>
+If notify everybody is enabled, then the conversation will be assigned to a default agent and notifications will be sent to everybody. Anybody can assign that conversation to themselves after that.
+
+**Note: In case 'Assign new conversations to bot' is enabled, then irrespective of the routing rules for human agents, the conversation will be assigned to the 'selected bot'.
 
 
-## Bot to human handoff
-There are multiple ways bot can assign the conversation to agents :
+### Routing rules for bots:
 
-  1. Set action `input.unknown` in Dialogflow. If Default fallback intents are enabled, Dialogflow automatically adds this action in response. It means whenever fallback intent is triggered the conversation will be assigned to an agent according to your conversation routing settings. 
+**Assign new conversations to bot**<br>
+If enabled, all the incoming conversations will be assigned to the selected bot. You can choose the selected bot from the drop down.
 
-  2. Assign conversation to an agent when an intent detected. Set below json as the custom payload in dialogflow. Specify the agent's emailId in `KM_ASSIGN_TO` parameter. If `KM_ASSIGN_TO` parameter left empty conversation routing rules will be applied. 
+A few points to note when the conversations are assigned to a bot:
+
+ - If the bot is not able to answer:
+ 	- The conversation will be assigned to default human agent if  **Notify everybody** is selected in the agent routing rules.
+ 	- The conversation will be assigned to the human agent present in the conversation for **Automatic assignment**.
+ 
+ - The Welcome and Away messages will not come.
+ - The **Take over from bot** button will be displayed in the the conversation, if the human agent takes over from the bot, conversation will assign to that particular agent.
+
+
+### Bot to human handoff
+Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways bot can assign the conversation to agents:
+
+1. On action `input.unknown`
+In Dialogflow, every intent has an action. In an Intent, you can set the action from the ‘action and parameter’ section while creating or updating an intent. The “Input.unknown” action is built into Dialogflow and associated with the default fallback intent (created and enabled by default when a bot is created in Dialogflow). 
+
+When none of the intents are matched, the default fallback intent is triggered and action associated with it is added in the response.  Kommunicate uses this action to handoff the conversation to a support agent. Whenever action “input.unknown” is detected in the response,  Kommunicate automatically assigns a conversation to a support agent based on the aforementioned routing rules. You can add an action “input.unknown” to any intent to handoff the conversation to a support agent or remove it from the default fallback intent to disable automatic handoff to support agents.
+
+2. To assign a conversation to a specific support agent:
+
+- Add the JSON code below (as a custom payload) to the response of the Intent. Specify the agent's email ID (same email ID which an agent uses to log into the Kommunicate dashboard) in `KM_ASSIGN_TO` parameter. If `KM_ASSIGN_TO` parameter is left empty, the conversation routing rules will be applied and the conversation will be assigned to a support agent based on the routing rules.
 
 ```js
 {
@@ -37,9 +58,15 @@ There are multiple ways bot can assign the conversation to agents :
   }
 }
 ```
+- Click on the Intent in Dialogflow console.  
+- In the response section, click on “Add Responses” then select “Custom Payload”.
+- Modify the sample JSON according to your specific needs and paste it in the “Custom Payload” section.
+- Save the intent and let the agent complete the training.
+
 
 ### Handoff a conversation to another bot 
-If you have multiple bots running, you can hand off the conversation to another bot when specific intent is matched. You can trigger an event so that your bot will get exact context rather than starting from the beginning. Set the below JSON as custom payload to handoff the conversation to another bot.
+If you have multiple bots running, you can hand off the conversation to another bot when specific intent is matched. You can trigger an event so that your bot will get exact context rather than starting from the beginning. Set the below JSON as custom payload to handoff the conversation to another bot:
+
 ```js
 {
 	"platform": "kommunicate",
@@ -53,5 +80,3 @@ If you have multiple bots running, you can hand off the conversation to another 
 	}
 }
 ```
-
-
