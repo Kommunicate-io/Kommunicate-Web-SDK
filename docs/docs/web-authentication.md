@@ -57,7 +57,7 @@ Once configured, user will see the form on click of the chat widget launch icon.
 
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
 
-> NOTE : Atleast one of (name,email,phone) field is required.
+> NOTE : Atleast one of (name, email, phone) field is required.
 
  Example:
 ```javascript
