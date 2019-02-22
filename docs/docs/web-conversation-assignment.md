@@ -9,6 +9,7 @@ Conversation Assignment is the set of rules you can apply to manage conversation
 
 ![List Template](/img/dashboard-conversation-rules.png)
 
+
 Here are the guidelines on how to use conversation rules for humans and bots:
 
 ## Routing rules for human agents
@@ -40,10 +41,10 @@ A few points to note when the conversations are assigned to a bot:
 ## Bot to human handoff
 Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways bot can assign the conversation to agents:
 
-1. On action `input.unknown`
-In Dialogflow, every intent has an action. In an Intent, you can set the action from the ‘action and parameter’ section while creating or updating an intent. The “Input.unknown” action is built into Dialogflow and associated with the default fallback intent (created and enabled by default when a bot is created in Dialogflow). 
+1. On action `input.unknown`:
 
-When none of the intents are matched, the default fallback intent is triggered and action associated with it is added in the response.  Kommunicate uses this action to handoff the conversation to a support agent. Whenever action “input.unknown” is detected in the response,  Kommunicate automatically assigns a conversation to a support agent based on the aforementioned routing rules. You can add an action “input.unknown” to any intent to handoff the conversation to a support agent or remove it from the default fallback intent to disable automatic handoff to support agents.
+* In Dialogflow, every intent has an action. In an Intent, you can set the action from the ‘action and parameter’ section while creating or updating an intent. The “Input.unknown” action is built into Dialogflow and associated with the default fallback intent (created and enabled by default when a bot is created in Dialogflow). 
+* When none of the intents are matched, the default fallback intent is triggered and action associated with it is added in the response.  Kommunicate uses this action to handoff the conversation to a support agent. Whenever action “input.unknown” is detected in the response,  Kommunicate automatically assigns a conversation to a support agent based on the aforementioned routing rules. You can add an action “input.unknown” to any intent to handoff the conversation to a support agent or remove it from the default fallback intent to disable automatic handoff to support agents.
 
 ![Default_Fallback_Intent](assets/Default_Fallback_Intent.png)
 
