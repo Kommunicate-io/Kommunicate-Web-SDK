@@ -103,7 +103,7 @@ Kommunicate.updateUserLanguage("en-US");
 You can call this method when kommunicate SDK initialized. For example if you are using web SDK you can put this inside `onInit` callback function in Kommunicate installation [script](web-installation#web-installation). 
 
 ### Multilingual dialogflow agents: 
-When you integrate a Dialogflow bot, Kommunicate sets English(en-US) the default language for bot. This setting will be overriden by user's language. Here is the [list of languages](https://dialogflow.com/docs/reference/language) supported by dialogflow. You need to pass the appropriate language tag in `Kommunicate.updateUserLanguage("languageTag")` method. Once this is set, only intents created in this language will be matched against user query. If none of the intents is matched `Default Fallback Intent` will be triggered. Here is the more information on creating [multilingual agent in Dialogflow](https://dialogflow.com/docs/agents/multilingual).      
+When you integrate a Dialogflow bot, Kommunicate sets English(en-US) the default language for bot. This setting will be overridden by user's language. Here is the [list of languages](https://dialogflow.com/docs/reference/language) supported by dialogflow. You need to pass the appropriate language tag in `Kommunicate.updateUserLanguage("languageTag")` method. Once this is set, only intents created in this language will be matched against user query. If none of the intents is matched `Default Fallback Intent` will be triggered. Here is the more information on creating [multilingual agent in Dialogflow](https://dialogflow.com/docs/agents/multilingual).      
 
 
 ## Working with custom actions
