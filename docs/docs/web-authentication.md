@@ -40,11 +40,12 @@ Whenever users come to your website, they are assigned a random ID by default. T
 Example:
 ```javascript
 
-    var kommunicateSettings = {"appId": <APP_ID>,
-            "userName": <USER_NAME>,
-            "conversationTitle":<CONVERSATION_TITLE>
-            };
-
+  var kommunicateSettings = {
+    "appId": '<APP_ID>',
+    "userName": '<USER_NAME>',
+    "conversationTitle": '<CONVERSATION_TITLE>'
+};
+ 
 ```
 
 ### 2. Pre-chat lead collection
@@ -55,7 +56,7 @@ Once configured, user will see the form on click of the chat widget launch icon.
 
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
 
-#### NOTE : Atleast one field is required.
+#### NOTE : Atleast one of (name,email,phone) field is required.
  Example:
 ```javascript
 
@@ -75,6 +76,7 @@ Once configured, user will see the form on click of the chat widget launch icon.
     "field": "phone",
     "type": "number",
     "required": true,
+    "element":"input",                      //Optional field(Possible values : textarea or input) 
     "placeholder": "enter your phone number"
 }]
 };
@@ -97,12 +99,12 @@ If the user has already logged into your website previously, then pass the user 
 Example:
 ```javascript
 
-    var kommunicateSettings = {
-            "userId": <USERID>,
-            "agentId": <AGENTID>,
-            "userName": <USERNAME>,
-            "email": <EMAIL>
-            };
+ var kommunicateSettings = {
+    "userId": '<USER_ID>',
+    "agentId": '<AGENT_ID>',
+    "userName": '<USER_NAME>',
+    "email": '<EMAIL_ID>'
+};
 
 ```
 
@@ -117,9 +119,9 @@ var kommunicateSettings = {
     "onInit": function () {
         // paste your code here
         var userdetail = {
-            "email": <EMAIL>,
-            "displayName": <DISPLAYNAME>,
-            "imageLink": <PROFILE_IMAGE_URL>,
+            "email": '<EMAIL_ID>',
+            "displayName": '<DISPLAY_NAME>',
+            "imageLink": '<PROFILE_IMAGE_URL>',
             "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
                 "companyName": value1,
                 "designation": value2,
