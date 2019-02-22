@@ -5,11 +5,24 @@ sidebar_label: Actionable Message
 ---
 
 ## Overview
-A pure textual experience is not enough to make a conversation interactive, fruitful, and easy to act upon. Kommunicate allows you to add several other interactive components in conversations such as Images, Audios, and Video in the form of Message Templates, Quick Replies, Buttons, Cards, Lists and other actionable items to provide a rich messaging experience.
+Only rendering text is not enough to make a conversation interactive, fruitful, and easy to act upon. Actionable Messages in Kommunicate help you make chat conversations more interactive.
 
-Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Quick Replies along with the message:
+Kommunicate allows you to add several other interactive components in conversations such as Images, Audios, and Video in the form of Message Templates, Quick Replies, Buttons, Cards, Lists, and other actionable items to provide a rich messaging experience.
 
- ```json
+## How to use Actionable Messages in chat?
+
+### Dialogflow custom payload
+Pass the Actionable Messages metadata as custom payload in Dialogflow to render Actionable Messages while using a Dialoflow bot. See how to set up Actionable Messages in Dailoglow bot [here](https://docs.kommunicate.io/docs/bot-configration#use-actionable-messages-to-make-conversations-interactive).
+
+### Send message API
+You can use [Send message API](https://docs.kommunicate.io/docs/api-detail#send-message) to add Actionable Messages.
+
+### Custom bots
+If you are using custom bots, pass the Actionable Message template as metadata in the message. Learn more about using Actionable Message in custom bots [here](https://docs.kommunicate.io/docs/bot-configration.html#to-integrate-with-other-bot-platforms-follow-the-below-steps).
+
+Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Suggested Replies along with the message:
+
+ ```JSON
  {
 	"message":"Do you want more updates?",
 	"ignoreTextResponse": false,
@@ -27,9 +40,9 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
     }
 }
 ```
-If you're passing both text response and custom payload in intent and want to hide the text response you can pass `ignoreTextResponse : true`. 
+If you're passing both the text response and custom payload in intent and want to hide the text response you can pass `ignoreTextResponse: true`. 
 
-Here is a list of available Actionable Messages:
+Here is a list of available Actionable Messages you can use in Kommunicate chat:
 
 * Buttons
     * Link Buttons
@@ -43,12 +56,12 @@ Here is a list of available Actionable Messages:
 
 ## Buttons 
 
-You can add any number of Button in your conversations for faster navigation. There are two type of Buttons supported in Kommunicate:
+You can add any number of Buttons in your conversations for faster navigation. There are two types of Buttons supported in Kommunicate:
 
 ### Link Button
-Link Button redirects users to a given URL in a new tab. Use below metadata to render the Link Buttons:
+Link Button redirects users to a given URL in a new tab. Use the below metadata to render the Link Buttons:
 
-```json
+```JSON
 {
 	"message": "click on the buttons",
 	"platform":"kommunicate",
@@ -70,14 +83,14 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 	}
 }
 ```
-Use `openLinkInNewTab: true` to open any link in new tab. Default is `false` which will open the links in same window.
-s
+Use `openLinkInNewTab: true` to open any link in new tab. Default value is `false`, which will open the links in the same window.
 
 ### Submit Button 
-Submit button allows you to post given data or redirect the user to a given URL. If parameter `requestType:json` is included it will post the data with content type `application/json` on the `formAction` url and `replyText` will be used as acknowledgement message. Default value for `replyText` is same as the value passed in `name` parameter. <br><br>
-If `requestType` parameter is not passed, it will submit the `formData` with contentType `application/x-www-form-urlencoded` and redirect the user on `formAction` url. The response will be rendered in new tab.
+Submit Button allows you to post given data or redirect the user to a given URL. If parameter `requestType:json` is included, it will post the data with content type `application/json` on the `formAction` URL and the `replyText` will be used as acknowledgement message. 
+
+Default value for `replyText` is same as the value passed in `name` parameter. If `requestType` parameter is not passed, it will submit the `formData` with contentType `application/x-www-form-urlencoded` and redirect the user on `formAction` URL. The response will be rendered in new tab.
   
-```json 
+```JSON
 {
 	"message": "click the pay button",
 	"platform": "kommunicate",
@@ -98,11 +111,15 @@ If `requestType` parameter is not passed, it will submit the `formData` with con
 }
 ```
 
-## Quick Replies
+## Suggested Replies
 
-Quick Replies provides a way to send messages on a click without typing them all out manually. You can add any number of Quick Replies by passing values in the metadata as described below:
+Suggested Replies provide a way to send messages on a click without typing them all out manually. These are essentially the same as Suggestion Chips in Dialogflow and Postback Buttons in Facebook.
 
-```json
+>Note: Suggested Replies were previously called Quick Replies.
+
+You can add any number of Suggested Replies by passing values in the metadata as described below:
+
+```JSON
 {
 	"message": "Do you want more updates?",
 	"platform": "kommunicate",
@@ -121,12 +138,13 @@ Quick Replies provides a way to send messages on a click without typing them all
 }
 ```
 `replyMetadata` can be used to set [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform). 
-The appearance of the Quick Replies and Buttons will be adjusted automatically.
+
+The appearance of the Suggested Replies and Buttons will be adjusted automatically according to the customization you have done on your chat widget.
 
 ## Images
-An image can be rendered in conversation using below JSON. An image object contains a caption(optional) and image url. You can send a list of image object in payload. There is no action supported on image template.
+Images can be rendered in conversation using below JSON. The image object contains a caption(optional) and an image URL. You can send a list of image objects in the payload. There is no action supported on image template.
 
-```json
+```JSON
 {
   "message": "Hey I am Kommunicate support bot",
   "platform":"kommunicate",
@@ -135,8 +153,8 @@ An image can be rendered in conversation using below JSON. An image object conta
     "templateId": "9",
     "payload": [
       {
-        "caption": "image caption",
-        "url": "image url"
+        "caption": "Image caption",
+        "url": "Image URL"
       }]
   }
 }
@@ -144,64 +162,70 @@ An image can be rendered in conversation using below JSON. An image object conta
 ```
 ## List Template
 
-The list template is a list of  structured items  with a optional header image and header text.
+The list template is a list of structured items with an optional header image and header text.
 
 ![List Template](/img/list.jpg)
 
 
+### Components of a List Template
+A list template may contain below items:
+
+* Header Image
+* Header text
+* List of items: Each item may contain below components:
+
+   * Thumbnail image
+   * Title 
+   * Description
+   * The action of the item
+       
+* List of buttons: Each button may contain below components:
+
+   * Name of button
+   * The action of the button
 
 
-  * **Components of list template**  A list template may contain below items:
-    * Header Image
-    * Header text
-    * List of items- one item may contain below components:
-       1. Thumbnail image
-       2. Title 
-       3. Description
-       4. Action of Item
-    * List of buttons: one button may contain below components:
-       1. Name of button
-       2. Action of button
+### Actions on the List
+There are two types of action supported on list items and buttons.
 
+* Link: It will navigate the user to another page in a new tab.
 
-  * **Action on the List** :  There are two type of action supported on list items and buttons.
-     * Link  - It will navigate user to the another page in new tab.
-     * Quick Reply - it will send a message with given text if passed. Default value will be title of list item or name of  button. Action is specified by the action object passed along with each item and buttons. Here is the action object looks like :
+* Suggested Replies: It will send a message with given text if passed. The default value will be the title of the list item or name of the button. The action is specified by the action object passed along with each item and button. This is how the action object looks like :
 
 
 
-```json
-// for quick reply action object will be like this:  
+```JSON
+// for Suggested Reply, the action object will look like this:  
 "action": {
 	"type": "quick_reply",
-	"text": "text will be sent as message" 
+	"text": "This text will be sent as message" 
 }
 
-// for navigation link action object will look like this
+// for Link, the action object will look like this:
 "action": {
 	"type": "link",	
-	"url": "url to navigate other page"
+	"url": "URL to navigate other page"
 } 
 ```
 > **Note:** Any URL provided in `url` key above will open that URL in a new tab.
 
 
-Here is the sample JSON for the list :
+Here is the sample JSON for the List Template:
 
-```json
+```JSON
 {
-	"message": "this is the sample json for list template",
+	"message": "This is the sample json for list template",
 	"platform": "kommunicate",
 	"metadata": {
 		"contentType": "300",
 		"templateId": "7",
 		"payload": {
-			"headerImgSrc": "url for header image",
-			"headerText": "header text.",
+			"headerImgSrc": "URL for header image",
+			"headerText": "Header text.",
 			"elements": [{
-				"imgSrc": "thumbnail icon for list item",
-				"title": "list item 1",
-				"description": " description for list item",
+				"imgSrc": "Thumbnail icon for list item",
+				"title": "List item 1",
+				"description": "Description for the list item",
 				"action": {
 					"url": "https://www.google.com",
 					"type": "link"
@@ -220,35 +244,47 @@ Here is the sample JSON for the list :
 ```
 
 ## Cards
-The card template is a list of structured items with title, subtitle, image, and buttons. There are two type of Cards supported in Kommunicate:
+The card template is a list of structured items with title, subtitle, image, and buttons. There are two types of Cards supported in Kommunicate:
 * Generic Card
 * Carousel Card
 
 ### Generic Card
 ![Generic Card Template](/img/generic-card.jpg)
-* **Components of card template** <br>
- A card template may contain below items:
-    * Header
-		1. Image (optional)
-		2. Overlay text (optional)
-    * Card information section
-       1. Title
-	   2. Title extension (optional) 
-       3. Sub title
-	   4. Description
-    * Card footer may contain list of buttons, it can be:
-       1. Link button
-	   2. Submit button
-	   3. Quick reply
 
-* **Actions on the button** <br>
-	* Link  - It will navigate user to the another page in new tab.
-	* Submit button - Submit button allows you to post given data or redirect the user to a given URL. 
-	* Quick Reply - it will send a message with given text if passed. Default value will be title of list item or name of  button. Action is specified by the action object passed along with each item and buttons. <br>
-	 Here is the action for buttons.
+**Components of card template** <br>
+A card template may contain below items:
+    
+* Header
+   
+     * Image (optional)
+     * Overlay text (optional)
+	
+* Card information section
+   
+     * Title
+     * Title extension (optional) 
+     * Subtitle
+     * Description
+   
+* Card footer may contain a list of buttons, it can be:
+   
+     * Link Button
+     * Submit Button
+     * Suggested Replies
 
-Sample `"action"` object for quick reply:
-```json 
+**Actions on the button** <br>
+
+   * Link: It will navigate the user to another page in a new tab.
+   
+   * Submit Button: Submit Button allows you to post given data or redirect the user to a given URL. 
+   
+   * Suggested Replies: It will send a message with given text if passed. The default value will be the title of the list item or name of the button. The action is specified by the action object passed along with each item and button. <br>
+	
+Here are the actions you can perform on click of the buttons:
+
+Sample `"action"` object for Suggested Reply:
+
+```JSON 
 "action": {
 	"type": "quickReply",
 	"payload": {
@@ -268,12 +304,12 @@ Sample `"action"` object for navigation link:
 }
 ```
 
-Sample `"action"` object for submit:
+Sample `"action"` object for Submit Button:
 ```json	 
 "action": {
 	"type": "submit",
 	"payload": {
-		"text": "button text",
+		"text": "Button text",
 		"formData": {
 			"amount": "1000",
 			"description": "movie ticket"
@@ -283,7 +319,7 @@ Sample `"action"` object for submit:
 	}
 }		  
 ```
-Here is the sample JSON for the single card :
+Here is the sample JSON for the single card:
 
 ```json
 {
@@ -301,7 +337,7 @@ Here is the sample JSON for the single card :
           "imgSrc": "Header image for the card"
         },
         "description": "Description",
-        "titleExt": "title Extension",
+        "titleExt": "Title extension",
         "buttons": [
           {
             "name": "Link Button",
@@ -322,14 +358,15 @@ You can add any number of buttons in your card footer.
 
 ### Card Carousel
 
-The chat widget supports the sending of a horizontally scroll-able carousel of generic templates.
+The Kommunicate chat widget supports sending of a horizontally scroll-able carousel of generic templates.
 
 ![Card CarouselTemplate](/img/card-carousel.png)
 
-Payload is an array of objects, each object can be different cards. So you can pass multiple objects inside payload.
+The payload is an array of objects, each object can be different cards. So you can pass multiple objects inside the payload.
 
-Here is the sample JSON for card carousel:
-```json
+Here is the sample JSON for the card carousel:
+
+```JSON
 {
   "message": "Carousel",
   "platform": "kommunicate",
@@ -357,7 +394,7 @@ Here is the sample JSON for card carousel:
             }
           },
           {
-            "name": "Quick",
+            "name": "Suggested Reply",
             "action": {
               "type": "quickReply",
               "payload": {
@@ -421,7 +458,7 @@ Here is the sample JSON for card carousel:
             }
           },
           {
-            "name": "Quick",
+            "name": "Suggested Reply",
             "action": {
               "type": "quickReply",
               "payload": {
@@ -470,7 +507,7 @@ Here is the sample JSON for card carousel:
             }
           },
           {
-            "name": "Quick",
+            "name": "Suggested Reply",
             "action": {
               "type": "quickReply",
               "payload": {
@@ -492,19 +529,18 @@ Here is the sample JSON for card carousel:
 
 ## Use autosuggestions in your chat box
 
-Autosuggestions make your life easier by populating the list of possible answers/data in the chat box itself.
-If you want to ask any question or enter any text message into the chat box and send possible answers or list of data with that question, you can pass a list of answers or data into metadata. It will be displayed in the suggestion list. Suggestion list can also be fetched from source URL/server if you pass source URL into the message. 
+Autosuggestions make your users' life easier by populating the list of possible answers/data in the chat itself (see the image below). 
+
+If you want to ask any question or enter any text message into the chat box and send possible answers or list of data with that question, you can pass a list of answers or data into metadata. It will be displayed in the suggestion list. Suggestion list can also be fetched from a source URL/server if you pass source URL into the message. 
 
 
 ![List Template](/img/autosuggest.png)
 
 The format of the message is as below:
-
- * MESSAGE FORMAT
  
  ```json
 {
-	"message": "Where you wanna go this summer?",
+	"message": "Where do you wanna go this summer?",
 	"platform":"kommunicate",
 	"metadata": {
 		"KM_AUTO_SUGGESTION": {
@@ -515,10 +551,10 @@ The format of the message is as below:
 }
 ```
 
-`"placeholder"` (optional) will appear in chat input field as placeholder text. The `"source"` can be any one of the below formats:
+`"placeholder"` (optional) will appear in the chat input field as placeholder text. The `"source"` can be any one of the below formats:
 
  * **Array of string**
- ```json
+ ```JSON
 {
  	"source": [
  		"London",
@@ -529,7 +565,7 @@ The format of the message is as below:
 ```
 
 * **Array of object**
-```json
+```JSON
 {
 	"source": [{
 			"searchKey": "Photography",
@@ -542,7 +578,7 @@ The format of the message is as below:
 	]
 }
 ```
-* **Url**  - Pass the API endpoint to get the data. Kommunicate will send data in the query parameter. 
+* **Url**: Pass the API endpoint to get the data. Kommunicate will send data in the query parameter. 
 
 ```json
 {
@@ -552,24 +588,24 @@ The format of the message is as below:
 	}
 }
 ```
-API should return data in below format : 
+The API should return data in below format : 
 
 ```json
 [{
     "searchKey": "searchable value",
-    "name": "text message which you want display/send into conversation.",
+    "name": "Text message which you want display/send into conversation.",
     "metadata": {"key":"value"} //optional, any extra information you want to send with message
 }]
 ```
-`"metadata"` is any extra information you want to send with message. This field is optional.
+`"metadata"` is any extra information you want to send with the message. This field is optional.
 
 ## Send HTML content 
 > HTML content will work with V2 APIs.
 
-You can send HTML content as a message and kommunicate will render the HTML into UI. Pass the property `messageType : html` in custom payload from Dialogflow. You can send stand alone html message or combine it with Actionable messages. Below is the sample JSON with quick replies:
+You can send HTML content as a message and Kommunicate will render the HTML in the UI. Pass the property `messageType: html` in custom payload from Dialogflow. You can send a standalone HTML message or combine it with Actionable Messages. Below is the sample JSON with Suggested Replies:
 
-Sample JSON with HTML in quick replies :
-```json
+Sample JSON with HTML in Suggested Replies:
+```JSON
 {
 	"message": "<ul><li> Bangalore </li><li> California </li><li> Singapore </li><li> London </li></ul>",
 	"platform": "kommunicate",
