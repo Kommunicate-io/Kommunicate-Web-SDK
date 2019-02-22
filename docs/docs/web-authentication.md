@@ -36,7 +36,7 @@ Whenever users come to your website, they are assigned a random ID by default. T
 |appId | A unique application ID assigned to your Kommunicate account.|
 |conversationTitle | All conversations will have this title. Once the conversation is assigned to one of your team members, their name would come as the conversation title.|
 
- > NOTE:  APP_ID is a unique application ID assigned to your Kommunicate account. You can get it from the install section in Kommunicate Dashboard.
+ > NOTE:  APP_ID is a unique application ID assigned to your Kommunicate account. You can get it from the [Install section](https://dashboard.kommunicate.io/settings/install) in Kommunicate Dashboard.
 Example:
 ```javascript
 
