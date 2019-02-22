@@ -41,7 +41,7 @@ Example:
 ```javascript
 
 var kommunicateSettings = {
-     ...
+    ...
     "appId": '<APP_ID>',
     "conversationTitle": '<CONVERSATION_TITLE>'
     ...
@@ -59,7 +59,7 @@ Once configured, user will see the form on click of the chat widget launch icon.
 
 > NOTE : Atleast one of (name, email, phone) field is required.
 
- Example:
+#### Example:
 ```javascript
 
 var kommunicateSettings = {
@@ -101,7 +101,7 @@ If the user has already logged into your website previously, then pass the user 
 
 
 
-Example:
+#### Example:
 ```javascript
 
 var kommunicateSettings = {
