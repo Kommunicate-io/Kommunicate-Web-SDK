@@ -5441,6 +5441,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                 $mck_text_box.submit();  
                                 e.preventDefault(); 
                             }
+                            if(e.which === 9) {
+                                $mck_autosuggest_search_input.focus();
+                                e.preventDefault();
+                            }
                         });
                         return metadataObj.displayMessage;
                     },
