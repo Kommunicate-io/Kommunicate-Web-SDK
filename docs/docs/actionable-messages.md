@@ -7,7 +7,7 @@ sidebar_label: Actionable Message
 ## Overview
 Only rendering text is not enough to make a conversation interactive, fruitful, and easy to act upon. Actionable Messages in Kommunicate help you make chat conversations more interactive.
 
-Kommunicate allows you to add several other interactive components in conversations such as Images, Audios, and Video in the form of Message Templates, Quick Replies, Buttons, Cards, Lists, and other actionable items to provide a rich messaging experience.
+Kommunicate allows you to add several other interactive components in conversations such as Images, Audios, and Video in the form of Message Templates, Suggested Replies, Buttons, Cards, Lists, and other actionable items to provide a rich messaging experience.
 
 ## How to use Actionable Messages in chat?
 
@@ -47,7 +47,7 @@ Here is a list of available Actionable Messages you can use in Kommunicate chat:
 * Buttons
     * Link Buttons
     * Submit Buttons
-* Quick Replies
+* Suggested Replies
 * Images
 * List
 * Cards
@@ -129,7 +129,7 @@ You can add any number of Suggested Replies by passing values in the metadata as
 		"payload": [{
 			"title": "Yes",
 			"message": "Cool! send me more.",
-			"replyMetadata":{"key1":"value1"} // optional. custom data will be sent along with message when user click on Quick reply button .
+			"replyMetadata":{"key1":"value1"} // optional. custom data will be sent along with message when user click on Suggested Reply button .
 		}, {
 			"title": "No ",
 			"message": "Don't send it to me again" 
