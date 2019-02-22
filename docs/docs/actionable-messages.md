@@ -9,15 +9,15 @@ Only rendering text is not enough to make a conversation interactive, fruitful, 
 
 Kommunicate allows you to add several other interactive components in conversations such as Images, Audios, and Video in the form of Message Templates, Quick Replies, Buttons, Cards, Lists, and other actionable items to provide a rich messaging experience.
 
-### How to use Actionable Messages in chat?
+## How to use Actionable Messages in chat?
 
-**Dialogflow custom payload:**<br>
+### Dialogflow custom payload
 Pass the Actionable Messages metadata as custom payload in Dialogflow to render Actionable Messages while using a Dialoflow bot. See how to set up Actionable Messages in Dailoglow bot [here](https://docs.kommunicate.io/docs/bot-configration#use-actionable-messages-to-make-conversations-interactive).
 
-**Send message API:**<Br>
+### Send message API
 You can use [Send message API](https://docs.kommunicate.io/docs/api-detail#send-message) to add Actionable Messages.
 
-**Custom bots:**<br>
+### Custom bots
 If you are using custom bots, pass the Actionable Message template as metadata in the message. Learn more about using Actionable Message in custom bots [here](https://docs.kommunicate.io/docs/bot-configration.html#to-integrate-with-other-bot-platforms-follow-the-below-steps).
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Suggested Replies along with the message:
