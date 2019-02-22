@@ -42,7 +42,6 @@ Example:
 
   var kommunicateSettings = {
     "appId": '<APP_ID>',
-    "userName": '<USER_NAME>',
     "conversationTitle": '<CONVERSATION_TITLE>'
 };
  
@@ -102,7 +101,6 @@ Example:
  var kommunicateSettings = {
     "userId": '<USER_ID>',
     "agentId": '<AGENT_ID>',
-    "userName": '<USER_NAME>',
     "email": '<EMAIL_ID>'
 };
 
