@@ -40,44 +40,50 @@ Whenever users come to your website, they are assigned a random ID by default. T
 Example:
 ```javascript
 
-  var kommunicateSettings = {
+var kommunicateSettings = {
+     ...
     "appId": '<APP_ID>',
     "conversationTitle": '<CONVERSATION_TITLE>'
+    ...
 };
  
 ```
 
 ### 2. Pre-chat lead collection
 
-For collecting user contact information before initiating chat, use the following setting 'preLeadCollection':
+For collecting user contact information before initiating chat, use the following setting `preLeadCollection`:
 
 Once configured, user will see the form on click of the chat widget launch icon.
 
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
 
-#### NOTE : Atleast one of (name,email,phone) field is required.
+> NOTE : Atleast one of (name,email,phone) field is required.
+
  Example:
 ```javascript
 
-   var kommunicateSettings = {
+var kommunicateSettings = {
+     ...
     "preLeadCollection": [{
-    "field": "name",                          // Whatever column you want to add
-    "required": true,                         // add whatever text you want to show in placeholder
-    "placeholder": "enter your name"
-},
-{
-    "field": "email",
-    "type": "email",
-    "required": true,
-    "placeholder": "enter your email"
-},
-{
-    "field": "phone",
-    "type": "number",
-    "required": true,
-    "element":"input",                      //Optional field(Possible values : textarea or input) 
-    "placeholder": "enter your phone number"
-}]
+            "field": "name", // Whatever column you want to add
+            "required": true, // add whatever text you want to show in placeholder
+            "placeholder": "enter your name"
+        },
+        {
+            "field": "email",
+            "type": "email",
+            "required": true,
+            "placeholder": "enter your email"
+        },
+        {
+            "field": "phone",
+            "type": "number",
+            "required": true,
+            "element": "input", //Optional field(Possible values : textarea or input) 
+            "placeholder": "enter your phone number"
+        }
+    ]
+    ...
 };
 
 ```
@@ -98,10 +104,12 @@ If the user has already logged into your website previously, then pass the user 
 Example:
 ```javascript
 
- var kommunicateSettings = {
+var kommunicateSettings = {
+ ...
     "userId": '<USER_ID>',
     "agentId": '<AGENT_ID>',
     "email": '<EMAIL_ID>'
+ ...
 };
 
 ```
@@ -112,8 +120,9 @@ Example:
 
 Once the chat plugin is initialized and has returned success response, then you can use `Kommunicate.updateUser(userdetail)` method to update the user's details.
 
-```
+```javascript
 var kommunicateSettings = {
+    ...
     "onInit": function () {
         // paste your code here
         var userdetail = {
@@ -126,6 +135,7 @@ var kommunicateSettings = {
                 "linkedInProfile": value3
             }
         };
+     ...
         Kommunicate.updateUser(userdetail);
     }
 };
