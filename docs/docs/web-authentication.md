@@ -105,11 +105,11 @@ If the user has already logged into your website previously, then pass the user 
 ```javascript
 
 var kommunicateSettings = {
- ...
+    ...
     "userId": '<USER_ID>',
     "agentId": '<AGENT_ID>',
     "email": '<EMAIL_ID>'
- ...
+    ...
 };
 
 ```
@@ -135,9 +135,9 @@ var kommunicateSettings = {
                 "linkedInProfile": value3
             }
         };
-     ...
         Kommunicate.updateUser(userdetail);
     }
+    ...
 };
 
 ```
