@@ -1654,8 +1654,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			document.getElementById("km-clear-search-text").addEventListener('click',function(event){
 				event.preventDefault();
 				document.getElementById("km-search").value="";
-				kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "n-vis","vis");
-				kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
+				kmUtils.modifyClassList( {id : ["km-clear-search-text","km-no-search-results-found"]}, "n-vis","vis");
 				var activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
 				document.getElementById("km-search-results").innerHTML = "";
 				document.getElementById(activeConversationList).click();
