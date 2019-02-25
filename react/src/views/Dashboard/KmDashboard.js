@@ -417,7 +417,8 @@ class KmDashboard extends Component {
           "Application": userSession.application.applicationId !== null ? userSession.application.applicationId : "",
           "Website": userSession.application.websiteUrl !== null ? userSession.application.websiteUrl : "",
           "Industry": userSession.industry !== null ? userSession.industry : "",
-          "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) ? "Done" : "Pending"
+          "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) ? "Done" : "Pending",
+          "Phone": userSession.contactNo !== null ? userSession.contactNo : ""
         }
       };
       window.Kommunicate.updateUser(userdetail);

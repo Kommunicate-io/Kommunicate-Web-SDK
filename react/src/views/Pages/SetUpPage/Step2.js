@@ -122,7 +122,8 @@ class Step2 extends Component {
       });
       userSession.name = customerInfo.name;
       userSession.adminDisplayName = customerInfo.name;
-      CommonUtils.setUserSession(userSession)
+      userSession.contactNo = customerInfo.contactNo;
+      CommonUtils.setUserSession(userSession);
       // this.props.moveToNextStep(customerInfo,this.state.nextStep)
   }
   onFocus (){
