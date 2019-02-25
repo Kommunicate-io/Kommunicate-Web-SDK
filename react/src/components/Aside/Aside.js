@@ -534,7 +534,7 @@ class Aside extends Component {
   
   
   handleForwardToAgileCrm = (e) => {
-    let contact = { lead: {} };
+    let contact = { metadata: {} };
     contact.email = this.state.userInfo.email ? this.state.userInfo.email : "";
     contact.first_name = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
     for (var i = 0; i < Object.keys(this.state.userInfo.metadata).length; i++) {
@@ -545,12 +545,18 @@ class Aside extends Component {
         value = JSON.parse(value)
 
       } catch (e) {
-        (typeof value == 'string' || typeof value == 'number') && (contact.lead[key] = value)
+        (typeof value == 'string' || typeof value == 'number') && (contact.metadata[key] = value)
       }
     }
     createAgileCrmContact(contact)
       .then(response => {
         Notification.success("User Info successfully forwarded")
+      }).catch (err => {
+        if (err.response.data.code == 400) {
+          Notification.error("Duplicate contact found with the same email address.")
+        } else {
+          Notification.error("Could not create Agile CRM contact. Please try again")
+        }
       })
   }
 
