@@ -715,7 +715,9 @@ class Aside extends Component {
                                 <span className="km-search-icon"> <a href="javascript:void(0)" role="link"
                                 className="km-tab-search"> <span className="km-icon-search"></span>
                               </a>
-                              </span> <input type="text" id="km-search" data-provide="typeahead"
+                              </span> 
+                              <span id="km-clear-search-text" className=" km-clear-search-text n-vis"> × </span>
+                              <input type="text" id="km-search" data-provide="typeahead"
                                 placeholder="Search..." autoFocus />
                               </div>
                             </div>
@@ -726,8 +728,13 @@ class Aside extends Component {
                                 </ul>
                                 <ul id="km-assigned-search-list"
                                   className="km-contact-list people km-assigned km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
+                                <ul id="km-search-results" 
+                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked vis"></ul>
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                <div id="km-no-search-results-found" className="n-vis">
+                                  No results found
+                                </div>
                                 <div id="km-contact-loading" className="km-loading km-contact-loading">
                                   <KommunicateContactListLoader/>
                                 </div>

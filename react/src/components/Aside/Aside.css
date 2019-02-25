@@ -1027,4 +1027,18 @@ color: #595757;
 }
 .km-box-form{
     position: relative;
+} 
+.km-clear-search-text {
+    font-size: 28px;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    cursor: pointer;
+    color: #97999b;
+}
+#km-no-search-results-found {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 15px;
+    color: #808080;
 }
