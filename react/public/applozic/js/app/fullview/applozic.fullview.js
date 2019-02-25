@@ -1669,7 +1669,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if(key === 13){
 					document.getElementById("km-search-results").innerHTML = "";
 					kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
-					console.log(kmSearch.value);
 					var params = {
 						content: kmSearch.value
 					}
@@ -2952,7 +2951,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + SEARCH_MESSAGE_URL,
 					data: params,
 					success: function (data) {
-						console.log(data);
 						if (data && data.response){
 							var list = {};
 							list.sectionId = "km-search-results";
