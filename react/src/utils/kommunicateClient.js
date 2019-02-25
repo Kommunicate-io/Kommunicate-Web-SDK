@@ -830,7 +830,7 @@ const createAgileCrmContact = (data) => {
     }
   }).catch(err => {
         console.log("Error while creating Agile CRM contact", err);
-        throw { message: err};
+        throw err;
    
   });
   
@@ -844,7 +844,7 @@ const updateAgileCrmContact = (data) => {
     }
   }).catch(err => {
         console.log("Error while updating Agile CRM contact", err);
-        throw { message: err }; 
+        throw err; 
   });
 }
 const updateConversation = (conversation) => {
