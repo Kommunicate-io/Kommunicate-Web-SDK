@@ -1655,6 +1655,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				event.preventDefault();
 				document.getElementById("km-search").value="";
 				kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "n-vis","vis");
+				kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
 				var activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
 				document.getElementById("km-search-results").innerHTML = "";
 				document.getElementById(activeConversationList).click();
@@ -1667,6 +1668,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				if(key === 13){
 					document.getElementById("km-search-results").innerHTML = "";
+					kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
 					console.log(kmSearch.value);
 					var params = {
 						content: kmSearch.value
