@@ -821,6 +821,32 @@ const createZendeskIntegrationTicket = (data, groupId) => {
   }).catch(err => { console.log("Error while creating zendesk ticket", err) })
 }
 
+const createAgileCrmContact = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+"/contact";
+  return Promise.resolve(axios.post(url, data)).then(response => {
+    if(response.data.code == "SUCCESS" ) {
+      return response;
+    }
+  }).catch(err => {
+        console.log("Error while creating Agile CRM contact", err);
+        throw { message: err};
+   
+  });
+  
+}
+const updateAgileCrmContact = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+ "/" +data.contactId+ "/contact";
+  return Promise.resolve(axios.post(url, data)).then(response => {
+    if(response.data.code == "SUCCESS" ) {
+      return response;
+    }
+  }).catch(err => {
+        console.log("Error while updating Agile CRM contact", err);
+        throw { message: err }; 
+  });
+}
 const updateConversation = (conversation) => {
   let userSession = CommonUtils.getUserSession();
   conversation.appId = userSession.application.applicationId
@@ -1206,5 +1232,7 @@ export {
   createIntegrySubscription,
   editApplicationDetails,
   updateKommunicateCustomerSubscription,
-  deleteInvitationByUserId
+  deleteInvitationByUserId,
+  createAgileCrmContact,
+  updateAgileCrmContact
 }
