@@ -1415,6 +1415,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "n-vis","vis");
 					document.getElementById("km-search-results").innerHTML = "";
 					document.getElementById("km-search").value="";
+					mckMessageService.isMessageSearchActive = false;
 					$kmApplozic(".km-conversation-tabView").removeClass('km-conversation-icon-active');
 					$kmApplozic(this).addClass('km-conversation-icon-active');
 					$kmApplozic(".km-converastion").removeClass('vis').addClass('n-vis');
@@ -1624,6 +1625,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var pressEnterToSendCheckbox = document.getElementById("km-press-enter-to-send-checkbox");
 
 			var $mck_msg_inner;
+			var isMessageSearchActive = false;
 			var MESSAGE_SEND_URL = "/rest/ws/message/send";
 			var GROUP_CREATE_URL = "/rest/ws/group/create";
 			var MESSAGE_LIST_URL = "/rest/ws/message/list";
@@ -1653,6 +1655,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			document.getElementById("km-clear-search-text").addEventListener('click',function(event){
 				event.preventDefault();
+				mckMessageService.isMessageSearchActive = false;
 				document.getElementById("km-search").value="";
 				kmUtils.modifyClassList( {id : ["km-clear-search-text","km-no-search-results-found"]}, "n-vis","vis");
 				var activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
@@ -2031,7 +2034,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
 				$kmMessageInner.bind('scroll', function () {
-					if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+					if (($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) && !mckMessageService.isMessageSearchActive) {
 						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.km-conversation-icon-active")[0].id;
 						var $conversation = $conversationAll;
 						var conversationLoadingFunc = mckMessageService.loadSupportGroup;
@@ -2951,6 +2954,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					data: params,
 					success: function (data) {
 						if (data && data.response){
+							mckMessageService.isMessageSearchActive = true;
 							var list = {};
 							list.sectionId = "km-search-results";
 							mckMessageService.addContactInConversationList(data, "km-search-results", list);
@@ -3062,8 +3066,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					global: false,
 					success: function (data) {
 						var isMessages = true;
-						var currTabId = $mck_msg_inner.data('km-id');
-						var isGroupTab = $mck_msg_inner.data('isgroup');
+						var currTabId = $mck_msg_inner.data('km-id') || params.tabId;
+						var isGroupTab = $mck_msg_inner.data('isgroup') || params.isGroup;
 						var conversationCreatedAtTime = data.groupFeeds.length ? kmDateUtils.getLastSeenAtStatus(data.groupFeeds[0].createdAtTime, "fullYearDateFormat"):"";
 						conversationCreatedAtTime = conversationCreatedAtTime.includes(KM_LABELS["last.seen.on"])?conversationCreatedAtTime.split(KM_LABELS["last.seen.on"]+' '):conversationCreatedAtTime.split(KM_LABELS["last.seen"]+' ');
 						$kmApplozic(".km-user-lastseen-info .km-user-info-metadata:last-child .km-user-info-meatadata-value").html(conversationCreatedAtTime);
