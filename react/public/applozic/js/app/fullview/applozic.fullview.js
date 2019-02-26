@@ -3066,8 +3066,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					global: false,
 					success: function (data) {
 						var isMessages = true;
-						var currTabId = $mck_msg_inner.data('km-id') || params.tabId;
-						var isGroupTab = $mck_msg_inner.data('isgroup') || params.isGroup;
+						var currTabId = $mck_msg_inner.data('km-id');
+						var isGroupTab = $mck_msg_inner.data('isgroup');
 						var conversationCreatedAtTime = data.groupFeeds.length ? kmDateUtils.getLastSeenAtStatus(data.groupFeeds[0].createdAtTime, "fullYearDateFormat"):"";
 						conversationCreatedAtTime = conversationCreatedAtTime.includes(KM_LABELS["last.seen.on"])?conversationCreatedAtTime.split(KM_LABELS["last.seen.on"]+' '):conversationCreatedAtTime.split(KM_LABELS["last.seen"]+' ');
 						$kmApplozic(".km-user-lastseen-info .km-user-info-metadata:last-child .km-user-info-meatadata-value").html(conversationCreatedAtTime);
