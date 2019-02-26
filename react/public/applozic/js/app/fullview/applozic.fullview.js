@@ -378,6 +378,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var GROUP_ROLE_MAP = [0, 1, 2, 3];
 		var GROUP_TYPE_MAP = [1, 2, 5, 6, 10];
 		var BLOCK_STATUS_MAP = ["BLOCKED_TO", "BLOCKED_BY", "UNBLOCKED_TO", "UNBLOCKED_BY"];
+		var MESSAGE_SEARCH_DETAILS = {};
 		var mckStorage = new MckStorage();
 		var TAB_FILE_DRAFT = new Object();
 		var MCK_CONTACT_ARRAY = new Array();
@@ -1415,7 +1416,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "n-vis","vis");
 					document.getElementById("km-search-results").innerHTML = "";
 					document.getElementById("km-search").value="";
-					mckMessageService.isMessageSearchActive = false;
+					MESSAGE_SEARCH_DETAILS.isMessageSearchActive = false;
 					$kmApplozic(".km-conversation-tabView").removeClass('km-conversation-icon-active');
 					$kmApplozic(this).addClass('km-conversation-icon-active');
 					$kmApplozic(".km-converastion").removeClass('vis').addClass('n-vis');
@@ -1625,7 +1626,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var pressEnterToSendCheckbox = document.getElementById("km-press-enter-to-send-checkbox");
 
 			var $mck_msg_inner;
-			var isMessageSearchActive = false;
+			MESSAGE_SEARCH_DETAILS.isMessageSearchActive = false;
 			var MESSAGE_SEND_URL = "/rest/ws/message/send";
 			var GROUP_CREATE_URL = "/rest/ws/group/create";
 			var MESSAGE_LIST_URL = "/rest/ws/message/list";
@@ -1655,12 +1656,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			document.getElementById("km-clear-search-text").addEventListener('click',function(event){
 				event.preventDefault();
-				mckMessageService.isMessageSearchActive = false;
+				MESSAGE_SEARCH_DETAILS.isMessageSearchActive = false;
 				document.getElementById("km-search").value="";
 				kmUtils.modifyClassList( {id : ["km-clear-search-text","km-no-search-results-found"]}, "n-vis","vis");
-				var activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
 				document.getElementById("km-search-results").innerHTML = "";
-				document.getElementById(activeConversationList).click();
+				document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.remove("km-retaliate");
+				document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "visible";
+				document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).click();
 			});
 			var kmSearch = document.getElementById("km-search");
 			kmSearch.addEventListener('keydown', function (event){
@@ -1675,6 +1677,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						content: kmSearch.value
 					}
 					_this.loadMessageSearchResults(params,function(){
+						MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
+						document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
+						document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
 						var divs = document.getElementsByClassName("km-converastion");
 						for (var i = 0; i < divs.length; i++) {
 							divs[i].classList.add('n-vis');
@@ -2034,7 +2039,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
 				$kmMessageInner.bind('scroll', function () {
-					if (($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) && !mckMessageService.isMessageSearchActive) {
+					if (($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) && !MESSAGE_SEARCH_DETAILS.isMessageSearchActive) {
 						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.km-conversation-icon-active")[0].id;
 						var $conversation = $conversationAll;
 						var conversationLoadingFunc = mckMessageService.loadSupportGroup;
@@ -2954,7 +2959,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					data: params,
 					success: function (data) {
 						if (data && data.response){
-							mckMessageService.isMessageSearchActive = true;
+							MESSAGE_SEARCH_DETAILS.isMessageSearchActive = true;
 							var list = {};
 							list.sectionId = "km-search-results";
 							mckMessageService.addContactInConversationList(data, "km-search-results", list);
