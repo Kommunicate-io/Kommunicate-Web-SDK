@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -24,6 +24,7 @@ import * as SignUpActions from '../../actions/signupAction'
 import Banner from '../Banner/Banner';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
+import {integration_type} from '../../views/Integrations/ThirdPartyList'
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -114,6 +115,7 @@ class Aside extends Component {
       clearbitKey: clearbitKey,
       applicationId:applicationId,
       botRouting:botRouting,
+      agileCrmData :"",
       inputBox:false
      },this.loadAgents);
      if (typeof(Storage) !== "undefined") {
@@ -130,6 +132,7 @@ class Aside extends Component {
     var user = e.detail.data;
     this.setState({
         userInfo: user,
+        agileCrmData: user.metadata ? (user.metadata.KM_AGILE_CRM ? user.metadata.KM_AGILE_CRM : "" ) : ""
     })
 }
   handleGroupUpdate(e) {
@@ -522,13 +525,53 @@ class Aside extends Component {
     });
     
   }
+  handleForwardToZendesk = (e) => {
+    this.setState({
+      clickedButton:e.target.dataset.index
+      },
+      this.openModal)
+    }
+  
+  
+  handleForwardToAgileCrm = (e) => {
+    let contact = { metadata: {} };
+    contact.email = this.state.userInfo.email ? this.state.userInfo.email : "";
+    contact.first_name = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
+    for (var i = 0; i < Object.keys(this.state.userInfo.metadata).length; i++) {
+      let key = Object.keys(this.state.userInfo.metadata)[i];
+      let value = this.state.userInfo.metadata[Object.keys(this.state.userInfo.metadata)[i]]
+      try {
+        //checking if metadata contains object
+        value = JSON.parse(value)
+
+      } catch (e) {
+        (typeof value == 'string' || typeof value == 'number') && (contact.metadata[key] = value)
+      }
+    }
+    createAgileCrmContact(contact)
+      .then(response => {
+        Notification.success("User Info successfully forwarded")
+      }).catch (err => {
+        if (err.response.data.code == 400) {
+          Notification.error("Duplicate contact found with the same email address.")
+        } else {
+          Notification.error("Could not create Agile CRM contact. Please try again")
+        }
+      })
+  }
+
+  forwardIntegrationButtonClick = (e) => {
+    integration_type.ZENDESK == e.target.dataset.integrationType && this.handleForwardToZendesk(e);
+    integration_type.AGILE_CRM == e.target.dataset.integrationType && this.handleForwardToAgileCrm(e);
+    
+  }
 
   render() {
     const thirdParty = thirdPartyList.map((item,index) => {
-         return <button disabled = {this.state.disableButton } key = {index} onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
-         className="km-button km-button--secondary">
-         <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
-    });
+      return <button data-index ={index} data-integration-type={item.type} disabled = {item.type == integration_type.ZENDESK ? this.state.disableButton : false } key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
+      className="km-button km-button--secondary km-forward-integration-button">
+      <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
+ });
     const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
 
     return (

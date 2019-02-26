@@ -4,7 +4,7 @@ import ZendeskLogo from './images/zendesk.png';
 import HelpdocsLogo from './images/helpdocs.png';
 import AgilecrmLogo from './images/agilecrm.png';
 
-const integration_type = { HELPDOCS: 1, ZENDESK: 2, CLEARBIT: 3,GOOGLE_SHETS:4, AGILE_CRM: 5 };
+export const integration_type = { HELPDOCS: 1, ZENDESK: 2, CLEARBIT: 3,GOOGLE_SHETS:4, AGILE_CRM: 5 };
 
 
 export let thirdPartyList = {
