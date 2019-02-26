@@ -66,9 +66,14 @@ let AppSetting= function(sequelize, DataTypes) {
         type: DataTypes.TINYINT,
         defaultValue: null,
         field:'popup_template_key',
+      },
+      loadInitialStateConversation:{
+        type:DataTypes.BOOLEAN,
+        defaultValue: 1,
+        field:'loadInitialStateConversation',
       }
     },
-    
+
     {
       underscored: true,
       paranoid: true

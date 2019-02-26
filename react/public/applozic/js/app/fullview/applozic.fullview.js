@@ -234,6 +234,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					case 'updateAccessTokenOnPasswordReset':
 						oInstance.updateAccessTokenOnPasswordReset(params);
 						break;
+					case 'disableInitialConversation':
+					     oInstance.disableInitialConversation();
 				}
 			} else if ($kmApplozic.type(appOptions) === "object") {
 				oInstance.reInit(appOptions);
@@ -354,7 +356,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
 		var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
 		var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
-		var MCK_LOAD_INITAL_CONVERSATION_STATE = true;
+		var MCK_LOAD_INITIAL_CONVERSATION_STATE = kmUtils.getItemFromLocalStorage('KM_USER_SESSION').loadInitialStateConversation || true;
 		var typeaheadMap = {};
 		var MCK_DEFAULT_MESSAGE_METADATA = (typeof appOptions.defaultMessageMetaData === 'undefined') ? {} : appOptions.defaultMessageMetaData;
 		var MCK_AWS_S3_SERVER = (appOptions.awsS3Server) ? appOptions.awsS3Server : false;
@@ -748,6 +750,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		_this.updateAccessTokenOnPasswordReset = function (value){
 			MCK_ACCESS_TOKEN = value;
 		};
+		_this.disableInitialConversation =function(){
+			MCK_LOAD_INITIAL_CONVERSATION_STATE =false;
+		}
 		_this.getContactImage = function (user) {
 			var contact = mckMessageLayout.fetchContact(user.userId);
 			var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
@@ -2866,7 +2871,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					data += "&lastFetchTime=" + params.startTime;
 				}
 				var url ="&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED;
-				if(MCK_LOAD_INITAL_CONVERSATION_STATE){
+				if(MCK_LOAD_INITIAL_CONVERSATION_STATE){
                       url = url+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL;
 				}
 
