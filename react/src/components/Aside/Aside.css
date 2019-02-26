@@ -601,13 +601,6 @@ ul#km-group-search-list li {
     cursor: pointer;
 }
 
-.trial-period-container {
-    position: relative;
-    min-width: 203px;
-    height: 40px;
-}
-
-
 .aside-menu *::-webkit-scrollbar {
 	-webkit-appearance: none;
 }

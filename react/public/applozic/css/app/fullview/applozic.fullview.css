@@ -662,8 +662,8 @@ a:hover {
 	vertical-align: middle;
 	line-height: 35px !important;
 	color: #3b5998;
-	border-bottom: 1px solid #e6e6e6;
-    border-right: 1px solid #e6e6e6;
+	/* border-bottom: 1px solid #e6e6e6; */
+    /* border-right: 1px solid #e6e6e6; */
 	overflow: hidden;
 }
 .km-conversation-header-without-border{
