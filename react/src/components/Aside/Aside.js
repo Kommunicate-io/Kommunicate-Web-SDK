@@ -599,7 +599,7 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="km-row">
+                      <div id="km-dashboard-conversation-list-heading"className="km-row">
                         <h4 id="assign-selected" className="km-conversation-tab-selected km-assigned">Assigned to me</h4>
                         <h4 id="all-conversatios-selected" className="km-conversation-tab-selected km-allconversation n-vis">All Conversations</h4>
                         <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected km-closed n-vis">Closed Conversations</h4>

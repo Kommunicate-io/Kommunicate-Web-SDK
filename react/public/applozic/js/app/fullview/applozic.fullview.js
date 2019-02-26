@@ -1416,6 +1416,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "n-vis","vis");
 					document.getElementById("km-search-results").innerHTML = "";
 					document.getElementById("km-search").value="";
+					MESSAGE_SEARCH_DETAILS.activeConversationList && document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.remove("km-retaliate");
+					document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "visible";
 					MESSAGE_SEARCH_DETAILS.isMessageSearchActive = false;
 					$kmApplozic(".km-conversation-tabView").removeClass('km-conversation-icon-active');
 					$kmApplozic(this).addClass('km-conversation-icon-active');

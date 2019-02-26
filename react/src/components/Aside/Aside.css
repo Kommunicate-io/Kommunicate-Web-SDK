@@ -1042,3 +1042,11 @@ color: #595757;
     font-size: 15px;
     color: #808080;
 }
+.km-retaliate svg path{
+    fill: #AAA;
+}
+.km-retaliate {
+    background-color: #f6f2f2;
+    border: 1px solid #cec9c9;
+    padding: 9px;
+}
