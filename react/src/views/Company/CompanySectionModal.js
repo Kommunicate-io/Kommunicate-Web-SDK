@@ -111,7 +111,10 @@ class CompanySectionModal extends Component {
         Notification.success("Domain value copied");
     }
     updateCustomUrl = (step) => {
-        if (this.state.customUrl && !isURL(this.state.customUrl)) {
+        if (!this.state.customUrl.trim()) {
+            Notification.error("Custom URL field is mandatory")
+            return
+        } else if(!isURL(this.state.customUrl)) {
             Notification.error("Invalid URL");
             return
         }
