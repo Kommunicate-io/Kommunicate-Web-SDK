@@ -227,4 +227,4 @@ ADD UNIQUE (application_id);
 
 -- script to add loadInitialStateConversation column
 ALTER TABLE app_settings
-ADD load_Initial_State_Conversation tinyint(1) default 1;
+ADD load_initial_state_conversation tinyint(1) default 1;

@@ -70,7 +70,7 @@ let AppSetting= function(sequelize, DataTypes) {
       loadInitialStateConversation:{
         type:DataTypes.TINYINT(1),
         defaultValue: 1,
-        field:'load_Initial_State_Conversation',
+        field:'load_initial_state_conversation',
       }
     },
 
