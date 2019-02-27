@@ -1,6 +1,6 @@
 const autosuggestService = require("./autosuggestService");
 const logger = require("../utils/logger");
-const botchannel = require("./botchannel");
+
 /**
  * returns all data in db irrespective to customer
  * dont use this API
@@ -132,9 +132,25 @@ exports.deleteSuggestion = (req, res) => {
 	})
 }
 
+exports.searchFAQv2 = (req, res) => {
+	let question = req.params.question;
+	if (question) {
+		question =  question.replace(/\-/g, " ")
+		req.query.question = autosuggestService.generateHash(question);
+	}
+	req.query.appId = req.params.appId
+	this.searchFAQ(req, res);
+}
+
 exports.searchFAQ=(req,res)=>{
 	logger.info("searching for query..")
-	return autosuggestService.searchFAQ({appId:req.query.appId,text:req.query.query,id:req.query.articleId, referenceId:req.query.referenceId}).then(data=>{
+	return autosuggestService.searchFAQ({
+		appId:req.query.appId,
+		text:req.query.query,
+		id:req.query.articleId, 
+		referenceId:req.query.referenceId,
+		key:req.query.question
+	}).then(data=>{
 		logger.info("got data from db");
 		return res.status(200).json({ code: "SUCCESS", data: data });
 	}).catch(e=>{

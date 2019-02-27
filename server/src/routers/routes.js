@@ -229,7 +229,8 @@ thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidat
 /**
  * Faq search
  */
-faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
+faqRouter.get("/search/:question/:appId",validate(autoSuggestValidation.searchFAQv2),autoSuggestController.searchFAQv2);
+faqRouter.get("/search", validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
 faqRouter.get("/list/:appId", validate(autoSuggestValidation.fetchSuggestion),autoSuggestController.fetchFAQs);
 
 
