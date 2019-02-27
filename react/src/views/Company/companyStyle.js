@@ -153,10 +153,9 @@ const DomainTable = styled.table`
         line-height: 1.33;
         letter-spacing: 0.5px;
         color: #49494a;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90px;
+        max-width: 150px;
+        white-space: pre-line;
+        word-break: break-word;
     }
     & tr:first-child {
         border: 1px solid #e8e8e8;

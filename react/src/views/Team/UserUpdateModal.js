@@ -64,6 +64,7 @@ class UserUpdateModal extends Component {
     let appId = userSession.application.applicationId;
     let users = this.props.usersList
     patchUserInfo({ "roleType": this.state.selectedRole }, this.props.userToBeUpdated.userId, appId).then(response => {
+      Notification.success('Role has been updated');
       users.find(result => {
         if (result.userName == this.props.userToBeUpdated.userId){
             result.roleType = this.state.selectedRole;
