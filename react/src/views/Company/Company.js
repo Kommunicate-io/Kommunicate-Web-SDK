@@ -58,7 +58,7 @@ class Company extends Component{
   getAppSettings = () => {
     getAppSetting().then(response => {
       if(response.status == 200 && response.data.response) {
-        this.setState({customUrl:response.data.response.domainUrl})
+        response.data.response.domainUrl && this.setState({customUrl:response.data.response.domainUrl})
       }
     }).catch(err => {
       console.log(err);
