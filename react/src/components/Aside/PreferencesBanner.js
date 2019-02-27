@@ -54,7 +54,7 @@ class PreferencesBanner extends Component {
             "loadInitialStateConversation": this.state.isChecked
         };
         updateAppSetting("", settingsJson).then(response => {
-            Notification.success("Setting Saved Succesfully");
+            Notification.success("Setting saved successfully");
             location.reload(true);
         }).catch(err => {
             Notification.info("Some issue with setting updation, please try again")

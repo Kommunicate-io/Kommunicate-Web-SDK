@@ -5160,7 +5160,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic("#km-li-" + contactIdExpr + " .km-cont-msg-wrapper").html("");
 			};
 			_this.addContact = function (contact, $listId, message, prepend) {
-				if (contact.metadata.CONVERSATION_STATUS == -1 && !MCK_LOAD_INITIAL_CONVERSATION_STATE) {
+				if (contact.metadata.CONVERSATION_STATUS == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL && !MCK_LOAD_INITIAL_CONVERSATION_STATE) {
 					return;
 				}
 				var emoji_template = "";
