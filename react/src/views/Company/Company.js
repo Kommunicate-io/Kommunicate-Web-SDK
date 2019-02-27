@@ -131,7 +131,7 @@ class Company extends Component{
       })
   }
   isCustomUrlFeatureRestricted = () => {
-      return (!CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
+      return !(CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
   }
 
   controlModal = (e) => {
