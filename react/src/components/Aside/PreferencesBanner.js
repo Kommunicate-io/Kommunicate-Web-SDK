@@ -57,7 +57,7 @@ class PreferencesBanner extends Component {
             Notification.success("Setting saved successfully");
             location.reload(true);
         }).catch(err => {
-            Notification.info("Some issue with setting updation, please try again")
+            Notification.info("Couldn't update preferences, please try again")
         })
     }
 
