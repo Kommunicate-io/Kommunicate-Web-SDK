@@ -113,6 +113,7 @@ class Forms extends Component {
           if (response.data.code === 'SUCCESS') {
             this.updateKommunicateSupportUser(user)
             userSession.adminDisplayName=this.state.name;
+	    userSession.contactNo=this.state.contact;
             CommonUtils.setUserSession(userSession);
             Notification.info(response.data.message)      
           }
