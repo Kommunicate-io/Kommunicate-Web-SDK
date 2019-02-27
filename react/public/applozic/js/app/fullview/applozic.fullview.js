@@ -234,8 +234,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					case 'updateAccessTokenOnPasswordReset':
 						oInstance.updateAccessTokenOnPasswordReset(params);
 						break;
-					case 'disableInitialConversation':
-					     oInstance.disableInitialConversation();
 				}
 			} else if ($kmApplozic.type(appOptions) === "object") {
 				oInstance.reInit(appOptions);
@@ -356,7 +354,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
 		var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
 		var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
-		var MCK_LOAD_INITIAL_CONVERSATION_STATE = kmUtils.getItemFromLocalStorage('KM_USER_SESSION').loadInitialStateConversation || true;
+		var MCK_LOAD_INITIAL_CONVERSATION_STATE = kmUtils.getItemFromLocalStorage('KM_USER_SESSION').loadInitialStateConversation;
 		var typeaheadMap = {};
 		var MCK_DEFAULT_MESSAGE_METADATA = (typeof appOptions.defaultMessageMetaData === 'undefined') ? {} : appOptions.defaultMessageMetaData;
 		var MCK_AWS_S3_SERVER = (appOptions.awsS3Server) ? appOptions.awsS3Server : false;
@@ -750,9 +748,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		_this.updateAccessTokenOnPasswordReset = function (value){
 			MCK_ACCESS_TOKEN = value;
 		};
-		_this.disableInitialConversation =function(){
-			MCK_LOAD_INITIAL_CONVERSATION_STATE =false;
-		}
 		_this.getContactImage = function (user) {
 			var contact = mckMessageLayout.fetchContact(user.userId);
 			var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
@@ -2939,9 +2934,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					data += "&lastFetchTime=" + params.startTime;
 				}
 				data += "&pageSize=60";
+				var url = "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN;
+				if(MCK_LOAD_INITIAL_CONVERSATION_STATE){
+					url = url+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL;
+			  }
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+url,
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.assignedToMeConversations = data.response.groupFeeds.length);
 						var list = {};
@@ -5161,6 +5160,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic("#km-li-" + contactIdExpr + " .km-cont-msg-wrapper").html("");
 			};
 			_this.addContact = function (contact, $listId, message, prepend) {
+				if (contact.metadata.CONVERSATION_STATUS == -1 && !MCK_LOAD_INITIAL_CONVERSATION_STATE) {
+					return;
+				}
 				var emoji_template = "";
 				var conversationId = "";
 				var isGroupTab = contact.isGroup;

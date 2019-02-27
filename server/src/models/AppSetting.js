@@ -68,9 +68,9 @@ let AppSetting= function(sequelize, DataTypes) {
         field:'popup_template_key',
       },
       loadInitialStateConversation:{
-        type:DataTypes.BOOLEAN,
+        type:DataTypes.TINYINT(1),
         defaultValue: 1,
-        field:'loadInitialStateConversation',
+        field:'load_Initial_State_Conversation',
       }
     },
 

@@ -2,20 +2,26 @@ import React, { Component, Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import { PreferencesIcon } from "../../assets/svg/svgs";
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
+import Notification from '../../views/model/Notification'
 import Button from '../Buttons/Button';
 import Checkbox from '../Checkbox/Checkbox';
+import { updateAppSetting}  from '../../utils/kommunicateClient'
+import CommonUtils from '../../utils/CommonUtils';
 
 class PreferencesBanner extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
-            isChecked: false
+            isChecked: true
         }
     }
 
     componentDidMount() {
-
+        let userSession = CommonUtils.getUserSession();
+        this.setState({
+            isChecked:  !!userSession.loadInitialStateConversation 
+        })
     }
 
     showDropDown = (e) => {
@@ -44,6 +50,15 @@ class PreferencesBanner extends Component {
 
     savePreference = () => {
         //TODO: Handle OnClick of the the "Save" Button
+        var settingsJson = {
+            "loadInitialStateConversation": this.state.isChecked
+        };
+        updateAppSetting("", settingsJson).then(response => {
+            Notification.success("Setting Saved Succesfully");
+            location.reload(true);
+        }).catch(err => {
+            Notification.info("Some issue with setting updation, please try again")
+        })
     }
 
     render() {
