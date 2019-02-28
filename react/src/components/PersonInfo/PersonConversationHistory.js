@@ -114,6 +114,9 @@ const ConversationDataContainer = styled.div`
     border-bottom: 1px solid rgb(236, 236, 236);
     padding: 10px 0 8px;
     cursor: pointer;
+    &:last-child {
+        margin-bottom: 75px;
+    }
 `;
 const ConversationTitle = styled.div`
     font-size: 16px;
