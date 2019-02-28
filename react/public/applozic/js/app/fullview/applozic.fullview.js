@@ -7697,7 +7697,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
 				if (message.message) {
 					var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 50);
-					msg = mckMessageLayout.getScriptMessagePreview(message, emoji_template);
+					msg = mckMessageLayout.getScriptMessagePreview(message, msg);
 					$mck_preview_msg_content.html("");
 					(typeof msg === 'object') ? $mck_preview_msg_content.append(msg) : $mck_preview_msg_content.html(msg);
 					$mck_preview_msg_content.removeClass('n-vis').addClass('vis');
