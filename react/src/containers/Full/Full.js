@@ -41,7 +41,7 @@ import MessageLogs from '../../ALDashboard/views/Groups/MessageLogs';
 
 
 
-const enableIntegry = config.integryEnabled;
+const enableIntegry = config.thirdPartyIntegration.integry.enable;
 const chatUrl = config.baseurl.applozicAPI;
 
 class Full extends Component {
@@ -66,28 +66,7 @@ class Full extends Component {
     });
    }
   componentWillMount(){
-    if(enableIntegry){
-    // integry SDK
-       new Promise(function(resolve,reject){
-        const integryScript = document.createElement("script");
-
-        integryScript.src = "https://app.integry.io/w/assets/sdk-1.1.js?q=4";
-        integryScript.async = true;
-    
-        document.getElementsByTagName('head')[0].appendChild(integryScript);
-      return resolve({})
-       }).then((data)=>{
-          let userSession = CommonUtils.getUserSession();
-         //TODO: load integry SDK synchronously, remove setTimeout 
-          userSession && setTimeout(function(){
-            initilizeIntegry({
-              applicationId:userSession.application.applicationId, 
-              apiKey:userSession.apiKey
-            });
-         }, 5000)
-       });
-
-      }
+    enableIntegry && this.initIntegryScript()
     window.appHistory = this.props.history;
     const search = window.location.href;
     let invitedBy = CommonUtils.getUrlParameter(search, 'referer');
@@ -117,7 +96,20 @@ class Full extends Component {
     this.initWootricScript();
 
   }
-
+  initIntegryScript = () => {
+    const integryScript = document.createElement("script");
+    integryScript.src = "https://app.integry.io/w/assets/sdk-1.1.js?q=4";
+    integryScript.async = true;
+    document.getElementsByTagName('head')[0].appendChild(integryScript);
+    integryScript.onload = function () {
+      let userSession = CommonUtils.getUserSession();
+      userSession && initilizeIntegry({
+              applicationId:userSession.application.applicationId, 
+              apiKey:userSession.apiKey
+            });
+      };
+    
+  } 
   initWootricScript() {
     let head = document.getElementsByTagName('head')[0];
     let wootricScript = document.createElement('script');

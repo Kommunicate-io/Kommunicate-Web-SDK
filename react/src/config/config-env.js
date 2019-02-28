@@ -29,9 +29,11 @@ export default {
         },
         'analytics' : {
             'enable': false
+        },
+        'integry': {
+            'enable': true
         }
     },
-    'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -70,9 +72,11 @@ export default {
         },
         'analytics' : {
             'enable': false
+        },
+        'integry': {
+            'enable': true
         }
     },
-    'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -111,9 +115,11 @@ export default {
         },
         'analytics' : {
             'enable': false
+        },
+        'integry': {
+            'enable': true
         }
     },
-    'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -153,9 +159,11 @@ export default {
         },
         'analytics' : {
             'enable': true
+        },
+        'integry': {
+            'enable': true
         }
     },
-    'integryEnabled':false,
     'enableDevTools':false,
     "applozic": {
         'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
@@ -193,10 +201,11 @@ export default {
     },
     'analytics' : {
         'enable': true
+    },
+    'integry': {
+        'enable': true
     }
-       
   },
-    'integryEnabled': false,
     'enableDevTools': false,
     "applozic": {
         'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
@@ -233,10 +242,12 @@ export default {
     },
     'analytics' : {
         'enable': true
+    },
+    'integry': {
+        'enable': true
     }
        
    },
-   'integryEnabled':false,
    'enableDevTools':false,
    "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -295,10 +306,12 @@ export default {
     },
     'analytics' : {
         'enable': true
+    },
+    'integry': {
+        'enable': true
     }
        
    },
-   'integryEnabled':false,
    'enableDevTools':false,
    "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
