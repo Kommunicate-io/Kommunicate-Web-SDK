@@ -113,7 +113,7 @@ class ChatWidgetCustomization extends Component {
         var widgetSettingsJson = {
             "widgetTheme": this.widgetTheme
         };
-        updateAppSetting("", widgetSettingsJson).then(response => {
+        updateAppSetting(widgetSettingsJson).then(response => {
             this.setState.changesMade = false;
             Notification.success("Chat widget visuals updated successfully");
             this.setState({ changesMade: false });

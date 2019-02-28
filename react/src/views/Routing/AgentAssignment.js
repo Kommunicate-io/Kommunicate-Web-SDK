@@ -94,7 +94,7 @@ updateDefaultAssignee = (selectedAssignee) => {
         data.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT]= prevAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT];
         this.setState({notifyEveryBodyDefaultAssigneeInfo: assignee});
     }
-    updateAppSetting(null, data)
+    updateAppSetting(data)
     .then(response => {
         appSettings.defaultConversationAssignee = data.defaultConversationAssignee;
         //update store
