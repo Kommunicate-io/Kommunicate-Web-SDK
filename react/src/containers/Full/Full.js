@@ -41,7 +41,7 @@ import MessageLogs from '../../ALDashboard/views/Groups/MessageLogs';
 
 
 
-const enableIntegry = config.thirdPartyIntegration.integry.enable;
+const enableIntegry = config.thirdPartyIntegration.integry.enabled;
 const chatUrl = config.baseurl.applozicAPI;
 
 class Full extends Component {

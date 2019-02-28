@@ -31,7 +31,7 @@ export default {
             'enable': false
         },
         'integry': {
-            'enable': true
+            'enabled': true
         }
     },
     'enableDevTools':true,
@@ -74,7 +74,7 @@ export default {
             'enable': false
         },
         'integry': {
-            'enable': true
+            'enabled': true
         }
     },
     'enableDevTools':true,
@@ -117,7 +117,7 @@ export default {
             'enable': false
         },
         'integry': {
-            'enable': true
+            'enabled': true
         }
     },
     'enableDevTools':true,
@@ -161,7 +161,7 @@ export default {
             'enable': true
         },
         'integry': {
-            'enable': true
+            'enabled': true
         }
     },
     'enableDevTools':false,
@@ -203,7 +203,7 @@ export default {
         'enable': true
     },
     'integry': {
-        'enable': true
+        'enabled': true
     }
   },
     'enableDevTools': false,
@@ -244,7 +244,7 @@ export default {
         'enable': true
     },
     'integry': {
-        'enable': true
+        'enabled': true
     }
        
    },
@@ -308,7 +308,7 @@ export default {
         'enable': true
     },
     'integry': {
-        'enable': true
+        'enabled': true
     }
        
    },
