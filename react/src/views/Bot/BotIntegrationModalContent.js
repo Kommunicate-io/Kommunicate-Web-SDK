@@ -158,7 +158,8 @@ class BotIntegrationModalContent extends Component {
         }   
         let data = { "userIdList": [userId] }
         createCustomerOrAgent(userInfo, "BOT").then(bot => {
-            var bot = bot.data.data;
+            var bot = bot.data.data,
+                botId = bot.userName;
             let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
             botAgentMap[bot.userName] = bot;
             CommonUtils.setItemInLocalStorage("KM_BOT_AGENT_MAP", botAgentMap);
@@ -168,7 +169,7 @@ class BotIntegrationModalContent extends Component {
                     let data = { id: id, botInfo: botInfo };
                     createBot(data).then(response => {
                         this.props.closeModal();
-                        this.props.setBotName(this.state.botName);
+                        this.props.setBotData(this.state.botName,botId);
                         this.props.assignmentModal();
                         Notification.success("Bot successfully created");  
                     }).catch(err => {
