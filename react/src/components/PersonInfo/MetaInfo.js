@@ -105,7 +105,7 @@ export const DisplayPseudoIcon = (props) => {
     return (
         <div className="pseudo-name-icon text-center" id="pseudo-name-icon" onClick={props.onOpenModal}>
             <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
-                viewBox="0 0 15.433 13.883">
+                viewBox="0 0 15.433 13.883" height="16px" width="16px">
                 <path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z"
                     transform="translate(0 5.998)" fill="#42b9e8" />
                 <path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z"
