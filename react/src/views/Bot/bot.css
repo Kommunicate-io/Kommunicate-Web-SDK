@@ -688,6 +688,8 @@ border-bottom: 1px solid #cfd8dc;
   letter-spacing: 0.6px;
   color: #383939;
   padding: 0 10px;
+  white-space: pre-line;
+  max-width: 100%;
 }
 .bot-assignment-subheading strong{
   font-weight: 700;
