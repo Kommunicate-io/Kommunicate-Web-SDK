@@ -39,6 +39,7 @@ class Integrations extends Component {
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         window.addEventListener("kmIntegryInitilized",this.getThirdPartyList, true);
+        window.Integrations = {closeModal: this.closeModal};
     }
     componentDidMount () {
         this.getThirdPartyList();           
