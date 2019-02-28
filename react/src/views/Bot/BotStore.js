@@ -600,7 +600,6 @@ class BotStore extends Component {
           this.enableBotRouting();
         }
         conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
-        console.log(this.state.latestIntegratedBotId)
         conversationHandlingByBot(this.state.latestIntegratedBotId, 1).then(response => {
           if (response.data.code === "success") {
             window.Aside.loadAgents();
