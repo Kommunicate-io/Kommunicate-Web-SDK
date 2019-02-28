@@ -595,7 +595,7 @@ class BotStore extends Component {
           this.enableBotRouting();
         }
         conversationHandlingByBot(this.state.conversationsAssignedToBot, 0)
-        conversationHandlingByBot(this.state.latestIntegratedBotName, 1).then(response => {
+        conversationHandlingByBot(this.state.latestIntegratedBotName.replace(/ /g, '-'), 1).then(response => {
           if (response.data.code === "success") {
             Notification.info('Conversations assigned to ' + this.state.latestIntegratedBotName);
           } else {
