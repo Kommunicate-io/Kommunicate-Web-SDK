@@ -119,7 +119,8 @@ class BotStore extends Component {
           hideIntegratedBots: true,
           setbotImageLink:'',
           botIntegrationType:"",
-          botAssignmentModal:false
+          botAssignmentModal:false,
+          latestIntegratedBotId:''
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -518,7 +519,8 @@ class BotStore extends Component {
             CommonUtils.setItemInLocalStorage("KM_BOT_AGENT_MAP",botAgentMap);
             Notification.info("Bot successfully created");
             this.setState({
-              latestIntegratedBotName: this.state.botName
+              latestIntegratedBotName: this.state.botName,
+              latestIntegratedBotId : bot.userName
             })
             return bot;
           })
@@ -595,7 +597,7 @@ class BotStore extends Component {
           this.enableBotRouting();
         }
         conversationHandlingByBot(this.state.conversationsAssignedToBot, 0)
-        conversationHandlingByBot(this.state.latestIntegratedBotName, 1).then(response => {
+        conversationHandlingByBot(this.state.latestIntegratedBotId, 1).then(response => {
           if (response.data.code === "success") {
             Notification.info('Conversations assigned to ' + this.state.latestIntegratedBotName);
           } else {
