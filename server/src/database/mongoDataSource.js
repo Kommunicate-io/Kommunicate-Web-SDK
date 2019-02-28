@@ -7,9 +7,9 @@ class Database {
   }
 _connect() {
      return mongoose.connect(`${config.mongoDbUrl}`)
-       .then(() => {
+       .then((res) => {
          console.log('Database connection successful')
-         return;
+         return res;
        })
        .catch(err => {
          console.error('Database connection error')
