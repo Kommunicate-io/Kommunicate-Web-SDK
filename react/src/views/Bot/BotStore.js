@@ -120,7 +120,8 @@ class BotStore extends Component {
           setbotImageLink:'',
           botIntegrationType:"",
           botAssignmentModal:false,
-          latestIntegratedBotId:''
+          latestIntegratedBotId:'',
+          conversationsAssignedToBotId:''
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
