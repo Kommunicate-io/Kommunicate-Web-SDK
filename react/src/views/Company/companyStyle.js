@@ -8,8 +8,7 @@ const inputFieldFontSize = css`
 `
 const inputFieldStyle = css`
     border-radius: 4px;
-    height: 40px;
-    padding: 16px;
+    padding: 9px;
     margin-bottom: 28px;
     color: #4a4a4a;
 `
