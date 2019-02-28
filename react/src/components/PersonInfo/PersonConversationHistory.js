@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import { CONVERSATION_STATUS } from '../../utils/Constant';
+// import { CONVERSATION_STATUS } from '../../utils/Constant';
 import { getConfig } from '../../config/config';
 
 class PersonConversationHistory extends Component {
@@ -80,7 +80,8 @@ class PersonConversationHistory extends Component {
                 <Section>
                     {
                         this.state.conversations.length !== 0 && this.state.conversations.filter((grp) => typeof grp !== 'undefined' && (!activeGroup.includes("conversations") && grp.id !== parseInt(activeGroup))).map( (data, index) => {
-                            let status = Object.keys(CONVERSATION_STATUS).find(key => CONVERSATION_STATUS[key] === parseInt(data.metadata.CONVERSATION_STATUS));
+                            let status = Object.keys(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE).find(key => 
+                                window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE[key] === parseInt(data.metadata.CONVERSATION_STATUS));
                             return (
                                 <ConversationDataContainer key={index} onClick={() => this.openConversation(data.id)}>
                                     <ConversationTitle>Conversation #{data.id}</ConversationTitle>
