@@ -601,6 +601,7 @@ class BotStore extends Component {
         conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
         conversationHandlingByBot(this.state.latestIntegratedBotId, 1).then(response => {
           if (response.data.code === "success") {
+            window.Aside.loadAgents();
             Notification.info('Conversations assigned to ' + this.state.latestIntegratedBotName);
           } else {
             Notification.info('Conversations not assigned to ' + his.state.latestIntegratedBotName)
