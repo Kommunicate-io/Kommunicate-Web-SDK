@@ -33,6 +33,9 @@ const GlobalStyle = createGlobalStyle`
   .product.product-${CommonUtils.getProduct()} {
     display: block;
   }
+  .product.product-${CommonUtils.getProduct()}-table-cell {
+    display: table-cell;
+  }
   .km-button--primary, .km-button--primary a {
     background-color: ${props => props.theme.buttons.primaryBG};
   }
