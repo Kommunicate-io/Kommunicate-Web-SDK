@@ -120,7 +120,8 @@ class BotStore extends Component {
           setbotImageLink:'',
           botIntegrationType:"",
           botAssignmentModal:false,
-          latestIntegratedBotId:''
+          latestIntegratedBotId:'',
+          conversationsAssignedToBotId:''
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -234,7 +235,8 @@ class BotStore extends Component {
             this.state.listOfIntegratedBots.map(bot => {
               if(bot.allConversations == 1){
                 this.setState({
-                  conversationsAssignedToBot: bot.name
+                  conversationsAssignedToBot: bot.name,
+                  conversationsAssignedToBotId: bot.userName
                 })
               }
             })
@@ -596,7 +598,7 @@ class BotStore extends Component {
         if (this.state.botRoutingEnabled == 0) {
           this.enableBotRouting();
         }
-        conversationHandlingByBot(this.state.conversationsAssignedToBot, 0)
+        conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
         conversationHandlingByBot(this.state.latestIntegratedBotId, 1).then(response => {
           if (response.data.code === "success") {
             Notification.info('Conversations assigned to ' + this.state.latestIntegratedBotName);
