@@ -6,7 +6,7 @@ const customerService= require('../customer/customerService')
 const applozicClient = require('../utils/applozicClient');
 const logger = require('../utils/logger');
 
-exports.createContact = (req, res) => {
+exports.createContact =  (req, res) => {
     let appId = req.params.appId;
     return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
@@ -16,13 +16,13 @@ exports.createContact = (req, res) => {
             if (settings.length == 0) {
                 return res.status(200).json({ code: "SUCCESS", message: 'no configuration found for Agile CRM' });
             }
-            return agileService.createContact(settings[0], req.body).then(response => {
+            return agileService.createContact(settings[0], req.body).then( async response => {
                 // console.log("response from agile CRM", response);
                 let userToBeUpdated = {
                     userId :req.body.userId,
                     metadata:{"KM_AGILE_CRM":JSON.stringify({"contactId": response.id,"hidden":true})}
                 } 
-                applozicClient.updateApplozicClient("bot","bot", appId, userToBeUpdated,null,true).then(data=>{
+                await applozicClient.updateApplozicClient("bot","bot", appId, userToBeUpdated,null,true).then(data=>{
                     logger.info("agile crm id is updated into user metadata");
                 })
                 return res.status(200).json({ code: "SUCCESS", response: response });
