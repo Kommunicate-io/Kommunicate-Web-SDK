@@ -462,9 +462,10 @@ class BotStore extends Component {
           botAssignmentModal: true,
         })
       }
-      setBotName = (botName) =>{
+      setBotCredentials = (botName, botId) =>{
         this.setState({
-          latestIntegratedBotName : botName
+          latestIntegratedBotName : botName,
+          latestIntegratedBotId: botId
         })
       }
 
@@ -599,6 +600,7 @@ class BotStore extends Component {
           this.enableBotRouting();
         }
         conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
+        console.log(this.state.latestIntegratedBotId)
         conversationHandlingByBot(this.state.latestIntegratedBotId, 1).then(response => {
           if (response.data.code === "success") {
             window.Aside.loadAgents();
@@ -883,7 +885,7 @@ class BotStore extends Component {
           </Modal>
             
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotName={this.setBotName}/>
+              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
               <span onClick={()=>{this.toggleBotIntegrationModal(false)}}><CloseButton /></span>
             </BotIntegrationModal>
             </div>
