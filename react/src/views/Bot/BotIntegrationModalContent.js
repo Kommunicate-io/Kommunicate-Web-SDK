@@ -135,6 +135,7 @@ class BotIntegrationModalContent extends Component {
             Notification.warning("Please enter a bot name !!");
             return;
         }
+       
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
         let userInfo = {
@@ -167,6 +168,8 @@ class BotIntegrationModalContent extends Component {
                     let data = { id: id, botInfo: botInfo };
                     createBot(data).then(response => {
                         this.props.closeModal();
+                        this.props.setBotName(this.state.botName);
+                        this.props.assignmentModal();
                         Notification.success("Bot successfully created");  
                     }).catch(err => {
                         console.log(err)

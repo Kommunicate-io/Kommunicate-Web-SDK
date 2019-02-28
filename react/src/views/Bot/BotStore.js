@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CommonUtils from '../../utils/CommonUtils';
-import {sendProfileImage,getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot} from '../../utils/kommunicateClient';
+import {sendProfileImage,getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot, getAppSetting,updateAppSetting} from '../../utils/kommunicateClient';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import BotDescription from './BotDescription.js';
@@ -27,6 +27,7 @@ import Banner from '../../components/Banner/Banner';
 import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
 import Button from '../../components/Buttons/Button';
 import styled, { withTheme } from 'styled-components';
+import { ConfirmationTick } from '../../assets/svg/svgs'
 
 const TextArea = styled.textarea`
     resize: none;
@@ -117,7 +118,8 @@ class BotStore extends Component {
           conversationsAssignedToBot: null,
           hideIntegratedBots: true,
           setbotImageLink:'',
-          botIntegrationType:""
+          botIntegrationType:"",
+          botAssignmentModal:false
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -130,7 +132,8 @@ class BotStore extends Component {
        }
 
       componentDidMount=()=>{
-        this.getIntegratedBotsWrapper()
+        this.getIntegratedBotsWrapper();
+        this.checkForBotRoutingEnabled();
       }
       toggleBotIntegrationModal = (value, botPlatform) => {
         this.setState({
@@ -142,6 +145,13 @@ class BotStore extends Component {
             botIntegrationContent: botIntegrationData[botPlatform]
           })
         }
+      }
+      checkForBotRoutingEnabled = () =>{
+        getAppSetting().then(response => {
+          response.status = 200 && response.data && this.setState({
+            botRoutingEnabled: response.data.response.botRouting
+          })
+        })
       }
 
       clearBotDetails = ()=>{
@@ -413,8 +423,8 @@ class BotStore extends Component {
               }).then(function(response){
                 if(response.status==200 ){
                   _this.clearBotDetails();
-                  Notification.info("Bot integrated successfully");
-                  _this.setState({disableIntegrateBotButton: false})
+                  _this.onCloseModal();
+                  _this.openIntegrationModal();
                   if(aiPlatform === "dialogflow"){
                     _this.setState({dialogFlowIntegrated: true})
                   }else if( aiPlatform === "microsoft"){
@@ -422,7 +432,6 @@ class BotStore extends Component {
                   }else{
 
                   }
-                  _this.toggleBotProfileModal()
                   _this.getIntegratedBotsWrapper()
                 }
               });
@@ -442,6 +451,17 @@ class BotStore extends Component {
       toggleOtherPlatformModal = () => {
         this.setState({
           otherPlatformModal: !this.state.otherPlatformModal
+        })
+      }
+
+      openIntegrationModal = () =>{
+        this.setState({
+          botAssignmentModal: true,
+        })
+      }
+      setBotName = (botName) =>{
+        this.setState({
+          latestIntegratedBotName : botName
         })
       }
 
@@ -478,7 +498,7 @@ class BotStore extends Component {
 
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
-
+        
 
         return Promise.resolve(
           createCustomerOrAgent({
@@ -497,6 +517,9 @@ class BotStore extends Component {
             botAgentMap[bot.userName] = bot;
             CommonUtils.setItemInLocalStorage("KM_BOT_AGENT_MAP",botAgentMap);
             Notification.info("Bot successfully created");
+            this.setState({
+              latestIntegratedBotName: this.state.botName
+            })
             return bot;
           })
       }
@@ -541,7 +564,8 @@ class BotStore extends Component {
         this.clearBotDetails();
         this.setState({
           dialogFlowModal: false,
-          botProfileModal: false
+          botProfileModal: false,
+          botAssignmentModal: false
         });
       };
 
@@ -553,6 +577,36 @@ class BotStore extends Component {
           return botList.length;
         }
         return 0;
+      }
+
+      enableBotRouting = () => {
+        updateAppSetting(null,{botRouting: true}).then(response => {
+          this.setState({
+            botRoutingEnabled: 1
+          })
+        }).catch(err => {
+          console.log("error while updating bot routing", err);
+        })
+      }
+
+      assignConversationsToIntegratedBot = () => {
+
+        if (this.state.botRoutingEnabled == 0) {
+          this.enableBotRouting();
+        }
+        conversationHandlingByBot(this.state.conversationsAssignedToBot, 0)
+        conversationHandlingByBot(this.state.latestIntegratedBotName, 1).then(response => {
+          if (response.data.code === "success") {
+            Notification.info('Conversations assigned to ' + this.state.latestIntegratedBotName);
+          } else {
+            Notification.info('Conversations not assigned to ' + his.state.latestIntegratedBotName)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+
+        this.onCloseModal();
+
       }
 
 
@@ -801,10 +855,30 @@ class BotStore extends Component {
               </div>
             </ModalBody>
         </Modal>
-
+        {/* Modal for assigning conversations to integrated bot */}
+          <Modal isOpen={this.state.botAssignmentModal} centered className="km-bot-assign-modal">
+              
+              <ConfirmationTick />
+              <p className="bot-assignment-heading">{this.state.latestIntegratedBotName} has been integrated</p>
+              {
+                this.state.botRoutingEnabled == 1 ? 
+                <p className="bot-assignment-subheading">
+                  You currently have a different bot, <strong>{this.state.conversationsAssignedToBot}</strong>, handling all new conversations. Do you want to let this bot handle them instead?
+                </p> : 
+                <p className="bot-assignment-subheading">
+                  You are currently not using any bot in conversations. Do you want to let this bot handle all new conversations?
+                </p>
+              }
+              <p className="bot-assignment-note"><strong>Note:</strong> You can set it up later too from Settings > Conversation rules</p>
+              <span onClick={this.onCloseModal}><CloseButton/></span>
+               <div className="bot-assign-modal-footer">
+                  <Button onClick={this.onCloseModal} secondary>I’ll set it up later</Button>
+                  <Button onClick={this.assignConversationsToIntegratedBot}>Let this bot handle all conversations</Button>
+                </div>
+          </Modal>
             
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType}/>
+              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotName={this.setBotName}/>
               <span onClick={()=>{this.toggleBotIntegrationModal(false)}}><CloseButton /></span>
             </BotIntegrationModal>
             </div>
