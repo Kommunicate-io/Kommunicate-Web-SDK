@@ -50,11 +50,79 @@ Add your geo-API_KEY in `AndroidManifest.xml` file:
 Apart from the properties mentioned in the above [Applozic documentation](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail), there are some other properties in `applozic-seetings.json` file that are specific to Kommunicate.
 
 ```json
-"hideGroupSubtitle" : true,   //True will hide the subtitle in the support group(for e.g 'Keith, bot and You' will be hidden)
 "enableAwayMessage": false,   //Away message will be disabled
 "logoutOption": false,        //The logout option in the Option menu will be hidden
 "showStartNewConversation" : false, //The default Start New Conversation button will be hidden
+"sentMessageCornerRadii": [  //The corner radii for sent message bubble
+10,                          //top left corner radius
+10,                          //top right corner radius
+10,                          //bottom right corner radius
+10                           //bottom left corner radius
+],
+"receivedMessageCornerRadii": [  //The corner radii for received message bubble . (Similar order as sentMessageCornerRadii)
+10,
+10,
+10,
+10
+]
 ```
+
+### Changing fonts
+Fonts for some TextViews can be changed by setting the fonts in the `applozic-settings.json` file. Add the below property in `applozic-settings.json` file to change the fonts for the respective TextViews:
+```
+"fontModel": {
+    "messageTextFont": "",
+    "messageDisplayNameFont": "",
+    "createdAtTimeFont": "",
+    "toolbarTitleFont": "",
+    "toolbarSubtitleFont": "",
+    "messageEditTextFont": ""
+  }
+```
+If a particular field is left blank or is not included in the above object, then default font would be used for the same.
+To change the font, provide either an external font file or select from a list of default android fonts.
+
+#### Use TTF font file
+To use an external font, add the ttf font file under the directory app/src/main/assets/fonts/<your-font>.ttf
+Then specify the font for the specific TextView. For e.g to use the above font for toolbarTitle, set the path to the property `toolbarTitleFont`:
+```
+"fontModel": {
+    "messageTextFont": "",
+    "messageDisplayNameFont": "",
+    "createdAtTimeFont": "",
+    "toolbarTitleFont": "fonts/<your-font>.ttf",
+    "toolbarSubtitleFont": "",
+    "messageEditTextFont": ""
+  }
+```
+   
+#### Use android's default fonts
+To use the font from the list of default android fonts, set the font name to the TextView property in the fontModel object in `applozic-settings.json` file. Use a font from the below list. Only one font is allowed, no combinations of fonts are allowed.
+
+```
+normal, 
+bold,
+italic,
+bold_italic,
+default,
+default_bold,
+monospace,
+sans_serif,
+serif
+```
+
+For e.g to use `sans_serif` font for the toolbar subtitle TextView, set the font name to the `toolbarSubtitleFont` property:
+```
+"fontModel": {
+    "messageTextFont": "",
+    "messageDisplayNameFont": "",
+    "createdAtTimeFont": "",
+    "toolbarTitleFont": "fonts/<your-font>.ttf",
+    "toolbarSubtitleFont": "sans_serif",
+    "messageEditTextFont": ""
+  }
+```
+
 
 ### Theme Customization
 Not all the colors can be changed from the applozic-settings.json file. There are some colors like the statusbar/toolbar color, message statuc icon colors(sent, delivered etc icons)
