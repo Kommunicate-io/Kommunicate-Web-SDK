@@ -975,7 +975,7 @@ const getAppSetting = () => {
     method: 'GET',
     url: url,
   })).then(result => {
-    userSession.loadInitialStateConversation = result.data.response.loadInitialStateConversation;
+    userSession.loadInitialStateConversation = result && result.data && result.data.response.loadInitialStateConversation;
     CommonUtils.setUserSession(userSession);
     return result;
   }).catch(err => {
