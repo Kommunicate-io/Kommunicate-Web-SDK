@@ -496,7 +496,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
             cardHtml.info = Kommunicate.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
-            cardList[i] = cardHtml; 
+            cardList[i] = $applozic.extend([], cardHtml);
         }
     }
     let cardCarousel = {payload:cardList};
