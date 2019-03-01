@@ -596,7 +596,7 @@ class BotStore extends Component {
 
       assignConversationsToIntegratedBot = () => {
 
-        if (this.state.botRoutingEnabled == 0) {
+        if (!this.state.botRoutingEnabled) {
           this.enableBotRouting();
         }
         conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
