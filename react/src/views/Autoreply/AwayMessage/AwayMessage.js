@@ -346,7 +346,7 @@ class AwayMessage extends Component{
       isChecked: isChecked,
     });
     let data = { "collectEmailOnAwayMessage": isChecked }
-    updateAppSetting(isChecked, data).then(response => {
+    updateAppSetting(data).then(response => {
       // console.log(response);
     }).catch(err => {
       // console.log(err);

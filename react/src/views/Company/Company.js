@@ -66,7 +66,7 @@ class Company extends Component{
   }
 
   updateSettings = (data) => {
-    updateAppSetting(null, data).then(response => {
+    updateAppSetting(data).then(response => {
         if(response.status == 200 && response.data.code == "SUCCESS") {
             typeof data.domainUrl != "undefined" && this.setState({customUrl: data.domainUrl})
             Notification.success("Custom URL updated")

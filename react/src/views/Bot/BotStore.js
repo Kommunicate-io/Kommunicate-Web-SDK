@@ -585,7 +585,7 @@ class BotStore extends Component {
       }
 
       enableBotRouting = () => {
-        updateAppSetting(null,{botRouting: true}).then(response => {
+        updateAppSetting({botRouting: true}).then(response => {
           this.setState({
             botRoutingEnabled: 1
           })
