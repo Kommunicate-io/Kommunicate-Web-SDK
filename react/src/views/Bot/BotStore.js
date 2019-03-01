@@ -599,11 +599,15 @@ class BotStore extends Component {
         if (!this.state.botRoutingEnabled) {
           this.enableBotRouting();
         }
-        conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
+        this.state.conversationsAssignedToBotId && conversationHandlingByBot(this.state.conversationsAssignedToBotId, 0)
         conversationHandlingByBot(this.state.latestIntegratedBotId, 1).then(response => {
           if (response.data.code === "success") {
             window.Aside.loadAgents();
             Notification.info('Conversations assigned to ' + this.state.latestIntegratedBotName);
+            this.setState({
+              conversationsAssignedToBot: this.state.latestIntegratedBotName,
+              conversationsAssignedToBotId : this.state.latestIntegratedBotId
+            })
           } else {
             Notification.info('Conversations not assigned to ' + his.state.latestIntegratedBotName)
           }
