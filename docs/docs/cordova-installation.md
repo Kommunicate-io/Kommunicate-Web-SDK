@@ -6,7 +6,7 @@ sidebar_label: Installation
 
 This plugin uses native UI screens and can be used for cordova, ionic and phonegap projects.
 
-You can add the plugin using the below command:
+Add the plugin using the below command:
  
 ```
 cordova plugin add kommunicate-cordova-plugin
@@ -17,6 +17,8 @@ For ionic, use the below command:
 ```
 ionic cordova plugin add kommunicate-cordova-plugin
 ```
+## Get your Application Id
+Sign up for [Kommunicate](https://dashboard.kommunicate.io) to get your [application id](https://dashboard.kommunicate.io/settings/install). This application Id is used to create/launch conversations.
 ## Declare kommunicate variable
 Declare the variable before calling any function on it. Write the below line at the end of the file.
 ```js
@@ -42,7 +44,7 @@ Below are the parmater's description:
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:| -----:|
-| appId      | String      |   Mandatory field. The application Id obtained from kommunicate dashboard |
+| appId      | String      |   Mandatory field. The [application Id](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard |
 | groupName      | String      |   Optional, you can pass a group name or ignore |
 | kmUser | KMUser     |    Pass the details if you have the user details, ignore otherwise |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. If you have user details then you can pass false or ignore. |
