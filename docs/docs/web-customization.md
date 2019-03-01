@@ -4,19 +4,25 @@ title: Customization
 sidebar_label: Customization
 ---
 
+## Overview
+
+Kommunicate chat widget is where your users will chat and interact with your team. You can customize the theme, look and feel of the chat widget to fit with your brand's theme. You can either do it through Kommunicate Dashboard or add your own customization code manually.
+
 ## Chat widget customization
 
-You can change the primary color of your chat widget to your brand color. You can also change the chat launcher icon from our given list of multiple icons. You will find these settings in 
+You can change the primary color of your chat widget to your choice of color. The primary color of the elements inside the chat widget will also be changed to that color. 
+
+You can also change the chat launcher icon from our given list of multiple icons. You will find these settings in 
 <a href="https://dashboard.kommunicate.io/settings/chat-widget-customization" target="_blank">Kommunicate Dashboard -> Chat widget</a>.
-
-
-If you are in one of our paid plans, you can also upload your own image/icon and use as your customized chat launcher icon.
 
 ![Chat_Widget_Customization.png](assets/Chat_Widget_Customization.png)
 
+If you are in one of our paid plans, you can also upload your own image/icon and use as your customized chat launcher icon.  Though, there are no hard restrictions of the shape of the image you want to use as the chat widget launcher icon, square images are preferred over others.
 
-## Customize chat widget by using css
-You can pass the css in `Kommunicate.customizeWidgetCss()` method as a string like shown in the example below.
+## Customize chat widget by using CSS
+
+Alternatively, you can pass custom CSS to customize the chat widget. Pass the CSS in `Kommunicate.customizeWidgetCss()` method as a string like shown in the example below.
+
 ```javascript
 var kommunicateSettings = {
     ...
@@ -29,6 +35,7 @@ var kommunicateSettings = {
 ```
 
 #### To change sent messages color
+
 ```javascript
 Example : 
 
@@ -47,17 +54,18 @@ Kommunicate.customizeWidgetCss(cssChanges);
 
 ```
 
-#### To show/hide the Chat Widget
-To hide the chat widget you can add the following CSS in you website's CSS file.
+#### To show/hide the chat widget
+To hide the chat widget you can add the following CSS in your website's CSS file:
 
-```css
+```CSS
 /* To hide the Chat Widget */
 #kommunicate-widget-iframe {
     display: none;
 }
 ```
 
-To show the chat widget on click of a button use the following code.
+To show the chat widget on click of a button use the following code:
+
 ```javascript
 var btn = document.getElementById("button"); //Assuming this the button on your website from where you will trigger the click event to show the chat widget
 
@@ -67,9 +75,7 @@ btn.addEventListener("click", function() {
 ```
 
 ## Default metadata 
-Add `defaultMessageMetaData` parameter in `kommunicateSettings` variable. This will be sent with every message.
-
-Example
+You can pass on additional information as metadata with every message. Add `defaultMessageMetaData` parameter in `kommunicateSettings` variable. Below is the example of how you can send metadata:
 
 ```javascript
 var kommunicateSettings = {
@@ -79,4 +85,4 @@ var kommunicateSettings = {
 };
 
 ```
-> *Note:* You can also update metadata using [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform).
+> Note: You can also update metadata using [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform).

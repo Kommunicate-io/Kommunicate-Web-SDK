@@ -29,6 +29,16 @@ module.exports.searchFAQ = {
 		referenceId:joi.number()
 	}
 }
+module.exports.searchFAQv2= {
+	params:{
+		appId: joi.string().required()
+	},
+	query:{
+		query:joi.string(),
+		articleId:joi.string(),
+		referenceId:joi.number()
+	}
+}
 module.exports.fetchSuggestion = {
 	params:{
 		appId: joi.string().required()

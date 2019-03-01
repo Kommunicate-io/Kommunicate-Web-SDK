@@ -950,7 +950,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
 
   });
 }
-const updateAppSetting = (status, data) => {
+const updateAppSetting = (data) => {
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
   const url = getConfig().kommunicateBaseUrl + '/settings/application/' + appId;
@@ -975,9 +975,11 @@ const getAppSetting = () => {
     method: 'GET',
     url: url,
   })).then(result => {
+    if(typeof result !== "undefined" && result.data.code == "SUCCESS") {
     userSession.loadInitialStateConversation = result && result.data && result.data.response.loadInitialStateConversation;
     CommonUtils.setUserSession(userSession);
-    return result;
+      return result;
+    }
   }).catch(err => {
     throw { message: err };
     console.log("Error while fetching application settings", err)

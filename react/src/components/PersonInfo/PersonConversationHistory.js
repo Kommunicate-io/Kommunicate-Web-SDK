@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import moment from 'moment';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import { CONVERSATION_STATUS } from '../../utils/Constant';
+// import { CONVERSATION_STATUS } from '../../utils/Constant';
+import { getConfig } from '../../config/config';
 
 class PersonConversationHistory extends Component {
 
@@ -64,6 +65,11 @@ class PersonConversationHistory extends Component {
         });
     }
 
+    openConversation = (groupId) => {
+        let url = getConfig().kommunicateDashboardUrl + '/conversations/' + groupId;
+        window.open(url, '_blank');
+    }
+
     render() {
 
         let activeGroup = decodeURIComponent(window.location.pathname.split("/").pop());
@@ -74,10 +80,11 @@ class PersonConversationHistory extends Component {
                 <Section>
                     {
                         this.state.conversations.length !== 0 && this.state.conversations.filter((grp) => typeof grp !== 'undefined' && (!activeGroup.includes("conversations") && grp.id !== parseInt(activeGroup))).map( (data, index) => {
-                            let status = Object.keys(CONVERSATION_STATUS).find(key => CONVERSATION_STATUS[key] === parseInt(data.metadata.CONVERSATION_STATUS));
+                            let status = Object.keys(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE).find(key => 
+                                window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE[key] === parseInt(data.metadata.CONVERSATION_STATUS));
                             return (
-                                <ConversationDataContainer key={index}>
-                                    <ConversationTitle className="km-conversation-tab-link"  data-km-id={data.id} data-isgroup={true}>Conversation #{data.id}</ConversationTitle>
+                                <ConversationDataContainer key={index} onClick={() => this.openConversation(data.id)}>
+                                    <ConversationTitle>Conversation #{data.id}</ConversationTitle>
                                     <ConversationStatus>Status: <strong>{status === "UNRESPONDED" ? "OPEN" : status} - </strong><span>{data.name}</span></ConversationStatus>
                                     <ConversationDate>Last Contacted: <span>{moment(data.lastMessageTime).format("DD MMM YYYY")}</span></ConversationDate>
                                 </ConversationDataContainer>
@@ -106,13 +113,17 @@ const SectionHeading = styled(Container)`
 const ConversationDataContainer = styled.div`
     border-bottom: 1px solid rgb(236, 236, 236);
     padding: 10px 0 8px;
+    cursor: pointer;
+    &:last-child {
+        margin-bottom: 75px;
+    }
 `;
 const ConversationTitle = styled.div`
     font-size: 16px;
     letter-spacing: 0.5px;
     color: #5553b7;
     margin-bottom: 5px;
-    cursor: pointer;
+    
     &:hover {
         text-decoration: underline;
     }

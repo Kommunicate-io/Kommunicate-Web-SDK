@@ -1035,7 +1035,7 @@
     margin-bottom: 4px;
     height: 44px;
     height: auto;
-    white-space: pre;
+    white-space: pre-line;
 }
 .km-carousel-card-content-wrapper {
     padding-top: 6px;

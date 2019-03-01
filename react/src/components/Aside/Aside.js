@@ -533,6 +533,7 @@ class Aside extends Component {
     let contact = { metadata: {} };
     contact.email = this.state.userInfo.email ? this.state.userInfo.email : "";
     contact.first_name = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
+    contact.userId = this.state.userInfo.userId;
     for (var i = 0; i < Object.keys(this.state.userInfo.metadata).length; i++) {
       let key = Object.keys(this.state.userInfo.metadata)[i];
       let value = this.state.userInfo.metadata[Object.keys(this.state.userInfo.metadata)[i]]

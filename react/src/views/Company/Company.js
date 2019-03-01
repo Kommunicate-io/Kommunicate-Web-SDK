@@ -58,7 +58,7 @@ class Company extends Component{
   getAppSettings = () => {
     getAppSetting().then(response => {
       if(response.status == 200 && response.data.response) {
-        this.setState({customUrl:response.data.response.domainUrl})
+        response.data.response.domainUrl && this.setState({customUrl:response.data.response.domainUrl})
       }
     }).catch(err => {
       console.log(err);
@@ -66,7 +66,7 @@ class Company extends Component{
   }
 
   updateSettings = (data) => {
-    updateAppSetting(null, data).then(response => {
+    updateAppSetting(data).then(response => {
         if(response.status == 200 && response.data.code == "SUCCESS") {
             typeof data.domainUrl != "undefined" && this.setState({customUrl: data.domainUrl})
             Notification.success("Custom URL updated")
@@ -131,7 +131,7 @@ class Company extends Component{
       })
   }
   isCustomUrlFeatureRestricted = () => {
-      return (!CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
+      return !(CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
   }
 
   controlModal = (e) => {

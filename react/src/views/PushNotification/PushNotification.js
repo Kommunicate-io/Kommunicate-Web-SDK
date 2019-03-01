@@ -329,7 +329,7 @@ class PushNotification extends Component {
 
                       <div className="fcm-key col-md-2">GCM/FCM key :<span className="customer-type"> </span></div>
                       <div className="col-md-10">
-                        <input id="gcmKey" onChange={(e) => { this.setState({ gcmKey: e.target.value }) }} className="km-input-apns km-gcm-input" value={this.state.gcmKey} type="text" onFocus={(e) => { this.setState({ disableButtonForAndroid: false }) }}></input></div>
+                        <input id="gcmKey" onChange={(e) => { this.setState({ gcmKey: e.target.value }) }} className="km-input-apns km-gcm-input" value={this.state.gcmKey} type="text" onFocus={(e) => { this.setState({ disableButtonForAndroid: false }) }} autocomplete="off"></input></div>
                     </div>
                     <div>
                       {
@@ -378,7 +378,7 @@ class PushNotification extends Component {
                     <div className="row form-group  pushnotifiction-sub">
                       <div className="apple-certificate second-option">Password :<span className="customer-type"> </span></div>
                       <div className="col-sm-6 col-md-6">
-                        <input className="km-input-apns" value={this.state.apnsPassword} onChange={(e) => { this.setState({ disableButtonForIosDistribution: false, apnsPassword: e.target.value }) }} id="apnsPassword" type="password"></input></div>
+                        <input className="km-input-apns" value={this.state.apnsPassword} onChange={(e) => { this.setState({ disableButtonForIosDistribution: false, apnsPassword: e.target.value }) }} id="apnsPassword" type="password" autocomplete="off"></input></div>
                     </div>
                     <div>
                       {
@@ -410,7 +410,7 @@ class PushNotification extends Component {
                       <div className="row form-group" style={{marginLeft:"0"}}>
                         <div className="apple-certificate second-option">Password :<span className="customer-type"> </span></div>
                         <div className=" col-md-6">
-                          <input className="km-input-apns" value={this.state.apnstestPassword} onChange={(e) => { this.setState({ disableButtonForIosDevelopment: false, apnstestPassword: e.target.value }) }} id="testApnsPassword" type="password"></input></div>
+                          <input className="km-input-apns" value={this.state.apnstestPassword} onChange={(e) => { this.setState({ disableButtonForIosDevelopment: false, apnstestPassword: e.target.value }) }} id="testApnsPassword" type="password" autocomplete="off"></input></div>
                       </div>
                     </div>
                     <div>

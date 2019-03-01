@@ -106,7 +106,7 @@ const CommonUtils = {
         return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
     },
     isEnterprisePlan: function() {
-        return typeof CommonUtils.getUserSession().subscription != 'undefined' || CommonUtils.getUserSession().subscription.indexOf("enterprise") != -1;
+        return typeof CommonUtils.getUserSession().subscription != 'undefined' && CommonUtils.getUserSession().subscription.indexOf("enterprise") != -1;
     },
     isApplozicTrialPlan: function() {
         return CommonUtils.getUserSession().application.pricingPackage == 0;

@@ -149,7 +149,7 @@ class Welcome extends Component{
       checked: checked,
     });
     let data = { "collectEmailOnWelcomeMessage": checked }
-    updateAppSetting(checked, data).then(response => {
+    updateAppSetting(data).then(response => {
       // console.log(response);
     }).catch(err => {
       // console.log(err);

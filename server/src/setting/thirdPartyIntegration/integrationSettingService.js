@@ -4,6 +4,7 @@ const botPlatformClient = require("../../utils/botPlatformClient");
 const LIZ = require("../../register/bots.js").LIZ;
 const INTEGRATION_PLATFORMS = require('../../application/utils').INTEGRATION_PLATFORMS;
 const userService = require('../../users/userService');
+const AGILE_CRM = require('../../application/utils').INTEGRATION_PLATFORMS.AGILE_CRM;
 
 const updateOrCreate = (customerId, appId, type, setting) => {
     return Promise.resolve(ThirdPartyIntegrationSettings.find({ where: { customerId: customerId, type: type } })).then(existingSetting => {
@@ -37,11 +38,13 @@ const updateLizBotHandler = (type, appId, handler) => {
 }
 
 const getIntegrationSetting = (customerId, type) => {
+    var order = [['created_at', 'DESC']];
     let criteria={customerId:customerId};
     if(type){
         criteria.type=type;
+        
     }
-    return Promise.resolve(ThirdPartyIntegrationSettings.findAll({ where: criteria })).then(setting => {
+    return Promise.resolve(ThirdPartyIntegrationSettings.findAll({ where: criteria, order, paranoid: type != AGILE_CRM })).then(setting => {
         return setting;
     });
 }

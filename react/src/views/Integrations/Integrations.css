@@ -377,3 +377,14 @@ body {
 .integry-preview {
 display: block;
 }
+#step-1018 {
+    /* hide Configure Kommunicate Authorization section on Integry modal*/
+    display: none;
+}
+#x_integry_modal.modal {
+    z-index: 10000 !important;
+}
+.integration-form-preview > h2 > a {
+    /* hide cancel button on Integry modal */
+    display: none;
+}
