@@ -174,12 +174,7 @@ class BillingApplozic extends Component {
                             For downgrading your account or unsubscribing drop a line on <a href="mailto:support@applozic.com">support@applozic.com</a>
                         </ContactUsText>
                     </ContactUsContainer>
-
-
-           
-                    Current plan: {status} | MAU: {planMAU}
-                        <br></br>
-                    <Button type="submit" value="Buy" onClick={this.buyPlan}>Buy</Button>
+                    
                 </div>
             </Container>
         );
