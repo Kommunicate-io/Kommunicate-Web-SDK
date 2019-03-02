@@ -621,7 +621,7 @@ class BotStore extends Component {
             <div className="km-bot-store-main-container">
                 <div className={this.state.listOfIntegratedBots.length > (CommonUtils.isProductApplozic() ? 1:0) ?"banner-container" : "banner-container n-vis"}>
                   <div className="banner-div">
-                    <span className="banner-sub-text">You have <span className="banner-main-text" style={{marginRight:"0px", paddingLeft:"0px"}}>{this.state.listOfIntegratedBots.length} bots</span>  integrated</span>
+                    <span className="banner-sub-text">You have <span className="banner-main-text" style={{marginRight:"0px", paddingLeft:"0px"}}>{this.state.listOfIntegratedBots.length - 1} bots</span>  integrated</span>
 
                     <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
