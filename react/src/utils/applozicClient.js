@@ -359,7 +359,7 @@ updateUserDetail:function(params){
   subscribe: function(token, pricingPackage, quantity) {
     let userSession = CommonUtils.getUserSession();
     let data = "stripeToken=" + token.id + "&email=" + encodeURIComponent(token.email) + "&appKey=" + userSession.application.applicationId + 
-    "&package=" + pricingPackage + "&quantity=" + quantity + "&payload=";
+    "&package=" + pricingPackage + "&payload=";
 
     Promise.resolve(axios({
         method: 'post',

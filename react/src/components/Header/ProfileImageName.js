@@ -207,7 +207,7 @@ class ProfileImageName extends Component {
 
                 {/* <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}> Profile </button> */}
 
-                <button className="dropdown-item product product-kommunicate" type="button" tabIndex="0" onClick={this.goToBilling}> Billing </button>
+                <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToBilling}> Billing </button>
 
                 <button className="dropdown-item" type="button" tabIndex="0"  onClick={this.logout} id="logout"> Logout </button>
               </div>

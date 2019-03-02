@@ -67,6 +67,9 @@ const GlobalStyle = createGlobalStyle`
   .hr {
     border-top: 4px solid ${props => props.theme.primary};
   }
+  a {
+    color: ${props => props.theme.primary};
+  }
 `;
 
 // const store = createStore(rootReducer, applyMiddleware(logger)
