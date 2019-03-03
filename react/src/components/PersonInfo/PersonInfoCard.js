@@ -90,7 +90,7 @@ class PersonInfoCard extends Component {
                         </div>
                         {
                             this.state.user ?
-                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.displayName} >
+                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.displayName}  updateUserInfo = {this.props.updateUserInfo}>
                                 {
                                     this.state.pseudoUser ?
                                         <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
@@ -106,7 +106,7 @@ class PersonInfoCard extends Component {
                                 <p className="">@</p>
                                 {
                                     this.state.user ?
-                                        <EditableText id ="km-sidebar-user-email" style={this.state.email ?"km-sidebar-user-data-found km-edit":"km-sidebar-user-data-notfound km-edit"} keyname={this.state.user.userId} reference={"email"} value={this.state.user.email} placeholder={"Add Email"} /> : null
+                                        <EditableText id ="km-sidebar-user-email" style={this.state.email ?"km-sidebar-user-data-found km-edit":"km-sidebar-user-data-notfound km-edit"} keyname={this.state.user.userId} reference={"email"} value={this.state.user.email} placeholder={"Add Email"} updateUserInfo = {this.props.updateUserInfo} /> : null
                                 }
                             </div>
                             <div className="km-postion-relative">
@@ -117,7 +117,7 @@ class PersonInfoCard extends Component {
                                 </p>
                                 {
                                     this.state.user ?
-                                        <EditableText id ="km-sidebar-user-number" style={this.state.phoneNumber ?"km-sidebar-user-data-found km-edit":"km-sidebar-user-data-notfound km-edit"}  inputType={"number"}  keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"}/> : null
+                                        <EditableText id ="km-sidebar-user-number" style={this.state.phoneNumber ?"km-sidebar-user-data-found km-edit":"km-sidebar-user-data-notfound km-edit"}  inputType={"number"}  keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"} updateUserInfo = {this.props.updateUserInfo}/> : null
                                 }
                             </div>
                         </div>
