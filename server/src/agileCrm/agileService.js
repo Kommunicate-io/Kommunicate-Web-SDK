@@ -64,6 +64,10 @@ const createContact = async function( settings, userInfo){
             "name": "email",
             "value": userInfo.email
         })
+        userInfo.phoneNumber && contact.properties.push({
+            "name": "phone",
+            "value": userInfo.phoneNumber
+        })
 
 
         userInfo.address && contact.properties.push({
@@ -154,6 +158,10 @@ const updateContact = async function(settings, contactId, userInfo){
             "name": "title",
             "value": userInfo.designation
         })
+        userInfo.phoneNumber && update_contact.properties.push({
+            "name": "phone",
+            "value": userInfo.phoneNumber
+        })
 
 
         userInfo.email && update_contact.properties.push({
@@ -187,7 +195,7 @@ const updateContact = async function(settings, contactId, userInfo){
                                 "value":  userInfo.metadata[Object.keys(userInfo.metadata)[i]]
                 }
 
-                contact.properties.push(field);
+                update_contact.properties.push(field);
             }
             }
         }
