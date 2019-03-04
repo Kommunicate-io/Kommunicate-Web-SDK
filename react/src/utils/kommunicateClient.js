@@ -772,15 +772,18 @@ const createAndUpdateThirdPArtyIntegration = (data, integrationType) => {
   }).catch(err => { console.log("Error while submiting third party integration keys", err) })
 
 }
-const getThirdPartyListByApplicationId = () => {
+const getThirdPartyListByApplicationId = (type) => {
   let userSession = CommonUtils.getUserSession();
-  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId
+  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId;
+  type && (url = url.concat("/?type="+type))
   return Promise.resolve(axios({
     method: 'get',
     url: url,
   })).then(result => {
     return result;
-  }).catch(err => { console.log("Error while fetching third party integration by applicationId", err) })
+  }).catch(err => { 
+    console.log("Error while fetching third party integration by applicationId", err) 
+  })
 
 }
 const deleteThirdPartyByIntegrationType = (integrationType) => {

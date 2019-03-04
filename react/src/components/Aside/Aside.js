@@ -51,7 +51,6 @@ class Aside extends Component {
       modalIsOpen:false,
       inputBoxMouseDown:false,
       clickedButton:-1,
-      disableButton:true,
       agents : new Array(),
       clearbitKey:"",
       botRouting : false,
@@ -68,7 +67,8 @@ class Aside extends Component {
       toggleExpandIcon: false,
       toggleCcBccField: true,
       warningBannerText: '',
-      toggleCcBccField: true
+      toggleCcBccField: true,
+      disabledIntegration:{[integration_type.AGILE_CRM]: true, [integration_type.ZENDESK]:true }
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -85,6 +85,7 @@ class Aside extends Component {
 
   componentDidMount() {
     this.getThirdparty ();
+    this.getAgileCrmSettings();
     quickReply.loadQuickReplies();
      if(CommonUtils.getUserSession() === null){
        //window.location ="#/login";
@@ -172,14 +173,32 @@ class Aside extends Component {
     getThirdPartyListByApplicationId().then(response => {
       if(response !== undefined  && response.data.message !== "no user found") {
         let zendeskKeys = response.data.message.filter(function (integration) {
-          return integration.type == 2;});
+          return integration.type == integration_type.ZENDESK;});
           if(zendeskKeys.length > 0 ){
-            this.setState({disableButton:false})
+            this.updateIntegrationStatus({[integration_type.ZENDESK]: false})
           }
       }
     }).catch(err => {
       console.log("erroe while fetching zendesk integration keys",err)
     });
+
+  }
+  getAgileCrmSettings = () => {
+    getThirdPartyListByApplicationId(integration_type.AGILE_CRM).then(response => {
+      if(response !== undefined  && response.data.message !== "no user found") {
+        response.data.message.length > 0 && this.updateIntegrationStatus({[integration_type.AGILE_CRM]: false})
+      }
+    }).catch(err => {
+      console.log("error while fetching zendesk integration keys",err)
+    });
+  }
+  updateIntegrationStatus = (status) => {
+    let disabledIntegration = this.state.disabledIntegration;
+    for (var key in status) {
+      disabledIntegration[key] = status[key]
+    }
+    this.setState({disabledIntegration:disabledIntegration})
+
 
   }
   changeTabToIntegration = () => {
@@ -576,7 +595,7 @@ class Aside extends Component {
   render() {
     let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
     const thirdParty = thirdPartyList.map((item,index) => {
-      return <button data-index ={index} data-integration-type={item.type} disabled = {item.type == integration_type.ZENDESK ? this.state.disableButton : false } key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
+      return <button data-index ={index} data-integration-type={item.type} disabled = {this.state.disabledIntegration[item.type]} key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
       className="km-button km-button--secondary km-forward-integration-button" data-agile-contact-id = {agileContactId} >
       <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
  });
