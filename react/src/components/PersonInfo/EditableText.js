@@ -125,6 +125,7 @@ class EditableText extends Component {
     ApplozicClient.updateUserDetail(params)
       .then(result => {
         if (result && result.data && result.data.status === "success") {
+          this.props.updateUserInfo(params.userDetails);
           this.setState({
             value: (kmSidebarUserInfoInputFieldName === 'displayName' && !kmSidebarUserInfoInputFieldValue )?userId:kmSidebarUserInfoInputFieldValue
           })

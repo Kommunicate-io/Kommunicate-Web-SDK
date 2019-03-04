@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact, updateAgileCrmContact} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -128,9 +128,15 @@ class Aside extends Component {
     var user = e.detail.data;
     this.setState({
         userInfo: user,
-        agileCrmData: user.metadata ? (user.metadata.KM_AGILE_CRM ? user.metadata.KM_AGILE_CRM : "" ) : ""
+        agileCrmData: (user.metadata && user.metadata.KM_AGILE_CRM) ? JSON.parse(user.metadata.KM_AGILE_CRM) : "" 
     })
 }
+  updateUserInfo = (userData) => {
+    let userInfo = this.state.userInfo
+    Object.keys(userInfo).forEach(function(key,index) {
+      userInfo[key] = (key == Object.keys(userData)[0]) ? userData[key] : userInfo[key];
+    });
+  } 
   handleGroupUpdate(e) {
     e.preventDefault();
     let activeConversationId = window.document.getElementsByClassName("active-chat")[0] && window.document.getElementsByClassName("active-chat")[0].dataset.kmId
@@ -531,32 +537,36 @@ class Aside extends Component {
   
   handleForwardToAgileCrm = (e) => {
     let contact = { metadata: {} };
-    contact.email = this.state.userInfo.email ? this.state.userInfo.email : "";
-    contact.first_name = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
+    let contactId = e.target.dataset.agileContactId
+    contact.email = this.state.userInfo.email ? this.state.userInfo.email : this.state.userInfo.userId;
+    contact.displayName = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
     contact.userId = this.state.userInfo.userId;
+    contact.phoneNumber = this.state.userInfo.phoneNumber ? this.state.userInfo.phoneNumber: "";
     for (var i = 0; i < Object.keys(this.state.userInfo.metadata).length; i++) {
       let key = Object.keys(this.state.userInfo.metadata)[i];
       let value = this.state.userInfo.metadata[Object.keys(this.state.userInfo.metadata)[i]]
-      try {
-        //checking if metadata contains object
-        value = JSON.parse(value)
-
-      } catch (e) {
-        (typeof value == 'string' || typeof value == 'number') && (contact.metadata[key] = value)
+      if(!CommonUtils.hasJsonStructure(value)){
+        contact.metadata[key] = value
       }
     }
+    if (contactId) {
+      contact.contactId = contactId
+      updateAgileCrmContact(contact)
+        .then(response => {
+          Notification.success("User Info updated")
+        }).catch(err => {
+          Notification.error("Could not update Agile CRM contact. Please try again")
+        })
+    } else {
     createAgileCrmContact(contact)
       .then(response => {
         Notification.success("User Info successfully forwarded")
-      }).catch (err => {
-        if (err.response.data.code == 400) {
-          Notification.error("Duplicate contact found with the same email address.")
-        } else {
+        }).catch(err => {
           Notification.error("Could not create Agile CRM contact. Please try again")
-        }
       })
   }
 
+  }
   forwardIntegrationButtonClick = (e) => {
     integration_type.ZENDESK == e.target.dataset.integrationType && this.handleForwardToZendesk(e);
     integration_type.AGILE_CRM == e.target.dataset.integrationType && this.handleForwardToAgileCrm(e);
@@ -564,9 +574,10 @@ class Aside extends Component {
   }
 
   render() {
+    let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
     const thirdParty = thirdPartyList.map((item,index) => {
       return <button data-index ={index} data-integration-type={item.type} disabled = {item.type == integration_type.ZENDESK ? this.state.disableButton : false } key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
-      className="km-button km-button--secondary km-forward-integration-button">
+      className="km-button km-button--secondary km-forward-integration-button" data-agile-contact-id = {agileContactId} >
       <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
  });
     const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
@@ -1173,7 +1184,7 @@ class Aside extends Component {
                       </div>
                     </div>
                   </div>
-                  <PersonInfoCard user={this.state.userInfo} group={this.state.group}/>
+                  <PersonInfoCard user={this.state.userInfo} group={this.state.group} updateUserInfo = {this.updateUserInfo}/>
                   </div>
                 <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">

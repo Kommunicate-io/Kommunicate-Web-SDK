@@ -838,7 +838,7 @@ const createAgileCrmContact = (data) => {
 const updateAgileCrmContact = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+ "/" +data.contactId+ "/contact";
-  return Promise.resolve(axios.post(url, data)).then(response => {
+  return Promise.resolve(axios.patch(url, data)).then(response => {
     if(response.data.code == "SUCCESS" ) {
       return response;
     }
