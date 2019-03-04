@@ -5705,7 +5705,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								mckMessageLayout.processNotification(message);
 							}
 						}
-					} else if (messageType === "APPLOZIC_02") {
+					} else if (messageType === "APPLOZIC_02" && _this.isSelfAddedNotification(message)) {
 						if (message.groupId) {
 							mckMessageLayout.addGroupFromMessage(message, true, list)
 						}
@@ -5756,6 +5756,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				 */
 				$mck_loading.removeClass('vis').addClass('n-vis');
 			};
+			/**
+			 * this method will check the member added
+			 * own self into conversation on click.
+			 */
+			_this.isSelfAddedNotification= function(message){
+				return !(message.senderName == MCK_USER_ID && message.metadata && message.metadata.action == window.KOMMUNICATE_CONSTANTS.GROUP_ACTION.JOIN);
+			}
 			_this.shouldAutoScrollOnNewMessage = function() {
 				var scrollHeight = $mck_msg_inner[0].scrollHeight;
 				var scrollTop = $mck_msg_inner[0].scrollTop;
