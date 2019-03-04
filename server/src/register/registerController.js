@@ -118,7 +118,8 @@ exports.patchCustomer = (req, res) => {
         "contactNo": customer.contactNo,
         "industry": customer.industry,
         "companySize": customer.companySize,
-        "tags": subscribed ? (product + "-customer") : undefined
+        "tags": subscribed ? (product + "-customer") : undefined,
+        "product": product
       }).catch(error => {
         console.log("Error while updating company URL to activeCampaign", error);
       });
