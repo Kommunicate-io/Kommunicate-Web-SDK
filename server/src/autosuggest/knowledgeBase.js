@@ -1,29 +1,91 @@
 const mongoose = require("mongoose");
-const mongoosastic = require("../mongoosastic/lib/mongoosastic");
+const mongoosastic = require("mongoosastic");//../mongoosastic/lib/
 const stringUtils = require("underscore.string");
 const Schema = mongoose.Schema;
+const {COLLECTIONS} = require("../mongodb/collections");
+const config = require('../../conf/config').getProperties();
 var crypto = require('crypto');
 mongoose.pluralize(null);
 
 const KnowledgeBase = new Schema({
-    status: { type: String, lowercase: true },
-    type: { type: String, lowercase: true },
-    category: { type: String, lowercase: true },
-    referenceId: { type: Number },
-    applicationId: { type: String, es_indexed: true },
-    userName: { type: String },
-    key: { type: String },
-    name: { type: String, es_indexed: true },
-    content: { type: String, es_indexed: true },
-    deleted: { type: String, default: false },
-    createdAt: { type: Date, default: Date.now() },
-    updatedAt: { type: Date, default: Date.now() }
+    id:{
+        type:Number,
+        unique:true
+    },
+    status: {
+        type: String, 
+        lowercase: true, 
+        es_type:'text',
+        es_indexed: true 
+    },
+    type: { 
+        type: String, 
+        lowercase: true, 
+        es_type:'text',
+        es_indexed: true 
+    },
+    category: { 
+        type: String, 
+        lowercase: true, 
+        es_type:'text',
+        es_indexed: true  
+    },
+    referenceId: { 
+        type: Number, 
+        es_type:'integer'
+    },
+    applicationId: { 
+        type: String, 
+        es_type:'text', 
+        es_indexed: true 
+    },
+    userName: { 
+        type: String 
+    },
+    key: { 
+        type: String, 
+        es_type:'text'
+    },
+    name: { 
+        type: String, 
+        es_type:'text', 
+        es_indexed: true 
+    },
+    content: { 
+        type: String, 
+        es_type:'text', 
+        es_indexed: true 
+    },
+    deleted: { 
+        type: String, 
+        default: false,
+        es_indexed: true 
+    },
+    created_at: { 
+        type: Number, 
+        default: new Date().getTime(), 
+        es_type:'date'
+    },
+    updated_at: { 
+        type: Number, 
+        default: new Date().getTime(), 
+        es_type:'date' 
+    }
 });
-KnowledgeBase.pre('save', async function (next) {
+KnowledgeBase.pre('save', function (next) {
     let question = this.name ? this.name.trim() : null;
     if (!stringUtils.isBlank(question)) {
         question = question.replace(/\?/g, '');
         this.key = crypto.createHash('md5').update(question).digest('hex');
+    }
+    next();
+});
+KnowledgeBase.pre('updateOne', function (next) {
+    this._update.updated_at = new Date().getTime();
+    let question = this.name ? this.name.trim() : null;
+    if (!stringUtils.isBlank(question)) {
+        question = question.replace(/\?/g, '');
+        this._update.key = crypto.createHash('md5').update(question).digest('hex');
     }
     next();
 });
@@ -35,11 +97,11 @@ KnowledgeBase.methods.toJSON = function () {
     return obj;
 }
 KnowledgeBase.plugin(mongoosastic, {
-    hosts: ["https://search-test-elastic-search-znmhne4j4ysxfsyvcfltyckjve.us-east-1.es.amazonaws.com/"],
-    index: 'knowledgebase_copy'
+    hosts: [config.esClientUrl],
+    index: COLLECTIONS.KNOWLEDGE_BASE,
 });
 
-const KnowledgeBaseModel = mongoose.model("knowledgebase_copy", KnowledgeBase);
+const KnowledgeBaseModel = mongoose.model(COLLECTIONS.KNOWLEDGE_BASE, KnowledgeBase);
 var stream = KnowledgeBaseModel.synchronize()
 var count = 0;
 
