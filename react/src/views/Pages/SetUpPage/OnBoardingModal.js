@@ -88,7 +88,7 @@ class OnBoardingModal extends Component {
     handleCardClick = (e) => {
         if (CommonUtils.isProductApplozic()) {
             this.closeModal();
-            window.location.assign("/settings/install");
+            window.appHistory.push("/settings/install");
         } else {
             let selectedCard = e.target.dataset.card;
             this.setState({selectedCard:selectedCard});
