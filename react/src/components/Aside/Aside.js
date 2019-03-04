@@ -189,7 +189,7 @@ class Aside extends Component {
         response.data.message.length > 0 && this.updateIntegrationStatus({[integration_type.AGILE_CRM]: false})
       }
     }).catch(err => {
-      console.log("error while fetching zendesk integration keys",err)
+      console.log("error while fetching agile crm integration keys",err)
     });
   }
   updateIntegrationStatus = (status) => {
