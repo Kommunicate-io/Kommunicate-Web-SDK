@@ -9,7 +9,7 @@ const pipeDrive = require('../pipedrive/pipedrive');
 const pipeDriveEnable = config.getProperties().pipeDriveEnable;
 const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
 const logger = require('../utils/logger');
-const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
+const subscriptionPlans = require("./subscriptionPlans");
 const authenticationService = require("../authentication/authenticationService.js");
 
 exports.createCustomer = async (req, res) => {
@@ -20,7 +20,7 @@ exports.createCustomer = async (req, res) => {
   let password = isPreSignUp ? randomString.generate(6) : req.body.password;
   let name = req.body.name;
   let email = req.body.email || userName;
-  let subscription = req.body.subscription || subscriptionPlan.initialPlan;
+  let subscription = req.body.subscription || subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP;
   let product = req.body.product || "kommunicate";
   let response = {};
   userName = userName.toLowerCase();

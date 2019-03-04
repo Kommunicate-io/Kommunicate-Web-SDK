@@ -15,7 +15,6 @@ const COMMON_CONSTANTS = require("../users/constants.js");
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const customerService = require('../customer/customerService.js');
-const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
 const USER_CONSTANTS = require("../users/constants.js");
 const subscriptionPlans = require("./subscriptionPlans");
 
@@ -52,7 +51,7 @@ exports.createCustomer = async customer => {
       if (customer.password !== null) {
         kmUser.password  = bcrypt.hashSync(customer.password, 10);
       }
-      customer.subscription = customer.subscription || subscriptionPlan.initialPlan;
+      customer.subscription = customer.subscription || subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP;
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
           console.log("persited in db", customer ? customer.id : null);
