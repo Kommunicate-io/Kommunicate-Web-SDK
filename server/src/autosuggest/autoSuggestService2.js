@@ -137,13 +137,13 @@ const searchQuery = (query) => {
         });
     })
 }
-const searchQuery2 = (esQuery) => {
+const searchRawQuery = (esQuery) => {
     return new Promise((resolve, reject) => {
-        KnowledgeBaseModel.search(esQuery, { hydrate: true, size: 15 }, function (err, results) {
+        KnowledgeBaseModel.esSearch(esQuery, { hydrate: true, size: 15 }, function (err, results) {
             if (err) {
-                return reject({})
+                return reject(err)
             }
-            console.log("res: ", results, "results.hits.hits: ", results.hits.hits)
+            console.log("results.hits.hits: ", results.hits.hits)
             return resolve(results.hits.hits);
         });
     })
@@ -155,7 +155,7 @@ module.exports = {
     deleteSuggestion,
     searchFAQ,
     searchQuery,
-    searchQuery2,
+    searchRawQuery,
     fetchFAQs,
     getSuggestionsByCriteria,
     getSuggestionsByAppId
