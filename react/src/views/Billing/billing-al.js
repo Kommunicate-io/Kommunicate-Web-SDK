@@ -129,7 +129,7 @@ class BillingApplozic extends Component {
 
     openModal() {
         this.setState({
-            isModalOpen: true
+            isModalOpen: !this.state.isModalOpen
         })
     }
 
@@ -195,7 +195,7 @@ class BillingApplozic extends Component {
                     
                 </div>
 
-                <Modal isOpen={this.state.isModalOpen} onRequestClose={() => this.setState({ isModalOpen: false })} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
+                <Modal isOpen={this.state.isModalOpen} onRequestClose={this.openModal} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
                     <ThankYouContainer>
                         <ThankYouTitle>Thank You!</ThankYouTitle>
                         <ConfirmationTick />
@@ -204,7 +204,7 @@ class BillingApplozic extends Component {
                         <ThankYouSubText>A receipt was sent to your email.</ThankYouSubText>
                     </ThankYouContainer>
 
-                    <CloseButton onClick={() => this.setState({ isModalOpen: false })}/>
+                    <CloseButton onClick={this.openModal}/>
                 </Modal>
             </Container>
         );
