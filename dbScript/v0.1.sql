@@ -228,3 +228,7 @@ ADD UNIQUE (application_id);
 -- script to add loadInitialStateConversation column
 ALTER TABLE app_settings
 ADD load_initial_state_conversation tinyint(1) default 1;
+
+-- 5 march 2019 --
+ALTER TABLE `app_settings` ADD COLUMN `help_center` JSON
+

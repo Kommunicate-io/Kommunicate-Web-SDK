@@ -1,6 +1,7 @@
 const applicationSettingModel = require("../../models").AppSetting;
 const chatPopupMessageService = require("./chatPopupMessageService");
 const logger = require('../../utils/logger');
+const deepmerge = require('deepmerge');
 
 exports.getAppSettingsByApplicationId = (criteria) => {
     return Promise.resolve(applicationSettingModel.findAll({ where: criteria , raw:true})).then(res => {
@@ -37,7 +38,12 @@ exports.insertAppSettings = (settings) => {
         });
     }
 
-exports.updateAppSettings = (settings, appId) => {
+exports.updateAppSettings = async (settings, appId) => {
+   let appSetting = await applicationSettingModel.find({ where: { applicationId: appId }});
+    if (!appSetting) { throw new Error("APPLICATION_NOT_FOUND") }
+    if(settings.helpCenter && appSetting.helpCenter){
+        settings = deepmerge(appSetting.helpCenter, settings);
+    }
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
         if(settings.popupTemplateKey == null){
             return { message: "application settings updated successfully" };
