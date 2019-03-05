@@ -2862,6 +2862,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_loading.removeClass('n-vis').addClass('vis');
 				}
 				var data = '?pageSize=60';
+				params.conversationCount && (data += "&conversationCount="+params.conversationCount);
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
 				}
@@ -2890,6 +2891,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.loadCloseGroup = function (params, callback) {
 				var individual = false;
 				var data = '?pageSize=60';
+				params.conversationCount && (data += "&conversationCount="+params.conversationCount);
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
 				}
@@ -2934,6 +2936,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					data += "&lastFetchTime=" + params.startTime;
 				}
 				data += "&pageSize=60";
+				params.conversationCount && (data += "&conversationCount="+params.conversationCount);
 				var url = "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN;
 				if(MCK_LOAD_INITIAL_CONVERSATION_STATE){
 					url = url+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL;
@@ -4117,6 +4120,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 				if (params.initialcall) {
+					params.conversationCount = true;
 					mckMessageService.loadSupportGroup(params, function() {
 						mckMessageService.checkEmptyState();
 					});
