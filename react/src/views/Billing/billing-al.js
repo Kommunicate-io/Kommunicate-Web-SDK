@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-// import Stripe from 'stripe';
+import Modal from 'react-modal';
+import CloseButton from '../../components/Modal/CloseButton';
 import CommonUtils from '../../utils/CommonUtils';
 import './billing.css';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
@@ -10,8 +11,8 @@ import MultiToggleSwitch from '../../components/MultiToggleSwitch';
 import Button from '../../components/Buttons/Button';
 import { SettingsHeader } from '../../components/SettingsComponent/SettingsComponents';
 import AlBillingPlansTables from './AlBillingPlansTables';
+import { ConfirmationTick } from '../../assets/svg/svgs';
 
-// const stripe = Stripe(getConfig().applozic.stripe);
 
 class BillingApplozic extends Component {
 
@@ -51,10 +52,14 @@ class BillingApplozic extends Component {
             currentModal: "",
             billingCycleText: "Monthly",
             hidePlanDetails: true,
-            pricingPackage: 0
+            pricingPackage: 0,
+            isModalOpen: false,
+            selectedPlanAmount: 0,
+            that: this
         };
 
         this.buyPlan = this.buyPlan.bind(this);
+        this.openModal = this.openModal.bind(this);
         this.changeCardClick = this.changeCardClick.bind(this);
     };
 
@@ -71,7 +76,13 @@ class BillingApplozic extends Component {
         // let quantity = 5; //selected number of MAU/1000
 
         // Removing quantity as it is not needed for new plans.
-        ApplozicClient.subscribe(token, pricingPackage);
+        ApplozicClient.subscribe(token, pricingPackage).then(response => {
+            if(response && response.data && response.data == "success")  {
+                this.that.openModal();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     processBuyPlan = (e) => {
@@ -81,7 +92,8 @@ class BillingApplozic extends Component {
 
     buyPlan(e) {
         this.setState({
-            pricingPackage: e.target.getAttribute("data-pricing-package")
+            pricingPackage: e.target.getAttribute("data-pricing-package"),
+            selectedPlanAmount: e.target.getAttribute("data-plan-amount")
         })
         this.state.stripeHandlerCallback = this.buy;
         this.state.stripeHandler.open({
@@ -112,6 +124,12 @@ class BillingApplozic extends Component {
     togglePlanDetails = () => {
         this.setState({
             hidePlanDetails: !this.state.hidePlanDetails
+        })
+    }
+
+    openModal() {
+        this.setState({
+            isModalOpen: true
         })
     }
 
@@ -176,11 +194,36 @@ class BillingApplozic extends Component {
                     </ContactUsContainer>
                     
                 </div>
+
+                <Modal isOpen={this.state.isModalOpen} onRequestClose={() => this.setState({ isModalOpen: false })} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
+                    <ThankYouContainer>
+                        <ThankYouTitle>Thank You!</ThankYouTitle>
+                        <ConfirmationTick />
+                        <PaymentAmount>${this.state.selectedPlanAmount/100}</PaymentAmount>
+                        <ThankYouText>Your payment was successful.</ThankYouText>
+                        <ThankYouSubText>A receipt was sent to your email.</ThankYouSubText>
+                    </ThankYouContainer>
+
+                    <CloseButton onClick={() => this.setState({ isModalOpen: false })}/>
+                </Modal>
             </Container>
         );
     }
 }
 
+const modalStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        minWidth: '550px',
+        maxWidth: '900px',
+        overflow: 'unset',
+    }
+};
 
 const billingCycleOptions = [
     {
@@ -329,6 +372,35 @@ const ContactUsContainer = styled.div`
 `;
 const ContactUsText = styled.p`
     font-size: 16px;
+`;
+
+const ThankYouContainer = styled.div`
+    text-align: center;
+    padding: 15px 0;
+`;
+const ThankYouTitle = styled.h4`
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1.7px;
+    color: #2DD35C;
+    margin-bottom: 25px;
+`;
+const PaymentAmount = styled(ThankYouTitle)`
+    color: #242424;
+    margin: 10px 0;
+`;
+const ThankYouText = styled.p`
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #242424;
+    margin-bottom: 0;
+`;
+const ThankYouSubText = styled(ThankYouText)`
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1.1px;
+    color: #4a4a4a;
 `;
 
 export default BillingApplozic;

@@ -31,7 +31,10 @@ const Input = styled.input`
 	background-color: #fff;
 	box-shadow: 0 1px 1px rgba(0,0,0,.24);
 	outline: 0;
-	border: 1px solid rgba(0,0,0,.12);
+  border: 1px solid rgba(0,0,0,.12);
+  &:focus {
+    border-color: rgba(0,0,0,.12);
+  }
 `;
 
 
@@ -211,7 +214,7 @@ class ApplicationList extends Component {
 											<p className="setup-sub-heading text-center">You are registered in multiple applications</p>
 											
 											{ Object.keys(allApps).length > 3 && <InputContainer>
-													<Input type="text" value={this.state.searchApplications} onChange={this.searchInApplicationsList} placeholder="Search applications"></Input>
+													<Input type="text" value={this.state.searchApplications} onChange={this.searchInApplicationsList} placeholder="Search applications" autofocus="true"></Input>
 												</InputContainer> 
 											}
 
