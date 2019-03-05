@@ -31,10 +31,10 @@ const createContact = async function( settings, userInfo){
         if (userInfo.star_value) {
             contact["star_value"] = userInfo.star_value;
         }
-    (userInfo.displayName ||userInfo.userId) && contact.properties.push({
+        userInfo.displayName && contact.properties.push({
             "type": "SYSTEM",
             "name": "first_name",
-            "value": userInfo.displayName || userInfo.userId
+            "value": userInfo.displayName
         })
 
 

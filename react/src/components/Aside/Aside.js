@@ -68,7 +68,8 @@ class Aside extends Component {
       toggleCcBccField: true,
       warningBannerText: '',
       toggleCcBccField: true,
-      disabledIntegration:{[integration_type.AGILE_CRM]: true, [integration_type.ZENDESK]:true }
+      disabledIntegration:{[integration_type.AGILE_CRM]: true, [integration_type.ZENDESK]:true },
+      pseudoUser: true
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -127,17 +128,23 @@ class Aside extends Component {
   }
   handleUpdateUser(e) {
     var user = e.detail.data;
+    var pseudoUser = (user.metadata && user.metadata.KM_PSEUDO_USER ) ? true : false;
     this.setState({
         userInfo: user,
-        agileCrmData: (user.metadata && user.metadata.KM_AGILE_CRM) ? JSON.parse(user.metadata.KM_AGILE_CRM) : "" 
+        agileCrmData: (user.metadata && user.metadata.KM_AGILE_CRM) ? JSON.parse(user.metadata.KM_AGILE_CRM) : "" ,
+        pseudoUser:pseudoUser
     })
 }
   updateUserInfo = (userData) => {
     let userInfo = this.state.userInfo
-    Object.keys(userInfo).forEach(function(key,index) {
-      userInfo[key] = (key == Object.keys(userData)[0]) ? userData[key] : userInfo[key];
-    });
-  } 
+    for (var key in userData) {
+      userInfo[key] = userData[key]
+    }
+    this.setState({
+      userInfo:userInfo,
+      pseudoUser:false
+    })
+  }
   handleGroupUpdate(e) {
     e.preventDefault();
     let activeConversationId = window.document.getElementsByClassName("active-chat")[0] && window.document.getElementsByClassName("active-chat")[0].dataset.kmId
@@ -171,23 +178,19 @@ class Aside extends Component {
 
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
-      if(response !== undefined  && response.data.message !== "no user found") {
         let zendeskKeys = response.data.message.filter(function (integration) {
           return integration.type == integration_type.ZENDESK;});
           if(zendeskKeys.length > 0 ){
             this.updateIntegrationStatus({[integration_type.ZENDESK]: false})
           }
-      }
     }).catch(err => {
       console.log("erroe while fetching zendesk integration keys",err)
     });
 
   }
   getAgileCrmSettings = () => {
-    getThirdPartyListByApplicationId(integration_type.AGILE_CRM).then(response => {
-      if(response !== undefined  && response.data.message !== "no user found") {
+    getThirdPartyListByApplicationId(integration_type.AGILE_CRM).then(response => {   
         response.data.message.length > 0 && this.updateIntegrationStatus({[integration_type.AGILE_CRM]: false})
-      }
     }).catch(err => {
       console.log("error while fetching agile crm integration keys",err)
     });
@@ -556,11 +559,12 @@ class Aside extends Component {
   
   handleForwardToAgileCrm = (e) => {
     let contact = { metadata: {} };
+    let agileCrmData = {};
     let contactId = e.target.dataset.agileContactId
-    contact.email = this.state.userInfo.email ? this.state.userInfo.email : this.state.userInfo.userId;
-    contact.displayName = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
+    contact.email = this.state.userInfo.email || "";
+    contact.displayName = (!this.state.pseudoUser && this.state.userInfo.displayName) || "";
     contact.userId = this.state.userInfo.userId;
-    contact.phoneNumber = this.state.userInfo.phoneNumber ? this.state.userInfo.phoneNumber: "";
+    contact.phoneNumber = this.state.userInfo.phoneNumber || "";
     for (var i = 0; i < Object.keys(this.state.userInfo.metadata).length; i++) {
       let key = Object.keys(this.state.userInfo.metadata)[i];
       let value = this.state.userInfo.metadata[Object.keys(this.state.userInfo.metadata)[i]]
@@ -579,7 +583,9 @@ class Aside extends Component {
     } else {
     createAgileCrmContact(contact)
       .then(response => {
-        Notification.success("User Info successfully forwarded")
+          agileCrmData.contactId = response.data.response.id;
+          this.setState({agileCrmData:agileCrmData})
+          Notification.success("User Info successfully forwarded") 
         }).catch(err => {
           Notification.error("Could not create Agile CRM contact. Please try again")
       })

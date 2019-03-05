@@ -780,9 +780,12 @@ const getThirdPartyListByApplicationId = (type) => {
     method: 'get',
     url: url,
   })).then(result => {
-    return result;
+    if(result.data && result.data.code == "SUCCESS" ) {
+      return result;
+    }
   }).catch(err => { 
     console.log("Error while fetching third party integration by applicationId", err) 
+    throw err
   })
 
 }
@@ -828,7 +831,7 @@ const createAgileCrmContact = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+"/contact";
   return Promise.resolve(axios.post(url, data)).then(response => {
-    if(response.data.code == "SUCCESS" ) {
+    if(response.data && response.data.code == "SUCCESS" ) {
       return response;
     }
   }).catch(err => {
@@ -842,7 +845,7 @@ const updateAgileCrmContact = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+ "/" +data.contactId+ "/contact";
   return Promise.resolve(axios.patch(url, data)).then(response => {
-    if(response.data.code == "SUCCESS" ) {
+    if(esponse.data && response.data.code == "SUCCESS" ) {
       return response;
     }
   }).catch(err => {
