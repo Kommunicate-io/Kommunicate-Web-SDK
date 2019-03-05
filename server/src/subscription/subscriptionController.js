@@ -126,7 +126,8 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
                 "email": userId,
                 "subscriberId": customer.activeCampaignId,
                 "product": product,
-                "subscription": customerDetail.subscription
+                "subscription": customerDetail.subscription,
+                "tags": subscribed ? (product + "-customer") : undefined,
               }).catch(error => {
                 console.log("Error while updating subscription plan to activeCampaign", error);
               });;
