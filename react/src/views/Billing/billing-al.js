@@ -59,7 +59,7 @@ class BillingApplozic extends Component {
         };
 
         this.buyPlan = this.buyPlan.bind(this);
-        this.openModal = this.openModal.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         this.changeCardClick = this.changeCardClick.bind(this);
     };
 
@@ -77,8 +77,8 @@ class BillingApplozic extends Component {
 
         // Removing quantity as it is not needed for new plans.
         ApplozicClient.subscribe(token, pricingPackage).then(response => {
-            if(response && response.data && response.data == "success")  {
-                this.that.openModal();
+            if(response && response.data && (response.data == "success" || response.data == "USER_DETAIL_REQUIRED") )  {
+                this.that.toggleModal();
             }
         }).catch(err => {
             console.log(err);
@@ -127,7 +127,7 @@ class BillingApplozic extends Component {
         })
     }
 
-    openModal() {
+    toggleModal() {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         })
@@ -195,16 +195,16 @@ class BillingApplozic extends Component {
                     
                 </div>
 
-                <Modal isOpen={this.state.isModalOpen} onRequestClose={this.openModal} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
+                <Modal isOpen={this.state.isModalOpen} onRequestClose={this.toggleModal} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
                     <ThankYouContainer>
-                        <ThankYouTitle>Thank You!</ThankYouTitle>
+                        <ThankYouTitle>Thanks and welcome aboard!</ThankYouTitle>
                         <ConfirmationTick />
                         <PaymentAmount>${this.state.selectedPlanAmount/100}</PaymentAmount>
                         <ThankYouText>Your payment was successful.</ThankYouText>
-                        <ThankYouSubText>A receipt was sent to your email.</ThankYouSubText>
+                        <ThankYouSubText>Please check your email for the invoice.</ThankYouSubText>
                     </ThankYouContainer>
 
-                    <CloseButton onClick={this.openModal}/>
+                    <CloseButton onClick={this.toggleModal}/>
                 </Modal>
             </Container>
         );

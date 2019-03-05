@@ -363,7 +363,7 @@ updateUserDetail:function(params){
 
     return Promise.resolve(axios({
         method: 'post',
-        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/subscription',
+        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/v2/subscription',
         data: data,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded' 
