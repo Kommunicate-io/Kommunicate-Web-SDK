@@ -70,6 +70,9 @@ const GlobalStyle = createGlobalStyle`
   a {
     color: ${props => props.theme.primary};
   }
+  .input:focus, .select:focus, input:focus, select:focus {
+    border: 1px solid ${props => props.theme.primary};
+  }
 `;
 
 // const store = createStore(rootReducer, applyMiddleware(logger)

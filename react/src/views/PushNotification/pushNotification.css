@@ -104,9 +104,6 @@
   border: solid 1px #e8e8e8;
 
 }
-.km-input-apns:focus {
-  border: solid 1px #bbb;
-}
 
 .km-input-component {
   margin-top: 20px;

@@ -361,9 +361,9 @@ updateUserDetail:function(params){
     let data = "stripeToken=" + token.id + "&email=" + encodeURIComponent(token.email) + "&appKey=" + userSession.application.applicationId + 
     "&package=" + pricingPackage + "&payload=";
 
-    Promise.resolve(axios({
+    return Promise.resolve(axios({
         method: 'post',
-        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/subscription',
+        url: getConfig().applozicPlugin.applozicHosturl + '/ws/payment/v2/subscription',
         data: data,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded' 
