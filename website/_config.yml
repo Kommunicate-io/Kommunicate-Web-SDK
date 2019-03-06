@@ -29,13 +29,13 @@ environment: production
 staticPath: /assets/resources
 dashboard: 
   dashboardPathProd: https://dashboard.kommunicate.io
-  dashboardPathTest: https://dashboard-test.kommunicate.io
-  supportChatBaseUrlTest: https://apps-test.applozic.com
+  dashboardPathTest: https://dashboard.kommunicate.io
+  supportChatBaseUrlTest: https://chat.kommunicate.io
   supportChatBaseUrlProd: https://chat.kommunicate.io
-  supportSourceUrlProd: https://api.kommunicate.io/kommunicate.app
-  supportSourceUrlTest: https://api-test.kommunicate.io/kommunicate.app
+  supportSourceUrlProd: https://api.kommunicate.io/v2/kommunicate.app
+  supportSourceUrlTest: https://api.kommunicate.io/v2/kommunicate.app
 # Build settings
-permalink: pretty
+# permalink: pretty
 markdown: kramdown
 theme: minima
 
@@ -48,3 +48,8 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+   - node_modules
+  - gulpfile.js
+  - package.json
+  - package-lock.json
+  - _src
