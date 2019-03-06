@@ -8,7 +8,7 @@ import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import Notification from '../../views/model/Notification';
 import ReactTooltip from 'react-tooltip';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS, CONVERSATION_TAB, CONVERSATION_TAB_VIEW_MAP} from '../../utils/Constant';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS, CONVERSATION_TYPE, CONVERSATION_TAB_VIEW_MAP} from '../../utils/Constant';
 import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
@@ -69,11 +69,11 @@ class Aside extends Component {
       toggleCcBccField: true,
       disabledIntegration:{[integration_type.AGILE_CRM]: true, [integration_type.ZENDESK]:true },
       pseudoUser: true,
-      activeConversationTab: CONVERSATION_TAB.ASSIGNED_TO_ME,
+      activeConversationTab: CONVERSATION_TYPE.ASSIGNED_TO_ME,
       conversationTab:{
-        [CONVERSATION_TAB.ALL]: {title:"All Conversations", count:0}, 
-        [CONVERSATION_TAB.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:1}, 
-        [CONVERSATION_TAB.CLOSED]: {title:"Closed Conversations", count:2}
+        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:0}, 
+        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:1}, 
+        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:2}
       },
     };
     this.dismissInfo = this.dismissInfo.bind(this);
@@ -651,16 +651,16 @@ class Aside extends Component {
 
                       <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="km-conversation-header-icons">
-                          <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tab = {CONVERSATION_TAB.ASSIGNED_TO_ME} data-tip="Assigned to me" data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
+                          <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tab = {CONVERSATION_TYPE.ASSIGNED_TO_ME} data-tip="Assigned to me" data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
                             {/* <div className="km-conversation-header-notification-alert"></div> */}
                             <AssignedToMeIcon />
                             <span id="km-assigned-unread-icon" className="km-unread-icon n-vis"></span>
                           </div>
-                          <div id= "km-conversation" className="km-conversation-header-icon km-conversation-tabView " data-tip="All Conversations" data-tab = {CONVERSATION_TAB.ALL} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
+                          <div id= "km-conversation" className="km-conversation-header-icon km-conversation-tabView " data-tip="All Conversations" data-tab = {CONVERSATION_TYPE.ALL} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
                            <ListIcon />
                           <span id="km-allconversation-unread-icon" className="km-unread-icon n-vis"></span>
                           </div>
-                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Closed Conversations" data-tab = {CONVERSATION_TAB.CLOSED} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
+                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Closed Conversations" data-tab = {CONVERSATION_TYPE.CLOSED} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
                             <ClosedIcon />
                             <span id="km-closed-unread-icon"></span>
                           </div>

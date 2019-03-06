@@ -145,7 +145,7 @@ export const NOTICEABLE_CREDENTIALS = {
     PROJECT_ID: "9e7IrkNtr4EfHhBkp6Hg"
 };
 
-export const CONVERSATION_TAB = {
+export const CONVERSATION_TYPE = {
     ALL : 0,
     ASSIGNED_TO_ME: 1,
     CLOSED: 2
