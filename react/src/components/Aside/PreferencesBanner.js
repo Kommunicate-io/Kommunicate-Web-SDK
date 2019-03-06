@@ -20,7 +20,7 @@ class PreferencesBanner extends Component {
     componentDidMount() {
         let userSession = CommonUtils.getUserSession();
         this.setState({
-            isChecked:  !!userSession.loadInitialStateConversation 
+            isChecked:  Boolean(userSession.loadInitialStateConversation)
         })
     }
 
@@ -42,18 +42,16 @@ class PreferencesBanner extends Component {
     }
 
     toggleChangeCheckbox = () => {
-        //TODO: Handle handleChange of the the "Checkbox" Button
         this.setState({
             isChecked:  !this.state.isChecked
         })
     }
 
     savePreference = () => {
-        //TODO: Handle OnClick of the the "Save" Button
         var settingsJson = {
             "loadInitialStateConversation": this.state.isChecked
         };
-        updateAppSetting("", settingsJson).then(response => {
+        updateAppSetting(settingsJson).then(response => {
             Notification.success("Preferences updated successfully");
             location.reload(true);
         }).catch(err => {
