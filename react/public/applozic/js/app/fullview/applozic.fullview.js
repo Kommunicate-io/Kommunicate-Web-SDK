@@ -1678,16 +1678,18 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var params = {
 						content: kmSearch.value
 					}
-					_this.loadMessageSearchResults(params,function(){
-						MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
-						document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
-						document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
-						var divs = document.getElementsByClassName("km-converastion");
-						for (var i = 0; i < divs.length; i++) {
-							divs[i].classList.add('n-vis');
-						}
-						kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
-					});
+					if(kmSearch.value && kmSearch.value.trim()){
+						_this.loadMessageSearchResults(params,function(){
+							MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
+							document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
+							document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
+							var divs = document.getElementsByClassName("km-converastion");
+							for (var i = 0; i < divs.length; i++) {
+								divs[i].classList.add('n-vis');
+							}
+							kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
+						});
+					}
 				}	
 			});
 			$kmApplozic(d).on("click", ".km-message-delete", function () {
