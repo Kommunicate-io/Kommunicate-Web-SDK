@@ -61,6 +61,8 @@ class HelpQuerySearch extends Component {
         if (event.key === 'Enter') {
             event.preventDefault();
             this.openSearchPage();
+        } else if (event.key == ' ' && !this.state.inputValue ){
+            event.preventDefault();
         }
     };
 
@@ -148,7 +150,7 @@ class HelpQuerySearch extends Component {
             (this.state.searchedFaqList && this.state.isDropDownOpen) &&
                 <SearchResultsWrapper className="animated-fast slide-animated">
                     {
-                        this.state.searchedFaqList && this.state.searchedFaqList.map((data,index)=>(
+                        this.state.searchedFaqList.map((data,index)=>(
                             <SearchResults key={index} onMouseDown={()=>{this.openSelectedFaq(data)}}>{data.name}</SearchResults>
                         ))
                     }

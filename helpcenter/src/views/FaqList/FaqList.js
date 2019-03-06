@@ -59,7 +59,7 @@ class FaqList extends Component {
         this.setState({
             searchQuery :  CommonUtils.getUrlParameter(window.location.search,"q")
         },()=>{
-            !this.state.searchQuery ? this.populateAllFaq() : this.populateSearchedFaq();
+            this.state.searchQuery ? this.populateSearchedFaq() : this.populateAllFaq();
         })
 
     }
@@ -71,16 +71,16 @@ class FaqList extends Component {
     render() {
         return (
                 <Container className="animated slide-animated">
-                {
-                    (this.state.searchQuery && this.state.faqList.length) ?
+                {   
+                    this.state.searchQuery &&
+                    (this.state.faqList.length ?
                     <TotalSearchedItems>{this.state.faqList.length} {this.state.faqList.length > 1 ? 'results' : 'result'  } found for : <span>{this.state.searchQuery}</span></TotalSearchedItems> 
-                        : 
-                    this.state.searchQuery && 
+                        :  
                         <NoResultsFoundWrapper>
                             <NoResultsFoundSvg/>
                                 <span>NO RESULT FOUND</span>
                                 <span>We couldn’t fnd what you’re looking for</span>
-                        </NoResultsFoundWrapper>
+                    </NoResultsFoundWrapper> )
                 }
                 {
                     this.state.faqList && this.state.faqList.map((index,data)=> (
