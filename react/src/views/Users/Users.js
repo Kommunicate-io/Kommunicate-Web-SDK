@@ -161,13 +161,13 @@ class Users extends Component {
       key: searchQuery
     }
     ApplozicClient.searchContact(params).then(response => {
+      if (_this.state.isSearchBoxActive) {
+        _this.setState({
+          oldResult: _this.state.result
+        })
+      };
       if (response.response.length !== 0) {
         var setPageNumbers = response.response.length;
-        if (_this.state.isSearchBoxActive) {
-          _this.setState({
-            oldResult: _this.state.result
-          })
-        };
         _this.setState({
           isFromSearch: true,
           result: [],
@@ -316,7 +316,7 @@ class Users extends Component {
     var key = event.which || event.keyCode;
     var kmSearchBoxValue = document.getElementById('km-search-box').value;
     if (key === 13 && kmSearchBoxValue.length !== 0) {
-      _this.searchContactInApplozic(kmSearchBoxValue);
+      _this.searchContactInApplozic(kmSearchBoxValue.trim());
       _this.setState({
         searchBoxEmpty: false,
         checkEnter:true
