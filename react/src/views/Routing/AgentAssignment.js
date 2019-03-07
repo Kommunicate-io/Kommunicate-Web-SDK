@@ -473,7 +473,7 @@ const mapStateToProps = state => ({
     appSettings : state.application 
   });
 const mapDispatchToProps = dispatch => ({
-    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload))
+    updateAppSettings: payload => dispatch(Actions.updateApplicationData('SAVE_APP_SETTINGS', payload))
 }) ;
   
 export default connect(mapStateToProps, mapDispatchToProps)(AgentAssignemnt)
