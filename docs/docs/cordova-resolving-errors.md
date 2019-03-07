@@ -6,23 +6,30 @@ sidebar_label: Resolving Errors
 
 ## Android support libraries/google versions conflict
 
-If using multiple plugins that use support libraries or google dependencies, you may get support libraries or firebase version conflict issues in android. 
-Use the below gradle script in your `app/platform/android/build.gradle` file's dependencies :
+If using multiple plugins that use android support libraries or google/firebase dependencies, you may get support libraries or firebase version conflict issues in android. 
+Use the below script in your `app/platform/android/build.gradle` file's dependencies(paste the script at the end of all the dependencies) :
 
-```
+```groovy
 dependencies {
+  //Here there will be some depencies
+  //This is the last dependency 
+  
   configurations.all {
-     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-         def requested = details.requested
-         if (requested.group == 'com.google.firebase' || requested.group == 'com.google.android.gms') {
-            details.useVersion '17.1.0'  //use a common firebase/google version here
-        }
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.google.firebase' && requested.name == 'firebase-messaging') {
+                details.useVersion '17.1.0'  //use a common firebase version here
+            }
 
-         if (requested.group == 'com.android.support' && requested.name != 'multidex') {
-            details.useVersion '27.1.1'  //use a common support libraries version here
+            if (requested.group == 'com.google.android.gms' && (requested.name == 'play-services-maps' || requested.name == 'play-services-location')) {
+                details.useVersion '15.0.1'  //use a common gms version here
+            }
+
+            if (requested.group == 'com.android.support' && requested.name != 'multidex') {
+                details.useVersion '27.1.1'  //use a common support libraries version here
+            }
         }
-     }
-   }
+    }
 }
 ```
 
