@@ -45,9 +45,9 @@ exports.updateAppSettings = async (settings, appId) => {
     if(settings.helpCenter && appSetting.helpCenter){
         settings = deepmerge(appSetting.helpCenter, settings);
     }
-    if(settings.supportMail && appSetting.supportMail){
-        settings = deepmerge(appSetting.supportMail, settings);
-        settings.supportMail = [...new Set(settings.supportMail)]; 
+    if(settings.supportMails && appSetting.supportMails){
+        settings = deepmerge(appSetting.supportMails, settings);
+        settings.supportMails = [...new Set(settings.supportMails)]; 
     }
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
         if(settings.popupTemplateKey == null){
