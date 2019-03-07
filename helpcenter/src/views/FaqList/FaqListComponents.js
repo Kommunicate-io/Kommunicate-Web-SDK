@@ -43,3 +43,43 @@ export const FaqListContent = styled.div`
         font-size: 14px;
     `}
 `
+
+export const TotalSearchedItems = styled.div`
+    max-width: 992px;
+    padding: 30px 0 8px;
+    font-size: 18px;
+    margin: 0 auto;
+    color: #9b9b9b;
+    font-weight: 600;
+
+    & span{
+        color: #5b5b5b;
+    }
+`
+
+export const NoResultsFoundWrapper = styled.div `
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+    & *{
+        margin: 10px 0 0;
+    }
+
+    & svg{
+        margin-top: 80px;
+    }
+
+    & span:not(:last-child){
+        font-weight: 700;
+        font-size: 24px;
+        color: #4d4d4d;
+    }
+    
+    & span:last-child{
+        color: #7f7f7f;
+        font-size: 20px;
+    }
+`

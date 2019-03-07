@@ -28,7 +28,7 @@ class Header extends Component {
     let searchQuery = '?appId=' + appId;
     this.props.history.push({
       pathname: '/',
-      search: searchQuery,
+      search: searchQuery
     });
   }
   
@@ -46,7 +46,7 @@ class Header extends Component {
               </TopbarLogoContainer>
                 {/* <Button>{props.contactSupportButtonText}</Button> */}
               </HeaderTopbar >
-                <HelpcenterHeading headingVisible={!location.pathname.includes('article')}>{this.props.HelpcenterHeadingText}</HelpcenterHeading>
+                <HelpcenterHeading headingVisible={window.location.pathname === "/" && !CommonUtils.getUrlParameter(window.location.search,"q")}>{this.props.HelpcenterHeadingText}</HelpcenterHeading>
               <SearchBarContainer >
               <SearchIconContainer>
                 <SearchLogo/>

@@ -27,6 +27,13 @@
     -webkit-animation-timing-function: ease;	
     backface-visibility: visible;
 }
+.animated-fast{
+    animation-duration: .3s;	
+    -webkit-animation-duration: .3s;    
+    animation-timing-function: ease;	
+    -webkit-animation-timing-function: ease;	
+    backface-visibility: visible;
+}
 .slide-animated{
     animation-name: slideDown;
     -webkit-animation-name: slideDown;	
