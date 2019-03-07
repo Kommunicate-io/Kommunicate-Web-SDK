@@ -86,3 +86,33 @@ var kommunicateSettings = {
 
 ```
 > Note: You can also update metadata using [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform).
+
+## Events
+To get real time updates regarding message sent and delivered you can subscribe to **onMessageSent** & **onMessageReceived** events.
+
+1. **onMessageSent** :  This event gets triggered when the message is sent by the user.
+2. **onMessageReceived** : This event gets triggered when a new message is received by the user. 
+
+
+### Example on how to subscribe to events
+To subscribe to events you need to call Kommunicate.subscribeToEvents(events) function and pass the events object in it.
+
+```javascript
+var kommunicateSettings = {
+    ...
+    "onInit": function () {
+        var events = {
+            'onMessageReceived': function (resp) {
+            console.log(resp);
+            //called when a new message is received
+            },
+            'onMessageSent': function (resp) {
+            console.log(resp);
+            //called when the message is sent
+            }
+        };
+        Kommunicate.subscribeToEvents(events);
+    },
+    ...
+}
+```

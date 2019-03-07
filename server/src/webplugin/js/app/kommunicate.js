@@ -450,5 +450,10 @@ $applozic.extend(true,Kommunicate,{
             style.type = 'text/css';
             style.innerHTML = classSettings;
             document.getElementsByTagName('head')[0].appendChild(style);
+    },
+
+    // subscribe to custom events
+    subscribeToEvents : function (events) {
+        $applozic.fn.applozic('subscribeToEvents', events);
     }
 });
