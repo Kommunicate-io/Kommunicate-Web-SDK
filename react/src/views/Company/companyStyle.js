@@ -64,10 +64,11 @@ const CompanyBlockButtonContainer = styled.div`
     }
 `
 const CompanyRestrictionBannerContainer = styled.div` 
-    margin: -25px 0 30px 0px;
+    margin: 0 0 30px 0px;
 `
 const CompanyContainer = styled.div`
     max-width:998px;
+    margin-left: 15px;
 `
 const CompanyModalTitleContainer= styled.div`
 

@@ -631,9 +631,9 @@ class Aside extends Component {
   render() {
     let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
     const thirdParty = thirdPartyList.map((item,index) => {
-      return <button data-index ={index} data-integration-type={item.type} disabled = {this.state.disabledIntegration[item.type]} key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
-      className="km-button km-button--secondary km-forward-integration-button" data-agile-contact-id = {agileContactId} >
-      <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
+      return <Button secondary data-index ={index} data-integration-type={item.type} disabled = {this.state.disabledIntegration[item.type]} key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
+      className="km-forward-integration-button" data-agile-contact-id = {agileContactId} >
+      <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</Button>
  });
     const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
     return (

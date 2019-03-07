@@ -140,7 +140,7 @@ class Company extends Component{
   }
   render() {
       return(
-          <CompanyContainer>
+          <CompanyContainer className="animated fadeIn">
               <CompanyRestrictionBannerContainer>
                 <Banner indicator={"warning"} hidden={this.state.companyInfoEditable} text={"You need admin permissions to update your company details"} />
               </CompanyRestrictionBannerContainer>
