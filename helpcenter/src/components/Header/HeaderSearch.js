@@ -28,7 +28,7 @@ class HelpQuerySearch extends Component {
             timeout = 300;
             fetchFaq = setTimeout(() => {    
             this.state.inputValue && CommonUtils.searchFaq(this.state.appId, encodeURIComponent(this.state.inputValue)).then(response => {
-                response && _this.setState({
+                response && response.data && _this.setState({
                     totalSearchResults: response.data.length,
                     searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq)
                 })
@@ -65,24 +65,6 @@ class HelpQuerySearch extends Component {
             event.preventDefault();
         }
     };
-
-    Menu = (props) => {
-        const { children, getStyles, innerProps: { ref, ...restInnerProps } } = props;
-        return (
-          <Fragment>
-            <MenuWrapper {...restInnerProps} ref={ref} style={getStyles('menu', props)}>
-              {props.children}
-              {
-                  (props.options.length >= this.state.maxVisibleSearchedFaq && this.state.totalSearchResults  > 6) && 
-                  <SeeAllButton onClick={this.openSearchPage}>
-                    See all results
-                 </SeeAllButton>
-              }
-            </MenuWrapper>
-          </Fragment>
-        );
-    };
-      
     
     openSearchPage = () =>{
         let searchQuery = '?appId=' + this.state.appId + '&q=' + this.state.inputValue;
