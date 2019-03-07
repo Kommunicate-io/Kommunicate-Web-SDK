@@ -16,28 +16,34 @@ const KnowledgeBase = new Schema({
         type: String, 
         lowercase: true, 
         es_type:'text',
-        es_indexed: true 
+        es_indexed: true,
+        es_index_analyzer:'keyword'
     },
     type: { 
         type: String, 
         lowercase: true, 
         es_type:'text',
-        es_indexed: true 
+        es_indexed: true,
+        es_index_analyzer:'keyword'
     },
     category: { 
         type: String, 
         lowercase: true, 
         es_type:'text',
-        es_indexed: true  
+        es_indexed: true,
+        es_index_analyzer:'keyword' 
     },
     referenceId: { 
         type: Number, 
-        es_type:'integer'
+        es_type:'integer',
+        es_indexed: true,
+        es_index_analyzer:'keyword'
     },
     applicationId: { 
         type: String, 
         es_type:'text', 
-        es_indexed: true 
+        es_indexed: true,
+        es_index_analyzer:'keyword'
     },
     userName: { 
         type: String 
@@ -59,7 +65,8 @@ const KnowledgeBase = new Schema({
     deleted: { 
         type: String, 
         default: false,
-        es_indexed: true 
+        es_indexed: true,
+        es_index_analyzer:'keyword'
     },
     created_at: { 
         type: Number, 
@@ -99,6 +106,7 @@ KnowledgeBase.methods.toJSON = function () {
 KnowledgeBase.plugin(mongoosastic, {
     hosts: [config.esClientUrl],
     index: COLLECTIONS.KNOWLEDGE_BASE,
+    type:"_doc"
 });
 
 const KnowledgeBaseModel = mongoose.model(COLLECTIONS.KNOWLEDGE_BASE, KnowledgeBase);

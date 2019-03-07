@@ -1,4 +1,4 @@
-const autosuggestService = require("./autosuggestService");
+const autosuggestService = require("./autosuggestService2");
 const logger = require("../utils/logger");
 
 /**
@@ -187,4 +187,13 @@ exports.fetchFAQs = (req, res) => {
 		console.log(`error in fetchFAQs ${error}`)
 		return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
 	})
+}
+
+exports._esSearchQuery = (req, res) => {
+	return autosuggestService.searchESQueryByCriteria(req.body).then(data => {
+		return res.status(200).json({ code: "SUCCESS", data: data });
+	}).catch(error => {
+		logger.error("error while fetching data esClient", error);
+		return res.status(500).json({ code: "ERROR", message: error.message });
+	});
 }

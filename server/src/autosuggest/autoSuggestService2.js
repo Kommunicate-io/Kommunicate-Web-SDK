@@ -2,8 +2,7 @@ const logger = require("../utils/logger");
 const { KnowledgeBaseModel } = require('./knowledgeBase')
 const crypto = require('crypto');
 const stringUtils = require("underscore.string");
-const mongoClient = require("../mongodb/client");
-const collections = require("../mongodb/collections").COLLECTIONS;
+const knowledgeBaseESClient = require("./faqSearchService");
 const { getNextCount } = require('./counter');
 
 
@@ -60,10 +59,10 @@ const deleteSuggestion = (suggestion) => {
 const searchFAQ = async (options) => {
     var data;
     if (options.text) {
-        data = await searchText(options.text)
+        data = await searchQuery(options);
     } else if (options.id) {
         options.id = parseInt(options.id);
-        data = await KnowledgeBaseModel.find({
+        data =  KnowledgeBaseModel.find({
             id: options.id,
             type: "faq",
             status: "published",
@@ -71,7 +70,7 @@ const searchFAQ = async (options) => {
             deleted: false
         }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
     } else if (options.referenceId) {
-        data = await KnowledgeBaseModel.find({
+        data =  KnowledgeBaseModel.find({
             referenceId: parseInt(options.referenceId),
             type: "learning",
             status: "published",
@@ -79,7 +78,7 @@ const searchFAQ = async (options) => {
             deleted: false
         }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 })
     } else if (options.key) {
-        data = await KnowledgeBaseModel.find({
+        data =  KnowledgeBaseModel.find({
             key: options.key,
             type: "faq",
             status: "published",
@@ -87,7 +86,7 @@ const searchFAQ = async (options) => {
             deleted: false
         }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
     } else {
-        data = await mongoClient.find({
+        data =  KnowledgeBaseModel.find({
             type: "faq",
             status: "published",
             applicationId: options.appId,
@@ -109,14 +108,13 @@ const searchFAQ = async (options) => {
 
     return data;
 }
+/**
+ * @param {Number} pageNumber 
+ * @param {Number} pageSize 
+ * @param {Object} criteria 
+ * pagination API
+ */
 const fetchFAQs = (pageNumber, pageSize, criteria) => {
-    let query = {
-        'collectionName': collections.KNOWLEDGE_BASE,
-        'pageNumber': pageNumber,
-        'pageSize': pageSize,
-        'criteria': criteria,
-        'order': { id: 1 } // order by id ASC
-    }
     return KnowledgeBaseModel.find(criteria)
         .skip((pageNumber - 1) * pageSize)
         .size(pageSize)
@@ -126,38 +124,54 @@ const fetchFAQs = (pageNumber, pageSize, criteria) => {
         });
 }
 
-const searchQuery = (query) => {
-    return new Promise((resolve, reject) => {
-        KnowledgeBaseModel.search({ query_string: { "query": query } }, { hydrate: true }, function (err, results) {
-            if (err) {
-                return reject({})
+/**
+ * @param {*} options 
+ * search text into content and name
+ */
+const searchQuery = (options) => {
+    return knowledgeBaseESClient.searchRawQuery({
+        "query": {
+            "bool": {
+                "must": {
+                    "match": {
+                        "content": options.text
+                    }
+                },
+                "filter": {
+                    "bool": {
+                        "must": [
+                            { "term": { "applicationId.keyword": options.appId } },
+                            { "term": { "type.keyword": "faq" } },
+                            { "term": { "deleted.keyword": false } },
+                            { "term": { "status.keyword": "published" } },
+                        ]
+                    }
+                }
             }
-            console.log("res: ", results, "results.hits.hits: ", results.hits.hits)
-            return resolve(results.hits.hits);
-        });
-    })
+        }
+    }).catch(error => {
+        throw error;
+    });
 }
-const searchRawQuery = (esQuery) => {
-    return new Promise((resolve, reject) => {
-        KnowledgeBaseModel.esSearch(esQuery, { hydrate: true, size: 15 }, function (err, results) {
-            if (err) {
-                return reject(err)
-            }
-            console.log("results.hits.hits: ", results.hits.hits)
-            return resolve(results.hits.hits);
-        });
-    })
+/**
+ * search raw query into esClient
+ */
+const searchESQueryByCriteria = (query)=>{
+    return knowledgeBaseESClient.searchRawQuery(query).catch(error=>{
+        throw error;
+    });
 }
+
+
 module.exports = {
     getAllSuggestions,
     createSuggestion,
     updateSuggestion,
     deleteSuggestion,
     searchFAQ,
-    searchQuery,
-    searchRawQuery,
     fetchFAQs,
     getSuggestionsByCriteria,
-    getSuggestionsByAppId
+    getSuggestionsByAppId,
+    generateHash,
+    searchESQueryByCriteria
 }
-

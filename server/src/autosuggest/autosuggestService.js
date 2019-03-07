@@ -2,6 +2,8 @@ const logger = require("../utils/logger");
 const mongoClient = require("../mongodb/client");
 const collections = require("../mongodb/collections").COLLECTIONS;
 const crypto = require('crypto');
+const stringUtils = require("underscore.string");
+
 
 const generateHash = (message) => {
 	if (stringUtils.isBlank(message)) { return null; }
