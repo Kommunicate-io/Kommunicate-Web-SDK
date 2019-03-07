@@ -5154,7 +5154,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic("#km-li-" + contactIdExpr + " .km-cont-msg-wrapper").html("");
 			};
 			_this.addContact = function (contact, $listId, message, prepend) {
-				if (!MCK_LOAD_INITIAL_CONVERSATION_STATE && message.metadata.skipBot == "true" ) {
+				if (!MCK_LOAD_INITIAL_CONVERSATION_STATE && message && message.metadata && message.metadata.skipBot == "true" && contact.metadata.CONVERSATION_STATUS == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) {
 					return;
 				}
 				var emoji_template = "";
