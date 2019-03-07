@@ -2866,7 +2866,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + url,
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.allConversations = data.response.groupFeeds.length);
-						data && data.response && data.response.conversationCount && window.Aside.conversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ALL);
+						data && data.response && data.response.conversationCount && window.Aside.showConversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ALL);
 						 mckMessageService.addContactInConversationList(data, conversationList);
 						 mckMessageService.initSearch();
 						 if (!params.initialcall) {
@@ -2891,7 +2891,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + "&status=2&status=3&status=4&status=5",
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.closedConversations = data.response.groupFeeds.length);
-						data && data.response && data.response.conversationCount && window.Aside.conversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.CLOSED);
+						data && data.response && data.response.conversationCount && window.Aside.showConversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.CLOSED);
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data, "km-closed-conversation-list", list);
@@ -2938,7 +2938,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+url,
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.assignedToMeConversations = data.response.groupFeeds.length);
-						data && data.response && data.response.conversationCount && window.Aside.conversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ASSIGNED_TO_ME);
+						data && data.response && data.response.conversationCount && window.Aside.showConversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ASSIGNED_TO_ME);
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data, "km-assigned-search-list", list);

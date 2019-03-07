@@ -150,7 +150,7 @@ class Aside extends Component {
       pseudoUser:false
     })
   }
-  conversationCount = (count, type) => {
+  showConversationCount = (count, type) => {
     this.state.conversationTab[type].count = count;
   }
   handleGroupUpdate(e) {
