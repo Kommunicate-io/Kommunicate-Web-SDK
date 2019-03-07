@@ -32,6 +32,10 @@ export default {
         },
         'integry': {
             'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "HZtim7bdyESbHo1opoc4",
+            'projectId': "9e7IrkNtr4EfHhBkp6Hg"
         }
     },
     'enableDevTools':true,
@@ -75,6 +79,10 @@ export default {
         },
         'integry': {
             'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "HZtim7bdyESbHo1opoc4",
+            'projectId': "9e7IrkNtr4EfHhBkp6Hg"
         }
     },
     'enableDevTools':true,
@@ -118,6 +126,10 @@ export default {
         },
         'integry': {
             'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "HZtim7bdyESbHo1opoc4",
+            'projectId': "9e7IrkNtr4EfHhBkp6Hg"
         }
     },
     'enableDevTools':true,
@@ -162,6 +174,10 @@ export default {
         },
         'integry': {
             'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "nSoxbruxKBWyRDraIQND",
+            'projectId': "lwxQBJuL2eWfCJkZ6py0"
         }
     },
     'enableDevTools':false,
@@ -204,6 +220,10 @@ export default {
     },
     'integry': {
         'enabled': true
+    },
+    'noticeable': {
+        'accessToken': "nSoxbruxKBWyRDraIQND",
+        'projectId': "lwxQBJuL2eWfCJkZ6py0"
     }
   },
     'enableDevTools': false,
@@ -245,6 +265,10 @@ export default {
     },
     'integry': {
         'enabled': true
+    },
+    'noticeable': {
+        'accessToken': "nSoxbruxKBWyRDraIQND",
+        'projectId': "lwxQBJuL2eWfCJkZ6py0"
     }
        
    },
@@ -309,6 +333,10 @@ export default {
     },
     'integry': {
         'enabled': true
+    },
+    'noticeable': {
+        'accessToken': "nSoxbruxKBWyRDraIQND",
+        'projectId': "lwxQBJuL2eWfCJkZ6py0"
     }
        
    },

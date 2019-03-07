@@ -67,7 +67,7 @@ class BotStore extends Component {
 
         this.state = {
           openModal:false,
-          botPlatformVersion :'DialogflowVersion1',
+          botPlatformVersion :'DialogflowVersion2',
           activeTab: '1',
           descriptionType :"ADD_BOT",
           descriptionHeader:"Step 1",
@@ -820,7 +820,7 @@ class BotStore extends Component {
           <Modal isOpen={this.state.botProfileModal} toggle={this.toggleBotProfileModal} className="modal-dialog">
             <div className="km-edit-section-header">
               <div>
-                <span className="km-selected-bot-name">Give your bot a name and face</span>
+                <span className="km-selected-bot-name">Update your bot's profile</span>
               </div>
             </div>
                 {  (CommonUtils.isKommunicateDashboard() && !CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&

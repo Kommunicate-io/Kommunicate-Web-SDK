@@ -118,3 +118,9 @@
 .ss-nav-item.agent-app-link {
     /* margin-top: 20px; */
 }
+
+.noticeable-whats-new-container {
+    position: absolute;
+    top: -5px;
+    right: 0px;
+}

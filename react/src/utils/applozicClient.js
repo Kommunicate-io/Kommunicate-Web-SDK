@@ -381,6 +381,31 @@ updateUserDetail:function(params){
     });
   },
 
+  subscriptionDetail: function () {
+    let userSession = CommonUtils.getUserSession();
+    let appId = userSession.application.applicationId;
+    let apiUrl = config.baseurl.applozicAPI + url.applozic.CUSTOMER_INFO;
+    let params = {
+      'applicationId': appId
+    };
+    let API_HEADERS = ApplozicClient.commonHeaders();
+    delete API_HEADERS["Apz-Product-App"];
+
+    return Promise.resolve(axios({
+      method: 'get',
+      url: apiUrl,
+      params: params,
+      headers: API_HEADERS
+    })).then(response => {
+      if(response.status === 200 && response.data !== undefined) {
+        console.log(response);
+        return response;
+      }
+    }).catch(err => {
+      console.log(err);
+    })
+  },
+
   changeCard: function(token) {
     Promise.resolve(axios({
         method: 'post',

@@ -40,7 +40,7 @@ const AlBillingPlansTables = (props) => {
                 </PricingTableHeader>
                 <PricingTableBody>
                     {
-                        isEnterprisePlan ? <Button as={"a"} href="https://calendly.com/applozic/pricing-plan/" target="_blank" secondary>Contact Us</Button> : <Button primary={props.primaryButton} secondary={!props.primaryButton} data-plan-amount={props.billingCycleText === "Annually" ? props.planAmount.amount  * 1200 : props.billingCycleText === "Quarterly" ? props.planAmount.amount  * 300 : props.planAmount.amount  * 100} data-pricing-package={props.planAmount.pricingPackage} onClick={props.buyPlan}>Choose Plan</Button>
+                        isEnterprisePlan ? <Button as={"a"} href="https://calendly.com/applozic/pricing-plan/" target="_blank" secondary>Contact Us</Button> : ( props.disabled > 0 ? <Button primary={props.primaryButton} secondary={!props.primaryButton} disabled>Choose Plan</Button> : <Button primary={props.primaryButton} secondary={!props.primaryButton} data-plan-amount={props.billingCycleText === "Annually" ? props.planAmount.amount  * 1200 : props.billingCycleText === "Quarterly" ? props.planAmount.amount  * 300 : props.planAmount.amount  * 100} data-pricing-package={props.planAmount.pricingPackage} onClick={props.buyPlan}>Choose Plan</Button>)
                     }
                     
                 </PricingTableBody>

@@ -8,6 +8,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import { withTheme } from 'styled-components';
 import {NOTICEABLE_CREDENTIALS} from '../../utils/Constant';
 import { KommunicateLogoSymbol, ApplozicLogoSymbol, MessageLogs } from '../../assets/svg/svgs';
+import { getConfig } from '../../config/config';
 
 const UserIcon = ()=>{
   return(
@@ -76,12 +77,9 @@ class Sidebar extends Component {
   }
 
   addNoticeableWidget () {
-    NOTICEABLE_CREDENTIALS;
-    return <noticeable-widget 
-              access-token= {NOTICEABLE_CREDENTIALS.ACCESS_TOKEN} 
-              project-id= {NOTICEABLE_CREDENTIALS.PROJECT_ID} 
-              popup-backdrop="false">
-           </noticeable-widget>
+    let noticeableCredentials = getConfig().thirdPartyIntegration.noticeable;
+    return <noticeable-widget access-token={noticeableCredentials.accessToken} 
+        project-id={noticeableCredentials.projectId} popup-backdrop="false"></noticeable-widget>
   };
 
   render() {
@@ -98,6 +96,11 @@ class Sidebar extends Component {
               <div className="km-logo-circle-bg">
                 { CommonUtils.isKommunicateDashboard() ? <KommunicateLogoSymbol /> : <ApplozicLogoSymbol /> }
               </div>
+              {CommonUtils.isKommunicateDashboard() ? <div className="noticeable-whats-new-container">
+                {this.addNoticeableWidget()}
+              </div>: ""}
+            
+              
               </NavLink>
             </li>
 
@@ -198,11 +201,7 @@ class Sidebar extends Component {
           <ul className="nav">
 
             {/* IntegrationStarted icon */}
-            { this.props.isIntegrationStarted ?
-              <li>
-                {this.addNoticeableWidget()}
-              </li>
-            :
+            { !this.props.isIntegrationStarted &&
               <li className="nav-item">
                 <IntegrationStarted />
               </li>

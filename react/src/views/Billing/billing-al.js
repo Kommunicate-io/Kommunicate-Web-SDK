@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
 import Modal from 'react-modal';
+import moment from 'moment';
 import CloseButton from '../../components/Modal/CloseButton';
 import CommonUtils from '../../utils/CommonUtils';
 import './billing.css';
@@ -12,6 +13,7 @@ import Button from '../../components/Buttons/Button';
 import { SettingsHeader } from '../../components/SettingsComponent/SettingsComponents';
 import AlBillingPlansTables from './AlBillingPlansTables';
 import { ConfirmationTick } from '../../assets/svg/svgs';
+import Notification from '../model/Notification';
 
 
 class BillingApplozic extends Component {
@@ -55,7 +57,8 @@ class BillingApplozic extends Component {
             pricingPackage: 0,
             isModalOpen: false,
             selectedPlanAmount: 0,
-            that: this
+            that: this,
+            subscriptionDetails: {}
         };
 
         this.buyPlan = this.buyPlan.bind(this);
@@ -68,6 +71,22 @@ class BillingApplozic extends Component {
         window.addEventListener('popstate', function() {
             this.state.stripeHandler.close();
         });
+        this.getSubscriptionDetail();
+    }
+
+    getSubscriptionDetail = () => {
+        ApplozicClient.subscriptionDetail().then(response => {
+            if(response.data.status === "success") {
+                let subscription = response.data.response.subscriptions.data[0];
+                console.log(subscription);
+                this.setState({
+                    subscriptionDetails: subscription
+                })
+            }
+        }).catch(err => {
+            console.log(err);
+            Notification.error("An error occurred while getting subscription detail. Please try again later.")
+        });
     }
 
     buy(token) {
@@ -75,19 +94,19 @@ class BillingApplozic extends Component {
         let pricingPackage = this.pricingPackage;
         // let quantity = 5; //selected number of MAU/1000
 
+        let userSession = CommonUtils.getUserSession();
+        userSession.application.pricingPackage = PRICING_PACKAGE_MAP[pricingPackage];
+
         // Removing quantity as it is not needed for new plans.
         ApplozicClient.subscribe(token, pricingPackage).then(response => {
             if(response && response.data && (response.data == "success" || response.data == "USER_DETAIL_REQUIRED") )  {
+                CommonUtils.setUserSession(userSession);
+                this.that.getSubscriptionDetail();
                 this.that.toggleModal();
             }
         }).catch(err => {
             console.log(err);
         });
-    }
-
-    processBuyPlan = (e) => {
-        let pricingPackage = e.target.getAttribute("data-pricing-package");
-        ApplozicClient.subscribe(token, pricingPackage);
     }
 
     buyPlan(e) {
@@ -133,10 +152,21 @@ class BillingApplozic extends Component {
         })
     }
 
+    getBillingInterval = () => {
+        let interval; 
+        if(Object.keys(this.state.subscriptionDetails).length > 0) {
+            return interval = this.state.subscriptionDetails.intervalCount === 3 ? "Quarterly Billing" : this.state.subscriptionDetails.intervalCount + "ly Billing";
+        } else {
+            return interval = "";
+        }
+    }
+
     render() {
         let status = SUBSCRIPTION_PACKAGES[CommonUtils.getUserSession().application.pricingPackage];
         let planMAU = CommonUtils.getUserSession().application.supportedMAU;
         let currentPricingPackage = CommonUtils.getUserSession().application.pricingPackage;
+        let billingInterval;
+        const { subscriptionDetails } = this.state;
 
         return (
             <Container className="animated fadeIn">
@@ -147,11 +177,14 @@ class BillingApplozic extends Component {
                     <PlanBoughtContainer>
                         <PlanBoughtActivePlanContainer>
                             <div>Your plan:</div>
-                            <div><span>{status}</span> <span style={{textTransform: "uppercase"}}>yearly BILLING</span></div>
+                            <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
                         </PlanBoughtActivePlanContainer>
-                        {/* <PlanBoughtNextBillingDateContainer>
-                            <div>Next billing:</div>
-                        </PlanBoughtNextBillingDateContainer> */}
+                        { Object.keys(subscriptionDetails).length > 0 ?
+                            <PlanBoughtNextBillingDateContainer>
+                                <div>Next billing:</div>
+                                <div>You will be charged <strong>${subscriptionDetails.plan.amount / 100}</strong> on <strong>{moment(subscriptionDetails.currentPeriodEnd * 1000).format("DD MMM YYYY")}</strong></div>
+                            </PlanBoughtNextBillingDateContainer> : ""
+                        }
                         <PlanChangeCardContainer>
                             <Button secondary link type="submit" value="Change Card" onClick={this.changeCardClick}>Change Card</Button>
                         </PlanChangeCardContainer>
@@ -168,16 +201,16 @@ class BillingApplozic extends Component {
                     <div className="row">
                         {(currentPricingPackage > 0 && currentPricingPackage <= 27) ? "" : 
                             <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                <AlBillingPlansTables className="al-starter-plan" briefText="For startups" planTitle="Starter" planAmount={PLANS[this.state.billingCycleText].starter} billingCycleText={this.state.billingCycleText} mauText="1000" planDetails={planDetails.starterPlan} primaryButton={false} togglePlanDetails={this.togglePlanDetails} hidePlanDetails={this.state.hidePlanDetails} everythingText="" buyPlan={this.buyPlan}
+                                <AlBillingPlansTables className="al-starter-plan" briefText="For startups" planTitle="Starter" planAmount={PLANS[this.state.billingCycleText].starter} billingCycleText={this.state.billingCycleText} mauText="1000" planDetails={planDetails.starterPlan} primaryButton={false} togglePlanDetails={this.togglePlanDetails} hidePlanDetails={this.state.hidePlanDetails} everythingText="" buyPlan={this.buyPlan} disabled={currentPricingPackage}
                                 />
                             </div>
                         }
                         <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <AlBillingPlansTables className="al-growth-plan" briefText="For growing businesses" planAmount={PLANS[this.state.billingCycleText].growth} planTitle="Growth" billingCycleText={this.state.billingCycleText} mauText="10,000" planDetails={planDetails.growthPlan} primaryButton={true} togglePlanDetails={this.togglePlanDetails} hidePlanDetails={this.state.hidePlanDetails} everythingText="Starter" buyPlan={this.buyPlan}
+                            <AlBillingPlansTables className="al-growth-plan" briefText="For growing businesses" planAmount={PLANS[this.state.billingCycleText].growth} planTitle="Growth" billingCycleText={this.state.billingCycleText} mauText="10,000" planDetails={planDetails.growthPlan} primaryButton={true} togglePlanDetails={this.togglePlanDetails} hidePlanDetails={this.state.hidePlanDetails} everythingText="Starter" buyPlan={this.buyPlan} disabled={currentPricingPackage}
                             />
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                            <AlBillingPlansTables className="al-pro-plan" briefText="For mid-sized companies" planAmount={PLANS[this.state.billingCycleText].pro} planTitle="Pro" billingCycleText={this.state.billingCycleText} mauText="100,000" planDetails={planDetails.proPlan} primaryButton={false} togglePlanDetails={this.togglePlanDetails} hidePlanDetails={this.state.hidePlanDetails} everythingText="Growth" buyPlan={this.buyPlan}
+                            <AlBillingPlansTables className="al-pro-plan" briefText="For mid-sized companies" planAmount={PLANS[this.state.billingCycleText].pro} planTitle="Pro" billingCycleText={this.state.billingCycleText} mauText="100,000" planDetails={planDetails.proPlan} primaryButton={false} togglePlanDetails={this.togglePlanDetails} hidePlanDetails={this.state.hidePlanDetails} everythingText="Growth" buyPlan={this.buyPlan} disabled={currentPricingPackage}
                             />
                         </div>
                         <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12">
@@ -249,6 +282,21 @@ const planDetails = {
 
     "enterprisePlan": ["Unlimited Group Member Limit", "Dedicated (Single-Tenant) Hosting", "On-Prem (Self) Hosting", "Complimentary Live Chat Plugin (Upto 10 Agents)", "Bots & Automation", "Choice of Support Channel", "Dedicated Account Manager"]
 };
+
+const PRICING_PACKAGE_MAP = {
+    '28': 1,
+    '29': 1,
+    '30': 1,
+    '31': 12,
+    '32': 12,
+    '33': 12,
+    '34': 13,
+    '35': 13,
+    '36': 13,
+    '37': 14,
+    '38': 14,
+    '39': 14,
+}
 
 const PLANS = {
     "Monthly": {
