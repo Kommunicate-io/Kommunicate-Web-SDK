@@ -12,7 +12,6 @@ class HelpQuerySearch extends Component {
         super(props);
         this.state = { 
             inputValue: '',
-            appId : '',
             searchQuery : '',
             faqList: '',
             searchedFaqList: '',
@@ -27,7 +26,7 @@ class HelpQuerySearch extends Component {
         var _this = this,
             timeout = 300;
             fetchFaq = setTimeout(() => {    
-            this.state.inputValue && CommonUtils.searchFaq(this.state.appId, encodeURIComponent(this.state.inputValue)).then(response => {
+            this.state.inputValue && CommonUtils.searchFaq(this.state.settings.appId, encodeURIComponent(this.state.inputValue)).then(response => {
                 response && response.data && _this.setState({
                     totalSearchResults: response.data.length,
                     searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq)
@@ -67,27 +66,23 @@ class HelpQuerySearch extends Component {
     };
     
     openSearchPage = () =>{
-        let searchQuery = '?appId=' + this.state.appId + '&q=' + this.state.inputValue;
+        let searchQuery = 'q=' + this.state.inputValue;
             this.props.history.push({
                 pathname: '/',
                 search: searchQuery,
             })
             this.toggleDropdown();
     }
-    openSelectedFaq = (selectedFAQ)=> {
-        if(selectedFAQ == null){
-            let searchQuery = '?appId='+this.state.appId;
+    openSelectedFaq = (selectedFAQ) => {
+        if (selectedFAQ == null) {
             this.props.history.push({
-            pathname: '/',
-            search: searchQuery,
-        });
-        }else{
-            let searchQuery = '?appId='+this.state.appId+"&articleId="+selectedFAQ.id;
+                pathname: '/'
+            });
+        } else {
             this.props.history.push({
-            pathname: '/article',
-            search: searchQuery,
-        });
-        }        
+                pathname: '/article/' + CommonUtils.formatFaqQuery(selectedFAQ.name)
+            });
+        }
     }
 
     clearSearchBar = () => {
@@ -98,8 +93,8 @@ class HelpQuerySearch extends Component {
 
     componentDidMount = () => {
         this.setState({
-            appId : CommonUtils.getUrlParameter(window.location.search,"appId")
-        })
+            settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
+        });
     }
     toggleDropdown = () => {
         this.state.inputValue && this.setState({ 
@@ -107,9 +102,12 @@ class HelpQuerySearch extends Component {
             searchedFaqList : ''
         });
     }
+    setPageTitle = () =>{
+        document.title = this.state.settings.title + " | Helpcenter";
+    }
     componentDidUpdate = (prevProps) => {   
-        // Following check will check if the user is moving back from article page or search page it will clear the searchbar
-        this.props.location.search !== prevProps.location.search && this.state.inputValue && !window.location.pathname.includes("article") && !CommonUtils.getUrlParameter(window.location.search,"q") ? this.clearSearchBar() : false;
+        // Following check will check if the user is moving back from article page or search page it will clear the searchbar and reset the page title to default
+        (this.props.location.key !== prevProps.location.key && this.props.location.pathname === '/' && !CommonUtils.getUrlParameter(this.props.location.search,"q")) ? (this.clearSearchBar() , this.setPageTitle()) : false;
     }
 
   render() {

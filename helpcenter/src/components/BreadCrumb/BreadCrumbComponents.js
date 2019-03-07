@@ -19,6 +19,10 @@ export const BreadCrumbItem = styled.span`
     &:hover{
         text-decoration: underline;
     }
+
+    &:last-child{
+        pointer-events: none;
+    }
 `
 
 export const BreadCrumbArrow = styled.span`

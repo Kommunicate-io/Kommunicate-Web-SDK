@@ -43,7 +43,7 @@ export const TopbarLogoContainer = styled.div `
         content: "Help Center";
         position: absolute;
         top: 50%;
-        width: 100px;
+        width: 120px;
         right: -50%;
         color: #fff;
         transform: translate(0% , -62%);
@@ -84,7 +84,7 @@ export const TopbarLogo = styled.span `
         content: "|";
         position: absolute;
         top: 50%;
-        width: 100px;
+        width: 130px;
         right: -43%;
         font-weight: 300;
         color: #fff;
@@ -96,6 +96,11 @@ export const TopbarLogo = styled.span `
                display: none;
             }
     `}
+
+    & img {
+        width: 150px;
+        height: 75px;
+    }
 `
 
 export const SearchBarContainer = styled.div`

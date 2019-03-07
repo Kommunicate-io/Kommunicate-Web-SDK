@@ -56,18 +56,21 @@ export const CommonUtils = {
 
         },
 
-        getSelectedFaq: (appId, faqId) => {
-            let queryUrl = kmApiUrl + url["kommunicateApi"].search,
-                faqList,
-                params = {
-                    appId: appId,
-                    articleId: faqId
-                }
-            return (axios.get(queryUrl, {
-                'params': params
-            })).then(response => {
+        getSelectedFaq: (appId, searchQuery) => {
+            let queryUrl = kmApiUrl + url["kommunicateApi"].search+'/'+searchQuery+'/'+appId , faqList;
+            return (axios.get(queryUrl)).then(response => {
                 faqList = response;
                 return faqList.data;
+            }).catch(err => {
+                console.log(err)
+            })
+
+        },
+        getAppSettings: (appId, faqId) => {
+            let queryUrl = kmApiUrl + url["kommunicateApi"].appSettingsDomain,settings;
+            return (axios.get(queryUrl)).then(response => {
+                settings = response;
+                return settings
             }).catch(err => {
                 console.log(err)
             })
@@ -80,6 +83,36 @@ export const CommonUtils = {
 
         getKommunicateWebsiteUrl: () => {
             return kmWebUrl;
+        },
+
+        setItemInLocalStorage: function(key,value){
+            if(key){
+                localStorage.setItem(key, JSON.stringify(value)); 
+            }
+        },
+
+        getItemFromLocalStorage: function(key){
+            if(key){
+                let data =  localStorage.getItem(key); 
+                try{
+                    data=  JSON.parse(data); 
+                }catch(e){
+                    // its string
+                }
+                return data;
+            }
+        },
+        
+        removeItemFromLocalStorage : function(key){
+            if(key){
+                localStorage.removeItem(key);
+            }
+        },
+        formatFaqQuery : function(query){
+            return query.replace(/[^a-zA-Z ]/g, "").replace(/ /g,"-");
+        },
+
+        getHostNameFromUrl : function(){
+            return window.location.hostname;
         }
-    
 }

@@ -18,10 +18,9 @@ export default class Article extends Component {
 
     getFaqArticle = ()=>{
         this.setState({
-            appId: CommonUtils.getUrlParameter(window.location.search, "appId"),
-            faqId: CommonUtils.getUrlParameter(window.location.search, "articleId")
+            query: window.location.pathname.replace('/article','')
         }, () => {
-            CommonUtils.getSelectedFaq(this.state.appId, this.state.faqId).then(response => {
+            CommonUtils.getSelectedFaq(this.state.settings.appId, this.state.query).then(response => {
                 this.setState({
                     faqHeading: response.data[0].name,
                     faqContent: response.data[0].content,
@@ -33,18 +32,22 @@ export default class Article extends Component {
     }
 
     componentDidMount = () => {
-        this.getFaqArticle();
+        this.setState({
+            settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
+          },()=>{
+            this.getFaqArticle();
+          });
     }
 
-    updateArticlesPage = (id) => {
-        let faqId = CommonUtils.getUrlParameter(window.location.search, "articleId");
-        id != faqId ? this.getFaqArticle() : null;
+    updateArticlesPage = (query) => {
+        let faqId = window.location.pathname.replace('/article','');
+        query != faqId ? this.getFaqArticle() : null;
     }
 
     componentDidUpdate(prevProps, prevState) {
-        let id = prevState.faqId;
+        let query = prevState.query;
         //Interval added to account for the flicker when react re-renders a component
-        setInterval(this.updateArticlesPage(id), 1000)
+        setInterval(this.updateArticlesPage(query), 1000)
     }
      
     render() {
@@ -61,8 +64,7 @@ export default class Article extends Component {
                                         crumbName : 'Kommunicate Help center'
                                     },
                                     {
-                                        pageUrl : '/article',
-                                        queryUrl : '?appId='+this.state.appId+'&articleId='+this.state.faqId,
+                                        pageUrl : '/article/'+this.state.query,
                                         crumbName : this.state.faqHeading
                                     }
                                 ]}

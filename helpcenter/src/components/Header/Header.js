@@ -14,23 +14,28 @@ class Header extends Component {
     super(props);
     this.state = {
       inputValue: '',
-      appId: '',
       searchQuery: '',
       faqList: '',
       searchedFaqList: '',
       isDropDownOpen: true,
-      value: ''
+      value: '',
+      settings : {}
     };
   }
 
   navigateHome = () =>{
     let appId = CommonUtils.getUrlParameter(window.location.search,"appId"); 
-    let searchQuery = '?appId=' + appId;
     this.props.history.push({
-      pathname: '/',
-      search: searchQuery
+      pathname: '/'
     });
   }
+
+  componentDidMount = () => {
+    this.setState({
+      settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
+    });
+  }
+  
   
   render(){
     return(
@@ -42,11 +47,11 @@ class Header extends Component {
                {
                  window.location.pathname.includes('article') &&  <BackButtonContainer> <BackButton/> </BackButtonContainer>
                }
-                <TopbarLogo ><img src={this.props.logoUrl} alt=""/></TopbarLogo>
+                <TopbarLogo ><img src={this.state.settings.logo} alt=""/></TopbarLogo>
               </TopbarLogoContainer>
                 {/* <Button>{props.contactSupportButtonText}</Button> */}
               </HeaderTopbar >
-                <HelpcenterHeading headingVisible={window.location.pathname === "/" && !CommonUtils.getUrlParameter(window.location.search,"q")}>{this.props.HelpcenterHeadingText}</HelpcenterHeading>
+                <HelpcenterHeading headingVisible={window.location.pathname === "/" && !CommonUtils.getUrlParameter(window.location.search,"q")}>{this.state.settings.heading}</HelpcenterHeading>
               <SearchBarContainer >
               <SearchIconContainer>
                 <SearchLogo/>
@@ -58,12 +63,6 @@ class Header extends Component {
       </HeaderComponent>        
     )
   }
-}
-
-Header.defaultProps = {
-  logoUrl : "./assets/svg/kommunicateLogoWhite.svg",
-  contactSupportButtonText: "Contact Support",
-  HelpcenterHeadingText:"Hi. How can we help?"
 }
 
 export default withRouter(Header);
