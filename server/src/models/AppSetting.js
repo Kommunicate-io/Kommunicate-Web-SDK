@@ -77,6 +77,11 @@ let AppSetting= function(sequelize, DataTypes) {
         allowNull:true,
         field:'help_center'
       },
+      supportMail:{
+        type: DataTypes.JSON,
+        allowNull:true,
+        field:'support_mail'
+      },
     },
 
     {

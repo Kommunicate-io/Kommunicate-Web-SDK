@@ -232,3 +232,5 @@ ADD load_initial_state_conversation tinyint(1) default 1;
 -- 5 march 2019 --
 ALTER TABLE `app_settings` ADD COLUMN `help_center` JSON
 
+ALTER TABLE `app_settings` ADD COLUMN `support_mail` JSON
+
