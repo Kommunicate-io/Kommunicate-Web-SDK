@@ -1410,16 +1410,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				});
 
-				$kmApplozic(d).on("click", ".km-conversation-tabView", function (e) {
-					$kmApplozic(".km-conversation-tabView").removeClass('km-conversation-icon-active');
-					$kmApplozic(this).addClass('km-conversation-icon-active');
-					$kmApplozic(".km-converastion").removeClass('vis').addClass('n-vis');
-					$kmApplozic(".km-conversation-tab-selected").removeClass('vis').addClass('n-vis');
-					var tabId = $(".km-conversation-icon-active")[0].id;
-					$kmApplozic("." + KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[tabId]).removeClass('n-vis').addClass('vis');
-					$kmApplozic("." + KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[tabId] + " .km-unread-icon").removeClass('n-vis').addClass('vis');
-					typeof e.originalEvent !== "undefined" && $kmApplozic("." + KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0].click();
-				});
 				$kmApplozic(d).on("click", ".kmfancybox", function (e) {
 					var $this = $kmApplozic(this);
 					var contentType = $this.data('type');
