@@ -318,6 +318,16 @@ const CommonUtils = {
     },isObject: function(object) {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
+    },
+    hasJsonStructure: function (value) {
+        if (typeof value !== 'string') return false;
+        try {
+            const result = JSON.parse(value);
+            return Object.prototype.toString.call(result) === '[object Object]'
+                || Array.isArray(result);
+        } catch (err) {
+            return false;
+        }
     }
 }
 

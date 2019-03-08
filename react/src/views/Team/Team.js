@@ -49,7 +49,7 @@ class Integration extends Component {
       applicationId: "",
       hideErrorMessage: true,
       activeUsers: [],
-      selectedRole: ROLE_TYPE.AGENT,
+      selectedRole: CommonUtils.isKommunicateDashboard() ? ROLE_TYPE.AGENT : ROLE_TYPE.ADMIN,
       invitedUser: [],
       isTrialPlan: null,
       isStartupPlan: null,

@@ -488,7 +488,7 @@ ul#km-group-search-list li {
 .km-sidebox-third-party-integration{
     margin-top: 11px;
     margin-bottom: 2px;
-    min-height: 73px;
+    min-height: 79px;
 }
 .km-write-box {
     margin-top: 7px;
@@ -600,13 +600,6 @@ ul#km-group-search-list li {
 .introducing-text-box-main-container .introducing-close-icon-container {
     cursor: pointer;
 }
-
-.trial-period-container {
-    position: relative;
-    min-width: 203px;
-    height: 40px;
-}
-
 
 .aside-menu *::-webkit-scrollbar {
 	-webkit-appearance: none;

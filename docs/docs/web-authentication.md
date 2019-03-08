@@ -21,7 +21,7 @@ Here are the parameters you can pass in the [plugin script](https://docs.kommuni
 |imageLink | This will be the profile image of the user.|
 |conversationTitle | All conversations will have this title. Once the conversation is assigned to one of your team, their name would come as the conversation title.|
 |defaultMessageMetaData |This will send defaultMessageMetaData with every message|
-|authenticationTypeId |You can use this to authenticate userId and password from your server <a href="access-token-url-configuration" target="_blank">Set AccessToken URL</a> and pass the value of 'authenticationTypeId' as "1" (Optional).|
+|authenticationTypeId |You can use this to authenticate userId and password from your server <a href="access-token-url-configuration" target="_blank">Set AccessToken URL</a> and pass the value of 'authenticationTypeId' as "0" (Optional).|
 
 ## User authentication
 There are 3 ways to log in users into the chat. 

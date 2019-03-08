@@ -650,3 +650,61 @@ border-bottom: 1px solid #cfd8dc;
   letter-spacing: 0.5px;
   color: #535455;
 }
+
+.km-bot-assign-modal.modal-dialog {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  width: 648px;
+  height: 368px;
+}
+.km-bot-assign-modal.modal-dialog .modal-content{
+  display: flex;
+  align-items: center;
+  padding: 70px 10px 20px;
+  text-align: center;
+}
+
+.bot-assign-modal-footer{
+  padding: 40px 0 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.bot-assign-modal-footer *{
+  margin: 0 10px;
+}
+.bot-assignment-heading{
+  font-size: 20px;
+  letter-spacing: 0.7px;
+  color: #424243;
+  margin-top: 30px;
+}
+.bot-assignment-subheading{
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.6px;
+  color: #383939;
+  padding: 0 10px;
+  white-space: pre-line;
+  max-width: 100%;
+}
+.bot-assignment-subheading strong{
+  font-weight: 700;
+}
+
+p.bot-assignment-note{
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-align: center;
+  color: #616263;
+  background-color: #e7e4e4;
+  padding: 8px 18px;
+  border-radius: 2px;
+}
+p.bot-assignment-note strong{
+  font-weight: 700;
+}

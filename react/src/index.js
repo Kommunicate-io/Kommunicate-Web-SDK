@@ -33,6 +33,9 @@ const GlobalStyle = createGlobalStyle`
   .product.product-${CommonUtils.getProduct()} {
     display: block;
   }
+  .product.product-${CommonUtils.getProduct()}-table-cell {
+    display: table-cell;
+  }
   .km-button--primary, .km-button--primary a {
     background-color: ${props => props.theme.buttons.primaryBG};
   }
@@ -63,6 +66,12 @@ const GlobalStyle = createGlobalStyle`
   }
   .hr {
     border-top: 4px solid ${props => props.theme.primary};
+  }
+  a {
+    color: ${props => props.theme.primary};
+  }
+  .input:focus, .select:focus, input:focus, select:focus {
+    border: 1px solid ${props => props.theme.primary};
   }
 `;
 

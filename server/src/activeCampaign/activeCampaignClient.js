@@ -49,11 +49,11 @@ exports.addContact = (options) => {
 }
 
 exports.updateActiveCampaign = (options) => {
-    if (!activeCampaignEnabled) {
-        return;
-    }
-
     return new Promise(function (resolve, reject) {
+        if (!activeCampaignEnabled) {
+            console.log("active campaign is disabled");
+            return resolve(null);
+        }
         var option = {
             method: 'POST',
             url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_edit',

@@ -9,7 +9,7 @@
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-# These are used to personalize your new site. If you look in the HTML files,
+# These are used to personalize your new site. If you look in the HTML files ,
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
@@ -29,13 +29,13 @@ environment: production
 staticPath: /assets/resources
 dashboard: 
   dashboardPathProd: https://dashboard.kommunicate.io
-  dashboardPathTest: https://dashboard-test.kommunicate.io
-  supportChatBaseUrlTest: https://apps-test.applozic.com
+  dashboardPathTest: https://dashboard.kommunicate.io
+  supportChatBaseUrlTest: https://chat.kommunicate.io
   supportChatBaseUrlProd: https://chat.kommunicate.io
-  supportSourceUrlProd: https://api.kommunicate.io/kommunicate.app
-  supportSourceUrlTest: https://api-test.kommunicate.io/kommunicate.app
+  supportSourceUrlProd: https://api.kommunicate.io/v2/kommunicate.app
+  supportSourceUrlTest: https://api.kommunicate.io/v2/kommunicate.app
 # Build settings
-permalink: pretty
+# permalink: pretty
 markdown: kramdown
 theme: minima
 
@@ -48,3 +48,8 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
+   - node_modules
+  - gulpfile.js
+  - package.json
+  - package-lock.json
+  - _src

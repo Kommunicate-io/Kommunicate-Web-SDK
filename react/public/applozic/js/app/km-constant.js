@@ -39,5 +39,17 @@ KOMMUNICATE_CONSTANTS = {
         DIALOG_BOX:"8",
         IMAGE:"9",
         CARD_CAROUSEL:"10"
+    },
+    GROUP_ACTION:{
+        CREATE:0,
+        ADD_MEMBER:1,
+        REMOVE_MEMBER:2,
+        LEFT:3,
+        DELETE_GROUP:4,
+        CHANGE_GROUP_NAME:5,
+        CHANGE_IMAGE_URL:6,
+        JOIN:7,
+        GROUP_USER_ROLE_UPDATED:8,
+        GROUP_META_DATA_UPDATED:9
     }
 }

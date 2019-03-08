@@ -132,7 +132,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload)),
+    updateAppSettings: payload => dispatch(Actions.updateApplicationData('SAVE_APP_SETTINGS', payload)),
     resetStore: payload => dispatch(ClearReduxAction.resetStore())
   }
 }

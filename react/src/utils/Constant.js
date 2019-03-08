@@ -1,6 +1,6 @@
 import { getEnvironmentId } from "../config/config";
 
-export const KM_RELEASE_VERSION = "3.5"
+export const KM_RELEASE_VERSION = "3.6"
 export const FALLBACK_TYPE = {
     MESSAGE_FORWARDING: 0,
     UNDELIVERED_MESSAGE: 1,
@@ -103,6 +103,7 @@ export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
 
 export const CONVERSATION_STATUS = window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE
 export const ACTIONABLE_MESSAGE_TEMPLATE = window.KOMMUNICATE_CONSTANTS.ACTIONABLE_MESSAGE_TEMPLATE
+export const CONVERSATION_TAB_VIEW_MAP = window.KOMMUNICATE_CONSTANTS.CONVERSATION_TAB_VIEW_MAP
 
 export const LOGIN_VIA = {
     GOOGLE: "google",
@@ -143,3 +144,9 @@ export const NOTICEABLE_CREDENTIALS = {
     ACCESS_TOKEN: "HZtim7bdyESbHo1opoc4",
     PROJECT_ID: "9e7IrkNtr4EfHhBkp6Hg"
 };
+
+export const CONVERSATION_TYPE = {
+    ALL : 0,
+    ASSIGNED_TO_ME: 1,
+    CLOSED: 2
+}

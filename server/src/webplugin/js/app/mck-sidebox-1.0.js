@@ -1754,9 +1754,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                      var preLeadCollectionClass ="km-form-control "+ (preLeadCollection.element ==="textarea" ? "mck-preleadcollection-textarea" :"km-input-width");
                      kmChatInputDiv.setAttribute("class", "km-form-group km-form-group-container");
                      var kmChatInput = document.createElement(preLeadCollection.element||"input");
-                     kmChatInput.setAttribute("id", "km-"+preLeadCollection.field);
+                     kmChatInput.setAttribute("id", "km-"+preLeadCollection.field.toLowerCase());
                      kmChatInput.setAttribute("type",preLeadCollection.type||"text");
-                     kmChatInput.setAttribute("name", "km-"+preLeadCollection.field);
+                     kmChatInput.setAttribute("name", "km-"+preLeadCollection.field.toLowerCase());
                      preLeadCollection.required && kmChatInput.setAttribute("required", preLeadCollection.required);
                      kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||'');
                      kmChatInput.setAttribute("class",preLeadCollectionClass);
@@ -8420,7 +8420,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
                 var currTabId = $mck_msg_inner.data('mck-id');
                 var isGroupTab = $mck_msg_inner.data('isgroup');
-                if (currTabId === contact.contactId && isGroupTab === contact.isGroup && !$mck_group_info_tab.hasClass('vis')) {
+                if (currTabId === contact.contactId && isGroupTab === contact.isGroup && !$mck_group_info_tab.hasClass('vis') && !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT) {
                     if (message.conversationId && (IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX)) {
                         var currConvId = $mck_msg_inner.data('mck-conversationid');
                         currConvId = (typeof currConvId !== "undefined" && currConvId !== '') ? currConvId.toString() : '';

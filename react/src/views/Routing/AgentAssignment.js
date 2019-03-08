@@ -94,7 +94,7 @@ updateDefaultAssignee = (selectedAssignee) => {
         data.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT]= prevAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT];
         this.setState({notifyEveryBodyDefaultAssigneeInfo: assignee});
     }
-    updateAppSetting(null, data)
+    updateAppSetting(data)
     .then(response => {
         appSettings.defaultConversationAssignee = data.defaultConversationAssignee;
         //update store
@@ -473,7 +473,7 @@ const mapStateToProps = state => ({
     appSettings : state.application 
   });
 const mapDispatchToProps = dispatch => ({
-    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload))
+    updateAppSettings: payload => dispatch(Actions.updateApplicationData('SAVE_APP_SETTINGS', payload))
 }) ;
   
 export default connect(mapStateToProps, mapDispatchToProps)(AgentAssignemnt)

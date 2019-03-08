@@ -130,12 +130,9 @@ class SettingsSidebar extends Component {
                                 <NavLink to={'/settings/chat-widget-customization'} className="ss-nav-link" activeClassName="active">Chat Widget</NavLink>
                             </li>
                         }
-                        {/* hiding billing section */
-                        this.state.isKommunicateDashboard && 
-                            <li className="ss-nav-item billing-link ">
-                                <NavLink to={'/settings/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
-                            </li>
-                        }
+                        <li className="ss-nav-item billing-link ">
+                            <NavLink to={'/settings/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
+                        </li>
                         <li className="ss-nav-item">
                             <NavLink to={'/settings/pushnotification'} className="ss-nav-link" activeClassName="active">Push Notifications</NavLink>
                         </li>

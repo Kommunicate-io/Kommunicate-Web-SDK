@@ -102,7 +102,7 @@ export const SearchBarContainer = styled.div`
     max-width: 992px;
     margin: 0 auto;
     width: 100%;
-    opacity: .95;
+    opacity: .98;
     box-shadow: 3px 11px 25px 0 rgba(0, 0, 0, 0.3);
     margin-top: 50px;
     position: relative;
@@ -131,9 +131,64 @@ export const BackButtonContainer = styled.span`
 
 export const ClearButtonWrapper = styled.div`
     transition: all .3s;
-    border-radius: 5px;
     cursor: pointer;
+    position: absolute;
+    background: #fff;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    border-radius: 5px;
     &:hover{
         background: #eee;
     }
+    &:active, &:focus{
+        background: #ddd;
+    }
+`
+
+export const MenuWrapper = styled.div`
+`
+
+export const SeeAllButton = styled.div`
+    background: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    color: #9b9b9b;
+    cursor: pointer;
+`
+export const SearchBox = styled.input.attrs(() => ({ type: "text" }))`
+    width: calc(100% - 40px);
+    background: #fff;
+    outline: none;
+    border: none;
+    font-size: 18px;
+    padding: 18px 10px 18px 45px;
+
+`
+export const SearchBoxWrapper = styled.div`
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden
+`
+
+export const SearchResultsWrapper = styled.div`
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 3px 11px 25px 0 rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 115%;
+    overflow: hidden;
+`
+export const SearchResults = styled.div`
+    padding: 15px 30px;
+    border-bottom: 1px solid #ddd;
+    font-size: 18px;
+    cursor: pointer;
 `

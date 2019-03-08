@@ -1,4 +1,8 @@
-export const saveAppSettings = (payload) => ({
-    type: 'SAVE_APP_SETTINGS',
+const updateApplicationData = (type, payload) => ({
+    type: type,
     payload
 })
+
+export {
+    updateApplicationData
+}

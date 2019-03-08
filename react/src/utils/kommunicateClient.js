@@ -772,15 +772,21 @@ const createAndUpdateThirdPArtyIntegration = (data, integrationType) => {
   }).catch(err => { console.log("Error while submiting third party integration keys", err) })
 
 }
-const getThirdPartyListByApplicationId = () => {
+const getThirdPartyListByApplicationId = (type) => {
   let userSession = CommonUtils.getUserSession();
-  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId
+  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId;
+  type && (url = url.concat("/?type="+type))
   return Promise.resolve(axios({
     method: 'get',
     url: url,
   })).then(result => {
-    return result;
-  }).catch(err => { console.log("Error while fetching third party integration by applicationId", err) })
+    if(result.data && result.data.code == "SUCCESS" ) {
+      return result;
+    }
+  }).catch(err => { 
+    console.log("Error while fetching third party integration by applicationId", err) 
+    throw err
+  })
 
 }
 const deleteThirdPartyByIntegrationType = (integrationType) => {
@@ -825,7 +831,7 @@ const createAgileCrmContact = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+"/contact";
   return Promise.resolve(axios.post(url, data)).then(response => {
-    if(response.data.code == "SUCCESS" ) {
+    if(response.data && response.data.code == "SUCCESS" ) {
       return response;
     }
   }).catch(err => {
@@ -838,8 +844,8 @@ const createAgileCrmContact = (data) => {
 const updateAgileCrmContact = (data) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl + "/agilecrm/"+ userSession.application.applicationId+ "/" +data.contactId+ "/contact";
-  return Promise.resolve(axios.post(url, data)).then(response => {
-    if(response.data.code == "SUCCESS" ) {
+  return Promise.resolve(axios.patch(url, data)).then(response => {
+    if(esponse.data && response.data.code == "SUCCESS" ) {
       return response;
     }
   }).catch(err => {
@@ -950,7 +956,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
 
   });
 }
-const updateAppSetting = (status, data) => {
+const updateAppSetting = (data) => {
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
   const url = getConfig().kommunicateBaseUrl + '/settings/application/' + appId;
@@ -975,7 +981,11 @@ const getAppSetting = () => {
     method: 'GET',
     url: url,
   })).then(result => {
-    return result;
+    if(typeof result !== "undefined" && result.data.code == "SUCCESS") {
+    userSession.loadInitialStateConversation = result && result.data && result.data.response.loadInitialStateConversation;
+    CommonUtils.setUserSession(userSession);
+      return result;
+    }
   }).catch(err => {
     throw { message: err };
     console.log("Error while fetching application settings", err)

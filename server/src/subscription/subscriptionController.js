@@ -114,11 +114,10 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
             await customerService.updateApplicationInApplozic(customer);
             response.code = "SUCCESS";
             response.message = { "subscription": req.body.subscription, "status": "updated" };
-            res.status(200).json(response);
         } else {
             response.code = "NOT_FOUND";
             response.message = "resource not found by userId " + userId;
-            res.status(404).json(response);
+            return res.status(404).json(response);
         }
 
         if (customerDetail.billingCustomerId) {
@@ -126,15 +125,16 @@ exports.updateKommunicateCustomerSubscription = async (req, res) => {
                 "email": userId,
                 "subscriberId": customer.activeCampaignId,
                 "product": product,
-                "subscription": customerDetail.subscription
+                "subscription": customerDetail.subscription,
+                "tags": subscribed ? (product + "-customer") : undefined,
               }).catch(error => {
                 console.log("Error while updating subscription plan to activeCampaign", error);
               });;
         }
-        
+        return res.status(200).json(response);
     } catch (error) {
         console.log("Error while updating kommunicate subscription details ", error);
-        res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });   
+        return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });   
     }
 
 }

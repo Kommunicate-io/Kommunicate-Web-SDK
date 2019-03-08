@@ -9,7 +9,7 @@ const config = require('../../../conf/config');
 const dashboardUrl = config.getProperties().urls.dashboardHostUrl;
 const kmWebsiteLogoIconUrl = config.getCommonProperties().companyDetail.companyLogo;
 const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-icon.png";
-const subscription = require('../../utils/utils').SUBSCRIPTION_PLAN;
+const subscriptionPlans = require("../../register/subscriptionPlans");
 const moment = require('moment-timezone');
 const userPreferenceService = require('../../users/userPreferenceService');
 var fs = require('fs');
@@ -105,7 +105,7 @@ const processOneApp = (app) => {
                         return "no stats for this app"
                     }
                     return generateReport(stats, users, dates).then(report => {
-                        report.growthPlanTemplate = (report.overAllReport.newConversationCount >= 25 && customer.subscription == subscription.initialPlan) ? "block" : "none";
+                        report.growthPlanTemplate = (report.overAllReport.newConversationCount >= 25 && customer.subscription == subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP) ? "block" : "none";
                         return sendWeeklyReport(report, customer, app.applicationId);
                     })
                 })

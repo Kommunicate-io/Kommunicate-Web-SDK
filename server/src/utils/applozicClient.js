@@ -8,6 +8,7 @@ const logger = require('./logger.js');
 const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist/v2.1?";
 const utils = require("./utils");
 const { EMAIL_NOTIFY } = require('../users/constants');
+const { APPLOZIC_USER_ROLE_TYPE } = require("../users/constants.js");
 
 /*
 this method register a user in applozic db with given parameters.
@@ -676,7 +677,7 @@ const sendMessageListRecursively = (msgList, groupId, headers) => {
 }
 
 exports.closeConversation = (interval, headers) => {
-  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/close/" + interval;
+  let url = config.getProperties().urls.applozicHostUrl + `/rest/ws/group/close/${interval}/assigneeRole=${APPLOZIC_USER_ROLE_TYPE.BOT.name}`;
   return axios.post(url, {}, { headers: headers }).then(response => {
     return response;
   }).catch(error => {

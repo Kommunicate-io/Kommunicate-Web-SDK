@@ -29,9 +29,15 @@ export default {
         },
         'analytics' : {
             'enable': false
+        },
+        'integry': {
+            'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "HZtim7bdyESbHo1opoc4",
+            'projectId': "9e7IrkNtr4EfHhBkp6Hg"
         }
     },
-    'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -70,9 +76,15 @@ export default {
         },
         'analytics' : {
             'enable': false
+        },
+        'integry': {
+            'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "HZtim7bdyESbHo1opoc4",
+            'projectId': "9e7IrkNtr4EfHhBkp6Hg"
         }
     },
-    'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -111,9 +123,15 @@ export default {
         },
         'analytics' : {
             'enable': false
+        },
+        'integry': {
+            'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "HZtim7bdyESbHo1opoc4",
+            'projectId': "9e7IrkNtr4EfHhBkp6Hg"
         }
     },
-    'integryEnabled':true,
     'enableDevTools':true,
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -153,9 +171,15 @@ export default {
         },
         'analytics' : {
             'enable': true
+        },
+        'integry': {
+            'enabled': true
+        },
+        'noticeable': {
+            'accessToken': "nSoxbruxKBWyRDraIQND",
+            'projectId': "lwxQBJuL2eWfCJkZ6py0"
         }
     },
-    'integryEnabled':false,
     'enableDevTools':false,
     "applozic": {
         'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
@@ -193,10 +217,15 @@ export default {
     },
     'analytics' : {
         'enable': true
+    },
+    'integry': {
+        'enabled': true
+    },
+    'noticeable': {
+        'accessToken': "nSoxbruxKBWyRDraIQND",
+        'projectId': "lwxQBJuL2eWfCJkZ6py0"
     }
-       
   },
-    'integryEnabled': false,
     'enableDevTools': false,
     "applozic": {
         'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
@@ -233,10 +262,16 @@ export default {
     },
     'analytics' : {
         'enable': true
+    },
+    'integry': {
+        'enabled': true
+    },
+    'noticeable': {
+        'accessToken': "nSoxbruxKBWyRDraIQND",
+        'projectId': "lwxQBJuL2eWfCJkZ6py0"
     }
        
    },
-   'integryEnabled':false,
    'enableDevTools':false,
    "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
@@ -295,10 +330,16 @@ export default {
     },
     'analytics' : {
         'enable': true
+    },
+    'integry': {
+        'enabled': true
+    },
+    'noticeable': {
+        'accessToken': "nSoxbruxKBWyRDraIQND",
+        'projectId': "lwxQBJuL2eWfCJkZ6py0"
     }
        
    },
-   'integryEnabled':false,
    'enableDevTools':false,
    "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'

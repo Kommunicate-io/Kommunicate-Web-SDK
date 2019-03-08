@@ -2,29 +2,29 @@ import React, { Component } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact, updateAgileCrmContact} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import Notification from '../../views/model/Notification';
 import ReactTooltip from 'react-tooltip';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS} from '../../utils/Constant';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS, CONVERSATION_TYPE, CONVERSATION_TAB_VIEW_MAP} from '../../utils/Constant';
 import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
-import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
 import {PseudonymModal} from '../PersonInfo/MetaInfo';
 import Button from '../Buttons/Button';
 import {KommunicateContactListLoader, KommunicateConversationLoader, KommunicateConversationDataLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
-import { CollapseIcon, ExpandIcon, EmailIndicatorIcon, DownArrow } from "../../assets/svg/svgs";
+import { CollapseIcon, ExpandIcon, EmailIndicatorIcon, DownArrow, AssignedToMeIcon, ClosedIcon, ListIcon } from "../../assets/svg/svgs";
 import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
 import Banner from '../Banner/Banner';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
-import {integration_type} from '../../views/Integrations/ThirdPartyList'
+import {integration_type} from '../../views/Integrations/ThirdPartyList';
+import PreferencesBanner from './PreferencesBanner';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -37,7 +37,6 @@ const SubmitButton = styled(Button)`
     box-shadow: none;
   }
 `;
-
 class Aside extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +50,6 @@ class Aside extends Component {
       modalIsOpen:false,
       inputBoxMouseDown:false,
       clickedButton:-1,
-      disableButton:true,
       agents : new Array(),
       clearbitKey:"",
       botRouting : false,
@@ -64,12 +62,19 @@ class Aside extends Component {
       group: null,
       modalOpen: false,
       hideInfoBox: false,
-      trialDaysLeftComponent: "",
       userInfo: null,
       toggleExpandIcon: false,
       toggleCcBccField: true,
       warningBannerText: '',
-      toggleCcBccField: true
+      toggleCcBccField: true,
+      disabledIntegration:{[integration_type.AGILE_CRM]: true, [integration_type.ZENDESK]:true },
+      pseudoUser: true,
+      activeConversationTab: CONVERSATION_TYPE.ASSIGNED_TO_ME,
+      conversationTab:{
+        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:0}, 
+        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:1}, 
+        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:2}
+      },
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -86,6 +91,7 @@ class Aside extends Component {
 
   componentDidMount() {
     this.getThirdparty ();
+    this.getAgileCrmSettings();
     quickReply.loadQuickReplies();
      if(CommonUtils.getUserSession() === null){
        //window.location ="#/login";
@@ -97,9 +103,6 @@ class Aside extends Component {
      }
      window.Aside = this;
 
-     this.setState({
-      trialDaysLeftComponent: <TrialDaysLeft />
-     })
     window.addEventListener("group-update", this.handleGroupUpdate);
     window.addEventListener("_sendMessageEvent", this.forwardMessageToZendesk);
     window.addEventListener("_userDetailUpdate", this.handleUpdateUser);
@@ -130,11 +133,23 @@ class Aside extends Component {
   }
   handleUpdateUser(e) {
     var user = e.detail.data;
+    var pseudoUser = (user.metadata && user.metadata.KM_PSEUDO_USER ) ? true : false;
     this.setState({
         userInfo: user,
-        agileCrmData: user.metadata ? (user.metadata.KM_AGILE_CRM ? user.metadata.KM_AGILE_CRM : "" ) : ""
+        agileCrmData: (user.metadata && user.metadata.KM_AGILE_CRM) ? JSON.parse(user.metadata.KM_AGILE_CRM) : "" ,
+        pseudoUser:pseudoUser
     })
 }
+  updateUserInfo = (userData) => {
+    let userInfo = this.state.userInfo
+    for (var key in userData) {
+      userInfo[key] = userData[key]
+    }
+    this.setState({
+      userInfo:userInfo,
+      pseudoUser:false
+    })
+  }
   handleGroupUpdate(e) {
     e.preventDefault();
     let activeConversationId = window.document.getElementsByClassName("active-chat")[0] && window.document.getElementsByClassName("active-chat")[0].dataset.kmId
@@ -168,16 +183,30 @@ class Aside extends Component {
 
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
-      if(response !== undefined  && response.data.message !== "no user found") {
         let zendeskKeys = response.data.message.filter(function (integration) {
-          return integration.type == 2;});
+          return integration.type == integration_type.ZENDESK;});
           if(zendeskKeys.length > 0 ){
-            this.setState({disableButton:false})
+            this.updateIntegrationStatus({[integration_type.ZENDESK]: false})
           }
-      }
     }).catch(err => {
       console.log("erroe while fetching zendesk integration keys",err)
     });
+
+  }
+  getAgileCrmSettings = () => {
+    getThirdPartyListByApplicationId(integration_type.AGILE_CRM).then(response => {   
+        response.data.message.length > 0 && this.updateIntegrationStatus({[integration_type.AGILE_CRM]: false})
+    }).catch(err => {
+      console.log("error while fetching agile crm integration keys",err)
+    });
+  }
+  updateIntegrationStatus = (status) => {
+    let disabledIntegration = this.state.disabledIntegration;
+    for (var key in status) {
+      disabledIntegration[key] = status[key]
+    }
+    this.setState({disabledIntegration:disabledIntegration})
+
 
   }
   changeTabToIntegration = () => {
@@ -531,35 +560,65 @@ class Aside extends Component {
       },
       this.openModal)
     }
-  
+  onTabClick= (e) => {
+    let selectedTab = e.currentTarget.dataset.tab;
+    this.toggleTab(selectedTab);
+    var tabId = $kmApplozic(".km-conversation-icon-active")[0].id;
+    this.setState({activeConversationTab:selectedTab})
+    this.populateMessageList(tabId);
+    this.selectFirstConversation(tabId);
+  }
+  populateMessageList = (tabId) => {
+    $kmApplozic(".km-converastion").removeClass('vis').addClass('n-vis');
+    $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId]).removeClass('n-vis').addClass('vis');
+  }
+
+  selectFirstConversation = (tabId) => {
+    $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0].click();
+  }
+
+  toggleTab = (selectedTab) => {
+    for (var i =0 ; i < document.querySelector('.km-conversation-header-icons').childNodes.length ; i++ ) {
+      document.querySelector('.km-conversation-header-icons').childNodes[i].classList.remove("km-conversation-icon-active");
+    }
+    document.querySelector('[data-tab="'+selectedTab+'"]').classList.add("km-conversation-icon-active");
+  }
   
   handleForwardToAgileCrm = (e) => {
     let contact = { metadata: {} };
-    contact.email = this.state.userInfo.email ? this.state.userInfo.email : "";
-    contact.first_name = this.state.userInfo.displayName ? this.state.userInfo.displayName : ""
+    let agileCrmData = {};
+    let contactId = e.target.dataset.agileContactId
+    contact.email = this.state.userInfo.email || "";
+    contact.displayName = (!this.state.pseudoUser && this.state.userInfo.displayName) || "";
+    contact.userId = this.state.userInfo.userId;
+    contact.phoneNumber = this.state.userInfo.phoneNumber || "";
     for (var i = 0; i < Object.keys(this.state.userInfo.metadata).length; i++) {
       let key = Object.keys(this.state.userInfo.metadata)[i];
       let value = this.state.userInfo.metadata[Object.keys(this.state.userInfo.metadata)[i]]
-      try {
-        //checking if metadata contains object
-        value = JSON.parse(value)
-
-      } catch (e) {
-        (typeof value == 'string' || typeof value == 'number') && (contact.metadata[key] = value)
+      if(!CommonUtils.hasJsonStructure(value)){
+        contact.metadata[key] = value
       }
     }
+    if (contactId) {
+      contact.contactId = contactId
+      updateAgileCrmContact(contact)
+        .then(response => {
+          Notification.success("User Info updated")
+        }).catch(err => {
+          Notification.error("Could not update Agile CRM contact. Please try again")
+        })
+    } else {
     createAgileCrmContact(contact)
       .then(response => {
-        Notification.success("User Info successfully forwarded")
-      }).catch (err => {
-        if (err.response.data.code == 400) {
-          Notification.error("Duplicate contact found with the same email address.")
-        } else {
+          agileCrmData.contactId = response.data.response.id;
+          this.setState({agileCrmData:agileCrmData})
+          Notification.success("User Info successfully forwarded") 
+        }).catch(err => {
           Notification.error("Could not create Agile CRM contact. Please try again")
-        }
       })
   }
 
+  }
   forwardIntegrationButtonClick = (e) => {
     integration_type.ZENDESK == e.target.dataset.integrationType && this.handleForwardToZendesk(e);
     integration_type.AGILE_CRM == e.target.dataset.integrationType && this.handleForwardToAgileCrm(e);
@@ -567,13 +626,13 @@ class Aside extends Component {
   }
 
   render() {
+    let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
     const thirdParty = thirdPartyList.map((item,index) => {
-      return <button data-index ={index} data-integration-type={item.type} disabled = {item.type == integration_type.ZENDESK ? this.state.disableButton : false } key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
-      className="km-button km-button--secondary km-forward-integration-button">
+      return <button data-index ={index} data-integration-type={item.type} disabled = {this.state.disabledIntegration[item.type]} key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
+      className="km-button km-button--secondary km-forward-integration-button" data-agile-contact-id = {agileContactId} >
       <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
  });
     const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
-
     return (
       <aside className="aside-menu">
         <div className="animated fadeIn applozic-chat-container">
@@ -583,6 +642,8 @@ class Aside extends Component {
             <div id="sec-chat-box" className="col-lg-12 tab-box">
               <div id="chat-box-div" style={{height: '100vh'}}>
 
+                <PreferencesBanner />
+
                 <div className="km-container">
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
@@ -590,23 +651,17 @@ class Aside extends Component {
 
                       <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="km-conversation-header-icons">
-                          <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tip="Assigned to me" data-effect="solid" data-place="bottom">
+                          <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tab = {CONVERSATION_TYPE.ASSIGNED_TO_ME} data-tip="Assigned to me" data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
                             {/* <div className="km-conversation-header-notification-alert"></div> */}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="20">
-                              <path fill="#AAA" d="M13.997 4.771c-.001-.615-.49-.947-.948-.947a.981.981 0 0 0-.657.255.91.91 0 0 0-.289.693v5.93a.41.41 0 1 1-.82 0V1.846c-.002-.615-.49-.947-.948-.947a.98.98 0 0 0-.656.254.91.91 0 0 0-.29.697v8.767a.41.41 0 0 1-.41.411.41.41 0 0 1-.41-.41V.947A.92.92 0 0 0 7.641 0h-.018a.978.978 0 0 0-.658.255.909.909 0 0 0-.29.696v9.74a.41.41 0 0 1-.82 0V2.657c-.003-.612-.49-.943-.947-.943a.98.98 0 0 0-.657.255.91.91 0 0 0-.29.696v9.96c1.097.015 3.055.314 4.458 2.066a.41.41 0 1 1-.64.513c-1.226-1.53-2.962-1.759-3.888-1.759-.11 0-.215.004-.314.01h-.014a.181.181 0 0 1-.07-.007.374.374 0 0 1-.145-.05.365.365 0 0 1-.105-.085.391.391 0 0 1-.049-.072.451.451 0 0 1-.036-.077L2.029 9.58c-.19-.6-.672-.958-1.287-.958-.148 0-.294.023-.433.067L0 8.788l1.899 6.03.002.008c.81 2.572 3.149 4.349 5.819 4.422.007 0 .014 0 .021.002 3.438-.016 6.24-2.829 6.259-6.28a.19.19 0 0 1-.003-.034V4.77z"/>
-                            </svg>
+                            <AssignedToMeIcon />
                             <span id="km-assigned-unread-icon" className="km-unread-icon n-vis"></span>
                           </div>
-                          <div id= "km-conversation" className="km-conversation-header-icon km-conversation-tabView " data-tip="All Conversations" data-effect="solid" data-place="bottom">
-                          <svg xmlns='http://www.w3.org/2000/svg' width='14' height='17'>
-                            <path fill='#AAA' d='M11.427 0H2.57C1.151 0 0 1.096 0 2.448v11.845c0 1.351 1.151 2.447 2.57 2.447h8.851c1.42 0 2.57-1.096 2.57-2.447V8.898l.006-.01v-6.44c0-1.352-1.15-2.448-2.57-2.448zM8.913 13.273h-5.81c-.516 0-.934-.398-.934-.89s.418-.89.935-.89h5.809c.516 0 .935.398.935.89s-.419.89-.935.89zm1.98-2.834h-7.79c-.516 0-.934-.399-.934-.89 0-.492.418-.89.935-.89h7.79c.516 0 .934.398.934.89 0 .491-.418.89-.935.89zm0-2.835h-7.79c-.516 0-.934-.399-.934-.89 0-.492.418-.89.935-.89h7.79c.516 0 .934.398.934.89 0 .491-.418.89-.935.89zm-7.7-3.507a1.024 1.024 0 1 1 0-2.049 1.024 1.024 0 0 1 0 2.049zm3.635 0a1.024 1.024 0 1 1 0-2.049 1.024 1.024 0 0 1 0 2.049zm3.755 0a1.024 1.024 0 1 1 0-2.049 1.024 1.024 0 0 1 0 2.049z'/>
-                          </svg>
+                          <div id= "km-conversation" className="km-conversation-header-icon km-conversation-tabView " data-tip="All Conversations" data-tab = {CONVERSATION_TYPE.ALL} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
+                           <ListIcon />
                           <span id="km-allconversation-unread-icon" className="km-unread-icon n-vis"></span>
                           </div>
-                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Closed Conversations" data-effect="solid" data-place="bottom">
-                            <svg xmlns='http://www.w3.org/2000/svg' width='14' height='17'>
-                              <path fill='#AAA' d='M13.3 0H.7C.314 0 0 .317 0 .706V3.67c0 .389.314.706.7.706h12.6c.386 0 .7-.317.7-.706V.706A.704.704 0 0 0 13.3 0zM.875 13.76c0 1.34 1.008 2.428 2.25 2.428h7.745c1.241 0 2.249-1.087 2.249-2.427V8.41l.005-.01V5H.875v8.76z'/>
-                            </svg>
+                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Closed Conversations" data-tab = {CONVERSATION_TYPE.CLOSED} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
+                            <ClosedIcon />
                             <span id="km-closed-unread-icon"></span>
                           </div>
                         </div>
@@ -643,9 +698,8 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="km-row">
-                        <h4 id="assign-selected" className="km-conversation-tab-selected km-assigned">Assigned to me</h4>
-                        <h4 id="all-conversatios-selected" className="km-conversation-tab-selected km-allconversation n-vis">All Conversations</h4>
-                        <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected km-closed n-vis">Closed Conversations</h4>
+                        <h4 id="km-conversation-tab-title" className="km-conversation-tab-selected km-assigned">{this.state.conversationTab[this.state.activeConversationTab].title}</h4>
+                        {/* <span>{this.state.conversationTab[this.state.activeConversationTab].count}</span> */}
                       </div>
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
@@ -884,9 +938,6 @@ class Aside extends Component {
                               <div className="select-container">
                                 <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
                               </div>
-                            </div>
-                            <div className="trial-period-container">
-                              {this.state.trialDaysLeftComponent}
                             </div>
                           </div>
                           <hr/>
@@ -1177,7 +1228,7 @@ class Aside extends Component {
                       </div>
                     </div>
                   </div>
-                  <PersonInfoCard user={this.state.userInfo} group={this.state.group}/>
+                  <PersonInfoCard user={this.state.userInfo} group={this.state.group} updateUserInfo = {this.updateUserInfo}/>
                   </div>
                 <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">

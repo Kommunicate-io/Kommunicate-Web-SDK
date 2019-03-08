@@ -1,53 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import {CommonUtils} from '../../utils/CommonUtils';
-import AsyncSelect from 'react-select/lib/Async';
 import { withRouter } from 'react-router-dom';
 import { ClearButton } from '../../assets/svgAssets';
-import { ClearButtonWrapper } from './HeaderComponents'
+import { ClearButtonWrapper, MenuWrapper, SeeAllButton, SearchBoxWrapper , SearchBox, SearchResultsWrapper,
+SearchResults } from './HeaderComponents'
 
-const customStyles = {
-    input: () => ({
-        padding: '16px 0',
-        maxWidth: '992px',
-        overflow: 'hidden',
-        cursor: 'text'
-    }),
-    valueContainer: (provided) =>({
-        ...provided,
-        paddingLeft:'45px',
-        overflow: 'hidden',
-        cursor: 'text'
-    }),
-    singleValue: (provided) =>({
-        ...provided,
-        maxWidth: 'calc(100% - 44px)',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
-        opacity: '.8'
-    }),
-    control: (provided, {isFocused}) => 
-    ({ ...provided, 
-        border: 'none', 
-        boxShadow: 'none'
-    }),
-    clearIndicator: (provided) =>({
-        ...provided,
-        height: '70%',
-        width: '42px',
-        alignItems: 'center',
-        marginRight: '10px'
-    })
-}
+let fetchFaq;
 
-const ClearIndicator = (props) => {
-    const { children = <ClearButton/>, getStyles, innerProps: { ref, ...restInnerProps } } = props;
-    return (
-      <ClearButtonWrapper {...restInnerProps} ref={ref} style={getStyles('clearIndicator', props)}>
-        {children}
-      </ClearButtonWrapper>
-    );
-  };
-  
 class HelpQuerySearch extends Component {
     constructor(props){
         super(props);
@@ -59,37 +18,63 @@ class HelpQuerySearch extends Component {
             searchedFaqList: '',
             isDropDownOpen: false,
             value: '',
-            key:''
+            key:'',
+            totalSearchResults:'',
+            maxVisibleSearchedFaq : 5
         };
     }
     getFaqListFromServer = () => {
-        var _this = this
-        this.state.inputValue && CommonUtils.searchFaq(this.state.appId, this.state.inputValue).then(response=>{
-            response && _this.setState({
-                searchedFaqList : response.data,
+        var _this = this,
+            timeout = 300;
+            fetchFaq = setTimeout(() => {    
+            this.state.inputValue && CommonUtils.searchFaq(this.state.appId, encodeURIComponent(this.state.inputValue)).then(response => {
+                response && response.data && _this.setState({
+                    totalSearchResults: response.data.length,
+                    searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq)
+                })
             })
-        })
+        }, timeout);
     }
     filterFaqList = (inputValue) => {
-        return this.state.searchedFaqList
+        return this.state.searchedFaqList.slice(0,this.state.maxVisibleSearchedFaq)
     };
       
-    loadOptions = (inputValue, callback) => {
+    loadOptions = () => {
         this.getFaqListFromServer();
         setTimeout(() => {
             callback(this.filterFaqList());
         }, 1000);
     };
     
-    handleInputChange = (newValue) => {
+    handleInput = (e) => {
         this.setState({
-            isDropDownOpen: newValue,
-            inputValue: newValue
+            isDropDownOpen: e.target.value,
+            inputValue: e.target.value,
+            searchedFaqList : ''
+        }, () => {
+            fetchFaq && clearTimeout(fetchFaq);
+            this.getFaqListFromServer();
         })
     };
- 
-    getSelectedFaq = (selectedFAQ)=> {
-        this.setState({ inputValue: "null" })
+
+    handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.openSearchPage();
+        } else if (event.key == ' ' && !this.state.inputValue ){
+            event.preventDefault();
+        }
+    };
+    
+    openSearchPage = () =>{
+        let searchQuery = '?appId=' + this.state.appId + '&q=' + this.state.inputValue;
+            this.props.history.push({
+                pathname: '/',
+                search: searchQuery,
+            })
+            this.toggleDropdown();
+    }
+    openSelectedFaq = (selectedFAQ)=> {
         if(selectedFAQ == null){
             let searchQuery = '?appId='+this.state.appId;
             this.props.history.push({
@@ -105,46 +90,60 @@ class HelpQuerySearch extends Component {
         }        
     }
 
+    clearSearchBar = () => {
+        this.setState({
+            inputValue: ""
+        })
+    }
+
     componentDidMount = () => {
         this.setState({
             appId : CommonUtils.getUrlParameter(window.location.search,"appId")
         })
     }
     toggleDropdown = () => {
-        this.state.inputValue && this.setState({ isDropDownOpen: !this.state.isDropDownOpen });
+        this.state.inputValue && this.setState({ 
+            isDropDownOpen: !this.state.isDropDownOpen ,
+            searchedFaqList : ''
+        });
     }
-    componentDidUpdate = (prevProps) => {
-        this.props.location.pathname !== prevProps.location.pathname && !this.state.inputValue && !window.location.pathname.includes("article") ? this.setState({
-            key: new Date().getTime()
-        }) : false;
+    componentDidUpdate = (prevProps) => {   
+        // Following check will check if the user is moving back from article page or search page it will clear the searchbar
+        this.props.location.search !== prevProps.location.search && this.state.inputValue && !window.location.pathname.includes("article") && !CommonUtils.getUrlParameter(window.location.search,"q") ? this.clearSearchBar() : false;
     }
 
   render() {
     return (
-      <div>
-        <AsyncSelect
-          key={this.state.key}
-          styles={customStyles}
-          menuIsOpen={this.state.isDropDownOpen}
-          loadOptions={this.loadOptions}
-          noOptionsMessage={ () => "No results found "}
-          onInputChange={this.handleInputChange}
-          getOptionLabel={({ name }) => name}
-          getOptionValue={({ id }) => id}
-          onBlurResetsInput={false}
-          onCloseResetsInput={false}  
-          cacheOptions={false}
-          onChange={this.getSelectedFaq}
-          blurInputOnSelect={false}
-          components={{DropdownIndicator:null,ClearIndicator  }}
-          isClearable = {true}
-          placeholder="Search Helpcenter"
-          filterOptions= {false}
-          onBlur={() => this.toggleDropdown()}
-          onFocus={()=> this.toggleDropdown()}/>
-      </div>
+     <SearchBoxWrapper
+        onBlur={this.toggleDropdown}
+        onFocus={this.toggleDropdown} >
+         <SearchBox
+            placeholder="Search Helpcenter"
+            onChange={(e)=>{this.handleInput(e)}}
+            value={this.state.inputValue}
+            onKeyDown={(e)=>{this.handleKeyPress(e)}} />
+         {  
+             this.state.inputValue &&
+             <ClearButtonWrapper onClick={this.clearSearchBar}>
+                <ClearButton/>
+             </ClearButtonWrapper>
+         }
+         {    
+            (this.state.searchedFaqList && this.state.isDropDownOpen) &&
+                <SearchResultsWrapper className="animated-fast slide-animated">
+                    {
+                        this.state.searchedFaqList.map((data,index)=>(
+                            <SearchResults key={index} onMouseDown={()=>{this.openSelectedFaq(data)}}>{data.name}</SearchResults>
+                        ))
+                    }
+                    {   
+                        this.state.totalSearchResults > this.state.maxVisibleSearchedFaq &&
+                        <SeeAllButton onMouseDown={this.openSearchPage}>See all results</SeeAllButton> 
+                    }
+                </SearchResultsWrapper>
+         }
+     </SearchBoxWrapper>
     );
   }
 }
-// 
 export default withRouter(HelpQuerySearch);

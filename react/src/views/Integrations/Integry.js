@@ -52,7 +52,8 @@ function integrationSuccessCallback(data) {
     // callback when integration process is finished. will be called when use click on the save button in template form.
     //in this method you can perform integration post-save actions 
     //for example you can save bundle instance id returned in your database 
-   console.log("integration data ",data);
+    //console.log("integration data ",data);
+    window.Integrations.closeModal();
    let subscriptionData = {
        platform:"integry",
        integrationName:"pipedrive",
