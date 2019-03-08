@@ -57,7 +57,7 @@ export const ROLE_NAME = {
     },
     11: {
         name: "Developer",
-        description: "Have access to edit all the settings and features in the dashboard"
+        description: "Have access to edit the settings required for installation"
     }
 }
 export const GROUP_ROLE = { 
