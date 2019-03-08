@@ -10,6 +10,7 @@
            }
          }
        },
+       "esClientUrl": "https://search-prod-elastic-search-hqpcsdjn4qviingjyw65sjwn2u.us-east-1.es.amazonaws.com",
        "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-54-205-30-77.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
        "mongoConfig":{
          "poolSize":20,
