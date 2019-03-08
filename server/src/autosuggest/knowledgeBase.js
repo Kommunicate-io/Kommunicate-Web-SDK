@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const mongoosastic = require("mongoosastic");//../mongoosastic/lib/
+const mongoosastic = require("mongoosastic");
 const stringUtils = require("underscore.string");
 const Schema = mongoose.Schema;
 const {COLLECTIONS} = require("../mongodb/collections");
