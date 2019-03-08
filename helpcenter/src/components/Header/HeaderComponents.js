@@ -129,6 +129,7 @@ export const BackButtonContainer = styled.span`
     margin-top: -5px;
     padding-left: 10px;
     display: none;
+    cursor: pointer;
     ${StyleUtils.mediaQuery.phone`
             display: inline;
     `}

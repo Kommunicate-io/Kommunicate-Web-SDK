@@ -69,7 +69,7 @@ class FaqList extends Component {
         })
     }
     componentDidUpdate = (prevProps, prevState) => {
-      prevProps.location.search !== this.props.location.search && CommonUtils.getUrlParameter(window.location.search,"q") ? this.populateSearchedFaq() : (prevProps.location.key !== this.props.location.key) && this.populateAllFaq();
+      prevProps.location.search !== this.props.location.search && CommonUtils.getUrlParameter(window.location.search,"q") ? this.populateSearchedFaq() : (prevProps.location.key !== this.props.location.key && !CommonUtils.getUrlParameter(window.location.search,"q")) && this.populateAllFaq();
     }
     
     
