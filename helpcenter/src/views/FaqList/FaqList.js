@@ -83,7 +83,7 @@ class FaqList extends Component {
                         <NoResultsFoundWrapper>
                             <NoResultsFoundSvg/>
                                 <span>NO RESULT FOUND</span>
-                                <span>We couldn’t fnd what you’re looking for</span>
+                                <span>We couldn’t find what you’re looking for</span>
                         </NoResultsFoundWrapper> )
                 }
                 {
@@ -91,7 +91,7 @@ class FaqList extends Component {
                             
                                 <FaqListItem key={index.id} onClick={e=>{this.openFaqArticle(index.name)}}>
                                     <FaqListTitle>{index.name}</FaqListTitle>
-                                    <FaqListContent>{this.stripHtml(index.content )}</FaqListContent>
+                                    <FaqListContent>{this.stripHtml(index.content)}</FaqListContent>
                             </FaqListItem>
                         
                     ))

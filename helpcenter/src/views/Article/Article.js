@@ -47,7 +47,7 @@ export default class Article extends Component {
     componentDidUpdate(prevProps, prevState) {
         let query = prevState.query;
         //Interval added to account for the flicker when react re-renders a component
-        setInterval(this.updateArticlesPage(query), 1000)
+        query && setInterval(this.updateArticlesPage(query), 1000)
     }
      
     render() {
