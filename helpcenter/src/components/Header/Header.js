@@ -30,6 +30,10 @@ class Header extends Component {
     });
   }
 
+  navigateBack = () =>{
+    window.history.length > 1 && history.back()
+  }
+
   componentDidMount = () => {
     this.setState({
       settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
@@ -43,10 +47,10 @@ class Header extends Component {
         <Container>
           <HeaderWrapper >
             <HeaderTopbar>
-              <TopbarLogoContainer onClick={this.navigateHome} >
-               {
-                 window.location.pathname.includes('article') &&  <BackButtonContainer> <BackButton/> </BackButtonContainer>
+              {
+                 (window.location.pathname.includes('article') || CommonUtils.getUrlParameter(window.location.search,"q"))  &&  <BackButtonContainer onClick={this.navigateBack}> <BackButton/> </BackButtonContainer>
                }
+              <TopbarLogoContainer onClick={this.navigateHome} >
                 <TopbarLogo ><img src={this.state.settings.logo} alt=""/></TopbarLogo>
               </TopbarLogoContainer>
                 {/* <Button>{props.contactSupportButtonText}</Button> */}
