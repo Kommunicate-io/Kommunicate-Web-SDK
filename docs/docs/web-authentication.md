@@ -97,6 +97,9 @@ If the user has already logged into your website previously, then pass the user 
 |userId| Pass the user ID of the logged in user.|
 |userName | Display name of the user. Your team will identify the user by this display name.|
 |email | Email ID of logged in user.|
+|password| Password of logged in user.|
+|authenticationTypeId| Default: 1 ,you can pass 1 for password verification from Kommunicate server and 0 for access token verification from [client](https://docs.kommunicate.io/docs/access-token-url-configuration) server.|
+
 
 
 
@@ -108,7 +111,10 @@ var kommunicateSettings = {
     ...
     "userId": '<USER_ID>',
     "agentId": '<AGENT_ID>',
-    "email": '<EMAIL_ID>'
+    "email": '<EMAIL_ID>',
+    "password": '<PASSWORD>',
+    "authenticationTypeId" : 1 // 1 for password verification from Kommunicate server and 0 for password verification from your server
+
     ...
 };
 
