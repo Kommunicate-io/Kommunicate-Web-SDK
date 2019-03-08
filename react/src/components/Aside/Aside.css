@@ -553,11 +553,21 @@ ul#km-group-search-list li {
     top: 1px;
 }
 .km-conversation-tab-selected {
+    width: 100%;
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 0.5px;
     color: #56565a;
-    padding: 16px 0 6px 11px;  
+}
+.km-conversation-tab-title-wrapper {
+    padding: 16px 11px 6px 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.km-conversation-count {
+    margin-top: 5px;
+    margin-right: 10px;
 }
 .km-conversation-heading.breadcrumb {
     margin-bottom: 0px;

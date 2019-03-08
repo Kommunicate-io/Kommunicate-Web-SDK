@@ -51,5 +51,11 @@ KOMMUNICATE_CONSTANTS = {
         JOIN:7,
         GROUP_USER_ROLE_UPDATED:8,
         GROUP_META_DATA_UPDATED:9
+    },
+    CONVERSATION_TYPE:{
+        //only used for UI purpose
+        ALL : 0,
+        ASSIGNED_TO_ME: 1,
+        CLOSED: 2
     }
 }

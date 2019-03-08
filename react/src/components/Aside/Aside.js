@@ -71,9 +71,9 @@ class Aside extends Component {
       pseudoUser: true,
       activeConversationTab: CONVERSATION_TYPE.ASSIGNED_TO_ME,
       conversationTab:{
-        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:0}, 
-        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:1}, 
-        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:2}
+        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:"" }, 
+        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:"" }, 
+        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:"" }
       },
     };
     this.dismissInfo = this.dismissInfo.bind(this);
@@ -149,6 +149,9 @@ class Aside extends Component {
       userInfo:userInfo,
       pseudoUser:false
     })
+  }
+  showConversationCount = (count, type) => {
+    this.state.conversationTab[type].count = count;
   }
   handleGroupUpdate(e) {
     e.preventDefault();
@@ -628,9 +631,9 @@ class Aside extends Component {
   render() {
     let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
     const thirdParty = thirdPartyList.map((item,index) => {
-      return <button data-index ={index} data-integration-type={item.type} disabled = {this.state.disabledIntegration[item.type]} key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
-      className="km-button km-button--secondary km-forward-integration-button" data-agile-contact-id = {agileContactId} >
-      <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
+      return <Button secondary data-index ={index} data-integration-type={item.type} disabled = {this.state.disabledIntegration[item.type]} key = {index} onClick={(e) => {this.forwardIntegrationButtonClick(e)}}
+      className="km-forward-integration-button" data-agile-contact-id = {agileContactId} >
+      <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</Button>
  });
     const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
     return (
@@ -697,9 +700,9 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="km-row">
+                      <div className="km-row km-conversation-tab-title-wrapper">
                         <h4 id="km-conversation-tab-title" className="km-conversation-tab-selected km-assigned">{this.state.conversationTab[this.state.activeConversationTab].title}</h4>
-                        {/* <span>{this.state.conversationTab[this.state.activeConversationTab].count}</span> */}
+                        <p className="km-conversation-count">{this.state.conversationTab[this.state.activeConversationTab].count}</p>
                       </div>
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
