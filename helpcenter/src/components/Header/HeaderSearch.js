@@ -3,7 +3,7 @@ import {CommonUtils} from '../../utils/CommonUtils';
 import { withRouter } from 'react-router-dom';
 import { ClearButton } from '../../assets/svgAssets';
 import { ClearButtonWrapper, MenuWrapper, SeeAllButton, SearchBoxWrapper , SearchBox, SearchResultsWrapper,
-SearchResults } from './HeaderComponents'
+SearchResults, NoResultFoundMenuButton } from './HeaderComponents'
 
 let fetchFaq;
 
@@ -137,6 +137,10 @@ class HelpQuerySearch extends Component {
                     {   
                         this.state.totalSearchResults > this.state.maxVisibleSearchedFaq &&
                         <SeeAllButton onMouseDown={this.openSearchPage}>See all results</SeeAllButton> 
+                    }
+                    {   
+                        this.state.searchedFaqList.length == 0  &&
+                        <NoResultFoundMenuButton>No results found</NoResultFoundMenuButton> 
                     }
                 </SearchResultsWrapper>
          }

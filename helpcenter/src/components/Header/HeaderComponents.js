@@ -197,3 +197,11 @@ export const SearchResults = styled.div`
     font-size: 18px;
     cursor: pointer;
 `
+
+export const NoResultFoundMenuButton = styled.div`
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #9b9b9b;
+`
