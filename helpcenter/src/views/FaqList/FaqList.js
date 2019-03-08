@@ -28,7 +28,7 @@ class FaqList extends Component {
     populateAllFaq = () => {
         this.clearFaqList();
         CommonUtils.getAllFaq(this.state.settings.appId).then(response => {
-            this.setState({
+            response && this.setState({
                 faqList: response,
                 searchQuery: ''
             })

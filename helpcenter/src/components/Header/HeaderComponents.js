@@ -58,7 +58,7 @@ export const TopbarLogoContainer = styled.div `
 
 export const HelpcenterHeading = styled.h1 `
     height: ${props => props.headingVisible ? '80px' :  '0px'};
-    margin-top: ${props => props.headingVisible ? '50px' :  '0'};
+    margin-top: ${props => props.headingVisible ? '10px' :  '0'};
     margin-bottom: ${props => props.headingVisible ? '-20px' :  '0'};
     font-size: ${props => props.theme.helpcenterHeadingFontSize};
     font-weight: 700;

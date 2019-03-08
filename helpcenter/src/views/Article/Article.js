@@ -21,7 +21,7 @@ export default class Article extends Component {
             query: window.location.pathname.replace('/article','')
         }, () => {
             CommonUtils.getSelectedFaq(this.state.settings.appId, this.state.query).then(response => {
-                this.setState({
+                response && response.data && this.setState({
                     faqHeading: response.data[0].name,
                     faqContent: response.data[0].content,
                     faqId: response.data[0].id
@@ -41,7 +41,7 @@ export default class Article extends Component {
 
     updateArticlesPage = (query) => {
         let faqId = window.location.pathname.replace('/article','');
-        query != faqId ? this.getFaqArticle() : null;
+        query != faqId && this.getFaqArticle();
     }
 
     componentDidUpdate(prevProps, prevState) {
