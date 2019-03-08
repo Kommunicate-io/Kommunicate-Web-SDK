@@ -45,8 +45,8 @@ class App extends Component {
     checkForMissingSettings = () => {
         !this.state.helpcenterSettings.color && (this.state.helpcenterSettings.color =  DEFAULT_HELPCENTER_SETTINGS.color)
         !this.state.helpcenterSettings.heading && (this.state.helpcenterSettings.heading =  DEFAULT_HELPCENTER_SETTINGS.heading);
-        !this.state.helpcenterSettings.logo && (this.state.helpcenterSettings.heading =  DEFAULT_HELPCENTER_SETTINGS.logo);
-        !this.state.helpcenterSettings.title && (this.state.helpcenterSettings.heading =  DEFAULT_HELPCENTER_SETTINGS.title);
+        !this.state.helpcenterSettings.logo && (this.state.helpcenterSettings.logo =  DEFAULT_HELPCENTER_SETTINGS.logo);
+        !this.state.helpcenterSettings.title && (this.state.helpcenterSettings.title =  DEFAULT_HELPCENTER_SETTINGS.title);
     }
 
     storeSettings = () => {
