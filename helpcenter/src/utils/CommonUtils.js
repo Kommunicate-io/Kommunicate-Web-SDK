@@ -66,11 +66,10 @@ export const CommonUtils = {
             })
 
         },
-        getAppSettings: (appId, faqId) => {
-            let queryUrl = kmApiUrl + url["kommunicateApi"].appSettingsDomain,settings;
+        getAppSettings: () => {
+            let queryUrl = kmApiUrl + url["kommunicateApi"].appSettingsDomain;
             return (axios.get(queryUrl)).then(response => {
-                settings = response;
-                return settings
+                return response;
             }).catch(err => {
                 console.log(err)
             })
