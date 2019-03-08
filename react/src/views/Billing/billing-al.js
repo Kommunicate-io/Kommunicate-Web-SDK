@@ -76,7 +76,7 @@ class BillingApplozic extends Component {
 
     getSubscriptionDetail = () => {
         ApplozicClient.subscriptionDetail().then(response => {
-            if(response.data.status === "success") {
+            if(response && response.data && response.data.status === "success") {
                 let subscription = response.data.response.subscriptions.data[0];
                 console.log(subscription);
                 this.setState({
@@ -165,7 +165,6 @@ class BillingApplozic extends Component {
         let status = SUBSCRIPTION_PACKAGES[CommonUtils.getUserSession().application.pricingPackage];
         let planMAU = CommonUtils.getUserSession().application.supportedMAU;
         let currentPricingPackage = CommonUtils.getUserSession().application.pricingPackage;
-        let billingInterval;
         const { subscriptionDetails } = this.state;
 
         return (
@@ -177,9 +176,9 @@ class BillingApplozic extends Component {
                     <PlanBoughtContainer>
                         <PlanBoughtActivePlanContainer>
                             <div>Your plan:</div>
-                            <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
+                            <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
                         </PlanBoughtActivePlanContainer>
-                        { Object.keys(subscriptionDetails).length > 0 ?
+                        { Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data.length > 0 ?
                             <PlanBoughtNextBillingDateContainer>
                                 <div>Next billing:</div>
                                 <div>You will be charged <strong>${subscriptionDetails.plan.amount / 100}</strong> on <strong>{moment(subscriptionDetails.currentPeriodEnd * 1000).format("DD MMM YYYY")}</strong></div>
