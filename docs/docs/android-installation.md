@@ -41,12 +41,14 @@ If you are using proguard in your application then add the below rules to your p
 -keep class com.google.gson.** { *; }
 ```
 
+## Get your APP_ID
+Sign up for [Kommunicate](https://dashboard.kommunicate.io) to get your [APP_ID](https://dashboard.kommunicate.io/settings/install). This APP_ID is used to create/launch conversations.
+
 ## Initialise SDK
 After the gradle sync has finished with kommunicate dependency, you can initialise the SDK by calling the below method:
 ```java
- Kommunicate.init(context, Your APP_ID);
+ Kommunicate.init(context, APP_ID);
 ```
-You can get the Application Id by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).
 
 ## Launch chat
 
@@ -57,7 +59,7 @@ Parmaters of KMChatBuilder:
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:| -----:|
 | context      | Activity | Only Activity Context is accepted. Excpetion is thrown otherwise  |
-| applicationId | String  | Ignore if you have already initialised the SDK with Application ID |
+| APP_ID | String  | Ignore if you have already initialised the SDK with [APP_ID](https://dashboard.kommunicate.io/settings/install) |
 | chatName      | String      |   Optional, you can pass a chat name or null |
 | kmUser | KMUser     |    Pass the details if you have the user details, null other wise. |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
@@ -87,10 +89,10 @@ If you have your agentList and bot list then use the builder as below:
 
 ```java
 List<String> agentList = new ArrayList();
-agentList.add("agent1@yourdomain.com"); //add your agentID
+agentList.add("agent1@yourdomain.com"); //add your agentID. The agentId id the email id you have used to signup on kommunicate dashboard
 
 List<String> botList = new ArrayList();
-botList.add("bot1"); //enter your integrated bot Ids
+botList.add("bot1"); //enter your integrated bot Ids.
 
       new KmChatBuilder(context).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
                         @Override
