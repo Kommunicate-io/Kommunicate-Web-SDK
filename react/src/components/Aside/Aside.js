@@ -45,6 +45,7 @@ class Aside extends Component {
       applicationId : "",
       activeTab: '1',
       assignee: '',
+      conversationStatus:"",
       visibleIntegartion:false,
       visibleReply:true,
       modalIsOpen:false,
@@ -75,6 +76,7 @@ class Aside extends Component {
         [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:"" }, 
         [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:"" }
       },
+      loggedInUser:""
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -119,7 +121,8 @@ class Aside extends Component {
       applicationId:applicationId,
       botRouting:botRouting,
       agileCrmData :"",
-      inputBox:false
+      inputBox:false,
+      loggedInUser: userSession.userName
      },this.loadAgents);
      if (typeof(Storage) !== "undefined") {
       (localStorage.getItem("KM_PSEUDO_INFO") === null ) ?
@@ -152,6 +155,16 @@ class Aside extends Component {
   }
   showConversationCount = (count, type) => {
     this.state.conversationTab[type].count = count;
+  }
+  increaseConversationCount = (type) => {
+    let conversationTab = this.state.conversationTab;
+    conversationTab[type].count = conversationTab[type].count + 1;
+    this.setState({conversationTab:conversationTab})
+  }
+  decreaseConversationCount = (type) => {
+    let conversationTab = this.state.conversationTab;
+    conversationTab[type].count = conversationTab[type].count -1;
+    this.setState({conversationTab:conversationTab})
   }
   handleGroupUpdate(e) {
     e.preventDefault();
@@ -317,17 +330,21 @@ class Aside extends Component {
       //assignee = "agent";
     }
     window.$kmApplozic("#assign").val(assignee);
+    this.setState({assignee:assignee})
   }
 
   selectStatus() {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
       if(this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN){
         window.$kmApplozic("#conversation-status").val(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN);
+        this.setState({conversationStatus:window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN})
       }else{
         window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
+        this.setState({conversationStatus:window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATUS})
       }
     } else {
       window.$kmApplozic("#conversation-status").val(0);
+      this.setState({conversationStatus:""})
     }
   }
 
@@ -420,7 +437,7 @@ class Aside extends Component {
 
   changeAssignee(userId) {
     var that = this;
-    this.setState({assignee:userId});
+    var prevAssignee = that.state.assignee
     var groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.state.group.groupId ;
     that.state.group && window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
@@ -429,6 +446,12 @@ class Aside extends Component {
                                                 'CONVERSATION_ASSIGNEE' : userId,
                                       },
                                       'callback': function(response) {
+                                        that.setState({assignee:userId});
+                                        if(userId == that.state.loggedInUser) {
+                                          that.increaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME)
+                                        } else if (prevAssignee == that.state.loggedInUser && prevAssignee != userId ){
+                                          that.decreaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME)
+                                        }
                                         var displayName = "";
                                         for(var key in that.state.agents) {
                                           if(that.state.agents.hasOwnProperty(key)) {
@@ -499,6 +522,7 @@ class Aside extends Component {
   changeStatus(status) {
     //var groupId = window.$kmApplozic(".left .person.active").data('km-id');
     var that = this;
+    var prevStatus = this.state.conversationStatus;
     window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': that.state.group.groupId,
@@ -518,6 +542,18 @@ class Aside extends Component {
                                               category: "ARCHIVE",
                                             }
                                           });
+                                          that.setState({conversationStatus:status})
+                                        if( status == CONVERSATION_STATUS.OPEN) {
+                                          that.decreaseConversationCount(CONVERSATION_TYPE.CLOSED);
+                                          that.increaseConversationCount(CONVERSATION_TYPE.ALL);
+                                          (that.state.assignee == that.state.loggedInUser) && that.increaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME);
+                                        } else if (prevStatus == CONVERSATION_STATUS.OPEN) {
+                                          that.increaseConversationCount(CONVERSATION_TYPE.CLOSED);
+                                          that.decreaseConversationCount(CONVERSATION_TYPE.ALL);
+                                          (that.state.assignee == that.state.loggedInUser) && that.decreaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME);
+
+                                        }
+                                          
                                       }
                                     });
                                     //updateConversation({groupId:that.state.group.groupId,status:status});
