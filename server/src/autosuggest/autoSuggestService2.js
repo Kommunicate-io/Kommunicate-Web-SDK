@@ -58,42 +58,23 @@ const deleteSuggestion = (suggestion) => {
 
 const searchFAQ = async (options) => {
     var data;
+    let criteria = {
+        type: "faq",
+        status: "published",
+        applicationId: options.appId,
+        deleted: false
+    }
     if (options.text) {
         data = await searchQuery(options);
     } else if (options.id) {
-        options.id = parseInt(options.id);
-        data =  KnowledgeBaseModel.find({
-            id: options.id,
-            type: "faq",
-            status: "published",
-            applicationId: options.appId,
-            deleted: false
-        }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
+        criteria.id = parseInt(options.id);
     } else if (options.referenceId) {
-        data =  KnowledgeBaseModel.find({
-            referenceId: parseInt(options.referenceId),
-            type: "learning",
-            status: "published",
-            applicationId: options.appId,
-            deleted: false
-        }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 })
+        criteria.referenceId = parseInt(options.referenceId);
+        criteria.type = "learning";
     } else if (options.key) {
-        data =  KnowledgeBaseModel.find({
-            key: options.key,
-            type: "faq",
-            status: "published",
-            applicationId: options.appId,
-            deleted: false
-        }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
-    } else {
-        data =  KnowledgeBaseModel.find({
-            type: "faq",
-            status: "published",
-            applicationId: options.appId,
-            deleted: false
-        }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
-    }
-
+        criteria.key = options.key;
+    } 
+    data =  KnowledgeBaseModel.find(criteria).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
     for (var i = 0; i < data.length; i += 1) {
         var knowledge = data[i];
         if (knowledge.referenceId != null && (knowledge.content == null || knowledge.content == "")) {
