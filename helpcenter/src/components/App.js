@@ -10,7 +10,7 @@ import  PoweredByKommunicate  from '../components/PoweredByKommunicate/PoweredBy
 import {StyleUtils} from '../utils/StyleUtils'
 import  PageNotFound  from '../views/PageNotFound/PageNotFound'
 import {CommonUtils} from '../utils/CommonUtils'
-import {Constants} from '../utils/Constants'
+import { DEFAULT_HELPCENTER_SETTINGS} from '../utils/Constants'
 
 //Converting the sass variables files to JSON to be used throughout the project, no need to import the variables file in any jsx file, all the variables will work out of the box.
 const theme = require('sass-extract-loader?{"plugins": ["sass-extract-js"]}!../scss/_variables.scss');
@@ -42,10 +42,10 @@ class App extends Component {
     }
 
     checkForMissingSettings = () => {
-        !this.state.helpcenterSettings.color && (this.state.helpcenterSettings.color = Constants["DEFAULT"].color)
-        !this.state.helpcenterSettings.heading && (this.state.helpcenterSettings.heading = Constants["DEFAULT"].heading);
-        !this.state.helpcenterSettings.logo && (this.state.helpcenterSettings.heading = Constants["DEFAULT"].logo);
-        !this.state.helpcenterSettings.title && (this.state.helpcenterSettings.heading = Constants["DEFAULT"].title);
+        !this.state.helpcenterSettings.color && (this.state.helpcenterSettings.color =  DEFAULT_HELPCENTER_SETTINGS.color)
+        !this.state.helpcenterSettings.heading && (this.state.helpcenterSettings.heading =  DEFAULT_HELPCENTER_SETTINGS.heading);
+        !this.state.helpcenterSettings.logo && (this.state.helpcenterSettings.heading =  DEFAULT_HELPCENTER_SETTINGS.logo);
+        !this.state.helpcenterSettings.title && (this.state.helpcenterSettings.heading =  DEFAULT_HELPCENTER_SETTINGS.title);
     }
 
     storeSettings = () => {
