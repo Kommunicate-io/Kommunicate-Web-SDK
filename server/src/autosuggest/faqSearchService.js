@@ -29,8 +29,3 @@ exports.searchRawQuery = (esQuery) => {
             });
     })
 }
-
-// module.exports = {
-//     searchQuery,
-//     searchRawQuery
-// }
