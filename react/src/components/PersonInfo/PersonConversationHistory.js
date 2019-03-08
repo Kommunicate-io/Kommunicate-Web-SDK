@@ -46,7 +46,7 @@ class PersonConversationHistory extends Component {
                     map = [],
                     group = response.data.groupFeeds;
                 for(var i=0; i<message.length; i++){
-                    map[message[i].groupId] = message[i];
+                    message[i].groupId && (map[message[i].groupId] = message[i]);
                 }
                 for (var j=0; j<group.length; j++){
                     if(map[group[j].id]){
@@ -80,12 +80,12 @@ class PersonConversationHistory extends Component {
                 <Section>
                     {
                         this.state.conversations.length !== 0 && this.state.conversations.filter((grp) => typeof grp !== 'undefined' && (!activeGroup.includes("conversations") && grp.id !== parseInt(activeGroup))).map( (data, index) => {
-                            let status = Object.keys(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE).find(key => 
-                                window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE[key] === parseInt(data.metadata.CONVERSATION_STATUS));
+                            let status = data.metadata ? Object.keys(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE).find(key => 
+                                window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE[key] === parseInt(data.metadata.CONVERSATION_STATUS)) : "OPEN";
                             return (
                                 <ConversationDataContainer key={index} onClick={() => this.openConversation(data.id)}>
                                     <ConversationTitle>Conversation #{data.id}</ConversationTitle>
-                                    <ConversationStatus>Status: <strong>{status === "UNRESPONDED" ? "OPEN" : status} - </strong><span>{data.name}</span></ConversationStatus>
+                                    <ConversationStatus>Status: <strong>{status === "UNRESPONDED" || status === "INITIAL" ? "OPEN" : status} - </strong><span>{data.name}</span></ConversationStatus>
                                     <ConversationDate>Last Contacted: <span>{moment(data.lastMessageTime).format("DD MMM YYYY")}</span></ConversationDate>
                                 </ConversationDataContainer>
                             )
