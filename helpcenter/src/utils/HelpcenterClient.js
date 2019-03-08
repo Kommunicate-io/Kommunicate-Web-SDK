@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getEnvironment, config } from '../config/config-env';
-import { url } from '../config/Url';
+import url from '../config/Url';
 
 const ENV = getEnvironment(),
     KM_API_URL = config[ENV].baseurl.kommunicateAPI;
@@ -14,7 +14,7 @@ export const HelpcenterClient = {
             headers = {
                 'Content-Type': "application/x-www-form-urlencoded; charset=UTF-8"
             },
-            queryUrl = KM_API_URL + url["kommunicateApi"].search;
+            queryUrl = KM_API_URL + url.kommunicateApi.SEARCH;
         return (axios({
             method: 'get',
             url: queryUrl,
@@ -30,7 +30,7 @@ export const HelpcenterClient = {
 
     searchFaq: (appId, searchQuery) => {
         searchQuery.replace(" ", "-");
-        let queryUrl = KM_API_URL + url["kommunicateApi"].search,
+        let queryUrl = KM_API_URL + url.kommunicateApi.SEARCH,
             params = {
                 appId: appId,
                 query: searchQuery
@@ -46,7 +46,7 @@ export const HelpcenterClient = {
     },
 
     getSelectedFaq: (appId, searchQuery) => {
-        let queryUrl = KM_API_URL + url["kommunicateApi"].search + '/' + searchQuery + '/' + appId;
+        let queryUrl = KM_API_URL + url.kommunicateApi.SEARCH + searchQuery + '/' + appId;
         return (axios.get(queryUrl)).then(response => {
             return response.data;
         }).catch(err => {
@@ -55,7 +55,7 @@ export const HelpcenterClient = {
 
     },
     getAppSettings: () => {
-        let queryUrl = KM_API_URL + url["kommunicateApi"].appSettingsDomain;
+        let queryUrl = KM_API_URL + url.kommunicateApi.APP_SETTINGS_DOMAIN;
         return (axios.get(queryUrl)).then(response => {
             return response;
         }).catch(err => {
