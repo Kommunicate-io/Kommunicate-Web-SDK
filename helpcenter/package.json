@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "test-build": "webpack --mode development",
+    "test-build": "webpack --mode development && cp dist/index.html dist/404.html",
     "prod-build": "webpack --mode production && cp dist/index.html dist/404.html"
   },
   "author": "Akshat Dhabi",

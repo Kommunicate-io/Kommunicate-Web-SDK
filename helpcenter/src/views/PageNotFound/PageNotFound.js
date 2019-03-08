@@ -17,7 +17,7 @@ class PageNotFound extends Component {
     };
     componentDidMount = () => {
         this.setState({
-            appId : CommonUtils.getUrlParameter(window.location.search,"appId")
+            settings : CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl())
         },()=>{
             let searchQuery = '?appId='+this.state.appId;
             this.props.history.push({
@@ -47,11 +47,9 @@ class PageNotFound extends Component {
     }
 
     returnHome = () => {
-        let searchQuery = '?appId='+this.state.appId;
-        this.state.appId ?
+        this.state.settings ?
             this.props.history.push({
-                pathname: '/',
-                search: searchQuery, 
+                pathname: '/'
             }) :
             window.location.assign(CommonUtils.getKommunicateWebsiteUrl())
     }

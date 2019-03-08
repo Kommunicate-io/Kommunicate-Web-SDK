@@ -17,7 +17,6 @@ import { BreadCrumbWrapper, BreadCrumbItem, BreadCrumbArrow } from './BreadCrumb
     navigateViaBreadCrumb = (pageUrl, searchQuery)=>{
         this.props.history.push({
             pathname: pageUrl,
-            search: searchQuery,
         });
     }
      

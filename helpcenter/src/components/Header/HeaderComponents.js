@@ -43,7 +43,7 @@ export const TopbarLogoContainer = styled.div `
         content: "Help Center";
         position: absolute;
         top: 50%;
-        width: 100px;
+        width: 120px;
         right: -50%;
         color: #fff;
         transform: translate(0% , -62%);
@@ -58,7 +58,7 @@ export const TopbarLogoContainer = styled.div `
 
 export const HelpcenterHeading = styled.h1 `
     height: ${props => props.headingVisible ? '80px' :  '0px'};
-    margin-top: ${props => props.headingVisible ? '50px' :  '0'};
+    margin-top: ${props => props.headingVisible ? '10px' :  '0'};
     margin-bottom: ${props => props.headingVisible ? '-20px' :  '0'};
     font-size: ${props => props.theme.helpcenterHeadingFontSize};
     font-weight: 700;
@@ -84,7 +84,7 @@ export const TopbarLogo = styled.span `
         content: "|";
         position: absolute;
         top: 50%;
-        width: 100px;
+        width: 130px;
         right: -43%;
         font-weight: 300;
         color: #fff;
@@ -96,6 +96,11 @@ export const TopbarLogo = styled.span `
                display: none;
             }
     `}
+
+    & img {
+        width: 150px;
+        height: 75px;
+    }
 `
 
 export const SearchBarContainer = styled.div`
@@ -191,4 +196,12 @@ export const SearchResults = styled.div`
     border-bottom: 1px solid #ddd;
     font-size: 18px;
     cursor: pointer;
+`
+
+export const NoResultFoundMenuButton = styled.div`
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #9b9b9b;
 `

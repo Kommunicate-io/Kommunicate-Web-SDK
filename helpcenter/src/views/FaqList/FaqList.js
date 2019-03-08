@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {Container} from '../../components/Container/Container';
-import {FaqListItem, FaqListContent, FaqListTitle, TotalSearchedItems, NoResultsFoundWrapper} from './FaqListComponents'
-import {CommonUtils} from '../../utils/CommonUtils'
+import {FaqListItem, FaqListContent, FaqListTitle, TotalSearchedItems, NoResultsFoundWrapper} from './FaqListComponents';
+import {CommonUtils} from '../../utils/CommonUtils';
+import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import { withRouter } from 'react-router-dom';
-import { NoResultsFoundSvg } from '../../assets/svgAssets'
+import { NoResultsFoundSvg } from '../../assets/svgAssets';
 
 class FaqList extends Component {
     constructor(props){
@@ -12,7 +13,8 @@ class FaqList extends Component {
             faqList : [],
             appId : "",
             companyName: "Kommunicate",
-            searchQuery:""
+            searchQuery:"",
+            isSearchFinished: false
         };
     };
 
@@ -24,44 +26,47 @@ class FaqList extends Component {
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     };
 
-    populateAllFaq = () =>{
-        this.setState({appId : CommonUtils.getUrlParameter(window.location.search,"appId") },()=>{
-            CommonUtils.getAllFaq(this.state.appId).then(response=>{
-                this.setState({
-                    faqList : response,
-                    searchQuery : ''
-                })
+    populateAllFaq = () => {
+        this.clearFaqList();
+        HelpcenterClient.getAllFaq(this.state.settings.appId).then(response => {
+            response && this.setState({
+                faqList: response,
+                searchQuery: ''
             })
         })
-        document.title = this.state.companyName + " | Helpcenter";
     }
     populateSearchedFaq = () => {
+        this.clearFaqList();
         this.setState({
-            appId: CommonUtils.getUrlParameter(window.location.search, "appId"),
             searchQuery: CommonUtils.getUrlParameter(window.location.search, "q")
         }, () => {
-            CommonUtils.searchFaq(this.state.appId, this.state.searchQuery).then(response => {
-                this.setState({
-                    faqList: response.data
+            HelpcenterClient.searchFaq(this.state.settings.appId, this.state.searchQuery).then(response => {
+                response && response.data && this.setState({
+                    faqList: response.data,
+                    isSearchFinished: true
                 })
             })
         })
-        document.title = this.state.companyName + " | Helpcenter";
     }
-    openFaqArticle = (indexId) =>{
-        let searchQuery = '?appId='+this.state.appId+"&articleId="+indexId;
+    openFaqArticle = (query) =>{
         this.props.history.push({
-        pathname: '/article',
-        search: searchQuery, 
+            pathname: '/article/' + CommonUtils.formatFaqQuery(query)
         });
     }
     componentDidMount = () => {
         this.setState({
-            searchQuery :  CommonUtils.getUrlParameter(window.location.search,"q")
+            searchQuery :  CommonUtils.getUrlParameter(window.location.search,"q"),
+            settings : CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl())
         },()=>{
             this.state.searchQuery ? this.populateSearchedFaq() : this.populateAllFaq();
         })
 
+    }
+    clearFaqList = () =>{
+        this.setState({
+            faqList : [],
+            isSearchFinished: false
+        })
     }
     componentDidUpdate = (prevProps, prevState) => {
       prevProps.location.search !== this.props.location.search && CommonUtils.getUrlParameter(window.location.search,"q") ? this.populateSearchedFaq() : (prevProps.location.key !== this.props.location.key) && this.populateAllFaq();
@@ -75,19 +80,19 @@ class FaqList extends Component {
                     this.state.searchQuery &&
                     (this.state.faqList.length ?
                     <TotalSearchedItems>{this.state.faqList.length} {this.state.faqList.length > 1 ? 'results' : 'result'  } found for : <span>{this.state.searchQuery}</span></TotalSearchedItems> 
-                        :  
+                        :  this.state.isSearchFinished &&
                         <NoResultsFoundWrapper>
                             <NoResultsFoundSvg/>
                                 <span>NO RESULT FOUND</span>
-                                <span>We couldn’t fnd what you’re looking for</span>
-                    </NoResultsFoundWrapper> )
+                                <span>We couldn’t find what you’re looking for</span>
+                        </NoResultsFoundWrapper> )
                 }
                 {
                     this.state.faqList && this.state.faqList.map((index,data)=> (
                             
-                                <FaqListItem key={index.id} onClick={e=>{this.openFaqArticle(index.id)}}>
+                                <FaqListItem key={index.id} onClick={e=>{this.openFaqArticle(index.name)}}>
                                     <FaqListTitle>{index.name}</FaqListTitle>
-                                    <FaqListContent>{this.stripHtml(index.content )}</FaqListContent>
+                                    <FaqListContent>{this.stripHtml(index.content)}</FaqListContent>
                             </FaqListItem>
                         
                     ))
