@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Container} from '../../components/Container/Container';
 import {CommonUtils} from '../../utils/CommonUtils';
+import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import {ArticleWrapper, ArticleHeading, ArticleContent} from './ArticleComponents';
 import  BreadCrumb  from '../../components/BreadCrumb/BreadCrumb'
 
@@ -20,7 +21,7 @@ export default class Article extends Component {
         this.setState({
             query: window.location.pathname.replace('/article','')
         }, () => {
-            CommonUtils.getSelectedFaq(this.state.settings.appId, this.state.query).then(response => {
+            HelpcenterClient.getSelectedFaq(this.state.settings.appId, this.state.query).then(response => {
                 response && response.data && this.setState({
                     faqHeading: response.data[0].name,
                     faqContent: response.data[0].content,

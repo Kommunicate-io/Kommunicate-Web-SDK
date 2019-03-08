@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {Container} from '../../components/Container/Container';
-import {FaqListItem, FaqListContent, FaqListTitle, TotalSearchedItems, NoResultsFoundWrapper} from './FaqListComponents'
-import {CommonUtils} from '../../utils/CommonUtils'
+import {FaqListItem, FaqListContent, FaqListTitle, TotalSearchedItems, NoResultsFoundWrapper} from './FaqListComponents';
+import {CommonUtils} from '../../utils/CommonUtils';
+import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import { withRouter } from 'react-router-dom';
-import { NoResultsFoundSvg } from '../../assets/svgAssets'
+import { NoResultsFoundSvg } from '../../assets/svgAssets';
 
 class FaqList extends Component {
     constructor(props){
@@ -27,7 +28,7 @@ class FaqList extends Component {
 
     populateAllFaq = () => {
         this.clearFaqList();
-        CommonUtils.getAllFaq(this.state.settings.appId).then(response => {
+        HelpcenterClient.getAllFaq(this.state.settings.appId).then(response => {
             response && this.setState({
                 faqList: response,
                 searchQuery: ''
@@ -39,7 +40,7 @@ class FaqList extends Component {
         this.setState({
             searchQuery: CommonUtils.getUrlParameter(window.location.search, "q")
         }, () => {
-            CommonUtils.searchFaq(this.state.settings.appId, this.state.searchQuery).then(response => {
+            HelpcenterClient.searchFaq(this.state.settings.appId, this.state.searchQuery).then(response => {
                 response && response.data && this.setState({
                     faqList: response.data,
                     isSearchFinished: true
