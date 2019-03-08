@@ -27,7 +27,7 @@ class HelpQuerySearch extends Component {
         var _this = this,
             timeout = 300;
             fetchFaq = setTimeout(() => {    
-            this.state.inputValue && HelpcenterClient.searchFaq(this.state.settings.appId, encodeURIComponent(this.state.inputValue)).then(response => {
+            this.state.inputValue && HelpcenterClient.searchFaq(this.state.settings.appId, this.state.inputValue).then(response => {
                 response && response.data && _this.setState({
                     totalSearchResults: response.data.length,
                     searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq)
