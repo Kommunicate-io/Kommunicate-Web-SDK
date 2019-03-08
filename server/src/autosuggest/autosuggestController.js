@@ -1,4 +1,5 @@
-const autosuggestService = require("./autosuggestService2");
+
+const autosuggestService = require("./autoSuggestService2");
 const logger = require("../utils/logger");
 
 /**
