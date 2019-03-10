@@ -438,7 +438,7 @@ export const ResendIcon =() =>(
   </svg>
 );
 export const BannerIcons = props => (
-    <svg width={21.531} height={20} {...props}>
+    <svg width={21.531} height={20} viewBox="0 0 21.531 20" {...props}>
         <g className="km-error-icon-svg">
             <path
                 fill="#ed222a"
