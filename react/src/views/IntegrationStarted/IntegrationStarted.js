@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled, { withTheme } from 'styled-components';
 import CommonUtils from '../../utils/CommonUtils';
 import './IntegrationStarted.css';
+import { getConfig } from '../../config/config';
+import Button from '../../components/Buttons/Button';
 
 const PulseIcon = styled.div`
     position: absolute;
@@ -12,6 +14,9 @@ const PulseIcon = styled.div`
     top: -3px;
     right: 2px;
     border-radius: 50%;
+`;
+const WhatsNewWidgetContainer = styled.div`
+    position: relative;
 `;
 
 const NotificationIcon = props => (
@@ -72,18 +77,26 @@ class IntegrationStarted extends Component {
         });
     }
 
+    addNoticeableWidget () {
+        let noticeableCredentials = getConfig().thirdPartyIntegration.noticeable;
+        return (
+            <Fragment>
+                <WhatsNewWidgetContainer>
+                    <noticeable-widget id="km-al-noticeable" access-token={noticeableCredentials.accessToken} 
+                    project-id={noticeableCredentials.projectId} popup-backdrop="false" popup-horizontal-offset="30" >
+                        <NotificationIcon />
+                    </noticeable-widget>
+                </WhatsNewWidgetContainer>
+            </Fragment>
+        )
+    };
 
   render() {
-    return (
-      <div className="km-integration-started-component">
-        <div className={`km-integration-notificationn-icon-container ${this.state.activeClass}`} onClick={this.togglePopup}>
-            <NotificationIcon />
-            <PulseIcon />
-        </div>
 
+    const WarningPopup = (
         <div tabIndex="-1" aria-hidden="false" role="menu"  className="km-integration-popup-container" hidden={this.state.hidePopup} ref={(element) => {
-                  this.popupMenu = element;
-                }}>
+                this.popupMenu = element;
+            }}>
             <IntegrationWarningIcon />
             { (CommonUtils.isKommunicateDashboard()) ?
                 <p>
@@ -94,9 +107,25 @@ class IntegrationStarted extends Component {
                     You have not installed Applozic in your mobile and web apps
                 </p>
             }
-            <button className="km-button km-button--primary" onClick={this.goToInstall}>See how to install</button>
+            <Button onClick={this.goToInstall}>See how to install</Button>
         </div>
-      </div>
+    )
+
+    return (
+        <Fragment>
+            <div className="km-integration-started-component">
+                { this.props.integrationStarted ? 
+                    <div className="km-integration-notificationn-icon-container km-popup-inactive">
+                        { CommonUtils.isKommunicateDashboard() && this.addNoticeableWidget() }
+                    </div> :
+                    <div className={`km-integration-notificationn-icon-container ${this.state.activeClass}`} onClick={this.togglePopup}>
+                        <NotificationIcon />
+                        <PulseIcon />
+                        {WarningPopup}
+                    </div>
+                }                
+            </div>
+        </Fragment>
     )
   }
 }
