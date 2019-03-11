@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import validator from 'validator';
 import { withTheme } from 'styled-components';
@@ -509,15 +509,19 @@ class Login extends Component {
 
 													{/* Login with Google code STARTS here. */}
 													{/* To show or hide Login with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
-													<a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={this.state.googleLoginUrl}>
-													<GoogleLogin/>
-													Login with Google
-													</a>
+													{ CommonUtils.isKommunicateDashboard() &&
+													<Fragment>
+														<a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={this.state.googleLoginUrl}>
+														<GoogleLogin/>
+														Login with Google
+														</a>
 
-													<div className="or-seperator" hidden={this.state.hideGoogleLoginBtn}>
-														<div className="or-seperator--line"></div>
-														<div className="or-seperator--text">OR</div>
-													</div>
+														<div className="or-seperator" hidden={this.state.hideGoogleLoginBtn}>
+															<div className="or-seperator--line"></div>
+															<div className="or-seperator--text">OR</div>
+														</div>
+													</Fragment>
+													}
 
 													{/* Login with Google code ENDS here */}
 
