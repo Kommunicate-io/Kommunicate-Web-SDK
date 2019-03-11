@@ -19,14 +19,9 @@ Then override the ```KmActionCallback```'s ```onReceive``` method :
         switch (action) {
              //This action will be received on click of the default start new chat button
             case Kommunicate.START_NEW_CHAT:
-                List<String> agents = new ArrayList<>(); //add your agents to this list
-                List<String> bots = new ArrayList<>(); //add your bots to this list
-                 try {
-                    KmHelper.setStartNewChat(context, agents, bots);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                //Write your code to create a new conversation. Follow this doc to create new conversation.
                 break;
+                
              //This action will be received on click of logout option in menu
             case Kommunicate.LOGOUT_CALL:
                 KmHelper.performLogout(context, object); //object will receive the exit Activity, the one that will be launched when logout is successfull
@@ -78,10 +73,10 @@ You can create a new conversation as below:
 
 If you have your agentList and botList and need to create conversation with them then use the builder as below:
 ```java
-     List<String> agentIds = new ArrayList<>(); //add agentIds to this list
-     agentIds.add("agent1");
-     List<String> botIds = new ArrayList<>(); //add botids to this list
-     botIds.add("bot1");
+     List<String> agentIds = new ArrayList<>();
+     agentIds.add("<AGENT_ID>");//add agentIds to this list. The agentId is the emailId you used to singup on kommunicate dashboard
+     List<String> botIds = new ArrayList<>(); 
+     botIds.add("<BOT_ID>");//add Botids to this list.
      
      new KmChatBuilder(MainActivity.this)
                             .setChatName("Support")
@@ -121,10 +116,10 @@ You can create a unique conversation using the below method. A unique conversati
 ```
 If you have your agentList and botList and need to create conversation with them then use the builder as below:
 ```java
-     List<String> agentIds = new ArrayList<>(); //add agentIds to this list
-     agentIds.add("agent1");
-     List<String> botIds = new ArrayList<>(); //add botids to this list
-     botIds.add("bot1");
+     List<String> agentIds = new ArrayList<>();
+     agentIds.add("<AGENT_ID>"); //add agentIds to this list
+     List<String> botIds = new ArrayList<>(); 
+     botIds.add("BOT_ID");//add botids to this list
      
      new KmChatBuilder(MainActivity.this)
                             .setChatName("Support")
