@@ -110,6 +110,8 @@ const PreferencesContainer = styled.div`
     ${flex}
     justify-content: flex-start;
     cursor: pointer;
+    position: relative;
+    z-index: 520;
 
     &:focus, &:focus-within {
         outline: none;
@@ -141,13 +143,13 @@ const PreferencesText = styled.div`
 const PreferencesDropdownContainer = styled.div`
     position: absolute;
     top: 40px;
-    right: 30px;
+    right: 00px;
     z-index: 10;
     border-radius: 2px;
     box-shadow: 0 2px 3px 2px rgba(104, 102, 102, 0.25);
     background-color: #ffffff;
     padding: 10px;
-    max-width: 250px;
+    width: 250px;
     cursor: default;
 `;
 const PreferencesDropdownTitle = styled.p`
