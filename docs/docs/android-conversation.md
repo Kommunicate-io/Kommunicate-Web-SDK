@@ -76,7 +76,7 @@ If you have your agentList and botList and need to create conversation with them
      List<String> agentIds = new ArrayList<>();
      agentIds.add("<AGENT_ID>");//add agentIds to this list. The agentId is the emailId you used to singup on kommunicate dashboard
      List<String> botIds = new ArrayList<>(); 
-     botIds.add("<BOT_ID>");//add Botids to this list.
+     botIds.add("<BOT_ID>");Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
      
      new KmChatBuilder(MainActivity.this)
                             .setChatName("Support")
