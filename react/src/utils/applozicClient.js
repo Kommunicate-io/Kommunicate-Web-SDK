@@ -398,7 +398,6 @@ updateUserDetail:function(params){
       headers: API_HEADERS
     })).then(response => {
       if(response.status === 200 && response.data !== undefined) {
-        console.log(response);
         return response;
       }
     }).catch(err => {
