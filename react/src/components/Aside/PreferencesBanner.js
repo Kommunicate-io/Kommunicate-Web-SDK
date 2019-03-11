@@ -143,7 +143,7 @@ const PreferencesText = styled.div`
 const PreferencesDropdownContainer = styled.div`
     position: absolute;
     top: 40px;
-    right: 00px;
+    right: 0;
     z-index: 10;
     border-radius: 2px;
     box-shadow: 0 2px 3px 2px rgba(104, 102, 102, 0.25);
