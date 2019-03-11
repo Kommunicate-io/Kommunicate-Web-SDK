@@ -156,14 +156,9 @@ class Aside extends Component {
   showConversationCount = (count, type) => {
     this.state.conversationTab[type].count = count;
   }
-  increaseConversationCount = (type) => {
+  updateConversationCount = (type, change) => {
     let conversationTab = this.state.conversationTab;
-    conversationTab[type].count = conversationTab[type].count + 1;
-    this.setState({conversationTab:conversationTab})
-  }
-  decreaseConversationCount = (type) => {
-    let conversationTab = this.state.conversationTab;
-    conversationTab[type].count = conversationTab[type].count -1;
+    conversationTab[type].count = conversationTab[type].count + change;
     this.setState({conversationTab:conversationTab})
   }
   handleGroupUpdate(e) {
@@ -448,9 +443,9 @@ class Aside extends Component {
                                       'callback': function(response) {
                                         that.setState({assignee:userId});
                                         if(userId == that.state.loggedInUser) {
-                                          that.increaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME)
+                                          that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, +1)
                                         } else if (prevAssignee == that.state.loggedInUser && prevAssignee != userId ){
-                                          that.decreaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME)
+                                          that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, -1)
                                         }
                                         var displayName = "";
                                         for(var key in that.state.agents) {
@@ -544,13 +539,13 @@ class Aside extends Component {
                                           });
                                           that.setState({conversationStatus:status})
                                         if( status == CONVERSATION_STATUS.OPEN) {
-                                          that.decreaseConversationCount(CONVERSATION_TYPE.CLOSED);
-                                          that.increaseConversationCount(CONVERSATION_TYPE.ALL);
-                                          (that.state.assignee == that.state.loggedInUser) && that.increaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME);
+                                          that.updateConversationCount(CONVERSATION_TYPE.CLOSED, -1);
+                                          that.updateConversationCount(CONVERSATION_TYPE.ALL, +1);
+                                          (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, +1);
                                         } else if (prevStatus == CONVERSATION_STATUS.OPEN) {
-                                          that.increaseConversationCount(CONVERSATION_TYPE.CLOSED);
-                                          that.decreaseConversationCount(CONVERSATION_TYPE.ALL);
-                                          (that.state.assignee == that.state.loggedInUser) && that.decreaseConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME);
+                                          that.updateConversationCount(CONVERSATION_TYPE.CLOSED, +1);
+                                          that.updateConversationCount(CONVERSATION_TYPE.ALL, -1);
+                                          (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, -1);
 
                                         }
                                           
