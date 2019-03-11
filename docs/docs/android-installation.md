@@ -65,7 +65,7 @@ Parmaters of KMChatBuilder:
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
 | isSingleChat | boolean      |    Pass false if you would like to create new conversation every time user starts a chat. This is true by default which means only one conversation will open for the user every time the user starts a chat. |
 | agentList | List<String>      |    Pass the list of agents. The agent id would be the email id you used to register on kommunicate. Leave null if you want to create conversation with default agent.|
-| botList | List<String>      |    Pass the list of bots. Leave null if you haven't integrated any bots |
+| botList | List<String>      |    Pass the list of bots.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID. Leave null if you haven't integrated any bots |
 | callback | KmCallback      |    Callback to notify Success or Failure |
 
 ### Launching chat for visitor:
@@ -92,7 +92,7 @@ List<String> agentList = new ArrayList();
 agentList.add("<AGENT_ID>"); //add your agentID. The agentId id the email id you have used to signup on kommunicate dashboard
 
 List<String> botList = new ArrayList();
-botList.add("<BOT_ID>"); //enter your integrated bot Ids.You can create a bot here : https://dialogflow.com/
+botList.add("<BOT_ID>"); Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
 
       new KmChatBuilder(context).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
                         @Override
