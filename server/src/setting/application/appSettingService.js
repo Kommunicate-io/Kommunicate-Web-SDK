@@ -6,7 +6,7 @@ const deepmerge = require('deepmerge');
 exports.getAppSettingsByApplicationId = (criteria) => {
     return Promise.resolve(applicationSettingModel.findAll({ where: criteria , raw:true})).then(res => {
         let result = res[0];
-        if (!result) { return { message: "SUCCESS", data: "Invalid query" } }
+        if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
         if(result.popupTemplateKey == null){
             return { message: "SUCCESS", data: result };
         }
