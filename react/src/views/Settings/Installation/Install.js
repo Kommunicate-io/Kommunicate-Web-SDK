@@ -167,7 +167,7 @@ class Install extends Component {
                           {this.state.copySuccess}
                         </Button>
                       )}
-                      <span className="identify-users">Want to identify your users? <a href={this.state.docsLink.installation} className="brand-color" target="_blank">Read more here</a></span>
+                      { CommonUtils.isKommunicateDashboard() ? <span className="identify-users">Want to identify your users? <a href={this.state.docsLink.installation} className="brand-color" target="_blank">Read more here</a></span> : ""}
                     </div>
                   </div>
                 </div>
