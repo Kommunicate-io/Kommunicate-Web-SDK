@@ -89,10 +89,10 @@ If you have your agentList and bot list then use the builder as below:
 
 ```java
 List<String> agentList = new ArrayList();
-agentList.add("agent1@yourdomain.com"); //add your agentID. The agentId id the email id you have used to signup on kommunicate dashboard
+agentList.add("<AGENT_ID>"); //add your agentID. The agentId id the email id you have used to signup on kommunicate dashboard
 
 List<String> botList = new ArrayList();
-botList.add("bot1"); //enter your integrated bot Ids.
+botList.add("<BOT_ID>"); //enter your integrated bot Ids.You can create a bot here : https://dialogflow.com/
 
       new KmChatBuilder(context).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
                         @Override
