@@ -2431,7 +2431,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
-
                     if(contactNumber){
                         userId =contactNumber;
                     }
@@ -2453,7 +2452,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         password:password,
                         googleApiKey: MCK_GOOGLE_API_KEY,
                         chatNotificationMailSent: true,
-                        authenticationTypeId:MCK_AUTHENTICATION_TYPE_ID||1,
+                        authenticationTypeId:MCK_AUTHENTICATION_TYPE_ID,
                     }
                     if (email) {
                         options.email = email;
