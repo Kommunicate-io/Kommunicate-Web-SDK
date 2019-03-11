@@ -300,13 +300,13 @@ const billingCycleOptions = [
 ];
 
 const planDetails = {
-    "starterPlan": ["Native Android, iOS & Ionic/PhoneGap SDK", "Unlimited concurrent connections", "Lifetime Message History Retention", "One-to-one & Group chat", "Attachment Sharing", "Push Notifications", "Complimentary Live Chat Plugin (2 Agent Plan)", "Standard Hosting"], 
+    "starterPlan": ["Android, iOS & Web", "Ionic PhoneGap, React Native SDK", "Unlimited peak connections", "Lifetime History Retention", "One-to-one & Group chat", "Attachment Sharing", "Push Notifications", "Live Chat Plugin (2 Agent)", "Standard Hosting"], 
 
-    "growthPlan": ["Broadcast Messages", "Admin Announcements", "Webhooks Support", "Email Notifications", "Downloadable Reports", "Profanity Filters", "User Moderation", "End-to-end Encryption", "No Applozic Branding"],
+    "growthPlan": ["Broadcast Messages", "Admin Announcements", "Webhooks Support", "Email Notifications", "Downloadable Reports", "Profanity Filters", "User Moderation", "No Applozic Branding"],
 
-    "proPlan": ["No Applozic Branding", "Live Streaming Chat", "Localization Support", "Custom Reports ", "Complimentary Live Chat Plugin (3 Agent Plan)", "Conversation Routing", "Choice of hosting region", "Service Level Agreement", "Phone Support"],
+    "proPlan": ["Bot Integration", "Live Streaming Chat", "Localization Support", "Custom Reports", "Live Chat Plugin (3 Agent)", "Conversation Routing", "Choice of hosting region", "Service Level Agreement", "Phone Support"],
 
-    "enterprisePlan": ["Unlimited Group Member Limit", "Dedicated (Single-Tenant) Hosting", "On-Prem (Self) Hosting", "Complimentary Live Chat Plugin (Upto 10 Agents)", "Bots & Automation", "Choice of Support Channel", "Dedicated Account Manager"]
+    "enterprisePlan": ["Unlimited Group Member", "Dedicated Hosting", "Live Chat Plugin (10 Agents)", "Bots & Automation", "Choice of Support Channel", "Dedicated Account Manager"]
 };
 
 const PRICING_PACKAGE_MAP = {

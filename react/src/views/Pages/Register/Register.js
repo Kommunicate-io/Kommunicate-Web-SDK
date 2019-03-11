@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import validator from 'validator';
 import { withTheme } from 'styled-components'
 import {getConfig} from '../../../config/config.js';
@@ -282,17 +282,18 @@ class Register extends Component {
                   {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
                   {/* Signup with Google code STARTS here. */}
-                    {/* To show or hide Signup with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
-                  <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
-                    <GoogleLogin />
-                    Sign up with Google
-                  </a>
+                  {/* To show or hide Signup with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
+                  { CommonUtils.isKommunicateDashboard() && <Fragment>
+                    <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
+                      <GoogleLogin />
+                      Sign up with Google
+                    </a>
 
-                  <div className={(this.state.googleOAuth || this.state.isInvited) ? "n-vis":"or-seperator"}>
-                    <div className="or-seperator--line"></div>
-                    <div className="or-seperator--text">OR</div>
-                  </div>
-
+                    <div className={(this.state.googleOAuth || this.state.isInvited) ? "n-vis":"or-seperator"}>
+                      <div className="or-seperator--line"></div>
+                      <div className="or-seperator--text">OR</div>
+                    </div>
+                  </Fragment>}
                   {/* Signup with Google code ENDS here. */}
 
                   <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
