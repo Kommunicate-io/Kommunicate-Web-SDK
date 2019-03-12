@@ -4,11 +4,13 @@ import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import { withRouter } from 'react-router-dom';
 import { ClearButton } from '../../assets/svgAssets';
 import { ClearButtonWrapper, MenuWrapper, SeeAllButton, SearchBoxWrapper , SearchBox, SearchResultsWrapper,
-SearchResults, NoResultFoundMenuButton } from './HeaderComponents'
+SearchResults, NoResultFoundMenuButton } from './HeaderComponents';
+import { HelpCenterData } from '../../context/HelpcenterDataContext'
 
 let fetchFaq;
 
 class HelpQuerySearch extends Component {
+    static contextType = HelpCenterData;
     constructor(props){
         super(props);
         this.state = { 
@@ -27,7 +29,7 @@ class HelpQuerySearch extends Component {
         var _this = this,
             timeout = 300;
             fetchFaq = setTimeout(() => {    
-            this.state.inputValue && HelpcenterClient.searchFaq(this.state.settings.appId, this.state.inputValue).then(response => {
+            this.state.inputValue && HelpcenterClient.searchFaq(this.context.helpCenter.appId, this.state.inputValue).then(response => {
                 response && response.data && _this.setState({
                     totalSearchResults: response.data.length,
                     searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq)
@@ -92,11 +94,6 @@ class HelpQuerySearch extends Component {
         })
     }
 
-    componentDidMount = () => {
-        this.setState({
-            settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
-        });
-    }
     toggleDropdown = () => {
         this.state.inputValue && this.setState({ 
             isDropDownOpen: !this.state.isDropDownOpen ,
@@ -104,12 +101,16 @@ class HelpQuerySearch extends Component {
         });
     }
     setPageTitle = () =>{
-        document.title = this.state.settings.title + " | Helpcenter";
+        document.title = this.context.helpCenter.helpCenter.title + " | Helpcenter";
     }
     componentDidUpdate = (prevProps) => {   
-        // Following check will check if the user is moving back from article page or search page it will clear the searchbar and reset the page title to default
+        // // Following check will check if the user is moving back from article page or search page it will clear the searchbar and reset the page title to default
         (this.props.location.key !== prevProps.location.key && this.props.location.pathname === '/' && !CommonUtils.getUrlParameter(this.props.location.search,"q")) ? (this.clearSearchBar() , this.setPageTitle()) : false;
     }
+    componentDidMount = () => {
+      this.setPageTitle();
+    }
+    
 
   render() {
     return (
@@ -149,4 +150,6 @@ class HelpQuerySearch extends Component {
     );
   }
 }
-export default withRouter(HelpQuerySearch);
+
+HelpQuerySearch.contextType = HelpCenterData;
+export default Object.assign(withRouter(HelpQuerySearch), { contextType: undefined });

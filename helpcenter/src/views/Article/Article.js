@@ -3,9 +3,12 @@ import {Container} from '../../components/Container/Container';
 import {CommonUtils} from '../../utils/CommonUtils';
 import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import {ArticleWrapper, ArticleHeading, ArticleContent} from './ArticleComponents';
-import  BreadCrumb  from '../../components/BreadCrumb/BreadCrumb'
+import  BreadCrumb  from '../../components/BreadCrumb/BreadCrumb';
+import { HelpCenterData } from '../../context/HelpcenterDataContext'
+
 
 export default class Article extends Component {
+    static contextType = HelpCenterData;
     constructor(props) {
         super(props);
         this.state = {
@@ -21,7 +24,7 @@ export default class Article extends Component {
         this.setState({
             query: window.location.pathname.replace('/article','')
         }, () => {
-            HelpcenterClient.getSelectedFaq(this.state.settings.appId, this.state.query).then(response => {
+            HelpcenterClient.getSelectedFaq(this.context.helpCenter.appId, this.state.query).then(response => {
                 response && response.data && this.setState({
                     faqHeading: response.data[0].name,
                     faqContent: response.data[0].content,
@@ -32,12 +35,9 @@ export default class Article extends Component {
         })
     }
 
+
     componentDidMount = () => {
-        this.setState({
-            settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
-          },()=>{
-            this.getFaqArticle();
-          });
+           this.getFaqArticle();
     }
 
     updateArticlesPage = (query) => {
@@ -61,7 +61,7 @@ export default class Article extends Component {
                                 crumbObject={[
                                     {
                                         pageUrl : '/',
-                                        queryUrl : '?appId='+this.state.appId,
+                                        queryUrl : '?appId='+this.context.helpCenter.appId,
                                         crumbName : 'Kommunicate Help center'
                                     },
                                     {
