@@ -54,8 +54,8 @@ export const HelpcenterClient = {
         })
 
     },
-    getAppSettings: () => {
-        let queryUrl = KM_API_URL + url.kommunicateApi.APP_SETTINGS_DOMAIN;
+    getAppSettings: (appId) => {
+        let queryUrl = KM_API_URL + url.kommunicateApi.APP_SETTINGS_DOMAIN + '/' + appId || '';
         return (axios.get(queryUrl)).then(response => {
             return response;
         }).catch(err => {

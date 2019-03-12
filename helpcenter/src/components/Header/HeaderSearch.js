@@ -62,8 +62,11 @@ class HelpQuerySearch extends Component {
     handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             event.preventDefault();
+            if (CommonUtils.getUrlParameter(window.location.search, 'q') === this.state.inputValue) {
+                return false;
+            }
             this.openSearchPage();
-        } else if (event.key == ' ' && !this.state.inputValue ){
+        } else if (event.key == ' ' && !this.state.inputValue) {
             event.preventDefault();
         }
     };

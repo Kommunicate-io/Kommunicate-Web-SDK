@@ -3,6 +3,7 @@ import { HelpcenterClient } from '../utils/HelpcenterClient';
 import { CommonUtils } from '../utils/CommonUtils';
 import { StyleUtils } from '../utils/StyleUtils';
 import { DEFAULT_HELPCENTER_SETTINGS} from '../utils/Constants';
+import { browserHistory } from 'react-router';
 
 
 export const HelpCenterData = React.createContext({});
@@ -20,11 +21,12 @@ export class HelpCenterDataContext extends Component {
     }
    
     fetchSettings = () => {
-        HelpcenterClient.getAppSettings().then(response => {
+        HelpcenterClient.getAppSettings( CommonUtils.getUrlParameter(window.location.search,'appId') ).then(response => {
             response && response.data && this.setState({
                 baseUrl: CommonUtils.getHostNameFromUrl(),
                 appId: response.data.response.applicationId,
                 helpCenter: response.data.response.helpCenter,
+                appIdAvailable : CommonUtils.getUrlParameter(window.location.search,'appId') 
             }, () => {
                 this.checkForMissingSettings();
                 this.storeSettings();
