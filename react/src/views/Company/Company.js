@@ -4,7 +4,7 @@ import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContaine
 import { getCustomerInfo, patchUserInfo, patchCustomerInfo } from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../model/Notification';
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/BannerV2';
 import {ROLE_TYPE} from '../../utils/Constant'
 import isURL from 'validator/lib/isURL';
 import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFunctionComponents'
@@ -142,7 +142,7 @@ class Company extends Component{
       return(
           <CompanyContainer className="animated fadeIn">
               <CompanyRestrictionBannerContainer>
-                <Banner indicator={"warning"} hidden={this.state.companyInfoEditable} text={"You need admin permissions to update your company details"} />
+                <Banner appearance="warning" hidden={this.state.companyInfoEditable} heading={"You need admin permissions to update your company details."}/>
               </CompanyRestrictionBannerContainer>
               <SettingsHeader />
               <CompanyInfo companyName = {this.state.companyName} companyUrl={this.state.companyUrl} companyInputValue = {this.companyInputValue} updateCustomerInfo = {this.updateCustomerInfo} setPreviousValue={this.setPreviousValue}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
 import Banner from '../Banner/Banner';
+import BannerV2 from '../../components/BannerV2';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
 import {integration_type} from '../../views/Integrations/ThirdPartyList';
@@ -75,6 +76,7 @@ class Aside extends Component {
         [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:"" }, 
         [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:"" }
       },
+      isLizActive: false
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -316,9 +318,16 @@ class Aside extends Component {
     if (assignee == userSession.userName && userSession.isAdmin) {
       //assignee = "agent";
     }
+    this.isConversationAssignedToLiz(assignee);
     window.$kmApplozic("#assign").val(assignee);
   }
 
+  isConversationAssignedToLiz (assignee) {
+    assignee && this.setState({
+      isLizActive: (assignee === LIZ.userName)
+    })
+  };
+  
   selectStatus() {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
       if(this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN){
@@ -955,6 +964,20 @@ class Aside extends Component {
                           <div className="km-bots-warning-banner" id="km-bots-warning--banner">
                             <Banner isVisible={this.state.warningBannerText === ""} indicator={'warning'} text={this.state.warningBannerText}/>
                           </div>
+                          <LizBanner>
+                            <Fragment>
+                                {
+                                    this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length === 0 &&
+                                    <BannerV2 cssClass="km-is-liz" appearance="warning" heading={["Liz will not work as you’ve not added any FAQs. Add them now from the ", <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
+                                }
+                            </Fragment>
+                            <Fragment>
+                                {
+                                    this.state.isLizActive && this.props.appSettings.faqList &&  this.props.appSettings.faqList.length !== 0 && this.props.appSettings.faqList.length < 5 &&
+                                    <BannerV2 cssClass="km-is-liz" appearance="warning" heading={["Add more FAQs for better results from the ", <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
+                                }
+                            </Fragment>
+                          </LizBanner>
                       </div>
                       <div id="km-product-group"
                         className="km-tab-panel km-btn-group km-product-group">
@@ -1395,12 +1418,17 @@ const NewMessageIndicatorText = styled.div`
   letter-spacing: 0.2px;
   color: #ffffff;
 `;
-
+const LizBanner = styled.div`
+    & .km-is-liz{
+      margin: 0 -10px;
+    }
+`;
 
 
 // export default Aside;
 const mapStateToProps = state => ({
   kmOnBoarding:state.signUp.kmOnBoarding,
+  appSettings : state.application
 })
 const mapDispatchToProps = dispatch => {
   return {

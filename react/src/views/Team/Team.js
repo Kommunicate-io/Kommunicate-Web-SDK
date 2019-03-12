@@ -12,7 +12,7 @@ import { USER_TYPE, INVITED_USER_STATUS } from '../../utils/Constant';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import RadioButton from '../../components/RadioButton/RadioButton';
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/BannerV2';
 import { ROLE_TYPE, ROLE_NAME, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
@@ -348,7 +348,7 @@ class Integration extends Component {
     return (
       <div className="animated fadeIn teammate-wrapper ">
         <div className="km-settings-banner">
-            <Banner indicator={"warning"} hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} text={"You need admin permissions to manage your team"} />
+            <Banner appearance="warning" hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} heading={"You need admin permissions to manage your team."}/>
         </div>
         <div className="km-heading-wrapper">
           <SettingsHeader />
@@ -365,7 +365,7 @@ class Integration extends Component {
                       <p className="teammates-add-member-modal-header-title">Adding new team member</p>
                     </div>
                     <hr className="teammates-add-member-modal-divider product product-kommunicate" />
-                      <Banner indicator={"warning"} hidden={!(CommonUtils.isKommunicateDashboard() && this.state.isTrialPlan)} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
+                      <Banner cssClass = "km-trial-banner" appearance="warning" hidden={!(CommonUtils.isKommunicateDashboard() && this.state.isTrialPlan)} heading={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."}/>
                     { !this.state.isTrialPlan &&
                     <div className="teammates-billing-update-container product product-kommunicate">
                       <div className="teammates-billing-update-text">
