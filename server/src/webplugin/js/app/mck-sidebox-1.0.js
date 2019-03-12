@@ -2393,7 +2393,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
-                    !isFirstLaunch && $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").addClass("vis-table").removeClass('n-vis');
+                    $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").addClass("vis-table").removeClass('n-vis');
                     $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding")
                     count++;
                     var $this = $applozic(this);
