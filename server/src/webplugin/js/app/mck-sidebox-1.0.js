@@ -2455,7 +2455,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         authenticationTypeId:MCK_AUTHENTICATION_TYPE_ID,
                     }
                     if (email) {
-                        options.email = email;
+                        options.email = email.toLowerCase();
                     }
                     if (userName) {
                         options.displayName = userName;
