@@ -4,7 +4,7 @@ const logger = require('../../utils/logger');
 const deepmerge = require('deepmerge');
 
 exports.getAppSettingsByApplicationId = (criteria) => {
-    return Promise.resolve(applicationSettingModel.findAll({ where: criteria , raw:true})).then(res => {
+    return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
         let result = res[0];
         if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
         if(result.popupTemplateKey == null){
