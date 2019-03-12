@@ -82,6 +82,21 @@ let AppSetting= function(sequelize, DataTypes) {
         allowNull:true,
         field:'support_mails'
       },
+      leadCollection:{
+        type: DataTypes.JSON,
+        allowNull:true,
+        field:'lead_collection' 
+      },
+      leadType:{
+        type: DataTypes.INTEGER,
+        allowNull:true,
+        field:'lead_type' 
+      },
+      collectLead:{
+        type: DataTypes.BOOLEAN,
+        allowNull:true,
+        field:'collect_lead' 
+      }
     },
 
     {
