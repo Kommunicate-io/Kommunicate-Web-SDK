@@ -1,7 +1,6 @@
 var KM_GROUP_MAP = [];
 var KM_CLIENT_GROUP_MAP = [];
 var KM_ASSIGNE_GROUP_MAP = [];
-var conversationLoadedTime = "";
 (function ($kmApplozic, w, d) {
 	"use strict";
 	var default_options = {
@@ -430,6 +429,8 @@ var conversationLoadedTime = "";
 		}
 		var currentTimeStamp = Math.ceil(new Date().getTime());
 		var maxHistoryInMillisec = (!MCK_MAX_HISTORY == "") ? MCK_MAX_HISTORY * 24 * 60 * 60 * 1000 : currentTimeStamp; // value of inputed days (or number) converted to milliseconds. If MCK_MAX_HISTORY is empty string then currentTimeStamp value will taken to break the condition for loading messages.
+
+		var conversationLoadedTime = "";
 
 		_this.events = {
 			'onConnectFailed': function () {
@@ -1629,7 +1630,7 @@ var conversationLoadedTime = "";
 
 			var CALLS_COMPLETED = 0,
 				TABS_COUNT = 3;
-
+			
 			_this.checkEmptyState = function() {
 				CALLS_COMPLETED += 1;
 				if(TABS_COUNT === CALLS_COMPLETED) {
@@ -2931,7 +2932,7 @@ var conversationLoadedTime = "";
 				}
 				data += "&pageSize=60";
 				params.conversationCount && (data += "&conversationCount="+params.conversationCount);
-				var url = "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN;
+				var url = "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED;
 				if(MCK_LOAD_INITIAL_CONVERSATION_STATE){
 					url = url+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL;
 			  }
