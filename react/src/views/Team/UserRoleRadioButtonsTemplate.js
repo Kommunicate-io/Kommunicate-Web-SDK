@@ -23,10 +23,8 @@ const UserRoleRadioButtonsTemplate = props => (
 
                 <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={props.handleOnChange} dataValue={ROLE_TYPE.ADMIN} checked={props.selectedRole == ROLE_TYPE.ADMIN} label={<RoleContainer role={ROLE_TYPE.ADMIN} />} />
 
-                {CommonUtils.isProductApplozic() ?
+                {CommonUtils.hasApplozicAccess() &&
                     <RadioButton idRadioButton={'teammates-developer-radio'} handleOnChange={props.handleOnChange} dataValue={ROLE_TYPE.DEVELOPER} checked={props.selectedRole == ROLE_TYPE.DEVELOPER} label={<RoleContainer role={ROLE_TYPE.DEVELOPER} />} />
-                    :
-                    ""
                 }
 
             </div>
