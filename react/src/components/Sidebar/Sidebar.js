@@ -121,11 +121,12 @@ class Sidebar extends Component {
             </li>
             }
             {/* Message Logs Link */}
-            <li className="nav-item product product-applozic">
-              <NavLink exact= {true} to={'/message-logs'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Logs" data-effect="solid" data-place="right">
-                <MessageLogs />
-              </NavLink>
-            </li>
+            { CommonUtils.hasApplozicAccess() && <li className="nav-item">
+                <NavLink exact= {true} to={'/message-logs'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Logs" data-effect="solid" data-place="right">
+                  <MessageLogs />
+                </NavLink>
+              </li>
+            }
             
             {/* Customers Link */}
             <li className="nav-item">
