@@ -301,7 +301,8 @@ function KmGroupUtils() {
             'userCount': group.userCount,
             'removedMembersId': removedMembersId,
             'clientGroupId': group.clientGroupId,
-            'isGroup': true
+            'isGroup': true,
+            'createdAtTime':group.createdAtTime
         };
         KM_GROUP_MAP[group.id] = groupFeed;
         if (group.clientGroupId) {

@@ -1,6 +1,7 @@
 var KM_GROUP_MAP = [];
 var KM_CLIENT_GROUP_MAP = [];
 var KM_ASSIGNE_GROUP_MAP = [];
+var conversationLoadedTime = "";
 (function ($kmApplozic, w, d) {
 	"use strict";
 	var default_options = {
@@ -2865,8 +2866,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + url,
 					success: function (data) {
+						conversationLoadedTime = new Date().getTime();
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.allConversations = data.response.groupFeeds.length);
-						data && data.response && data.response.conversationCount && window.Aside.showConversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ALL);
+						data && data.response && data.response.conversationCount && window.Aside.updateConversationCount(KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ALL, parseInt(data.response.conversationCount));
 						 mckMessageService.addContactInConversationList(data, conversationList);
 						 mckMessageService.initSearch();
 						 if (!params.initialcall) {
@@ -2891,7 +2893,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + "&status=2&status=3&status=4&status=5",
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.closedConversations = data.response.groupFeeds.length);
-						data && data.response && data.response.conversationCount && window.Aside.showConversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.CLOSED);
+						data && data.response && data.response.conversationCount && window.Aside.updateConversationCount(KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.CLOSED, parseInt(data.response.conversationCount));
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data, "km-closed-conversation-list", list);
@@ -2938,7 +2940,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+url,
 					success: function (data) {
 						data && data.response && data.response.groupFeeds && (MCK_CONVERSATIONS_DATA.assignedToMeConversations = data.response.groupFeeds.length);
-						data && data.response && data.response.conversationCount && window.Aside.showConversationCount(data.response.conversationCount, KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ASSIGNED_TO_ME);
+						data && data.response && data.response.conversationCount && window.Aside.updateConversationCount(KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ASSIGNED_TO_ME, parseInt(data.response.conversationCount));
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data, "km-assigned-search-list", list);
@@ -4810,6 +4812,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" + section + "-" + contactHtmlExpr + " .km-cont-msg-wrapper");
 						if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
 							_this.updateContact(contact, message, sectionId);
+							_this.updateConversationCount(contact, sectionId);
 						}
 					} else {
 						_this.addContact(contact, sectionId, message, prepend);
@@ -5156,6 +5159,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic("#km-li-" + contactIdExpr + " .km-cont-msg-date").html("");
 				$kmApplozic("#km-li-" + contactIdExpr + " .km-cont-msg-wrapper").html("");
 			};
+			_this.updateConversationCount = function (group, tab) {
+				if(conversationLoadedTime < group.createdAtTime){
+					tab == "km-contact-list" && window.Aside.updateConversationCount(KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ALL, 1);
+					tab == "km-assigned-search-list" && window.Aside.updateConversationCount(KOMMUNICATE_CONSTANTS.CONVERSATION_TYPE.ASSIGNED_TO_ME, 1);
+				}
+			 }
 			_this.addContact = function (contact, $listId, message, prepend) {
 				if (!MCK_LOAD_INITIAL_CONVERSATION_STATE && message && message.metadata && message.metadata.skipBot == "true" && contact.metadata.CONVERSATION_STATUS == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) {
 					return;
