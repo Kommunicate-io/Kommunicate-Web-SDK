@@ -28,16 +28,24 @@ export class HelpCenterDataContext extends Component {
                 helpCenter: response.data.response.helpCenter,
             }, () => {
                 this.checkForMissingSettings();
-                this.storeSettings();
+                this.state.helpCenter && this.storeSettings();
             })
         })
     }
-
     checkForMissingSettings = () => {
-        !this.state.helpCenter.color && (this.state.helpCenter.color =  DEFAULT_HELPCENTER_SETTINGS.color)
-        !this.state.helpCenter.heading && (this.state.helpCenter.heading =  DEFAULT_HELPCENTER_SETTINGS.heading);
-        !this.state.helpCenter.logo && (this.state.helpCenter.logo =  DEFAULT_HELPCENTER_SETTINGS.logo);
-        !this.state.helpCenter.title && (this.state.helpCenter.title =  DEFAULT_HELPCENTER_SETTINGS.title);
+        if (this.state.helpCenter) {
+            !this.state.helpCenter.color && (this.state.helpCenter.color = DEFAULT_HELPCENTER_SETTINGS.color);
+            !this.state.helpCenter.heading && (this.state.helpCenter.heading = DEFAULT_HELPCENTER_SETTINGS.heading);
+            !this.state.helpCenter.logo && (this.state.helpCenter.logo = DEFAULT_HELPCENTER_SETTINGS.logo);
+            !this.state.helpCenter.title && (this.state.helpCenter.title = DEFAULT_HELPCENTER_SETTINGS.title);
+        } else {
+            this.setState({
+                helpCenter: DEFAULT_HELPCENTER_SETTINGS
+            }, () => {
+                this.storeSettings();
+            })
+        }
+
     }
 
     storeSettings = () => {
