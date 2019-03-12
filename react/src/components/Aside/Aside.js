@@ -73,9 +73,9 @@ class Aside extends Component {
       pseudoUser: true,
       activeConversationTab: CONVERSATION_TYPE.ASSIGNED_TO_ME,
       conversationTab:{
-        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:"" }, 
-        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:"" }, 
-        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:"" }
+        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count: 0 }, 
+        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count: 0 }, 
+        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count: 0 }
       },
       loggedInUser:"",
       isLizActive: false
@@ -155,12 +155,13 @@ class Aside extends Component {
       pseudoUser:false
     })
   }
-  showConversationCount = (count, type) => {
-    this.state.conversationTab[type].count = count;
+  displayConversationCount = (count) => {
+    const displayLimit = 999;
+    return count > displayLimit ? (displayLimit.toString() + "+") : count
   }
   updateConversationCount = (type, change) => {
     let conversationTab = this.state.conversationTab;
-    conversationTab[type].count = conversationTab[type].count + change;
+    conversationTab[type].count += change;
     this.setState({conversationTab:conversationTab})
   }
   handleGroupUpdate(e) {
@@ -742,7 +743,11 @@ class Aside extends Component {
                       </div>
                       <div className="km-row km-conversation-tab-title-wrapper">
                         <h4 id="km-conversation-tab-title" className="km-conversation-tab-selected km-assigned">{this.state.conversationTab[this.state.activeConversationTab].title}</h4>
-                        <p className="km-conversation-count">{this.state.conversationTab[this.state.activeConversationTab].count}</p>
+                       { this.state.conversationTab[this.state.activeConversationTab].count &&
+                          <div className="km-conversation-count-wrapper">
+                            <p className="km-conversation-count">{this.displayConversationCount(this.state.conversationTab[this.state.activeConversationTab].count)}</p>
+                          </div>
+                       }
                       </div>
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
