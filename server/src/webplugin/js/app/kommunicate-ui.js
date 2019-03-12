@@ -125,7 +125,7 @@ KommunicateUI={
     updateAttachmentStopUploadStatus: function(key, status) {
         let template = document.querySelector(".mck-message-inner.mck-group-inner");
         let attachment = template && template.querySelector(".mck-attachment-"+key);
-        attachment && template.setAttribute("data-stopupload", status);
+        attachment && attachment.setAttribute("data-stopupload", status);
     },
     getAttachmentStopUploadStatus: function (key) {
         var stopUpload = $applozic('.mck-attachment-'+key).attr('data-stopupload');
