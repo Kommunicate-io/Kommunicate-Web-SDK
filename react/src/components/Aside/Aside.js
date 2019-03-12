@@ -618,7 +618,8 @@ class Aside extends Component {
   }
 
   selectFirstConversation = (tabId) => {
-    $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0].click();
+    let fistConversation =  $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0];
+    fistConversation && fistConversation.click();
   }
 
   toggleTab = (selectedTab) => {
