@@ -21,7 +21,7 @@ Make an option false if you want to hide it.
     ":location": true,
     ":camera": true,
     ":file": true,
-    ":emoticons":true
+    ":audio":true
   }
 ```
 
@@ -50,6 +50,7 @@ Add your geo-API_KEY in `AndroidManifest.xml` file:
 Apart from the properties mentioned in the above [Applozic documentation](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail), there are some other properties in `applozic-seetings.json` file that are specific to Kommunicate.
 
 ```json
+"isFaqOptionEnabled": true,   //This will enable the FAQ button on the toolbar.
 "enableAwayMessage": false,   //Away message will be disabled
 "logoutOption": false,        //The logout option in the Option menu will be hidden
 "showStartNewConversation" : false, //The default Start New Conversation button will be hidden
