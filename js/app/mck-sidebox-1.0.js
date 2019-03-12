@@ -5626,7 +5626,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     if(typeof emoji_template =="undefined"){
                         return;
                     }
-                    $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-date").html(typeof message.createdAtTime === 'undefined' ? '' : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : '', true));
+                    $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-date").html(typeof message.createdAtTime === 'undefined' ? '' : kommunicateCommons.getTimeOrDate(message ? message.createdAtTime : '', true));
                     var $messageText = $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-wrapper");
                     $messageText.html('');
                     (typeof emoji_template === 'object') ? $messageText.append(emoji_template) : $messageText.html(emoji_template);
@@ -5727,7 +5727,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     titleExpr: title,
                     groupUserCountExpr: isGroupTab ? contact.userCount : '',
                     displayGroupUserCountExpr: displayCount ? "vis" : "n-vis",
-                    msgCreatedDateExpr: message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ''
+                    msgCreatedDateExpr: message ? kommunicateCommons.getTimeOrDate(message.createdAtTime, true) : ''
                 }];
                 var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
                 if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : '') >= latestCreatedAtTime || ($listId.indexOf("search") !== -1 && prepend)) {
@@ -6679,7 +6679,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
 
                 var response = new Object();
-                window.Applozic.ALApiService.getUserDetail({data:{userIdList: userIdList},
+                window.Applozic.ALApiService.getUserDetail({data:userIdList,
                     success: function (data) {
                         if (data.status === 'success') {
                             if (data.response.length > 0) {
