@@ -496,7 +496,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				'isGroup': false,
 				isSearch: true
 			});
-			$kmApplozic("#km-search").val("");
+			tabId && $kmApplozic("#km-search").val("");
 		};
 		_this.getDateAndTime = function (params) {
 			return kmDateUtils.getDate(params);
