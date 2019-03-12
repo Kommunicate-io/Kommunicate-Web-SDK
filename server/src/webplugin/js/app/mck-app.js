@@ -30,6 +30,10 @@ function ApplozicSidebox() {
     } ];
     var mck_script_loader1 = [
     {
+            "name": "applozic-min-js", 
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.3.min.js" // update the url with every new release of applozic-web-plugin
+    },
+    {
             "name": "km-utils", 
             "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
     },
@@ -110,13 +114,14 @@ function ApplozicSidebox() {
         style.href = url;
         head.appendChild(style);
     };
-    function mckLoadScript(url, callback) {
+    function mckLoadScript(url, callback, removeCrossOrigin) {
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = url;
-            url.indexOf("maps.google.com") == -1 && (script.crossOrigin = "anonymous")
+            script.crossOrigin = "anonymous";
+            removeCrossOrigin && script.removeAttribute("crossOrigin");
             if (callback) {
                 if (script.readyState) { // IE
                     script.onreadystatechange = function() {
@@ -177,15 +182,18 @@ function ApplozicSidebox() {
                             }
                             if (options.googleApiKey) {
                                 var url = data.url + "&key=" + options.googleApiKey;
-                                mckLoadScript(url);
+                                mckLoadScript(url, null, true);
                             }
                         } else {
-                            mckLoadScript(data.url);
+                            mckLoadScript(data.url, null, true);
                         }
                     } catch (e) {
-                        mckLoadScript(data.url);
+                        mckLoadScript(data.url), null, true;
                     }
-                } else {
+                } else if (data.name === "applozic-min-js"){
+                    mckLoadScript(data.url, null, true)
+                } 
+                else {
                     mckLoadScript(data.url);
                 }
             });
