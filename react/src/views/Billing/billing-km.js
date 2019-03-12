@@ -446,7 +446,7 @@ class BillingKommunicate extends Component {
                 nextBillingDate: response.next_billing_at,
                 totalPlanAmount: response.plan_amount
             })
-            if((this.state.subscription === "" || this.state.subscription === "startup")) {
+            if(CommonUtils.isStartupPlan()) {
                 this.setState({
                     totalPlanQuantity: 2
                 })
@@ -456,7 +456,7 @@ class BillingKommunicate extends Component {
                 this.setState({
                     totalPlanQuantity: 5
                 })
-            } else if((this.state.subscription === "" || this.state.subscription === "startup")) {
+            } else if(CommonUtils.isStartupPlan()) {
                 this.setState({
                     totalPlanQuantity: 2
                 })
@@ -641,8 +641,8 @@ class BillingKommunicate extends Component {
                             <SettingsHeader  />
 
                                 <button id="chargebee-init" hidden></button>
-                                {this.state.subscription == '' || this.state.subscription == 'startup' ?
-                                    (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
+                                {CommonUtils.isStartupPlan() ?
+                                    (CommonUtils.isTrialPlan() ?
                                         (<div className="subscription-current-plan-container">
                                             <p className="km-startup-plan-billing-info">
                                             <span>You are currently enjoying a trial version of the <strong>GROWTH PLAN</strong></span> 
@@ -664,8 +664,8 @@ class BillingKommunicate extends Component {
 				                    
                                 {/* Subscribe successfully box */}
 
-                                <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")): "subscription-complete-container"}>
-                                {this.state.subscription == '' || this.state.subscription == 'startup' ? "" :
+                                <div className={CommonUtils.isStartupPlan() ? (CommonUtils.isTrialPlan() ? ("n-vis") : ("n-vis")): "subscription-complete-container"}>
+                                {CommonUtils.isStartupPlan() ? "" :
                                     <div className="subscription-current-plan-container">
                                         <div className="subscription-success-plan-billing">
                                             <div className="subscription-success-purchased-plan-name">
@@ -689,7 +689,7 @@ class BillingKommunicate extends Component {
                                         
                                     </div>
                                     }
-                                    {  this.state.seatsBillable > this.state.totalPlanQuantity ? <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? "n-vis" : "subscription-current-plan-warning-container"}>
+                                    {  this.state.seatsBillable > this.state.totalPlanQuantity ? <div className={CommonUtils.isStartupPlan() ? "n-vis" : "subscription-current-plan-warning-container"}>
                                         <div className="subscription-warning-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 512 512">
                                                 <path d="M507.494 426.066L282.864 53.537c-5.677-9.415-15.87-15.172-26.865-15.172s-21.188 5.756-26.865 15.172L4.506 426.066c-5.842 9.689-6.015 21.774-.451 31.625 5.564 9.852 16.001 15.944 27.315 15.944h449.259c11.314 0 21.751-6.093 27.315-15.944 5.564-9.852 5.392-21.936-.45-31.625zM256.167 167.227c12.901 0 23.817 7.278 23.817 20.178 0 39.363-4.631 95.929-4.631 135.292 0 10.255-11.247 14.554-19.186 14.554-10.584 0-19.516-4.3-19.516-14.554 0-39.363-4.63-95.929-4.63-135.292 0-12.9 10.584-20.178 24.146-20.178zm.331 243.791c-14.554 0-25.471-11.908-25.471-25.47 0-13.893 10.916-25.47 25.471-25.47 13.562 0 25.14 11.577 25.14 25.47 0 13.562-11.578 25.47-25.14 25.47z" fill="#f8ba36"/>
@@ -699,7 +699,7 @@ class BillingKommunicate extends Component {
                                             <p>You have added {this.state.seatsBillable + this.state.disabledUsers} team members (humans + bots) but have bought the plan for only {this.state.totalPlanQuantity} team members</p>
                                             <p>To make sure all the right team members can log in to their Kommunicate account, delete the extra ones from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
-                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to add or delete agents in your current plan? Go to <Link to="/settings/team">Teammates section</Link></p> : ""
+                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={CommonUtils.isStartupPlan() ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to add or delete agents in your current plan? Go to <Link to="/settings/team">Teammates section</Link></p> : ""
                                     }
                                     
                                 </div>
@@ -874,6 +874,13 @@ class BillingKommunicate extends Component {
 }
 
 const SUBSCRIPTION_PLANS = {
+    'applozic': {
+        'index': '0',
+        'icon': StartupPlanIcon,
+        'name': 'Free',
+        'mau': 'Unlimited',
+        'amount': '0'
+    },
     'startup': {
         'index': '1',
         'icon': StartupPlanIcon,
