@@ -6,9 +6,7 @@ import ProfileImageName from '../Header/ProfileImageName';
 import IntegrationStarted from '../../views/IntegrationStarted/IntegrationStarted';
 import CommonUtils from '../../utils/CommonUtils';
 import { withTheme } from 'styled-components';
-import {NOTICEABLE_CREDENTIALS} from '../../utils/Constant';
 import { KommunicateLogoSymbol, ApplozicLogoSymbol, MessageLogs } from '../../assets/svg/svgs';
-import { getConfig } from '../../config/config';
 
 const UserIcon = ()=>{
   return(
@@ -76,12 +74,6 @@ class Sidebar extends Component {
     )
   }
 
-  addNoticeableWidget () {
-    let noticeableCredentials = getConfig().thirdPartyIntegration.noticeable;
-    return <noticeable-widget access-token={noticeableCredentials.accessToken} 
-        project-id={noticeableCredentials.projectId} popup-backdrop="false"></noticeable-widget>
-  };
-
   render() {
 
     const currentPath = window.location.pathname;
@@ -95,13 +87,8 @@ class Sidebar extends Component {
             <NavLink to={this.state.isKommunicateDashboard ?'/conversations':'/dashboard'} className="nav-link" activeClassName="active" data-rh="Conversations" data-rh-at="right" data-tip={this.state.isKommunicateDashboard ? "Conversations":"Dashboard"} data-effect="solid" data-place="right">
               <div className="km-logo-circle-bg">
                 { CommonUtils.isKommunicateDashboard() ? <KommunicateLogoSymbol /> : <ApplozicLogoSymbol /> }
-              </div>
-              {CommonUtils.isKommunicateDashboard() ? <div className="noticeable-whats-new-container">
-                {this.addNoticeableWidget()}
-              </div>: ""}
-            
-              
-              </NavLink>
+              </div>              
+            </NavLink>
             </li>
 
             {/* Dashboard Link */}
@@ -201,11 +188,9 @@ class Sidebar extends Component {
           <ul className="nav">
 
             {/* IntegrationStarted icon */}
-            { !this.props.isIntegrationStarted &&
-              <li className="nav-item">
-                <IntegrationStarted />
-              </li>
-            }
+            <li className="nav-item">
+              <IntegrationStarted integrationStarted={this.props.isIntegrationStarted} />
+            </li>
 
             {/* Profile Link */}
             <li className="nav-item profile-dropdown-sidebar-item" style={{marginBottom:"5px",marginTop:"0px"}}>

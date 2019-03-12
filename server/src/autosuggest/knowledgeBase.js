@@ -63,10 +63,10 @@ const KnowledgeBase = new Schema({
         es_indexed: true 
     },
     deleted: { 
-        type: String, 
+        type: Boolean, 
         default: false,
+        es_type: "boolean",
         es_indexed: true,
-        es_index_analyzer:'keyword'
     },
     created_at: { 
         type: Number, 
@@ -103,13 +103,22 @@ KnowledgeBase.methods.toJSON = function () {
     delete obj._id;
     return obj;
 }
+/**
+ * configuration for esClient
+ *  
+ */
 KnowledgeBase.plugin(mongoosastic, {
     hosts: [config.esClientUrl],
-    index: COLLECTIONS.KNOWLEDGE_BASE,
-    type:"_doc"
+    index: COLLECTIONS.KNOWLEDGE_BASE2.toLowerCase(),
+    type: "_doc",
+    bulk: {
+        delay: 10 * 1000,
+        size: 10,
+        batch: 50
+    }
 });
 
-const KnowledgeBaseModel = mongoose.model(COLLECTIONS.KNOWLEDGE_BASE, KnowledgeBase);
+const KnowledgeBaseModel = mongoose.model(COLLECTIONS.KNOWLEDGE_BASE2, KnowledgeBase);
 var stream = KnowledgeBaseModel.synchronize()
 var count = 0;
 

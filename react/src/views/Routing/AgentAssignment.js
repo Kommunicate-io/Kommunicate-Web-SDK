@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import axios from 'axios';
-import { ROUTING_RULES_FOR_AGENTS, USER_TYPE } from '../../../src/utils/Constant';
+import { ROUTING_RULES_FOR_AGENTS, USER_TYPE, LIZ } from '../../../src/utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {Link} from 'react-router-dom';
@@ -27,7 +27,7 @@ import {
 } from '../../utils/kommunicateClient'
 import * as Actions from '../../actions/applicationAction'
 import styled, { css } from 'styled-components';
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/BannerV2';
 import { LearnMore } from '../../views/Faq/LizSVG';
 
 class AgentAssignemnt extends Component{
@@ -51,7 +51,8 @@ class AgentAssignemnt extends Component{
             notifyEveryBodyDefaultAssigneeInfo:{},
             automaticAssignmentDefaultAssigneeInfo:{},
             botInAgentAssignedConversation: false,
-            appSettings:""
+            appSettings:"",
+            isLizActive:false
         };
 
     }
@@ -136,6 +137,7 @@ getIntegratedBots = () => {
                             dropDownBoxTitle: bot.name,
                             // assignConversationToBot: true,
                         })
+                        this.setLizActiveBanner(bot.userName);
                     }
                 })
             })
@@ -168,6 +170,24 @@ getAppSettings = () => {
         console.log("error while fetching routing state/round robin state", err);
     })
 }
+
+setLizActiveBanner = (botAssignee) => {
+    if (this.state.assignConversationToBot) {
+        this.setState({
+            isLizActive: (botAssignee === LIZ.userName)
+        })
+    };
+};
+
+faqAndLizBanner = () => {
+    if (this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length === 0) {
+        return <Banner appearance="warning" heading="You have not added any FAQ"> Liz cannot answer your user queries without the FAQs. Add them now from the <Link to={'/faq'} >FAQ section.</Link></Banner>
+    }
+    else if (this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length !== 0 && this.props.appSettings.faqList.length < 5) {
+        return <Banner appearance="warning" heading="Add more FAQs for better results"> You can keep adding more FAQs to improve Liz's performance and accuracy from the <Link to={'/faq'} >FAQ section.</Link></Banner>
+    }
+};
+
 handleRadioBtnNotifyEverybody = () => {
     this.setState({
         checkedNotifyEverybody: true,
@@ -234,6 +254,7 @@ toggleConversationAssignment = () => {
             let userSession = CommonUtils.getUserSession();
             userSession.botRouting = status;
             CommonUtils.setUserSession(userSession);
+            console.log(this.state.dropDownBoxTitle);
         }
     })).catch(err => {
         console.log("error while updating bot routing", err);
@@ -323,8 +344,8 @@ toggleConversationAssignment = () => {
                             <BannerContainer>
                                 <div>
                                     {
-                                        this.state.botsAreAvailable ?  <Banner indicator={"default"} hidden={false} text={"You have bots available. Turn this section on to use them in conversations. "}/> : 
-                                        <Banner indicator={"warning"} hidden={false} text={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/> 
+                                        this.state.botsAreAvailable ?  <Banner appearance="info" hidden={false} heading={"You have bots available. Turn this section on to use them in conversations. "}/> : 
+                                        <Banner appearance="info" hidden={false} heading={["You do not have any bots available. You may start with your ", <Link key={1} className="routing-bot-link" to="/bot">Bot Integration</Link>,  " or set up your ", <Link key={2} className="routing-bot-link" to="/faq">FAQ</Link>, " section."]}/>                                    
                                     }
                                 </div>
                             </BannerContainer>
@@ -353,6 +374,7 @@ toggleConversationAssignment = () => {
                                                                             Notification.info('Conversations assigned to ' + bot.name);
                                                                             window.Aside.loadAgents();
                                                                             this.getIntegratedBots();
+                                                                            this.setLizActiveBanner(bot.userName);
                                                                         } else {
                                                                                 Notification.info('Conversations not assigned to ' + bot.name)
                                                                         }
@@ -377,6 +399,9 @@ toggleConversationAssignment = () => {
                                     </DropdownButton>
                                 </div>
                             </OptionsWrapper>
+                            <LizBanner>
+                                <Fragment>{ this.state.isLizActive && this.faqAndLizBanner() }</Fragment>
+                            </LizBanner>
                             <div style={{marginTop: "30px"}}>
                                 <div className="see-docs-link-container">
                                     <p className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-conversation-assignment" target="_blank" >See Docs <LearnMore color={"#5553B7"} /></a></p>
@@ -396,7 +421,7 @@ toggleConversationAssignment = () => {
                         </OptionsWrapper>
 
                         <BannerContainer>   
-                            <Banner indicator={"default"} hidden={false} text={"NOTE: If enabled, the unassigned bots will also reply to user messages."} />
+                            <Banner appearance="info" hidden={false} heading={"NOTE: If enabled, the unassigned bots will also reply to user messages."}/>
                         </BannerContainer>
                     </OptionsContainer>
                 </div>
@@ -467,6 +492,9 @@ const BannerContainer = styled.div`
     margin: 25px auto;
 `;
 
+const LizBanner = styled.div`
+    margin-top: 10px;
+`;
 
 
 const mapStateToProps = state => ({

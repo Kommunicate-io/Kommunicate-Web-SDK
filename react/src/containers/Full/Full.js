@@ -35,10 +35,12 @@ import { COOKIES } from '../../utils/Constant';
 import config from '../../config/index';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
+import {getSuggestionsByCriteria} from '../../utils/kommunicateClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import MessageLogs from '../../ALDashboard/views/Groups/MessageLogs';
-
+import { connect } from 'react-redux';
+import * as Actions from '../../actions/applicationAction';
 
 
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
@@ -190,6 +192,7 @@ class Full extends Component {
   }
 
   componentDidMount() {
+    this.getFaqList();
     if(CommonUtils.getUserSession()){
       AnalyticsTracking.identify(CommonUtils.getUserSession().userName);
 
@@ -235,6 +238,16 @@ class Full extends Component {
     this.setState({hideInvitedMemberBar:true});
   }
 
+  getFaqList = () => {
+    let userSession = CommonUtils.getUserSession();
+    getSuggestionsByCriteria(userSession.applicationId, 'type', 'faq').then(response => {
+      console.log(response)
+      if(response && response.data && response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
+        var faqList = response.data || [];
+        this.props.updateFaqListInAppSettings(faqList);
+      }
+    }).catch(err => {console.log(err)});
+  }
 
   render() {
 
@@ -302,4 +315,8 @@ class Full extends Component {
   }
 }
 
-export default Full;
+const mapDispatchToProps = dispatch => ({
+  updateFaqListInAppSettings: payload => dispatch(Actions.updateApplicationData('FAQ_LIST', payload))
+}) ;
+
+export default connect(null, mapDispatchToProps)(Full); 

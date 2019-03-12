@@ -9,7 +9,7 @@ import { sendProfileImage, updateAppSetting, getAppSetting } from '../../utils/k
 import LockBadge from '../../components/LockBadge/LockBadge';
 import {LiveChatWidget} from '../../components/LiveChatWidget/LiveChatWidget';
 import ReactTooltip from 'react-tooltip';
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/BannerV2';
 import { ROLE_TYPE } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
@@ -205,7 +205,7 @@ class ChatWidgetCustomization extends Component {
         return (
             <div className="animated fadeIn km-chat-customization-wrapper">
                 <div className="km-settings-banner">
-                    <Banner indicator={"warning"} hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} text={"You need admin permissions to change Chat Widget settings"} />
+                    <Banner appearance="warning" hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} heading={"You need admin permissions to change Chat Widget settings."}/>
                 </div>
             <SettingsHeader />
             <div className="row">

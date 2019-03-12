@@ -13,7 +13,8 @@ const initialState = {
       primaryColor:null,
       secondaryColor:null,
       widgetImageLink:null
-    }
+    },
+    faqList:null
 
 };
 initialState.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] = null;
@@ -32,6 +33,11 @@ const applicationReducer = (state = initialState, action) => {
         defaultConversationAssignee : action.payload.defaultConversationAssignee,
         removeBotOnAgentHandOff : action.payload.removeBotOnAgentHandOff,
         widgetTheme : action.payload.widgetTheme,
+      } 
+    case 'FAQ_LIST':
+      return {
+        ...state,
+        faqList: action.payload
       }
     default:
       return state

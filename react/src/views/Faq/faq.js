@@ -30,6 +30,8 @@ import ReactQuill from 'react-quill';
 import './ReactQuill.css';
 import './LizSVG';
 import { LearnMore } from './LizSVG';
+import { connect } from 'react-redux';
+import * as Actions from '../../actions/applicationAction';
 
 
 class Tabs extends Component {
@@ -72,9 +74,11 @@ class Tabs extends Component {
     getSuggestionsByCriteria(this.applicationId, 'type', 'faq').then(response => {
       // console.log(response)
       if(response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
+        var faqList = response.data ? response.data : [];
         this.setState({
-          listOfFAQs :  response.data ? response.data : []
+          listOfFAQs : faqList
         })
+        this.props.updateFaqListInAppSettings(faqList);
       }
     }).catch(err => {console.log(err)});
   }
@@ -660,4 +664,10 @@ const styles = {
 }
 
 
-export default Tabs;
+// export default Tabs;
+
+const mapDispatchToProps = dispatch => ({
+  updateFaqListInAppSettings: payload => dispatch(Actions.updateApplicationData('FAQ_LIST', payload))
+}) ;
+
+export default connect(null, mapDispatchToProps)(Tabs);

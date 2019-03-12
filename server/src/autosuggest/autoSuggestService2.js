@@ -14,7 +14,7 @@ const generateHash = (message) => {
 }
 
 const getAllSuggestions = async () => {
-    let arr = await KnowledgeBaseModel.find();
+    let arr = await KnowledgeBaseModel.find().sort({id:1});
     return arr;
 }
 
@@ -32,7 +32,7 @@ const getSuggestionsByCriteria = (criteria, value, applicationId) => {
         criteriaObj[criteria] = parseInt(value, 10);
     }
     criteriaObj.applicationId = applicationId;
-    return KnowledgeBaseModel.find(criteriaObj);
+    return KnowledgeBaseModel.find(criteriaObj).sort({id:1});
 }
 
 const createSuggestion = async (suggestion) => {
@@ -43,6 +43,19 @@ const createSuggestion = async (suggestion) => {
         logger.error("error while creating auto suggestion/faq", error);
         throw error;
     });
+}
+/**
+ * 
+ * @param {*} suggestion 
+ */
+const createIfNotExist = (suggestion)=>{
+    KnowledgeBaseModel.findOne({id:suggestion.id}).then(result=>{
+        if(!result){
+            KnowledgeBaseModel.create(suggestion).catch(error => {
+                logger.error("error while creating auto suggestion/faq", error);
+            });
+        }
+    })
 }
 
 const updateSuggestion = (suggestion) => {
@@ -77,7 +90,7 @@ const searchFAQ = async (options) => {
         if (options.key) {
             criteria.key = options.key;
         }
-        data = KnowledgeBaseModel.find(criteria).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
+        data = KnowledgeBaseModel.find(criteria).select({ name: 1, content: 1, referenceId: 1, id: 1}).sort({id:1});
     } 
     for (var i = 0; i < data.length; i += 1) {
         var knowledge = data[i];
@@ -86,7 +99,7 @@ const searchFAQ = async (options) => {
                 id: knowledge.referenceId,
                 deleted: false,
                 status: { '$nin': ['un_answered'] }
-            }).select({ name: 1, content: 1, referenceId: 1, id: 1, _id: 0 });
+            }).select({ name: 1, content: 1, referenceId: 1, id: 1}).sort({id:1});
             data[i].content = result[0].content;
         }
     }
@@ -127,7 +140,7 @@ const searchQuery = (options) => {
                         "must": [
                             { "term": { "applicationId.keyword": options.appId } },
                             { "term": { "type.keyword": "faq" } },
-                            { "term": { "deleted.keyword": false } },
+                            { "term": { "deleted": false } },
                             { "term": { "status.keyword": "published" } },
                         ]
                     }
@@ -158,5 +171,6 @@ module.exports = {
     getSuggestionsByCriteria,
     getSuggestionsByAppId,
     generateHash,
+    createIfNotExist,
     searchESQueryByCriteria
 }

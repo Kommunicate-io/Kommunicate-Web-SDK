@@ -2079,7 +2079,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
               }
             };
             _this.getUserMetadata = function () {
-                var KM_USER_DETAIL = ['name', 'email', 'phone'];
+                var KM_USER_DETAIL = ['name', 'email', 'phone','password'];
                 var metadata = {};
                 KM_PRELEAD_COLLECTION.filter(function (element) {
                     if (KM_USER_DETAIL.indexOf(element.field) === -1) {
@@ -2427,7 +2427,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     var email = $applozic("#km-email").val();
                     var userName = $applozic("#km-name").val();
                     var contactNumber = $applozic("#km-phone").val();
-
+                    var password = $applozic("#km-password").val();
+                    if (password) {
+                        MCK_ACCESS_TOKEN = password;
+                    }
                     if(contactNumber){
                         userId =contactNumber;
                     }
@@ -2446,8 +2449,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
                         metadata:metadata,
+                        password:password,
                         googleApiKey: MCK_GOOGLE_API_KEY,
-                        chatNotificationMailSent: true
+                        chatNotificationMailSent: true,
+                        authenticationTypeId:MCK_AUTHENTICATION_TYPE_ID,
                     }
                     if (email) {
                         options.email = email;

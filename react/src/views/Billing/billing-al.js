@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled, { css } from 'styled-components';
 import Modal from 'react-modal';
 import moment from 'moment';
@@ -161,6 +161,29 @@ class BillingApplozic extends Component {
         }
     }
 
+    renderTrailPeriodText = () => {
+        let userSession = CommonUtils.getUserSession();
+        let currentPricingPackage = userSession.application.pricingPackage;
+        let applicationCreatedAt = userSession.applicationCreatedAt || userSession.created_at;
+        applicationCreatedAt.replace('Z','');
+        if(!CommonUtils.isTrialPlan() && currentPricingPackage <=0) {
+            return (
+                <TrialDaysText>
+                    <div>You are on the <strong>FREE PLAN</strong></div>
+                    <div>Your trial ended on {moment(applicationCreatedAt).add(1, 'month').format("DD MMMM YYYY")}.</div>
+                </TrialDaysText>
+            )
+        } else  {
+            return (
+                <TrialExpiredText>
+                    <div>You are currently enjoying a trial version of the <strong>GROWTH PLAN</strong></div>
+                    <div>At the end of the trial period ({moment(applicationCreatedAt).add(1, 'month').format("DD MMMM YYYY")}) you will be downgraded to the Free plan.</div>
+                </TrialExpiredText>
+            )
+        }
+        
+    }
+
     render() {
         let status = SUBSCRIPTION_PACKAGES[CommonUtils.getUserSession().application.pricingPackage];
         let planMAU = CommonUtils.getUserSession().application.supportedMAU;
@@ -174,19 +197,23 @@ class BillingApplozic extends Component {
                 <div className="container">
                     
                     <PlanBoughtContainer>
-                        <PlanBoughtActivePlanContainer>
-                            <div>Your plan:</div>
-                            <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
-                        </PlanBoughtActivePlanContainer>
-                        { Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data.length > 0 ?
-                            <PlanBoughtNextBillingDateContainer>
-                                <div>Next billing:</div>
-                                <div>You will be charged <strong>${subscriptionDetails.plan.amount / 100}</strong> on <strong>{moment(subscriptionDetails.currentPeriodEnd * 1000).format("DD MMM YYYY")}</strong></div>
-                            </PlanBoughtNextBillingDateContainer> : ""
+                        { (!CommonUtils.isTrialPlan() && currentPricingPackage > 0) ?
+                            <Fragment>
+                                <PlanBoughtActivePlanContainer>
+                                    <div>Your plan:</div>
+                                    <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data && subscriptionDetails.data.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
+                                </PlanBoughtActivePlanContainer>
+                                { Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data && subscriptionDetails.data.length > 0 ?
+                                    <PlanBoughtNextBillingDateContainer>
+                                        <div>Next billing:</div>
+                                        <div>You will be charged <strong>${subscriptionDetails.plan.amount / 100}</strong> on <strong>{moment(subscriptionDetails.currentPeriodEnd * 1000).format("DD MMM YYYY")}</strong></div>
+                                    </PlanBoughtNextBillingDateContainer> : ""
+                                }
+                                <PlanChangeCardContainer>
+                                    <Button secondary link type="submit" value="Change Card" onClick={this.changeCardClick}>Change Card</Button>
+                                </PlanChangeCardContainer>
+                            </Fragment> : this.renderTrailPeriodText()
                         }
-                        <PlanChangeCardContainer>
-                            <Button secondary link type="submit" value="Change Card" onClick={this.changeCardClick}>Change Card</Button>
-                        </PlanChangeCardContainer>
                     </PlanBoughtContainer>
 
                     <MultiToggleSwitch
@@ -273,13 +300,13 @@ const billingCycleOptions = [
 ];
 
 const planDetails = {
-    "starterPlan": ["Native Android, iOS & Ionic/PhoneGap SDK", "Unlimited concurrent connections", "Lifetime Message History Retention", "One-to-one & Group chat", "Attachment Sharing", "Push Notifications", "Complimentary Live Chat Plugin (2 Agent Plan)", "Standard Hosting"], 
+    "starterPlan": ["Android, iOS & Web", "Ionic PhoneGap, React Native SDK", "Unlimited peak connections", "Lifetime History Retention", "One-to-one & Group chat", "Attachment Sharing", "Push Notifications", "Live Chat Plugin (2 Agent)", "Standard Hosting"], 
 
-    "growthPlan": ["Broadcast Messages", "Admin Announcements", "Webhooks Support", "Email Notifications", "Downloadable Reports", "Profanity Filters", "User Moderation", "End-to-end Encryption", "No Applozic Branding"],
+    "growthPlan": ["Broadcast Messages", "Admin Announcements", "Webhooks Support", "Email Notifications", "Downloadable Reports", "Profanity Filters", "User Moderation", "No Applozic Branding"],
 
-    "proPlan": ["No Applozic Branding", "Live Streaming Chat", "Localization Support", "Custom Reports ", "Complimentary Live Chat Plugin (3 Agent Plan)", "Conversation Routing", "Choice of hosting region", "Service Level Agreement", "Phone Support"],
+    "proPlan": ["Bot Integration", "Live Streaming Chat", "Localization Support", "Custom Reports", "Live Chat Plugin (3 Agent)", "Conversation Routing", "Choice of hosting region", "Service Level Agreement", "Phone Support"],
 
-    "enterprisePlan": ["Unlimited Group Member Limit", "Dedicated (Single-Tenant) Hosting", "On-Prem (Self) Hosting", "Complimentary Live Chat Plugin (Upto 10 Agents)", "Bots & Automation", "Choice of Support Channel", "Dedicated Account Manager"]
+    "enterprisePlan": ["Unlimited Group Member", "Dedicated Hosting", "Live Chat Plugin (10 Agents)", "Bots & Automation", "Choice of Support Channel", "Dedicated Account Manager"]
 };
 
 const PRICING_PACKAGE_MAP = {
@@ -449,5 +476,19 @@ const ThankYouSubText = styled(ThankYouText)`
     letter-spacing: 1.1px;
     color: #4a4a4a;
 `;
+const TrialDaysText = styled.div`
+    & div:first-child {
+        font-size: 18px;
+        margin-bottom: 5px;
+        color: #4e4e4f;
+        display: block;
+        padding-bottom: 10px;
+    }
+    & div:last-child {
+        font-size: 16px;
+        color: #969797;
+    }
+`;
+const TrialExpiredText = styled(TrialDaysText)``;
 
 export default BillingApplozic;

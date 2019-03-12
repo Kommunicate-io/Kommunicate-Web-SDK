@@ -209,10 +209,9 @@ getListMarkup:function(){
          </div>
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
-                         {{#buttons}}
-                         <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
-                         {{/buttons}}
-                     
+                    {{#buttons}}
+                        <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                    {{/buttons}}  
              </div>
          </div>
      </div>`
