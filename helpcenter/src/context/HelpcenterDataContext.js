@@ -15,12 +15,13 @@ export class HelpCenterDataContext extends Component {
         this.state = {
             baseUrl: '',
             appId: '',
-            helpCenter:{}
+            helpCenter:{},
+            appIdFromUrl:''
         }
     }
    
     fetchSettings = () => {
-        HelpcenterClient.getAppSettings().then(response => {
+        HelpcenterClient.getAppSettings(this.state.appIdFromUrl).then(response => {
             response && response.data && this.setState({
                 baseUrl: CommonUtils.getHostNameFromUrl(),
                 appId: response.data.response.applicationId,
@@ -65,9 +66,12 @@ export class HelpCenterDataContext extends Component {
     } 
 
     componentDidMount = () => {
-      this.fetchSettings();
+        this.setState({
+            appIdFromUrl: CommonUtils.getUrlParameter(window.location.search, 'appId')
+        }, () => {
+            this.fetchSettings();
+        })
     }
-    
     render() {
         return (
             <HelpCenterData.Provider value ={{
