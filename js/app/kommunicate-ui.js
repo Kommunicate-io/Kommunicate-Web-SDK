@@ -361,9 +361,7 @@ showChat :function () {
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
     $applozic("#mck-msg-new").attr("disabled", false);
     if ($applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 && isFirstLaunch == true) {
-        $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").addClass("n-vis");
         $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").addClass("padding")
-
         isFirstLaunch = false;
     }else{
         $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis");
