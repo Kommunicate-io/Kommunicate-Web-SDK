@@ -1039,28 +1039,6 @@ color: #595757;
 }
 .km-box-form{
     position: relative;
-} 
-.km-clear-search-text {
-    font-size: 28px;
-    position: absolute;
-    right: 6px;
-    top: 6px;
-    cursor: pointer;
-    color: #97999b;
-}
-#km-no-search-results-found {
-    text-align: center;
-    margin-top: 25px;
-    font-size: 15px;
-    color: #808080;
-}
-.km-retaliate svg path{
-    fill: #AAA;
-}
-.km-retaliate {
-    background-color: #f6f2f2;
-    border: 1px solid #cec9c9;
-    padding: 9px;
 }
 .km-forward-integration-button {
     margin-left: 5px;
