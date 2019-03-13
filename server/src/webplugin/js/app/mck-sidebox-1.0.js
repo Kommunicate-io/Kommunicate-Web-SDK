@@ -18,7 +18,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
     var default_options = {
         baseUrl: KM_PLUGIN_SETTINGS.applozicBaseUrl ||'https://chat.kommunicate.io',
         fileBaseUrl: 'https://applozic.appspot.com',
-        customFileUrl:'https://googleupload.applozic.com',
+        customFileUrl:'https://googleupload.applozic.com', // google cloud file upload url
+        genereateCloudFileUrl: "https://googleupload.applozic.com/files/url?key={key}", // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
         notificationSoundLink: '',
         mapStaticAPIkey: 'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
@@ -1848,7 +1849,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 } else {
                     var href = $this.data('url');
                     var title= $this.data('name');
-
+                    if(href === ""){
+                        var key;
+                        var fileUrl;
+                        key = $this.data("blobkey");
+                        alFileService.generateCloudUrl(key, function(result) {
+                          href= result;
+                        });
+                    }
                     // Get the modal
                     var modal = parent.document.getElementById('km-fullscreen-image-modal');
                     var modalImg = parent.document.getElementById("km-fullscreen-image-modal-content");
@@ -4153,6 +4161,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
             var $mck_msg_new = $applozic("#mck-msg-new");
             var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
+            var CLOUD_HOST_URL = "www.googleapis.com";
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=  '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
@@ -5026,8 +5035,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                       }
                       else {
                           if((msg.fileMeta).hasOwnProperty("url")){
-                            if((msg.fileMeta).hasOwnProperty("thumbnailBlobKey")){
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.cloudupdate(msg.fileMeta.BlobKey) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.cloudupdate(msg.fileMeta.thumbnailBlobKey) + '" area-hidden="true" ></img></a>';
+                            if((msg.fileMeta.url).indexOf(CLOUD_HOST_URL) !== -1){
+                                var thumbnailUrl ;
+                                alFileService.generateCloudUrl(msg.fileMeta.thumbnailBlobKey, function(result) {
+                                  thumbnailUrl= result;
+                                });
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="" data-blobKey="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + thumbnailUrl + '" area-hidden="true" ></img></a>';
                             }
                             else {
                             return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
