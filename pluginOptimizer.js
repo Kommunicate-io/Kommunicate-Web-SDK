@@ -98,6 +98,7 @@ const compressAndOptimize = () => {
         compressor: 'uglify-es',
         //compressor: 'no-compress',
         input: [
+            path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/kommunicate-kb-0.1.min.js'),
             path.resolve(__dirname, 'js/app/labels/default-labels.js'),
             path.resolve(__dirname, 'js/app/kommunicate-client.js'),
@@ -117,24 +118,6 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/events/applozic-event-handler.js'),
             path.resolve(__dirname, 'js/app/km-post-initialization.js'),
             path.resolve(__dirname, 'js/app/mck-ringtone-service.js')
-        ],
-        output: path.resolve(__dirname, 'js/app/km-chat-combined-0.1.min.js'),
-        callback: function (err, min) {
-            if (!err)
-                console.log(" km-chat-combined-0.1.min.js combined successfully");
-            else {
-                console.log("err while minifying kkm-chat-combined-0.1.min.js", err);
-            }
-        }
-    });
-
-    compressor.minify({
-
-        compressor: 'no-compress',
-        input: [
-            path.resolve(__dirname, 'js/app/applozic.jquery.js'),
-            path.resolve(__dirname, 'js/app/applozic.chat.min.js'),
-            path.resolve(__dirname, 'js/app/km-chat-combined-0.1.min.js')
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`),
         callback: function (err, min) {
