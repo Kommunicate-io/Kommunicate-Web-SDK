@@ -44,6 +44,7 @@ const getIntegrationSetting = (customerId, type) => {
         criteria.type=type;
         
     }
+    //Note: paranoid : false - to get the deleted record from db so agile CRM contact will be created manually from dashboard.
     return Promise.resolve(ThirdPartyIntegrationSettings.findAll({ where: criteria, order, paranoid: type != AGILE_CRM })).then(setting => {
         return setting;
     });
