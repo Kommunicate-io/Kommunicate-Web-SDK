@@ -282,17 +282,18 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
             if (applozic.PRODUCT_ID == 'kommunicate') {
+                var cookieDomain  = KommunicateUtils.getDomainFromUrl();
                 if (!options.userId) {
                     if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID)) {
                         options.userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                     } else {
                         options.userId = userId;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30, domain: cookieDomain});
                         if (pseudoNameEnabled) {
                             if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME)) {
                                 options.userName = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                             } else {
-                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30});
+                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30,domain: cookieDomain});
                                 options.userName = data.userName;
                             }
                             options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
@@ -300,7 +301,7 @@ function ApplozicSidebox() {
                     }
                 }
                 if (!options.askUserDetails || !options.preLeadCollection) {
-                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30});
+                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
                 }
             }
             if (typeof options !== 'undefined') {
@@ -323,7 +324,7 @@ function ApplozicSidebox() {
         mapCookies && mapCookies.forEach(function(arrayItem){
             if (KommunicateUtils.getCookie(arrayItem.oldName)) {
                 var value = KommunicateUtils.getCookie(arrayItem.oldName);
-                KommunicateUtils.setCookie(arrayItem.newName, value, 1);
+                KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
                 KommunicateUtils.deleteCookie(arrayItem.oldName);
             }
         })
