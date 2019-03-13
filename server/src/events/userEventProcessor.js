@@ -55,7 +55,7 @@ exports.processUserUpdatedEvent= (user)=>{
         return;
     }
     if (!user.applicationId) {
-        logger.info('application id is missing on user update event');
+        logger.info('application id is missing on user update event', user.userId);
         return
     }
     let contactId =  agileCrm && agileCrm.contactId;
