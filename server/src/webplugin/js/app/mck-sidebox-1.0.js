@@ -2444,8 +2444,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                     if(email){
                         userId = email;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30});
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
                     }
                     var metadata = mckMessageService.getUserMetadata();
                     $error_chat_login.removeClass('show').addClass('hide');
@@ -8569,7 +8569,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         stompClient.connect("guest", "guest", _this.onConnect, _this.onError, '/');
                         w.addEventListener("beforeunload", function (e) {
                             _this.disconnect();
-                        });
+                        }); 
                     }
                 }
             };
