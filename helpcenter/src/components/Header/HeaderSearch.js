@@ -4,7 +4,7 @@ import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import { withRouter } from 'react-router-dom';
 import { ClearButton } from '../../assets/svgAssets';
 import { ClearButtonWrapper, MenuWrapper, SeeAllButton, SearchBoxWrapper , SearchBox, SearchResultsWrapper,
-SearchResults, NoResultFoundMenuButton } from './HeaderComponents';
+SearchResults, NoResultFoundMenuButton, SearchBarLoaderWrapper, SearchBarLoader } from './HeaderComponents';
 import { HelpCenterData } from '../../context/HelpcenterDataContext'
 
 let fetchFaq;
@@ -22,7 +22,8 @@ class HelpQuerySearch extends Component {
             value: '',
             key:'',
             totalSearchResults:'',
-            maxVisibleSearchedFaq : 5
+            maxVisibleSearchedFaq : 5,
+            isLoaderVisible : true
         };
     }
     getFaqListFromServer = () => {
@@ -32,27 +33,19 @@ class HelpQuerySearch extends Component {
             this.state.inputValue && HelpcenterClient.searchFaq(this.context.helpCenter.appId, this.state.inputValue).then(response => {
                 response && response.data && _this.setState({
                     totalSearchResults: response.data.length,
-                    searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq)
+                    searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq),
+                    isLoaderVisible : false
                 })
             })
         }, timeout);
     }
-    filterFaqList = (inputValue) => {
-        return this.state.searchedFaqList.slice(0,this.state.maxVisibleSearchedFaq)
-    };
-      
-    loadOptions = () => {
-        this.getFaqListFromServer();
-        setTimeout(() => {
-            callback(this.filterFaqList());
-        }, 1000);
-    };
-    
+
     handleInput = (e) => {
         this.setState({
             isDropDownOpen: e.target.value,
             inputValue: e.target.value,
-            searchedFaqList : ''
+            searchedFaqList : '',
+            isLoaderVisible : true
         }, () => {
             fetchFaq && clearTimeout(fetchFaq);
             this.getFaqListFromServer();
@@ -100,7 +93,7 @@ class HelpQuerySearch extends Component {
     toggleDropdown = () => {
         this.state.inputValue && this.setState({ 
             isDropDownOpen: !this.state.isDropDownOpen ,
-            searchedFaqList : ''
+            searchedFaqList : null,
         });
     }
     setPageTitle = () =>{
@@ -126,10 +119,16 @@ class HelpQuerySearch extends Component {
             value={this.state.inputValue}
             onKeyDown={(e)=>{this.handleKeyPress(e)}} />
          {  
+            ( this.state.inputValue && !this.state.searchedFaqList && this.state.isLoaderVisible) &&
+             <SearchBarLoaderWrapper>
+                <SearchBarLoader/>
+             </SearchBarLoaderWrapper>
+         }
+         {  
              this.state.inputValue &&
              <ClearButtonWrapper onClick={this.clearSearchBar}>
                 <ClearButton/>
-             </ClearButtonWrapper>
+             </ClearButtonWrapper>  
          }
          {    
             (this.state.searchedFaqList && this.state.isDropDownOpen) &&

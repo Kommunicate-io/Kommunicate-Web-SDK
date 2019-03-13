@@ -168,7 +168,7 @@ export const SeeAllButton = styled.div`
     cursor: pointer;
 `
 export const SearchBox = styled.input.attrs(() => ({ type: "text" }))`
-    width: calc(100% - 40px);
+    width: calc(100% - 85px);
     background: #fff;
     outline: none;
     border: none;
@@ -180,7 +180,7 @@ export const SearchBoxWrapper = styled.div`
     width: 100%;
     background: #fff;
     border-radius: 4px;
-    overflow: hidden
+    overflow: hidden;
 `
 
 export const SearchResultsWrapper = styled.div`
@@ -205,4 +205,20 @@ export const NoResultFoundMenuButton = styled.div`
     text-align: center;
     font-size: 18px;
     color: #9b9b9b;
+`
+
+export const SearchBarLoaderWrapper = styled.div `
+    position: absolute;
+    width: 45px;
+    right: 46px;
+    top: 50%;
+    transform: translateY(-50%);
+`
+export const SearchBarLoader = styled.div`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: searchbarLoading .4s linear infinite alternate;
+    position: relative;
+    left: 6px;
 `
