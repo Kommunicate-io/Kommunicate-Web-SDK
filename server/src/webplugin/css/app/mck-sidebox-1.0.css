@@ -1939,13 +1939,15 @@
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
-.mck-attachement-icon {
+.mck-attachement-icon, .mck-icon--video {
 	margin-right: 5px;
 }
 .mck-attachement-icon svg {
 	vertical-align: bottom;
 }
-
+.mck-icon--video svg, .mck-icon-video-text {
+	vertical-align: middle;
+}
 .mck-file-upload .mck-btn img {
 	vertical-align: middle;
 	height: 30px;

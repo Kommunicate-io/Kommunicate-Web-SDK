@@ -176,8 +176,8 @@ class BillingApplozic extends Component {
         } else  {
             return (
                 <TrialExpiredText>
-                    <div>You are currently enjoying a trial version of the <strong>GROWTH PLAN</strong></div>
-                    <div>At the end of the trial period ({moment(applicationCreatedAt).add(1, 'month').format("DD MMMM YYYY")}) you will be downgraded to the Free plan.</div>
+                    <div>You are currently enjoying a trial version of the <strong>PRO PLAN</strong></div>
+                    <div>At the end of the trial period ({moment(applicationCreatedAt).add(1, 'month').format("DD MMMM YYYY")}) your services will be stalled.</div>
                 </TrialExpiredText>
             )
         }
@@ -201,7 +201,7 @@ class BillingApplozic extends Component {
                             <Fragment>
                                 <PlanBoughtActivePlanContainer>
                                     <div>Your plan:</div>
-                                    <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data && subscriptionDetails.data.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
+                                    <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.plan && subscriptionDetails.plan.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
                                 </PlanBoughtActivePlanContainer>
                                 { Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data && subscriptionDetails.data.length > 0 ?
                                     <PlanBoughtNextBillingDateContainer>

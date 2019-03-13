@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CommonUtils from '../../utils/CommonUtils';
+import CommonUtils, {PRODUCTS}  from '../../utils/CommonUtils';
 import {sendProfileImage,getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot, getAppSetting,updateAppSetting} from '../../utils/kommunicateClient';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
@@ -459,7 +459,7 @@ class BotStore extends Component {
 
       openIntegrationModal = () =>{
         this.setState({
-          botAssignmentModal: true,
+          botAssignmentModal: true && CommonUtils.isKommunicateDashboard(),
         })
       }
       setBotCredentials = (botName, botId) =>{
@@ -621,6 +621,9 @@ class BotStore extends Component {
 
 
     render() {
+
+      const product = CommonUtils.getProduct();
+
         return(
             <div className="km-bot-store-main-container">
                 <div className={this.state.listOfIntegratedBots.length > (CommonUtils.isProductApplozic() ? 1:0) ?"banner-container" : "banner-container n-vis"}>
@@ -630,7 +633,7 @@ class BotStore extends Component {
                     <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
-                <div className={!this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
+                <div className={!this.state.useCaseSubmitted && CommonUtils.isKommunicateDashboard() ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
                 <div className="col-sm-6 km-bot-integration-second-container-text-container">
                   <p className="km-bot-request-bot-heading">Want a custom bot made for you?</p>
                   <p className="km-bot-request-bot-sub-heading">Tell us your bot use-case and we will take care of everything else</p>
@@ -666,7 +669,7 @@ class BotStore extends Component {
                 </div>
               </div> */}
 
-            <h4 className="km-bot-box-heading">Integrate your existing bot with Kommunicate</h4>
+            <h4 className="km-bot-box-heading">Integrate your existing bot with {PRODUCTS[product].title}</h4>
            <div className="row km-bot-integration-boxes" >
                 <div onClick={this.toggleDialogFlowModalWrapper} className="col-sm-6 km-bot-integration-logo-container" >
                  

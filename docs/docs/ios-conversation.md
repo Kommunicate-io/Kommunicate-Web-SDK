@@ -41,8 +41,8 @@ In the callback, clientChannelKey will be returned.
 ```
 Kommunicate.createConversation(
     userId: userId,
-    agentIds: [agentId],
-    botIds: [botId],
+    agentIds: [<AGENT_ID>],  //List of AGENT_IDs. AGENT_ID is the emailID used to signup on Kommunicate dashboard.
+    botIds: [<BOT_ID>], //List of botIds.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
     useLastConversation: true,
     completion: { response in
         guard !response.isEmpty else {return}

@@ -8,7 +8,7 @@ import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
-import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
+import { USER_TYPE, MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
 import AnalyticsTracking from './AnalyticsTracking';
 import dateFormat from 'dateformat';
 import ApplozicClient from '../utils/applozicClient';
@@ -447,6 +447,31 @@ const getWelcomeMessge = (applicationId) => {
     if (response.data.code == 'success') {
       return response.data.data.message;
     }
+  });
+}
+/**
+ * this method fetch the all users(agents and Bots) for applicationId.
+ * pass userType to filter result: 1 for Agent, 2 for Bot
+ * @param {String} applicationId
+ * @return {Object} Json of agent and bots
+ * @throws {Object} Error
+ */
+const getAgentAndUsers = (applicationId) => {
+  // this method also populating BOT_AGENT_MAP in localStorage
+  let agentFilterOption = [];
+  let agentBotMap ={};
+  return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT])).then(data => {
+    data.map((user, index) => {
+     user && (agentBotMap[user.userName] = user);
+      // remove below "if" to show bot  in agent filter option
+      if(user && user.type !=USER_TYPE.BOT ){
+      let name = user.name ? user.name :  user.email
+      agentFilterOption.push({ label: name, value: user.userName })
+    }
+    });
+    return {agents: agentFilterOption, users: agentBotMap};
+  }).catch(err => {
+    // console.log("err while fetching users list ", err);
   });
 }
 /**
@@ -1202,6 +1227,7 @@ export {
   sendProfileImage,
   updateApplozicUser,
   getWelcomeMessge,
+  getAgentAndUsers,
   getUsersByType,
   changePassword,
   goAway,

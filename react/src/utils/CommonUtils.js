@@ -103,7 +103,7 @@ const CommonUtils = {
         return diffDays;
     },
     isStartupPlan: function() {
-        return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
+        return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup" || CommonUtils.getUserSession().subscription === 'applozic';
     },
     isEnterprisePlan: function() {
         return typeof CommonUtils.getUserSession().subscription != 'undefined' && CommonUtils.getUserSession().subscription.indexOf("enterprise") != -1;
