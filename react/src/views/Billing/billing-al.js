@@ -77,8 +77,7 @@ class BillingApplozic extends Component {
     getSubscriptionDetail = () => {
         ApplozicClient.subscriptionDetail().then(response => {
             if(response && response.data && response.data.status === "success") {
-                let subscription = response.data.response.subscriptions.data[0];
-                console.log(subscription);
+                let subscription = response.data.response.subscriptions;
                 this.setState({
                     subscriptionDetails: subscription
                 })
@@ -152,15 +151,6 @@ class BillingApplozic extends Component {
         })
     }
 
-    getBillingInterval = () => {
-        let interval; 
-        if(Object.keys(this.state.subscriptionDetails).length > 0) {
-            return interval = this.state.subscriptionDetails.intervalCount === 3 ? "Quarterly Billing" : this.state.subscriptionDetails.intervalCount + "ly Billing";
-        } else {
-            return interval = "";
-        }
-    }
-
     renderTrailPeriodText = () => {
         let userSession = CommonUtils.getUserSession();
         let currentPricingPackage = userSession.application.pricingPackage;
@@ -186,7 +176,6 @@ class BillingApplozic extends Component {
 
     render() {
         let status = SUBSCRIPTION_PACKAGES[CommonUtils.getUserSession().application.pricingPackage];
-        let planMAU = CommonUtils.getUserSession().application.supportedMAU;
         let currentPricingPackage = CommonUtils.getUserSession().application.pricingPackage;
         const { subscriptionDetails } = this.state;
 
@@ -201,12 +190,12 @@ class BillingApplozic extends Component {
                             <Fragment>
                                 <PlanBoughtActivePlanContainer>
                                     <div>Your plan:</div>
-                                    <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.plan && subscriptionDetails.plan.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.plan.interval + "ly Billing"}</span> : ""}</div>
+                                    <div><span>{status.split("_")[0]}</span> {(Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data && subscriptionDetails.data.length > 0 && currentPricingPackage > 0) ? <span style={{textTransform: "uppercase"}}>{subscriptionDetails.data[0].plan.intervalCount === 3 ? "Quarterly Billing" : subscriptionDetails.data[0].plan.interval + "ly Billing"}</span> : ""}</div>
                                 </PlanBoughtActivePlanContainer>
                                 { Object.keys(subscriptionDetails).length > 0 && subscriptionDetails.data && subscriptionDetails.data.length > 0 ?
                                     <PlanBoughtNextBillingDateContainer>
                                         <div>Next billing:</div>
-                                        <div>You will be charged <strong>${subscriptionDetails.plan.amount / 100}</strong> on <strong>{moment(subscriptionDetails.currentPeriodEnd * 1000).format("DD MMM YYYY")}</strong></div>
+                                        <div>You will be charged <strong>${subscriptionDetails.data[0].plan.amount / 100}</strong> on <strong>{moment(subscriptionDetails.data[0].currentPeriodEnd * 1000).format("DD MMM YYYY")}</strong></div>
                                     </PlanBoughtNextBillingDateContainer> : ""
                                 }
                                 <PlanChangeCardContainer>

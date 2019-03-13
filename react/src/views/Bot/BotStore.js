@@ -707,7 +707,7 @@ class BotStore extends Component {
 
 
             {/* USECASE Modal */}
-            <Modal isOpen={this.state.useCaseModal} toggle={this.toggleUseCaseModal} className="modal-dialog">
+            {/* <Modal isOpen={this.state.useCaseModal} toggle={this.toggleUseCaseModal} className="modal-dialog">
           <ModalHeader toggle={this.toggleUseCaseModal}>
             <img src={KmIcon} className="km-bot-integration-dialogflow-icon" />
           </ModalHeader>
@@ -730,7 +730,7 @@ class BotStore extends Component {
               </div>
             </div>
           </ModalBody>
-        </Modal>
+        </Modal> */}
 
                 <Modal isOpen={this.state.otherPlatformModal} toggle={this.toggleOtherPlatformModal} className="modal-dialog">
           <ModalHeader toggle={this.toggleOtherPlatformModal}>
