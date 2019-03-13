@@ -5,7 +5,7 @@ import './Dashboard.css';
 // import ProductHuntOffer from '../.../../../components/EarlyBirdOffer/ProductHuntOffer';
 import Select from 'react-select';
 // import 'react-select/dist/react-select.css';
-import { getUsersByType, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
+import { getAgentAndUsers, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
 import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 // import Checkbox from '../../components/Checkbox/Checkbox'
 import {Link} from 'react-router-dom';
@@ -382,24 +382,13 @@ class KmDashboard extends Component {
     }
   }
 
-
-  getAllUsers = (applicationId) => {
-    // this method also populating BOT_AGENT_MAP in localStorage
+  loadAllUsers = (applicationId) => {
     let agentFilterOption = this.state.agentFilterOption;
-    let agentBotMap ={};
-    return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT])).then(data => {
-      data.map((user, index) => {
-       user && (agentBotMap[user.userName] = user);
-        // remove below "if" to show bot  in agent filter option
-        if(user && user.type !=USER_TYPE.BOT ){
-        let name = user.name ? user.name :  user.email
-        agentFilterOption.push({ label: name, value: user.userName })
-      }
-      })
-      this.setState({ agentFilterOption: agentFilterOption })
-      CommonUtils.setItemInLocalStorage('KM_BOT_AGENT_MAP',agentBotMap);
-    }).catch(err => {
-      // console.log("err while fetching users list ", err);
+
+    getAgentAndUsers(applicationId).then(data => {
+      agentFilterOption.push(...data.agents);
+      this.setState({ agentFilterOption: agentFilterOption });
+      CommonUtils.setItemInLocalStorage('KM_BOT_AGENT_MAP',data.users);
     });
   }
 
@@ -428,7 +417,7 @@ class KmDashboard extends Component {
   componentDidMount() {
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
-    this.getAllUsers(application.applicationId);
+    this.loadAllUsers(application.applicationId);
     this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
     window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
   }

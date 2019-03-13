@@ -6,25 +6,16 @@ import HelpQuerySearch from './HeaderSearch'
 import { SearchLogo, BackButton } from '../../assets/svgAssets';
 import { withRouter } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils'
-
+import { HelpCenterData } from '../../context/HelpcenterDataContext'
 
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputValue: '',
-      searchQuery: '',
-      faqList: '',
-      searchedFaqList: '',
-      isDropDownOpen: true,
-      value: '',
-      settings : {}
-    };
-  }
+  static contextType = HelpCenterData;
 
   navigateHome = () =>{
-    let appId = CommonUtils.getUrlParameter(window.location.search,"appId"); 
+    if(this.props.location.pathname==='/' && !this.props.location.search){
+      return false;
+    }
     this.props.history.push({
       pathname: '/'
     });
@@ -32,14 +23,7 @@ class Header extends Component {
 
   navigateBack = () =>{
     window.history.length > 1 && history.back()
-  }
-
-  componentDidMount = () => {
-    this.setState({
-      settings: CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl()),
-    });
-  }
-  
+  }  
   
   render(){
     return(
@@ -48,14 +32,14 @@ class Header extends Component {
           <HeaderWrapper >
             <HeaderTopbar>
               {
-                 (window.location.pathname.includes('article') || CommonUtils.getUrlParameter(window.location.search,"q"))  &&  <BackButtonContainer onClick={this.navigateBack}> <BackButton/> </BackButtonContainer>
-               }
+                (window.location.pathname.includes('article') || CommonUtils.getUrlParameter(window.location.search,"q"))  &&  <BackButtonContainer onClick={this.navigateBack}> <BackButton/> </BackButtonContainer>
+              }
               <TopbarLogoContainer onClick={this.navigateHome} >
-                <TopbarLogo ><img src={this.state.settings.logo} alt=""/></TopbarLogo>
+                <TopbarLogo ><img src={this.context.helpCenter.helpCenter.logo} alt=""/></TopbarLogo>
               </TopbarLogoContainer>
                 {/* <Button>{props.contactSupportButtonText}</Button> */}
               </HeaderTopbar >
-                <HelpcenterHeading headingVisible={window.location.pathname === "/" && !CommonUtils.getUrlParameter(window.location.search,"q")}>{this.state.settings.heading}</HelpcenterHeading>
+                <HelpcenterHeading headingVisible={window.location.pathname === "/" && !CommonUtils.getUrlParameter(window.location.search,"q")}>{this.context.helpCenter.helpCenter.heading}</HelpcenterHeading>
               <SearchBarContainer >
               <SearchIconContainer>
                 <SearchLogo/>
@@ -63,12 +47,15 @@ class Header extends Component {
                 <HelpQuerySearch/>
             </SearchBarContainer>
           </HeaderWrapper>
-        </Container>
+      </Container>
       </HeaderComponent>        
     )
   }
 }
 
-export default withRouter(Header);
+Header.contextType = HelpCenterData;
+export default Object.assign(withRouter(Header), { contextType: undefined });
+
+
 
 

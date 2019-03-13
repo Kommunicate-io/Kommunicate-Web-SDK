@@ -4,7 +4,7 @@ const logger = require('../../utils/logger');
 const deepmerge = require('deepmerge');
 
 exports.getAppSettingsByApplicationId = (criteria) => {
-    return Promise.resolve(applicationSettingModel.findAll({ where: criteria , raw:true})).then(res => {
+    return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
         let result = res[0];
         if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
         if(result.popupTemplateKey == null){
@@ -48,6 +48,10 @@ exports.updateAppSettings = async (settings, appId) => {
     if(settings.supportMails && appSetting.supportMails){
         settings = deepmerge(appSetting.supportMails, settings);
         settings.supportMails = [...new Set(settings.supportMails)]; 
+    }
+    if (settings.preLeadCollection && appSetting.preLeadCollection) {
+        settings = deepmerge(appSetting.preLeadCollection, settings);
+        settings.preLeadCollection = [...new Set(settings.preLeadCollection)]; 
     }
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
         if(settings.popupTemplateKey == null){

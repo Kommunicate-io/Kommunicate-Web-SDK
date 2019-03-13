@@ -459,7 +459,7 @@ class BotStore extends Component {
 
       openIntegrationModal = () =>{
         this.setState({
-          botAssignmentModal: true,
+          botAssignmentModal: true && CommonUtils.isKommunicateDashboard(),
         })
       }
       setBotCredentials = (botName, botId) =>{
@@ -633,7 +633,7 @@ class BotStore extends Component {
                     <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
-                <div className={!this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
+                <div className={!this.state.useCaseSubmitted && CommonUtils.isKommunicateDashboard() ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
                 <div className="col-sm-6 km-bot-integration-second-container-text-container">
                   <p className="km-bot-request-bot-heading">Want a custom bot made for you?</p>
                   <p className="km-bot-request-bot-sub-heading">Tell us your bot use-case and we will take care of everything else</p>

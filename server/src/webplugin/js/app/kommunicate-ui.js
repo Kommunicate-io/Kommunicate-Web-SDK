@@ -100,8 +100,9 @@ KommunicateUI={
 
     },
     updateImageAttachmentPreview: function(fileMeta, key) {
-        let thumbnailUrl = $applozic(".mck-attachment-"+key)[0].dataset.thumbnailurl;
-        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
+        let template = $applozic(".mck-attachment-"+key)[0];
+        let thumbnailUrl = template && template.dataset && template.dataset.thumbnailurl;
+        thumbnailUrl && $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
         if(file.type.indexOf("image/") != -1) {
@@ -113,15 +114,18 @@ KommunicateUI={
     },
     updateAttachmentTemplate: function(file_meta,key){
         let template = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key);
-        template.setAttribute("data-filemetakey", file_meta.blobKey);
-        template.setAttribute("data-filename", file_meta.name);
-        template.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
-        template.setAttribute("data-filesize", file_meta.size);
-        template.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+        if (template) {
+            template.setAttribute("data-filemetakey", file_meta.blobKey);
+            template.setAttribute("data-filename", file_meta.name);
+            template.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
+            template.setAttribute("data-filesize", file_meta.size);
+            template.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+        }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
-        let template = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key);
-        template.setAttribute("data-stopupload", status);
+        let template = document.querySelector(".mck-message-inner.mck-group-inner");
+        let attachment = template && template.querySelector(".mck-attachment-"+key);
+        attachment && attachment.setAttribute("data-stopupload", status);
     },
     getAttachmentStopUploadStatus: function (key) {
         var stopUpload = $applozic('.mck-attachment-'+key).attr('data-stopupload');
@@ -357,9 +361,6 @@ showChat :function () {
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
     $applozic("#mck-msg-new").attr("disabled", false);
     if ($applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 && isFirstLaunch == true) {
-        $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").addClass("n-vis");
-        $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").addClass("padding")
-
         isFirstLaunch = false;
     }else{
         $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis");

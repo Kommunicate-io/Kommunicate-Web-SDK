@@ -5,9 +5,11 @@ import * as PageNotFoundComponents from './PageNotFoundComponents';
 import { FourOhFourOne, FourOhFourTwo, FourOhFourThree } from '../../assets/svgAssets';
 import  Button  from "../../components/Button/Button";
 import  PoweredByKommunicate  from "../../components/PoweredByKommunicate/PoweredByKommunicate";
-import { CommonUtils } from '../../utils/CommonUtils'
-
+import { CommonUtils } from '../../utils/CommonUtils';
+import { HelpCenterData } from '../../context/HelpcenterDataContext';
+ 
 class PageNotFound extends Component {
+    static contextType = HelpCenterData;
     constructor(props) {
         super(props);
         this.state = {
@@ -16,15 +18,9 @@ class PageNotFound extends Component {
         };
     };
     componentDidMount = () => {
-        this.setState({
-            settings : CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl())
-        },()=>{
-            let searchQuery = '?appId='+this.state.appId;
-            this.props.history.push({
-                pathname: '/404'
-            });
-        })
-       
+        this.props.history.push({
+            pathname: '/404'
+        });
         this.generateClouds();
         this.generateWaves();
     }
@@ -47,7 +43,7 @@ class PageNotFound extends Component {
     }
 
     returnHome = () => {
-        this.state.settings ?
+        this.context.appId ?
             this.props.history.push({
                 pathname: '/'
             }) :
@@ -107,7 +103,7 @@ class PageNotFound extends Component {
     }
 }
 
-export default withRouter(PageNotFound);
-
+PageNotFound.contextType = HelpCenterData;
+export default Object.assign(withRouter(PageNotFound), { contextType: undefined });
 
 

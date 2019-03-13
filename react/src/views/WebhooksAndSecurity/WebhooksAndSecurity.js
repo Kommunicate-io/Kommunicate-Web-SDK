@@ -10,7 +10,7 @@ import {SettingsHeader} from '../../../src/components/SettingsComponent/Settings
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/BannerV2';
 import { ROLE_TYPE } from '../../utils/Constant';
 import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
 import { withTheme } from 'styled-components';
@@ -174,8 +174,8 @@ class WebhooksAndSecurity extends Component {
         return(
             <div className="animated fadeIn webhooks-and-security-div">
                 <div className="km-settings-banner">
-                    <Banner indicator={"warning"} hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} text={"You need admin permissions to change Webhooks & Security settings"} />
-              </div>
+                    <Banner appearance="warning" hidden={this.state.loggedInUserRoleType != ROLE_TYPE.AGENT} heading={"You need admin permissions to change Webhooks & Security settings."}/>
+                </div>
                 <div className="km-heading-wrapper">
 					<SettingsHeader  />
                 </div>

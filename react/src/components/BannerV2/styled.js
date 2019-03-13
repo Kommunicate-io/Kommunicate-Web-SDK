@@ -9,6 +9,7 @@ const Content = styled.div`
 `;
 const Icon = styled.div`
     display: flex;
+    align-items: flex-start;
     margin-right: 10px;
     & svg {
         width: 18px;

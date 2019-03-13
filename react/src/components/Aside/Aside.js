@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
 import Banner from '../Banner/Banner';
+import BannerV2 from '../../components/BannerV2';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
 import {integration_type} from '../../views/Integrations/ThirdPartyList';
@@ -45,6 +46,7 @@ class Aside extends Component {
       applicationId : "",
       activeTab: '1',
       assignee: '',
+      conversationStatus:"",
       visibleIntegartion:false,
       visibleReply:true,
       modalIsOpen:false,
@@ -71,10 +73,12 @@ class Aside extends Component {
       pseudoUser: true,
       activeConversationTab: CONVERSATION_TYPE.ASSIGNED_TO_ME,
       conversationTab:{
-        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:"" }, 
-        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:"" }, 
-        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:"" }
+        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count: 0 }, 
+        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count: 0 }, 
+        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count: 0 }
       },
+      loggedInUser:"",
+      isLizActive: false
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
@@ -119,7 +123,8 @@ class Aside extends Component {
       applicationId:applicationId,
       botRouting:botRouting,
       agileCrmData :"",
-      inputBox:false
+      inputBox:false,
+      loggedInUser: userSession.userName
      },this.loadAgents);
      if (typeof(Storage) !== "undefined") {
       (localStorage.getItem("KM_PSEUDO_INFO") === null ) ?
@@ -150,8 +155,14 @@ class Aside extends Component {
       pseudoUser:false
     })
   }
-  showConversationCount = (count, type) => {
-    this.state.conversationTab[type].count = count;
+  displayConversationCount = (count) => {
+    const displayLimit = 999;
+    return count > displayLimit ? (displayLimit.toString() + "+") : count
+  }
+  updateConversationCount = (type, change) => {
+    let conversationTab = this.state.conversationTab;
+    conversationTab[type].count += change;
+    this.setState({conversationTab:conversationTab})
   }
   handleGroupUpdate(e) {
     e.preventDefault();
@@ -316,18 +327,29 @@ class Aside extends Component {
     if (assignee == userSession.userName && userSession.isAdmin) {
       //assignee = "agent";
     }
+    this.isConversationAssignedToLiz(assignee);
     window.$kmApplozic("#assign").val(assignee);
+    this.setState({assignee:assignee})
   }
 
+  isConversationAssignedToLiz (assignee) {
+    assignee && this.setState({
+      isLizActive: (assignee === LIZ.userName)
+    })
+  };
+  
   selectStatus() {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
       if(this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN){
         window.$kmApplozic("#conversation-status").val(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN);
+        this.setState({conversationStatus:window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN})
       }else{
         window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
+        this.setState({conversationStatus:window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATUS})
       }
     } else {
       window.$kmApplozic("#conversation-status").val(0);
+      this.setState({conversationStatus:""})
     }
   }
 
@@ -420,7 +442,7 @@ class Aside extends Component {
 
   changeAssignee(userId) {
     var that = this;
-    this.setState({assignee:userId});
+    var prevAssignee = that.state.assignee
     var groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.state.group.groupId ;
     that.state.group && window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
@@ -429,6 +451,12 @@ class Aside extends Component {
                                                 'CONVERSATION_ASSIGNEE' : userId,
                                       },
                                       'callback': function(response) {
+                                        that.setState({assignee:userId});
+                                        if(userId == that.state.loggedInUser) {
+                                          that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, +1)
+                                        } else if (prevAssignee == that.state.loggedInUser && prevAssignee != userId ){
+                                          that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, -1)
+                                        }
                                         var displayName = "";
                                         for(var key in that.state.agents) {
                                           if(that.state.agents.hasOwnProperty(key)) {
@@ -499,6 +527,7 @@ class Aside extends Component {
   changeStatus(status) {
     //var groupId = window.$kmApplozic(".left .person.active").data('km-id');
     var that = this;
+    var prevStatus = this.state.conversationStatus;
     window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': that.state.group.groupId,
@@ -518,6 +547,18 @@ class Aside extends Component {
                                               category: "ARCHIVE",
                                             }
                                           });
+                                          that.setState({conversationStatus:status})
+                                        if( status == CONVERSATION_STATUS.OPEN) {
+                                          that.updateConversationCount(CONVERSATION_TYPE.CLOSED, -1);
+                                          that.updateConversationCount(CONVERSATION_TYPE.ALL, +1);
+                                          (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, +1);
+                                        } else if (prevStatus == CONVERSATION_STATUS.OPEN) {
+                                          that.updateConversationCount(CONVERSATION_TYPE.CLOSED, +1);
+                                          that.updateConversationCount(CONVERSATION_TYPE.ALL, -1);
+                                          (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, -1);
+
+                                        }
+                                          
                                       }
                                     });
                                     //updateConversation({groupId:that.state.group.groupId,status:status});
@@ -577,7 +618,8 @@ class Aside extends Component {
   }
 
   selectFirstConversation = (tabId) => {
-    $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0].click();
+    let fistConversation =  $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0];
+    fistConversation && fistConversation.click();
   }
 
   toggleTab = (selectedTab) => {
@@ -702,7 +744,11 @@ class Aside extends Component {
                       </div>
                       <div className="km-row km-conversation-tab-title-wrapper">
                         <h4 id="km-conversation-tab-title" className="km-conversation-tab-selected km-assigned">{this.state.conversationTab[this.state.activeConversationTab].title}</h4>
-                        <p className="km-conversation-count">{this.state.conversationTab[this.state.activeConversationTab].count}</p>
+                       { this.state.conversationTab[this.state.activeConversationTab].count > 0 &&
+                          <div className="km-conversation-count-wrapper">
+                            <p className="km-conversation-count">{this.displayConversationCount(this.state.conversationTab[this.state.activeConversationTab].count)}</p>
+                          </div>
+                       }
                       </div>
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
@@ -955,6 +1001,20 @@ class Aside extends Component {
                           <div className="km-bots-warning-banner" id="km-bots-warning--banner">
                             <Banner isVisible={this.state.warningBannerText === ""} indicator={'warning'} text={this.state.warningBannerText}/>
                           </div>
+                          <LizBanner>
+                            <Fragment>
+                                {
+                                    this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length === 0 &&
+                                    <BannerV2 cssClass="km-is-liz" appearance="warning" heading={["Liz will not work as you’ve not added any FAQs. Add them now from the ", <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
+                                }
+                            </Fragment>
+                            <Fragment>
+                                {
+                                    this.state.isLizActive && this.props.appSettings.faqList &&  this.props.appSettings.faqList.length !== 0 && this.props.appSettings.faqList.length < 5 &&
+                                    <BannerV2 cssClass="km-is-liz" appearance="warning" heading={["Add more FAQs for better results from the ", <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
+                                }
+                            </Fragment>
+                          </LizBanner>
                       </div>
                       <div id="km-product-group"
                         className="km-tab-panel km-btn-group km-product-group">
@@ -1395,12 +1455,17 @@ const NewMessageIndicatorText = styled.div`
   letter-spacing: 0.2px;
   color: #ffffff;
 `;
-
+const LizBanner = styled.div`
+    & .km-is-liz{
+      margin: 0 -10px;
+    }
+`;
 
 
 // export default Aside;
 const mapStateToProps = state => ({
   kmOnBoarding:state.signUp.kmOnBoarding,
+  appSettings : state.application
 })
 const mapDispatchToProps = dispatch => {
   return {

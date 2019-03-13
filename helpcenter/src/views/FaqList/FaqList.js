@@ -5,8 +5,10 @@ import {CommonUtils} from '../../utils/CommonUtils';
 import {HelpcenterClient} from '../../utils/HelpcenterClient';
 import { withRouter } from 'react-router-dom';
 import { NoResultsFoundSvg } from '../../assets/svgAssets';
+import { HelpCenterData } from '../../context/HelpcenterDataContext';
 
 class FaqList extends Component {
+    static contextType = HelpCenterData;
     constructor(props){
         super(props);
         this.state = {
@@ -28,7 +30,7 @@ class FaqList extends Component {
 
     populateAllFaq = () => {
         this.clearFaqList();
-        HelpcenterClient.getAllFaq(this.state.settings.appId).then(response => {
+        HelpcenterClient.getAllFaq(this.context.helpCenter.appId).then(response => {
             response && this.setState({
                 faqList: response,
                 searchQuery: ''
@@ -40,7 +42,7 @@ class FaqList extends Component {
         this.setState({
             searchQuery: CommonUtils.getUrlParameter(window.location.search, "q")
         }, () => {
-            HelpcenterClient.searchFaq(this.state.settings.appId, this.state.searchQuery).then(response => {
+            HelpcenterClient.searchFaq(this.context.helpCenter.appId, this.state.searchQuery).then(response => {
                 response && response.data && this.setState({
                     faqList: response.data,
                     isSearchFinished: true
@@ -56,7 +58,6 @@ class FaqList extends Component {
     componentDidMount = () => {
         this.setState({
             searchQuery :  CommonUtils.getUrlParameter(window.location.search,"q"),
-            settings : CommonUtils.getItemFromLocalStorage(CommonUtils.getHostNameFromUrl())
         },()=>{
             this.state.searchQuery ? this.populateSearchedFaq() : this.populateAllFaq();
         })
@@ -101,4 +102,5 @@ class FaqList extends Component {
         )
     }
 }
-export default withRouter(FaqList);
+FaqList.contextType = HelpCenterData;
+export default Object.assign(withRouter(FaqList), { contextType: undefined });

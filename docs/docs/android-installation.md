@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-implementation 'io.kommunicate:kommunicate:1.8.2'
+implementation 'io.kommunicate:kommunicate:1.8.3'
 ```
 
 ## Building with proguard
@@ -41,12 +41,14 @@ If you are using proguard in your application then add the below rules to your p
 -keep class com.google.gson.** { *; }
 ```
 
+## Get your APP_ID
+Sign up for [Kommunicate](https://dashboard.kommunicate.io) to get your [APP_ID](https://dashboard.kommunicate.io/settings/install). This APP_ID is used to create/launch conversations.
+
 ## Initialise SDK
 After the gradle sync has finished with kommunicate dependency, you can initialise the SDK by calling the below method:
 ```java
- Kommunicate.init(context, Your APP_ID);
+ Kommunicate.init(context, APP_ID);
 ```
-You can get the Application Id by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).
 
 ## Launch chat
 
@@ -57,13 +59,13 @@ Parmaters of KMChatBuilder:
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:| -----:|
 | context      | Activity | Only Activity Context is accepted. Excpetion is thrown otherwise  |
-| applicationId | String  | Ignore if you have already initialised the SDK with Application ID |
+| APP_ID | String  | Ignore if you have already initialised the SDK with [APP_ID](https://dashboard.kommunicate.io/settings/install) |
 | chatName      | String      |   Optional, you can pass a chat name or null |
 | kmUser | KMUser     |    Pass the details if you have the user details, null other wise. |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
 | isSingleChat | boolean      |    Pass false if you would like to create new conversation every time user starts a chat. This is true by default which means only one conversation will open for the user every time the user starts a chat. |
 | agentList | List<String>      |    Pass the list of agents. The agent id would be the email id you used to register on kommunicate. Leave null if you want to create conversation with default agent.|
-| botList | List<String>      |    Pass the list of bots. Leave null if you haven't integrated any bots |
+| botList | List<String>      |    Pass the list of bots.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID. Leave null if you haven't integrated any bots |
 | callback | KmCallback      |    Callback to notify Success or Failure |
 
 ### Launching chat for visitor:
@@ -87,10 +89,10 @@ If you have your agentList and bot list then use the builder as below:
 
 ```java
 List<String> agentList = new ArrayList();
-agentList.add("agent1@yourdomain.com"); //add your agentID
+agentList.add("<AGENT_ID>"); //add your agentID. The agentId id the email id you have used to signup on kommunicate dashboard
 
 List<String> botList = new ArrayList();
-botList.add("bot1"); //enter your integrated bot Ids
+botList.add("<BOT_ID>"); Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
 
       new KmChatBuilder(context).setAgentIds(agentList).setBotIds(botList).launchChat(new KmCallback() {
                         @Override

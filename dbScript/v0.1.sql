@@ -234,3 +234,19 @@ ALTER TABLE `app_settings` ADD COLUMN `help_center` JSON
 
 ALTER TABLE `app_settings` ADD COLUMN `support_mails` JSON
 
+-- 10 march 2019 --
+
+ALTER TABLE `app_settings` 
+ADD COLUMN `lead_collection` JSON, 
+ADD COLUMN `lead_type` INTEGER, 
+ADD COLUMN `collect_lead` BOOLEAN DEFAULT 0;
+
+-- script to migrate data from collect_email_welcome  and collect_email_away to lead_collection --
+UPDATE app_settings
+SET lead_type = (
+    case when collect_email_welcome = 1 then 0 when collect_email_away = 1 then 1 end)
+
+
+UPDATE app_settings
+SET collect_lead = 1 where collect_email_welcome = 1  and collect_email_away = 1;
+
