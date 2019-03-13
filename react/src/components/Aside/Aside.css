@@ -566,8 +566,17 @@ ul#km-group-search-list li {
     justify-content: space-between;
 }
 .km-conversation-count {
-    margin-top: 5px;
-    margin-right: 10px;
+    background-color: #e45d6c;
+    color: #ffffff;
+}
+.km-conversation-count-wrapper {
+    height: 22px;
+    min-width: 22px;
+    padding: 1px 7px 1px 7px;
+    border-radius: 12.5px;
+    background-color: #e45d6c;
+    text-align: center;
+    margin-bottom: 6px;
 }
 .km-conversation-heading.breadcrumb {
     margin-bottom: 0px;
