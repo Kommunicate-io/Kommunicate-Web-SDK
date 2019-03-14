@@ -336,6 +336,50 @@
     height: 35px;
 }
 
+
+/* New Signup page Design */
+.signup-app-div .signup-form-container {
+    -ms-flex: 5 1 0%;
+    flex: 5 1 0%;
+    background-color: #fff;
+    padding-top: 50px;
+}
+.signup-app-div .signup-testimonial-div {
+    -ms-flex: 3 1 0%;
+    flex: 3 1 0%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.signup-app-div .signup-form-container .card {
+    width: 100%;
+}
+
+.signup-app-div .signup-form-container .signup-form-fields-container {
+    max-width: 500px;
+    width: 70%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 0 auto;
+    min-height: 100%;
+}
+
+.signup-app-div .signup-form-container .signup-form-fields-container .login-signup-subheading {
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.4px;
+    color: #565555;
+    margin: -42px auto 40px;
+}
+
+
 @media(max-width:576px) {
     .signup-card-block {
         padding:20px !important;
@@ -356,11 +400,19 @@
     .login-app-div .container, .signup-app-div .container, .app-list-div .container {
         padding-bottom: 80px;
     }
+    .signup-app-div .signup-form-container .signup-form-fields-container {
+        width: 100%;
+    }
 }
 
 @media(min-width:768px) and (max-width:991px) {
     .signup-app-div .col-md-6, .applozic-user-signup .col-md-6 {
         width: 100%;
+    }
+}
+@media (max-width:991px) {
+    .signup-app-div .signup-testimonial-div {
+        display: none;
     }
 }
 .display-invitee-email{

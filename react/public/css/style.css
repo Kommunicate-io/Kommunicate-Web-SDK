@@ -8609,12 +8609,11 @@ iframe#crowd-shortcut {
     display: flex;
     flex-direction: column; } }
 
-.app,
-app-dashboard,
-app-root {
+.app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  height:100vh;
   /* overflow-x: hidden; */
   background-color: #fff;
 }

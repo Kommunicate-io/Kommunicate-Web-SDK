@@ -4,7 +4,6 @@
 .setup-pages-bg {
     background-color: #f5f5f5;
     flex-direction: row;
-    align-items: center;
 }
 .setup-pages-bg form {
     z-index: 2;
@@ -272,4 +271,59 @@ select:-webkit-autofill:focus {
 }
 .react-phone-number-input__input:-webkit-autofill {
     box-shadow: none;
+}
+
+/* New Signup page Design */
+.setup-pages-bg .setup-pages-form-container {
+    -ms-flex: 5 1 0%;
+    flex: 5 1 0%;
+    background-color: #fff;
+    padding-top: 50px;
+}
+.setup-pages-bg .setup-pages-testimonial-container {
+    -ms-flex: 3 1 0%;
+    flex: 3 1 0%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.setup-pages-bg .setup-pages-form-container .card {
+    width: 100%;
+    padding: 0 34px;
+}
+
+.setup-pages-bg .setup-pages-form-container .setup-pages-form-fields-container {
+    max-width: 500px;
+    width: 70%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 0 auto;
+    min-height: 100%;
+}
+
+.setup-pages-bg .setup-btn-group p {
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    color: #717173;
+    text-align: center;
+    margin-top: 5px;
+}
+
+
+@media (max-width: 991px) {
+    .setup-pages-bg .setup-pages-testimonial-container {
+        display: none;
+    }
+}
+@media (max-width:576px) {
+    .setup-pages-bg .setup-pages-form-container .setup-pages-form-fields-container {
+        width: 100%;
+    }
 }

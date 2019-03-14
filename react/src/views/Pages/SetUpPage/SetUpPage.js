@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { withTheme } from 'styled-components';
 import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
-import Header from '../../../components/Header/';
-import SelectStep from './SelectSteps'
-import Step3 from './Step3'
-import Step2 from './Step2'
-import Step1 from './Step1'
-import './setup.css'
-import { LoginSignupSvg } from '../../../assets/svg/svgs';
+import SelectStep from './SelectSteps';
+import Step3 from './Step3';
+import Step2 from './Step2';
+import Step1 from './Step1';
+import './setup.css';
+import Testimonials from '../Register/Testimonials';
+import Mikolaj from '../Register/Testimonials/Images/Mikolaj.jpg';
+import Alex from '../Register/Testimonials/Images/AlexKlein.jpg';
 
 
 
@@ -17,23 +18,24 @@ class SetUpPage extends Component {
 		super(props);
 
 		this.state = {
-			step: 1,
+			step: 2,
 			isSelectStepHidden:false,
-			disableAncher:true,
+			disableAnchor:true,
 			customerDetail:{},//{websiteUrl:'https://applozic.com',name:'default'},
 		}
 		this.moveToNextStep=this.moveToNextStep.bind(this);
 	}
 
 	moveToNextStep=(data, step)=>{
-		this.setState({customerDetail: Object.assign(this.state.customerDetail, data),
-					step:step})
-		//console.log('user data++++', this.state.customerDetail)
+		this.setState({
+			customerDetail: Object.assign(this.state.customerDetail, data),
+			step: step
+		})
 	}
 
 	componentWillMount(){
 		if(this.props.location && this.props.location.pathname ==="/installation" &&this.props.location.search){
-			this.state.disableAncher=false;
+			this.state.disableAnchor=false;
 		}
 		if(this.props.hideSkipForNow){
 			this.state.step=3;
@@ -42,28 +44,18 @@ class SetUpPage extends Component {
 	
 	render() {
 		const Logo = PRODUCTS[CommonUtils.getProduct()].logo;
+		const productTitle = PRODUCTS[CommonUtils.getProduct()].title;
 		return (
 			<div className="app setup-pages-bg">
-				<div className="container">
-					{/* <header className="app-header navbar">
-						<button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
-						<a href="https://www.kommunicate.io" target="_blank" className={this.state.disableAncher ? "a-undecorated a-unclickable" : "a-undecorated"}>
-						<svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 352.7 316.7'>
-							<path className='km-logo-final-logo-beta-0' d='M348.5,302.2V121.2c0-65.4-53-118.3-118.3-118.3H122.5C57.1,2.8,4.1,55.8,4.1,121.2 c0,65.4,53,118.4,118.4,118.4H239c0,0,9.5,0.6,15.2,2.6c5.5,2,11.5,6.8,11.5,6.8l72,59.3c0,0,6.5,5.6,8.9,4.5 C349,311.5,348.5,302.2,348.5,302.2z M125.8,145.3c0,7.9-6.9,14.3-15.4,14.3S95,153.2,95,145.3V94.5c0-7.9,6.9-14.3,15.4-14.3 s15.4,6.4,15.4,14.3V145.3z M191.7,169.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V70.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V169.3z M257.6,145.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V94.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V145.3z' />
-						</svg>
-						</a>
-					</header> */}
+				<div className="setup-pages-form-container">
+					<div className="setup-pages-form-fields-container">
+						<div className="logo-container text-center">
+							<Logo/>
+						</div>
 
-					<div className="logo-container text-center">
-						<Logo/>
-					</div>
+						<hr className="hr"/>
 
-					<div className="row justify-content-center">
-						<div className={(this.state.step === 3) ? "step-3-div-card col-md-6 card" : "col-md-6 card"}>
-
-							<hr className="hr"/>
-
-							<SelectStep step={this.state.step} location={this.props.location} />
+						<div className={(this.state.step === 3) ? "step-3-div-card col-md-6 card" : "card"}>
 							{this.state.step === 1 ? 
 								<Step1 moveToNextStep={this.moveToNextStep} hideSkipForNow={this.props.hideSkipForNow} location={this.props.location} />
 								: this.state.step === 2 ? 
@@ -72,16 +64,27 @@ class SetUpPage extends Component {
 							}
 						</div>
 					</div>
-					<div className="bottom-shape-container">
-						<LoginSignupSvg gradient0={this.props.theme.gradients.loginGradientColorStop0} gradient1={this.props.theme.gradients.loginGradientColorStop1} gradient2={this.props.theme.gradients.loginGradientColorStop2} />
-						{
-							this.state.step === 1 ? <div className="steps-container"> <div className="step-1 filled"><p>Step 1</p></div> <div className="step-2 empty"><p>Step 2</p></div>	<div className="step-3 empty n-vis"><p>Step 3</p></div> </div> : this.state.step === 2 ? <div className="steps-container"> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled"><p>Step 2</p></div>	<div className="step-3 empty n-vis"><p>Step 3</p></div> </div> : <div className={ this.props.hideSkipForNow ? "n-vis": "steps-container"}> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled visited"><p>Step 2</p></div>	<div className="step-3 filled"><p>Step 3</p></div> </div>
-						}
-						
 				</div>
+				<div className="setup-pages-testimonial-container">
+					<Testimonials testimonialFace={testimonialTexts[productTitle].face} testimonialAuthor={testimonialTexts[productTitle].author} testimonialCompany={testimonialTexts[productTitle].company} testimonialText={testimonialTexts[productTitle].text} />
 				</div>
 			</div>
 		)
+	}
+}
+
+const testimonialTexts = {
+	"Applozic" : {
+	  face: Alex,
+	  author: "Alex Klein",
+	  company: "YogaTrail",
+	  text: "Super easy, powerful addition to our site and the team couldn’t have been any more responsive and helpful."
+	},
+	"Kommunicate" : {
+	  face: Mikolaj,
+	  author: "Mikolaj Kulesz",
+	  company: "Zoovu",
+	  text: "We wanted a simple Dialogflow integration and not many chat providers have that functionality. Not only the integration is super easy, Kommunicate provides great customer support. On top of that, they do listen to the client's needs and requests."
 	}
 }
 

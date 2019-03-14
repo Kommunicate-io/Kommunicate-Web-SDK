@@ -15,9 +15,11 @@ import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
 import {LOGIN_VIA} from '../../../utils/Constant';
 import { GoogleLogin }from '../../Faq/LizSVG'
-import { LoginSignupSvg } from '../../../assets/svg/svgs';
 import ReCAPTCHA from "react-google-recaptcha";
 import Button from '../../../components/Buttons/Button';
+import Testimonials from './Testimonials';
+import Christian from './Testimonials/Images/Christian.jpg';
+import Eli from './Testimonials/Images/Eli-gross.jpg';
 
 class Register extends Component {
   constructor(props){
@@ -265,21 +267,22 @@ class Register extends Component {
     const Logo = PRODUCTS[CommonUtils.getProduct()].logo;
 
     return(
-      <div> 
-      <div className= {this.state.googleOAuth?"n-vis":"app flex-row align-items-center signup-app-div"}>
-        <div className="container">
-          <div className="logo-container text-center">
-            <Logo/>
-          </div>
-          
-          <div className="row justify-content-center signup-form-div">
-            <div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
-            <hr className={ this.state.isInvited ? "n-vis":"hr"}/>
+      <Fragment> 
+        <div className= {this.state.googleOAuth?"n-vis":"app flex-row signup-app-div"}>
+            <div className="signup-form-container">
+            <div className="signup-form-fields-container">
+              <div className="logo-container text-center">
+                <Logo/>
+              </div>
+              <hr className={ this.state.isInvited ? "n-vis":"hr"}/>
               <div className="card">
-              <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
+                <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
-                  <h1 className="login-signup-heading text-center">Sign up to {productTitle}</h1>
-                  {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
+                  { this.state.isInvited ? <h1 className="login-signup-heading text-center">Sign up to {productTitle}</h1> : <Fragment>
+                      <h1 className="login-signup-heading text-center">Try {productTitle} for free now!</h1>
+                      <p className="login-signup-subheading text-center">Get a free trial account and try out all the features for 30 days. <br />No credit card required.</p>
+                    </Fragment>
+                  }
 
                   {/* Signup with Google code STARTS here. */}
                   {/* To show or hide Signup with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
@@ -315,8 +318,6 @@ class Register extends Component {
                   </div>
 
                   <div className={this.state.googleOAuth ? "n-vis":"input-group mb-3 register-password-div"}>
-                  {/*<div className="input-group mb-3 register-password-div">*/}
-                    {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
                     <input id="input-password" type={this.state.type} className="input" placeholder=" "  onChange={ this.setPassword } onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("create-button").click()}}} required/>
                     <label className="label-for-input email-label">Password</label>
                     <label className="label-for-input2 email-label">Your password must have a minimum of 6 characters</label>
@@ -355,15 +356,19 @@ class Register extends Component {
                   </div>
                 </div>
                 </div>
-              </div>
+                </div>
             </div>
-            <div className="bottom-shape-container"></div>
-          </div>
+            <div className="signup-testimonial-div">
+              <Testimonials testimonialFace={testimonialTexts[productTitle].face} testimonialAuthor={testimonialTexts[productTitle].author} testimonialCompany={testimonialTexts[productTitle].company} testimonialText={testimonialTexts[productTitle].text} />
+            </div>
         </div>
-      <div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
-      <img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
-      </div>
-     </div> 
+      
+        {/* Loading animation hack when someone signs up with Google. */}
+        <div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
+          <img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
+        </div>
+
+     </Fragment> 
     );
   }
 
@@ -385,22 +390,19 @@ class Register extends Component {
             <div className="col-md-6">
             <hr className="hr"/>
               <div className="card">
-                            <div className="card-block p-4 signup-card-block">
-                                <div className="km-cancel-svg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
-                                        <path fill="#A8A4A4" fillRule="nonzero" d="M25.002.917C11.701.917.917 11.701.917 25.002s10.784 24.085 24.085 24.085 24.085-10.784 24.085-24.085S38.303.917 25.002.917zm10.504 31.974a1.849 1.849 0 0 1-2.614 2.616l-7.89-7.89-7.89 7.888a1.845 1.845 0 0 1-2.614 0 1.849 1.849 0 0 1 0-2.615l7.89-7.888-7.89-7.89a1.849 1.849 0 1 1 2.614-2.614l7.89 7.89 7.89-7.89a1.849 1.849 0 0 1 2.614 2.614l-7.89 7.89 7.89 7.89z" />
-                                    </svg>
-                                </div>
-                                <div className="km-invitation-revoked">
-                                    <p>This invitation is revoked.</p>
-                                    <p>Please contact your admin for more details.</p>
-                                </div>
-                            </div>
+                <div className="card-block p-4 signup-card-block">
+                    <div className="km-cancel-svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+                            <path fill="#A8A4A4" fillRule="nonzero" d="M25.002.917C11.701.917.917 11.701.917 25.002s10.784 24.085 24.085 24.085 24.085-10.784 24.085-24.085S38.303.917 25.002.917zm10.504 31.974a1.849 1.849 0 0 1-2.614 2.616l-7.89-7.89-7.89 7.888a1.845 1.845 0 0 1-2.614 0 1.849 1.849 0 0 1 0-2.615l7.89-7.888-7.89-7.89a1.849 1.849 0 1 1 2.614-2.614l7.89 7.89 7.89-7.89a1.849 1.849 0 0 1 2.614 2.614l-7.89 7.89 7.89 7.89z" />
+                        </svg>
+                    </div>
+                    <div className="km-invitation-revoked">
+                        <p>This invitation is revoked.</p>
+                        <p>Please contact your admin for more details.</p>
+                    </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="bottom-shape-container">
-            <LoginSignupSvg gradient0={this.props.theme.gradients.loginGradientColorStop0} gradient1={this.props.theme.gradients.loginGradientColorStop1} gradient2={this.props.theme.gradients.loginGradientColorStop2} />
           </div>
         </div>
       </div>
@@ -413,6 +415,21 @@ class Register extends Component {
 
     console.log("invite",this.state.invitedUserEmail);
     return this.state.renderInvitationRevokedView ? this.renderInvitationRevoked() :this.renderDefaultView();
+  }
+}
+
+const testimonialTexts = {
+  "Applozic" : {
+    face: Eli,
+    author: "Eli Gross",
+    company: "WishTrip",
+    text: "With Applozic, powering messaging is a breeze. The best part is it integrates seamlessly on all platforms and provides the same set of features and ease of customization."
+  },
+  "Kommunicate" : {
+    face: Christian,
+    author: "Christian C",
+    company: "Teodoro Bot",
+    text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
   }
 }
 
