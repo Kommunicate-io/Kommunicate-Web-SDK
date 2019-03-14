@@ -13,6 +13,9 @@ class Header extends Component {
   static contextType = HelpCenterData;
 
   navigateHome = () =>{
+    if(this.props.location.pathname==='/' && !this.props.location.search){
+      return false;
+    }
     this.props.history.push({
       pathname: '/'
     });

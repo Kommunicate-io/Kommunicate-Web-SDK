@@ -566,8 +566,17 @@ ul#km-group-search-list li {
     justify-content: space-between;
 }
 .km-conversation-count {
-    margin-top: 5px;
-    margin-right: 10px;
+    background-color: #e45d6c;
+    color: #ffffff;
+}
+.km-conversation-count-wrapper {
+    height: 22px;
+    min-width: 22px;
+    padding: 1px 7px 1px 7px;
+    border-radius: 12.5px;
+    background-color: #e45d6c;
+    text-align: center;
+    margin-bottom: 6px;
 }
 .km-conversation-heading.breadcrumb {
     margin-bottom: 0px;
@@ -1030,7 +1039,29 @@ color: #595757;
 }
 .km-box-form{
     position: relative;
+} 
+.km-clear-search-text {
+    font-size: 28px;
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    cursor: pointer;
+    color: #97999b;
 }
 .km-forward-integration-button {
     margin-left: 5px;
+}
+#km-no-search-results-found {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 15px;
+    color: #808080;
+}
+.km-retaliate svg path{
+    fill: #AAA;
+}
+.km-retaliate {
+    background-color: #f6f2f2;
+    border: 1px solid #cec9c9;
+    padding: 9px;
 }

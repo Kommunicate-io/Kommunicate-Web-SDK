@@ -30,6 +30,10 @@ function ApplozicSidebox() {
     } ];
     var mck_script_loader1 = [
     {
+            "name": "applozic-min-js", 
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.3.min.js" // update the url with every new release of applozic-web-plugin
+    },
+    {
             "name": "km-utils", 
             "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
     },
@@ -110,13 +114,14 @@ function ApplozicSidebox() {
         style.href = url;
         head.appendChild(style);
     };
-    function mckLoadScript(url, callback) {
+    function mckLoadScript(url, callback, removeCrossOrigin) {
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = url;
-            url.indexOf("maps.google.com") == -1 && (script.crossOrigin = "anonymous")
+            script.crossOrigin = "anonymous";
+            removeCrossOrigin && script.removeAttribute("crossOrigin");
             if (callback) {
                 if (script.readyState) { // IE
                     script.onreadystatechange = function() {
@@ -177,15 +182,18 @@ function ApplozicSidebox() {
                             }
                             if (options.googleApiKey) {
                                 var url = data.url + "&key=" + options.googleApiKey;
-                                mckLoadScript(url);
+                                mckLoadScript(url, null, true);
                             }
                         } else {
-                            mckLoadScript(data.url);
+                            mckLoadScript(data.url, null, true);
                         }
                     } catch (e) {
-                        mckLoadScript(data.url);
+                        mckLoadScript(data.url), null, true;
                     }
-                } else {
+                } else if (data.name === "applozic-min-js"){
+                    mckLoadScript(data.url, null, true)
+                } 
+                else {
                     mckLoadScript(data.url);
                 }
             });
@@ -274,17 +282,18 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
             if (applozic.PRODUCT_ID == 'kommunicate') {
+                var cookieDomain  = KommunicateUtils.getDomainFromUrl();
                 if (!options.userId) {
                     if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID)) {
                         options.userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                     } else {
                         options.userId = userId;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30, domain: cookieDomain});
                         if (pseudoNameEnabled) {
                             if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME)) {
                                 options.userName = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                             } else {
-                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30});
+                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30,domain: cookieDomain});
                                 options.userName = data.userName;
                             }
                             options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
@@ -292,7 +301,7 @@ function ApplozicSidebox() {
                     }
                 }
                 if (!options.askUserDetails || !options.preLeadCollection) {
-                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30});
+                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
                 }
             }
             if (typeof options !== 'undefined') {
@@ -315,7 +324,7 @@ function ApplozicSidebox() {
         mapCookies && mapCookies.forEach(function(arrayItem){
             if (KommunicateUtils.getCookie(arrayItem.oldName)) {
                 var value = KommunicateUtils.getCookie(arrayItem.oldName);
-                KommunicateUtils.setCookie(arrayItem.newName, value, 1);
+                KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
                 KommunicateUtils.deleteCookie(arrayItem.oldName);
             }
         })

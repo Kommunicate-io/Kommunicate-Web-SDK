@@ -4,7 +4,9 @@ import Select from 'react-select';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-plugin-style';
 import ReactTooltip from 'react-tooltip';
+import CommonUtils from '../../../utils/CommonUtils';
 import ApplozicClient   from '../../../utils/applozicClient';
+import { getAgentAndUsers} from '../../../utils/kommunicateClient';
 import Notification from '../../../views/model/Notification';
 import { ALAnalyticsDashboardLoader } from '../../../components/EmptyStateLoader/emptyStateLoader';
 import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentIcon } from '../../../assets/svg/svgs';
@@ -53,7 +55,14 @@ class AlDashboard extends Component {
     };
 
     componentDidMount = () => {
+        this.loadBots();
         this.getAnalyticsData();   
+    }
+
+    loadBots = () => {
+        getAgentAndUsers(CommonUtils.getUserSession().application.applicationId).then(data => {
+            CommonUtils.setItemInLocalStorage('KM_BOT_AGENT_MAP',data.users);
+          });
     }
 
     getAnalyticsData = () => {

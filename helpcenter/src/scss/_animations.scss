@@ -42,3 +42,20 @@
     animation-name: opacityAnim;
     -webkit-animation-name: opacityAnim;	
 }
+
+@keyframes searchbarLoading{
+    0%{
+        background-color: rgba(111,111,111, 1);
+        box-shadow: 12px 0px 0px 0px rgba(111,111,111,0.2), 
+                    24px 0px 0px 0px rgba(111,111,111,0.2);
+      }
+    50%{ 
+        background-color: rgba(111,111,111, 0.4);
+        box-shadow: 12px 0px 0px 0px rgba(111,111,111,2), 
+                    24px 0px 0px 0px rgba(111,111,111,0.2);
+    }
+    100%{ background-color: rgba(111,111,111, 0.4);
+        box-shadow: 12px 0px 0px 0px rgba(111,111,111,0.2), 
+                    24px 0px 0px 0px rgba(111,111,111,1);
+      }
+ }

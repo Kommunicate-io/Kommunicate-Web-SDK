@@ -53,13 +53,19 @@ const KnowledgeBase = new Schema({
         es_type:'text'
     },
     name: { 
-        type: String, 
-        es_type:'text', 
-        es_indexed: true 
+        type: String,  
+        es_indexed: true,
+        es_type: 'completion',
+        es_index_analyzer: 'simple',
+        es_search_analyzer: 'simple',
+        es_payloads: true
     },
     content: { 
         type: String, 
-        es_type:'text', 
+        es_type: 'completion',
+        es_index_analyzer: 'simple',
+        es_search_analyzer: 'simple',
+        es_payloads: true, 
         es_indexed: true 
     },
     deleted: { 

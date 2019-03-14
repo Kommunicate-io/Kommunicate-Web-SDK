@@ -73,9 +73,9 @@ class Aside extends Component {
       pseudoUser: true,
       activeConversationTab: CONVERSATION_TYPE.ASSIGNED_TO_ME,
       conversationTab:{
-        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count:"" }, 
-        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count:"" }, 
-        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count:"" }
+        [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count: 0 }, 
+        [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count: 0 }, 
+        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count: 0 }
       },
       loggedInUser:"",
       isLizActive: false
@@ -155,12 +155,13 @@ class Aside extends Component {
       pseudoUser:false
     })
   }
-  showConversationCount = (count, type) => {
-    this.state.conversationTab[type].count = count;
+  displayConversationCount = (count) => {
+    const displayLimit = 999;
+    return count > displayLimit ? (displayLimit.toString() + "+") : count
   }
   updateConversationCount = (type, change) => {
     let conversationTab = this.state.conversationTab;
-    conversationTab[type].count = conversationTab[type].count + change;
+    conversationTab[type].count += change;
     this.setState({conversationTab:conversationTab})
   }
   handleGroupUpdate(e) {
@@ -617,7 +618,8 @@ class Aside extends Component {
   }
 
   selectFirstConversation = (tabId) => {
-    $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0].click();
+    let fistConversation =  $kmApplozic("." + CONVERSATION_TAB_VIEW_MAP[tabId] + " li:first-child")[0];
+    fistConversation && fistConversation.click();
   }
 
   toggleTab = (selectedTab) => {
@@ -740,9 +742,13 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="km-row km-conversation-tab-title-wrapper">
+                      <div id="km-dashboard-conversation-list-heading" className="km-row km-conversation-tab-title-wrapper">
                         <h4 id="km-conversation-tab-title" className="km-conversation-tab-selected km-assigned">{this.state.conversationTab[this.state.activeConversationTab].title}</h4>
-                        <p className="km-conversation-count">{this.state.conversationTab[this.state.activeConversationTab].count}</p>
+                       { this.state.conversationTab[this.state.activeConversationTab].count > 0 &&
+                          <div className="km-conversation-count-wrapper">
+                            <p className="km-conversation-count">{this.displayConversationCount(this.state.conversationTab[this.state.activeConversationTab].count)}</p>
+                          </div>
+                       }
                       </div>
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
@@ -855,7 +861,9 @@ class Aside extends Component {
                                 <span className="km-search-icon"> <a href="javascript:void(0)" role="link"
                                 className="km-tab-search"> <span className="km-icon-search"></span>
                               </a>
-                              </span> <input type="text" id="km-search" data-provide="typeahead"
+                              </span> 
+                              <span id="km-clear-search-text" className=" km-clear-search-text n-vis"> × </span>
+                              <input type="text" id="km-search" data-provide="typeahead"
                                 placeholder="Search..." autoFocus />
                               </div>
                             </div>
@@ -866,8 +874,13 @@ class Aside extends Component {
                                 </ul>
                                 <ul id="km-assigned-search-list"
                                   className="km-contact-list people km-assigned km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
+                                <ul id="km-search-results" 
+                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked vis"></ul>
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                <div id="km-no-search-results-found" className="n-vis">
+                                  No results found
+                                </div>
                                 <div id="km-contact-loading" className="km-loading km-contact-loading">
                                   <KommunicateContactListLoader/>
                                 </div>

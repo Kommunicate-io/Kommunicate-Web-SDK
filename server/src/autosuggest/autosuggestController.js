@@ -214,8 +214,10 @@ exports.migrateToModel = (req, res) => {
                 question = question.replace(/\?/g, '');
                 var hash = crypto.createHash('md5').update(question).digest('hex');
                 suggestion.key = hash
-                autosuggestService.createIfNotExist(suggestion);
-            }
+
+			}
+			autosuggestService.createIfNotExist(suggestion);
+
         })
     }).catch(err => {
         console.log(" error on hash generation", err)

@@ -23,6 +23,9 @@ export const StyleUtils = {
     //function to calculate gradient color
     getGradientColor: (colorCode) => {
         return tinycolor(colorCode).saturate(20).toString()
+    },
+    getColorBrightness: (colorCode) => {
+        return tinycolor(colorCode).getBrightness()
     }
 
 }

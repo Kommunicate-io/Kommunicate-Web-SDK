@@ -54,9 +54,12 @@ exports.processUserUpdatedEvent= (user)=>{
         logger.info('user identified as agent or bot. skipping record..'); 
         return;
     }
-
-        let contactId =  agileCrm && agileCrm.contactId;
-    if(contactId && user.applicationId){
+    if (!user.applicationId) {
+        logger.info('application id is missing on user update event', user.userId);
+        return
+    }
+    let contactId =  agileCrm && agileCrm.contactId;
+    if(contactId){
         logger.info("updating agilecrmId ",contactId);
         user.metadata.KM_AGILE_CRM = agileCrm;
         agileService.updateContact(null,contactId, user).then(data=>{
@@ -72,6 +75,7 @@ exports.processUserUpdatedEvent= (user)=>{
     }else{
         logger.info("adding contact in agilecrm");
         processUserCreatedEventInKommunicate(user);
-        integryService.sendUserEventToIntegry("USER_UPDATED",user)
     }
+    integryService.sendUserEventToIntegry("USER_UPDATED",user)
+
 }

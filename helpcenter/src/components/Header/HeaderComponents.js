@@ -45,7 +45,7 @@ export const TopbarLogoContainer = styled.div `
         top: 50%;
         width: 120px;
         right: -50%;
-        color: #fff;
+        color: ${props => props.theme.helpcenterHeadingFontColor};
         transform: translate(0% , -62%);
         font-size: 18px;
     }
@@ -148,6 +148,7 @@ export const ClearButtonWrapper = styled.div`
     justify-content: center;
     width: 50px;
     border-radius: 5px;
+    max-height: 57px;
     &:hover{
         background: #eee;
     }
@@ -168,19 +169,22 @@ export const SeeAllButton = styled.div`
     cursor: pointer;
 `
 export const SearchBox = styled.input.attrs(() => ({ type: "text" }))`
-    width: calc(100% - 40px);
+    width: calc(100% - 85px);
     background: #fff;
     outline: none;
     border: none;
     font-size: 18px;
     padding: 18px 10px 18px 45px;
+    &::-ms-clear {
+    display: none;
+}
 
 `
 export const SearchBoxWrapper = styled.div`
     width: 100%;
     background: #fff;
     border-radius: 4px;
-    overflow: hidden
+    overflow: hidden;
 `
 
 export const SearchResultsWrapper = styled.div`
@@ -205,4 +209,20 @@ export const NoResultFoundMenuButton = styled.div`
     text-align: center;
     font-size: 18px;
     color: #9b9b9b;
+`
+
+export const SearchBarLoaderWrapper = styled.div `
+    position: absolute;
+    width: 45px;
+    right: 46px;
+    top: 50%;
+    transform: translateY(-50%);
+`
+export const SearchBarLoader = styled.div`
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: searchbarLoading .4s linear infinite alternate;
+    position: relative;
+    left: 6px;
 `

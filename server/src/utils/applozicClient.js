@@ -421,12 +421,12 @@ exports.updateApplozicClient = (userName, accessToken, applicationId, user, opti
       'Of-User-Id': user.userId,
       'Apz-Product-App': isApplicationWebAdmin
     };
-  return axios.patch(config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update?userId=" + user.userId, user, { headers: headers })
+  return axios.patch(config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update?userId=" + encodeURIComponent(user.userId), user, { headers: headers })
     .then(response => {
       if (response.data && response.data.status === "success") {
         return { code: "success" };
       } else {
-        throw { code: "APPLOZIC_ERROR", data: response }
+        throw { code: "APPLOZIC_ERROR", data: response.data }
       }
     })
     .catch(err => {

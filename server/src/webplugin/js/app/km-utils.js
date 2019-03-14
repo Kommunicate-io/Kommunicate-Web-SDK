@@ -159,6 +159,7 @@ KommunicateUtils = {
         var path = "/";
         var secure = typeof cookie.secure == "undefined"?this.isHttpsEnabledConnection():cookie.secure;
         var cookieExpiry= new Date("2038-01-19 04:14:07").toUTCString();
+        var domain = cookie.domain;
         if(cookie.path){
             path = cookie.path;
         }
@@ -167,7 +168,7 @@ KommunicateUtils = {
             cookieExpiry = new Date(today.setDate(today.getDate()+cookie.expiresInDays)).toUTCString();
         }
 
-        document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"");
+        document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"") +(domain?";domain="+domain:"");
     },
     isHttpsEnabledConnection : function(){
          return parent.window.location.protocol == "https:";
@@ -241,5 +242,27 @@ KommunicateUtils = {
         session = session ? JSON.parse(session) : {};
         session[key] = data;
         localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+    },
+    getDomainFromUrl: function (hostName) {
+        var hostName = parent.window.location.hostname;
+        var domain = "";
+        if (hostName != null) {
+            var parts = hostName.split('.').reverse();
+
+            if (parts != null && parts.length <= 1) {
+                // cases like  localhost
+                return domain;
+            } else if (parts != null && parts.length <= 3) {
+                // cases:  url with one or no sub domain 
+                domain = "." + parts[1] + '.' + parts[0];
+            } else if (parts != null && parts.length <= 4) {
+
+                if (!parseInt(parts[1]) && !parseInt(parts[0])) {
+                    // check if url is not IP address
+                    domain = "." + parts[2] + "." + parts[1] + "." + parts[0];
+                }
+            }
+        }
+        return domain;
     }
-}
+    }

@@ -11,7 +11,6 @@ import { testimonialTexts } from '../Register/Register';
 
 
 
-
 class SetUpPage extends Component {
 
 	constructor(props) {
@@ -70,6 +69,21 @@ class SetUpPage extends Component {
 				</div>
 			</div>
 		)
+	}
+}
+
+const testimonialTexts = {
+	"Applozic" : {
+	  face: Alex,
+	  author: "Alex Klein",
+	  company: "YogaTrail",
+	  text: "Super easy, powerful addition to our site and the team couldn’t have been any more responsive and helpful."
+	},
+	"Kommunicate" : {
+	  face: Mikolaj,
+	  author: "Mikolaj Kulesz",
+	  company: "Zoovu",
+	  text: "We wanted a simple Dialogflow integration and not many chat providers have that functionality. Not only the integration is super easy, Kommunicate provides great customer support. On top of that, they do listen to the client's needs and requests."
 	}
 }
 
