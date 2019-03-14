@@ -7,8 +7,8 @@ import Step2 from './Step2';
 import Step1 from './Step1';
 import './setup.css';
 import Testimonials from '../Register/Testimonials';
-import Mikolaj from '../Register/Testimonials/Images/Mikolaj.jpg';
-import Alex from '../Register/Testimonials/Images/AlexKlein.jpg';
+import { testimonialTexts } from '../Register/Register';
+
 
 
 
@@ -66,25 +66,10 @@ class SetUpPage extends Component {
 					</div>
 				</div>
 				<div className="setup-pages-testimonial-container">
-					<Testimonials testimonialFace={testimonialTexts[productTitle].face} testimonialAuthor={testimonialTexts[productTitle].author} testimonialCompany={testimonialTexts[productTitle].company} testimonialText={testimonialTexts[productTitle].text} />
+					<Testimonials testimonialFace={testimonialTexts[productTitle].setupPage.face} testimonialAuthor={testimonialTexts[productTitle].setupPage.author} testimonialCompany={testimonialTexts[productTitle].setupPage.company} testimonialText={testimonialTexts[productTitle].setupPage.text} />
 				</div>
 			</div>
 		)
-	}
-}
-
-const testimonialTexts = {
-	"Applozic" : {
-	  face: Alex,
-	  author: "Alex Klein",
-	  company: "YogaTrail",
-	  text: "Super easy, powerful addition to our site and the team couldn’t have been any more responsive and helpful."
-	},
-	"Kommunicate" : {
-	  face: Mikolaj,
-	  author: "Mikolaj Kulesz",
-	  company: "Zoovu",
-	  text: "We wanted a simple Dialogflow integration and not many chat providers have that functionality. Not only the integration is super easy, Kommunicate provides great customer support. On top of that, they do listen to the client's needs and requests."
 	}
 }
 

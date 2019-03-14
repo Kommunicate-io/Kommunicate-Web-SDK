@@ -20,6 +20,8 @@ import Button from '../../../components/Buttons/Button';
 import Testimonials from './Testimonials';
 import Christian from './Testimonials/Images/Christian.jpg';
 import Eli from './Testimonials/Images/Eli-gross.jpg';
+import Mikolaj from './Testimonials/Images/Mikolaj.jpg';
+import Alex from './Testimonials/Images/AlexKlein.jpg';
 
 class Register extends Component {
   constructor(props){
@@ -359,7 +361,7 @@ class Register extends Component {
                 </div>
             </div>
             <div className="signup-testimonial-div">
-              <Testimonials testimonialFace={testimonialTexts[productTitle].face} testimonialAuthor={testimonialTexts[productTitle].author} testimonialCompany={testimonialTexts[productTitle].company} testimonialText={testimonialTexts[productTitle].text} />
+              <Testimonials testimonialFace={testimonialTexts[productTitle].registerPage.face} testimonialAuthor={testimonialTexts[productTitle].registerPage.author} testimonialCompany={testimonialTexts[productTitle].registerPage.company} testimonialText={testimonialTexts[productTitle].registerPage.text} />
             </div>
         </div>
       
@@ -418,18 +420,35 @@ class Register extends Component {
   }
 }
 
-const testimonialTexts = {
+export const testimonialTexts = {
   "Applozic" : {
-    face: Eli,
-    author: "Eli Gross",
-    company: "WishTrip",
-    text: "With Applozic, powering messaging is a breeze. The best part is it integrates seamlessly on all platforms and provides the same set of features and ease of customization."
+    registerPage: {
+      face: Eli,
+      author: "Eli Gross",
+      company: "WishTrip",
+      text: "With Applozic, powering messaging is a breeze. The best part is it integrates seamlessly on all platforms and provides the same set of features and ease of customization."
+    },
+    setupPage: {
+      face: Alex,
+      author: "Alex Klein",
+      company: "YogaTrail",
+      text: "Super easy, powerful addition to our site and the team couldn’t have been any more responsive and helpful."
+    }
+    
   },
   "Kommunicate" : {
-    face: Christian,
-    author: "Christian C",
-    company: "Teodoro Bot",
-    text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
+    registerPage: {
+      face: Christian,
+      author: "Christian C",
+      company: "Teodoro Bot",
+      text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
+    },
+    setupPage: {
+      face: Mikolaj,
+      author: "Mikolaj Kulesz",
+      company: "Zoovu",
+      text: "We wanted a simple Dialogflow integration and not many chat providers have that functionality. Not only the integration is super easy, Kommunicate provides great customer support. On top of that, they do listen to the client's needs and requests."
+    }
   }
 }
 
