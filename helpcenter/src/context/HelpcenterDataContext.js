@@ -68,7 +68,7 @@ export class HelpCenterDataContext extends Component {
             themeGradient = StyleUtils.getGradientColor(primaryColor),
             primaryColorBrightness = StyleUtils.getColorBrightness(primaryColor), 
             textColor;
-        primaryColorBrightness > 150 ? textColor = '##4a4a4a' : textColor = '#fff'; 
+        primaryColorBrightness > 150 ? textColor = '#4a4a4a' : textColor = '#fff'; 
         const updatedTheme = Object.assign({}, theme, { 
             primaryColor: primaryColor, 
             gradientColor: themeGradient,
