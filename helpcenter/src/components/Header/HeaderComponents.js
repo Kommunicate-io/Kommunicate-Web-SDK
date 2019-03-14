@@ -45,7 +45,7 @@ export const TopbarLogoContainer = styled.div `
         top: 50%;
         width: 120px;
         right: -50%;
-        color: #fff;
+        color: ${props => props.theme.helpcenterHeadingFontColor};
         transform: translate(0% , -62%);
         font-size: 18px;
     }
@@ -148,6 +148,7 @@ export const ClearButtonWrapper = styled.div`
     justify-content: center;
     width: 50px;
     border-radius: 5px;
+    max-height: 57px;
     &:hover{
         background: #eee;
     }
@@ -174,6 +175,9 @@ export const SearchBox = styled.input.attrs(() => ({ type: "text" }))`
     border: none;
     font-size: 18px;
     padding: 18px 10px 18px 45px;
+    &::-ms-clear {
+    display: none;
+}
 
 `
 export const SearchBoxWrapper = styled.div`
