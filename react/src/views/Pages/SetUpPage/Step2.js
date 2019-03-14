@@ -52,7 +52,6 @@ class Step2 extends Component {
 
   websiteUrlCheck(){
       document.getElementById("website-url").className = 'input km-error-input';
-      //document.getElementById("url-http-text").className = 'url-http-text km-error-input';
       document.getElementById('mySpan').innerHTML = 'Invalid URL';
       document.getElementById("emptyerror1").className = 'input-error-div km-url-error vis';
 	}
@@ -81,18 +80,6 @@ class Step2 extends Component {
 
   finishSetUp = (e) => {
     e.preventDefault();
-    // if(document.getElementById("company-name").value ===""|| document.getElementById("company-name").value === null){
-    //   document.getElementById("emptyerrorforCompanyName").className = 'input-error-div vis';
-    //   document.getElementById("company-name").className = 'input km-error-input';
-    //   return;
-	// }
-	
-    // if(document.getElementById("number-input").value ===""|| document.getElementById("number-input").value === null){
-    //   document.getElementById("emptyerror").className = 'input-error-div vis';
-    //   document.getElementById("number-input").className = 'input km-error-input';
-    //   return;
-	// }
-
 	if (document.getElementById("customer-name").value === "" || document.getElementById("customer-name").value === null) {
         this.comapnyNameValidation();
         return;
@@ -173,15 +160,11 @@ comapnyUrlValidation(){
   document.getElementById('mySpan').innerHTML = 'This field is mandatory';
   document.getElementById("emptyerror1").className = 'input-error-div km-url-error vis';
   document.getElementById("website-url").className = 'input km-error-input';
-  // document.getElementById("url-http-text").className = 'url-http-text km-error-input';
 }
 
 hideAllErrors (){
   document.getElementById("emptyerror1").className = ' n-vis';
   document.getElementById("website-url").className = 'input';
-  // document.getElementById("url-http-text").className = 'url-http-text';
-  // document.getElementById("emptyerror2").className = 'n-vis';
-  // document.getElementById("customer-name").className = 'input customer-name';
 }
 
   onBlur() {

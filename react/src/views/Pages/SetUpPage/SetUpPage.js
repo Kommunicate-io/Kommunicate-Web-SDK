@@ -7,8 +7,7 @@ import Step2 from './Step2';
 import Step1 from './Step1';
 import './setup.css';
 import Testimonials from '../Register/Testimonials';
-import Mikolaj from '../Register/Testimonials/Images/Mikolaj.jpg';
-import Alex from '../Register/Testimonials/Images/AlexKlein.jpg';
+import { testimonialTexts } from '../Register/Register';
 
 
 
@@ -66,7 +65,7 @@ class SetUpPage extends Component {
 					</div>
 				</div>
 				<div className="setup-pages-testimonial-container">
-					<Testimonials testimonialFace={testimonialTexts[productTitle].face} testimonialAuthor={testimonialTexts[productTitle].author} testimonialCompany={testimonialTexts[productTitle].company} testimonialText={testimonialTexts[productTitle].text} />
+					<Testimonials testimonialFace={testimonialTexts[productTitle].setupPage.face} testimonialAuthor={testimonialTexts[productTitle].setupPage.author} testimonialCompany={testimonialTexts[productTitle].setupPage.company} testimonialText={testimonialTexts[productTitle].setupPage.text} />
 				</div>
 			</div>
 		)
