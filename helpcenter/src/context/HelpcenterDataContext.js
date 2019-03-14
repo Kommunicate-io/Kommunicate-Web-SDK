@@ -64,12 +64,18 @@ export class HelpCenterDataContext extends Component {
     } 
 
     setTheme = () => {
-        let primaryColor = this.state.helpCenter.color;
-        let themeGradient = StyleUtils.getGradientColor(this.state.helpCenter.color);
-        theme.primaryColor = primaryColor;
-        theme.gradientColor = themeGradient;
+        let primaryColor = this.state.helpCenter.color,
+            themeGradient = StyleUtils.getGradientColor(primaryColor),
+            primaryColorBrightness = StyleUtils.getColorBrightness(primaryColor), 
+            textColor;
+        primaryColorBrightness > 150 ? textColor = '#000' : textColor = '#fff'; 
+        const updatedTheme = Object.assign({}, theme, { 
+            primaryColor: primaryColor, 
+            gradientColor: themeGradient,
+            helpcenterHeadingFontColor : textColor
+        });
         this.setState({
-            theme:theme,
+            theme:updatedTheme,
         })
     } 
 
