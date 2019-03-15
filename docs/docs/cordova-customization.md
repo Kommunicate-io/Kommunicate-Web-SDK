@@ -58,8 +58,7 @@ Apart from the properties mentioned in the above [Applozic documentation](https:
 ```
 
 ### Theme Customization
-Not all the colors can be changed from the applozic-settings.json file. There are some colors like the statusbar/toolbar color, message statuc icon colors(sent, delivered etc icons)
-which you need to override in your colors file under platforms/android/res/values/colors.xml file. Create the file under the same directory if not created.
+Not all the colors can be changed from the applozic-settings.json file. There are some colors like the statusbar/toolbar color, message status icon colors(sent, delivered etc icons) which you need to override in your colors file under platforms/android/res/values/colors.xml file. Create the file under the same directory if not created.
 
 Follow the below steps to override the default colors in Kommunicate:
 1) Add the below line in your `<resources` tag in the colors.xml file
