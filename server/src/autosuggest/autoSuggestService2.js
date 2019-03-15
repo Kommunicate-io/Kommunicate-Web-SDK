@@ -9,7 +9,7 @@ const { getNextCount } = require('./counter');
 const generateHash = (message) => {
     if (stringUtils.isBlank(message)) { return null; }
     message = message.trim()
-    message = message.replace(/\?/g, '');
+    message = message.replace(/[\W_]+/g, '');
     return crypto.createHash('md5').update(message).digest('hex');
 }
 

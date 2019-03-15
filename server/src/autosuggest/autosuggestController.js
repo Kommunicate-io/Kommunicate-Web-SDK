@@ -139,7 +139,6 @@ exports.deleteSuggestion = (req, res) => {
 exports.searchFAQv2 = (req, res) => {
 	let question = req.params.question;
 	if (question) {
-		question =  question.replace(/\-/g, " ")
 		req.query.question = autosuggestService.generateHash(question);
 	}
 	req.query.appId = req.params.appId
