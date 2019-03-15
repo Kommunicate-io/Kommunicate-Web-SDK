@@ -64,7 +64,8 @@ class PersonInfoCard extends Component {
     }
     checkForUserInfoEmptyState = () => {
         if(this.state.user){
-            var userMetaInfo = Object.assign(this.state.user.metadata);
+            var userMetaInfo;
+            this.state.userMetadata && (userMetaInfo = Object.assign({}, this.state.user.metadata));
             userMetaInfo.KM_PSEUDO_USER && delete userMetaInfo.KM_PSEUDO_USER;
             userMetaInfo.kmClearbitData && delete userMetaInfo.kmClearbitData;
             return Object.keys(userMetaInfo).length > 0 ;
