@@ -97,7 +97,7 @@ const CommonUtils = {
     },
     getDaysCount: function() {
         var now = new Date();
-        var trialStarted = new Date(CommonUtils.getUserSession().applicationCreatedAt);
+        var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
         var timeDiff = now.getTime() - trialStarted.getTime();
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         return diffDays;
@@ -112,7 +112,10 @@ const CommonUtils = {
         return CommonUtils.getUserSession().application.pricingPackage == 0;
     },
     isTrialPlan: function() {
-        return CommonUtils.getDaysCount() < 31 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan());
+        return CommonUtils.getDaysCount() < 31 && ((CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan()) || (CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan()));
+    },
+    isExpiredPlan: function() {
+        return (CommonUtils.getDaysCount() > 30 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan())) ;
     },
     hasFeatureAccess: function() {
         return CommonUtils.isTrialPlan() || !CommonUtils.isStartupPlan();

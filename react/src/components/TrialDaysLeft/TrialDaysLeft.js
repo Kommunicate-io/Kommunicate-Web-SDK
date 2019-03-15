@@ -110,8 +110,7 @@ class TrialDaysLeft extends Component {
     daysRemaining = () => {
         var _this = this;
         let daysRemaining = 31 - CommonUtils.getDaysCount();
-        let applicationCreatedAtTime = CommonUtils.getUserSession().applicationCreatedAt || CommonUtils.getUserSession().created_at;
-        applicationCreatedAtTime = applicationCreatedAtTime.replace('Z','');
+        let applicationCreatedAtTime = CommonUtils.getUserSession().application.createdAtTime;
         var trialExpiryDate = moment(applicationCreatedAtTime).add(30, 'days').format("DD MMM YYYY");
 
         this.setState({renderSections: {
@@ -157,7 +156,7 @@ class TrialDaysLeft extends Component {
         //Note: For Applozic, once pricing is finalized, upgrade will come.
         
         return (
-            <div className={(CommonUtils.isTrialPlan() || CommonUtils.isStartupPlan()) ? "km-trial-days-left-container" : "n-vis"}
+            <div className={CommonUtils.isTrialPlan() || CommonUtils.isExpiredPlan() ? "km-trial-days-left-container" : "n-vis"}
             // onMouseOver={this.showPopup}
             >
                 {(CommonUtils.isTrialPlan()) ?
@@ -165,7 +164,7 @@ class TrialDaysLeft extends Component {
                         <p>{daysLeft}</p>
                     </div>
                     :
-                    <div className={"km-trial-days-left product product-kommunicate"}>
+                    <div className={"km-trial-days-left"}>
                         <Link to="/settings/billing" className="km-button km-button--secondary trial-over">{daysLeft}</Link>
                     </div>
                 }

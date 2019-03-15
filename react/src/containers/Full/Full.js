@@ -41,6 +41,7 @@ import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import MessageLogs from '../../ALDashboard/views/Groups/MessageLogs';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/applicationAction';
+import TrialExpired from '../../views/TrialExpired/TrialExpired';
 
 
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
@@ -56,7 +57,8 @@ class Full extends Component {
       hideInvitedMemberBar: true,
       invitedBy: '',
       displayName: '',
-      isIntegrationStarted: true
+      isIntegrationStarted: true,
+      isApplozicTrialExpired: CommonUtils.isProductApplozic() && CommonUtils.isExpiredPlan()
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
     this.updateUserDisplay  = this.updateUserDisplay.bind(this);
@@ -271,6 +273,12 @@ class Full extends Component {
             </div>
             <Breadcrumb />
             <div className="container-fluid">
+              { this.state.isApplozicTrialExpired ? 
+              <Switch>
+                <Route exact path="/settings/billing" name="Billing" render={() => <Billing {...this.props} />} />
+                <Route exact path="/trial-expired" name="TrialExpired" render={() => <TrialExpired {...this.props} />} />
+                <Redirect from="/" to="/trial-expired" />   
+              </Switch> :
               <Switch >
                 <Route exact path="/conversations/oops" name="" render={() => <Conversation404 {...this.props} />} />
                 <Route path="/dashboard" name="Dashboard" render={() => <Dashboard {...this.props} />} />
@@ -305,6 +313,7 @@ class Full extends Component {
                 <Redirect from="/" to="/dashboard" />      
 
               </Switch>
+            }
             </div>
           </main>
           <Aside updateProfilePicUrl={this.updateProfilePic}/>

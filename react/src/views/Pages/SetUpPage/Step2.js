@@ -152,7 +152,7 @@ comapnyUrlValidationOnEnter = (e) => {
     if (!isURL(document.getElementById("website-url").value)) {
       this.websiteUrlCheck();
     }else{
-    document.getElementById("customer-name").focus();
+    document.getElementById("step-2-submit-btn").click();
     }
   }
 }
@@ -222,7 +222,7 @@ hideAllErrors (){
 								</div>
 							</div>
 							<div className="form-group setup-btn-group">
-								<Button className="step-1-submit-btn" onClick={this.finishSetUp}>Start using {CommonUtils.isKommunicateDashboard() ? "Kommunicate" : "Applozic"}</Button>
+								<Button id="step-2-submit-btn" className="step-1-submit-btn" onClick={this.finishSetUp}>Start using {CommonUtils.isKommunicateDashboard() ? "Kommunicate" : "Applozic"}</Button>
                 <p>Enjoy your 30 day trial :)</p>
 							</div>
 						</div>

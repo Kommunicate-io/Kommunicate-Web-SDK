@@ -7,6 +7,9 @@
     overflow-y: auto;
     height: 100vh;
 }
+.settings-sidebar-nav {
+    min-width: 200px;
+}
 .settings-title {
     font-size: 20px;
     font-weight: normal;

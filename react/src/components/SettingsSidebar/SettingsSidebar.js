@@ -51,7 +51,8 @@ class SettingsSidebar extends Component {
     constructor(props){
         super(props);
         this.state={
-            isKommunicateDashboard:CommonUtils.isKommunicateDashboard()
+            isKommunicateDashboard:CommonUtils.isKommunicateDashboard(),
+            isApplozicTrialExpired: CommonUtils.isProductApplozic() && CommonUtils.isExpiredPlan()
         }
     }
 
@@ -67,6 +68,15 @@ class SettingsSidebar extends Component {
                 <p className="settings-title">Settings</p>
                 <hr className="hrr"/>
                 <div className="settings-sidebar-nav">
+                    { this.state.isApplozicTrialExpired ? 
+                    <ul className="ss-nav">
+                        <li className="ss-nav-title">
+                            CONFIGURATION
+                        </li>
+                        <li className="ss-nav-item billing-link ">
+                            <NavLink to={'/settings/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
+                        </li>
+                    </ul> :
                     <ul className="ss-nav">
                         {this.state.isKommunicateDashboard &&
                             <li className="ss-nav-title">
@@ -164,7 +174,8 @@ class SettingsSidebar extends Component {
                             </li>
                         }
 
-                    </ul>
+                    </ul>                     
+                }
                 </div>
             </div>
         )

@@ -62,7 +62,7 @@ class BillingApplozic extends Component {
         };
 
         this.buyPlan = this.buyPlan.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
+        this.openModal = this.openModal.bind(this);
         this.changeCardClick = this.changeCardClick.bind(this);
     };
 
@@ -100,8 +100,9 @@ class BillingApplozic extends Component {
         ApplozicClient.subscribe(token, pricingPackage).then(response => {
             if(response && response.data && (response.data == "success" || response.data == "USER_DETAIL_REQUIRED") )  {
                 CommonUtils.setUserSession(userSession);
+                this.that.props.updateApplozicCustomerPricingPackage(userSession.application.pricingPackage);
                 this.that.getSubscriptionDetail();
-                this.that.toggleModal();
+                this.that.openModal();
             }
         }).catch(err => {
             console.log(err);
@@ -145,17 +146,23 @@ class BillingApplozic extends Component {
         })
     }
 
-    toggleModal() {
+    openModal() {
         this.setState({
-            isModalOpen: !this.state.isModalOpen
+            isModalOpen: true
+        })
+    }
+    closeModal = () => {
+        this.setState({
+            isModalOpen: false
+        }, () => {
+            location.reload(true);
         })
     }
 
     renderTrailPeriodText = () => {
         let userSession = CommonUtils.getUserSession();
         let currentPricingPackage = userSession.application.pricingPackage;
-        let applicationCreatedAt = userSession.applicationCreatedAt || userSession.created_at;
-        applicationCreatedAt.replace('Z','');
+        let applicationCreatedAt = userSession.application.createdAtTime;
         if(!CommonUtils.isTrialPlan() && currentPricingPackage <=0) {
             return (
                 <TrialDaysText>
@@ -243,7 +250,7 @@ class BillingApplozic extends Component {
                     
                 </div>
 
-                <Modal isOpen={this.state.isModalOpen} onRequestClose={this.toggleModal} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
+                <Modal isOpen={this.state.isModalOpen} onRequestClose={this.closeModal} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
                     <ThankYouContainer>
                         <ThankYouTitle>Thanks and welcome aboard!</ThankYouTitle>
                         <ConfirmationTick />
@@ -252,7 +259,7 @@ class BillingApplozic extends Component {
                         <ThankYouSubText>Please check your email for the invoice.</ThankYouSubText>
                     </ThankYouContainer>
 
-                    <CloseButton onClick={this.toggleModal}/>
+                    <CloseButton onClick={this.closeModal}/>
                 </Modal>
             </Container>
         );

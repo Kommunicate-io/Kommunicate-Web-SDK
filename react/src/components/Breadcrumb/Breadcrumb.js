@@ -45,9 +45,9 @@ const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
   const i = 0;
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem} />);
   return (
-    <Breadcrumb className={paths[1].includes("/settings") || paths[paths.length-1].includes('/conversations/oops') ? "km-remove-border" : ""}>
+    <Breadcrumb className={paths[1].includes("/settings") || paths[paths.length-1].includes('/conversations/oops') || paths[1].includes('/trial-expired') ? "km-remove-border" : ""}>
       {items}
-      { paths[1] === '/conversations' ? " " : <TrialDaysLeft />}    
+      { (paths[1] === '/conversations' || paths[1] === '/trial-expired') ? " " : <TrialDaysLeft />}    
     </Breadcrumb>
   );
 };
