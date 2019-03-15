@@ -1,0 +1,11 @@
+{
+	"applinks": {
+		"apps": [],
+		"details": [
+			{
+				"appID": "C25JNDCBM4.io.kommunicate.agent",
+				"paths": ["/conversations/*"]
+			}
+		]
+	}
+}
