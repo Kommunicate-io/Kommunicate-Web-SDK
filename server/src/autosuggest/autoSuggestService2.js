@@ -1,17 +1,8 @@
 const logger = require("../utils/logger");
 const { KnowledgeBaseModel } = require('./knowledgeBase')
-const crypto = require('crypto');
-const stringUtils = require("underscore.string");
 const knowledgeBaseESClient = require("./faqSearchService");
 const { getNextCount } = require('./counter');
 
-
-const generateHash = (message) => {
-    if (stringUtils.isBlank(message)) { return null; }
-    message = message.trim()
-    message = message.replace(/[\W_]+/g, '');
-    return crypto.createHash('md5').update(message).digest('hex');
-}
 
 const getAllSuggestions = async () => {
     let arr = await KnowledgeBaseModel.find().sort({id:1});
@@ -170,7 +161,6 @@ module.exports = {
     fetchFAQs,
     getSuggestionsByCriteria,
     getSuggestionsByAppId,
-    generateHash,
     createIfNotExist,
     searchESQueryByCriteria
 }

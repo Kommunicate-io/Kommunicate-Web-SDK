@@ -1,6 +1,7 @@
 
 const autosuggestService = require("./autoSuggestService2");
 const autosuggestServiceExisting = require("./autosuggestService");
+const hashGenerator = require("./hashGenerator");
 const logger = require("../utils/logger");
 var crypto = require('crypto');
 const stringUtils = require("underscore.string");
@@ -139,7 +140,7 @@ exports.deleteSuggestion = (req, res) => {
 exports.searchFAQv2 = (req, res) => {
 	let question = req.params.question;
 	if (question) {
-		req.query.question = autosuggestService.generateHash(question);
+		req.query.question = hashGenerator.generateHash(question);
 	}
 	req.query.appId = req.params.appId
 	this.searchFAQ(req, res);
@@ -210,10 +211,7 @@ exports.migrateToModel = (req, res) => {
             delete suggestion._id
             let question = suggestion.name ? suggestion.name.trim() : null;
             if (!stringUtils.isBlank(question)) {
-                question = question.replace(/\?/g, '');
-                var hash = crypto.createHash('md5').update(question).digest('hex');
-                suggestion.key = hash
-
+                suggestion.key = hashGenerator.generateHash(question);
 			}
 			autosuggestService.createIfNotExist(suggestion);
 

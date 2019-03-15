@@ -1,16 +1,7 @@
 const logger = require("../utils/logger");
 const mongoClient = require("../mongodb/client");
 const collections = require("../mongodb/collections").COLLECTIONS;
-const crypto = require('crypto');
-const stringUtils = require("underscore.string");
-
-
-const generateHash = (message) => {
-	if (stringUtils.isBlank(message)) { return null; }
-	message = message.trim()
-	message = message.replace(/\?/g, '');
-	return crypto.createHash('md5').update(message).digest('hex');
-}
+const hashGenerator = require("./hashGenerator");
 
 const getAllSuggestions = () => {
 		return mongoClient.find({"collectionName":collections.KNOWLEDGE_BASE});
@@ -37,7 +28,7 @@ const getSuggestionsByCriteria = (criteria, value, applicationId) => {
 const createSuggestion = (suggestion) => {
 	return mongoClient.getNextSequence(collections.KNOWLEDGE_BASE,"id").then(value=>{
 		suggestion.id = value;
-		suggestion.key = suggestion.name ?  generateHash(suggestion.name): null;
+		suggestion.key = suggestion.name ?  hashGenerator.generateHash(suggestion.name): null;
 		 return mongoClient.insertOne(collections.KNOWLEDGE_BASE,suggestion).then(mongoResult=>{
 			return mongoResult;
 		}).catch(e=>{
@@ -49,7 +40,7 @@ const createSuggestion = (suggestion) => {
 
 const updateSuggestion = (suggestion) => {
 	if(suggestion.name ){
-		suggestion.key = generateHash(suggestion.name)
+		suggestion.key = hashGenerator.generateHash(suggestion.name)
 	}
 	return mongoClient.updateOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id},update:suggestion}).then(mongoResult=>{
 		return mongoResult;
@@ -108,4 +99,3 @@ exports.getSuggestionsByAppId = getSuggestionsByAppId
 exports.updateSuggestion = updateSuggestion
 exports.deleteSuggestion = deleteSuggestion
 exports.getSuggestionsByCriteria = getSuggestionsByCriteria
-exports.generateHash = generateHash;

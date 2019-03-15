@@ -5,6 +5,8 @@ const Schema = mongoose.Schema;
 const {COLLECTIONS} = require("../mongodb/collections");
 const config = require('../../conf/config').getProperties();
 var crypto = require('crypto');
+const hashGenerator = require("./hashGenerator");
+
 mongoose.pluralize(null);
 
 const KnowledgeBase = new Schema({
@@ -88,8 +90,7 @@ const KnowledgeBase = new Schema({
 KnowledgeBase.pre('save', function (next) {
     let question = this.name ? this.name.trim() : null;
     if (!stringUtils.isBlank(question)) {
-        question = question.replace(/\?/g, '');
-        this.key = crypto.createHash('md5').update(question).digest('hex');
+        this.key = hashGenerator.generateHash(question);
     }
     next();
 });
@@ -97,8 +98,7 @@ KnowledgeBase.pre('updateOne', function (next) {
     this._update.updated_at = new Date().getTime();
     let question = this.name ? this.name.trim() : null;
     if (!stringUtils.isBlank(question)) {
-        question = question.replace(/\?/g, '');
-        this._update.key = crypto.createHash('md5').update(question).digest('hex');
+        this._update.key = hashGenerator.generateHash(question);
     }
     next();
 });
