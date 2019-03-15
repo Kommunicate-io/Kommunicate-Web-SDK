@@ -44,7 +44,7 @@ export const CommonUtils = {
     },
 
     formatFaqQuery: function (query) {
-        return query.replace(/ /g,"-").replace('?','');
+        return query.replace(/[/]/g,'-').replace(/ /g,"-").replace('?','');
     },
 
     getHostNameFromUrl: function () {
