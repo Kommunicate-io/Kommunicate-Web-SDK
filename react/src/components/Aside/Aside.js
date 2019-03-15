@@ -8,7 +8,7 @@ import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import Notification from '../../views/model/Notification';
 import ReactTooltip from 'react-tooltip';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS, CONVERSATION_TYPE, CONVERSATION_TAB_VIEW_MAP} from '../../utils/Constant';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS, CONVERSATION_TYPE, CONVERSATION_TAB_VIEW_MAP, FAQ_TYPE} from '../../utils/Constant';
 import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
@@ -668,7 +668,21 @@ class Aside extends Component {
     integration_type.ZENDESK == e.target.dataset.integrationType && this.handleForwardToZendesk(e);
     integration_type.AGILE_CRM == e.target.dataset.integrationType && this.handleForwardToAgileCrm(e);
     
-  }
+  };
+
+  faqAndLizBanner = () => {
+    var faqList = this.props.appSettings.faqList;
+    var publishedFaq = faqList && faqList.filter(function (item) {
+        return item.status == FAQ_TYPE.PUBLISHED;
+    });
+    if (this.state.isLizActive && publishedFaq && publishedFaq.length < 5) {
+      var heading = "Add more FAQs for better results from the ";
+      if (publishedFaq.length === 0) {
+        heading = "Liz will not work as you’ve not added any FAQs. Add them now from the ";
+      } 
+      return <BannerV2 cssClass="km-is-liz" appearance="warning" heading={[heading, <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
+    }
+  };
 
   render() {
     let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
@@ -1009,18 +1023,7 @@ class Aside extends Component {
                             <Banner isVisible={this.state.warningBannerText === ""} indicator={'warning'} text={this.state.warningBannerText}/>
                           </div>
                           <LizBanner>
-                            <Fragment>
-                                {
-                                    this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length === 0 &&
-                                    <BannerV2 cssClass="km-is-liz" appearance="warning" heading={["Liz will not work as you’ve not added any FAQs. Add them now from the ", <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
-                                }
-                            </Fragment>
-                            <Fragment>
-                                {
-                                    this.state.isLizActive && this.props.appSettings.faqList &&  this.props.appSettings.faqList.length !== 0 && this.props.appSettings.faqList.length < 5 &&
-                                    <BannerV2 cssClass="km-is-liz" appearance="warning" heading={["Add more FAQs for better results from the ", <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
-                                }
-                            </Fragment>
+                            {this.state.isLizActive && this.faqAndLizBanner()}
                           </LizBanner>
                       </div>
                       <div id="km-product-group"
@@ -1465,6 +1468,9 @@ const NewMessageIndicatorText = styled.div`
 const LizBanner = styled.div`
     & .km-is-liz{
       margin: 0 -10px;
+    }
+    & .km-is-liz a {
+      font-weight:500;
     }
 `;
 

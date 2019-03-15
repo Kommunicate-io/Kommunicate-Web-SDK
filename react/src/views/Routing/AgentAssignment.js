@@ -4,7 +4,7 @@ import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import axios from 'axios';
-import { ROUTING_RULES_FOR_AGENTS, USER_TYPE, LIZ } from '../../../src/utils/Constant';
+import { ROUTING_RULES_FOR_AGENTS, USER_TYPE, LIZ, FAQ_TYPE } from '../../../src/utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {Link} from 'react-router-dom';
@@ -172,19 +172,25 @@ getAppSettings = () => {
 }
 
 setLizActiveBanner = (botAssignee) => {
-    if (this.state.assignConversationToBot) {
-        this.setState({
-            isLizActive: (botAssignee === LIZ.userName)
-        })
-    };
+    this.setState({
+        isLizActive: (botAssignee === LIZ.userName)
+    })
 };
 
 faqAndLizBanner = () => {
-    if (this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length === 0) {
-        return <Banner appearance="warning" heading="You have not added any FAQ"> Liz cannot answer your user queries without the FAQs. Add them now from the <Link to={'/faq'} >FAQ section.</Link></Banner>
-    }
-    else if (this.state.isLizActive && this.props.appSettings.faqList && this.props.appSettings.faqList.length !== 0 && this.props.appSettings.faqList.length < 5) {
-        return <Banner appearance="warning" heading="Add more FAQs for better results"> You can keep adding more FAQs to improve Liz's performance and accuracy from the <Link to={'/faq'} >FAQ section.</Link></Banner>
+    var faqList = this.props.appSettings.faqList;
+    var publishedFaq = faqList && faqList.filter(function (item) {
+        return item.status == FAQ_TYPE.PUBLISHED;
+    });
+    if (this.state.isLizActive && publishedFaq && publishedFaq.length < 5) {
+        var heading = "Add more FAQs for better results";
+        var subHeading = "You can keep adding more FAQs to improve Liz's performance and accuracy from the ";
+        if (publishedFaq.length === 0) {
+            heading = "You have not added any FAQ";
+            subHeading = "Liz cannot answer your user queries without the FAQs. Add them now from the "
+        } 
+        return <Banner cssClass = "km-highlight-anchor" appearance="warning" heading={heading}> {subHeading} <Link to={'/faq'} >FAQ section.</Link></Banner>
+
     }
 };
 
@@ -494,6 +500,10 @@ const BannerContainer = styled.div`
 
 const LizBanner = styled.div`
     margin-top: 10px;
+
+    & .km-highlight-anchor a{
+        font-weight:500;
+    }
 `;
 
 
