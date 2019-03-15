@@ -39,8 +39,8 @@ You can start a new conversation by using the below function:
 
 ```js
  let convInfo = {
-      'agentIds':['reytum@live.com'],  //list of agentIds
-      'botIds': ['Hotel-Booking-Assistant']  //list of botIds
+      'agentIds':['<AGENT_ID>'],  //List of agentIds. AGENT_ID is the emailID used to signup on Kommunicate
+      'botIds': ['<BOT_ID>']  //List of botIds.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
      };
      
   kommunicate.startNewConversation(convInfo, (response) => {
@@ -57,8 +57,8 @@ You can create a unique conversation using the below method. A unique conversati
 
 ```
  var vary = {
-        'agentIds':['reytum@live.com'],
-        'botIds' : ['bot1', 'bot2']
+      'agentIds':['<AGENT_ID>'],  //List of agentIds. AGENT_ID is the emailID used to signup on Kommunicate
+      'botIds': ['<BOT_ID>']  //List of botIds.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
        };
 
        kommunicate.startOrGetConversation(vary, (response) => {  

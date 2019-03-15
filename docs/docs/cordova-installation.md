@@ -18,7 +18,7 @@ For ionic, use the below command:
 ionic cordova plugin add kommunicate-cordova-plugin
 ```
 ## Get your Application Id
-Sign up for [Kommunicate](https://dashboard.kommunicate.io) to get your [application id](https://dashboard.kommunicate.io/settings/install). This application Id is used to create/launch conversations.
+Sign up for [Kommunicate](https://dashboard.kommunicate.io) to get your [APP_ID](https://dashboard.kommunicate.io/settings/install). This APP_ID is used to create/launch conversations.
 ## Declare kommunicate variable
 Declare the variable before calling any function on it. Write the below line at the end of the file.
 ```js
@@ -30,13 +30,13 @@ To launch the single chat you need to create a conversation launch object. This 
 
 ```js
 let conversationObject = {
-     'appId' : '<Your-app-Id>',
+     'appId' : '<APP_ID>',
      'groupName' : 'My Support group', 
      'kmUser' : JSON.stringify(user),
      'withPreChat' : false,
      'isUnique' : true,
-     'agentIds' : ['agent1', 'agent2'],
-     'botIds' : ['bot1', bot2]
+     'agentIds' : ['<AGENT_ID>'], //AGENT_ID is the email id used to signup on kommunicate dashboard
+     'botIds' : ['<BOT_ID>'] . //List of botIds. Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID 
 }
 ```
 
@@ -44,13 +44,13 @@ Below are the parmater's description:
 
 | Parameter        | Type           | Description  |
 | ------------- |:-------------:| -----:|
-| appId      | String      |   Mandatory field. The [application Id](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard |
+| appId      | String      |   Mandatory field. The [APP_ID](https://dashboard.kommunicate.io/settings/install) obtained from kommunicate dashboard |
 | groupName      | String      |   Optional, you can pass a group name or ignore |
 | kmUser | KMUser     |    Pass the details if you have the user details, ignore otherwise |
 | withPreChat | boolean      |   Pass true if you would like the user to fill the details before starting the chat. If you have user details then you can pass false or ignore. |
 | isUnique | boolean      |    Pass true if you would like to create only one conversation for every user. The next time user starts the chat the same conversation would open, false if you would like to create a new conversation everytime the user starts the chat. True is recommended for single chat|
 | agentIds | List<String>      |    Pass the list of agents. The agent id would be the email id you used to register on kommunicate|
-| botIds | List<String>      |    Pass the list of bots. Ignore if you haven't integrated any bots |
+| botIds | List<String>      |    Pass the list of bots. Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID . Ignore you haven't integrated any bots. |
  
 Then use the object to launch the chat:
 ```js
@@ -68,9 +68,9 @@ If you would like to launch the chat directly without the visiting user entering
 
 ```js
 let conversationObject = {
-     'appId' : '<Your-app-Id>',
-     'agentIds' : ['agent1', 'agent2'],
-     'botIds' : ['bot1', bot2]
+     'appId' : '<APP_ID>',
+     'agentIds' : ['<AGENT_ID>'],  
+     'botIds' : ['<BOT_ID>']
 }
 
  kommunicate.startSingleChat(conversationObject, (response) => {
@@ -84,10 +84,10 @@ If you need the user to fill in details like phone number, emailId and name befo
 
 ```js
 let conversationObject = {
-     'appId' : '<Your-app-Id>',
+     'appId' : '<APP_ID>',
      'withPreChat' : true,
-     'agentIds' : ['agent1', 'agent2'],
-     'botIds' : ['bot1', bot2]
+     'agentIds' : ['<AGENT_ID>'],
+     'botIds' : ['<BOT_ID>']
 }
 
  kommunicate.startSingleChat(conversationObject, (response) => {
@@ -107,10 +107,10 @@ let user = {
 }
 
 let conversationObject = {
-     'appId' : '<Your-app-Id>',
+     'appId' : '<APP_ID>',
      'kmUser' : JSON.stringify(user),
-     'agentIds' : ['agent1', 'agent2'],
-     'botIds' : ['bot1', bot2]
+     'agentIds' : ['<AGENT_ID>'],
+     'botIds' : ['<BOT_ID>']
 }
 
  kommunicate.startSingleChat(conversationObject, (response) => {

@@ -14,7 +14,7 @@ To authenticate a user you need to create a user object and then pass it to the 
 |password | User's password|
 |imageLink | This image will be visible to the user |
 |authenticationTypeId | Pass 1 for authentication from kommunicate |
-|applicationId | Pass your applicationId here |
+|APP_ID | Pass your [APP_ID](https://dashboard.kommunicate.io) here |
 |deviceApnsType | 0 for development, 1 for release |
 
 ## There are 2 ways to Login
@@ -35,7 +35,7 @@ Then create the User object using random Id:
 ```js
  var kmUser = {
       'userId' : this.getRandomId(),
-      'applicationId' : '22823b4a764f9944ad7913ddb3e43cae1',  //replace this with your Application Key from Applozic Dashboard
+      'applicationId' : '<APP_ID>',  //replace this with your APP_ID from Applozic Dashboard
       'deviceApnsType' : 0    //Set 0 for Development and 1 for Distribution (Release)
       };
 ```
@@ -58,7 +58,7 @@ If the user is already logged in to your app, then pass the user details to crea
         'password' : this.password,  //Put password here
         'authenticationTypeId' : 1,
         'imageLink' : <image-link-for-user>
-        'applicationId' : '22823b4a764f9944ad7913ddb3e43cae1',  //replace this with your Application Key from Applozic Dashboard
+        'applicationId' : '<APP_ID>',  //replace this with your APP_ID from Applozic Dashboard
         'deviceApnsType' : 0    //Set 0 for Development and 1 for Distribution (Release)
     };
 ```
