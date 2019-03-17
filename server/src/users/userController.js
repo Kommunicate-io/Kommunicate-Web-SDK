@@ -127,7 +127,7 @@ exports.createUser = function (req, res) {
           .then(([user, application]) => {
             return integrationSettingService.getIntegrationSetting(customer.id, CLEARBIT).then(key => {
               logger.info("user created successfully.. ", user);
-              if (user.type === 1) {
+              if (user.type === 1 && customer.subscription != "applozic") {
                 registrationService.sendWelcomeMail(user.email, user.name, true, user.companyName);
               }
               user.application = application;
