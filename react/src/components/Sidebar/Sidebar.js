@@ -30,7 +30,8 @@ class Sidebar extends Component {
     super(props)
     this.state = {
       isKommunicateDashboard: CommonUtils.isKommunicateDashboard(),
-      isApplozicDashboard: CommonUtils.isProductApplozic()
+      isApplozicDashboard: CommonUtils.isProductApplozic(),
+      isApplozicTrialExpired: CommonUtils.isProductApplozic() && CommonUtils.isExpiredPlan()
     };
   }
 
@@ -76,6 +77,8 @@ class Sidebar extends Component {
 
   render() {
 
+    const visibility = this.state.isApplozicTrialExpired ? "invisible" : "visible";
+
     const currentPath = window.location.pathname;
     var settingsSidebarShow = currentPath.includes('/settings') ? <SettingsSidebar {...this.props} /> : null;
     return (
@@ -92,7 +95,7 @@ class Sidebar extends Component {
             </li>
 
             {/* Dashboard Link */}
-            <li className="nav-item">
+            <li className={"nav-item " + visibility}>
               <NavLink to={'/dashboard'} className="nav-link" activeClassName="active" data-rh="Dashboard" data-rh-at="right" data-tip="Dashboard" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 5">
@@ -107,7 +110,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Conversations Link */
-            this.state.isKommunicateDashboard &&<li className="nav-item" onClick={this.hideUnreadCountOnConversationTab}>
+            this.state.isKommunicateDashboard &&<li className={"nav-item " + visibility} onClick={this.hideUnreadCountOnConversationTab}>
               <NavLink exact= {true} to={'/conversations'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Conversations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 4">
@@ -121,7 +124,7 @@ class Sidebar extends Component {
             </li>
             }
             {/* Message Logs Link */}
-            { CommonUtils.hasApplozicAccess() && <li className="nav-item">
+            { CommonUtils.hasApplozicAccess() && <li className={"nav-item " + visibility}>
                 <NavLink exact= {true} to={'/message-logs'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Message Logs" data-effect="solid" data-place="right">
                   <MessageLogs />
                 </NavLink>
@@ -129,13 +132,13 @@ class Sidebar extends Component {
             }
             
             {/* Customers Link */}
-            <li className="nav-item">
+            <li className={"nav-item " + visibility}>
               <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Users" data-effect="solid" data-place="right">
                 <UserIcon />
               </NavLink>
             </li>
             {/* Bot Link */}
-            {<li className="nav-item">
+            {<li className={"nav-item " + visibility}>
               <NavLink to={'/bot'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-bot-integrations" data-tip="Bot Integration" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 9">
@@ -153,7 +156,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>}
             {/* Integrations Link */}
-            {this.state.isKommunicateDashboard && <li className="nav-item">
+            {this.state.isKommunicateDashboard && <li className={"nav-item " + visibility}>
               <NavLink to={'/integrations'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-integrations" data-tip="Integrations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.363 25.363">
               <g data-name="Group 10">
@@ -173,7 +176,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>}
             {/* FAQ Link */}
-            {this.state.isKommunicateDashboard && <li className="nav-item">
+            {this.state.isKommunicateDashboard && <li className={"nav-item " + visibility}>
               <NavLink to={'/faq'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-faq" data-tip="FAQ" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 7">
@@ -189,7 +192,7 @@ class Sidebar extends Component {
           <ul className="nav">
 
             {/* IntegrationStarted icon */}
-            <li className="nav-item">
+            <li className={"nav-item " + visibility}>
               <IntegrationStarted integrationStarted={this.props.isIntegrationStarted} />
             </li>
 
@@ -200,7 +203,7 @@ class Sidebar extends Component {
 
             {/* Settings Link */}
             <li className="nav-item">
-              <NavLink to={'/settings/profile'} className={currentPath.includes('/settings/') ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right">
+              <NavLink to={this.state.isApplozicTrialExpired ? '/settings/billing' : '/settings/profile'} className={currentPath.includes('/settings/') ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <g data-name="Group 3">
                       <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 7" />
