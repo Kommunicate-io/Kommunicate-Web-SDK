@@ -1,50 +1,33 @@
 ---
 id: web-botintegration
 title: Integrate bot with Kommunicate
-sidebar_label: Bot Integration
+sidebar_label: Dialogflow Integration
 ---
 
 ## Overview
+Kommunicate provide a codeless integration with Dialogflow. You can easily integrate your Dialogflow agent form bot section in Kommunicate dashboard. 
 
-Kommunicate has the provisions to integrate any third-party (Dialogflow, Microsoft Bot Framework, IBM Watson etc) or custom-made bots in the website. Bots can handle all the incoming conversations and when unable to answer, they can assign conversion to humans. In this section, learn how to:
+### Integration using Dialogflow V1 APIs
+  1. Login to Dialogflow console and select the agent you want to integrate with Kommunicate from the drop-down in the left panel
 
-* Assign conversation to bot
-* Assign conversation to bot based on certain events
-* Pass custom data to the bot platform
-* Send attachments to bots
-* Make your bot multilingual
-* Assign conversation to humans based on availability
+  2. Go to `Settings->general` and copy Client access token and Developer access token.
 
-> **Note: Creating a bot and [configuring it from the Dashboard](https://docs.kommunicate.io/docs/bot-configration.html) is required before this step.**
+  3. Go to kommunicate `dashboard->bots` and click on `Dialogflow (settings)`.
 
-## Assign all the new conversations to the bot by default
+  4. Submit the required details.
 
-Go to [Kommunicate Dashboard -> Settings -> Conversation Routing](https://dashboard.kommunicate.io/settings/agent-assignment) and enable "Assign new conversations to bot", select the configured bot. 
+### Integration using Dialogflow V2 APIs
 
-After this, go to the chat widget integrated into your website, click on "Start New Conversation", send a message and verify that the configured bot is replying.
+  1. Login to Dialogflow console. 
+  2. Select your Agent from dropdown in left panel.
+  3. Click on setting button. It will open a setting page for agent.
+  4. Inside general tab search for GOOGLE PROJECTS and click on your service account.
+  5. After getting redirected to your SERIVICE ACCOUNT, create key in JSON format for your project from actions section and it will get automatically downloaded.
+  6. Upload the key file in Kommunicate dashboard.
 
-## Assign conversations to specific bots based on the webpage
 
-If you wish to assign conversations to specific bots based on which webpage the conversation is started from, pass an array of botIds in `botIds` parameter in the [installation script](https://docs.kommunicate.io/docs/web-installation.html#script) in webpages where the specific bot need to be the default bot to handle incoming conversations.
+On successful integration, the bot will be given an ID(botId) and will be listed under My Integrated Bots section. The botId will be used to identify the bot in the Kommunicate system.
 
-```javascript
-     var kommunicateSettings = {"appId": appId,"agentId":agentId,"botIds":["liz"],"conversationTitle":conversationTitle,"botIds":["bot1"],"onInit":callback};
-```
-
-## Assign conversations to specific bots based on certain events
-
-You can start group conversations with bot using `startConversation(conversationDetail, callback)`.
-
-```javascript
-  var conversationDetail = {
-    agentId: "agentId", // optinal, if you dont pass agent Id, default agent will automatically get selected.
-    botIds: ["bot1"],
-    assignee:"bot1" // if nothing is passed, conversation will be assigned to default agent.
-  };
-  Kommunicate.startConversation(conversationDetail, function (response) {
-  console.log("new conversation created");
-  }); 
-```
 ## Pass Custom data to bot platform
 
 > Note: This feature is supported by only Dialogflow V2 APIs. 
@@ -132,6 +115,95 @@ When you integrate a Dialogflow bot, Kommunicate sets US English(en-US) the defa
 
 You need to pass the appropriate language tag in `Kommunicate.updateUserLanguage("languageTag")` method. Once this is set, only intents created in this language will be matched against user queries. If none of the intents is matched, `Default Fallback Intent` will be triggered. Here is more information on creating [multilingual agent in Dialogflow](https://dialogflow.com/docs/agents/multilingual).      
 
+## Working with Dialogflow fulfillment
+> This feature is only available with Dialogflow V2 APIs. 
+
+Fulfillment lets your Dialogflow agent call business logic on an intent-by-intent basis. Dialogflow supports two ways to configure the fulfillment for an agent. More information on the fulfillment configuration is available on Dialogflow [docs](https://dialogflow.com/docs/fulfillment/configure).
+
+1. Custom webhook
+2. Create a webhook with the inline editor
+
+### Custom webhook
+
+A webhook is a web server endpoint that you create and host. When an intent with fulfillment enabled is matched, Dialogflow will make an HTTP POST request to your webhook with a JSON object containing information about the matched intent. And your webhook should respond back with instructions for what Dialogflow should do next. More about the request and response format is available in Dialogflow [docs](https://dialogflow.com/docs/fulfillment/how-it-works). Then Dialogflow wraps webhook response into the [response object](https://dialogflow.com/docs/reference/api-v2/rest/v2/projects.agent.sessions/detectIntent#response-body) depending on the API version you are using and send it to the client. 
+
+Kommunicate look for the fulfillmentMessages array in webhook response. The element in this array can be a text message or an [actionable messages](actionable-messages) supported by kommunicate. Every element is treated as a independent message and rendered into UI according to the data present. 
+
+Below is the sample fullfilmentMessage array for Dialogflow V2 APIs:
+
+```js
+{
+	"fulfillmentMessages": [{
+		"payload": {
+			"message": "Object1- this object renders the link button on the UI",
+			"platform": "kommunicate",
+			"metadata": {
+				"contentType": "300",
+				"templateId": "3",
+				"payload": [{
+						"type": "link",
+						"url": "www.google.com",
+						"name": "Go To Google"
+					},
+					{
+						"type": "link",
+						"url": "www.facebook.com",
+						"name": "Go To Facebook"
+					}
+				]
+			}
+		}
+	}, {
+		"payload": {
+			"message": "Object2 - this object renders this text string on the UI",
+			"platform": "kommunicate"
+		}
+	}]
+}
+
+```
+
+### Create a webhook with the inline editor
+Dialogflow provides some libraries designed to assist with building a fulfillment webhook. Below is the node js function with dialogflow fulfillment library which render the specified actionable messages on kommunicate chat UI.
+
+``` js
+'use strict';
+ 
+const functions = require('firebase-functions');
+const {WebhookClient} = require('dialogflow-fulfillment');
+const {Payload} = require('dialogflow-fulfillment');
+ 
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
+ 
+exports.dialogflowfullfilment = functions.https.onRequest((request, response) => {
+  const agent = new WebhookClient({ request, response }); 
+  function welcome(agent) {
+    agent.add(new Payload("PLATFORM_UNSPECIFIED", [{
+      "message": "Do you want more updates?",
+      "platform": "kommunicate",
+      "metadata": {
+        "contentType": "300",
+        "templateId": "6",
+        "payload": [
+          {
+            "title": "Yes",
+            "message": "Cool! send me more."
+          },
+          {
+            "title": "No ",
+            "message": "Don't send it to me again"
+          }
+        ]
+      }
+    }]));
+  }
+ 
+  let intentMap = new Map();
+  intentMap.set('Default Welcome Intent', welcome);
+  agent.handleRequest(intentMap);
+});
+
+```
 
 ## Working with custom actions
 
