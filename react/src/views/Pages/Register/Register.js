@@ -282,7 +282,7 @@ class Register extends Component {
                 <div className="card-block p-4 signup-card-block">
                   { this.state.isInvited ? <h1 className="login-signup-heading text-center">Sign up to {productTitle}</h1> : <Fragment>
                       <h1 className="login-signup-heading text-center">Try {productTitle} for free now!</h1>
-                      <p className="login-signup-subheading text-center">Get a free trial account and try out all the features for 30 days. <br />No credit card required.</p>
+                      <p className="login-signup-subheading text-center">Get a free trial account and try out all the features for {testimonialTexts[productTitle].trialDays} days. <br />No credit card required.</p>
                     </Fragment>
                   }
 
@@ -433,7 +433,8 @@ export const testimonialTexts = {
       author: "Alex Klein",
       company: "YogaTrail",
       text: "Super easy, powerful addition to our site and the team couldn’t have been any more responsive and helpful."
-    }
+    },
+    trialDays : 30
     
   },
   "Kommunicate" : {
@@ -448,7 +449,8 @@ export const testimonialTexts = {
       author: "Christian C",
       company: "Teodoro Bot",
       text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
-    }
+    },
+    trialDays : 14
   }
 }
 
