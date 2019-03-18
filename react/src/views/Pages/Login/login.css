@@ -357,6 +357,9 @@
 .signup-app-div .signup-form-container .card {
     width: 100%;
 }
+.signup-app-div .signup-form-container .signup-form-fields-container .signup-card-block {
+    padding-top: 25px !important;
+}
 
 .signup-app-div .signup-form-container .signup-form-fields-container {
     max-width: 500px;

@@ -276,7 +276,7 @@ class Register extends Component {
               <div className="logo-container text-center">
                 <Logo/>
               </div>
-              <hr className={ this.state.isInvited ? "n-vis":"hr"}/>
+              {/* <hr className={ this.state.isInvited ? "n-vis":"hr"}/> */}
               <div className="card">
                 <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
@@ -438,16 +438,16 @@ export const testimonialTexts = {
   },
   "Kommunicate" : {
     registerPage: {
-      face: Christian,
-      author: "Christian C",
-      company: "Teodoro Bot",
-      text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
-    },
-    setupPage: {
       face: Mikolaj,
       author: "Mikolaj Kulesz",
       company: "Zoovu",
       text: "We wanted a simple Dialogflow integration and not many chat providers have that functionality. Not only the integration is super easy, Kommunicate provides great customer support. On top of that, they do listen to the client's needs and requests."
+    },
+    setupPage: {
+      face: Christian,
+      author: "Christian C",
+      company: "Teodoro Bot",
+      text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
     }
   }
 }
