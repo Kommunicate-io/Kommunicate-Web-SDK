@@ -1,7 +1,7 @@
 import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
 import crypto from 'crypto';
-import {THIRD_PARTY_LOGIN, KM_RELEASE_VERSION} from '../utils/Constant';
+import {THIRD_PARTY_LOGIN, KM_RELEASE_VERSION, KM_PLAN_LENGTH} from '../utils/Constant';
 import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs.js';
 
 export const PRODUCTS = {
@@ -112,10 +112,22 @@ const CommonUtils = {
         return CommonUtils.getUserSession().application.pricingPackage == 0;
     },
     isTrialPlan: function() {
-        return CommonUtils.getDaysCount() < 31 && ((CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan()) || (CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan()));
+        return CommonUtils.getDaysCount() < (CommonUtils.maxDaysAsPerPlan() + 1) && ((CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan()) || (CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan()));
     },
     isExpiredPlan: function() {
-        return (CommonUtils.getDaysCount() > 30 && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan())) ;
+        return (CommonUtils.getDaysCount() > CommonUtils.maxDaysAsPerPlan() && (CommonUtils.isKommunicateDashboard() && CommonUtils.isStartupPlan() || CommonUtils.isProductApplozic() && CommonUtils.isApplozicTrialPlan())) ;
+    },
+    // Below a specific date is mentioned because before 20th March 2019 we were giving 30 days trial and after that we will start 14 days trial.
+    isOldPlan: function() {
+        return new Date(CommonUtils.getUserSession().application.createdAtTime) < new Date("2019-03-20");
+    },
+    maxDaysAsPerPlan: function() {
+        if(CommonUtils.isKommunicateDashboard()){
+            return CommonUtils.isOldPlan() ? KM_PLAN_LENGTH.OLD : KM_PLAN_LENGTH.NEW;
+        }
+        else {
+            return KM_PLAN_LENGTH.OLD;
+        }
     },
     hasFeatureAccess: function() {
         return CommonUtils.isTrialPlan() || !CommonUtils.isStartupPlan();

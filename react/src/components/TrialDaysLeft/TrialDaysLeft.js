@@ -109,22 +109,23 @@ class TrialDaysLeft extends Component {
 
     daysRemaining = () => {
         var _this = this;
-        let daysRemaining = 31 - CommonUtils.getDaysCount();
         let applicationCreatedAtTime = CommonUtils.getUserSession().application.createdAtTime;
-        var trialExpiryDate = moment(applicationCreatedAtTime).add(30, 'days').format("DD MMM YYYY");
+        var planDetails = this.checkPlanAndAssignValues(applicationCreatedAtTime);
+        let daysRemaining = (planDetails.TOTAL_DAYS+1) - CommonUtils.getDaysCount();
+        var trialExpiryDate = moment(applicationCreatedAtTime).add(planDetails.TOTAL_DAYS, 'days').format("DD MMM YYYY");
 
         this.setState({renderSections: {
-                haveQueries: this.renderHaveQueriesSection(daysRemaining > 15),
-                popupMainBox: this.renderPopupBoxMainContent(daysRemaining > 15)
+                haveQueries: this.renderHaveQueriesSection(daysRemaining > (planDetails.TOTAL_DAYS/2)),
+                popupMainBox: this.renderPopupBoxMainContent(daysRemaining > (planDetails.TOTAL_DAYS/2))
             }
         })
 
-        if(daysRemaining <= 7) {
+        if(daysRemaining <= planDetails.END_PHASE_LENGTH) {
             this.setState({
                 color: _this.props.theme.buttons.dangerBG,
                 trialExpiryBannerMsg: "Trial ending soon",
             });
-        } else if(daysRemaining <= 15) {
+        } else if(daysRemaining <= planDetails.MID_PHASE_LENGTH) {
             this.setState({
                 color: Colors.ApplozicColors.secondary,
                 trialExpiryBannerMsg: "Trial ends on " + trialExpiryDate,
@@ -136,12 +137,20 @@ class TrialDaysLeft extends Component {
             });
         }
 
-        if(daysRemaining === 7 || daysRemaining === 15) {
+        if(daysRemaining === planDetails.END_PHASE_LENGTH || daysRemaining === planDetails.MID_PHASE_LENGTH) {
             this.props.updateStatus(actionType.trailDaysLeftBanner, false);
             this.props.updateStatus(actionType.onboardingValueForTrialDaysLeft, false);
         }
     }
 
+    checkPlanAndAssignValues = () => {
+        if(CommonUtils.isKommunicateDashboard()){
+            return (CommonUtils.isOldPlan() ? TRIAL_DAYS_BREAKDOWN.OLD_PLAN:TRIAL_DAYS_BREAKDOWN.NEW_PLAN);
+        }
+        else {
+            return  TRIAL_DAYS_BREAKDOWN.OLD_PLAN;
+        }
+    };
 
 
 
@@ -149,7 +158,7 @@ class TrialDaysLeft extends Component {
         
         let daysLeft;
         if (CommonUtils.isTrialPlan()) {
-            daysLeft = ["trial ", <Span key="0" onClick={this.showPopupContainer} color={this.state.color}>{31 - CommonUtils.getDaysCount()} days</Span>, " left"];
+            daysLeft = ["trial ", <Span key="0" onClick={this.showPopupContainer} color={this.state.color}>{(CommonUtils.maxDaysAsPerPlan()+1) - CommonUtils.getDaysCount()} days</Span>, " left"];
         } else {
             daysLeft = ["", <span key="0">upgrade plan</span>, ""];
         }
@@ -231,6 +240,19 @@ const trialDaysBannerEmployeeProfile = {
     imageLink:"https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/154591304350622823b4a764f9944ad7913ddb3e43cae1-reytum%40live.com.image.jpg",
     designation:"CEO"
 }
+
+const TRIAL_DAYS_BREAKDOWN = {
+    NEW_PLAN:{
+        END_PHASE_LENGTH:3,
+        MID_PHASE_LENGTH:4,
+        TOTAL_DAYS:14
+    },
+    OLD_PLAN:{
+        END_PHASE_LENGTH:7,
+        MID_PHASE_LENGTH:15,
+        TOTAL_DAYS:30
+    }
+};
 
 const TrialDaysCountdownBannerContainer = styled.div`
     background-color: ${props => tinycolor(props.color).setAlpha(0.18).toRgbString()};

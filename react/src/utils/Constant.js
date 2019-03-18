@@ -139,3 +139,7 @@ export const FAQ_TYPE = {
     DRAFT: "draft"
 }
 
+export const KM_PLAN_LENGTH = {
+    OLD : 30,
+    NEW : 14
+}
