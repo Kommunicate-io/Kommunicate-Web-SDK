@@ -762,7 +762,7 @@ class Aside extends Component {
                       <div id="km-dashboard-conversation-list-heading" className="km-row km-conversation-tab-title-wrapper">
                         <h4 id="km-conversation-tab-title" className="km-conversation-tab-selected km-assigned">{this.state.conversationTab[this.state.activeConversationTab].title}</h4>
                        { this.state.conversationTab[this.state.activeConversationTab].count > 0 &&
-                          <div className="km-conversation-count-wrapper">
+                          <div className="km-conversation-count-wrapper n-vis">
                             <p className="km-conversation-count">{this.displayConversationCount(this.state.conversationTab[this.state.activeConversationTab].count)}</p>
                           </div>
                        }

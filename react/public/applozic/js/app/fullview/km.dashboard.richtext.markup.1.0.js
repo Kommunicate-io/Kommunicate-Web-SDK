@@ -279,15 +279,19 @@ getListMarkup:function(){
 kommunicateDashboard.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-dashboard-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
-    var formData= JSON.parse(options.formData||"{}");
+    var formData= options.formData || "";
     var requestType = options.requestType;
     var buttonClass = "km-dashboard-add-more-rooms ";
     buttonClass += payload.length==1?"km-dashboard-cta-button-1 ":(payload.length==2?"km-dashboard-cta-button-2":"km-dashboard-cta-button-many");
 
     for(var i = 0;i<payload.length;i++){
         containerMarkup+=  kommunicateDashboard.markup.getButtonTemplate(payload[i],requestType, buttonClass)
+        if(payload[i].type != "link" && formData) {
+            formData = JSON.parse(formData);
+            Object.keys(formData).length > 0 && (containerMarkup += kommunicateDashboard.markup.getFormMarkup(options))
+           
+        }  
     }
-    formData && (containerMarkup += kommunicateDashboard.markup.getFormMarkup(options))
     containerMarkup+='</div>';
     return containerMarkup;
 }

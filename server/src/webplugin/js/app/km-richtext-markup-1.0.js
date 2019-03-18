@@ -280,15 +280,18 @@ getCardInfoTemplate: function() {
 Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
-    var formData= payload? JSON.parse(options.formData||"{}"):"";
+    var formData= options.formData || "";
     var buttonClass = "km-add-more-rooms ";
     buttonClass += payload.length==1?"km-cta-button-1 km-custom-widget-border-color":(payload.length==2?"km-cta-button-2 km-custom-widget-border-color":"km-cta-button-many km-custom-widget-border-color");
     var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
         payload[i].replyMetadata = typeof  payload[i].replyMetadata =="object"? JSON.stringify(payload[i].replyMetadata):payload[i].replyMetadata;
         containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],requestType,buttonClass)
+        if(payload[i].type != "link" && formData) {
+            formData = JSON.parse(formData);
+            Object.keys(formData).length > 0 && (containerMarkup += Kommunicate.markup.getFormMarkup(options));   
+        }  
     }
-    formData && (containerMarkup += Kommunicate.markup.getFormMarkup(options))
     containerMarkup+='</div>';
     return containerMarkup;
 }
