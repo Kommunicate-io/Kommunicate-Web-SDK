@@ -715,6 +715,8 @@ class Aside extends Component {
               isDeleteModalOpen: false
             });
             Notification.success("Conversation deleted successfully");
+          } else {
+            Notification.error("Something went wrong. Please try again after some time.");
           }
         }
       }
