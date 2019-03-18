@@ -343,7 +343,7 @@ ul#km-group-search-list li {
     min-height: 66px;
     text-align: left;
     border-bottom: 1px solid #F3F3F3;
-    z-index: 1;
+    z-index: 2;
     background-color: #fff;
 }
 
