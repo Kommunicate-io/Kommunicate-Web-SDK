@@ -10,6 +10,7 @@ import Notification from '../../views/model/Notification';
 import ReactTooltip from 'react-tooltip';
 import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, CONVERSATION_STATUS, CONVERSATION_TYPE, CONVERSATION_TAB_VIEW_MAP, FAQ_TYPE} from '../../utils/Constant';
 import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
+import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
@@ -25,7 +26,6 @@ import BannerV2 from '../../components/BannerV2';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
 import {integration_type} from '../../views/Integrations/ThirdPartyList';
-import PreferencesBanner from './PreferencesBanner';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -64,6 +64,7 @@ class Aside extends Component {
       group: null,
       modalOpen: false,
       hideInfoBox: false,
+      trialDaysLeftComponent: "",
       userInfo: null,
       toggleExpandIcon: false,
       toggleCcBccField: true,
@@ -106,6 +107,10 @@ class Aside extends Component {
        //window.appHistory.push('/dashboard');
      }
      window.Aside = this;
+
+     this.setState({	
+        trialDaysLeftComponent: <TrialDaysLeft />	
+     })
 
     window.addEventListener("group-update", this.handleGroupUpdate);
     window.addEventListener("_sendMessageEvent", this.forwardMessageToZendesk);
@@ -701,8 +706,6 @@ class Aside extends Component {
             <div id="sec-chat-box" className="col-lg-12 tab-box">
               <div id="chat-box-div" style={{height: '100vh'}}>
 
-                <PreferencesBanner />
-
                 <div className="km-container">
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
@@ -1008,6 +1011,9 @@ class Aside extends Component {
                               <div className="select-container">
                                 <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
                               </div>
+                            </div>
+                            <div className="trial-period-container">	
+                              {this.state.trialDaysLeftComponent}	
                             </div>
                           </div>
                           <hr/>
