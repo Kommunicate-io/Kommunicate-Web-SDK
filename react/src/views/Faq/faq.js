@@ -292,29 +292,10 @@ class Tabs extends Component {
                   </p> */}
                 </div>
               </div>
-              <div className="row mt-4 faq-btn-wrapper">
+              <div className="row mb-4 faq-btn-wrapper">
                 <button className="km-button km-button--primary" onClick={this.toggleFaqModal}>
                   + Add FAQ
                 </button>
-                <div className="km-faq-or">OR</div>
-                { this.state.helpdocsKey.length == 0 &&
-                  <div className="faq-integrate-btn-container">
-                    <button className="km-button km-button--secondary" onClick={this.openModal}>
-                    <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
-                      Integrate with Helpdocs
-                    </button>
-                    <div className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</div>
-                    <div className="percent-off-pill">20% off</div>
-                  </div>  
-                }
-                
-                { this.state.helpdocsKey.length > 0 &&
-                  <div className="km-faq-helpdocs-edit-wrapper">
-                    <img className="km-faq-helpdocs-logo" src={TickIcon} />
-                    <span className="km-faq-helpdocs-edit">Integration done with Helpdocs
-                    <span onClick ={this.openModal}  className="km-faq-helpdocs-edit km-faq-edit-btn"> Edit</span></span>
-                  </div>
-                }
                 <Modal open={this.state.modalIsOpen} onClose={this.closeModal} >
                   <div>
                     <IntegrationDescription activeModal={"helpdocs"} handleCloseModal={this.closeModal} 
@@ -432,19 +413,11 @@ class Tabs extends Component {
                 <p className="p">Create FAQs to cater generic and recurring customer queries. Your customer will be able to directly access FAQs in chat.</p>
               </div>
               <div className="upgrade-plan-integrations">
-                <h2>Create your own FAQs or import them from Helpdocs</h2>
+                <h2>Create your own FAQs</h2>
                 <div className="faq-restricted-container">
                   <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                   <div className="faq-disabled-buttons mt-4 faq-btn-wrapper">
                     <button className="km-button km-button--primary">+ Add FAQ</button>
-                    <div className="km-faq-or">OR</div>
-                    <div className="faq-integrate-btn-container">
-                      <button className="km-button km-button--secondary">
-                      <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
-                        Integrate with Helpdocs
-                      </button>
-                      <div className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</div>
-                    </div>  
                   </div>
                 </div>
               </div>
