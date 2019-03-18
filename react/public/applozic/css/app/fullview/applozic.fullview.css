@@ -3358,7 +3358,7 @@ ol, ul {
 .km-new-conversation-header {
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: space-between;
 }
 .km-new-conversation-header-bot {
 	display: flex;
@@ -3399,9 +3399,7 @@ ol, ul {
 	max-width: 320px;
 }
 .km-new-conversation-header {
-	/* border-bottom: solid 1px #eaeaea; */
 	padding: 13px 0px 13px; 
-	margin-right: -10px;
 }
 .km-toolbar hr {
 	margin: 0px -10px; 
