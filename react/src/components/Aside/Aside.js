@@ -13,6 +13,7 @@ import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
+import config from '../../config/index';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
 import {PseudonymModal} from '../PersonInfo/MetaInfo';
 import Button from '../Buttons/Button';
@@ -700,6 +701,7 @@ class Aside extends Component {
   }
 
   deleteGroup = () => {
+    let url = window.location.origin + '/conversations';
     var that = this;
     window.$kmApplozic.fn.applozic('deleteGroup',
       {
@@ -710,6 +712,7 @@ class Aside extends Component {
               isDeleteModalOpen: false
             });
             Notification.success("Conversation deleted successfully");
+            window.location.replace(url);
           } else {
             Notification.error("Something went wrong. Please try again after some time.");
           }

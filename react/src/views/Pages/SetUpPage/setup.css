@@ -307,6 +307,10 @@ select:-webkit-autofill:focus {
     margin: 0 auto;
     min-height: 100%;
 }
+.setup-pages-bg .setup-pages-form-container .setup-pages-form-fields-container.invite-link-setup-page {
+    max-width: 992px;
+    width: 70%;
+}
 
 .setup-pages-bg .setup-btn-group p {
     font-size: 14px;

@@ -77,6 +77,13 @@ const OnboardingContainer = styled.div`
     background-color: #ffffff;
     margin: 50px 0 30px;
     padding: 25px 30px;
+
+    & .km-close-modal-wrapper .km-modal-close-text {
+        color: #a4a2a2;
+    }
+    & .km-close-modal-wrapper .km-modal-close-icon {
+        fill: #a4a2a2;
+    }
 `;
 const H3 = styled.h3`
     font-weight: normal;
@@ -121,13 +128,6 @@ const OnboardingTextBlock = styled.div`
     }
     & ul li>a:hover {
         text-decoration: none;
-    }
-
-    &.km-close-modal-wrapper .km-modal-close-text {
-        color: #a4a2a2;
-    }
-    & .km-close-modal-wrapper .km-modal-close-icon {
-        fill: #a4a2a2;
     }
 `;
 
