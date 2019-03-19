@@ -41,6 +41,7 @@ const subscriptionController = require("../subscription/subscriptionController")
 const metabaseController = require('../metabase/metabaseController');
 const metabaseValidator = require('../metabase/validation');
 const feedbackController = require('../feedback/feedbackController');
+const iosAppSiteAssociationController = require('../iosAppSiteAssociation/iosAppSiteAssociationController'); 
 
 
 
@@ -75,6 +76,7 @@ const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
 const subscriptionRouter = express.Router();
 const metabaseRouter = express.Router();
+const iosSettingRouter = express.Router();
 
 
 //export routers
@@ -103,6 +105,7 @@ exports.v2UserRouter = express.Router();
 exports.metabaseRouter = metabaseRouter;
 exports.feedbackRouter = feedbackController.feedbackRouter;
 
+exports.iosSettingRouter = iosSettingRouter
 //Cron Time Stamp Route
 exports.cronServiceRouter = express.Router();
 
@@ -290,3 +293,5 @@ subscriptionRouter.get('/',validate(subscriptionValidation.getAllSubscriptionByA
 subscriptionRouter.post('/',validate(subscriptionValidation.createSubscription), subscriptionController.createSubscription);
 subscriptionRouter.patch('/update/:userId', validate(subscriptionValidation.updateSubscription), chargebeeController.updateSubscribedAgentCount)
 subscriptionRouter.delete('/:subscriptionId', validate(subscriptionValidation.deleteSubscription), subscriptionController.deleteSubscription);
+
+iosSettingRouter.get('/', iosAppSiteAssociationController.getIosSiteAssociationSettings)
