@@ -27,7 +27,7 @@ Here is the list of supported platforms(we will add more platforms in due course
 
 * [Microsoft Bot Framework](https://dev.botframework.com/) (coming soon)
 
-Once you have Integrated the bot you can [let it handle all the incoming conversations](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default). You can design your bot to collect the required detail and handoff the [conversation to a human agent](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer) if its not able to answer.
+Once you have integrated the bot you can [let it handle all the incoming conversations](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default). You can design your bot to collect the required detail and handoff the [conversation to a human agent](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer) if its not able to answer.
 
 ## Assign all the new conversations to the bot by default
 
@@ -35,11 +35,11 @@ Once you have Integrated a bot, you need to enable the conversation rules for th
 
 Go to [Kommunicate Dashboard -> Settings -> Conversation rules](https://dashboard.kommunicate.io/settings/agent-assignment) and enable "Assign new conversations to bot" and select the bot from drop down list.
 
-Once this is done, all new incoming conversations will be assigned to the selected bot. You can test it out by starting a new conversation from your website and see how your bot reply. You can always design your bot to handoff t
+Once this is done, all new incoming conversations will be assigned to the selected bot. You can test it out by starting a new conversation from your website and see how your bot reply. You can always design your bot to handoff the conversation to human agents if it's not able to answer.
 
 ## Assign conversations to specific bots based on the webpage
 
-If you wish to assign conversations to specific bots based on which webpage the conversation is started from, pass an array of botIds in `botIds` parameter in the [installation script](https://docs.kommunicate.io/docs/web-installation.html#script) in webpages where the specific bot need to be the default bot to handle incoming conversations.
+If you wish to assign conversations to specific bots based on which webpage the conversation is started from, pass a botId in `botIds` array in the [installation script](https://docs.kommunicate.io/docs/web-installation.html#script) in webpages where the specific bot need to be the default bot to handle incoming conversations.
 
 ```javascript
      ...
@@ -64,7 +64,7 @@ You can start group conversations with bot using `startConversation(conversation
 
 ## Handoff the conversation to human if bot is not able to answer
 
-Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways of achieving this depends on the bot platform. Detailed instructions can be found here for [dialogflow](web-conversation-assignment#bot-to-human-handoff) and [custom bots](custom-bot-integration#handoff-conversation-to-human-agents).
+Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways of achieving this and it depends on the bot platform. Detailed instructions can be found here for [dialogflow](web-conversation-assignment#bot-to-human-handoff) and [custom bots](custom-bot-integration#handoff-conversation-to-human-agents).
 
 
 
