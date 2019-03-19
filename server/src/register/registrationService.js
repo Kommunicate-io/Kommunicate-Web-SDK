@@ -152,9 +152,6 @@ exports.sendWelcomeMail = (email, userName, agent, companyName) => {
     let organization = companyName !== undefined && companyName != null ? companyName : '';
     templatePath = path.join(__dirname, "../mail/agentWelcomeMailTamplate.html"),
       templateReplacement = { ":USER_NAME": userName, ":ORGANIZATION": organization, ":DASHBOARDURL":config.getProperties().urls.dashboardHostUrl }
-  } else {
-    templatePath = path.join(__dirname, "../mail/welcomeMailTemplate.html"),
-      templateReplacement = { ":USER_NAME": userName }
   }
   let mailOptions = {
     to: email,
@@ -170,7 +167,8 @@ exports.sendWelcomeMail = (email, userName, agent, companyName) => {
 const populateDataInKommunicateDb = (options, application, applozicCustomer, applozicBot, liz) => {
   let kmCustomer = {
     name: applozicCustomer.displayName, userName: options.userName, email: options.email,
-    contactNo: applozicCustomer.contactNumber, applicationId: application.applicationId
+    contactNo: applozicCustomer.contactNumber, applicationId: application.applicationId,
+    subscription: subscriptionPlans.APPLOZIC_SUBSCRIPTION_NAME
   };
   kmCustomer.password = bcrypt.hashSync(options.password, 10);
   kmCustomer.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
