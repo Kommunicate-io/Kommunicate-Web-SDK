@@ -152,9 +152,6 @@ exports.sendWelcomeMail = (email, userName, agent, companyName) => {
     let organization = companyName !== undefined && companyName != null ? companyName : '';
     templatePath = path.join(__dirname, "../mail/agentWelcomeMailTamplate.html"),
       templateReplacement = { ":USER_NAME": userName, ":ORGANIZATION": organization, ":DASHBOARDURL":config.getProperties().urls.dashboardHostUrl }
-  } else {
-    templatePath = path.join(__dirname, "../mail/welcomeMailTemplate.html"),
-      templateReplacement = { ":USER_NAME": userName }
   }
   let mailOptions = {
     to: email,
