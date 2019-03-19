@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { patchCustomerInfo } from '../../../utils/kommunicateClient'
 import '../../Admin/Admin.css';
 import isURL from 'validator/lib/isURL';
-import CommonUtils from '../../../utils/CommonUtils';
+import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import applozicClient from '../../../utils/applozicClient';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/signupAction';
 import Button from '../../../components/Buttons/Button';
 import { ErrorIcon } from '../../../assets/svg/svgs';
+import { TRIAL_DAYS } from '../../../utils/Constant';
 
 class Step2 extends Component {
 
@@ -223,7 +224,7 @@ hideAllErrors (){
 							</div>
 							<div className="form-group setup-btn-group">
 								<Button id="step-2-submit-btn" className="step-1-submit-btn" onClick={this.finishSetUp}>Start using {CommonUtils.isKommunicateDashboard() ? "Kommunicate" : "Applozic"}</Button>
-                <p>Enjoy your {CommonUtils.isKommunicateDashboard() ? "14" : "30"} day trial :)</p>
+                <p>Enjoy your {TRIAL_DAYS[productTitle]}  day trial :)</p>
 							</div>
 						</div>
 					</div>
@@ -239,6 +240,8 @@ const actionType = {
   modalOnboardingStatus: "UPDATE_KM_ON_BOARDING_MODAL_STATUS",
   trialDaysLeftOnboardingStatus: "UPDATE_KM_TRIAL_DAYS_LEFT_ON_BOARDING_STATUS"
 }
+
+const productTitle = PRODUCTS[CommonUtils.getProduct()].title;
 
 const mapDispatchToProps = dispatch => {
   return {

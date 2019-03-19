@@ -139,6 +139,11 @@ export const FAQ_TYPE = {
     DRAFT: "draft"
 }
 
+export const TRIAL_DAYS = {
+    "Applozic" : 30,
+    "Kommunicate" : 14
+}
+
 export const KM_PLAN_LENGTH = {
     OLD : 30,
     NEW : 14
