@@ -514,6 +514,8 @@ function KmGroupService() {
     var GROUP_UPDATE_INFO_URL = "/rest/ws/group/update";
     var GROUP_ADD_MEMBER_URL = "/rest/ws/group/add/member";
     var GROUP_REMOVE_MEMBER_URL = "/rest/ws/group/remove/member";
+    var GROUP_DELETE_URL = "/rest/ws/group/delete"
+
     _this.loadGroups = function(params) {
         var response = new Object();
         kmUtils.ajax({
@@ -856,6 +858,44 @@ function KmGroupService() {
             }
         });
     };
+    _this.deleteGroup = function(params) {
+        var data = '';
+        var response = new Object();
+        if (params.groupId) {
+            data += 'groupId=' + params.groupId;
+        } else {
+            if (typeof params.callback === 'function') {
+                params.callback(response);
+            }
+            return;
+        }
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_DELETE_URL,
+            data: data,
+            type: 'get',
+            global: false,
+            success: function(data) {
+                if (data.status === "success") {
+                    response.status = 'success';
+                    response.data = data.response;
+                } else {
+                    response.status = 'error';
+                    response.errorMessage = data.errorResponse[0].description;
+                }
+                if (params.callback) {
+                    params.callback(response);
+                }
+            },
+            error: function() {
+                console.log('Unable to process your request. Please reload page.');
+                response.status = "error";
+                response.errorMessage = '';
+                if (params.callback) {
+                    params.callback(response);
+                }
+            }
+        });
+    }
 }
 function KmDateUtils() {
     var _this = this;

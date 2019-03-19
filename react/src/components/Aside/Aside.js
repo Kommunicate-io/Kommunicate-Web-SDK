@@ -26,6 +26,9 @@ import BannerV2 from '../../components/BannerV2';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
 import {integration_type} from '../../views/Integrations/ThirdPartyList';
+import ResolutionDropdown from './ResolutionDropdown';
+import CloseButton from '../Modal/CloseButton';
+import { default as DeleteModal } from 'react-modal';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -76,15 +79,17 @@ class Aside extends Component {
       conversationTab:{
         [CONVERSATION_TYPE.ALL]: {title:"All Conversations", count: 0 }, 
         [CONVERSATION_TYPE.ASSIGNED_TO_ME]: {title:"Assigned to me",  count: 0 }, 
-        [CONVERSATION_TYPE.CLOSED]: {title:"Closed Conversations", count: 0 }
+        [CONVERSATION_TYPE.CLOSED]: {title:"Resolved Conversations", count: 0 }
       },
       loggedInUser:"",
-      isLizActive: false
+      isLizActive: false,
+      isDeleteModalOpen: false
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
     this.forwardMessageToZendesk = this.forwardMessageToZendesk.bind(this);
     this.handleUpdateUser = this.handleUpdateUser.bind(this);
+    this.changeStatus = this.changeStatus.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -350,12 +355,16 @@ class Aside extends Component {
         this.setState({conversationStatus:window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN})
       }else{
         window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
-        this.setState({conversationStatus:window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATUS})
+        this.setState({conversationStatus:this.state.group.metadata.CONVERSATION_STATUS})
       }
     } else {
       window.$kmApplozic("#conversation-status").val(0);
       this.setState({conversationStatus:""})
     }
+  }
+
+  resolveConversation = () => {
+
   }
 
   removeServiceBots() {
@@ -689,6 +698,31 @@ class Aside extends Component {
     }
   };
 
+  toggleDeleteConversationModal = () => {
+    this.setState({
+      isDeleteModalOpen: !this.state.isDeleteModalOpen
+    });
+  }
+
+  deleteGroup = () => {
+    var that = this;
+    window.$kmApplozic.fn.applozic('deleteGroup',
+      {
+        'groupId': that.state.group.groupId,
+        'callback': function (response) {
+          if(response && response.data && response.data === 'success') {
+            that.setState({
+              isDeleteModalOpen: false
+            });
+            Notification.success("Conversation deleted successfully");
+          } else {
+            Notification.error("Something went wrong. Please try again after some time.");
+          }
+        }
+      }
+    );
+  }
+
   render() {
     let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
     const thirdParty = thirdPartyList.map((item,index) => {
@@ -722,7 +756,7 @@ class Aside extends Component {
                            <ListIcon />
                           <span id="km-allconversation-unread-icon" className="km-unread-icon n-vis"></span>
                           </div>
-                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Closed Conversations" data-tab = {CONVERSATION_TYPE.CLOSED} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
+                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Resolved Conversations" data-tab = {CONVERSATION_TYPE.CLOSED} data-effect="solid" data-place="bottom" onClick={this.onTabClick}>
                             <ClosedIcon />
                             <span id="km-closed-unread-icon"></span>
                           </div>
@@ -924,74 +958,68 @@ class Aside extends Component {
                       <div id="km-toolbar" className="km-toolbar blk-lg-12 n-vis">
                           <div className="km-new-conversation-header">
 
-                            <div id="km-tab-header" className="km-box-top n-vis km-hide">
-                              <div id="km-tab-individual"
-                                className="km-tab-individual km-row">
-                                <div className="blk-lg-8 km-box-title">
-                                  <div id="km-group-tab-title" className="n-vis">
-                                    <a id="km-tab-info" href="javascript:void(0)" className="km-tab-info">
-                                      <div className="km-tab-title km-truncate name"></div>
-                                      <div className="km-tab-status km-truncate n-vis km-hide"></div>
-                                      <div className="km-typing-box km-truncate n-vis">
-                                        <span className="name-text"></span><span>typing...</span>
-                                      </div>
-                                    </a>
+                            <div className="flexi">
+                              <div id="km-tab-header" className="km-box-top n-vis km-hide">
+                                <div id="km-tab-individual"
+                                  className="km-tab-individual km-row">
+                                  <div className="blk-lg-8 km-box-title">
+                                    <div id="km-group-tab-title" className="n-vis">
+                                      <a id="km-tab-info" href="javascript:void(0)" className="km-tab-info">
+                                        <div className="km-tab-title km-truncate name"></div>
+                                        <div className="km-tab-status km-truncate n-vis km-hide"></div>
+                                        <div className="km-typing-box km-truncate n-vis">
+                                          <span className="name-text"></span><span>typing...</span>
+                                        </div>
+                                      </a>
 
-                                  </div>
-                                  <div id="km-individual-tab-title"
-                                    className="km-individual-tab-title">
-                                    <a id="km-tab-info-individual" href="javascript:void(0)" className="km-tab-info">
-                                      <div className="km-tab-title km-truncate name"></div>
-                                      <div className="km-tab-status km-truncate n-vis km-hide"></div>
-                                      <div className="km-typing-box km-truncate n-vis">
-                                        <span className="name-text"></span><span>typing...</span>
-                                      </div>
-                                    </a>
-                                  </div>
-                                </div>
-                                <div className="blk-lg-4 move-right">
-                                  <div id="km-tab-menu" className="km-menu-item km-text-right n-vis">
-                                    <div className="km-dropdown-toggle" data-toggle="kmdropdown"
-                                      aria-expanded="true">
-                                      <img src="/applozic/images/icon-menu.png" className="km-menu-icon"
-                                        alt="Tab Menu"/>
                                     </div>
-                                    <ul id="km-tab-menu-list"
-                                      className="km-dropdown-menu km-tab-menu-box menu-right"
-                                      role="menu">
-                                      <li className="km-tab-message-option vis"><a href="javascript:void(0)"
-                                        id="km-delete-button"
-                                        className="km-delete-button menu-item vis"
-                                        title="Clear Messages"> Clear Messages </a></li>
-                                      <li id="km-li-block-user" className="vis"><a href="javascript:void(0)"
-                                        id="km-block-button" className="menu-item" title="Block User">Block
-                                          User</a></li>
-                                      <li id="km-li-group-info"
-                                        className="km-group-menu-options n-vis"><a href="javascript:void(0)"
-                                        id="km-group-info-btn" className="menu-item km-group-info-btn"
-                                        title="Group Info"> Group Info </a></li>
-                                      <li id="km-li-leave-group"
-                                        className="km-group-menu-options n-vis"><a href="javascript:void(0)"
-                                        id="km-leave-group-btn" className="menu-item" title="Exit Group">
-                                          Exit Group </a></li>
-                                    </ul>
+                                    <div id="km-individual-tab-title"
+                                      className="km-individual-tab-title">
+                                      <a id="km-tab-info-individual" href="javascript:void(0)" className="km-tab-info">
+                                        <div className="km-tab-title km-truncate name"></div>
+                                        <div className="km-tab-status km-truncate n-vis km-hide"></div>
+                                        <div className="km-typing-box km-truncate n-vis">
+                                          <span className="name-text"></span><span>typing...</span>
+                                        </div>
+                                      </a>
+                                    </div>
                                   </div>
-                                  {/* <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
-                                    viewBox="0 0 15.433 13.883">
-                                        <path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z"
-                                      transform="translate(0 5.998)" fill="#42b9e8" />
-                                        <path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z"
-                                      data-name="Shape" transform="translate(1.954 8.626)"
-                                        fill="#42b9e8" />
-                                        <path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z"
-                                        data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
-                                    </svg>
-                                  </div> */}
+                                  <div className="blk-lg-4 move-right">
+                                    <div id="km-tab-menu" className="km-menu-item km-text-right n-vis">
+                                      <div className="km-dropdown-toggle" data-toggle="kmdropdown"
+                                        aria-expanded="true">
+                                        <img src="/applozic/images/icon-menu.png" className="km-menu-icon"
+                                          alt="Tab Menu"/>
+                                      </div>
+                                      <ul id="km-tab-menu-list"
+                                        className="km-dropdown-menu km-tab-menu-box menu-right"
+                                        role="menu">
+                                        <li className="km-tab-message-option vis"><a href="javascript:void(0)"
+                                          id="km-delete-button"
+                                          className="km-delete-button menu-item vis"
+                                          title="Clear Messages"> Clear Messages </a></li>
+                                        <li id="km-li-block-user" className="vis"><a href="javascript:void(0)"
+                                          id="km-block-button" className="menu-item" title="Block User">Block
+                                            User</a></li>
+                                        <li id="km-li-group-info"
+                                          className="km-group-menu-options n-vis"><a href="javascript:void(0)"
+                                          id="km-group-info-btn" className="menu-item km-group-info-btn"
+                                          title="Group Info"> Group Info </a></li>
+                                        <li id="km-li-leave-group"
+                                          className="km-group-menu-options n-vis"><a href="javascript:void(0)"
+                                          id="km-leave-group-btn" className="menu-item" title="Exit Group">
+                                            Exit Group </a></li>
+                                      </ul>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
+                              <div className="trial-period-container">	
+                                {this.state.trialDaysLeftComponent}	
+                              </div>
                             </div>
-                            <div className="select-labels">
+                            
+                            {/* <div className="select-labels">
                                 <span className="">Status:</span>
                             </div>
                             <div className="">
@@ -1003,17 +1031,28 @@ class Aside extends Component {
                                   <option value={CONVERSATION_STATUS.DUPLICATE}>Duplicate</option>
                                 </select>
                               </div>
-                            </div>
-                            <div className="select-labels">
-                                <span className="">Assign to:</span>
-                            </div>
-                            <div className="">
-                              <div className="select-container">
-                                <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
+                            </div> */}
+                            <div className="flexi">
+                              <div className="flexi">
+                                <div className="select-labels">
+                                    <span className="">Assign to:</span>
+                                </div>
+                                <div>
+                                  <div className="select-container">
+                                    <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} >
+                                      <option disabled value="">Assign to:</option>
+                                    </select>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                            <div className="trial-period-container">	
-                              {this.state.trialDaysLeftComponent}	
+                              
+                              <ResolveButtonContainer>
+                                <Button onClick={() => this.changeStatus(CONVERSATION_STATUS.CLOSED)} disabled={this.state.conversationStatus == CONVERSATION_STATUS.CLOSED || this.state.conversationStatus == CONVERSATION_STATUS.SPAM}>Resolve</Button>
+                              </ResolveButtonContainer>
+
+                              <div>
+                                <ResolutionDropdown conversationStatus={CONVERSATION_STATUS} changeStatus={this.changeStatus} group={this.state.group} toggleDeleteConversationModal={this.toggleDeleteConversationModal}/>
+                              </div>
                             </div>
                           </div>
                           <hr/>
@@ -1407,41 +1446,37 @@ class Aside extends Component {
 
           <ModalContent activeModal={this.state.clickedButton} handleCloseModal={this.closeModal} />
         </Modal>
-        {/* moved to separate component
-        <ReactModal isOpen={this.state.modalOpen} style={customStyles}  shouldCloseOnOverlayClick={true} ariaHideApp={false}>
-          <div className="row" style={{marginTop:"80px"}}>
-            <div className="col-lg-5 col-md-6 col-sm-12 pseudo-name-intro-text-container">
-              <p className="intro text-center">Introducing</p>
-              <h1 className="pseudo text-center">PSEUDONYMS</h1>
-              <p className="anonymous text-center">for your anonymous visitors</p>
-              <p className="desc">Pseudonyms help identify anonymous visitors easily when they initiate a conversation and facilitates a better cross team collaboration.<br/><br/>Look out for the <span><svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3" viewBox="0 0 15.433 13.883"><path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z" transform="translate(0 5.998)" fill="#42b9e8" /><path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z" data-name="Shape" transform="translate(1.954 8.626)" fill="#42b9e8" /><path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z" data-name="Shape" transform="translate(2.965)" fill="#42b9e8" /></svg></span> icon in the conversation screen to identify visitors with pseudonyms.</p>
-              <button className="km-button km-button--primary" onClick={this.onCloseModal}>Cool! Got it</button>
-            </div>
-            <div className="col-lg-7 col-md-6 col-sm-12 pseudo-name-intro-svg-container">
-              <PseudoNameImage />
-            </div>
-          </div>
-          <div className="close-button-container" onClick={this.onCloseModal}>
-            <button className="close-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></button>
-          </div>
-        </ReactModal> */}
+        
+        <DeleteModal isOpen={this.state.isDeleteModalOpen} onRequestClose={this.toggleDeleteConversationModal} style={modalStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
+          <ModalHeading>Delete conversation</ModalHeading>
+          <Hr />
+          <ModalDescription>Are you sure you want to delete this conversation?</ModalDescription>
+          <ModalDescription>This action is irreversible and all the messages and user info in this conversation will be lost. Data on your user’s end will be deleted too.</ModalDescription>
+
+          <ButtonContainer>
+            <Button secondary onClick={this.toggleDeleteConversationModal}>Cancel</Button>
+            <Button danger onClick={this.deleteGroup}>Delete Conversation</Button>
+          </ButtonContainer>
+
+          <CloseButton onClick={this.toggleDeleteConversationModal}/>
+        </DeleteModal>
+
       </aside>
 
     )
   }
 }
 
-const customStyles = {
-  content : {
-    top                   : '80px',
-    // left                  : '50%',
-    // right                 : 'auto',
-    bottom                : '80px',
-    // marginRight           : '-50%',
-    // transform             : 'translate(-50%, -50%)'
-    maxWidth              : '1000px',
-    margin                : '0 auto',
-    overflowY             : 'auto'
+const modalStyles = {
+  content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      maxWidth: '600px',
+      overflow: 'unset',
   }
 };
 
@@ -1477,6 +1512,28 @@ const LizBanner = styled.div`
     }
     & .km-is-liz a {
       font-weight:500;
+    }
+`;
+
+const ResolveButtonContainer = styled.div`
+  margin-right: 20px;
+`;
+
+//Delete Modal Styles
+const ModalHeading = styled.h4``;
+const Hr = styled.hr`
+    margin: 15px -20px;
+`;
+const ModalDescription = styled.div`
+    margin: 10px auto;
+`;
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & button {
+      margin-left: 20px;
     }
 `;
 

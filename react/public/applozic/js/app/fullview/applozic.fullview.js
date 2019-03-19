@@ -234,6 +234,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					case 'updateAccessTokenOnPasswordReset':
 						oInstance.updateAccessTokenOnPasswordReset(params);
 						break;
+					case 'deleteGroup':
+						oInstance.deleteGroup(params);
+						break;
 				}
 			} else if ($kmApplozic.type(appOptions) === "object") {
 				oInstance.reInit(appOptions);
@@ -1179,9 +1182,26 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (typeof events.onUserDeactivated === 'function') {
 					_this.events.onUserDeactivated = events.onUserDeactivated;
 				}
-			}
-			;
+			};
 		};
+		_this.deleteGroup = function(params) {
+			if (typeof params === 'object') {
+				if (typeof params.callback === 'function') {
+					if ((typeof params.groupId === 'undefined' || params.groupId === "")) {
+						params.callback({
+							'status': 'error',
+							'errorMessage': "GroupId is required"
+						});
+						return;
+					}
+					kmGroupService.deleteGroup(params);
+					return 'success';
+				} else {
+					return 'Callback function required';
+				}
+			}
+		}
+
 		function MckInit() {
 			var _this = this;
 			var refreshIntervalId;
