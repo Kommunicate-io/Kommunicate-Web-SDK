@@ -1692,7 +1692,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					document.getElementById("km-search-results").innerHTML = "";
 					kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
 					var params = {
-						content: kmSearch.value
+						search: kmSearch.value
 					}
 					if(kmSearch.value && kmSearch.value.trim()){
 						_this.loadMessageSearchResults(params,function(){
@@ -2980,7 +2980,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.loadMessageSearchResults = function (params, callback) {
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + SEARCH_MESSAGE_URL,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP,
 					data: params,
 					success: function (data) {
 						if (data && data.response){

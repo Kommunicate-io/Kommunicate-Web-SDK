@@ -21,8 +21,7 @@ import { CollapseIcon, ExpandIcon, EmailIndicatorIcon, DownArrow, AssignedToMeIc
 import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
-import Banner from '../Banner/Banner';
-import BannerV2 from '../../components/BannerV2';
+import Banner from '../../components/BannerV2';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
 import {integration_type} from '../../views/Integrations/ThirdPartyList';
@@ -447,7 +446,7 @@ class Aside extends Component {
     if(allBotsInGroup.length > 0 && (!CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan())) {
       document.querySelector("#km-bots-warning--banner").style.display = "block";
       this.setState({
-        warningBannerText: [<span className="km-bot-names">{allBotsInGroup.join(', ')} </span>, <span>will not work as your trial has ended. </span>,<Link key={1} to={'/settings/billing'} >Upgrade plan</Link>]
+        warningBannerText: [<span key={1} className="km-bot-names">{allBotsInGroup.join(', ')} </span>, <span key={2}>will not work as your trial has ended. </span>,<Link key={3} to={'/settings/billing'} >Upgrade plan</Link>]
       });
     }
   }
@@ -694,7 +693,7 @@ class Aside extends Component {
       if (publishedFaq.length === 0) {
         heading = "Liz will not work as you’ve not added any FAQs. Add them now from the ";
       } 
-      return <BannerV2 cssClass="km-is-liz" appearance="warning" heading={[heading, <Link key={1} to={'/faq'} >FAQ section.</Link>]}></BannerV2>
+      return <Banner cssClass="km-is-liz" appearance="warning" heading={[heading, <Link key={1} to={'/faq'} >FAQ section.</Link>]}/>
     }
   };
 
@@ -1065,10 +1064,10 @@ class Aside extends Component {
                             </div>
                           </div>
                           <div className="km-bots-warning-banner" id="km-bots-warning--banner">
-                            <Banner isVisible={this.state.warningBannerText === ""} indicator={'warning'} text={this.state.warningBannerText}/>
+                            <Banner hidden={this.state.warningBannerText === ""} appearance="warning" heading={this.state.warningBannerText}/>
                           </div>
                           <LizBanner>
-                            {this.state.isLizActive && this.faqAndLizBanner()}
+                            { !(!CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) && this.state.isLizActive && this.faqAndLizBanner()}
                           </LizBanner>
                       </div>
                       <div id="km-product-group"
