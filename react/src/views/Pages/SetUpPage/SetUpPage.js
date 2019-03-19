@@ -47,7 +47,7 @@ class SetUpPage extends Component {
 		return (
 			<div className="app setup-pages-bg">
 				<div className="setup-pages-form-container">
-					<div className="setup-pages-form-fields-container">
+					<div className={window.location.pathname.includes("/installation") ? "setup-pages-form-fields-container invite-link-setup-page" : "setup-pages-form-fields-container"}>
 						<div className="logo-container text-center">
 							<Logo/>
 						</div>
@@ -64,7 +64,7 @@ class SetUpPage extends Component {
 						</div>
 					</div>
 				</div>
-				<div className="setup-pages-testimonial-container">
+				<div className={window.location.pathname.includes("/installation") ? "n-vis" : "setup-pages-testimonial-container"}>
 					<Testimonials testimonialFace={testimonialTexts[productTitle].setupPage.face} testimonialAuthor={testimonialTexts[productTitle].setupPage.author} testimonialCompany={testimonialTexts[productTitle].setupPage.company} testimonialText={testimonialTexts[productTitle].setupPage.text} />
 				</div>
 			</div>
