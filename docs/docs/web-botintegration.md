@@ -21,9 +21,9 @@ In this section, learn how to:
 ## Integration using Dialogflow V1 APIs
   1. Login to Dialogflow console and select the agent you want to integrate with Kommunicate from the drop-down in the left panel
 
-  2. Go to `Settings->general` and copy Client access token and Developer access token.
+  2. Go to `Settings->General` and copy Client access token and Developer access token.
 
-  3. Go to kommunicate `dashboard->bots` and click on `Dialogflow (settings)`.
+  3. Go to Kommunicate [bots](https://dashboard.kommunicate.io/bot) section and click on `Dialogflow (Integrate another bot)`.
 
   4. Submit the required details.
 

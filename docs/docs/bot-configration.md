@@ -43,7 +43,7 @@ If you wish to assign conversations to specific bots based on which webpage the 
 
 ```javascript
      ...
-     var kommunicateSettings = {"appId": appId,"agentId":agentId,"botIds":["liz"],"conversationTitle":conversationTitle,"botIds":["bot1"],"onInit":callback};
+     var kommunicateSettings = {"appId": < APP_ID >,"agentId":<AGENT_ID>,"botIds": [<BOT_ID>],"conversationTitle":<CONVERSATION_TITLE>,"onInit":<CALLBACK_FUNCTION>};
      ...
 ```
 
@@ -53,9 +53,9 @@ You can start group conversations with bot using `startConversation(conversation
 
 ```javascript
   var conversationDetail = {
-    agentId: "agentId", // optinal, if you dont pass agent Id, default agent will automatically get selected.
-    botIds: ["bot1"],
-    assignee:"bot1" // if nothing is passed, conversation will be assigned to default agent.
+    agentId: <AGENT_ID>, // optinal, if you dont pass agent Id, default agent will automatically get selected.
+    botIds: [<BOT_ID>], // array of bot Ids
+    assignee: <ASSIGNEE>//  agent/bot's id who you want to assigne the conversation. if nothing is passed, conversation will be assigned to default agent.
   };
   Kommunicate.startConversation(conversationDetail, function (response) {
   console.log("new conversation created");
@@ -64,7 +64,7 @@ You can start group conversations with bot using `startConversation(conversation
 
 ## Handoff the conversation to human if bot is not able to answer
 
-Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple way of achieving this depends on the bot platform. Detailed instructions can be found here for [dialogflow](web-conversation-assignment#bot-to-human-handoff) and [custom bots](custom-bot-integration#handoff-conversation-to-human-agents).
+Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways of achieving this depends on the bot platform. Detailed instructions can be found here for [dialogflow](web-conversation-assignment#bot-to-human-handoff) and [custom bots](custom-bot-integration#handoff-conversation-to-human-agents).
 
 
 
