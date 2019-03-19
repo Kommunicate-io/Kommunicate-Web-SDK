@@ -350,7 +350,8 @@ function ApplozicSidebox() {
     function loadErrorTracking(userId) {
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
         Sentry.init({
-            dsn: sentryConfig.dsn
+            dsn: sentryConfig.dsn,
+            release: KommunicateConstants.KM_SERVER_RELEASE_VERSION
         });
         Sentry.configureScope(function (scope) {
             scope.setTag("applicationId", options.appId);
