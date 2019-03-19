@@ -167,7 +167,8 @@ exports.sendWelcomeMail = (email, userName, agent, companyName) => {
 const populateDataInKommunicateDb = (options, application, applozicCustomer, applozicBot, liz) => {
   let kmCustomer = {
     name: applozicCustomer.displayName, userName: options.userName, email: options.email,
-    contactNo: applozicCustomer.contactNumber, applicationId: application.applicationId
+    contactNo: applozicCustomer.contactNumber, applicationId: application.applicationId,
+    subscription: subscriptionPlans.APPLOZIC_SUBSCRIPTION_NAME
   };
   kmCustomer.password = bcrypt.hashSync(options.password, 10);
   kmCustomer.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
