@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-implementation 'io.kommunicate:kommunicate:1.8.3'
+implementation 'io.kommunicate:kommunicate:1.8.4'
 ```
 
 ## Building with proguard
