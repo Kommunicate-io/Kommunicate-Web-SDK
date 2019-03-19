@@ -1,6 +1,6 @@
 import { getEnvironmentId } from "../config/config";
 
-export const KM_RELEASE_VERSION = "3.6"
+export const KM_RELEASE_VERSION = "4.0"
 export const FALLBACK_TYPE = {
     MESSAGE_FORWARDING: 0,
     UNDELIVERED_MESSAGE: 1,
