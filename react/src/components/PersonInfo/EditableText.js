@@ -116,16 +116,19 @@ class EditableText extends Component {
     if (kmSidebarUserInfoInputFieldValue === this.state.value) {
       return;
     }
-    var params = {
+    var data = {
       ofUserId: this.props.keyname,
-      userDetails: {}
+      userDetails: {},
+      params:{
+        elasticUpdate: true
+      }
     };
-    params.userDetails[this.props.reference] = kmSidebarUserInfoInputFieldValue;
+    data.userDetails[this.props.reference] = kmSidebarUserInfoInputFieldValue;
     if(kmSidebarUserInfoInputFieldValue){
-    ApplozicClient.updateUserDetail(params)
+    ApplozicClient.updateUserDetail(data)
       .then(result => {
         if (result && result.data && result.data.status === "success") {
-          this.props.updateUserInfo(params.userDetails);
+          this.props.updateUserInfo(data.userDetails);
           this.setState({
             value: (kmSidebarUserInfoInputFieldName === 'displayName' && !kmSidebarUserInfoInputFieldValue )?userId:kmSidebarUserInfoInputFieldValue
           })

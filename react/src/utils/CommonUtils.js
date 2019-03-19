@@ -119,7 +119,7 @@ const CommonUtils = {
     },
     // Below a specific date is mentioned because before 20th March 2019 we were giving 30 days trial and after that we will start 14 days trial.
     isOldPlan: function() {
-        return new Date(CommonUtils.getUserSession().application.createdAtTime) < new Date("2019-03-20");
+        return new Date(CommonUtils.getUserSession().application.createdAtTime) < new Date(KOMMUNICATE_CONSTANTS.RELEASE_DATE);
     },
     maxDaysAsPerPlan: function() {
         if(CommonUtils.isKommunicateDashboard()){

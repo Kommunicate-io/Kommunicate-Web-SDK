@@ -57,5 +57,6 @@ KOMMUNICATE_CONSTANTS = {
         ALL : 0,
         ASSIGNED_TO_ME: 1,
         CLOSED: 2
-    }
+    },
+    RELEASE_DATE: "2019-03-20"
 }

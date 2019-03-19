@@ -70,26 +70,25 @@ const ApplozicClient ={
       });
    },
 
-updateUserDetail:function(params){
+updateUserDetail:function(data){
     var headers = ApplozicClient.commonHeaders();
-    headers['Of-User-Id'] = params.ofUserId;
+    headers['Of-User-Id'] = data.ofUserId;
     var url = getConfig().applozicPlugin.updateApplozicUser;
-   
   return Promise.resolve(axios({
     method: 'post',
     url: url,
-    data: params.userDetails,
+    params: data.params,
+    data: data.userDetails,
     headers: headers
   })).then(response => {
-    if(params.userDetails.callback){
-      params.userDetails.callback(params.userDetails);
+    if(data.userDetails.callback){
+      data.userDetails.callback(data.userDetails);
     }else {
       return response;
     }
   }).catch(e => {
     console.log("error", e);
   });
-
 },
 
 

@@ -327,9 +327,9 @@ class BillingKommunicate extends Component {
             var trialStarted = new Date(CommonUtils.getUserSession().applicationCreatedAt);
             var timeDiff = now.getTime() - trialStarted.getTime();
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-            if (diffDays < 31) {
-                this.setState({ trialLeft: (31 - diffDays) });
+            var planLimit = CommonUtils.maxDaysAsPerPlan() + 1;
+            if (diffDays < planLimit) {
+                this.setState({ trialLeft: (planLimit - diffDays) });
                 this.setState({ currentPlan: SUBSCRIPTION_PLANS['per_agent_monthly'] });
             } else {
                 this.setState({ currentPlan: SUBSCRIPTION_PLANS['startup'] });
