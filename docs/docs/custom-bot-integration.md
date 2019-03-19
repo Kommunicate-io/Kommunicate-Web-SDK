@@ -5,6 +5,13 @@ sidebar_label: Custom Bot Integration
 ---
 
 ## Overview
+Custom bot integration allows you to integrate with any other bot platforms. 
+In this section, learn how to:
+
+* [Integrating with custom bot platform](custom-bot-integration#integrating-with-custom-bot-platform)
+* [Design you your bot to send welcome message](custom-bot-integration#welcome-message-from-bots)  
+* [Process documents attached by user](custom-bot-integration#send-attachments-to-bot)
+* [Handoff the conversation to human if bot is not able to answer](custom-bot-integration#handoff-conversation-to-human-agents)
 
 ## Integrating with custom bot platform
 

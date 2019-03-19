@@ -1,13 +1,24 @@
 ---
 id: web-botintegration
-title: Integrate bot with Kommunicate
+title: Dialogflow Integration
 sidebar_label: Dialogflow Integration
 ---
 
 ## Overview
-Kommunicate provide a codeless integration with Dialogflow. You can easily integrate your Dialogflow agent form bot section in Kommunicate dashboard. 
+Kommunicate provide a codeless integration with Dialogflow. You can easily integrate your Dialogflow agent form bot section in Kommunicate dashboard.
+In this section, learn how to:
 
-### Integration using Dialogflow V1 APIs
+* [Integration using Dialogflow V1 APIs](web-botintegration#integration-using-dialogflow-v1-apis)
+* [Integration using Dialogflow V2 APIs](web-botintegration#integration-using-dialogflow-v2-apis)  
+* [Pass Custom data to bot platform](web-botintegration#pass-custom-data-to-bot-platform)
+* [Welcome message from bots](web-botintegration#welcome-message-from-bots)
+* [Process documents attached by user](web-botintegration#send-attachments-to-bot)
+* [Make your bot multilingual](web-botintegration#make-your-bot-multilingual)
+* [Working with Dialogflow fulfillment](web-botintegration#working-with-dialogflow-fulfillment)
+* [Working with custom actions](web-botintegration#working-with-custom-actions)
+
+
+## Integration using Dialogflow V1 APIs
   1. Login to Dialogflow console and select the agent you want to integrate with Kommunicate from the drop-down in the left panel
 
   2. Go to `Settings->general` and copy Client access token and Developer access token.
@@ -16,7 +27,7 @@ Kommunicate provide a codeless integration with Dialogflow. You can easily integ
 
   4. Submit the required details.
 
-### Integration using Dialogflow V2 APIs
+## Integration using Dialogflow V2 APIs
 
   1. Login to Dialogflow console. 
   2. Select your Agent from dropdown in left panel.

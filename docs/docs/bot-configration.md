@@ -8,15 +8,16 @@ sidebar_label: Bot setup
 
 Kommunicate has the provisions to integrate any third-party (Dialogflow, Microsoft Bot Framework, IBM Watson etc) or custom-made bots in the website. You can deploy you bots to automate the repeated tasks and reduce the workload on your agents. Bots can handle all the incoming conversations and when unable to answer, they can assign conversion to humans. In this section, learn how to:
 
-* [Supported bot platforms](already-have-a-bot)
-* [Assign all conversation to the bot](assign-all-the-new-conversations-to-the-bot-by-default)  
-* Assign conversation to bot based on certain events
-* Handoff the conversation to human if bot is not able to answer
+* [Integrate with any bot platform](bot-configration#integrate-with-any-bot-platform)
+* [Assign all conversation to the bot](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default)  
+* [Assign conversation to bot based on certain events](bot-configration#assign-conversations-to-specific-bots-based-on-certain-events)
+* [Handoff the conversation to human if bot is not able to answer](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer)
 
 
-## Supported bot platforms 
+## Integrate with any bot platform
 
-Here is the list of supported platforms(we will add more platform in due course):
+Kommunicate has the built in support for some bot platform like Dialogflow and provides integration with other bot platforms by custom bot integration. 
+Here is the list of supported platforms(we will add more platform in due course) and the detailed instructions for integration:
 
 * [Dialogflow](web-botintegration "instructions to integrate dialogflow bot")
 
@@ -25,7 +26,6 @@ Here is the list of supported platforms(we will add more platform in due course)
 * [Amazon Lex](https://aws.amazon.com/lex/) (coming soon)
 
 * [Microsoft Bot Framework](https://dev.botframework.com/) (coming soon)
-
 
 Once you have Integrated the bot you can [let it handle all the incoming conversations](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default). You can design your bot to collect the required detail and handoff the [conversation to an human agent](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer) if its not able to answer.
 
