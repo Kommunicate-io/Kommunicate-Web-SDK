@@ -31,7 +31,7 @@ Once you have integrated the bot you can [let it handle all the incoming convers
 
 ## Assign all the new conversations to the bot by default
 
-Once you have Integrated a bot, you need to enable the conversation rules for the bots.  
+Once you have integrated a bot, you need to enable the conversation rules for the bots.  
 
 Go to [Kommunicate Dashboard -> Settings -> Conversation rules](https://dashboard.kommunicate.io/settings/agent-assignment) and enable "Assign new conversations to bot" and select the bot from drop down list.
 
