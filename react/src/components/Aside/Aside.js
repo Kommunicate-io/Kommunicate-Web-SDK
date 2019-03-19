@@ -59,8 +59,8 @@ class Aside extends Component {
       botRouting : false,
       statuses: {
         0: 'Open',
-        2: 'Close',
-        3: 'Spam',
+        2: 'Resolved',
+        3: 'Spam/Irrelevant',
         4: 'Duplicate'
       },
       group: null,
@@ -360,10 +360,6 @@ class Aside extends Component {
       window.$kmApplozic("#conversation-status").val(0);
       this.setState({conversationStatus:""})
     }
-  }
-
-  resolveConversation = () => {
-
   }
 
   removeServiceBots() {
@@ -1046,7 +1042,10 @@ class Aside extends Component {
                               </div>
                               
                               <ResolveButtonContainer>
-                                <Button onClick={() => this.changeStatus(CONVERSATION_STATUS.CLOSED)} disabled={this.state.conversationStatus == CONVERSATION_STATUS.CLOSED || this.state.conversationStatus == CONVERSATION_STATUS.SPAM}>Resolve</Button>
+                                {
+                                  (this.state.conversationStatus == CONVERSATION_STATUS.CLOSED || this.state.conversationStatus == CONVERSATION_STATUS.SPAM) ? <Button onClick={() => this.changeStatus(CONVERSATION_STATUS.OPEN)}>Reopen</Button> : <Button onClick={() => this.changeStatus(CONVERSATION_STATUS.CLOSED)}>Resolve</Button>
+                                }
+                                
                               </ResolveButtonContainer>
 
                               <div>
