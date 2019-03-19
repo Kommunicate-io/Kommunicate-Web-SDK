@@ -51,13 +51,15 @@ var kommunicateSettings = {
 
 ### 2. Pre-chat lead collection
 
-For collecting user contact information before initiating chat, use the following setting `preLeadCollection`:
-
-Once configured, user will see the form on click of the chat widget launch icon.
+For collecting users' contact information before initiating the chat, use the `preLeadCollection` method. Once configured, users will see the form on click of the chat widget launcher icon.
 
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
 
-> NOTE : Atleast one of (name, email, phone) field is required.
+> NOTE: At least one of the (name, email, phone) fields is required. 
+
+#### Adding custome properties in the pre-chat lead collection form
+
+You can collect any custom information from the users as well. Just add the object for that particular information in the code. Let's say you want to collect your user's employment information, you can add that field in a similar manner.
 
 #### Example:
 ```javascript
@@ -65,22 +67,28 @@ Once configured, user will see the form on click of the chat widget launch icon.
 var kommunicateSettings = {
      ...
     "preLeadCollection": [{
-            "field": "name", // Whatever column you want to add
-            "required": true, // add whatever text you want to show in placeholder
-            "placeholder": "enter your name"
+            "field": "Name", // Name of the field you want to add
+            "required": true, // Set 'true' to make it a mandatory field
+            "placeholder": "enter your name" // add whatever text you want to show in the placeholder
         },
         {
-            "field": "email",
+            "field": "Email",
             "type": "email",
             "required": true,
-            "placeholder": "enter your email"
+            "placeholder": "Enter your email"
         },
         {
-            "field": "phone",
+            "field": "Phone",
             "type": "number",
             "required": true,
-            "element": "input", //Optional field(Possible values : textarea or input) 
-            "placeholder": "enter your phone number"
+            "element": "input", // Optional field (Possible values: textarea or input) 
+            "placeholder": "Enter your phone number"
+        },
+        {
+            "field": "Employer", // You can add any number of custom properties
+            "required": true,
+            "element": "input",
+            "placeholder": "Enter your company name"
         }
     ]
     ...
