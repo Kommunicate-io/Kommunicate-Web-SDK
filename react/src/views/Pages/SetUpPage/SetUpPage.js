@@ -51,9 +51,6 @@ class SetUpPage extends Component {
 						<div className="logo-container text-center">
 							<Logo/>
 						</div>
-
-						<hr className="hr"/>
-
 						<div className={(this.state.step === 3) ? "step-3-div-card col-md-6 card" : "card"}>
 							{this.state.step === 1 ? 
 								<Step1 moveToNextStep={this.moveToNextStep} hideSkipForNow={this.props.hideSkipForNow} location={this.props.location} />
