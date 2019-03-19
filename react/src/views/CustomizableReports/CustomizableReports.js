@@ -231,6 +231,7 @@ class CustomizableReports extends Component {
                                 clearable={false}
                                 searchable={false}
                                 value={this.state.selectedReportsDuration}
+                                styles={customStyles}
                                 onChange={selectedReportsDuration => {
                                     this.setState({
                                         selectedReportsDuration
@@ -261,6 +262,25 @@ class CustomizableReports extends Component {
             </Container>
         );
     }
+}
+
+const customStyles = {
+    container: (provided, state) => ({
+      ...provided,
+        width: '100px',
+        display: 'inline-block',
+        margin: '0 5px',
+    }),
+    control: (provided, state) => ({
+      ...provided,
+        border: 'none',
+        cursor: 'pointer'
+
+    }),
+    indicatorSeparator: (provided, state) => ({
+      ...provided,
+        display: 'none'
+    })
 }
 
 export default withTheme(CustomizableReports);
