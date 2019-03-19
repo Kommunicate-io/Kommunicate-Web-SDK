@@ -19,7 +19,7 @@ KOMMUNICATE_CONSTANTS = {
     CONVERSATION_STATUS :{
         'Open': 0,
         'Resolved':2,
-        'Spam':3,
+        'Spam/Irrelevant':3,
         'Duplicate':4
     },
       ROLE_IN_GROUP: {
