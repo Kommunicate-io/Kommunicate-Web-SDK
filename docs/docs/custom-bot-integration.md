@@ -15,8 +15,8 @@ In this section, learn how to:
 
 ## Integrating with custom bot platform
 
-If you have any bot running on platform other than Dialogflow, you can integrate it with kommunicate by following below steps:
-1. Go to kommunicate [bot integration](https://dashboard.kommunicate.io/bot) and click on `Other bot platforms`.
+If you have any bot running on platforms other than Dialogflow, you can integrate it with kommunicate by following below steps:
+1. Go to Kommunicate [bot integration](https://dashboard.kommunicate.io/bot) and click on `Other bot platforms`.
 
 2. Kommunicate will ask you a webhook URL and request header for the webhook. Webhook URL is required at your backend server so that messages sent to bot can be forwarded to your server. You can use same webhook for multiple bots or can configure different webhook. 
 Kommunicate will send the data to your webhook in below format:
@@ -104,8 +104,8 @@ Attachment object for location message
 
 ## Handoff conversation to human agents
 
-You can design your bot to handoff the conversation to human agents if bot is not able to answer. You can notify Kommunicate by sending an specific agent Id or an empty value in "KM_ASSIGN_TO" property in metadata. If empty value is passed Kommunicate will check the conversation rules for agents configured in [dashboard](https://dashboard.kommunicate.io/settings/conversation-rules "conversation rules in dashboard"). 
-If agent id is passed then kommunicate will skip the conversation rules and assign conversation to the mentioned agent.
+You can design your bot to handoff the conversation to human agents if bot is not able to answer. You can notify Kommunicate by sending an specific human agent Id or an empty value in "KM_ASSIGN_TO" property in metadata. If empty value is passed Kommunicate will check the conversation rules for agents configured in [dashboard](https://dashboard.kommunicate.io/settings/conversation-rules "conversation rules in dashboard"). 
+If human agent id is passed then kommunicate will skip the conversation rules and assign conversation to the mentioned agent.
 
 below is the sample response of the webhook agent handoff
 ```json
