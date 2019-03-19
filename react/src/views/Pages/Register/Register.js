@@ -449,6 +449,7 @@ export const testimonialTexts = {
       company: "Teodoro Bot",
       text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
     }
+  }
 }
 
 const mapDispatchToProps = dispatch => {
