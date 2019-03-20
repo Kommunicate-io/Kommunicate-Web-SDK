@@ -1,3 +1,5 @@
+exports.KM_SERVER_RELEASE_VERSION = "4.0";
+
 exports.GROUP_ROLE = { ADMIN: "1", MODERATOR: "2", MEMBER: "3" }; // bot is moderator
 
 exports. ADJECTIVE = ["Merry", "Amused", "Bubbly", "Cheerful", "Friendly", "Happy", "Jolly", "Sincere", "Excited", "Euphoric", "Zealous", "Lively", "Witty", "Inventive", "Reliable", "Charming", "Dynamic", "Diligent", "Kooky", "Brainy", "Ecstatic", "Fancy", "Posh", "Poised", "Suave", "Radiant", "Shrewd", "Sporty", "Stylish", "Phenomenal"];

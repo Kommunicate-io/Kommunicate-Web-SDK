@@ -18,8 +18,8 @@ KOMMUNICATE_CONSTANTS = {
     },
     CONVERSATION_STATUS :{
         'Open': 0,
-        'Close':2,
-        'Spam':3,
+        'Resolved':2,
+        'Spam/Irrelevant':3,
         'Duplicate':4
     },
       ROLE_IN_GROUP: {

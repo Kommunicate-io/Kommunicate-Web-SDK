@@ -15,12 +15,14 @@ import CommonUtils from '../src/utils/CommonUtils';
 import {setTag} from '../src/sentry/sentry'
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import theme from './assets/theme/theme';
+import {KM_RELEASE_VERSION} from '../src/utils/Constant'
 
 
 const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 
 enableSentry && Sentry.init({
- dsn: getConfig().thirdPartyIntegration.sentry.dsn
+ dsn: getConfig().thirdPartyIntegration.sentry.dsn,
+ release: KM_RELEASE_VERSION
 });
 enableSentry && Sentry.configureScope((scope) => {
   setTag(scope);
