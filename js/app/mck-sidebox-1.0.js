@@ -435,6 +435,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var DEFAULT_BOT_IDS = appOptions.botIds;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         var USE_BRANDING = typeof appOptions.useBranding  == 'boolean'? appOptions.useBranding : true;
+        var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
 
         _this.submitMessage = function (params) {
@@ -2099,7 +2100,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.createNewConversation = function (params, callback) {
                 Kommunicate.startConversation(params,callback);
             }
+            _this.openChatbox = function (params, callback) {
+                if ($mck_sidebox.css('display') === 'none') {
+                    $applozic('.mckModal').mckModal('hide');
+                    $mck_sidebox.mckModal();
+                }
+                $mck_msg_to.focus(); 
+            }
             _this.loadConversationWithAgents = function (params, callback) {
+                
+                _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == "kommunicate") {
                     $mck_btn_leave_group
                         .removeClass("vis")
@@ -4208,13 +4218,13 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 $applozic.template("searchContactbox", searchContactbox);
             };
 
-            _this.openConversation = function () {
-                if ($mck_sidebox.css('display') === 'none') {
-                    $applozic('.mckModal').mckModal('hide');
-                    $mck_sidebox.mckModal();
-                }
-                $mck_msg_to.focus();
-            };
+            // _this.openConversation = function () {
+            //     if ($mck_sidebox.css('display') === 'none') {
+            //         $applozic('.mckModal').mckModal('hide');
+            //         $mck_sidebox.mckModal();
+            //     }
+            //     $mck_msg_to.focus();
+            // };
              _this.initEmojis = function () {
                  try {
                      $applozic("#mck-text-box").emojiarea({
@@ -4414,14 +4424,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         mckMessageLayout.addContactsFromMessageList({
                             message: mckMessageArray
                         }, params);
-                         _this.openConversation();
+                        //  _this.openConversation();
                         CONTACT_SYNCING = false;
                         return;
                     }
                 }
 
                 mckMessageService.loadMessageList(params, callback);
-                _this.openConversation();
+                // _this.openConversation();
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
