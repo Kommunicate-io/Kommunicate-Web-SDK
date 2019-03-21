@@ -214,7 +214,7 @@ class ApplicationList extends Component {
 											<p className="setup-sub-heading text-center">You are registered in multiple applications</p>
 											
 											{ Object.keys(allApps).length > 3 && <InputContainer>
-													<Input type="text" value={this.state.searchApplications} onChange={this.searchInApplicationsList} placeholder="Search applications" autofocus="true"></Input>
+													<Input type="text" value={this.state.searchApplications} onChange={this.searchInApplicationsList} placeholder="Search applications" autoFocus="true"></Input>
 												</InputContainer> 
 											}
 

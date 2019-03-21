@@ -110,7 +110,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Conversations Link */
-            this.state.isKommunicateDashboard &&<li className={"nav-item " + visibility} onClick={this.hideUnreadCountOnConversationTab}>
+            <li className={"nav-item product product-kommunicate " + visibility} onClick={this.hideUnreadCountOnConversationTab}>
               <NavLink exact= {true} to={'/conversations'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Conversations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 4">
