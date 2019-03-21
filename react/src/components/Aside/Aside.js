@@ -542,7 +542,7 @@ class Aside extends Component {
                                     {
                                       'groupId': that.state.group.groupId,
                                       'metadata': {
-                                                'CONVERSATION_STATUS' : status
+                                                'CONVERSATION_STATUS' : status.toString()
                                       },
                                       'callback': function(response) {
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
