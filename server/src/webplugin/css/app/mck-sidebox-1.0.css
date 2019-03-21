@@ -612,6 +612,7 @@
 .mck-box-backdrop {
 	position: absolute !important;
 	z-index: 0;
+	display: none;
 }
 
 .mck-box .mck-box-backdrop {
@@ -656,21 +657,19 @@
 }
 
 .mck-box.fade .mck-right {
-	-webkit-transform: translate3d(80%, 0, 0);
-	transform: translate3d(80%, 0, 0);
-	-webkit-transition: -webkit-transform .4s
-		cubic-bezier(0.25, 0.8, 0.25, 1);
-	-moz-transition: -moz-transform .4s cubic-bezier(0.25, 0.8, 0.25, 1);
-	-o-transition: -o-transform .4s cubic-bezier(0.25, 0.8, 0.25, 1);
-	transition: transform .4s cubic-bezier(0.25, 0.8, 0.25, 1);
+	transform:translateY(0);
+	-webkit-transition: -webkit-transform .25s
+		cubic-bezier(0.25, 0.1, 0.25, 1);
+	-moz-transition: -moz-transform .25s cubic-bezier(0.25, 0.1, 0.25, 1);
+	-o-transition: -o-transform .25s cubic-bezier(0.25, 0.1, 0.25, 1);
+	transition: transform .25s cubic-bezier(0.25, 0.1, 0.25, 1);
 	margin: 0;
 	height: 100%;
 }
 
 .mck-box.in .mck-left, .mck-box.in .mck-right, .mck-box.in .mck-top,
 	.mck-box.in .mck-bottom {
-	-webkit-transform: translate3d(0, 0, 0);
-	transform: translate3d(0, 0, 0);
+	transform: translateY(0);
 }
 
 .mck-sidebox h1, .mck-sidebox h2, .mck-sidebox h3, .mck-sidebox h4,
@@ -1643,8 +1642,8 @@
     -webkit-align-self: flex-start;
     -ms-flex-item-align: start;
     align-self: flex-start;
-    -webkit-animation-name: slideFromLeft;
-    animation-name: slideFromLeft;
+    -webkit-animation-name: kmOpeningAnimation;
+    animation-name: kmOpeningAnimation;
     border-radius: 5px;
 	/* max-width: 70%; */
 	width: 220px;
@@ -2649,8 +2648,8 @@ display: none;
 	-webkit-align-self: flex-start;
 	-ms-flex-item-align: start;
 	align-self: flex-start;
-	-webkit-animation-name: slideFromLeft;
-	animation-name: slideFromLeft;
+	-webkit-animation-name: kmOpeningAnimation;
+	animation-name: kmOpeningAnimation;
 	border-radius: 5px;
 	max-width: 70%; /* all browsers */
 	max-width: -moz-calc(85% - 58px); /* Firefox 4+ */
@@ -5714,4 +5713,19 @@ button:focus, button:active, button:hover {
 }
 div[name="message"]:last-child {
     margin-bottom: 30px;
+}
+#mck-sidebox, #km-chat-login-modal{
+	animation: kmOpeningAnimation .3s  cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@keyframes kmOpeningAnimation {
+	from {
+		opacity: 0.6;
+		transform: translateY(45px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
