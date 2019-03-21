@@ -23,7 +23,8 @@ class MessageLogs extends Component {
             totalCombinedGroupData: [],
             showGroupDetailData: false,
             lastFetchTime: 0,
-            searchMessages: ""
+            searchMessages: "",
+            hideLoadMoreButton: true
         };
     };
 
@@ -44,7 +45,8 @@ class MessageLogs extends Component {
             if(response && response.status === 200 && response.data.status === "success") {
                 this.setState({
                     lastFetchTime: response.data.response.lastFetchTime,
-                    emptyState: false
+                    emptyState: false,
+                    hideLoadMoreButton: response.data.response.groupFeeds.length < params.pageSize
                 }); 
     
                 var message = response.data.response.message;
@@ -83,7 +85,8 @@ class MessageLogs extends Component {
         var params = {
             "startIndex" : 0,
             "pageSize" : 100,
-            "orderBy" : 1
+            "orderBy" : 1,
+            "groupId" : data.id
         };
         var headers = {
             'Content-Type': 'application/json',
@@ -94,9 +97,7 @@ class MessageLogs extends Component {
         }
 
         if(data.type === 0) {
-            params.userId = data.membersId[1] || data.membersId[0];
-        } else {
-            params.groupId = data.id;
+            params.combinedMessage = true;
         }
 
         ApplozicClient.getMessageGroups(params, headers).then(response => {
@@ -138,13 +139,13 @@ class MessageLogs extends Component {
         })
         var filter, mainContainer, div, messages, i;
             
-        filter = this.state.searchMessages.toUpperCase();
+        filter = e.target.value.toUpperCase();
         mainContainer = document.querySelector(".al-messages-list-section-container");
         div = mainContainer.querySelectorAll('.al-messages-list-sections--blocks');
         for (i = 0; i < div.length; i++) {
         messages = div[i].querySelectorAll(".al-messages-list-section--messages")[0];
             if (messages.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                div[i].style.display = "flex";
+                div[i].style.display = "";
             } else {
                 div[i].style.display = "none";
             }
@@ -196,7 +197,7 @@ class MessageLogs extends Component {
                 </MessageLogsStyles.Table> : <MyLoader />
             }
                 {!this.state.showGroupDetailData && <MessageLogsStyles.LoadMoreButtonContainer>
-                    <Button secondary onClick={() => this.fetchMessages(this.state.lastFetchTime)}>Load More</Button>
+                    <Button secondary onClick={() => this.fetchMessages(this.state.lastFetchTime)} hidden={this.state.hideLoadMoreButton}>Load More</Button>
                 </MessageLogsStyles.LoadMoreButtonContainer>}
             </MessageLogsStyles.Container>
         );

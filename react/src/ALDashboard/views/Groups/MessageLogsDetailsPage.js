@@ -134,7 +134,7 @@ const MessageLogsDetailsPage = (props) =>  {
                     <Fragment>
                         <MessageLogsStyles.GroupDetailMessageSearchContainer>
                             <MessageLogsStyles.GroupDetailMessagesSearchIcon><SearchIcon /></MessageLogsStyles.GroupDetailMessagesSearchIcon>
-                            <MessageLogsStyles.GroupDetailMessagesSearchField type="text" placeholder={searchFieldPlaceholder} value={props.searchValue} onChange={props.onChange} />
+                            <MessageLogsStyles.GroupDetailMessagesSearchField type="text" placeholder={searchFieldPlaceholder} value={props.searchValue} onChange={props.onChange} autoComplete="off" />
                         </MessageLogsStyles.GroupDetailMessageSearchContainer>
 
                         <MessageLogsStyles.GroupMessagesContainer className="al-messages-list-section-container">

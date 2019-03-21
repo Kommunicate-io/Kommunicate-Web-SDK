@@ -348,6 +348,8 @@ const GroupDetailMessagesSearchField = styled.input`
     
     &:focus {
         outline:0;
+        border: none;
+        box-shadow: none;
     }
     &::placeholder {
         color: #9b9c9e;
