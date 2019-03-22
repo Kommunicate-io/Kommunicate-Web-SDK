@@ -29,13 +29,13 @@ You can copy the below script and replace required parameters manually.
     /*---------------- Kommunicate settings start ----------------*/
 
      var kommunicateSettings = {
-      "appId": appId,
-      "conversationTitle":conversationTitle
+      "appId": "<APP_ID>",
+      "conversationTitle":"<CONVERSATION_TITLE>"
       /*
       "onInit": function (){
         // paste your code here
       },
-        "botIds":["bot1","bot2"]
+        "botIds":["<BOT_ID_1>","<BOT_ID_2>"]
       */
       };
 
