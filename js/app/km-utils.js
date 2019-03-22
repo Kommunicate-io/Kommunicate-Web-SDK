@@ -138,8 +138,9 @@ KommunicateUI = {};
 /**all  utilities*/
 KommunicateUtils = {
 
-    getCookie: function (cname) {
-        var name = cname + "=";
+    getCookie: function (cname, skipPrefix) {
+        var cookiePrefix = this.getCookiePrefix();
+        var name = (skipPrefix ?cname:  cookiePrefix+cname)+ "="
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
@@ -155,7 +156,8 @@ KommunicateUtils = {
     },
     /* Method to set cookies*/
         setCookie: function (cookie) {
-        var name = cookie.name;
+        var cookiePrefix =this.getCookiePrefix();
+        var name = (cookie && cookie.skipPrefix )?cookie.name: cookiePrefix+cookie.name;
         var value =cookie.value;
         var path = "/";
         var secure = typeof cookie.secure == "undefined"?this.isHttpsEnabledConnection():cookie.secure;
@@ -171,11 +173,26 @@ KommunicateUtils = {
 
         document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"") +(domain?";domain="+domain:"");
     },
+    getCookiePrefix : function(){
+        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
+        var cookiePrefix = KommunicateUtils.getSubDomain();
+        if(appOptions && appOptions.domainKey){
+            cookiePrefix = appOptions.domainKey;
+        }
+        return cookiePrefix+"_";
+    },
     isHttpsEnabledConnection : function(){
          return parent.window.location.protocol == "https:";
     },
-    deleteCookie : function(name) {
-        document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    deleteCookie : function(cookie) {
+        
+        var cookiePrefix =this.getCookiePrefix();
+        var name = (cookie && cookie.skipPrefix )?cookie.name: cookiePrefix+cookie.name;
+        var value ="";
+        var path = cookie.path ||"/";
+        var secure = typeof cookie.secure == "undefined"?this.isHttpsEnabledConnection():cookie.secure;
+        var domain = cookie.domain;
+        document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path="+path+(secure?";secure":"") +(domain?";domain="+domain:"");
     },
     getRandomId: function () {
         var text = "";
@@ -245,7 +262,7 @@ KommunicateUtils = {
         localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
     },
     getDomainFromUrl: function (hostName) {
-        var hostName = parent.window.location.hostname;
+        hostName = hostName?hostName: parent.window.location.hostname;
         var domain = "";
         if (hostName != null) {
             var parts = hostName.split('.').reverse();
@@ -265,5 +282,17 @@ KommunicateUtils = {
             }
         }
         return domain;
+    },
+    getSubDomain : function(){
+         var hostName = parent.window.location.hostname;
+         var domainLength= this.getDomainFromUrl(hostName).length;
+         var subDomain =hostName.substr(0,hostName.length - domainLength);
+         return subDomain;
+    },
+    deleteUserCookiesOnLogout : function(){
+        var cookieDomain  = KommunicateUtils.getDomainFromUrl();
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,domain: KommunicateUtils.getDomainFromUrl()});
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,  domain: KommunicateUtils.getDomainFromUrl()});
     }
-    }
+}
