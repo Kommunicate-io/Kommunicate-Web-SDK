@@ -1735,7 +1735,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							for (var i = 0; i < divs.length; i++) {
 								divs[i].classList.add('n-vis');
 							}
-							// kmUtils.modifyClassList( {id : ["km-converastion"]}, "n-vis");
 							kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
 						});
 					}
