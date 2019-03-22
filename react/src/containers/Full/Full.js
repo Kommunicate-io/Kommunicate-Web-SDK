@@ -243,7 +243,6 @@ class Full extends Component {
   getFaqList = () => {
     let userSession = CommonUtils.getUserSession();
     getSuggestionsByCriteria(userSession.applicationId, 'type', 'faq').then(response => {
-      console.log(response)
       if(response && response.data && response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
         var faqList = response.data || [];
         this.props.updateFaqListInAppSettings(faqList);

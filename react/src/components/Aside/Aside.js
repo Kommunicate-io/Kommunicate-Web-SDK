@@ -29,6 +29,7 @@ import {integration_type} from '../../views/Integrations/ThirdPartyList';
 import ResolutionDropdown from './ResolutionDropdown';
 import CloseButton from '../Modal/CloseButton';
 import { default as DeleteModal } from 'react-modal';
+import { SearchBarIcon } from "../../assets/svg/svgs";
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -719,7 +720,7 @@ class Aside extends Component {
         }
       }
     );
-  }
+  };
 
   render() {
     let agileContactId = this.state.agileCrmData.contactId ? this.state.agileCrmData.contactId : "";
@@ -907,13 +908,11 @@ class Aside extends Component {
                           <div className="km-box-body">
                             <div className="km-form-group">
                               <div id="km-assigned-search-input-box" className="km-input-group blk-lg-12">
-                                <span className="km-search-icon"> <a href="javascript:void(0)" role="link"
-                                className="km-tab-search"> <span className="km-icon-search"></span>
-                              </a>
-                              </span> 
                               <span id="km-clear-search-text" className=" km-clear-search-text n-vis"> × </span>
-                              <input type="text" id="km-search" data-provide="typeahead"
-                                placeholder="Search..." autoFocus />
+                              <input type="text" id="km-search" className= "km-search-icon-properties" placeholder="Search..."/>
+                              <span className="km-search-icon km-conversation-search-icon"> 
+                                <SearchBarIcon id = "km-conversation-search-icon-svg"/>
+                              </span> 
                               </div>
                             </div>
                             <div className="km-tab-cell">

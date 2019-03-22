@@ -1681,31 +1681,31 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				activeConversationTab && activeConversationTab.classList.remove("km-retaliate");
 				document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "visible";
 				activeConversationTab && activeConversationTab.click();
+				kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]},"vis","n-vis");
+			});
+			document.getElementById("km-conversation-search-icon-svg").addEventListener('click', function(event){
+				event.preventDefault();
+				kmSearch.focus();
+				if (kmSearch && kmSearch.value.trim()){
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
+					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
+					_this.searchMessages();
+				}
 			});
 			var kmSearch = document.getElementById("km-search");
-			kmSearch.addEventListener('keydown', function (event){
+			kmSearch.addEventListener('keyup', function (event){
 				var key = event.which || event.keyCode;
-				if(document.getElementById("km-clear-search-text")){
-					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
+				if (kmSearch && kmSearch.value.trim()){
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "km-conversation-search-icon-svg-properties");
+				}
+				else {
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
 				}
 				if(key === 13){
-					document.getElementById("km-search-results").innerHTML = "";
-					kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
-					var params = {
-						search: kmSearch.value
-					}
-					if(kmSearch.value && kmSearch.value.trim()){
-						_this.loadMessageSearchResults(params,function(){
-							MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
-							MESSAGE_SEARCH_DETAILS.activeConversationList && document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
-							document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
-							var divs = document.getElementsByClassName("km-converastion");
-							for (var i = 0; i < divs.length; i++) {
-								divs[i].classList.add('n-vis');
-							}
-							kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
-						});
-					}
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
+					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
+					_this.searchMessages();
 				}	
 			});
 			$kmApplozic(d).on("click", ".km-message-delete", function () {
@@ -1723,6 +1723,25 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_sidebox_content.addClass("minimized");
 				}
 			});
+			_this.searchMessages = function (){
+				document.getElementById("km-search-results").innerHTML = "";
+					kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
+					var params = {
+						search: kmSearch.value
+					}
+					if(kmSearch.value && kmSearch.value.trim()){
+						_this.loadMessageSearchResults(params,function(){
+							MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
+							MESSAGE_SEARCH_DETAILS.activeConversationList && document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
+							document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
+							var divs = document.getElementsByClassName("km-converastion");
+							for (var i = 0; i < divs.length; i++) {
+								divs[i].classList.add('n-vis');
+							}
+							kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
+						});
+					}
+			};
 			_this.monthsDiffCalculator = function(msgTimestamp) {
 				var monthsDiff = currentTimeStamp - msgTimestamp;
 				return monthsDiff && monthsDiff > maxHistoryInMillisec;
@@ -5338,10 +5357,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 					msgCreatedDateExpr: message ? kmDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				}];
-				if ($listId === "km-search-results") {
-					$kmApplozic.kmtmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
-				}
-				else if ($listId === "km-contact-search-list") {
+
+				if ($listId === "km-contact-search-list") {
 					$kmApplozic.kmtmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
 				} else {
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');

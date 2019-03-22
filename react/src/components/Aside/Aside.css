@@ -1065,3 +1065,22 @@ color: #595757;
     border: 1px solid #cec9c9;
     padding: 9px;
 }
+
+.km-conversation-search-icon {
+    height: 32px;
+    width: 32px;
+    padding: 7px;
+    border-radius: 0 4px 4px 0;
+}
+
+.km-conversation-search-icon svg {
+    cursor: pointer;
+}
+
+.km-container .left input.km-search-icon-properties {
+    border-radius: 4px 0 0 4px;
+}
+
+.km-conversation-search-icon-svg-properties path{
+    fill : #5553B7;
+}
