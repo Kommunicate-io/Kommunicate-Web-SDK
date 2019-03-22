@@ -25,10 +25,10 @@ A conversation can be created using `startConversation` method. Below is the exa
 
 ```javascript
 var conversationDetail = {
-    "agentIds": ["agentId"], // Optional. If you do not pass any agent ID, the default agent will automatically get selected.
-    "botIds": ["bot1"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
+    "agentIds": ["<AGENT_ID>"], // Optional. If you do not pass any agent ID, the default agent will automatically get selected.
+    "botIds": ["<BOT_ID>"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
     "skipRouting":"true", // Optional. If this parameter is set to 'true', then routing rules will be skipped for this conversation.
-    "assignee":"bot1 or agentId" // Optional. You can asign this conversation to any agent or bot. If you do not pass the ID. the conversation will assigned to the default agent.
+    "assignee":"<BOT_ID> or <AGENT_ID>" // Optional. You can assign this conversation to any agent or bot. If you do not pass the ID. the conversation will assigned to the default agent.
 };
 Kommunicate.startConversation(conversationDetail, function (response) {
     console.log("new conversation created");
@@ -39,7 +39,7 @@ Kommunicate.startConversation(conversationDetail, function (response) {
 If you wish to open a particular conversation, pass the group ID of that conversation by using the method mentioned below:
 
 ```
-Kommunicate.openConversation(groupId);
+Kommunicate.openConversation(<GROUP_ID>);
 ```
 
 ### Open chat window when a new message comes
@@ -48,9 +48,9 @@ If you want the chat window to pop open when a new conversation comes, add `"ope
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
-            "agentId": agentId,
-            "userName": userName,
-            "conversationTitle":conversationTitle,
+            "agentId":"<AGENT_ID>",
+            "userName":"<USER_NAME>",
+            "conversationTitle":"<CONVERSATION_TITLE>",
             "openConversationOnNewMessage":true
             };
 
