@@ -228,14 +228,19 @@ function ApplozicSidebox() {
     };
     function mckLoadAppScript() {
         var userId = KommunicateUtils.getRandomId();
-        var mapCookies = [
-            {
-                oldName : 'kommunicate-id',
-                newName : KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-            },
-            {
-                oldName : "userName",
-                newName : KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
+        var cookiePrefix = KommunicateUtils.getCookiePrefix();
+        var mapCookies = [{
+              oldName: "km_id",
+              newName: cookiePrefix+KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+              skipPrefix: true
+            },{
+                oldName: "km_user_name",
+                newName: cookiePrefix+KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+                skipPrefix: true
+            },{
+                oldName: "km_lead_collection",
+                newName: cookiePrefix+KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+                skipPrefix: true
             }
         ];
         
@@ -271,7 +276,7 @@ function ApplozicSidebox() {
             return false;
         }
     };
-    function mckInitSidebox(data, userId) {
+    function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
             options["agentId"]= data.agentId;
@@ -282,32 +287,18 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
             if (applozic.PRODUCT_ID == 'kommunicate') {
-                var cookieDomain  = KommunicateUtils.getDomainFromUrl();
-                if (!options.userId) {
-                    if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID)) {
-                        options.userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
-                    } else {
-                        options.userId = userId;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": userId, "expiresInDays":30, domain: cookieDomain});
-                        if (pseudoNameEnabled) {
-                            if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME)) {
-                                options.userName = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
-                            } else {
-                                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": data.userName, "expiresInDays":30,domain: cookieDomain});
-                                options.userName = data.userName;
-                            }
-                            options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
-                        }
-                    }
-                }
-                if (!options.askUserDetails || !options.preLeadCollection) {
-                    KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
-                }
+                var userIdFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+                var displayNameFromCookie= KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
+                var isAnonymousUser= !options.userId;
+                options["userId"] = !isAnonymousUser? options.userId:(userIdFromCookie||randomUserId)
+                options["userName"] = isAnonymousUser? (pseudoNameEnabled?(displayNameFromCookie||data.userName):""): options.userName;
+                (isAnonymousUser&& pseudoNameEnabled) &&  (options.metadata["KM_PSEUDO_USER"] = JSON.stringify({pseudoName: "true", hidden: "true" })); 
+                //save user cookies
+                saveUserCookies(options);
             }
             if (typeof options !== 'undefined') {
                 options.ojq = $original;
                 options.obsm = oModal;
-
                 $applozic.fn.applozic(options);
             }
         } catch (e) {
@@ -321,11 +312,14 @@ function ApplozicSidebox() {
     };
     
     function seekReplaceDestroyCookies (mapCookies){
+       var  hostName = parent.window.location.hostname;
         mapCookies && mapCookies.forEach(function(arrayItem){
-            if (KommunicateUtils.getCookie(arrayItem.oldName)) {
-                var value = KommunicateUtils.getCookie(arrayItem.oldName);
-                KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
-                KommunicateUtils.deleteCookie(arrayItem.oldName);
+            if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
+                var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
+                KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
+                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
+                // deleting for old version where domain is set as hostname
+                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
             }
         })
     };
@@ -361,5 +355,13 @@ function ApplozicSidebox() {
             });
         });
     };
+    function saveUserCookies(kommunicateSettings){
+        var cookieDomain  = KommunicateUtils.getDomainFromUrl();
+        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": kommunicateSettings.userId, "expiresInDays":30, domain: cookieDomain});
+        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": kommunicateSettings.userName, "expiresInDays":30,domain: cookieDomain});
+        if (!kommunicateSettings.askUserDetails || !kommunicateSettings.preLeadCollection) {
+            KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
+        }
+    }
 
 }
