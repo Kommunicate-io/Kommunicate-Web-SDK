@@ -57,7 +57,7 @@ Bot to human handoff comes in handy when the bot is unable to answer the custome
   "platform": "kommunicate",
   "message": "our agents will get back to you", //optional 
   "metadata": {
-    "KM_ASSIGN_TO": "agent's userId" // pass empty string to use conversation routing rules. 
+    "KM_ASSIGN_TO": "<AGENT'S USER_ID>" // pass empty string to use conversation routing rules. 
   }
 }
 ```
@@ -76,7 +76,7 @@ If you have multiple bots running, you can hand off the conversation to another 
 	"platform": "kommunicate",
 	"message": "Forwarding your request to a teammate who is expert in this",
 	"metadata": {
-		"KM_ASSIGN_TO": "your-bot-id",
+		"KM_ASSIGN_TO": "<BOT_ID>",
 		"event": {
 			"name": "WELCOME", // event to be triggered
 			"data": {} // data will be sent to your webhook in "originalDetectIntentRequest" parameter.
