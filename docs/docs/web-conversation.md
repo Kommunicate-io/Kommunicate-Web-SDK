@@ -47,7 +47,7 @@ If you want the chat window to pop open when a new conversation comes, add `"ope
 
 ```javascript
 
-    var kommunicateSettings = {"appId": applicationId,
+    var kommunicateSettings = {"appId": "<APP_ID>",
             "agentId":"<AGENT_ID>",
             "userName":"<USER_NAME>",
             "conversationTitle":"<CONVERSATION_TITLE>",
