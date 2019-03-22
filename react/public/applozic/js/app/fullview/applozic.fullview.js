@@ -1685,10 +1685,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			});
 			document.getElementById("km-conversation-search-icon-svg").addEventListener('click', function(event){
 				event.preventDefault();
-				kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
-				kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
-				kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
-				kmSearch && kmSearch.value.trim()	&& _this.searchMessages();
+				kmSearch.focus();
+				if (kmSearch && kmSearch.value.trim()){
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
+					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
+					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
+					_this.searchMessages();
+				}
 			});
 			var kmSearch = document.getElementById("km-search");
 			kmSearch.addEventListener('keyup', function (event){
