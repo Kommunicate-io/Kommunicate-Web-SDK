@@ -1682,6 +1682,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "visible";
 				activeConversationTab && activeConversationTab.click();
 				kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]},"vis","n-vis");
+				kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
 			});
 			document.getElementById("km-conversation-search-icon-svg").addEventListener('click', function(event){
 				event.preventDefault();
@@ -1689,7 +1690,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (kmSearch && kmSearch.value.trim()){
 					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
 					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
-					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
 					_this.searchMessages();
 				}
 			});
@@ -1725,22 +1725,21 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			});
 			_this.searchMessages = function (){
 				document.getElementById("km-search-results").innerHTML = "";
-					kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
-					var params = {
-						search: kmSearch.value
-					}
-					if(kmSearch.value && kmSearch.value.trim()){
-						_this.loadMessageSearchResults(params,function(){
-							MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
-							MESSAGE_SEARCH_DETAILS.activeConversationList && document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
-							document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
-							var divs = document.getElementsByClassName("km-converastion");
-							for (var i = 0; i < divs.length; i++) {
-								divs[i].classList.add('n-vis');
-							}
-							kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
-						});
-					}
+				kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
+				kmUtils.modifyClassList( {id : ["km-contact-loading"]}, "vis","n-vis");
+				var params = {
+					search: kmSearch.value
+				}
+				if(kmSearch.value && kmSearch.value.trim()){
+					MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;
+					MESSAGE_SEARCH_DETAILS.activeConversationList && document.getElementById(MESSAGE_SEARCH_DETAILS.activeConversationList).classList.add("km-retaliate");
+					document.getElementById("km-dashboard-conversation-list-heading").style.visibility = "hidden";
+					kmUtils.modifyClassList( {class : ["km-converastion"]}, "n-vis");
+					_this.loadMessageSearchResults(params,function(){
+						kmUtils.modifyClassList( {id : ["km-contact-loading"]}, "n-vis","vis");
+						kmUtils.modifyClassList( {id : ["km-search-results"]}, "vis","n-vis");
+					});
+				}
 			};
 			_this.monthsDiffCalculator = function(msgTimestamp) {
 				var monthsDiff = currentTimeStamp - msgTimestamp;
