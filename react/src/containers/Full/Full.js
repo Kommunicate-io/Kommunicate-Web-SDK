@@ -33,6 +33,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
 import config from '../../config/index';
+import { getConfig, getEnvironmentId } from '../../config/config';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import {getSuggestionsByCriteria} from '../../utils/kommunicateClient';
@@ -93,9 +94,8 @@ class Full extends Component {
     window.wootricSettings = {
       email: userSession.email,
       created_at: (new Date(userSession.created_at).getTime()) / 1000,
-      account_token: 'NPS-954f150b'
+      account_token: getConfig().products[CommonUtils.getProduct()].wootric
     };
-    // console.log(window.wootricSettings)
 
     this.initWootricScript();
 
@@ -115,15 +115,17 @@ class Full extends Component {
     
   } 
   initWootricScript() {
-    let head = document.getElementsByTagName('head')[0];
-    let wootricScript = document.createElement('script');
-    wootricScript.src = "https://cdn.wootric.com/wootric-sdk.js";
-    head.appendChild(wootricScript);
-
-    wootricScript.onload = function () {
-        window.wootric('run');
+    let env = getEnvironmentId();
+    if(env.includes('prod')) {
+      let head = document.getElementsByTagName('head')[0];
+      let wootricScript = document.createElement('script');
+      wootricScript.src = "https://cdn.wootric.com/wootric-sdk.js";
+      head.appendChild(wootricScript);
+      wootricScript.onload = function () {
+          window.wootric('run');
+      }
+      return false;
     }
-    return false;
   } 
 
 
