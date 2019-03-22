@@ -26,7 +26,8 @@ class ThirdPartyScripts extends Component {
               "baseUrl":kommunicateSupportChatUrl,
               "googleApiKey": "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI",
               "googleMapScriptLoaded": true,
-              "emojilibrary": false
+              "emojilibrary": false,
+              "domainKey":"_kom"
             }
               : {
                 "appId": "applozic-sample-app",
@@ -35,7 +36,8 @@ class ThirdPartyScripts extends Component {
                 "baseUrl":kommunicateSupportChatUrl,
                 "googleApiKey": "AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw",
                 "googleMapScriptLoaded": true,
-                "emojilibrary": false
+                "emojilibrary": false,
+                "domainKey":"_al"
               };
             (function(d, m){
               let  o = support

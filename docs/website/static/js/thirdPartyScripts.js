@@ -41,7 +41,8 @@ if (trackByDefault || /(^|; )ac_enable_tracking=([^;]+)/.test(document.cookie)) 
 (function(d, m) {
     let o = {
         "appId": "kommunicate-support",
-        "isAnonymousChat": true
+        "isAnonymousChat": true,
+        "domainKey":"_kom"
     };
     let s = document.createElement("script");
     s.type = "text/javascript";
