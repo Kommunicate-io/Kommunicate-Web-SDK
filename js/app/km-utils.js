@@ -140,7 +140,7 @@ KommunicateUtils = {
 
     getCookie: function (cname, skipPrefix) {
         var cookiePrefix = this.getCookiePrefix();
-        var name = (skipPrefix ?cname:  cookiePrefix+cname)+ "="
+        var name = (skipPrefix ?cname:  cookiePrefix+cname)+ "=";
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
@@ -262,7 +262,7 @@ KommunicateUtils = {
         localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
     },
     getDomainFromUrl: function (hostName) {
-        hostName = hostName?hostName: parent.window.location.hostname;
+        hostName = hostName || parent.window.location.hostname;
         var domain = "";
         if (hostName != null) {
             var parts = hostName.split('.').reverse();

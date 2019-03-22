@@ -230,19 +230,27 @@ function ApplozicSidebox() {
         var userId = KommunicateUtils.getRandomId();
         var cookiePrefix = KommunicateUtils.getCookiePrefix();
         var mapCookies = [{
-              oldName: "km_id",
-              newName: cookiePrefix+KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-              skipPrefix: true
-            },{
-                oldName: "km_user_name",
-                newName: cookiePrefix+KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-                skipPrefix: true
-            },{
-                oldName: "km_lead_collection",
-                newName: cookiePrefix+KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
-                skipPrefix: true
-            }
-        ];
+            oldName: 'kommunicate-id',
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+            skipPrefix: true
+        }, {
+            oldName: "userName",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+            skipPrefix: true
+
+        }, {
+            oldName: "km_id",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+            skipPrefix: true
+        }, {
+            oldName: "km_user_name",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+            skipPrefix: true
+        }, {
+            oldName: "km_lead_collection",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+            skipPrefix: true
+        }];
         
         try {
             var body = document.getElementsByTagName('body')[0];
