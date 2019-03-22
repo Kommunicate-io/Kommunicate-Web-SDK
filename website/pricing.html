@@ -49,7 +49,9 @@ layout:
     function launchSideboxChat() {
       KommunicateGlobal.window.$applozic.fn.applozic('mckLaunchSideboxChat');
     }
-    document.getElementById("chat-withus-btn").addEventListener("click", launchSideboxChat);
+    document.getElementById("chat-withus-btn").addEventListener("click", function(){
+      window.KommunicateGlobal && launchSideboxChat();
+    });
   </script>
 
 </body>
