@@ -35,7 +35,7 @@ You can copy the below script and replace required parameters manually.
       "onInit": function (){
         // paste your code here
       },
-        "botIds":["<ID_1>","<ID_2>"]
+        "botIds":["<BOT_ID_1>","<BOT_ID_2>"]
       */
       };
 
