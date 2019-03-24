@@ -1,4 +1,12 @@
 {
-    "plugins": ["babel-plugin-styled-components", "syntax-class-properties", ["transform-class-properties", { "spec": true }]],
-    "presets":["babel-preset-env", "react"]
+    "plugins": [
+        "babel-plugin-styled-components",
+        "@babel/plugin-transform-modules-commonjs"
+    ],
+    "presets": [
+        ["@babel/preset-env", {
+            "modules": false
+        }],
+        "@babel/preset-react"
+    ]
 }

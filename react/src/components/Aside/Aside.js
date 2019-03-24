@@ -22,7 +22,7 @@ import { CollapseIcon, ExpandIcon, EmailIndicatorIcon, DownArrow, AssignedToMeIc
 import styled from 'styled-components';
 import { connect } from 'react-redux'
 import * as SignUpActions from '../../actions/signupAction'
-import Banner from '../../components/BannerV2';
+import Banner from '../../components/Banner';
 import { Link } from 'react-router-dom';
 import MultiSelectInput from './MultiSelectInput';
 import {integration_type} from '../../views/Integrations/ThirdPartyList';

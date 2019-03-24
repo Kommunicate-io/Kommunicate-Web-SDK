@@ -29,7 +29,7 @@ const optimization = {
 }
 
 module.exports = env => {
-    console.log(`\x1b[41m------ Build is running on ${env && env.REACT_APP_NODE_ENV}----${env&&env.BRAND}-\x1b[0m`)
+    console.log(`\x1b[41m------ Build is running on ${env && env.REACT_APP_NODE_ENV} ---- ${env&&env.BRAND} ------\x1b[0m`)
     let faviconIconPath = env && env.BRAND == "applozic" ? 'assets/favicon/applozic.ico' : 'assets/favicon/kommunicate.ico'
     let productTitle = env && env.BRAND == "applozic"? "Applozic": "Kommunicate";
     let analyticsScripts = env && env.BRAND == "applozic" ? 'alAnalyticsScripts.js' : 'kmAnalyticsScripts.js';
@@ -101,12 +101,20 @@ module.exports = env => {
         module: {
             rules: [
                 {
-                    test: /\.js$/,
+                    test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
-                    query: {
-                        plugins: ['transform-object-rest-spread', 'transform-class-properties']
-                    }
+                    options: {
+                        presets: [
+                            '@babel/preset-env',
+                            '@babel/preset-react',
+                            {
+                                plugins: [
+                                    '@babel/plugin-proposal-class-properties'
+                                ]
+                            }
+                        ]
+                    },
                 },
                 {
                     use: ['style-loader', 'css-loader'],

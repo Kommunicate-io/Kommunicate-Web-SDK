@@ -9,7 +9,7 @@ import { sendProfileImage, updateAppSetting, getAppSetting } from '../../utils/k
 import LockBadge from '../../components/LockBadge/LockBadge';
 import {LiveChatWidget} from '../../components/LiveChatWidget/LiveChatWidget';
 import ReactTooltip from 'react-tooltip';
-import Banner from '../../components/BannerV2';
+import Banner from '../../components/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';

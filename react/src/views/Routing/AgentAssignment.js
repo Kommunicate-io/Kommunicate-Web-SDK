@@ -27,7 +27,7 @@ import {
 } from '../../utils/kommunicateClient'
 import * as Actions from '../../actions/applicationAction'
 import styled, { css } from 'styled-components';
-import Banner from '../../components/BannerV2';
+import Banner from '../../components/Banner';
 import { LearnMore } from '../../views/Faq/LizSVG';
 
 class AgentAssignemnt extends Component{

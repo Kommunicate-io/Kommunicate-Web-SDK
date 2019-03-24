@@ -4,7 +4,7 @@ import {CompanyInfoContainer, CompanyRestrictionBannerContainer, CompanyContaine
 import { getCustomerInfo, patchUserInfo, patchCustomerInfo } from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../model/Notification';
-import Banner from '../../components/BannerV2';
+import Banner from '../../components/Banner';
 import {ROLE_TYPE} from '../../utils/Constant'
 import isURL from 'validator/lib/isURL';
 import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFunctionComponents'

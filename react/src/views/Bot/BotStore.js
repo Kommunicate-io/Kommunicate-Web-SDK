@@ -23,7 +23,7 @@ import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG
 import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/Banner';
 import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
 import Button from '../../components/Buttons/Button';
 import styled, { withTheme } from 'styled-components';
@@ -827,11 +827,11 @@ class BotStore extends Component {
               </div>
             </div>
                 {  (CommonUtils.isKommunicateDashboard() && !CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) &&
-                  <Banner indicator={"default"} hidden={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
+                  <Banner appearance="info" heading={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                 }
 
                 {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
-                  <Banner indicator={"warning"} hidden={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
+                  <Banner appearance="warning" heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 
             <ModalBody>

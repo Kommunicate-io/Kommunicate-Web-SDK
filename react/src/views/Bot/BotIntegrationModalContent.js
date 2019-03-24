@@ -10,7 +10,7 @@ import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL } from '../../util
 import CommonUtils from '../../utils/CommonUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
-import Banner from '../../components/Banner/Banner';
+import Banner from '../../components/Banner';
 
 
 
@@ -216,11 +216,11 @@ render() {
                 this.state.step==2 &&
                 <div style={{margin:"-20px -33px"}}>
                 {  (CommonUtils.isKommunicateDashboard() && !CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan())   &&
-                        <Banner style={{margin:"-20px -32px"}} indicator={"default"} hidden={false} text={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
+                        <Banner style={{margin:"-20px -32px"}} appearance="info" heading={["Adding a bot will increase the number of team members in your plan ",<strong key={1} >(1 bot = 1 team member).</strong>," Your bill will be updated on pro rata basis."]} />
                     }
 
                         {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
-                          <Banner indicator={"warning"} style={{margin:"-20px -32px"}} hidden={false} text={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
+                          <Banner appearance="warning" style={{margin:"-20px -32px"}} heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 </div>
             }
