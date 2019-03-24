@@ -71,7 +71,7 @@ This example will change the text for pre chat lead collection screen :-
     (function(d, m){
     /*---------------- Kommunicate settings start ----------------*/
      var kommunicateSettings = {
-        "appId": appId, // add your application id here 
+        "appId": "<APP_ID>", // add your application id here 
         "askUserDetails": ["name", "email", "phone"],
         "labels": {
             'lead.collection': {

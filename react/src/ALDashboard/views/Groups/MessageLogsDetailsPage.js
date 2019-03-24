@@ -23,11 +23,11 @@ const MessageLogsDetailsPage = (props) =>  {
                 <MessageLogsStyles.GroupDetailMetadataContainer id="group-metadata-container">
                     <MessageLogsStyles.GroupDetailMetadataHeader>
                         <MessageLogsStyles.GroupDetailMetadataBackdropContainer>
-                            {(groupFeed.imageUrl) ? imageTag : <MessageLogsStyles.ContactIcon className={`${image[1]}`}>{image[0]}</MessageLogsStyles.ContactIcon>}
+                            {(groupFeed.imageUrl) ? imageTag : <MessageLogsStyles.ContactIcon className={image[1]}>{image[0]}</MessageLogsStyles.ContactIcon>}
                             <MessageLogsStyles.GroupDetailMetadataBackdrop />
                         </MessageLogsStyles.GroupDetailMetadataBackdropContainer>
                         <MessageLogsStyles.GroupImage>
-                            {(groupFeed.imageUrl) ? imageTag : <MessageLogsStyles.ContactIcon className={`${image[1]}`}>{image[0]}</MessageLogsStyles.ContactIcon>}
+                            {(groupFeed.imageUrl) ? imageTag : <MessageLogsStyles.ContactIcon className={image[1]}>{image[0]}</MessageLogsStyles.ContactIcon>}
                         </MessageLogsStyles.GroupImage>
                         <MessageLogsStyles.GroupTitle title={displayName}>{displayName}</MessageLogsStyles.GroupTitle>
                     </MessageLogsStyles.GroupDetailMetadataHeader>
@@ -141,7 +141,7 @@ const MessageLogsDetailsPage = (props) =>  {
                             { message.length > 0 && message.filter(item => item.metadata && item.metadata.hide !== "true" && item.metadata.show !== "false").slice(0).reverse().map((data, index) => {
                             
                                 return (
-                                    <MessageList key={index} data={data} image={props.getContactImageByAlphabet}/>
+                                    <MessageList key={index} data={data} image={props.getContactImageByAlphabet} />
                                 )
                             })
                             }    
@@ -169,7 +169,7 @@ const MessageList = (props) => {
         <MessageLogsStyles.MessagesDataContainer className="al-messages-list-sections--blocks">
             <MessageLogsStyles.MessagesProfileImageContainer>
                 {
-                    (data.imageUrl) ? <MessageLogsStyles.Image src={data.imageUrl}/> : <MessageLogsStyles.ContactIcon className={`${image[1]}`}>{image[0]}</MessageLogsStyles.ContactIcon>
+                    (data.imageUrl) ? <MessageLogsStyles.Image src={data.imageUrl}/> : <MessageLogsStyles.ContactIcon className={image[1]}>{image[0]}</MessageLogsStyles.ContactIcon>
                 }
             </MessageLogsStyles.MessagesProfileImageContainer>
             <MessageLogsStyles.MessagesContainer>
@@ -183,9 +183,12 @@ const MessageList = (props) => {
                     </MessageLogsStyles.MessageFromMetadataText> }
                 </MessageLogsStyles.MessageFromContainer>
                 <MessageLogsStyles.MessagesTextContainer>
+                    {data.source == 7 ? 
+                    <MessageLogsStyles.MessagesText className="al-messages-list-section--messages" id={"al-iframe-container" + data.groupId || data.key} dangerouslySetInnerHTML={mailMarkup(data)} /> : 
                     <Linkify properties={{target: '_blank'}}>
-                    <MessageLogsStyles.MessagesText className="al-messages-list-section--messages">{data.message}</MessageLogsStyles.MessagesText>
+                        <MessageLogsStyles.MessagesText className="al-messages-list-section--messages">{data.message}</MessageLogsStyles.MessagesText>
                     </Linkify>
+                    }
                     { Object.keys(data.metadata).length > 0 ?
                         <MessageLogsStyles.MessagesMetadata> {JSON.stringify(data.metadata)}</MessageLogsStyles.MessagesMetadata> : 
                         ""
@@ -199,6 +202,8 @@ const MessageList = (props) => {
     )
 }
 
-
+const mailMarkup = (message) => {
+    return {__html: message.message};
+}
 
 export default MessageLogsDetailsPage;

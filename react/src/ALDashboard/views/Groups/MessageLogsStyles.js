@@ -280,7 +280,9 @@ const GroupTitle = styled.h4`
     overflow: hidden;
     text-overflow: ellipsis;
 `;
-const GroupDetailMetadataHeader = styled.div``;
+const GroupDetailMetadataHeader = styled.div`
+    ${placeholderProfileBG}
+`;
 const GroupDetailMetadataBody = styled.div`
     padding: 0 10px 15px;
 `;
@@ -361,6 +363,7 @@ const GroupMessagesContainer = styled.div`
     height: calc(100% - 43px);
     overflow-y: auto;
     overflow-x: hidden;
+    ${placeholderProfileBG}
 `;
 
 const MessagesDataContainer = styled(FlexContainer)`
