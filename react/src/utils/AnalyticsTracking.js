@@ -45,7 +45,33 @@ const AnalyticsTracking = {
     });
   },
 
-  acEventTrigger: function(trigger) {
+  sendOnboardingMessage: function(trigger) {
+    let clientGroupId = "km-onboarding-" + CommonUtils.getUserSession().userName;
+
+    Applozic.ALApiService.sendMessage({
+      data: {
+          message: {
+              "type": 5,
+              "contentType": 0,
+              "message": "event: " + trigger,
+              "clientGroupId": clientGroupId,
+              "metadata": {},
+              "key": "mpfj2",
+              "source": 1
+          }
+      },
+      success: function (response) { 
+        console.log(response); 
+      },
+      error: function () { }
+    });
+  },
+
+  acEventTrigger: function(trigger, onboarding) {
+    if (onboarding) {
+      this.sendOnboardingMessage(trigger);
+    }
+
     if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
       return;
     }
