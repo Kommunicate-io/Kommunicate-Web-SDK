@@ -1,6 +1,7 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
 import  { getConfig }  from '../config/config';
+import OnboardingMessages from './onboarding-messages';
 
 
 const AnalyticsTracking = {
@@ -46,6 +47,10 @@ const AnalyticsTracking = {
   },
 
   sendOnboardingMessage: function(trigger) {
+    if (!OnboardingMessages[trigger]) {
+      console.log("returning as no message found for trigger: " + trigger);
+      return;
+    }
     let clientGroupId = "km-onboarding-" + CommonUtils.getUserSession().userName;
 
     Applozic.ALApiService.sendMessage({
@@ -67,10 +72,8 @@ const AnalyticsTracking = {
     });
   },
 
-  acEventTrigger: function(trigger, onboarding) {
-    if (onboarding) {
-      this.sendOnboardingMessage(trigger);
-    }
+  acEventTrigger: function(trigger) {
+    this.sendOnboardingMessage(trigger);
 
     if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
       return;

@@ -1,0 +1,10 @@
+{
+    "bot-setup": {
+        "delay": 0,
+        "message": "bot-setup"
+    },
+    "ac-android-push": {
+        "delay": 0,
+        "message": "ac-android-push"
+    }
+}

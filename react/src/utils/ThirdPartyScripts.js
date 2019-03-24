@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
 import AnalyticsTracking from './AnalyticsTracking';
-import axios from 'axios';
+import OnboardingMessageClient from './OnboardingMessageClient';
 // import Notification from '../views/model/Notification';
 
 class ThirdPartyScripts extends Component {
@@ -71,28 +71,10 @@ class ThirdPartyScripts extends Component {
                   });
                 }
 
-                Applozic.ALApiService.getGroupInfo({
-                  data: {
-                    clientGroupId: "km-onboarding-" + userId, //270685
-                  },
-                  success: function (response) { 
-                    if (response.status == "error") {
-                      var conversationDetail = {
-                        "clientGroupId": "km-onboarding-" + userId,
-                        "agentIds": ["devashish@kommunicate.io"], // Optional. If you do not pass any agent ID, the default agent will automatically get selected.
-                        "botIds": ["onboarding"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
-                        "skipRouting":"true", // Optional. If this parameter is set to 'true', then routing rules will be skipped for this conversation.
-                        "assignee":"onboarding" // Optional. You can asign this conversation to any agent or bot. If you do not pass the ID. the conversation will assigned to the default agent.
-                      };
-                      Kommunicate.startConversation(conversationDetail, function (response) {
-                          console.log("new conversation created");
-                      });                    
-                    } else {
-                      console.log("onboarding group exists");
-                    }
-                  },
-                  error: function () { }
-                });
+                if (userId) {
+                  OnboardingMessageClient.setupOnboardingGroup(userId);
+                }
+                
               };
               var s = document.createElement("script");
               s.type = "text/javascript";
