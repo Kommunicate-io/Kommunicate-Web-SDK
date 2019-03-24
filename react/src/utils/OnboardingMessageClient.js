@@ -42,7 +42,7 @@ const OnboardingMessageClient = {
                   "contentType": 0,
                   "message": "event: " + trigger,
                   "clientGroupId": this.getClientGroupId(userId),
-                  "metadata": {"hide": "true"},
+                  "metadata": {"HIDE": "true"},
                   "source": 1
               }
           },
