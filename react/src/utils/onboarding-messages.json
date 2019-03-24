@@ -1,7 +1,7 @@
 {
-    "bot-setup": {
+    "ac-integrated-bot": {
         "delay": 0,
-        "message": "bot-setup"
+        "message": "ac-integrated-bot"
     },
     "ac-android-push": {
         "delay": 0,

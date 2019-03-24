@@ -1,3 +1,5 @@
+import OnboardingMessages from './onboarding-messages';
+
 const OnboardingMessageClient = { 
 
     getClientGroupId: function(userId) {
@@ -26,7 +28,30 @@ const OnboardingMessageClient = {
             },
             error: function () { }
         });
-    }
+    },
+
+    sendOnboardingMessage: function(userId, trigger) {
+        if (!OnboardingMessages[trigger]) {
+          return;
+        }
+    
+        Applozic.ALApiService.sendMessage({
+          data: {
+              message: {
+                  "type": 5,
+                  "contentType": 0,
+                  "message": "event: " + trigger,
+                  "clientGroupId": this.getClientGroupId(userId),
+                  "metadata": {"hide": "true"},
+                  "source": 1
+              }
+          },
+          success: function (response) { 
+            console.log(response); 
+          },
+          error: function () { }
+        });
+      },
 }
 
 export default OnboardingMessageClient;

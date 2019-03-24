@@ -1,8 +1,7 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
 import  { getConfig }  from '../config/config';
-import OnboardingMessages from './onboarding-messages';
-
+import OnboardingMessageClient from './OnboardingMessageClient';
 
 const AnalyticsTracking = {
 
@@ -46,34 +45,10 @@ const AnalyticsTracking = {
     });
   },
 
-  sendOnboardingMessage: function(trigger) {
-    if (!OnboardingMessages[trigger]) {
-      console.log("returning as no message found for trigger: " + trigger);
-      return;
-    }
-    let clientGroupId = "km-onboarding-" + CommonUtils.getUserSession().userName;
-
-    Applozic.ALApiService.sendMessage({
-      data: {
-          message: {
-              "type": 5,
-              "contentType": 0,
-              "message": "event: " + trigger,
-              "clientGroupId": clientGroupId,
-              "metadata": {},
-              "key": "mpfj2",
-              "source": 1
-          }
-      },
-      success: function (response) { 
-        console.log(response); 
-      },
-      error: function () { }
-    });
-  },
-
   acEventTrigger: function(trigger) {
-    this.sendOnboardingMessage(trigger);
+    if (CommonUtils.getUserSession() && CommonUtils.getUserSession().userName) {
+      OnboardingMessageClient.sendOnboardingMessage(CommonUtils.getUserSession().userName, trigger);
+    }
 
     if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
       return;
