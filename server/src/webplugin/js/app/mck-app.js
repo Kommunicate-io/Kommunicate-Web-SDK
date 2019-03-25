@@ -367,7 +367,7 @@ function ApplozicSidebox() {
         var cookieDomain  = KommunicateUtils.getDomainFromUrl();
         KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": kommunicateSettings.userId, "expiresInDays":30, domain: cookieDomain});
         KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": kommunicateSettings.userName, "expiresInDays":30,domain: cookieDomain});
-        if (!kommunicateSettings.askUserDetails || !kommunicateSettings.preLeadCollection) {
+        if (!(options.preLeadCollection || options.askUserDetails)) {
             KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
         }
     }

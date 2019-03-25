@@ -81,7 +81,7 @@ class ThirdPartyScripts extends Component {
               var s = document.createElement("script");
               s.type = "text/javascript";
               s.async = true;
-              s.src = getConfig().kommunicateApi.pluginUrl;
+              s.src = getConfig().kommunicateApi.pluginUrlV2;
               var h = document.getElementsByTagName("head")[0];
               h.appendChild(s);
               window.kommunicate = m;
