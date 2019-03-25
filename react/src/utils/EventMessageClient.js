@@ -16,7 +16,7 @@ const EventMessageClient = {
                 if (response.status == "error") {                    
                     var conversationDetail = {
                         "clientGroupId": this.getClientGroupId(userId),
-                        "botIds": ["onboarding"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
+                        "botIds": ["eve"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
                         "skipRouting":"true", // Optional. If this parameter is set to 'true', then routing rules will be skipped for this conversation.
                         "assignee":"onboarding" // Optional. You can asign this conversation to any agent or bot. If you do not pass the ID. the conversation will assigned to the default agent.
                     };
