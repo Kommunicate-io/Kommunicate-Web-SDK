@@ -7,7 +7,8 @@ const EventMessageClient = {
     },
     
     setupEventMessageGroup: function(userId) {
-        Applozic.ALApiService.getGroupInfo({
+        //Todo: Change it after plugin is moved to v2
+        Applozic && Applozic.ALApiService.getGroupInfo({
             data: {
                 clientGroupId: this.getClientGroupId(userId),
             },
@@ -35,7 +36,8 @@ const EventMessageClient = {
           return;
         }
     
-        Applozic.ALApiService.sendMessage({
+        //Todo: Change it after plugin is moved to v2
+        Applozic && Applozic.ALApiService.sendMessage({
           data: {
               message: {
                   "type": 5,
