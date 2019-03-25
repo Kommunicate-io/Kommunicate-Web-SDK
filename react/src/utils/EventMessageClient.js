@@ -1,18 +1,18 @@
-import OnboardingMessages from './onboarding-messages';
+import EventMessages from './event-messages';
 
-const OnboardingMessageClient = { 
+const EventMessageClient = { 
 
     getClientGroupId: function(userId) {
         return "km-onboarding-" + userId;
     },
     
-    setupOnboardingGroup: function(userId) {
+    setupEventMessageGroup: function(userId) {
         Applozic.ALApiService.getGroupInfo({
             data: {
                 clientGroupId: this.getClientGroupId(userId),
             },
             success: function (response) { 
-                if (response.status == "error") {
+                if (response.status == "error") {                    
                     var conversationDetail = {
                         "clientGroupId": this.getClientGroupId(userId),
                         "botIds": ["onboarding"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
@@ -30,8 +30,8 @@ const OnboardingMessageClient = {
         });
     },
 
-    sendOnboardingMessage: function(userId, trigger) {
-        if (!OnboardingMessages[trigger]) {
+    sendEventMessage: function(userId, trigger) {
+        if (!EventMessages[trigger]) {
           return;
         }
     
@@ -39,10 +39,10 @@ const OnboardingMessageClient = {
           data: {
               message: {
                   "type": 5,
-                  "contentType": 0,
-                  "message": "event: " + trigger,
+                  "contentType": 10,
+                  "message": "Event: " + trigger,
                   "clientGroupId": this.getClientGroupId(userId),
-                  "metadata": {"category": "HIDDEN"},
+                  "metadata": {"category": "HIDDEN", "KM_TRIGGER_EVENT": trigger},
                   "source": 1
               }
           },
@@ -54,4 +54,4 @@ const OnboardingMessageClient = {
       },
 }
 
-export default OnboardingMessageClient;
+export default EventMessageClient;

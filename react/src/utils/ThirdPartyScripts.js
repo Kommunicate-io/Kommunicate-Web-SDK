@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
 import AnalyticsTracking from './AnalyticsTracking';
-import OnboardingMessageClient from './OnboardingMessageClient';
+import EventMessageClient from './EventMessageClient';
 // import Notification from '../views/model/Notification';
 
 class ThirdPartyScripts extends Component {
@@ -72,7 +72,7 @@ class ThirdPartyScripts extends Component {
                 }
 
                 if (userId) {
-                  OnboardingMessageClient.setupOnboardingGroup(userId);
+                  EventMessageClient.setupEventMessageGroup(userId);
                 }
                 
               };

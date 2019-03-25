@@ -1,7 +1,7 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
 import  { getConfig }  from '../config/config';
-import OnboardingMessageClient from './OnboardingMessageClient';
+import EventMessageClient from './EventMessageClient';
 
 const AnalyticsTracking = {
 
@@ -47,7 +47,7 @@ const AnalyticsTracking = {
 
   acEventTrigger: function(trigger) {
     if (CommonUtils.getUserSession() && CommonUtils.getUserSession().userName) {
-      OnboardingMessageClient.sendOnboardingMessage(CommonUtils.getUserSession().userName, trigger);
+      EventMessageClient.sendEventMessage(CommonUtils.getUserSession().userName, trigger);
     }
 
     if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
