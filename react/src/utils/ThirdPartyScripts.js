@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
 import AnalyticsTracking from './AnalyticsTracking';
-import axios from 'axios';
+import EventMessageClient from './EventMessageClient';
 // import Notification from '../views/model/Notification';
 
 class ThirdPartyScripts extends Component {
@@ -45,7 +45,7 @@ class ThirdPartyScripts extends Component {
                 o.userId = userId;
                 o.password =CommonUtils.getUserSession().accessToken;
               }
-              o.onInit=function(response) {
+              o.onInit=function(response, data) {
                 var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
                 var widgetCloseButton = document.querySelector(".mck-close-sidebox");
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
@@ -73,6 +73,10 @@ class ThirdPartyScripts extends Component {
                   });
                 }
 
+                if (userId) {
+                  EventMessageClient.setupEventMessageGroup(userId);
+                }
+                
               };
               var s = document.createElement("script");
               s.type = "text/javascript";

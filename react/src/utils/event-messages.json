@@ -1,0 +1,10 @@
+{
+    "ac-integrated-bot": {
+        "delay": 0,
+        "message": "ac-integrated-bot"
+    },
+    "ac-android-push": {
+        "delay": 0,
+        "message": "ac-android-push"
+    }
+}

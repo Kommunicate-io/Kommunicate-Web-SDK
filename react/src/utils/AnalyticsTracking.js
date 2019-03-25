@@ -1,7 +1,7 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
 import  { getConfig }  from '../config/config';
-
+import EventMessageClient from './EventMessageClient';
 
 const AnalyticsTracking = {
 
@@ -46,6 +46,10 @@ const AnalyticsTracking = {
   },
 
   acEventTrigger: function(trigger) {
+    if (CommonUtils.getUserSession() && CommonUtils.getUserSession().userName) {
+      EventMessageClient.sendEventMessage(CommonUtils.getUserSession().userName, trigger);
+    }
+
     if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
       return;
     }
