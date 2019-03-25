@@ -12,7 +12,7 @@ import { USER_TYPE, INVITED_USER_STATUS } from '../../utils/Constant';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import RadioButton from '../../components/RadioButton/RadioButton';
-import Banner from '../../components/BannerV2';
+import Banner from '../../components/Banner';
 import { ROLE_TYPE, ROLE_NAME, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';

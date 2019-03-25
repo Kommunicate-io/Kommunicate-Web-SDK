@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-import styled, { css, withTheme } from 'styled-components';
-// import './RadioButton.css';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled, { withTheme } from 'styled-components';
 
 const RadioButtonLabel = styled.label`
     display: block;
@@ -78,12 +78,14 @@ class RadioButton extends Component {
     }
 }
 
-// RadioButton.propTypes = {
-//     checked: React.PropTypes.boolean,
-//     disabled: React.PropTypes.boolean,
-//     label: React.PropTypes.isRequired,
-//     handleOnChange: React.PropTypes.func.isRequired,
-
-// };
+RadioButton.propTypes = {
+    checked: PropTypes.bool,
+    disabled: PropTypes.bool,
+    label: PropTypes.any.isRequired,
+    handleOnChange: PropTypes.func.isRequired,
+    dataValue: PropTypes.string,
+    idRadioButton: PropTypes.string,
+    cssClass: PropTypes.string,
+};
 
 export default withTheme(RadioButton);

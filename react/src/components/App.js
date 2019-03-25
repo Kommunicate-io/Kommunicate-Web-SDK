@@ -2,7 +2,7 @@ import React from 'react';
 // import App from './components/App';
 import ReactDOM from 'react-dom';
 import { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import ThirdPartyScripts from '../utils/ThirdPartyScripts';
 import AnalyticsTracking from '../utils/AnalyticsTracking';
@@ -104,7 +104,6 @@ class App extends Component {
                     <NotificationContainer />
                     <ThirdPartyScripts />
                 </div> : null}
-            <BrowserRouter>
                 <Switch>
                     <Route path="/login" name="Login Page" component={Login} />
                     <Route path="/subscribe" name="Subscribe" component={Subscribe} />
@@ -121,7 +120,7 @@ class App extends Component {
                             return CommonUtils.getUserSession() ? <Full history={data.history} application={CommonUtils.getUserSession().application} /> : <Redirect to={"/login?referrer=" + data.location.pathname} />;
                         }} />
                 </Switch>
-            </BrowserRouter>
+
         </div>;
     }
 } 
@@ -136,4 +135,4 @@ const mapDispatchToProps = dispatch => {
     resetStore: payload => dispatch(ClearReduxAction.resetStore())
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

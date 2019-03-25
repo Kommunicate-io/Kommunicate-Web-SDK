@@ -20,7 +20,7 @@ const getPaths = (pathname) => {
   return paths;
 };
 
-const BreadcrumbsItem = ({ ...rest, match }) => {
+const BreadcrumbsItem = ({ match, ...rest }) => {
   const routeName = findRouteName(match.url);
   if (routeName) {
     return (
@@ -40,7 +40,7 @@ const BreadcrumbsItem = ({ ...rest, match }) => {
   return null;
 };
 
-const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
+const Breadcrumbs = ({ location : { pathname }, match, ...rest }) => {
   const paths = getPaths(pathname);
   const i = 0;
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem} />);

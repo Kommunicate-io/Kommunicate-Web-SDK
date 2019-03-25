@@ -10,7 +10,7 @@ import {SettingsHeader} from '../../../src/components/SettingsComponent/Settings
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
-import Banner from '../../components/BannerV2';
+import Banner from '../../components/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
 import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
 import { withTheme } from 'styled-components';

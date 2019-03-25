@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import './LockBadge.css'
-import { BrowserRouter, Link, Route } from 'react-router-dom';
 
 export default class LockBadge extends Component {
 

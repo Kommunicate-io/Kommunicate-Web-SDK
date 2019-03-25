@@ -9950,7 +9950,15 @@ pointer-events: none;
 }
 
 .checkbox-input[type='checkbox']:checked + .checkbox-label > span{
-  border: 10px solid #5c5aa7;
+  border: 10px solid #5553B7;
+  animation: shrink-bounce 200ms cubic-bezier(.4,.0,.23,1);
+}
+.checkbox-input[type='checkbox']:checked:disabled + .checkbox-label > span{
+  border: 10px solid #bbbbbb;
+  animation: shrink-bounce 200ms cubic-bezier(.4,.0,.23,1);
+}
+.checkbox-input[type='checkbox']:disabled + .checkbox-label > span{
+  border: 10px solid #bbbbbb;
   animation: shrink-bounce 200ms cubic-bezier(.4,.0,.23,1);
 }
 .checkbox-input[type='checkbox']:checked + .checkbox-label > span:before{
@@ -10127,6 +10135,9 @@ pointer-events: none;
 
 input:required {
   box-shadow: none;
+}
+input::-ms-clear, input::-ms-reveal {
+  display: none;
 }
 
 .km-bot-integration-cato {
