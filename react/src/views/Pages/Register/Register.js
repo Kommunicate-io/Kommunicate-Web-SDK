@@ -8,12 +8,11 @@ import Notification from '../../model/Notification';
 import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import ApplozicClient from '../../../utils/applozicClient';
 import { Link } from 'react-router-dom';
-import { ROLE_TYPE} from '../../../utils/Constant';
+import { ROLE_TYPE, LOGIN_VIA, TRIAL_DAYS} from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
-import {LOGIN_VIA} from '../../../utils/Constant';
 import { GoogleLogin }from '../../Faq/LizSVG'
 import ReCAPTCHA from "react-google-recaptcha";
 import Button from '../../../components/Buttons/Button';
@@ -22,7 +21,6 @@ import Christian from './Testimonials/Images/Christian.jpg';
 import Eli from './Testimonials/Images/Eli-gross.jpg';
 import Mikolaj from './Testimonials/Images/Mikolaj.jpg';
 import Alex from './Testimonials/Images/AlexKlein.jpg';
-import { TRIAL_DAYS } from '../../../utils/Constant';
 
 class Register extends Component {
   constructor(props){
