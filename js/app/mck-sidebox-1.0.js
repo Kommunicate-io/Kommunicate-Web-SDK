@@ -3746,7 +3746,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
                                 if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
                                     
-                                    var CONVERSATION_ASSIGNEE, detailOfAssignedUser, name;
+                                    var CONVERSATION_ASSIGNEE, detailOfAssignedUser, name, imageUrl;
                                     if(typeof params.groupName !== "undefined") {
                                         name = params.groupName;
                                     } else {
@@ -3766,12 +3766,15 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                     $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
                                     $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
 
-                                    if( typeof detailOfAssignedUser !== "undefined" && typeof detailOfAssignedUser.imageLink !== "undefined" ) {
-                                        $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
-                                    } else {
-                                        //DEFAULT_PROFILE_IMAGE
-                                        $applozic(".mck-agent-image-container img").attr("src", KommunicateConstants.DEFAULT_PROFILE_IMAGE.URL);
+
+                                    if (data && data.groupFeeds[0] && data.groupFeeds[0].imageUrl) {
+                                        imageUrl = data.groupFeeds[0].imageUrl;
                                     }
+                                    else {
+                                        //DEFAULT_PROFILE_IMAGE
+                                        imageUrl = KommunicateConstants.DEFAULT_PROFILE_IMAGE.URL;
+                                    }
+                                    $applozic(".mck-agent-image-container img").attr("src", imageUrl);
 
                                     if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
