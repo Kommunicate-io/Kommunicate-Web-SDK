@@ -52,7 +52,7 @@ var chatContext = {
   "key1":"value1",
   "key2":"value2"
 }
-Kommunicate.updateSettings({"KM_CHAT_CONTEXT":chatContext})
+Kommunicate.updateChatContext(chatContext);
 
 ```
 Dialogflow will send this data in the configured webhook in `originalDetectIntentRequest` param.
