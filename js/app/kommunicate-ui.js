@@ -113,13 +113,15 @@ KommunicateUI={
         }
     },
     updateAttachmentTemplate: function(file_meta,key){
-        let template = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key);
-        if (template) {
-            template.setAttribute("data-filemetakey", file_meta.blobKey);
-            template.setAttribute("data-filename", file_meta.name);
-            template.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
-            template.setAttribute("data-filesize", file_meta.size);
-            template.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+        var attachment;
+        var template = document.querySelector(".mck-message-inner.mck-group-inner");
+        template && key && (attachment = template.querySelector(".mck-attachment-"+key));
+        if (attachment) {
+            attachment.setAttribute("data-filemetakey", file_meta.blobKey);
+            attachment.setAttribute("data-filename", file_meta.name);
+            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
+            attachment.setAttribute("data-filesize", file_meta.size);
+            attachment.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
         }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
