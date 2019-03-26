@@ -523,7 +523,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
               document.getElementById('mck-btn-smiley-box').classList.remove("n-vis");
               mckMessageLayout.initEmojis();
             }
-            MCK_DISABLE_ATTACHMENT && KommunicateUI.hideAttachmentIcon()
+            MCK_DISABLE_ATTACHMENT && KommunicateUI.hideAttachmentIcon();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();

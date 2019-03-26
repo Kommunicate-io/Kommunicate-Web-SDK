@@ -412,7 +412,7 @@ showClosedConversationBanner  : function(isConversationClosed){
     } 
 },
 hideAttachmentIcon : function() {
-    document.getElementById('mck-attachfile-box').classList.add("n-vis")
-    document.getElementById('mck-file-up').classList.add("n-vis")
+    document.getElementById('mck-attachfile-box').classList.add("n-vis");
+    document.getElementById('mck-file-up').classList.add("n-vis");
 }
 }
