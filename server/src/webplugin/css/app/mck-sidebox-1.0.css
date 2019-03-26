@@ -2338,7 +2338,6 @@ display: none;
 	width: 60px;
 	border-radius: 50%;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.31);
-
 }
 .mck-sidebox-launcher *{
 	font-family:"Roboto",sans-serif;
@@ -5597,7 +5596,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	margin-top: 3px;
 }
 .km-iframe-sidebox-border-radius {
-	border-radius: 6px !important;
+	border-radius: 8px !important;
 }
 .km-iframe-badge-count {
 	min-width: 9px;
@@ -5714,8 +5713,44 @@ button:focus, button:active, button:hover {
 div[name="message"]:last-child {
     margin-bottom: 30px;
 }
-#mck-sidebox, #km-chat-login-modal{
-	animation: kmOpeningAnimation .3s  cubic-bezier(0.25, 0.1, 0.25, 1);
+
+#mck-sidebox,
+#km-chat-login-modal {
+	animation: kmOpeningAnimation .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+#popup-close-button {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 10;
+	border-radius: 100%;
+	text-align: center;
+	color: #fff;
+	font-size: 50px;
+	font-weight: 300;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	animation: kmScaleAnim .25s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+#popup-close-button svg {
+	height: 20px;
+	width: 20px;
+}
+
+@media only screen and (width: 442px) and (height: 700px) {
+	.mck-sidebox.fade.in {
+		max-height: 600px !important;
+		width: 89%;
+		margin: 10px 34px 0 !important;
+		box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
+	}
+	.mck-sidebox.fade.in .mck-close-btn {
+		width: 0!important;
+		overflow: hidden;
+	}
 }
 
 @keyframes kmOpeningAnimation {
@@ -5727,5 +5762,16 @@ div[name="message"]:last-child {
 	to {
 		opacity: 1;
 		transform: translateY(0);
+	}
+}
+@keyframes kmScaleAnim {
+	from {
+		opacity: 0.6;
+		transform: scale(.7);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1);
 	}
 }
