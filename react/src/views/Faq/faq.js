@@ -178,7 +178,7 @@ class Tabs extends Component {
           Notification.info("There was problem in creating the faq.");
         }}).then(response => {
           if (this.state.listOfFAQs.length == 0) {
-            EventMessageClient.sendEventMessage(CommonUtils.getUserSession().userName, 'ac-created-faq');
+            EventMessageClient.sendEventMessage('ac-created-faq');
           }
           this.getFaqsWrapper()
         }).then(response => {

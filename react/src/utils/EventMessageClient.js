@@ -1,4 +1,5 @@
 import EventMessages from './event-messages';
+import CommonUtils from './CommonUtils';
 
 const EventMessageClient = { 
 
@@ -31,7 +32,7 @@ const EventMessageClient = {
         });
     },
 
-    sendEventMessage: function(userId, trigger) {
+    sendEventMessage: function(trigger) {
         if (!EventMessages[trigger]) {
           return;
         }
@@ -42,7 +43,7 @@ const EventMessageClient = {
                   "type": 5,
                   "contentType": 10,
                   "message": "Event: " + trigger,
-                  "clientGroupId": this.getClientGroupId(userId),
+                  "clientGroupId": this.getClientGroupId(CommonUtils.getUserSession().userName),
                   "metadata": {"category": "HIDDEN", "KM_TRIGGER_EVENT": trigger},
                   "source": 1
               }

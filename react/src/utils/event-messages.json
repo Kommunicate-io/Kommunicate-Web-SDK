@@ -10,9 +10,5 @@
     "ac-added-agent": {
         "delay": 0,
         "message": "ac-added-agent"
-    },
-    "ac-android-push": {
-        "delay": 0,
-        "message": "ac-android-push"
     }
 }

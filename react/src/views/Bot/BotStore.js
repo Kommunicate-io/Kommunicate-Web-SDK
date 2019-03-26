@@ -19,6 +19,7 @@ import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
+import EventMessageClient from '../../utils/EventMessageClient';
 import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg,BotSectionSvg} from '../../views/Faq/LizSVG.js';
 import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
@@ -434,6 +435,9 @@ class BotStore extends Component {
                     _this.setState({microsoftIntegrated: true})
                   }else{
 
+                  }
+                  if (_this.state.listOfIntegratedBots.length == 1) {
+                    EventMessageClient.sendEventMessage('ac-integrated-bot');
                   }
                   _this.getIntegratedBotsWrapper()
                 }
