@@ -32,10 +32,6 @@ const EventMessageClient = {
     },
 
     sendEventMessage: function(userId, trigger) {
-        /*if (CommonUtils.getUserSession() && CommonUtils.getUserSession().userName) {
-            EventMessageClient.sendEventMessage(CommonUtils.getUserSession().userName, trigger);
-          }*/
-
         if (!EventMessages[trigger]) {
           return;
         }
