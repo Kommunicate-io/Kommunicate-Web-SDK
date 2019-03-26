@@ -410,5 +410,9 @@ showClosedConversationBanner  : function(isConversationClosed){
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
     } 
+},
+hideAttachmentIcon : function() {
+    document.getElementById('mck-attachfile-box').classList.add("n-vis")
+    document.getElementById('mck-file-up').classList.add("n-vis")
 }
 }
