@@ -12,13 +12,13 @@ Kommunicate allows you to add several other interactive components in conversati
 ## How to use Actionable Messages in chat?
 
 ### Dialogflow custom payload
-Pass the Actionable Messages metadata as custom payload in Dialogflow to render Actionable Messages while using a Dialoflow bot. See how to set up Actionable Messages in Dailoglow bot [here](https://docs.kommunicate.io/docs/bot-configration#use-actionable-messages-to-make-conversations-interactive).
+Pass the Actionable Messages metadata as custom payload in Dialogflow to render Actionable Messages while using a Dialoflow bot. See how to set up Actionable Messages in Dailoglow bot [here](bot-configration#use-actionable-messages-to-make-conversations-interactive).
 
 ### Send message API
-You can use [Send message API](https://docs.kommunicate.io/docs/api-detail#send-message) to add Actionable Messages.
+You can use [Send message API](api-detail#send-message) to add Actionable Messages.
 
 ### Custom bots
-If you are using custom bots, pass the Actionable Message template as metadata in the message. Learn more about using Actionable Message in custom bots [here](https://docs.kommunicate.io/docs/bot-configration.html#to-integrate-with-other-bot-platforms-follow-the-below-steps).
+If you are using custom bots, pass the Actionable Message template as metadata in the message. Learn more about using Actionable Message in custom bots [here](custom-bot-integration).
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Suggested Replies along with the message:
 
@@ -128,17 +128,20 @@ You can add any number of Suggested Replies by passing values in the metadata as
 		"templateId": "6",
 		"payload": [{
 			"title": "Yes",
-			"message": "Cool! send me more.",
-			"replyMetadata":{"key1":"value1"} // optional. custom data will be sent along with message when user click on Suggested Reply button .
+			"message": "Cool! send me more."
 		}, {
-			"title": "No ",
-			"message": "Don't send it to me again" 
+			"title": "No",
+			"message": "Not at all",
+			"replyMetadata": {
+				"KM_CHAT_CONTEXT": {
+					"buttonClicked": true
+				}
+			}
 		}]
 	}
 }
 ```
-`replyMetadata` can be used to set [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform). 
-
+`replyMetadata` helps you to send custom data along with every suggested reply. Pair it with [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform) to receive data back when user click on the suggested reply. 
 The appearance of the Suggested Replies and Buttons will be adjusted automatically according to the customization you have done on your chat widget.
 
 ## Images
@@ -583,7 +586,7 @@ The format of the message is as below:
 ```json
 {
 	"source": {
-		"url": "http://localhost:5454/city/v2/search",
+		"url": "<API_ENDPOINT>",
 		"headers": {}
 	}
 }
