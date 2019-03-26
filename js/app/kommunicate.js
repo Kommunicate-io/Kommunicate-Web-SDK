@@ -440,8 +440,6 @@ $applozic.extend(true,Kommunicate,{
     },
     setDefaultIframeConfigForOpenChat: function () {
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-        kommunicateIframe.style.width="390px";
-        kommunicateIframe.style.height="600px";
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
 
