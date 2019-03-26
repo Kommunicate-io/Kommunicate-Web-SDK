@@ -46,10 +46,6 @@ const AnalyticsTracking = {
   },
 
   acEventTrigger: function(trigger) {
-    if (CommonUtils.getUserSession() && CommonUtils.getUserSession().userName) {
-      EventMessageClient.sendEventMessage(CommonUtils.getUserSession().userName, trigger);
-    }
-
     if(!AnalyticsTracking.isEnabled() || CommonUtils.getUserSession() == null) {
       return;
     }

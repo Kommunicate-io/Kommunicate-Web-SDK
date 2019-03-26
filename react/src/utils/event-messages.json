@@ -3,6 +3,14 @@
         "delay": 0,
         "message": "ac-integrated-bot"
     },
+    "ac-created-faq": {
+        "delay": 0,
+        "message": "ac-created-faq"
+    },
+    "ac-added-agent": {
+        "delay": 0,
+        "message": "ac-added-agent"
+    },
     "ac-android-push": {
         "delay": 0,
         "message": "ac-android-push"

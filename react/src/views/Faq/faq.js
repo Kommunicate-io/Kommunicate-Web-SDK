@@ -25,7 +25,8 @@ import IntegrationDescription from '../Integrations/IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CloseButton from './../../components/Modal/CloseButton.js';
-import AnalyticsTracking from '../../utils/AnalyticsTracking.js'
+import AnalyticsTracking from '../../utils/AnalyticsTracking.js';
+import EventMessageClient from '../../utils/EventMessageClient.js'
 import ReactQuill from 'react-quill';
 import './ReactQuill.css';
 import './LizSVG';
@@ -176,6 +177,9 @@ class Tabs extends Component {
         } else {
           Notification.info("There was problem in creating the faq.");
         }}).then(response => {
+          if (this.state.listOfFAQs.length == 0) {
+            EventMessageClient.sendEventMessage(CommonUtils.getUserSession().userName, 'ac-created-faq');
+          }
           this.getFaqsWrapper()
         }).then(response => {
           this.toggleFaqModal()
