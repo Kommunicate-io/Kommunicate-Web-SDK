@@ -167,8 +167,7 @@ Images can be rendered in conversation using below JSON. The image object contai
 
 The list template is a list of structured items with an optional header image and header text.
 
-![List Template](/img/list.jpg)
-
+![List Template](assets/List_Template.png)
 
 ### Components of a List Template
 A list template may contain below items:
@@ -252,11 +251,16 @@ The card template is a list of structured items with title, subtitle, image, and
 * Carousel Card
 
 ### Generic Card
-![Generic Card Template](/img/generic-card.jpg)
 
+![Generic Card](assets/Generic_Card.png)
+<br><br>
 **Components of card template** <br>
+<br>
 A card template may contain below items:
-    
+<br><br>
+
+![Labeled Generic Card ](assets/Generic_Card_Labeled.png)
+<br>
 * Header
    
      * Image (optional)
@@ -363,7 +367,7 @@ You can add any number of buttons in your card footer.
 
 The Kommunicate chat widget supports sending of a horizontally scroll-able carousel of generic templates.
 
-![Card CarouselTemplate](/img/card-carousel.png)
+![Card Carousel Template](assets/Carousel.png)
 
 The payload is an array of objects, each object can be different cards. So you can pass multiple objects inside the payload.
 
@@ -537,7 +541,7 @@ Autosuggestions make your users' life easier by populating the list of possible 
 If you want to ask any question or enter any text message into the chat box and send possible answers or list of data with that question, you can pass a list of answers or data into metadata. It will be displayed in the suggestion list. Suggestion list can also be fetched from a source URL/server if you pass source URL into the message. 
 
 
-![List Template](/img/autosuggest.png)
+![Autosuggestions](assets/Autosuggestion.png)
 
 The format of the message is as below:
  
