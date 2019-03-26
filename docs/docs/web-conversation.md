@@ -9,13 +9,11 @@ This section is dedicated to launching and managing conversations in the chat wi
 ## Conversations
 
 ### Set default parameters for conversations
-You can set default parameters for your conversations which will act as the default settings every time a new conversation is created. 
-
-Below you can find the default parameters which can be set using the Kommunicate.updateSettings() method : 
+You can set default parameters for your conversations which will act as the default settings every time a new conversation is created. Below you can find the default parameters which can be set using the Kommunicate.updateSettings() method : 
 
 |Parameters|Type|Descriptions|
 |---	   |---	   |---	    |
-|defaultAssignee           | string| You need to pass the agentId/BotId. If nothing is passed the default agent will automatically get selected.  <br> NOTE: You need to pass "skipRouting": true with defaultAssignee parameter if you have assigned a default assignee from the [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules)  section|
+|defaultAssignee           | string| You need to pass the agentId/botId. If nothing is passed the default agent will automatically get selected.  <br> NOTE: You need to pass "skipRouting": true with defaultAssignee parameter if you have assigned a default assignee from the [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules)  section|
 |skipRouting               | boolean| Default: false, If you pass this value true then it will skip routing rules set from [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules) section.|
 |defaultAgentIds           | array|  You can pass the default agents that you want to be present in every new conversation created.|
 |defaultBotIds             | array | You can pass the default bots that you want to be present in every new conversation created. |
