@@ -433,8 +433,6 @@ class BotStore extends Component {
                     _this.setState({dialogFlowIntegrated: true})
                   }else if( aiPlatform === "microsoft"){
                     _this.setState({microsoftIntegrated: true})
-                  }else{
-
                   }
                   if (_this.state.listOfIntegratedBots.length == 1) {
                     EventMessageClient.sendEventMessage('ac-integrated-bot');
