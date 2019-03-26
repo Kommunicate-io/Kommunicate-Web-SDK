@@ -438,8 +438,11 @@ $applozic.extend(true,Kommunicate,{
         chatContext[KommunicateConstants.SETTINGS.KM_USER_LANGUAGE_CODE] =languageCode;
         Kommunicate.updateChatContext(chatContext);
     },
-    setDefaultIframeConfigForOpenChat: function () {
+    setDefaultIframeConfigForOpenChat: function (isPopupEnabled) {
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        var kommunicateIframeDocument = kommunicateIframe.contentDocument;
+        var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
+        isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
 
