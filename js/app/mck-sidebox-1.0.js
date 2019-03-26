@@ -8,6 +8,7 @@ var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
+var isWidgetOpen;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -442,7 +443,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             mckMessageService.submitMessage(params.messagePxy, params.optns);
         }
         _this.mckLaunchSideboxChat = function() {
+            isWidgetOpen = true;
             !POPUP_WIDGET && ($applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis'));
+            (KOMMUNICATE_VERSION === "v2") && Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             KommunicateUI.showChat();
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
                 mckMessageService.loadConversationWithAgents({
@@ -1221,6 +1224,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 'tabId': '',
                 'isGroup': false
             }
+            isWidgetOpen = true;
             mckMessageService.loadMessageList(params, function (data) {
                 if (data && data.groupFeeds && data.groupFeeds.length !== 0 && data.message && data.message.length !== 0) {
                     var latestGroupId = data.groupFeeds[0].id;
@@ -1728,12 +1732,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var chatbox = kommunicateIframeDocument.getElementById("mck-sidebox-launcher");
                 var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
                 chatbox.addEventListener("click", function(){
+                    isWidgetOpen = true;
                     kommunicateIframe.classList.remove('km-iframe-closed');
                     kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
                     POPUP_WIDGET ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
                 });
                 var closeButton = kommunicateIframeDocument.getElementById("km-chat-widget-close-button");
                 function closeChatBox(e){
+                    isWidgetOpen = false;
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
                     kommunicateIframe.classList.add('km-iframe-closed');
@@ -2919,6 +2925,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 Fr.voice.stop();
             });
             _this.closeSideBox = function(){
+                isWidgetOpen = false;
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                 KommunicateUI.hideAwayMessage();
                 KommunicateUI.hideLeadCollectionTemplate();
@@ -4294,8 +4301,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             }
 
             _this.loadTab = function (params, callback) {
-                _this.handleLoadTab();
-                _this.openChatbox();
+                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || isWidgetOpen ) && (
+                    _this.handleLoadTab(),
+                    _this.openChatbox()
+                )
                 clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
