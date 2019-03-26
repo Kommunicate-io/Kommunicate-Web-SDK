@@ -392,6 +392,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var BLOCK_STATUS_MAP = ["BLOCKED_TO", "BLOCKED_BY", "UNBLOCKED_TO", "UNBLOCKED_BY"];
         var MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT = (typeof appOptions.msgTriggerTimeout === "number") ? appOptions.msgTriggerTimeout : 0;
         MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = (typeof appOptions.automaticChatOpenOnNavigation === "boolean") ? appOptions.automaticChatOpenOnNavigation : false;
+        var MCK_ATTACHMENT = (typeof appOptions.attachment === "boolean") ? appOptions.attachment : true;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -522,6 +523,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
               document.getElementById('mck-btn-smiley-box').classList.remove("n-vis");
               mckMessageLayout.initEmojis();
             }
+            !MCK_ATTACHMENT && KommunicateUI.hideAttachmentIcon();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();
@@ -4364,7 +4366,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         $mck_atttachmenu_box.removeClass('n-vis').addClass('vis');
                     } else {
                         $mck_atttachmenu_box.removeClass('vis').addClass('n-vis');
-                        $mck_attachfile_box.removeClass('n-vis').addClass('vis');
+                        MCK_ATTACHMENT && $mck_attachfile_box.removeClass('n-vis').addClass('vis');
                     }
 
                     //Todo: temporarily removing.
