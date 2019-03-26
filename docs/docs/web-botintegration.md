@@ -109,6 +109,8 @@ Sample JSON for the location message
 
 ## Make your bot multilingual
 
+> Note: Multilingual agents are supported only with Dialogflow V2 APIs
+
 Kommunicate allows you to integrate your multilingual bot so that your bot can reply in the user's language. You need to pass the user's language tag to Kommunicate. 
 
 Language tags follow the [HTTP/1.1 specification, section 3.10](https://tools.ietf.org/html/rfc2616#section-3.10). Kommunicate will send this information with every message to the integrated bot platform. You can use the below method to update the user's language:
@@ -121,6 +123,7 @@ Kommunicate.updateUserLanguage("en-US");
 You can call this method when kommunicate SDK is initialized. For example, if you are using web SDK you can put this inside `onInit` callback function in Kommunicate [installation script](web-installation#web-installation). 
 
 ### Multilingual dialogflow agents
+
 
 When you integrate a Dialogflow bot, Kommunicate sets US English(en-US) the default language. This setting will be overridden by the user's language. Here is the [list of languages](https://dialogflow.com/docs/reference/language) supported by Dialogflow. 
 
