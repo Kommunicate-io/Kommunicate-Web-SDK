@@ -20,6 +20,7 @@ import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import Button from '../../components/Buttons/Button';
 import UserRoleRadioButtonsTemplate from './UserRoleRadioButtonsTemplate'
+import EventMessageClient from '../../utils/EventMessageClient';
 
 const customStyles = {
   content: {
@@ -167,6 +168,9 @@ class Integration extends Component {
       if (email.match(mailformat)) {
         this.onCloseModal();
         AnalyticsTracking.acEventTrigger('ac-added-agent');
+        if (activeUsers.length == 1) {
+          EventMessageClient.sendEventMessage('ac-added-agent');
+        }
         return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType,resendMail :isInvitationExists?true:false })).then(response => {
           if (response.data && response.data.code === "SUCCESS") {
             Notification.success('Invitation sent successfully');
