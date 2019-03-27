@@ -357,7 +357,7 @@ hideMessagePreview: function(){
 },
 
 showChat :function () {
-    isWidgetOpen = true;
+    kommunicateCommons.setWidgetStateOpen(true);
     $applozic('.faq-common').removeClass("vis").addClass("n-vis");
     $applozic('.mck-conversation').removeClass("n-vis").addClass("vis");
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
