@@ -2514,6 +2514,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
                     KommunicateUI.showClosedConversationBanner(false);
+                    !MCK_ATTACHMENT && KommunicateUI.hideAttachmentIcon();
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
@@ -4465,6 +4466,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var $scrollToDiv = $mck_msg_inner.children("div[name='message']:first");
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
+                var enableAttachment = ""
                 var contact = (isGroup) ? mckGroupUtils.getGroup(tabId) : mckMessageLayout.fetchContact(tabId);
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
@@ -4476,7 +4478,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
                         if (!(typeof message.to === 'undefined')) {
-                            _this.addMessage(message, contact, false, false, isValidated);
+                            !enableAttachment ? (enableAttachment = (typeof message.metadata === "object" &&  message.metadata.KM_ENABLE_ATTACHMENT) ? message.metadata.KM_ENABLE_ATTACHMENT :"") :"";
+                            _this.addMessage(message, contact, false, false, isValidated, enableAttachment);
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
                         }
@@ -4579,7 +4582,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
             }
-            _this.addMessage = function(msg, contact, append, scroll, appendContextMenu) {
+            _this.addMessage = function(msg, contact, append, scroll, appendContextMenu, enableAttachment) {
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -4713,7 +4716,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
                 }
-
+                !MCK_ATTACHMENT && KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
                 var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
@@ -4781,7 +4784,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-
+                       
                 if (!(msg.metadata.obsolete && msg.metadata.obsolete == "true") && msg.metadata.KM_AUTO_SUGGESTION) {
                     var autosuggetionMetadata = {}
                     try {

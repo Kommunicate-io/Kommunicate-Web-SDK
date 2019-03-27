@@ -412,7 +412,19 @@ showClosedConversationBanner  : function(isConversationClosed){
     } 
 },
 hideAttachmentIcon : function() {
-    document.getElementById('mck-attachfile-box').classList.add("n-vis");
-    document.getElementById('mck-file-up').classList.add("n-vis");
+    $applozic('#mck-attachfile-box').removeClass("vis").addClass("n-vis");
+    $applozic('#mck-file-up').removeClass("vis").addClass("n-vis");
+},
+showAttachmentIcon : function() {
+    $applozic('#mck-attachfile-box').removeClass("n-vis").addClass("vis");
+    $applozic('#mck-file-up').removeClass("n-vis").addClass("vis");
+},
+handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {
+    if (!groupReloaded && typeof msg.metadata === "object" && msg.metadata.KM_ENABLE_ATTACHMENT) {
+        msg.metadata.KM_ENABLE_ATTACHMENT == "true" && KommunicateUI.showAttachmentIcon();
+        msg.metadata.KM_ENABLE_ATTACHMENT == "false" && KommunicateUI.hideAttachmentIcon();
+    } else if (groupReloaded && enableAttachment) {
+        enableAttachment == "true" && KommunicateUI.showAttachmentIcon();
+    }
 }
 }
