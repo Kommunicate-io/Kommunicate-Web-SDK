@@ -4478,7 +4478,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
                         if (!(typeof message.to === 'undefined')) {
-                            !enableAttachment ? (enableAttachment = (typeof message.metadata === "object" &&  message.metadata.KM_ENABLE_ATTACHMENT) ? message.metadata.KM_ENABLE_ATTACHMENT :"") :"";
+                            !enableAttachment && (enableAttachment = (typeof message.metadata === "object" &&  message.metadata.KM_ENABLE_ATTACHMENT) ? message.metadata.KM_ENABLE_ATTACHMENT :"");
                             _this.addMessage(message, contact, false, false, isValidated, enableAttachment);
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
