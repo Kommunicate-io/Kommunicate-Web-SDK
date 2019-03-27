@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
 import { GoogleLogin }from '../../Faq/LizSVG'
 import Button from '../../../components/Buttons/Button';
+import ButtonLoader from '../../../components/ButtonLoader/ButtonLoader';
 import Testimonials from './Testimonials';
 
 import Christian from './Testimonials/Images/Christian.jpg';
@@ -48,7 +49,8 @@ class Register extends Component {
       renderInvitationRevokedView :false,
       isDataFetched:false,
       googleSignUpUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_up",
-      captcha: ''
+      captcha: '',
+      isLoadingVisible : false
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -172,6 +174,10 @@ class Register extends Component {
     this.props.history.push('/login');
   }
   createAccountWithUserId=(_this)=>{
+    this.setState({
+      signupButtonTxt : '',
+      isLoadingVisible : true
+    })
     var email = this.state.email;
     var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
@@ -218,7 +224,11 @@ class Register extends Component {
       CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard?referer="+this.state.invitedBy;
       return;
     }).catch(err=>{
-      _this.setState({disableRegisterButton:false});
+      _this.setState({
+        disableRegisterButton:false,
+        signupButtonTxt : 'Create Account',
+        isLoadingVisible : false
+      });
 
       let msg = err.code?err.message:"Something went wrong ";
       if(err.response&&err.response.code==="BAD_REQUEST"){
@@ -351,7 +361,10 @@ class Register extends Component {
                   </div>
                   <div className="row signup-button-row">
                     <div className="col-lg-12 text-center">
-                      <Button id="create-button" type="button" className="step-1-submit-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</Button>
+                      <Button id="create-button" type="button" className="step-1-submit-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton} disabledWithPrimaryBg>
+                        <ButtonLoader isVisible={this.state.isLoadingVisible}/>
+                        {this.state.signupButtonTxt}
+                      </Button>
                       
                       <p className="have-need-account">
                         Already have an account? <Button link={"true"} as={Link} to={'/login'}>Sign In</Button>
