@@ -4716,7 +4716,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
                 }
-                !MCK_ATTACHMENT && KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
+                KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
                 var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";

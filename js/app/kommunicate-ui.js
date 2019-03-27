@@ -412,12 +412,12 @@ showClosedConversationBanner  : function(isConversationClosed){
     } 
 },
 hideAttachmentIcon : function() {
-    $applozic('#mck-attachfile-box').removeClass("vis").addClass("n-vis");
-    $applozic('#mck-file-up').removeClass("vis").addClass("n-vis");
+    kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box"]}, "n-vis", "vis");
+    kommunicateCommons.modifyClassList( {id : ["mck-file-up"]}, "n-vis", "vis");
 },
 showAttachmentIcon : function() {
-    $applozic('#mck-attachfile-box').removeClass("n-vis").addClass("vis");
-    $applozic('#mck-file-up').removeClass("n-vis").addClass("vis");
+    kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box"]}, "vis", "n-vis");
+    kommunicateCommons.modifyClassList( {id : ["mck-file-up"]}, "vis", "n-vis");
 },
 handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {
     if (!groupReloaded && typeof msg.metadata === "object" && msg.metadata.KM_ENABLE_ATTACHMENT) {
@@ -425,6 +425,7 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         msg.metadata.KM_ENABLE_ATTACHMENT == "false" && KommunicateUI.hideAttachmentIcon();
     } else if (groupReloaded && enableAttachment) {
         enableAttachment == "true" && KommunicateUI.showAttachmentIcon();
+        enableAttachment == "false" && KommunicateUI.hideAttachmentIcon();
     }
 }
 }
