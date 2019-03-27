@@ -33,6 +33,7 @@ const buttonNecessaryCss = css`
     text-align: center;
     min-width: 70px;
     transition: all 0.3s ease-out;
+    position: relative;
 `;
 
 const buttonHoverState = (prop) => {
@@ -82,7 +83,7 @@ const buttonDisabledState = (prop) => {
         `;
     } else if(prop.disabled) {
         return css`
-            background-color: ${props => props.theme.buttons.disabledBG};
+            background-color: ${props => !props.disabledWithPrimaryBg && props.theme.buttons.disabledBG};
             color: ${Colors.CommonColors.White};
             cursor: default;
             &:hover {
