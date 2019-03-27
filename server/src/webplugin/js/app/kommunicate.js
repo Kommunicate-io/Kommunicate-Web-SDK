@@ -31,7 +31,7 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
-
+        isWidgetOpen = true;
         params = typeof params == 'object' ? params : {};
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds) {
@@ -88,15 +88,18 @@ $applozic.extend(true,Kommunicate,{
         return conversationDetail;
     },
     openConversationList: function () {
+        isWidgetOpen = true;
         window.$applozic.fn.applozic('loadTab', '');
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
     openConversation: function (groupId) {
+        isWidgetOpen = true;
         window.$applozic.fn.applozic('loadGroupTab', groupId);
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
+        isWidgetOpen = true;
         window.$applozic.fn.applozic('loadTab', userId);
         KommunicateUI.showChat(); 
         KommunicateUI.hideFaq();

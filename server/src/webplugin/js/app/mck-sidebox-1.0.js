@@ -1447,24 +1447,13 @@ var isWidgetOpen;
                         kmChatLoginModal.style.display='none';
                         kmAnonymousChatLauncher.classList.remove('n-vis');
                         kmAnonymousChatLauncher.classList.add('vis');
-                        document.getElementById("km-modal-close").addEventListener("click", closeLeadCollectionWindow);
+                        document.getElementById("km-modal-close").addEventListener("click", _this.closeLeadCollectionWindow);
                         var popUpCloseButton = document.getElementById("km-popup-close-button");
                         popUpCloseButton.addEventListener("click", function(){
                             event.preventDefault();
                             event.stopPropagation();
-                            closeLeadCollectionWindow();
+                            _this.closeLeadCollectionWindow();
                         });
-
-                        function closeLeadCollectionWindow(){
-                            if (KOMMUNICATE_VERSION === "v2"){
-                                var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                                kommunicateIframe.style.boxShadow="none";
-                                POPUP_WIDGET && (popUpCloseButton.style.display='none');
-                              }
-                              kmChatLoginModal.style.display='none';
-                              kmAnonymousChatLauncher.classList.remove('n-vis');
-                              kmAnonymousChatLauncher.classList.add('vis');
-                        }
                         
                         kmAnonymousChatLauncher.addEventListener("click", function(event){
                           event.preventDefault();
@@ -1570,6 +1559,17 @@ var isWidgetOpen;
                         }
                     });
                     
+            }
+
+            _this.closeLeadCollectionWindow = function(){
+                if (KOMMUNICATE_VERSION === "v2"){
+                    var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    kommunicateIframe.style.boxShadow="none";
+                    POPUP_WIDGET && (popUpCloseButton.style.display='none');
+                  }
+                  kmChatLoginModal.style.display='none';
+                  kmAnonymousChatLauncher.classList.remove('n-vis');
+                  kmAnonymousChatLauncher.classList.add('vis');
             }
 
             _this.onInitApp = function (data) {
