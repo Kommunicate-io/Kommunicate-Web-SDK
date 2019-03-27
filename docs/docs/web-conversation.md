@@ -8,22 +8,43 @@ This section is dedicated to launching and managing conversations in the chat wi
 
 ## Conversations
 
-### Set default parameters for conversations
-You can set default parameters for your conversations which will act as the default settings every time a new conversation is created. Below you can find the default parameters which can be set using the Kommunicate.updateSettings() method : 
+### Conversation Settings
+Kommunicate provides some parameter to configure the conversation rules when it is created. These parameters can be used to override the conversation rules you have set from dashboard. These parameters can be set using the `Kommunicate.updateSettings()` methods.
+The updated setting will be effective from the next conversation user creates by either clicking on the `Start new conversation` on chat widget or calling the `Kommunciate.startConversation()`.  
 
-|Parameters|Type|Descriptions|
-|---	   |---	   |---	    |
-|defaultAssignee           | string| You need to pass the agentId/botId. If nothing is passed the default agent will automatically get selected.  <br> NOTE: You need to pass "skipRouting": true with defaultAssignee parameter if you have assigned a default assignee from the [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules)  section|
-|skipRouting               | boolean| Default: false, If you pass this value true then it will skip routing rules set from [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules) section.|
-|defaultAgentIds           | array|  You can pass the default agents that you want to be present in every new conversation created.|
-|defaultBotIds             | array | You can pass the default bots that you want to be present in every new conversation created. |
-|WELCOME_MESSAGE           | string| You can pass the default welcome message here and it will override the welcome message which you have set from dashboard. <br> NOTE: It will not override the welcome message sent by your bot.|
+below is the sample code to update the conversation setting:
 
-#### Example : Assigning conversations to a specific bot/agent
+```js
+var defaultSettings = {
+    "defaultAgentIds": ["<AGENT_ID>"]
+    "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+    "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+    "skipRouting": true
+};
+Kommunicate.updateSettings(defaultSettings);  
+
+```
+
+Below is the detail about the supported parameters:  
+
+|Parameters|Type|Default value|Descriptions|
+|---	   |---	   |---  |---	    |
+|defaultAssignee           | string|Configured routing rules for agents from dashboard| You need to pass the agentId/botId. If nothing is passed the default agent will automatically get selected.  <br> NOTE: You need to pass "skipRouting": true with defaultAssignee parameter if you have assigned a default assignee from the [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules)  section|
+|skipRouting               | boolean| false | If you pass this value true then it will skip routing rules set from [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules) section.|
+|defaultAgentIds           | array|Configured routing rules for agents from dashboard|You can pass the default agents that you want to be present in every new conversation created.|
+|defaultBotIds             | array | Configured routing rules for bots from dashboard|You can pass the default bots that you want to be present in every new conversation created. |
+|WELCOME_MESSAGE           | string| Configured from dashboard|You can pass the default welcome message here and it will override the welcome message which you have set from dashboard. <br> NOTE: It will not override the welcome message sent by your bot.|
+
+#### Example : Assigning conversations to a specific bot/agent on certain events
+
+*Usecase:*  A user comes to your website and starts a conversation with support agents. When user navigates to another page you wants to start conversation  with another agents or bots. You can achieve this by updating the conversation rules dynamically. 
+Set the appropriate values in above mentioned parameters and Kommunciate will use these parameters while creating the conversation. You can update the empty values when user navigate to previous page to make old conversation rules(set from dashboard) effective. 
+Below is the sample code for the same:
 ```javascript
 
 // Example : Addind bot as a default assignee 
 var defaultSettings = {
+    "defaultAgentIds": ["<AGENT_ID>"]
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "skipRouting": true
@@ -46,7 +67,7 @@ Kommunicate.openConversationList();
 ```
 
 ### Create a new conversation
-A conversation can be created using `startConversation` method. Below is the example code for the same. You can choose to define certain parameters to profile this conversation and allot assignee.
+A conversation can be created using startConversation method. Below is the example code for the same. You can choose to define certain parameters to profile this conversation and allot assignee.
 
 ```javascript
 var conversationDetail = {
@@ -60,7 +81,7 @@ Kommunicate.startConversation(conversationDetail, function (response) {
 });                    
 ```
 
->Note: If you have configured default parameters for conversations using Kommunicate.updateSettings() method, you can directly call Kommunicate.startConversation() method. Refer to below example :
+>Note: If called with empty parameters it will inherits the conversation rules from [conversation settings](web-conversation#conversation-settings) object. It can be helpful to set conversation rules dynamically. Refer to below example :
 
 ```javascript
 var defaultSettings = {
@@ -68,7 +89,9 @@ var defaultSettings = {
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "skipRouting": true
 };
-Kommunicate.updateSettings(defaultSettings);  
+Kommunicate.updateSettings(defaultSettings); 
+
+//Pass the empty parameter to use the default conversation setting.  
 Kommunicate.startConversation(); 
 ```
 
