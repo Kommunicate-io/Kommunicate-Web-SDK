@@ -1,4 +1,4 @@
-#Kommunicate Helpcenter
+# Kommunicate Helpcenter
 
 ###### *All variables for css are defined in _variables.scss 
             *Please make sure we keep the code clean and put the reusable variables there and fetch them from there.
