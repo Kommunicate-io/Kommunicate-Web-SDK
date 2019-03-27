@@ -91,7 +91,7 @@ var defaultSettings = {
 };
 Kommunicate.updateSettings(defaultSettings); 
 
-// once setting is updated pass the empty parameter to get the setting considered. 
+//Pass the empty parameter to use the default conversation setting.  
 Kommunicate.startConversation(); 
 ```
 
