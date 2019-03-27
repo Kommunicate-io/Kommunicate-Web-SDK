@@ -14,13 +14,16 @@ import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
 import { GoogleLogin }from '../../Faq/LizSVG'
-import ReCAPTCHA from "react-google-recaptcha";
 import Button from '../../../components/Buttons/Button';
 import Testimonials from './Testimonials';
+
 import Christian from './Testimonials/Images/Christian.jpg';
+
 import Eli from './Testimonials/Images/Eli-gross.jpg';
 import Mikolaj from './Testimonials/Images/Mikolaj.jpg';
 import Alex from './Testimonials/Images/AlexKlein.jpg';
+
+import '../Login/login.css';
 
 class Register extends Component {
   constructor(props){
