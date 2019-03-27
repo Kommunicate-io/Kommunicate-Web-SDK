@@ -1,7 +1,8 @@
 {
     "plugins": [
         "babel-plugin-styled-components",
-        "@babel/plugin-transform-modules-commonjs"
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-syntax-dynamic-import"
     ],
     "presets": [
         ["@babel/preset-env", {

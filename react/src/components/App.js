@@ -1,37 +1,70 @@
 import React from 'react';
 // import App from './components/App';
-import ReactDOM from 'react-dom';
-import { Component } from 'react';
+import { Component} from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
-import { createBrowserHistory } from 'history';
 import ThirdPartyScripts from '../utils/ThirdPartyScripts';
 import AnalyticsTracking from '../utils/AnalyticsTracking';
 import * as Sentry from '@sentry/browser';
 import { getConfig } from '../config/config';
+import Loadable from 'react-loadable';
+import { EmptyLoading} from '../assets/svg/svgs';
 
-// Containers
-import Full from './../containers/Full/'
+const Full = Loadable({
+  loader: () => import('./../containers/Full'),
+  loading: EmptyLoading
+});
 
 // Views
-import Login from '../views/Pages/Login/'
-import Register from '../views/Pages/Register/'
-import Page404 from '../views/Pages/Page404/'
-import Page500 from '../views/Pages/Page500/'
-import SetUpPage from '../views/Pages/SetUpPage'
-import ApplozicUserSignUp from '../views/Pages/ApplozicUserSignUp'
-import PasswordReset from '../views/Pages/PasswordReset/'
+const Login = Loadable({
+  loader: () => import('../views/Pages/Login/'),
+  loading: EmptyLoading
+});
+
+const Register = Loadable({
+  loader: () => import('../views/Pages/Register/'),
+  loading: EmptyLoading
+});
+
+const Page404 = Loadable({
+  loader: () => import('../views/Pages/Page404/'),
+  loading: EmptyLoading
+});
+
+const Page500 = Loadable({
+  loader: () => import('../views/Pages/Page500/'),
+  loading: EmptyLoading
+});
+
+const SetUpPage = Loadable({
+  loader: () => import('../views/Pages/SetUpPage/'),
+  loading: EmptyLoading
+});
+
+const ApplozicUserSignUp = Loadable({
+  loader: () => import('../views/Pages/ApplozicUserSignUp/'),
+  loading: EmptyLoading
+});
+
+const PasswordReset = Loadable({
+  loader: () => import('../views/Pages/PasswordReset/'),
+  loading: EmptyLoading
+});
+
 //import 'react-notifications/lib/notifications.css';
 import {NotificationContainer} from 'react-notifications'
 import CommonUtils from '../utils/CommonUtils';
-import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
+
+const ApplicationList = Loadable({
+  loader: () => import('../views/Pages/ApplicationList/ApplicationList'),
+  loading: EmptyLoading
+});
+
 import {setTag} from '../../src/sentry/sentry'
 import {getAppSetting} from '../../src/utils/kommunicateClient'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/applicationAction';
 import * as ClearReduxAction from '../actions/index'
 import {Subscribe, Unsubscribe} from '../views/Pages/subscription/Subscribe';
-import {KM_RELEASE_VERSION} from '../../src/utils/Constant'
-
 
 
 // const history = createBrowserHistory();
