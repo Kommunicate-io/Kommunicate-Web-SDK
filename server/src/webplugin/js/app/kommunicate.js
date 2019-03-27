@@ -31,7 +31,7 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
-
+        kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds) {
@@ -88,15 +88,18 @@ $applozic.extend(true,Kommunicate,{
         return conversationDetail;
     },
     openConversationList: function () {
+        kommunicateCommons.setWidgetStateOpen(true);
         window.$applozic.fn.applozic('loadTab', '');
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
     openConversation: function (groupId) {
+        kommunicateCommons.setWidgetStateOpen(true);
         window.$applozic.fn.applozic('loadGroupTab', groupId);
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
+        kommunicateCommons.setWidgetStateOpen(true);
         window.$applozic.fn.applozic('loadTab', userId);
         KommunicateUI.showChat(); 
         KommunicateUI.hideFaq();
@@ -438,10 +441,11 @@ $applozic.extend(true,Kommunicate,{
         chatContext[KommunicateConstants.SETTINGS.KM_USER_LANGUAGE_CODE] =languageCode;
         Kommunicate.updateChatContext(chatContext);
     },
-    setDefaultIframeConfigForOpenChat: function () {
+    setDefaultIframeConfigForOpenChat: function (isPopupEnabled) {
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-        kommunicateIframe.style.width="390px";
-        kommunicateIframe.style.height="600px";
+        var kommunicateIframeDocument = kommunicateIframe.contentDocument;
+        var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
+        isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
 

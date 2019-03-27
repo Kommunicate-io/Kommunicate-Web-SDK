@@ -20,7 +20,16 @@ var kmCustomIframe =
     '   height: 100% !important;' +
     '   width: 100% !important;' +
     '   max-height: 100% !important;' +
-    '} \n' +
+    '} } \n' + 
+    '.km-iframe-closed{ '+
+    '    height: 75px; '+
+    '    width:  75px; '+
+    '    box-shadow: none!important; '+
+    '}\n' + 
+    '.km-iframe-notification{ '+
+    '    height:100px; '+
+    '    width: 390px; '+   
+    '} \n '+
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
     '    width: 390px; ' +
@@ -28,11 +37,6 @@ var kmCustomIframe =
     '.km-iframe-dimension-with-popup{ '+
     '    height: 700px; '+
     '    width: 442px; '+
-    '} \n '+
-    '.km-iframe-closed{ '+
-    '    height: 75px; '+
-    '    width:  75px; '+
-    '    box-shadow: none; '+
     '} \n '
 
 createCustomClasses(kmCustomIframe);              

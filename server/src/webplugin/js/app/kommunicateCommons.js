@@ -5,6 +5,7 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    KommunicateCommons.IS_WIDGET_OPEN = false;
 
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
@@ -103,4 +104,11 @@ function KommunicateCommons() {
         }
     };
 
+    _this.setWidgetStateOpen = function(isWidgetOpen){
+        KommunicateCommons.IS_WIDGET_OPEN = isWidgetOpen;
+    };
+
+    _this.isWidgetOpen = function(){
+        return KommunicateCommons.IS_WIDGET_OPEN;
+    };
 };
