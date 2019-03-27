@@ -81,7 +81,10 @@ const searchFAQ = async (options) => {
         if (options.key) {
             criteria.key = options.key;
         }
-        data = KnowledgeBaseModel.find(criteria).select({ name: 1, content: 1, referenceId: 1, id: 1}).sort({id:1});
+        if (options.category) {
+            criteria.category = options.category;
+        }
+        data = KnowledgeBaseModel.find(criteria).select({ name: 1, category:1, content: 1, referenceId: 1, id: 1}).sort({id:1});
     } 
     for (var i = 0; i < data.length; i += 1) {
         var knowledge = data[i];
@@ -90,7 +93,7 @@ const searchFAQ = async (options) => {
                 id: knowledge.referenceId,
                 deleted: false,
                 status: { '$nin': ['un_answered'] }
-            }).select({ name: 1, content: 1, referenceId: 1, id: 1}).sort({id:1});
+            }).select({ name: 1, content: 1, category:1, referenceId: 1, id: 1}).sort({id:1});
             data[i].content = result[0].content;
         }
     }

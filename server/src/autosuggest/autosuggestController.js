@@ -153,7 +153,8 @@ exports.searchFAQ=(req,res)=>{
 		text:req.query.query,
 		id:req.query.articleId, 
 		referenceId:req.query.referenceId,
-		key:req.query.question
+		key:req.query.question,
+		category:req.query.category
 	}).then(data=>{
 		logger.info("got data from db");
 		return res.status(200).json({ code: "SUCCESS", data: data });
