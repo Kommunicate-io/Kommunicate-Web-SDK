@@ -7,7 +7,18 @@ import AnalyticsTracking from '../utils/AnalyticsTracking';
 import * as Sentry from '@sentry/browser';
 import { getConfig } from '../config/config';
 import Loadable from 'react-loadable';
-import { EmptyLoading} from '../assets/svg/svgs';
+import {NotificationContainer} from 'react-notifications'
+import CommonUtils from '../utils/CommonUtils';
+import {setTag} from '../../src/sentry/sentry'
+import {getAppSetting} from '../../src/utils/kommunicateClient'
+import { connect } from 'react-redux'
+import * as Actions from '../actions/applicationAction';
+import * as ClearReduxAction from '../actions/index'
+import {Subscribe, Unsubscribe} from '../views/Pages/subscription/Subscribe';
+
+const EmptyLoading = ()=>(
+    <div></div>
+  );
 
 const Full = Loadable({
   loader: () => import('./../containers/Full'),
@@ -50,22 +61,10 @@ const PasswordReset = Loadable({
   loading: EmptyLoading
 });
 
-//import 'react-notifications/lib/notifications.css';
-import {NotificationContainer} from 'react-notifications'
-import CommonUtils from '../utils/CommonUtils';
-
 const ApplicationList = Loadable({
   loader: () => import('../views/Pages/ApplicationList/ApplicationList'),
   loading: EmptyLoading
 });
-
-import {setTag} from '../../src/sentry/sentry'
-import {getAppSetting} from '../../src/utils/kommunicateClient'
-import { connect } from 'react-redux'
-import * as Actions from '../actions/applicationAction';
-import * as ClearReduxAction from '../actions/index'
-import {Subscribe, Unsubscribe} from '../views/Pages/subscription/Subscribe';
-
 
 // const history = createBrowserHistory();
 const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
