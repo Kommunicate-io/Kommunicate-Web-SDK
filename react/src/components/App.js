@@ -132,7 +132,7 @@ class App extends Component {
     }
 
     return <div>
-            {!(currentPath.includes("/subscribe") || currentPath.includes("/unsubscribe")) ? <div>
+            {!(currentPath.includes("/signup") || currentPath.includes("/subscribe") || currentPath.includes("/unsubscribe")) ? <div>
                     <NotificationContainer />
                     <ThirdPartyScripts />
                 </div> : null}

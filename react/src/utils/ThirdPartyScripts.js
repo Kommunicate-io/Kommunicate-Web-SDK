@@ -157,10 +157,15 @@ class ThirdPartyScripts extends Component {
                 })(window,document,'script','https://dna8twue3dlxq.cloudfront.net/js/profitwell.js','profitwell');
             profitwell('auth_token', getConfig().products[CommonUtils.getProduct()].profitwell); // Your unique Profitwell public API token
             profitwell('user_email', profitWellUser);
+
+
+            const script = document.createElement("script");
+            script.src = "https://checkout.stripe.com/checkout.js";
+            script.async = true;
+            document.body.appendChild(script);
       }
 
       componentWillMount(){
-        
 
         // Google Remarketing Tags
         const script = document.createElement("script");
