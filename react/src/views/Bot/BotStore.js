@@ -15,7 +15,6 @@ import Microsoft from './images/microsoft-icon.png'
 import Tick from './images/tick-icon.png'
 import KmIcon from './images/km-icon.png'
 import NoteIcon from './images/note-icon.png';
-import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
@@ -25,7 +24,7 @@ import BotIntegrationModal from 'react-modal';
 import {botIntegrationData} from './botIntegrationData'
 import BotIntegrationModalContent from './BotIntegrationModalContent'
 import Banner from '../../components/Banner';
-import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL} from '../../utils/Constant.js'
+import {SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL, ROLE_TYPE} from '../../utils/Constant.js'
 import Button from '../../components/Buttons/Button';
 import styled, { withTheme } from 'styled-components';
 import { ConfirmationTick } from '../../assets/svg/svgs'
@@ -122,7 +121,8 @@ class BotStore extends Component {
           botIntegrationType:"",
           botAssignmentModal:false,
           latestIntegratedBotId:'',
-          conversationsAssignedToBotId:''
+          conversationsAssignedToBotId:'',
+          applicationExpiryDate:''
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -130,14 +130,14 @@ class BotStore extends Component {
       this.toggle = this.toggle.bind(this);
        };
 
-       componentWillMount =()=>{
-        //this.populateBotOptions();
-       }
-
       componentDidMount=()=>{
         this.getIntegratedBotsWrapper();
         this.checkForBotRoutingEnabled();
+        this.setState({
+          applicationExpiryDate: CommonUtils.getFormatedExpiryDate()
+        });
       }
+
       toggleBotIntegrationModal = (value, botPlatform) => {
         this.setState({
           openModal: value
@@ -833,7 +833,7 @@ class BotStore extends Component {
                 }
 
                 {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
-                  <Banner appearance="warning" heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
+                  <Banner appearance="warning" heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({this.state.applicationExpiryDate})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 
             <ModalBody>

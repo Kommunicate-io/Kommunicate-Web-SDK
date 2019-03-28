@@ -148,3 +148,5 @@ export const KM_PLAN_LENGTH = {
     OLD : 30,
     NEW : 14
 }
+
+export const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

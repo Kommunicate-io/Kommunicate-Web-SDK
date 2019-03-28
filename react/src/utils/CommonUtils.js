@@ -1,7 +1,7 @@
 import { getResource, getConfig } from '../config/config.js'
 import moment from 'moment';
 import crypto from 'crypto';
-import {THIRD_PARTY_LOGIN, KM_RELEASE_VERSION, KM_PLAN_LENGTH} from '../utils/Constant';
+import {THIRD_PARTY_LOGIN, KM_RELEASE_VERSION, KM_PLAN_LENGTH, MONTH_NAMES} from '../utils/Constant';
 import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs.js';
 
 export const PRODUCTS = {
@@ -134,12 +134,23 @@ const CommonUtils = {
     },
     getApplicationExpiryDate () {
         var applicationCreatedAt = CommonUtils.getUserSession().applicationCreatedAt ;
+        var planLength = CommonUtils.maxDaysAsPerPlan();
         if (applicationCreatedAt) {
             applicationCreatedAt = new Date(CommonUtils.getUserSession().applicationCreatedAt).getTime();
-            var applicationExpiryDate = applicationCreatedAt += 1000 * 60 * 60 * 24 * 30;
+            var applicationExpiryDate = applicationCreatedAt += 1000 * 60 * 60 * 24 * planLength;
             applicationExpiryDate = new Date(applicationExpiryDate);
             return applicationExpiryDate
         }     
+    },
+    getFormatedExpiryDate() {
+        let applicationExpiryDate = CommonUtils.getApplicationExpiryDate();
+        if (applicationExpiryDate) {
+            let DD = applicationExpiryDate.getDate();
+            let MM = MONTH_NAMES[applicationExpiryDate.getMonth()];
+            var YY = applicationExpiryDate.getFullYear();
+            applicationExpiryDate = DD + ' ' + MM + ', ' + YY;
+        }
+        return applicationExpiryDate;
     },
     lastSeenTime(lastSeenAtTime) {
       var lastSeen;
@@ -211,9 +222,12 @@ const CommonUtils = {
         userSession.availabilityStatus ? userSession.availabilityStatus = status : userSession.status = status;
         CommonUtils.setUserSession(userSession);
     },
-    //pass number of days you want to calculate forward to in countTo variable.
+    /*
+    - Pass number of days you want to calculate forward to in countTo variable.
+    - Below are values you can pass in type parameter: 
+    type : years/quarters/months/weeks/days/hours/minutes/seconds/milliseconds/timestamp
+    */
     countDaysForward: function(countTo, type) {
-        var numberOfDaysToAdd, timeStamp, diff, now;
         var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
         if(type === "timestamp") {
@@ -228,7 +242,7 @@ const CommonUtils = {
             return calculatedDate;
         }
         else {
-            return moment().add(countTo, type).format("D MMMM, YYYY");;
+            return moment().add(countTo, type).format("D MMMM, YYYY");
         }
     },
     updateUserSession : function(data,){
