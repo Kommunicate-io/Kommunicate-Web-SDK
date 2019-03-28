@@ -411,8 +411,13 @@ showClosedConversationBanner  : function(isConversationClosed){
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
     } 
 },
-hideAttachmentIcon : function() {
-    document.getElementById('mck-attachfile-box').classList.add("n-vis");
-    document.getElementById('mck-file-up').classList.add("n-vis");
+handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {
+    if (!groupReloaded && typeof msg.metadata === "object" && msg.metadata.KM_ENABLE_ATTACHMENT) {
+        msg.metadata.KM_ENABLE_ATTACHMENT == "true" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "vis", "n-vis");
+        msg.metadata.KM_ENABLE_ATTACHMENT == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
+    } else if (groupReloaded && enableAttachment) {
+        enableAttachment == "true" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "vis", "n-vis");
+        enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
+    }
 }
 }
