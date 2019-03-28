@@ -411,21 +411,13 @@ showClosedConversationBanner  : function(isConversationClosed){
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
     } 
 },
-hideAttachmentIcon : function() {
-    kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box"]}, "n-vis", "vis");
-    kommunicateCommons.modifyClassList( {id : ["mck-file-up"]}, "n-vis", "vis");
-},
-showAttachmentIcon : function() {
-    kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box"]}, "vis", "n-vis");
-    kommunicateCommons.modifyClassList( {id : ["mck-file-up"]}, "vis", "n-vis");
-},
 handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {
     if (!groupReloaded && typeof msg.metadata === "object" && msg.metadata.KM_ENABLE_ATTACHMENT) {
-        msg.metadata.KM_ENABLE_ATTACHMENT == "true" && KommunicateUI.showAttachmentIcon();
-        msg.metadata.KM_ENABLE_ATTACHMENT == "false" && KommunicateUI.hideAttachmentIcon();
+        msg.metadata.KM_ENABLE_ATTACHMENT == "true" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "vis", "n-vis");
+        msg.metadata.KM_ENABLE_ATTACHMENT == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     } else if (groupReloaded && enableAttachment) {
-        enableAttachment == "true" && KommunicateUI.showAttachmentIcon();
-        enableAttachment == "false" && KommunicateUI.hideAttachmentIcon();
+        enableAttachment == "true" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "vis", "n-vis");
+        enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
 }
 }

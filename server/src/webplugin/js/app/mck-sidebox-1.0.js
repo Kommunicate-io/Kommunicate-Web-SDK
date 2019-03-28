@@ -523,7 +523,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
               document.getElementById('mck-btn-smiley-box').classList.remove("n-vis");
               mckMessageLayout.initEmojis();
             }
-            !MCK_ATTACHMENT && KommunicateUI.hideAttachmentIcon();
+            !MCK_ATTACHMENT && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();
@@ -2514,7 +2514,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
                     KommunicateUI.showClosedConversationBanner(false);
-                    !MCK_ATTACHMENT && KommunicateUI.hideAttachmentIcon();
+                    !MCK_ATTACHMENT && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
