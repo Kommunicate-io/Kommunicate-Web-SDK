@@ -12,7 +12,8 @@ import  PageNotFound  from '../views/PageNotFound/PageNotFound';
 import {CommonUtils} from '../utils/CommonUtils';
 import {HelpcenterClient} from '../utils/HelpcenterClient';
 import { DEFAULT_HELPCENTER_SETTINGS} from '../utils/Constants';
-import { HelpCenterDataContext, HelpCenterData } from '../context/HelpcenterDataContext'
+import { HelpCenterDataContext, HelpCenterData } from '../context/HelpcenterDataContext';
+import { ThirdPartyScripts } from '../utils/ThirdPartyScripts';
 
 class App extends Component {
 
@@ -52,6 +53,7 @@ class App extends Component {
                         context.helpCenter.theme && context.helpCenter.appId?
                         <ThemeProvider theme={context.helpCenter.theme}>
                             <Fragment>
+                                <ThirdPartyScripts/>
                                 {
                                     !location.pathname.includes('404') && <Header/> 
                                 }

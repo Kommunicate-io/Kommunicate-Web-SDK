@@ -62,7 +62,7 @@ export default class Article extends Component {
                                     {
                                         pageUrl : '/',
                                         queryUrl : '?appId='+this.context.helpCenter.appId,
-                                        crumbName : 'Kommunicate Help center'
+                                        crumbName : 'Helpcenter'
                                     },
                                     {
                                         pageUrl : '/article/'+this.state.query,
