@@ -8,12 +8,11 @@ import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
 import './team.css';
 import CommonUtils from '../../utils/CommonUtils';
-import { USER_TYPE, INVITED_USER_STATUS } from '../../utils/Constant';
+import { USER_TYPE, INVITED_USER_STATUS, MONTH_NAMES, ROLE_TYPE, ROLE_NAME, USER_STATUS } from '../../utils/Constant';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import Banner from '../../components/Banner';
-import { ROLE_TYPE, ROLE_NAME, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
@@ -76,17 +75,13 @@ class Integration extends Component {
     let applicationId = userSession.application.applicationId;
     let isTrialPlan = CommonUtils.isTrialPlan();
     let isStartupPlan = userSession.subscription == "startup" ? true : false;
-    let applicationExpiryDate = CommonUtils.getApplicationExpiryDate();
-    if (applicationExpiryDate) {
-      let DD = this.getGetOrdinal(applicationExpiryDate.getDate());
-      applicationExpiryDate = DD + " " + MONTH_NAMES[applicationExpiryDate.getMonth()];
-    }
+
     this.setState({
       loggedInUserId: userSession.userName,
       applicationId: applicationId,
       isTrialPlan: isTrialPlan,
       isStartupPlan: isStartupPlan,
-      applicationExpiryDate: applicationExpiryDate
+      applicationExpiryDate: CommonUtils.getFormatedExpiryDate()
     }, this.getAgents);
   }
   getUsers = () => {
@@ -134,11 +129,6 @@ class Integration extends Component {
     }).catch(err => {
       console.log("error while fetching invited users list", err.message);
     })
-  }
-  getGetOrdinal = (DD) => {
-    var suffix = ["th", "st", "nd", "rd"],
-    v = DD % 100;
-    return DD + (suffix[(v - 20) % 10] || suffix[v] || suffix[0]);
   }
   showEmailInput = (e) => {
     e.preventDefault();
@@ -369,7 +359,7 @@ class Integration extends Component {
                       <p className="teammates-add-member-modal-header-title">Adding new team member</p>
                     </div>
                     <hr className="teammates-add-member-modal-divider product product-kommunicate" />
-                      <Banner cssClass = "km-trial-banner" appearance="warning" hidden={!(CommonUtils.isKommunicateDashboard() && this.state.isTrialPlan)} heading={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."}/>
+                      <Banner cssClass = "km-trial-banner" appearance="warning" hidden={!(CommonUtils.isKommunicateDashboard() && this.state.isTrialPlan)} heading={"Upgrade to a paid plan before your trial period ends (" + this.state.applicationExpiryDate + ") to ensure access for this team member."}/>
                     { !this.state.isTrialPlan &&
                     <div className="teammates-billing-update-container product product-kommunicate">
                       <div className="teammates-billing-update-text">
@@ -508,6 +498,5 @@ class Integration extends Component {
     )
   }
 }
-const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const SUFFIX = ["th", "st", "nd", "rd"]
+
 export default Integration;
