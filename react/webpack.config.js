@@ -11,13 +11,13 @@ var HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin
 const optimization = {
     splitChunks: {
         cacheGroups: {
-            common: {
+            /*common: {
                 test: /[\\/]node_modules[\\/]/,
                 name: "common",
                 chunks: "all",
                 priority: 20,
                 enforce: true
-            },
+            },*/
             styles: {
                 name: 'styles',
                 test: /\.css$/,
@@ -36,6 +36,7 @@ module.exports = env => {
     loadingAnimation = env && env.BRAND == "applozic" ? 'al-loading-animation.svg' : 'km-loading-animation.svg';
 
     var plugins = [
+       // [new LoadablePlugin()],
         new HtmlWebpackPlugin({
             title: productTitle,
             template: 'public/index.html',
@@ -89,7 +90,7 @@ module.exports = env => {
     }
     return {
         entry: {
-            dashboard: "./src/index.js",
+            dashboard: "./src/index.js"
         },
         output: {
             path: path.resolve(__dirname, 'build'),
