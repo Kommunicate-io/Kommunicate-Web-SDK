@@ -61,11 +61,6 @@
     color: #666464;
     text-decoration: none;
 }
-.ss-nav-link.active {
-    background-color: #e4e5e7;
-    color: #32b2e4;
-    border-radius: 2px;
-}
 .hrr {
     border: 0.5px solid #d4d4d4;
     margin-bottom: 10px;
