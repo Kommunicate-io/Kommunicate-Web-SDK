@@ -30,7 +30,8 @@ You can copy the below script and replace required parameters manually.
 
      var kommunicateSettings = {
       "appId": "<APP_ID>",
-      "conversationTitle":"<CONVERSATION_TITLE>"
+      "conversationTitle":"<CONVERSATION_TITLE>",
+      "automaticChatOpenOnNavigation": true
       /*
       "onInit": function (){
         // paste your code here
@@ -72,7 +73,8 @@ You can customize the plugin by passing below parameters in the `kommunicateSett
 |onInit| Function| This function will be called after the chat plugin is [initialized](/docs/web-installation#script). Here, you can define the actions to be done after the plugin is initialized.|
 |emojilibrary| Boolean| Default: false <br> Emoticons library will be available in the chat widget if this parameter is set to ‘true’.|
 |locShare| Boolean| Default: false <br> If you want to enable location sharing in the chat widget, set this parameter to ‘true’.|  
-|msgTriggerTimeout| Integer| This will automatically start a conversation with a user after the user has spent a certain amount of time on your website and if the conversation has already been created before then last unread message notification will come. <br> **msgTriggerTimeout will open the conversation in below cases:** <br>1. When a user comes to your website for the first time.<br>2. If a user has any unread message.<br> **msgTriggerTimeout will not open the conversation if:**<br>1. The last message is sent by the user and does not have any unread messages.<br>**You can define the trigger time like this:** "msgTriggerTimeout": 10000 (Note: the time is set in milliseconds).|
+|msgTriggerTimeout| Integer| This will automatically start a conversation with a user after the user has spent a certain amount of time on your website and if the conversation has already been created before then last unread message notification will come. <br> **msgTriggerTimeout will open the conversation in below cases:** <br>1. When a user comes to your website for the first time.<br>2. If a user has any unread message.<br> **msgTriggerTimeout will not open the conversation if:**<br>1. The last message is sent by the user and does not have any unread messages.<br>**You can define the trigger time like this:** "msgTriggerTimeout": 10000 (Note: the time is set in milliseconds).<br>
+Note: You have to remove/set "automaticChatOpenOnNavigation" parameter to false as this option won't be compatible with msgTriggerTimeout.|
 |openConversationOnNewMessage | Boolean| Default: false <br> If this parameter is set to ‘true’, the chat window will be opened whenever a new message comes in the chat widget. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage</a>.|
 |automaticChatOpenOnNavigation | Boolean| Default: false <br> If the chat widget is open and the user navigates to some other section in the website or to some other tab, then keep the chat widget open with the current active conversation<br> Note:<a href="web-conversation#create-a-new-conversation" target="_blank"> Kommunicate.startConversation()</a> method and msgTriggerTimeout option won't be compatible with this option.|  
 

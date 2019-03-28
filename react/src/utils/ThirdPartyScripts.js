@@ -21,7 +21,7 @@ class ThirdPartyScripts extends Component {
             var kommunicateSupportChatUrl = getConfig().baseurl.komunicateSupportUrl|| getConfig().homeUrl;
             var support = isKommunicateDashboard ? {
               "appId": "kommunicate-support",
-              "isAnonymousChat": true,
+              "popupWidget": true,
               "groupName": "Kommunicate Support",
               "baseUrl":kommunicateSupportChatUrl,
               "googleApiKey": "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI",
@@ -31,7 +31,7 @@ class ThirdPartyScripts extends Component {
             }
               : {
                 "appId": "applozic-sample-app",
-                "isAnonymousChat": true,
+                "popupWidget": true,
                 "groupName": "Applozic",
                 "baseUrl":kommunicateSupportChatUrl,
                 "googleApiKey": "AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw",
