@@ -53,14 +53,6 @@
     transition: all .3s;
     text-align: left;
 }
-.ss-nav-item:hover {
-    border-radius: 2px;
-    background-color: #e4e5e7;    
-}
-.ss-nav-item:hover .ss-nav-link {
-    color: #666464;
-    text-decoration: none;
-}
 .hrr {
     border: 0.5px solid #d4d4d4;
     margin-bottom: 10px;

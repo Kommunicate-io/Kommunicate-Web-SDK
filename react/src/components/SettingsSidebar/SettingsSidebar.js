@@ -39,6 +39,7 @@ const GlobalSettingSidebarStyle = createGlobalStyle`
     }
     .ss-nav-item:hover .ss-nav-link {
         color: #FFF;
+        text-decoration: none;
     }
     .ss-nav-item:hover .ss-nav-link .info-icon, .ss-nav-link.active .info-icon {
         color: #666464;
