@@ -69,7 +69,7 @@ Kommunicate.openConversationList();
 ### Create a new conversation
 A conversation can be created using startConversation method. Below is the example code for the same. You can choose to define certain parameters to profile this conversation and allot assignee.
 
->Note: You have to remove/set "automaticChatOpenOnNavigation" parameter to false as this option won't be compatible with startConversation method.
+>Note: You have to set "automaticChatOpenOnNavigation" parameter to false as this option won't be compatible with startConversation method.
 
 ```javascript
 var conversationDetail = {
