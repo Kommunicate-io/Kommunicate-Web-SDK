@@ -37,6 +37,11 @@ let InAppMsg = function (sequelize, DataTypes) {
     category: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    languageCode: {
+      type: DataTypes.STRING,
+      field: 'language_code',
+      allowNull: true
     }
   }, {
       underscored: true,
