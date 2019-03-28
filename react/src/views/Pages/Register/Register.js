@@ -24,6 +24,8 @@ import Mikolaj from './Testimonials/Images/Mikolaj.jpg';
 import Alex from './Testimonials/Images/AlexKlein.jpg';
 
 import '../Login/login.css';
+import '../SetUpPage/setup.css';
+
 
 class Register extends Component {
   constructor(props){
