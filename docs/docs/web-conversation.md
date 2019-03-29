@@ -16,7 +16,7 @@ below is the sample code to update the conversation setting:
 
 ```js
 var defaultSettings = {
-    "defaultAgentIds": ["<AGENT_ID>"]
+    "defaultAgentIds": ["<AGENT_ID>"],
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "skipRouting": true
