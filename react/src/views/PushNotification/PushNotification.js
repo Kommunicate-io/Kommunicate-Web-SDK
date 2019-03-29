@@ -45,7 +45,7 @@ class PushNotification extends Component {
       apnsTestUrl: userDetail.testApnsUrl,
       appSync: '',
       isTrialPlan: CommonUtils.isTrialPlan(),
-      isStartUpPlan: CommonUtils.isStartupPlan()
+      isStartUpPlan: CommonUtils.getProduct() == "applozic" ? false : CommonUtils.isStartupPlan()
     };
 
     this.submitGcmkey = this.submitGcmkey.bind(this);
