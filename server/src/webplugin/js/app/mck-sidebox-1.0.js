@@ -1729,16 +1729,15 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
                 // handle click events for openning and closing of sidebox
                 var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                var kommunicateIframeDocument = kommunicateIframe.contentDocument;
-                var chatbox = kommunicateIframeDocument.getElementById("mck-sidebox-launcher");
-                var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
+                var chatbox = document.getElementById("mck-sidebox-launcher");
+                var popUpcloseButton = document.getElementById("km-popup-close-button");
                 chatbox.addEventListener("click", function(){
                     kommunicateCommons.setWidgetStateOpen(true);
                     kommunicateIframe.classList.remove('km-iframe-closed');
                     kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
                     POPUP_WIDGET ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
                 });
-                var closeButton = kommunicateIframeDocument.getElementById("km-chat-widget-close-button");
+                var closeButton = document.getElementById("km-chat-widget-close-button");
                 function closeChatBox(e){
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
@@ -4281,14 +4280,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
              
             _this.handleLoadTab = function () {
                 if (KOMMUNICATE_VERSION === "v2") {
-                    var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                    !POPUP_WIDGET && (kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)");
                     Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-                };
-            };
-
-            _this.openChatbox = function (params, callback) {
-                if (KOMMUNICATE_VERSION === "v2") {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     var kommunicateIframeDocument = kommunicateIframe.contentDocument;
                     var chatbox = kommunicateIframeDocument.getElementById("mck-sidebox-launcher");
@@ -4300,13 +4292,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     $mck_sidebox.mckModal();
                 }
                 $mck_msg_to.focus(); 
-            }
+            };
 
             _this.loadTab = function (params, callback) {
-                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && (
-                    _this.handleLoadTab(),
-                    _this.openChatbox()
-                )
+                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab()
                 clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId})
                 var currTabId = $mck_msg_inner.data('mck-id');
@@ -8588,6 +8577,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 // }, 10000);
                 mckInitializeChannel.onNotificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
+                    var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    kommunicateIframe.classList.remove("km-iframe-dimension-no-popup", "km-iframe-notification", ".km-iframe-dimension-with-popup");
+                    document.getElementById("km-popup-close-button").style.display = "none";
                     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                     $mck_msg_preview_visual_indicator_text.html('');
                 });
