@@ -172,11 +172,11 @@ The list template is a list of structured items with an optional header image an
 ### Components of a List Template
 A list template may contain below items:
 
-* Header Image
+* Header Image  &nbsp;&nbsp;<font color='#9b9b9b'>(Recommended size: 910*330px)</font>
 * Header text
 * List of items: Each item may contain below components:
 
-   * Thumbnail image
+   * Thumbnail image&nbsp;&nbsp;<font color='#9b9b9b'>(Recommended size: 150*150px)</font>
    * Title 
    * Description
    * The action of the item
@@ -263,7 +263,7 @@ A card template may contain below items:
 <br>
 * Header
    
-     * Image (optional)
+     * Image (optional)  &nbsp;&nbsp; <font color='#9b9b9b'>Recommended size: 720*280px</font>
      * Overlay text (optional)
 	
 * Card information section
