@@ -194,13 +194,14 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var appId = req.query.appId;
     var userName = req.query.userName;
     var eventIds = req.query.eventIds;
+    var languageCode = req.query.languageCode;
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
     //return customerService.getCustomerByApplicationId(appId).then(customer => {
     return userService.getByUserNameAndAppId(userName, appId).then(user => {
         if (!user) {
             return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
         }
-        return inAppMsgService.getInAppMessagesByEventIds(user.id, user.applicationId, user.type, eventIds).then(inAppMessages => {
+        return inAppMsgService.getInAppMessagesByEventIds(user.id, user.applicationId, user.type, eventIds,languageCode).then(inAppMessages => {
             if (inAppMessages instanceof Array && inAppMessages.length > 0) {
                 return res.status(200).json({ code: 'SUCCESS', message: "message list", data: inAppMessages });
             }

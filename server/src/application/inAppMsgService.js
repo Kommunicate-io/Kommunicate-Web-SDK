@@ -259,7 +259,7 @@ exports.getInAppMessages2=(createdBy, appId)=>{
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds)=>{
+exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds,languageCode)=>{
 
   let criteria={};
   if(appId){
@@ -268,6 +268,9 @@ exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds)=>{
   
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
+  }
+  if (languageCode) {
+    criteria.languageCode = languageCode;
   }
   var order= [ ['id', 'ASC']];
   return Promise.resolve(db.InAppMsg.findAll({where: criteria, order, limit:3})).catch(err=>{
