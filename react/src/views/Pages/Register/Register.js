@@ -256,6 +256,10 @@ class Register extends Component {
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
     var _this= this;
+    if (!validator.isLength(password, 6)) {
+      Notification.warning("Password must be a minimum of 6 characters");
+      return;
+    }
     if(!isEmail(email)){
       Notification.warning("Invalid Email !!");
       return;

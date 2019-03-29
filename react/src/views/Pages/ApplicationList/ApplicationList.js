@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
 import styled from 'styled-components';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
-
+import '../Login/login.css';
 
 
 const InputContainer = styled.div`
