@@ -188,6 +188,15 @@ class Aside extends Component {
     }
    
   }
+  populateAgentAndBotDetailMap(agents){
+    let AGENT_BOT_DETAIL_MAP= {}
+    if(agents && agents.length){
+      agents.forEach(function(agent){
+        AGENT_BOT_DETAIL_MAP[agent.userName]= agent;
+      })
+    }
+   window.AGENT_BOT_DETAIL_MAP = AGENT_BOT_DETAIL_MAP;
+  }
   forwardMessageToZendesk(e) {
     var message = e.detail.data;
     if (this.state.group && this.state.group.metadata && this.state.group.metadata.KM_ZENDESK_TICKET_ID) {
@@ -267,6 +276,7 @@ class Aside extends Component {
       return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
         var assign = window.$kmApplozic("#assign");
         that.setState({ agents: data });
+        that.populateAgentAndBotDetailMap(data);
         window.$kmApplozic.each(data, function () {
           if (this.type == GROUP_ROLE.MEMBER || this.type == GROUP_ROLE.ADMIN) {
             assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));

@@ -5915,7 +5915,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.processNotification = function(message){
 				var groupDetail =  KM_GROUP_MAP[message.groupId];
-				if(groupDetail&& groupDetail.metadata["CONVERSATION_ASSIGNEE"]== MCK_USER_ID){
+				var assignee=  groupDetail && window.AGENT_BOT_DETAIL_MAP && window.AGENT_BOT_DETAIL_MAP[groupDetail.metadata["CONVERSATION_ASSIGNEE"]];
+				if(assignee && assignee.roleType!= KOMMUNICATE_CONSTANTS.USER_ROLE_TYPE.KOMMUNICATE.BOT){
 					mckNotificationService.notifyUser(message);
 				}
 					 
