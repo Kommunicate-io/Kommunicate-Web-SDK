@@ -25,7 +25,7 @@ Declare the variable before calling any function on it. Write the below line at 
  declare var kommunicate: any;
 ```
 ## Launch single chat
-To launch the single chat you need to create a conversation launch object. This object is passed to the `launchSingleChat` function and based on the parameters of the object the chat is created/launched.
+To launch the single chat you need to create a conversation launch object. This object is passed to the `startSingleChat` function and based on the parameters of the object the chat is created/launched.
 
 
 ```js
