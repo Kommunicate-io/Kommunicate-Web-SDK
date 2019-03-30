@@ -1,6 +1,6 @@
 import { getResource, getConfig } from '../config/config.js'
 import {THIRD_PARTY_LOGIN, KM_RELEASE_VERSION, KM_PLAN_LENGTH, MONTH_NAMES} from '../utils/Constant';
-import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs.js';
+import { KommunicateLogoSvg, ApplozicLogo } from '../assets/svg/svgs_common.js';
 
 export const PRODUCTS = {
     'applozic': {
