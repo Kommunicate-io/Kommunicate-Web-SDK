@@ -83,7 +83,9 @@ class ThirdPartyScripts extends Component {
               s.async = true;
               s.src = getConfig().kommunicateApi.pluginUrlV2;
               var h = document.getElementsByTagName("head")[0];
-              h.appendChild(s);
+              if (!currentPath.includes('/signup')) {
+                h.appendChild(s);
+              }
               window.kommunicate = m;
               m._globals = o;
             })(document, window.kommunicate || {});
