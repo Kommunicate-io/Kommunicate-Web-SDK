@@ -11,7 +11,6 @@ import cache from 'memory-cache';
 import { USER_TYPE, MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
 import AnalyticsTracking from './AnalyticsTracking';
 import dateFormat from 'dateformat';
-import ApplozicClient from '../utils/applozicClient';
 
 /**
  * Creates Customer /Bot/ Agent

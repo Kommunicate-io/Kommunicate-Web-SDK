@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
-import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
-import Footer from '../../components/Footer/';
-import moment from 'moment';
 import Dashboard from '../../views/Dashboard/'
 import Users from '../../views/Users/'
 import Conversations from '../../views/Conversations/'

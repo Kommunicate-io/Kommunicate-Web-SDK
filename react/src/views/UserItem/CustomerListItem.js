@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
 import {getConfig} from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils.js';
+import DateTimeUtils from '../../utils/DateTimeUtils';
 
 class CustomerListItem extends Component {
 
@@ -121,7 +122,7 @@ class CustomerListItem extends Component {
     var name = displayName.charAt(0).toUpperCase();
     var createdAtTime = window.$kmApplozic.fn.applozic('getDateTime', user.createdAtTime);
     var lastLoggedInAtTime = (typeof user.lastLoggedInAtTime !== 'undefined')? (window.$kmApplozic.fn.applozic('getDateTime', user.lastLoggedInAtTime)) : '';
-    var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined')? (CommonUtils.lastSeenTime(user.lastSeenAtTime)) : '';
+    var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined')? (DateTimeUtils.lastSeenTime(user.lastSeenAtTime)) : '';
     return (<tr>
       <td className="text-center">
         <div>
