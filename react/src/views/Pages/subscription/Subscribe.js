@@ -2,8 +2,8 @@ import React from 'react';
 import styled, { css } from 'styled-components'
 import CommonUtils from '../../../utils/CommonUtils';
 import {patchUserInfo} from '../../../utils/kommunicateClient';
-import {SubscribeIcon} from '../../../assets/svg/svgs.js';
-import { Redirect,NavLink } from 'react-router-dom';
+import {SubscribeIcon} from '../../../assets/svg/svgs_common.js';
+import { NavLink } from 'react-router-dom';
 import Button from '../../../components/Buttons/Button';
 
 const fontStyling = css`
