@@ -1,7 +1,6 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
 import  { getConfig }  from '../config/config';
-import EventMessageClient from './EventMessageClient';
 
 const AnalyticsTracking = {
 
