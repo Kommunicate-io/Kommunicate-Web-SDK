@@ -1,8 +1,4 @@
 import React, {Component} from 'react';
-import moment from 'moment';
-import axios from 'axios';
-import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
-import {getConfig} from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils.js';
 import DateTimeUtils from '../../utils/DateTimeUtils';
 
@@ -162,7 +158,7 @@ class CustomerListItem extends Component {
                         color: "#a4a3a9",
                         fontSize: "13px"
                       }}>No Conversation</span>
-                  : CommonUtils.lastSeenTime(user.messagePxy.createdAtTime)
+                  : DateTimeUtils.lastSeenTime(user.messagePxy.createdAtTime)
               }
             </td>
       }
