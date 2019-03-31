@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import isURL from 'validator/lib/isURL';
-import Notification from '../../model/Notification';
 import Phone from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import Moment from 'moment-timezone';
