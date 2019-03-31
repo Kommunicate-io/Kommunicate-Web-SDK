@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getConfig, getEnvironmentId} from '../config/config';
+import {getConfig} from '../config/config';
 import CommonUtils from '../utils/CommonUtils';
 import config from "../config/index";
 import url from '../config/url';
