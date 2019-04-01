@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact, updateAgileCrmContact} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact, updateAgileCrmContact, getAppSetting} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -101,10 +101,8 @@ class Aside extends Component {
   }
 
   componentDidMount() {
-    this.getThirdparty ();
-    this.getAgileCrmSettings();
-    quickReply.loadQuickReplies();
-     if(CommonUtils.getUserSession() === null){
+    var userSession = CommonUtils.getUserSession();
+     if(userSession === null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
        return;
@@ -112,7 +110,17 @@ class Aside extends Component {
        //window.location ="/dashboard";
        //window.appHistory.push('/dashboard');
      }
+
+     this.getThirdparty ();
+     this.getAgileCrmSettings();
+     quickReply.loadQuickReplies();
+     getAppSetting(userSession.application.applicationId)
+     .then(this.storeAppSettingInSession)
+     .catch(e=>{
+       console.log("error while fetching app setting", e);
+     });
      window.Aside = this;
+    
 
      this.setState({	
         trialDaysLeftComponent: <TrialDaysLeft />	
@@ -147,6 +155,11 @@ class Aside extends Component {
     window.removeEventListener("_sendMessageEvent", this.forwardMessageToZendesk);
     window.removeEventListener("_userDetailUpdate", this.handleUpdateUser);
   }
+
+  storeAppSettingInSession(appSetting){
+    appSetting  && appSetting.data&& CommonUtils.setItemInLocalStorage('KM_APP_SETTINGS', appSetting.data.response);
+  }
+
   handleUpdateUser(e) {
     var user = e.detail.data;
     var pseudoUser = (user.metadata && user.metadata.KM_PSEUDO_USER ) ? true : false;

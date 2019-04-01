@@ -78,5 +78,9 @@ KOMMUNICATE_CONSTANTS = {
             AGENT : 2,
             BOT : 3,
         } 
+    },
+    ROUTING_RULES_FOR_AGENTS :{
+        NOTIFY_EVERYBODY : 0 ,
+        AUTOMATIC_ASSIGNMENT : 1
     }
 }
