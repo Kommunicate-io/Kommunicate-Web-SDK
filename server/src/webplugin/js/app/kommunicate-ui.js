@@ -392,7 +392,7 @@ sendFaqQueryAsMsg: function(groupId){
     }
 },
 activateTypingField: function(){
-        $applozic('#mck-text-box').focus();
+        !kommunicateCommons.checkIfDeviceIsHandheld() && $applozic('#mck-text-box').focus();
 },
 setAvailabilityStatus : function (status){
     $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").addClass("mck-status--" + status);
