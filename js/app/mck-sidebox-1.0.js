@@ -1718,6 +1718,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             };
 
+            _this.configurePopupWidget = function(){
+                !kommunicateCommons.checkIfDeviceIsHandheld() && kommunicateCommons.modifyClassList( {id : ["mck-sidebox"]}, "popup-enabled","");
+            }
+
             _this.configureIframe = function (){
                 // update sidebox css for kommunicate v2 version
                 document.getElementById("mck-sidebox-launcher").style.right='10px';
@@ -1736,6 +1740,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     kommunicateIframe.classList.remove('km-iframe-closed');
                     kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
                     POPUP_WIDGET ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+                    KOMMUNICATE_VERSION ==='v2' && POPUP_WIDGET && _this.configurePopupWidget();
                 });
                 var closeButton = document.getElementById("km-chat-widget-close-button");
                 function closeChatBox(e){
