@@ -273,7 +273,7 @@ exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds,languageCod
     criteria.languageCode = languageCode;
   }
   var order= [ ['id', 'ASC']];
-  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order, limit:3})).catch(err=>{
+  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order})).catch(err=>{
     return { code: err.parent.code, message: err.parent.sqlMessage }
   });
   
