@@ -96,7 +96,7 @@ KnowledgeBase.pre('save', function (next) {
 });
 KnowledgeBase.pre('updateOne', function (next) {
     this._update.updated_at = new Date().getTime();
-    let question = this.name ? this.name.trim() : null;
+    let question = this._update.name ? this._update.name.trim() : null;
     if (!stringUtils.isBlank(question)) {
         this._update.key = hashGenerator.generateHash(question);
     }
