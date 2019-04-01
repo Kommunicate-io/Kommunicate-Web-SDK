@@ -21,13 +21,11 @@ const removeExistingFile = function (dirPath) {
 
 const compressAndOptimize = () => {
     compressor.minify({
-        //compressor: 'gcc',
-        compressor: 'no-compress',
+        compressor: 'gcc',
+        // compressor: 'no-compress',  
         input: [
-            path.resolve(__dirname, 'lib/js/jquery-3.2.1.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
-            path.resolve(__dirname, 'lib/js/mqttws31.js'),
             path.resolve(__dirname, 'lib/js/mck-emojis.min.js'),
             path.resolve(__dirname, 'lib/js/howler-2.0.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
@@ -37,6 +35,9 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicatepluginrequirements.${version}.min.js`),
+        options: {
+            compilationLevel: 'WHITESPACE_ONLY',
+        },
         callback: function (err, min) {
             if (!err) {
                 console.log( `kommunicatepluginrequirements.${version}.min.js combined successfully`);
