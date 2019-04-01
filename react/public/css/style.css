@@ -11503,3 +11503,23 @@ border-left-color: #5e8631;
 .km-input-component {
   margin-top: 20px;
 }
+
+.km-contact-icon {
+  font-weight: bold;
+  vertical-align: middle;
+  height: 43px;
+  line-height: 43px;
+  display: block;
+}
+
+.app #root:empty {
+  position: relative;
+  height: 100vh;
+}
+.loader:empty::after {
+  position: absolute;
+  top: calc(50% - 4em);
+  left: calc(50% - 4em);
+  width: 6em;
+  height: 6em;
+}
