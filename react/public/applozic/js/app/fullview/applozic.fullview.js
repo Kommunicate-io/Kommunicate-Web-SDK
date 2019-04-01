@@ -1728,7 +1728,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
 				kmUtils.modifyClassList( {id : ["km-contact-loading"]}, "vis","n-vis");
 				var params = {
-					search: kmSearch.value
+					search: kmSearch.value.trim()
 				}
 				if(kmSearch.value && kmSearch.value.trim()){
 					MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;

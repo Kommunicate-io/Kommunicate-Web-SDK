@@ -893,7 +893,7 @@ class BotStore extends Component {
           </Modal>
             
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
+              <BotIntegrationModalContent applicationExpiryDate = {this.state.applicationExpiryDate} integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
               <span onClick={()=>{this.toggleBotIntegrationModal(false)}}><CloseButton /></span>
             </BotIntegrationModal>
             </div>

@@ -144,6 +144,9 @@ const BotIntegrationInputFieldsContainer = styled.div`
         height: 40px;
         padding: 16px;
     }
+    & input:focus {
+        outline: none;
+    }
     & input::placeholder  {
         font-size: 14px;
         color: #cacaca;
