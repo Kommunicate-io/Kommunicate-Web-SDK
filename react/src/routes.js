@@ -27,6 +27,7 @@ const routes = {
   '/settings/chat-widget-customization':'Chat Widget',
   '/settings/email-fallback':'Fallback Emails',
   '/settings/webhooks-security':'Webhooks and Security',
+  '/settings/csat-ratings':'CSAT Ratings',
 };
 
 export default routes;

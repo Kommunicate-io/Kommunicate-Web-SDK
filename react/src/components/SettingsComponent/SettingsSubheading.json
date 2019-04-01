@@ -58,6 +58,10 @@
         "Company": {
           "subHeading":"Edit your company details",
           "knowledgeBaseLink":""      
+        },
+        "CSAT Ratings": {
+                "subHeading": "Measure how satisfied your users are with your customer support",
+                "knowledgeBaseLink": ""
         }
 
 }
