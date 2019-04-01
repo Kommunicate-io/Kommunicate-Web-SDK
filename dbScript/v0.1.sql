@@ -251,6 +251,9 @@ UPDATE app_settings
 SET collect_lead = 1 where collect_email_welcome = 1  and collect_email_away = 1;
 
 
+-- 22 march 2019
+ALTER TABLE `app_settings` ADD COLUMN `collect_feedback` BOOLEAN DEFAULT 0;
+
 -- 28 March 2019 --
 
 ALTER TABLE `in_app_msgs` 

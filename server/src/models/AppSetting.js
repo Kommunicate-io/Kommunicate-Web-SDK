@@ -96,6 +96,11 @@ let AppSetting= function(sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         allowNull:true,
         field:'collect_lead' 
+      },
+      collectFeedback:{
+        type: DataTypes.BOOLEAN,
+        allowNull:true,
+        field:'collect_feedback' 
       }
     },
 
