@@ -43,7 +43,7 @@ exports.updateAppSettings = async (settings, appId) => {
    let appSetting = await applicationSettingModel.find({ where: { applicationId: appId }});
     if (!appSetting) { throw new Error("APPLICATION_NOT_FOUND") }
     if(settings.helpCenter && appSetting.helpCenter){
-        settings = deepmerge(appSetting.helpCenter, settings);
+        settings.helpCenter = deepmerge(appSetting.helpCenter, settings.helpCenter);
     }
     if(settings.supportMails && appSetting.supportMails){
         settings = deepmerge(appSetting.supportMails, settings);
