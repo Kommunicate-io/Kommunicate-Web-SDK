@@ -85,8 +85,8 @@ class BotIntegrationModalContent extends Component {
             customBotKey:"",
             customBotValue:"",
             botName:"",
-            selectedBotImage:""
-
+            selectedBotImage:"",
+            applicationExpiryDate: this.props.applicationExpiryDate
         }
         
     }
@@ -221,7 +221,7 @@ render() {
                     }
 
                         {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
-                          <Banner appearance="warning" style={{margin:"-20px -32px"}} heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({DateTimeUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
+                          <Banner appearance="warning" style={{margin:"-20px -32px"}} heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({this.state.applicationExpiryDate}})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 </div>
             }
