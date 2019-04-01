@@ -13,13 +13,12 @@ import kmloadinganimation from './km-loading-animation.svg';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking.js';
 import { connect } from 'react-redux';
 import * as Actions from '../../../actions/loginAction';
-import { GoogleLogin }from '../../Faq/LizSVG'
+import {GoogleLogin}from '../Login-Signup/LoginSignupCommons'
 import Button from '../../../components/Buttons/Button';
 import ButtonLoader from '../../../components/ButtonLoader/ButtonLoader';
 import Testimonials from './Testimonials';
 
 import Christian from './Testimonials/Images/Christian.jpg';
-
 import Eli from './Testimonials/Images/Eli-gross.jpg';
 import Mikolaj from './Testimonials/Images/Mikolaj.jpg';
 import Alex from './Testimonials/Images/AlexKlein.jpg';

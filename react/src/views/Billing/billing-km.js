@@ -5,6 +5,7 @@ import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDeta
 import Notification from '../model/Notification';
 import { getResource } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
+import DateTimeUtils from '../../utils/DateTimeUtils';
 import './billing.css';
 import StartupPlanIcon from './img/Startup-plan-icon.svg';
 import LaunchPlanIcon from './img/Launch-plan-icon.svg';
@@ -568,7 +569,7 @@ class BillingKommunicate extends Component {
                         </div>
                         <div className="renewal-date-container flexi">
                             <p>Auto renewal date:</p>
-                            <p>{(!this.state.toggleSlider) ? CommonUtils.countDaysForward(1, "month") : CommonUtils.countDaysForward(1, "year")}</p>
+                            <p>{(!this.state.toggleSlider) ? DateTimeUtils.countDaysForward(1, "month") : DateTimeUtils.countDaysForward(1, "year")}</p>
                         </div>
                     </div>
                 </div>
@@ -584,7 +585,7 @@ class BillingKommunicate extends Component {
         const InfoModalContent = (
             <Fragment>
                 <div className="info-detail-container">
-                    <p>You are currently in <strong><span>{SUBSCRIPTION_PLANS[this.state.subscription].name}</span> Plan.</strong> Your next billing date is on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
+                    <p>You are currently in <strong><span>{SUBSCRIPTION_PLANS[this.state.subscription].name}</span> Plan.</strong> Your next billing date is on <strong>{DateTimeUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
                     <br/>
                     <p>If you want to downgrade your plan, just leave us a mail at <strong> support@kommunicate.io</strong> <br/> or start a conversation from the chat widget, and we will get back to you.</p>
                 </div>
@@ -646,7 +647,7 @@ class BillingKommunicate extends Component {
                                         (<div className="subscription-current-plan-container">
                                             <p className="km-startup-plan-billing-info">
                                             <span>You are currently enjoying a trial version of the <strong>GROWTH PLAN</strong></span> 
-                                            <span>At the end of the trial period ({CommonUtils.countDaysForward(this.state.trialLeft, "days")}), you will be downgraded to the Free plan.<a href="javascript:void(0)"  className="km-free-plan-link" onClick={(event) => {this.openCurrentModal("missingOut", event)}}> See free plan details</a>  </span> </p>
+                                            <span>At the end of the trial period ({DateTimeUtils.countDaysForward(this.state.trialLeft, "days")}), you will be downgraded to the Free plan.<a href="javascript:void(0)"  className="km-free-plan-link" onClick={(event) => {this.openCurrentModal("missingOut", event)}}> See free plan details</a>  </span> </p>
                                         </div>
                                         )
                                         : (
@@ -676,7 +677,7 @@ class BillingKommunicate extends Component {
                                                 <div>
                                                     <div className="subscription-success-purchased-plan-billing">
                                                         <p>Next billing:</p>
-                                                        <p>You will be charged <strong>${this.state.totalPlanAmount / 100}</strong> on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
+                                                        <p>You will be charged <strong>${this.state.totalPlanAmount / 100}</strong> on <strong>{DateTimeUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
                                                     </div>
 
                                                     <div className="subscription-success-purchased-plan-billing-actions">

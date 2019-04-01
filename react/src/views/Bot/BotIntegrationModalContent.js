@@ -8,6 +8,7 @@ import ApplozicClient from '../../utils/applozicClient';
 import {createBot} from '../../utils/botPlatformClient';
 import { ROLE_TYPE, SUPPORTED_PLATFORM, DEFAULT_BOT_IMAGE_URL } from '../../utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
+import DateTimeUtils from '../../utils/DateTimeUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
 import Banner from '../../components/Banner';
@@ -220,7 +221,7 @@ render() {
                     }
 
                         {  (CommonUtils.isKommunicateDashboard() && CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) &&
-                          <Banner appearance="warning" style={{margin:"-20px -32px"}} heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({CommonUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
+                          <Banner appearance="warning" style={{margin:"-20px -32px"}} heading={["Upgrade to a paid plan before your trial period ends ",<strong key={2} >({DateTimeUtils.countDaysForward(1, 'month')})</strong>," to ensure that all bot related features continue to work"]} />
                 }
                 </div>
             }

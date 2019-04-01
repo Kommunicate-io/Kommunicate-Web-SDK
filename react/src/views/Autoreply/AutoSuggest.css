@@ -220,3 +220,24 @@ body{
     border:  1px solid #d8d8d8;
   }
   
+
+  #weekDays-selector input {
+    display: none!important;
+  }
+  
+  #weekDays-selector input[type=checkbox] + label {
+    display: inline-block!important;
+    border-radius: 6px!important;
+    background: #dddddd!important;
+    /*height: 130px!important;*/
+    width: 80px!important;
+    margin-right: 3px!important;
+    line-height: 40px!important;
+    text-align: center!important;
+    cursor: pointer!important;
+  }
+  
+  #weekDays-selector input[type=checkbox]:checked + label {
+    background: #2AD705!important;
+    color: #ffffff!important;
+  }

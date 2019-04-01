@@ -8,22 +8,20 @@ import { resetPassword, getUserInfo } from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
 import CommonUtils, {PRODUCTS} from '../../../utils/CommonUtils';
 import AnalyticsTracking from '../../../utils/AnalyticsTracking';
-import './login.css';
 import ApplozicClient   from '../../../utils/applozicClient';
 import ValidationUtils from  '../../../utils/validationUtils';
 import { Buffer } from 'buffer';
 import InputField from '../../../components/InputField/InputField';
 import { Link } from 'react-router-dom';
-import {COOKIES, USER_STATUS} from '../../../utils/Constant';
+import {USER_STATUS} from '../../../utils/Constant';
 import kmloadinganimation from '../Register/km-loading-animation.svg';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
-import * as signUpActions from '../../../actions/signupAction'
-import { persistor} from '../../../store/store';
-import {GoogleLogin}from '../../Faq/LizSVG'
+import {GoogleLogin} from '../Login-Signup/LoginSignupCommons'
 import {ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick, LoginSignupSvg } from '../../../assets/svg/svgs';
 import Button from '../../../components/Buttons/Button';
 
+import './login.css';
 
 class Login extends Component {
 

@@ -11494,3 +11494,12 @@ border-left-color: #5e8631;
   }
 }
 
+.flexi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.km-input-component {
+  margin-top: 20px;
+}

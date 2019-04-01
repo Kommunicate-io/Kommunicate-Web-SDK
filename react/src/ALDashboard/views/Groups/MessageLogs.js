@@ -157,7 +157,6 @@ class MessageLogs extends Component {
     }
     
     render() {
-
         const isEncryptedApp = CommonUtils.getUserSession().application.encryptionEnabled || false;
 
         return (

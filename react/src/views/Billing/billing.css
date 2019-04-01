@@ -18,12 +18,6 @@
     margin: 0px;
 }
 
-.flexi {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
 .current-plan-container {
     border-bottom: 1px solid #dedede;
     margin-top: 40px;

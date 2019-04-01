@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { QuotesIcon } from '../../../../assets/svg/svgs';
+import { QuotesIcon } from '../../../../assets/svg/svgs_common.js';
 import CatchPhraseImage from '../Testimonials/Images/catchPhraseText.png';
  
 class Testimonials extends Component {

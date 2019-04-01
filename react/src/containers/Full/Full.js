@@ -1,34 +1,9 @@
 import React, { Component } from 'react';
-import { Link, Switch, Route, Redirect } from 'react-router-dom'
-import Header from '../../components/Header/';
+import { Link, Switch, Route, Redirect } from 'react-router-dom';
+import Loadable from 'react-loadable';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
-import Footer from '../../components/Footer/';
-import moment from 'moment';
-import Dashboard from '../../views/Dashboard/'
-import Users from '../../views/Users/'
-import Conversations from '../../views/Conversations/'
-import Reports from '../../views/Reports/'
-import Bot from '../../views/Bot/'
-import Install from '../../views/Settings/Installation'
-import Admin from '../../views/Admin/'
-import Team from '../../views/Team/'
-import Autoreply from '../../views/Autoreply/'
-import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
-import Company from '../../views/Company/Company'
-import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
-import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
-import Download from '../../views/Download/Download.js'
-import Faq from '../../views/Faq/'
-import Billing from '../../views/Billing/'
-import PushNotification from '../../views/PushNotification/PushNotification.js'
-import Integrations from '../../views/Integrations/Integrations.js'
-import IncomingEmailForward from '../../views/IncomingEmailForward/IncomingEmailForward.js'
-import EmailNotifications from '../../views/EmailNotifications/EmailNotifications.js'
-import Conversation404 from '../../views/Pages/Page404/Conversation404'
-import EmailFallback from '../../views/EmailFallback/EmailFallback.js'
-import WebhooksAndSecurity from '../../views/WebhooksAndSecurity/WebhooksAndSecurity'
 import CommonUtils from '../../utils/CommonUtils';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
@@ -37,13 +12,131 @@ import { getConfig, getEnvironmentId } from '../../config/config';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import {getSuggestionsByCriteria} from '../../utils/kommunicateClient';
-import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
-import MessageLogs from '../../ALDashboard/views/Groups/MessageLogs';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/applicationAction';
 import TrialExpired from '../../views/TrialExpired/TrialExpired';
+import Dashboard from '../../views/Dashboard/';
+import Conversations from '../../views/Conversations/';
 
+const EmptyLoading = ()=>(
+  <div></div>
+);
+
+const ChatWigetCustomization = Loadable({
+  loader: () => import('../../views/ChatWidgetCustomization/ChatWidgetCustomization'),
+  loading: EmptyLoading
+});
+
+const MessageLogs = Loadable({
+  loader: () => import('../../ALDashboard/views/Groups/MessageLogs'),
+  loading: EmptyLoading
+});
+
+const Users = Loadable({
+  loader: () => import('../../views/Users/'),
+  loading: EmptyLoading
+});
+
+const Reports = Loadable({
+  loader: () => import('../../views/Reports/'),
+  loading: EmptyLoading
+});
+
+const Bot = Loadable({
+  loader: () => import('../../views/Bot/'),
+  loading: EmptyLoading
+});
+
+const Install = Loadable({
+  loader: () => import('../../views/Settings/Installation'),
+  loading: EmptyLoading
+});
+
+const Admin = Loadable({
+  loader: () => import('../../views/Admin/'),
+  loading: EmptyLoading
+});
+
+const Team = Loadable({
+  loader: () => import('../../views/Team/'),
+  loading: EmptyLoading
+});
+
+const Autoreply = Loadable({
+  loader: () => import('../../views/Autoreply/'),
+  loading: EmptyLoading
+});
+
+const Welcome = Loadable({
+  loader: () => import('../../views/Autoreply/Welcome/Welcome.js'),
+  loading: EmptyLoading
+});
+
+const Company = Loadable({
+  loader: () => import('../../views/Company/Company'),
+  loading: EmptyLoading
+});
+
+const AwayMessage = Loadable({
+  loader: () => import('../../views/Autoreply/AwayMessage/AwayMessage.js'),
+  loading: EmptyLoading
+});
+
+const AutoSuggest = Loadable({
+  loader: () => import('../../views/Autoreply/AutoSuggest.js'),
+  loading: EmptyLoading
+});
+
+const Download = Loadable({
+  loader: () => import('../../views/Download/Download.js'),
+  loading: EmptyLoading
+});
+
+const Faq = Loadable({
+  loader: () => import('../../views/Faq/'),
+  loading: EmptyLoading
+});
+
+const Billing = Loadable({
+  loader: () => import('../../views/Billing/'),
+  loading: EmptyLoading
+});
+
+const PushNotification = Loadable({
+  loader: () => import('../../views/PushNotification/PushNotification.js'),
+  loading: EmptyLoading
+});
+
+const Integrations = Loadable({
+  loader: () => import('../../views/Integrations/Integrations.js'),
+  loading: EmptyLoading
+});
+
+const IncomingEmailForward = Loadable({
+  loader: () => import('../../views/IncomingEmailForward/IncomingEmailForward.js'),
+  loading: EmptyLoading
+});
+
+const EmailNotifications = Loadable({
+  loader: () => import('../../views/EmailNotifications/EmailNotifications.js'),
+  loading: EmptyLoading
+});
+
+const Conversation404 = Loadable({
+  loader: () => import('../../views/Pages/Page404/Conversation404'),
+  loading: EmptyLoading
+});
+
+const EmailFallback = Loadable({
+  loader: () => import('../../views/EmailFallback/EmailFallback.js'),
+  loading: EmptyLoading
+});
+
+const WebhooksAndSecurity = Loadable({
+  loader: () => import('../../views/WebhooksAndSecurity/WebhooksAndSecurity'),
+  loading: EmptyLoading
+});
 
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
 const chatUrl = config.baseurl.applozicAPI;

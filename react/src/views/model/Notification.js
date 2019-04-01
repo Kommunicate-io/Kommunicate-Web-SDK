@@ -1,6 +1,5 @@
 
 import {
-  NotificationContainer,
   NotificationManager
 } from "react-notifications";
 

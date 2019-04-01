@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import validator from 'validator';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
-import {Modal} from 'react-bootstrap';
-import  {Button}  from 'react-bootstrap';
-import Dropdown from 'react-dropdown';
-import {SplitButton, MenuItem} from 'react-bootstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import AutoSuggest from './AutoSuggest'

@@ -14,7 +14,6 @@ import {getAppSetting} from '../../src/utils/kommunicateClient'
 import { connect } from 'react-redux'
 import * as Actions from '../actions/applicationAction';
 import * as ClearReduxAction from '../actions/index'
-import {Subscribe, Unsubscribe} from '../views/Pages/subscription/Subscribe';
 
 const EmptyLoading = ()=>(
     <div></div>
@@ -65,6 +64,18 @@ const ApplicationList = Loadable({
   loader: () => import('../views/Pages/ApplicationList/ApplicationList'),
   loading: EmptyLoading
 });
+
+const Subscribe = Loadable({
+  loader: () => import('../views/Pages/subscription/Subscribe'),
+  loading: EmptyLoading
+});
+
+const Unsubscribe = Loadable({
+  loader: () => import('../views/Pages/subscription/Subscribe'),
+  loading: EmptyLoading
+});
+
+
 
 // const history = createBrowserHistory();
 const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
@@ -132,7 +143,7 @@ class App extends Component {
     }
 
     return <div>
-            {!(currentPath.includes("/signup") || currentPath.includes("/subscribe") || currentPath.includes("/unsubscribe")) ? <div>
+            {!(currentPath.includes("/subscribe") || currentPath.includes("/unsubscribe")) ? <div>
                     <NotificationContainer />
                     <ThirdPartyScripts />
                 </div> : null}

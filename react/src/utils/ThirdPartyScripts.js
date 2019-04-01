@@ -8,16 +8,20 @@ import EventMessageClient from './EventMessageClient';
 class ThirdPartyScripts extends Component {
 
       componentDidMount(){
+
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
           var isKommunicateDashboard = CommonUtils.isKommunicateDashboard();
+          let signupPage = currentPath.includes('/signup');
+
           // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
 
+          if (!signupPage) {
             var kommunicateSupportChatUrl = getConfig().baseurl.komunicateSupportUrl|| getConfig().homeUrl;
             var support = isKommunicateDashboard ? {
               "appId": "kommunicate-support",
@@ -87,9 +91,8 @@ class ThirdPartyScripts extends Component {
               window.kommunicate = m;
               m._globals = o;
             })(document, window.kommunicate || {});
+          }
           /*}*/
-
-
 
           // hot jar script
             (function(h,o,t,j,a,r){
@@ -143,26 +146,28 @@ class ThirdPartyScripts extends Component {
             }
 
             //Profitwell Script
-            let profitWellUser = '';
-            if(CommonUtils.getUserSession()) {
-                profitWellUser = CommonUtils.getUserSession().adminUserName;
+            if (!signupPage) {
+              let profitWellUser = '';
+              if(CommonUtils.getUserSession()) {
+                  profitWellUser = CommonUtils.getUserSession().adminUserName;
+              }
+              if (CommonUtils.getUserSession() && CommonUtils.isProductApplozic() && CommonUtils.getUserSession().application.stripeCustomerKey != null) {
+                  profitWellUser = CommonUtils.getUserSession().application.stripeCustomerKey;
+              }
+  
+              (function(i,s,o,g,r,a,m){i['ProfitWellObject']=r;i[r]=i[r]||function(){
+                  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
+                  })(window,document,'script','https://dna8twue3dlxq.cloudfront.net/js/profitwell.js','profitwell');
+              profitwell('auth_token', getConfig().products[CommonUtils.getProduct()].profitwell); // Your unique Profitwell public API token
+              profitwell('user_email', profitWellUser);
+  
+  
+              const script = document.createElement("script");
+              script.src = "https://checkout.stripe.com/checkout.js";
+              script.async = true;
+              document.body.appendChild(script);
             }
-            if (CommonUtils.getUserSession() && CommonUtils.isProductApplozic() && CommonUtils.getUserSession().application.stripeCustomerKey != null) {
-                profitWellUser = CommonUtils.getUserSession().application.stripeCustomerKey;
-            }
-
-            (function(i,s,o,g,r,a,m){i['ProfitWellObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-                })(window,document,'script','https://dna8twue3dlxq.cloudfront.net/js/profitwell.js','profitwell');
-            profitwell('auth_token', getConfig().products[CommonUtils.getProduct()].profitwell); // Your unique Profitwell public API token
-            profitwell('user_email', profitWellUser);
-
-
-            const script = document.createElement("script");
-            script.src = "https://checkout.stripe.com/checkout.js";
-            script.async = true;
-            document.body.appendChild(script);
       }
 
       componentWillMount(){
