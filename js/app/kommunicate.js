@@ -69,6 +69,7 @@ $applozic.extend(true,Kommunicate,{
             "isMessage": params.isMessage,
             "isInternal": params.isInternal,
             "skipRouting": params.skipRouting,
+            "skipBotEvent": params.skipBotEvent,
             "metadata": groupMetadata
         }
         Kommunicate.client.createConversation(conversationDetail, callback);
@@ -84,6 +85,7 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.agentIds = conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
+        conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
 
         return conversationDetail;
     },
