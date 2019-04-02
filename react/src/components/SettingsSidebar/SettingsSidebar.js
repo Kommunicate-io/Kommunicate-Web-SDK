@@ -111,6 +111,11 @@ class SettingsSidebar extends Component {
                                 <NavLink to={'/settings/away-message'} className="ss-nav-link ac-trigger-links" id="ac-away-message" activeClassName="active">Away Message</NavLink>
                             </li>
                         }
+                        {this.state.isKommunicateDashboard && 
+                            <li className="ss-nav-item welcome-link">
+                                <NavLink to={'/settings/csat-ratings'} className="ss-nav-link ac-trigger-links" id="ac-conversation-ratings" activeClassName="active">CSAT Ratings</NavLink>
+                            </li>
+                        }
                         {this.state.isKommunicateDashboard &&  
                             <li className="ss-nav-item message-shortcut-link">
                                 <NavLink to={'/settings/quick-replies'} className="ss-nav-link ac-trigger-links" id="ac-quick-replies" activeClassName="active">Quick Replies</NavLink>

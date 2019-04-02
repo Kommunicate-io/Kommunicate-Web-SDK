@@ -138,6 +138,11 @@ const WebhooksAndSecurity = Loadable({
   loading: EmptyLoading
 });
 
+const CSATRatings = Loadable({
+  loader: () => import('../../views/CSATRatings/CSATRatings'),
+  loading: EmptyLoading
+});
+
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
 const chatUrl = config.baseurl.applozicAPI;
 
@@ -403,6 +408,7 @@ class Full extends Component {
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" render={() => <ChatWigetCustomization {...this.props} />} />
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
+                <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
 
                 <Redirect from="/" to="/dashboard" />      
 
