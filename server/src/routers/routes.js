@@ -305,5 +305,10 @@ iosSettingRouter.get('/', iosAppSiteAssociationController.getIosSiteAssociationS
  * onboarding router
  */
 
-onboardingRouter.post('/:appId/insert', validate(onboardingValidation.insertOnboardingStatus),
+onboardingRouter.get('/:appId/', validate(onboardingValidation.getOnboardingStatus),
+onboardingController.getOnboardingStatusByApplicationId);
+onboardingRouter.post('/:appId/', validate(onboardingValidation.insertOnboardingStatus),
 onboardingController.insertOnboardingStatus);
+onboardingRouter.patch('/:appId/', validate(onboardingValidation.updateOnboardingStatus),
+onboardingController.updateOnboardingStatus);
+
