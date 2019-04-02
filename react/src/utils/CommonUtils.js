@@ -313,6 +313,16 @@ const CommonUtils = {
         } catch (err) {
             return false;
         }
+    },
+    updateRoutingRulesInStorage: function (options) {
+        // update in session
+        let userSession = CommonUtils.getUserSession();
+        userSession.routingState = options.routingRuleForAgents;
+        CommonUtils.setUserSession(userSession);
+        // up[date in storage 
+        var appSettings = kmUtils.getItemFromLocalStorage("KM_APP_SETTINGS") || {};
+        appSettings.agentRouting = options.routingRuleForAgents;
+        kmUtils.setItemInLocalStorage("KM_APP_SETTINGS", appSettings);
     }
 }
 

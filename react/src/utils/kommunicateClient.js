@@ -997,9 +997,9 @@ const updateAppSetting = (data) => {
   })
 
 }
-const getAppSetting = () => {
+const getAppSetting = (applicationId) => {
   let userSession = CommonUtils.getUserSession();
-  let appId = userSession.application.applicationId;
+  let appId = applicationId || userSession.application.applicationId;
   const url = getConfig().kommunicateBaseUrl + '/settings/application/' + appId;
   return Promise.resolve(axios({
     method: 'GET',
@@ -1011,8 +1011,8 @@ const getAppSetting = () => {
       return result;
     }
   }).catch(err => {
-    throw { message: err };
     console.log("Error while fetching application settings", err)
+    throw { message: err };
   })
 }
 

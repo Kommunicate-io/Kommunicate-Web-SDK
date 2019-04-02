@@ -5915,7 +5915,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.processNotification = function(message){
 				var groupDetail =  KM_GROUP_MAP[message.groupId];
-				if(groupDetail&& groupDetail.metadata["CONVERSATION_ASSIGNEE"]== MCK_USER_ID){
+				var assignee=  groupDetail && window.AGENT_BOT_DETAIL_MAP && window.AGENT_BOT_DETAIL_MAP[groupDetail.metadata["CONVERSATION_ASSIGNEE"]];
+				var appSetting =mckStorage.getAppSetting();
+				var conversationRouting = (appSetting && typeof appSetting.agentRouting != 'undefined')? appSetting.agentRouting:"";
+				// if assignee not found show the notification
+				if((conversationRouting == KOMMUNICATE_CONSTANTS.ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY && (!assignee ||  assignee.roleType!= KOMMUNICATE_CONSTANTS.USER_ROLE_TYPE.KOMMUNICATE.BOT)) 
+				|| (conversationRouting == KOMMUNICATE_CONSTANTS.ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT && MCK_USER_ID == groupDetail.metadata["CONVERSATION_ASSIGNEE"])){
 					mckNotificationService.notifyUser(message);
 				}
 					 
@@ -7231,6 +7236,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					return MCK_CONTACT_NAME_ARRAY;
 				}
 			};
+			_this.getAppSetting = function(){
+			return 	kmUtils.getItemFromLocalStorage("KM_APP_SETTINGS");
+			}
 		}
 		function MckMapLayout() {
 			var _this = this;

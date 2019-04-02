@@ -58,5 +58,29 @@ KOMMUNICATE_CONSTANTS = {
         ASSIGNED_TO_ME: 1,
         CLOSED: 2
     },
-    RELEASE_DATE: "2019-03-20"
+    RELEASE_DATE: "2019-03-20",
+    // user role 
+    USER_ROLE_TYPE:{
+        APPLOZIC:{
+            ADMIN: 4,
+            APPLICATION_ADMIN: 2,
+            APPLICATION_WEB_ADMIN:8,
+            USER : 3,
+            BOT: 1,
+            DEVELOPER:11,
+            BUSINESS:5,
+            APPLICATION_BROADCASTER:6,
+            SUPPORT:7
+        },
+        KOMMUNICATE: {
+            SUPER_ADMIN : 0,
+            ADMIN : 1,
+            AGENT : 2,
+            BOT : 3,
+        } 
+    },
+    ROUTING_RULES_FOR_AGENTS :{
+        NOTIFY_EVERYBODY : 0 ,
+        AUTOMATIC_ASSIGNMENT : 1
+    }
 }

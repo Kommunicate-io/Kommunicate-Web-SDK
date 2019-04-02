@@ -202,9 +202,7 @@ handleRadioBtnNotifyEverybody = () => {
     if (this.state.preventMultiCallNotifyEverybody == false) {
         return Promise.resolve(updateAgentAndBotRouting({agentRouting: ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
-                let userSession = CommonUtils.getUserSession();
-                userSession.routingState = ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY;
-                CommonUtils.setUserSession(userSession)
+                CommonUtils.updateRoutingRulesInStorage({routingRuleForAgents:ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY});
                 Notification.success('Notify everybody is enabled');
                 this.setState({
                     preventMultiCallAutoAssignment: false,
@@ -224,9 +222,7 @@ handleRadioBtnAutomaticAssignment = () => {
     if (this.state.preventMultiCallAutoAssignment == false) {
         return Promise.resolve(updateAgentAndBotRouting({agentRouting: ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
-                let userSession = CommonUtils.getUserSession();
-                userSession.routingState = ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT;
-                CommonUtils.setUserSession(userSession);
+                CommonUtils.updateRoutingRulesInStorage({routingRuleForAgents: ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT});
                 Notification.success('Automatic assignment is enabled');
                 this.setState({
                     preventMultiCallAutoAssignment: true,
@@ -238,6 +234,7 @@ handleRadioBtnAutomaticAssignment = () => {
         })
     }
 }
+
 
 toggleConversationAssignment = () => {
     this.setState({
