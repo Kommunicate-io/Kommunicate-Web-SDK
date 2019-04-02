@@ -60,6 +60,7 @@ app.use('/v2/users',routes.v2UserRouter);
 app.use('/metabase',routes.metabaseRouter);
 app.use('/feedback', routes.feedbackRouter);
 app.use('/apple-app-site-association', routes.iosSettingRouter);
+app.use('/onboarding', routes.onboardingRouter)
 
 //Cron Time Stamp Route
 app.use('/crontime',routes.cronServiceRouter);

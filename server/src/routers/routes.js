@@ -42,6 +42,8 @@ const metabaseController = require('../metabase/metabaseController');
 const metabaseValidator = require('../metabase/validation');
 const feedbackController = require('../feedback/feedbackController');
 const iosAppSiteAssociationController = require('../iosAppSiteAssociation/iosAppSiteAssociationController'); 
+const onboardingController = require('../onboarding/onboardingController');
+const onboardingValidation = require('../onboarding/validation')
 
 
 
@@ -77,6 +79,7 @@ const googleAuthRouter = express.Router();
 const subscriptionRouter = express.Router();
 const metabaseRouter = express.Router();
 const iosSettingRouter = express.Router();
+const onboardingRouter = express.Router();
 
 
 //export routers
@@ -104,6 +107,7 @@ exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
 exports.metabaseRouter = metabaseRouter;
 exports.feedbackRouter = feedbackController.feedbackRouter;
+exports.onboardingRouter = onboardingRouter;
 
 exports.iosSettingRouter = iosSettingRouter
 //Cron Time Stamp Route
@@ -296,3 +300,10 @@ subscriptionRouter.patch('/update/:userId', validate(subscriptionValidation.upda
 subscriptionRouter.delete('/:subscriptionId', validate(subscriptionValidation.deleteSubscription), subscriptionController.deleteSubscription);
 
 iosSettingRouter.get('/', iosAppSiteAssociationController.getIosSiteAssociationSettings)
+
+/**
+ * onboarding router
+ */
+
+onboardingRouter.post('/:appId/insert', validate(onboardingValidation.insertOnboardingStatus),
+onboardingController.insertOnboardingStatus);

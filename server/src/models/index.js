@@ -34,7 +34,8 @@ const modules = [
   require('./UserPreferences'),
   require('./Preference'),
   require("./ChatPopupMessage"),
-  require("./Feedback")
+  require("./Feedback"),
+  require('./Onboarding')
 ];
 
 modules.forEach(function (module) {
