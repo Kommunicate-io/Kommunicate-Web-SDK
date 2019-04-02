@@ -408,8 +408,9 @@ $applozic.extend(true,Kommunicate,{
        2. defaultAgentIds [multiple values]
        3. defaultBotIds [multiple values]
        4. skipRouting [boolean]
-       5. KM_CHAT_CONTEXT
-       6. WELCOME_MESSAGE
+       5. skipBotEvent [multiple values]
+       6. KM_CHAT_CONTEXT
+       7. WELCOME_MESSAGE
    */
     updateSettings:function(options){
         let type = typeof options;
