@@ -403,14 +403,12 @@
         text-decoration:none;
     }
     .km-cta-button.km-link-button {
-        border: none;
-        width: 100%;
         text-align: left;
-        padding-left: 0px;
         font-size: 14px;
     }
-    .km-cta-button.km-link-button:hover {
-        text-decoration: underline;
+    .km-cta-button.km-link-button span {
+        vertical-align: sub;
+        margin-left: 5px;
     }
     .km-cta-button.km-carousel-card-button, .km-cta-button.km-faq-list-link-button {
         border: 1px solid #e7e4e4;

@@ -52,19 +52,20 @@ const compressAndOptimize = () => {
     // minify applozic css files into a single file
     compressor.minify({
         compressor: 'clean-css',
-        //compressor: 'no-compress',
+        // compressor: 'no-compress',
         input: [
             path.resolve(__dirname, 'lib/css/mck-combined.min.css'),
             path.resolve(__dirname, 'css/app/mck-sidebox-1.0.css'),
             path.resolve(__dirname, 'css/app/km-rich-message.css'),
             path.resolve(__dirname, 'css/app/km-login-model.css'),
             path.resolve(__dirname, 'lib/css/tiny-slider-2.4.0.css'),
-            path.resolve(__dirname, 'css/app/km-sidebox.css')
+            path.resolve(__dirname, 'css/app/km-sidebox.css'),
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicatepluginrequirements.${version}.min.css`),
         options: {
             advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
             aggressiveMerging: true, // set to false to disable aggressive merging of properties.
+            compatibility: '', // To add vendor prefixes for IE8+
             sourceMap: true
         },
         callback: function (err, min) {
@@ -78,29 +79,13 @@ const compressAndOptimize = () => {
     });
 
     compressor.minify({
-        compressor: 'gcc',
+        compressor: 'uglify-es',
         // compressor: 'no-compress',
         input: [
+            path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
             path.resolve(__dirname, 'knowledgebase/helpdocs.js'),
-            path.resolve(__dirname, 'knowledgebase/kb.js')
-        ],
-        output: path.resolve(__dirname, 'knowledgebase/kommunicate-kb-0.1.min.js'),
-        callback: function (err, min) {
-            if (!err)
-                console.log(" kommunicate-kb-0.1.min.js combined successfully");
-            else {
-                console.log("err while minifying kommunicate-kb-0.1.min.js", err);
-            }
-        }
-    });
-    compressor.minify({
-        // compressor: 'gcc',
-        compressor: 'uglify-es',
-        //compressor: 'no-compress',
-        input: [
-            path.resolve(__dirname, 'js/app/applozic.jquery.js'),
-            path.resolve(__dirname, 'knowledgebase/kommunicate-kb-0.1.min.js'),
+            path.resolve(__dirname, 'knowledgebase/kb.js'),
             path.resolve(__dirname, 'js/app/labels/default-labels.js'),
             path.resolve(__dirname, 'js/app/kommunicate-client.js'),
             path.resolve(__dirname, 'js/app/conversation/km-conversation-helper.js'),
@@ -126,22 +111,6 @@ const compressAndOptimize = () => {
                 console.log(`kommunicate-plugin.${version}.min.js combined successfully`);
             else {
                 console.log(`err while minifying kommunicate-plugin.${version}.min.js`, err);
-            }
-        }
-    });
-
-    compressor.minify({
-        compressor: 'clean-css',
-        input: [
-            path.resolve(__dirname, 'css/app/km-rich-message.css'),
-            path.resolve(__dirname, 'css/app/mck-sidebox-1.0.css')
-        ],
-        output: path.resolve(__dirname, 'js/app/mck-sidebox-1.0.min.css'),
-        callback: function (err, min) {
-            if (!err)
-                console.log("mck-sidebox-1.0.css minified successfully");
-            else {
-                console.log("err while minifying mck-sidebox-1.0.css", err);
             }
         }
     });

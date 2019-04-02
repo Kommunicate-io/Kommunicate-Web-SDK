@@ -30,7 +30,8 @@ function KmCustomTheme() {
             var kmCustomWidgetCustomCSS = '.km-custom-widget-background-color { background: ' + primaryColor + ' !important;} '+
             '.km-custom-widget-border-color { border-color: ' + primaryColor + ' !important;} '+
             '.km-custom-widget-text-color { color: ' + primaryColor + ' !important;} '+
-            '.km-custom-widget-fill { fill: ' + primaryColor + ' !important;} ';
+            '.km-custom-widget-fill { fill: ' + primaryColor + ' !important;} '+
+            '.km-custom-widget-stroke { stroke: ' + primaryColor + ' !important;} ';
 
             // Pass all classes you want to create in a single array.
             _this.createCustomClasses(kmCustomWidgetCustomCSS);
