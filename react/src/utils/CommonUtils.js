@@ -358,14 +358,14 @@ const CommonUtils = {
             return false;
         }
     },
-    updateRoutingRulesInStorage: function(options){
+    updateRoutingRulesInStorage: function (options) {
         // update in session
         let userSession = CommonUtils.getUserSession();
         userSession.routingState = options.routingRuleForAgents;
         CommonUtils.setUserSession(userSession);
         // up[date in storage 
-        var appSettings = 	kmUtils.getItemFromLocalStorage("KM_APP_SETTINGS") || {};
-        appSettings.agentRouting= options.routingRuleForAgents; 
+        var appSettings = kmUtils.getItemFromLocalStorage("KM_APP_SETTINGS") || {};
+        appSettings.agentRouting = options.routingRuleForAgents;
         kmUtils.setItemInLocalStorage("KM_APP_SETTINGS", appSettings);
     }
 }

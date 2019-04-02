@@ -7227,7 +7227,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (typeof (w.localStorage) !== "undefined") {
 					var mckLocalcontactNameArray = kmUtils.getItemFromLocalStorage("kmContactNameArray");
 					if (mckLocalcontactNameArray !== null) {
-						mckContactNameArray = mxckContactNameArray.concat(mckLocalcontactNameArray);
+						mckContactNameArray = mckContactNameArray.concat(mckLocalcontactNameArray);
 					}
 					kmUtils.setItemInLocalStorage('kmContactNameArray', mckContactNameArray);
 					return mckContactNameArray;
