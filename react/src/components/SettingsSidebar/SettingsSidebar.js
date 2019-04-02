@@ -5,7 +5,7 @@ import './SettingsSidebar.css';
 import styled, { withTheme, createGlobalStyle } from 'styled-components';
 
 const LinkContainer = styled.a`
-    display: flex; 
+    display: flex !important; 
     align-items: center;
     justify-content: flex-start;
 `;
