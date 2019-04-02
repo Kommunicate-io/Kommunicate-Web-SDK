@@ -6,8 +6,8 @@ var kmCustomIframe =
     '   border: none;' +
     '   position: fixed;' +
     '   z-index: 2243000;' +
-    '   bottom: 30px;' +
-    '   right: 30px;' +
+    '   bottom: 10px;' +
+    '   right: 20px;' +
     '   height: 75px;' +
     '   width: 75px;' +
     '} \n ' +
@@ -65,6 +65,7 @@ function addKommunicatePluginToIframe() {
 // Create element iframe for kommunicate widget
 var kommunicateIframe = document.createElement("iframe");
 kommunicateIframe.setAttribute("style", "overflow:hidden;"); // to fix scrollbars appearing before the chat widget loads on slow connections
+kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
 kommunicateIframe.setAttribute("id", "kommunicate-widget-iframe");
 kommunicateIframe.setAttribute("class", "kommunicate-custom-iframe");
 kommunicateIframe.setAttribute('data-protocol', window.location.protocol);

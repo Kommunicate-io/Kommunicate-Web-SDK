@@ -1739,16 +1739,18 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     kommunicateCommons.setWidgetStateOpen(true);
                     kommunicateIframe.classList.remove('km-iframe-closed');
                     kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'n-vis','')
                     POPUP_WIDGET ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
-                    KOMMUNICATE_VERSION ==='v2' && POPUP_WIDGET && _this.configurePopupWidget();
+                    POPUP_WIDGET && _this.configurePopupWidget();
                 });
                 var closeButton = document.getElementById("km-chat-widget-close-button");
-                function closeChatBox(e){
+                function closeChatBox(){
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
                     kommunicateIframe.classList.add('km-iframe-closed');
                     kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query', 'km-iframe-dimension-with-popup',  'km-iframe-dimension-no-popup');
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'','n-vis')
                 }
                 closeButton.addEventListener("click", closeChatBox);
                 popUpcloseButton.addEventListener("click", function(e){
@@ -8493,6 +8495,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 kmIframe.classList.add('km-iframe-notification');
             };
 
+            _this.hideMessagePreview = function(){
+                $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
+                $mck_msg_preview_visual_indicator_text.html('');
+            }
+
             _this.showNewMessageNotification = function (message, contact, displayName) {
                 if (!IS_NOTIFICATION_ENABLED || message.contentType === 102 || message.metadata.KM_ASSIGN || message.metadata.KM_STATUS) {
                     return;
@@ -8581,12 +8588,15 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 //     $mck_msg_preview.fadeOut(1000);
                 // }, 10000);
                 mckInitializeChannel.onNotificationEvent(message);
-                $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
+                $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn", function(e) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     kommunicateIframe.classList.remove("km-iframe-dimension-no-popup", "km-iframe-notification", ".km-iframe-dimension-with-popup");
                     document.getElementById("km-popup-close-button").style.display = "none";
-                    $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
-                    $mck_msg_preview_visual_indicator_text.html('');
+                    _this.hideMessagePreview();
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'','n-vis')
+                });
+                $applozic(d).on("click", " #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
+                    _this.hideMessagePreview();
                 });
             };
 
