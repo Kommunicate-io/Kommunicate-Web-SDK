@@ -2113,6 +2113,33 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
 
+            _this.showSendButton = function(){
+                kommunicateCommons.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
+                kommunicateCommons.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
+                IS_MCK_LOCSHARE ? "" :kommunicateCommons.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
+            }
+
+            _this.hideSendButton = function(){
+                kommunicateCommons.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
+                kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                !IS_MCK_LOCSHARE ? kommunicateCommons.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommons.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
+                !EMOJI_LIBRARY ? "" : kommunicateCommons.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
+            }
+
+            _this.toggleSendButton = function(el) {
+                var text = "";
+                if(el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+                    text = el.value;
+                } else {
+                    text = el.textContent;
+                }
+                if(text == "" || !text.replace(/\s/g, '').length){
+                    _this.hideSendButton();
+                }   else {
+                    _this.showSendButton();
+                }
+            }
+
             _this.checkArray = function(askUserDetails) {
               if(askUserDetails && Array.isArray(askUserDetails) === false) {
                 throw new Error("askUserDetails should be an array");
@@ -2281,25 +2308,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     mckMessageLayout.addGroupsToGroupSearchList();
                 });
 
-                _this.showSendButton = function(){
-                    kommunicateCommons.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
-                    kommunicateCommons.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
-                    IS_MCK_LOCSHARE ? "" :kommunicateCommons.modifyClassList({id : ["mck-file-up2"]}, "n-vis" , "vis");
-                }
-
-                _this.hideSendButton = function(){
-                    kommunicateCommons.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
-                    kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
-                    !IS_MCK_LOCSHARE ? kommunicateCommons.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommons.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
-                    !EMOJI_LIBRARY ? "" : kommunicateCommons.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
-                }
-
                 mck_text_box.addEventListener("keyup",function(){
-                    if(mck_text_box.textContent == "" || !mck_text_box.textContent.replace(/\s/g, '').length){
-                        _this.hideSendButton();
-                    }   else {
-                        _this.showSendButton();
-                    }
+                    _this.toggleSendButton(this);
                 });
                 $mck_text_box.keydown(function (e) {
                     if ($mck_text_box.hasClass('mck-text-req')) {
@@ -5478,6 +5488,17 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
              * metadata:{}//optional
              * }
              */
+
+            $mck_autosuggest_search_input.on("keyup", function(e) {
+                mckMessageService.toggleSendButton(this);
+                $mck_text_box.text($mck_autosuggest_search_input.val());
+                if((!(document.querySelector("ul.mcktypeahead.mck-auto-suggest-menu").style.display === "block")) && e.keyCode === 13) {
+                    e.preventDefault();
+                    $mck_text_box.submit();
+                    mckMessageLayout.clearMessageField(true);
+                }
+            });
+
             _this.populateAutoSuggest = function (params) {
                 $mck_autosuggest_search_input.mcktypeahead({
                     order: 'desc',
@@ -5518,8 +5539,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         $mck_autosuggest_search_input.on("keydown", function(e) {
                             $mck_text_box.text($mck_autosuggest_search_input.val());
                             if(e.which === 13 && metadataObj.displayMessage) {
-                                $mck_text_box.submit();  
                                 e.preventDefault(); 
+                                $mck_text_box.submit();  
+                                mckMessageLayout.clearMessageField(true);
                             }
                             if(e.which === 9) {
                                 $mck_autosuggest_search_input.focus();
@@ -5993,6 +6015,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             };
             _this.clearMessageField = function (keyboard) {
                 $mck_text_box.html('');
+                $mck_text_box.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
                 if (keyboard) {
