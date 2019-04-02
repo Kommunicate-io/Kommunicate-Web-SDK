@@ -8,6 +8,7 @@ const EventMessageClient = {
     },
     
     setupEventMessageGroup: function(userId) {
+        let _this = this;
         let clientGroupId = this.getClientGroupId(userId);
         KommunicateGlobal.Applozic.ALApiService.getGroupInfo({
             data: {
@@ -24,6 +25,7 @@ const EventMessageClient = {
                     };
                     Kommunicate.startConversation(conversationDetail, function (response) {
                         console.log("new conversation created");
+                        _this.sendEventMesssage('welcome-post-signup');
                     });                    
                 } else {
                     console.log("onboarding group exists");
