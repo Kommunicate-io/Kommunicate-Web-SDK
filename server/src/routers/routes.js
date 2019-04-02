@@ -234,6 +234,7 @@ thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidat
  */
 faqRouter.get("/migrate", autoSuggestController.migrateToModel);
 faqRouter.get("/_search", autoSuggestController._esSearchQuery);
+faqRouter.post("/_search", autoSuggestController._esSearchQuery);
 faqRouter.get("/search/:question/:appId",validate(autoSuggestValidation.searchFAQv2),autoSuggestController.searchFAQv2);
 faqRouter.get("/search", validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
 faqRouter.get("/list/:appId", validate(autoSuggestValidation.fetchSuggestion),autoSuggestController.fetchFAQs);

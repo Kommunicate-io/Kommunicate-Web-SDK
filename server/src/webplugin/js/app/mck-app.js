@@ -31,7 +31,7 @@ function ApplozicSidebox() {
     var mck_script_loader1 = [
     {
             "name": "applozic-min-js", 
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.3.min.js" // update the url with every new release of applozic-web-plugin
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.4.min.js" // update the url with every new release of applozic-web-plugin
     },
     {
             "name": "km-utils", 
@@ -53,7 +53,7 @@ function ApplozicSidebox() {
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.crossOrigin = "anonymous";
-            script.src = MCK_STATICPATH + "/lib/js/jquery-3.2.1.min.js";
+            script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {

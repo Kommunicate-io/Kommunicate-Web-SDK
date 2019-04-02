@@ -8,7 +8,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
 //import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
 import ApplozicClient from '../../utils/applozicClient';
-import _ from 'lodash';
+import sortBy from 'lodash/sortBy';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 import Notification from '../model/Notification';
@@ -136,7 +136,7 @@ class Users extends Component {
             assignedUser.push(user);
             // Sort array after pushing
             var sortOnBasisOf = assignedUser[index] && assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
-            var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
+            var arrObj = sortBy(assignedUser, sortOnBasisOf).reverse();
             _this.setState({
               result: arrObj,
               hideEmptyStateImage: true
@@ -147,7 +147,7 @@ class Users extends Component {
       else {
         assignedUser.push(user);
         var sortOnBasisOf = assignedUser[index] && assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
-        var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
+        var arrObj = sortBy(assignedUser, sortOnBasisOf).reverse();
         _this.setState({
           result: arrObj,
           hideEmptyStateImage: true

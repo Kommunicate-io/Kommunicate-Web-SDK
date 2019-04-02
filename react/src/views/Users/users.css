@@ -140,6 +140,10 @@
   display: inline;
 }
 
+input#km-search-box:focus {
+  border: none;
+}
+
 .km-text-box-wrapper {
   position: relative;
   width: 20%;
