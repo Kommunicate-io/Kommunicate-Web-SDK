@@ -282,6 +282,7 @@ export default {
  "commonResources":{
     "docsLink" : {
         applozic:{
+          web: 'https://docs.applozic.com/docs/web-javascript-overview',
           installation:'https://docs.applozic.com/docs/web-javascript-chat-plugin#section-adding-sidebox-chat-ui-plugin-to-your-website',
           android:'https://docs.applozic.com/docs/android-chat-sdk',
           ios:"https://docs.applozic.com/docs/ios-chat-sdk#section-automated-installation-using-cocoapods",
