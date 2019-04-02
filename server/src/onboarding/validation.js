@@ -7,6 +7,8 @@ module.exports.getOnboardingStatus = {
 module.exports.updateOnboardingStatus = {
   params: {
     appId: joi.string().required(),
+  },
+  body: {
     stepId: joi.number().integer().required(),
     completed: joi.boolean().required()
   }
