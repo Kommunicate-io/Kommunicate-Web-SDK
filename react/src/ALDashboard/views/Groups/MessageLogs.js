@@ -6,7 +6,7 @@ import MessageLogsRowList from './MessageLogsRowList';
 import * as MessageLogsStyles from './MessageLogsStyles';
 import ApplozicClient from '../../../utils/applozicClient';
 import Button from '../../../components/Buttons/Button';
-import { BackArrow, DownloadIcon } from '../../../assets/svg/svgs';
+import { BackArrow, DownloadIcon, MessageLogsEmptyState } from '../../../assets/svg/svgs';
 import { MyLoader, MessageLogsDetailsLoader } from '../../../components/EmptyStateLoader/emptyStateLoader';
 import CommonUtils from '../../../utils/CommonUtils';
 
@@ -176,7 +176,7 @@ class MessageLogs extends Component {
                 { this.state.showGroupDetailData && <MessageLogsDetailsPage getContactImageByAlphabet={this.getContactImageByAlphabet} searchValue={this.state.searchMessages} onChange={this.searchMessagesOnChange} encryptedApp={isEncryptedApp} {...this.state.groupData} />  }
 
                 { !this.state.emptyState ?
-                <MessageLogsStyles.Table hidden={this.state.showGroupDetailData}>
+                ( this.state.totalCombinedGroupData.length > 0 ? <MessageLogsStyles.Table hidden={this.state.showGroupDetailData}>
                     <MessageLogsStyles.THead>
                         <MessageLogsStyles.TableRow>
                             <MessageLogsStyles.TableHeader>NAME</MessageLogsStyles.TableHeader>
@@ -193,7 +193,10 @@ class MessageLogs extends Component {
                             )
                         }
                     </MessageLogsStyles.TBody>
-                </MessageLogsStyles.Table> : <MyLoader />
+                </MessageLogsStyles.Table> : 
+                <MessageLogsStyles.EmptyStateContainer>
+                    <MessageLogsEmptyState />
+                </MessageLogsStyles.EmptyStateContainer> ) : <MyLoader />
             }
                 {!this.state.showGroupDetailData && <MessageLogsStyles.LoadMoreButtonContainer>
                     <Button secondary onClick={() => this.fetchMessages(this.state.lastFetchTime)} hidden={this.state.hideLoadMoreButton}>Load More</Button>

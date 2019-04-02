@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import Phone from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
 import Moment from 'moment-timezone';
-import countriesAndTimezones from 'countries-and-timezones';
 import Button from '../../../components/Buttons/Button';
 
 class Step1 extends Component {
@@ -24,7 +21,6 @@ class Step1 extends Component {
     }
 
     componentDidMount() {
-      this.getCoutryCodeFromTimezone();
       var _rrui_input_field = document.getElementById("number-input");
       _rrui_input_field.required = true;
       _rrui_input_field.classList.add("input");
@@ -159,28 +155,6 @@ onFocusName() {
   document.getElementById("customer-name").className = 'input customer-name';
 }
 
-getCoutryCodeFromTimezone() {
-  var countryId;
-  var timezone = Moment.tz.guess().toString();
-  if(timezone === "Asia/Calcutta") {
-    timezone = "Asia/Kolkata";
-  } else if(timezone === "Asia/Katmandu") {
-    timezone = "Asia/Kathmandu";
-  } else {
-    timezone = timezone;
-  }
-  // console.log(timezone);
-  var country = countriesAndTimezones.getCountriesForTimezone(timezone);
-  // console.log(country);
-  if(typeof country !== "undefined" && country.length > 0) {
-    countryId = country[0].id;
-  } else {
-    countryId = undefined;
-  }
-  // console.log(countryId);
-  return countryId;
-}
-
     render() {
         return (
             <form >
@@ -249,32 +223,7 @@ getCoutryCodeFromTimezone() {
                     </svg>
                     <span className="input-error-message">This field is mandatory</span>
                   </div>
-                </div> */}
-
-                <div className="group form-group">
-                  <Phone
-                    country={this.getCoutryCodeFromTimezone()}
-                    placeholder=" "
-                    value={ this.state.contact_no }
-                    onChange={ contact_no => this.setState({ contact_no }) }
-					id="number-input"
-                  />
-                  <div id="emptyerror" className="input-error-div n-vis">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                      <g id="Page-1" fill="none" fillRule="evenodd">
-                        <g id="Framework" transform="translate(-77 -805)" fill="#ED1C24">
-                          <g id="Wrong-Value-with-Notification" transform="translate(77 763)">
-                            <g id="Error-Notification" transform="translate(0 40)">
-                              <path d="M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z" id="Error-Icon"></path>
-                            </g>
-                          </g>
-                        </g>
-                      </g>
-                    </svg>
-                    <span className="input-error-message">This field is mandatory</span>
-                  </div>
-                </div>
-                
+                </div> */}                
 
                 <div className="group form-group email-form-group n-vis">
                               <input className="input" type="text" id="role-input" required name="role-input" placeholder=" " onFocus={this.onFocus} value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />

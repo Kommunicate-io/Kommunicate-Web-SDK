@@ -477,6 +477,9 @@ const EncryptedMessageLogoText = styled(GoBackText)`
     font-weight: 300;
 `;
 
+const EmptyStateContainer = styled.div`
+    text-align: center;
+`;
 
 module.exports = {
     Container,
@@ -540,4 +543,5 @@ module.exports = {
     ContactIcon,
     EncryptedMessageLogoContainer,
     EncryptedMessageLogoText,
+    EmptyStateContainer
 }

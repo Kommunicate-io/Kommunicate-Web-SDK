@@ -10,7 +10,6 @@ const routes = {
   '/settings/install': 'Install',
   '/settings/team': 'Teammates',
   '/configuration':"Configuration",
-  '/autoreply':"Configuration",
   '/settings/profile': "Profile",
   '/settings/quick-replies': 'Quick Replies',
   '/settings/welcome-message': 'Welcome Message',

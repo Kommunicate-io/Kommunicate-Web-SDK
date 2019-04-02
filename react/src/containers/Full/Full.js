@@ -63,11 +63,6 @@ const Team = Loadable({
   loading: EmptyLoading
 });
 
-const Autoreply = Loadable({
-  loader: () => import('../../views/Autoreply/'),
-  loading: EmptyLoading
-});
-
 const Welcome = Loadable({
   loader: () => import('../../views/Autoreply/Welcome/Welcome.js'),
   loading: EmptyLoading
@@ -392,7 +387,6 @@ class Full extends Component {
                 <Redirect from="/settings/agent-assignment" to="/settings/conversation-rules" />
                 <Route exact path="/faq" name="Faq" render={() => <Faq {...this.props} />} />
                 <Route exact path="/settings/team" name="Team" render={() => <Team {...this.props} />} />
-                <Route exact path="/settings/autoreply" name="Autoreply" render={() => <Autoreply {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
                 <Route exact path="/settings/company" name="Company" render={() => <Company {...this.props} />} />
                 <Route exact path="/settings/away-message" name="AwayMessage" render={() => <AwayMessage {...this.props} />} />
