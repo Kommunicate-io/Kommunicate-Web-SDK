@@ -3,6 +3,7 @@ const applicationModel = require('../models').application;
 const user = require("../models").user;
 const applicationService = require('./applicationService');
 const appSettingService = require('../setting/application/appSettingService');
+const onboardingService = require('../Onboarding/onboardingService')
 const logger = require('../utils/logger');
 const chargebeeService = require('../chargebee/chargebeeService');
 const userService = require('../users/userService');
@@ -10,7 +11,7 @@ const botClientService = require('../utils/botPlatformClient');
 const subscriptionPlans = require("../register/subscriptionPlans");
 const applozicClient = require("../utils/applozicClient");
 const {ROUTING_RULES_FOR_AGENTS} = require("../utils/constant")
-const {appSettings}= require("../utils/constant");
+const {appSettings, ONBOARDING_STATUS}= require("../utils/constant");
 
 
 const createCustomer = (customer, application, transaction) => {
@@ -23,11 +24,16 @@ const createCustomer = (customer, application, transaction) => {
         //logger.info('customer created :', 'created');
         application.customerId = customer[0].id;
         return applicationService.createApplication(application, transaction).then(application => {
-            return appSettingService.insertAppSettings({ applicationId: application.applicationId,"defaultConversationAssignee": conversationAssignee,removeBotOnAgentHandOff:appSettings.REMOVE_BOT_ON_AGENT_HANDOFF.ENABLED}).then(result => {
-                return getCustomerByApplicationId(application.applicationId);
-            }); 
-        });
+            return Promise.all([appSettingService.insertAppSettings({ applicationId: application.applicationId,"defaultConversationAssignee": conversationAssignee,removeBotOnAgentHandOff:appSettings.REMOVE_BOT_ON_AGENT_HANDOFF.ENABLED}), onboardingService.insertOnboardingStatus({applicationId: application.applicationId, stepId:ONBOARDING_STATUS.ACCOUNT_CREATED, completed:true})])
+        .then(([appSettingResponse, onboardingResponse]) => {
+            return getCustomerByApplicationId(application.applicationId);
+        }
 
+        ).catch(err => {
+            logger.info("error while inserting application on the app setting or onboarding status")
+        })
+        });
+        
     })
 }
 

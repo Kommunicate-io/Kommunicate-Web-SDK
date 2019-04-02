@@ -25,3 +25,7 @@ exports.appSettings={
     }
 }
 exports.ROUTING_RULES_FOR_AGENTS =this.appSettings.ROUTING_RULES_FOR_AGENTS;
+
+exports.ONBOARDING_STATUS = {
+    ACCOUNT_CREATED: 1
+}
