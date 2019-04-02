@@ -171,7 +171,7 @@ class SettingsSidebar extends Component {
                         {/**help */
                          !this.state.isKommunicateDashboard &&
                             <li className="ss-nav-item agent-app-link">
-                                <LinkContainer href="https://support.applozic.com/" className="ss-nav-link" target="_blank">
+                                <LinkContainer href="https://answers.applozic.com/" className="ss-nav-link" target="_blank">
                                     <InfoContainer>
                                         <InfoIcon className="info-icon">?</InfoIcon>
                                     </InfoContainer>

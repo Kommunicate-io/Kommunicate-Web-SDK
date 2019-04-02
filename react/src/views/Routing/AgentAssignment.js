@@ -66,7 +66,7 @@ componentDidMount(){
 }
 updateDefaultAssigneeDetails = (userList) => {
     //AssigneeInfo:key value pair for drop down
-    let appSettings = this.props.appSettings || this.state.appSettings;
+    let appSettings =  this.state.appSettings || this.props.appSettings ;
     let notifyEveryBodyDefaultAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY];
     let automaticAssignmentAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT];
     let notifyEveryBodyDefaultAssigneeInfo = userList.find(result => {

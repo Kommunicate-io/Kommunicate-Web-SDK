@@ -11523,3 +11523,8 @@ border-left-color: #5e8631;
   width: 6em;
   height: 6em;
 }
+.ReactModal__Overlay--after-open {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  z-index: 5000 !important;
+  overflow-y: auto !important;
+}
