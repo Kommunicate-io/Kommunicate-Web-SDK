@@ -86,7 +86,8 @@ class MessageLogs extends Component {
             "startIndex" : 0,
             "pageSize" : 100,
             "orderBy" : 1,
-            "groupId" : data.id
+            "groupId" : data.id,
+            "skipRead": true
         };
         var headers = {
             'Content-Type': 'application/json',

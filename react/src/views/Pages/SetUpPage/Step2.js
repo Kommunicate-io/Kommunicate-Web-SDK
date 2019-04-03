@@ -182,7 +182,7 @@ hideAllErrors (){
     localStorage.setItem("KM_ONBOARDING","true");
     this.props.updateStatus(actionType.onboardingStatus, true);
     this.props.updateStatus(actionType.modalOnboardingStatus, false);
-    this.props.updateStatus(actionType.trialDaysLeftOnboardingStatus, true);
+    this.props.updateStatus(actionType.trialDaysLeftOnboardingStatus, false);
   }
   openModal() {
     this.setState({ modalIsOpen: true });
