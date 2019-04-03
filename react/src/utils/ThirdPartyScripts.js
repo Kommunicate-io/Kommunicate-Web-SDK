@@ -14,6 +14,7 @@ class ThirdPartyScripts extends Component {
           var currentPath = window.location.pathname;
           var isKommunicateDashboard = CommonUtils.isKommunicateDashboard();
           let signupPage = currentPath.includes('/signup');
+          let setupPage = currentPath.includes('/setUpPage');
 
           // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
@@ -77,8 +78,8 @@ class ThirdPartyScripts extends Component {
                   });
                 }
 
-                if (userId) {
-                  EventMessageClient.setupEventMessageGroup(userId);
+                if (isKommunicateDashboard && userId && !signupPage && !setupPage) {
+                  setTimeout(function() { EventMessageClient.setupEventMessageGroup(userId) }, 45000);
                 }
                 
               };
