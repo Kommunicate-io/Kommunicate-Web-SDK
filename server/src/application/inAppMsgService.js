@@ -278,7 +278,6 @@ exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds,languageCod
     dbResult.find(function (item, i) {
       dbResult.findIndex(invite => (item.languageCode));
       if (item.languageCode === languageCode) {
-          console.log("test",item);
            finalResult[i] = item;       
       }
   });
