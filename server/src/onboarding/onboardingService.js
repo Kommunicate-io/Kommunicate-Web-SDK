@@ -1,11 +1,17 @@
 const onboardingModel = require("../models").Onboarding;
 const logger = require('../utils/logger');
 
-exports.insertOnboardingStatus = (data) => {
+exports.insertOnboardingStatus = async (data) => {
+    let onboardingStatus = await onboardingModel.find({ where: { applicationId: data.applicationId, stepId: data.stepId } });
+    if (onboardingStatus) { 
+        logger.info("RECORD EXIST FOR THIS STEP ID");
+        return 
+    }
     return Promise.resolve(onboardingModel.create(data)).then(res => {    
         return { message: "onboarding status inserted successfully" };
     }).catch(err => {
-        throw err;
+        // throw err;
+        logger.info("error while inserting the onboarding status", err)
     });
 }
 
