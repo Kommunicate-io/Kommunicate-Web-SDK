@@ -1,7 +1,10 @@
 const applicationSettingModel = require("../../models").AppSetting;
+const onboardingModel = require("../../models").Onboarding;
 const chatPopupMessageService = require("./chatPopupMessageService");
 const logger = require('../../utils/logger');
 const deepmerge = require('deepmerge');
+const {ONBOARDING_STATUS}= require('../../utils/constant');
+const onboardingService = require('../../Onboarding/onboardingService');
 
 exports.getAppSettingsByApplicationId = (criteria) => {
     return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
@@ -53,8 +56,10 @@ exports.updateAppSettings = async (settings, appId) => {
         settings = deepmerge(appSetting.preLeadCollection, settings);
         settings.preLeadCollection = [...new Set(settings.preLeadCollection)]; 
     }
+    let updateOnboardingStatus = settings.widgetTheme || settings.supportMails
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
         if(settings.popupTemplateKey == null){
+            updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED :MAILBOX_CONFIGURED, completed:true})
             return { message: "application settings updated successfully" };
         }
         else{
