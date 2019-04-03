@@ -5760,6 +5760,33 @@ div[name="message"]:last-child {
 	}
 }
 
+/* Dialogflow HTML Headers Fix */
+
+.mck-sidebox .mck-msg-text h1{
+	font-size:24px;
+	font-weight: 700!important;
+}
+.mck-sidebox .mck-msg-text h2{
+	font-size:22px;
+	font-weight: 700!important;
+}
+.mck-sidebox .mck-msg-text h3{
+	font-size:20px;
+	font-weight: 700!important;
+}
+.mck-sidebox .mck-msg-text h4{
+	font-size:18px;
+	font-weight: 700!important;
+}
+.mck-sidebox .mck-msg-text h5{
+	font-size:16px;
+	font-weight: 700!important;
+}
+.mck-sidebox .mck-msg-text h6{
+	font-size:14px;
+	font-weight: 700!important;
+}
+
 @keyframes kmOpeningAnimation {
 	from {
 		opacity: 0.6;
