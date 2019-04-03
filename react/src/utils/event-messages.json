@@ -1,4 +1,8 @@
 {
+    "welcome-post-signup": {
+        "delay": 0,
+        "message": "welcome-post-signup"
+    },
     "ac-integrated-bot": {
         "delay": 0,
         "message": "ac-integrated-bot"

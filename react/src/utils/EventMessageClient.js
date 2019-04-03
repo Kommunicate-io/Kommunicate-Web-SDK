@@ -25,7 +25,7 @@ const EventMessageClient = {
                     };
                     Kommunicate.startConversation(conversationDetail, function (response) {
                         console.log("new conversation created");
-                        _this.sendEventMesssage('welcome-post-signup');
+                        _this.sendEventMessage('welcome-post-signup');
                     });                    
                 } else {
                     console.log("onboarding group exists");
