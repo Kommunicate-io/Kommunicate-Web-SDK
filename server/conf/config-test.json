@@ -105,7 +105,7 @@
       "apiUrl":"https://kong-api.applozic.com",
       "enabled":true
   },
-
+    "kommunicateCryptoKey": "&h+!~%_1`ye;N,RH5M.H}hQ~A_7u@9vMOR4>:mFA#{kx!my^VaY$[1d/kX}=z;$",
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateAdminId": "suraj@applozic.com",
     "kommunicateAdminPassword": "1234567890",

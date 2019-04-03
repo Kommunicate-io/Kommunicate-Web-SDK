@@ -118,7 +118,7 @@ exports.register = (userId, password, captcha) => {
  return Promise.resolve(axios({
       method: 'post',
       url: config.getProperties().urls.applozicHostUrl + "/rest/ws/register/v2/admin",
-      data: "userName=" + encodeURIComponent(userId) + "&email=" + encodeURIComponent(userId) + "&password=" + password + "&companyName=", // + "&g-recaptcha-response=" + captcha,
+      data: "userName=" + encodeURIComponent(userId) + "&email=" + encodeURIComponent(userId) + "&password=" + encodeURIComponent(password) + "&companyName=", // + "&g-recaptcha-response=" + captcha,
       headers: {
           'Content-Type': 'application/x-www-form-urlencoded' 
       }

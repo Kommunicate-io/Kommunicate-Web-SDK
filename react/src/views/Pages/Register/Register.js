@@ -49,7 +49,7 @@ class Register extends Component {
       roleType:null,
       renderInvitationRevokedView :false,
       isDataFetched:false,
-      googleSignUpUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_up",
+      googleSignUpUrl: getConfig().googleApi.googleApiUrl,
       captcha: '',
       isLoadingVisible : false
     };
@@ -72,7 +72,7 @@ class Register extends Component {
     if (CommonUtils.getUserSession()) {
       window.location = "/dashboard";
     }
-    
+    this.updateGoogleSignupUrl();
     const search = this.props.location.search;
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
     const token = CommonUtils.getUrlParameter(search, 'token');
@@ -120,6 +120,19 @@ class Register extends Component {
    }
     //console.log("location",this.props.location);
   }
+
+  updateGoogleSignupUrl = () => {
+    let state = {};
+    let product = CommonUtils.getProduct();
+    state.product = product || "kommunicate";
+    state.process = "google_sign_up"
+    var cipherText = CommonUtils.encryptDataUsingCrypto(state);
+    var url = this.state.googleSignUpUrl + "&state=" + encodeURIComponent(cipherText);
+    this.setState({
+      googleSignUpUrl: url
+    });
+  };
+
   getUserDetails= (token) => {
     return Promise.resolve(getUserDetailsByToken(token)).then(response => {
       if (!response) {
@@ -255,7 +268,7 @@ class Register extends Component {
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
     var _this= this;
-    if (!validator.isLength(password, 6)) {
+    if (!validator.isLength(password, 6) && !this.state.googleOAuth) {
       Notification.warning("Password must be a minimum of 6 characters");
       return;
     }
@@ -305,7 +318,7 @@ class Register extends Component {
 
                   {/* Signup with Google code STARTS here. */}
                   {/* To show or hide Signup with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
-                  { CommonUtils.isKommunicateDashboard() && <Fragment>
+                  { <Fragment>
                     <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
                       <GoogleLogin />
                       Sign up with Google

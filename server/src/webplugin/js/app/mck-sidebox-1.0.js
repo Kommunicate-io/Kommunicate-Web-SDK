@@ -3466,9 +3466,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
-                if (message.code === "AGENTS_ONLINE") {
+                if (message && message.code === "AGENTS_ONLINE") {
                     KommunicateUI.setAvailabilityStatus("online");
-                } else if (message.code === "SUCCESS" && !isAgentOffline) {
+                } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
                     KommunicateUI.setAvailabilityStatus("away");
                 }
                 KommunicateUI.populateAwayMessage(err, message);

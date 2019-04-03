@@ -104,7 +104,7 @@
     "apiUrl":"https://services.kommunicate.io",
     "enabled":false
 },
-  
+       "kommunicateCryptoKey": "&h+!~%_1`ye;N,RH5M.H}hQ~A_7u@9vMOR4>:mFA#{kx!my^VaY$[1d/kX}=z;$",
        "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
        "kommunicateAdminId": "techdisrupt@applozic.com",
        "kommunicateAdminPassword": "techdisrupt",
