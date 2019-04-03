@@ -37,6 +37,9 @@ exports.getIntegrationSetting = (req, res) => {
         })
     }).catch(err => {
         console.log('error thirdparty setting', err)
+        if(err.message === 'application not found'){
+          return res.status(200).json({ code: "SUCCESS", response:{message: err.message }});
+        }
         return res.status(500).json({ code: "ERROR", message: "error" });
     })
 
