@@ -273,18 +273,17 @@ exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds,languageCod
     criteria.languageCode = {[Sequelize.Op.or]: [null, languageCode]}; 
   }
   var order= [ ['id', 'ASC']];
-  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order})).then(dbResult=>{
-    var finalResult =[];
-    dbResult.find(function (item, i) {
-      dbResult.findIndex(invite => (item.languageCode));
-      if (item.languageCode === languageCode) {
-           finalResult[i] = item;       
-      }
-  });
-      return finalResult.length !== 0? finalResult : dbResult;
-
-  }).catch(err=>{
-    return { code: err.parent.code, message: err.parent.sqlMessage }
+  return Promise.resolve(db.InAppMsg.findAll({
+    where: criteria,
+    order
+  })).then(dbResult => {
+    var finalResult = dbResult.filter(item => languageCode && item.languageCode === languageCode);
+    return finalResult.length !== 0 ? finalResult : dbResult;
+  }).catch(err => {
+    return {
+      code: err.parent.code,
+      message: err.parent.sqlMessage
+    }
   });
   
 }
