@@ -299,7 +299,8 @@ function ApplozicSidebox() {
                 var displayNameFromCookie= KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                 var isAnonymousUser= !options.userId;
                 options["userId"] = !isAnonymousUser? options.userId:(userIdFromCookie||randomUserId)
-                options["userName"] = isAnonymousUser? (pseudoNameEnabled?(displayNameFromCookie||data.userName):""): options.userName;
+                var displayName= isAnonymousUser? (pseudoNameEnabled?(displayNameFromCookie||data.userName):""): options.userName;
+                displayName && (options["userName"]  = displayName)
                 (isAnonymousUser&& pseudoNameEnabled) &&  (options.metadata["KM_PSEUDO_USER"] = JSON.stringify({pseudoName: "true", hidden: "true" })); 
                 //save user cookies
                 saveUserCookies(options);
@@ -366,7 +367,7 @@ function ApplozicSidebox() {
     function saveUserCookies(kommunicateSettings){
         var cookieDomain  = KommunicateUtils.getDomainFromUrl();
         KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": kommunicateSettings.userId, "expiresInDays":30, domain: cookieDomain});
-        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": kommunicateSettings.userName, "expiresInDays":30,domain: cookieDomain});
+        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": kommunicateSettings.userName ||"", "expiresInDays":30,domain: cookieDomain});
         if (!(kommunicateSettings.preLeadCollection || kommunicateSettings.askUserDetails)) {
             KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
         }
