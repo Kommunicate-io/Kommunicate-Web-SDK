@@ -63,6 +63,10 @@ Kommunicate.client={
             KM_CHAT_CONTEXT: JSON.stringify(chatContext)
         };
 
+        if (conversationDetail.skipBotEvent) {
+            groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent;
+        }
+
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
         conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE)
 

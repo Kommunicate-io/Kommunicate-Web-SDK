@@ -69,6 +69,7 @@ $applozic.extend(true,Kommunicate,{
             "isMessage": params.isMessage,
             "isInternal": params.isInternal,
             "skipRouting": params.skipRouting,
+            "skipBotEvent": params.skipBotEvent,
             "metadata": groupMetadata
         }
         Kommunicate.client.createConversation(conversationDetail, callback);
@@ -84,6 +85,7 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.agentIds = conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
+        conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
 
         return conversationDetail;
     },
@@ -406,8 +408,9 @@ $applozic.extend(true,Kommunicate,{
        2. defaultAgentIds [multiple values]
        3. defaultBotIds [multiple values]
        4. skipRouting [boolean]
-       5. KM_CHAT_CONTEXT
-       6. WELCOME_MESSAGE
+       5. skipBotEvent [multiple values]
+       6. KM_CHAT_CONTEXT
+       7. WELCOME_MESSAGE
    */
     updateSettings:function(options){
         let type = typeof options;
