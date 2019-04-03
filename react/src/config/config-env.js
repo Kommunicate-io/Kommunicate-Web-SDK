@@ -299,7 +299,9 @@ export default {
           wix:"http://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/",
           squareSpace:"https://www.kommunicate.io/blog/squarespace-live-chat-software-for-website/"
         }
-      }
+    },
+    "kommunicateCryptoKey": "&h+!~%_1`ye;N,RH5M.H}hQ~A_7u@9vMOR4>:mFA#{kx!my^VaY$[1d/kX}=z;$",
+
  }
     
 }

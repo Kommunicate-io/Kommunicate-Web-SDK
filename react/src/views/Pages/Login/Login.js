@@ -76,11 +76,7 @@ class Login extends Component {
 	componentWillMount() {
 		!CommonUtils.isLatestKmVersionOnLocalStorage() && CommonUtils.updateKommunicateVersion()
 		const search = this.props.location.search;
-		let referer = CommonUtils.getUrlParameter(search, 'referrer');
-		if(referer) {
-			var url = this.state.googleLoginUrl + "&state=" + referer;
-			this.setState({next:referer, googleLoginUrl:url});
-		}
+		this.updateGoogleLoginUrl();
 		this.autoLoginViaEmailAndPassInUrl(function (forceLogin, that) {
 			if (CommonUtils.getUserSession() && !forceLogin) {
 				window.location = that.state.next; 
@@ -129,6 +125,22 @@ class Login extends Component {
 		document.body.appendChild(sheet);
 
 	}
+
+	updateGoogleLoginUrl = () => {
+		let state = {};
+		let product = CommonUtils.getProduct();
+		let search = this.props.location.search;
+		let referrer = CommonUtils.getUrlParameter(search, 'referrer');
+		referrer && (state.referrer = referrer)
+		state.product = product || "kommunicate";
+		state.process = "google_login"
+		var cipherText = CommonUtils.encryptDataUsingCrypto(state);
+		var url = this.state.googleLoginUrl + "&state=" + encodeURIComponent(cipherText);
+		this.setState({
+			next: referrer,
+			googleLoginUrl: url
+		});
+	};
 
 	autoLoginViaEmailAndPassInUrl = (callback) => {
 		var forceLogin = false;
@@ -507,7 +519,7 @@ class Login extends Component {
 
 													{/* Login with Google code STARTS here. */}
 													{/* To show or hide Login with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
-													{ CommonUtils.isKommunicateDashboard() &&
+													{
 													<Fragment>
 														<a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={this.state.googleLoginUrl}>
 														<GoogleLogin/>

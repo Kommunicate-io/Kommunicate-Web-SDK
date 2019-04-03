@@ -1,44 +1,20 @@
 const axios =require("axios");
+const CryptoJS = require ('crypto-js');
 const querystring = require('querystring');
-const registrationService = require("../register/registrationService");
 const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const config = require("../../conf/config");
 const loginService = require("../login/loginService");
-const customerService = require('../customer/customerService')
-const CLIENT_ID = '660706316085-tt8berusqqdekmo22rdea2mc17bq17kp.apps.googleusercontent.com'
-const CLIENT_SECRET = 'tugOu4lqIziB5tSA_i7qhYkE' 
+const CLIENT_ID = '660706316085-tt8berusqqdekmo22rdea2mc17bq17kp.apps.googleusercontent.com';
+const CLIENT_SECRET = 'tugOu4lqIziB5tSA_i7qhYkE';
 
-const GOOGLE_REDIRECT_URL = config.getProperties().urls.hostUrl + '/google/authCode'
-const REDIRECT_URL = config.getProperties().urls.dashboardHostUrl + '/signup'
-const APPLOZIC_CLIENT_URL = config.getProperties().urls.applozicHostUrl+"/rest/ws/user/data?";
-const KOMMUNICATE_LOGIN_URL = config.getProperties().urls.dashboardHostUrl + '/login'
+const GOOGLE_REDIRECT_URL = config.getProperties().urls.hostUrl + '/google/authCode';
+const REDIRECT_URL = config.getProperties().urls.dashboardHostUrl + '/signup';
+const KOMMUNICATE_LOGIN_URL = config.getProperties().urls.dashboardHostUrl + '/login';
+const APPLOZIC_LOGIN_URL = config.getProperties().urls.applozicDashboardHostUrl + '/login';
 
 const GOOGLE_PLUS_PROFILE_URL = 'https://www.googleapis.com/plus/v1/people/me';
-
-const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
-const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
-
 const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN";
-
-const getUserInfoByEmail = (options) => {
-	let APPLOZIC_CLIENT_URL_GET_USER_INFO = APPLOZIC_CLIENT_URL;
-	APPLOZIC_CLIENT_URL_GET_USER_INFO += "email=" + options.email + "&applicationId=" + options.applicationId;
-	logger.info(APPLOZIC_CLIENT_URL_GET_USER_INFO);
-	return axios.get(APPLOZIC_CLIENT_URL_GET_USER_INFO).then( response => {
-		let status = response.data&&response.data.status;
-		logger.info(response.data)
-		if (status=="success") {
-			return response.data;
-		} else if (status=="error" && response.data.errorResponse[0].errorCode=="AL-U-01") {
-			return null;
-		} else {
-			logger.info("error",response);
-			logger.info("error while fetching user deatil by email");
-		}
-	})
-}
-
 
 const getToken = (authCode) => {
 	logger.info("getToken")
@@ -68,7 +44,15 @@ exports.authCode = (req, res) => {
 	let numOfApp = 1
 	let email = null
 	let name = null
-	let referrer = req.query.state;
+	let oauthState = req.query.state;
+	let key = config.getProperties().kommunicateCryptoKey;
+	let bytes  = CryptoJS.AES.decrypt(oauthState.toString(), key);
+	let decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+	let referrer = decryptedData.referrer;
+	let product = decryptedData.product;
+	let process = decryptedData.process;
+	let LOGIN_URL = product === "applozic" ? APPLOZIC_LOGIN_URL : KOMMUNICATE_LOGIN_URL;
+	logger.info(process);
 
 	getToken(authCode).then(response => {
 		logger.info(response.data);
@@ -96,12 +80,12 @@ exports.authCode = (req, res) => {
 		logger.info(user.loginType);
 		if(user.loginType === 'oauth'){
 			logger.info("oauth oauth oauth oauth oauth oauth oauth oauth")
-			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp+"&referrer="+referrer)
+			res.redirect(LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp+"&referrer="+referrer)
 			throw 'Ignore this error. It is present to by pass the promise chain'
 		} else if(user.loginType === 'email' || user.loginType === null) {
 			logger.info("email email email email email email email email")
 			if(_numOfApp > 1){
-				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=oauth&numOfApp=" + _numOfApp+"&referrer="+referrer)
+				res.redirect(LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=oauth&numOfApp=" + _numOfApp+"&referrer="+referrer)
 				throw 'Ignore this error. It is present to by pass the promise chain'
 			} else {
 				const loginDetails = {
@@ -119,7 +103,7 @@ exports.authCode = (req, res) => {
 			numOfApp: numOfApp,
 			applicationId: applicationId,
 	    }
-	    res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType +  "&" + querystring.stringify(userData))
+	    res.redirect(LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType +  "&" + querystring.stringify(userData))
 	}).catch(err => {
 		logger.info(err)
 	})
