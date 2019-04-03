@@ -356,10 +356,10 @@ function ApplozicSidebox() {
             release: KommunicateConstants.KM_SERVER_RELEASE_VERSION
         });
         Sentry.configureScope(function (scope) {
-            scope.setTag("applicationId", options.appId);
+            scope.setTag("applicationId", applozic._globals.appId);
             scope.setTag("userId", userId);
             scope.setUser({
-                id: options.appId
+                id: applozic._globals.appId
             });
         });
     };
