@@ -216,7 +216,7 @@ class ImageUploader extends Component {
               </span>
             </div>
               <div className="modal-footer-button">
-                <Button secondary type="submit" autoFocus={false} onClick={this.props.handleClose}> Cancel</Button>
+                <Button secondary type="submit" autoFocus={false} onClick={()=>{this.props.handleClose(), this.props.hideLoader()}}> Cancel</Button>
                 <Button primary type="submit" autoFocus={false} className="m-left" onClick={this.cropMethod}>Save changes</Button>
               </div>
             </div>
