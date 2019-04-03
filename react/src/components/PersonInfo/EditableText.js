@@ -123,6 +123,9 @@ class EditableText extends Component {
         elasticUpdate: true
       }
     };
+    if (this.props.reference === 'email') {
+      kmSidebarUserInfoInputFieldValue = kmSidebarUserInfoInputFieldValue.toLowerCase();
+    }
     data.userDetails[this.props.reference] = kmSidebarUserInfoInputFieldValue;
     if(kmSidebarUserInfoInputFieldValue){
     ApplozicClient.updateUserDetail(data)
