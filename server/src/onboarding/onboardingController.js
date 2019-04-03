@@ -10,7 +10,7 @@ exports.insertOnboardingStatus = (req, res) => {
   return onboardingService.insertOnboardingStatus(data).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
   }).catch(err => {
-    logger.info("error while inserting onboarding status", err);
+    logger.error("error while inserting onboarding status", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 
@@ -21,7 +21,7 @@ exports.getOnboardingStatusByApplicationId = (req, res) => {
   return onboardingService.getOnboardingStatus(settings).then(response => {
     return res.status(200).json({ code: "SUCCESS", response: response.data });
   }).catch(err => {
-    logger.info("onboarding status fetch error", err);
+    logger.error("onboarding status fetch error", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 
@@ -33,7 +33,7 @@ exports.updateOnboardingStatus = (req, res) => {
   return onboardingService.updateOnboardingStatus(data, appId).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
   }).catch(err => {
-    logger.info("onboarding status update error", err);
+    logger.error("onboarding status update error", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 }
