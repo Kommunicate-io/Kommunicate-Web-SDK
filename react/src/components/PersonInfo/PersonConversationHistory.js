@@ -31,7 +31,8 @@ class PersonConversationHistory extends Component {
         var params = {
             "startIndex" : 0,
             "pageSize" : 60,
-            "orderBy" : 1
+            "orderBy" : 1,
+            "skipDelivered": true
         };
         var headers = {
             'Content-Type': 'application/json',
