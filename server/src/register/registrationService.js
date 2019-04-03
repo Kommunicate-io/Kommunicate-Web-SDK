@@ -17,6 +17,8 @@ const LIZ = require("./bots.js").LIZ;
 const customerService = require('../customer/customerService.js');
 const USER_CONSTANTS = require("../users/constants.js");
 const subscriptionPlans = require("./subscriptionPlans");
+const {ONBOARDING_STATUS}= require('../utils/constant');
+const onboardingService = require('../Onboarding/onboardingService');
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -118,6 +120,7 @@ const getResponse = (customer, applozicCustomer, application) => {
 exports.updateCustomer = (userId, customer) => {
   return userService.updateUser(userId, customer.applicationId, { name: customer.name, email: customer.email, companyName: customer.companyName }).then(result => {
     return customerService.updateCustomer(userId, customer).then(result=>{
+     customer.name &&  onboardingService.insertOnboardingStatus({applicationId:customer.applicationId, stepId:ONBOARDING_STATUS.PROFILE_UPDATED, completed:true})
       return result[0];
     });
   }).catch(err => {
