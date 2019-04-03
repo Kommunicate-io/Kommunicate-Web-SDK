@@ -1202,6 +1202,23 @@ const updateKommunicateCustomerSubscription = (data) => {
     }   
   }).catch(err => { throw { message: err }; })
 }
+const submitOnboardingStatus = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let url = getConfig().kommunicateBaseUrl +'/onboarding/'+appId;
+  return Promise.resolve(axios({
+    method: 'POST',
+    url: url,
+    data: data
+  })).then(response => {
+    if(typeof response !== "undefined" && response.data.code == "SUCCESS") {
+      return response;
+    }   
+  }).catch(err => { 
+    console.log("error while submitting on-boarding status" )
+    throw err  
+  })
+}
 
 export {
   createCustomer,
@@ -1269,5 +1286,6 @@ export {
   updateKommunicateCustomerSubscription,
   deleteInvitationByUserId,
   createAgileCrmContact,
-  updateAgileCrmContact
+  updateAgileCrmContact,
+  submitOnboardingStatus
 }

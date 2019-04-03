@@ -6,12 +6,12 @@ import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
 import CommonUtils from '../../utils/CommonUtils';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
-import { COOKIES } from '../../utils/Constant';
+import { COOKIES, ONBOARDING_STATUS } from '../../utils/Constant';
 import config from '../../config/index';
 import { getConfig, getEnvironmentId } from '../../config/config';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
-import {getSuggestionsByCriteria} from '../../utils/kommunicateClient';
+import {getSuggestionsByCriteria, submitOnboardingStatus} from '../../utils/kommunicateClient';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/applicationAction';
@@ -238,6 +238,7 @@ class Full extends Component {
    let userList = (response && response.response&& response.response.users)?response.response.users:[];
    let appUsers = userList.filter(user=>!(user.metadata&&user.metadata['KM_SOURCE']=="KOMMUNICATE_DASHBOARD"));
    options && typeof options.callback == 'function' ? options.callback(appUsers.length?true:false):"";
+   appUsers.length && submitOnboardingStatus({stepId:ONBOARDING_STATUS.SCRIPT_INSTALLED, completed:true})
    })
 }
 

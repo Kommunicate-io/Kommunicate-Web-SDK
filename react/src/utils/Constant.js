@@ -150,3 +150,13 @@ export const KM_PLAN_LENGTH = {
 }
 
 export const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+export const ONBOARDING_STATUS = {
+    ACCOUNT_CREATED: 1,	   
+    PROFILE_UPDATED: 2,
+    SCRIPT_INSTALLED:3,
+    WIDGET_CUSTOMIZED: 4,
+    MAILBOX_CONFIGURED: 5,
+    WELCOME_MESSAGE_CREATED:6,
+    TEAM_INVITATION_SENT: 7,
+} 
