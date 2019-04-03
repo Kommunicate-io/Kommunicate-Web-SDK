@@ -139,8 +139,8 @@
     "thirdPartyIntegration": {
         "sentry": {
             "plugin": {
-                "dsn": "https://cf842ea45c924747b0803f7ad515a80c@sentry.io/1340890",
-                "enable": true
+                "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+                "enable": false
             },
             "server": {
                 "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
