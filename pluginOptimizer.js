@@ -7,8 +7,16 @@ const buildDir = path.resolve(__dirname,'build');
 const config = require("../../conf/config");
 const MCK_CONTEXT_PATH = config.getProperties().urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
- 
 
+let env = config.getEnvId();
+
+let testEnvironment = !env || env=="test" || env =="default" || env =="staging";
+let jsCompressor = testEnvironment ?"no-compress" : "gcc"; 
+let uglifyCompressor = testEnvironment? "no-compress" : "uglify-es";
+let cssCompressor =  testEnvironment? "no-compress" : "clean-css";
+
+
+console.log("##### testEnvironment", testEnvironment, jsCompressor,uglifyCompressor, cssCompressor);
 const removeExistingFile = function (dirPath) {
     try { var files = fs.readdirSync(dirPath); }
     catch (e) { return; }
@@ -21,7 +29,7 @@ const removeExistingFile = function (dirPath) {
 
 const compressAndOptimize = () => {
     compressor.minify({
-        compressor: 'gcc',
+        compressor: jsCompressor,
         // compressor: 'no-compress',  
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
@@ -51,7 +59,7 @@ const compressAndOptimize = () => {
 
     // minify applozic css files into a single file
     compressor.minify({
-        compressor: 'clean-css',
+        compressor: cssCompressor,
         // compressor: 'no-compress',
         input: [
             path.resolve(__dirname, 'lib/css/mck-combined.min.css'),
@@ -79,8 +87,7 @@ const compressAndOptimize = () => {
     });
 
     compressor.minify({
-        compressor: 'uglify-es',
-        // compressor: 'no-compress',
+         compressor: uglifyCompressor,
         input: [
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
