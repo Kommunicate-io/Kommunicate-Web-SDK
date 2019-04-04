@@ -92,7 +92,8 @@ KommunicateConstants = {
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
         KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",
-        IS_USER_ID_FOR_LEAD_COLLECTION: "km_lead_collection"
+        IS_USER_ID_FOR_LEAD_COLLECTION: "km_lead_collection",
+        ACCESS_TOKEN:"km_ac_tn"
     },
     MESSAGE_CLUBBING: {
         TIME_FRAME: 300000, // 5 minutes timestamp value in milliseconds.
@@ -294,5 +295,6 @@ KommunicateUtils = {
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,domain: KommunicateUtils.getDomainFromUrl()});
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,  domain: KommunicateUtils.getDomainFromUrl()});
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.ACCESS_TOKEN, domain: KommunicateUtils.getDomainFromUrl()});
     }
 }
