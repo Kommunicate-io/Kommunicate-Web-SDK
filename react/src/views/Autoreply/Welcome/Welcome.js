@@ -11,6 +11,7 @@ import {SettingsHeader} from '../../../../src/components/SettingsComponent/Setti
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import Button from '../../../components/Buttons/Button';
 import {LiveChatWidget} from '../../../components/LiveChatWidget/LiveChatWidget'
+import { DeleteIcon } from '../../../assets/svg/svgs';
 
 class Welcome extends Component{
   constructor(props){
@@ -283,7 +284,7 @@ class Welcome extends Component{
               }, 
               this.deleteWelcomeMessage)
               }}>
-              <i className="fa fa-trash-o"></i>
+              <DeleteIcon/>
             </div>
           }     
         </div>

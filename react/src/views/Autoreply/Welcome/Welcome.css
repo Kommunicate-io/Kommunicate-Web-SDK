@@ -103,6 +103,9 @@
     cursor: pointer;
     
 }
+.trash-btn svg {
+    vertical-align: middle;
+}
 textarea::-webkit-input-placeholder {
     color: rgb(202, 206, 207);
     }
