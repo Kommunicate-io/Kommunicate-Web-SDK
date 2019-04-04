@@ -4030,7 +4030,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             };
 
             _this.getGroup = function (params) {
-               Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
+                (KOMMUNICATE_VERSION === "v2") && Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
                var usersArray = [];
                $applozic.each(params.users, function (i, user) {
                    if (typeof user.userId !== 'undefined') {
