@@ -2646,7 +2646,7 @@ ol, ul {
 	margin: 0 auto;
 	vertical-align: baseline;
 	outline: none;
-	cursor: pointer;
+	cursor: default;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;

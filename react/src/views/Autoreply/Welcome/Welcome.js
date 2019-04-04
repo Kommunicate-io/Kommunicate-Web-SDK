@@ -178,7 +178,10 @@ class Welcome extends Component{
       })
     } else {
       welcomeMessages.splice(index, 1)
-      this.setState({ welcomeMessages: welcomeMessages })
+      this.setState({
+        welcomeMessages: welcomeMessages,
+        activeTextField: index - 1
+      })
     }
     if(index == 0){
       welcomeMessages.splice(0,1,{ messageField : '' })

@@ -93,7 +93,7 @@
 }
 
 .customer-list-item .avatar .img-avatar {
-    cursor: pointer;
+    cursor: default;
     float: left;
     width: 43px;
     height: 43px;

@@ -231,7 +231,7 @@ body {
 }
 
 .km-alpha-contact-image {
-	cursor: pointer;
+	cursor: default;
 	float: left;
 	width: 43px;
 	height: 43px;
