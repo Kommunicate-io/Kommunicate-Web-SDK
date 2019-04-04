@@ -5735,6 +5735,7 @@ div[name="message"]:last-child {
 	justify-content: center;
 	animation: kmScaleAnim .25s cubic-bezier(0.25, 0.1, 0.25, 1);
 	background: #5553b7;
+	white-space: pre-line;
 }
 
 #km-popup-close-button svg {
