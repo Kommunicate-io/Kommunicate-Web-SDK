@@ -1563,10 +1563,14 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             }
 
             _this.closeLeadCollectionWindow = function(){
+                var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+                var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
+
                 if (KOMMUNICATE_VERSION === "v2"){
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    var popUpcloseButton = document.getElementById("km-popup-close-button");
                     kommunicateIframe.style.boxShadow="none";
-                    POPUP_WIDGET && (popUpCloseButton.style.display='none');
+                    POPUP_WIDGET && (popUpcloseButton.style.display='none');
                   }
                   kmChatLoginModal.style.display='none';
                   kmAnonymousChatLauncher.classList.remove('n-vis');
@@ -1924,6 +1928,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             });
             _this.appendLauncher = function () {
+                var anonymousChatLauncher = document.querySelector('#km-anonymous-chat-launcher');
+                anonymousChatLauncher.parentNode.removeChild(anonymousChatLauncher);
                 $applozic("#mck-sidebox-launcher").remove();
                 $applozic("body").append(_this.getLauncherHtml());
                 mckNotificationService.init();
@@ -2529,7 +2535,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                     $submit_chat_login.attr('disabled', true);
                     $submit_chat_login.html('Initiating chat...');
-                     mckInit.initialize(options);
+                    mckInit.initialize(options);
 
                     return false;
                 });
@@ -4024,6 +4030,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             };
 
             _this.getGroup = function (params) {
+               Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
                var usersArray = [];
                $applozic.each(params.users, function (i, user) {
                    if (typeof user.userId !== 'undefined') {

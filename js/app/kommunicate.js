@@ -445,6 +445,7 @@ $applozic.extend(true,Kommunicate,{
         Kommunicate.updateChatContext(chatContext);
     },
     setDefaultIframeConfigForOpenChat: function (isPopupEnabled) {
+        !kommunicateCommons.checkIfDeviceIsHandheld() && kommunicateCommons.modifyClassList( {id : ["mck-sidebox"]}, "popup-enabled","");
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
         var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
