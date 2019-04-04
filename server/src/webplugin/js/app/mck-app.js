@@ -295,14 +295,20 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
             if (applozic.PRODUCT_ID == 'kommunicate') {
+                var accessTokenFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.ACCESS_TOKEN);
                 var userIdFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                 var displayNameFromCookie= KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME);
                 var isAnonymousUser= !options.userId;
                 options["userId"] = !isAnonymousUser? options.userId:(userIdFromCookie||randomUserId)
                 var displayName= isAnonymousUser? (pseudoNameEnabled?(displayNameFromCookie||data.userName):""): options.userName;
-                displayName && (options["userName"]  = displayName)
+                displayName && (options["userName"]  = displayName);
+
                 if (isAnonymousUser && pseudoNameEnabled) {
                     options.metadata["KM_PSEUDO_USER"] = JSON.stringify({pseudoName: "true", hidden: "true" })
+                }
+                if(isAnonymousUser && accessTokenFromCookie){
+                    options.accessToken = window.atob(accessTokenFromCookie);
+                
                 }
                 //save user cookies
                 saveUserCookies(options);
@@ -372,6 +378,10 @@ function ApplozicSidebox() {
         KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,"value": kommunicateSettings.userName ||"", "expiresInDays":30,domain: cookieDomain});
         if (!(kommunicateSettings.preLeadCollection || kommunicateSettings.askUserDetails)) {
             KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": false, "expiresInDays":30, domain: cookieDomain});
+        }
+        if(kommunicateSettings.accessToken){
+            var encodedToken = window.btoa(kommunicateSettings.accessToken);
+            KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.ACCESS_TOKEN,"value": encodedToken || "", "expiresInDays":30,domain: cookieDomain});
         }
     }
 
