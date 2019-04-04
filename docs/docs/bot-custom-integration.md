@@ -1,5 +1,5 @@
 ---
-id: custom-bot-integration
+id: bot-custom-integration
 title: Custom Bot Integration
 sidebar_label: Custom Bot Integration
 ---

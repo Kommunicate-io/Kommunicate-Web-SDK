@@ -5,7 +5,7 @@
     "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-customization","ios-localization","ios-logout"],
     "Ionic/Cordova/Phonegap":["cordova-installation","cordova-authentication","cordova-conversation","cordova-pushnotification","cordova-logout","cordova-resolving-errors"],
     "Platform APIs":["api-authentication","api-detail"],
-    "Bots" : ["bot-configration","web-botintegration","custom-bot-integration","bot-samples"],
+    "Bots" : ["bot-setup","bot-dialogflow-integration","bot-custom-integration","bot-samples"],
     "Configuration":["email-fallback-configuration","webhooks-configuration","access-token-url-configuration"]
   },
   "docs-other": {
