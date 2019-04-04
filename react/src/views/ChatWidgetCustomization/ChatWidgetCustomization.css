@@ -233,3 +233,15 @@
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
+.km-hide-input-element {
+    opacity: 0.0;
+    position: absolute;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right:0;
+    width:100%;
+    height:100%;
+    font-size: 0px;
+    cursor: pointer;
+}
