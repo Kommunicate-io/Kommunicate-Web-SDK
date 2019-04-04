@@ -193,7 +193,7 @@ getListMarkup:function(){
                                      {{{imgSrc}}}
                              </div>
                          <div class="km-faq-list--body_que-ans">
-                                 <p class="km-faq-list--body_que km-custom-widget-text-color">
+                                 <p class="km-faq-list--body_que">
                                      {{title}}
                                  </p>
                                  <p class="km-faq-list--body_ans">
