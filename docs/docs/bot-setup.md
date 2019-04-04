@@ -1,5 +1,5 @@
 ---
-id: bot-configration
+id: bot-setup
 title: Integrate your bot with Kommunicate
 sidebar_label: Bot setup
 ---
@@ -102,5 +102,3 @@ Pass any kind of Kommunicate supported <a href="actionable-messages" target="_bl
    }
 }
 ```
-
-
