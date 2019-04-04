@@ -7,3 +7,7 @@
     cursor: pointer;
     
 }
+
+.delete-icon svg {
+    vertical-align: middle;
+}
