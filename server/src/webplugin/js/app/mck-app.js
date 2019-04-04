@@ -301,7 +301,9 @@ function ApplozicSidebox() {
                 options["userId"] = !isAnonymousUser? options.userId:(userIdFromCookie||randomUserId)
                 var displayName= isAnonymousUser? (pseudoNameEnabled?(displayNameFromCookie||data.userName):""): options.userName;
                 displayName && (options["userName"]  = displayName)
-                (isAnonymousUser&& pseudoNameEnabled) &&  (options.metadata["KM_PSEUDO_USER"] = JSON.stringify({pseudoName: "true", hidden: "true" })); 
+                if (isAnonymousUser && pseudoNameEnabled) {
+                    options.metadata["KM_PSEUDO_USER"] = JSON.stringify({pseudoName: "true", hidden: "true" })
+                }
                 //save user cookies
                 saveUserCookies(options);
             }
