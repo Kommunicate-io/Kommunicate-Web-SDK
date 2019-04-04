@@ -33,7 +33,7 @@ In this section, learn how to:
   2. Select your Agent from dropdown in left panel.
   3. Click on setting button. It will open a setting page for agent.
   4. Inside general tab search for GOOGLE PROJECTS and click on your service account.
-  5. After getting redirected to your SERIVICE ACCOUNT, create key in JSON format for your project from actions section and it will get automatically downloaded.
+  5. After getting redirected to your SERVICE ACCOUNT, create key in JSON format for your project from actions section and it will get automatically downloaded.
   6. Upload the key file in Kommunicate dashboard.
 
 
