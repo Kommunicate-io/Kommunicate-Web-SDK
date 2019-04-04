@@ -110,7 +110,7 @@ cursor: pointer;
     width: 315px;
     padding-left: 0;
     max-width: 100%;
-    transform: translateX(-10px);
+    /* transform: translateX(-10px); */
 }
 .km-next-card-btn, .km-previous-card-btn {
     position: absolute;
@@ -883,7 +883,7 @@ cursor: pointer;
     width: 315px;
     padding-left: 0;
     max-width: 100%;
-    transform: translateX(-10px);
+    /* transform: translateX(-10px); */
 }
 .km-dashboard-carousel-card-template {
     min-width: 240px;
