@@ -5,7 +5,7 @@ exports.insertOnboardingStatus = async (data) => {
     let onboardingStatus = await onboardingModel.find({ where: { applicationId: data.applicationId, stepId: data.stepId } });
     if (onboardingStatus) { 
         logger.error("RECORD EXIST FOR THIS STEP ID");
-        return 
+        return { message: "RECORD EXIST FOR THIS STEP ID"};
     }
     return Promise.resolve(onboardingModel.create(data)).then(res => {    
         return { message: "onboarding status inserted successfully" };
