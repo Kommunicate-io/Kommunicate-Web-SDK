@@ -438,7 +438,7 @@ class BotStore extends Component {
                     EventMessageClient.sendEventMessage('ac-integrated-bot');
                   }
                   _this.getIntegratedBotsWrapper();
-                  this.setState({
+                  _this.setState({
                     disableIntegrateBotButton: false
                   })
                 }
