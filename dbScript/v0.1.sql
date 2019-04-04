@@ -259,6 +259,7 @@ ALTER TABLE `app_settings` ADD COLUMN `collect_feedback` BOOLEAN DEFAULT 0;
 ALTER TABLE `in_app_msgs` 
 ADD COLUMN `language_code` char(5);
 
+ALTER TABLE app_subscriptions MODIFY COLUMN trigger_url  VARCHAR(250) NOT null;
 
 ---------------------------Release- 4.2 ------------------------
 -- KM-1790:Implementation - onboarding flow for Kommunicate --
