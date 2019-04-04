@@ -699,7 +699,7 @@
         margin-top: 0px;
         margin-bottom: 10px;
         background-image: linear-gradient(to right, #dddddd 40%, rgba(255, 255, 255, 0) 0%);
-        background-position: left;
+    background-position: left;
         background-size: 14px 1px;
         background-repeat: repeat-x;
         height: 2px;
@@ -711,7 +711,7 @@
         background: transparent;
         width:100%;
         box-sizing: border-box;
-
+        border-radius: 5px;
     }
     .km-faq-list--body, .km-faq-list--footer {
         /*background-color: #e5e5e5;*/
@@ -769,11 +769,12 @@
     .km-faq-list--body_list li>a:hover {
         background-color: #efefef;
         color: grey;
+        text-decoration: none!important;
     }
     
     .km-faq-list--body_que-ans .km-faq-list--body_que {
         font-size: 15px;
-        color: #5c5aa7;
+        color: #000;
         margin: 0px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -782,7 +783,7 @@
     }
     .km-faq-list--body_que-ans .km-faq-list--body_ans {
         font-size: 14px;
-        color: #646262;
+        color: #797474;
         margin: 5px 0px 0px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -812,7 +813,7 @@
         left: 12px;
         margin: 0;
         margin-bottom: 0px !important;
-        padding: 7px !important;
+        padding: 9px 7px !important;
         text-align:center;
         width: calc(100% - 12px);
         color: rgb(48, 48, 48);
