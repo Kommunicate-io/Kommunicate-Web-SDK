@@ -5686,6 +5686,13 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	overflow-y: auto;
 }
 
+.mck-msg-text.mck-msg-content audio, .mck-msg-text.mck-msg-content video {
+	width: 100%;
+}
+.mck-msg-text.mck-msg-content audio {
+	min-width: 215px;
+}
+
 /* Message Clubbing */
 .km-clubbing-first.mck-msg-avator-bubble .mck-msg-box {
 	/* margin-bottom: 2px; */
