@@ -15,8 +15,6 @@ let jsCompressor = testEnvironment ?"no-compress" : "gcc";
 let uglifyCompressor = testEnvironment? "no-compress" : "uglify-es";
 let cssCompressor =  testEnvironment? "no-compress" : "clean-css";
 
-
-console.log("##### testEnvironment", testEnvironment, jsCompressor,uglifyCompressor, cssCompressor);
 const removeExistingFile = function (dirPath) {
     try { var files = fs.readdirSync(dirPath); }
     catch (e) { return; }
