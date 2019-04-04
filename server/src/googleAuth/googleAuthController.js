@@ -9,7 +9,8 @@ const CLIENT_ID = '660706316085-tt8berusqqdekmo22rdea2mc17bq17kp.apps.googleuser
 const CLIENT_SECRET = 'tugOu4lqIziB5tSA_i7qhYkE';
 
 const GOOGLE_REDIRECT_URL = config.getProperties().urls.hostUrl + '/google/authCode';
-const REDIRECT_URL = config.getProperties().urls.dashboardHostUrl + '/signup';
+const KOMMUNICATE_REDIRECT_URL = config.getProperties().urls.dashboardHostUrl + '/signup';
+const APPLOZIC_REDIRECT_URL = config.getProperties().urls.applozicDashboardHostUrl + '/signup';
 const KOMMUNICATE_LOGIN_URL = config.getProperties().urls.dashboardHostUrl + '/login';
 const APPLOZIC_LOGIN_URL = config.getProperties().urls.applozicDashboardHostUrl + '/login';
 
@@ -39,6 +40,8 @@ const getToken = (authCode) => {
 
 exports.authCode = (req, res) => {
 
+	let LOGIN_URL;
+	let REDIRECT_URL;
 	let authCode = req.query.code;
 	let user = {}
 	let numOfApp = 1
@@ -51,7 +54,14 @@ exports.authCode = (req, res) => {
 	let referrer = decryptedData.referrer;
 	let product = decryptedData.product;
 	let process = decryptedData.process;
-	let LOGIN_URL = product === "applozic" ? APPLOZIC_LOGIN_URL : KOMMUNICATE_LOGIN_URL;
+	if (product === "applozic"){
+		LOGIN_URL = APPLOZIC_LOGIN_URL;
+		REDIRECT_URL = APPLOZIC_REDIRECT_URL;
+	}
+	else {
+		LOGIN_URL = KOMMUNICATE_LOGIN_URL;
+		REDIRECT_URL = KOMMUNICATE_REDIRECT_URL;
+	}
 	logger.info(process);
 
 	getToken(authCode).then(response => {
