@@ -50,6 +50,7 @@ class ThirdPartyScripts extends Component {
                 o.password =CommonUtils.getUserSession().accessToken;
               }
               o.onInit=function(response, data) {
+                window.$applozic = KommunicateGlobal.window.$applozic;
                 var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
                 var widgetCloseButton = document.querySelector(".mck-close-sidebox");
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
