@@ -10,10 +10,9 @@ const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 
 let env = config.getEnvId();
 
-let testEnvironment = !env || env=="test" || env =="default" || env =="staging";
-let jsCompressor = testEnvironment ?"no-compress" : "gcc"; 
-let uglifyCompressor = testEnvironment? "no-compress" : "uglify-es";
-let cssCompressor =  testEnvironment? "no-compress" : "clean-css";
+let jsCompressor = !env ?"no-compress" : "gcc"; 
+let uglifyCompressor = !env? "no-compress" : "uglify-es";
+let cssCompressor =  !env? "no-compress" : "clean-css";
 
 const removeExistingFile = function (dirPath) {
     try { var files = fs.readdirSync(dirPath); }
