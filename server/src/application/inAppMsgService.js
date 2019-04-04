@@ -9,6 +9,8 @@ const Sequelize = require("sequelize");
 const constant = require('./utils');
 const cacheClient =require("../cache/hazelCacheClient");
 const welcomeMessageMapPrefix ="KM_WELCOME_MESSAGE";
+const {ONBOARDING_STATUS}= require('../utils/constant');
+const onboardingService = require('../Onboarding/onboardingService');
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{applicationId:options.customer.applications[0].applicationId}}).then(inAppMessage=>{
@@ -227,6 +229,7 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
                   console.log(response);
                   response.message = "Created"
                   response.countOfRecords =  countRecords;
+                  onboardingService.insertOnboardingStatus({applicationId: appId, stepId:ONBOARDING_STATUS.WELCOME_MESSAGE_CREATED, completed:true})
                   return response;    
                 }))
           }else{

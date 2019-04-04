@@ -23,6 +23,8 @@ const activeCampaignClient = require("../activeCampaign/activeCampaignClient");
 const subscriptionPlans = require('../register/subscriptionPlans');
 const USER_CONSTANTS = require("../users/constants.js");
 const FREE_BOTS_COUNT = 2; //'bot' and 'liz' are free
+const {ONBOARDING_STATUS}= require('../utils/constant');
+const onboardingService = require('../Onboarding/onboardingService');
 
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
@@ -114,10 +116,11 @@ const inviteTeam = (inviteteam) => {
         });
         if (invites.length > 0) {
          return teammateInviteModel.bulkCreate(invites).then(result => {//spread
-            logger.info("error while creating bot", result);
+            onboardingService.insertOnboardingStatus({applicationId:inviteteam.applicationId, stepId:ONBOARDING_STATUS.TEAM_INVITATION_SENT, completed:true});
+            logger.info("invitation mail inserted successfully", result);
             return result;
           }).catch(err => {
-            logger.error("error while creating bot", err);
+            logger.error("error while inserting invitation mail", err);
             throw err;
           });
         }

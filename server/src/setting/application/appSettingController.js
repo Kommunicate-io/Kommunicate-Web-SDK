@@ -41,7 +41,7 @@ exports.updateAppSettings = (req, res) => {
   return applicationService.updateAppSettings(settings, appId).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
   }).catch(err => {
-    console.log("error while updating lead collection", err);
+    console.log("error while updating app settings", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 
