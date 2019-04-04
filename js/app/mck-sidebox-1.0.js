@@ -1929,7 +1929,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             });
             _this.appendLauncher = function () {
                 var anonymousChatLauncher = document.querySelector('#km-anonymous-chat-launcher');
-                anonymousChatLauncher.parentNode.removeChild(anonymousChatLauncher);
+                anonymousChatLauncher && anonymousChatLauncher.parentNode.removeChild(anonymousChatLauncher);
                 $applozic("#mck-sidebox-launcher").remove();
                 $applozic("body").append(_this.getLauncherHtml());
                 mckNotificationService.init();
