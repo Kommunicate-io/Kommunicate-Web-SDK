@@ -41,7 +41,8 @@ const logger = require("../utils/logger");
     if(req.body.deleted){
         faqCategory.deleted = req.body.deleted;
     }
-    faqCategoryService.updateFaqCategory(criteria,faqCategory).then(result => {
+
+    return faqCategoryService.updateFaqCategory(criteria,faqCategory).then(result => {
         return res.status(200).json({code: "SUCCESS"});
     }).catch(err => {
          logger.info("error while updating faq category", err);
