@@ -337,14 +337,9 @@ const createConversationFromMail = (req) => {
     }
     return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
         toAddresses.map(toUser => {
-            let userAdded = false;
-             users.map(user=> {
-                if (toUser == user.userName) {
-                    groupInfo.users.push({ "userId": user.userName, "role": 1 })
-                    userAdded = true;
-                }
-            })
-            if (!userAdded) { groupInfo.users.push({ "userId": toUser, "role": 3 }) }
+            let agent = users.find(user => toUser === user.userName);
+            agent ? groupInfo.users.push({ "userId": toUser, "role": 1 })
+                : groupInfo.users.push({ "userId": toUser, "role": 3 });
         });
         let adminUser = users.find(user => user.type == 3);
         return applozicClient.getUserDetails([fromEmail], adminUser.applicationId, adminUser.apzToken).then(userDetail => {
