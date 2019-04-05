@@ -3508,7 +3508,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     if (params.startTime) {
                         reqData += "&endTime=" + params.startTime;
                     }
-                    reqData += "&mainPageSize=60";
+                    reqData += "&mainPageSize=30";
                 }
                 if (!params.startTime) {
                     $mck_msg_inner.html('');
