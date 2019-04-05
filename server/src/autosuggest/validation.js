@@ -44,3 +44,28 @@ module.exports.fetchSuggestion = {
 		appId: joi.string().required()
 	}
 }
+
+module.exports.insertFaqCategory = {
+	body: {
+		applicationId: joi.string().required()
+	}
+}
+
+module.exports.updateFaqCategory = {
+	body: {
+		type: joi.number().required()
+	}
+}
+
+module.exports.getFaqCategory = {
+	query: {
+		appId: joi.string().required()
+	}
+}
+
+module.exports.deleteFaqCategory = {
+	query: {	
+		type: joi.number().required(),
+		applicationId: joi.string().required()
+	}
+}

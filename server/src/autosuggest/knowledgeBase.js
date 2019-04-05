@@ -70,6 +70,9 @@ const KnowledgeBase = new Schema({
         es_payloads: true, 
         es_indexed: true 
     },
+    categoryType: {
+        type: Number,
+    },
     deleted: { 
         type: Boolean, 
         default: false,

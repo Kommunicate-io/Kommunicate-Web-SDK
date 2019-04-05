@@ -1,5 +1,6 @@
 const logger = require("../utils/logger");
 const { KnowledgeBaseModel } = require('./knowledgeBase')
+const {faqCategoryModel } = require('./faqCategory')
 const knowledgeBaseESClient = require("./faqSearchService");
 const { getNextCount } = require('./counter');
 
@@ -28,7 +29,10 @@ const getSuggestionsByCriteria = (criteria, value, applicationId) => {
 
 const createSuggestion = async (suggestion) => {
     suggestion.id = await getNextCount(KnowledgeBaseModel.modelName, "id")
-    return KnowledgeBaseModel.create(suggestion).then(result => {
+    return KnowledgeBaseModel.create(suggestion).then(async result => {
+        if(suggestion.categoryType){
+            await faqCategoryModel.findOneAndUpdate({applicationId:result.applicationId ,type: result.categoryType}, { $inc: {articleCount: 1 } });          
+        }
         return result;
     }).catch(error => {
         logger.error("error while creating auto suggestion/faq", error);
@@ -55,8 +59,14 @@ const updateSuggestion = (suggestion) => {
     })
 }
 const deleteSuggestion = (suggestion) => {
-    return KnowledgeBaseModel.updateOne({ "id": suggestion.id }, { 'deleted': true }).then(result => {
-        return result;
+       
+           return getSuggestionsByCriteria("id", suggestion.id, suggestion.applicationId).then(async dbResult =>{
+                if(dbResult[0].categoryType){
+                    await faqCategoryModel.findOneAndUpdate({type: dbResult[0].categoryType}, { $inc: {articleCount: -1 } });  
+                    return KnowledgeBaseModel.updateOne({ "id": suggestion.id }, { 'deleted': true }).then( result => {  
+                        return result; 
+       })
+                    }    
     })
 }
 
@@ -81,10 +91,10 @@ const searchFAQ = async (options) => {
         if (options.key) {
             criteria.key = options.key;
         }
-        if (options.category) {
-            criteria.category = options.category;
+        if (options.categoryType) {
+            criteria.categoryType = options.categoryType;
         }
-        data = KnowledgeBaseModel.find(criteria).select({ name: 1, category:1, content: 1, referenceId: 1, id: 1}).sort({id:1});
+        data = KnowledgeBaseModel.find(criteria).select({ name: 1, categoryType:1, content: 1, referenceId: 1, id: 1}).sort({id:1});
     } 
     for (var i = 0; i < data.length; i += 1) {
         var knowledge = data[i];
@@ -93,7 +103,7 @@ const searchFAQ = async (options) => {
                 id: knowledge.referenceId,
                 deleted: false,
                 status: { '$nin': ['un_answered'] }
-            }).select({ name: 1, content: 1, category:1, referenceId: 1, id: 1}).sort({id:1});
+            }).select({ name: 1, content: 1, categoryType:1, referenceId: 1, id: 1}).sort({id:1});
             data[i].content = result[0].content;
         }
     }
