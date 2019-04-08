@@ -12,13 +12,14 @@ This section is dedicated to launching and managing conversations in the chat wi
 Kommunicate provides some parameter to configure the conversation rules when it is created. These parameters can be used to override the conversation rules you have set from dashboard. These parameters can be set using the `Kommunicate.updateSettings()` methods.
 The updated setting will be effective from the next conversation user creates by either clicking on the `Start new conversation` on chat widget or calling the `Kommunciate.startConversation()`.  
 
-below is the sample code to update the conversation setting:
+Below is the sample code to update the conversation setting:
 
 ```js
 var defaultSettings = {
     "defaultAgentIds": ["<AGENT_ID>"],
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+    "skipBotEvent": '["<EVENT_NAME"]', // Replace <EVENT_NAME> with the bot platform event names which you want to skip
     "skipRouting": true
 };
 Kommunicate.updateSettings(defaultSettings);  
