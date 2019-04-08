@@ -19,7 +19,7 @@ var defaultSettings = {
     "defaultAgentIds": ["<AGENT_ID>"],
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
-    "skipBotEvent": '["<EVENT_NAME"]', // Replace <EVENT_NAME> with the bot platform event names which you want to skip
+    "skipBotEvent": '["<EVENT_NAME"]', // Replace <EVENT_NAME> with the bot platform event names which you want to skip, read more about bot events [here](bot-configration#bot-events) 
     "skipRouting": true
 };
 Kommunicate.updateSettings(defaultSettings);  
@@ -35,7 +35,7 @@ Below is the detail about the supported parameters:
 |defaultBotIds             | array | Configured routing rules for bots from dashboard| You can pass the default bots that you want to be present in every new conversation created. |
 |WELCOME_MESSAGE           | string| Configured from dashboard|You can pass the default welcome message here and it will override the welcome message which you have set from dashboard. <br> NOTE: It will not override the welcome message sent by your bot.|
 |skipRouting               | boolean| false | If you pass this value true then it will skip routing rules set from [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules) section.|
-|skipBotEvent              | array| None | You can pass the bot event names that you want to skip in every new conversation created.|
+|skipBotEvent              | array| None | You can pass the bot event names that you want to skip in every new conversation created. Read more about bot events [here](bot-configration#bot-events) |
 
 #### Example : Assigning conversations to a specific bot/agent on certain events
 
