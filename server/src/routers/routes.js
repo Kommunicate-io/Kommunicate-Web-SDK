@@ -132,7 +132,7 @@ home.get('/seed/liz', seedLiz.seedLiz)
 userRouter.post("/preference/add", validate(userValidation.createUserPreference), userPreferenceController.createUserPreference);
 userRouter.delete("/preference/", validate(userValidation.deleteUserPreference), userPreferenceController.deleteUserPreference);
 userRouter.patch("/preference/", validate(userValidation.updateUserPreference), userPreferenceController.updateUserPreference);
-userRouter.get("/preference/get",  validate(userValidation.getUserPreference), userPreferenceController.getUserPreference);
+userRouter.get("/preference",  validate(userValidation.getUserPreference), userPreferenceController.getUserPreference);
 
 // requests to user router
 userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);

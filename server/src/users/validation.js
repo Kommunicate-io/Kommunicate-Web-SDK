@@ -144,7 +144,7 @@ module.exports.deleteUserPreference= {
 }
 
 module.exports.getUserPreference= {
-  body:{
+  query:{
     applicationId: joi.string().required(),
     userName: joi.string().required()
 	}

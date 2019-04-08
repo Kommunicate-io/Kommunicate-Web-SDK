@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact, updateAgileCrmContact, getAppSetting} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket, createAgileCrmContact, updateAgileCrmContact, getAppSetting,updateUserPreference} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -30,6 +30,7 @@ import ResolutionDropdown from './ResolutionDropdown';
 import CloseButton from '../Modal/CloseButton';
 import { default as DeleteModal } from 'react-modal';
 import { SearchBarIcon } from "../../assets/svg/svgs";
+import Moment from 'moment-timezone';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -114,6 +115,14 @@ class Aside extends Component {
      this.getThirdparty ();
      this.getAgileCrmSettings();
      quickReply.loadQuickReplies();
+       var currentTimeZone = Moment.tz.guess().toString();
+       var timeZone = userSession.timeZone;
+       if (typeof timeZone == "undefined" || timeZone !== currentTimeZone) {
+         updateUserPreference(userSession.application.applicationId, userSession.email, currentTimeZone).then(res => {
+           userSession.timeZone = currentTimeZone;
+           CommonUtils.setUserSession(userSession);
+         })
+       }
      getAppSetting(userSession.application.applicationId)
      .then(this.storeAppSettingInSession)
      .catch(e=>{
