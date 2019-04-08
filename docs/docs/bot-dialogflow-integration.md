@@ -267,4 +267,31 @@ Possible values for availability status are:
 * `away` - if no agent is online and at least one agent is away
 * `offline` - if none of the agents is neither online nor away.
 
-Dialogflow, further, sends this data to your Webhook as the part of `originalDetectIntentRequest`. You can get this information and decide whether to handover the conversation to any of the human agents or send any other message.  
+Dialogflow, further, sends this data to your Webhook as the part of `originalDetectIntentRequest`. You can get this information and decide whether to handover the conversation to any of the human agents or send any other message.
+
+## Enable/disable attachment based on the bot response
+
+You can enable or disable the chat widget attachment icon based on the bot response. Use "KM_ENABLE_ATTACHMENT" property in metadata. 
+
+Note: By default the chat widget attachment icon will be enabled. You can disable it from kommunicateSettings object by using parameter<a href="web-installation#step-2-add-the-customized-kommunicate-plugin-to-your-website" target="_blank"> attachment</a>. 
+
+This is the sample JSON to enable attachment
+
+```json
+[{
+  "message": "Please share the document",// This is your trigger message to ask for attachments from the user. You can customize the message accordingly
+  "metadata": {
+    "KM_ENABLE_ATTACHMENT": "true" 
+  }
+}]
+``` 
+This is the sample JSON to disable attachment
+
+```json
+[{
+  "message": "Thanks for sharing the document",// This is your trigger message to disable the attachment icon from the chat widget. You can use this to disable the attachment icon once the user has shared the documents.
+  "metadata": {
+    "KM_ENABLE_ATTACHMENT": "false" 
+  }
+}]
+```  
