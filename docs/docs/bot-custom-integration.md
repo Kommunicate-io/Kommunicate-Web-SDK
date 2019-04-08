@@ -9,7 +9,7 @@ Custom bot integration allows you to integrate with any other bot platforms.
 In this section, learn how to:
 
 * [Integrating with custom bot platform](custom-bot-integration#integrating-with-custom-bot-platform)
-* [Design you your bot to send welcome message](custom-bot-integration#welcome-message-from-bots)
+* [Design your bot to send welcome message](custom-bot-integration#welcome-message-from-bots)
 * [Skip bot welcome message](custom-bot-integration#skip-bot-welcome-message)
 * [Process documents attached by user](custom-bot-integration#send-attachments-to-bot)
 * [Handoff the conversation to human if bot is not able to answer](custom-bot-integration#handoff-conversation-to-human-agents)
@@ -32,8 +32,8 @@ Kommunicate will send the data to your webhook in below format:
 	"metadata": "extra information with message",
 	"contentType": "content type of the message (text, html, location, etc)",
 	"applicationKey": "your APP_ID shown in Dashboard Install section",
-    "source": "identifies if message is sent from web or mobile",
-    "eventName": "events ie. WELCOME , KOMMUNICATE_MEDIA_EVENT etc",
+    	"source": "identifies if message is sent from web or mobile",
+   	"eventName": "events ie. WELCOME , KOMMUNICATE_MEDIA_EVENT etc",
 	"createdAt": "message sent time"
 }
 ```
