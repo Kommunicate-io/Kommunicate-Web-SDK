@@ -3,31 +3,41 @@ import CommonUtils from './CommonUtils';
 
 const EventMessageClient = { 
 
+    eventGroupSetupCompleted: false,
+
+    isEventGroupSetupCompleted: function() { 
+        return this.eventGroupSetupCompleted;
+    },
+
     getClientGroupId: function(userId) {
         return "km-onboarding-" + userId;
     },
     
-    setupEventMessageGroup: function(userId) {
+    setupEventMessageGroup: function() {
+        if (!CommonUtils.getUserSession()) {
+            console.log("user session not found, skipping event message group setup");
+            return;
+        }
+
         let _this = this;
-        let clientGroupId = this.getClientGroupId(userId);
+        let clientGroupId = this.getClientGroupId(CommonUtils.getUserSession().userName);
         KommunicateGlobal.Applozic.ALApiService.getGroupInfo({
             data: {
-                clientGroupId: clientGroupId,
+                clientGroupId: encodeURIComponent(clientGroupId),
             },
             success: function (response) { 
                 if (response.status == "error") {                    
                     var conversationDetail = {
                         "clientGroupId": clientGroupId,
-                        "botIds": ["kommunicate-support-bot"], // Optional. Pass the bot IDs of the bots you want to add in this conversation.
-                        "skipRouting":"true", // Optional. If this parameter is set to 'true', then routing rules will be skipped for this conversation.
-                        "assignee":"kommunicate-support-bot", // Optional. You can asign this conversation to any agent or bot. If you do not pass the ID. the conversation will assigned to the default agent.
                         "skipBotEvent":'["WELCOME_EVENT"]'
                     };
                     Kommunicate.startConversation(conversationDetail, function (response) {
+                        _this.eventGroupSetupCompleted = true;
                         console.log("new conversation created");
                         _this.sendEventMessage('welcome-post-signup');
                     });                    
                 } else {
+                    _this.eventGroupSetupCompleted = true;
                     console.log("onboarding group exists");
                 }
             },
@@ -36,7 +46,7 @@ const EventMessageClient = {
     },
 
     sendEventMessage: function(trigger) {
-        if (!EventMessages[trigger]) {
+        if (!EventMessages[trigger] || !this.eventGroupSetupCompleted) {
           return;
         }
     
