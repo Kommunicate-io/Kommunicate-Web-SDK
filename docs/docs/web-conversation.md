@@ -19,7 +19,7 @@ var defaultSettings = {
     "defaultAgentIds": ["<AGENT_ID>"],
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
-    "skipBotEvent": '["<EVENT_NAME"]', // Replace <EVENT_NAME> with the bot platform event names which you want to skip, read more about bot events [here](bot-configration#bot-events) 
+    "skipBotEvent": '["<EVENT_NAME"]', // Replace <EVENT_NAME> with the bot platform event names which you want to skip
     "skipRouting": true
 };
 Kommunicate.updateSettings(defaultSettings);  
@@ -44,7 +44,7 @@ Set the appropriate values in above mentioned parameters and Kommunciate will us
 Below is the sample code for the same:
 ```javascript
 
-// Example : Addind bot as a default assignee 
+// Example : Adding bot as a default assignee 
 var defaultSettings = {
     "defaultAgentIds": ["<AGENT_ID>"]
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
