@@ -62,6 +62,35 @@ Each object in message array is rendered as separate message in Kommunicate chat
 
 Kommunicate sends some specific events to your webhook in `eventName` property. When a user creates a new conversation Kommunicate sends `eventName: WELCOME` to your webhook. You can check for this property in payload and reply with a welcome message. 
 
+
+## Skip bot welcome message
+
+Skip the 'WELCOME' event from dialogflow by setting
+```
+ "skipBotEvent":'["WELCOME_EVENT"]'
+```
+
+### Skip bot welcome message through Settings
+
+```
+var defaultSettings = {
+      "skipBotEvent": '["WELCOME_EVENT"]',
+};
+Kommunicate.updateSettings(defaultSettings);
+```
+
+### Skip bot welcome message for a specific conversation
+
+```
+  var conversationDetail = {
+                       "skipBotEvent":'["WELCOME_EVENT"]'
+                    };
+		    
+  Kommunicate.startConversation(conversationDetail, function (response) {
+  });      
+```
+
+
 ## Send attachments to bot
 
 When a user attaches a file or shares location, Kommunicate sends `eventName: KOMMUNICATE_MEDIA_EVENT` to your bot along with the attached file information. You can find the file information in `KM_CHAT_CONTEXT` object in metadata.
