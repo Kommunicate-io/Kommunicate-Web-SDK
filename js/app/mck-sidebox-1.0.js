@@ -4113,7 +4113,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                    response.data = group;
                                    params.callback(response);
                                }
-                               (KOMMUNICATE_VERSION === "v2") && Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
                            }
                        } else if (data.status === 'error') {
                            if (typeof params.callback === 'function') {
