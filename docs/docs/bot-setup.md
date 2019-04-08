@@ -12,6 +12,8 @@ Kommunicate has the provision to integrate any third-party (Dialogflow, Microsof
 * [Assign all conversation to the bot](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default)  
 * [Assign conversation to bot based on certain events](bot-configration#assign-conversations-to-specific-bots-based-on-certain-events)
 * [Handoff the conversation to human if bot is not able to answer](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer)
+* [Use Actionable messages to make conversations interactive](bot-configration#actionable-messaages)
+* [Bot Events](bot-configration#bot-events)
 
 
 ## Integrate with any bot platform
@@ -108,9 +110,9 @@ Bot Events signify communication that can't be captured easily through text or v
 
 If you are using Dialogflow then visit [Dialogflow Custom Events](https://dialogflow.com/docs/events/custom-events) to know more.
 
-### Trigger message based on the bot event
+### Trigger event on bot platform
 
-Call the following function to trigger a message through the bot by passing the event name.
+Call the following function to trigger an event on the bot platform.
 
 ```
 KommunicateGlobal.Applozic.ALApiService.sendMessage({
