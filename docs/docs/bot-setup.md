@@ -102,3 +102,39 @@ Pass any kind of Kommunicate supported <a href="actionable-messages" target="_bl
    }
 }
 ```
+
+## Bot Events
+Bot Events signify communication that can't be captured easily through text or voice. Examples include, clicking a 'Buy' button, adding an item to the shopping cart.
+
+If you are using Dialogflow then visit [Dialogflow Custom Events](https://dialogflow.com/docs/events/custom-events) to know more.
+
+### Trigger message based on the bot event
+
+Call the following function to trigger a message through the bot by passing the event name.
+
+```
+KommunicateGlobal.Applozic.ALApiService.sendMessage({
+          data: {
+              message: {
+                  "type": 5,
+                  "contentType": 10,
+                  "message": "Event: " + trigger,
+                  "clientGroupId": <CLIENT_GROUP_ID>,
+                  "metadata": {"category": "HIDDEN", "KM_TRIGGER_EVENT": <EVENT_NAME>},
+                  "source": 1
+              }
+          },
+          success: function (response) { 
+            console.log(response); 
+          },
+          error: function () { }
+        });
+```
+
+
+Replace:
+<CLIENT_GROP_ID> with the client group id of the group in which you want to trigger the message.
+https://docs.kommunicate.io/docs/web-conversation#create-a-new-conversation
+
+Client group id value will be available under ’response’ in Kommunicate.startConversation call.
+Replace <EVENT_NAME> with the bot platform event name.
