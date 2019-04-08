@@ -24,7 +24,7 @@ const subscriptionPlans = require('../register/subscriptionPlans');
 const USER_CONSTANTS = require("../users/constants.js");
 const FREE_BOTS_COUNT = 2; //'bot' and 'liz' are free
 const {ONBOARDING_STATUS}= require('../utils/constant');
-const onboardingService = require('../Onboarding/onboardingService');
+const onboardingService = require('../onboarding/onboardingService');
 
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
