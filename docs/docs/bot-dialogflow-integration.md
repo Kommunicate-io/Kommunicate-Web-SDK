@@ -12,7 +12,7 @@ In this section, learn how to:
 * [Integration using Dialogflow V2 APIs](web-botintegration#integration-using-dialogflow-v2-apis)  
 * [Pass Custom data to bot platform](web-botintegration#pass-custom-data-to-bot-platform)
 * [Welcome message from bots](web-botintegration#welcome-message-from-bots)
-* [Skip Welcome message from bots](web-botintegration#skip-welcome-message-from-bots)
+* [Skip Dialogflow Welcome message](web-botintegration#skip-dialogflow-welcome-message)
 * [Process documents attached by user](web-botintegration#send-attachments-to-bot)
 * [Make your bot multilingual](web-botintegration#make-your-bot-multilingual)
 * [Working with Dialogflow fulfillment](web-botintegration#working-with-dialogflow-fulfillment)
@@ -94,11 +94,10 @@ Kommunicate.updateSettings(defaultSettings);
 
 ```
   var conversationDetail = {
-                        "skipBotEvent":'["WELCOME_EVENT"]'
+                       "skipBotEvent":'["WELCOME_EVENT"]'
                     };
 		    
   Kommunicate.startConversation(conversationDetail, function (response) {
-        _this.eventGroupSetupCompleted = true;
   });      
 ```
 
