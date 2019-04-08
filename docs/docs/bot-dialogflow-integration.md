@@ -273,7 +273,7 @@ Dialogflow, further, sends this data to your Webhook as the part of `originalDet
 
 You can enable or disable the chat widget attachment icon based on the bot response. Use "KM_ENABLE_ATTACHMENT" property in metadata. 
 
-Note: By default the chat widget attachment icon will be enabled. You can disable it from kommunicateSettings object by using parameter<a href="web-installation#step-2-add-the-customized-kommunicate-plugin-to-your-website" target="_blank"> attachment</a>. 
+> Note: By default the chat widget attachment icon will be enabled. You can disable it from kommunicateSettings object by setting <a href="web-installation#step-2-add-the-customized-kommunicate-plugin-to-your-website" target="_blank">attachment</a> parameter to false. 
 
 This is the sample JSON to enable attachment
 
@@ -281,7 +281,7 @@ This is the sample JSON to enable attachment
 [{
   "message": "Please share the document",// This is your trigger message to ask for attachments from the user. You can customize the message accordingly
   "metadata": {
-    "KM_ENABLE_ATTACHMENT": "true" 
+    "KM_ENABLE_ATTACHMENT": true 
   }
 }]
 ``` 
@@ -291,7 +291,7 @@ This is the sample JSON to disable attachment
 [{
   "message": "Thanks for sharing the document",// This is your trigger message to disable the attachment icon from the chat widget. You can use this to disable the attachment icon once the user has shared the documents.
   "metadata": {
-    "KM_ENABLE_ATTACHMENT": "false" 
+    "KM_ENABLE_ATTACHMENT": false 
   }
 }]
 ```  
