@@ -1745,7 +1745,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     kommunicateCommons.setWidgetStateOpen(true);
                     kommunicateIframe.classList.remove('km-iframe-closed');
                     kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
-                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'n-vis','')
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'n-vis','');
+                    kommunicateIframe.style.width='';
                     POPUP_WIDGET ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
                     POPUP_WIDGET && _this.configurePopupWidget();
                 });
