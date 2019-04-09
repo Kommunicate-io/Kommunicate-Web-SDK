@@ -1236,7 +1236,7 @@ const updateUserPreference =(appId,userName)=>{
       return response;
     }   
   }).catch(err => { 
-    console.log("error while fetching user preference" );
+    console.log("error while updating user preference" );
     throw err  
   })
 }
