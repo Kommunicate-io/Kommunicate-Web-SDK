@@ -173,12 +173,12 @@ The list template is a list of structured items with an optional header image an
 A list template may contain below items:
 
 * Header Image  &nbsp;&nbsp;<font color='#9b9b9b'>(Recommended size: 910*330px)</font>
-* Header text
+* Header text   &nbsp;&nbsp;<font color='#9b9b9b'>(Character limit: 75)</font>
 * List of items: Each item may contain below components:
 
    * Thumbnail image&nbsp;&nbsp;<font color='#9b9b9b'>(Recommended size: 150*150px)</font>
-   * Title 
-   * Description
+   * Title &nbsp;&nbsp;<font color='#9b9b9b'>(Character limit: 32)</font>
+   * Description &nbsp;&nbsp;<font color='#9b9b9b'>(Character limit: 35)</font>
    * The action of the item
        
 * List of buttons: Each button may contain below components:
@@ -263,15 +263,15 @@ A card template may contain below items:
 <br>
 * Header
    
-     * Image (optional)  &nbsp;&nbsp; <font color='#9b9b9b'>Recommended size: 720*280px</font>
+     * Image (optional)  &nbsp;&nbsp; <font color='#9b9b9b'>(Recommended size: 720*280px)</font>
      * Overlay text (optional)
 	
 * Card information section
    
-     * Title
+     * Title &nbsp;&nbsp; <font color='#9b9b9b'>(Character limit: 16)</font>
      * Title extension (optional) 
-     * Subtitle
-     * Description
+     * Subtitle &nbsp;&nbsp; <font color='#9b9b9b'>(Character limit: 56)</font>
+     * Description &nbsp;&nbsp; <font color='#9b9b9b'>(Character limit is 99 and use \n to break the line.)</font>
    
 * Card footer may contain a list of buttons, it can be:
    
