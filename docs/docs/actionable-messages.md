@@ -141,7 +141,7 @@ You can add any number of Suggested Replies by passing values in the metadata as
 	}
 }
 ```
-`replyMetadata` helps you to send custom data along with every suggested reply. Pair it with [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform) to receive data back when user click on the suggested reply. 
+`replyMetadata` helps you to send custom data along with every suggested reply. Pair it with [KM_CHAT_CONTEXT](bot-dialogflow-integration#pass-custom-data-to-bot-platform) to receive data back when user click on the suggested reply. 
 The appearance of the Suggested Replies and Buttons will be adjusted automatically according to the customization you have done on your chat widget.
 
 ## Images
