@@ -259,7 +259,8 @@ Your bot can make a request to fetch the human agent's availability status. This
 
 The bot makes this request by passing `actionRequest` parameter along with the action name `fetchAgentAvailability` in the custom payload. This parameter should be used with `replyMetadata` so that your bot will get the response of the action along with the message reply.
 
-** Here is an example to understand this: **  
+Here is an example to understand this:
+ 
 Assume, you have designed a button `Talk to Human`. When a user clicks on this button, you want to handover the conversation only if your human agents are online. If none of the agents are online you want to display some other message. Here is the custom payload for this kind of button:
 
 ```JSON
