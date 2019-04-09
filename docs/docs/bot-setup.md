@@ -8,12 +8,12 @@ sidebar_label: Bot setup
 
 Kommunicate has the provision to integrate any third-party (Dialogflow, Microsoft Bot Framework, IBM Watson etc) or custom-made bots in the website. You can deploy your bots to automate the repeated tasks and reduce the workload on your human agents. Bots can handle all the incoming conversations and when unable to answer, they can assign conversion to humans. In this section, learn how to:
 
-* [Integrate with any bot platform](bot-configration#integrate-with-any-bot-platform)
-* [Assign all conversation to the bot](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default)  
-* [Assign conversation to bot based on certain events](bot-configration#assign-conversations-to-specific-bots-based-on-certain-events)
-* [Handoff the conversation to human if bot is not able to answer](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer)
-* [Use Actionable messages to make conversations interactive](bot-configration#actionable-messaages)
-* [Bot Events](bot-configration#bot-events)
+* [Integrate with any bot platform](bot-setup#integrate-with-any-bot-platform)
+* [Assign all conversation to the bot](bot-setup#assign-all-the-new-conversations-to-the-bot-by-default)  
+* [Assign conversation to bot based on certain events](bot-setup#assign-conversations-to-specific-bots-based-on-certain-events)
+* [Handoff the conversation to human if bot is not able to answer](bot-setup#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer)
+* [Use Actionable messages to make conversations interactive](bot-setup#use-actionable-messages-to-make-conversations-interactive)
+* [Bot Events](bot-setup#bot-events)
 
 
 ## Integrate with any bot platform
