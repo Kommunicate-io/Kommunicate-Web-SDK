@@ -1220,11 +1220,11 @@ const submitOnboardingStatus = (data) => {
   })
 }
 
-const updateUserPreference =(appId,userName)=>{
+const updateUserPreference =(appId,userName,currentTimeZone)=>{
   var data = {};
   data.applicationId =appId;
-  data.preference = "TIME_ZONE";
-  data.value = appId;
+  data.preference = "timeZone";
+  data.value = currentTimeZone;
   data.userName = userName; 
   let url = getConfig().kommunicateBaseUrl +'/users/preference';
   return Promise.resolve(axios({
