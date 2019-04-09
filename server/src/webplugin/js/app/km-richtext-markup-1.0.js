@@ -188,7 +188,7 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link km-custom-widget-text-color" >
+                     <li class ={{handlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
@@ -212,7 +212,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                     {{#buttons}}
-                        <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                        <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                     {{/buttons}}  
              </div>
          </div>
@@ -384,7 +384,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 item.href = item.action.url;
                }else{
                 item.href = "javascript:void(0)";
-                item.hadlerClass= "km-list-item-handler";
+                item.handlerClass= "km-list-item-handler";
                 
                }
                if(item.action){
@@ -408,7 +408,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
               }
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
-                button.hadlerClass= "km-list-button-item-handler";
+                button.handlerClass= "km-list-button-item-handler";
                }else{
                 button.href = encodeURI(button.action.url);
                }

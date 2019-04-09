@@ -50,6 +50,9 @@ const onboardingValidation = require('../onboarding/validation')
 //For Cron Time Features
 const cronService = require("../cron/cronService.js")
 
+//For faq Category
+const faqCategoryController = require('../autosuggest/faqCategoryController');
+
 // For user preference
 const userPreferenceController = require("../users/userPreferenceController.js")
 
@@ -242,6 +245,10 @@ faqRouter.post("/_search", autoSuggestController._esSearchQuery);
 faqRouter.get("/search/:question/:appId",validate(autoSuggestValidation.searchFAQv2),autoSuggestController.searchFAQv2);
 faqRouter.get("/search", validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
 faqRouter.get("/list/:appId", validate(autoSuggestValidation.fetchSuggestion),autoSuggestController.fetchFAQs);
+faqRouter.get("/category",validate(autoSuggestValidation.getFaqCategory),faqCategoryController.getFaqCategory);
+faqRouter.post("/category",validate(autoSuggestValidation.insertFaqCategory),faqCategoryController.insertFaqCategory);
+faqRouter.patch("/category",validate(autoSuggestValidation.updateFaqCategory),faqCategoryController.updateFaqCategory);
+faqRouter.delete("/category",validate(autoSuggestValidation.deleteFaqCategory),faqCategoryController.deleteFaqCategory);
 
 
 /**

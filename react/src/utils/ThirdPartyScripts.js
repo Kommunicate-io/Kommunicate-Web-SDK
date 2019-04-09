@@ -81,7 +81,7 @@ class ThirdPartyScripts extends Component {
                 }
 
                 if (isKommunicateDashboard && userId && !signupPage && !setupPage) {
-                  setTimeout(function() { EventMessageClient.setupEventMessageGroup(userId) }, 30000);
+                  setTimeout(function() { EventMessageClient.setupEventMessageGroup() }, 30000);
                 }
                 
               };

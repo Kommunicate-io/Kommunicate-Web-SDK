@@ -1571,6 +1571,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     var popUpcloseButton = document.getElementById("km-popup-close-button");
                     kommunicateIframe.style.boxShadow="none";
                     POPUP_WIDGET && (popUpcloseButton.style.display='none');
+                    kommunicateIframe.classList.add('km-iframe-closed');
+                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query', 'km-iframe-dimension-with-popup',  'km-iframe-dimension-no-popup');
                   }
                   kmChatLoginModal.style.display='none';
                   kmAnonymousChatLauncher.classList.remove('n-vis');
@@ -3508,7 +3510,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     if (params.startTime) {
                         reqData += "&endTime=" + params.startTime;
                     }
-                    reqData += "&mainPageSize=60";
+                    reqData += "&mainPageSize=30";
                 }
                 if (!params.startTime) {
                     $mck_msg_inner.html('');
@@ -4030,7 +4032,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             };
 
             _this.getGroup = function (params) {
-                (KOMMUNICATE_VERSION === "v2") && Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
                var usersArray = [];
                $applozic.each(params.users, function (i, user) {
                    if (typeof user.userId !== 'undefined') {
@@ -8522,12 +8523,17 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
             _this.handleIframeNotification = function (){
                 var kmIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                kmIframe.classList.add('km-iframe-notification');
+                var notificationMessageWidth = document.getElementById("mck-msg-preview-visual-indicator").offsetWidth;
+                var launcherIconWidth = document.getElementById("mck-sidebox-launcher").offsetWidth;
+                kmIframe.classList.add("km-iframe-notification");
+                kmIframe.style.width = notificationMessageWidth + launcherIconWidth + 30 + 'px';
             };
 
             _this.hideMessagePreview = function(){
+                var kmIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                 $mck_msg_preview_visual_indicator_text.html('');
+                kmIframe.style.width = '';
             }
 
             _this.showNewMessageNotification = function (message, contact, displayName) {
@@ -8620,7 +8626,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 mckInitializeChannel.onNotificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn", function(e) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                    kommunicateIframe.classList.remove("km-iframe-dimension-no-popup", "km-iframe-notification", ".km-iframe-dimension-with-popup");
+                    kommunicateIframe.classList.remove("km-iframe-dimension-no-popup", "km-iframe-notification", "km-iframe-dimension-with-popup");
                     document.getElementById("km-popup-close-button").style.display = "none";
                     _this.hideMessagePreview();
                     kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'','n-vis')

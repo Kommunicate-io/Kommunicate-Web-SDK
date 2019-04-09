@@ -10,6 +10,7 @@ var skipCron = false;
  */
 exports.closeConversationCron = async () => {
     if (skipCron) return;
+    console.log("auto close cron started ", new Date())
     skipCron = !skipCron;
     var order = [['id', 'ASC']];
     let criteria = { where: { id: { $gt: 0 }, conversationCloseTime: { $gt: 0 } }, order, limit: 50 }

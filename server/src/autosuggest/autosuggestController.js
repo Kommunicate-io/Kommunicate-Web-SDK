@@ -69,6 +69,7 @@ exports.createSuggestion = (req, res) => {
 		referenceId: req.body.referenceId ? req.body.referenceId : null,
 		created_at: presentTime,
 		updated_at: presentTime,
+		categoryType:req.body.categoryType,
 		deleted:false
 	}
 
@@ -103,6 +104,9 @@ exports.updateSuggestion = (req, res) => {
 	}
 	if (null !== req.body.status) {
 		suggestion['status'] = req.body.status
+	}
+	if (null !== req.body.status) {
+		suggestion['categoryType'] = req.body.categoryType
 	}
 	// To update updated_at attribute in Knowledge base
 	suggestion['updated_at'] = new Date().getTime()
@@ -154,7 +158,7 @@ exports.searchFAQ=(req,res)=>{
 		id:req.query.articleId, 
 		referenceId:req.query.referenceId,
 		key:req.query.question,
-		category:req.query.category
+		categoryType:req.query.categoryType
 	}).then(data=>{
 		logger.info("got data from db");
 		return res.status(200).json({ code: "SUCCESS", data: data });

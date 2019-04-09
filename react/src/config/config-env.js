@@ -143,7 +143,7 @@ export default {
 
     "baseurl": {
 
-        "applozicAPI": "https://apps.applozic.com",
+        "applozicAPI": "https://chat.kommunicate.io",
         "kommunicateAPI": "https://api.kommunicate.io",
         "botPlatformAPI":"https://bots.applozic.com"
 

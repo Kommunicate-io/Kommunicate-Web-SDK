@@ -18,7 +18,7 @@ const customerService = require('../customer/customerService.js');
 const USER_CONSTANTS = require("../users/constants.js");
 const subscriptionPlans = require("./subscriptionPlans");
 const {ONBOARDING_STATUS}= require('../utils/constant');
-const onboardingService = require('../Onboarding/onboardingService');
+const onboardingService = require('../onboarding/onboardingService');
 
 exports.USER_TYPE = USER_TYPE;
 

@@ -4,7 +4,7 @@ const chatPopupMessageService = require("./chatPopupMessageService");
 const logger = require('../../utils/logger');
 const deepmerge = require('deepmerge');
 const {ONBOARDING_STATUS}= require('../../utils/constant');
-const onboardingService = require('../../Onboarding/onboardingService');
+const onboardingService = require('../../onboarding/onboardingService');
 
 exports.getAppSettingsByApplicationId = (criteria) => {
     return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {

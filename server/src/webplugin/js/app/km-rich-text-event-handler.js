@@ -395,6 +395,7 @@ Kommunicate.richMsgEventHandler = {
 
     },
     processClickOnButtonItem: function(e){
+        e.preventDefault();
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
