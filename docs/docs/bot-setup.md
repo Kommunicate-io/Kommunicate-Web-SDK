@@ -21,15 +21,15 @@ Kommunicate has the provision to integrate any third-party (Dialogflow, Microsof
 Kommunicate has the built in support for some bot platforms like Dialogflow and provides integration with other bot platforms by custom bot integration. 
 Here is the list of supported platforms(we will add more platforms in due course) and the detailed instructions for integration:
 
-* [Dialogflow](web-botintegration "instructions to integrate dialogflow bot")
+* [Dialogflow](bot-dialogflow-integration "instructions to integrate dialogflow bot")
 
-* [Custom made bots](custom-bot-integration "instruction to integrate custom bot")
+* [Custom made bots](bot-custom-integration "instruction to integrate custom bot")
 
 * [Amazon Lex](https://aws.amazon.com/lex/) (coming soon)
 
 * [Microsoft Bot Framework](https://dev.botframework.com/) (coming soon)
 
-Once you have integrated the bot you can [let it handle all the incoming conversations](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default). You can design your bot to collect the required detail and handoff the [conversation to a human agent](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer) if its not able to answer.
+Once you have integrated the bot you can [let it handle all the incoming conversations](bot-setup#assign-all-the-new-conversations-to-the-bot-by-default). You can design your bot to collect the required detail and handoff the [conversation to a human agent](bot-setup#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer) if its not able to answer.
 
 ## Assign all the new conversations to the bot by default
 
@@ -66,7 +66,7 @@ You can start group conversations with bot using `startConversation(conversation
 
 ## Handoff the conversation to human if bot is not able to answer
 
-Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways of achieving this and it depends on the bot platform. Detailed instructions can be found here for [dialogflow](web-conversation-assignment#bot-to-human-handoff) and [custom bots](custom-bot-integration#handoff-conversation-to-human-agents).
+Bot to human handoff comes in handy when the bot is unable to answer the customer or is unable to understand what the customer is saying. There are multiple ways of achieving this and it depends on the bot platform. Detailed instructions can be found [here](web-conversation-assignment#bot-to-human-handoff) for dialogflow and custom bots.
 
 
 
@@ -136,7 +136,6 @@ KommunicateGlobal.Applozic.ALApiService.sendMessage({
 
 Replace:
 <CLIENT_GROP_ID> with the client group id of the group in which you want to trigger the message.
-https://docs.kommunicate.io/docs/web-conversation#create-a-new-conversation
 
-Client group id value will be available under ’response’ in Kommunicate.startConversation call.
+Client group id value will be available under ’response’ in [Kommunicate.startConversation](web-conversation#create-a-new-conversation) call.
 Replace <EVENT_NAME> with the bot platform event name.
