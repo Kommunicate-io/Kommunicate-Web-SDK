@@ -75,7 +75,7 @@ Skip the 'WELCOME' event from dialogflow by setting
 
 ```
 var defaultSettings = {
-      "skipBotEvent": '["WELCOME_EVENT"]',
+	"skipBotEvent": '["WELCOME_EVENT"]',
 };
 Kommunicate.updateSettings(defaultSettings);
 ```
@@ -83,12 +83,11 @@ Kommunicate.updateSettings(defaultSettings);
 ### Skip bot welcome message for a specific conversation
 
 ```
-  var conversationDetail = {
-                       "skipBotEvent":'["WELCOME_EVENT"]'
-                    };
+var conversationDetail = {
+	"skipBotEvent":'["WELCOME_EVENT"]'
+};
 		    
-  Kommunicate.startConversation(conversationDetail, function (response) {
-  });      
+Kommunicate.startConversation(conversationDetail, function (response) { });      
 ```
 
 
