@@ -12,13 +12,14 @@ This section is dedicated to launching and managing conversations in the chat wi
 Kommunicate provides some parameter to configure the conversation rules when it is created. These parameters can be used to override the conversation rules you have set from dashboard. These parameters can be set using the `Kommunicate.updateSettings()` methods.
 The updated setting will be effective from the next conversation user creates by either clicking on the `Start new conversation` on chat widget or calling the `Kommunciate.startConversation()`.  
 
-below is the sample code to update the conversation setting:
+Below is the sample code to update the conversation setting:
 
 ```js
 var defaultSettings = {
     "defaultAgentIds": ["<AGENT_ID>"],
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
     "defaultAssignee": "<BOT_ID>", // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard
+    "skipBotEvent": '["<EVENT_NAME"]', // Replace <EVENT_NAME> with the bot platform event names which you want to skip
     "skipRouting": true
 };
 Kommunicate.updateSettings(defaultSettings);  
@@ -29,11 +30,12 @@ Below is the detail about the supported parameters:
 
 |Parameters|Type|Default value|Descriptions|
 |---	   |---	   |---  |---	    |
-|defaultAssignee           | string|Configured routing rules for agents from dashboard| You need to pass the agentId/botId. If nothing is passed the default agent will automatically get selected.  <br> NOTE: You need to pass "skipRouting": true with defaultAssignee parameter if you have assigned a default assignee from the [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules)  section|
-|skipRouting               | boolean| false | If you pass this value true then it will skip routing rules set from [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules) section.|
-|defaultAgentIds           | array|Configured routing rules for agents from dashboard|You can pass the default agents that you want to be present in every new conversation created.|
-|defaultBotIds             | array | Configured routing rules for bots from dashboard|You can pass the default bots that you want to be present in every new conversation created. |
+|defaultAssignee           | string| Configured routing rules for agents from dashboard| You need to pass the agentId/botId. If nothing is passed the default agent will automatically get selected.  <br> NOTE: You need to pass "skipRouting": true with defaultAssignee parameter if you have assigned a default assignee from the [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules)  section|
+|defaultAgentIds           | array| Configured routing rules for agents from dashboard| You can pass the default agents that you want to be present in every new conversation created.|
+|defaultBotIds             | array | Configured routing rules for bots from dashboard| You can pass the default bots that you want to be present in every new conversation created. |
 |WELCOME_MESSAGE           | string| Configured from dashboard|You can pass the default welcome message here and it will override the welcome message which you have set from dashboard. <br> NOTE: It will not override the welcome message sent by your bot.|
+|skipRouting               | boolean| false | If you pass this value true then it will skip routing rules set from [conversation rules](https://dashboard.kommunicate.io/settings/conversation-rules) section.|
+|skipBotEvent              | array| None | You can pass the bot event names that you want to skip in every new conversation created. Read more about bot events [here](bot-configration#bot-events) |
 
 #### Example : Assigning conversations to a specific bot/agent on certain events
 
@@ -42,7 +44,7 @@ Set the appropriate values in above mentioned parameters and Kommunciate will us
 Below is the sample code for the same:
 ```javascript
 
-// Example : Addind bot as a default assignee 
+// Example : Adding bot as a default assignee 
 var defaultSettings = {
     "defaultAgentIds": ["<AGENT_ID>"]
     "defaultBotIds": ["<BOT_ID>"], // Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard

@@ -12,6 +12,8 @@ Kommunicate has the provision to integrate any third-party (Dialogflow, Microsof
 * [Assign all conversation to the bot](bot-configration#assign-all-the-new-conversations-to-the-bot-by-default)  
 * [Assign conversation to bot based on certain events](bot-configration#assign-conversations-to-specific-bots-based-on-certain-events)
 * [Handoff the conversation to human if bot is not able to answer](bot-configration#handoff-the-conversation-to-human-if-bot-is-not-able-to-answer)
+* [Use Actionable messages to make conversations interactive](bot-configration#actionable-messaages)
+* [Bot Events](bot-configration#bot-events)
 
 
 ## Integrate with any bot platform
@@ -102,3 +104,39 @@ Pass any kind of Kommunicate supported <a href="actionable-messages" target="_bl
    }
 }
 ```
+
+## Bot Events
+Bot Events signify communication that can't be captured easily through text or voice. Examples include, clicking a 'Buy' button, adding an item to the shopping cart.
+
+If you are using Dialogflow then visit [Dialogflow Custom Events](https://dialogflow.com/docs/events/custom-events) to know more.
+
+### Trigger event on bot platform
+
+Call the following function to trigger an event on the bot platform.
+
+```
+KommunicateGlobal.Applozic.ALApiService.sendMessage({
+          data: {
+              message: {
+                  "type": 5,
+                  "contentType": 10,
+                  "message": "Event: " + trigger,
+                  "clientGroupId": <CLIENT_GROUP_ID>,
+                  "metadata": {"category": "HIDDEN", "KM_TRIGGER_EVENT": <EVENT_NAME>},
+                  "source": 1
+              }
+          },
+          success: function (response) { 
+            console.log(response); 
+          },
+          error: function () { }
+        });
+```
+
+
+Replace:
+<CLIENT_GROP_ID> with the client group id of the group in which you want to trigger the message.
+https://docs.kommunicate.io/docs/web-conversation#create-a-new-conversation
+
+Client group id value will be available under ’response’ in Kommunicate.startConversation call.
+Replace <EVENT_NAME> with the bot platform event name.
