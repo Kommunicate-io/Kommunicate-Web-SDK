@@ -8,15 +8,15 @@ sidebar_label: Dialogflow Integration
 Kommunicate provide a codeless integration with Dialogflow. You can easily integrate your Dialogflow agent form bot section in Kommunicate dashboard.
 In this section, learn how to:
 
-* [Integration using Dialogflow V1 APIs](web-botintegration#integration-using-dialogflow-v1-apis)
-* [Integration using Dialogflow V2 APIs](web-botintegration#integration-using-dialogflow-v2-apis)  
-* [Pass Custom data to bot platform](web-botintegration#pass-custom-data-to-bot-platform)
-* [Welcome message from bots](web-botintegration#welcome-message-from-bots)
-* [Skip Dialogflow Welcome message](web-botintegration#skip-dialogflow-welcome-message)
-* [Process documents attached by user](web-botintegration#send-attachments-to-bot)
-* [Make your bot multilingual](web-botintegration#make-your-bot-multilingual)
-* [Working with Dialogflow fulfillment](web-botintegration#working-with-dialogflow-fulfillment)
-* [Working with custom actions](web-botintegration#working-with-custom-actions)
+* [Integration using Dialogflow V1 APIs](bot-dialogflow-integration#integration-using-dialogflow-v1-apis)
+* [Integration using Dialogflow V2 APIs](bot-dialogflow-integration#integration-using-dialogflow-v2-apis)  
+* [Pass Custom data to bot platform](bot-dialogflow-integration#pass-custom-data-to-bot-platform)
+* [Welcome message from bots](bot-dialogflow-integration#welcome-message-from-bots)
+* [Skip Dialogflow Welcome message](bot-dialogflow-integration#skip-dialogflow-welcome-message)
+* [Process documents attached by user](bot-dialogflow-integration#send-attachments-to-bot)
+* [Make your bot multilingual](bot-dialogflow-integration#make-your-bot-multilingual)
+* [Working with Dialogflow fulfillment](bot-dialogflow-integration#working-with-dialogflow-fulfillment)
+* [Working with custom actions](bot-dialogflow-integration#working-with-custom-actions)
 
 
 ## Integration using Dialogflow V1 APIs
@@ -301,7 +301,7 @@ Dialogflow, further, sends this data to your Webhook as the part of `originalDet
 
 ## Enable/disable attachment based on the bot response
 
-You can enable or disable the chat widget attachment icon based on the bot response. Use "KM_ENABLE_ATTACHMENT" property in metadata. 
+You can enable or disable the chat widget attachment icon based on the bot response. Use `KM_ENABLE_ATTACHMENT` property in metadata. 
 
 > Note: By default the chat widget attachment icon will be enabled. You can disable it from kommunicateSettings object by setting <a href="web-installation#step-2-add-the-customized-kommunicate-plugin-to-your-website" target="_blank">attachment</a> parameter to false. 
 
