@@ -93,12 +93,11 @@ Kommunicate.updateSettings(defaultSettings);
 ### Skip Dialogflow welcome message for a specific conversation
 
 ```
-  var conversationDetail = {
-                       "skipBotEvent":'["WELCOME_EVENT"]'
-                    };
+var conversationDetail = {
+	"skipBotEvent":'["WELCOME_EVENT"]'
+};
 		    
-  Kommunicate.startConversation(conversationDetail, function (response) {
-  });      
+Kommunicate.startConversation(conversationDetail, function (response) { });      
 ```
 
 
