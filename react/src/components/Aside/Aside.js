@@ -115,7 +115,8 @@ class Aside extends Component {
      this.getThirdparty ();
      this.getAgileCrmSettings();
      quickReply.loadQuickReplies();
-       var currentTimeZone = Moment.tz.guess().toString();
+
+       var currentTimeZone = Moment.tz.guess(true).toString();
        var timeZone = userSession.timeZone;
        if (typeof timeZone == "undefined" || timeZone !== currentTimeZone) {
          updateUserPreference(userSession.application.applicationId, userSession.email, currentTimeZone).then(res => {

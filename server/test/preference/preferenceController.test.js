@@ -8,7 +8,7 @@ describe('preference', function () {
     this.timeout(50000);
     describe('#GET preference by userName', function () {
         it('should get preference', function (done) {
-            request(app).get('/users/preference/get')
+            request(app).get('/users/preference')
                         .send({ 
                             "applicationId": preference.applicationId,
                             "userName": preference.userName
