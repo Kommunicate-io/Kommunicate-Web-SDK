@@ -47,7 +47,8 @@ module.exports.fetchSuggestion = {
 
 module.exports.insertFaqCategory = {
 	body: {
-		applicationId: joi.string().required()
+		applicationId: joi.string().required(),
+		name: joi.string().required()
 	}
 }
 

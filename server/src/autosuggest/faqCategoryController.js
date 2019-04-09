@@ -4,7 +4,17 @@ const logger = require("../utils/logger");
  exports.getFaqCategory = (req, res) => {
     var appId = req.query.appId;
     return faqCategoryService.getFaqCategory(appId).then(result => {
-        return res.status(200).json({ code: "SUCCESS",data: result});
+        if (res.length === 0) {
+            return res.status(200).json({
+                code: "SUCCESS",
+                data: "data not found"
+            });
+        } else {
+            return res.status(200).json({
+                code: "SUCCESS",
+                data: result
+            });
+        }
     }).catch(err => {
          logger.info("error while fetching faq category", err);
          return res.status(500).json({ code: "ERROR", message: "error" });
