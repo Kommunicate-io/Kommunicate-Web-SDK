@@ -1220,6 +1220,27 @@ const submitOnboardingStatus = (data) => {
   })
 }
 
+const updateUserPreference =(appId,userName)=>{
+  var data = {};
+  data.applicationId =appId;
+  data.preference = "TIME_ZONE";
+  data.value = appId;
+  data.userName = userName; 
+  let url = getConfig().kommunicateBaseUrl +'/users/preference';
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+    data:data
+  })).then(response => {
+    if(typeof response !== "undefined" && response.data.message == "SUCCESS") {
+      return response;
+    }   
+  }).catch(err => { 
+    console.log("error while fetching user preference" );
+    throw err  
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -1287,5 +1308,6 @@ export {
   deleteInvitationByUserId,
   createAgileCrmContact,
   updateAgileCrmContact,
-  submitOnboardingStatus
+  submitOnboardingStatus,
+  updateUserPreference
 }
