@@ -12,6 +12,7 @@ In this section, learn how to:
 * [Integration using Dialogflow V2 APIs](web-botintegration#integration-using-dialogflow-v2-apis)  
 * [Pass Custom data to bot platform](web-botintegration#pass-custom-data-to-bot-platform)
 * [Welcome message from bots](web-botintegration#welcome-message-from-bots)
+* [Skip Dialogflow Welcome message](web-botintegration#skip-dialogflow-welcome-message)
 * [Process documents attached by user](web-botintegration#send-attachments-to-bot)
 * [Make your bot multilingual](web-botintegration#make-your-bot-multilingual)
 * [Working with Dialogflow fulfillment](web-botintegration#working-with-dialogflow-fulfillment)
@@ -65,11 +66,40 @@ Dialogflow will send this data in the configured webhook in `originalDetectInten
     }
   }
   ```
+  
 ## Welcome message from bots
 
 When a conversation is routed through the bot, it will trigger a `WELCOME` event to the Dialogflow bot. You can enable default welcome intent in Dialogflow or create a custom event `WELCOME`. 
 
 This message is different from the [Welcome Message](https://dashboard.kommunicate.io/settings/welcome-message) you set in Kommunicate dashboard. If Welcome Message for bot and humans (configured from the dashboard) both are enabled, both welcome message will be sent to the users. We recommend disabling the Welcome Message from the dashboard in this case.
+
+
+## Skip Dialogflow welcome message
+
+Skip the 'WELCOME' event from dialogflow by setting
+```
+ "skipBotEvent":'["WELCOME_EVENT"]'
+```
+
+### Skip Dialogflow welcome message through Settings
+
+```
+var defaultSettings = {
+      "skipBotEvent": '["WELCOME_EVENT"]',
+};
+Kommunicate.updateSettings(defaultSettings);
+```
+
+### Skip Dialogflow welcome message for a specific conversation
+
+```
+var conversationDetail = {
+	"skipBotEvent":'["WELCOME_EVENT"]'
+};
+		    
+Kommunicate.startConversation(conversationDetail, function (response) { });      
+```
+
 
 ## Send attachments to bot
 

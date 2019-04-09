@@ -9,7 +9,8 @@ Custom bot integration allows you to integrate with any other bot platforms.
 In this section, learn how to:
 
 * [Integrating with custom bot platform](custom-bot-integration#integrating-with-custom-bot-platform)
-* [Design you your bot to send welcome message](custom-bot-integration#welcome-message-from-bots)  
+* [Design your bot to send welcome message](custom-bot-integration#welcome-message-from-bots)
+* [Skip bot welcome message](custom-bot-integration#skip-bot-welcome-message)
 * [Process documents attached by user](custom-bot-integration#send-attachments-to-bot)
 * [Handoff the conversation to human if bot is not able to answer](custom-bot-integration#handoff-conversation-to-human-agents)
 
@@ -31,8 +32,8 @@ Kommunicate will send the data to your webhook in below format:
 	"metadata": "extra information with message",
 	"contentType": "content type of the message (text, html, location, etc)",
 	"applicationKey": "your APP_ID shown in Dashboard Install section",
-    "source": "identifies if message is sent from web or mobile",
-    "eventName": "events ie. WELCOME , KOMMUNICATE_MEDIA_EVENT etc",
+    	"source": "identifies if message is sent from web or mobile",
+   	"eventName": "events ie. WELCOME , KOMMUNICATE_MEDIA_EVENT etc",
 	"createdAt": "message sent time"
 }
 ```
@@ -61,6 +62,34 @@ Each object in message array is rendered as separate message in Kommunicate chat
 ## Welcome message from bots
 
 Kommunicate sends some specific events to your webhook in `eventName` property. When a user creates a new conversation Kommunicate sends `eventName: WELCOME` to your webhook. You can check for this property in payload and reply with a welcome message. 
+
+
+## Skip bot welcome message
+
+Skip the 'WELCOME' event from dialogflow by setting
+```
+ "skipBotEvent":'["WELCOME_EVENT"]'
+```
+
+### Skip bot welcome message through Settings
+
+```
+var defaultSettings = {
+	"skipBotEvent": '["WELCOME_EVENT"]',
+};
+Kommunicate.updateSettings(defaultSettings);
+```
+
+### Skip bot welcome message for a specific conversation
+
+```
+var conversationDetail = {
+	"skipBotEvent":'["WELCOME_EVENT"]'
+};
+		    
+Kommunicate.startConversation(conversationDetail, function (response) { });      
+```
+
 
 ## Send attachments to bot
 
