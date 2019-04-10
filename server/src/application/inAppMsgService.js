@@ -194,13 +194,14 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
     })
 }
 
-const countEnableRecordsInAppMsgs = (createdBy, appId, eventId) => {
+const countEnableRecordsInAppMsgs = (createdBy, appId, eventId,languageCode) => {
 
     return Promise.resolve(db.InAppMsg.count({where: {
             createdBy: createdBy,
             applicationId:appId,
             eventId:eventId,
-            status: 1
+            status: 1,
+            languageCode:languageCode
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 
@@ -221,19 +222,35 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
       languageCode:body.languageCode
   }
 
-  return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId)
-      .then(countRecords => {
-          console.log(countRecords)
-              return Promise.resolve(db.InAppMsg.create(inAppMessage)
-                .then(response => {
-                  console.log(response);
-                  response.message = "Created"
-                  response.countOfRecords =  countRecords;
-                  onboardingService.insertOnboardingStatus({applicationId: appId, stepId:ONBOARDING_STATUS.WELCOME_MESSAGE_CREATED, completed:true})
-                  return response;    
-                }))
-      }).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
-}
+  return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId, body.languageCode)
+    .then(countRecords => {
+      console.log(countRecords)
+      if (countRecords < 3) {
+        return Promise.resolve(db.InAppMsg.create(inAppMessage)
+          .then(response => {
+            console.log(response);
+            response.message = "Created"
+            response.countOfRecords = countRecords;
+            onboardingService.insertOnboardingStatus({
+              applicationId: appId,
+              stepId: ONBOARDING_STATUS.WELCOME_MESSAGE_CREATED,
+              completed: true
+            })
+            return response;
+          }))
+      } else {
+        let response = {};
+        response.message = "Limit reached"
+        response.countOfRecords = countRecords;
+        return response;
+      }
+    }).catch(err => {
+      return {
+        code: err.parent.code,
+        message: err.parent.sqlMessage
+      }
+    });
+  }
 
 
 
