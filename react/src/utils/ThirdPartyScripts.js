@@ -33,7 +33,7 @@ class ThirdPartyScripts extends Component {
               "googleMapScriptLoaded": true,
               "emojilibrary": false,
               "popupWidget": true,
-              "domainKey":"_kom"
+              //"domainKey":"_k"
             }
               : {
                 "appId": "applozic-sample-app",
@@ -43,7 +43,7 @@ class ThirdPartyScripts extends Component {
                 "googleMapScriptLoaded": true,
                 "emojilibrary": false,
                 "popupWidget": true,
-                "domainKey":"_al"
+                //"domainKey":"_a"
               };
             (function(d, m){
               let  o = support
