@@ -209,7 +209,10 @@ const countEnableRecordsInAppMsgs = (createdBy, appId, eventId,languageCode) => 
 }
 
 exports.createInAppMsg=(createdBy, appId, body)=>{
-
+  var languageCode =null;
+  if(body.languageCode){
+    languageCode =body.languageCode.toLowerCase();
+}
   inAppMessage = {
       createdBy: createdBy,
       applicationId:appId,
@@ -219,10 +222,10 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
       sequence: body.sequence,
       category: body.category,
       metadata: body.metadata,
-      languageCode:body.languageCode
+      languageCode:languageCode
   }
 
-  return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId, body.languageCode)
+  return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId, languageCode)
     .then(countRecords => {
       console.log(countRecords)
       if (countRecords < 3) {
