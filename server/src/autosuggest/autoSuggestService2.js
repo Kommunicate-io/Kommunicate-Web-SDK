@@ -104,14 +104,10 @@ const deleteSuggestion = (suggestion) => {
                     articleCount: -1
                 }
             });
-            return KnowledgeBaseModel.updateOne({
-                "id": suggestion.id
-            }, {
-                'deleted': true
-            }).then(result => {
-                return result;
-            })
         }
+        return KnowledgeBaseModel.updateOne({"id": suggestion.id }, { 'deleted': true }).then(result => {
+            return result;
+        })
     })
 }
 
