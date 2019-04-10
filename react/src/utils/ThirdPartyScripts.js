@@ -11,6 +11,7 @@ class ThirdPartyScripts extends Component {
 
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
+          var displayName =CommonUtils.getUserSession()?(CommonUtils.getUserSession().name || CommonUtils.getUserSession().displayName):"";
           var currentPath = window.location.pathname;
           var isKommunicateDashboard = CommonUtils.isKommunicateDashboard();
           let signupPage = currentPath.includes('/signup');
@@ -50,6 +51,7 @@ class ThirdPartyScripts extends Component {
                 o.userId = userId;
                 o.password =CommonUtils.getUserSession().accessToken;
               }
+              displayName && (o.userName = displayName);
               o.onInit=function(response, data) {
                 window.$applozic = KommunicateGlobal.window.$applozic;
                 window.applozic = KommunicateGlobal.window.applozic;
