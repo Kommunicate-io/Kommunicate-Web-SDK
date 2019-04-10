@@ -250,6 +250,16 @@ function ApplozicSidebox() {
             oldName: "km_lead_collection",
             newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
             skipPrefix: true
+        },{
+            oldName: "_kom_km_id",
+            //skip newName to delete the cookie  
+            skipPrefix: true
+        },{
+            oldName: "_kom_km_lead_collection",
+            skipPrefix: true
+        },{
+            oldName: "_kom_km_user_name",
+            skipPrefix: true
         }];
         
         try {
@@ -333,7 +343,9 @@ function ApplozicSidebox() {
         mapCookies && mapCookies.forEach(function(arrayItem){
             if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
                 var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
-                KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
+                if(arrayItem.newName){
+                    KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
+                }
                 KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
                 // deleting for old version where domain is set as hostname
                 KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
