@@ -1,6 +1,7 @@
 /*eslint-disable */
 const app = require("../../app.js");
 const express = require("express");
+const heapdump = require('heapdump');
 const userController = require("../users/userController.js");
 const loginController= require("../login/loginController");
 const registerController=require("../register/registerController");
@@ -126,6 +127,13 @@ var upload = multer({ dest: 'uploads/' })
 home.get('/',function(req,res){
   console.log("req received at home routes");
   res.status(200).json({"message":"Welcome to kommunicate"});
+});
+home.get('/heapdump', 
+function(req,res){
+  heapdump.writeSnapshot((err, filename) => {
+    console.log('Heap dump written to', filename)
+  })
+  res.status(200).json({"message":"dump generated"});
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/v2/kommunicate.app',webpluginController.iframePlugin);
