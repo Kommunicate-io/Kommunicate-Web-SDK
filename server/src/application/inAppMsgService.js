@@ -217,7 +217,8 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
       status:body.status,
       sequence: body.sequence,
       category: body.category,
-      metadata: body.metadata
+      metadata: body.metadata,
+      languageCode:body.languageCode
   }
 
   return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId)
