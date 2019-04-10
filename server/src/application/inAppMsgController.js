@@ -194,7 +194,7 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var appId = req.query.appId;
     var userName = req.query.userName;
     var eventIds = req.query.eventIds;
-    var languageCode = req.query.languageCode;
+    var languageCode = req.query.languageCode.toLowerCase();
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
     //return customerService.getCustomerByApplicationId(appId).then(customer => {
     return userService.getByUserNameAndAppId(userName, appId).then(user => {
