@@ -110,6 +110,7 @@ Bot Events signify communication that can't be captured easily through text or v
 
 If you are using Dialogflow then visit [Dialogflow Custom Events](https://dialogflow.com/docs/events/custom-events) to know more.
 
+
 ### Trigger event on bot platform
 
 Call the following function to trigger an event on the bot platform.
@@ -121,7 +122,7 @@ KommunicateGlobal.Applozic.ALApiService.sendMessage({
                   "type": 5,
                   "contentType": 10,
                   "message": "Event: " + trigger,
-                  "clientGroupId": <CLIENT_GROUP_ID>,
+                  "groupId": <GROUP_ID>,
                   "metadata": {"category": "HIDDEN", "KM_TRIGGER_EVENT": <EVENT_NAME>},
                   "source": 1
               }
@@ -135,7 +136,7 @@ KommunicateGlobal.Applozic.ALApiService.sendMessage({
 
 
 Replace:
-<CLIENT_GROUP_ID> with the client group id of the group in which you want to trigger the message.
+<GROUP_ID> with the group id of the conversation in which you want to trigger the message.
 
-Client group id value will be available under ’response’ in [Kommunicate.startConversation](web-conversation#create-a-new-conversation) call.
+GroupId value will be available in ’response’ of [Kommunicate.startConversation](web-conversation#create-a-new-conversation) call.
 Replace <EVENT_NAME> with the bot platform event name.
