@@ -223,7 +223,6 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
   return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId)
       .then(countRecords => {
           console.log(countRecords)
-          if(countRecords  <  3){
               return Promise.resolve(db.InAppMsg.create(inAppMessage)
                 .then(response => {
                   console.log(response);
@@ -232,12 +231,6 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
                   onboardingService.insertOnboardingStatus({applicationId: appId, stepId:ONBOARDING_STATUS.WELCOME_MESSAGE_CREATED, completed:true})
                   return response;    
                 }))
-          }else{
-            let response = {};
-            response.message = "Limit reached"
-            response.countOfRecords =  countRecords;
-            return response;
-          }
       }).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
