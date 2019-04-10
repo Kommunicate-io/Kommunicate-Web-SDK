@@ -121,7 +121,7 @@ KnowledgeBase.plugin(mongoosastic, {
     index: COLLECTIONS.KNOWLEDGE_BASE2.toLowerCase(),
     type: "_doc",
     bulk: {
-        delay: 10 * 1000,
+        delay: 30 * 60 * 1000, //30 min
         size: 10,
         batch: 50
     }
