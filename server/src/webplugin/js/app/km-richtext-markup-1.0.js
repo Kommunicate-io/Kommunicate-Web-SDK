@@ -188,7 +188,7 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{handlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} class="km-undecorated-link km-custom-widget-text-color" >
+                     <li class ={{handlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} {{{target}}} class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
@@ -382,8 +382,10 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                //checking for type
                if(item.action && item.action.type=="link"){
                 item.href = item.action.url;
+                item.action.openLinkInNewTab == false ? item.target = 'target="_parent"' : item.target = 'target="_blank"';
                }else{
                 item.href = "javascript:void(0)";
+                item.target = '';
                 item.handlerClass= "km-list-item-handler";
                 
                }
