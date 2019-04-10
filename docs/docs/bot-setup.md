@@ -135,7 +135,7 @@ KommunicateGlobal.Applozic.ALApiService.sendMessage({
 
 
 Replace:
-<CLIENT_GROP_ID> with the client group id of the group in which you want to trigger the message.
+<CLIENT_GROUP_ID> with the client group id of the group in which you want to trigger the message.
 
 Client group id value will be available under ’response’ in [Kommunicate.startConversation](web-conversation#create-a-new-conversation) call.
 Replace <EVENT_NAME> with the bot platform event name.
