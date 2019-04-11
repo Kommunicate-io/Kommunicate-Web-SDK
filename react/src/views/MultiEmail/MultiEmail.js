@@ -103,9 +103,9 @@ class MultiEmail extends Component {
                             onClick={this.showEmailInput}
                         >
                             {" "}
-                            Send instructions {" "}
+                            {this.props.titleText ? this.props.titleText : "Send instructions"} {" "}
                         </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link brand-color":"n-vis"}
-                            onClick={this.showEmailInput}>Send instructions </a>}
+                            onClick={this.showEmailInput}>{this.props.titleText ? this.props.titleText : "Send instructions"} </a>}
                         
                         
                     </div>

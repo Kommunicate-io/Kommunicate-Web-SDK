@@ -10,6 +10,7 @@ import Notification from '../../model/Notification';
 import ImageUploader from '../../Admin/ImageUploader';
 import { UploadIcon } from '../../../assets/svg/svgs';
 import CommonUtils from '../../../utils/CommonUtils';
+import MultiEmail from "../../MultiEmail/MultiEmail";
 
 class HelpCenterCustomization extends Component {
     constructor(props) {
@@ -259,9 +260,15 @@ class HelpCenterCustomization extends Component {
                         <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" value={this.state.homepageTitle} onChange={this.handleInputChange} />
 
                         <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" value={this.state.customDomain} onChange={this.handleInputChange} />
-                        <Button link secondary>Mail instructions to tech team for sub domain setup</Button>
 
-                        <Button onClick={this.saveCustomizationChanges}>Save changes</Button>
+                        <SendInstructionsContainer>
+                            <MultiEmail template="INSTALLATION_INSTRUCTIONS" titleText="Mail instructions to tech team for sub domain setup" />
+                        </SendInstructionsContainer>
+
+                        <div>
+                            <Button onClick={this.saveCustomizationChanges}>Save changes</Button>
+                        </div>
+                        
                     </Columns>
                     <Columns>
                         <LivePreviewContainer>
@@ -342,7 +349,7 @@ const Label = styled.label`
     margin: 0 5px 0 0;
 `;
 const Input = styled.input`
-    max-width: 350px;
+    max-width: 450px;
     padding: 7px 10px 7px;
 `;
 
@@ -463,7 +470,19 @@ const ContentBox = styled(LivePreviewSearchField)`
     height: 60px;
     background-color: #efefef;
 `;
-
+const SendInstructionsContainer = styled.div`
+    & .multi-email-install-link {
+        display: block;
+        margin: -15px 0 25px 0;
+    }
+    & .flex-center {
+        justify-content: flex-start;
+    }
+    & .multiple-email-container {
+        width: 53%;
+        max-width: 320px;
+    }
+`;
 
 
 
