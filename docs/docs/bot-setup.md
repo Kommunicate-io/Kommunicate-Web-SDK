@@ -121,7 +121,7 @@ KommunicateGlobal.Applozic.ALApiService.sendMessage({
               message: {
                   "type": 5,
                   "contentType": 10,
-                  "message": "Event: " + trigger,
+                  "message": "Event: " + <EVENT_NAME>,
                   "groupId": <GROUP_ID>,
                   "metadata": {"category": "HIDDEN", "KM_TRIGGER_EVENT": <EVENT_NAME>},
                   "source": 1
