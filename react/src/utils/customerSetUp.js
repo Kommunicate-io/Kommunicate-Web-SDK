@@ -23,7 +23,7 @@ function getJsCode (){
     // options.agentId = CommonUtils.getUrlParameter(search, "agentId");
     // options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
-
+  options.automaticChatOpenOnNavigation = true;
   // console.log(options);
 
 var jsScript= `<script type="text/javascript">
