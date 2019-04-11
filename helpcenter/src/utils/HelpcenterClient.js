@@ -31,8 +31,7 @@ export const HelpcenterClient = {
     searchFaq: (appId, searchQuery) => {
         searchQuery.replace(" ", "-");
         let queryUrl = KM_API_URL + url.kommunicateApi.SEARCH_ELASTIC;
-        return axios
-          .post(queryUrl, {
+        let data = {
             query: {
               bool: {
                 must: {
@@ -70,7 +69,9 @@ export const HelpcenterClient = {
                 }
               }
             }
-          })
+          }
+        return axios
+          .post(queryUrl, data)
           .then(response => {
             return response.data;
           })
