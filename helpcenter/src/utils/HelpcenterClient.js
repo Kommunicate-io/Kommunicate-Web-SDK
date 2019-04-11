@@ -30,18 +30,53 @@ export const HelpcenterClient = {
 
     searchFaq: (appId, searchQuery) => {
         searchQuery.replace(" ", "-");
-        let queryUrl = KM_API_URL + url.kommunicateApi.SEARCH,
-            params = {
-                appId: appId,
-                query: searchQuery
+        let queryUrl = KM_API_URL + url.kommunicateApi.SEARCH_ELASTIC;
+        return axios
+          .post(queryUrl, {
+            query: {
+              bool: {
+                must: {
+                  multi_match: {
+                    query: searchQuery,
+                    type: "phrase_prefix",
+                    fields: ["content", "name"]
+                  }
+                },
+                filter: {
+                  bool: {
+                    must: [
+                      {
+                        term: {
+                          "applicationId.keyword": appId
+                        }
+                      },
+                      {
+                        term: {
+                          "type.keyword": "faq"
+                        }
+                      },
+                      {
+                        term: {
+                          deleted: false
+                        }
+                      },
+                      {
+                        term: {
+                          "status.keyword": "published"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
             }
-        return (axios.get(queryUrl, {
-            'params': params
-        })).then(response => {
+          })
+          .then(response => {
             return response.data;
-        }).catch(err => {
-            console.log(err)
-        })
+          })
+          .catch(err => {
+            console.log(err);
+          });
 
     },
 
