@@ -350,7 +350,7 @@ exports.softDeleteInAppMsg=(id)=>{
 
 exports.editInAppMsg=async (body)=>{
 let inAppMessage = await  this.getInAppMessagebyId(body.id);
-var languageCode = null;
+var languageCode;
 if (body.languageCode) {
   languageCode = body.languageCode.toLowerCase();
 }
