@@ -24,7 +24,7 @@ const BotDescription = {
 
           return(
             <p>
-              1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login">Dialogflow console</a> <br />
+              1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login" target="_blank">Dialogflow console</a> <br />
              2. Select your Agent from dropdown in left panel.<br />
              3. Click on setting button. It will open a setting page for agent.<br />
              4. Inside general tab search for <b>API KEYS</b>.<br />
@@ -35,14 +35,21 @@ const BotDescription = {
     dialogflowV2 : function(){
           return(
             <p>
-              1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login">Dialogflow console</a> <br />
+              1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login" target="_blank">Dialogflow console</a> <br />
               2. Select your Agent from dropdown in left panel.<br />
               3. Click on setting button. It will open a setting page for agent.<br />
               4. Inside general tab search for <b>GOOGLE PROJECTS</b> and click on your service account.<br />
               5. After getting redirected to your <b>SERVICE ACCOUNT</b>, create key in JSON format for your project from <b>actions</b> section and it will get automatically downloaded.<br/>
               6. Now upload the <b>key file</b>.<br />
             </p>);
+    },
+    customBot : function(){
+          return(
+            <p>
+              1. <a href ="https://docs.kommunicate.io/docs/webhooks-configuration" target="_blank">Create a webhook</a> end point at your server.<br/>
+              2. Setup authentication at your server using request headers.<br/>
+              3. Enter the web hook url and request headers and paste here.<br/>
+            </p>);
     }
-
 }
 export default BotDescription;
