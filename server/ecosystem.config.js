@@ -5,8 +5,9 @@ module.exports = {
     args: '--cron enable',
     instances: 1,
     autorestart: true,
-    watch: true,
-    max_memory_restart: '1G',
+    watch: false,
+    exec_mode : "fork", //"cluster" ,
+    max_memory_restart: '500M',
     env: {
       NODE_ENV: 'default'
     },

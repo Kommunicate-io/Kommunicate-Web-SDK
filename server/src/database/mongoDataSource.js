@@ -6,7 +6,10 @@ class Database {
     this._connect()
   }
 _connect() {
-     return mongoose.connect(`${config.mongoDbUrl}`)
+     return mongoose.connect(`${config.mongoDbUrl}`,{
+      useCreateIndex: true,
+      useNewUrlParser: true
+    })
        .then((res) => {
          console.log('Database connection successful')
          return res;
