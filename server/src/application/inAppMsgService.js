@@ -350,7 +350,11 @@ exports.softDeleteInAppMsg=(id)=>{
 
 exports.editInAppMsg=async (body)=>{
 let inAppMessage = await  this.getInAppMessagebyId(body.id);
- return this.updateInAppMessage({id: body.id, applicationId: inAppMessage.applicationId},{message:body.message,languageCode:body.languageCode}).then(response => {
+var languageCode = null;
+if (body.languageCode) {
+  languageCode = body.languageCode.toLowerCase();
+}
+ return this.updateInAppMessage({id: body.id, applicationId: inAppMessage.applicationId},{message:body.message,languageCode:languageCode}).then(response => {
         response.message = "Edited"
         return response;    
       }).catch(err => {
