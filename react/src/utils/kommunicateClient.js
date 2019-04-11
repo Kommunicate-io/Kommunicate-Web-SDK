@@ -1241,6 +1241,23 @@ const updateUserPreference =(appId,userName,currentTimeZone)=>{
   })
 }
 
+const uploadImageToS3 = (fileObject, fileName) => {
+  const profileImageUrl = getConfig().kommunicateApi.profileImage;
+  let data = new FormData();
+  data.append('file', fileObject, fileName);
+
+  return Promise.resolve(axios.post(profileImageUrl, data, {
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    }
+  })).then(response => {
+    if(response && response.status === 200) return response;
+  }).catch(err => {
+    throw err;
+  });
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -1309,5 +1326,6 @@ export {
   createAgileCrmContact,
   updateAgileCrmContact,
   submitOnboardingStatus,
-  updateUserPreference
+  updateUserPreference,
+  uploadImageToS3
 }

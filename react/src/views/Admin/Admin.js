@@ -309,6 +309,8 @@ class Forms extends Component {
                             >
                             <div>
                               <ImageUploader
+                                allowZoomOut={true}
+                                profileImageUploader={true}
                                 handleImageFiles={this.handleImageFiles}
                                 invokeImageUpload={this.invokeImageUpload}
                                 uploadImageToS3={this.uploadImageToS3}

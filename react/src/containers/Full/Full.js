@@ -138,6 +138,11 @@ const CSATRatings = Loadable({
   loading: EmptyLoading
 });
 
+const HelpCenterCustomization = Loadable({
+  loader: () => import('../../views/HelpCenter/Customization/HelpCenterCustomization'),
+  loading: EmptyLoading
+});
+
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
 const chatUrl = config.baseurl.applozicAPI;
 
@@ -404,6 +409,7 @@ class Full extends Component {
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
                 <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
+                <Route exact path="/helpcenter/customization" name="HelpCenterCustomization" render={() => <HelpCenterCustomization {...this.props} />} />
 
                 <Redirect from="/" to="/dashboard" />      
 
