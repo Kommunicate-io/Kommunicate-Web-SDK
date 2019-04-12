@@ -2176,6 +2176,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
                     $mck_sidebox.mckModal();
+                    $mck_msg_inner.html('');
                 }
                 $mck_msg_to.focus(); 
             }
@@ -2209,9 +2210,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             ALStorage.clearMckMessageArray();
                         }
                         $applozic.fn.applozic("loadTab",null,callback);
-                        
-                    }
 
+                    }
+                  
                 });
             };
 
@@ -3521,7 +3522,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     reqData +="&startTime="+params.LatestMessageReceivedTime;
                     append= true;
                 }
-                if(!params.caller =="onSocketReconnect"){
+                if(!(params.caller == "onSocketReconnect")){
                     $mck_loading.removeClass('n-vis').addClass('vis');
                 }
                 
@@ -3718,7 +3719,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        mckMessageLayout.processMessageList(data, true, validated, append);
+                                                        mckMessageLayout.processMessageList(data, true, validated, append, params.caller);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
                                                         }
@@ -4534,46 +4535,42 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.getTopicLink = function (topicLink) {
                 return (topicLink) ? '<img src="' + topicLink + '">' : '<span class="mck-icon-no-image"></span>';
             };
-            _this.processMessageList = function (data, scroll, isValidated, append) {
+            _this.processMessageList = function (data, scroll, isValidated, append, caller) {
                 var showMoreDateTime;
                 var $scrollToDiv = $mck_msg_inner.children("div[name='message']:first");
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
                 var enableAttachment = "";
-                 append  = typeof append !=="undefined" ? append: false;
+                append  = typeof append !=="undefined" ? append: false;
                 var contact = (isGroup) ? mckGroupUtils.getGroup(tabId) : mckMessageLayout.fetchContact(tabId);
+                scroll && $mck_msg_inner.data('last-message-received-time', data.message[0].createdAtTime)
+                caller  && (scroll = false);
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
                     messageArray.push(data.message);
                     ALStorage.updateMckMessageArray(messageArray);
                     _this.addMessage(data.message, contact, append, false, isValidated);
                     showMoreDateTime = data.createdAtTime;
-                    _this.latestMessageReceivedTime = _this.latestMessageReceivedTime || message.createdAtTime;
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
-                        if (!(typeof message.to === 'undefined')) {
+                        if (!(typeof message.to === 'undefined')) { 
                             !enableAttachment && (enableAttachment = (typeof message.metadata === "object" &&  message.metadata.KM_ENABLE_ATTACHMENT) ? message.metadata.KM_ENABLE_ATTACHMENT :"");
                             _this.addMessage(message, contact, append, false, isValidated, enableAttachment);
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
-                            _this.latestMessageReceivedTime = _this.latestMessageReceivedTime || message.createdAtTime;
+                            caller && !scroll && message.contentType != 10 && (scroll = true)
                         }
                     });
                 }
                 $mck_tab_option_panel.data('datetime', showMoreDateTime);
-                $mck_msg_inner.data('last-message-received-time', _this.latestMessageReceivedTime)
-                
-                // Todo: uncomment below code
-            
-
-                // if (!scroll && $scrollToDiv.length > 0) {
-                //     $mck_msg_inner.scrollTop($scrollToDiv.offset().top - $mck_msg_inner.offset().top + $mck_msg_inner.scrollTop());
-                // } else if (scroll) {
-                //     $mck_msg_inner.animate({
-                //         scrollTop: $mck_msg_inner.prop("scrollHeight")
-                //     }, 'slow');
-                // }
+                if (!scroll && $scrollToDiv.length > 0) {
+                    $mck_msg_inner.scrollTop($scrollToDiv.offset().top - $mck_msg_inner.offset().top + $mck_msg_inner.scrollTop());
+                } else if (scroll) {
+                    $mck_msg_inner.animate({
+                        scrollTop: $mck_msg_inner.prop("scrollHeight")
+                    }, 'slow');
+                }
             };
             _this.closeConversation = function (data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {
@@ -8726,7 +8723,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             var isGroup = $mck_message_inner.data('isgroup');
                             var conversationId = $mck_message_inner.data('mck-conversationid');
                             var topicId = $mck_message_inner.data('mck-topicid'); 
-                            var latestMessageReceivedTime = $mck_msg_inner.data('last-message-received-time');
+                            var latestMessageReceivedTime = + $mck_msg_inner.data('last-message-received-time') + 1;
+                            //adding 1msec with latestMessageReceivedTime so API wont return the last message
                             ALStorage.clearMckMessageArray();
                             mckMessageService.loadMessageList({
                                 'tabId': currTabId,
@@ -9008,6 +9006,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.onMessage = function (obj) {
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
+                    typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                     var messageType = resp.type;
                     if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
                         $applozic("." + resp.message.split(",")[0] + " .mck-message-status").removeClass('mck-pending-icon').removeClass('mck-sent-icon').addClass('mck-delivered-icon').attr('title', 'delivered');
