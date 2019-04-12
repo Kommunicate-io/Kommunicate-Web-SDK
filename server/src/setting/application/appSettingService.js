@@ -6,9 +6,11 @@ const deepmerge = require('deepmerge');
 const {ONBOARDING_STATUS}= require('../../utils/constant');
 const onboardingService = require('../../onboarding/onboardingService');
 const cacheClient = require("../../cache/hazelCacheClient");
+const APPSETTINGMAP ="appSettingMap"
 
 exports.getAppSettingsByApplicationId = (criteria) => {
-    return cacheClient.getDataFromMap("appSettingMap", criteria.applicationId+"-appSetting").then(res => {
+    var key = "appSetting-"+criteria.applicationId;
+    return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
         if(res !== null){
             logger.info("picking appsetting data from cache server ");
             return { message: "SUCCESS", data: res };
@@ -17,13 +19,13 @@ exports.getAppSettingsByApplicationId = (criteria) => {
                 let result = res[0];
                 if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
                 if(result.popupTemplateKey == null){
-                    cacheClient.setDataIntoMap("appSettingMap", criteria.applicationId+"-appSetting", result);
+                    cacheClient.setDataIntoMap(APPSETTINGMAP, key, result);
                     return { message: "SUCCESS", data: result };
                 }
                 else{
                     return Promise.resolve(chatPopupMessageService.getChatPopupMessage(result.applicationId)).then(data =>{
                         result.chatPopupMessage = data;
-                        cacheClient.setDataIntoMap("appSettingMap", criteria.applicationId+"-appSetting", result);
+                        cacheClient.setDataIntoMap(APPSETTINGMAP, key, result);
                         return { message: "SUCCESS", data: result };
                     })
                 }
@@ -69,7 +71,7 @@ exports.updateAppSettings = async (settings, appId) => {
     }
     let updateOnboardingStatus = settings.widgetTheme || settings.supportMails
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
-        cacheClient.deleteDataFromMap("appSettingMap", appId+"-appSetting");
+        cacheClient.deleteDataFromMap(APPSETTINGMAP, "appSetting-"+appId);
         if(settings.popupTemplateKey == null){
             updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED :MAILBOX_CONFIGURED, completed:true})
             return { message: "application settings updated successfully" };

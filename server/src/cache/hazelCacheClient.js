@@ -43,12 +43,16 @@ exports.getDataFromMap= (mapPrefix,key)=> {
 exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
     if(client) {
         mapPrefix = cachePrefix+"_"+mapPrefix;
-        return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
-            return map.put(key,value).then(oldValue=> {
-                console.log( mapPrefix," updated for Key ",key ,"new value :",value," old value :", oldValue);
-                return oldValue;
+        try {
+            return Promise.resolve(client.getMap(mapPrefix)).then(map => {
+                return map.put(key, value).then(oldValue => {
+                    console.log(mapPrefix, " updated for Key ", key, "new value :", value, " old value :", oldValue);
+                    return oldValue;
+                });
             });
-        });
+        } catch (e) {
+            return null;
+        }
     }else{
         return null;
     };
