@@ -33,6 +33,9 @@ exports.getDataFromMap= (mapPrefix,key)=> {
         mapPrefix =   cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.get(key);
+        }).catch(e =>{
+            logger.info("error while getting data from cache",e );
+            return Promise.resolve(null);
         });
     }else{
         logger.info("cache client is null, returning null");
