@@ -3515,15 +3515,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                     reqData += "&mainPageSize=30";
                 }
-                if (!params.startTime && params.caller != "onSocketReconnect") {
+                if (!params.startTime && !(params.allowReload)) {
                     $mck_msg_inner.html('');
                 }
                 if(params.LatestMessageReceivedTime){
                     reqData +="&startTime="+params.LatestMessageReceivedTime;
-                    append= true;
                 }
-                if(!(params.caller == "onSocketReconnect")){
+                if(!(params.allowReload)){
                     $mck_loading.removeClass('n-vis').addClass('vis');
+                }else{
+                    append= true;
                 }
                 
                 mckUtils.ajax({
@@ -3719,7 +3720,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        mckMessageLayout.processMessageList(data, true, validated, append, params.caller);
+                                                        mckMessageLayout.processMessageList(data, true, validated, append, params.allowReload);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
                                                         }
@@ -4535,7 +4536,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.getTopicLink = function (topicLink) {
                 return (topicLink) ? '<img src="' + topicLink + '">' : '<span class="mck-icon-no-image"></span>';
             };
-            _this.processMessageList = function (data, scroll, isValidated, append, caller) {
+            _this.processMessageList = function (data, scroll, isValidated, append, allowReload) {
+                // allowReload parameter is using to reload chat widget when the socket connect 
                 var showMoreDateTime;
                 var $scrollToDiv = $mck_msg_inner.children("div[name='message']:first");
                 var tabId = $mck_msg_inner.data('mck-id');
@@ -4544,7 +4546,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 append  = typeof append !=="undefined" ? append: false;
                 var contact = (isGroup) ? mckGroupUtils.getGroup(tabId) : mckMessageLayout.fetchContact(tabId);
                 scroll && $mck_msg_inner.data('last-message-received-time', data.message[0].createdAtTime)
-                caller  && (scroll = false);
+                allowReload  && (scroll = false);
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
                     messageArray.push(data.message);
@@ -4559,7 +4561,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             _this.addMessage(message, contact, append, false, isValidated, enableAttachment);
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
-                            caller && !scroll && message.contentType != 10 && (scroll = true)
+                            allowReload && !scroll && message.contentType != 10 && (scroll = true)
                         }
                     });
                 }
@@ -8732,7 +8734,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                 'conversationId': conversationId,
                                 'topicId': topicId,
                                 "LatestMessageReceivedTime":latestMessageReceivedTime,
-                                "caller":"onSocketReconnect"
+                                "allowReload": true
                             })
                         } else {
                             // do we need this? 
