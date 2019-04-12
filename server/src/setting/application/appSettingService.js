@@ -11,6 +11,7 @@ const key = "appsetting-213ad407cc7e09ede19d2c9a707c6276d";
 exports.getAppSettingsByApplicationId = (criteria) => {
     return cacheClient.getDataFromMap("appSettingMap", key).then(res => {
         if(res !== null){
+            logger.info("picking appsetting data from cache server ");
             return { message: "SUCCESS", data: res };
         }else{
             return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
