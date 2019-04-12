@@ -130,10 +130,12 @@ home.get('/',function(req,res){
 });
 home.get('/heapdump', 
 function(req,res){
+  let response = { message: "dump generated error" }
   heapdump.writeSnapshot((err, filename) => {
     console.log('Heap dump written to', filename)
+    response.filename = filename; response.message = "dump generated";
   })
-  res.status(200).json({"message":"dump generated"});
+  res.status(200).json(response);
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/v2/kommunicate.app',webpluginController.iframePlugin);
