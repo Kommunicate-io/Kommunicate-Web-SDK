@@ -211,7 +211,7 @@ const countEnableRecordsInAppMsgs = (createdBy, appId, eventId,languageCode) => 
 exports.createInAppMsg=(createdBy, appId, body)=>{
   var languageCode =null;
   if(body.languageCode){
-    languageCode =body.languageCode.toLowerCase();
+    languageCode =body.languageCode.trim().toLowerCase();
 }
   inAppMessage = {
       createdBy: createdBy,
@@ -351,7 +351,7 @@ exports.softDeleteInAppMsg=(id)=>{
 exports.editInAppMsg=async (body)=>{
 let inAppMessage = await  this.getInAppMessagebyId(body.id);
 if (body.languageCode) {
-  body.languageCode = body.languageCode.toLowerCase();
+  body.languageCode = body.languageCode.trim().toLowerCase();
 }
  return this.updateInAppMessage({id: body.id, applicationId: inAppMessage.applicationId},{message:body.message,languageCode:body.languageCode}).then(response => {
         response.message = "Edited"
