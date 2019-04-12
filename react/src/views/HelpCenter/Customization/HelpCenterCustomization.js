@@ -166,7 +166,8 @@ class HelpCenterCustomization extends Component {
       }
 
     getImageBlob = (img) => {
-        uploadImageToS3(img, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${img.name}`).then(response => {
+        var imageName = `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}-${this.state.currentUploader}.${img.name}`;
+        uploadImageToS3(img, imageName).then(response => {
             if(response.status === 200 && response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
                 if(this.state.currentUploader === "logo") {
                     this.setState({

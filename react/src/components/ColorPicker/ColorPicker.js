@@ -30,7 +30,7 @@ class ColorPicker extends Component {
 		const { heading, tooltip, color, onChange, disableAlpha, className } = this.props;
 
 		return (
-			<ColorPickerContainer className={className && className}>
+			<ColorPickerContainer className={className}>
 				<HeadingContainer className={className && className + "--km-customizer-heading"}>
 					<HeadingText className={className && className + "--km-color-picker-heading"}>{heading}</HeadingText>
 					{ tooltip && <InfoContainer data-rh-at="right" data-tip={tooltip} data-effect="solid" data-place="right">
