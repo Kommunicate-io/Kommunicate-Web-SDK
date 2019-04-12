@@ -3515,13 +3515,13 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                     reqData += "&mainPageSize=30";
                 }
-                if (!params.startTime && !(params.allowReload)) {
+                if (!params.startTime && !params.allowReload) {
                     $mck_msg_inner.html('');
                 }
-                if(params.LatestMessageReceivedTime){
-                    reqData +="&startTime="+params.LatestMessageReceivedTime;
+                if(params.latestMessageReceivedTime){
+                    reqData +="&startTime="+params.latestMessageReceivedTime;
                 }
-                if(!(params.allowReload)){
+                if(!params.allowReload){
                     $mck_loading.removeClass('n-vis').addClass('vis');
                 }else{
                     append= true;
@@ -4283,7 +4283,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}" data-msg-time="${msgCreatedAtTimeExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            _this.latestMassageReceivedTime ="";
+            _this.latestMessageReceivedTime ="";
             _this.init = function() {
                 $applozic.template("convTemplate", convbox);
                 $applozic.template("messageTemplate", markup);
@@ -8725,15 +8725,15 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             var isGroup = $mck_message_inner.data('isgroup');
                             var conversationId = $mck_message_inner.data('mck-conversationid');
                             var topicId = $mck_message_inner.data('mck-topicid'); 
-                            var latestMessageReceivedTime = + $mck_msg_inner.data('last-message-received-time') + 1;
-                            //adding 1msec with latestMessageReceivedTime so API wont return the last message
+                             //adding 1msec with latestMessageReceivedTime so API wont return the last message
+                            var latestMessageReceivedTime =$mck_msg_inner.data('last-message-received-time') + 1;
                             ALStorage.clearMckMessageArray();
                             mckMessageService.loadMessageList({
                                 'tabId': currTabId,
                                 'isGroup': isGroup,
                                 'conversationId': conversationId,
                                 'topicId': topicId,
-                                "LatestMessageReceivedTime":latestMessageReceivedTime,
+                                "latestMessageReceivedTime":latestMessageReceivedTime,
                                 "allowReload": true
                             })
                         } else {
