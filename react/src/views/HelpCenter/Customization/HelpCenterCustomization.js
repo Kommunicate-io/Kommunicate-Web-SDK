@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import Modal from 'react-modal';
+import tinycolor from 'tinycolor2';
 import {getAppSetting, updateAppSetting, uploadImageToS3} from '../../../utils/kommunicateClient';
 import { SettingsHeader } from '../../../components/SettingsComponent/SettingsComponents';
 import ColorPicker from '../../../components/ColorPicker/ColorPicker';
@@ -25,7 +26,7 @@ class HelpCenterCustomization extends Component {
             modalIsOpen: false,
             hideLoader:true,
             fileObject: {},
-            currentUploader: ""
+            currentUploader: "logo"
         }
     }
 
@@ -181,11 +182,19 @@ class HelpCenterCustomization extends Component {
             console.log(response);
         }).catch(error => {
             console.log(error);
+            Notification.error("Error while uploading image. Please try again after some time.");
         })
-        console.log(img);
+    }
+
+    getColorBrightness = (colorCode) => {
+        return tinycolor(colorCode).getBrightness()
     }
 
     render() {
+
+        let primaryColorBrightness = this.getColorBrightness(this.state.helpcenterColor), textColor;
+        primaryColorBrightness > 150 ? textColor = '#4a4a4a' : textColor = '#fff';
+
         return (
             <Container className="animated fadeIn">
                 <div className="km-heading-wrapper">
@@ -229,7 +238,7 @@ class HelpCenterCustomization extends Component {
                             </FaviconUploadContainer>
                         </ImageUploadContainer>
 
-                        <input type="file" accept="image/png, image/ico" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
+                        <input type="file" accept="image/png, image/x-icon" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
 
 
 
@@ -242,6 +251,9 @@ class HelpCenterCustomization extends Component {
                             <div>
                                 <ImageUploader
                                     allowZoomOut={true}
+                                    width={avatarEditorConfig[this.state.currentUploader].width}
+                                    height={avatarEditorConfig[this.state.currentUploader].height}
+                                    borderRadius={0}
                                     profileImageUploader={false}
                                     handleImageFiles={this.handleImageFiles}
                                     invokeImageUpload={this.invokeImageUpload}
@@ -250,6 +262,7 @@ class HelpCenterCustomization extends Component {
                                     fileObject={this.state.fileObject}
                                     hideLoader={this.hideLoader}
                                     imageData={this.getImageBlob}
+                                    color={[0, 0, 0, 0.3]}
                                 />
                             </div>
                         </Modal>
@@ -274,7 +287,7 @@ class HelpCenterCustomization extends Component {
                         <LivePreviewContainer>
                             <LivePreview>
                                 <LivePreviewHeader bgColor={this.state.helpcenterColor}>
-                                    <LivePreviewHeading>
+                                    <LivePreviewHeading color={textColor}>
                                         { this.state.headlineText ? this.state.headlineText : "Hi, how can we help you?" }
                                     </LivePreviewHeading>
                                     <LivePreviewSearchField />
@@ -402,6 +415,7 @@ const LogoUpload = styled.div`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    overflow: hidden;
 `;
 const LogoDescription = styled.div`
     margin-top: 5px;
@@ -453,7 +467,7 @@ const LivePreviewHeading = styled.div`
     font-size: 22px;
     font-weight: 500;
     letter-spacing: 1.5px;
-    color: #ffffff;
+    color: ${props => props.color};
 `;
 const LivePreviewSearchField = styled.div`
     border-radius: 4px;
@@ -484,9 +498,6 @@ const SendInstructionsContainer = styled.div`
     }
 `;
 
-
-
-
 const customStyles = {
     content: {
       top: '50%',
@@ -501,5 +512,16 @@ const customStyles = {
   
     }
 };
+
+const avatarEditorConfig = {
+    "logo": {
+        width: 200,
+        height: 100
+    },
+    "favicon": {
+        width: 200,
+        height: 200
+    }
+}
 
 export default HelpCenterCustomization;

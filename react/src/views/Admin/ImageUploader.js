@@ -187,11 +187,11 @@ class ImageUploader extends Component {
             <AvatarEditor
               ref={this.setEditorRef}
               image={this.state.fileObjectProp}
-              width={300}
-              height={300}
+              width={this.props.width}
+              height={this.props.height}
               // border={60}
-              borderRadius={250}
-              color={[255, 255, 255, 0.6]} // RGBA
+              borderRadius={this.props.borderRadius}
+              color={this.props.color} // RGBA
               scale={this.state.scale}
               rotate={0}
             />

@@ -310,6 +310,9 @@ class Forms extends Component {
                             <div>
                               <ImageUploader
                                 allowZoomOut={true}
+                                width={300}
+                                height={300}
+                                borderRadius={250}
                                 profileImageUploader={true}
                                 handleImageFiles={this.handleImageFiles}
                                 invokeImageUpload={this.invokeImageUpload}
@@ -318,6 +321,7 @@ class Forms extends Component {
                                 handleClose={this.closeModal}
                                 fileObject={this.state.fileObject}
                                 hideLoader={this.hideLoader}
+                                color={[255, 255, 255, 0.6]}
                               />
                             </div>
                           </Modal>
