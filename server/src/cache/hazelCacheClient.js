@@ -33,6 +33,9 @@ exports.getDataFromMap= (mapPrefix,key)=> {
         mapPrefix =   cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.get(key);
+        }).catch(e =>{
+            logger.info("error while getting data from cache",e );
+            return null;
         });
     }else{
         logger.info("cache client is null, returning null");
@@ -43,13 +46,16 @@ exports.getDataFromMap= (mapPrefix,key)=> {
 exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
     if(client) {
         mapPrefix = cachePrefix+"_"+mapPrefix;
-        return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
-            return map.put(key,value).then(oldValue=> {
-                console.log( mapPrefix," updated for Key ",key ,"new value :",value," old value :", oldValue);
-                return oldValue;
-            });
-        });
-    }else{
+            return Promise.resolve(client.getMap(mapPrefix)).then(map => {
+                return map.put(key, value).then(oldValue => {
+                    console.log(mapPrefix, " updated for Key ", key, "new value :", value, " old value :", oldValue);
+                    return oldValue;
+                }).catch(e =>{
+                    logger.info("error while getting data from cache",e );
+                    return null;
+                });;
+            }); 
+    } else {
         return null;
     };
 };

@@ -5,24 +5,37 @@ const logger = require('../../utils/logger');
 const deepmerge = require('deepmerge');
 const {ONBOARDING_STATUS}= require('../../utils/constant');
 const onboardingService = require('../../onboarding/onboardingService');
+const cacheClient = require("../../cache/hazelCacheClient");
+const APPSETTINGMAP ="appSettingMap"
 
 exports.getAppSettingsByApplicationId = (criteria) => {
-    return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
-        let result = res[0];
-        if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
-        if(result.popupTemplateKey == null){
-            return { message: "SUCCESS", data: result };
+    var key = generateKey(criteria.applicationId);
+    return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
+        if(res !== null){
+            logger.info("picking appsetting data from cache server ");
+            return { message: "SUCCESS", data: res };
+        }else{
+            return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
+                let result = res[0];
+                if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
+                if(result.popupTemplateKey == null){
+                    cacheClient.setDataIntoMap(APPSETTINGMAP, key, result);
+                    return { message: "SUCCESS", data: result };
+                }
+                else{
+                    return Promise.resolve(chatPopupMessageService.getChatPopupMessage(result.applicationId)).then(data =>{
+                        result.chatPopupMessage = data;
+                        cacheClient.setDataIntoMap(APPSETTINGMAP, key, result);
+                        return { message: "SUCCESS", data: result };
+                    })
+                }
+            }).catch(err =>{
+                logger.info("Application settings get error");
+                throw err;
+            });
         }
-        else{
-            return Promise.resolve(chatPopupMessageService.getChatPopupMessage(result.applicationId)).then(data =>{
-                result.chatPopupMessage = data;
-                return { message: "SUCCESS", data: result };
-            })
-        }
-    }).catch(err =>{
-        logger.info("Application settings get error");
-        throw err;
-    });
+    })
+     
 }
 
 exports.insertAppSettings = (settings) => {
@@ -58,6 +71,7 @@ exports.updateAppSettings = async (settings, appId) => {
     }
     let updateOnboardingStatus = settings.widgetTheme || settings.supportMails
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
+        cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(appId));
         if(settings.popupTemplateKey == null){
             updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED :MAILBOX_CONFIGURED, completed:true})
             return { message: "application settings updated successfully" };
@@ -85,4 +99,8 @@ exports.getAppSettingIdByApplicationId = (appId) => {
         // logger.info(result);
         return result[0].id;
     });
+}
+
+const generateKey =(appId)=>{
+   return "appSetting-"+appId;
 }
