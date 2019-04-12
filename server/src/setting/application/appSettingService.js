@@ -9,7 +9,7 @@ const cacheClient = require("../../cache/hazelCacheClient");
 const APPSETTINGMAP ="appSettingMap"
 
 exports.getAppSettingsByApplicationId = (criteria) => {
-    var key = "appSetting-"+criteria.applicationId;
+    var key = generateKey(criteria.applicationId);
     return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
         if(res !== null){
             logger.info("picking appsetting data from cache server ");
@@ -71,7 +71,7 @@ exports.updateAppSettings = async (settings, appId) => {
     }
     let updateOnboardingStatus = settings.widgetTheme || settings.supportMails
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
-        cacheClient.deleteDataFromMap(APPSETTINGMAP, "appSetting-"+appId);
+        cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(appId));
         if(settings.popupTemplateKey == null){
             updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED :MAILBOX_CONFIGURED, completed:true})
             return { message: "application settings updated successfully" };
@@ -99,4 +99,8 @@ exports.getAppSettingIdByApplicationId = (appId) => {
         // logger.info(result);
         return result[0].id;
     });
+}
+
+const generateKey =(appId)=>{
+   return "appSetting-"+appId;
 }
