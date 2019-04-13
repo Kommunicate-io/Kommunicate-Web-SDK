@@ -630,7 +630,7 @@ class BillingKommunicate extends Component {
 
         let applicationCreatedAtTime = CommonUtils.getUserSession().applicationCreatedAt || CommonUtils.getUserSession().created_at;
         applicationCreatedAtTime = applicationCreatedAtTime.replace('Z','');
-        var trialExpiryDate = moment(applicationCreatedAtTime).add(30, 'days').format("DD MMMM YYYY");
+        var trialExpiryDate = moment(applicationCreatedAtTime).add(CommonUtils.maxDaysAsPerPlan(), 'days').format("DD MMMM YYYY");
 
         return (
             <div className="animated fadeIn billings-section">
