@@ -6,7 +6,8 @@ const deepmerge = require('deepmerge');
 const {ONBOARDING_STATUS}= require('../../utils/constant');
 const onboardingService = require('../../onboarding/onboardingService');
 const cacheClient = require("../../cache/hazelCacheClient");
-const APPSETTINGMAP ="appSettingMap"
+const APPSETTINGMAP ="appSettingMap";
+const expiryTime = 86400000;
 
 exports.getAppSettingsByApplicationId = (criteria) => {
     var key = generateKey(criteria.applicationId);
@@ -19,13 +20,13 @@ exports.getAppSettingsByApplicationId = (criteria) => {
                 let result = res[0];
                 if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
                 if(result.popupTemplateKey == null){
-                    cacheClient.setDataIntoMap(APPSETTINGMAP, key, result);
+                    cacheClient.setDataIntoMap(APPSETTINGMAP, key, result, expiryTime);
                     return { message: "SUCCESS", data: result };
                 }
                 else{
                     return Promise.resolve(chatPopupMessageService.getChatPopupMessage(result.applicationId)).then(data =>{
                         result.chatPopupMessage = data;
-                        cacheClient.setDataIntoMap(APPSETTINGMAP, key, result);
+                        cacheClient.setDataIntoMap(APPSETTINGMAP, key, result, expiryTime);
                         return { message: "SUCCESS", data: result };
                     })
                 }
