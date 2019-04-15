@@ -68,8 +68,10 @@ const createContact = async function( settings, userInfo){
             "name": "phone",
             "value": userInfo.phoneNumber
         })
-
-
+        userInfo.contactNumber && update_contact.properties.push({
+            "name": "phone",
+            "value": userInfo.contactNumber
+        })
         userInfo.address && contact.properties.push({
             "type": "SYSTEM",
             "name": "address",
@@ -162,8 +164,10 @@ const updateContact = async function(settings, contactId, userInfo){
             "name": "phone",
             "value": userInfo.phoneNumber
         })
-
-
+        userInfo.contactNumber && update_contact.properties.push({
+            "name": "phone",
+            "value": userInfo.contactNumber
+        })
         userInfo.email && update_contact.properties.push({
             "type": "SYSTEM",
             "name": "email",
