@@ -8,7 +8,7 @@ import {InputButtonTop ,InputButtonBottom } from '../../assets/svg/svgs';
 
 let updateTimer;
 
-class ConversationAutoClosing extends Component {
+class ConversationAutoResolving extends Component {
 
     constructor(props) {
         super(props);
@@ -25,15 +25,15 @@ class ConversationAutoClosing extends Component {
     }
 
     componentDidMount = () => {
-        this.getConversationAutoCloseSettings();
+        this.getConversationAutoResolveSettings();
     }
 
-    getConversationAutoCloseSettings = () => {
+    getConversationAutoResolveSettings = () => {
         getAppSetting().then(response => {
             if(response.status == 200 && response.data.response) { 
                 response.data.response && this.setState({
-                    inputDuration: !response.data.response.conversationCloseTime ?  10 : response.data.response.conversationCloseTime/60 ,
-                    enableConversationAutoClosing:  response.data.response.conversationCloseTime === 0 ?  false : true
+                    inputDuration: !response.data.response.conversationResolveTime ?  10 : response.data.response.conversationResolveTime/60 ,
+                    enableConversationAutoResolving:  response.data.response.conversationResolveTime === 0 ?  false : true
                 });
             }
         }).catch(err => {
@@ -52,42 +52,39 @@ class ConversationAutoClosing extends Component {
             e.preventDefault();
     }
 
-    changeConversationClosingTime = (change) =>{
-        if (change === 'decrement') {
-            this.state.inputDuration != 0 && this.setState({
-                inputDuration: this.state.inputDuration-1
-            },()=>{ updateTimer && clearTimeout(updateTimer), this.handleConversationClosingTimeChange() });
-        } else if(change == 'increment'){
-            this.setState({
-                inputDuration: this.state.inputDuration+1
-            },()=>{ updateTimer && clearTimeout(updateTimer),this.handleConversationClosingTimeChange() });
+    changeConversationResolvingTime = (change) =>{
+        if(change === -1 && this.state.inputDuration ===0){
+            return;
         }
+        this.setState({
+            inputDuration : this.state.inputDuration + change
+        },()=>{ updateTimer && clearTimeout(updateTimer), this.handleConversationResolvingTimeChange()})
     }
 
-    handleConversationClosingTimeChange = () =>{
+    handleConversationResolvingTimeChange = () =>{
         let timer = 500;
         updateTimer = setTimeout(() => {
-            let closingTime = this.state.inputDuration > 0  ? this.state.inputDuration*60 : 0 ;
-            this.updateConversationClosingTime(closingTime);
+            let ResolvingTime = this.state.inputDuration > 0  ? this.state.inputDuration*60 : 0 ;
+            this.updateConversationResolvingTime(ResolvingTime);
         }, timer);
     }
 
 
-    toggleConversationAutoClosing = () => {
-        let closingTime = !this.state.enableConversationAutoClosing  ? this.state.inputDuration*60 : 0 ;
-        this.updateConversationClosingTime(closingTime);
+    toggleConversationAutoResolving = () => {
+        let ResolvingTime = !this.state.enableConversationAutoResolving  ? this.state.inputDuration*60 : 0 ;
+        this.updateConversationResolvingTime(ResolvingTime);
     }
 
-    updateConversationClosingTime = (closingTime) =>{
+    updateConversationResolvingTime = (ResolvingTime) =>{
         let data = {
-            conversationCloseTime: closingTime
+            conversationCloseTime: ResolvingTime
         }
         updateAppSetting(data).then(response => {
             if(response.status == 200 && response.data.code == "SUCCESS") {
-                data.conversationCloseTime && this.state.enableConversationAutoClosing && Notification.success("Conversation auto-closing time updated") 
-                !data.conversationCloseTime && Notification.success("Conversation auto-closing disabled successfully");
-                data.conversationCloseTime && !this.state.enableConversationAutoClosing && Notification.success("Conversation auto-closing enabled successfully") 
-                this.setState({ enableConversationAutoClosing: data.conversationCloseTime ? true : false });
+                data.conversationCloseTime && this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving time updated") 
+                !data.conversationCloseTime && Notification.success("Conversation auto-resolving disabled successfully");
+                data.conversationCloseTime && !this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving enabled successfully") 
+                this.setState({ enableConversationAutoResolving: data.conversationCloseTime ? true : false });
             }
         }).catch( err => {
             Notification.error("Could not update CSAT Rating settings. Please try again after some time.");
@@ -106,12 +103,12 @@ class ConversationAutoClosing extends Component {
                         <ToggleSettingsText>Allow conversations to be resolved automatically</ToggleSettingsText>
                         <ToggleSettingsToggler>
                             <SliderToggle 
-                                checked={this.state.enableConversationAutoClosing} 
-                                handleOnChange={this.toggleConversationAutoClosing}
+                                checked={this.state.enableConversationAutoResolving} 
+                                handleOnChange={this.toggleConversationAutoResolving}
                             />
                         </ToggleSettingsToggler>
                     </ToggleSettingsContainer>
-                    <ToggleSettingsDescription style={this.state.enableConversationAutoClosing ? {} : {pointerEvents: 'none', opacity: .5} }>
+                    <ToggleSettingsDescription style={this.state.enableConversationAutoResolving ? {} : {pointerEvents: 'none', opacity: .5} }>
                     Conversations which are assigned to a bot will be auto-resolved, when the user has not replied for
                     <InputNumberWrapper>
                         <DurationInput type="number" min="0" value={this.state.inputDuration}
@@ -119,14 +116,14 @@ class ConversationAutoClosing extends Component {
                                 this.setState({
                                     inputDuration : parseInt(e.target.value)
                                 },()=>{
-                                    updateTimer && clearTimeout(updateTimer), this.handleConversationClosingTimeChange();
+                                    updateTimer && clearTimeout(updateTimer), this.handleConversationResolvingTimeChange();
                                 })
                             }}
                             onKeyPress={this.handleKeypress}
                             />
                         <ToggleButtonWrapper>
-                            <ToggleButton onClick={()=>{this.changeConversationClosingTime('increment')}}> <InputButtonTop/> </ToggleButton>
-                            <ToggleButton onClick={()=>{this.changeConversationClosingTime('decrement')}}> <InputButtonBottom/> </ToggleButton>
+                            <ToggleButton onClick={()=>{this.changeConversationResolvingTime(+1)}}> <InputButtonTop/> </ToggleButton>
+                            <ToggleButton onClick={()=>{this.changeConversationResolvingTime(-1)}}> <InputButtonBottom/> </ToggleButton>
                         </ToggleButtonWrapper>
                     </InputNumberWrapper>minutes.
                     </ToggleSettingsDescription>
@@ -204,4 +201,4 @@ const DurationInput = styled.input`
     }
 `
 
-export default ConversationAutoClosing;
+export default ConversationAutoResolving;
