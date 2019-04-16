@@ -6115,7 +6115,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             };
             _this.getScriptMessagePreview = function(message,emoji_template){
-				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
+				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
 					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
 						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 					}

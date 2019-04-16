@@ -29,7 +29,7 @@ exports.getClientInstanse = ()=> {
 };
 
 exports.getDataFromMap= (mapPrefix,key)=> {
-    if(client) {
+    if(client && key) {
         mapPrefix =   cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.get(key);
@@ -44,7 +44,7 @@ exports.getDataFromMap= (mapPrefix,key)=> {
 };
 
 exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
-    if(client) {
+    if(client && key) {
         mapPrefix = cachePrefix+"_"+mapPrefix;
             return Promise.resolve(client.getMap(mapPrefix)).then(map => {
                 return map.put(key, value, expiryTime).then(oldValue => {
@@ -61,7 +61,7 @@ exports.setDataIntoMap= (mapPrefix,key,value,expiryTime)=> {
 };
 
 exports.deleteDataFromMap=(mapPrefix,key)=>{
-    if(client) {
+    if(client && key) {
         mapPrefix = cachePrefix+"_"+mapPrefix;
         return Promise.resolve(client.getMap(mapPrefix)).then(map=> {
             return map.delete(key).then(data=> {
