@@ -34,7 +34,7 @@ class ConversationAutoResolving extends Component {
             if(response.status == 200 && response.data.response) { 
                 this.setState({
                     inputDuration: !response.data.response.conversationCloseTime ?  10 : response.data.response.conversationCloseTime/60 ,
-                    enableConversationAutoResolving:  response.data.response.conversationCloseTime === 0  ?  false : true
+                    enableConversationAutoResolving:  response.data.response.conversationCloseTime > 0 
                 });
             }
         }).catch(err => {
@@ -54,6 +54,7 @@ class ConversationAutoResolving extends Component {
     }
 
     changeConversationResolvingTime = (change) =>{
+        //followng check is there to make sure the value never drops below 0
         if(change === -1 && this.state.inputDuration ===0){
             return;
         }
@@ -85,7 +86,7 @@ class ConversationAutoResolving extends Component {
                 data.conversationCloseTime && this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving time updated") 
                 !data.conversationCloseTime && Notification.success("Conversation auto-resolving disabled successfully");
                 data.conversationCloseTime && !this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving enabled successfully") 
-                this.setState({ enableConversationAutoResolving: data.conversationCloseTime ? true : false });
+                this.setState({ enableConversationAutoResolving: data.conversationCloseTime > 0 });
             }
         }).catch( err => {
             Notification.error("Could not update conversation auto-resolving setting. Please try again after some time.");
