@@ -27,7 +27,7 @@ const routes = {
   '/settings/email-fallback':'Fallback Emails',
   '/settings/webhooks-security':'Webhooks and Security',
   '/settings/csat-ratings':'CSAT Ratings',
-  '/settings/conversation-auto-closing':'Auto-resolve conversations'
+  '/settings/conversation-auto-resolving':'Auto-resolve conversations'
 };
 
 export default routes;

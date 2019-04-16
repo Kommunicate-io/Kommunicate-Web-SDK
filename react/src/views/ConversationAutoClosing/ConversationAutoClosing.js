@@ -109,7 +109,7 @@ class ConversationAutoResolving extends Component {
                             />
                         </ToggleSettingsToggler>
                     </ToggleSettingsContainer>
-                    <ToggleSettingsDescription style={this.state.enableConversationAutoResolving ? {} : {pointerEvents: 'none', opacity: .5} }>
+                    <ToggleSettingsDescription disabled={!this.state.enableConversationAutoResolving}>
                     Conversations which are assigned to a bot will be auto-resolved, when the user has not replied for
                     <InputNumberWrapper>
                         <DurationInput type="number" min="0" value={this.state.inputDuration}
@@ -162,6 +162,8 @@ const ToggleSettingsDescription = styled.div`
     letter-spacing: 0.5px;
     color: #797575;
     margin: 30px auto;
+    pointer-events : ${props => props.disabled ? 'none' : 'all'};
+    opacity : ${props => props.disabled ? '.5' : '1'};
 `;
 
 const InputNumberWrapper = styled.div`

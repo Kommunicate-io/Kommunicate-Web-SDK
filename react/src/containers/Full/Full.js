@@ -408,7 +408,7 @@ class Full extends Component {
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
                 <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
-                <Route exact path="/settings/conversation-auto-closing" name="ConversationAutoClosing" render={() => <ConversationAutoClosing {...this.props} />} />
+                <Route exact path="/settings/conversation-auto-resolving" name="ConversationAutoResolving" render={() => <ConversationAutoClosing {...this.props} />} />
 
                 <Redirect from="/" to="/dashboard" />      
 

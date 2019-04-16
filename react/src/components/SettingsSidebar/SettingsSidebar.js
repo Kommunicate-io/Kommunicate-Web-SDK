@@ -132,7 +132,7 @@ class SettingsSidebar extends Component {
                         }
                         {this.state.isKommunicateDashboard && 
                             <li className="ss-nav-item agent-assignment-link">
-                                <NavLink to={'/settings/conversation-auto-closing'} className="ss-nav-link ac-trigger-links" id="ac-conversation-rules" activeClassName="active">Auto-resolve conversations</NavLink>
+                                <NavLink to={'/settings/conversation-auto-resolving'} className="ss-nav-link ac-trigger-links" id="ac-conversation-rules" activeClassName="active">Auto-resolve conversations</NavLink>
                             </li>
                         }
                         <li className="ss-nav-title">
