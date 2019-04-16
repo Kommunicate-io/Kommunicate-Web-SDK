@@ -11,7 +11,7 @@ const expiryTime = 86400000;
 
 exports.getAppSettingsByApplicationId = (criteria) => {
     var key = generateKey(criteria.applicationId);
-    return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
+        return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
         if(res !== null){
             logger.info("picking appsetting data from cache server ");
             return { message: "SUCCESS", data: res };
@@ -103,5 +103,8 @@ exports.getAppSettingIdByApplicationId = (appId) => {
 }
 
 const generateKey =(appId)=>{
-   return "appSetting-"+appId;
+    if(appId){
+        return "appSetting-"+appId;
+    }
+    return null;
 }
