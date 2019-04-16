@@ -4,7 +4,7 @@ import { SettingsHeader } from '../../components/SettingsComponent/SettingsCompo
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {getAppSetting, updateAppSetting} from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
-import {InputButtonTop ,InputButtonBottom } from '../../assets/svg/svgs';
+import {CaretTop ,CaretBottom } from '../../assets/svg/svgs';
 
 let updateTimer;
 
@@ -21,6 +21,7 @@ class ConversationAutoResolving extends Component {
             ],
             defaultDurationType :[{ value: 1, label: "minutes" }] ,
             durationType : 'minutes',
+            enableConversationAutoResolving:true
         };
     }
 
@@ -31,9 +32,9 @@ class ConversationAutoResolving extends Component {
     getConversationAutoResolveSettings = () => {
         getAppSetting().then(response => {
             if(response.status == 200 && response.data.response) { 
-                response.data.response && this.setState({
-                    inputDuration: !response.data.response.conversationResolveTime ?  10 : response.data.response.conversationResolveTime/60 ,
-                    enableConversationAutoResolving:  response.data.response.conversationResolveTime === 0 ?  false : true
+                this.setState({
+                    inputDuration: !response.data.response.conversationCloseTime ?  10 : response.data.response.conversationCloseTime/60 ,
+                    enableConversationAutoResolving:  response.data.response.conversationCloseTime === 0  ?  false : true
                 });
             }
         }).catch(err => {
@@ -64,20 +65,20 @@ class ConversationAutoResolving extends Component {
     handleConversationResolvingTimeChange = () =>{
         let timer = 500;
         updateTimer = setTimeout(() => {
-            let ResolvingTime = this.state.inputDuration > 0  ? this.state.inputDuration*60 : 0 ;
-            this.updateConversationResolvingTime(ResolvingTime);
+            let resolvingTime = this.state.inputDuration > 0  ? this.state.inputDuration*60 : 0 ;
+            this.updateConversationResolvingTime(resolvingTime);
         }, timer);
     }
 
 
     toggleConversationAutoResolving = () => {
-        let ResolvingTime = !this.state.enableConversationAutoResolving  ? this.state.inputDuration*60 : 0 ;
-        this.updateConversationResolvingTime(ResolvingTime);
+        let resolvingTime = !this.state.enableConversationAutoResolving  ? this.state.inputDuration*60 : 0 ;
+        this.updateConversationResolvingTime(resolvingTime);
     }
 
-    updateConversationResolvingTime = (ResolvingTime) =>{
+    updateConversationResolvingTime = (resolvingTime) =>{
         let data = {
-            conversationCloseTime: ResolvingTime
+            conversationCloseTime: resolvingTime
         }
         updateAppSetting(data).then(response => {
             if(response.status == 200 && response.data.code == "SUCCESS") {
@@ -87,7 +88,7 @@ class ConversationAutoResolving extends Component {
                 this.setState({ enableConversationAutoResolving: data.conversationCloseTime ? true : false });
             }
         }).catch( err => {
-            Notification.error("Could not update CSAT Rating settings. Please try again after some time.");
+            Notification.error("Could not update conversation auto-resolving setting. Please try again after some time.");
             console.log(err);
         })
     }
@@ -122,8 +123,8 @@ class ConversationAutoResolving extends Component {
                             onKeyPress={this.handleKeypress}
                             />
                         <ToggleButtonWrapper>
-                            <ToggleButton onClick={()=>{this.changeConversationResolvingTime(+1)}}> <InputButtonTop/> </ToggleButton>
-                            <ToggleButton onClick={()=>{this.changeConversationResolvingTime(-1)}}> <InputButtonBottom/> </ToggleButton>
+                            <ToggleButton onClick={()=>{this.changeConversationResolvingTime(+1)}}> <CaretTop/> </ToggleButton>
+                            <ToggleButton onClick={()=>{this.changeConversationResolvingTime(-1)}}> <CaretBottom/> </ToggleButton>
                         </ToggleButtonWrapper>
                     </InputNumberWrapper>minutes.
                     </ToggleSettingsDescription>
