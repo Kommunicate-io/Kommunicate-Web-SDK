@@ -3,6 +3,8 @@ module.exports = {
     name: 'Kommunicate',
     script: './app.js',
     args: '--cron enable',
+    error_file : "./logs/kommunicate-error.log",
+    out_file : "./logs/kommunicate.log",
     instances: 1,
     autorestart: true,
     watch: false,
