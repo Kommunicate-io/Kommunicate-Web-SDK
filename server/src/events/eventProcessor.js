@@ -23,7 +23,7 @@ const initializeEventsConsumers = function() {
         });
         conn.on('close', function(e) {
             logger.error('[AMQP] connection closed: ', e);
-            logger.info('[AMQP] Will try to reconnect to afetr 30 sec...');
+            logger.info('[AMQP] Will try to reconnect to after 30 sec...');
             setTimeout(initializeEventsConsumers, 30000); // reconnect after 30 sec.
         });
         /** *
