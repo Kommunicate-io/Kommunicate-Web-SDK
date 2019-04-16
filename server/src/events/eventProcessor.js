@@ -16,14 +16,14 @@ const amqpProperties = {
 
 const initializeEventsConsumers = function() {
     amqp.connect(amqpProperties).then((conn) => {
-        logger.info('[AMQP] connection initilized...');
+        logger.info('[AMQP] connection established at server ',amqpProperties.hostname);
        
         conn.on('error', function(e) {
             logger.error('[AMQP] error in connection', e);
         });
         conn.on('close', function(e) {
             logger.error('[AMQP] connection closed: ', e);
-            logger.info('[AMQP] Tryig to reconnect to rabbitmq...');
+            logger.info('[AMQP] Will try to reconnect to afetr 30 sec...');
             setTimeout(initializeEventsConsumers, 30000); // reconnect after 30 sec.
         });
         /** *
@@ -36,10 +36,9 @@ const initializeEventsConsumers = function() {
         });
     }).catch((e) => {
         logger.error('[AMQP] error while connecting with rabbitmq ', e);
-        logger.info('[AMQP] reconecting....');
-       if (!amqpConn){
+        logger.info('[AMQP] will try reconnecting after 30 secs....');
+        amqpConn && amqpConn.close();
         setTimeout(initializeEventsConsumers,30000); // reconnect after 30 sec
-       }
     });
 };
 
