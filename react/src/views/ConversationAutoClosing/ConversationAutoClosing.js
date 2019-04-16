@@ -54,7 +54,7 @@ class ConversationAutoResolving extends Component {
     }
 
     changeConversationResolvingTime = (change) =>{
-        //followng check is there to make sure the value never drops below 0
+        //following check is there to make sure the value of the auto-resolve time never drops below 0
         if(change === -1 && this.state.inputDuration ===0){
             return;
         }
