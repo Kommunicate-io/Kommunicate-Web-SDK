@@ -68,7 +68,7 @@ const createContact = async function( settings, userInfo){
             "name": "phone",
             "value": userInfo.phoneNumber
         })
-        userInfo.contactNumber && update_contact.properties.push({
+        userInfo.contactNumber && contact.properties.push({
             "name": "phone",
             "value": userInfo.contactNumber
         })
