@@ -137,6 +137,10 @@ const CSATRatings = Loadable({
   loader: () => import('../../views/CSATRatings/CSATRatings'),
   loading: EmptyLoading
 });
+const ConversationAutoClosing = Loadable({
+  loader: () => import('../../views/ConversationAutoClosing/ConversationAutoClosing'),
+  loading: EmptyLoading
+});
 
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
 const chatUrl = config.baseurl.applozicAPI;
@@ -404,6 +408,7 @@ class Full extends Component {
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
                 <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
+                <Route exact path="/settings/conversation-auto-closing" name="ConversationAutoClosing" render={() => <ConversationAutoClosing {...this.props} />} />
 
                 <Redirect from="/" to="/dashboard" />      
 

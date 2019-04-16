@@ -929,3 +929,14 @@ export const MessageLogsEmptyState = props => (
     </g>
   </svg>
 )
+
+export const InputButtonTop = props => (
+  <svg width={7} height={4} {...props}>
+    <path fill="#B1B3B1" d="M0 3.77L3.5 0 7 3.77z" />
+  </svg>
+)
+export const InputButtonBottom = props => (
+  <svg width={7} height={4} {...props}>
+    <path fill="#B1B3B1" d="M0 0l3.5 3.77L7 0z" />
+  </svg>
+)
