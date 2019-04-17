@@ -8656,7 +8656,7 @@ iframe#crowd-shortcut {
 
 .sidebar-fixed .sidebar {
   position: fixed;
-  max-width: 285px;
+  max-width: 300px;
   min-width: 60px;
   /* Below two lines are HACK for SAFARI BROWSERS */
   [;min-width: 60px;];

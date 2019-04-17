@@ -87,6 +87,7 @@ class ConversationAutoResolving extends Component {
                 !data.conversationCloseTime && Notification.success("Conversation auto-resolving disabled successfully");
                 data.conversationCloseTime && !this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving enabled successfully") 
                 this.setState({ enableConversationAutoResolving: data.conversationCloseTime > 0 });
+                this.state.inputDuration === 0 && this.setState({ inputDuration : 10 });
             }
         }).catch( err => {
             Notification.error("Could not update conversation auto-resolving setting. Please try again after some time.");
