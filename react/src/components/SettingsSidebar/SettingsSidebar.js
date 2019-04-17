@@ -33,9 +33,11 @@ const GlobalSettingSidebarStyle = createGlobalStyle`
     .ss-nav-link.active {
         background-color: ${props => props.theme.primary};
         color: #FFF;
+        border-radius: 2px;
     }
     .ss-nav-item:hover {
         background-color: ${props => props.theme.primary};
+        border-radius: 2px;
     }
     .ss-nav-item:hover .ss-nav-link {
         color: #FFF;

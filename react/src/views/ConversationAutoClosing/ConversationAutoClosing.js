@@ -5,6 +5,8 @@ import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {getAppSetting, updateAppSetting} from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
 import {CaretTop ,CaretBottom } from '../../assets/svg/svgs';
+import LockBadge from '../../components/LockBadge/LockBadge';
+import CommonUtils from '../../utils/CommonUtils';
 
 let updateTimer;
 
@@ -77,6 +79,10 @@ class ConversationAutoResolving extends Component {
         this.updateConversationResolvingTime(resolvingTime);
     }
 
+    isAutoResolvingRestricted = () => {
+        return !CommonUtils.isEnterprisePlan();
+    }
+
     updateConversationResolvingTime = (resolvingTime) =>{
         let data = {
             conversationCloseTime: resolvingTime
@@ -108,8 +114,18 @@ class ConversationAutoResolving extends Component {
                             <SliderToggle 
                                 checked={this.state.enableConversationAutoResolving} 
                                 handleOnChange={this.toggleConversationAutoResolving}
-                            />
+                                disabled={this.isAutoResolvingRestricted()}
+                            />   
                         </ToggleSettingsToggler>
+
+                    {  this.isAutoResolvingRestricted() &&
+                           <LockBadge 
+                                className={"lock-with-text"} 
+                                text={"Available in Enterprise plan"} 
+                                history={this.props.history} 
+                                onClickGoTo={"/settings/billing"}
+                        />
+                    }
                     </ToggleSettingsContainer>
                     <ToggleSettingsDescription disabled={!this.state.enableConversationAutoResolving}>
                     Conversations which are assigned to a bot will be auto-resolved, when the user has not replied for
@@ -157,7 +173,9 @@ const ToggleSettingsText = styled.div`
     letter-spacing: 0.3px;
     color: #272828;
 `;
-const ToggleSettingsToggler = styled.div``;
+const ToggleSettingsToggler = styled.div`
+    margin-right: 20px;
+`;
 const ToggleSettingsDescription = styled.div`
     font-size: 15px;
     line-height: 1.4;
