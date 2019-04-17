@@ -62,6 +62,10 @@
         "CSAT Ratings": {
                 "subHeading": "Measure how satisfied your users are with your customer support",
                 "knowledgeBaseLink": ""
+        },
+        "Auto-resolve conversations": {
+                "subHeading": "Set up rules to automatically resolve conversations",
+                "knowledgeBaseLink": ""
         }
 
 }
