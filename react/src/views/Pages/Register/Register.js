@@ -311,8 +311,7 @@ class Register extends Component {
                 <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
                   { this.state.isInvited ? <h1 className="login-signup-heading text-center">Sign up to {productTitle}</h1> : <Fragment>
-                      <h1 className="login-signup-heading text-center">Try {productTitle} for free now!</h1>
-                        <p className="login-signup-subheading text-center">Get a free trial account and try out all the features for {TRIAL_DAYS[productTitle]} days. <br />No credit card required.</p>
+                      <h1 className="login-signup-heading text-center">Try {productTitle} for free</h1>
                     </Fragment>
                   }
 
@@ -459,13 +458,13 @@ export const testimonialTexts = {
       face: Eli,
       author: "Eli Gross",
       company: "WishTrip",
-      text: "With Applozic, powering messaging is a breeze. The best part is it integrates seamlessly on all platforms and provides the same set of features and ease of customization."
+      text: " Applozic's ease of customization made embedding messaging a breeze for us."
     },
     setupPage: {
       face: Alex,
       author: "Alex Klein",
       company: "YogaTrail",
-      text: "Super easy, powerful addition to our site and the team couldn’t have been any more responsive and helpful."
+      text: "Super easy, powerful addition to our site and a super helpful team to assist us."
     }    
   },
   "Kommunicate" : {
@@ -473,13 +472,13 @@ export const testimonialTexts = {
       face: Mikolaj,
       author: "Mikolaj Kulesz",
       company: "Zoovu",
-      text: "We wanted a simple Dialogflow integration and not many customer support software have that functionality. Not only the integration is super easy, Kommunicate provides great customer support. On top of that, they do listen to the client’s needs and requests. They have a strong team in place to cater to such requests."
+      text: "Kommunicate has a super-easy chatbot integration and on top of that, a great customer support team."
     },
     setupPage: {
       face: Christian,
       author: "Christian C",
       company: "Teodoro Bot",
-      text: "Kommunicate is highly customizable and powerful with beautiful rich messaging experience to provide a fluent interface to visitors. Additionally, the integration with Dialogflow is extremely simple. It exceeded my expectations in terms of product and customer service."
+      text: "What makes Kommunicate great is the ability to customize, powerful actionable messaging and simple chatbot integration."
     }
   }
 }

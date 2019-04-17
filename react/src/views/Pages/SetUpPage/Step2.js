@@ -196,7 +196,6 @@ hideAllErrors (){
       	<form className="form-horizontal">
 			<div className="col-lg-12 text-center setup-profile-div step-2-div">
 				<h1 className="setup-heading">Setting up your profile</h1>
-				<h4 className="setup-sub-heading">{ CommonUtils.isKommunicateDashboard() ? "Let your chat users know who they are talking to" : "Help us know more about you" }</h4>
 			</div>
 			<div className="form-group row">
 				<div className="col-md-12">
