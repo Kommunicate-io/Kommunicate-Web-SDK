@@ -3542,7 +3542,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             })[0];
                             var userSession = JSON.parse(sessionStorage.kommunicate);
                             var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
-                            console.log("sessionStorage",languageCode);
                             if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({
                                         "applicationId": MCK_APP_ID,
