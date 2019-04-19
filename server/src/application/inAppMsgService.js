@@ -260,7 +260,7 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
 exports.updateInAppMessage =(criteria, inAppMessage)=>{
   let _this =this;
   return Promise.resolve(db.InAppMsg.update(inAppMessage, { where: criteria})).then(data =>{
-    _this.removeWelcomeMessageFromCache(criteria.applicationId);
+    _this.removeWelcomeMessageFromCache(criteria.applicationId,criteria.languageCode);
     return data;
   }).catch(err => {
    throw err;
@@ -404,9 +404,10 @@ exports.getInAppMessagebyId= (id)=>{
     return inAppMessage;
   })
 }
-exports.removeWelcomeMessageFromCache=(applicationId)=>{
-  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessageStatus");
-  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessage");
+exports.removeWelcomeMessageFromCache=(applicationId,languageCode)=>{
+  var messageLanguage = languageCode || "default";
+  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+messageLanguage+"-welcomeMessageStatus");
+  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+messageLanguage+"-welcomeMessage");
 }
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;
