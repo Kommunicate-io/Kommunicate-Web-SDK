@@ -31,7 +31,6 @@ exports.postWelcomeMsg=(options)=>{
 
 const getInAppMessage=(appId, eventType,languageCode)=>{
   console.log('geting data for', appId );
-  //kusum
   let criteria ={ applicationId:appId, status: appUtils.EVENT_STATUS.ENABLED};
 
   if (eventType){
