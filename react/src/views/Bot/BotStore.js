@@ -122,7 +122,8 @@ class BotStore extends Component {
           botAssignmentModal:false,
           latestIntegratedBotId:'',
           conversationsAssignedToBotId:'',
-          applicationExpiryDate:''
+          applicationExpiryDate:'',
+          step: 1
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -138,9 +139,10 @@ class BotStore extends Component {
         });
       }
 
-      toggleBotIntegrationModal = (value, botPlatform) => {
+      toggleBotIntegrationModal = (value, botPlatform, step) => {
         this.setState({
-          openModal: value
+          openModal: value,
+          step
         })
         if (botPlatform) {
           this.setState({
@@ -674,6 +676,8 @@ class BotStore extends Component {
                 </div>
               </div> */}
 
+            { CommonUtils.isProductApplozic() && <Button secondary onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom", 2)}} >CREATE BOT</Button> }
+
             <h4 className="km-bot-box-heading">Integrate your existing bot with {PRODUCTS[product].title}</h4>
            <div className="row km-bot-integration-boxes" >
                 <div onClick={this.toggleDialogFlowModalWrapper} className="col-sm-6 km-bot-integration-logo-container" >
@@ -690,7 +694,7 @@ class BotStore extends Component {
                 
                 </div>
               
-                <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom")}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
+                <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom", 1)}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
                   
                   <BotDefaultImage/>
                   <p className="km-bot-type">Other bot platforms <br /> 
@@ -896,7 +900,7 @@ class BotStore extends Component {
           </Modal>
             
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent applicationExpiryDate = {this.state.applicationExpiryDate} integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
+              <BotIntegrationModalContent step={this.state.step || 2} applicationExpiryDate = {this.state.applicationExpiryDate} integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
               <CloseButton onClick={()=>{this.toggleBotIntegrationModal(false)}} />
             </BotIntegrationModal>
             </div>

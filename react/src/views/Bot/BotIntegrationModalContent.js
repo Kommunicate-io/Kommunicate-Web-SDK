@@ -71,7 +71,7 @@ class BotIntegrationModalContent extends Component {
         super(props);
         this.state = {
             buttonText:"Next",
-            step:1,
+            step: this.props.step || 1,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
