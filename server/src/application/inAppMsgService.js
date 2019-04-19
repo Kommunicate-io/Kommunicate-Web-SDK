@@ -405,7 +405,7 @@ exports.getInAppMessagebyId= (id)=>{
   })
 }
 exports.removeWelcomeMessageFromCache=(applicationId,languageCode)=>{
-  var messageLanguage = languageCode ? languageCode : "default";
+  var messageLanguage = languageCode || "default";
   cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+messageLanguage+"-welcomeMessageStatus");
   cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+messageLanguage+"-welcomeMessage");
 }
