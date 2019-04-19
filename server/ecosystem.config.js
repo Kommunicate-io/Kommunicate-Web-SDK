@@ -3,6 +3,9 @@ module.exports = {
     name: 'Kommunicate',
     script: './app.js',
     args: '--cron enable',
+    interpreter : "node@8.11.4",
+    error_file : "./logs/kommunicate-error.log",
+    out_file : "./logs/kommunicate.log",
     instances: 1,
     autorestart: true,
     watch: false,
@@ -14,8 +17,8 @@ module.exports = {
     env_test: {
       NODE_ENV: 'test'
     },
-    env_production: {
-      NODE_ENV: 'production'
+    env_prod: {
+      NODE_ENV: 'prod'
     }
   }],
 
