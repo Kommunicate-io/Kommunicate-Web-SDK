@@ -45,57 +45,57 @@ class ThirdPartyScripts extends Component {
                 "popupWidget": true,
                 //"domainKey":"_a"
               };
-            // (function(d, m){
-            //   let  o = support
-            //   if(userId){
-            //     o.userId = userId;
-            //     o.password =CommonUtils.getUserSession().accessToken;
-            //   }
-            //   displayName && (o.userName = displayName);
-            //   o.onInit=function(response, data) {
-            //     window.$applozic = KommunicateGlobal.window.$applozic;
-            //     window.applozic = KommunicateGlobal.window.applozic;
-            //     var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
-            //     var widgetCloseButton = document.querySelector(".mck-close-sidebox");
-            //     if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
-            //       console.log("template not loaded");
-            //       window.$applozic.template = window.$kmApplozic.kmtemplate;
-            //       window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
-            //     };
+            (function(d, m){
+              let  o = support
+              if(userId){
+                o.userId = userId;
+                o.password =CommonUtils.getUserSession().accessToken;
+              }
+              displayName && (o.userName = displayName);
+              o.onInit=function(response, data) {
+                window.$applozic = KommunicateGlobal.window.$applozic;
+                window.applozic = KommunicateGlobal.window.applozic;
+                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+                var widgetCloseButton = document.querySelector(".mck-close-sidebox");
+                if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
+                  console.log("template not loaded");
+                  window.$applozic.template = window.$kmApplozic.kmtemplate;
+                  window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
+                };
 
-            //     if (currentPath.includes('/login') && mckSideboxLauncher) {
-            //       mckSideboxLauncher.classList.add('vis');
-            //       mckSideboxLauncher.classList.remove('n-vis');
-            //     };
+                if (currentPath.includes('/login') && mckSideboxLauncher) {
+                  mckSideboxLauncher.classList.add('vis');
+                  mckSideboxLauncher.classList.remove('n-vis');
+                };
 
-            //     widgetCloseButton && ( widgetCloseButton.onclick = function() {
-            //       if(mckSideboxLauncher) {
-            //         mckSideboxLauncher.classList.add('n-vis');
-            //         mckSideboxLauncher.classList.add('force-hide');
-            //         mckSideboxLauncher.classList.remove('vis');
-            //       }
-            //     });
+                widgetCloseButton && ( widgetCloseButton.onclick = function() {
+                  if(mckSideboxLauncher) {
+                    mckSideboxLauncher.classList.add('n-vis');
+                    mckSideboxLauncher.classList.add('force-hide');
+                    mckSideboxLauncher.classList.remove('vis');
+                  }
+                });
 
-            //     if(mckSideboxLauncher){
-            //       mckSideboxLauncher.addEventListener("click",function(){
-            //         AnalyticsTracking.acEventTrigger("initiateChatKMdashboard");
-            //       });
-            //     }
+                if(mckSideboxLauncher){
+                  mckSideboxLauncher.addEventListener("click",function(){
+                    AnalyticsTracking.acEventTrigger("initiateChatKMdashboard");
+                  });
+                }
 
-            //     if (isKommunicateDashboard && userId && !signupPage && !setupPage) {
-            //       setTimeout(function() { EventMessageClient.setupEventMessageGroup() }, 30000);
-            //     }
+                if (isKommunicateDashboard && userId && !signupPage && !setupPage) {
+                  setTimeout(function() { EventMessageClient.setupEventMessageGroup() }, 30000);
+                }
                 
-            //   };
-            //   var s = document.createElement("script");
-            //   s.type = "text/javascript";
-            //   s.async = true;
-            //   s.src = getConfig().kommunicateApi.pluginUrlV2;
-            //   var h = document.getElementsByTagName("head")[0];
-            //   h.appendChild(s);
-            //   window.kommunicate = m;
-            //   m._globals = o;
-            // })(document, window.kommunicate || {});
+              };
+              var s = document.createElement("script");
+              s.type = "text/javascript";
+              s.async = true;
+              s.src = getConfig().kommunicateApi.pluginUrlV2;
+              var h = document.getElementsByTagName("head")[0];
+              h.appendChild(s);
+              window.kommunicate = m;
+              m._globals = o;
+            })(document, window.kommunicate || {});
           }
           /*}*/
 
