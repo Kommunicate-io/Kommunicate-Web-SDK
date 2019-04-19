@@ -265,7 +265,7 @@ $applozic.extend(true,Kommunicate,{
         window.$applozic.fn.applozic('updateUser', data);
     },getAwayMessage:function(options, callback){
         $applozic.ajax({
-            url: Kommunicate.getBaseUrl() + "/applications/"+options.applicationId+"/awaymessage?conversationId="+options.conversationId,
+            url: Kommunicate.getBaseUrl() + "/applications/"+options.applicationId+"/awaymessage?conversationId="+options.conversationId+"&languageCode="+options.languageCode,
             type: "get",
             contentType: "application/json",
             success: function (result) {
