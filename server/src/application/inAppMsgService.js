@@ -29,20 +29,31 @@ exports.postWelcomeMsg=(options)=>{
     })
 }
 
-const getInAppMessage=(appId, eventType)=>{
+const getInAppMessage=(appId, eventType,languageCode)=>{
   console.log('geting data for', appId );
   let criteria ={ applicationId:appId, status: appUtils.EVENT_STATUS.ENABLED};
 
   if (eventType){
     criteria.eventId=eventType
   }
-    return db.InAppMsg.findAll(
-      {
-        where:criteria,
-        order:[
-          ['id', 'ASC']
-        ]
-      });
+  if(languageCode){
+    criteria.languageCode = {[Sequelize.Op.or]: [null, languageCode]}; 
+  } 
+
+  return Promise.resolve(db.InAppMsg.findAll({
+    where: criteria,
+    order:[
+      ['id', 'ASC']
+    ]
+  })).then(dbResult => {
+    var finalResult = dbResult.filter(item => languageCode && item.languageCode === languageCode);
+    return finalResult.length !== 0 ? finalResult : dbResult;
+  }).catch(err => {
+    return {
+      code: err.parent.code,
+      message: err.parent.sqlMessage
+    }
+  });
 }
 
 exports.sendWelcomeMessage = (conversationId, customer) => {
@@ -267,11 +278,12 @@ exports.updateInAppMessage =(criteria, inAppMessage)=>{
   });
 }
 
-exports.getInAppMessages2=(createdBy, appId)=>{
+exports.getInAppMessages2=(createdBy, appId, languageCode)=>{
     return Promise.resolve(db.InAppMsg.findAll({
         where: {
             createdBy: createdBy,
-            applicationId: appId
+            applicationId: appId,
+            languageCode:languageCode
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
