@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
-//import Select from 'react-select';
-// import 'react-select/dist/react-select.css';
-import { TabContent, TabPane, Nav, NavItem, NavLink, FormGroup, Label, Input} from 'reactstrap';
-import axios from 'axios';
-import {getConfig,getEnvironmentId,get} from '../../config/config.js';
+import { Label, Input} from 'reactstrap';
 import Notification from '../model/Notification';
 import {createSuggestions, getSuggestionsByCriteria, deleteSuggestionsById, updateSuggestionsById} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
-import {Button, Modal as FaqModal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-import uuid from 'uuid/v1';
-import SliderToggle from '../../components/SliderToggle/SliderToggle';
-import bot1x from './images/bot-icon.png';
+import { Modal as FaqModal, ModalBody } from 'reactstrap';
 import bot2x from './images/bot-icon@2x.png';
-import bot3x from './images/bot-icon@3x.png';
-import {Link} from 'react-router-dom';
 import trash2x from './images/trash-icon@2x.png';
 import {AUTOREPLY} from '../Autoreply/Constant';
 import TickIcon from '../Integrations/images/tick.png';
-import { thirdPartyList } from '../Integrations/ThirdPartyList';
 import Modal  from 'react-responsive-modal'  ;
 import IntegrationDescription from '../Integrations/IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
@@ -31,6 +21,7 @@ import './LizSVG';
 import { LearnMore } from './LizSVG';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/applicationAction';
+import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 
 
 class Tabs extends Component {
@@ -52,6 +43,7 @@ class Tabs extends Component {
       modalIsOpen:false,
       helpdocsKey:[],
       addFaqSectionCheck: false,
+      sidebar: <SettingsSidebar />
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -264,10 +256,11 @@ class Tabs extends Component {
   render() {
     return (
       <div className="animated fadeIn" >
+      <div>{this.state.sidebar}</div>
       {/* Change showNewBot to false to hide new bot section*/}
         <div className={(CommonUtils.isTrialPlan()) ? "card" : (CommonUtils.isStartupPlan()) ? "n-vis" : "card"}>
           <div className="card-block">
-            <div style={styles}>
+            <div style={{width: "60%", margin: "0 auto"}}>
               <div className="row">
                 <div className="col-sm-12 km-bot-integration-heading">
                   <p>FAQs help customers find answers faster through self service, and also reduce workload of your team &nbsp; 
@@ -285,38 +278,12 @@ class Tabs extends Component {
                   </p>
                   <p className="km-bot-integration-instruction" >Read instructions for opening chat with FAQ Bot (botId: liz)
                     <a className="km-bot-instruction-link" target="_blank" href="https://docs.kommunicate.io/docs/web-botintegration.html"> here </a> </p>
-                  {/* <p>
-                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}>
-                  <img src={bot2x} style={{width: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> 
-                  &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> 
-                  <Link className="faq-converstion-routing-link" to="/settings/agent-assignment">Conversation Routing </Link>  </span> 
-                  to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
-                  </p> */}
                 </div>
               </div>
               <div className="row mb-4 faq-btn-wrapper">
                 <button className="km-button km-button--primary" onClick={this.toggleFaqModal}>
                   + Add FAQ
                 </button>
-                {/* <div className="km-faq-or">OR</div>
-                { this.state.helpdocsKey.length == 0 &&
-                  <div className="faq-integrate-btn-container">
-                    <button className="km-button km-button--secondary" onClick={this.openModal}>
-                    <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
-                      Integrate with Helpdocs
-                    </button>
-                    <div className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</div>
-                    <div className="percent-off-pill">20% off</div>
-                  </div>  
-                }
-                
-                { this.state.helpdocsKey.length > 0 &&
-                  <div className="km-faq-helpdocs-edit-wrapper">
-                    <img className="km-faq-helpdocs-logo" src={TickIcon} />
-                    <span className="km-faq-helpdocs-edit">Integration done with Helpdocs
-                    <span onClick ={this.openModal}  className="km-faq-helpdocs-edit km-faq-edit-btn"> Edit</span></span>
-                  </div>
-                } */}
                 <Modal open={this.state.modalIsOpen} onClose={this.closeModal} >
                   <div>
                     <IntegrationDescription activeModal={"helpdocs"} handleCloseModal={this.closeModal} 
@@ -439,14 +406,6 @@ class Tabs extends Component {
                   <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                   <div className="faq-disabled-buttons mt-4 faq-btn-wrapper">
                     <button className="km-button km-button--primary">+ Add FAQ</button>
-                    {/* <div className="km-faq-or">OR</div>
-                    <div className="faq-integrate-btn-container">
-                      <button className="km-button km-button--secondary">
-                      <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
-                        Integrate with Helpdocs
-                      </button>
-                      <div className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</div>
-                    </div>   */}
                   </div>
                 </div>
               </div>
@@ -645,24 +604,11 @@ class Tabs extends Component {
                 </g>
               </svg>
             </div>
-         
-        
           </div>
-
-
-
         </div>
-     
-
-
       </div>
     )
   }
-}
-
-const styles = {
-  width: "60%", 
-  margin: "0 auto"
 }
 
 

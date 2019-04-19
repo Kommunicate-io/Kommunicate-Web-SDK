@@ -821,7 +821,7 @@ class BotStore extends Component {
                 </div>
               </div>
           </ModalBody>
-          <span onClick={this.onCloseModal}><CloseButton/></span>
+          <CloseButton  onClick={this.onCloseModal} />
         </Modal>
 
           {/* Set bot image and name modal */}
@@ -888,7 +888,7 @@ class BotStore extends Component {
                 </p>
               }
               <p className="bot-assignment-note"><strong>Note:</strong> You can set it up later too from Settings > Conversation rules</p>
-              <span onClick={this.onCloseModal}><CloseButton/></span>
+              <CloseButton onClick={this.onCloseModal}/>
                <div className="bot-assign-modal-footer">
                   <Button onClick={this.onCloseModal} secondary>I’ll set it up later</Button>
                   <Button onClick={this.assignConversationsToIntegratedBot}>Let this bot handle all conversations</Button>
@@ -897,7 +897,7 @@ class BotStore extends Component {
             
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
               <BotIntegrationModalContent applicationExpiryDate = {this.state.applicationExpiryDate} integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
-              <span onClick={()=>{this.toggleBotIntegrationModal(false)}}><CloseButton /></span>
+              <CloseButton onClick={()=>{this.toggleBotIntegrationModal(false)}} />
             </BotIntegrationModal>
             </div>
             
