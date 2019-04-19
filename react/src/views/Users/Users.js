@@ -341,13 +341,19 @@ class Users extends Component {
       users
     }, () => {
       if(users) {
-        this.setState({
-          userId: users.userId || "",
-          userName: users.userName || "",
-          userEmail: users.email || "",
-          loginPassword: ""
-        });
+        this.handleFormFields(users);
+      } else {
+        this.handleFormFields({});
       }
+    });
+  }
+
+  handleFormFields = (users) => {
+    this.setState({
+      userId: users.userId || "",
+      userName: users.userName || "",
+      userEmail: users.email || "",
+      loginPassword: ""
     });
   }
 
@@ -426,7 +432,8 @@ class Users extends Component {
 
   reRenderUsersList = () => {
     this.setState({
-      getUsersFlag: 1
+      getUsersFlag: 1,
+      result: []
     });
     this.getUsers();
     this.updateConversationWithRespectToPageNumber();
