@@ -80,7 +80,7 @@ class ConversationAutoResolving extends Component {
     }
 
     isAutoResolvingRestricted = () => {
-        return !CommonUtils.isEnterprisePlan();
+        return !(CommonUtils.isEnterprisePlan() || CommonUtils.isTrialPlan());
     }
 
     updateConversationResolvingTime = (resolvingTime) =>{
@@ -188,8 +188,10 @@ const ToggleSettingsDescription = styled.div`
 
 const InputNumberWrapper = styled.div`
     display: inline-flex;
-    width: 70px;
+    width: 75px;
     margin-right: 10px;
+    border-bottom: 1px solid #ccc;
+    margin: 0 3px;
 `;
 const ToggleButtonWrapper = styled.div``;
 const ToggleButton = styled.div`
@@ -199,7 +201,7 @@ const ToggleButton = styled.div`
     height: 10px;
     background: #eee;
     margin: 3px 0;
-    padding: 0 4px;
+    padding: 0 5px;
     cursor: pointer;
     z-index: 10;
 `;
@@ -208,9 +210,9 @@ const DurationInput = styled.input`
     outline: none;
     border: none;
     box-shadow: none;
-    padding: 0 8px;
+    padding: 0 2px;
     position: relative;
-    width: 50px;
+    width: 57px;
     /* Hide default arrows in numver field */
     -moz-appearance: textfield; /*For FireFox*/
     &::-webkit-inner-spin-button { /*For Webkits like Chrome and Safari*/

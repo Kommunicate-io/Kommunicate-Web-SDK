@@ -646,7 +646,7 @@ class BillingKommunicate extends Component {
                                     (CommonUtils.isTrialPlan() ?
                                         (<div className="subscription-current-plan-container">
                                             <p className="km-startup-plan-billing-info">
-                                            <span>You are currently enjoying a trial version of the <strong>GROWTH PLAN</strong></span> 
+                                            <span>You are in the full-feature trial</span> 
                                             <span>At the end of the trial period ({DateTimeUtils.countDaysForward(this.state.trialLeft, "days")}), you will be downgraded to the Free plan.<a href="javascript:void(0)"  className="km-free-plan-link" onClick={(event) => {this.openCurrentModal("missingOut", event)}}> See free plan details</a>  </span> </p>
                                         </div>
                                         )
