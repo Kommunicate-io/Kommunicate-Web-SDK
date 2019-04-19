@@ -318,7 +318,7 @@ exports.processAwayMessage = function(req,res){
     
     const applicationId = req.params.appId;
     const conversationId = req.query.conversationId;
-    const languageCode = req.query.languageCode||"default";
+    const languageCode = req.query.languageCode;
     logger.info("processing awayMessage for application: ",applicationId);
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
