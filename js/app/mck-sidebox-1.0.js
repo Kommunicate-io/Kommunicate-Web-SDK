@@ -1680,8 +1680,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
-                KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
-
+                    KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
+                
                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
