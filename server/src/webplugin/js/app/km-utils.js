@@ -219,7 +219,7 @@ KommunicateUtils = {
         delete session[key];
         sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
     },
-    triggerCustomEvent: function(eventName, options) {
+    triggerCustomEvent: function(eventName, options, kmPluginVersion) {
 
         options = typeof options == 'object' ? options : {}
         options.bubbles = options.bubbles || true;
@@ -228,13 +228,14 @@ KommunicateUtils = {
         if (navigator.userAgent.indexOf('MSIE') !== -1 ||
             navigator.appVersion.indexOf('Trident/') > 0) {
             /* Microsoft Internet Explorer detected in. */
-            var evt = document.createEvent('Event');
+            var evt =  kmPluginVersion  === "v2" ? window.parent.document.createEvent('Event') : document.createEvent('Event');
             evt.initEvent(eventName, options.bubbles, options.cancelable);
-            window.dispatchEvent(evt);
+            kmPluginVersion  === "v2" ? window.parent.document.dispatchEvent(evt) : window.dispatchEvent(evt);
 
         } else {
+            var parentWindow = (kmPluginVersion  === "v2") ? window.parent.document : window
             //Custom event trigger
-            window.dispatchEvent(new CustomEvent(eventName, {
+            parentWindow.dispatchEvent(new CustomEvent(eventName, {
                 detail: options.data || {},
                 bubbles: options.bubbles || true,
                 cancelable: options.cancelable || true
