@@ -1,4 +1,7 @@
-
+/**
+ * Use this file as a standalone program to publish data to rabbitmq.  
+ * do not use this file in project.
+ */
 
 const amqp = require('amqplib');
 let amqpConn = null;
@@ -7,7 +10,7 @@ let amqpConn = null;
 let queue = "integrations.contact.created";
 let counter  =0;
 let NUMBER_OF_ATTEMPTS = 1;
-
+let MESSAGE_PER_ATTEMPT = 10
 const amqpProperties = {
     protocol: 'amqp',
     "host":"localhost",
@@ -62,8 +65,8 @@ amqp.connect(amqpProperties).then((conn) => {
             });
             channel.assertQueue(queue).then(ok=>{
                 console.info('[AMQP] queue aserted', ok);
-                //setInterval(function(){publish(channel)},3000);
-                publish(channel)
+                setInterval(function(){publish(channel)},3000);
+                //publish(channel)
 
                
             }).catch(err=>{
@@ -86,13 +89,14 @@ amqp.connect(amqpProperties).then((conn) => {
     let publish = (channel)=>{
         counter=0;
        //while (true){
-           while (counter<NUMBER_OF_ATTEMPTS){
+           while (counter<MESSAGE_PER_ATTEMPT){
             counter++;
             let data  = getUserData(); 
             console.log("## user published", data);
             channel.sendToQueue(queue, Buffer.from(data));
             
         }
+        NUMBER_OF_ATTEMPTS ++;
     }
     const getUserData= ()=>{
         let data ={}

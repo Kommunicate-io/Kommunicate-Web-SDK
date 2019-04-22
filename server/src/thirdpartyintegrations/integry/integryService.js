@@ -63,7 +63,7 @@ const getSubscriptionSettings = async (criteria)=>{
             logger.info("got setting Integration Setting from cache for applicationId : ",criteria.applicationId);
             return  integrySubscription;
         }else{
-            logger.info("application has not integrated with agile crm: ",criteria.applicationId);
+            logger.info("application has not been integrated with Integry: ",criteria.applicationId);
             return null;
         }
     }
