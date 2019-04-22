@@ -751,7 +751,7 @@ function showAfterLoad(){
 	showAfterLoad();
 } else {
 	// eventlistener to make ContentVisible after page is loaded
-	window.addEventListener('kmInitilized', function() {
+	window.parent.document.addEventListener('kmInitilized', function() {
 		showAfterLoad();
 	}, false);
 }
