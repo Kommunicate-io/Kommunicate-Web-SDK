@@ -10,6 +10,25 @@ const APPSETTINGMAP ="appSettingMap";
 const expiryTime = 86400000;
 
 exports.getAppSettingsByApplicationId = (criteria) => {
+        return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
+            let result = res[0];
+            if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
+            if(result.popupTemplateKey == null){
+                return { message: "SUCCESS", data: result };
+            }
+            else{
+                return Promise.resolve(chatPopupMessageService.getChatPopupMessage(result.applicationId)).then(data =>{
+                    result.chatPopupMessage = data;
+                    return { message: "SUCCESS", data: result };
+                })
+            }
+        }).catch(err =>{
+            logger.info("Application settings get error");
+            throw err;
+        });  
+}
+
+exports.getAppSettingsByApplicationIdFromCache = (criteria) => {
     var key = generateKey(criteria.applicationId);
         return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
         if(res !== null){
