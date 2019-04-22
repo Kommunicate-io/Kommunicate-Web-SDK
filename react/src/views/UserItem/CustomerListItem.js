@@ -93,7 +93,7 @@ class CustomerListItem extends Component {
     var convoStatus = user.convoStatus;
     var assignee = user.assignee? user.assignee: user.displayName||user.userId;
     var convoClass,initalText;
-    KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? (convoClass ="assignee-closed",initalText="CLOSED") :(convoClass ="assignee-open",initalText="ASSIGNED");
+    KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? (convoClass ="assignee-closed",initalText="CLOSED") :(convoClass ="km-custom-text-color assignee-open",initalText="ASSIGNED");
     return <span className ={convoClass}><strong>{initalText} - </strong>{assignee} </span>; 
   }
 
@@ -167,7 +167,7 @@ class CustomerListItem extends Component {
       {
         this.props.hideConversation == "true"
           ? null
-          : <td className="km-conversation-tab-link product product-kommunicate-table-cell" data-km-id={groupId + ''} data-isgroup= {openGroupChat + ''}>
+          : <td className="km-conversation-tab-link product product-kommunicate-table-cell km-custom-text-color" data-km-id={groupId + ''} data-isgroup= {openGroupChat + ''}>
               {
                 latestConversation == null
                   ? <button type="submit" className="km-button km-button--secondary" onClick={(event) => this.handleClick(event)}>Start Conversation</button>
