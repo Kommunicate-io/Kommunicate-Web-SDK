@@ -1,3 +1,5 @@
+
+
 const amqp = require('amqplib');
 let amqpConn = null;
 
@@ -14,6 +16,9 @@ const amqpProperties = {
     heartbeat: '40',
 
 };
+
+// uncomment this to publish data in test.
+
 // const amqpProperties = {
 //     protocol: 'amqp',
 //     "hostname":"apps-test.applozic.com",
