@@ -137,6 +137,20 @@ const reactivateAccount = async function (appId) {
     return "success";
 }
 
+const reactivateBot = async (appId, botId) => {
+  let bot = await userService.getByUserNameAndAppId(botId, appId);
+  botClientService.updateBot({ key: bot.userKey, status: "enabled" });
+  userService.updateOnlyKommunicateUser(bot.userName, appId, {
+    bot_availability_status: 1,
+    status: 1
+  });
+  applicationService.updateApplication(appId, {
+    status: applicationService.STATUS.ACTIVE
+  });
+  return "success";
+};
+
+
 const updateApplicationInApplozic = async (customer) => {
     let application = {};
         if (typeof customer == 'object') {
@@ -170,5 +184,6 @@ module.exports = {
     getCustomerByAgentUserKey: getCustomerByAgentUserKey,
     isAdmin: isAdmin,
     createApplication: createApplication,
-    updateApplicationInApplozic:updateApplicationInApplozic
+    updateApplicationInApplozic:updateApplicationInApplozic,
+    reactivateBot :reactivateBot
 }

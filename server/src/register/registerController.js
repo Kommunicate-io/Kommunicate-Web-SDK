@@ -294,3 +294,15 @@ exports.getCustomerByApplicationId = (req, res) => {
     res.status(500).json({ code: "ERROR", message: "internal server error" });
   });
 }
+
+exports.reactivateBot =(req, res) =>{
+  return customerService.reactivateBot(appId, botId).then(bot =>{
+     if(bot){
+       res.status(200).json({code:"SUCCESS", message:"bot reactivated successfully"});
+     }else{
+      res.status(200).json({code:"SUCCESS", message:"error while reactivating bot"});
+     }
+  }).catch(err =>{
+     res.status(500).json({code:"ERROR", message :"internal server error"});
+  })
+}
