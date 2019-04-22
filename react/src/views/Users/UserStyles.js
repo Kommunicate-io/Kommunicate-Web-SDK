@@ -30,6 +30,8 @@ const Input = styled.input`
 `;
 const ButtonGroup = styled.div`
     margin-top: 50px;
+    ${flex}
+    justify-content: flex-end;
 
     & button:last-child {
         margin-left: 20px;
