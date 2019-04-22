@@ -274,3 +274,6 @@ CREATE TABLE IF NOT EXISTS onboarding (
     deleted_at DATETIME,
     PRIMARY KEY(id)
 );
+
+-- mongoDb script
+db.getCollection('knowledgebase_copy').update({},{$set:{"categoryType" : 0}},{multi:true})
