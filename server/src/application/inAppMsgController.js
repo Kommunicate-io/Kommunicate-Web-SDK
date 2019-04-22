@@ -336,7 +336,7 @@ exports.processAwayMessage = function(req,res){
                  let onlineUser = agentsDetail.find(agent=>agent.connected); 
                  anonymousUser = group.groupUserAnonymous            
                  !group.groupUserAnonymous && (eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN);
-                Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
+                Promise.all([appSetting.getAppSettingsByApplicationIdFromCache({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
                 .then(([response, assignedUser, welcomeMessage]) => {  
                      collectEmail = response.data.collectEmailOnAwayMessage
                      collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;

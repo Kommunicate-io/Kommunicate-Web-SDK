@@ -4,6 +4,10 @@ const AGILE_CRM = require('../application/utils').INTEGRATION_PLATFORMS.AGILE_CR
 const logger = require('../utils/logger.js');
 const customerService = require('../customer/customerService');
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
+const integrationSettingMapPrefix = "INTEGRATION_SETTINGS"
+const integrationSettingCacheExpTimeInSec = 300000; // 5 minutes 
+
+const cacheClient = require("../cache/hazelCacheClient");
 
 const createContact = async function( settings, userInfo){
     if(!settings){
@@ -248,13 +252,26 @@ const updateTag = (settings, contactId, userInfo) => {
 }
 
 const getSettings = async function(applicationId){
+    let cachedSettings=  await cacheClient.getDataFromMap(integrationSettingMapPrefix, applicationId)
+    if (cachedSettings){
+        if(Object.keys(cachedSettings).length){
+            logger.info("got setting Integration Setting from cache for applicationId : ",applicationId);
+            return  cachedSettings;
+        }else{
+            logger.info("application has not integrated with agile crm: ",applicationId);
+            return null;
+        }
+    }
     let customer = await  customerService.getCustomerByApplicationId(applicationId);
     if(customer){
     let settings = await integrationSettingService.getIntegrationSetting(customer.id,AGILE_CRM);
     if(settings.length == 0 || settings[0].deleted_at){
         logger.info("agile crm is not integrated for Application Id",applicationId);
+        // setting empty object in cache if application is not integrated. 
+        cacheClient.setDataIntoMap(integrationSettingMapPrefix, applicationId,{},integrationSettingCacheExpTimeInSec)
         return null;
     }else{
+        cacheClient.setDataIntoMap(integrationSettingMapPrefix, applicationId, settings[0],integrationSettingCacheExpTimeInSec)
        return settings[0];  
     }
 }else{

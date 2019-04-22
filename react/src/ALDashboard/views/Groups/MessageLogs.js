@@ -112,6 +112,9 @@ class MessageLogs extends Component {
                 let groupType = data.type;
                 response.data.type = groupType;
                 response.data.userCount = data.userCount;
+
+                response.data.oneToOneUsersDetail = groupType === 0 ? usersDetail : {};
+                
                 this.setState({
                     groupData: response.data,
                     showGroupDetailData: true,
