@@ -3711,7 +3711,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                                         });
                                                         mckUserUtils.lastSeenOfGroupOfTwo(contact.contactId);
                                                     }
-                                                    if (window.applozic.PRODUCT_ID == 'kommunicate') {
+                                                    if (window.applozic.PRODUCT_ID == 'kommunicate' && group.users[MCK_USER_ID]) {
                                                         if (group.users[MCK_USER_ID].role === 3 || group.users[MCK_USER_ID].role === 2 || group.users[MCK_USER_ID].role === 0) {
                                                             $li_mck_group_info.removeClass('vis').addClass('n-vis');
                                                         }
