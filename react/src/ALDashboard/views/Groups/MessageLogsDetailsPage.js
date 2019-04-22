@@ -8,6 +8,7 @@ const MessageLogsDetailsPage = (props) =>  {
 
     var oneToOneChat = props.type === 0,
         groupFeed = !oneToOneChat ? props.groupFeeds[0] : props.userDetails[0],
+        oneToOneUsersDetail = props.oneToOneUsersDetail,
         message = props.message,
         displayName = groupFeed.name || groupFeed.displayName || groupFeed.userId,
         image = props.getContactImageByAlphabet(displayName),
@@ -141,7 +142,7 @@ const MessageLogsDetailsPage = (props) =>  {
                             { message.length > 0 && message.filter(item => item.metadata && item.metadata.hide !== "true" && item.metadata.show !== "false").slice(0).reverse().map((data, index) => {
                             
                                 return (
-                                    <MessageList key={index} data={data} image={props.getContactImageByAlphabet} />
+                                    <MessageList key={index} data={data} image={props.getContactImageByAlphabet} oneToOneUsersDetail={oneToOneUsersDetail} oneToOneChat={oneToOneChat} />
                                 )
                             })
                             }    
@@ -162,7 +163,7 @@ const MessageLogsDetailsPage = (props) =>  {
 
 const MessageList = (props) => {
     let data = props.data,
-        displayName = data.to,
+        displayName = props.oneToOneChat ? props.oneToOneUsersDetail[data.userKey] : data.to,
         image = props.image(displayName);
 
     return (
@@ -174,13 +175,13 @@ const MessageList = (props) => {
             </MessageLogsStyles.MessagesProfileImageContainer>
             <MessageLogsStyles.MessagesContainer>
                 <MessageLogsStyles.MessageFromContainer>
-                    <MessageLogsStyles.MessageFromText>{data.to}</MessageLogsStyles.MessageFromText>
-                    { Object.keys(data.metadata).length > 0 && <MessageLogsStyles.MessageFromMetadataText>
+                    <MessageLogsStyles.MessageFromText>{props.oneToOneChat ? props.oneToOneUsersDetail[data.userKey] : data.to}</MessageLogsStyles.MessageFromText>
+                    {/* { Object.keys(data.metadata).length > 0 && <MessageLogsStyles.MessageFromMetadataText>
                         <MessageLogsStyles.MessageFromMetadataPlaceholder>Message contains metadata</MessageLogsStyles.MessageFromMetadataPlaceholder>
                         <MessageLogsStyles.InfoContainer>
                             <MessageLogsStyles.InfoIcon className="info-icon">?</MessageLogsStyles.InfoIcon>
                         </MessageLogsStyles.InfoContainer>
-                    </MessageLogsStyles.MessageFromMetadataText> }
+                    </MessageLogsStyles.MessageFromMetadataText> } */}
                 </MessageLogsStyles.MessageFromContainer>
                 <MessageLogsStyles.MessagesTextContainer>
                     {data.source == 7 ? 

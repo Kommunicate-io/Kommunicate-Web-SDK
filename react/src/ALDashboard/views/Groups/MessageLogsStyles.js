@@ -388,8 +388,11 @@ const MessagesTextContainer = styled.div`
     border-radius: 6px;
     background-color: #ffffff;
     padding: 12px;
+    float: left;
+    margin-bottom: 3px;
 `;
 const MessagesTimeStampContainer = styled.div`
+    clear: left;
     margin-top: 3px;
 `;
 const MessageFromText = styled.p`
