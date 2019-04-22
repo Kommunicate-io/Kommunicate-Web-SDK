@@ -103,6 +103,12 @@ class MessageLogs extends Component {
 
         ApplozicClient.getMessageGroups(params, headers).then(response => {
             if(response && response.status === 200) {
+
+                let usersDetail = {
+                    [data.memberUserKeys[0]]: data.groupUsers[0].userId,
+                    [data.memberUserKeys[1]]: data.groupUsers[1].userId
+                }
+
                 let groupType = data.type;
                 response.data.type = groupType;
                 response.data.userCount = data.userCount;
