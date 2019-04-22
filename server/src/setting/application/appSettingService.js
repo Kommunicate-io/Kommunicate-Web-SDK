@@ -28,35 +28,25 @@ exports.getAppSettingsByApplicationId = (criteria) => {
         });  
 }
 
-exports.getAppSettingsByApplicationIdFromCache = (criteria) => {
-    var key = generateKey(criteria.applicationId);
-        return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
-        if(res !== null){
-            logger.info("picking appsetting data from cache server ");
-            return { message: "SUCCESS", data: res };
-        }else{
-            return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
-                let result = res[0];
-                if (!result) { return { message: "SUCCESS", data: { message: "Invalid query" } } }
-                if(result.popupTemplateKey == null){
-                    cacheClient.setDataIntoMap(APPSETTINGMAP, key, result, expiryTime);
-                    return { message: "SUCCESS", data: result };
-                }
-                else{
-                    return Promise.resolve(chatPopupMessageService.getChatPopupMessage(result.applicationId)).then(data =>{
-                        result.chatPopupMessage = data;
-                        cacheClient.setDataIntoMap(APPSETTINGMAP, key, result, expiryTime);
-                        return { message: "SUCCESS", data: result };
-                    })
-                }
-            }).catch(err =>{
-                logger.info("Application settings get error");
-                throw err;
-            });
-        }
-    })
-     
-}
+exports.getAppSettingsByApplicationIdFromCache = criteria => {
+  var key = generateKey(criteria.applicationId);
+  return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
+    if (res !== null) {
+      logger.info("picking appsetting data from cache server ");
+      return { message: "SUCCESS", data: res };
+    } else {
+      return Promise.resolve(this.getAppSettingsByApplicationId(criteria))
+        .then(res => {
+          cacheClient.setDataIntoMap(APPSETTINGMAP, key, res.data, expiryTime);
+          return res;
+        })
+        .catch(err => {
+          logger.info("Application settings get error");
+          throw err;
+        });
+    }
+  });
+};
 
 exports.insertAppSettings = (settings) => {
     return Promise.resolve(applicationSettingModel.create(settings)).then(res => {    
