@@ -61,7 +61,12 @@ class MessageLogs extends Component {
                     if(group[j].latestMessagekey){
                         group[j].message = map[group[j].latestMessagekey].message;
                         group[j].latestMessageTime = map[group[j].latestMessagekey].createdAtTime;
-                        group[j].senderName = map[group[j].latestMessagekey].senderName;    
+                        group[j].senderName = map[group[j].latestMessagekey].senderName;  
+                        group[j].groupMemberUserKeys = {
+                            [group[j].memberUserKeys[0]]: group[j].groupUsers[0].userId,
+                            [group[j].memberUserKeys[1]]: group[j].groupUsers[1].userId
+                        };
+                        group[j].senderUserKey = map[group[j].latestMessagekey].userKey;
                     } else {
                         console.log("Group without Latest Message", group[j]);
                     }  
