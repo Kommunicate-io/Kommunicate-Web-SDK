@@ -736,13 +736,13 @@ class BillingKommunicate extends Component {
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
-                                                                <h2><sup>$</sup>10</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
+                                                                <h2><sup>$</sup>10</h2>per human or bot
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per human or bot/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                             <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
                                                                 <h2><sup>$</sup>8</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per human or bot/mo</p>
                                                                 <p style={{visibility:"visible",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
@@ -807,12 +807,12 @@ class BillingKommunicate extends Component {
                                                     <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
                                                                 <h2><sup>$</sup>30</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per human or bot/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                             <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
                                                                 <h2><sup>$</sup>25</h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per team member/mo</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per human or bot/mo</p>
                                                                 <p style={{visibility:"visible",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>

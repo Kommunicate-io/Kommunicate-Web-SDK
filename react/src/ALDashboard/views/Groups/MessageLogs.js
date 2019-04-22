@@ -106,7 +106,7 @@ class MessageLogs extends Component {
 
                 let usersDetail = {
                     [data.memberUserKeys[0]]: data.membersName[0] || data.membersId[0],
-                    [data.memberUserKeys[1]]: data.membersName[1] || data.membersId[0],
+                    [data.memberUserKeys[1]]: data.membersName[1] || data.membersId[1],
                 }
 
                 let groupType = data.type;
