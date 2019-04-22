@@ -516,7 +516,7 @@ const getPluginSettings = async function(appId){
       let pseudoUser = await getPseudoName();
         let response = Object.assign(pseudoUser, { "agentId": user.userName, "agentName": user.name });
         try {
-          let appSettings = await appSettingService.getAppSettingsByApplicationId({ applicationId: appId });
+          let appSettings = await appSettingService.getAppSettingsByApplicationIdFromCache({ applicationId: appId });
           (appSettings && appSettings.data) && (response.widgetTheme = appSettings.data.widgetTheme);
           let customer = await customerService.getCustomerByApplicationId(appId);
           response.customerCreatedAt = customer.created_at;
