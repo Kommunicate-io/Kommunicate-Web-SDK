@@ -8226,7 +8226,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic('#km-toolbar').addClass('n-vis').removeClass('vis');
 				$kmApplozic('#km-conversation-heading').addClass('vis').removeClass('n-vis');
 				$kmApplozic(".km-box-ft .km-box-form").addClass('n-vis').removeClass('vis');
-				$kmApplozic('.chat.km-message-inner.' + groupId + '.active-chat').remove('div');
+				$kmApplozic('.chat.km-message-inner.' + groupId + '.active-chat').removeClass("active-chat");
 				mckMessageService.emptyStateChange();
 			}
 
