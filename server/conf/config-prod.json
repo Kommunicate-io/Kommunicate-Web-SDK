@@ -5,7 +5,7 @@
           "url": "mysql://dashboard:db@pr0ddb@applozicdbserver.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate",
           "options": {
             "pool": {
-              "threadPoolMax": 5,
+              "threadPoolMax": 10,
               "threadPoolMin": 0,
               "idle": 10000
             },

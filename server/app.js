@@ -13,14 +13,20 @@ const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
 const Sentry = require('@sentry/node');
 const KM_SERVER_RELEASE_VERSION = require("../server/src/utils/constant").KM_SERVER_RELEASE_VERSION;
+const logger = require("./src/utils/logger")
 require('./src/webplugin/pluginOptimizer');
 require('./src/database/mongoDataSource');
+
+const deploymentSettings= process.argv;
 
 global['__basedir'] = __dirname
 
 app.use(cors());
+
 process.env.NODE_ENV?console.log("\x1b[41m ------Warning: build running into "+process.env.NODE_ENV+" -----\x1b[0m"):console.log("\x1b[41m ------Warning: environment is not -----\x1b[0m");
+
 const sentryConfig = config.getProperties().thirdPartyIntegration.sentry.server;
+
 sentryConfig.enable && Sentry.init({ 
   dsn: sentryConfig.dsn,
   release: KM_SERVER_RELEASE_VERSION 
@@ -71,8 +77,13 @@ app.use('/popup', routes.chatPopupRouter);
 function startApp() {
     app.listen(port, function () {
         console.log('Express server listening on port : ' + port);
-        //to do: start the event consumers
-        eventProcessor.initializeEventsConsumers();
+       
+       deploymentSettings.forEach(setting=>{
+          if(setting =="--ep"){
+            logger.info("[EP] Ep is enabled... initializing event consumers");
+            eventProcessor.initializeEventsConsumers();
+          }
+        });    
         cronInitializer.initiateAllCron();
     });
 }
@@ -84,11 +95,6 @@ Promise.all([hazelCastClient.initializeClient(),db.sequelize.sync()])
         throw new Error(e);
     });
 
-/* app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  console.log("executing error handlar",err);
-  res.status(500).send('Something is broken!')
-}) */
 
 app.use((err, req,res,next)=>{
 console.log("executing error handlar",err);
