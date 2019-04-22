@@ -443,12 +443,12 @@ class Users extends Component {
   }
 
   keyPress(e) {
-    var a = [];
-    var k = e.which;
-    var chars = ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32  || (k >= 48 && k <= 57));
-    if(!chars) {
+    var regex = /[^a-zA-Z0-9_\-@#]/;
+    var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if(regex.test(key)) {
       Notification.error("Special characters not allowed.");
       e.preventDefault();
+      return false;
     }
   }
 
