@@ -539,7 +539,7 @@ ul#km-group-search-list li {
     padding: 7px;
 
 }
-.km-conversation-icon-active svg path{
+.km-conversation-icon-active svg path, .km-conversation-icon-active svg circle{
        fill: #fff
 }
 .km-conversation-header-notification-alert {
