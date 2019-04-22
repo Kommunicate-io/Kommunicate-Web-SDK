@@ -11528,3 +11528,32 @@ border-left-color: #5e8631;
   z-index: 5000 !important;
   overflow-y: auto !important;
 }
+.km-user-dropdown-container  button {
+  background-color: transparent;
+  color: #333333;
+  font-size: 14px;
+  display: flex;
+  width: 150px;
+  align-items: center;
+  justify-content: space-between;
+}
+.km-user-dropdown-container  button:hover {
+  box-shadow: none;
+  background-color: transparent;
+  color: #333333;
+}
+.km-user-dropdown-container  button .dropdown-btn-text {
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.user-dropdown-arrow-wrapper:hover svg path {
+  fill: rgb(153, 153, 153);
+}
+.notify-everybody-dropdown, .automatic-assignment-dropdown {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px, rgba(0, 0, 0, 0.1) 0px -1px 4px 0px;
+}
+.km-user-dropdown-container .notify-everybody-dropdown:hover, .km-user-dropdown-container .automatic-assignment-dropdown:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px, rgba(0, 0, 0, 0.1) 0px -1px 4px 0px;
+}

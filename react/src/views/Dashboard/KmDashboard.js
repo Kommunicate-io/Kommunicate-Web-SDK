@@ -857,7 +857,7 @@ render() {
           </div>
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
              <UserDropdown
-              className= {(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
+               searchBoxClassName= {(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
               handleDropDownChange = {this.agentFilterHandleChange} 
               userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
               defaultValue={{ label: "All agents", value: "allagents" }}
