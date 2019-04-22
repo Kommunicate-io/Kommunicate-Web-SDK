@@ -31,7 +31,7 @@ exports.getAppSettingsByApplicationId = (criteria) => {
 exports.getAppSettingsByApplicationIdFromCache = criteria => {
   var key = generateKey(criteria.applicationId);
   return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
-    if (res !== null) {
+    if (res) {
       logger.info("picking appsetting data from cache server ");
       return { message: "SUCCESS", data: res };
     } else {
