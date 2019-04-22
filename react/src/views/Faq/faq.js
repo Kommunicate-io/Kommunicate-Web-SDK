@@ -21,7 +21,6 @@ import './LizSVG';
 import { LearnMore } from './LizSVG';
 import { connect } from 'react-redux';
 import * as Actions from '../../actions/applicationAction';
-import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 
 
 class Tabs extends Component {
@@ -43,7 +42,6 @@ class Tabs extends Component {
       modalIsOpen:false,
       helpdocsKey:[],
       addFaqSectionCheck: false,
-      sidebar: <SettingsSidebar />
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -256,7 +254,6 @@ class Tabs extends Component {
   render() {
     return (
       <div className="animated fadeIn" >
-      <div>{this.state.sidebar}</div>
       {/* Change showNewBot to false to hide new bot section*/}
         <div className={(CommonUtils.isTrialPlan()) ? "card" : (CommonUtils.isStartupPlan()) ? "n-vis" : "card"}>
           <div className="card-block">
