@@ -519,7 +519,7 @@ class Users extends Component {
         <div className="col-md-12">
           <div className="card">
             <div className="card-block">
-            <div className="flexi mb-20">
+            <div className="flexi mb-30">
               <Button className="product product-applozic" secondary onClick={() => this.openModal("newUser")}>Create new user</Button>
               <div id="km-text-box-wrapper" className="km-text-box-wrapper">
                 <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">
