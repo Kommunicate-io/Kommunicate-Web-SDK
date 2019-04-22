@@ -57,22 +57,12 @@ class HelpCenterCustomization extends Component {
     }
 
     handleInputChange = (e) => {
-        let id = e.target.id,
+        let name = e.target.name,
             value = e.target.value;
         
-        if(id === "headline-text") {
-            this.setState({
-                headlineText: value
-            });
-        } else if(id === "homepage-title") {
-            this.setState({
-                homepageTitle: value
-            });
-        } else {
-            this.setState({
-                customDomain: value
-            });
-        }
+        this.setState({
+            [name]: value
+        })
     }
 
     saveCustomizationChanges = () => {
@@ -94,17 +84,6 @@ class HelpCenterCustomization extends Component {
             Notification.error("Could not update Helpcenter customization settings. Please try again after some time.");
             console.log(err);
         })
-    }
-
-    validateFileType = (e) => {
-        var fileName = e.target ? e.target.value : e;
-        var idxDot = fileName.lastIndexOf(".") + 1;
-        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
-        if (extFile=="jpg" || extFile=="jpeg" || extFile=="png"){
-            console.log(extFile, idxDot, fileName);
-        }else{
-            alert("Only jpg/jpeg and png files are allowed!");
-        }   
     }
 
     openModal = () => {
@@ -209,7 +188,7 @@ class HelpCenterCustomization extends Component {
 
                         <ColorPicker className="helpcenter-color-picker" heading="Primary Color" disableAlpha={true} color={this.state.helpcenterColor} onChange={this.handleColorPickerChange} />
 
-                        <InputGroup id="headline-text" heading="Headline Text" tooltip="Max. 30 characters" placeholder="Hi, how can we help you?" value={this.state.headlineText} onChange={this.handleInputChange} />
+                        <InputGroup id="headline-text" heading="Headline Text" tooltip="Max. 30 characters" placeholder="Hi, how can we help you?" name="headlineText" value={this.state.headlineText} onChange={this.handleInputChange} />
 
                        
                        <ComponentHeading>Branding</ComponentHeading>
@@ -271,9 +250,9 @@ class HelpCenterCustomization extends Component {
 
                         <SectionTitle>Settings</SectionTitle>
 
-                        <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" value={this.state.homepageTitle} onChange={this.handleInputChange} />
+                        <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} />
 
-                        <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" value={this.state.customDomain} onChange={this.handleInputChange} />
+                        <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} />
 
                         <SendInstructionsContainer>
                             <MultiEmail template="INSTALLATION_INSTRUCTIONS" titleText="Mail instructions to tech team for sub domain setup" />
@@ -318,7 +297,7 @@ const InputGroup = (props) => {
                     <InfoIcon>i</InfoIcon>
                 </InfoContainer> }
             </LabelContainer> 
-            <Input id={props.id} className="input" type="text" value={props.value} onChange={props.onChange} placeholder={props.placeholder} />
+            <Input id={props.id} className="input" type="text" name={props.name} value={props.value} onChange={props.onChange} placeholder={props.placeholder} {...props} />
         </InputGroupContainer>
     )
 }

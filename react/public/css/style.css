@@ -8614,7 +8614,7 @@ iframe#crowd-shortcut {
   flex-direction: column;
   min-height: 100vh;
   /* height:100vh; */
-  /* overflow-x: hidden; */
+  overflow: hidden;
   background-color: #fff;
 }
 
@@ -8631,10 +8631,13 @@ iframe#crowd-shortcut {
   overflow-x: hidden;
   overflow-y: hidden; }
   .app-body .main {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100vh;
     flex: 1;
     min-width: 0; }
   .app-body .sidebar {
-    flex: 0 0 200px;
+    /* flex: 0 0 200px; */
     order: -1; }
   .app-body .aside-menu {
     flex: 0 0 250px; }
@@ -8655,8 +8658,8 @@ iframe#crowd-shortcut {
   margin-left: -200px; }
 
 .sidebar-fixed .sidebar {
-  position: fixed;
-  max-width: 285px;
+  /* position: fixed; */
+  max-width: 300px;
   min-width: 60px;
   /* Below two lines are HACK for SAFARI BROWSERS */
   [;min-width: 60px;];
@@ -8666,7 +8669,7 @@ iframe#crowd-shortcut {
   height: 100%;
   display: flex; }
   .sidebar-fixed .sidebar .sidebar-nav {
-    height: calc(100vh - 10px);
+    height: calc(100vh - 0px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8675,7 +8678,8 @@ iframe#crowd-shortcut {
  }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
-  margin-left: 53px; }
+  /* margin-left: 53px; */
+} 
 
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
@@ -8721,7 +8725,8 @@ iframe#crowd-shortcut {
     height: calc(100vh - 2.375rem - 55px); }
 
 .aside-menu-fixed .main, .aside-menu-fixed .app-footer {
-  margin-right: 250px; }
+  /* margin-right: 250px;  */
+}
 
 .aside-menu-fixed.aside-menu-hidden .main, .aside-menu-fixed.aside-menu-hidden .app-footer {
   margin-right: 0; }

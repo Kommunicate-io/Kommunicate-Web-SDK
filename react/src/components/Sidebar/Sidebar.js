@@ -80,7 +80,7 @@ class Sidebar extends Component {
     const visibility = this.state.isApplozicTrialExpired ? "invisible" : "visible";
 
     const currentPath = window.location.pathname;
-    var settingsSidebarShow = currentPath.includes('/settings') ? <SettingsSidebar {...this.props} /> : null;
+    var settingsSidebarShow = <SettingsSidebar {...this.props} />;
     return (
       <div className="sidebar" style={{ backgroundColor: this.props.theme.primary }}>
         <nav className="sidebar-nav">
@@ -189,7 +189,7 @@ class Sidebar extends Component {
 
           </ul>
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
-          <ul className="nav">
+          <ul className="nav" style={{marginBottom: "10px"}}>
 
             {/* IntegrationStarted icon */}
             <li className={"nav-item " + visibility}>

@@ -19,6 +19,7 @@
     color: #666464;
     padding-left: 21px;
     text-align: left;
+    text-transform: capitalize;
 }
 .ss-nav {
     list-style: none;
@@ -40,6 +41,7 @@
     color: #cacaca;
     font-weight: bold;
     margin-bottom: 2px;
+    text-transform: uppercase;
   }
 .ss-nav-title:not(:first-child) {
     margin-top: 20px;
@@ -48,7 +50,7 @@
     display: block;
     font-size: 14px;
     color: #666464;
-    padding: 5px 24px;
+    padding: 5px 5px 5px 24px;
     letter-spacing: 0.3px;
     transition: all .3s;
     text-align: left;
