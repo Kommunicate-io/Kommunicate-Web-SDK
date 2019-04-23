@@ -736,7 +736,7 @@ class BillingKommunicate extends Component {
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
-                                                                <h2><sup>$</sup>10</h2>per human or bot
+                                                                <h2><sup>$</sup>10</h2>
                                                                 <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per human or bot/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
