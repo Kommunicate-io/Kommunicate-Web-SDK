@@ -1352,7 +1352,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var CHAT_CLOSE_BUTTON = `<div id="km-popup-close-button" class="km-custom-widget-background-color">
                     <svg width="64" xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 64 64">
-                        <path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/>
+                        <path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z" stroke-width="6" stroke="#fff"/>
                     </svg>
                 </div>`
                 var customLauncherHtml =  `<div id="launcher-svg-container" class="vis" style ="white-space: nowrap;">
@@ -1680,8 +1680,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
-                KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
-
+                    KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
+                
                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
@@ -2176,6 +2176,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
                     $mck_sidebox.mckModal();
+                    $mck_msg_inner.html('');
                 }
                 $mck_msg_to.focus(); 
             }
@@ -2209,9 +2210,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             ALStorage.clearMckMessageArray();
                         }
                         $applozic.fn.applozic("loadTab",null,callback);
-                        
-                    }
 
+                    }
+                  
                 });
             };
 
@@ -3489,6 +3490,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var isConvReq = false;
                 var reqData = '';
                 var isAgentOffline = false;
+                var append =false;
                 if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
                     reqData = (params.isGroup) ? "&groupId=" + params.tabId : "&userId=" + encodeURIComponent(params.tabId);
                     individual = true;
@@ -3513,10 +3515,18 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                     reqData += "&mainPageSize=30";
                 }
-                if (!params.startTime) {
+                if (!params.startTime && !params.allowReload) {
                     $mck_msg_inner.html('');
                 }
-                $mck_loading.removeClass('n-vis').addClass('vis');
+                if(params.latestMessageReceivedTime){
+                    reqData +="&startTime="+params.latestMessageReceivedTime;
+                }
+                if(!params.allowReload){
+                    $mck_loading.removeClass('n-vis').addClass('vis');
+                }else{
+                    append= true;
+                }
+                
                 mckUtils.ajax({
                     url: MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
                     type: 'get',
@@ -3530,10 +3540,13 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                             var conversationAssigneeDetails = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;
                             })[0];
+                            var userSession = JSON.parse(sessionStorage.kommunicate);
+                            var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
                             if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({
                                         "applicationId": MCK_APP_ID,
-                                        "conversationId": params.tabId
+                                        "conversationId": params.tabId,
+                                        "languageCode": languageCode||"default"
                                     },
                                     function (err, message) {
                                         _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
@@ -3583,10 +3596,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                 if (individual) {
                                     if (isMessages) {
                                         if (params.startTime > 0) {
-                                            mckMessageLayout.processMessageList(data, false, true);
+                                            mckMessageLayout.processMessageList(data, false, true, append);
                                         } else {
                                             if (!params.isGroup) {
-                                                mckMessageLayout.processMessageList(data, true, true);
+                                                mckMessageLayout.processMessageList(data, true, true, append);
                                                 $mck_tab_message_option.removeClass('n-vis').addClass('vis');
                                             }
                                         }
@@ -3698,7 +3711,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                                         });
                                                         mckUserUtils.lastSeenOfGroupOfTwo(contact.contactId);
                                                     }
-                                                    if (window.applozic.PRODUCT_ID == 'kommunicate') {
+                                                    if (window.applozic.PRODUCT_ID == 'kommunicate' && group.users[MCK_USER_ID]) {
                                                         if (group.users[MCK_USER_ID].role === 3 || group.users[MCK_USER_ID].role === 2 || group.users[MCK_USER_ID].role === 0) {
                                                             $li_mck_group_info.removeClass('vis').addClass('n-vis');
                                                         }
@@ -3710,7 +3723,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        mckMessageLayout.processMessageList(data, true, validated);
+                                                        mckMessageLayout.processMessageList(data, true, validated, append, params.allowReload);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
                                                         }
@@ -4273,7 +4286,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}" data-msg-time="${msgCreatedAtTimeExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-
+            _this.latestMessageReceivedTime ="";
             _this.init = function() {
                 $applozic.template("convTemplate", convbox);
                 $applozic.template("messageTemplate", markup);
@@ -4526,27 +4539,32 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.getTopicLink = function (topicLink) {
                 return (topicLink) ? '<img src="' + topicLink + '">' : '<span class="mck-icon-no-image"></span>';
             };
-            _this.processMessageList = function (data, scroll, isValidated) {
+            _this.processMessageList = function (data, scroll, isValidated, append, allowReload) {
+                // allowReload parameter is using to reload chat widget when the socket connect 
                 var showMoreDateTime;
                 var $scrollToDiv = $mck_msg_inner.children("div[name='message']:first");
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
-                var enableAttachment = ""
+                var enableAttachment = "";
+                append  = typeof append !=="undefined" ? append: false;
                 var contact = (isGroup) ? mckGroupUtils.getGroup(tabId) : mckMessageLayout.fetchContact(tabId);
+                scroll && $mck_msg_inner.data('last-message-received-time', data.message[0].createdAtTime)
+                allowReload  && (scroll = false);
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
                     messageArray.push(data.message);
                     ALStorage.updateMckMessageArray(messageArray);
-                    _this.addMessage(data.message, contact, false, false, isValidated);
+                    _this.addMessage(data.message, contact, append, false, isValidated);
                     showMoreDateTime = data.createdAtTime;
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
-                        if (!(typeof message.to === 'undefined')) {
+                        if (!(typeof message.to === 'undefined')) { 
                             !enableAttachment && (enableAttachment = (typeof message.metadata === "object" &&  message.metadata.KM_ENABLE_ATTACHMENT) ? message.metadata.KM_ENABLE_ATTACHMENT :"");
-                            _this.addMessage(message, contact, false, false, isValidated, enableAttachment);
+                            _this.addMessage(message, contact, append, false, isValidated, enableAttachment);
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
+                            allowReload && !scroll && message.contentType != 10 && (scroll = true)
                         }
                     });
                 }
@@ -4695,6 +4713,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     return;
                 }
                 if ($applozic("#mck-message-cell ." + msg.key).length > 0) {
+                    // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
                 if (msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
@@ -6099,7 +6118,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             };
             _this.getScriptMessagePreview = function(message,emoji_template){
-				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
+				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
 					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
 						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 					}
@@ -8659,6 +8678,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var $mck_typing_label = $applozic('#mck-typing-label');
             var $mck_message_inner = $applozic("#mck-message-cell .mck-message-inner");
             var $mck_msg_inner_content = $applozic('.mck-message-inner');
+            var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
 
             _this.init = function () {
                 if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
@@ -8707,15 +8727,20 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         if (currTabId) {
                             var isGroup = $mck_message_inner.data('isgroup');
                             var conversationId = $mck_message_inner.data('mck-conversationid');
-                            var topicId = $mck_message_inner.data('mck-topicid');
+                            var topicId = $mck_message_inner.data('mck-topicid'); 
+                             //adding 1msec with latestMessageReceivedTime so API wont return the last message
+                            var latestMessageReceivedTime =$mck_msg_inner.data('last-message-received-time') + 1;
                             ALStorage.clearMckMessageArray();
-                            mckMessageLayout.loadTab({
+                            mckMessageService.loadMessageList({
                                 'tabId': currTabId,
                                 'isGroup': isGroup,
                                 'conversationId': conversationId,
-                                'topicId': topicId
-                            });
+                                'topicId': topicId,
+                                "latestMessageReceivedTime":latestMessageReceivedTime,
+                                "allowReload": true
+                            })
                         } else {
+                            // do we need this? 
                             ALStorage.clearMckMessageArray();
                             mckMessageLayout.loadTab({
                                 'tabId': '',
@@ -8986,6 +9011,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             _this.onMessage = function (obj) {
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
+                    typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                     var messageType = resp.type;
                     if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
                         $applozic("." + resp.message.split(",")[0] + " .mck-message-status").removeClass('mck-pending-icon').removeClass('mck-sent-icon').addClass('mck-delivered-icon').attr('title', 'delivered');

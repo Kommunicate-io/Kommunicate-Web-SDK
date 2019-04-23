@@ -25,6 +25,7 @@ enableSentry && Sentry.configureScope((scope) => {
   setTag(scope);
 });
 
+
 const GlobalStyle = createGlobalStyle`
   .product {
     display: none;
@@ -72,16 +73,68 @@ const GlobalStyle = createGlobalStyle`
   .input:focus, .select:focus, input:focus, select:focus {
     border: 1px solid ${props => props.theme.primary};
   }
+
+  /* Custom classes for theming the dashboard */
+  .km-conversation-icon-active{
+      background: #${primaryColor}!important;
+      border: 2px solid #${primaryColor}!important;
+  }
+  .km-custom-text-color{
+    color: #${primaryColor}!important;
+  }
+  .km-custom-bg{
+    background: #${primaryColor}!important;
+  }
+  .card-inner-block.active{
+    border-top-color: #${primaryColor}!important;
+  }
 `;
+
+let CustomTheme;
+const primaryColor = CommonUtils.getUrlParameter(window.location.href,"primaryTheme") || CommonUtils.getItemFromLocalStorage('kmCustomTheme');
+
+let getTheme = () =>{
+
+ if(primaryColor){
+  CommonUtils.setItemInLocalStorage('kmCustomTheme',primaryColor);
+  //Adding custom color to global theme object
+  theme.primary = `#${primaryColor}`;
+  theme.primaryLight = `#${primaryColor}`;
+  theme.buttons.primaryBG = `#${primaryColor}`;
+  theme.buttons.secondaryText = `#${primaryColor}`;
+
+  CustomTheme = createGlobalStyle`
+  /* Custom classes for theming the dashboard */
+  .km-conversation-icon-active{
+      background: #${primaryColor}!important;
+      border: 2px solid #${primaryColor}!important;
+  }
+  .km-custom-text-color{
+    color: #${primaryColor}!important;
+  }
+  .km-custom-bg{
+    background: #${primaryColor}!important;
+  }
+  .card-inner-block.active{
+    border-top-color: #${primaryColor}!important;
+  }`; 
+ }else{
+    CommonUtils.setItemInLocalStorage('kmCustomTheme',primaryColor);
+ }
+  return theme;
+};
 
 // const store = createStore(rootReducer, applyMiddleware(logger)
 
 ReactDOM.render(
   <Provider store={store}> 
     <PersistGate loading={null} persistor={persistor}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={getTheme()}>
         <BrowserRouter>
           <GlobalStyle/>
+          {
+            primaryColor && <CustomTheme/>
+          }
           <App />
         </BrowserRouter>
       </ThemeProvider>

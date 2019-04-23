@@ -3844,14 +3844,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.emptyStateChange = function () {
 				var assignedToMeList = document.querySelector("#km-assigned-search-list"),
-					allConversationList = document.querySelector("#km-contact-list"),
-					closedConversationList = document.querySelector("#km-closed-conversation-list"),
 					emptyStateDiv = document.getElementById("empty-state-conversations-div"),
-					emptyStateDivFirstPara = document.querySelector("#empty-state-conversations-div .empty-state-message-shortcuts-first-text"),
-					activeConnversationBox = document.querySelector('#km-toolbar'),
-					activeAllConversationList = document.querySelector("#km-conversation"),
-					activeAssignedConversationList = document.querySelector("#km-assigned");
-
+					emptyStateDivFirstPara = document.querySelector("#empty-state-conversations-div .empty-state-message-shortcuts-first-text");
 
 				if(typeof MCK_INTEGRATION_STARTED !== "undefined" && !MCK_INTEGRATION_STARTED) {
 					if (emptyStateDiv.classList.contains("n-vis")) {
@@ -3859,7 +3853,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDivFirstPara.innerHTML = "You have not installed Kommunicate in your website";
 						emptyStateDiv.classList.remove("n-vis");
 					}
-				} else if(MCK_CONVERSATIONS_DATA.assignedToMeConversations !== 0 ) {
+				} else if(assignedToMeList.getElementsByTagName("li").length !== 0 ) {
 					emptyStateDiv.classList.add("km-assigned-conv-empty-state", "vis");
 					emptyStateDiv.classList.remove("n-vis");
 					emptyStateDivFirstPara.innerHTML = "Select a conversation to interact with your customers";
@@ -8227,6 +8221,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			}
 		
+			_this.resetConverationPanel = function(groupId) {
+				$kmApplozic('#chat-box-div .km-container').removeClass('km-panel-3');
+				$kmApplozic('#km-toolbar').addClass('n-vis').removeClass('vis');
+				$kmApplozic('#km-conversation-heading').addClass('vis').removeClass('n-vis');
+				$kmApplozic(".km-box-ft .km-box-form").addClass('n-vis').removeClass('vis');
+				$kmApplozic('.chat.km-message-inner.' + groupId + '.active-chat').removeClass("active-chat");
+				mckMessageService.emptyStateChange();
+			}
 
 			_this.onMessage = function (obj) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
@@ -8460,18 +8462,25 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								if (message.metadata.KM_STATUS == "Open") {
 									//remove from closed
 									var cldiv = document.getElementById("km-li-cl-" + contactHtmlExpr);
+									var closedConversationList = document.getElementById("km-closed-conversation-list");
 									cldiv && cldiv.remove();
+									if(closedConversationList.getElementsByTagName("li").length == 0) {
+										_this.resetConverationPanel(contact.htmlId);
+									}
 								} else {
 									//remove from assigned and all conversations
-		
 									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
+									var assignedToMeList = document.getElementById("km-assigned-search-list");
 									if (asdiv != null) {
 										asdiv.remove();
 									}
-		
 									var csdiv = document.getElementById("km-li-cs-" + contactHtmlExpr);
+									var allConversationsList = document.getElementById("km-contact-list");
 									if (csdiv != null) {
 										csdiv.remove();
+									}
+									if(assignedToMeList.getElementsByTagName("li").length == 0 || allConversationsList.getElementsByTagName("li").length == 0) {
+										_this.resetConverationPanel(contact.htmlId);
 									}
 								}
 							}

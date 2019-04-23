@@ -6,11 +6,17 @@ sidebar_label: Push Notification
 For push notifications, you must have a firebase account. Signup on [Firebase](https://console.firebase.google.com).
 Go to [Kommunicate dashboard](https://dashboard.kommunicate.io/settings/pushnotification) and update the GCM/FCM server key under GCM/FCM key. Make sure you update the FCM server key and not the FCM legacy key or FCM sender Id.
 
+## Note:
+Skip the step `Kommunicate.registerForPushNotification` in this doc if you are using KmChatBuilder without calling `Kommunicate.login` or `Kommunicate.loginAsVistor`. This step needs to be called only in onSuccess of Kommunicate login. If using KmChatBuilder, this will automatically be called if you [pass the deviceToken with the builder](https://docs.kommunicate.io/docs/android-installation#launch-chat) or pass the token to Kommunicate in `onTokenRefersh` method of the FirebaseInstanceIdListener service. Pass the token to Kommunicate explicitly as below:
+   ```java
+     Kommunicate.setDeviceToken(context, "deviceToken");
+   ```
+   
 ## FCM
-If you are already using Firebase in your application, add the below code in Kommunicate.login onSuccess() method and pass the FCM registration token as below:
+If you are already using Firebase in your application, add the below code in Kommunicate.login onSuccess() method and pass the FCM registration token as below(Skip this step if using KmChatBuilder):
 ```java
 if(MobiComUserPreference.getInstance(context).isRegistered()) {
-    Kommunicate.registerForPushNotification(context, registrationToken, new KmPushNotificationHandler() {
+    Kommunicate.registerForPushNotification(context, deviceToken, new KmPushNotificationHandler() {
                     @Override
                     public void onSuccess(RegistrationResponse registrationResponse) {
 
@@ -23,15 +29,15 @@ if(MobiComUserPreference.getInstance(context).isRegistered()) {
                 }); 
 }
 ```
-The `registrationToken` is obtained from the onToken refresh method of FcmListenerIdService class.
+The `deviceToken` is obtained from the onToken refresh method of FcmListenerIdService class.
 ```java
-String registrationToken = FirebaseInstanceId.getInstance().getToken();
+String deviceToken = FirebaseInstanceId.getInstance().getToken();
 ```
 In your FcmInstanceIDListenerService onTokenRefresh() method add the below code:
 
 ```java
 if (MobiComUserPreference.getInstance(this).isRegistered()) {
-    new RegisterUserClientService(this).updatePushNotificationId(registrationToken);
+    new RegisterUserClientService(this).updatePushNotificationId(<deviceToken>);
 }
 ```
 
@@ -46,7 +52,7 @@ if (Kommunicate.isKmNotification(this, remoteMessage.getData())) {
 If you already have GCM enabled in your app, add the below code in Kommunicate.login onSuccess() method and pass the GCM registration token as below:
 ```java
 if(MobiComUserPreference.getInstance(context).isRegistered()) {
-   Kommunicate.registerForPushNotification(context, registrationToken, new KmPushNotificationHandler() {
+   Kommunicate.registerForPushNotification(context, deviceToken, new KmPushNotificationHandler() {
                     @Override
                     public void onSuccess(RegistrationResponse registrationResponse) {
 
@@ -62,7 +68,7 @@ if(MobiComUserPreference.getInstance(context).isRegistered()) {
 At the place where you are getting the GCM registration token, add below code:
 ```java
 if (MobiComUserPreference.getInstance(this).isRegistered()) {
-    new RegisterUserClientService(this).updatePushNotificationId(registrationToken);
+    new RegisterUserClientService(this).updatePushNotificationId(deviceToken);
 }
 ```
 For Receiving GCM Notifications in app, add the following code in your GcmListenerService in onMessageReceived method

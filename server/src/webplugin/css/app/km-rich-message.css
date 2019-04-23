@@ -374,7 +374,7 @@
         padding: 6px 14px;
         border-radius: 15px;
         min-width: 35px;
-        font-size: 13px;
+        font-size: 14px;
         letter-spacing: .5px;
     }
 
@@ -1166,8 +1166,10 @@
     outline: none;
 }
 .km-cta-multi-button-container button.km-quick-replies {
+    font-size: 14px;
     border: 1px solid;
     background-color: white;
+    font-size: 14px;
 }
 .km-carousel-card-footer .km-cta-multi-button-container button.km-quick-replies {
     border-bottom: none;

@@ -6,7 +6,7 @@
       "options": {
         "pool": {
           "threadPoolMax": 5,
-          "threadPoolMin": 0,
+          "threadPoolMin": 1,
           "idle": 10000
         }
       }
@@ -18,8 +18,8 @@
       "autoReconnect":true,
       "connectTimeoutMS":30000,
       "socketTimeoutMS":360000,
-      "reconnectTries":	30,
-      "reconnectInterval":	1000
+      "reconnectTries":	9007199254740991,
+      "reconnectInterval":	10000
     },
     "urls": {
      "baseUrl": "https://apps-test.applozic.com",

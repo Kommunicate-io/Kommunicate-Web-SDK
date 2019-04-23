@@ -15,7 +15,7 @@ const MessageLogsRowList = (props) => {
                 <MessageLogsStyles.FlexContainer>
                     <MessageLogsStyles.ImageContainer>
                         {
-                            (data.imageUrl) ? <MessageLogsStyles.Image src={data.imageUrl}/> : <MessageLogsStyles.ContactIcon className={`${image[1]}`}>{image[0]}</MessageLogsStyles.ContactIcon>
+                            (data.imageUrl) ? <MessageLogsStyles.Image src={data.imageUrl}/> : <MessageLogsStyles.ContactIcon className={image[1]}>{image[0]}</MessageLogsStyles.ContactIcon>
                         }
                     </MessageLogsStyles.ImageContainer>
                     <MessageLogsStyles.GroupNameContainer>
@@ -37,14 +37,21 @@ const MessageLogsRowList = (props) => {
                             This conversation is encrypted
                         </MessageLogsStyles.EncryptedMessageText>
                     </MessageLogsStyles.LastMessage> :
-                    <MessageLogsStyles.LastMessage>
-                        <MessageLogsStyles.LastMessageFrom>{data.senderName}: </MessageLogsStyles.LastMessageFrom>
-                        <MessageLogsStyles.LastMessageData>{data.message}</MessageLogsStyles.LastMessageData>
-                    </MessageLogsStyles.LastMessage>
+                    <Fragment>
+                    {   data.senderName ? 
+                        <Fragment>
+                            <MessageLogsStyles.LastMessage>    
+                                <MessageLogsStyles.LastMessageFrom>{data.type === 0 ? data.groupMemberUserKeys[data.senderUserKey] : data.senderName}: </MessageLogsStyles.LastMessageFrom>
+                                <MessageLogsStyles.LastMessageData>{data.message}</MessageLogsStyles.LastMessageData>
+                            </MessageLogsStyles.LastMessage>
+                    
+                            <MessageLogsStyles.LastMessageTime>
+                            {moment(data.createdAtTime).format("DD MMM YYYY, hh:mm A")}
+                            </MessageLogsStyles.LastMessageTime>
+                        </Fragment> : <i>No Conversation</i>
+                    }
+                    </Fragment>
                 }
-                <MessageLogsStyles.LastMessageTime>
-                {moment(data.createdAtTime).format("DD MMM YYYY, hh:mm A")}
-                </MessageLogsStyles.LastMessageTime>
             </MessageLogsStyles.TableData>
         </MessageLogsStyles.TableRow>
     );

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 //import axios from 'axios';
 import ReactTooltip from 'react-tooltip';
 //import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
@@ -8,10 +8,14 @@ import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
 //import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
 import ApplozicClient from '../../utils/applozicClient';
+import { updateApplozicUser, checkUserInApplozic } from '../../utils/kommunicateClient';
 import sortBy from 'lodash/sortBy';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 import Notification from '../model/Notification';
+import Button from '../../components/Buttons/Button';
+import Modal from '../../components/Modal/Modal';
+import * as UserStyles from './UserStyles';
 
 const limit = 2;
 const pageCount = 3;
@@ -40,7 +44,13 @@ class Users extends Component {
       oldResult : [],
       searchBoxEmpty : true,
       isSearchBoxActive : true,
-      checkEnter: false
+      checkEnter: false,
+      modalType: "",
+      userId: "",
+      userName: "",
+      userEmail: "",
+      loginPassword: "",
+      users: {}
     };
 
   }
@@ -325,24 +335,212 @@ class Users extends Component {
     _this.detectEmptySearchBox(event);
   };
 
+  openModal = (modalType, users) => {
+    this.setState({
+      modalType,
+      users
+    }, () => {
+      if(users) {
+        this.handleFormFields(users);
+      } else {
+        this.handleFormFields({});
+      }
+    });
+  }
+
+  handleFormFields = (users) => {
+    this.setState({
+      userId: users.userId || "",
+      userName: users.userName || "",
+      userEmail: users.email || "",
+      loginPassword: ""
+    });
+  }
+
+  onInputChange = (e) => {
+    const target = e.target;
+    const value  = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+
+  onFormSubmit = (e) => {
+    e.preventDefault();
+    if(this.state.modalType === 'newUser') {
+      this.createNewUser(e);
+    } else {
+      this.editUser(e);
+    }
+  }
+
+  dataForApi = () => {
+    return {
+      userId: this.state.userId,
+      displayName: this.state.userName,
+      email: this.state.userEmail,
+      password: this.state.loginPassword,
+      roleName:'USER'
+    }
+  }
+
+  createNewUser = (e) => {
+    const form = e.target;
+    let userSession = CommonUtils.getUserSession();
+    const header = {
+      'Content-Type' :'application/json',
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': 'true'
+    }
+    const data = this.dataForApi();
+    const args = {
+      header: header,
+      data: data
+    }
+    checkUserInApplozic(args).then(response => {
+      if(response.status === 200 && response.data.response === 'success'){
+        Notification.success('User created successfully');
+        form.reset();
+        this.openModal("");
+        this.reRenderUsersList();
+      } else if(response.data.status === "error") {
+        let errorMessage = response.data.errorResponse[0].description.charAt(0).toUpperCase() + response.data.errorResponse[0].description.slice(1);
+        Notification.error(errorMessage);
+      }
+    }).catch(err => {
+      console.log(err);
+      Notification.info('Something went wrong. Please try again later.');
+    });
+  }
+
+  editUser = (e) => {
+    let data = this.dataForApi();
+    const form = e.target;
+    updateApplozicUser(data).then(response => {
+      if(response.status === 200 && response.data.response === 'success') {
+        Notification.success('User details updated successfully');
+        form.reset();
+        this.openModal("");
+        this.reRenderUsersList();
+      }
+      console.log(response);
+    }).catch(err => {
+      console.log(err);
+      Notification.info('Something went wrong. Please try again later.');
+    });
+  }
+
+  reRenderUsersList = () => {
+    this.setState({
+      getUsersFlag: 1,
+      result: []
+    });
+    this.getUsers();
+    this.updateConversationWithRespectToPageNumber();
+  }
+
+  keyPress(e) {
+    var regex = /[^a-zA-Z0-9_\-@#]/;
+    var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if(regex.test(key)) {
+      Notification.error("Special characters not allowed.");
+      e.preventDefault();
+      return false;
+    }
+  }
 
   render() {
+    var _this = this;
     const infoText = Labels["lastcontacted.tooltip"];
-    var showrResult = this.state.result.slice(this.state.intial, this.state.final).map(function (result, index) {
-      return <CustomerListItem key={index} user={result} hideConversation="false" />
+    var showResult = this.state.result.slice(this.state.intial, this.state.final).map(function (result, index) {
+      return <CustomerListItem key={index} user={result} hideConversation="false" openModal={_this.openModal} />
     });
+
+    const CreateNewUser = (
+      <Fragment>
+        <form onSubmit={this.onFormSubmit} autoComplete="off">
+          <InputGroup id='user-id' label='User Id:' name='userId' inputType='text' value={this.state.userId} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' required />
+          <InputGroup id='user-name' label='User Name:' name='userName' inputType='text' value={this.state.userName} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' />
+          <InputGroup id='user-email' label='User Email:' name='userEmail' inputType='text' value={this.state.userEmail} onChange={this.onInputChange} placeholder='' />
+          <InputGroup id='login-password' label='Login Password:' name='loginPassword' inputType='password' value={this.state.loginPassword} onChange={this.onInputChange} placeholder='' required />
+
+          <UserStyles.ButtonGroup>
+            <Button secondary type="reset" onClick={() => this.openModal("")}>Cancel</Button>
+            <Button type="submit">Create new user</Button>
+          </UserStyles.ButtonGroup>
+        </form>
+      </Fragment>
+    );
+
+    const EditUser = (
+      <Fragment>
+        <form onSubmit={this.onFormSubmit} autoComplete="off">
+          <InputGroup id='user-id' label='User Id:' name='userId' inputType='text' value={this.state.userId} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' required disabled />
+          <InputGroup id='user-name' label='User Name:' name='userName' inputType='text' value={this.state.userName} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' />
+          <InputGroup id='user-email' label='User Email:' name='userEmail' inputType='text' value={this.state.userEmail} onChange={this.onInputChange} placeholder='' />
+          <InputGroup id='login-password' label='Login Password:' name='loginPassword' inputType='password' value={this.state.loginPassword} onChange={this.onInputChange} placeholder='' required />
+
+          <UserStyles.ButtonGroup>
+            <Button secondary type="reset" onClick={() => this.openModal("")}>Cancel</Button>
+            <Button type="submit">Save changes</Button>
+          </UserStyles.ButtonGroup>
+        </form>
+      </Fragment>
+    );
+
+    const DeleteUser = (
+      <Fragment>
+        Delete User
+      </Fragment>
+    );
+
+    const BlockUser = (
+      <Fragment>
+        Block User
+      </Fragment>
+    );
+
+    const renderModalContent = {
+      '': {
+        'heading': '',
+        'content': ''
+      },
+      'newUser': {
+        'heading': "Create new user",
+        'content': CreateNewUser
+      },
+      'editUser': {
+        'heading': "Edit user details",
+        'content': EditUser
+      },
+      'deleteUser': {
+        'heading': "Create new user",
+        'content': DeleteUser
+      },
+      'blockUser': {
+        'heading': "Create new user",
+        'content': BlockUser
+      }
+    }
+
    return (
    <div className="animated fadeIn customer-list-item">
       <div className="row">
         <div className="col-md-12">
           <div className="card">
             <div className="card-block">
-           <div id="km-text-box-wrapper" className="km-text-box-wrapper">
-           <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">
-                <path fill="#a8a8a8" d="M51.704 51.273L36.845 35.82c3.79-3.801 6.138-9.041 6.138-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.083 0 9.748-1.817 13.384-4.832l14.895 15.491a.998.998 0 0 0 1.414.028 1 1 0 0 0 .028-1.414zM21.983 40c-10.477 0-19-8.523-19-19s8.523-19 19-19 19 8.523 19 19-8.524 19-19 19z"/>
-              </svg>
-            <input id="km-search-box" type="text" className="km-search-box required"  onClick={(event) => this.handleClickEventForSearch(event)} onKeyUp={(event) => this.handleKeyboardEventForSearch(event)} placeholder="Search for email or user ID"></input>
-            <span id="km-clear-search-text" className=" km-clear-search-text n-vis"  onClick={(event) => this.handleClickEventForSearch(event)}> &times; </span>
+            <div className="flexi mb-30">
+              <Button className="product product-applozic" secondary onClick={() => this.openModal("newUser")}>Create new user</Button>
+              <div id="km-text-box-wrapper" className="km-text-box-wrapper">
+                <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">
+                  <path fill="#a8a8a8" d="M51.704 51.273L36.845 35.82c3.79-3.801 6.138-9.041 6.138-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.083 0 9.748-1.817 13.384-4.832l14.895 15.491a.998.998 0 0 0 1.414.028 1 1 0 0 0 .028-1.414zM21.983 40c-10.477 0-19-8.523-19-19s8.523-19 19-19 19 8.523 19 19-8.524 19-19 19z"/>
+                </svg>
+                <input id="km-search-box" type="text" className="km-search-box required"  onClick={(event) => this.handleClickEventForSearch(event)} onKeyUp={(event) => this.handleKeyboardEventForSearch(event)} placeholder="Search for email or user ID"></input>
+                <span id="km-clear-search-text" className=" km-clear-search-text n-vis"  onClick={(event) => this.handleClickEventForSearch(event)}> &times; </span>
+              </div>
             </div>
             <table className={this.state.result.length !== 0 ? "table table-hover mb-0 hidden-sm-down km-show-visibility":"table table-hover mb-0 hidden-sm-down km-hide-visibility"}>
                   <thead className="thead-default">
@@ -362,14 +560,13 @@ class Users extends Component {
                         </svg>
                       </th>
                       <th className="product product-kommunicate-table-cell">Latest Conversation</th>
-                      <th className="text-center n-vis">Country</th>
-                      <th className="n-vis">Usage</th>
-                      <th className="text-center n-vis">Payment Method</th>
-                      <th className="n-vis">Activity</th>
+                      <th className="users-edit-icon km-hide-visibility product product-applozic-table-cell">Edit</th>
+                      <th className="users-delete-icon km-hide-visibility n-vis">Delete</th>
+                      <th className="users-block-icon km-hide-visibility n-vis">Block</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {showrResult}
+                    {showResult}
                   </tbody>
           </table>
               { this.state.result.length !== 0 ?
@@ -471,9 +668,27 @@ class Users extends Component {
           </div>
         </div>
       </div>
+
+      <Modal isOpen={this.state.modalType !== ""} heading={renderModalContent[this.state.modalType].heading} onRequestClose={() => this.openModal("")}>
+        {
+          renderModalContent[this.state.modalType].content  
+        }
+      </Modal>
+
       <ReactTooltip/>
     </div>)
   }
+}
+
+const InputGroup = (props) => {
+  return ( 
+      <UserStyles.InputGroupContainer>
+          <UserStyles.LabelContainer>
+              <UserStyles.Label htmlFor={props.id}>{props.label}</UserStyles.Label> 
+          </UserStyles.LabelContainer> 
+          <UserStyles.Input id={props.id} className="input" name={props.name} type={props.inputType} value={props.value} onChange={props.onChange} placeholder={props.placeholder} {...props} />
+      </UserStyles.InputGroupContainer>
+  )
 }
 
 export default Users;

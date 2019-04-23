@@ -29,20 +29,31 @@ exports.postWelcomeMsg=(options)=>{
     })
 }
 
-const getInAppMessage=(appId, eventType)=>{
+const getInAppMessage=(appId, eventType,languageCode)=>{
   console.log('geting data for', appId );
   let criteria ={ applicationId:appId, status: appUtils.EVENT_STATUS.ENABLED};
 
   if (eventType){
     criteria.eventId=eventType
   }
-    return db.InAppMsg.findAll(
-      {
-        where:criteria,
-        order:[
-          ['id', 'ASC']
-        ]
-      });
+  if(languageCode){
+    criteria.languageCode = {[Sequelize.Op.or]: [null, languageCode]}; 
+  } 
+
+  return Promise.resolve(db.InAppMsg.findAll({
+    where: criteria,
+    order:[
+      ['id', 'ASC']
+    ]
+  })).then(dbResult => {
+    var finalResult = dbResult.filter(item => languageCode && item.languageCode === languageCode);
+    return finalResult.length !== 0 ? finalResult : dbResult;
+  }).catch(err => {
+    return {
+      code: err.parent.code,
+      message: err.parent.sqlMessage
+    }
+  });
 }
 
 exports.sendWelcomeMessage = (conversationId, customer) => {
@@ -211,7 +222,7 @@ const countEnableRecordsInAppMsgs = (createdBy, appId, eventId,languageCode) => 
 exports.createInAppMsg=(createdBy, appId, body)=>{
   var languageCode =null;
   if(body.languageCode){
-    languageCode =body.languageCode.toLowerCase();
+    languageCode =body.languageCode.trim().toLowerCase();
 }
   inAppMessage = {
       createdBy: createdBy,
@@ -260,18 +271,19 @@ exports.createInAppMsg=(createdBy, appId, body)=>{
 exports.updateInAppMessage =(criteria, inAppMessage)=>{
   let _this =this;
   return Promise.resolve(db.InAppMsg.update(inAppMessage, { where: criteria})).then(data =>{
-    _this.removeWelcomeMessageFromCache(criteria.applicationId);
+    _this.removeWelcomeMessageFromCache(criteria.applicationId,criteria.languageCode);
     return data;
   }).catch(err => {
    throw err;
   });
 }
 
-exports.getInAppMessages2=(createdBy, appId)=>{
+exports.getInAppMessages2=(createdBy, appId, languageCode)=>{
     return Promise.resolve(db.InAppMsg.findAll({
         where: {
             createdBy: createdBy,
-            applicationId: appId
+            applicationId: appId,
+            languageCode:languageCode
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
@@ -351,7 +363,7 @@ exports.softDeleteInAppMsg=(id)=>{
 exports.editInAppMsg=async (body)=>{
 let inAppMessage = await  this.getInAppMessagebyId(body.id);
 if (body.languageCode) {
-  body.languageCode = body.languageCode.toLowerCase();
+  body.languageCode = body.languageCode.trim().toLowerCase();
 }
  return this.updateInAppMessage({id: body.id, applicationId: inAppMessage.applicationId},{message:body.message,languageCode:body.languageCode}).then(response => {
         response.message = "Edited"
@@ -404,9 +416,10 @@ exports.getInAppMessagebyId= (id)=>{
     return inAppMessage;
   })
 }
-exports.removeWelcomeMessageFromCache=(applicationId)=>{
-  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessageStatus");
-  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+"-welcomeMessage");
+exports.removeWelcomeMessageFromCache=(applicationId,languageCode)=>{
+  var messageLanguage = languageCode || "default";
+  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+messageLanguage+"-welcomeMessageStatus");
+  cacheClient.deleteDataFromMap(welcomeMessageMapPrefix, applicationId+messageLanguage+"-welcomeMessage");
 }
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;

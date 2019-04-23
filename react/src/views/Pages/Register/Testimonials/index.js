@@ -69,7 +69,7 @@ const TestimonialAuthorCompany = styled(TestimonialAuthor)`
     margin-bottom: 15px;
 `;
 const TestimonialText = styled.p`
-    font-size: 16px;
+    font-size: 22px;
     line-height: 1.5;
     text-align: center;
     color: #767272;

@@ -3,18 +3,22 @@ module.exports = {
     name: 'Kommunicate',
     script: './app.js',
     args: '--cron enable',
+    interpreter : "node@8.11.4",
+    error_file : "./logs/kommunicate-error.log",
+    out_file : "./logs/kommunicate.log",
     instances: 1,
     autorestart: true,
-    watch: true,
-    max_memory_restart: '1G',
+    watch: false,
+    exec_mode : "fork", //"cluster" ,
+    max_memory_restart: '500M',
     env: {
       NODE_ENV: 'default'
     },
     env_test: {
       NODE_ENV: 'test'
     },
-    env_production: {
-      NODE_ENV: 'production'
+    env_prod: {
+      NODE_ENV: 'prod'
     }
   }],
 

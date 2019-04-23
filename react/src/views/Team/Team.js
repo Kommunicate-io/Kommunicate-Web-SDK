@@ -443,7 +443,7 @@ class Integration extends Component {
                       <thead className="thead-default">
                         <tr className="tm-disable-accounts-table-th-parent">
                           <th className="tm-disabled-accounts-table-th">Name</th>
-                          <th className="tm-disabled-accounts-table-th">Email Id</th>
+                          <th className="tm-disabled-accounts-table-th">Email Id (Agent id)</th>
                           <th className="tm-disabled-accounts-table-th">Role</th>
                           <th className="tm-disabled-accounts-table-th">Status</th>
                         </tr>
@@ -467,7 +467,7 @@ class Integration extends Component {
                     <tr>
                       {/* <th className="text-center"><i className="icon-people"></i></th> */}
                       <th className="team-name-title">Name</th>
-                      <th>Email id</th>
+                      <th>Email id (Agent id)</th>
                       <th>Role</th>
                       {/* <th>Last Activity</th> */}
                       <th>Status</th>

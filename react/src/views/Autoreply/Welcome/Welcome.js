@@ -312,7 +312,7 @@ class Welcome extends Component{
                   {welcomeMsgTextArea}                  
                 </div>
                 {  this.state.welcomeMessages.length <= 2 && 
-                  <Button link className ="add-new-msg-btn" disabled = { this.state.enableAddMsgLink } onClick={this.appendMessageTextArea} >+ Add a follow up welcome message</Button>
+                  <Button link className ="add-new-msg-btn km-custom-text-color" disabled = { this.state.enableAddMsgLink } onClick={this.appendMessageTextArea} >+ Add a follow up welcome message</Button>
                 }                
                 <div className="btn-group">
                   <Button primary disabled={this.state.disableButton} className="save-changes-btn"

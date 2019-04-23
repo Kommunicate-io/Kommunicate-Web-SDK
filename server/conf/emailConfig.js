@@ -87,6 +87,7 @@ var config ={
 }
 config["prod-ca"]= config.prod;
 config["prod-mzadqatar"]= config.prod;
+config["ep-prod"] = config.prod;
 exports.getProperties = function(){
   var envId = process.env.NODE_ENV || "default";
   return config[envId];

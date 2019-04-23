@@ -122,7 +122,8 @@ class BotStore extends Component {
           botAssignmentModal:false,
           latestIntegratedBotId:'',
           conversationsAssignedToBotId:'',
-          applicationExpiryDate:''
+          applicationExpiryDate:'',
+          step: 1
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -138,9 +139,10 @@ class BotStore extends Component {
         });
       }
 
-      toggleBotIntegrationModal = (value, botPlatform) => {
+      toggleBotIntegrationModal = (value, botPlatform, step) => {
         this.setState({
-          openModal: value
+          openModal: value,
+          step
         })
         if (botPlatform) {
           this.setState({
@@ -638,7 +640,7 @@ class BotStore extends Component {
                     <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
-                <div className={!this.state.useCaseSubmitted && CommonUtils.isKommunicateDashboard() ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
+                {/* <div className={!this.state.useCaseSubmitted && CommonUtils.isKommunicateDashboard() ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
                 <div className="col-sm-6 km-bot-integration-second-container-text-container">
                   <p className="km-bot-request-bot-heading">Want a custom bot made for you?</p>
                   <p className="km-bot-request-bot-sub-heading">Tell us your bot use-case and we will take care of everything else</p>
@@ -650,7 +652,7 @@ class BotStore extends Component {
                 <div className="col-sm-4 km-bot-integration-second-container-cato-container">
                   
                 </div>
-              </div>
+              </div> */}
 
               <div className={this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-use-case-sbmt-container":"n-vis"}>
                 <div className="col-sm-1 km-bot-integration-tick-container">
@@ -674,6 +676,8 @@ class BotStore extends Component {
                 </div>
               </div> */}
 
+            { CommonUtils.isProductApplozic() && <Button secondary onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom", 2)}} >CREATE BOT</Button> }
+
             <h4 className="km-bot-box-heading">Integrate your existing bot with {PRODUCTS[product].title}</h4>
            <div className="row km-bot-integration-boxes" >
                 <div onClick={this.toggleDialogFlowModalWrapper} className="col-sm-6 km-bot-integration-logo-container" >
@@ -690,7 +694,7 @@ class BotStore extends Component {
                 
                 </div>
               
-                <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom")}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
+                <div onClick={(e)=> {this.toggleBotIntegrationModal(true, "custom", 1)}} className="col-sm-6 km-bot-integration-logo-container" style={{marginLeft: "2%"}}>
                   
                   <BotDefaultImage/>
                   <p className="km-bot-type">Other bot platforms <br /> 
@@ -821,7 +825,7 @@ class BotStore extends Component {
                 </div>
               </div>
           </ModalBody>
-          <span onClick={this.onCloseModal}><CloseButton/></span>
+          <CloseButton  onClick={this.onCloseModal} />
         </Modal>
 
           {/* Set bot image and name modal */}
@@ -888,7 +892,7 @@ class BotStore extends Component {
                 </p>
               }
               <p className="bot-assignment-note"><strong>Note:</strong> You can set it up later too from Settings > Conversation rules</p>
-              <span onClick={this.onCloseModal}><CloseButton/></span>
+              <CloseButton onClick={this.onCloseModal}/>
                <div className="bot-assign-modal-footer">
                   <Button onClick={this.onCloseModal} secondary>I’ll set it up later</Button>
                   <Button onClick={this.assignConversationsToIntegratedBot}>Let this bot handle all conversations</Button>
@@ -896,8 +900,8 @@ class BotStore extends Component {
           </Modal>
             
             <BotIntegrationModal isOpen={this.state.openModal} onRequestClose={()=>{this.toggleBotIntegrationModal(false)}} style={customStyles} ariaHideApp={false}>
-              <BotIntegrationModalContent applicationExpiryDate = {this.state.applicationExpiryDate} integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
-              <span onClick={()=>{this.toggleBotIntegrationModal(false)}}><CloseButton /></span>
+              <BotIntegrationModalContent step={this.state.step || 2} applicationExpiryDate = {this.state.applicationExpiryDate} integrationContent ={this.state.botIntegrationContent} closeModal={()=>{this.toggleBotIntegrationModal(false)}} aiPlatform = {this.state.botIntegrationType} assignmentModal={this.openIntegrationModal} setBotData={this.setBotCredentials}/>
+              <CloseButton onClick={()=>{this.toggleBotIntegrationModal(false)}} />
             </BotIntegrationModal>
             </div>
             

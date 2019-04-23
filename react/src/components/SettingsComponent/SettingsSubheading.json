@@ -66,6 +66,10 @@
         "Customization": {
                 "subHeading": "Change the look and feel of your helpcenter",
                 "knowledgeBaseLink": ""
+        },
+        "Auto-resolve conversations": {
+                "subHeading": "Set up rules to automatically resolve conversations",
+                "knowledgeBaseLink": ""
         }
 
 }

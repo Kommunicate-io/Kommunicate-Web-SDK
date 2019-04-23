@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import CommonUtils from '../../utils/CommonUtils.js';
 import DateTimeUtils from '../../utils/DateTimeUtils';
+import { BlockIcon, DeleteIcon, EditIcon } from '../../assets/svg/svgs';
 
 class CustomerListItem extends Component {
 
@@ -86,14 +87,14 @@ class CustomerListItem extends Component {
     }
   }
 
-  converastionAssignee() {
+  conversationAssignee() {
     var user = this.props.user;
     var status = user.messagePxy.status;
     var convoStatus = user.convoStatus;
     var assignee = user.assignee? user.assignee: user.displayName||user.userId;
     var convoClass,initalText;
-    KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? (convoClass ="assignee-closed",initalText="CLOSED") :(convoClass ="assignee-open",initalText="ASSIGNED");
-    return <span className ={convoClass}><strong>{initalText} -</strong>{assignee} </span>; 
+    KOMMUNICATE_CONSTANTS.CLOSED_CONVERSATION_ARRAY.includes(convoStatus)? (convoClass ="assignee-closed",initalText="CLOSED") :(convoClass ="km-custom-text-color assignee-open",initalText="ASSIGNED");
+    return <span className ={convoClass}><strong>{initalText} - </strong>{assignee} </span>; 
   }
 
   render() {
@@ -166,28 +167,32 @@ class CustomerListItem extends Component {
       {
         this.props.hideConversation == "true"
           ? null
-          : <td className="km-conversation-tab-link product product-kommunicate-table-cell" data-km-id={groupId + ''} data-isgroup= {openGroupChat + ''}>
+          : <td className="km-conversation-tab-link product product-kommunicate-table-cell km-custom-text-color" data-km-id={groupId + ''} data-isgroup= {openGroupChat + ''}>
               {
                 latestConversation == null
                   ? <button type="submit" className="km-button km-button--secondary" onClick={(event) => this.handleClick(event)}>Start Conversation</button>
-                  : this.converastionAssignee()
+                  : this.conversationAssignee()
               }
             </td>
       }
 
-      <td className="text-center n-vis">
-        <img src={'img/flags/USA.png'} alt="USA" style={{
-            height: 24 + 'px'
-          }}/>
+      <td className="users-icon-container product product-applozic-table-cell">
+        <div onClick={() => this.props.openModal("editUser", user)}>
+          <EditIcon />
+          <p>Edit</p>
+        </div>
       </td>
-      <td className="text-center n-vis">
-        <i className="fa fa-cc-mastercard" style={{
-            fontSize: 24 + 'px'
-          }}></i>
+      <td className="users-icon-container n-vis">
+        <div onClick={() => this.props.openModal("deleteUser")}>
+          <DeleteIcon />
+          <p>Delete</p>
+        </div>
       </td>
-      <td className="n-vis">
-        <div className="small text-muted n-vis">Last Seen</div>
-        <strong className="n-vis">{lastSeenAt}</strong>
+      <td className="users-icon-container n-vis">
+        <div onClick={() => this.props.openModal("blockUser")}>
+          <BlockIcon />
+          <p>Block</p>
+        </div>
       </td>
     </tr>);
   }

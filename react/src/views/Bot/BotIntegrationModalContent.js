@@ -12,6 +12,7 @@ import DateTimeUtils from '../../utils/DateTimeUtils';
 import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
 import Banner from '../../components/Banner';
+import BotDescription from './BotDescription.js';
 
 
 
@@ -25,16 +26,10 @@ function BotIntegrationTitle(props) {
     )
 }
 
-function BotIntegrationInstructions(props) {
+function BotIntegrationInstructions() {
     return (
         <Instruction>
-            <div className="instruction-order-circle">
-                <span className="instruction-order">{props.order}</span>
-            </div> 
-            <Linkify properties={{target: '_blank'}}>
-                <span className="instruction">{props.instruction}</span>
-            </Linkify>
-            
+            {BotDescription.customBot()}
         </Instruction>
         
     )
@@ -76,7 +71,7 @@ class BotIntegrationModalContent extends Component {
         super(props);
         this.state = {
             buttonText:"Next",
-            step:1,
+            step: this.props.step || 1,
             title:this.props.integrationContent.step1.title,
             subTitle:this.props.integrationContent.step1.subTitle,
             step1InputField:this.props.integrationContent.step1.inputFieldComponent,
@@ -200,9 +195,7 @@ render() {
     let inputField;
     let step2;
     (this.state.step == 1 && this.props.integrationContent) && [this.props.integrationContent].map((integration) => {
-        instructions = integration.step1.instructions.map((instruction, index) => {
-            return <BotIntegrationInstructions key={index} instruction={instruction} order={index+1} />
-        })
+        instructions = <BotIntegrationInstructions/>
     });
     return (
         <div className="">

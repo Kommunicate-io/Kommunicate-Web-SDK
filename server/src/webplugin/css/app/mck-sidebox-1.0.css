@@ -5446,7 +5446,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-sending-failed {
 	display: none;
 	position: absolute;
-    left: -16px;
+    right: 18px;
 	top: 0;
 	font-size: 12px;
 	color: rgba(234, 61, 61, 0.87);
@@ -5746,8 +5746,8 @@ div[name="message"]:last-child {
 }
 
 #km-popup-close-button svg {
-	height: 20px;
-	width: 20px;
+	height: 14px;
+	width: 14px;
 }
 
 /* fix for message preview bug */

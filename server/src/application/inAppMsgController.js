@@ -176,7 +176,7 @@ exports.getInAppMessages2 =(req,res)=>{
                 res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
                 return;
             }
-        inAppMsgService.getInAppMessages2(user.id, user.applicationId)
+        inAppMsgService.getInAppMessages2(user.id, user.applicationId,req.params.languageCode)
             .then(inAppMessages=>{
                 res.status(200).json({code:'SUCCESS', message:"Got in app messages", data:inAppMessages});
             })
@@ -196,7 +196,7 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var eventIds = req.query.eventIds;
     var languageCode = req.query.languageCode;
     if(languageCode){
-        languageCode =languageCode.toLowerCase();
+        languageCode =languageCode.trim().toLowerCase();
     }
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
     //return customerService.getCustomerByApplicationId(appId).then(customer => {
@@ -318,6 +318,7 @@ exports.processAwayMessage = function(req,res){
     
     const applicationId = req.params.appId;
     const conversationId = req.query.conversationId;
+    const languageCode = req.query.languageCode;
     logger.info("processing awayMessage for application: ",applicationId);
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
@@ -335,7 +336,7 @@ exports.processAwayMessage = function(req,res){
                  let onlineUser = agentsDetail.find(agent=>agent.connected); 
                  anonymousUser = group.groupUserAnonymous            
                  !group.groupUserAnonymous && (eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN);
-                Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
+                Promise.all([appSetting.getAppSettingsByApplicationIdFromCache({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
                 .then(([response, assignedUser, welcomeMessage]) => {  
                      collectEmail = response.data.collectEmailOnAwayMessage
                      collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;
@@ -355,7 +356,7 @@ exports.processAwayMessage = function(req,res){
                            }).status(200);
                         return;
                     } else {
-                        return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
+                        return inAppMsgService.getInAppMessage(applicationId,eventId,languageCode).then(result=>{
                             logger.info("got data from db.. sending response.");
                             let messageList = result.map(data=>data.dataValues);
                             let data = {

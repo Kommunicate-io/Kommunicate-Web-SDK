@@ -137,6 +137,10 @@ const CSATRatings = Loadable({
   loader: () => import('../../views/CSATRatings/CSATRatings'),
   loading: EmptyLoading
 });
+const ConversationAutoClosing = Loadable({
+  loader: () => import('../../views/ConversationAutoClosing/ConversationAutoClosing'),
+  loading: EmptyLoading
+});
 
 const HelpCenterCustomization = Loadable({
   loader: () => import('../../views/HelpCenter/Customization/HelpCenterCustomization'),
@@ -410,6 +414,7 @@ class Full extends Component {
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
                 <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
                 <Route exact path="/helpcenter/customization" name="HelpCenterCustomization" render={() => <HelpCenterCustomization {...this.props} />} />
+                <Route exact path="/settings/conversation-auto-resolving" name="ConversationAutoResolving" render={() => <ConversationAutoClosing {...this.props} />} />
 
                 <Redirect from="/" to="/dashboard" />      
 
