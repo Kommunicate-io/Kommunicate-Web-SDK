@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS onboarding (
     PRIMARY KEY(id)
 );
 
--- mongoDb script
-db.getCollection('knowledgebase_copy').update({},{$set:{"categoryType" : 0}},{multi:true})
+---mongoDb
+db.getCollection('knowledgebase_copy').update({id:{ $gt: 0 }},{$set:{"categoryType" : 0}},{multi:true ,upsert:false})
 
-db.getCollection('counter').insert({  "_id" : "faqCategory_type",  "sequence_value" : 1})
+db.getCollection('counter').insert({"_id" : "faqCategory_type",  "sequence_value" : 1})
