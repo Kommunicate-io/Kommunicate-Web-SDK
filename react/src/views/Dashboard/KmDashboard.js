@@ -860,7 +860,7 @@ render() {
                searchBoxClassName= {(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
               handleDropDownChange = {this.agentFilterHandleChange} 
               userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
-              defaultValue={{ label: "All agents", value: "allagents" }}
+              defaultValue={this.state.agentFilterSelectedOption}
               name="km-dashboard-agent-filter"
               styles = {UserDropDownStyles}
              />

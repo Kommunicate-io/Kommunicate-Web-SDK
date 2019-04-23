@@ -31,6 +31,7 @@ import CloseButton from '../Modal/CloseButton';
 import { default as DeleteModal } from 'react-modal';
 import { SearchBarIcon } from "../../assets/svg/svgs";
 import Moment from 'moment-timezone';
+import UserDropdown from '../../components/Dropdown/UserDrodown'
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -51,6 +52,7 @@ class Aside extends Component {
       applicationId : "",
       activeTab: '1',
       assignee: '',
+      conversationAssigneeInfo: { label: "", value: "" },
       conversationStatus:"",
       visibleIntegartion:false,
       visibleReply:true,
@@ -198,6 +200,9 @@ class Aside extends Component {
     conversationTab[type].count += change;
     this.setState({conversationTab:conversationTab})
   }
+  clearConversationAssignee = () => {
+    this.setState({conversationAssigneeInfo: { label: "", value: "" }})
+  }
   handleGroupUpdate(e) {
     e.preventDefault();
     let activeConversationId = window.document.getElementsByClassName("active-chat")[0] && window.document.getElementsByClassName("active-chat")[0].dataset.kmId
@@ -294,22 +299,12 @@ class Aside extends Component {
 
   loadAgents() {
       var that = this;
-      window.$kmApplozic("#assign").empty();
       let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT];
       return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
-        var assign = window.$kmApplozic("#assign");
         that.setState({ agents: data });
         that.populateAgentAndBotDetailMap(data);
-        window.$kmApplozic.each(data, function () {
-          if (this.type == GROUP_ROLE.MEMBER || this.type == GROUP_ROLE.ADMIN) {
-            assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
-          } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName) {
-            assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
-          }
-
-        });
       }).catch(err => {
-        // console.log("err while fetching users list ", err);
+        console.log("error while fetching users list ", err);
       });
 
       if (CommonUtils.getItemFromLocalStorage("userProfileUrl") != null) {
@@ -372,8 +367,19 @@ class Aside extends Component {
       //assignee = "agent";
     }
     this.isConversationAssignedToLiz(assignee);
-    window.$kmApplozic("#assign").val(assignee);
-    this.setState({assignee:assignee})
+
+    let userList = this.state.agents;
+    let conversationAssigneeInfo = {};
+    userList && assignee && userList.find(result => {
+      if (result.userName == assignee) {
+        conversationAssigneeInfo.label = result.name || result.userName ;
+        conversationAssigneeInfo.value = result.userName;
+      }
+    });
+    this.setState({
+      assignee:assignee,
+      conversationAssigneeInfo:conversationAssigneeInfo
+    })
   }
 
   isConversationAssignedToLiz (assignee) {
@@ -483,10 +489,12 @@ class Aside extends Component {
   }
     
   }
-
-  changeAssignee(userId) {
+  
+  changeAssignee = (assigneeInfo) => {
     var that = this;
     var prevAssignee = that.state.assignee
+    var userId = assigneeInfo.value;
+    this.setState({conversationAssigneeInfo: assigneeInfo})
     var groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.state.group.groupId ;
     that.state.group && window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
@@ -1068,11 +1076,12 @@ class Aside extends Component {
                                     <span className="">Assign to:</span>
                                 </div>
                                 <div>
-                                  <div className="select-container">
-                                    <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} >
-                                      <option disabled value="">Assign to:</option>
-                                    </select>
-                                  </div>
+                                     <UserDropdown
+                                        handleDropDownChange = {this.changeAssignee} 
+                                        userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN, USER_TYPE.BOT]}
+                                        className="conversation-assignee-dropdown"
+                                        defaultValue={this.state.conversationAssigneeInfo}
+                                      />
                                 </div>
                               </div>
                               
