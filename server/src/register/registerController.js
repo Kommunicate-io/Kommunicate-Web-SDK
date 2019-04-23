@@ -296,7 +296,10 @@ exports.getCustomerByApplicationId = (req, res) => {
 }
 
 exports.reactivateBot =(req, res) =>{
-  return customerService.reactivateBot(appId, botId).then(bot =>{
+  var appId = req.query.appId;
+  var botId = req.query.botId;
+  var agentId = req.query.agentId;
+  return customerService.reactivateBot(appId,botId,agentId).then(bot =>{
      if(bot){
        res.status(200).json({code:"SUCCESS", message:"bot reactivated successfully"});
      }else{

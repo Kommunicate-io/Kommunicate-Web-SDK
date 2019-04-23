@@ -35,7 +35,6 @@ module.exports.searchCustomer={
 
 module.exports.reactivateBot={
   query:{
-        applicationId:joi.string().required(),
-        botId:joi.string().required()
+        appId:joi.string().required()
   }
 }
