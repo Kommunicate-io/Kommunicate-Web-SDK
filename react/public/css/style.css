@@ -8677,10 +8677,6 @@ iframe#crowd-shortcut {
     /* margin-left: 7px; */
  }
 
-.sidebar-fixed .main, .sidebar-fixed .app-footer {
-  /* margin-left: 53px; */
-} 
-
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
 
@@ -8723,10 +8719,6 @@ iframe#crowd-shortcut {
   height: 100%; }
   .aside-menu-fixed .aside-menu .tab-content {
     height: calc(100vh - 2.375rem - 55px); }
-
-.aside-menu-fixed .main, .aside-menu-fixed .app-footer {
-  /* margin-right: 250px;  */
-}
 
 .aside-menu-fixed.aside-menu-hidden .main, .aside-menu-fixed.aside-menu-hidden .app-footer {
   margin-right: 0; }
