@@ -314,7 +314,7 @@ class HelpCenterCustomization extends Component {
     render() {
 
         let primaryColorBrightness = this.getColorBrightness(this.state.helpcenterColor), textColor;
-        primaryColorBrightness > 150 ? textColor = '#4a4a4a' : textColor = '#fff';
+        textColor = primaryColorBrightness > 150 ? '#4a4a4a' : '#fff';
 
         return (
             <Container className="animated fadeIn">
