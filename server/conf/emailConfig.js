@@ -32,11 +32,11 @@ var config ={
     hostUrl:"smtp.gmail.com",
     port:587,
     auth:{
-      kommunicate: {
+      applozic: {
         userName : "support@applozic.com",
         password:"knowledge1234"
       },
-      applozic: {
+      kommunicate: {
         userName : "support@kommunicate.io",
         password:"knowledge123"
       }
