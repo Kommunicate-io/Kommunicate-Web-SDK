@@ -38,6 +38,8 @@ Modify the labels like "Start Conversation",etc by adding following labels in ko
     'file.attach.title': 'Attach File',
     'last.seen': 'Last seen',
     'last.seen.on': 'Last seen on',
+    'time.format.AM':'AM',
+    'time.format.PM':'PM',
     'hour':' hour',
     'min':' min',
     'yesterday':'yesterday',
