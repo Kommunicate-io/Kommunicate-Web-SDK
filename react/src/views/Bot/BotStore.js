@@ -825,7 +825,7 @@ class BotStore extends Component {
                 </div>
               </div>
           </ModalBody>
-          <CloseButton  onClick={this.onCloseModal} />
+          <CloseButton onClick={this.onCloseModal} />
         </Modal>
 
           {/* Set bot image and name modal */}

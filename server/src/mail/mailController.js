@@ -137,6 +137,17 @@ const getEmailFormat = (options, custInfo) => {
                     options.to = [...options.to];
                     options.cc = [...options.cc, "support@applozic.com"]
                     break;
+
+                case "CUSTOM_DOMAIN_SETUP_INSTRUCTION":
+                    logger.info("CUSTOM_DOMAIN_SETUP_INSTRUCTION");
+                    options.templatePath  = path.join(__dirname, "/customDomainSetupTemplate.html");
+                    options.templateReplacement = {  
+                        ":ADMIN_NAME": custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? options.agentName + " from " + custInfo.companyName : options.agentName
+                    };
+                    options.to = [...options.to];
+                    options.cc = ["support@kommunicate.io"];
+                    options.subject = options.agentName + " has invited you to set up Helpcenter for your company";
+                    break;
             }
         }
         if (!options.templatePath ) {

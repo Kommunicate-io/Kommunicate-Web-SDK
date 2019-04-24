@@ -2,12 +2,14 @@ export default {
     "development":{
     "baseurl": {
         "applozicAPI": "https://apps-test.applozic.com",
-        "kommunicateAPI": "https://api-test.kommunicate.io",
+        // "kommunicateAPI": "https://api-test.kommunicate.io",
+        "kommunicateAPI": "http://localhost:3999",
         "botPlatformAPI": "https://bots-test.applozic.com"
     },
     "kommunicateDashboardUrl": "https://dashboard-test.kommunicate.io",
     "kommunicateWebsiteUrl": "https://test.kommunicate.io",
     "applozicWebsiteUrl": "https://test.applozic.com",
+    "helpcenterUrl": "https://helpcenter-test.kommunicate.io",
     "adminDetails": {
         "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
         "kommunicateParentAppName": "suraj",
@@ -55,6 +57,7 @@ export default {
     "kommunicateDashboardUrl": "https://dashboard-test.kommunicate.io",
     "kommunicateWebsiteUrl": "https://test.kommunicate.io",
     "applozicWebsiteUrl": "https://test.applozic.com",
+    "helpcenterUrl": "https://helpcenter-test.kommunicate.io",
     "adminDetails": {
         "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
         "kommunicateParentAppName": "suraj",
@@ -102,6 +105,7 @@ export default {
     "kommunicateDashboardUrl": "https://dashboard-staging.kommunicate.io",
     "kommunicateWebsiteUrl": "https://test.kommunicate.io",
     "applozicWebsiteUrl": "https://test.applozic.com",
+    "helpcenterUrl": "https://helpcenter-test.kommunicate.io",
     "adminDetails": {
         "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
         "kommunicateParentAppName": "suraj",
@@ -151,6 +155,7 @@ export default {
     "kommunicateDashboardUrl": "https://dashboard.kommunicate.io",
     "kommunicateWebsiteUrl": "https://www.kommunicate.io",
     "applozicWebsiteUrl": "https://www.applozic.com",
+    "helpcenterUrl": "https://helpcenter.kommunicate.io",
     "adminDetails":{
         "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
         "kommunicateAdminId": "techdisrupt@applozic.com",
@@ -197,6 +202,7 @@ export default {
    "kommunicateDashboardUrl": "https://dashboard-ca.kommunicate.io",
    "kommunicateWebsiteUrl": "https://www.kommunicate.io",
    "applozicWebsiteUrl": "https://www.applozic.com",
+   "helpcenterUrl": "https://helpcenter.kommunicate.io",
    "adminDetails":{
        "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
        "kommunicateAdminId": "techdisrupt@applozic.com",
@@ -242,6 +248,7 @@ export default {
    },
    "kommunicateDashboardUrl": "https://dashboard-mzadqatar.applozic.com",
    "kommunicateWebsiteUrl": "https://www.kommunicate.io",
+   "helpcenterUrl": "https://helpcenter.kommunicate.io",
    "adminDetails":{
        "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
        "kommunicateAdminId": "techdisrupt@applozic.com",

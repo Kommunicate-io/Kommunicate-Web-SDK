@@ -395,7 +395,7 @@ class Full extends Component {
                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }} />
                 <Redirect from="/settings/agent-assignment" to="/settings/conversation-rules" />
-                <Route exact path="/faq" name="Faq" render={() => <Faq {...this.props} />} />
+                {/* <Route exact path="/faq" name="Faq" render={() => <Faq {...this.props} />} /> */}
                 <Route exact path="/settings/team" name="Team" render={() => <Team {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
                 <Route exact path="/settings/company" name="Company" render={() => <Company {...this.props} />} />
@@ -413,9 +413,11 @@ class Full extends Component {
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
                 <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
+                <Route exact path="/helpcenter/content" name="HelpCenterContent" render={() => <Faq {...this.props} />} />} />
                 <Route exact path="/helpcenter/customization" name="HelpCenterCustomization" render={() => <HelpCenterCustomization {...this.props} />} />
                 <Route exact path="/settings/conversation-auto-resolving" name="ConversationAutoResolving" render={() => <ConversationAutoClosing {...this.props} />} />
 
+                <Redirect from="/faq" to="/helpcenter/content" />      
                 <Redirect from="/" to="/dashboard" />      
 
               </Switch>

@@ -1,17 +1,55 @@
-import React, { Component, Fragment } from 'react';
-import styled from 'styled-components';
+import React, { Component } from 'react';
+import styled, { withTheme } from 'styled-components';
 import ReactTooltip from 'react-tooltip';
-import Modal from 'react-modal';
+import copy from 'copy-to-clipboard';
 import tinycolor from 'tinycolor2';
-import {getAppSetting, updateAppSetting, uploadImageToS3} from '../../../utils/kommunicateClient';
+import CreatableSelect from "react-select/lib/Creatable";
+import isEmail from "validator/lib/isEmail";
+import Modal from '../../../components/Modal/Modal';
+import {getAppSetting, updateAppSetting, uploadImageToS3, notifyThatEmailIsSent} from '../../../utils/kommunicateClient';
 import { SettingsHeader } from '../../../components/SettingsComponent/SettingsComponents';
 import ColorPicker from '../../../components/ColorPicker/ColorPicker';
 import Button from '../../../components/Buttons/Button';
 import Notification from '../../model/Notification';
 import ImageUploader from '../../Admin/ImageUploader';
-import { UploadIcon } from '../../../assets/svg/svgs';
+import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick  } from '../../../assets/svg/svgs';
 import CommonUtils from '../../../utils/CommonUtils';
 import MultiEmail from "../../MultiEmail/MultiEmail";
+import { getConfig } from '../../../config/config';
+import {SetUpYourDomainContainer, DomainTable, SetUpCompleteContainer} from '../../../views/Company/companyStyle';
+
+
+const components = {
+    DropdownIndicator: null
+};
+
+const createOption = label => ({
+    label,
+    value: label
+});
+
+const colourStyles = {
+    control: styles => ({ ...styles }),
+
+     multiValue: (styles, { data }) => {
+        return {
+            ...styles,
+            borderRadius: '3px'
+        };
+    },
+    input: (styles, {data}) => ({
+        ...styles,
+        transition: 'none',
+        fontSize: '16px'
+
+     }),
+    multiValueLabel: (styles, { data }) => ({
+        ...styles,
+        color: data.color,
+        fontSize: '100%'
+    })
+};
+
 
 class HelpCenterCustomization extends Component {
     constructor(props) {
@@ -26,12 +64,58 @@ class HelpCenterCustomization extends Component {
             modalIsOpen: false,
             hideLoader:true,
             fileObject: {},
-            currentUploader: "logo"
+            currentUploader: "logo",
+            disablePreviewButton: true,
+            toggleCustomDomainModal: false,
+            inputValue: "",
+            value: [],
+            emailSubmitted: false
         }
     }
 
     componentDidMount = () => {
         this.getHelpcenterSetting();
+    }
+
+    handleSelectChange = (value, meta) => {
+        this.setState({ value });
+    };
+
+    handleSelectInputChange = (inputValue, action) => {
+        if (action.action !== "input-blur" && action.action !== "menu-close") {
+            this.setState({ inputValue });
+        }
+    };
+
+    handleSelectKeyDown = event => {
+        const { inputValue } = this.state;
+        if (!inputValue) return;
+        switch (event.keyCode) {
+            case 9: // TAB
+            case 13: // ENTER
+            case 32: // SPACE
+            case 188: // COMMA
+                event.preventDefault();
+                this.createValidOption();
+         }
+    };
+
+    handleSelectCreate = (e) => {
+        this.createValidOption();
+    }
+
+    createValidOption = () => {
+        const { inputValue, value } = this.state;
+        if (!inputValue) return;
+        if(isEmail(this.state.inputValue)) {
+            this.setState({
+                inputValue: "",
+                value: [...value, createOption(inputValue)]
+            });
+            console.log(this.state.value)
+        } else {
+            Notification.error("Please enter a valid email address.");
+        }
     }
 
     getHelpcenterSetting = () => {
@@ -44,7 +128,8 @@ class HelpCenterCustomization extends Component {
                     homepageTitle: helpcenterSettings.title,
                     customDomain: helpcenterSettings.domain,
                     logo: helpcenterSettings.logo,
-                    favicon: helpcenterSettings.favicon
+                    favicon: helpcenterSettings.favicon,
+                    disablePreviewButton: false
                 });
             }
         }).catch(err => {
@@ -79,6 +164,9 @@ class HelpCenterCustomization extends Component {
         updateAppSetting(data).then(response => {
             if(response.status == 200 && response.data.code == "SUCCESS") {
                 Notification.success("Helpcenter customization settings updated successfully");
+                this.setState({
+                    disablePreviewButton: false
+                })
             }
         }).catch( err => {
             Notification.error("Could not update Helpcenter customization settings. Please try again after some time.");
@@ -170,6 +258,60 @@ class HelpCenterCustomization extends Component {
         return tinycolor(colorCode).getBrightness()
     }
 
+    limitText = (limitField, limitCount, limitNum) => {
+        if (limitField.value.length > limitNum) {
+            limitField.value = limitField.value.substring(0, limitNum);
+        } else {
+            limitCount.value = limitNum - limitField.value.length;
+        }
+    }
+
+    openHelpcenterPreview = () => {
+        let appId = CommonUtils.getUserSession().application.applicationId;
+        let url = getConfig().helpcenterUrl + '?appId=' + appId;
+        window.open(url, '_blank');
+    }
+
+    onKeyDown = (e, limit) => {
+        if(e.target.value.length >= limit) {
+            e.preventDefault();
+            return false;
+        }
+    }
+
+    toggleCustomDomainModal = () => {
+        this.setState({
+            customDomainModal: !this.state.customDomainModal
+        });
+    }
+
+    copyToClipboard = () => {
+        copy("helpcenter-proxy.kommunicate.io");
+        Notification.success("Domain value copied");
+    }
+
+    sendEmail = () => {
+        let emailIds = [];
+        if(this.state.value.length < 1) {
+            Notification.error("Please enter an email id.");
+            return false;
+        }
+        for(var i=0; i<this.state.value.length; i++) {
+            emailIds.push(this.state.value[i].value);
+        }
+        console.log(emailIds);
+        notifyThatEmailIsSent({
+            to: emailIds,
+            templateName: "CUSTOM_DOMAIN_SETUP_INSTRUCTION"
+        }).then(response => {
+            if(response && response.code === "SUCCESS")
+                this.setState({
+                    emailSubmitted: true
+                });
+            console.log(response)
+        });
+    }
+
     render() {
 
         let primaryColorBrightness = this.getColorBrightness(this.state.helpcenterColor), textColor;
@@ -188,7 +330,7 @@ class HelpCenterCustomization extends Component {
 
                         <ColorPicker className="helpcenter-color-picker" heading="Primary Color" disableAlpha={true} color={this.state.helpcenterColor} onChange={this.handleColorPickerChange} />
 
-                        <InputGroup id="headline-text" heading="Headline Text" tooltip="Max. 30 characters" placeholder="Hi, how can we help you?" name="headlineText" value={this.state.headlineText} onChange={this.handleInputChange} />
+                        <InputGroup id="headline-text" heading="Headline Text" tooltip="Max. 30 characters" placeholder="Hi, how can we help you?" name="headlineText" value={this.state.headlineText} onChange={this.handleInputChange} charCount={this.state.headlineText.length + "/30"} onKeyDown={(e) => this.onKeyDown(e, 30)} />
 
                        
                        <ComponentHeading>Branding</ComponentHeading>
@@ -224,9 +366,8 @@ class HelpCenterCustomization extends Component {
 
                         <Modal
                             isOpen={this.state.modalIsOpen}
-                            ariaHideApp={false}
+                            heading={"Choose " + this.state.currentUploader}
                             onRequestClose={this.closeModal}
-                            style={customStyles} 
                             >
                             <div>
                                 <ImageUploader
@@ -250,17 +391,18 @@ class HelpCenterCustomization extends Component {
 
                         <SectionTitle>Settings</SectionTitle>
 
-                        <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} />
+                        <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} charCount={this.state.homepageTitle.length + "/60"} onKeyDown={(e) => this.onKeyDown(e, 60)} />
 
                         <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} />
 
                         <SendInstructionsContainer>
-                            <MultiEmail template="INSTALLATION_INSTRUCTIONS" titleText="Mail instructions to tech team for sub domain setup" />
+                            <Button link secondary onClick={this.toggleCustomDomainModal} style={{paddingLeft: "0", marginBottom: "10px"}}>Mail instructions to tech team for sub domain setup</Button>
                         </SendInstructionsContainer>
 
-                        <div>
+                        <ButtonGroup>
                             <Button onClick={this.saveCustomizationChanges}>Save changes</Button>
-                        </div>
+                            <Button secondary onClick={this.openHelpcenterPreview} disabled={this.state.disablePreviewButton}>Preview <MoreInfoLinkSvg color={this.props.theme.primary} /></Button>
+                        </ButtonGroup>
                         
                     </Columns>
                     <Columns>
@@ -282,6 +424,63 @@ class HelpCenterCustomization extends Component {
                 </ColumnsContainer>
                 
 
+                <Modal isOpen={this.state.customDomainModal} heading="Domain Setup Instructions" onRequestClose={this.toggleCustomDomainModal} width="700px" >                    
+                    {this.state.emailSubmitted ? 
+                        <SetUpCompleteContainer>
+                            <ConfirmationTick />
+                            <h5>Mail sent successfully!</h5>
+                            <p>Follow the Domain setup instructions sent on your email</p>
+                        </SetUpCompleteContainer> :
+                        <SetUpYourDomainContainer >
+                            <ol>
+                                <li>Login to your<strong> domain administration panel </strong>and find <strong>DNS records management panel</strong> for the domain: <span>abcdefgh.com</span> </li>
+                                <li>Then add new records</li>
+                            </ol>
+                            <DomainTable>
+                                <tbody>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Name</th>
+                                        <th>Value</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <td>CNAME</td>
+                                        <td>{this.state.customDomain || "helpcenter.<your-domain>.com"}</td>
+                                        <td>helpcenter-proxy.kommunicate.io</td>
+                                        <td><span onClick = {this.copyToClipboard}><CopyIcon/> Copy</span></td>
+                                    </tr>
+                                </tbody>
+                            </DomainTable>
+                            <p>If you have any problems with the setup, please contact your domain admin support team. They will be able to help you out</p>
+                            <CreatableSelect
+                                className={'multi-email-input-field'}
+                                components={components}
+                                inputValue={this.state.inputValue}
+                                isClearable={false}
+                                isMulti={true}
+                                menuIsOpen={false}
+                                blurInputOnSelect={false} 
+                                closeMenuOnSelect={false}
+                                onChange={this.handleSelectChange}
+                                onInputChange={this.handleSelectInputChange}
+                                onKeyDown={this.handleSelectKeyDown}
+                                onBlur={this.handleSelectCreate}
+                                placeholder="Enter email ID here"
+                                value={this.state.value}
+                                styles={colourStyles}
+                            />
+                            <P>Tip: You can enter multiple email IDs separated by space</P>
+                        </SetUpYourDomainContainer>
+                    }
+
+                    <ButtonGroup style={{textAlign:"right"}}>
+                        {this.state.emailSubmitted ? 
+                            <Button onClick={this.toggleCustomDomainModal}>Close</Button> : <Button onClick={this.sendEmail}>Send instructions to tech team</Button>
+                        }
+                    </ButtonGroup>
+                </Modal>
+
                 <ReactTooltip />
             </Container>
         )
@@ -292,10 +491,13 @@ const InputGroup = (props) => {
     return ( 
         <InputGroupContainer>
             <LabelContainer>
-                <Label htmlFor={props.id}>{props.heading}</Label> 
-                { props.tooltip && <InfoContainer data-rh-at="right" data-tip={props.tooltip} data-effect="solid" data-place="right" data-html={true}> 
-                    <InfoIcon>i</InfoIcon>
-                </InfoContainer> }
+                <LabelWrapper>
+                    <Label htmlFor={props.id}>{props.heading}</Label> 
+                    { props.tooltip && <InfoContainer data-rh-at="right" data-tip={props.tooltip} data-effect="solid" data-place="right" data-html={true}> 
+                        <InfoIcon>i</InfoIcon>
+                    </InfoContainer> }
+                </LabelWrapper>
+                <CharCount>{props.charCount}</CharCount>
             </LabelContainer> 
             <Input id={props.id} className="input" type="text" name={props.name} value={props.value} onChange={props.onChange} placeholder={props.placeholder} {...props} />
         </InputGroupContainer>
@@ -348,7 +550,13 @@ const Input = styled.input`
 
 const LabelContainer = styled(ColumnsContainer)`
     align-items: center;
+    justify-content: space-between;
+    max-width: 450px;
 `;
+const LabelWrapper = styled(ColumnsContainer)`
+    align-items: center;
+`;
+const CharCount = styled.div``;
 
 const ComponentHeading = styled(Label)`
     display: block;
@@ -465,17 +673,15 @@ const ContentBox = styled(LivePreviewSearchField)`
     background-color: #efefef;
 `;
 const SendInstructionsContainer = styled.div`
-    & .multi-email-install-link {
-        display: block;
-        margin: -15px 0 25px 0;
+    margin-top: -10px;
+`;
+const ButtonGroup = styled.div`
+    & button:last-child {
+        margin-left: 15px;
     }
-    & .flex-center {
-        justify-content: flex-start;
-    }
-    & .multiple-email-container {
-        width: 53%;
-        max-width: 320px;
-    }
+`;
+const P = styled.p`
+    margin: 10px 0;
 `;
 
 const customStyles = {
@@ -489,7 +695,6 @@ const customStyles = {
       overflow: 'hidden',
       height: '450px',
       width: '600px'
-  
     }
 };
 
@@ -504,4 +709,4 @@ const avatarEditorConfig = {
     }
 }
 
-export default HelpCenterCustomization;
+export default withTheme(HelpCenterCustomization);

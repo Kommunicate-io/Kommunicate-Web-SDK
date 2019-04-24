@@ -70,6 +70,10 @@
         "Auto-resolve conversations": {
                 "subHeading": "Set up rules to automatically resolve conversations",
                 "knowledgeBaseLink": ""
+        },
+        "Content": {
+                "subHeading": "FAQs help customers find answers faster through self service, and also reduce workload of your team",
+                "knowledgeBaseLink": "https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/"
         }
 
 }

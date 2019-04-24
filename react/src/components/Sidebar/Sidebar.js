@@ -177,7 +177,7 @@ class Sidebar extends Component {
             </li>}
             {/* FAQ Link */}
             {this.state.isKommunicateDashboard && <li className={"nav-item " + visibility}>
-              <NavLink to={'/faq'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-faq" data-tip="FAQ" data-effect="solid" data-place="right">
+              <NavLink to={'/helpcenter/content'} className={currentPath.includes('/helpcenter/') ? "nav-link active" : "nav-link"} activeClassName="active" id="ac-faq" data-tip="Helpcenter" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 7">
                   <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 3"/>
