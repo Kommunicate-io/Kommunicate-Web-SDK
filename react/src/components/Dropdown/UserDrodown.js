@@ -33,7 +33,7 @@ export default class UserDropDown extends React.Component {
         let applicationId = userSession.application.applicationId;
         return getUsersByType(applicationId, this.props.userType).then(data => {
             data.map((user, index) => {
-                users.push({ label: user.name || user.email, value: user.email })
+                users.push({ label: user.name || user.userName, value: user.userName })
             })
             this.setState({
                 users: users,
@@ -58,7 +58,7 @@ export default class UserDropDown extends React.Component {
                             onClick={this.toggleOpen}
                             isSelected={isOpen}
                         >
-                            <span className="dropdown-btn-text">{value ? value.label : this.props.defaultValue.label}</span>
+                            <span className="dropdown-btn-text">{this.props.defaultValue.label}</span>
                             <ChevronDown />
                         </Button>
                     }
@@ -86,7 +86,7 @@ export default class UserDropDown extends React.Component {
     }
 }
 const selectStyles = {
-    control: provided => ({ ...provided, minWidth: 240, margin: 8 }),
+    control: provided => ({ ...provided, minWidth: 190, margin: 8 }),
     menu: () => ({ boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)' }),
 };
 const Menu = props => {
@@ -120,8 +120,8 @@ const Blanket = props => (
 const Dropdown = ({ children, isOpen, target, onClose }) => (
     <div css={{ position: 'relative' }}>
         {target}
-        {isOpen ? <Menu>{children}</Menu> : null}
-        {isOpen ? <Blanket onClick={onClose} /> : null}
+        {isOpen &&  <Menu>{children}</Menu> }
+        {isOpen && <Blanket onClick={onClose} />}
     </div>
 );
 const Svg = p => (

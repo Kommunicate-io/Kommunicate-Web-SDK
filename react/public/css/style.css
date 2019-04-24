@@ -11557,3 +11557,13 @@ border-left-color: #5e8631;
 .km-user-dropdown-container .notify-everybody-dropdown:hover, .km-user-dropdown-container .automatic-assignment-dropdown:hover {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px, rgba(0, 0, 0, 0.1) 0px -1px 4px 0px;
 }
+.km-new-conversation-header .km-user-dropdown-container {
+  margin-right: 20px;
+}
+.km-new-conversation-header .km-user-dropdown-container .conversation-assignee-dropdown {
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.user-dropdown-search-box {
+  font-size: 14px;
+}
