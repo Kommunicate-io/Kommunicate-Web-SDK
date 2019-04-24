@@ -121,6 +121,9 @@ const searchFAQ = async (options) => {
     }
     if (options.text) {
         data = await searchQuery(options);
+        data = data.filter(faq => {
+            return typeof faq !== "undefined";
+        });
     } else {
         if (options.id) {
             criteria.id = parseInt(options.id);

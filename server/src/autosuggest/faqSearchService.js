@@ -17,7 +17,6 @@ exports.searchRawQuery = (esQuery) => {
             {
                 hydrate: true,
                 size: 30,
-                hydrateWithESResults: true,
                 hydrateOptions: { select: 'name content referenceId id' }
             },
             function (err, results) {

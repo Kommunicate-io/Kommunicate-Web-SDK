@@ -8,7 +8,8 @@ class Database {
 _connect() {
      return mongoose.connect(`${config.mongoDbUrl}`,{
       useCreateIndex: true,
-      useNewUrlParser: true
+      useNewUrlParser: true,
+      useFindAndModify: false
     })
        .then((res) => {
          console.log('Database connection successful')
