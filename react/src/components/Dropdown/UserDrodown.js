@@ -11,7 +11,9 @@ export default class UserDropDown extends React.Component {
         this.state = {
             options: [],
             isOpen: false,
-            value: undefined
+            value: undefined,
+            selectedItem:"",
+            hideClearButton: true
         };
     }
     componentDidMount() {
@@ -21,6 +23,12 @@ export default class UserDropDown extends React.Component {
         e && e.preventDefault()
         this.setState({ isOpen: !this.state.isOpen });
     };
+    handleInputChange = (value) => {
+        this.setState({hideClearButton: !Boolean(value)});
+    }
+    clearInputField = (e) => {
+        this.setState({selectedItem:""})
+    }
     onSelectChange = (value) => {
         this.props.handleDropDownChange(value);
         this.toggleOpen();
@@ -60,9 +68,10 @@ export default class UserDropDown extends React.Component {
                         >
                             <span className="dropdown-btn-text">{this.props.defaultValue.label}</span>
                             <ChevronDown />
-                        </Button>
+                    </Button>
                     }
                 >
+                 <ClearButton handleClick = {this.clearInputField} handleVisibility = {this.state.hideClearButton}/>
                     <Select
                         defaultValue = {this.props.defaultValue}
                         options={options}
@@ -77,8 +86,9 @@ export default class UserDropDown extends React.Component {
                         hideSelectedOptions={false}
                         isClearable={false}
                         tabSelectsValue={false}
+                        onInputChange = {this.handleInputChange}
                         autoFocus
-                        placeholder="Search..."
+                        placeholder={"Search..."}
                     />
                 </Dropdown>
             </div>
@@ -86,7 +96,15 @@ export default class UserDropDown extends React.Component {
     }
 }
 const selectStyles = {
-    control: provided => ({ ...provided, minWidth: 190, margin: 8 }),
+    control: provided => ({ 
+        ...provided, 
+        minWidth: 190, 
+        margin: 8,  
+        boxShadow: "none", 
+        border:"solid 0.6px #5553b7",
+        paddingLeft: 25,
+        '&:hover': { borderColor: '#5553b7'}
+    }),
     menu: () => ({ boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)' }),
 };
 const Menu = props => {
@@ -126,8 +144,8 @@ const Dropdown = ({ children, isOpen, target, onClose }) => (
 );
 const Svg = p => (
     <svg
-        width="24"
-        height="24"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         focusable="false"
         role="presentation"
@@ -136,7 +154,7 @@ const Svg = p => (
 );
 const DropdownIndicator = () => (
     //SearchIcon
-    <div css={{ color: colors.neutral20, height: 24, width: 32 }}>
+    <div id="user-dropdown-search-icon" css={{ color: colors.neutral20, height: 24, width: 32 }}>
         <Svg>
             <path
                 d="M16.436 15.085l3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406zM10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z"
@@ -146,9 +164,21 @@ const DropdownIndicator = () => (
         </Svg>
     </div>
 );
+const ClearButton = (props) => {
+   return (
+    <div className= "user-dropdown-clear-button" onClick= {props.handleClick} hidden={props.handleVisibility}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="10" viewBox="0 0 9 10">
+        <g fill="#3C3C3C" fillRule="evenodd" stroke="#3C3C3C" strokeWidth=".6">
+            <path d="M8.507 9.302a.127.127 0 0 1-.09-.036L.374 1.22a.127.127 0 0 1 0-.178.127.127 0 0 1 .178 0l8.045 8.045a.127.127 0 0 1 0 .179.124.124 0 0 1-.089.036z"/>
+            <path d="M.463 9.302a.127.127 0 0 1-.089-.036.127.127 0 0 1 0-.179L8.42 1.042a.127.127 0 0 1 .178 0 .127.127 0 0 1 0 .178L.553 9.266a.127.127 0 0 1-.09.036z"/>
+        </g>
+    </svg>
+    </div>
+   )
+}
 const ChevronDown = () => (
     <span className="user-dropdown-arrow-wrapper">
-        <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" className="css-19bqh2r">
+        <svg height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false" >
             <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z" fill="rgb(204,204,204)" >
             </path>
         </svg>
