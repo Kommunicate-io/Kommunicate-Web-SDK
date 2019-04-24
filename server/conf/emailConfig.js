@@ -88,6 +88,12 @@ var config ={
 config["prod-ca"]= config.prod;
 config["prod-mzadqatar"]= config.prod;
 config["ep-prod"] = config.prod;
+config["ep-prod-ca"] = config.prod;
+config["ep-prod-mzadqatar"] = config.prod;
+config["ep-test"] = config.test;
+config["ep-staging"] = config.staging;
+config["ep-default"] = config.default;
+config["ep-development"] = config.development;
 exports.getProperties = function(){
   var envId = process.env.NODE_ENV || "default";
   return config[envId];
