@@ -59,9 +59,10 @@ class ImageUploader extends Component {
     let blob = this.dataURItoBlob(this.state.canvas)
 
     let file = blob;
+    let fileName = `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name}`;
     let imageUrl = '';
     if (file) {
-      sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name}`)
+      sendProfileImage(file, fileName)
         .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {

@@ -395,7 +395,6 @@ class Full extends Component {
                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }} />
                 <Redirect from="/settings/agent-assignment" to="/settings/conversation-rules" />
-                {/* <Route exact path="/faq" name="Faq" render={() => <Faq {...this.props} />} /> */}
                 <Route exact path="/settings/team" name="Team" render={() => <Team {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
                 <Route exact path="/settings/company" name="Company" render={() => <Company {...this.props} />} />
