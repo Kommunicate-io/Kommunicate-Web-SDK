@@ -1,4 +1,4 @@
-exports.KM_SERVER_RELEASE_VERSION = "4.0";
+exports.KM_SERVER_RELEASE_VERSION = "4.3";
 
 exports.GROUP_ROLE = { ADMIN: "1", MODERATOR: "2", MEMBER: "3" }; // bot is moderator
 
