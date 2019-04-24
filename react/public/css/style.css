@@ -11567,3 +11567,15 @@ border-left-color: #5e8631;
 .user-dropdown-search-box {
   font-size: 14px;
 }
+#user-dropdown-search-icon {
+  position: absolute;
+  left: 4px;
+  padding-top: 2px;
+}
+.user-dropdown-clear-button {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  margin-right: 20px;
+  margin-top: 18px;
+}
