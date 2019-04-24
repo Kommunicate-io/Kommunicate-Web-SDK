@@ -198,20 +198,20 @@ class HelpCenterCustomization extends Component {
 
     let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
 
-    if (hiddenImageInputElem) {
-      hiddenImageInputElem.click();
+    hiddenImageInputElem && hiddenImageInputElem.click();
     }
   };
 
     handleImageFiles = (e) => {
         e.preventDefault();
+        const fileSizeLimit = 5000000;
         const files = e.target.files;
         const file = files[0];
         this.setState({ fileObject: file })
         console.log(file)
         let imageTypeRegex = /^image\//
         if (file && imageTypeRegex.test(file.type)) {
-          if (file.size <= 5000000) {
+          if (file.size <= fileSizeLimit) {
     
             let img = document.createElement("img")
             img.height = 90
@@ -225,7 +225,7 @@ class HelpCenterCustomization extends Component {
     
             this.openModal();
     
-          } else if (file.size > 5000000) {
+          } else if (file.size > fileSizeLimit) {
             Notification.info("Size exceeds 5MB")
             return
           }
