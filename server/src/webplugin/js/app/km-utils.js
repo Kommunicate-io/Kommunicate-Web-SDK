@@ -3,7 +3,7 @@
 */
 
 KommunicateConstants = {
-    KM_SERVER_RELEASE_VERSION: "4.0",
+    KM_SERVER_RELEASE_VERSION: "4.3",
     EVENT_IDS: {
         WELCOME_MESSAGE: "3",
         AWAY_MESSAGE: {
