@@ -23,7 +23,8 @@ const LiveChatWidget =  (props) =>{
         hasThirdMessage:false,
         hasAwayMessage:false,
         hasTextBox:false,
-        hideChatIcon:false
+        hideChatIcon:false,
+        status: 'Online'
     }
      
    return(
@@ -36,7 +37,7 @@ const LiveChatWidget =  (props) =>{
             </div>
             <div className="km-chat-box-img"><AgentIcon /></div>
             <div className="km-chat-box-name">James Drake
-                <div className="km-chat-box-status">Online</div>
+                <div className="km-chat-box-status">{props.status}</div>
             </div>
             <div className="km-chat-box-close">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#fff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /><path d="M0 0h24v24H0z" fill="none" /></svg>
