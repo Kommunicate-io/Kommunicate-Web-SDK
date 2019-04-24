@@ -299,16 +299,15 @@ class HelpCenterCustomization extends Component {
         for(var i=0; i<this.state.value.length; i++) {
             emailIds.push(this.state.value[i].value);
         }
-        console.log(emailIds);
         notifyThatEmailIsSent({
             to: emailIds,
             templateName: "CUSTOM_DOMAIN_SETUP_INSTRUCTION"
         }).then(response => {
-            if(response && response.code === "SUCCESS")
+            if(response && response.code === "SUCCESS") {
                 this.setState({
                     emailSubmitted: true
                 });
-            console.log(response)
+            } 
         });
     }
 
