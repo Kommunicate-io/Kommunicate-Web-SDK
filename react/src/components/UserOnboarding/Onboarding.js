@@ -62,7 +62,7 @@ class Onboarding extends Component {
                             <OnBoardingSVG />
                         </div>
                     </OnboardingBlock>
-                    <CloseButton onClick={this.closeOnboadringBanner} />
+                    <CloseButton className="onboarding-close-button" onClick={this.closeOnboadringBanner} />
                 </OnboardingContainer>}
             </Fragment>
         );
@@ -78,10 +78,10 @@ const OnboardingContainer = styled.div`
     margin: 50px 0 30px;
     padding: 25px 30px;
 
-    & .km-close-modal-wrapper .km-modal-close-text {
+    & .onboarding-close-button--km-close-modal-wrapper .onboarding-close-button--km-modal-close-text {
         color: #a4a2a2;
     }
-    & .km-close-modal-wrapper .km-modal-close-icon {
+    & .onboarding-close-button--km-close-modal-wrapper .onboarding-close-button--km-modal-close-icon-wrapper svg {
         fill: #a4a2a2;
     }
 `;

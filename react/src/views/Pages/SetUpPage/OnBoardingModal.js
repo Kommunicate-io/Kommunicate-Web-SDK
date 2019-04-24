@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import Modal from 'react-modal';
-import CloseButton from '../../../components/Modal/CloseButton.js'
 import CardList from './CardList'
 import {SendEmailIcon, CodeIcon, BackIcon} from '../../../assets/svg/svgs'
 import './onBoardingModal.css'

@@ -80,7 +80,7 @@ class Sidebar extends Component {
     const visibility = this.state.isApplozicTrialExpired ? "invisible" : "visible";
 
     const currentPath = window.location.pathname;
-    var settingsSidebarShow = currentPath.includes('/settings') ? <SettingsSidebar {...this.props} /> : null;
+    var settingsSidebarShow = <SettingsSidebar {...this.props} />;
     return (
       <div className="sidebar" style={{ backgroundColor: this.props.theme.primary }}>
         <nav className="sidebar-nav">
@@ -177,7 +177,7 @@ class Sidebar extends Component {
             </li>}
             {/* FAQ Link */}
             {this.state.isKommunicateDashboard && <li className={"nav-item " + visibility}>
-              <NavLink to={'/faq'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-faq" data-tip="FAQ" data-effect="solid" data-place="right">
+              <NavLink to={'/helpcenter/content'} className={currentPath.includes('/helpcenter/') ? "nav-link active" : "nav-link"} activeClassName="active" id="ac-faq" data-tip="Helpcenter" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 7">
                   <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 3"/>
@@ -189,7 +189,7 @@ class Sidebar extends Component {
 
           </ul>
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
-          <ul className="nav">
+          <ul className="nav" style={{marginBottom: "10px"}}>
 
             {/* IntegrationStarted icon */}
             <li className={"nav-item " + visibility}>

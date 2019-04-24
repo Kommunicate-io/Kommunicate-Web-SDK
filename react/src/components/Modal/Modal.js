@@ -13,6 +13,20 @@ class Modal extends Component {
 
     render() {
 
+        const modalStyles = {
+            content: {
+                top: '50%',
+                left: '50%',
+                right: 'auto',
+                bottom: 'auto',
+                marginRight: '-50%',
+                transform: 'translate(-50%, -50%)',
+                width: this.props.width || "auto",
+                maxWidth: '900px',
+                overflow: 'unset',
+            }
+        };
+
         const { isOpen, onAfterOpen, onRequestClose, shouldCloseOnOverlayClick, heading } = this.props;
 
         return (
@@ -37,20 +51,8 @@ Modal.propTypes = {
     onAfterOpen: PropTypes.func,
     onRequestClose: PropTypes.func.isRequired,
     shouldCloseOnOverlayClick: PropTypes.bool,
-    heading: PropTypes.string
-};
-
-const modalStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        maxWidth: '900px',
-        overflow: 'unset',
-    }
+    heading: PropTypes.string,
+    width: PropTypes.string
 };
 
 export default Modal;

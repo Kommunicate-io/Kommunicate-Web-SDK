@@ -8,6 +8,7 @@ import { getResource, get } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
 
 
+
 class ImageUploader extends Component {
 
   static defaultProps = {
@@ -36,7 +37,13 @@ class ImageUploader extends Component {
     if (document.getElementById("hidden-image-input-element").value != "") {
        var _this = this;
       return Promise.resolve(_this.onClickSave()).then(res => {
-        _this.uploadImageToS3()
+        if(!this.props.profileImageUploader) {
+          let blob = _this.dataURItoBlob(_this.state.canvas)
+          _this.props.imageData(blob);
+        } else {
+          _this.uploadImageToS3()
+        }
+        
         _this.props.handleClose()
       }).catch(err => {
        console.log(err);
@@ -49,17 +56,13 @@ class ImageUploader extends Component {
   }
 
   uploadImageToS3 = () => {
-    //e.preventDefault()  
     let blob = this.dataURItoBlob(this.state.canvas)
-    console.log(blob)
-    //this.dataURItoBlob(this.state.canvas)
-    // let thumbnail = document.getElementById("thumbnail")
-    let imageTypeRegex = /^image\//
-    //let file = this.state.imageFile
-    let file = blob
-    let imageUrl = ''
+
+    let file = blob;
+    let fileName = `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name}`;
+    let imageUrl = '';
     if (file) {
-      sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name}`)
+      sendProfileImage(file, fileName)
         .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
@@ -96,9 +99,8 @@ class ImageUploader extends Component {
   }
 
   handleScale(event) {
-    this.setState({
-      scale: event.target.value / 100
-    })
+    const scale = parseFloat(event.target.value)
+    this.setState({ scale });
   }
 
   dataURItoBlob(dataURI) {
@@ -186,11 +188,11 @@ class ImageUploader extends Component {
             <AvatarEditor
               ref={this.setEditorRef}
               image={this.state.fileObjectProp}
-              width={300}
-              height={300}
+              width={this.props.width}
+              height={this.props.height}
               // border={60}
-              borderRadius={250}
-              color={[255, 255, 255, 0.6]} // RGBA
+              borderRadius={this.props.borderRadius}
+              color={this.props.color} // RGBA
               scale={this.state.scale}
               rotate={0}
             />
@@ -210,7 +212,15 @@ class ImageUploader extends Component {
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"/></svg>
               </span>
-              <input type="range" className="slider-input" min="100" max="500" step="10" onChange={this.handleScale} />
+              <input 
+                type="range" 
+                className="slider-input" 
+                min={this.props.allowZoomOut ? '0.1' : '1'}
+                max="2"
+                step="0.01"
+                defaultValue="1"
+                onChange={this.handleScale} 
+              />
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"/></svg>
               </span>

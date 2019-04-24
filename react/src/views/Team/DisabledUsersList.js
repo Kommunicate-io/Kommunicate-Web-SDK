@@ -170,7 +170,7 @@ class DisabledUsersList extends Component {
                         </div>
                       </div>
                       </div>
-                      <span onClick={this.onCloseModal}><CloseButton /></span>
+                      <CloseButton onClick={this.onCloseModal} />
                     </Modal>
                 </tr>
                 

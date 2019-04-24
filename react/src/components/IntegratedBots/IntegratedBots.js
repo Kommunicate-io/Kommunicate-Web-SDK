@@ -782,7 +782,7 @@ export default class IntegratedBots extends Component {
                     </div>
                   </div>
                   </ModalBody>
-                  <span onClick={this.onCloseModal}><CloseButton/></span>
+                  <CloseButton  onClick={this.onCloseModal} />
                 </Modal>
 
                 {/* Modal for deleting already created bot */}
@@ -805,7 +805,7 @@ export default class IntegratedBots extends Component {
                       </Button>
                     </div>
                   </ModalBody>
-                  <span onClick={this.onCloseModal}><CloseButton /></span>
+                  <CloseButton onClick={this.onCloseModal} />
                 </Modal>
               </div>
               </div>

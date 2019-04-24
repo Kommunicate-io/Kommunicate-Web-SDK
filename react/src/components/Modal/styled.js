@@ -18,7 +18,7 @@ const Header = styled.h3`
     color: #6c6a6a;
 `;
 const Hr = styled.hr`
-    margin: 20px -20px 0 -20px;
+    margin: 20px -20px;
 `;
 const Text = styled.span`
     text-transform: uppercase;

@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import './SettingsComponent.css';
-import routes from "../../../src/routes";
+import routes from "../../routes";
 import subHeadings from "./SettingsSubheading.json";
 import {LearnMore} from "../../views/Faq/LizSVG"
 import CommonUtils from '../../utils/CommonUtils';

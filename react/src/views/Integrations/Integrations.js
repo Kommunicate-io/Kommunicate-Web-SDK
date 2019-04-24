@@ -163,7 +163,7 @@ class Integrations extends Component {
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys} integrationEnabled={this.state.integrationEnabled}/>
             </div>
-            <span onClick={this.closeModal}><CloseButton /></span>
+            <CloseButton onClick={this.closeModal} />
             </Modal>
         }
         { this.state.integryIntegration &&        
@@ -171,7 +171,7 @@ class Integrations extends Component {
           // commented for testing
             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles} ariaHideApp= {false} onAfterOpen={this.afterOpenModal} >
                 <div dangerouslySetInnerHTML={{__html: integryModalHtmlContent}} ></div>
-                <span onClick={this.closeModal}><CloseButton /></span>
+                <CloseButton onClick={this.closeModal} />
             </Modal>
         }  
      </div>
