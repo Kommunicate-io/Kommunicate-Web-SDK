@@ -11,7 +11,6 @@ export default class UserDropDown extends React.Component {
         this.state = {
             options: [],
             isOpen: false,
-            value: undefined,
             selectedItem:"",
             hideClearButton: true
         };
@@ -24,7 +23,7 @@ export default class UserDropDown extends React.Component {
         this.setState({ isOpen: !this.state.isOpen });
     };
     handleInputChange = (value) => {
-        this.setState({hideClearButton: !Boolean(value)});
+        this.setState({hideClearButton: !value});
     }
     clearInputField = (e) => {
         this.setState({selectedItem:""})
@@ -88,7 +87,7 @@ export default class UserDropDown extends React.Component {
                         tabSelectsValue={false}
                         onInputChange = {this.handleInputChange}
                         autoFocus
-                        placeholder={"Search..."}
+                        placeholder="Search..."
                     />
                 </Dropdown>
             </div>
