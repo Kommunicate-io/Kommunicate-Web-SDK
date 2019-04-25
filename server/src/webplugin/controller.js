@@ -14,7 +14,7 @@ exports.getPlugin = (req, res) => {
   PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.getProperties().urls.baseUrl;
 
   console.log("setting context and static path", MCK_CONTEXTPATH);
-  fs.readFile(path.join(__dirname, "/plugin.js"), 'utf8', function (err, data) {
+  fs.readFile(path.join(__dirname, "/build/plugin.js"), 'utf8', function (err, data) {
     if (err) {
       res.send("err while getting plugin...");
       return console.log(err);

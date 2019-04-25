@@ -36,9 +36,11 @@ app.set("db",db);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const fileMaxAge = !process.env.NODE_ENV && 2538000000; // 30 days cache period which is converted in milliseconds
 //static paths
-app.use('/plugin', express.static(path.join(__dirname,"src/webplugin")));
-app.use('/plugin/sidebox', express.static(path.join(__dirname,"src/webplugin")));
+app.use('/plugin', express.static(path.join(__dirname, "src/webplugin"), {maxAge: fileMaxAge}));
+app.use('/plugin/sidebox', express.static(path.join(__dirname,"src/webplugin"), {maxAge: fileMaxAge}));
+
 app.use('/img', express.static("img"));
 app.use('/chat/js',express.static("src/chat-demo"));
 

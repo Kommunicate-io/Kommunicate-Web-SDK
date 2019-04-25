@@ -2,7 +2,9 @@ const compressor = require('node-minify');
 const path = require('path');
 const fs = require('fs');
 const date = require('../../package.json').pluginVersion;
-const version = new Date(date).getTime().toString(36);
+const version = require('child_process')
+  .execSync('git rev-parse --short HEAD')
+  .toString().trim();
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../../conf/config");
 const MCK_CONTEXT_PATH = config.getProperties().urls.hostUrl;
@@ -118,26 +120,67 @@ const compressAndOptimize = () => {
             }
         }
     });
-}
+};
 
-const generateMckApp = () => {
+const minifyMckAppJs = () => {
+    compressor.minify({
+        compressor: uglifyCompressor,
+        input: [
+            path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
+        ],
+        output: path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
+        callback: function (err, min) {
+            if (!err) {
+                console.log( `mck-app.${version}.js combined successfully`);
+            }
+            else {
+                console.log(`err while minifying mck-app.${version}.js`, err);
+            }
+        }
+    });
+};
+
+const generateBuildFiles = () => {
+    // Generate mck-sidebox.html file for build folder.
+    fs.readFile(path.join(__dirname, "template/mck-sidebox.html"), 'utf8', function (err, data) {
+        if (err) {
+            console.log("error while generating plugin.js", err);
+        }
+        fs.writeFile(`${buildDir}/mck-sidebox.${version}.html`, data, function (err) {
+            if (err){
+                console.log("mck-file generation error");}
+        })
+    });
+    // Generate plugin.js file for build folder.
+    fs.readFile(path.join(__dirname, "plugin.js"), 'utf8', function (err, data) {
+        if (err) {
+            console.log("error while generating plugin.js", err);
+        }
+        var mckApp = data.replace('MCK_APP_JS', `"${MCK_STATIC_PATH}/build/mck-app.${version}.js"`)
+        fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
+            if (err){
+                console.log("mck-file generation error");}
+        })
+    });
+    // Generate mck-app.js file for build folder.
     fs.readFile(path.join(__dirname, "js/app/mck-app.js"), 'utf8', function (err, data) {
         if (err) {
             console.log("error while generating mck app", err);
         }
         var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS', `"${MCK_STATIC_PATH}/build/kommunicatepluginrequirements.${version}.min.css"`)
             .replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicatepluginrequirements.${version}.min.js"`)
-            .replace('KOMMUNICATE_PLUGIN_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate-plugin.${version}.min.js"`);
-        fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
-            if (err)
-                console.log("mck-file generation error");
+            .replace('KOMMUNICATE_PLUGIN_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate-plugin.${version}.min.js"`)
+            .replace('MCK_SIDEBOX_HTML', `"${MCK_STATIC_PATH}/build/mck-sidebox.${version}.html"`);
+        fs.writeFile(`${buildDir}/mck-app.${version}.js`, mckApp, function (err) {
+            if (err){
+                console.log("mck-file generation error");}
+                minifyMckAppJs();
         })
-    })
+    });
 }
-
 
 removeExistingFile(buildDir);
 compressAndOptimize();
-generateMckApp();
+generateBuildFiles();
 
 exports.pluginVersion = version;
