@@ -70,7 +70,8 @@ const modules = [
   require('./Preference'),
   require("./ChatPopupMessage"),
   require("./Feedback"),
-  require('./Onboarding')
+  require('./Onboarding'),
+  require('./UserAuthentication')
 ];
 
 modules.forEach(function (module) {

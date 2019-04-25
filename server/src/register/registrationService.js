@@ -19,6 +19,7 @@ const USER_CONSTANTS = require("../users/constants.js");
 const subscriptionPlans = require("./subscriptionPlans");
 const {ONBOARDING_STATUS}= require('../utils/constant');
 const onboardingService = require('../onboarding/onboardingService');
+const userAuthenticationService = require('../userAuthentication/userAuthenticationService.js');
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -48,17 +49,20 @@ exports.createCustomer = async customer => {
     applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name, null, LIZ.name, undefined, LIZ.imageLink),
     applozicClient.createApplozicClient("bot", "bot", application.applicationId, null, USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name)
     ]).then(([applozicCustomer, liz, bot]) => {
-
+      
       let kmUser = getUserObject(customer, applozicCustomer, application);
       if (customer.password !== null) {
         kmUser.password  = bcrypt.hashSync(customer.password, 10);
       }
       customer.subscription = customer.subscription || subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP;
       return db.sequelize.transaction(t => {
-        return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
+        return Promise.all ([customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }),userAuthenticationService.createUserAuthentication({"userName": customer.userName, "password": kmUser.password},{transaction: t})]).then(([customer, authentication]) => {
           console.log("persited in db", customer ? customer.id : null);
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
           let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password);
+          kmUser.authenticationId = authentication.response.id;
+          botObj.authenticationId = authentication.response.id;
+          lizObj.authenticationId = authentication.response.id;
           // create default bot plateform
 
           Promise.all([botPlatformClient.createBot({
@@ -92,6 +96,9 @@ exports.createCustomer = async customer => {
             return getResponse(signupUser, applozicCustomer, application);
           });
         });
+      }).catch(err => {
+        console.log("err while creating customer ", err);
+        throw err;
       });
     }).catch(err => {
       console.log("err while creating customer ", err);

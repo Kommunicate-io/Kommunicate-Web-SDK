@@ -104,6 +104,12 @@ const user = function (sequelize, DataTypes) {
       allowNull: false,
       defaultValue: true,
       field: 'email_subscription',
+    },
+    authenticationId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      field: 'authentication_id'
     }
   }, {
       underscored: true,
