@@ -5,7 +5,7 @@
       "options": {
         "pool": {
           "threadPoolMax": 5,
-          "threadPoolMin": 0,
+          "threadPoolMin": 1,
           "idle": 10000
         },
         "logging": false
