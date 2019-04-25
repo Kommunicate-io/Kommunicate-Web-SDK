@@ -60,9 +60,9 @@ exports.createCustomer = async customer => {
           console.log("persited in db", customer ? customer.id : null);
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
           let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password);
-          kmUser.authenticationId = authentication.response.id;
-          botObj.authenticationId = authentication.response.id;
-          lizObj.authenticationId = authentication.response.id;
+          kmUser.authenticationId = authentication.id;
+          botObj.authenticationId = authentication.id;
+          lizObj.authenticationId = authentication.id;
           // create default bot plateform
 
           Promise.all([botPlatformClient.createBot({
