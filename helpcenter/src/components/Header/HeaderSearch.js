@@ -22,7 +22,7 @@ class HelpQuerySearch extends Component {
             value: '',
             key:'',
             totalSearchResults:'',
-            maxVisibleSearchedFaq : 5,
+            maxVisibleSearchedFaq : 4,
             isLoaderVisible : true
         };
     }
@@ -33,12 +33,13 @@ class HelpQuerySearch extends Component {
             this.state.inputValue && HelpcenterClient.searchFaq(this.context.helpCenter.appId, this.state.inputValue).then(response => {
                 response && response.data && _this.setState({
                     totalSearchResults: response.data.length,
-                    searchedFaqList: response.data.slice(0,this.state.maxVisibleSearchedFaq),
+                    searchedFaqList:response.data.filter( value => value !== null),
                     isLoaderVisible : false
                 })
             })
         }, timeout);
     }
+
 
     handleInput = (e) => {
         this.setState({
@@ -135,7 +136,7 @@ class HelpQuerySearch extends Component {
                 <SearchResultsWrapper className="animated-fast slide-animated">
                     {
                         this.state.searchedFaqList.map((data,index)=>(
-                            <SearchResults key={index} onMouseDown={()=>{this.openSelectedFaq(data)}}>{data.name}</SearchResults>
+                            index <= this.state.maxVisibleSearchedFaq && <SearchResults key={index} onMouseDown={()=>{this.openSelectedFaq(data)}}>{data.name}</SearchResults>
                         ))
                     }
                     {   

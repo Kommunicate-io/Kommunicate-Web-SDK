@@ -44,7 +44,7 @@ class FaqList extends Component {
         }, () => {
             HelpcenterClient.searchFaq(this.context.helpCenter.appId, this.state.searchQuery).then(response => {
                 response && response.data && this.setState({
-                    faqList: response.data,
+                    faqList: response.data.filter( value => value !== null),
                     isSearchFinished: true
                 })
             })
