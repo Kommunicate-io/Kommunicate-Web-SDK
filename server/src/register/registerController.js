@@ -295,17 +295,15 @@ exports.getCustomerByApplicationId = (req, res) => {
   });
 }
 
-exports.reactivateBot =(req, res) =>{
+exports.reactivateAccountForDemo =(req, res) =>{
   var appId = req.query.appId;
-  var botId = req.query.botId;
-  var agentId = req.query.agentId;
-  return customerService.reactivateBot(appId,botId,agentId).then(bot =>{
-     if(bot){
-       res.status(200).json({code:"SUCCESS", message:"bot reactivated successfully"});
-     }else{
-      res.status(200).json({code:"SUCCESS", message:"error while reactivating bot"});
-     }
+  var userIds = req.body.userIds;
+  return customerService.reactivateAccount(appId,userIds,true).then(result =>{
+     return  res.status(200).json({code:"SUCCESS", message:"account reactivated successfully"});
   }).catch(err =>{
-     res.status(500).json({code:"ERROR", message :"internal server error"});
+    if(err === "userId is incorrect"){
+      return res.status(400).json({code:"ERROR", message :err});
+    }
+    return res.status(500).json({code:"ERROR", message :"Internal server error"});
   })
 }

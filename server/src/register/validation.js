@@ -33,7 +33,7 @@ module.exports.searchCustomer={
   }
 }
 
-module.exports.reactivateBot={
+module.exports.reactivateAccountForDemo={
   query:{
         appId:joi.string().required()
   }
