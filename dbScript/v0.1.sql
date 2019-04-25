@@ -236,9 +236,9 @@ ALTER TABLE `app_settings` ADD COLUMN `support_mails` JSON
 
 -- 10 march 2019 --
 
-ALTER TABLE `app_settings` 
-ADD COLUMN `lead_collection` JSON, 
-ADD COLUMN `lead_type` INTEGER, 
+ALTER TABLE `app_settings`
+ADD COLUMN `lead_collection` JSON,
+ADD COLUMN `lead_type` INTEGER,
 ADD COLUMN `collect_lead` BOOLEAN DEFAULT 0;
 
 -- script to migrate data from collect_email_welcome  and collect_email_away to lead_collection --
@@ -256,7 +256,7 @@ ALTER TABLE `app_settings` ADD COLUMN `collect_feedback` BOOLEAN DEFAULT 0;
 
 -- 28 March 2019 --
 
-ALTER TABLE `in_app_msgs` 
+ALTER TABLE `in_app_msgs`
 ADD COLUMN `language_code` char(5);
 
 ALTER TABLE app_subscriptions MODIFY COLUMN trigger_url  VARCHAR(250) NOT null;
@@ -275,8 +275,11 @@ CREATE TABLE IF NOT EXISTS onboarding (
     PRIMARY KEY(id)
 );
 
--- mongoDb script
-db.getCollection('knowledgebase_copy').update({},{$set:{"categoryType" : 0}},{multi:true})
+
+db.getCollection('knowledgebase_copy').update({id:{ $gt: 0 }},{$set:{"categoryType" : 0}},{multi:true ,upsert:false})
+
+db.getCollection('counter').insert({"_id" : "faqCategory_type",  "sequence_value" : 1})
+
 
 -- KM-2171 : For multiple applications - check for password in the first step --
 CREATE TABLE IF NOT EXISTS authentication (
