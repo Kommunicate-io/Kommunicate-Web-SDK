@@ -51,6 +51,15 @@ const GlobalSettingSidebarStyle = createGlobalStyle`
     }
 `;
 
+const BetaTag = styled.sup`
+    font-size: 10px;
+    color: #fff;
+    border-radius: 2px;
+    background-color: #f4264f;
+    padding: 1px 4px;
+    top: -0.8em;
+`;
+
 class SettingsSidebar extends Component {
     constructor(props){
         super(props);
@@ -82,12 +91,13 @@ class SettingsSidebar extends Component {
     render() {
 
         const currentSection = window.location.pathname.split("/")[1];
+        const isBeta = currentSection.includes('helpcenter');
 
         return (
              SubSection[currentSection] ?
             <div className="settings-sidebar text-center">
                 <GlobalSettingSidebarStyle />
-                <p className="settings-title">{currentSection}</p>
+                <p className="settings-title">{currentSection} {isBeta && <BetaTag>BETA</BetaTag>}</p>
                 <hr className="hrr"/>
                 <div className="settings-sidebar-nav">
                     <ul className="ss-nav">
