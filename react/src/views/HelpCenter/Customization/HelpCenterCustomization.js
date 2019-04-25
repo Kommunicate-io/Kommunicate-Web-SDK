@@ -271,13 +271,6 @@ class HelpCenterCustomization extends Component {
         window.open(url, '_blank');
     }
 
-    onKeyDown = (e, limit) => {
-        if(e.target.value.length >= limit) {
-            e.preventDefault();
-            return false;
-        }
-    }
-
     toggleCustomDomainModal = () => {
         this.setState({
             customDomainModal: !this.state.customDomainModal
@@ -302,7 +295,7 @@ class HelpCenterCustomization extends Component {
             to: emailIds,
             templateName: "CUSTOM_DOMAIN_SETUP_INSTRUCTION"
         }).then(response => {
-            if(response && response.code === "SUCCESS") {
+            if(response && response.status === 200 && response.data.code === "SUCCESS") {
                 this.setState({
                     emailSubmitted: true
                 });
@@ -328,7 +321,7 @@ class HelpCenterCustomization extends Component {
 
                         <ColorPicker className="helpcenter-color-picker" heading="Primary Color" disableAlpha={true} color={this.state.helpcenterColor} onChange={this.handleColorPickerChange} />
 
-                        <InputGroup id="headline-text" heading="Headline Text" tooltip="Max. 30 characters" placeholder="Hi, how can we help you?" name="headlineText" value={this.state.headlineText} onChange={this.handleInputChange} charCount={this.state.headlineText.length + "/30"} onKeyDown={(e) => this.onKeyDown(e, 30)} />
+                        <InputGroup id="headline-text" heading="Headline Text" tooltip="Max. 30 characters" placeholder="Hi, how can we help you?" name="headlineText" value={this.state.headlineText} onChange={this.handleInputChange} charCount={this.state.headlineText.length + "/30"} maxLength="30" />
 
                        
                        <ComponentHeading>Branding</ComponentHeading>
@@ -389,7 +382,7 @@ class HelpCenterCustomization extends Component {
 
                         <SectionTitle>Settings</SectionTitle>
 
-                        <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} charCount={this.state.homepageTitle.length + "/60"} onKeyDown={(e) => this.onKeyDown(e, 60)} />
+                        <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} charCount={this.state.homepageTitle.length + "/60"}  maxLength="60" />
 
                         <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} />
 
