@@ -33,7 +33,7 @@ module.exports.searchCustomer={
   }
 }
 
-module.exports.reactivateAccountForDemo={
+module.exports.reactivateAccountWithoutPayment={
   query:{
         appId:joi.string().required()
   }

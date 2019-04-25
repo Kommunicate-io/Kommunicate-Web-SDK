@@ -103,9 +103,9 @@ const createApplication = (application) => {
     return applicationService.createApplication(application);
 }
 
-const reactivateAccount = async function (appId,userIds,withoutSubscription) {
+const reactivateAccount = async function (appId,userIds,enableWithoutPayment) {
     let customer = await getCustomerByApplicationId(appId);
-    if ((customer.subscription && !customer.isProductApplozic && customer.subscription != subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP)||withoutSubscription ) {
+    if ((customer.subscription && !customer.isProductApplozic && customer.subscription != subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP)||enableWithoutPayment ) {
         let users, liz, dbUsers, result= [];
         if(userIds){
             var criteria ={};
@@ -131,7 +131,7 @@ const reactivateAccount = async function (appId,userIds,withoutSubscription) {
     }
 
         for (var i = 0; i < users.length; i++) {
-            let userStatus = (i < result && result.subscription.plan_quantity) || withoutSubscription? 1 : 2;
+            let userStatus = (i < result && result.subscription.plan_quantity) || enableWithoutPayment? 1 : 2;
             let dataToBeUpdated = { status: userStatus };
             users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = userStatus);
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
@@ -141,8 +141,8 @@ const reactivateAccount = async function (appId,userIds,withoutSubscription) {
                 console.log("bot updation error", error)
             }
         }
-        !withoutSubscription && userService.updateOnlyKommunicateUser(liz.userName, appId, {"bot_availability_status":1, "status": 1 });
-        (withoutSubscription && userIds.includes("liz") || !withoutSubscription)&& botClientService.updateBot({ 'key': liz.userKey, 'status': 'enabled' })
+        !enableWithoutPayment && userService.updateOnlyKommunicateUser(liz.userName, appId, {"bot_availability_status":1, "status": 1 });
+        (enableWithoutPayment && userIds.includes("liz") || !enableWithoutPayment)&& botClientService.updateBot({ 'key': liz.userKey, 'status': 'enabled' })
         applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE });
     }
     return "success";
@@ -183,6 +183,5 @@ module.exports = {
     getCustomerByAgentUserKey: getCustomerByAgentUserKey,
     isAdmin: isAdmin,
     createApplication: createApplication,
-    updateApplicationInApplozic:updateApplicationInApplozic,
-    reactivateAccountForDemo :reactivateAccountForDemo
+    updateApplicationInApplozic:updateApplicationInApplozic
 }

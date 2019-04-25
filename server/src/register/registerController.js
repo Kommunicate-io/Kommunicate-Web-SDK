@@ -295,7 +295,7 @@ exports.getCustomerByApplicationId = (req, res) => {
   });
 }
 
-exports.reactivateAccountForDemo =(req, res) =>{
+exports.reactivateAccountWithoutPayment =(req, res) =>{
   var appId = req.query.appId;
   var userIds = req.body.userIds;
   return customerService.reactivateAccount(appId,userIds,true).then(result =>{
