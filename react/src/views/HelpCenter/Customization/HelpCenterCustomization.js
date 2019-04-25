@@ -199,7 +199,6 @@ class HelpCenterCustomization extends Component {
     let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
 
     hiddenImageInputElem && hiddenImageInputElem.click();
-    }
   };
 
     handleImageFiles = (e) => {
