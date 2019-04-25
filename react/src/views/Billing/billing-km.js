@@ -552,12 +552,12 @@ class BillingKommunicate extends Component {
 
                     {/* <!-- Pricing Toggle --> */}
                     <div className="pricing-toggle text-left">
-                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly billing</label>
+                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active km-custom-bg"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly billing</label>
                         <div className="toggle n-vis">
                             <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
                             <b className="b switch"></b>
                         </div>
-                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing</label>
+                        <label className={this.state.toggleSlider ? "toggler toggler--is-active km-custom-bg" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing</label>
                     </div>
 
 
@@ -716,12 +716,12 @@ class BillingKommunicate extends Component {
 
                                     {/* <!-- Pricing Toggle --> */}
                                     <div className="pricing-toggle text-center">
-                                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly</label>
+                                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active km-custom-bg"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly</label>
                                         <div className="toggle n-vis">
                                             <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
                                             <b className="b switch"></b>
                                         </div>
-                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly <span>(Save 20%)</span></label>
+                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active km-custom-bg" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly <span>(Save 20%)</span></label>
                                     </div>
 
                                     <div className="col-lg-5 col-md-5 col-xs-12">
@@ -736,7 +736,7 @@ class BillingKommunicate extends Component {
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
-                                                                <h2><sup>$</sup>10</h2>per human or bot
+                                                                <h2><sup>$</sup>10</h2>
                                                                 <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per human or bot/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>

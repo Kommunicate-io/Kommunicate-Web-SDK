@@ -406,6 +406,9 @@ class Users extends Component {
         form.reset();
         this.openModal("");
         this.reRenderUsersList();
+      } else if(response.data.status === "error") {
+        let errorMessage = response.data.errorResponse[0].description.charAt(0).toUpperCase() + response.data.errorResponse[0].description.slice(1);
+        Notification.error(errorMessage);
       }
     }).catch(err => {
       console.log(err);
@@ -439,6 +442,16 @@ class Users extends Component {
     this.updateConversationWithRespectToPageNumber();
   }
 
+  keyPress(e) {
+    var regex = /[^a-zA-Z0-9_\-@#]/;
+    var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+    if(regex.test(key)) {
+      Notification.error("Special characters not allowed.");
+      e.preventDefault();
+      return false;
+    }
+  }
+
   render() {
     var _this = this;
     const infoText = Labels["lastcontacted.tooltip"];
@@ -449,8 +462,8 @@ class Users extends Component {
     const CreateNewUser = (
       <Fragment>
         <form onSubmit={this.onFormSubmit} autoComplete="off">
-          <InputGroup id='user-id' label='User Id:' name='userId' inputType='text' value={this.state.userId} onChange={this.onInputChange} placeholder='' required />
-          <InputGroup id='user-name' label='User Name:' name='userName' inputType='text' value={this.state.userName} onChange={this.onInputChange} placeholder='' />
+          <InputGroup id='user-id' label='User Id:' name='userId' inputType='text' value={this.state.userId} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' required />
+          <InputGroup id='user-name' label='User Name:' name='userName' inputType='text' value={this.state.userName} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' />
           <InputGroup id='user-email' label='User Email:' name='userEmail' inputType='text' value={this.state.userEmail} onChange={this.onInputChange} placeholder='' />
           <InputGroup id='login-password' label='Login Password:' name='loginPassword' inputType='password' value={this.state.loginPassword} onChange={this.onInputChange} placeholder='' required />
 
@@ -465,8 +478,8 @@ class Users extends Component {
     const EditUser = (
       <Fragment>
         <form onSubmit={this.onFormSubmit} autoComplete="off">
-          <InputGroup id='user-id' label='User Id:' name='userId' inputType='text' value={this.state.userId} onChange={this.onInputChange} placeholder='' required disabled />
-          <InputGroup id='user-name' label='User Name:' name='userName' inputType='text' value={this.state.userName} onChange={this.onInputChange} placeholder='' />
+          <InputGroup id='user-id' label='User Id:' name='userId' inputType='text' value={this.state.userId} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' required disabled />
+          <InputGroup id='user-name' label='User Name:' name='userName' inputType='text' value={this.state.userName} onChange={this.onInputChange} onKeyPress={this.keyPress} placeholder='' />
           <InputGroup id='user-email' label='User Email:' name='userEmail' inputType='text' value={this.state.userEmail} onChange={this.onInputChange} placeholder='' />
           <InputGroup id='login-password' label='Login Password:' name='loginPassword' inputType='password' value={this.state.loginPassword} onChange={this.onInputChange} placeholder='' required />
 
@@ -519,7 +532,7 @@ class Users extends Component {
         <div className="col-md-12">
           <div className="card">
             <div className="card-block">
-            <div className="flexi mb-20">
+            <div className="flexi mb-30">
               <Button className="product product-applozic" secondary onClick={() => this.openModal("newUser")}>Create new user</Button>
               <div id="km-text-box-wrapper" className="km-text-box-wrapper">
                 <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">

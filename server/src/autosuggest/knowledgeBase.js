@@ -120,11 +120,12 @@ KnowledgeBase.plugin(mongoosastic, {
     hosts: [config.esClientUrl],
     index: COLLECTIONS.KNOWLEDGE_BASE2.toLowerCase(),
     type: "_doc",
-    bulk: {
-        delay: 30 * 60 * 1000, //30 min
-        size: 10,
-        batch: 50
-    }
+    // bulk: {
+    //     delay: 30 * 60 * 1000, //30 min
+    //     size: 10,
+    //     batch: 50
+    // },
+    indexAutomatically:true
 });
 
 const KnowledgeBaseModel = mongoose.model(COLLECTIONS.KNOWLEDGE_BASE2, KnowledgeBase);

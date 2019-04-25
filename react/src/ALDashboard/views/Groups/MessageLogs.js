@@ -61,7 +61,12 @@ class MessageLogs extends Component {
                     if(group[j].latestMessagekey){
                         group[j].message = map[group[j].latestMessagekey].message;
                         group[j].latestMessageTime = map[group[j].latestMessagekey].createdAtTime;
-                        group[j].senderName = map[group[j].latestMessagekey].senderName;    
+                        group[j].senderName = map[group[j].latestMessagekey].senderName;  
+                        (group[j].type === 0) &&  (group[j].groupMemberUserKeys = {
+                            [group[j].memberUserKeys[0]]: group[j].groupUsers[0].userId,
+                            [group[j].memberUserKeys[1]]: group[j].groupUsers[1].userId
+                        });
+                        group[j].senderUserKey = map[group[j].latestMessagekey].userKey;
                     } else {
                         console.log("Group without Latest Message", group[j]);
                     }  
@@ -104,16 +109,16 @@ class MessageLogs extends Component {
         ApplozicClient.getMessageGroups(params, headers).then(response => {
             if(response && response.status === 200) {
 
-                let usersDetail = {
-                    [data.memberUserKeys[0]]: data.membersName[0] || data.membersId[0],
-                    [data.memberUserKeys[1]]: data.membersName[1] || data.membersId[1],
-                }
-
                 let groupType = data.type;
                 response.data.type = groupType;
                 response.data.userCount = data.userCount;
 
-                response.data.oneToOneUsersDetail = groupType === 0 ? usersDetail : {};
+                if(groupType === 0) {
+                    response.data.oneToOneUsersDetail = {
+                        [data.memberUserKeys[0]]: data.groupUsers[0].userId,
+                        [data.memberUserKeys[1]]: data.groupUsers[1].userId
+                    };
+                }
                 
                 this.setState({
                     groupData: response.data,

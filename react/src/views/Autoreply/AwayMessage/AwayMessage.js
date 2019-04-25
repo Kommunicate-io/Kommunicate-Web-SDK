@@ -498,6 +498,7 @@ class AwayMessage extends Component{
               awayMessage={this.state.liveAwayMessage || this.props.awayMessage}
               hasSecondMessage={false}
               hideChatIcon={true}
+              status={"Offline"}
             />  
           </div>
         </div>

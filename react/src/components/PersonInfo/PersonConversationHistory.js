@@ -85,7 +85,7 @@ class PersonConversationHistory extends Component {
                                 window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE[key] === parseInt(data.metadata.CONVERSATION_STATUS)) : "OPEN";
                             return (
                                 <ConversationDataContainer key={index} onClick={() => this.openConversation(data.id)}>
-                                    <ConversationTitle>Conversation #{data.id}</ConversationTitle>
+                                    <ConversationTitle className="km-custom-text-color">Conversation #{data.id}</ConversationTitle>
                                     <ConversationStatus>Status: <strong>{status === "UNRESPONDED" || status === "INITIAL" ? "OPEN" : status} - </strong><span>{data.name}</span></ConversationStatus>
                                     <ConversationDate>Last Contacted: <span>{moment(data.lastMessageTime).format("DD MMM YYYY")}</span></ConversationDate>
                                 </ConversationDataContainer>

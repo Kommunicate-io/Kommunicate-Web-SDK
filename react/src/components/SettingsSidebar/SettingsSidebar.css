@@ -1,7 +1,7 @@
 .settings-sidebar {
     /* margin-left: 7px; */
     margin-top: 0px;
-    width: 227px;
+    width: auto;
     background-color: #f4f5f7;
     /* margin-right: -7px; */
     overflow-y: auto;
@@ -19,6 +19,7 @@
     color: #666464;
     padding-left: 21px;
     text-align: left;
+    text-transform: capitalize;
 }
 .ss-nav {
     list-style: none;
@@ -30,7 +31,7 @@
 .ss-nav-item {
     font-size: 14px;
     color: #666464;
-    transition: all .3s;
+    transition: background-color .3s;
     margin: 5px 0;
 }
 .ss-nav-title {
@@ -40,6 +41,7 @@
     color: #cacaca;
     font-weight: bold;
     margin-bottom: 2px;
+    text-transform: uppercase;
   }
 .ss-nav-title:not(:first-child) {
     margin-top: 20px;

@@ -640,7 +640,7 @@ class BotStore extends Component {
                     <a className="bot-routing-link brand-color" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
-                <div className={!this.state.useCaseSubmitted && CommonUtils.isKommunicateDashboard() ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
+                {/* <div className={!this.state.useCaseSubmitted && CommonUtils.isKommunicateDashboard() ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
                 <div className="col-sm-6 km-bot-integration-second-container-text-container">
                   <p className="km-bot-request-bot-heading">Want a custom bot made for you?</p>
                   <p className="km-bot-request-bot-sub-heading">Tell us your bot use-case and we will take care of everything else</p>
@@ -652,7 +652,7 @@ class BotStore extends Component {
                 <div className="col-sm-4 km-bot-integration-second-container-cato-container">
                   
                 </div>
-              </div>
+              </div> */}
 
               <div className={this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-use-case-sbmt-container":"n-vis"}>
                 <div className="col-sm-1 km-bot-integration-tick-container">
@@ -825,7 +825,7 @@ class BotStore extends Component {
                 </div>
               </div>
           </ModalBody>
-          <CloseButton  onClick={this.onCloseModal} />
+          <CloseButton onClick={this.onCloseModal} />
         </Modal>
 
           {/* Set bot image and name modal */}

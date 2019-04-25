@@ -1951,7 +1951,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
 					_this.removeChatThreadSelection();
-					_this.clearConversationAssigneeAndStatus();
 					var emptyStateDiv = document.getElementById("empty-state-conversations-div");
 					//resetCustomerInfoTab();
 					//resetClearbitInfoAndUserInfo();
@@ -2394,10 +2393,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.removeChatThreadSelection = function () {
 				$kmApplozic('.chat').removeClass('active-chat');
 				$kmApplozic('.left .person').removeClass('active');
-			}
-			_this.clearConversationAssigneeAndStatus = function () {
-				$kmApplozic("#assign").val("")
-				$kmApplozic("#conversation-status").val("");
 			}
 			_this.sendMessage = function (messagePxy) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
@@ -3997,7 +3992,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.loadTab = function (params, callback) {
 				// $kmApplozic('.km-user-info-tab').removeClass('vis').addClass("n-vis");
 				mckMessageService.removeChatThreadSelection();
-				mckMessageService.clearConversationAssigneeAndStatus();
+				window.Aside.clearConversationAssignee();
 				if (params.tabId) {
 					$mck_text_box.data("metadata", null);
 					if ($kmApplozic('.person[data-km-id ="' + params.tabId + '"][data-isgroup ="' + params.isGroup + '"]').length == 0 && kmGroupUtils.getGroup(params.tabId)) {
@@ -8226,7 +8221,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic('#km-toolbar').addClass('n-vis').removeClass('vis');
 				$kmApplozic('#km-conversation-heading').addClass('vis').removeClass('n-vis');
 				$kmApplozic(".km-box-ft .km-box-form").addClass('n-vis').removeClass('vis');
-				$kmApplozic('.chat.km-message-inner.' + groupId + '.active-chat').remove('div');
+				$kmApplozic('.chat.km-message-inner.' + groupId + '.active-chat').removeClass("active-chat");
 				mckMessageService.emptyStateChange();
 			}
 

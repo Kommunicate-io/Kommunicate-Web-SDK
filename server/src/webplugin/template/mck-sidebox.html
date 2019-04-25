@@ -750,9 +750,15 @@ function showAfterLoad(){
 
 	showAfterLoad();
 } else {
-	// eventlistener to make ContentVisible after page is loaded
-	window.addEventListener('kmInitilized', function() {
-		showAfterLoad();
-	}, false);
+	var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
+	if (isScriptV2){
+		window.parent.document.addEventListener('kmInitilized', function() {
+			showAfterLoad();
+		}, false);
+	}else{
+		window.addEventListener('kmInitilized', function() {
+			showAfterLoad();
+		}, false);	
+	}
 }
 </script>

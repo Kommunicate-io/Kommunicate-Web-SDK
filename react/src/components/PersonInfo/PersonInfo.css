@@ -143,8 +143,8 @@ transition: opacity 300ms ease-in;
     opacity: 0.6;
     color: #949494;
 }
-  .km-sidebar-user-data-notfound {
-    color: #4831d9!important;
+  .km-sidebar-user-data-notfound.km-edit.km-custom-text-color {
+    color: #4831d9;
     width:100%;
   }
   .km-edit {

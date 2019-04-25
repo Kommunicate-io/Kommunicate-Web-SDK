@@ -165,7 +165,8 @@ class EditableText extends Component {
     const style = {
       width: "95%",
       textAlign: "left",
-      padding:"5px"
+      padding:"5px",
+      fontSize: "14px"
     };
     return (
       <div className={this.state.style}>

@@ -41,7 +41,7 @@ const MessageLogsRowList = (props) => {
                     {   data.senderName ? 
                         <Fragment>
                             <MessageLogsStyles.LastMessage>    
-                                <MessageLogsStyles.LastMessageFrom>{data.senderName}: </MessageLogsStyles.LastMessageFrom>
+                                <MessageLogsStyles.LastMessageFrom>{data.type === 0 ? data.groupMemberUserKeys[data.senderUserKey] : data.senderName}: </MessageLogsStyles.LastMessageFrom>
                                 <MessageLogsStyles.LastMessageData>{data.message}</MessageLogsStyles.LastMessageData>
                             </MessageLogsStyles.LastMessage>
                     

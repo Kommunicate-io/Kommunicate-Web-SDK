@@ -144,7 +144,7 @@ class UserUpdateModal extends Component {
             </div>
           </div>
         </div>
-        <span onClick={this.props.onRequestClose}><CloseButton /></span>
+        <CloseButton onClick={this.props.onRequestClose} />
       </Modal>)
   }
 }

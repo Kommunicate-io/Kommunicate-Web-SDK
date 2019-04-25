@@ -25,6 +25,7 @@ const USER_CONSTANTS = require("../users/constants.js");
 const FREE_BOTS_COUNT = 2; //'bot' and 'liz' are free
 const {ONBOARDING_STATUS}= require('../utils/constant');
 const onboardingService = require('../onboarding/onboardingService');
+const userAuthenticationService = require('../userAuthentication/userAuthenticationService.js');
 
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
@@ -178,21 +179,23 @@ const createUser = (user, customer) => {
   let userId = user.userId ? user.userId.toLowerCase() : "";
   user.userName ? (user.userName = user.userName.toLowerCase()) : "";
   let role = user.type == 2 ? USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.BOT.name : USER_CONSTANTS.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN.name;
-  return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name, undefined, user.imageLink).catch(err => {
+  let password = bcrypt.hashSync(user.password, 10); 
+  return Promise.all([applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name, undefined, user.imageLink), userAuthenticationService.createUserAuthentication({"userName": user.userName, "password": password})]).catch(err => {
     if (user.type === registrationService.USER_TYPE.AGENT) {
       return handleCreateUserError(user, customer, err);
     } else {
       logger.error("error while creating user in applozic : ", err);
       throw err;
     }
-  }).then(applozicUser => {
+  }).then(([applozicUser, authentication]) => {
     console.log("created user in applozic db", applozicUser.userId);
     let authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
     user.accessToken = user.password;
     user.userKey = applozicUser.userKey;
-    user.password = bcrypt.hashSync(user.password, 10);
+    user.password = password;
     user.imageLink = applozicUser.imagelink;
     user.roleType = (user.type === 2)? USER_CONSTANTS.ROLE_TYPE.BOT:user.roleType;
+    user.authenticationId = authentication.id;
     
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);

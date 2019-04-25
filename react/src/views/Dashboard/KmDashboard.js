@@ -857,10 +857,10 @@ render() {
           </div>
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
              <UserDropdown
-              className= {(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
+               searchBoxClassName= {(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
               handleDropDownChange = {this.agentFilterHandleChange} 
               userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
-              defaultValue={{ label: "All agents", value: "allagents" }}
+              defaultValue={this.state.agentFilterSelectedOption}
               name="km-dashboard-agent-filter"
               styles = {UserDropDownStyles}
              />
@@ -885,8 +885,8 @@ render() {
                 data-key = {this.state.dataKey.newConversation}
                 data-day = {this.state.dataDay}
                 onClick={this.displayChart}>
-                <h4 className="card-count">{this.state.displayTotalCounts.newConversationCount}</h4>
-                <p className="card-count-title">Incoming Conversations</p>
+                <h4 className="card-count km-custom-text-color">{this.state.displayTotalCounts.newConversationCount}</h4>
+                <p className="card-count-title km-custom-text-color">Incoming Conversations</p>
               </div>
             </div>
           </div>
@@ -896,8 +896,8 @@ render() {
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.closedConversation}
                 data-day = {this.state.dataDay}
                 onClick={this.displayChart}>
-                <h4 className="card-count">{this.state.displayTotalCounts.closedConversationCount}</h4>
-                <p className="card-count-title">Resolved Conversations</p>
+                <h4 className="card-count km-custom-text-color">{this.state.displayTotalCounts.closedConversationCount}</h4>
+                <p className="card-count-title km-custom-text-color">Resolved Conversations</p>
               </div>
             </div>
           </div>
@@ -907,7 +907,7 @@ render() {
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.responseTime}
                 data-day = {this.state.dataDay}
                 onClick = {this.displayChart}>
-                <h4 className="card-count">
+                <h4 className="card-count km-custom-text-color">
                   <span className="card-time-digit">{this.state.avgResponseTime.hrDigit}</span>
                   <span className="card-time-text">{this.state.avgResponseTime.hrText}</span>
                   <span className="card-time-digit">{this.state.avgResponseTime.minDigit}</span>
@@ -915,7 +915,7 @@ render() {
                   <span className="card-time-digit">{this.state.avgResponseTime.secDigit}</span>
                   <span className="card-time-text">{this.state.avgResponseTime.secText}</span>
                 </h4>
-                <p className="card-count-title">First Response Time</p>
+                <p className="card-count-title km-custom-text-color">First Response Time</p>
                 <Link className={this.state.unansweredConversation > 0 ? "vis" : "n-vis"} to="/conversations" >{this.state.unansweredConversation} {this.state.unansweredConversation == 1 ? " user" : " users"} waiting for first response</Link>
               </div>
             </div>
@@ -926,7 +926,7 @@ render() {
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.resolutionTime}
                data-day = { this.state.dataDay}
                onClick = { this.displayChart}>
-                <h4 className="card-count">
+                <h4 className="card-count km-custom-text-color">
                   <span className="card-time-digit">{this.state.avgResolutionTime.hrDigit}</span>
                   <span className="card-time-text">{this.state.avgResolutionTime.hrText}</span>
                   <span className="card-time-digit">{this.state.avgResolutionTime.minDigit}</span>
@@ -934,7 +934,7 @@ render() {
                   <span className="card-time-digit">{this.state.avgResolutionTime.secDigit}</span>
                   <span className="card-time-text">{this.state.avgResolutionTime.secText}</span>
                 </h4>
-                <p className="card-count-title">Resolution Time</p>
+                <p className="card-count-title km-custom-text-color">Resolution Time</p>
               </div>
             </div>
           </div>

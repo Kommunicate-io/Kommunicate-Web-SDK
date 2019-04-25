@@ -410,7 +410,7 @@ class Integration extends Component {
                     </div>
                   </div>  
                 }
-                <span onClick={this.onCloseModal}><CloseButton /></span>
+                <CloseButton onClick={this.onCloseModal} />
               </Modal>
             </div>
           </div>

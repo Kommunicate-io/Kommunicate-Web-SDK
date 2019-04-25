@@ -8614,7 +8614,7 @@ iframe#crowd-shortcut {
   flex-direction: column;
   min-height: 100vh;
   /* height:100vh; */
-  /* overflow-x: hidden; */
+  overflow: hidden;
   background-color: #fff;
 }
 
@@ -8631,10 +8631,13 @@ iframe#crowd-shortcut {
   overflow-x: hidden;
   overflow-y: hidden; }
   .app-body .main {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100vh;
     flex: 1;
     min-width: 0; }
   .app-body .sidebar {
-    flex: 0 0 200px;
+    /* flex: 0 0 200px; */
     order: -1; }
   .app-body .aside-menu {
     flex: 0 0 250px; }
@@ -8655,7 +8658,7 @@ iframe#crowd-shortcut {
   margin-left: -200px; }
 
 .sidebar-fixed .sidebar {
-  position: fixed;
+  /* position: fixed; */
   max-width: 300px;
   min-width: 60px;
   /* Below two lines are HACK for SAFARI BROWSERS */
@@ -8666,16 +8669,13 @@ iframe#crowd-shortcut {
   height: 100%;
   display: flex; }
   .sidebar-fixed .sidebar .sidebar-nav {
-    height: calc(100vh - 10px);
+    height: calc(100vh - 0px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     /* margin-left: 7px; */
  }
-
-.sidebar-fixed .main, .sidebar-fixed .app-footer {
-  margin-left: 53px; }
 
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
@@ -8719,9 +8719,6 @@ iframe#crowd-shortcut {
   height: 100%; }
   .aside-menu-fixed .aside-menu .tab-content {
     height: calc(100vh - 2.375rem - 55px); }
-
-.aside-menu-fixed .main, .aside-menu-fixed .app-footer {
-  margin-right: 250px; }
 
 .aside-menu-fixed.aside-menu-hidden .main, .aside-menu-fixed.aside-menu-hidden .app-footer {
   margin-right: 0; }
@@ -11527,4 +11524,55 @@ border-left-color: #5e8631;
   background-color: rgba(0, 0, 0, 0.75) !important;
   z-index: 5000 !important;
   overflow-y: auto !important;
+}
+.km-user-dropdown-container  button {
+  background-color: transparent;
+  color: #333333;
+  font-size: 14px;
+  display: flex;
+  width: 150px;
+  align-items: center;
+  justify-content: space-between;
+}
+.km-user-dropdown-container  button:hover {
+  box-shadow: none;
+  background-color: transparent;
+  color: #333333;
+}
+.km-user-dropdown-container  button .dropdown-btn-text {
+  max-width: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.user-dropdown-arrow-wrapper:hover svg path {
+  fill: rgb(153, 153, 153);
+}
+.notify-everybody-dropdown, .automatic-assignment-dropdown {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px, rgba(0, 0, 0, 0.1) 0px -1px 4px 0px;
+}
+.km-user-dropdown-container .notify-everybody-dropdown:hover, .km-user-dropdown-container .automatic-assignment-dropdown:hover {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px, rgba(0, 0, 0, 0.1) 0px -1px 4px 0px;
+}
+.km-new-conversation-header .km-user-dropdown-container {
+  margin-right: 20px;
+}
+.km-new-conversation-header .km-user-dropdown-container .conversation-assignee-dropdown {
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+.user-dropdown-search-box {
+  font-size: 14px;
+}
+#user-dropdown-search-icon {
+  position: absolute;
+  left: 4px;
+  padding-top: 2px;
+}
+.user-dropdown-clear-button {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  margin-right: 20px;
+  margin-top: 18px;
 }

@@ -18,8 +18,8 @@
          "autoReconnect":true,
          "connectTimeoutMS":30000,
          "socketTimeoutMS":360000,
-         "reconnectTries":    30,
-         "reconnectInterval": 1000
+         "reconnectTries":	9007199254740991,
+         "reconnectInterval":	10000
        },
        "urls": {
          "baseUrl": "https://chat-ca.kommunicate.io",

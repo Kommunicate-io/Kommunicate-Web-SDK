@@ -26,7 +26,7 @@ const BreadcrumbsItem = ({ match, ...rest }) => {
     return (
       match.isExact ?
       (
-        <BreadcrumbItem active className={match.url.includes('/settings/') || match.url.includes('/conversations/oops') ? "invisible" : ""}>{routeName}</BreadcrumbItem>
+        <BreadcrumbItem active className={match.url.includes('/settings/') || match.url.includes('/conversations/oops') || match.url.includes('/helpcenter/') ? "invisible" : ""}>{routeName}</BreadcrumbItem>
       ) :
       ( 
         <BreadcrumbItem>
@@ -45,7 +45,7 @@ const Breadcrumbs = ({ location : { pathname }, match, ...rest }) => {
   const i = 0;
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem} />);
   return (
-    <Breadcrumb className={paths[1].includes("/settings") || paths[paths.length-1].includes('/conversations/oops') || paths[1].includes('/trial-expired') ? "km-remove-border" : ""}>
+    <Breadcrumb className={paths[1].includes("/settings") || paths[paths.length-1].includes('/conversations/oops') || paths[1].includes('/trial-expired') || paths[1].includes("/helpcenter") ? "km-remove-border" : ""}>
       {items}
       { (paths[1] === '/conversations' || paths[1] === '/trial-expired') ? " " : <TrialDaysLeft />}    
     </Breadcrumb>

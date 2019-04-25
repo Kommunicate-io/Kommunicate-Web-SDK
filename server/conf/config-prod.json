@@ -5,8 +5,8 @@
           "url": "mysql://dashboard:db@pr0ddb@applozicdbserver.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate",
           "options": {
             "pool": {
-              "threadPoolMax": 5,
-              "threadPoolMin": 0,
+              "threadPoolMax": 10,
+              "threadPoolMin": 1,
               "idle": 10000
             },
             "logging": false
@@ -19,8 +19,8 @@
           "autoReconnect":true,
           "connectTimeoutMS":30000,
           "socketTimeoutMS":360000,
-          "reconnectTries":	30,
-          "reconnectInterval":	1000
+          "reconnectTries":	9007199254740991,
+          "reconnectInterval":	10000
         },
         "urls": {
           "baseUrl": "https://chat.kommunicate.io",

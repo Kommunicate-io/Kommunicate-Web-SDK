@@ -275,7 +275,20 @@ CREATE TABLE IF NOT EXISTS onboarding (
     PRIMARY KEY(id)
 );
 
----mongoDb
+
 db.getCollection('knowledgebase_copy').update({id:{ $gt: 0 }},{$set:{"categoryType" : 0}},{multi:true ,upsert:false})
 
 db.getCollection('counter').insert({"_id" : "faqCategory_type",  "sequence_value" : 1})
+
+
+-- KM-2171 : For multiple applications - check for password in the first step --
+CREATE TABLE IF NOT EXISTS authentication (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+	user_name VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(200) NOT NULL, 
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME,
+    PRIMARY KEY(id)
+); 
+ALTER TABLE users ADD COLUMN authentication_id int(11) not null;

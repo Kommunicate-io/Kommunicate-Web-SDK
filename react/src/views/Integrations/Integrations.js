@@ -132,8 +132,8 @@ class Integrations extends Component {
                      <div className={enabledClass} data-integration-source ={item.source}>
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
-                         <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} className="integration-settings" data-integry-template-id = {item.templateId} data-integration-source ={item.source} onClick={this.openModal}>{item.label}
+                         <p className="integration-description">{item.subTitle}</p> 
+                         <span data-key={item.key} className="integration-settings km-custom-text-color" data-integry-template-id = {item.templateId} data-integration-source ={item.source} onClick={this.openModal}>{item.label}
                          </span>
                          <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
@@ -163,7 +163,7 @@ class Integrations extends Component {
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys} integrationEnabled={this.state.integrationEnabled}/>
             </div>
-            <span onClick={this.closeModal}><CloseButton /></span>
+            <CloseButton onClick={this.closeModal} />
             </Modal>
         }
         { this.state.integryIntegration &&        
@@ -171,7 +171,7 @@ class Integrations extends Component {
           // commented for testing
             <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles} ariaHideApp= {false} onAfterOpen={this.afterOpenModal} >
                 <div dangerouslySetInnerHTML={{__html: integryModalHtmlContent}} ></div>
-                <span onClick={this.closeModal}><CloseButton /></span>
+                <CloseButton onClick={this.closeModal} />
             </Modal>
         }  
      </div>

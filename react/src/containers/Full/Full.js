@@ -142,6 +142,11 @@ const ConversationAutoClosing = Loadable({
   loading: EmptyLoading
 });
 
+const HelpCenterCustomization = Loadable({
+  loader: () => import('../../views/HelpCenter/Customization/HelpCenterCustomization'),
+  loading: EmptyLoading
+});
+
 const enableIntegry = config.thirdPartyIntegration.integry.enabled;
 const chatUrl = config.baseurl.applozicAPI;
 
@@ -365,7 +370,7 @@ class Full extends Component {
       <div className="app" suppressContentEditableWarning={true}>
         <div className="app-body">
           <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName} isIntegrationStarted={this.state.isIntegrationStarted}/>
-          <main className="main" style={currentPath.includes('/settings')?settingStyle:null}>
+          <main className="main">
             <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
               <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">{CommonUtils.getProductName()} Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
               <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
@@ -390,7 +395,6 @@ class Full extends Component {
                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }} />
                 <Redirect from="/settings/agent-assignment" to="/settings/conversation-rules" />
-                <Route exact path="/faq" name="Faq" render={() => <Faq {...this.props} />} />
                 <Route exact path="/settings/team" name="Team" render={() => <Team {...this.props} />} />
                 <Route exact path="/settings/welcome-message" name="Welcome" render={() => <Welcome {...this.props} />} />
                 <Route exact path="/settings/company" name="Company" render={() => <Company {...this.props} />} />
@@ -408,8 +412,11 @@ class Full extends Component {
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
                 <Route exact path="/settings/csat-ratings" name="ConversationRatings" render={() => <CSATRatings {...this.props} />} />
+                <Route exact path="/helpcenter/content" name="HelpCenterContent" render={() => <Faq {...this.props} />} />} />
+                <Route exact path="/helpcenter/customization" name="HelpCenterCustomization" render={() => <HelpCenterCustomization {...this.props} />} />
                 <Route exact path="/settings/conversation-auto-resolving" name="ConversationAutoResolving" render={() => <ConversationAutoClosing {...this.props} />} />
 
+                <Redirect from="/faq" to="/helpcenter/content" />      
                 <Redirect from="/" to="/dashboard" />      
 
               </Switch>
