@@ -58,6 +58,7 @@ const BetaTag = styled.sup`
     background-color: #f4264f;
     padding: 1px 4px;
     top: -0.8em;
+    font-weight: 500;
 `;
 
 class SettingsSidebar extends Component {

@@ -33,8 +33,11 @@ class Modal extends Component {
             <Fragment>
                 <ReactModal isOpen={isOpen} onAfterOpen={onAfterOpen} onRequestClose={onRequestClose} style={modalStyles} shouldCloseOnOverlayClick={shouldCloseOnOverlayClick} ariaHideApp={false} >
 
-                    <ModalStyles.Header>{heading}</ModalStyles.Header>
-                    <ModalStyles.Hr />
+                    {heading && <Fragment>
+                            <ModalStyles.Header>{heading}</ModalStyles.Header>
+                            <ModalStyles.Hr />
+                        </Fragment>
+                    }
                     <Fragment>
                         {this.props.children}
                     </Fragment>

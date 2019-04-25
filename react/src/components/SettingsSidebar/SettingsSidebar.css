@@ -31,7 +31,7 @@
 .ss-nav-item {
     font-size: 14px;
     color: #666464;
-    transition: all .3s;
+    transition: background-color .3s;
     margin: 5px 0;
 }
 .ss-nav-title {

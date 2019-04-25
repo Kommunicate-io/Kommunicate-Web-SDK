@@ -69,7 +69,8 @@ class HelpCenterCustomization extends Component {
             toggleCustomDomainModal: false,
             inputValue: "",
             value: [],
-            emailSubmitted: false
+            emailSubmitted: false,
+            changesMade: false
         }
     }
 
@@ -146,7 +147,8 @@ class HelpCenterCustomization extends Component {
             value = e.target.value;
         
         this.setState({
-            [name]: value
+            [name]: value,
+            changesMade: true
         })
     }
 
@@ -165,7 +167,8 @@ class HelpCenterCustomization extends Component {
             if(response.status == 200 && response.data.code == "SUCCESS") {
                 Notification.success("Helpcenter customization settings updated successfully");
                 this.setState({
-                    disablePreviewButton: false
+                    disablePreviewButton: false,
+                    changesMade: false
                 })
             }
         }).catch( err => {
@@ -188,18 +191,15 @@ class HelpCenterCustomization extends Component {
     hideLoader = () =>{
         this.setState({ hideLoader:true });
     }
-
     
-  invokeImageUpload = (e, currentUploader) => {
-    e.preventDefault();
-    this.setState({
-        currentUploader: currentUploader
-    })
-
-    let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
-
-    hiddenImageInputElem && hiddenImageInputElem.click();
-  };
+    invokeImageUpload = (e, currentUploader) => {
+        e.preventDefault();
+        this.setState({
+            currentUploader: currentUploader
+        });
+        let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
+        hiddenImageInputElem && hiddenImageInputElem.click();
+    };
 
     handleImageFiles = (e) => {
         e.preventDefault();
@@ -235,6 +235,9 @@ class HelpCenterCustomization extends Component {
         var imageName = `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}-${this.state.currentUploader}.${img.name}`;
         uploadImageToS3(img, imageName).then(response => {
             if(response.status === 200 && response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
+                this.setState({
+                    changesMade: true
+                })
                 if(this.state.currentUploader === "logo") {
                     this.setState({
                         logo: response.data.profileImageUrl
@@ -271,9 +274,10 @@ class HelpCenterCustomization extends Component {
         window.open(url, '_blank');
     }
 
-    toggleCustomDomainModal = () => {
+    toggleCustomDomainModal = (showEmailSubmitted) => {
         this.setState({
-            customDomainModal: !this.state.customDomainModal
+            customDomainModal: !this.state.customDomainModal,
+            emailSubmitted: !showEmailSubmitted 
         });
     }
 
@@ -297,7 +301,9 @@ class HelpCenterCustomization extends Component {
         }).then(response => {
             if(response && response.status === 200 && response.data.code === "SUCCESS") {
                 this.setState({
-                    emailSubmitted: true
+                    emailSubmitted: true,
+                    value: [],
+                    inputValue: ""
                 });
             } 
         });
@@ -391,7 +397,7 @@ class HelpCenterCustomization extends Component {
                         </SendInstructionsContainer>
 
                         <ButtonGroup>
-                            <Button onClick={this.saveCustomizationChanges}>Save changes</Button>
+                            <Button onClick={this.saveCustomizationChanges}  disabled={!this.state.changesMade}>Save changes</Button>
                             <Button secondary onClick={this.openHelpcenterPreview} disabled={this.state.disablePreviewButton}>Preview <MoreInfoLinkSvg color={this.props.theme.primary} /></Button>
                         </ButtonGroup>
                         
@@ -415,7 +421,7 @@ class HelpCenterCustomization extends Component {
                 </ColumnsContainer>
                 
 
-                <Modal isOpen={this.state.customDomainModal} heading="Domain Setup Instructions" onRequestClose={this.toggleCustomDomainModal} width="700px" >                    
+                <Modal isOpen={this.state.customDomainModal} heading={this.state.emailSubmitted ? "": "Domain Setup Instructions"} onRequestClose={() => this.toggleCustomDomainModal(false)} width="700px" >                    
                     {this.state.emailSubmitted ? 
                         <SetUpCompleteContainer>
                             <ConfirmationTick />
@@ -467,7 +473,7 @@ class HelpCenterCustomization extends Component {
 
                     <ButtonGroup style={{textAlign:"right"}}>
                         {this.state.emailSubmitted ? 
-                            <Button onClick={this.toggleCustomDomainModal}>Close</Button> : <Button onClick={this.sendEmail}>Send instructions to tech team</Button>
+                            <Button onClick={() => this.toggleCustomDomainModal(false)}>Close</Button> : <Button onClick={this.sendEmail}>Send instructions to tech team</Button>
                         }
                     </ButtonGroup>
                 </Modal>
@@ -529,7 +535,7 @@ const InputGroupContainer = styled.div`
 `;
 const Label = styled.label`
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: 0.6px;
     color: #4a4a4a;
     margin: 0 5px 0 0;
@@ -582,7 +588,7 @@ const Image = styled.img`
 `;
 const ImageUploadContainer = styled(ColumnsContainer)``;
 const LogoUploadContainer = styled.div`
-    padding-right: 25px;
+    padding-right: 45px;
 `;
 const LogoUpload = styled.div`
     width: 192px;
@@ -669,6 +675,9 @@ const SendInstructionsContainer = styled.div`
 const ButtonGroup = styled.div`
     & button:last-child {
         margin-left: 15px;
+        &:disabled svg path {
+            stroke: #BBBBBB;
+        }
     }
 `;
 const P = styled.p`
