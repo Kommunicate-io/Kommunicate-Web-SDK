@@ -33,7 +33,7 @@ window.addEventListener('error', function(e) {
   }
 }, true);
 var imported = document.createElement('script');
-imported.src = MCK_STATICPATH + '/build/mck-app.js';
+imported.src = MCK_APP_JS;
 imported.crossOrigin = "anonymous";
 document.head.appendChild(imported);
 addFullviewImageModal();
