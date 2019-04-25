@@ -78,7 +78,7 @@ const HeadingContainer = styled.div`
 `;
 const HeadingText = styled.p`
 	font-size: 16px;
-	font-weight: 500;
+	font-weight: 400;
 	letter-spacing: 0.6px;
 	color: #4a4a4a;
 	margin-bottom: 3px;
