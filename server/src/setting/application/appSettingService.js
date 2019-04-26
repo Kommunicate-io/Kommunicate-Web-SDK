@@ -83,7 +83,7 @@ exports.updateAppSettings = async (settings, appId) => {
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
         cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(appId));
         if(settings.popupTemplateKey == null){
-            updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED :MAILBOX_CONFIGURED, completed:true})
+            updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED : ONBOARDING_STATUS.MAILBOX_CONFIGURED, completed:true})
             return { message: "application settings updated successfully" };
         }
         else{
