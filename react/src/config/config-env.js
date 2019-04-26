@@ -201,7 +201,7 @@ export default {
    "kommunicateDashboardUrl": "https://dashboard-ca.kommunicate.io",
    "kommunicateWebsiteUrl": "https://www.kommunicate.io",
    "applozicWebsiteUrl": "https://www.applozic.com",
-   "helpcenterUrl": "https://helpcenter.kommunicate.io",
+   "helpcenterUrl": "https://helpcenter-ca.kommunicate.io",
    "adminDetails":{
        "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
        "kommunicateAdminId": "techdisrupt@applozic.com",

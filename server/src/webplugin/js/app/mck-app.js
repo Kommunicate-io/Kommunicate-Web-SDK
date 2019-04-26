@@ -92,7 +92,7 @@ function ApplozicSidebox() {
                 mckLoadStyle(data.url);
             });
             $.ajax({
-                    url: MCK_STATICPATH + '/template/mck-sidebox.html', crossDomain: true, success: function(data) {
+                    url: MCK_SIDEBOX_HTML, crossDomain: true, success: function(data) {
                         data = data.replace(/MCK_STATICPATH/g, MCK_STATICPATH);
                         $("body").append(data);
                         mckInitPluginScript();
