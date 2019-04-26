@@ -47,7 +47,7 @@ Add your geo-API_KEY in `AndroidManifest.xml` file:
 ```
 
 ### Other properties
-Apart from the properties mentioned in the above [Applozic documentation](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail), there are some other properties in `applozic-seetings.json` file that are specific to Kommunicate.
+Apart from the properties mentioned in the above [Applozic documentation](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail), there are some other properties in `applozic-settings.json` file that are specific to Kommunicate.
 
 ```json
 "enableFaqOption": [         //Setting to enable/disable the FAQ button on the toolbar.
