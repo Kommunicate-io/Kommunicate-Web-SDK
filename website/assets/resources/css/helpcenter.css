@@ -94,10 +94,18 @@ ul.nacc.helpcenter li img{
         min-height: 55px;
     }
 }
+@media only screen and (max-width: 767px) {
+    .helpcenter-landing-video{
+        display: none;
+    }
+}
 @media only screen and (max-width: 860px) {
 
     .helpcenter-features-container .row{
         flex-direction: column-reverse;
+    }
+    .helpcenter-features-container .row.reverse{
+        flex-direction: column;
     }
     .helpcenter-features-text, .helpcenter-features-img,
     .helpcenter-features-text.reverse{
