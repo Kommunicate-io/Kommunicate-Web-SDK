@@ -336,8 +336,7 @@ exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
   }).catch(err => {
     if(err.response && (err.response.status === 400 || err.response.status === 404)){
         throw { status: err.response.status, message: err.response.statusText};
-    } 
-  }	    
+    }     
     console.log("error while getting group info from Applozic", err);
     throw err;
   });
