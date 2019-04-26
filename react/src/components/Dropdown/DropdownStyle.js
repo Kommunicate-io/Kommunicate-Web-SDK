@@ -5,7 +5,10 @@ export const UserDropDownStyles = {
             backgroundColor: 'transparent',
             border: 'none',
             boxShadow: 'none',
-            width: 150
+            width: 150,
+            '&:hover': {
+                cursor: 'pointer'
+              }
         }),
 };
 

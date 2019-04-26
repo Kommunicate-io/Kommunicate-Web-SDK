@@ -11576,3 +11576,6 @@ border-left-color: #5e8631;
   margin-right: 20px;
   margin-top: 18px;
 }
+.user-dropdown-clear-button:hover {
+  cursor: pointer;
+}

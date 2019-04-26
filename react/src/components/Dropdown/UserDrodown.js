@@ -88,6 +88,7 @@ export default class UserDropDown extends React.Component {
                         onInputChange = {this.handleInputChange}
                         autoFocus
                         placeholder="Search..."
+                        noOptionsMessage = {() => "No results" }
                     />
                 </Dropdown>
             </div>
