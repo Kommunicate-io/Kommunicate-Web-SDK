@@ -157,7 +157,7 @@ class HelpCenterCustomization extends Component {
     }
 
     saveCustomizationChanges = () => {
-        if(!isURL(this.state.customDomain)) { 
+        if(this.state.customDomain !== "" && !isURL(this.state.customDomain)) { 
             this.setState({
                 errorText: "Please enter a valid URL."
             });
