@@ -23,6 +23,9 @@ exports.searchRawQuery = (esQuery) => {
                 if (err) {
                     return reject(err)
                 }
+                results.hits.hits = results && results.hits && results.hits.hits.filter(faq => {
+                    return typeof faq !== "undefined";
+                });
                 console.log("results.hits.hits: ", results.hits.hits)
                 return resolve(results.hits.hits);
             });
