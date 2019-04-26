@@ -56,6 +56,15 @@ To resolve it, check with your network team for allowing websocket protocol and 
 - Select the respective bot to answer queries under "Routing rules for bots".
 - If you have recently modified the 'Bot Routing Rules' then test the new behaviour initiating new conversations. Please note that new changes will not be reflected on already created conversations.
 
+## Chat widget is not scaling according the screen size
 
+- Check if you have added the viewport `<meta>` tag to your website.
+- The tag sets the width of the page to follow the screen-width of the device (which will vary on every device)
+
+You can copy the following snippet and paste it in the `<head>` tag of your website.
+
+```
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
 
 If none of the above helps, drop us a mail at support@kommunicate.io
