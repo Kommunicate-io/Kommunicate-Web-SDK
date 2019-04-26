@@ -1006,9 +1006,10 @@
 .km-carousel-card-template {
     max-width: 240px;
     width:240px !important;
-    margin-right: 4px;
-    margin-left: 6px;
-    /* border: 1px solid #e7e4e4; */
+    margin:8px 4px 0 10px;
+}
+.tns-slider .km-carousel-card-template {
+    margin:8px 4px 0 6px;
 }
 .km-carousel-card-img {
     width: 100%;
@@ -1049,15 +1050,6 @@
     color: #565454;
     margin-top: 4px;
     font-weight: 400;
-}
-.km-carousel-card-description {
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    color: #797474;
-    margin-bottom: 4px;
-    height: 44px;
-    height: auto;
-    white-space: pre-line;
 }
 .km-carousel-card-content-wrapper {
     padding-top: 6px;
@@ -1106,10 +1098,14 @@
   position: relative; 
   line-height: 14.4px;
   max-height: 43.2px; 
-  text-align: justify;  
   margin-right: 12px;
   padding-right: 12px;
   margin-top: 4px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  color: #797474;
+  height: auto;
+  white-space: pre-line;
 }
 .km-carousel-card-description:before {
     content: '...';
@@ -1131,6 +1127,11 @@
     background-color: #d6d6d6;
     border-radius: 0 0 4px 0;
     box-shadow: none;
+}
+.km-carousel-card-header-with-img {
+    border: 1px solid #e7e4e4;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
 }
 .km-carousel-card-header-without-img {
     height: 37px;
