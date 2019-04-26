@@ -10,7 +10,7 @@ This section is dedicated to launching and managing conversations in the chat wi
 
 ### Conversation Settings
 Kommunicate provides some parameter to configure the conversation rules when it is created. These parameters can be used to override the conversation rules you have set from dashboard. These parameters can be set using the `Kommunicate.updateSettings()` methods.
-The updated setting will be effective from the next conversation user creates by either clicking on the `Start new conversation` on chat widget or calling the `Kommunciate.startConversation()`.  
+The updated setting will be effective from the next conversation user creates by either clicking on the `Start new conversation` on chat widget or calling the `Kommunicate.startConversation()`.  
 
 Below is the sample code to update the conversation setting:
 
@@ -40,7 +40,7 @@ Below is the detail about the supported parameters:
 #### Example : Assigning conversations to a specific bot/agent on certain events
 
 *Usecase:*  A user comes to your website and starts a conversation with support agents. When user navigates to another page you wants to start conversation  with another agents or bots. You can achieve this by updating the conversation rules dynamically. 
-Set the appropriate values in above mentioned parameters and Kommunciate will use these parameters while creating the conversation. You can update the empty values when user navigate to previous page to make old conversation rules(set from dashboard) effective. 
+Set the appropriate values in above mentioned parameters and Kommunicate will use these parameters while creating the conversation. You can update the empty values when user navigate to previous page to make old conversation rules(set from dashboard) effective. 
 Below is the sample code for the same:
 ```javascript
 
@@ -58,15 +58,15 @@ Kommunicate.updateSettings(defaultSettings);
 ### Launch conversation List
 To launch the chat widget and conversation list, use the following method.
 
+
 ```
 Kommunicate.launchConversation();
 ```
-### Show conversation list
-To show the conversation list, use the following method.
+#### How it works ?
+1. If initially there is no conversation started then it will create a new conversation and open it.
+2. If there is more than one conversation started then it will open the conversation list.
 
-```
-Kommunicate.openConversationList();
-```
+
 
 ### Create a new conversation
 A conversation can be created using startConversation method. Below is the example code for the same. You can choose to define certain parameters to profile this conversation and allot assignee.
