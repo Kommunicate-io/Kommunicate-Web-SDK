@@ -65,7 +65,10 @@ layout:
             //Stopping the startInterval()
             clearInterval(fiveSecTimer);
           }
-          document.getElementById('helpcenter-video').play();
+          $( document ).ready(function() {
+            document.getElementById('helpcenter-video').play();
+          });
+
           </script>
 
 </body>
