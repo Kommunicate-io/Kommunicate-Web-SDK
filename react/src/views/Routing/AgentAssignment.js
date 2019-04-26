@@ -308,7 +308,7 @@ toggleConversationAssignment = () => {
                 <SettingsHeader  />
             </div>
             <div className=" agent-assignment-wrapper row">
-                <div className="card col-11">
+                <div className="card col-md-11">
                     <OptionsContainer className="options-wrapper">
                         <Headings>Routing rules for agents</Headings>
                         <SubHeadings>Select from one of the options below</SubHeadings>
@@ -336,7 +336,7 @@ toggleConversationAssignment = () => {
                     </OptionsContainer>
                     <Hr />
                 </div>
-                <div className="card col-11">
+                <div className="card col-md-11">
                     <OptionsContainer>
                         <Headings>Routing rules for bots</Headings>
                         <OptionsWrapper>
@@ -414,7 +414,7 @@ toggleConversationAssignment = () => {
                     </OptionsContainer>
                     <Hr />
                 </div>
-                <div className="col-11">
+                <div className="col-md-11">
                     <OptionsContainer>
                         <Headings>Reply rules for unassigned bots</Headings>
 

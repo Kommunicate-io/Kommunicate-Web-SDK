@@ -13,6 +13,7 @@ import Banner from '../../components/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
+import { InfoIcon } from '../../assets/svg/svgs';
 
 class ChatWidgetCustomization extends Component {
     constructor() {
@@ -213,16 +214,7 @@ class ChatWidgetCustomization extends Component {
                     <div className="km-color-picker">
                         <div className="km-customizer-heading">Color:
                             <span className="info-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" style={{
-                                    verticalAlign: "middle",
-                                    marginLeft: "8px",
-                                    marginBottom: "2px"
-                                }} data-tip="Default chat widget Color code is #5553b7" data-effect="solid" data-place="right" data-multiline="True">
-                                    <g fill="#514E4E" fillRule="nonzero">
-                                        <path d="M6.6.073c-.014-.002-.026 0-.04 0C2.983.094.073 2.975.073 6.5c0 3.525 2.914 6.409 6.494 6.426a.56.56 0 0 0 .035.002l.001-.002c3.489-.017 6.326-2.9 6.326-6.426 0-3.525-2.837-6.41-6.329-6.427zm.003 12.098l-.03-.001C3.404 12.155.827 9.61.827 6.5S3.405.845 6.598.83c3.073.015 5.574 2.56 5.574 5.67 0 3.108-2.498 5.652-5.569 5.671z" />
-                                        <path d="M6.485 5.38H5.84v4.317h1.32V5.38zM6.509 3.306v-.003l-.004-.001-.008.001-.006-.001v.003c-.399.007-.643.29-.651.659 0 .354.246.64.651.656v.004h.012l.003-.001.003.001v-.001a.636.636 0 0 0 .651-.66c0-.366-.257-.646-.651-.657z" />
-                                    </g>
-                                </svg>
+                                <InfoIcon data-tip="Default chat widget Color code is #5553b7" data-effect="solid" data-place="right" data-multiline="True" />
                             </span>
                         </div>
                         <div className="swatch" onClick={this.handleClick}>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { ChromePicker } from 'react-color';
 import ReactTooltip from 'react-tooltip';
+import { InfoIcon } from '../../assets/svg/svgs';
 
 class ColorPicker extends Component {
 
@@ -33,9 +34,7 @@ class ColorPicker extends Component {
 			<ColorPickerContainer className={className}>
 				<HeadingContainer className={className && className + "--km-customizer-heading"}>
 					<HeadingText className={className && className + "--km-color-picker-heading"}>{heading}</HeadingText>
-					{ tooltip && <InfoContainer data-rh-at="right" data-tip={tooltip} data-effect="solid" data-place="right">
-						<InfoIcon>i</InfoIcon>
-					</InfoContainer> }
+					{ tooltip && <InfoIcon data-rh-at="right" data-tip={tooltip} data-effect="solid" data-place="right" /> }
 				</HeadingContainer>
 				<SwatchContainer className={className && className + "--swatch"} onClick={this.handleClick}>
 					<SwatchColor className={className && className + "--color"} bgColor={color} />
@@ -82,26 +81,8 @@ const HeadingText = styled.p`
 	letter-spacing: 0.6px;
 	color: #4a4a4a;
 	margin-bottom: 3px;
+	margin-right: 5px;
 `;
-
-const InfoContainer = styled.div`
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-`;
-const InfoIcon = styled.div`
-    width: 15px;
-    height: 15px;
-    font-size: 12px;
-    line-height: 15px;
-    border: 1px solid #515050;
-    border-radius: 50%;
-    margin: 0 auto;
-`;
-
 const SwatchContainer = styled(HeadingContainer)`
     width: 150px;
     border-radius: 4px;

@@ -245,3 +245,9 @@
     font-size: 0px;
     cursor: pointer;
 }
+.info-icon {
+    margin-left: 5px;
+}
+.info-icon svg {
+    vertical-align: middle;
+}

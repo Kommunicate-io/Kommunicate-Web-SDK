@@ -4,30 +4,12 @@ import styled, { withTheme, createGlobalStyle } from 'styled-components';
 import CommonUtils from '../../utils/CommonUtils';
 import './SettingsSidebar.css';
 import SubSection from './SettingsSubSectionLinks.json';
+import { InfoIcon } from '../../assets/svg/svgs';
 
 const LinkContainer = styled.a`
     display: flex !important; 
     align-items: center;
     justify-content: flex-start;
-`;
-
-const InfoContainer = styled.div`
-    width: 20px;
-    height: 15px;
-    margin-right: 5px;
-`;
-
-const InfoIcon = styled.div`
-    width: 15px;
-    height: 15px;
-    font-size: 12px;
-    line-height: 15px;
-    border: 1px solid #666464;
-    background-color: #666464;
-    color: #FFF;
-    border-radius: 50%;
-    margin: 0 auto;
-    text-align: center;
 `;
 
 const GlobalSettingSidebarStyle = createGlobalStyle`
@@ -44,10 +26,15 @@ const GlobalSettingSidebarStyle = createGlobalStyle`
         color: #FFF;
         text-decoration: none;
     }
-    .ss-nav-item:hover .ss-nav-link .info-icon, .ss-nav-link.active .info-icon {
-        color: #666464;
-        border: 1px solid #FFF;
-        background-color: #FFF;
+    .ss-nav-item .ss-nav-link svg {
+        margin-right: 5px;
+        transition: all .3s;
+    }
+    .ss-nav-item:hover .ss-nav-link svg circle {
+        fill: #fff;
+    }
+    .ss-nav-item:hover .ss-nav-link svg path:last-child {
+        fill: #4a4a4a;
     }
 `;
 
@@ -106,9 +93,7 @@ class SettingsSidebar extends Component {
                             this.state.isApplozicTrialExpired ? this.renderOnlyBillingSection() : SubSection[currentSection].map((data, index) => (
                                 data.isLink ? <li className={data.dashboard !== "" ? "ss-nav-item product product-" + data.dashboard : "ss-nav-item"}  key={index}>
                                     {data.icon ? <LinkContainer href={data.linkTo} className="ss-nav-link" target="_blank">
-                                        <InfoContainer>
-                                            <InfoIcon className="info-icon">?</InfoIcon>
-                                        </InfoContainer>
+                                        <InfoIcon />
                                         {data.link}
                                     </LinkContainer>
                                 : <NavLink to={data.linkTo} className="ss-nav-link" activeClassName="active">{data.link}</NavLink>}

@@ -12,7 +12,7 @@ import ColorPicker from '../../../components/ColorPicker/ColorPicker';
 import Button from '../../../components/Buttons/Button';
 import Notification from '../../model/Notification';
 import ImageUploader from '../../Admin/ImageUploader';
-import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick  } from '../../../assets/svg/svgs';
+import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick, InfoIcon  } from '../../../assets/svg/svgs';
 import CommonUtils from '../../../utils/CommonUtils';
 import MultiEmail from "../../MultiEmail/MultiEmail";
 import { getConfig } from '../../../config/config';
@@ -139,7 +139,10 @@ class HelpCenterCustomization extends Component {
     }
 
     handleColorPickerChange = (changedColor) => {
-        this.setState({ helpcenterColor: changedColor.hex });
+        this.setState({ 
+            helpcenterColor: changedColor.hex,
+            changesMade: true
+        });
     }
 
     handleInputChange = (e) => {
@@ -319,7 +322,7 @@ class HelpCenterCustomization extends Component {
                 <div className="km-heading-wrapper">
 					<SettingsHeader  />
                 </div>
-
+                
                 <ColumnsContainer>
 
                     <Columns>
@@ -348,9 +351,7 @@ class HelpCenterCustomization extends Component {
                                 </FaviconUpload>
                                 <FaviconDescription>
                                     <FaviconDescriptionHeading>Favicon
-                                        <InfoContainer data-rh-at="right" data-tip="Shortcut icon, Website icon, <br />Tab icon, URL icon, or Bookmark icon" data-effect="solid" data-place="right" data-html={true}> 
-                                            <InfoIcon>i</InfoIcon>
-                                        </InfoContainer>
+                                        <InfoIcon style={{marginLeft: "5px"}} data-rh-at="right" data-tip="Shortcut icon, Website icon, <br />Tab icon, URL icon, or Bookmark icon" data-effect="solid" data-place="right" data-html={true} />
                                     </FaviconDescriptionHeading>
                                     <FaviconDescriptionSubHeading>Recommended Ratio: 1:1 <br />ICO or PNG</FaviconDescriptionSubHeading>
                                 </FaviconDescription>
@@ -490,9 +491,7 @@ const InputGroup = (props) => {
             <LabelContainer>
                 <LabelWrapper>
                     <Label htmlFor={props.id}>{props.heading}</Label> 
-                    { props.tooltip && <InfoContainer data-rh-at="right" data-tip={props.tooltip} data-effect="solid" data-place="right" data-html={true}> 
-                        <InfoIcon>i</InfoIcon>
-                    </InfoContainer> }
+                    { props.tooltip && <InfoIcon data-rh-at="right" data-tip={props.tooltip} data-effect="solid" data-place="right" data-html={true} /> }
                 </LabelWrapper>
                 <CharCount>{props.charCount}</CharCount>
             </LabelContainer> 
@@ -567,19 +566,6 @@ const InfoContainer = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 1px;
-`;
-const InfoIcon = styled.div`
-    width: 15px;
-    height: 15px;
-    font-size: 12px;
-    line-height: 15px;
-    border-radius: 50%;
-    margin: 0 auto;
-    color: #fff;
-    background-color: #4a4a4a;
-    font-style: italic;
-    font-family: serif;
-    padding-right: 2px;
 `;
 
 // Image Upload Section

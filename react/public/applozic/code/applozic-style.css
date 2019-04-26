@@ -756,6 +756,9 @@ body {
 	margin-bottom: 2px;
 	margin-left: 6px;
 }
+.km-tooltipsvg svg{
+	vertical-align: text-top;
+}
 
 .km-lastseen-online{
 	color : #22d674 !important;
