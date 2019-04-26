@@ -63,9 +63,8 @@ To launch the chat widget and conversation list, use the following method.
 Kommunicate.launchConversation();
 ```
 #### How it works ?
-1. If initially there is no conversation started then it will create a new conversation and open it.
-2. If there is more than one conversation started then it will open the conversation list.
-
+1. Initially, if there are no previous conversations, then it will create a new conversation and open it.
+2. If you have old/previous conversations, it will open the conversation list.
 
 
 ### Create a new conversation
