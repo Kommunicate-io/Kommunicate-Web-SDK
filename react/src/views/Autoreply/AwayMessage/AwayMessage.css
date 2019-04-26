@@ -102,7 +102,11 @@ body {
 }
 
 .info-icon {
-    margin-left: 0px;
+    margin-left: 5px;
+    vertical-align: text-top;
+}
+.info-icon svg {
+    vertical-align: middle;
 }
 
 .checkbox-input[type='checkbox'] {

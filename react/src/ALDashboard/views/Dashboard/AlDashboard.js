@@ -9,7 +9,7 @@ import ApplozicClient   from '../../../utils/applozicClient';
 import { getAgentAndUsers} from '../../../utils/kommunicateClient';
 import Notification from '../../../views/model/Notification';
 import { ALAnalyticsDashboardLoader } from '../../../components/EmptyStateLoader/emptyStateLoader';
-import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentIcon } from '../../../assets/svg/svgs';
+import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentIcon, InfoIcon } from '../../../assets/svg/svgs';
 import tinycolor from 'tinycolor2';
 import Onboarding from '../../../components/UserOnboarding/Onboarding';
 import OnBoardingModal from '../../../views/Pages/SetUpPage/OnBoardingModal';
@@ -264,9 +264,7 @@ class AlDashboard extends Component {
                             <TotalUsersIcon primarycolor={this.props.theme.primary} primarycolorlight={this.props.theme.primaryLight}  />
                             <H2>{this.state.totalUsers}</H2>
                             <P>Total registered users</P>
-                            <InfoContainer data-rh-at="right" data-tip="Total number of users registered on your platform" data-effect="solid" data-place="right">
-                                <InfoIcon>?</InfoIcon>
-                            </InfoContainer>
+                            <InfoContainer><InfoIcon data-rh-at="right" data-tip="Total number of users registered on your platform" data-effect="solid" data-place="right" /></InfoContainer>
                         </AnalyticsCards>
 
                         <AnalyticsCards>
@@ -279,9 +277,7 @@ class AlDashboard extends Component {
                             <ConversationThreadsIcon primarycolor={this.props.theme.primary} primarycolorlight={this.props.theme.primaryLight}  />
                             <H2>{this.state.conversationThreads}</H2>
                             <P>Conversation threads</P>
-                            <InfoContainer data-rh-at="right" data-effect="solid" data-place="right" data-tip="Total number of one-to-one conversations, group <br> conversations and announcement threads" data-html={true}>
-                                <InfoIcon>?</InfoIcon>
-                            </InfoContainer>
+                            <InfoContainer><InfoIcon data-rh-at="right" data-effect="solid" data-place="right" data-tip="Total number of one-to-one conversations, group <br> conversations and announcement threads" data-html={true} /></InfoContainer>
                         </AnalyticsCards>
 
                         <AnalyticsCards>
@@ -412,17 +408,11 @@ const InfoContainer = styled.div`
     left: 12px;
     width: 20px;
     height: 20px;
-    cursor: pointer;
-`;
-
-const InfoIcon = styled.div`
-    width: 15px;
-    height: 15px;
-    font-size: 12px;
-    line-height: 15px;
-    border: 1px solid #515050;
-    border-radius: 50%;
-    margin: 0 auto;
+    & svg {
+        width: 15px;
+        height: 15px;
+        margin: 0;
+    }
 `;
 
 const AnalyticsGraphContainer = styled.div`
