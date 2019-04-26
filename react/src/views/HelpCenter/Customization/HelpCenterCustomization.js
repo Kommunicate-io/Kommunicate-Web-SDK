@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip';
 import copy from 'copy-to-clipboard';
 import tinycolor from 'tinycolor2';
 import CreatableSelect from "react-select/lib/Creatable";
+import isURL from 'validator/lib/isURL';
 import isEmail from "validator/lib/isEmail";
 import Modal from '../../../components/Modal/Modal';
 import {getAppSetting, updateAppSetting, uploadImageToS3, notifyThatEmailIsSent} from '../../../utils/kommunicateClient';
@@ -12,9 +13,8 @@ import ColorPicker from '../../../components/ColorPicker/ColorPicker';
 import Button from '../../../components/Buttons/Button';
 import Notification from '../../model/Notification';
 import ImageUploader from '../../Admin/ImageUploader';
-import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick, InfoIcon  } from '../../../assets/svg/svgs';
+import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick, InfoIcon, ErrorIcon } from '../../../assets/svg/svgs';
 import CommonUtils from '../../../utils/CommonUtils';
-import MultiEmail from "../../MultiEmail/MultiEmail";
 import { getConfig } from '../../../config/config';
 import {SetUpYourDomainContainer, DomainTable, SetUpCompleteContainer} from '../../../views/Company/companyStyle';
 
@@ -70,7 +70,8 @@ class HelpCenterCustomization extends Component {
             inputValue: "",
             value: [],
             emailSubmitted: false,
-            changesMade: false
+            changesMade: false,
+            errorText: ""
         }
     }
 
@@ -156,6 +157,16 @@ class HelpCenterCustomization extends Component {
     }
 
     saveCustomizationChanges = () => {
+        if(!isURL(this.state.customDomain)) { 
+            this.setState({
+                errorText: "Please enter a valid URL."
+            });
+            return false;
+        } else {
+            this.setState({
+                errorText: ""
+            });
+        }
         let data = {
             "helpCenter": {
                 "color": this.state.helpcenterColor,
@@ -391,7 +402,7 @@ class HelpCenterCustomization extends Component {
 
                         <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} charCount={this.state.homepageTitle.length + "/60"}  maxLength="60" />
 
-                        <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} />
+                        <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} error={this.state.errorText !== ""} errorText={this.state.errorText} />
 
                         <SendInstructionsContainer>
                             <Button link secondary onClick={this.toggleCustomDomainModal} style={{paddingLeft: "0", marginBottom: "10px"}}>Mail instructions to tech team for sub domain setup</Button>
@@ -496,6 +507,10 @@ const InputGroup = (props) => {
                 <CharCount>{props.charCount}</CharCount>
             </LabelContainer> 
             <Input id={props.id} className="input" type="text" name={props.name} value={props.value} onChange={props.onChange} placeholder={props.placeholder} {...props} />
+            {props.error && <ErrorFieldContainer>
+                <ErrorIcon />
+                <ErrorText>{props.errorText}</ErrorText>
+            </ErrorFieldContainer>}
         </InputGroupContainer>
     )
 }
@@ -566,6 +581,18 @@ const InfoContainer = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 1px;
+`;
+const ErrorFieldContainer = styled(ColumnsContainer)`
+    align-items: center;
+
+    & svg {
+        width: 14px;
+        height: 14px;
+    }
+`;
+const ErrorText = styled.p`
+    margin: 0 0 0 5px;
+    color: #ED1C24;
 `;
 
 // Image Upload Section
