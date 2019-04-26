@@ -50,7 +50,10 @@ Add your geo-API_KEY in `AndroidManifest.xml` file:
 Apart from the properties mentioned in the above [Applozic documentation](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail), there are some other properties in `applozic-seetings.json` file that are specific to Kommunicate.
 
 ```json
-"isFaqOptionEnabled": true,   //This will enable the FAQ button on the toolbar.
+"enableFaqOption": [         //Setting to enable/disable the FAQ button on the toolbar.
+    false,                   //Making this true will enable the FAQ button on the conversation list screen(first screen)
+    false                    //Making this true will enable the FAQ button on the message list screen(individual chat thread)
+  ],
 "enableAwayMessage": false,   //Away message will be disabled
 "logoutOption": false,        //The logout option in the Option menu will be hidden
 "showStartNewConversation" : false, //The default Start New Conversation button will be hidden
