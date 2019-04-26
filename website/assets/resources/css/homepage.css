@@ -3015,6 +3015,9 @@ ul.nacc li p {
   .naccs .tabs-images-container {
     min-height: 250px;
   }
+  .naccs .tabs-images-container.helpcenter img {
+    height: 400px;
+  }
   .homepage-ab-beta-features-section {
     padding-bottom: 50px;
   }

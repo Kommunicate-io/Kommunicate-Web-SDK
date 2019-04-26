@@ -231,7 +231,8 @@
     letter-spacing: normal;
     color: #fff;
     margin: 25px 0px;
-
+    text-align: left;
+    padding-left: 20px;
 }
 .footer-cta-section .cta-signup-btn {
     background-color: #2dd35c;
@@ -597,4 +598,5 @@ footer .copyright {
     padding-top: 30px;
     padding-bottom: 30px;
     margin-bottom: 30px;
+    max-width: 95%;
 }

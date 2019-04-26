@@ -1,0 +1,73 @@
+---
+layout:
+---
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A simple and powerful tool to create Knowledge Base, reduce customer queries and improve customer service experience.">
+    <meta name="og:description" content="A simple and powerful tool to create Knowledge Base, reduce customer queries and improve customer service experience.">
+    <meta name="author" content="">
+    <meta http-equiv=”content-language” content=”en-us”>
+    <meta property="og:title" content="Build Knowledge Base and FAQs | Helpcenter | Kommunicate" />
+    <meta property="og:image" content="/assets/resources/images/Kommunicate.jpg" />
+
+    <title>Build Knowledge Base and FAQs | Helpcenter | Kommunicate</title>
+ 
+    {% include headtag.html %} {% include scripts.html %}
+    <link rel="stylesheet" href="/assets/resources/css/homepage.css" type="text/css">
+    <link rel="stylesheet" href="/assets/resources/css/helpcenter.css" type="text/css">
+
+</head>
+
+<body>
+      {% include_relative /sections/helpcenter-landing-page-hero.html %}
+      {% include customer-logos.html %}
+      {% include_relative /sections/helpcenter-features.html %}
+      {% include homepage-ab-customer-testimonial-section.html %}
+      {% include nav-header.html %}
+
+      {% include footer-ab-section.html %}
+      <script>
+
+          var div = $(".naccs .menu div"), fiveSecTimer;
+          
+          
+           //on click to tab, turn it on, and turn previously-on tab off
+          $(div).on("mouseover", function() {
+            var numberIndex = $(this).index();
+            if (!$(this).is("active")) {
+              $(".naccs .menu div").removeClass("active");
+              $(".naccs ul li").removeClass("active");
+              $(this).addClass("active");
+              $(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
+          
+              var listItemHeight = $(".naccs ul").find("li:eq(" + numberIndex + ")").innerHeight();
+              $(".naccs .tabs-images-container").height(listItemHeight + "px");
+          
+              stopInterval();
+              fiveSecTimer = setInterval(startInterval, 5000);
+            }
+          
+          });
+          
+          function startInterval() {
+            //get currently active tab
+            // var tabListDiv = $(".naccs ul li").filter(".active");
+            var mainDiv = $(".naccs .menu div").filter(".active");
+            //click either next tab, if exists, else first one
+            var tabListDiv = mainDiv.index() < div.length-1 ? mainDiv.next() : div.first();
+            tabListDiv.mouseover();
+          }
+          function stopInterval() {
+            //Stopping the startInterval()
+            clearInterval(fiveSecTimer);
+          }
+          
+          </script>
+
+</body>
+
+</html>
