@@ -1703,8 +1703,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "", "km-conversation-search-icon-svg-properties");
 				}
 				if(key === 13){
-					kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
-					kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
 					_this.searchMessages();
 				}	
 			});
@@ -1724,11 +1722,18 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			});
 			_this.searchMessages = function (){
+				var kmSearch = document.getElementById("km-search");
+				var searchQuery = kmSearch.value.trim()
+				if (!searchQuery){
+					return !searchQuery;
+				}
+				kmUtils.modifyClassList( {id : ["km-conversation-search-icon-svg"]}, "n-vis","vis");
+				kmUtils.modifyClassList( {id : ["km-clear-search-text"]}, "vis","n-vis");
 				document.getElementById("km-search-results").innerHTML = "";
 				kmUtils.modifyClassList( {id : ["km-no-search-results-found"]}, "n-vis","vis");
 				kmUtils.modifyClassList( {id : ["km-contact-loading"]}, "vis","n-vis");
 				var params = {
-					search: kmSearch.value.trim()
+					search: searchQuery
 				}
 				if(kmSearch.value && kmSearch.value.trim()){
 					MESSAGE_SEARCH_DETAILS.activeConversationList = document.getElementsByClassName("km-conversation-icon-active")[0].id;

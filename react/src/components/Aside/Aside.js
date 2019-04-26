@@ -950,7 +950,7 @@ class Aside extends Component {
                             <div className="km-form-group">
                               <div id="km-assigned-search-input-box" className="km-input-group blk-lg-12">
                               <span id="km-clear-search-text" className=" km-clear-search-text n-vis"> × </span>
-                              <input type="text" id="km-search" className= "km-search-icon-properties" placeholder="Search..."/>
+                              <input type="text" id="km-search" className= "km-search-icon-properties" autoComplete="off" placeholder="Search..."/>
                               <span className="km-search-icon km-conversation-search-icon"> 
                                 <SearchBarIcon id = "km-conversation-search-icon-svg"/>
                               </span> 
