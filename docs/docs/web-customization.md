@@ -74,7 +74,7 @@ btn.addEventListener("click", function() {
 });
 ```
 
-### Make chat widget full screen or add it in a container
+## Full screen chat widget
 To make the chat widget full screen or to add it in a container, follow the instructions given in the readme of [Kommunicate-Live-Chat-Plugin](https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/tree/master/kommunicate-script-example)
 
 ## Default metadata 
