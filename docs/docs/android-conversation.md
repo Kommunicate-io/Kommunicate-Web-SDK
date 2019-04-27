@@ -31,13 +31,13 @@ Then override the ```KmActionCallback```'s ```onReceive``` method :
 ```
 
 ## Open Conversation Screen:
-Launch the chat screen (where all the conversations are listed in descending order of time of communication) by using this method:
+Open the conversation screen (where all the conversations are listed in descending order of time of communication) by using the below method:
 
 ```java
 Kommunicate.openConversation(context);
 ```
 
-If you need the callback for launchChat, then use the below method:
+If you need the callback when the screen is opened, then use the below method:
 ```java
 Kommunicate.openConversation(context, null, new KmCallback() {
                         @Override
@@ -138,7 +138,8 @@ If you have your agentList and botList and need to create conversation with them
                     });
 ```
 ## Open a particular conversation thread:
-You can open a particular conversation if you have the chat ID of that particular conversation using the below method.
+You can open a particular conversation thread screen if you have the chat ID of that particular conversation using the below method.
+
 ```java
 Kommunicate.openParticularConversation(context, chatId, new KmCallback() {
                         @Override

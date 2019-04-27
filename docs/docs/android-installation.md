@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-implementation 'io.kommunicate:kommunicate:1.8.4'
+implementation 'io.kommunicate:kommunicate:1.8.5'
 ```
 
 ## Building with proguard
@@ -59,20 +59,21 @@ Parameters along with the methods of KMChatBuilder(the parameters should be pass
 
 | Parameter        | Parameter type           |Method| Description  |
 | ------------- |:------------- |:------------- |:-----|
-| context      | Activity | new KmChatBuilder(&lt;context&gt;)| Passed in the constructor. Only Activity Context is accepted. Excpetion is thrown otherwise  |
+| context      | Activity | new KmChatBuilder(&lt;context&gt;)| Passed in the constructor. Only Activity Context is accepted. Exception is thrown otherwise  |
 | APP_ID | String | setApplicationId(<APP_ID>)|Ignore if you have already initialised the SDK with [APP_ID](https://dashboard.kommunicate.io/settings/install) |
 | chatName      | String      | setChatName(&lt;chatName&gt;) | Optional, you can pass a chat name or null |
-| kmUser | KMUser     |  setKmUser(&lt;kmUser&gt;) | Pass the details if you have the user details, null other wise. |
+| kmUser | KMUser     |  setKmUser(&lt;kmUser&gt;) | Pass the details if you have the user details, null otherwise. |
 | withPreChat | boolean      | setWithPreChat(&lt;withPreChat&gt;) | Pass true if you would like the user to fill the details before starting the chat. IF you have user details then you can pass false. |
 | isSingleChat | boolean      | setSingleChat(&lt;isSingleChat&gt;) |  Pass false if you would like to create new conversation every time user starts a chat. This is true by default which means only one conversation will open for the user every time the user starts a chat. |
-| agentList | List<String>      | setAgentIds(&lt;agentList&gt;)|   Pass the list of agents. The agent id would be the email id you used to register on kommunicate. Leave null if you want to create conversation with default agent.|
-| botList | List<String>      |  setBotIds(&lt;botList&gt;) | Pass the list of bots.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID. Leave null if you haven't integrated any bots |
+| agentList | List&lt;String&gt; | setAgentIds(&lt;agentList&gt;)|   Pass the list of agents. The agent id would be the email id you used to register on kommunicate. Leave null if you want to create conversation with default agent.|
+| botList | List&lt;String&gt; |  setBotIds(&lt;botList&gt;) | Pass the list of bots.Go to bots(https://dashboard.kommunicate.io/bot) -> Integrated bots -> Copy botID. Leave null if you haven't integrated any bots |
 | deviceToken | String | setDeviceToken(&lt;deviceToken&gt;) | Pass the deviceToken(Push notification token) obtained from FirebaseInstanceIdListener. Refer [here](https://docs.kommunicate.io/docs/android-pushnotification) for more details.|
+| metadata | Map&lt;String, String&gt; |  setMetadata(&lt;metadata&gt;) | This metadata if set will be sent with all the messages sent from that device. Also this metadata will be set to the conversations created from that device. |
 | callback | KmCallback      |  launchChat(&lt;callback&gt;)<br />OR<br />createChat(&lt;callback&gt;) | Callback to notify Success or Failure |
 
-The difference between launchChat and createChat is that launchChat will also launch the chat after creating it whereas createChat will only create the chat and won't launch it.
+The difference between launchChat and createChat is that launchChat will also launch the chat after creating it, whereas createChat will only create the chat and won't launch it.
 
-Below are some examples of how you can customise the builder for launching a single chat. If you want to create a new chat everytime then call `.setSingleChat(false)` on the builder. Doing so, the chat hostory won't be retained.
+Below are some examples of how you can customise the builder for launching a single chat. If you want to create a new chat everytime then call `.setSingleChat(false)` on the builder. Doing so, the chat history won't be retained.
 
 ### Launching chat for visitor:
 If you would like to launch the chat directly without the visiting user entering any details, then use the builder as below:
@@ -155,5 +156,5 @@ new KmChatBuilder(MainActivity.this).setKmUser(user).launchChat(new KmCallback()
                         }
                     });
 ```
-If you have a different use-case and would like to customise the chat creation , user creation and chat launch, you can explore our docs further.
+If you have a different use-case and would like to customise the chat creation, user creation and chat launch, you can explore our docs further.
 
