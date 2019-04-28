@@ -14,6 +14,7 @@ import { getApplication } from '../../utils/kommunicateClient';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import Button from '../../components/Buttons/Button';
 import LockBadge from '../../components/LockBadge/LockBadge';
+import Banner from '../../components/Banner';
 
 
 let headers = {
@@ -306,13 +307,12 @@ class PushNotification extends Component {
     return (   
       <div className="fadeIn animated km-push-notification-container">
          <div className="km-heading-wrapper">
-         <div className="app-id-container " style={{margin: "-15px 0 50px 0"}}>
-                <div className="app-id-div">
-                 <span className="rectangle-7"> This setup is for mobile sdk only</span>
-                    <span className="app-id-main-text">{this.yourApplicationId}</span>
-             </div>
-           </div>
-            <SettingsHeader  />
+          <div className="app-id-container " style={{margin: "-15px 0 50px 0"}}>
+            <div className="app-id-div">
+              <Banner heading="This setup is for mobile sdk only" />
+            </div>
+          </div>
+          <SettingsHeader  />
         </div>
         <div className="row">
           <div className="col-md-12">
@@ -329,7 +329,7 @@ class PushNotification extends Component {
 
                       <div className="fcm-key col-md-2">GCM/FCM key :<span className="customer-type"> </span></div>
                       <div className="col-md-10">
-                        <input id="gcmKey" onChange={(e) => { this.setState({ gcmKey: e.target.value }) }} className="km-input-apns km-gcm-input" value={this.state.gcmKey} type="text" onFocus={(e) => { this.setState({ disableButtonForAndroid: false }) }} autocomplete="off"></input></div>
+                        <input id="gcmKey" onChange={(e) => { this.setState({ gcmKey: e.target.value }) }} className="km-input-apns km-gcm-input" value={this.state.gcmKey} type="text" onFocus={(e) => { this.setState({ disableButtonForAndroid: false }) }} autoComplete="off"></input></div>
                     </div>
                     <div>
                       {
@@ -378,7 +378,7 @@ class PushNotification extends Component {
                     <div className="row form-group  pushnotifiction-sub">
                       <div className="apple-certificate second-option">Password :<span className="customer-type"> </span></div>
                       <div className="col-sm-6 col-md-6">
-                        <input className="km-input-apns" value={this.state.apnsPassword} onChange={(e) => { this.setState({ disableButtonForIosDistribution: false, apnsPassword: e.target.value }) }} id="apnsPassword" type="password" autocomplete="off"></input></div>
+                        <input className="km-input-apns" value={this.state.apnsPassword} onChange={(e) => { this.setState({ disableButtonForIosDistribution: false, apnsPassword: e.target.value }) }} id="apnsPassword" type="password" autoComplete="off"></input></div>
                     </div>
                     <div>
                       {
@@ -410,7 +410,7 @@ class PushNotification extends Component {
                       <div className="row form-group" style={{marginLeft:"0"}}>
                         <div className="apple-certificate second-option">Password :<span className="customer-type"> </span></div>
                         <div className=" col-md-6">
-                          <input className="km-input-apns" value={this.state.apnstestPassword} onChange={(e) => { this.setState({ disableButtonForIosDevelopment: false, apnstestPassword: e.target.value }) }} id="testApnsPassword" type="password" autocomplete="off"></input></div>
+                          <input className="km-input-apns" value={this.state.apnstestPassword} onChange={(e) => { this.setState({ disableButtonForIosDevelopment: false, apnstestPassword: e.target.value }) }} id="testApnsPassword" type="password" autoComplete="off"></input></div>
                       </div>
                     </div>
                     <div>
