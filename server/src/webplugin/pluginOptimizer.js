@@ -144,7 +144,7 @@ const generateBuildFiles = () => {
     // Generate mck-sidebox.html file for build folder.
     fs.readFile(path.join(__dirname, "template/mck-sidebox.html"), 'utf8', function (err, data) {
         if (err) {
-            console.log("error while generating plugin.js", err);
+            console.log("error while generating mck-sidebox.html", err);
         }
         fs.writeFile(`${buildDir}/mck-sidebox.${version}.html`, data, function (err) {
             if (err){
@@ -159,7 +159,7 @@ const generateBuildFiles = () => {
         var mckApp = data.replace('MCK_APP_JS', `"${MCK_STATIC_PATH}/build/mck-app.${version}.js"`)
         fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
             if (err){
-                console.log("mck-file generation error");}
+                console.log("plugin.js generation error");}
         })
     });
     // Generate mck-app.js file for build folder.
