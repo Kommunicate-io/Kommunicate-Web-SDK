@@ -40,7 +40,7 @@ export default class UserDropDown extends React.Component {
         let applicationId = userSession.application.applicationId;
         return getUsersByType(applicationId, this.props.userType).then(data => {
             data.map((user, index) => {
-                users.push({ label: user.name || user.userName, value: user.userName })
+                users.push({ label: user.name || user.userName, value: user.userName, isDisabled: this.props.isDisabled || false })
             })
             this.setState({
                 users: users,
@@ -105,6 +105,18 @@ const selectStyles = {
         paddingLeft: 25,
         '&:hover': { borderColor: '#5553b7'}
     }),
+    option: (styles, { isDisabled, isFocused, isSelected }) => {
+        return {
+          ...styles,
+          ':after': isDisabled ? {
+              content: 'url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0Ij4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTggOGgtMVY2YzAtMi43Ni0yLjI0LTUtNS01UzcgMy4yNCA3IDZ2Mkg2Yy0xLjEgMC0yIC45LTIgMnYxMGMwIDEuMS45IDIgMiAyaDEyYzEuMSAwIDItLjkgMi0yVjEwYzAtMS4xLS45LTItMi0yem0tNiA5Yy0xLjEgMC0yLS45LTItMnMuOS0yIDItMiAyIC45IDIgMi0uOSAyLTIgMnptMy4xLTlIOC45VjZjMC0xLjcxIDEuMzktMy4xIDMuMS0zLjEgMS43MSAwIDMuMSAxLjM5IDMuMSAzLjF2MnoiIGZpbGw9IiMyZmMzNTkiLz48L3N2Zz4=)',
+              position: 'absolute',
+              right: '10px',
+              zIndex: '5',
+          } : null,
+          cursor: isDisabled ? 'not-allowed' : 'default',
+        };
+    },
     menu: () => ({ boxShadow: 'inset 0 1px 0 rgba(0, 0, 0, 0.1)' }),
 };
 const Menu = props => {

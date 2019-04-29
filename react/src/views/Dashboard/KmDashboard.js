@@ -862,6 +862,7 @@ render() {
               userType ={[USER_TYPE.AGENT, USER_TYPE.ADMIN]}
               defaultValue={this.state.agentFilterSelectedOption}
               name="km-dashboard-agent-filter"
+              isDisabled={!CommonUtils.hasFeatureAccess()}
               styles = {UserDropDownStyles}
              />
             {/* <span id="tooltip-span" className="tooltip-span">
