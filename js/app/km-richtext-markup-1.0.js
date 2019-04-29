@@ -216,6 +216,7 @@ getListMarkup:function(){
                     {{/buttons}}  
              </div>
          </div>
+     </div>
      </div>`
  },
  getDialogboxTemplate : function(){
@@ -376,6 +377,9 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 if(item.imgSrc){
                 item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
                }
+               if(item.description) {
+                   item.description = KommunicateUI.stripHtml(item.description);
+               }
                if(item.action && item.action.replyMetadata){
                  item.replyMetadata = typeof  item.action.replyMetadata =="object"? JSON.stringify(item.action.replyMetadata):item.action.replyMetadata;
                }
@@ -421,7 +425,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 return button;
         })
     }
-        
+
        return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
     }else{
         return "";
