@@ -263,6 +263,11 @@ function KmUtils() {
         
     };
 
+    _this.removeHtmlTag = function(html) {
+        let temporalDivElement = document.createElement("div");
+        temporalDivElement.innerHTML = html;
+        return temporalDivElement.textContent || temporalDivElement.innerText || "";
+    }
 }
 function KmContactUtils() {
     var _this = this;
