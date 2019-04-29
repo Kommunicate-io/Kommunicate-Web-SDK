@@ -462,6 +462,8 @@ class HelpCenterCustomization extends Component {
                                 </tbody>
                             </DomainTable>
                             <p>If you have any problems with the setup, please contact your domain admin support team. They will be able to help you out</p>
+                            <ModalSeperator/>
+                            <SetupInstructionText>Send instructions to:</SetupInstructionText>
                             <CreatableSelect
                                 className={'multi-email-input-field'}
                                 components={components}
@@ -484,9 +486,7 @@ class HelpCenterCustomization extends Component {
                     }
 
                     <ButtonGroup style={{textAlign:"right"}}>
-                        {this.state.emailSubmitted ? 
-                            <Button onClick={() => this.toggleCustomDomainModal(false)}>Close</Button> : <Button onClick={this.sendEmail}>Send instructions to tech team</Button>
-                        }
+                            <Button onClick={() => this.toggleCustomDomainModal(false)} secondary>Cancel</Button> <Button disabled={!this.state.value.length} onClick={this.sendEmail}>Send Instructions</Button>
                     </ButtonGroup>
                 </Modal>
 
@@ -643,6 +643,18 @@ const FaviconDescriptionHeading = styled(LogoDescriptionHeading)`
         margin-left: 5px;
     }
 `;
+
+const ModalSeperator = styled.hr`
+    border: dashed .3px #d8d8d8;
+    margin: 30px 0;
+`;
+
+const SetupInstructionText = styled.p`
+  font-size: 16px;
+  line-height: 1.25;
+  color: #49494a;
+`;
+
 const FaviconDescriptionSubHeading = styled(LogoDescriptionSubHeading)``;
 
 
@@ -695,6 +707,7 @@ const ButtonGroup = styled.div`
 `;
 const P = styled.p`
     margin: 10px 0;
+    margin-left: 2px!important;
 `;
 
 const customStyles = {
