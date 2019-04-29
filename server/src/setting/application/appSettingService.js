@@ -33,7 +33,7 @@ exports.getAppSettingsByDomain = criteria => {
     var key = generateKey(criteria.helpCenter.domain);
     return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
         if (res) {
-            logger.info("picking appsetting data from cache server , key:",key);
+            logger.info("picking appSetting from cache , key:",key);
             return {
                 message: "SUCCESS",
                 data: res
@@ -48,7 +48,7 @@ exports.getAppSettingsByDomain = criteria => {
                     data: result
                 };
             }).catch(err => {
-                logger.info("Application settings get error");
+                logger.info("error while fetching appSetting");
                 throw err;
             });
         }
