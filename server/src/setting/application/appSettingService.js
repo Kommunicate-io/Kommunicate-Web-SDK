@@ -29,15 +29,30 @@ exports.getAppSettingsByApplicationId = (criteria) => {
             throw err;
         });  
 }
-exports.getAppSettingsByDomain = criteria =>{
-    return applicationSettingModel.find({
-        where: fn('JSON_CONTAINS', literal('help_center->"$.domain"'), '"'+criteria.helpCenter.domain+'"'),
-      }).then(result=>{
-          return { message: "SUCCESS", data: result };
-      }).catch(err => {
-        logger.info("Application settings get error");
-        throw err;
-      });
+exports.getAppSettingsByDomain = criteria => {
+    var key = generateKey(criteria.helpCenter.domain);
+    return cacheClient.getDataFromMap(APPSETTINGMAP, key).then(res => {
+        if (res) {
+            logger.info("picking appsetting data from cache server , key:",key);
+            return {
+                message: "SUCCESS",
+                data: res
+            };
+        } else {
+            return applicationSettingModel.find({
+                where: fn('JSON_CONTAINS', literal('help_center->"$.domain"'), '"' + criteria.helpCenter.domain + '"'),
+            }).then(result => {
+                cacheClient.setDataIntoMap(APPSETTINGMAP, key, result, expiryTime);
+                return {
+                    message: "SUCCESS",
+                    data: result
+                };
+            }).catch(err => {
+                logger.info("Application settings get error");
+                throw err;
+            });
+        }
+    });
 };
 
 exports.getAppSettingsByApplicationIdFromCache = criteria => {
@@ -97,8 +112,10 @@ exports.updateAppSettings = async (settings, appId) => {
         settings.preLeadCollection = [...new Set(settings.preLeadCollection)]; 
     }
     let updateOnboardingStatus = settings.widgetTheme || settings.supportMails
-    return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId } })).then(res => {
+    return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId }})).then(res => {
+        appSetting.helpCenter && appSetting.helpCenter.domain && appSetting.helpCenter.domain.filter(domain =>{ cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(domain));}) ;
         cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(appId));
+        
         if(settings.popupTemplateKey == null){
             updateOnboardingStatus && onboardingService.insertOnboardingStatus({applicationId: appId, stepId: settings.widgetTheme ? ONBOARDING_STATUS.WIDGET_CUSTOMIZED : ONBOARDING_STATUS.MAILBOX_CONFIGURED, completed:true})
             return { message: "application settings updated successfully" };
@@ -128,9 +145,9 @@ exports.getAppSettingIdByApplicationId = (appId) => {
     });
 }
 
-const generateKey =(appId)=>{
-    if(appId){
-        return "appSetting-"+appId;
+const generateKey =(key)=>{
+    if(key){
+        return "appSetting-"+key;
     }
     return null;
 }
