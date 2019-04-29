@@ -377,9 +377,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 if(item.imgSrc){
                 item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
                }
-               if(item.description) {
-                   item.description = KommunicateUI.stripHtml(item.description);
-               }
+               item.description && (item.description = KommunicateUI.removeHtmlTag(item.description));
                if(item.action && item.action.replyMetadata){
                  item.replyMetadata = typeof  item.action.replyMetadata =="object"? JSON.stringify(item.action.replyMetadata):item.action.replyMetadata;
                }
