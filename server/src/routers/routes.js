@@ -137,9 +137,14 @@ function(req,res){
   })
   res.status(200).json(response);
 });
-home.get('/kommunicate.app',webpluginController.getPlugin);
-home.get('/v2/kommunicate.app',webpluginController.iframePlugin);
-home.get('/seed/liz', seedLiz.seedLiz)
+
+home.get("/kommunicate.app", function(req, res){
+  // below is the code to handle the "forward".
+  req.url = "/v1/kommunicate.app";
+  home.handle(req, res);
+});
+home.get('/:version/kommunicate.app',webpluginController.getPlugin);
+home.get('/seed/liz', seedLiz.seedLiz);
 
 // requests for user preference service
 userRouter.post("/preference/add", validate(userValidation.createUserPreference), userPreferenceController.createUserPreference);
