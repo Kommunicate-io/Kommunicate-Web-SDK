@@ -8,6 +8,8 @@ const onboardingService = require('../../onboarding/onboardingService');
 const cacheClient = require("../../cache/hazelCacheClient");
 const APPSETTINGMAP ="appSettingMap";
 const expiryTime = 86400000;
+const Sequelize = require("sequelize");
+const { fn, col ,literal} = Sequelize;
 
 exports.getAppSettingsByApplicationId = (criteria) => {
         return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
@@ -27,6 +29,16 @@ exports.getAppSettingsByApplicationId = (criteria) => {
             throw err;
         });  
 }
+exports.getAppSettingsByDomain = criteria =>{
+    return applicationSettingModel.find({
+        where: fn('JSON_CONTAINS', literal('help_center->"$.domain"'), '"'+criteria.helpCenter.domain+'"'),
+      }).then(result=>{
+          return { message: "SUCCESS", data: result };
+      }).catch(err => {
+        logger.info("Application settings get error");
+        throw err;
+      });
+};
 
 exports.getAppSettingsByApplicationIdFromCache = criteria => {
   var key = generateKey(criteria.applicationId);
@@ -69,7 +81,12 @@ exports.updateAppSettings = async (settings, appId) => {
    let appSetting = await applicationSettingModel.find({ where: { applicationId: appId }});
     if (!appSetting) { throw new Error("APPLICATION_NOT_FOUND") }
     if(settings.helpCenter && appSetting.helpCenter){
-        settings.helpCenter = deepmerge(appSetting.helpCenter, settings.helpCenter);
+        if(settings.helpCenter.domain && Array.isArray(settings.helpCenter.domain)){
+            settings.helpCenter = deepmerge(appSetting.helpCenter.domain, settings.helpCenter);
+            settings.helpCenter.domain = [...new Set(settings.helpCenter.domain)];  
+        }else{
+            settings.helpCenter = deepmerge(appSetting.helpCenter, settings.helpCenter);
+        }
     }
     if(settings.supportMails && appSetting.supportMails){
         settings = deepmerge(appSetting.supportMails, settings);
