@@ -659,7 +659,10 @@ const FaviconDescriptionSubHeading = styled(LogoDescriptionSubHeading)``;
 
 
 // Live Preview Section Design
-const LivePreviewContainer = styled.div``;
+const LivePreviewContainer = styled.div`
+    max-width: 550px;
+    margin-top: 60px;
+`;
 const LivePreview = styled.div`
     border-radius: 6px;
     background-color: #ffffff;
@@ -706,23 +709,10 @@ const ButtonGroup = styled.div`
     }
 `;
 const P = styled.p`
-    margin: 10px 0;
-    margin-left: 2px!important;
+   &&&{
+        margin: 10px 0 10px 2px;
+   }
 `;
-
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      overflow: 'hidden',
-      height: '450px',
-      width: '600px'
-    }
-};
 
 const avatarEditorConfig = {
     "logo": {
