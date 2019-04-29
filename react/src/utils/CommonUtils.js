@@ -328,6 +328,11 @@ const CommonUtils = {
     encryptDataUsingCrypto: function (data) {
 		return CryptoJS.AES.encrypt(JSON.stringify(data), getCommonResource().kommunicateCryptoKey);
 
+    },
+    removeHtmlTag: function(html) {
+        let temporalDivElement = document.createElement("div");
+        temporalDivElement.innerHTML = html;
+        return temporalDivElement.textContent || temporalDivElement.innerText || "";
     }
 }
 
