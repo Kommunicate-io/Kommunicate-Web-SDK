@@ -462,6 +462,8 @@ class HelpCenterCustomization extends Component {
                                 </tbody>
                             </DomainTable>
                             <p>If you have any problems with the setup, please contact your domain admin support team. They will be able to help you out</p>
+                            <ModalSeperator/>
+                            <SetupInstructionText>Send instructions to:</SetupInstructionText>
                             <CreatableSelect
                                 className={'multi-email-input-field'}
                                 components={components}
@@ -484,9 +486,7 @@ class HelpCenterCustomization extends Component {
                     }
 
                     <ButtonGroup style={{textAlign:"right"}}>
-                        {this.state.emailSubmitted ? 
-                            <Button onClick={() => this.toggleCustomDomainModal(false)}>Close</Button> : <Button onClick={this.sendEmail}>Send instructions to tech team</Button>
-                        }
+                            <Button onClick={() => this.toggleCustomDomainModal(false)} secondary>Cancel</Button> <Button disabled={!this.state.value.length} onClick={this.sendEmail}>Send Instructions</Button>
                     </ButtonGroup>
                 </Modal>
 
@@ -643,11 +643,26 @@ const FaviconDescriptionHeading = styled(LogoDescriptionHeading)`
         margin-left: 5px;
     }
 `;
+
+const ModalSeperator = styled.hr`
+    border: dashed .3px #d8d8d8;
+    margin: 30px 0;
+`;
+
+const SetupInstructionText = styled.p`
+  font-size: 16px;
+  line-height: 1.25;
+  color: #49494a;
+`;
+
 const FaviconDescriptionSubHeading = styled(LogoDescriptionSubHeading)``;
 
 
 // Live Preview Section Design
-const LivePreviewContainer = styled.div``;
+const LivePreviewContainer = styled.div`
+    max-width: 550px;
+    margin-top: 60px;
+`;
 const LivePreview = styled.div`
     border-radius: 6px;
     background-color: #ffffff;
@@ -694,22 +709,10 @@ const ButtonGroup = styled.div`
     }
 `;
 const P = styled.p`
-    margin: 10px 0;
+   &&&{
+        margin: 10px 0 10px 2px;
+   }
 `;
-
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      overflow: 'hidden',
-      height: '450px',
-      width: '600px'
-    }
-};
 
 const avatarEditorConfig = {
     "logo": {

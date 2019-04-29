@@ -40,7 +40,7 @@ export const TopbarLogoContainer = styled.div `
     justify-content: space-around;
     cursor: pointer;
     &:after{
-        content: "Help Center";
+        content: "Helpcenter";
         position: absolute;
         top: 50%;
         width: 120px;
@@ -87,7 +87,7 @@ export const TopbarLogo = styled.span `
         width: 130px;
         right: -43%;
         font-weight: 300;
-        color: #fff;
+        color: ${props => props.theme.helpcenterHeadingFontColor};
         transform: translate(0% , -62%);
         font-size: 30px;
     }
