@@ -1,10 +1,10 @@
 var MCK_CONTEXTPATH = ":MCK_CONTEXTPATH";
-var MCK_STATICPATH =":MCK_STATICPATH";
+var MCK_STATICPATH = ":MCK_STATICPATH";
 var MCK_ONINIT = "";
-var KM_PLUGIN_SETTINGS=JSON.parse(':PLUGIN_SETTINGS');
+var KM_PLUGIN_SETTINGS = JSON.parse(':PLUGIN_SETTINGS');
 var MCK_PLUGIN_VERSION = ":MCK_PLUGIN_VERSION";
-var MCK_THIRD_PARTY_INTEGRATION =JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
-var PRODUCT_ID =":PRODUCT_ID";
+var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
+var PRODUCT_ID = ":PRODUCT_ID";
 
 
 // iframe class
@@ -49,25 +49,25 @@ var kmCustomIframe =
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 
-function appendIframe () {
-    createKommunicateIframe();
-    createCustomClasses(kmCustomIframe); // Add class to document
+function appendIframe() {
+  createKommunicateIframe();
+  createCustomClasses(kmCustomIframe); // Add class to document
 };
 
-function isV1Script(){
-    return MCK_PLUGIN_VERSION === "v1";
+function isV1Script() {
+  return MCK_PLUGIN_VERSION === "v1";
 };
 
 function createCustomClasses(classSettings) {
-    // Create custom classes 
-    var style = document.createElement('style');
-    style.type = 'text/css';
-    style.innerHTML = classSettings;
-    document.getElementsByTagName('head')[0].appendChild(style);
+  // Create custom classes 
+  var style = document.createElement('style');
+  style.type = 'text/css';
+  style.innerHTML = classSettings;
+  document.getElementsByTagName('head')[0].appendChild(style);
 };
 
 // Create element iframe for kommunicate widget
-function createKommunicateIframe () {
+function createKommunicateIframe() {
   var kommunicateIframe = document.createElement("iframe");
   kommunicateIframe.setAttribute("style", "overflow:hidden;"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
@@ -80,67 +80,66 @@ function createKommunicateIframe () {
   kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
   if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-      // Do Firefox-related activities
-      var testClick = window.document.getElementById("kommunicate-widget-iframe");
-      testClick.onload = function () {
-          addKommunicatePluginToIframe();
-      };
+    // Do Firefox-related activities
+    var testClick = window.document.getElementById("kommunicate-widget-iframe");
+    testClick.onload = function () {
+      addKommunicatePluginToIframe();
+    };
   } else {
-      window.setTimeout(function () {
-          addKommunicatePluginToIframe();
-      }, 500);
+    window.setTimeout(function () {
+      addKommunicatePluginToIframe();
+    }, 500);
   }
 };
 
 function addKommunicatePluginToIframe() {
-    // Add kommunicate plugin inside iframe
-    var addableWindow, addableDocument;
-    if (isV1Script()){
-        addableWindow = window;
-        addableDocument = document;
-    }
-    else {
-        var kommunicateIframe = window.document.getElementById("kommunicate-widget-iframe");
-        var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
-        addableWindow = kommunicateIframe.contentWindow;
-        addableDocument = iframeDocument ;
-    }
+  // Add kommunicate plugin inside iframe
+  var addableWindow, addableDocument;
+  if (isV1Script()) {
+    addableWindow = window;
+    addableDocument = document;
+  } else {
+    var kommunicateIframe = window.document.getElementById("kommunicate-widget-iframe");
+    var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+    addableWindow = kommunicateIframe.contentWindow;
+    addableDocument = iframeDocument;
+  }
 
-    addableWindow.applozic = (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate) || {};
-    addableWindow.MCK_CONTEXTPATH = MCK_CONTEXTPATH;
-    addableWindow.MCK_STATICPATH =MCK_STATICPATH;
-    addableWindow.MCK_ONINIT = "";
-    addableWindow.KM_PLUGIN_SETTINGS=KM_PLUGIN_SETTINGS;
-    addableWindow.MCK_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
-    addableWindow.MCK_THIRD_PARTY_INTEGRATION =MCK_THIRD_PARTY_INTEGRATION;
-    addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
-    var options={};
-    var options = addableWindow.applozic._globals;
-    options.isAnonymousChat =options.isAnonymousChat;
-    options.KM_VER = MCK_PLUGIN_VERSION; 
-    if (typeof options !== 'undefined') {
-        addableWindow.MCK_ONINIT = options.onInit;
-    }
-    addableWindow.addEventListener('error', function(e) {
+  addableWindow.applozic = (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate) || {};
+  addableWindow.MCK_CONTEXTPATH = MCK_CONTEXTPATH;
+  addableWindow.MCK_STATICPATH = MCK_STATICPATH;
+  addableWindow.MCK_ONINIT = "";
+  addableWindow.KM_PLUGIN_SETTINGS = KM_PLUGIN_SETTINGS;
+  addableWindow.MCK_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
+  addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
+  addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
+  var options = {};
+  var options = addableWindow.applozic._globals;
+  options.isAnonymousChat = options.isAnonymousChat;
+  options.KM_VER = MCK_PLUGIN_VERSION;
+  if (typeof options !== 'undefined') {
+    addableWindow.MCK_ONINIT = options.onInit;
+  }
+  addableWindow.addEventListener('error', function (e) {
     let sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
     sentryConfig.enable && typeof Sentry != "undefined" && Sentry.withScope(function (scope) {
-        scope.setTag("applicationId", options.appId);
-        scope.setTag("userId", options.userId);
-        scope.setUser({
+      scope.setTag("applicationId", options.appId);
+      scope.setTag("userId", options.userId);
+      scope.setUser({
         id: options.appId
-        });
-        Sentry.captureException(e);
+      });
+      Sentry.captureException(e);
     });
-    if (typeof(e.target.src) !== 'undefined' && e.target.src.indexOf('sidebox') !== -1 && typeof MCK_ONINIT === 'function') {
-        console.log("Plugin loading error. Refresh page.");
-        MCK_ONINIT("error");
+    if (typeof (e.target.src) !== 'undefined' && e.target.src.indexOf('sidebox') !== -1 && typeof MCK_ONINIT === 'function') {
+      console.log("Plugin loading error. Refresh page.");
+      MCK_ONINIT("error");
     }
-    }, true);
-    var imported = addableDocument.createElement('script');
-    imported.src = MCK_APP_JS;
-    imported.crossOrigin = "anonymous";
-    addableDocument.head.appendChild(imported);
-    addFullviewImageModal();
+  }, true);
+  var imported = addableDocument.createElement('script');
+  imported.src = MCK_APP_JS;
+  imported.crossOrigin = "anonymous";
+  addableDocument.head.appendChild(imported);
+  addFullviewImageModal();
 };
 
 /*
@@ -241,7 +240,7 @@ function addFullviewImageModal () {
       fullscreenModal.innerHTML = modalHtml;
       parent.document.body.appendChild(fullscreenModal);
 
-       // Append CSS of image fullview viewer modal to body of html page
+      // Append CSS of image fullview viewer modal to body of html page
       var style = parent.document.createElement('style');
       style.type = 'text/css';
       style.innerHTML = addFullviewImageModalCss;
