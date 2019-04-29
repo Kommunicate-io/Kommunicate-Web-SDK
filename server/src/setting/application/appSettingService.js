@@ -8,6 +8,8 @@ const onboardingService = require('../../onboarding/onboardingService');
 const cacheClient = require("../../cache/hazelCacheClient");
 const APPSETTINGMAP ="appSettingMap";
 const expiryTime = 86400000;
+const Sequelize = require("sequelize");
+const { fn, col ,literal} = Sequelize;
 
 exports.getAppSettingsByApplicationId = (criteria) => {
         return Promise.resolve(applicationSettingModel.findAll({ where: criteria})).then(res => {
@@ -27,6 +29,16 @@ exports.getAppSettingsByApplicationId = (criteria) => {
             throw err;
         });  
 }
+exports.getAppSettingsByDomain = criteria =>{
+    return applicationSettingModel.find({
+        where: fn('JSON_CONTAINS', literal('help_center->"$.domain"'), '"'+criteria.helpCenter.domain+'"'),
+      }).then(result=>{
+          return { message: "SUCCESS", data: result };
+      }).catch(err => {
+        logger.info("Application settings get error");
+        throw err;
+      });
+};
 
 exports.getAppSettingsByApplicationIdFromCache = criteria => {
   var key = generateKey(criteria.applicationId);

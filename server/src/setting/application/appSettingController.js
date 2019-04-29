@@ -16,7 +16,7 @@ exports.getAppSettingsByDomain = (req, res) => {
   let criteria = {
     helpCenter: { domain: url.parse(req.headers.origin).host }
   } 
-  return applicationService.getAppSettingsByApplicationId(criteria).then(response => {
+  return applicationService.getAppSettingsByDomain(criteria).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message, response: response.data });
   }).catch(err => {
     console.log("error while creating customer on application_settings", err);
