@@ -6,6 +6,8 @@ module.exports = {
         'src/components/Banner/index.js',
         'src/components/Buttons/**/[A-Z]*.js',
         'src/components/Checkbox/**/[A-Z]*.js',
+        'src/components/ColorPicker/**/[A-Z]*.js',
+        'src/components/Modal/**/[M]*.js',
         'src/components/MultiToggleSwitch/index.js',
         'src/components/RadioButton/**/[A-Z]*.js',
         'src/components/SliderToggle/**/[A-Z]*.js'
@@ -22,7 +24,7 @@ module.exports = {
     },
     defaultExample: false,
     usageMode: "expand",
-    version: "1.0.0",
+    version: "1.1.0",
     template: {
         favicon: 'public/favicon.ico',
         head: {
