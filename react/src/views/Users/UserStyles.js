@@ -37,11 +37,16 @@ const ButtonGroup = styled.div`
         margin-left: 20px;
     }
 `;
+const P = styled.p`
+    font-size: 14px;
+    color: #393a39;
+`;
 
 export {
     LabelContainer,
     InputGroupContainer,
     Label,
     Input,
-    ButtonGroup
+    ButtonGroup,
+    P
 }

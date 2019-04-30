@@ -120,7 +120,7 @@ class CustomerListItem extends Component {
     var createdAtTime = window.$kmApplozic.fn.applozic('getDateTime', user.createdAtTime);
     var lastLoggedInAtTime = (typeof user.lastLoggedInAtTime !== 'undefined')? (window.$kmApplozic.fn.applozic('getDateTime', user.lastLoggedInAtTime)) : '';
     var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined')? (DateTimeUtils.lastSeenTime(user.lastSeenAtTime)) : '';
-    return (<tr>
+    return (<tr className={this.props.user.deactivated ? "km-user-blocked": ""}>
       <td className="text-center">
         <div>
           <div className="customer-section-design">
@@ -182,16 +182,16 @@ class CustomerListItem extends Component {
           <p>Edit</p>
         </div>
       </td>
-      <td className="users-icon-container n-vis">
-        <div onClick={() => this.props.openModal("deleteUser")}>
+      <td className="users-icon-container">
+        <div onClick={() => this.props.openModal("deleteUser", user)}>
           <DeleteIcon />
           <p>Delete</p>
         </div>
       </td>
-      <td className="users-icon-container n-vis">
-        <div onClick={() => this.props.openModal("blockUser")}>
+      <td className="users-icon-container">
+        <div onClick={() => this.props.openModal(this.props.user.deactivated ? "unBlockUser" : "blockUser", user)}>
           <BlockIcon />
-          <p>Block</p>
+          <p>{this.props.user.deactivated ? "Unblock" : "Block"}</p>
         </div>
       </td>
     </tr>);

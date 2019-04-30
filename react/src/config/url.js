@@ -19,7 +19,9 @@ export default {
         SEARCH_USER:"/rest/ws/user/search/contact",
         GET_MESSAGE_LIST: "/rest/ws/message/list",
         GROUP_ALL: "/rest/ws/group/all",
-        CUSTOMER_INFO: "/rest/ws/application/customer/info"
+        CUSTOMER_INFO: "/rest/ws/application/customer/info",
+        ACTIVATE_DEACTIVATE_USER: "/rest/ws/user/update/status",
+        DELETE_USER: "/rest/ws/user/delete"
     }, 
     kommunicateApi: {
         LOGIN: "/login",
