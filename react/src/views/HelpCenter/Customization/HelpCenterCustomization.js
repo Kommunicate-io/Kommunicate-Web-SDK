@@ -463,7 +463,7 @@ class HelpCenterCustomization extends Component {
                             </DomainTable>
                             <p>If you have any problems with the setup, please contact your domain admin support team. They will be able to help you out</p>
                             <ModalSeperator/>
-                            <SetupInstructionText>Send instructions to:</SetupInstructionText>
+                            <SetupInstructionText>Send these instructions to:</SetupInstructionText>
                             <CreatableSelect
                                 className={'multi-email-input-field'}
                                 components={components}
@@ -711,6 +711,7 @@ const ButtonGroup = styled.div`
 const P = styled.p`
    &&&{
         margin: 10px 0 10px 2px;
+        margin-bottom: 35px;
    }
 `;
 
