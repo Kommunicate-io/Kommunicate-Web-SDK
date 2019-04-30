@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const date = require('../../package.json').pluginVersion;
 const version = require('child_process')
-  .execSync('git rev-parse --short HEAD')
+  .execSync('git rev-parse --short HEAD', {cwd: __dirname})
   .toString().trim();
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../../conf/config");
