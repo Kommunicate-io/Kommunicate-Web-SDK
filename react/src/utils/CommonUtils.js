@@ -328,7 +328,7 @@ const CommonUtils = {
     encryptDataUsingCrypto: function (data) {
 		return CryptoJS.AES.encrypt(JSON.stringify(data), getCommonResource().kommunicateCryptoKey);
 
-    },
+    }
 }
 
 export default CommonUtils;
