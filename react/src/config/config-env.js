@@ -43,7 +43,7 @@ export default {
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     },
-    "loadBalancerDnsValue": "TEST-LOADBALANCER-623268850.us-east-1.elb.amazonaws.com"
+    "loadBalancerDnsValue": "dashboard-proxy-test.kommunicate.io"
 },
 
 "test" : {
@@ -91,7 +91,7 @@ export default {
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
 },
-    "loadBalancerDnsValue": "TEST-LOADBALANCER-623268850.us-east-1.elb.amazonaws.com"
+    "loadBalancerDnsValue": "dashboard-proxy-test.kommunicate.io"
 },
     
 "staging" : {
@@ -139,7 +139,7 @@ export default {
     "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     },
-    "loadBalancerDnsValue": "TEST-LOADBALANCER-623268850.us-east-1.elb.amazonaws.com"
+    "loadBalancerDnsValue": "dashboard-proxy-test.kommunicate.io"
 },
     
  "prod" :{
@@ -188,7 +188,7 @@ export default {
     "applozic": {
         'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
     },
-    "loadBalancerDnsValue": "KOMMUNICATELOADBALANACER-628917815.us-east-1.elb.amazonaws.com"
+    "loadBalancerDnsValue": "dashboard-proxy.kommunicate.io"
 },
     
 "prod_ca" :{
@@ -235,7 +235,7 @@ export default {
     "applozic": {
         'stripe': 'pk_live_AKXOn0EVITgKlLDM3KduJjp1'
     },
-    "loadBalancerDnsValue": "KOM-CA-LOADBALANCER-1964220300.ca-central-1.elb.amazonaws.com"
+    "loadBalancerDnsValue": "dashboard-proxy-ca.kommunicate.io"
 },
  
 "prod_mzadqatar" :{
@@ -282,7 +282,6 @@ export default {
    "applozic": {
         'stripe': 'pk_test_fTj5uBW3Noxymz532VJFmItj'
     },
-    "loadBalancerDnsValue":"MZAD-SWEATNET-PROD-LOADBALANCER-1031499291.us-east-1.elb.amazonaws.com"
 
  },
  "commonResources":{
