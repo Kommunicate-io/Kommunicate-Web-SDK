@@ -121,4 +121,10 @@ function KommunicateCommons() {
         })(navigator.userAgent || navigator.vendor || window.opera);
         return check;
       };
+
+    _this.removeHtmlTag = function(html){
+        let temporalDivElement = document.createElement("div");
+        temporalDivElement.innerHTML = html;
+        return temporalDivElement.textContent || temporalDivElement.innerText || "";
+    }  
 };
