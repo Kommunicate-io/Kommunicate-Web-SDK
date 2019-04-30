@@ -32,3 +32,9 @@ module.exports.searchCustomer={
         applicationId:joi.string().required()
   }
 }
+
+module.exports.reactivateAccountWithoutPayment={
+  query:{
+        appId:joi.string().required()
+  }
+}

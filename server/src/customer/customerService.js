@@ -103,24 +103,35 @@ const createApplication = (application) => {
     return applicationService.createApplication(application);
 }
 
-const reactivateAccount = async function (appId) {
+const reactivateAccount = async function (appId,userIds,enableWithoutPayment) {
     let customer = await getCustomerByApplicationId(appId);
-    if (customer.subscription && !customer.isProductApplozic && customer.subscription != subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP) {
-        let users = [];
-        let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
+    if ((customer.subscription && !customer.isProductApplozic && customer.subscription != subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP)||enableWithoutPayment ) {
+        let users, liz, dbUsers, result= [];
+        if(userIds){
+            var criteria ={};
+            criteria.applicationId =appId;
+            criteria.userName = userIds;
+            dbUsers = await userService.getUserListByCriteria(criteria);
+            if(userIds.length !== dbUsers.length){
+                throw "userId is incorrect";
+            }
+            users=dbUsers;
+        }else{
+        result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC'], ['id', 'ASC']])
         let admin = dbUsers.filter(user => { return user.type == 3 });
         let agents = dbUsers.filter(user => { return user.type == 1 });
         let bots = dbUsers.filter(user => { 
             return (!(user.userName == 'bot' || user.userName == 'liz')&& user.type == 2);
         });
-        let liz = dbUsers.find(user => { 
+         liz = dbUsers.find(user => { 
             return  user.userName == 'liz';
         });
         users.push(...admin, ...agents, ...bots);
+    }
 
         for (var i = 0; i < users.length; i++) {
-            let userStatus = (i < result.subscription.plan_quantity) ? 1 : 2;
+            let userStatus = (i < result && result.subscription.plan_quantity) || enableWithoutPayment? 1 : 2;
             let dataToBeUpdated = { status: userStatus };
             users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = userStatus);
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
@@ -130,12 +141,14 @@ const reactivateAccount = async function (appId) {
                 console.log("bot updation error", error)
             }
         }
-        userService.updateOnlyKommunicateUser(liz.userName, appId, {"bot_availability_status":1, "status": 1 });
-        botClientService.updateBot({ 'key': liz.userKey, 'status': 'enabled' })
+        !enableWithoutPayment && userService.updateOnlyKommunicateUser(liz.userName, appId, {"bot_availability_status":1, "status": 1 });
+        (enableWithoutPayment && userIds.includes("liz") || !enableWithoutPayment)&& botClientService.updateBot({ 'key': liz.userKey, 'status': 'enabled' })
         applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE });
     }
     return "success";
 }
+
+
 
 const updateApplicationInApplozic = async (customer) => {
     let application = {};

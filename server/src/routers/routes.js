@@ -181,6 +181,7 @@ userRouter.delete("/invitation",validate(userValidation.deleteInvitation), userC
 
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 customerRouter.post('/',validate(customerValidation.createCustomer),registerController.createCustomer);
+customerRouter.patch('/reactivate',validate(customerValidation.reactivateAccountWithoutPayment),registerController.reactivateAccountWithoutPayment);
 customerRouter.patch('/:userId',validate(customerValidation.patchCustomer),registerController.patchCustomer);
 customerRouter.get('/:userName',registerController.getCustomerInformation);
 customerRouter.post('/applozic',function(req,res){

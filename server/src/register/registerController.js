@@ -294,3 +294,16 @@ exports.getCustomerByApplicationId = (req, res) => {
     res.status(500).json({ code: "ERROR", message: "internal server error" });
   });
 }
+
+exports.reactivateAccountWithoutPayment =(req, res) =>{
+  var appId = req.query.appId;
+  var userIds = req.body.userIds;
+  return customerService.reactivateAccount(appId,userIds,true).then(result =>{
+     return  res.status(200).json({code:"SUCCESS", message:"account reactivated successfully"});
+  }).catch(err =>{
+    if(err === "userId is incorrect"){
+      return res.status(400).json({code:"ERROR", message :err});
+    }
+    return res.status(500).json({code:"ERROR", message :"Internal server error"});
+  })
+}
