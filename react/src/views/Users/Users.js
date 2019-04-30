@@ -723,7 +723,7 @@ lost. Although, the user can come back to initiate a new conversation with you a
         </div>
       </div>
 
-      <Modal isOpen={this.state.modalType !== ""} heading={`${renderModalContent[this.state.modalType].heading} `} onRequestClose={() => this.openModal("")} width="550px">
+      <Modal isOpen={this.state.modalType !== ""} heading={renderModalContent[this.state.modalType].heading} onRequestClose={() => this.openModal("")} width="550px">
         {
           renderModalContent[this.state.modalType].content  
         }
