@@ -420,4 +420,5 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
 }
+
 }

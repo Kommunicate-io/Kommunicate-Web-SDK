@@ -371,6 +371,7 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
                 if(item.imgSrc){
                 item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
                }
+               item.description && (item.description = kmUtils.removeHtmlTag(item.description));
                //checking for type
                if(!item.action || item.action.type =="quick_reply" || item.action.type =="submit"){
                 item.href = "javascript:void(0)";
