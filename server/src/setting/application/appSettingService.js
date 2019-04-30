@@ -113,7 +113,9 @@ exports.updateAppSettings = async (settings, appId) => {
     }
     let updateOnboardingStatus = settings.widgetTheme || settings.supportMails
     return Promise.resolve(applicationSettingModel.update(settings, { where: { applicationId: appId }})).then(res => {
-        appSetting.helpCenter && appSetting.helpCenter.domain && appSetting.helpCenter.domain.filter(domain =>{ cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(domain));}) ;
+        if(appSetting.helpCenter && appSetting.helpCenter.domain){
+            Array.isArray(appSetting.helpCenter.domain) ? appSetting.helpCenter.domain.filter(domain =>{ cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(domain))}) :cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(appSetting.helpCenter.domain)) ;
+        }
         cacheClient.deleteDataFromMap(APPSETTINGMAP, generateKey(appId));
         
         if(settings.popupTemplateKey == null){
