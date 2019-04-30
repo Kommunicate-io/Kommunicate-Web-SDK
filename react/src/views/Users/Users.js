@@ -442,7 +442,7 @@ class Users extends Component {
     }
     ApplozicClient.activateDeactivateUser(params).then(response => {
       if(response && response.status === 200 && response.data.response === 'success') {
-        Notification.success("User blocked successfully");
+        Notification.success("User " + (params.deactivate ? "blocked" : "unblocked" ) + " successfully");
         this.openModal("");
         this.reRenderUsersList();
       }

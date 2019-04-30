@@ -455,13 +455,12 @@ updateUserDetail:function(data){
     })
   },
   activateDeactivateUser: (params) => {
-    var API_HEADERS = ApplozicClient.commonHeaders();
     var apiUrl = config.baseurl.applozicAPI + url.applozic.ACTIVATE_DEACTIVATE_USER;
 
     return Promise.resolve(axios({
       method: 'post',
       url: apiUrl,
-      headers: API_HEADERS,
+      headers: ApplozicClient.commonHeaders(),
       params: params
     })).then( response => {
       return response;
@@ -470,13 +469,12 @@ updateUserDetail:function(data){
     });
   },
   deleteUser: (params) => {
-    var API_HEADERS = ApplozicClient.commonHeaders();
     var apiUrl = config.baseurl.applozicAPI + url.applozic.DELETE_USER;
 
     return Promise.resolve(axios({
       method: 'post',
       url: apiUrl,
-      headers: API_HEADERS,
+      headers: ApplozicClient.commonHeaders(),
       params: params
     })).then( response => {
       return response;
