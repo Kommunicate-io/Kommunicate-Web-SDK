@@ -1427,6 +1427,7 @@
     border: 0.5px solid #cecbcb;
 	border-radius: 4px;
 	background-color: white;
+	position: relative;
 }
 
 .mck-box-ft .mck-row {

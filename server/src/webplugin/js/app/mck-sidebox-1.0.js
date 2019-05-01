@@ -5534,7 +5534,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     order: 'desc',
                     hint: false,
                     minLength: 2,
-                    wrapper: ".mck-sidebox",
+                    wrapper: ".mck-box-form",
                     backdropOnFocus: true,
                     menu: '<ul class="mcktypeahead mck-auto-suggest-menu mck-dropup-menu"></ul>',
                     show: function () {
@@ -5563,7 +5563,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         if (Object.keys(metadataObj.metadata).length != 0) {
                             $mck_autosuggest_metadata.val(JSON.stringify(metadataObj.metadata));
                         }
-                        $mck_text_box.val(metadataObj.displayMessage);
+                        $mck_text_box.text(metadataObj.displayMessage);
                         
                         // TODO: Need to improve this.
                         $mck_autosuggest_search_input.on("keydown", function(e) {
