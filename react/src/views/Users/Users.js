@@ -70,7 +70,8 @@ class Users extends Component {
         startIndex : 0,
         pageSize : 60,
         orderBy : 1,
-        roleNameList : "USER"
+        roleNameList : "USER",
+        inactiveUser: true
       };
       if(_this.state.lastSeenTime){
         params.lastSeenTime = _this.state.lastSeenTime;
@@ -434,10 +435,46 @@ class Users extends Component {
     });
   }
 
+  activateDeactivateUser = (userId, currentActivateDeactivateStatus) => {
+    let params = {
+      userId: userId,
+      deactivate: !currentActivateDeactivateStatus
+    }
+    ApplozicClient.activateDeactivateUser(params).then(response => {
+      if(response && response.status === 200 && response.data.response === 'success') {
+        Notification.success("User " + (params.deactivate ? "blocked" : "unblocked" ) + " successfully");
+        this.openModal("");
+        this.reRenderUsersList();
+      }
+      console.log(response);
+    }).catch(err => {
+      console.log(err);
+      Notification.info('Something went wrong. Please try again later.');
+    })
+  }
+
+  deleteUser = (userId) => {
+    let data = {
+      userId: userId
+    }
+    ApplozicClient.deleteUser(data).then(response => {
+      if(response && response.status === 200 && response.data.response === 'success') {
+        Notification.success("User deleted successfully");
+        this.openModal("");
+        this.reRenderUsersList();
+      }
+    }).catch(err => {
+      console.log(err);
+      Notification.info('Something went wrong. Please try again later.');
+    })
+  }
+
   reRenderUsersList = () => {
     this.setState({
       getUsersFlag: 1,
-      result: []
+      result: [],
+      lastSeenTime: "",
+      startTime: ""
     });
     this.getUsers();
     this.updateConversationWithRespectToPageNumber();
@@ -494,13 +531,34 @@ class Users extends Component {
 
     const DeleteUser = (
       <Fragment>
-        Delete User
+        <UserStyles.P>This action is irreversible and all the data for this user will be permanently
+lost. Although, the user can come back to initiate a new conversation with you anytime.</UserStyles.P>
+        <UserStyles.P>Are you sure you want to delete this user?</UserStyles.P>
+        <UserStyles.ButtonGroup>
+          <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
+          <Button danger onClick={() => this.deleteUser(this.state.users.userId)}>Delete user</Button>
+        </UserStyles.ButtonGroup>
       </Fragment>
     );
 
     const BlockUser = (
       <Fragment>
-        Block User
+        <UserStyles.P>This action will block the user from starting any new conversations or continuing existing ones. You can unblock the user at any time.</UserStyles.P>
+        <UserStyles.P>Are you sure you want to block this user?</UserStyles.P>
+        <UserStyles.ButtonGroup>
+          <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
+          <Button danger onClick={() => this.activateDeactivateUser(this.state.users.userId, this.state.users.deactivated)}>Block user</Button>
+        </UserStyles.ButtonGroup>
+      </Fragment>
+    );
+    const UnBlockUser = (
+      <Fragment>
+        <UserStyles.P>This action will allow the user to send messages to you again.</UserStyles.P>
+        <UserStyles.P>Are you sure you want to unblock this user?</UserStyles.P>
+        <UserStyles.ButtonGroup>
+          <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
+          <Button onClick={() => this.activateDeactivateUser(this.state.users.userId, this.state.users.deactivated)}>Unblock user</Button>
+        </UserStyles.ButtonGroup>
       </Fragment>
     );
 
@@ -518,12 +576,16 @@ class Users extends Component {
         'content': EditUser
       },
       'deleteUser': {
-        'heading': "Create new user",
+        'heading': "Delete user - " + (this.state.users && (this.state.users.userName || this.state.users.userId)),
         'content': DeleteUser
       },
       'blockUser': {
-        'heading': "Create new user",
+        'heading': "Block user - " + (this.state.users && (this.state.users.userName || this.state.users.userId)),
         'content': BlockUser
+      },
+      'unBlockUser': {
+        'heading': "Unblock user - " + (this.state.users && (this.state.users.userName || this.state.users.userId)),
+        'content': UnBlockUser
       }
     }
 
@@ -553,8 +615,8 @@ class Users extends Component {
                       </th>
                       <th className="product product-kommunicate-table-cell">Latest Conversation</th>
                       <th className="users-edit-icon km-hide-visibility product product-applozic-table-cell">Edit</th>
-                      <th className="users-delete-icon km-hide-visibility n-vis">Delete</th>
-                      <th className="users-block-icon km-hide-visibility n-vis">Block</th>
+                      <th className="users-delete-icon km-hide-visibility">Delete</th>
+                      <th className="users-block-icon km-hide-visibility">Block</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -661,7 +723,7 @@ class Users extends Component {
         </div>
       </div>
 
-      <Modal isOpen={this.state.modalType !== ""} heading={renderModalContent[this.state.modalType].heading} onRequestClose={() => this.openModal("")}>
+      <Modal isOpen={this.state.modalType !== ""} heading={renderModalContent[this.state.modalType].heading} onRequestClose={() => this.openModal("")} width="550px">
         {
           renderModalContent[this.state.modalType].content  
         }

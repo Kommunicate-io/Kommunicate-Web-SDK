@@ -6176,7 +6176,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						roleNameListParam += "&" + "roleNameList=" + params.roleNameList[i];
 					}
 				}
-				var url = "?startIndex=0&pageSize=50&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam);
+				var url = "?startIndex=0&pageSize=50&inactiveUser=true&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam);
 				kmUtils.ajax({
 					url: KM_BASE_URL + CONTACT_LIST_URL + url+(typeof params.userId !=='undefined'?"&userId="+params.userId :''),
 					type: 'get',

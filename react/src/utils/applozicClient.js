@@ -453,6 +453,34 @@ updateUserDetail:function(data){
     }).catch( err => {
       console.log(err);
     })
+  },
+  activateDeactivateUser: (params) => {
+    var apiUrl = config.baseurl.applozicAPI + url.applozic.ACTIVATE_DEACTIVATE_USER;
+
+    return Promise.resolve(axios({
+      method: 'post',
+      url: apiUrl,
+      headers: ApplozicClient.commonHeaders(),
+      params: params
+    })).then( response => {
+      return response;
+    }).catch(err => {
+      console.log(err);
+    });
+  },
+  deleteUser: (params) => {
+    var apiUrl = config.baseurl.applozicAPI + url.applozic.DELETE_USER;
+
+    return Promise.resolve(axios({
+      method: 'post',
+      url: apiUrl,
+      headers: ApplozicClient.commonHeaders(),
+      params: params
+    })).then( response => {
+      return response;
+    }).catch(err => {
+      console.log(err);
+    });
   }
 }
 

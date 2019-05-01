@@ -2,6 +2,13 @@
   border-bottom: 1px solid #cfd8dc;
   transition: all .3s;
 } 
+.customer-list-item .table tbody tr.km-user-blocked {
+  background-color: #e9e7e7;
+} 
+.customer-list-item .table tbody tr.km-user-blocked:hover {
+  box-shadow: none;
+  background-color: #e9e7e7;
+} 
 .customer-list-item .table tbody tr .users-icon-container div {
   visibility: hidden
 } 
