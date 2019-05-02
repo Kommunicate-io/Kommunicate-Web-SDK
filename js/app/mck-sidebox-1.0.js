@@ -8591,7 +8591,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     var msgLength = msg.textContent.length || msg.innerText.length || msg.length;
                     if((typeof msg === 'object')) {
                         // $mck_preview_msg_content.append(msg);
-                        msgLength > MAX_CHAR_IN_ONE_LINE ? ($mck_msg_preview_visual_indicator_text[0].style.width = '200px') : $mck_msg_preview_visual_indicator_text[0].style.width = msgLength*WIDTH_MULTIPLIER+'px';
+                        var visualTextIndicator = document.getElementsByClassName('mck-msg-preview-visual-indicator-text')[0];
+                        msgLength > MAX_CHAR_IN_ONE_LINE ? (visualTextIndicator.style.width = '200px') : visualTextIndicator.style.width = msgLength*WIDTH_MULTIPLIER+'px';
                         msgLength > MAX_NOTIFICATION_CHAR && (msg.innerHTML = msg.innerHTML.replace(/&nbsp;/g, ' ').substring(0,MAX_STRING_LENGTH)+' ...');
                         $mck_msg_preview_visual_indicator_text.append(msg);
                     } else {
