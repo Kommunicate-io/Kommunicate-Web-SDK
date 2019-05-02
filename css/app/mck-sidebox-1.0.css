@@ -5301,10 +5301,12 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 18px 0 rgba(219,219,219,.5), 0 2px 4px 0 rgba(176,174,174,.5);
-    position: absolute;
+	position: fixed;
     top: 50%;
     right: 70px;
-    transform: translateY(-50%);
+	transform: translateY(-50%);
+	max-height: 66px;
+	padding-bottom: 2px;
 }
 .mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
 	font-size: 14px;
@@ -5317,15 +5319,14 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	padding: 5px 10px;
 	min-width: 60px;
 	max-width: 210px;
-	height: 28px;
-	white-space: nowrap;
+	white-space: normal;
 	cursor: pointer;
 	box-sizing: content-box;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: table-cell;
-	text-align: center;
-	vertical-align: middle;
+	min-height: 38px;
+    display: flex;
+    align-items: center;
 }
 .mck-flexi {
 	display: flex;
@@ -5333,13 +5334,14 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	justify-content: flex-start;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn-container {
-	width: 100%;
-    height: 30px;
-    position: absolute;
-    top: -30px;
-	left: 0;
-	display: none;
-	transition: all 0.3s ease-in-out;
+	position: absolute;
+    top: 50%;
+    left: -26px;
+    display: none;
+    transition: all 0.3s ease-in-out;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 26px;
 }
 .km-mail-fixed-view{
 	background-color: white;
@@ -5370,6 +5372,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	line-height: normal;
 	letter-spacing: 0.4px;
 	color: #ffffff;
+	display: none;
 }
 
 #launcher-agent-img-container {
@@ -5754,6 +5757,7 @@ div[name="message"]:last-child {
 .mck-msg-preview-visual-indicator-text.applozic-launcher *{
 	overflow: hidden;
 	text-overflow: ellipsis;
+	margin: 0;
 }
 
 @media only screen and (width: 442px) {
