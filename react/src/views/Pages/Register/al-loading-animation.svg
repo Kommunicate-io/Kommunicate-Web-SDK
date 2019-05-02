@@ -1,0 +1,227 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1" viewBox="0 0 147.594 147.5944" >
+    <defs>
+        <style>
+            .cls-1 {
+                fill: url(#linear-gradient);
+            }
+
+            .path {
+                fill: none;
+                stroke: #fff;
+                stroke-linecap: round;
+                stroke-width: 5px;
+                stroke-miterlimit: 1;
+                stroke-linejoin: round;
+            }
+            .remaining-paths-1 {
+                stroke-dasharray: 215;
+                stroke-dashoffset: 215;
+                opacity: 0;
+                -webkit-animation: remainingpaths1 1s ease-in-out forwards;
+                animation: remainingpaths1 1s ease-in-out forwards;
+            }
+            .remaining-paths-2,
+            .remaining-paths-4 {
+                stroke-dasharray: 58;
+                stroke-dashoffset: 58;
+                opacity: 0;
+            }
+            .remaining-paths-2 {
+                -webkit-animation: remainingpaths1 1s ease-in-out forwards;
+                animation: remainingpaths1 1s ease-in-out forwards;
+            }
+            .remaining-paths-3 {
+                stroke-dasharray: 102;
+                stroke-dashoffset: 102;
+                opacity: 0;
+                -webkit-animation: remainingpaths1 1s ease-in-out forwards;
+                animation: remainingpaths1 1s ease-in-out forwards;
+            }
+            .remaining-paths-4 {
+                -webkit-animation: remainingpaths1 1s ease-in-out forwards;
+                animation: remainingpaths1 1s ease-in-out forwards;
+            }
+            .remaining-paths-5 {
+                stroke-dasharray: 188;
+                stroke-dashoffset: 188;
+                opacity: 0;
+                -webkit-animation: remainingpaths1 1s ease-in-out forwards;
+                animation: remainingpaths1 1s ease-in-out forwards;
+            }
+            .path.path-1 {
+                stroke-dasharray: 44;
+                stroke-dashoffset: 44;
+                opacity: 0;
+                -webkit-animation: path1 2s ease-in-out alternate infinite 1s;
+                animation: path1 2s ease-in-out alternate infinite 1s;
+            }
+            .path.path-2 {
+                stroke-dasharray: 29;
+                stroke-dashoffset: 29;
+                opacity: 0;
+                -webkit-animation: path2 2s ease-in-out alternate infinite 1s;
+                animation: path2 2s ease-in-out alternate infinite 1s;
+            }
+            .path.path-3 {
+                stroke-dasharray: 58;
+                stroke-dashoffset: 58;
+                opacity: 0;
+                -webkit-animation: path3 2s ease-in-out alternate infinite 1s;
+                animation: path3 2s ease-in-out alternate infinite 1s;
+            }
+            
+            @-webkit-keyframes remainingpaths1 {
+                to {
+                    opacity: 1;
+                    stroke-dashoffset: 0;
+                }
+            }
+            
+            @keyframes remainingpaths1 {
+                to {
+                    opacity: 1;
+                    stroke-dashoffset: 0;
+                }
+            }
+            
+            @-webkit-keyframes path1 {
+                0% {
+                    opacity: 1;
+                    stroke-dashoffset: 43;
+                }
+                50% {
+                    opacity: 1;
+                    stroke-dashoffset: -43;
+                }
+                100% {
+                    opacity: 1;
+                    stroke-dashoffset: 43;
+                }
+            }
+            
+            @keyframes path1 {
+                0% {
+                    opacity: 1;
+                    stroke-dashoffset: 43;
+                }
+                50% {
+                    opacity: 1;
+                    stroke-dashoffset: -43;
+                }
+                100% {
+                    opacity: 1;
+                    stroke-dashoffset: 43;
+                }
+            }
+            @-webkit-keyframes path2 {
+                0% {
+                    opacity: 1;
+                    stroke-dashoffset: 29;
+                }
+                50% {
+                    opacity: 1;
+                    stroke-dashoffset: -29;
+                }
+                100% {
+                    opacity: 1;
+                    stroke-dashoffset: 29;
+                }
+            }
+            @keyframes path2 {
+                0% {
+                    opacity: 1;
+                    stroke-dashoffset: 29;
+                }
+                50% {
+                    opacity: 1;
+                    stroke-dashoffset: -29;
+                }
+                100% {
+                    opacity: 1;
+                    stroke-dashoffset: 29;
+                }
+            }
+            @-webkit-keyframes path3 {
+                0% {
+                    opacity: 1;
+                    stroke-dashoffset: 58;
+                }
+                50% {
+                    opacity: 1;
+                    stroke-dashoffset: -58;
+                }
+                100% {
+                    opacity: 1;
+                    stroke-dashoffset: 58;
+                }
+            }
+            @keyframes path3 {
+                0% {
+                    opacity: 1;
+                    stroke-dashoffset: 58;
+                }
+                50% {
+                    opacity: 1;
+                    stroke-dashoffset: -58;
+                }
+                100% {
+                    opacity: 1;
+                    stroke-dashoffset: 58;
+                }
+            }
+        </style>
+        <linearGradient id="linear-gradient" x1="373.236" y1="1039.447"
+            x2="497.3735" y2="1162.9915" gradientTransform="translate(-361.507 -1041.906)" gradientUnits="userSpaceOnUse" >
+            <stop offset="0" stop-color="#00b069"></stop>
+            <stop offset="1" stop-color="#00b3d3"></stop>
+        </linearGradient>
+    </defs>
+    <g>
+        <path
+            class="cls-1"
+            d="M15.865,0A15.883,15.883,0,0,0,0,15.864v86.897a15.885,15.885,0,0,0,15.865,15.867H67.224L91.548,142.95a15.8673,15.8673,0,0,0,27.082-11.487l.266-12.835h12.835a15.883,15.883,0,0,0,15.863-15.867V15.864A15.88,15.88,0,0,0,131.731,0Z"
+        ></path>
+
+        <line
+            class="path path-1"
+            x1="44.8054"
+            y1="73.797"
+            x2="88.1875"
+            y2="73.797"
+        ></line>
+        <line
+            class="path path-2"
+            x1="44.8054"
+            y1="59.313"
+            x2="73.797"
+            y2="59.313"
+        ></line>
+        <line
+            class="path path-3"
+            x1="44.8054"
+            y1="44.8546"
+            x2="102.75"
+            y2="44.8546"
+        ></line>
+
+        <path
+            class="path remaining-paths-5"
+            d="M73.797,88.255h43.3479V30.375H30.4375"
+        ></path>
+        <path
+            class="path remaining-paths-4"
+            d="M15.8888,73.7609V88.316h43.4"
+        ></path>
+        <path
+            class="path remaining-paths-3"
+            d="M73.7777,15.9126H15.863v43.4"
+        ></path>
+        <path
+            class="path remaining-paths-2"
+            d="M131.7049,30.375V15.82h-43.4"
+        ></path>
+        <polyline class="path remaining-paths-1"
+            points="15.889 102.763 73.796 102.763 102.765 131.694 102.765 102.763 131.729 102.763 131.729 44.854"
+        ></polyline>
+    </g>
+</svg>

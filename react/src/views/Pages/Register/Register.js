@@ -126,6 +126,7 @@ class Register extends Component {
     let product = CommonUtils.getProduct();
     state.product = product || "kommunicate";
     state.process = "google_sign_up"
+    state.dashboardUrl = window.location.origin;
     var cipherText = CommonUtils.encryptDataUsingCrypto(state);
     var url = this.state.googleSignUpUrl + "&state=" + encodeURIComponent(cipherText);
     this.setState({
