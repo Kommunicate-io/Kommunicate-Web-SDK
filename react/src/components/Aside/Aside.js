@@ -406,6 +406,7 @@ class Aside extends Component {
   removeServiceBots() {
     var that = this;
     var group = that.state.group;
+    let userSession = CommonUtils.getUserSession();
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     var changeAssignee = true;
     for(var key in group.users) {
@@ -420,7 +421,7 @@ class Aside extends Component {
         if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
               that.removeGroupMember(group.groupId, groupUserDetail.userName);
               if (changeAssignee) {
-                that.changeAssignee(loggedInUserId);
+                that.changeAssignee({label:userSession.displayName, value:loggedInUserId});
                 changeAssignee = false;
               }
             }
