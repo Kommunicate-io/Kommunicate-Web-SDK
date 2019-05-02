@@ -3820,7 +3820,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                 if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
                                     
                                     var CONVERSATION_ASSIGNEE, detailOfAssignedUser, name, imageUrl;
-                                    if(typeof params.groupName !== "undefined") {
+                                    if(data.groupFeeds[0].name){
+                                        name = data.groupFeeds[0].name;
+                                    }
+                                    else if(typeof params.groupName !== "undefined") {
                                         name = params.groupName;
                                     } else {
                                         name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, params.userName);
@@ -3836,9 +3839,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                                             return false;
                                         }
                                     });
-                                    $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
-                                    $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
-
 
                                     if (data && data.groupFeeds[0] && data.groupFeeds[0].imageUrl) {
                                         imageUrl = data.groupFeeds[0].imageUrl;
