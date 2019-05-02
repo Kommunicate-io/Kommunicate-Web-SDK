@@ -7,6 +7,7 @@ import {KommunicateUserInfoPanelLoader} from '../../components/EmptyStateLoader/
 import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
 import {UserInfoEmptyStateSvg} from '../../assets/svg/svgs';
 import PersonConversationHistory from './PersonConversationHistory';
+import Banner from '../../components/Banner';
 
 const UserInfoEmptyState = (props) => {
     return (
@@ -101,6 +102,9 @@ class PersonInfoCard extends Component {
                         {
                             this.state.modalOpen ? <PseudonymModal modalOpen={this.state.modalOpen} onCloseModal={this.onCloseModal} /> : null
                         }
+
+                        {this.props.user && this.props.user.deactivated && <div style={{padding: "0 15px",     margin: "-10px 0 -20px 0"}}><Banner appearance="warning" heading="This user has been blocked" /></div>}
+
                         <hr className="hr" />
                         <div className="km-display-email-number-wrapper">
                             <div className="km-postion-relative">

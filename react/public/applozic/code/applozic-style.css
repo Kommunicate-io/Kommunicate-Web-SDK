@@ -340,7 +340,7 @@ body {
 }
 
 .km-container.km-panel-3 .right {
-	width: calc(100% - 600px);
+	width: calc(100% - 610px);
 }
 
 .km-container .right .top span {
@@ -668,7 +668,7 @@ body {
 }
 
 .km-panel-sm {
-	width: 300px;
+	width: 310px;
 }
 
 .km-group-info-tab .km-box-top .blk-lg-2, .km-group-create-tab .km-box-top .blk-lg-2  {
