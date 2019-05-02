@@ -990,15 +990,18 @@
     border-radius: 5px 5px 0px 0px;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn {
-    border-radius: 18px;
-    background-color: #cbc8c8;
-    padding: 2px 10px;
-    width: 48px;
-    height: 18px;
+    border-radius: 100px;
+    background-color: #a19e9e;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
 }
 .mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email{
 	margin-left: 10px;

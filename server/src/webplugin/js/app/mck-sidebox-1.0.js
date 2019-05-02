@@ -1361,7 +1361,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                   if (isAnonymousChat) {
                       return '<a href="#" target="_self">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ? customLauncherHtml : defaultHtml) + '</a>';
                   } else {
-                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
                   }
                   
              };
@@ -8546,7 +8546,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var notificationMessageWidth = document.getElementById("mck-msg-preview-visual-indicator").offsetWidth;
                 var launcherIconWidth = document.getElementById("mck-sidebox-launcher").offsetWidth;
                 kmIframe.classList.add("km-iframe-notification");
-                kmIframe.style.width = notificationMessageWidth + launcherIconWidth + 30 + 'px';
+                kmIframe.style.width = notificationMessageWidth + launcherIconWidth + 50 + 'px';
             };
 
             _this.hideMessagePreview = function(){
@@ -8562,6 +8562,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
                 var currTabId = $mck_msg_inner.data('mck-id');
                 var isGroupTab = $mck_msg_inner.data('isgroup');
+                var WIDTH_MULTIPLIER = 7;
+                var MAX_NOTIFICATION_CHAR = 86;
+                var MAX_CHAR_IN_ONE_LINE = 28;
+                var MAX_STRING_LENGTH = 80;
                 if (currTabId === contact.contactId && isGroupTab === contact.isGroup && !$mck_group_info_tab.hasClass('vis') && !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT) {
                     if (message.conversationId && (IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX)) {
                         var currConvId = $mck_msg_inner.data('mck-conversationid');
@@ -8584,8 +8588,12 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     // $mck_preview_msg_content.html('');
                     $mck_msg_preview_visual_indicator_text.html('');
                     $mck_msg_preview_visual_indicator_text.removeClass('mck-flexi');
+                    var msgLength = msg.textContent.length || msg.innerText.length || msg.length;
                     if((typeof msg === 'object')) {
                         // $mck_preview_msg_content.append(msg);
+                        var visualTextIndicator = document.getElementsByClassName('mck-msg-preview-visual-indicator-text')[0];
+                        msgLength > MAX_CHAR_IN_ONE_LINE ? (visualTextIndicator.style.width = '200px') : visualTextIndicator.style.width = msgLength*WIDTH_MULTIPLIER+'px';
+                        msgLength > MAX_NOTIFICATION_CHAR && (msg.innerHTML = msg.innerHTML.replace(/&nbsp;/g, ' ').substring(0,MAX_STRING_LENGTH)+' ...');
                         $mck_msg_preview_visual_indicator_text.append(msg);
                     } else {
                         // $mck_preview_msg_content.html(msg);

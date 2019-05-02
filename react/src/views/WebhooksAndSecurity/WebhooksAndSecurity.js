@@ -14,6 +14,7 @@ import Banner from '../../components/Banner';
 import { ROLE_TYPE } from '../../utils/Constant';
 import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
 import { withTheme } from 'styled-components';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 const links={
     applozic:{
@@ -143,11 +144,13 @@ class WebhooksAndSecurity extends Component {
                     userSession.application.accessTokenUrl = response.data.accessTokenUrl;
                     CommonUtils.setUserSession(userSession);
                     Notification.info("Security configuration updated successfully");
+                    AnalyticsTracking.acEventTrigger('configuredSecurity')
                 } else if(response.data !== 'error') {   
                     userSession.application.applicationWebhookPxys = response.data.applicationWebhookPxys;
                     userSession.application.webhookAuthentication = response.data.webhookAuthentication;
                     CommonUtils.setUserSession(userSession);                 
                     Notification.info("Webhooks configured successfully");
+                    AnalyticsTracking.acEventTrigger('configuredWebhook')
                 }else{
                     Notification.info("Webhooks configure error"); 
                 }

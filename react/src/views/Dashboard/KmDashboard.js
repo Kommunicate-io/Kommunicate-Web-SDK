@@ -418,7 +418,7 @@ class KmDashboard extends Component {
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
     this.loadAllUsers(application.applicationId);
-    this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
+    this.filterConversationDetails(dayWiseFilterOptions.last7Days, "allagents", this.state.isChecked);
     window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
   }
 
@@ -790,7 +790,7 @@ timeFilterHandleChange = (timeFilterSelectedOption) => {
       disableCheckbox: false,
       isChecked: isChecked
     });
-    return this.filterConversationDetails(dayWiseFilterOptions.last30Days, this.state.agentFilterSelectedOption.value, isChecked);
+    return this.filterConversationDetails(timeFilterSelectedOption.value, this.state.agentFilterSelectedOption.value, isChecked);
 
   }
 
