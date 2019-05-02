@@ -2124,6 +2124,15 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
 
+            _this.hideAutoSuggestionBoxEnableTxtBox= function(){
+                if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
+                    $mck_autosuggest_search_input.addClass('n-vis').removeClass('mck-text-box').val('');
+                    $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
+                    $mck_autosuggest_search_input.data('source-url',"");
+                    $applozic('.mck-dropup-menu') && $applozic('.mck-dropup-menu').hide();
+                }
+            }
+
             _this.showSendButton = function(){
                 kommunicateCommons.modifyClassList( {id : ["send-button-wrapper"]}, "vis","n-vis");
                 kommunicateCommons.modifyClassList({ id : ["mck-file-up" , "mck-btn-loc", "mck-btn-smiley-box"]}, "n-vis" , "vis");
@@ -2873,12 +2882,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         mckMessageService.updateMessageMetadata({ key: $mck_autosuggest_search_input.data('prev-msgkey'), metadata: { obsolete: true } })
                         $mck_autosuggest_search_input.data('prev-msgkey', "")
                     }
-                    if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
-                        $mck_autosuggest_search_input.addClass('n-vis').removeClass('mck-text-box').val('');
-                        $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
-                        $mck_autosuggest_search_input.data('source-url',"");
-                        $applozic('.mck-dropup-menu').hide();
-                    }
+                    _this.hideAutoSuggestionBoxEnableTxtBox();
                     if ($mck_msg_inner.data("isgroup") === true) {
                         messagePxy.groupId = $mck_msg_to.val();
                     } else {
@@ -4890,6 +4894,10 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         $mck_autosuggest_search_input.data('headers', autosuggetionMetadata.source.headers ? autosuggetionMetadata.source.headers : {});
                     }
 
+                }else{
+                    // hide the auto suggestion box and show the text box
+                    mckMessageService.hideAutoSuggestionBoxEnableTxtBox();
+
                 }
 
                 // if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
@@ -5589,6 +5597,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         return metadata.displayMessage;
                     }
                 });
+                // updating data source 
+                params && params.source ? $mck_autosuggest_search_input.mcktypeahead().data("mcktypeahead").source = _this.processAutosuggestData(params.source):"";
                 $mck_autosuggest_search_input.focus();
             };
 
