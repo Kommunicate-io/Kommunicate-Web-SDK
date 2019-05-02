@@ -61,6 +61,7 @@ class HelpCenterCustomization extends Component {
             headlineText: "",
             homepageTitle: "",
             customDomain: "",
+            customDomains: [],
             logo: "",
             favicon: "",
             modalIsOpen: false,
@@ -130,7 +131,8 @@ class HelpCenterCustomization extends Component {
                     helpcenterColor: helpcenterSettings.color,
                     headlineText: helpcenterSettings.heading,
                     homepageTitle: helpcenterSettings.title,
-                    customDomain: helpcenterSettings.domain,
+                    customDomain: helpcenterSettings.domain[0],
+                    customDomains: helpcenterSettings.domain,
                     logo: helpcenterSettings.logo,
                     favicon: helpcenterSettings.favicon,
                     disablePreviewButton: false
@@ -169,10 +171,20 @@ class HelpCenterCustomization extends Component {
                 errorText: ""
             });
         }
+
+        if(this.state.customDomains.length) {
+            this.setState({
+                customDomains: this.state.customDomains.splice(0, 1),
+                customDomains: this.state.customDomains.unshift(this.state.customDomain)
+            });
+        } else {
+            this.setState({ customDomains: this.state.customDomains.push(this.state.customDomain) });
+        }
+
         let data = {
             "helpCenter": {
                 "color": this.state.helpcenterColor,
-                "domain": this.state.customDomain,
+                "domain": this.state.customDomains,
                 "favicon": this.state.favicon,
                 "heading": this.state.headlineText,
                 "logo": this.state.logo,
@@ -408,6 +420,8 @@ class HelpCenterCustomization extends Component {
 
                         <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} error={this.state.errorText !== ""} errorText={this.state.errorText} />
 
+                        <InputGroup id="custom-domain" className="n-vis" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomains[1] || ""} />
+
                         <SendInstructionsContainer>
                             <Button link secondary onClick={this.toggleCustomDomainModal} style={{paddingLeft: "0", marginBottom: "10px"}}>Mail instructions to tech team for sub domain setup</Button>
                         </SendInstructionsContainer>
@@ -502,7 +516,7 @@ class HelpCenterCustomization extends Component {
 
 const InputGroup = (props) => {
     return ( 
-        <InputGroupContainer>
+        <InputGroupContainer className={props.className}>
             <LabelContainer>
                 <LabelWrapper>
                     <Label htmlFor={props.id}>{props.heading}</Label> 
