@@ -701,7 +701,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
           userName: userName,
           applicationId: applicationId,
           deleted_at: {$ne:null}
-        }
+        } ,paranoid: false  
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
