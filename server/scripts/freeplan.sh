@@ -22,15 +22,18 @@ fi
 
 
 #Prepare sql query
-SQL_QUERY_BOT_STATUS="update users set bot_availability_status = 0 where type = 2 and bot_availability_status = 1 and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and c.created_at < (now() - interval 31 day));"
-SQL_QUERY_ROUTING="update app_settings  settings join applications app on settings.application_id=app.application_id   join customers  c on app.customer_id  = c.id   set settings.agent_routing = 0, settings.bot_routing = 0 where (settings.agent_routing = 1 or settings.bot_routing = 1) and c.subscription = 'startup' and c.created_at < (now() - interval 31 day);"
-SQL_QUERY_COLLECT_EMAIL="update app_settings set collect_email = 0 where collect_email = 1 and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and c.created_at < (now() - interval 31 day));"
+SQL_QUERY_BOT_STATUS="update users set bot_availability_status = 0 where type = 2 and bot_availability_status = 1 and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and a.created_at < (now() - interval 18 day) and a.created_at > (now() - interval 30 day));"
+SQL_QUERY_ROUTING="update app_settings settings join applications app on settings.application_id=app.application_id join customers  c on app.customer_id  = c.id  set settings.agent_routing = 0, settings.bot_routing = 0 where (settings.agent_routing = 1 or settings.bot_routing = 1) and c.subscription = 'startup' and app.created_at < (now() - interval 18 day) and app.created_at > (now() - interval 30 day);"
+SQL_QUERY_COLLECT_EMAIL="update app_settings set collect_email_welcome = 0, collect_email_away = 0 where (collect_email_welcome = 1 or collect_email_away = 1) and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and a.created_at < (now() - interval 18 day) and a.created_at > (now() - interval 30 day));"
+SQL_QUERY_AUTO_RESOLVE_CONVERSATIONS="update app_settings set conversation_close_time = 0 where conversation_close_time > 0 and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and a.created_at < (now() - interval 18 day) and a.created_at > (now() - interval 30 day));"
+
 #mysql command to connect to database
 
 mysql -u$MASTER_DB_USER -p$MASTER_DB_PASSWD -h$MASTER_DB_HOST  -D$MASTER_DB_NAME <<EOF  
 $SQL_QUERY_BOT_STATUS
 $SQL_QUERY_ROUTING
 $SQL_QUERY_COLLECT_EMAIL
+$SQL_QUERY_AUTO_RESOLVE_CONVERSATIONS
 CALL expire_agent_in_free_plan('$MASTER_DB_NAME');
 EOF
 echo "End of script"
