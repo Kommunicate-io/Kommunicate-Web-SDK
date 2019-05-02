@@ -37,9 +37,9 @@ Kommunicate.postPluginInitialization = function (err, data) {
     }
     var activeConversationInfo = Kommunicate.getActiveConversation();
     
-    activeConversationInfo && (data.appId == activeConversationInfo.appId) && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && Kommunicate.openConversation(activeConversationInfo.groupId));
+    activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId) && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && Kommunicate.openConversation(activeConversationInfo.groupId));
     
-    activeConversationInfo && (data.appId != activeConversationInfo.appId) && (KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo"));
+    activeConversationInfo && typeof data != "undefined" && (data.appId != activeConversationInfo.appId) && (KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo"));
 
 }
 
