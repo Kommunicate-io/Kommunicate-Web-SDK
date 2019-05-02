@@ -8566,16 +8566,24 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 kmIframe.style.width = '';
             }
 
+            _this.formatMessageForNotification = function(msg){
+                var WIDTH_MULTIPLIER = 7;
+                var MAX_NOTIFICATION_CHAR = 86;
+                var MAX_CHAR_IN_ONE_LINE = 28;
+                var MAX_STRING_LENGTH = 80;
+                var msgLength = msg.textContent.length || msg.innerText.length || msg.length;
+                var visualTextIndicator = document.getElementsByClassName('mck-msg-preview-visual-indicator-text')[0];
+                msgLength > MAX_CHAR_IN_ONE_LINE ? (visualTextIndicator.style.width = '200px') : visualTextIndicator.style.width = msgLength*WIDTH_MULTIPLIER+'px';
+                msgLength > MAX_NOTIFICATION_CHAR && (msg.innerHTML = msg.innerHTML.replace(/&nbsp;/g, ' ').substring(0,MAX_STRING_LENGTH)+' ...');
+                return msg;
+            }
+
             _this.showNewMessageNotification = function (message, contact, displayName) {
                 if (!IS_NOTIFICATION_ENABLED || message.contentType === 102 || message.metadata.KM_ASSIGN || message.metadata.KM_STATUS) {
                     return;
                 }
                 var currTabId = $mck_msg_inner.data('mck-id');
                 var isGroupTab = $mck_msg_inner.data('isgroup');
-                var WIDTH_MULTIPLIER = 7;
-                var MAX_NOTIFICATION_CHAR = 86;
-                var MAX_CHAR_IN_ONE_LINE = 28;
-                var MAX_STRING_LENGTH = 80;
                 if (currTabId === contact.contactId && isGroupTab === contact.isGroup && !$mck_group_info_tab.hasClass('vis') && !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT) {
                     if (message.conversationId && (IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX)) {
                         var currConvId = $mck_msg_inner.data('mck-conversationid');
@@ -8598,13 +8606,16 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     // $mck_preview_msg_content.html('');
                     $mck_msg_preview_visual_indicator_text.html('');
                     $mck_msg_preview_visual_indicator_text.removeClass('mck-flexi');
-                    var msgLength = msg.textContent.length || msg.innerText.length || msg.length;
                     if((typeof msg === 'object')) {
                         // $mck_preview_msg_content.append(msg);
-                        var visualTextIndicator = document.getElementsByClassName('mck-msg-preview-visual-indicator-text')[0];
-                        msgLength > MAX_CHAR_IN_ONE_LINE ? (visualTextIndicator.style.width = '200px') : visualTextIndicator.style.width = msgLength*WIDTH_MULTIPLIER+'px';
-                        msgLength > MAX_NOTIFICATION_CHAR && (msg.innerHTML = msg.innerHTML.replace(/&nbsp;/g, ' ').substring(0,MAX_STRING_LENGTH)+' ...');
-                        $mck_msg_preview_visual_indicator_text.append(msg);
+                        var finalMessage = _this.formatMessageForNotification(msg)
+                        $mck_msg_preview_visual_indicator_text.append(finalMessage);
+                    } else if(message.contentType === 3) {
+                        var formattedMessage =kommunicateCommons.removeHtmlTag(message.message);
+                        var notificationContent = document.createElement("p");
+                        notificationContent.appendChild(document.createTextNode(formattedMessage));
+                        var finalMessage = _this.formatMessageForNotification(notificationContent)
+                        $mck_msg_preview_visual_indicator_text.append(finalMessage);
                     } else {
                         // $mck_preview_msg_content.html(msg);
                         $mck_msg_preview_visual_indicator_text.html(msg);
