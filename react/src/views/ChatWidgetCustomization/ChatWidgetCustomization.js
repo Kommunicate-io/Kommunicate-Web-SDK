@@ -14,6 +14,7 @@ import { ROLE_TYPE } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import { InfoIcon } from '../../assets/svg/svgs';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 class ChatWidgetCustomization extends Component {
     constructor() {
@@ -117,6 +118,7 @@ class ChatWidgetCustomization extends Component {
         updateAppSetting(widgetSettingsJson).then(response => {
             this.setState.changesMade = false;
             Notification.success("Chat widget visuals updated successfully");
+            AnalyticsTracking.acEventTrigger("widgetCustomization");
             this.setState({ changesMade: false });
         }).catch(err => {
             Notification.info("Could not update chat widget visuals, please try again")

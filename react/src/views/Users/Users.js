@@ -17,7 +17,7 @@ import Button from '../../components/Buttons/Button';
 import Modal from '../../components/Modal/Modal';
 import * as UserStyles from './UserStyles';
 import { InfoIcon } from '../../assets/svg/svgs';
-
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 const limit = 2;
 const pageCount = 3;
 var hasClass = function(el, className) {
@@ -404,7 +404,8 @@ class Users extends Component {
     }
     checkUserInApplozic(args).then(response => {
       if(response.status === 200 && response.data.response === 'success'){
-        Notification.success('User created successfully');
+        Notification.success('User created successfully');  
+        AnalyticsTracking.acEventTrigger('createUserAL');
         form.reset();
         this.openModal("");
         this.reRenderUsersList();

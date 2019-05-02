@@ -7,6 +7,7 @@ import Notification from '../model/Notification';
 import {CaretTop ,CaretBottom } from '../../assets/svg/svgs';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CommonUtils from '../../utils/CommonUtils';
+import AnalyticsTracking from '../../utils/AnalyticsTracking'
 
 let updateTimer;
 
@@ -89,6 +90,7 @@ class ConversationAutoResolving extends Component {
         }
         updateAppSetting(data).then(response => {
             if(response.status == 200 && response.data.code == "SUCCESS") {
+                AnalyticsTracking.acEventTrigger('conversationAutoresolve');
                 data.conversationCloseTime && this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving time updated") 
                 !data.conversationCloseTime && Notification.success("Conversation auto-resolving disabled successfully");
                 data.conversationCloseTime && !this.state.enableConversationAutoResolving && Notification.success("Conversation auto-resolving enabled successfully") 

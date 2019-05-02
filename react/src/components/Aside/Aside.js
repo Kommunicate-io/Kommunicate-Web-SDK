@@ -31,7 +31,8 @@ import CloseButton from '../Modal/CloseButton';
 import { default as DeleteModal } from 'react-modal';
 import { SearchBarIcon } from "../../assets/svg/svgs";
 import Moment from 'moment-timezone';
-import UserDropdown from '../../components/Dropdown/UserDrodown'
+import UserDropdown from '../../components/Dropdown/UserDrodown';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -605,6 +606,7 @@ class Aside extends Component {
                                           that.updateConversationCount(CONVERSATION_TYPE.ALL, +1);
                                           (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, +1);
                                         } else if (prevStatus == CONVERSATION_STATUS.OPEN) {
+                                          AnalyticsTracking.acEventTrigger("resolveConversation");
                                           that.updateConversationCount(CONVERSATION_TYPE.CLOSED, +1);
                                           that.updateConversationCount(CONVERSATION_TYPE.ALL, -1);
                                           (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, -1);
@@ -754,6 +756,7 @@ class Aside extends Component {
               isDeleteModalOpen: false
             });
             Notification.success("Conversation deleted successfully");
+            AnalyticsTracking.acEventTrigger('deleteConversation');
             window.location.replace(url);
           } else {
             Notification.error("Something went wrong. Please try again after some time.");
