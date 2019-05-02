@@ -35,7 +35,12 @@ Kommunicate.postPluginInitialization = function (err, data) {
     } else {
         Kommunicate.helpdocsInitialization(data, helpdocsAccessKey);
     }
-    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && Kommunicate.getActiveConversation() && Kommunicate.openConversation(Kommunicate.getActiveConversation().groupId);
+    let activeConversationInfo = Kommunicate.getActiveConversation()
+    
+    activeConversationInfo && (data.appId == activeConversationInfo.appId) && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && Kommunicate.getActiveConversation() && Kommunicate.openConversation(Kommunicate.getActiveConversation().groupId));
+    
+    activeConversationInfo && (data.appId != activeConversationInfo.appId) && (KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo"));
+
 }
 
 //faq plugin
