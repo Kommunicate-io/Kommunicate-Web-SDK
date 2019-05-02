@@ -35,7 +35,7 @@ var kmCustomIframe =
     '    box-shadow: none!important; '+
     '}\n' + 
     '.km-iframe-notification{ '+
-    '    height:100px; '+ 
+    '    height:80px; '+ 
     '} \n '+
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
