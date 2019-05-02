@@ -14,7 +14,8 @@ import { Buffer } from 'buffer';
 import InputField from '../../../components/InputField/InputField';
 import { Link } from 'react-router-dom';
 import {USER_STATUS} from '../../../utils/Constant';
-import kmloadinganimation from '../Register/km-loading-animation.svg';
+import kmLoadingAnimation from '../Register/km-loading-animation.svg';
+import alLoadingAnimation from '../Register/al-loading-animation.svg';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
 import {GoogleLogin} from '../Login-Signup/LoginSignupCommons'
@@ -134,6 +135,7 @@ class Login extends Component {
 		referrer && (state.referrer = referrer)
 		state.product = product || "kommunicate";
 		state.process = "google_login"
+		state.dashboardUrl = window.location.origin;
 		var cipherText = CommonUtils.encryptDataUsingCrypto(state);
 		var url = this.state.googleLoginUrl + "&state=" + encodeURIComponent(cipherText);
 		this.setState({
@@ -610,7 +612,7 @@ class Login extends Component {
 					</div>
 				</div>
 				<div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
-					<img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
+					<img src={CommonUtils.isProductApplozic() ? alLoadingAnimation : kmLoadingAnimation} style={{width: "6em", height: "6em"}}/> 
 				</div>
 			</div>
 		);
