@@ -616,8 +616,8 @@ lost. Although, the user can come back to initiate a new conversation with you a
                       </th>
                       <th className="product product-kommunicate-table-cell">Latest Conversation</th>
                       <th className="users-edit-icon km-hide-visibility product product-applozic-table-cell">Edit</th>
-                      <th className="users-delete-icon km-hide-visibility n-vis">Delete</th>
-                      <th className="users-block-icon km-hide-visibility n-vis">Block</th>
+                      <th className="users-delete-icon km-hide-visibility">Delete</th>
+                      <th className="users-block-icon km-hide-visibility">Block</th>
                     </tr>
                   </thead>
                   <tbody>
