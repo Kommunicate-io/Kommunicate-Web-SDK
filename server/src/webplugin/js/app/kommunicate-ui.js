@@ -340,6 +340,9 @@ KommunicateUI={
             $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
             $applozic('#km-faq').removeClass("n-vis").addClass("vis");
             $applozic("#mck-msg-new").attr("disabled", false);
+            $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
+            $applozic('.mck-agent-image-container').removeClass("vis").addClass("n-vis");
+            $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("vis").addClass("n-vis");
             document.getElementById("mck-tab-title").textContent = "";
             MCK_EVENT_HISTORY.length = 0 ;
             return;
@@ -395,7 +398,8 @@ activateTypingField: function(){
         !kommunicateCommons.checkIfDeviceIsHandheld() && $applozic('#mck-text-box').focus();
 },
 setAvailabilityStatus : function (status){
-    $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").addClass("mck-status--" + status);
+    $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
+    $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").removeClass("n-vis").addClass("vis mck-status--" + status);
     $applozic("#mck-agent-status-text").text(MCK_LABELS[status]).addClass("vis").removeClass("n-vis");
 },
 showClosedConversationBanner  : function(isConversationClosed){

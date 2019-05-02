@@ -17,6 +17,8 @@ import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick, InfoIcon, Erro
 import CommonUtils from '../../../utils/CommonUtils';
 import { getConfig } from '../../../config/config';
 import {SetUpYourDomainContainer, DomainTable, SetUpCompleteContainer} from '../../../views/Company/companyStyle';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking';
+
 
 
 const components = {
@@ -59,6 +61,7 @@ class HelpCenterCustomization extends Component {
             headlineText: "",
             homepageTitle: "",
             customDomain: "",
+            customDomains: [],
             logo: "",
             favicon: "",
             modalIsOpen: false,
@@ -128,7 +131,8 @@ class HelpCenterCustomization extends Component {
                     helpcenterColor: helpcenterSettings.color,
                     headlineText: helpcenterSettings.heading,
                     homepageTitle: helpcenterSettings.title,
-                    customDomain: helpcenterSettings.domain,
+                    customDomain: helpcenterSettings.domain[0],
+                    customDomains: helpcenterSettings.domain,
                     logo: helpcenterSettings.logo,
                     favicon: helpcenterSettings.favicon,
                     disablePreviewButton: false
@@ -167,10 +171,20 @@ class HelpCenterCustomization extends Component {
                 errorText: ""
             });
         }
+
+        if(this.state.customDomains.length) {
+            this.setState({
+                customDomains: this.state.customDomains.splice(0, 1),
+                customDomains: this.state.customDomains.unshift(this.state.customDomain)
+            });
+        } else {
+            this.setState({ customDomains: this.state.customDomains.push(this.state.customDomain) });
+        }
+
         let data = {
             "helpCenter": {
                 "color": this.state.helpcenterColor,
-                "domain": this.state.customDomain,
+                "domain": this.state.customDomains,
                 "favicon": this.state.favicon,
                 "heading": this.state.headlineText,
                 "logo": this.state.logo,
@@ -180,6 +194,7 @@ class HelpCenterCustomization extends Component {
         updateAppSetting(data).then(response => {
             if(response.status == 200 && response.data.code == "SUCCESS") {
                 Notification.success("Helpcenter customization settings updated successfully");
+                AnalyticsTracking.acEventTrigger('helpcenterCustomization');
                 this.setState({
                     disablePreviewButton: false,
                     changesMade: false
@@ -314,6 +329,7 @@ class HelpCenterCustomization extends Component {
             templateName: "CUSTOM_DOMAIN_SETUP_INSTRUCTION"
         }).then(response => {
             if(response && response.status === 200 && response.data.code === "SUCCESS") {
+                AnalyticsTracking.acEventTrigger("customDomainHelpcenter");
                 this.setState({
                     emailSubmitted: true,
                     value: [],
@@ -403,6 +419,8 @@ class HelpCenterCustomization extends Component {
                         <InputGroup id="homepage-title" heading="Homepage Title" tooltip="Max. 60 characters. <br> Will be displayed in a web browser's window title bar." placeholder="Kommunicate Helpcenter" name="homepageTitle" value={this.state.homepageTitle} onChange={this.handleInputChange} charCount={this.state.homepageTitle.length + "/60"}  maxLength="60" />
 
                         <InputGroup id="custom-domain" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomain} onChange={this.handleInputChange} error={this.state.errorText !== ""} errorText={this.state.errorText} />
+
+                        <InputGroup id="custom-domain" className="n-vis" heading="Custom Domain" placeholder="helpcenter.<your-domain>.com" name="customDomain" value={this.state.customDomains[1] || ""} />
 
                         <SendInstructionsContainer>
                             <Button link secondary onClick={this.toggleCustomDomainModal} style={{paddingLeft: "0", marginBottom: "10px"}}>Mail instructions to tech team for sub domain setup</Button>
@@ -498,7 +516,7 @@ class HelpCenterCustomization extends Component {
 
 const InputGroup = (props) => {
     return ( 
-        <InputGroupContainer>
+        <InputGroupContainer className={props.className}>
             <LabelContainer>
                 <LabelWrapper>
                     <Label htmlFor={props.id}>{props.heading}</Label> 

@@ -42,6 +42,7 @@ class Tabs extends Component {
       modalIsOpen:false,
       helpdocsKey:[],
       addFaqSectionCheck: false,
+      disableSaveButton: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -158,10 +159,13 @@ class Tabs extends Component {
       status: this.state.isDraft ? 'draft':'published'
     }
 
+    this.setState({ disableSaveButton: true });
+
     createSuggestions(suggestion)
       .then(response => {
         if (response.status === 200 && response.data.code === "SUGGESTION_CREATED") {
-          Notification.info("FAQ created")
+          Notification.info("FAQ created");
+          this.setState({ disableSaveButton: false });
         } else {
           Notification.info("There was problem in creating the faq.");
         }}).then(response => {
@@ -230,9 +234,10 @@ class Tabs extends Component {
         category: 'faq',
         status: this.state.isDraft ? 'draft':'published'
     }
-
+    this.setState({ disableSaveButton: true });
     updateSuggestionsById(suggestion).then(response => {
       Notification.info("Updated successfully");
+      this.setState({ disableSaveButton: false });
     }).then(response => {
       this.getFaqsWrapper()
     }).then(response => {
@@ -352,7 +357,7 @@ class Tabs extends Component {
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="km-button km-button--primary faq-modal-save-btn" onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
+                <button className="km-button km-button--primary faq-modal-save-btn" disabled={this.state.disableSaveButton} onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
                   Save
                 </button>
               </div> 

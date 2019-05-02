@@ -13,6 +13,7 @@ import { Title, Instruction, Footer, BotProfileContainer} from './BotStyle'
 import Linkify from 'react-linkify';
 import Banner from '../../components/Banner';
 import BotDescription from './BotDescription.js';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 
 
@@ -168,6 +169,7 @@ class BotIntegrationModalContent extends Component {
                         this.props.setBotData(this.state.botName,botId);
                         this.props.assignmentModal();
                         Notification.success("Bot successfully created");  
+                        CommonUtils.isProductApplozic() &&  AnalyticsTracking.acEventTrigger('createBotAL');
                     }).catch(err => {
                         console.log(err)
                     })

@@ -31,7 +31,8 @@ import CloseButton from '../Modal/CloseButton';
 import { default as DeleteModal } from 'react-modal';
 import { SearchBarIcon } from "../../assets/svg/svgs";
 import Moment from 'moment-timezone';
-import UserDropdown from '../../components/Dropdown/UserDrodown'
+import UserDropdown from '../../components/Dropdown/UserDrodown';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -406,6 +407,7 @@ class Aside extends Component {
   removeServiceBots() {
     var that = this;
     var group = that.state.group;
+    let userSession = CommonUtils.getUserSession();
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     var changeAssignee = true;
     for(var key in group.users) {
@@ -420,7 +422,7 @@ class Aside extends Component {
         if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
               that.removeGroupMember(group.groupId, groupUserDetail.userName);
               if (changeAssignee) {
-                that.changeAssignee(loggedInUserId);
+                that.changeAssignee({label:userSession.displayName, value:loggedInUserId});
                 changeAssignee = false;
               }
             }
@@ -605,6 +607,7 @@ class Aside extends Component {
                                           that.updateConversationCount(CONVERSATION_TYPE.ALL, +1);
                                           (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, +1);
                                         } else if (prevStatus == CONVERSATION_STATUS.OPEN) {
+                                          AnalyticsTracking.acEventTrigger("resolveConversation");
                                           that.updateConversationCount(CONVERSATION_TYPE.CLOSED, +1);
                                           that.updateConversationCount(CONVERSATION_TYPE.ALL, -1);
                                           (that.state.assignee == that.state.loggedInUser) && that.updateConversationCount(CONVERSATION_TYPE.ASSIGNED_TO_ME, -1);
@@ -754,6 +757,7 @@ class Aside extends Component {
               isDeleteModalOpen: false
             });
             Notification.success("Conversation deleted successfully");
+            AnalyticsTracking.acEventTrigger('deleteConversation');
             window.location.replace(url);
           } else {
             Notification.error("Something went wrong. Please try again after some time.");
