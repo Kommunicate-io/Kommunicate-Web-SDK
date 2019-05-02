@@ -17,6 +17,8 @@ import { UploadIcon, MoreInfoLinkSvg, CopyIcon, ConfirmationTick, InfoIcon, Erro
 import CommonUtils from '../../../utils/CommonUtils';
 import { getConfig } from '../../../config/config';
 import {SetUpYourDomainContainer, DomainTable, SetUpCompleteContainer} from '../../../views/Company/companyStyle';
+import AnalyticsTracking from '../../../utils/AnalyticsTracking';
+
 
 
 const components = {
@@ -180,6 +182,7 @@ class HelpCenterCustomization extends Component {
         updateAppSetting(data).then(response => {
             if(response.status == 200 && response.data.code == "SUCCESS") {
                 Notification.success("Helpcenter customization settings updated successfully");
+                AnalyticsTracking.acEventTrigger('helpcenterCustomization');
                 this.setState({
                     disablePreviewButton: false,
                     changesMade: false
@@ -314,6 +317,7 @@ class HelpCenterCustomization extends Component {
             templateName: "CUSTOM_DOMAIN_SETUP_INSTRUCTION"
         }).then(response => {
             if(response && response.status === 200 && response.data.code === "SUCCESS") {
+                AnalyticsTracking.acEventTrigger("customDomainHelpcenter");
                 this.setState({
                     emailSubmitted: true,
                     value: [],

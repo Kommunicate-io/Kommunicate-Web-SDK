@@ -11,6 +11,8 @@ import {BlockButton} from '../../components/GeneralFunctionComponents/GeneralFun
 import CompanySectionModal from './CompanySectionModal'
 import {getAppSetting, updateAppSetting} from '../../utils/kommunicateClient'
 import LockBadge from '../../components/LockBadge/LockBadge';
+import AnalyticsTracking from '../../utils/AnalyticsTracking';
+
 
 const CompanyInfo = props => (
     <CompanyInfoContainer >
@@ -69,7 +71,8 @@ class Company extends Component{
     updateAppSetting(data).then(response => {
         if(response.status == 200 && response.data.code == "SUCCESS") {
             typeof data.domainUrl != "undefined" && this.setState({customUrl: data.domainUrl})
-            Notification.success("Custom URL updated")
+            Notification.success("Custom URL updated");
+            AnalyticsTracking.acEventTrigger("customDomainMain");
         }
       }).catch(err => {
         console.log(err);
