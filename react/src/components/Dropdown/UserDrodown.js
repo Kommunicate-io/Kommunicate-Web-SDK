@@ -4,7 +4,7 @@ import { USER_TYPE } from '../../utils/Constant'
 import CommonUtils from '../../utils/CommonUtils'
 import Button from '../../components/Buttons/Button'
 import { colors } from 'react-select/lib/theme'
-import Select from "react-select";
+import Select, { createFilter } from "react-select";
 export default class UserDropDown extends React.Component {
     constructor() {
         super();
@@ -89,6 +89,9 @@ export default class UserDropDown extends React.Component {
                         autoFocus
                         placeholder="Search..."
                         noOptionsMessage = {() => "No results" }
+                        filterOption={createFilter({
+                            stringify: option => `${option.label}`
+                        })}
                     />
                 </Dropdown>
             </div>
