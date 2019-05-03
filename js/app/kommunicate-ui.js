@@ -320,7 +320,6 @@ KommunicateUI={
                  $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
-                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:elem.dataset.mckId})
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                 KommunicateUI.activateTypingField();
                 return;
