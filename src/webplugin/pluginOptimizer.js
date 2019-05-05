@@ -1,9 +1,8 @@
 const compressor = require('node-minify');
 const path = require('path');
 const fs = require('fs');
-const date = require('../../package.json').pluginVersion;
 const version = require('child_process')
-  .execSync('git rev-parse --short HEAD', {cwd: __dirname})	
+  .execSync('git rev-parse --short HEAD', {cwd: __dirname})
   .toString().trim();
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../../conf/config");
@@ -11,7 +10,7 @@ const MCK_CONTEXT_PATH = config.getProperties().urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 
 // Change "env" to "false" to uncompress all files.
-let env = false;
+let env = config.getEnvId();
 
 let jsCompressor = !env ?"no-compress" : "gcc"; 
 let uglifyCompressor = !env? "no-compress" : "uglify-es";
@@ -182,5 +181,4 @@ removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();
 
-console.log("Process completed at: ",new Date().toString());
 exports.pluginVersion = version;
