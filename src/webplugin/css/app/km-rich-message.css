@@ -1,0 +1,1186 @@
+/*css for ask number of rooms in hotel booking */
+.km-room-person-selector-text {
+    border-bottom-left-radius: 4px;
+    
+    }
+    .km-room-person-selector-container {
+    margin-top: 3px;
+    border-top-left-radius: 4px;
+    
+    }
+    .km-rich-text-default-container{
+        border-radius: 10px;
+        background-color: #fff;
+        padding: 10px;
+	border: solid 1px #e5e5e5;
+    }
+    .km-room-person-selector-container .km-room-title-text {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    }
+    .km-room-person-selector-container hr {
+    height: 1px;
+    background-color: #D9D9D9;
+    border: none;
+    }
+    .km-add-room-button-container {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    }
+    .km-add-more-rooms {
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border: 1px solid #00b0ff;
+    background-color: #fff;
+    color: #00b0ff;
+    border-radius: 18px;
+    font-size: 14px;
+    padding: 5px 10px;
+    cursor: pointer;
+    }
+    .km-done-button {
+    float: right;
+    }
+    
+    .km-room-person-selector-container .km-room-selector .km-room-number-field:disabled, .km-room-person-selector-container .km-person-selector .km-person-number-field:disabled {
+    background-color: transparent;
+    border: none;
+    color: #000;
+    font-size: 14px;
+    text-align: center;
+    width: 30px;
+    margin-left: 22px;
+    }
+    .km-room-selector, .km-person-selector {
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    }
+    .km-room-person-selector-container input[type="button"] {
+    height: 30px;
+    width: 30px;
+    padding: 0;
+    margin-left: 10px;
+    border: #ddd 1px solid;
+    background-color: #ffffff;
+    color: #000;
+    border-radius: 50%;
+    box-shadow: 0px 1px 4px 1px rgba(0,0,0,.12);
+    outline: none;
+    cursor: pointer;
+    }
+    
+    .mck-msg-box-rich-text-container{
+        top: 0;
+        float: left;
+        margin: 1px 0px 0px 0px;
+        color:#7766B5;
+    }
+    .km-guest-text-lable .km-children-text-lable{
+        width:30 px;
+    }
+    .km-children-text-lable span{
+    display: block;
+    font-size:12px; 
+    color: rgba(0,0,0,0.5);
+    }
+    
+    .km-card-message-container {
+       /* width: 90%; */
+        display: flex;
+        /*overflow-x: hidden;*/
+        /* margin-right: 0px; */
+        margin: 0;
+        width: 315px;
+        padding-left: 0;
+        max-width: 100%;
+        transform: translateX(-10px);
+    }
+    .km-next-card-btn, .km-previous-card-btn {
+        position: absolute;
+        bottom: 50%;
+        /* transform: translateY(-50%); */
+        background-color: #ffffff;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        box-shadow: 1px 2px 4px 1px rgba(0,0,0,.12);
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        z-index: 5;
+    }
+    .km-next-card-btn {
+        right: 0px;
+    }
+    .km-previous-card-btn {
+        left: 0px;
+    }
+    .km-single-card-message {
+        width: 300px !important;
+        margin-left: 4px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.20), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px 0px rgba(0, 0, 0, 0.12);
+    }
+    .km-single-card-message:focus {
+        outline: none;
+    }
+    .km-card-message-header {
+        border-radius: 8px;
+        position: relative;
+    }
+    .km-card-message-image-continer {
+        border-radius: 8px 8px 0px 0px;
+        width: 100%;
+        height: 100px;
+        /*background-image: url('/images/card-message-img-1.jpg');*/
+        background-size: cover;
+        background-position-y: 30%;
+        object-fit: cover;
+    }
+    .km-image-card-2 {
+        background-image: url('/images/card-message-img-2.jpg');
+    }
+    .km-card-message-image-price-container {
+        position: absolute;
+        bottom: 50%;
+        transform: translateY(50%);
+        left: 0;
+        right: auto;
+        background-color: #FFF;
+        padding: 5px 15px;
+        border-radius: 0px 3px 3px 0px;
+        color: #000;
+        font-weight: 500;
+        font-size: 16px;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    }
+    /*.km-card-message-image-continer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        border-radius: 10px 10px 0px 0px;
+    }*/
+    .km-card-message-body {
+        height: 67px;
+        padding: 0px 10px;
+        border-bottom: 1px solid #D9D9D9;
+    }
+    .km-card-message-body-title {
+        font-size: 16px;
+        margin: 10px 0px 5px;
+        color: #000;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .km-card-message-body-ratings svg {
+        width: 16px;
+        height: 16px;
+    }
+    .km-star-filled {
+        fill: #FFD700;
+    }
+    .km-star-empty {
+        fill: #c1c1c1;
+    }
+    .km-card-message-body-address {
+        width: 100%;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000;
+    }
+    .km-card-message-body-address-icon svg {
+        width: auto;
+        height: 16px;
+        margin-bottom: -3px;
+        fill:#000;
+    }
+    .card-message-footer {
+        width: 100%;
+        height: 34px;
+    }
+    .km-card-message-footer-button {
+        width: 100%;
+        outline: none;
+        border: none;
+        background: transparent;
+        height: 35px;
+        color: #7766B5 !important;
+        font-size: 15px !important;
+        cursor: pointer !important;
+    }
+    .km-card-message-img{
+        width:100%;
+        height:100px;
+        object-fit: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    
+    }
+    /** slick plugin css started*/
+    
+    /* Slider */
+    .slick-slider
+    {
+        position: relative;
+    
+        display: block;
+        box-sizing: border-box;
+    
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+    
+        -webkit-touch-callout: none;
+        -khtml-user-select: none;
+        -ms-touch-action: pan-y;
+            touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .slick-list
+    {
+        position: relative;
+    
+        display: block;
+        overflow: hidden;
+    
+        margin: 0;
+        padding: 0;
+    }
+    .slick-list:focus
+    {
+        outline: none;
+    }
+    .slick-list.dragging
+    {
+        cursor: pointer;
+        cursor: hand;
+    }
+    
+    .slick-slider .slick-track,
+    .slick-slider .slick-list
+    {
+        -webkit-transform: translate3d(0, 0, 0);
+           -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+             -o-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+    }
+    
+    .slick-track
+    {
+        position: relative;
+        top: 0;
+        left: 0;
+    
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .slick-track:before,
+    .slick-track:after
+    {
+        display: table;
+    
+        content: '';
+    }
+    .slick-track:after
+    {
+        clear: both;
+    }
+    .slick-loading .slick-track
+    {
+        visibility: hidden;
+    }
+    
+    .slick-slide
+    {
+        display: none;
+        float: left;
+        min-height: 1px;
+    }
+    [dir='rtl'] .slick-slide
+    {
+        float: right;
+    }
+    .slick-slide img
+    {
+        display: block;
+    }
+    .slick-slide.slick-loading img
+    {
+        display: none;
+    }
+    .slick-slide.dragging img
+    {
+        pointer-events: none;
+    }
+    .slick-initialized .slick-slide
+    {
+        display: block;
+    }
+    .slick-loading .slick-slide
+    {
+        visibility: hidden;
+    }
+    .slick-vertical .slick-slide
+    {
+        display: block;
+    
+        height: auto;
+    
+        border: 1px solid transparent;
+    }
+    .slick-arrow.slick-hidden {
+        display: none;
+    }
+    
+    /* slick css ends here*/
+    
+    .tns-nav {
+        display: none;
+    }
+    
+    .tns-controls {
+        padding-bottom: 8px;
+    }
+    .km-cta-multi-button-container {
+        display: flex;
+        flex-flow: row;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    
+    }
+    .km-quick-rpy-btn {
+        width: auto;
+        padding: 6px 14px;
+        border-radius: 15px;
+        min-width: 35px;
+        font-size: 14px;
+        letter-spacing: .5px;
+    }
+
+    .km-cta-multi-button-container .km-cta-button-many, .km-cta-multi-button-container .km-cta-button-1 {
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+    .km-cta-multi-button-container .km-cta-button-1{
+        margin-top: 10px;
+        width:50%;
+    }
+    .km-cta-multi-button-container .km-cta-button-2{
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 6px 14px;
+    }
+    .km-cta-multi-button-container button a {
+        margin: -6px -10px;
+        padding: 8px 10px;
+    }
+    .km-cta-button {
+        color: #5553b7;
+        border: 1px solid #5553b7;
+    }
+    .km-undecorated-link{
+        text-decoration:none;
+    }
+    .km-cta-button.km-link-button {
+        text-align: left;
+        font-size: 14px;
+    }
+    .km-cta-button.km-link-button span {
+        vertical-align: sub;
+        margin-left: 5px;
+    }
+    .km-cta-button.km-carousel-card-button, .km-cta-button.km-faq-list-link-button {
+        border: 1px solid #e7e4e4;
+        text-align: center;
+        padding-left: 0px;
+        font-size: 12px;
+    }
+    .km-cta-button.km-faq-list-link-button {
+        border: none;
+        font-size: 14px;
+    }
+    .km-cta-button.km-carousel-card-button:hover, .km-cta-button.km-faq-list-link-button:hover {
+        text-decoration: none;
+    }
+    
+    /********** Guest Details Form Starts Here ***********/
+    
+    .km-guest-detail-form {
+        border-bottom: 1px solid#eee;
+    }
+    .km-title-select {
+            -webkit-appearance: none;
+            margin-top: 10px;
+            display: inline;
+            width: 41.5%;
+            font-size: 16px !important;
+            border-radius: 18px;
+            padding: 6px 5px 6px 10px;
+            outline: none;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+            position: relative;
+            }
+            .km-select-title {
+            position: relative;
+            display: inline;
+            
+            }
+            .km-select-title::after {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            padding: 0;
+            content: '';
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #333333;
+            pointer-events: none;
+            }
+    
+    .km-guest-details-container input{
+        width: 91.5%;
+        border-radius: 18px;
+        outline: none ;
+        border: 1px solid rgba(0, 0, 0, 0.5) ;
+        margin-top: 8px ;
+        font-size: 16px ;
+        padding: 6.5px 10px ;
+    }
+    
+    /*.km-input {
+        width: 91.5% !important;
+        border-radius: 18px !important;
+        outline: none !important;
+        border: 1px solid rgba(0, 0, 0, 0.5) !important;
+        margin-top: 8px !important;
+        font-size: 16px !important;
+        padding: 6.5px 10px !important;
+    }*/
+    .km-input:last-child {
+        margin-bottom: 15px !important;
+    }
+    .km-mandatory-field-error{
+        font-size:12px;
+        color:#ff4a2a;
+        margin-top: 6px;
+    }
+    .km-age-input {
+        display: inline !important;
+        width: 43% !important;
+        margin-left: 5px !important;
+    }
+    .km-guest-button-container {
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    /*.km-add-more-rooms {
+        appearance: none;
+        -webkit-appearance: none;
+        outline: none;
+        border: 1px solid #00b0ff;
+        background-color: #fff;
+        color: #00b0ff;
+        border-radius: 18px;
+        font-size: 14px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }*/
+    .km-done-button {
+        float: right;
+    }
+    
+    /********** Guest Details Form Ends Here ***********/
+    
+    
+    .km-fixed-container{
+        width:96%;
+        overflow:hidden;
+        overflow: hidden;
+        border-radius: 5px;
+        /* border: solid 1px #e5e5e5; */
+    }
+    
+    .km-border-less-container{
+        width:96%;
+        overflow:hidden;
+        overflow: hidden;
+    }
+    
+    .km-slick-container .tns-controls button{
+        position: absolute;
+        padding: 0;
+        bottom: 50%;
+        background-color: #ffffff;
+        width: 30px;
+        height: 30px;
+        border-radius: 44px;
+        box-shadow: 1px 2px 4px 1px rgba(0,0,0,.12);
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        z-index: 5;
+        transform: translateY(50%);
+        padding: 0
+    }
+    
+    .km-slick-container .tns-controls button:first-child{
+        left :45px;
+    }
+    .km-slick-container .tns-controls button:last-child{
+        right :0;
+    }
+    .km-slider-multiple-cards-container .tns-controls button:first-child {
+        left: 0;
+    }
+    
+    /* Room Details after Blocking Room */
+    .km-card-room-detail-container {
+        /* width: 90%; */
+         /*overflow-x: hidden;*/
+         /* margin-right: 0px; */
+         margin: 0;
+         width: 315px;
+         padding-left: 0;
+         max-width: 100%;
+         transform: translateX(-10px);
+     }
+    .message.km-blocked-room {
+        padding: 0;
+        width: 100%;
+    }
+    .km-blocked-room-details {
+        padding: 0px;;
+    }
+    .km-blocked-room-image-container {
+        border-radius: 8px 8px 0px 0px;
+        width: 100%;
+        height: 100px;
+       /* background-image: url('/images/card-message-img-1.jpg');*/
+        background-size: cover;
+        background-position-y: 30%;
+    }
+    .km-blocked-room-text-container {
+        padding-top: 5px;
+    }
+    .km-blocked-room-button-container{
+        width: 100%;
+        height: 35px;
+    }
+    .km-blocked-room-button-container button{
+        width: 100%;
+        outline: none;
+        border: none;
+        background: transparent;
+        height: 100%;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    .km-blocked-room-room-type, .km-blocked-room-guests, .km-blocked-room-price, .km-blocked-room-sub-total {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+        padding: 7px 12px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .km-blocked-room-room-type span:first-child, .km-blocked-room-guests span:first-child  {
+        font-size: 14px;
+        font-weight: normal;
+    }
+    
+    .km-blocked-room-room-type span:last-child, .km-blocked-room-guests span:last-child, .km-blocked-room-price span:last-child, .km-blocked-room-sub-total span:last-child {
+        font-size: 16px;
+        font-weight: bold;
+        display: inline-block;
+           width: 122px;
+           overflow: hidden;
+        text-align: right;
+        word-wrap: break-word;	
+    }
+    .km-blocked-room-sub-total span:last-child {
+        font-size: 20px;
+        font-weight: bold;
+        float: right;
+    }
+    .km-blocked-room-price p {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px 0px 5px;
+        display: inline-block;
+    }
+    .km-blocked-room-price p>span, .km-blocked-room-sub-total p>span {
+        font-size: 12px !important;
+        font-weight: normal !important;
+    }
+    .km-blocked-room-sub-total p {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px 0px 5px;
+        display: inline-block;
+    }
+    .km-pxinfo-btn-left{
+        display: inline !important;
+        width: 41.5% !important;
+      }
+      .km-pxinfo-btn-right{
+        display: inline !important;
+        width: 43% !important;
+        margin-left: 5px !important;
+      }
+    /********** Guest Details Form Ends Here ***********/
+    
+    .mck-away-msg{
+        font-family: Roboto;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        text-align: center;
+        color: #8f8f8f;
+        margin-bottom: 0px !important;  
+        font-weight: 300;
+        line-height: 17px;
+    }
+    #mck-away-msg-box{
+        /* border-top: dashed 1px #bebbbb; */
+        border: none;
+        /* border-bottom: solid 1px #654df7; */
+        padding: 0px 25px 20px
+        /* position: absolute;
+        bottom: 52px;
+        left:0; 
+        width: 97%;
+        background-color: white; */
+    }  
+    #mck-away-msg {
+        white-space: pre-line;
+    }
+    .mck-collect-email {
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 0.4px;
+        color: #6b6767;
+    }
+    #mck-email-error-alert {
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 0.4px;
+        color: #f46262;
+    }
+    #mck-email-collection-box, #mck-email-error-alert-box {
+        text-align: center;
+        padding: 0px 25px 10px
+        /* background-color: #d8d8d8; */
+    }
+    #mck-away-msg-box hr, #mck-email-collection-box hr, #mck-email-error-alert-box hr {
+        border: none;
+        margin-top: 0px;
+        margin-bottom: 10px;
+        background-image: linear-gradient(to right, #dddddd 40%, rgba(255, 255, 255, 0) 0%);
+    background-position: left;
+        background-size: 14px 1px;
+        background-repeat: repeat-x;
+        height: 2px;
+    }
+    /******** Generic list template*************/
+    /* FAQ List */
+    .km-message.km-received.km-chat-faq-list {
+        padding: 0px;
+        background: transparent;
+        width:100%;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+    .km-faq-list--body, .km-faq-list--footer {
+        /*background-color: #e5e5e5;*/
+    }
+    .km-list-image {
+        max-width: 100%;
+        object-fit: contain;
+    }
+    .km-faq-list--header_text-img {
+        background-color: rgba(103, 103, 103, 0);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255, 0)), color-stop(100%,rgba(0, 0, 0, 0.75)));
+        background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+    }
+    .km-faq-list--header_text-img img {
+        object-fit: cover;
+        width: 100%;
+        height: 110px;
+        position: relative;
+        z-index: 0;
+        display: block;
+        border-top-left-radius:5px;
+        border-top-right-radius:5px;
+    }
+    
+    .km-faq-list--body_list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 0px !important;
+    }
+    .km-faq-list--body_list li>a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-decoration: none;
+        border-bottom: solid 1px #e5e5e5;
+        color: grey;
+        transition: all 0.3s ease-in-out;
+    }
+    .km-faq-list--body_que-ans {
+        padding: 10px 12px;
+        /*width: calc(100% - 106px);*/
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 51px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+    }
+    .km-faq-list--body_que-ans * {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .km-faq-list--body_list li>a:hover {
+        background-color: #efefef;
+        color: grey;
+        text-decoration: none!important;
+    }
+    
+    .km-faq-list--body_que-ans .km-faq-list--body_que {
+        font-size: 15px;
+        color: #000;
+        margin: 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        
+    }
+    .km-faq-list--body_que-ans .km-faq-list--body_ans {
+        font-size: 14px;
+        color: #797474;
+        margin: 5px 0px 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .km-faq-list--body_img {
+        padding: 10px 0px 10px 12px;
+        /*width: 70px;*/
+        height: 50px;
+        border-radius: 4px;
+    }
+    .km-faq-list--body_img img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .km-faq-list--body_img:empty .km-faq-list--body_que-ans {
+        width: 100%;
+    }
+    .km-faq-list--header {
+        position: relative;
+    }
+   
+    .km-faq-list--header_text {
+        bottom: 2px;
+        left: 12px;
+        margin: 0;
+        margin-bottom: 0px !important;
+        padding: 9px 7px !important;
+        text-align:center;
+        width: calc(100% - 12px);
+        color: rgb(48, 48, 48);
+        word-wrap: break-word;
+        font-size: 16px;
+        border-bottom: 1px solid #edeff1;
+    }
+    
+    .km-faq-list--footer {
+        width: 100%;
+        /* min-height: 35px; */
+        border-bottom-left-radius: 18px;
+        border-bottom-right-radius: 18px;
+    }
+    .km-faq-list--footer_button-container button {
+        width: 99%;
+        outline: none;
+        border: none;
+        background: transparent;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        font-size: 15px;
+        cursor: pointer;
+        padding: 12px 0px;
+        border-radius: 0px;
+    }
+    .km-faq-list--footer_button-container button a{
+        color: #5c5aa7;
+    }
+    
+    .km-faq-list--header_text-container {
+        /*background-color: #e5e5e5;*/
+        border: none !important;
+        min-height:10px;
+    }
+    
+    .km-faq-list--footer_button-container button:not(:last-child){
+        border-bottom: 1px solid #e5e5e5;
+    
+    }
+    .km-dialog-box{
+        /*width:96%;*/
+    }
+
+    .km-faq-list--container{
+        
+    }
+    
+    /********  dialog box template *************/
+    /* FAQ Answer */
+    .km-message.km-received.km-faq-answer {
+        padding: 0px;
+        background: transparent;
+        width:100%;
+        background-color:#e5e5e5;
+    }
+    .km-faq-answer--body {
+        border-radius: 5px;
+      background-color: #e5e5e5;
+    }
+    .km-faq-answer--body_container {
+        padding: 10px;
+    }
+    .km-faq-answer--body_container ol, .km-faq-answer--body_container ul {
+        margin-left: 12px;
+    }
+    .km-faq-answer--body_que {
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 0.5px;
+        color: #141515;
+    }
+    .km-faq-answer--body_ans {
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 0.5px;
+        color: #646262;
+    }
+    .km-faq-answer--footer {
+        padding: 10px 10px;
+    }
+    .km-faq-answer--footer_button-text-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .km-faq-answer--footer_button-text-container p {
+        margin-bottom: 0px;
+        margin-right: 10px;
+        color:#646262;
+        font-family: Roboto;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+    .km-faq-answer--footer_button-text-container button {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+
+
+    .km-faq-list--header .km-faq-list--header_text-container:first-child{
+        
+        background-color: #fff;
+    }
+    .km-faq-dialog-button{
+        min-width: 40px;
+        border-radius: 15px;
+    }
+
+    .km-faq-answer--body .km-faq-answer--body_container {
+        color:#646262;
+    }
+
+#mck-email-collection-box .svg-container, #mck-email-error-alert-box .svg-container {
+    width: 45px;
+    height: 45px;
+    border-radius: 40px;
+    background-color: #edebeb;
+    line-height: 52px;
+    margin: 5px auto;
+}
+#mck-email-collection-box .svg-container svg, #mck-email-error-alert-box .svg-container svg {
+    margin-top: 16px;
+}
+
+#mck-email-error-alert-box .svg-container {
+    background-color: #f1a5a5;
+}
+.km-template-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+.km-template-img-caption {
+    margin-top: 5px;
+    font-weight: 400;
+    text-align: center;
+    color: #6f6e6e;
+    letter-spacing: 0.3px;
+    font-size: 15px;
+}
+.mck-msg-box-rich-text-container .email-message-indicator, .km-msg-box .email-message-indicator {
+	margin-bottom: 15px;
+}
+
+.mck-msg-box-rich-text-container .email-message-indicator span:first-child,.email-conversation-indicator span:first-child, .km-msg-box .email-message-indicator span:first-child {
+	margin-right: 10px;
+}
+.mck-msg-box-rich-text-container .email-message-indicator span:first-child svg .email-conversation-indicator span:first-child svg, .km-msg-box .email-message-indicator span:first-child svg{
+	vertical-align: middle;
+}
+.mck-msg-box-rich-text-container .email-message-indicator span:last-child,.email-conversation-indicator span:last-child, .km-msg-box .email-message-indicator span:last-child {
+	font-size: 14px;
+	font-weight: 300;
+	font-style: italic;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.6px;
+	text-align: left;
+	color: #414243;
+}
+
+.mck-msg-box-rich-text-container .email-message-indicator {
+	padding: 5px 14px 10px;
+    margin-bottom: -5px;
+    background-color: #fff;
+    border-radius: 5px 5px 0px 0px;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn {
+    border-radius: 100px;
+    background-color: #a19e9e;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+}
+.mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email{
+	margin-left: 10px;
+}
+.km-carousel-card-template {
+    max-width: 240px;
+    width:240px !important;
+    margin:8px 4px 0 10px;
+}
+.tns-slider .km-carousel-card-template {
+    margin:8px 4px 0 6px;
+}
+.km-carousel-card-img {
+    width: 100%;
+    height: 93px;
+    object-fit: cover;
+}
+.km-carousel-card-overlay-text {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    background-color: #ffffff;
+    padding: 10px;
+    color: #0d0d0e;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 0 4px 4px 0;
+    font-size: 16px;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.km-carousel-card-header {
+    position: relative;
+    height: 93px;
+}
+.km-carousel-card-title {
+    font-size: 18px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.6px;
+    color: #141313;
+}
+.km-carousel-card-sub-title {
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    color: #565454;
+    margin-top: 4px;
+    font-weight: 400;
+}
+.km-carousel-card-content-wrapper {
+    padding-top: 6px;
+    padding-left: 9px;
+    padding-bottom: 6px;
+    border: 1px solid #e7e4e4;
+    border-top: 0;
+}
+.km-carousel-card-title-wrapper {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.km-carousel-card-footer .km-cta-button, .km-carousel-card-footer .km-cta-multi-button-container button {
+    width: 100%;
+    height: 36px;
+    border-color: #e7e4e4 ;
+    border-bottom: none ;
+    margin: 0;
+    background-color: white;
+}
+.km-carousel-card-footer {
+    border-bottom: 1px outset rgba(255, 255, 255, 0.4);
+    border-radius: 0px 0px 5px 5px;
+    overflow: hidden;
+}
+.km-carousel-card-img {
+    border-radius: 5px 5px 0 0;
+}
+.km-carousel-card-title {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 220px;
+    text-overflow: ellipsis;
+}
+.km-carousel-card-title-extension {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: #000000;
+    margin-right: 9px;
+    margin-left: 8px;
+    margin-top: 4px;
+}
+.km-carousel-card-description {
+  overflow: hidden;
+  position: relative; 
+  line-height: 14.4px;
+  max-height: 43.2px; 
+  margin-right: 12px;
+  padding-right: 12px;
+  margin-top: 4px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  color: #797474;
+  height: auto;
+  white-space: pre-line;
+}
+.km-carousel-card-description:before {
+    content: '...';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.km-carousel-card-description:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    margin-top: 2.4px;
+    background: white;
+  }
+.km-carousel-card-overlay-text-without-img {
+    position: static;
+    background-color: #d6d6d6;
+    border-radius: 0 0 4px 0;
+    box-shadow: none;
+}
+.km-carousel-card-header-with-img {
+    border: 1px solid #e7e4e4;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+}
+.km-carousel-card-header-without-img {
+    height: 37px;
+    border: 1px solid #e7e4e4;
+    border-bottom: 0;
+    border-radius: 2px;
+}
+.km-carousel-card-description-wrapper {
+    height: 44px;
+}
+.km-carousel-card-info-wrapper-without-header {
+    border-top: 1px solid #e7e4e4;
+    border-radius: 7px 7px 0 0;
+}
+.km-carousel-card-info-wrapper-with-buttons {
+    border-bottom: 0;
+}
+.km-carousel-card-footer button {
+    width: 100% !important;
+    box-sizing: border-box;
+}
+.km-carousel-card-footer form {
+    margin: 0;
+}
+.km-list-container {
+    margin-top: 8px;
+    border: solid 1px #e5e5e5;
+}
+.tns-controls button[data-controls='next'] svg {
+    transform: rotate(180deg);
+}
+.tns-controls:focus {
+    outline: none;
+}
+.km-cta-multi-button-container button.km-quick-replies {
+    font-size: 14px;
+    border: 1px solid;
+    background-color: white;
+    font-size: 14px;
+}
+.km-carousel-card-footer .km-cta-multi-button-container button.km-quick-replies {
+    border-bottom: none;
+}
+.km-slider-multiple-cards-container {
+    margin-left: -65px;
+}
+.km-cta-multi-button-container .km-quick-replies.km-carousel-card-button {
+    border-color: #e7e4e4
+}
