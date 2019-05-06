@@ -31,6 +31,7 @@ class CustomerListItem extends Component {
         }
       ], //userId of user
       //clientGroupId: ''
+      "skipBotEvent":'["WELCOME_EVENT"]'
     };
 
     window.$kmApplozic.fn.applozic("createGroup", {
@@ -56,7 +57,8 @@ class CustomerListItem extends Component {
         KM_CONVERSATION_TITLE: conversationDetail.groupName,
         //ALERT: "false",
         HIDE: "true",
-        WELCOME_MESSAGE: ""
+        WELCOME_MESSAGE: "",
+        SKIP_BOT_EVENT: conversationDetail.skipBotEvent
       },
       callback: function(response) {
         //console.log("response", response);
