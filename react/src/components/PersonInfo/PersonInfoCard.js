@@ -88,10 +88,10 @@ class PersonInfoCard extends Component {
         });
     }
 
-    activateDeactivateUser = (userId, currentActivateDeactivateStatus) => {
+    activateDeactivateUser = (userId, isDeactivated) => {
         let params = {
           userId: userId,
-          deactivate: !currentActivateDeactivateStatus
+          deactivate: !isDeactivated
         }
         ApplozicClient.activateDeactivateUser(params).then(response => {
           if(response && response.status === 200 && response.data.response === 'success') {
