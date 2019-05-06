@@ -11,8 +11,6 @@
     "cors": "2.8.4",
     "express": "4.16.4",
     "express-validation": "1.0.2",
-    "node-minify": "3.6.0",
-    "path": "0.12.7",
-    "request": "2.88.0"
+    "node-minify": "3.6.0"
   }
 }
