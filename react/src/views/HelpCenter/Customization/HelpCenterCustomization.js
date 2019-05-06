@@ -197,7 +197,8 @@ class HelpCenterCustomization extends Component {
                 AnalyticsTracking.acEventTrigger('helpcenterCustomization');
                 this.setState({
                     disablePreviewButton: false,
-                    changesMade: false
+                    changesMade: false,
+                    customDomains: data.helpCenter.domain
                 })
             }
         }).catch( err => {
