@@ -88,10 +88,10 @@ class PersonInfoCard extends Component {
         });
     }
 
-    activateDeactivateUser = (userId, isDeactivated) => {
+    activateDeactivateUser = (userId, setActivationStatus) => {
         let params = {
           userId: userId,
-          deactivate: !isDeactivated
+          deactivate: setActivationStatus
         }
         ApplozicClient.activateDeactivateUser(params).then(response => {
           if(response && response.status === 200 && response.data.response === 'success') {
@@ -144,7 +144,7 @@ class PersonInfoCard extends Component {
               <UserStyles.P>Are you sure you want to block this user?</UserStyles.P>
               <UserStyles.ButtonGroup>
                 <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
-                <Button danger onClick={() => this.activateDeactivateUser(this.props.user.userId, this.props.user.deactivated)}>Block user</Button>
+                <Button danger onClick={() => this.activateDeactivateUser(this.props.user.userId, !this.props.user.deactivated)}>Block user</Button>
               </UserStyles.ButtonGroup>
             </Fragment>
         );
@@ -154,7 +154,7 @@ class PersonInfoCard extends Component {
               <UserStyles.P>Are you sure you want to unblock this user?</UserStyles.P>
               <UserStyles.ButtonGroup>
                 <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
-                <Button onClick={() => this.activateDeactivateUser(this.props.user.userId, this.props.user.deactivated)}>Unblock user</Button>
+                <Button onClick={() => this.activateDeactivateUser(this.props.user.userId, !this.props.user.deactivated)}>Unblock user</Button>
               </UserStyles.ButtonGroup>
             </Fragment>
         );
