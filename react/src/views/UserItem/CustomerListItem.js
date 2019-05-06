@@ -146,12 +146,17 @@ class CustomerListItem extends Component {
           </div>
         </div>
       </td>
+
+      <td>
+          {this.props.user.userId}
+      </td>
+
       <td>
         <div className="small text-muted"></div>
         <span>{lastSeenAt}</span>
       </td>
 
-      {
+      {/* {
         this.props.hideConversation == "true"
           ? null
           : <td>
@@ -164,7 +169,7 @@ class CustomerListItem extends Component {
                   : DateTimeUtils.lastSeenTime(user.messagePxy.createdAtTime)
               }
             </td>
-      }
+      } */}
 
       {
         this.props.hideConversation == "true"
