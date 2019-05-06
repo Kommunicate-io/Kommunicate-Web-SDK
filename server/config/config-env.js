@@ -128,10 +128,3 @@ const config = configEnv[getEnvId()];
 
 module.exports = config;
 module.exports.getEnvId = getEnvId;
-
-module.exports.getProperties = function () {
-  return config;
-};
-module.exports.commonResources = function () {
-  return config["commonResources"];
-};

@@ -6,7 +6,7 @@ const version = require('child_process')
   .toString().trim();
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../server/config/config-env");
-const MCK_CONTEXT_PATH = config.getProperties().urls.hostUrl;
+const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 
 // Change "env" to "false" to uncompress all files.
