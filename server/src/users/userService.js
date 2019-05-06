@@ -196,29 +196,31 @@ const createUser = (user, customer) => {
     user.imageLink = applozicUser.imagelink;
     user.roleType = (user.type === 2)? USER_CONSTANTS.ROLE_TYPE.BOT:user.roleType;
     user.authenticationId = authentication.id;
-    
+
+    let botUser =  {
+      "name": user.userName,
+      "key": user.userKey,
+      "brokerUrl": applozicUser.brokerUrl,
+      "accessToken": user.accessToken,
+      "applicationKey": customer.applications[0].applicationId,
+      "authorization": authorization,
+      "clientToken": clientToken,
+      "devToken": devToken,
+      "aiPlatform": aiPlatform,
+      "type": "KOMMUNICATE_SUPPORT",
+      "handlerModule":user.handlerModule?user.handlerModule:(aiPlatform ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT"),
+      "googleClientEmail":user.googleClientEmail,
+      "googlePrivateKey":user.googlePrivateKey,
+      "projectId":user.projectId
+    };
+  
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
       updateSubscriptionQuantity(user, 1);
       if (user.type == registrationService.USER_TYPE.BOT) {
         // keeping it async for now.
-        botPlatformClient.createBot({
-          "name": user.userName,
-          "key": user.userKey,
-          "brokerUrl": applozicUser.brokerUrl,
-          "accessToken": user.accessToken,
-          "applicationKey": customer.applications[0].applicationId,
-          "authorization": authorization,
-          "clientToken": clientToken,
-          "devToken": devToken,
-          "aiPlatform": aiPlatform,
-          "type": "KOMMUNICATE_SUPPORT",
-          "handlerModule":user.handlerModule?user.handlerModule:(aiPlatform ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT"),
-          "googleClientEmail":user.googleClientEmail,
-          "googlePrivateKey":user.googlePrivateKey,
-          "projectId":user.projectId
-        }).catch(err => {
+        botPlatformClient.createBot(botUser).catch(err => {
           logger.error("error while creating bot platform", err);
         })
       } else {

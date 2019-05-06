@@ -398,11 +398,6 @@ class BotStore extends Component {
 
         // this.setState({uuid: uuid_holder})
 
-        /*let userSession = CommonUtils.getUserSession();
-        let applicationId = userSession.application.applicationId;
-        let userDetailUrl = getConfig().applozicPlugin.userDetailUrl;
-        let userIdList = {"userIdList" : [userId]}*/
-
         this.setState({disableIntegrateBotButton: true})
 
         this.checkBotNameAvailability(data).then( bot => {
@@ -421,7 +416,9 @@ class BotStore extends Component {
           _this.setState({
             disableIntegrateBotButton: false
           });
-          /*axios({
+          /*
+          Node: leaving it as commented as this can be used in future once bot update is provided in the UI
+          axios({
           method: 'post',
           url:userDetailUrl,
           data: userIdList,
