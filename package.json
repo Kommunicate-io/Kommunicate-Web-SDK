@@ -1,0 +1,18 @@
+{
+  "name": "chat-widget",
+  "version": "2.0.0-ragnarok",
+  "description": "",
+  "main": "app.js",
+  "author": "Abhinav <abhinav@applozic.com>",
+  "license": "ISC",
+  "dependencies": {
+    "babel-minify": "0.5.0",
+    "babel-preset-minify": "0.5.0",
+    "cors": "2.8.4",
+    "express": "4.16.4",
+    "express-validation": "1.0.2",
+    "node-minify": "3.6.0",
+    "path": "0.12.7",
+    "request": "2.88.0"
+  }
+}
