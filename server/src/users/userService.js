@@ -214,7 +214,10 @@ const createUser = (user, customer) => {
           "devToken": devToken,
           "aiPlatform": aiPlatform,
           "type": "KOMMUNICATE_SUPPORT",
-          "handlerModule":user.handlerModule?user.handlerModule:(aiPlatform ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT")
+          "handlerModule":user.handlerModule?user.handlerModule:(aiPlatform ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT"),
+          "googleClientEmail":user.googleClientEmail,
+          "googlePrivateKey":user.googlePrivateKey,
+          "projectId":user.projectId
         }).catch(err => {
           logger.error("error while creating bot platform", err);
         })

@@ -394,20 +394,34 @@ class BotStore extends Component {
         // let uuid_holder = uuid();
 
         let userId = CommonUtils.removeSpecialCharacters(this.state.botName);
+        data.userId = userId;
 
         // this.setState({uuid: uuid_holder})
 
-        let userSession = CommonUtils.getUserSession();
+        /*let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
-        let password = CommonUtils.getUserSession().password;
-        let env = getEnvironmentId();
-        let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
-        let userIdList = {"userIdList" : [userId]}
+        let userDetailUrl = getConfig().applozicPlugin.userDetailUrl;
+        let userIdList = {"userIdList" : [userId]}*/
 
         this.setState({disableIntegrateBotButton: true})
 
-        this.checkBotNameAvailability(userId,aiPlatform).then( bot => {
-          axios({
+        this.checkBotNameAvailability(data).then( bot => {
+          _this.clearBotDetails();
+          _this.onCloseModal();
+          _this.openIntegrationModal();
+          if(aiPlatform === "dialogflow"){
+            _this.setState({dialogFlowIntegrated: true})
+          }else if( aiPlatform === "microsoft"){
+            _this.setState({microsoftIntegrated: true})
+          }
+          if (_this.state.listOfIntegratedBots.length == 1) {
+            EventMessageClient.sendEventMessage('ac-integrated-bot');
+          }
+          _this.getIntegratedBotsWrapper();
+          _this.setState({
+            disableIntegrateBotButton: false
+          });
+          /*axios({
           method: 'post',
           url:userDetailUrl,
           data: userIdList,
@@ -446,7 +460,7 @@ class BotStore extends Component {
                 }
               });
             }
-          });
+          });*/
         }).catch( err => {
           if(err.code=="USER_ALREADY_EXISTS"){
             // _this.setState({botNameAlreadyExists:true})
@@ -501,7 +515,7 @@ class BotStore extends Component {
         AnalyticsTracking.acEventTrigger('ac-integrated-bot');
       }
 
-      checkBotNameAvailability(userId,aiPlatform) {
+      checkBotNameAvailability(data) {
         if(!this.state.botName){
           Notification.info("Please enter a bot name !!");
           return;
@@ -509,20 +523,17 @@ class BotStore extends Component {
 
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
-        
+
+        data.userName = data.userId;
+        data.type = 2;
+        data.applicationId = applicationId;
+        data.password = data.userId;
+        data.name = this.state.botName;
+        data.roleType = ROLE_TYPE.BOT;
+        data.imageLink = this.state.setbotImageLink ? this.state.setbotImageLink : DEFAULT_BOT_IMAGE_URL;
 
         return Promise.resolve(
-          createCustomerOrAgent({
-            userName: userId,
-            type:2,
-            applicationId:applicationId,
-            password:userId,
-            name:this.state.botName,
-            aiPlatform:aiPlatform,
-            roleType: ROLE_TYPE.BOT,
-            imageLink: this.state.setbotImageLink ? this.state.setbotImageLink : DEFAULT_BOT_IMAGE_URL
-
-          },"BOT")).then( bot => {
+          createCustomerOrAgent(data,"BOT")).then( bot => {
             var bot = bot.data.data;
             let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
             botAgentMap[bot.userName] = bot;
