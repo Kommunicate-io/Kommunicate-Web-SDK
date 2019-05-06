@@ -101,6 +101,11 @@ let AppSetting= function(sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         allowNull:true,
         field:'collect_feedback' 
+      },
+      transcript:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: 0,
+        field:'transcript' 
       }
     },
 

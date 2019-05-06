@@ -1,10 +1,7 @@
 
 const autosuggestService = require("./autoSuggestService2");
-const autosuggestServiceExisting = require("./autosuggestService");
 const hashGenerator = require("./hashGenerator");
 const logger = require("../utils/logger");
-var crypto = require('crypto');
-const stringUtils = require("underscore.string");
 
 /**
  * returns all data in db irrespective to customer
@@ -205,24 +202,4 @@ exports._esSearchQuery = (req, res) => {
 		logger.error("error while fetching data esClient", error);
 		return res.status(500).json({ code: "ERROR", message: error.message });
 	});
-}
-/**
- * we will remove this after mongo raw document
- * migration and also remove route
- */
-exports.migrateToModel = (req, res) => {
-	autosuggestServiceExisting.getAllSuggestions().then(suggestions => {
-        suggestions.map( suggestion => {
-            delete suggestion._id
-            let question = suggestion.name ? suggestion.name.trim() : null;
-            if (!stringUtils.isBlank(question)) {
-                suggestion.key = hashGenerator.generateHash(question);
-			}
-			autosuggestService.createIfNotExist(suggestion);
-
-        })
-    }).catch(err => {
-        console.log(" error on hash generation", err)
-    });
-	return res.status(200).json({ code: "success", message: "done" });
 }

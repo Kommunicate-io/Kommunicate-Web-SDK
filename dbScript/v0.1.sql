@@ -293,4 +293,8 @@ CREATE TABLE IF NOT EXISTS authentication (
 ); 
 ALTER TABLE users ADD COLUMN authentication_id int(11) not null;
 
+
+-- -------- May 6, 2019 ------------
+alter table app_settings add column transcript tinyint(1) default 0;
 ALTER TABLE third_party_settings ADD COLUMN automatic_forward_to_thirdparty BOOLEAN ;
+
