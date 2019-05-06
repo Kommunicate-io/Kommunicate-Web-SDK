@@ -19,6 +19,7 @@
 }
 .km-popup-inactive svg {
     fill: rgba(255, 255, 255, 0.5);
+    margin-top: 5px;
 }
 .km-integration-popup-container p {
     font-size: 15px;
