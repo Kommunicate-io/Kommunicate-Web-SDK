@@ -18,7 +18,7 @@ Pass the Actionable Messages metadata as custom payload in Dialogflow to render 
 You can use [Send message API](api-detail#send-message) to add Actionable Messages.
 
 ### Custom bots
-If you are using custom bots, pass the Actionable Message template as metadata in the message. Learn more about using Actionable Message in custom bots [here](custom-bot-integration).
+If you are using custom bots, pass the Actionable Message template as metadata in the message. Learn more about using Actionable Message in custom bots [here](bot-custom-integration).
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Suggested Replies along with the message:
 
