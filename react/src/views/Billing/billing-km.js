@@ -13,20 +13,19 @@ import GrowthPlanIcon from './img/Growth-plan-icon.svg';
 import EnterprisePlanIcon from './img/Enterprise-plan-icon.svg';
 import EarlyBirdPlanIcon from './img/Growth-plan-icon.svg';
 import Modal from 'react-modal';
-//import Modal from 'react-responsive-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 import PlanView from '../.../../../components/PlanDetails/PlanView';
 import AnalyticsTracking from '../../utils/AnalyticsTracking';
  
 import RadioButton from '../../components/RadioButton/RadioButton';
-// import {RadioGroup, Radio} from '../../components/Radio/Radio';
 import CloseButton from '../../components/Modal/CloseButton';
 import { Link } from 'react-router-dom';
 import { USER_TYPE, USER_STATUS } from '../../utils/Constant';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import moment  from 'moment';
 import {FreePlanBullets} from '../../assets/svg/svgs';
+import Banner from '../../components/Banner';
 
 const MissingOutOnFreePlanBox = (props) => (
      <div className="km-missing-out">
@@ -399,7 +398,7 @@ class BillingKommunicate extends Component {
 
     handleChange(e) {
         this.setState({
-            seatsBillable: e.target.value
+            seatsBillable: parseInt(e.target.value)
         });
         var elements = document.querySelectorAll('.km-subscription-buttons-container button');
         for(var i = 0; i < elements.length; i++) {
@@ -505,6 +504,15 @@ class BillingKommunicate extends Component {
             seatsBillable:totalSeatsBillable
         })
     }
+
+    changeTotalCount = (count) => {
+        if((this.state.seatsBillable + count) == 0) {
+            return
+        } else {
+            this.setState({ seatsBillable: this.state.seatsBillable + count });
+        }
+    }
+
     render() {
         //Todo: set this dynamically based on current plan
         let currentPlanElems = document.querySelectorAll(".pricing-table-body button");
@@ -537,16 +545,29 @@ class BillingKommunicate extends Component {
                 </div>
                         
                 <div className="seat-selection-modal--body">
-                    <div className="seat-selector-container">
-                        <div className="seat-selector--text">
-                            <p>Number of seats:</p>
-                        </div>
-                        <div className="seat-selector--input">
-                            <input maxLength="4" min="1" max="10000" type="number"  value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
 
-                            <p>You have {this.state.kmActiveUsers+(this.state.numberOfIntegratedBots)} existing team {this.state.kmActiveUsers+this.state.numberOfIntegratedBots > 1 ? "members" : "member"} {this.state.numberOfIntegratedBots > 0 ? <strong>({this.state.kmActiveUsers} {this.state.kmActiveUsers>1?"humans":"human"} and {this.state.numberOfIntegratedBots} {this.state.numberOfIntegratedBots>1?"bots":"bot"})</strong> : null}. You may still buy lesser number of seats and delete the extra team members later.</p>
+                    <div className="seat-selector--counts-container">
+                        <div>Number of humans in your account:</div>
+                        <div>{this.state.kmActiveUsers}</div>
+                    </div>
+                    <div className="seat-selector--counts-container">
+                        <div>Number of bots in your account:</div>
+                        <div>{this.state.numberOfIntegratedBots}</div>
+                    </div>
+                    <hr/>
+                    <div className="seat-selector-container">
+
+                        <div className="seat-selector--text">
+                            <p>Number of licenses:</p>
+                        </div>
+                        <div className={ (this.state.numberOfIntegratedBots > 0 && this.state.seatsBillable == 1 ) ? "seat-selector--input warning" : "seat-selector--input" }>
+                            <div className="seat-selector--input_decrement" onClick={() => this.changeTotalCount(-1)}>-</div>
+                            <input maxLength="4" min="1" max="10000" type="number"  value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
+                            <div className="seat-selector--input_increment" onClick={() => this.changeTotalCount(+1)}>+</div>
                         </div>
                     </div>
+                    { (this.state.numberOfIntegratedBots > 0 && this.state.seatsBillable == 1 ) ? <Banner appearance="warning" heading="It is required to buy a minimum of 2 licenses (1 bot and 1 human license for managing the account and fallback)"></Banner> : (this.state.seatsBillable < (this.state.kmActiveUsers + this.state.numberOfIntegratedBots)) ? <Banner appearance="info" heading="You can buy less number of licenses now, but the extra bots/humans will be disabled until you buy them"></Banner> : null
+                    }
                     <hr/>
 
 
@@ -971,17 +992,6 @@ const SUBSCRIPTION_PLANS = {
     }
 };
 
-const customStyles = {
-    content: {
-        top: '55px',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translateX(-50%)',
-        maxWidth: '900px',
-    }
-};
 const stylesForSeatSelectionModal = {
     content: {
         top: '50%',
@@ -991,6 +1001,7 @@ const stylesForSeatSelectionModal = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         maxWidth: '900px',
+        width: '500px',
         overflow: 'unset',
     }
 };

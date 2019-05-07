@@ -651,6 +651,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
+    margin-top: -20px;
 }
 .seat-selector--text p, .amount-payable-container p:first-child, .renewal-date-container p:first-child {
     font-size: 14px;
@@ -664,31 +665,45 @@
 }
 .seat-selector--text p {
     margin-top: 10px;
+    color: #171817;
+}
+.seat-selector--input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #c2bfbf;
+    border-radius: 3px;
+}
+.seat-selector--input.warning {
+    border: solid 1px #deb752;
 }
 .seat-selector--input input {
     text-align: center;
-    border-radius: 3px;
-    border: solid 1px #c2bfbf;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     ;
     letter-spacing: 0.8px;
-    color: #767978;
-    padding: 9px;
+    color: #474947;
+    padding: 0;
     max-width: 100px;
+    border: none;
+    outline: none;
 }
-.seat-selector--input p {
-    max-width: 350px;
-    font-size: 13px;
-    font-weight: 300;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.15;
-    letter-spacing: 0.4px;
-    color: #373837;
-    margin-top: 7px;
+.seat-selector--input input:focus, .seat-selector--input input:active, .seat-selector--input input:focus-within {
+    border: none;
+    outline: none;
+}
+.seat-selector--input .seat-selector--input_increment, .seat-selector--input .seat-selector--input_decrement  {
+    font-size: 26px;
+    font-weight: 500;
+    min-width: 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.seat-selector--input .seat-selector--input_increment {
+    font-size: 16px;
 }
 
 .amount-payable-container p:last-child, .renewal-date-container p:last-child {
@@ -938,4 +953,21 @@ p.km-startup-plan-billing-info {
 .km-free-plan-link{
     color: #5553b7;
     font-weight: 500;
+}
+
+.seat-selector--counts-container, .seat-selector-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.seat-selector--counts-container {
+    padding-right: 42px;
+}
+.seat-selector--counts-container div:last-child {
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    color: #474947;
+    min-width: 20px;
+    text-align: center;
 }
