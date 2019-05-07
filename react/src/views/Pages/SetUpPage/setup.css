@@ -281,6 +281,10 @@ select:-webkit-autofill:focus {
     background-color: #fff;
     padding-top: 50px;
 }
+.setup-pages-bg .setup-pages-form-container.setup-pages-install-script-instruction {
+    height: 100vh;
+    overflow-y: scroll;
+}
 .setup-pages-bg .setup-pages-testimonial-container {
     -ms-flex: 3 1 0%;
     flex: 3 1 0%;

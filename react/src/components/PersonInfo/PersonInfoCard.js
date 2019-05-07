@@ -1,13 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './PersonInfo.css'
 import ClearBitInfo from './ClearbitInfo'
 import { UserMetadata, LastSeenSection, DisplayPseudoIcon, PseudonymModal } from './MetaInfo'
 import EditableText from './EditableText';
 import {KommunicateUserInfoPanelLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
 import {MoreInfoLink} from '../../components/MoreInfoLink/MoreInfoLink';
-import {UserInfoEmptyStateSvg} from '../../assets/svg/svgs';
+import { UserInfoEmptyStateSvg, MoreIconVertical } from '../../assets/svg/svgs';
 import PersonConversationHistory from './PersonConversationHistory';
 import Banner from '../../components/Banner';
+import DropList, { DropListItems } from '../DropList';
+import * as UserStyles from '../../views/Users/UserStyles';
+import Button from '../Buttons/Button';
+import Modal from '../Modal/Modal';
+import ApplozicClient from '../../utils/applozicClient';
+import Notification from '../../views/model/Notification';
+
 
 const UserInfoEmptyState = (props) => {
     return (
@@ -29,7 +36,8 @@ class PersonInfoCard extends Component {
             pseudoUser: false,
             imageLink: "",
             email:"",
-            phoneNumber:""
+            phoneNumber:"",
+            modalType: ""
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -73,9 +81,103 @@ class PersonInfoCard extends Component {
         }
         return false;
     }
+
+    openModal = (modalType) => {
+        this.setState({
+            modalType
+        });
+    }
+
+    activateDeactivateUser = (userId, setActivationStatus) => {
+        let params = {
+          userId: userId,
+          deactivate: setActivationStatus
+        }
+        ApplozicClient.activateDeactivateUser(params).then(response => {
+          if(response && response.status === 200 && response.data.response === 'success') {
+            Notification.success("User " + (params.deactivate ? "blocked" : "unblocked" ) + " successfully");
+            this.openModal("");
+            var currentConversation =  document.querySelector("li.person.active");
+            currentConversation && currentConversation.click();
+          }
+        }).catch(err => {
+          console.log(err);
+          Notification.info('Something went wrong. Please try again later.');
+        })
+    }
+    
+    deleteUser = (userId) => {
+        let data = {
+          userId: userId
+        }
+        ApplozicClient.deleteUser(data).then(response => {
+          if(response && response.status === 200 && response.data.response === 'success') {
+            Notification.success("User deleted successfully");
+            this.openModal("");
+            var currentConversation =  document.querySelector("li.person.active");
+            currentConversation && currentConversation.click();
+          }
+        }).catch(err => {
+          console.log(err);
+          Notification.info('Something went wrong. Please try again later.');
+        })
+    }
   
 
     render() {
+
+
+        const DeleteUser = (
+            <Fragment>
+              <UserStyles.P>This action is irreversible and all the data for this user will be permanently lost. Although, the user can come back to initiate a new conversation with you anytime.</UserStyles.P>
+              <UserStyles.P>Are you sure you want to delete this user?</UserStyles.P>
+              <UserStyles.ButtonGroup>
+                <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
+                <Button danger onClick={() => this.deleteUser(this.props.user.userId)}>Delete user</Button>
+              </UserStyles.ButtonGroup>
+            </Fragment>
+        );
+      
+        const BlockUser = (
+            <Fragment>
+              <UserStyles.P>This action will block the user from starting any new conversations or continuing existing ones. You can unblock the user at any time.</UserStyles.P>
+              <UserStyles.P>Are you sure you want to block this user?</UserStyles.P>
+              <UserStyles.ButtonGroup>
+                <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
+                <Button danger onClick={() => this.activateDeactivateUser(this.props.user.userId, !this.props.user.deactivated)}>Block user</Button>
+              </UserStyles.ButtonGroup>
+            </Fragment>
+        );
+        const UnBlockUser = (
+            <Fragment>
+              <UserStyles.P>This action will allow the user to send messages to you again.</UserStyles.P>
+              <UserStyles.P>Are you sure you want to unblock this user?</UserStyles.P>
+              <UserStyles.ButtonGroup>
+                <Button secondary onClick={() => this.openModal("")}>Cancel</Button>
+                <Button onClick={() => this.activateDeactivateUser(this.props.user.userId, !this.props.user.deactivated)}>Unblock user</Button>
+              </UserStyles.ButtonGroup>
+            </Fragment>
+        );
+
+        const renderModalContent = {
+            '': {
+              'heading': '',
+              'content': ''
+            },
+            'deleteUser': {
+              'heading': "Delete user - " + (this.props.user && (this.props.user.userName || this.props.user.userId)),
+              'content': DeleteUser
+            },
+            'blockUser': {
+              'heading': "Block user - " + (this.props.user && (this.props.user.userName || this.props.user.userId)),
+              'content': BlockUser
+            },
+            'unBlockUser': {
+              'heading': "Unblock user - " + (this.props.user && (this.props.user.userName || this.props.user.userId)),
+              'content': UnBlockUser
+            }
+        }
+
         return (
             <div id="km-group-info-tab"
                 className="km-group-info-tab km-panel-sm km-panel">
@@ -83,6 +185,14 @@ class PersonInfoCard extends Component {
                     this.state.user ?
                 <div>
                 <div className="panel-content">
+
+                    <div className="km-group-info-drop-list-container">
+                        <DropList control={<div className="km-group-info-drop-list-control"><MoreIconVertical /></div>}>
+                            <DropListItems onClick={() => this.openModal(this.props.user.deactivated ? "unBlockUser" : "blockUser")}>{this.props.user.deactivated ? "Unblock" : "Block" } user</DropListItems>
+                            <DropListItems appearance="danger" onClick={() => this.openModal("deleteUser")}>Delete user</DropListItems>
+                        </DropList>
+                    </div>
+
                     <div className="km-box-top">
                         <div className="km-group-icon-sec km-postion-relative">
                             <div id="km-group-info-icon-box"
@@ -147,6 +257,13 @@ class PersonInfoCard extends Component {
                 <KommunicateUserInfoPanelLoader/>
             </div>
             }
+
+            <Modal isOpen={this.state.modalType !== ""} heading={renderModalContent[this.state.modalType].heading} onRequestClose={() => this.openModal("")} width="550px">
+                {
+                    renderModalContent[this.state.modalType].content  
+                }
+            </Modal>
+
             </div>
         )
     }

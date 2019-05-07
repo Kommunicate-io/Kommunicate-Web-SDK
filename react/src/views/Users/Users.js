@@ -429,7 +429,6 @@ class Users extends Component {
         this.openModal("");
         this.reRenderUsersList();
       }
-      console.log(response);
     }).catch(err => {
       console.log(err);
       Notification.info('Something went wrong. Please try again later.');
@@ -447,7 +446,6 @@ class Users extends Component {
         this.openModal("");
         this.reRenderUsersList();
       }
-      console.log(response);
     }).catch(err => {
       console.log(err);
       Notification.info('Something went wrong. Please try again later.');
@@ -610,10 +608,11 @@ lost. Although, the user can come back to initiate a new conversation with you a
                   <thead className="thead-default">
                     <tr className="users-table">
                       <th>Name</th>
-                      <th>Last Seen</th>
-                      <th>Last Contacted
+                      {/* <th>Last Contacted
                         <InfoIcon style={{marginLeft: "5px", verticalAlign: "text-top"}} data-tip={infoText} data-effect="solid" data-place="right" data-multiline="True" />
-                      </th>
+                      </th> */}
+                      <th>User Id</th>
+                      <th>Last Seen</th>
                       <th className="product product-kommunicate-table-cell">Latest Conversation</th>
                       <th className="users-edit-icon km-hide-visibility product product-applozic-table-cell">Edit</th>
                       <th className="users-delete-icon km-hide-visibility">Delete</th>

@@ -179,3 +179,13 @@ transition: opacity 300ms ease-in;
     display: block;
     margin: 20px auto;
   }
+
+.km-group-info-drop-list-container {
+    position: absolute;
+    top: 21px;
+    right: 10px;
+}
+.km-group-info-drop-list-control {
+    width: 30px;
+    height: 30px;
+}

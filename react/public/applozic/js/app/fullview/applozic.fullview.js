@@ -1747,7 +1747,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.monthsDiffCalculator = function(msgTimestamp) {
-				var monthsDiff = currentTimeStamp - msgTimestamp;
+				var monthsDiff = currentTimeStamp - (msgTimestamp ? msgTimestamp : currentTimeStamp);
 				return monthsDiff && monthsDiff > maxHistoryInMillisec;
 			}
 			_this.upgradePlanContainer = function(groupId) {
