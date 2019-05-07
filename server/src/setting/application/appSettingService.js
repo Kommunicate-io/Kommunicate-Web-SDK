@@ -103,6 +103,9 @@ exports.updateAppSettings = async (settings, appId) => {
             settings.helpCenter = deepmerge(appSetting.helpCenter, settings.helpCenter);
         }
     }
+    if(settings.transcriptSetting && appSetting.transcriptSetting){
+        settings.transcriptSetting = deepmerge(appSetting.transcriptSetting, settings.transcriptSetting);
+    }
     if(settings.supportMails && appSetting.supportMails){
         settings = deepmerge(appSetting.supportMails, settings);
         settings.supportMails = [...new Set(settings.supportMails)]; 
