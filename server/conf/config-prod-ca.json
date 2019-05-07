@@ -135,5 +135,6 @@
             "enable": true
           }
         }
-      }
+      },
+      "trialExpireDays":18
    }

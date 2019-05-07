@@ -150,5 +150,6 @@
     },
     "metabase": { 
         "userName": "techdisrupt@applozic.com", "password": "techdisrupt@123", "domainUrl": "https://metabase.applozic.com" 
-    }
+    },
+    "trialExpireDays":18
 }

@@ -1,7 +1,7 @@
 const application = require("../models").application;
 const customer = require("../models").customer;
 const moment = require('moment');
-const STATUS = { ACTIVE: 1, EXPIRED: 2 }
+const STATUS = { ACTIVE: 1, EXPIRED: 2 };
 
 /**
  * 
@@ -40,7 +40,7 @@ const getApplication = (applicationId) => {
     return Promise.resolve(application.findOne({ where: { applicationId: applicationId } })).then(app => {
         return app;
     }).catch(e => {
-        let err = new Error('No pplication found');
+        let err = new Error('No application found');
         throw err;
     })
 }
@@ -71,8 +71,8 @@ const getAllApplications = (criteria) => {
     })
 }
 
-const getExpiredApplication = () => {
-    return Promise.resolve(application.findAll({ where: { 'status': {$ne: 2}, 'created_at': { $lt: moment().subtract(31, 'days').toDate() } }, include: [{ model: customer, where: { 'subscription': 'startup' } }] })).then(applications => {
+const getExpiredApplication = (days) => {
+    return Promise.resolve(application.findAll({ where: { 'status': {$ne: 2}, 'created_at': { $lt: moment().subtract(days, 'days').toDate() } }, include: [{ model: customer, where: { 'subscription': 'startup' } }] })).then(applications => {
         return applications;
     })
 }
