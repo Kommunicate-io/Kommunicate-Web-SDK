@@ -2,8 +2,8 @@
 #Script to run automated sql queries
 #Declaring mysql DB connection 
 
-MASTER_DB_USER='testdbauser'
-MASTER_DB_PASSWD='db@u$er2o16'
+MASTER_DB_USER='admin'
+MASTER_DB_PASSWD='adm1n2ol6'
 MASTER_DB_PORT='3160'
 MASTER_DB_HOST='test-db.celtixdshllg.us-east-1.rds.amazonaws.com'
 MASTER_DB_NAME='kommunicate_test'
