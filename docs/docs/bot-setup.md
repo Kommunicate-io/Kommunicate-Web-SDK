@@ -140,3 +140,29 @@ Replace:
 
 GroupId value will be available in ’response’ of [Kommunicate.startConversation](web-conversation#create-a-new-conversation) call.
 Replace <EVENT_NAME> with the bot platform event name.
+
+## Working with Actions
+
+Actions are the triggers which tell Kommunicate to perform certain tasks. Kommunicate exposes these actions to give more powers to your bot. The example of the actions are: <br> 
+* [Resolve a conversation](bot-setup#resolving-the-conversation-from-bot),<br>
+* [Handoff a conversation to an agent](web-conversation-assignment#bot-to-human-handoff), <br> 
+* [Fetch the availability status of agents](bot-dialogflow-integration#fetch-the-human-agent-s-availability-status).
+
+Your bot can make a action request by passing the action name in the `actionRequest` parameter in metadata. 
+Actions are supported with all bot platforms. In case of Dialogflow integration, the metadata can be set in custom payload. In case of custom bot platform it can be returned as the webhook response.
+
+### Resolving the conversation from bot 
+
+A bot can be configured to resolve the conversation when it is appropriate to do. It can be done by making an action request with the value `resolveConversation` to Kommunicate. Once the request is received Kommunicate will close the current conversation, notify the user and conversation will be moved to the resolve section of Kommunicate dashboard.
+ 
+
+Here is how action request for resolving the conversation look like: 
+
+```JSON
+{
+  "platform": "kommunicate",
+  "metadata": {
+    "actionRequest": "resolveConversation"
+  }
+}
+```

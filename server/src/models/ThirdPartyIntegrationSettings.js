@@ -24,6 +24,10 @@ let ThirdPartyIntegrationSettings = function (sequelize, DataTypes) {
     },
     domain: {
       type: DataTypes.STRING(50)
+    },
+    automaticForward: {
+      type: DataTypes.BOOLEAN(),
+      field: 'automatic_forward'
     }
   }, {
       underscored: true,

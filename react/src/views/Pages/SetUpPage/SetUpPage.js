@@ -46,7 +46,7 @@ class SetUpPage extends Component {
 		const productTitle = PRODUCTS[CommonUtils.getProduct()].title;
 		return (
 			<div className="app setup-pages-bg">
-				<div className="setup-pages-form-container">
+				<div className={window.location.pathname.includes("/installation") ? "setup-pages-form-container setup-pages-install-script-instruction" : "setup-pages-form-container"}>
 					<div className={window.location.pathname.includes("/installation") ? "setup-pages-form-fields-container invite-link-setup-page" : "setup-pages-form-fields-container"}>
 						<div className="logo-container text-center">
 							<Logo/>

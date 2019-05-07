@@ -3020,6 +3020,9 @@ ol, ul {
     z-index: 2;
     width: 100%;
 }
+.mck-video-player {
+	width: 100%;
+}
 
 .km-group-name-box div[contenteditable="true"].km-req-border {
 	border-bottom: 2px solid #EB5858 !important;
