@@ -1,13 +1,13 @@
 const applicationService = require('../../customer/applicationService')
 const userService = require('../../users/userService');
 const botPlatform = require('../../utils/botPlatformClient');
-const BOT_STATUS = require('../../users/constants').USER_STATUS
-const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
 const env = process.env.NODE_ENV ? process.env.NODE_ENV : "test";
+const config = require('../../../conf/config');
 
 
 exports.trialExpireCron = async function () {
-    var freePlan = exec('sh ' + __basedir + '/scripts/freeplan.sh ' + env,
+    var freePlan = execSync('sh ' + __basedir + '/scripts/freeplan.sh ' + env,
         (error, stdout, stderr) => {
             console.log(`${stdout}`);
             console.log(`${stderr}`);
@@ -16,7 +16,7 @@ exports.trialExpireCron = async function () {
             }
         });
 
-    let applications = await applicationService.getExpiredApplication();
+    let applications = await applicationService.getExpiredApplication(config.trialExpireDays);
     for (var i = 0; i < applications.length; i++) {
         let res = await markBotAsExpire(applications[i].applicationId);
         applicationService.updateApplication(applications[i].applicationId, { status: applicationService.STATUS.EXPIRED });
