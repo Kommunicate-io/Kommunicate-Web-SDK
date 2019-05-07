@@ -597,7 +597,7 @@ class BillingKommunicate extends Component {
                 <div className="seat-selection-modal--footer text-right">
                     <button className="km-button km-button--secondary" onClick={() => this.openCurrentModal("")}>Cancel</button>
                     
-                    <button className="km-button km-button--primary" onClick={this.openChargebeeModal}>Continue</button>                                   
+                    <button className="km-button km-button--primary" onClick={this.openChargebeeModal} disabled={this.state.numberOfIntegratedBots > 0 && this.state.seatsBillable == 1}>Continue</button>
                     
                 </div>
             </Fragment>
