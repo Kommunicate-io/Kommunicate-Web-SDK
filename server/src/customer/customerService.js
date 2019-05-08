@@ -104,6 +104,7 @@ const createApplication = (application) => {
 }
 
 const reactivateAccount = async function (appId,userIds,enableWithoutPayment) {
+    try{
     let customer = await getCustomerByApplicationId(appId);
     if ((customer.subscription && !customer.isProductApplozic && customer.subscription != subscriptionPlans.KOMMUNICATE_SUBSCRIPTION.STARTUP)||enableWithoutPayment ) {
         let users = [],
@@ -149,6 +150,10 @@ const reactivateAccount = async function (appId,userIds,enableWithoutPayment) {
         applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE });
     }
     return "success";
+  } catch (error) {
+      console.log("error while reactivating", error);
+      return "error";
+  }
 }
 
 
