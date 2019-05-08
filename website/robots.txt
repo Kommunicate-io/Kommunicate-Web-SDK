@@ -1,7 +1,0 @@
-User-agent: *
-
-Disallow: https://chat.kommunicate.io/*
-Disallow: https://www.kommunicate.io/blog/author/*
-Disallow: https://www.kommunicate.io/blog/category/*
-Disallow: https://www.kommunicate.io/blog/page/*
-Disallow: https://www.kommunicate.io/blog/tag/*

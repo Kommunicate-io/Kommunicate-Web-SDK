@@ -1,6 +1,0 @@
-{
-  "name": "Install",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./Install.js"
-}

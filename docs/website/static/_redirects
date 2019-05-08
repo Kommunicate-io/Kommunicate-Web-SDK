@@ -1,9 +1,0 @@
-/docs/web-botintegration#assign-all-the-new-conversations-to-the-bot-by-default                /docs/bot-configration#assign-all-the-new-conversations-to-the-bot-by-default
-
-/docs/web-botintegration#assign-conversations-to-specific-bots-based-on-certain-events         /docs/bot-configration#assign-conversations-to-specific-bots-based-on-certain-events    
-
-/docs/web-botintegration#assign-conversations-to-specific-bots-based-on-the-webpage             /docs/bot-configration#assign-conversations-to-specific-bots-based-on-the-webpage  
-
-/docs/bot-configration#to-integrate-bot-built-using-dialogflow-follow-the-below-steps           /docs/web-botintegration   
-
-/docs/bot-configration#to-integrate-with-other-bot-platforms-follow-the-below-steps             /docs/custom-bot-integration#integrating-with-custom-bot-platform  

@@ -1,6 +1,0 @@
-> use kommunicate;
-switched to db kommunicate
-> db.createCollection("counter")
-{ "ok" : 1 }
-> db.createCollection("knowledgebase")
-{ "ok" : 1 }
