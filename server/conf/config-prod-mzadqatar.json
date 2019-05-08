@@ -4,8 +4,8 @@
          "url": "mysql://mzadqatardbadmin:mzadqatar$2017@mzadqatarproddb.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_mzad",
          "options": {
            "pool": {
-             "threadPoolMax": 5,
-             "threadPoolMin": 0,
+             "threadPoolMax": 10,
+             "threadPoolMin": 1,
              "idle": 10000
            },
            "logging": false
