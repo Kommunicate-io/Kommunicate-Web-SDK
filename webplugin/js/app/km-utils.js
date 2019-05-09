@@ -117,7 +117,8 @@ KommunicateConstants = {
         // chat context parameters are  dynamic and defined by customers while some of them are used to define system settings.
         // these parameters should not be overridden by customer defined parameters
         KM_CHAT_CONTEXT: "KM_CHAT_CONTEXT",
-        KM_USER_LANGUAGE_CODE:"kmUserLanguageCode"
+        KM_USER_LANGUAGE_CODE:"kmUserLanguageCode",
+        KM_USER_TIMEZONE:"kmUserTimezone"
     }
 }
 
@@ -297,5 +298,19 @@ KommunicateUtils = {
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,  domain: KommunicateUtils.getDomainFromUrl()});
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.ACCESS_TOKEN, domain: KommunicateUtils.getDomainFromUrl()});
+    },
+    isValidTimeZone : function(tzId) {
+        if (!Intl || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
+            console.log("not able to validate the timezone in this environment, skipping validation for timezone ", tzId);
+            return true;
+        }
+        try {
+            Intl.DateTimeFormat(undefined, {timeZone: tzId});
+            return true;
+        }
+        catch (ex) {
+            console.log("ERROR: time zone is not registered into IANA timezone db. can not set the user timezone. more detail about timezone db https://www.iana.org/time-zones" );
+            return false;
+        }
     }
 }
