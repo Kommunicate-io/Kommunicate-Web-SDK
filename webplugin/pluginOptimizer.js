@@ -10,7 +10,7 @@ const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 
 // Change "env" to "false" to uncompress all files.
-let env = false;
+let env = config.getEnvId();
 
 let jsCompressor = !env ?"no-compress" : "gcc"; 
 let uglifyCompressor = !env? "no-compress" : "uglify-es";
