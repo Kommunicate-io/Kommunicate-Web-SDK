@@ -234,17 +234,17 @@ function addFullviewImageModal () {
           '}  \n ';
 
       // Append HTML of image fullview viewer modal to body of html page
-      var fullscreenModal = parent.document.createElement('div');
+      var fullscreenModal = window.top.document.createElement('div');
       fullscreenModal.setAttribute("id", "km-fullscreen-image-modal");
       fullscreenModal.setAttribute("class", "km-fullscreen-image-modal");
       fullscreenModal.innerHTML = modalHtml;
-      parent.document.body.appendChild(fullscreenModal);
+      window.top.document.body.appendChild(fullscreenModal);
 
       // Append CSS of image fullview viewer modal to body of html page
-      var style = parent.document.createElement('style');
+      var style = window.top.document.createElement('style');
       style.type = 'text/css';
       style.innerHTML = addFullviewImageModalCss;
-      parent.document.getElementsByTagName('head')[0].appendChild(style);
+      window.top.document.getElementsByTagName('head')[0].appendChild(style);
 
 };
 //<----------------------------CODE ENDS HERE---------------------------->

@@ -1902,9 +1902,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         });
                     }
                     // Get the modal
-                    var modal = parent.document.getElementById('km-fullscreen-image-modal');
-                    var modalImg = parent.document.getElementById("km-fullscreen-image-modal-content");
-                    var captionText = parent.document.getElementById("km-fullscreen-image-modal-caption");
+                    var modal = window.top.document.getElementById('km-fullscreen-image-modal');
+                    var modalImg = window.top.document.getElementById("km-fullscreen-image-modal-content");
+                    var captionText = window.top.document.getElementById("km-fullscreen-image-modal-caption");
                     modal.style.display = "block";
                     modalImg.src = href;
                     captionText.innerHTML = title ? title : "";
@@ -1912,9 +1912,8 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             });
 
-
-            parent.document.getElementById("km-fullscreen-image-modal-close").onclick = function(){
-                parent.document.getElementById('km-fullscreen-image-modal').style.display = "none";
+            window.top.document.getElementById("km-fullscreen-image-modal-close").onclick = function(){
+                window.top.document.getElementById('km-fullscreen-image-modal').style.display = "none";
             };
 
             $applozic(w).on('resize', function () {
