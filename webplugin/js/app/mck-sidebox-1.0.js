@@ -1912,7 +1912,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 }
             });
 
-
             parent.document.getElementById("km-fullscreen-image-modal-close").onclick = function(){
                 parent.document.getElementById('km-fullscreen-image-modal').style.display = "none";
             };
