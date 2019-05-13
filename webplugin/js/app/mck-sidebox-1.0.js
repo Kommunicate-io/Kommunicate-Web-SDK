@@ -4983,6 +4983,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
                 var emoji_template = '';
                 if (msg.message) {
+                    msg.message = mckMessageLayout.getScriptMessagePreview(msg, msg.message);
                     var msg_text = msg.message.replace(/\n/g, '<br/>');
                     if (w.emoji !== null && typeof w.emoji !== 'undefined') {
                         emoji_template = w.emoji.replace_unified(msg_text);
@@ -5029,11 +5030,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         } else {
                             var x = d.createElement('div');
                             x.appendChild(d.createTextNode(nodes[i]));
-                            if (nodes[i] && nodes[i].match(LINK_MATCHER)) {
                                 x = $applozic(x).linkify({
                                     target: '_blank'
                                 });
-                            }
                         }
                         $textMessage.append(x);
                     }
