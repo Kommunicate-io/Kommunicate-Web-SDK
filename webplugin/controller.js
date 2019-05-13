@@ -1,17 +1,17 @@
 const path = require("path");
 const fs = require('fs');
-const config = require("../../conf/config");
+const config = require("./../server/config/config-env");
 
 exports.getPlugin = (req, res) => {
   //var MCK_CONTEXTPATH =req.protocol+"://"+req.headers.host;
-  const MCK_CONTEXTPATH = config.getProperties().urls.hostUrl;
+  const MCK_CONTEXTPATH = config.urls.hostUrl;
   const MCK_STATICPATH = MCK_CONTEXTPATH + "/plugin";
-  const PLUGIN_SETTING = config.getProperties().pluginProperties;
+  const PLUGIN_SETTING = config.pluginProperties;
   const MCK_ENVIRONMENT = config.getEnvId();
-  const MCK_THIRD_PARTY_INTEGRATION = config.getProperties().thirdPartyIntegration;
+  const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
   const MCK_PLUGIN_VERSION = req.params.version;
-  PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || MCK_CONTEXTPATH;
-  PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.getProperties().urls.baseUrl;
+  PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
+  PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 
   console.log("setting context and static path", MCK_CONTEXTPATH);
   fs.readFile(path.join(__dirname, "/build/plugin.js"), 'utf8', function (err, data) {

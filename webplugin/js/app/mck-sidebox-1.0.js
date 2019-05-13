@@ -365,7 +365,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
-        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.getBaseUrl()+ "/plugin/audio/notification_tone.mp3";
+        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : MCK_CONTEXTPATH+ "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -1911,7 +1911,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
                 }
             });
-
 
             parent.document.getElementById("km-fullscreen-image-modal-close").onclick = function(){
                 parent.document.getElementById('km-fullscreen-image-modal').style.display = "none";
@@ -4984,6 +4983,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 
                 var emoji_template = '';
                 if (msg.message) {
+                    msg.message = mckMessageLayout.getScriptMessagePreview(msg, msg.message);
                     var msg_text = msg.message.replace(/\n/g, '<br/>');
                     if (w.emoji !== null && typeof w.emoji !== 'undefined') {
                         emoji_template = w.emoji.replace_unified(msg_text);
@@ -5030,11 +5030,9 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                         } else {
                             var x = d.createElement('div');
                             x.appendChild(d.createTextNode(nodes[i]));
-                            if (nodes[i] && nodes[i].match(LINK_MATCHER)) {
                                 x = $applozic(x).linkify({
                                     target: '_blank'
                                 });
-                            }
                         }
                         $textMessage.append(x);
                     }

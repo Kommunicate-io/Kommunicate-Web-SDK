@@ -466,5 +466,16 @@ $applozic.extend(true,Kommunicate,{
     // subscribe to custom events
     subscribeToEvents : function (events) {
         $applozic.fn.applozic('subscribeToEvents', events);
+    },
+    /**
+     * 
+     * @param {String} timezone 
+     */
+    updateUserTimezone: function(timezone){
+        if (KommunicateUtils.isValidTimeZone(timezone)){
+            var chatContext = KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
+            chatContext[KommunicateConstants.SETTINGS.KM_USER_TIMEZONE] = timezone;
+            Kommunicate.updateChatContext(chatContext);
+        } 
     }
 });
