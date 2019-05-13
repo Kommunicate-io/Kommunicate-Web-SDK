@@ -127,4 +127,24 @@ function KommunicateCommons() {
         temporalDivElement.innerHTML = html;
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     }  
+    _this.isConversationClosedByBot = function(){
+        var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function(member){
+            return member.userId == CURRENT_GROUP_DATA.lastMessagingMember
+        });
+        return filtered[0] && filtered[0].role == 2
+
+    }  
+
+    _this.getRatingSmilies = function(rating){
+        switch (rating) {
+            case 1:
+                return '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"><g fill="none" fill-rule="evenodd"><path fill="#FFCC4D" d="M34.966 17.483c0 9.655-7.828 17.483-17.483 17.483C7.828 34.966 0 27.138 0 17.483 0 7.828 7.828 0 17.483 0c9.655 0 17.483 7.828 17.483 17.483"/> <path fill="#6F543A" d="M24.753 26.592c-.044-.173-1.134-4.253-7.27-4.253-6.137 0-7.227 4.08-7.27 4.253-.054.211.042.43.23.539.19.107.427.075.582-.075.018-.019 1.898-1.803 6.458-1.803 4.56 0 6.44 1.784 6.457 1.803a.49.49 0 0 0 .58.077.486.486 0 0 0 .233-.54M14.083 13.112c0 1.879-1.086 3.4-2.428 3.4-1.34 0-2.428-1.521-2.428-3.4 0-1.877 1.087-3.4 2.428-3.4 1.342 0 2.428 1.523 2.428 3.4M26.763 13.112c0 1.879-1.087 3.4-2.428 3.4s-2.428-1.521-2.428-3.4c0-1.877 1.087-3.4 2.428-3.4s2.428 1.523 2.428 3.4"/></g></svg>'
+            case 5:
+                return '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"><g fill="none" fill-rule="evenodd"><circle cx="17.497" cy="17.497" r="17.497" fill="#FFCC4D"/><g fill="#6F543A" transform="translate(8.089 8.713)"> <circle cx="4.411" cy="2.787" r="2.5"/><circle cx="14.411" cy="2.787" r="2.5"/><path d="M1.499 15.287h16.825c.783 0 .783-1 0-1H1.499c-.783 0-.783 1 0 1z"/></g></g></svg>';
+            case 10:
+                return '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"> <g fill="none" fill-rule="evenodd"><path fill="#FFCC4D" d="M34.932 17.466c0 9.646-7.82 17.466-17.466 17.466S0 27.112 0 17.466 7.82 0 17.466 0s17.466 7.82 17.466 17.466"/><path fill="#6F543A" d="M17.466 20.377c-3.516 0-5.848-.41-8.733-.97-.659-.128-1.94 0-1.94 1.94 0 3.881 4.458 8.733 10.673 8.733 6.214 0 10.674-4.852 10.674-8.733 0-1.94-1.282-2.069-1.941-1.94-2.885.56-5.218.97-8.733.97"/><path fill="#FFF" d="M8.733 21.347s2.91.97 8.733.97c5.822 0 8.733-.97 8.733-.97s-1.94 3.881-8.733 3.881c-6.792 0-8.733-3.88-8.733-3.88"/><path fill="#6F543A" d="M14.07 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396M26.737 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396"/></g></svg>'
+            default:
+                console.log('unknown rating');
+        } 
+    }
 };

@@ -301,6 +301,7 @@ function ApplozicSidebox() {
             options["agentName"]=data.agentName;
             options["widgetSettings"]=data.widgetTheme;
             options["customerCreatedAt"]=data.customerCreatedAt;
+            options["collectFeedback"]=data.collectFeedback;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");

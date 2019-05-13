@@ -404,14 +404,46 @@ setAvailabilityStatus : function (status){
 showClosedConversationBanner  : function(isConversationClosed){
     var messageText = MCK_LABELS["closed.conversation.message"];
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
-    if (isConversationClosed){
+    var isCSATenabled = kommunicate._globals.collectFeedback;
+    var FEEDBACK_UPDATE_URL = "/feedback"
+    isConversationClosed && kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
+    if(isCSATenabled && isConversationClosed && !kommunicateCommons.isConversationClosedByBot()){
+        mckUtils.ajax({
+            type: 'GET',
+            url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL + '/'+ CURRENT_GROUP_DATA.tabId ,
+            global: false,
+            contentType: 'application/json',
+            success: function (data) {
+                CURRENT_GROUP_DATA.currentGroupFeedback = data.data;
+                kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
+                kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]}, "","n-vis");
+                kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
+                if( data.data && data.data.rating && data.data.comments.length> 0){
+                    kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
+                    kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2"]}, "n-vis");
+                    document.getElementById('csat-3').innerHTML = '\"' + data.data.comments[0] + '\"';
+                }else if( data.data && data.data.rating) {
+                    kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
+                    kommunicateCommons.modifyClassList( {id : ["csat-1","csat-3"]}, "n-vis");
+                    document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(data.data.rating);
+                }else {
+                    kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "", "n-vis");
+                    kommunicateCommons.modifyClassList( {id : ["csat-2","csat-3"]}, "n-vis");
+                }
+            }
+        });  
+    }else if(isConversationClosed){
         conversationStatusDiv && (conversationStatusDiv.innerHTML= messageText);
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "vis", "n-vis");
-    }
+        kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
+    } 
     else {
+        kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
-        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "n-vis", "vis");
+        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
+        kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
+        kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
     } 
 },
 handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {
