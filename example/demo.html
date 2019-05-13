@@ -1,0 +1,21 @@
+<html>
+<head>
+<link rel="import" href="../template/km-sidebox.html">
+<script type="text/javascript" src="../js/app/km-login.js"></script>
+</head>
+<body>
+<script>
+          var link = document.querySelector('link[rel="import"]');
+          var content = link.import;
+          var el = content.querySelector('#kommunicate');
+          document.body.appendChild(el.cloneNode(true));
+          $(document).ready(function () {
+            var kommunicateSettings = {"appId":  "kommunicate-support",
+           "userId": "testaccount",
+           "conversationTitle":"Kommunicate Support"
+           };
+              kmLogin(kommunicateSettings);
+          });
+          </script>
+</body>
+</html>
