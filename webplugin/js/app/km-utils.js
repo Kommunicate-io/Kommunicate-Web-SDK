@@ -312,5 +312,10 @@ KommunicateUtils = {
             console.log("ERROR: time zone is not registered into IANA timezone db. can not set the user timezone. more detail about timezone db https://www.iana.org/time-zones" );
             return false;
         }
+    },
+    isActiveConversationNeedsToBeOpened : function(activeConversationInfo, data) {
+        var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
+        if (activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId && userId == activeConversationInfo.userId ))return true
+        return false
     }
 }

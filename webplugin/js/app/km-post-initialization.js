@@ -36,10 +36,8 @@ Kommunicate.postPluginInitialization = function (err, data) {
         Kommunicate.helpdocsInitialization(data, helpdocsAccessKey);
     }
     var activeConversationInfo = Kommunicate.getActiveConversation();
-    
-    activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId) && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && Kommunicate.openConversation(activeConversationInfo.groupId));
-    
-    activeConversationInfo && typeof data != "undefined" && (data.appId != activeConversationInfo.appId) && (KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo"));
+    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && Kommunicate.openConversation(activeConversationInfo.groupId);
+    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && !KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
 
 }
 
