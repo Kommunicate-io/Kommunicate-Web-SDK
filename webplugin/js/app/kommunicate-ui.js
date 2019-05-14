@@ -427,6 +427,9 @@ showClosedConversationBanner  : function(isConversationClosed){
                 }else {
                     kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "", "n-vis");
                 }
+            },
+            error : function(){
+                console.log('Error fetching feedback')
             }
         });  
     }else if(isConversationClosed){
