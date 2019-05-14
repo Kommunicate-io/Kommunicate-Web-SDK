@@ -1913,6 +1913,11 @@ var CURRENT_GROUP_DATA={};
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
+                document.getElementById('mck-rated-text').innerHTML= MCK_LABELS['csat.rating'].CONVERSATION_RATED;
+                document.getElementById('mck-rate-conversation').innerHTML= MCK_LABELS['csat.rating'].RATE_CONVERSATION;
+                document.getElementById('mck-other-queries').innerHTML= MCK_LABELS['csat.rating'].OTHER_QUERIES;
+                document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
+                document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 // $applozic(".fancybox-kommunicate").click(function(e){
