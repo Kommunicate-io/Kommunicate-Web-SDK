@@ -127,4 +127,15 @@ function KommunicateCommons() {
         temporalDivElement.innerHTML = html;
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     }  
+    _this.isConversationClosedByBot = function(){
+        var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function(member){
+            return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
+        });
+        return filtered[0] && filtered[0].role ==  KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
+
+    }  
+
+    _this.getRatingSmilies = function(rating){
+       return KommunicateConstants.RATINGS_SVG[rating];
+    }
 };

@@ -1419,8 +1419,9 @@
 	padding: 0px 15px 10px;
 	/* position: absolute;
     bottom: 8px; */
-    background-color: white;
-    width: auto;
+	background-color: white;
+	width: auto;
+	position: relative;
 }
 .mck-box-ft .mck-box-form {
 	padding: 10px 5px 10px 0px;
@@ -5801,6 +5802,139 @@ div[name="message"]:last-child {
 	font-weight: 700!important;
 }
 
+.mck-ratings-smilies{
+	display: flex;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 250px;
+    margin: 25px auto;
+}
+
+.mck-csat-wrapper{
+	text-align: center;
+}
+
+.mck-csat-text-1{
+	text-align:  center;
+	font-size: 14px;
+}
+.mck-csat-text-1 > span{
+	display: block;
+}
+.mck-csat-wrapper > span{
+    margin-bottom: 22px;
+	color: #222222;
+	font-size: 15px;
+}
+.mck-csat-text-1 span{
+	color: #8b8888;
+	display: block;
+	max-width: 85%;
+    margin: 20 auto 5px;
+}
+.mck-csat-text-1 span a{
+    text-decoration: none;
+}
+.mck-rating-box{
+	cursor: pointer;
+	transition: all .2s;
+}
+.mck-rating-box:hover{
+	transform: scale(1.2);
+}
+
+.mck-conversation-comment{
+	background: white;
+    padding: 19px 10px;
+    text-align: center;
+    margin: 0 -15px;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.3px;
+	color: #676262;
+	font-size: 14px;
+}
+
+
+div#mck-rated {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 300;
+    color: #676262;
+    position: absolute;
+    top: -24px;
+    width: 92%;
+    background: white;
+	overflow: hidden;
+	padding: 3px 0px;
+}
+div#mck-rated span svg{    
+	height: 16px;
+    width: 16px;
+    margin: 0 5px -4px 3px;
+}
+div#mck-rated:after, div#mck-rated:before{
+	content: "";
+    position: absolute;
+    height: 8px;
+    border-top: 1px solid #e2e2e2;
+    top: 50%;
+    width: 600px;
+    z-index: 0;  
+}
+div#mck-rated:after{
+	left: 79%;
+}
+div#mck-rated:before{
+	right: 80%;
+}
+.mck-feedback-text-wrapper{
+	max-height: 80px;
+    background: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 3px;
+    margin-top: 18px;
+    padding: 7px;
+    border: solid 0.5px #cecbcb;
+    max-width: 90%;
+    margin: 18px auto;
+}
+.mck-feedback-text-wrapper textarea{
+    background: none;
+    border: none;
+    outline: none;
+}
+.mck-feedback-text-wrapper textarea::-webkit-input-placeholder, 
+.mck-feedback-text-wrapper textarea::-moz-placeholder, 
+.mck-feedback-text-wrapper textarea:-ms-input-placeholder,
+.mck-feedback-text-wrapper textarea:-moz-placeholder{
+    font-size: 13px;
+}
+
+.mck-send-feedback {
+	margin-left: 6px;
+    border-left: 1px solid #f6f5f5;
+	padding: 7px;
+}
+
+#csat-1, #csat-2, #csat-3, #mck-sidebox-ft, #mck-rated, .mck-csat-text-1{
+	animation-name: kmFadeIn;
+	-webkit-animation-name: kmFadeIn;
+	-webkit-animation-duration: .3s;
+	animation-duration: .3s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+	animation-timing-function: ease-in-out;
+	-webkit-animation-timing-function: ease-in-out;
+}
+
+.mck-send-feedback{
+	cursor: pointer;
+}
+
 @keyframes kmOpeningAnimation {
 	from {
 		opacity: 0.6;
@@ -5821,5 +5955,14 @@ div[name="message"]:last-child {
 	to {
 		opacity: 1;
 		transform: scale(1);
+	}
+}
+@keyframes kmFadeIn {
+	from {
+		opacity: 0.2;
+	}
+
+	to {
+		opacity: 1;
 	}
 }

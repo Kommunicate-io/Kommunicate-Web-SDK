@@ -105,5 +105,12 @@ Kommunicate.defaultLabels = {
                 'phone':'Contact Number',
                 'heading':'Before starting, we just need a few details so that we may serve you better',
                 'submit':'Start Conversation',
-    }
+    },
+    'csat.rating': {
+        'CONVERSATION_RATED' : 'You rated the conversation',
+        'RATE_CONVERSATION' : 'Rate your conversation',
+        'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a comment…',
+        'OTHER_QUERIES' : 'If you have any other queries, just',
+        'RESTART_CONVERSATION' : 'restart this conversation',
+    } 
 }

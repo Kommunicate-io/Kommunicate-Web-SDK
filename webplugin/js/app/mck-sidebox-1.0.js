@@ -8,6 +8,7 @@ var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
+var CURRENT_GROUP_DATA={};
 
 (function ($applozic, w, d) {
     "use strict";
@@ -318,6 +319,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
         KOMMUNICATE_VERSION === "v2" && (parent.Kommunicate = window.Kommunicate);
         var WIDGET_SETTINGS = appOptions.widgetSettings;
         var EMOJI_LIBRARY = appOptions.emojilibrary;
+        var CSAT_ENABLED = appOptions.collectFeedback;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
@@ -1347,6 +1349,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var $mck_tab_individual = $applozic("#mck-tab-individual");
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
+            var FEEDBACK_UPDATE_URL = "/feedback";
             _this.getLauncherHtml = function (isAnonymousChat) {
 
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
@@ -1584,6 +1587,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 _this.appendLauncher();
                 _this.setLabels();
                 KOMMUNICATE_VERSION === "v2" && _this.configureIframe();
+                _this.configureRatingElements();
                 $applozic('.applozic-launcher').each(function () {
                     if (!$applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).show();
@@ -1775,6 +1779,54 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     }
                 });
             };
+
+            _this.configureRatingElements = function(){
+                var ratingSmilies = document.getElementsByClassName("mck-rating-box");
+                var sendFeedbackComment = document.getElementById('mck-submit-comment');
+                var restartConversation = document.getElementById('mck-restart-conversation');
+                var feedbackObject = {
+                    groupId:0,
+                    comments:[],
+                    rating:0
+                };
+
+                restartConversation.addEventListener('click',function(){
+                    KommunicateUI.showClosedConversationBanner(false);
+                })
+
+                sendFeedbackComment.addEventListener('click',function(){
+                    feedbackObject.comments = [document.getElementById("mck-feedback-comment").value];
+                    feedbackObject.rating = CURRENT_GROUP_DATA.currentGroupFeedback.rating;
+                    feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
+                    _this.sendFeedback(feedbackObject);
+                });
+                for (var i = 0; i < ratingSmilies.length; i++) {
+                    ratingSmilies[i].addEventListener('click',function(e){
+                        feedbackObject.comments = [];
+                        feedbackObject.rating = parseInt(this.getAttribute("data-rating"));
+                        feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
+                        _this.sendFeedback(feedbackObject);                     
+                    })
+                }
+            }
+            _this.sendFeedback = function(feedbackData){
+                mckUtils.ajax({
+                    type: 'POST',
+                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL,
+                    global: false,
+                    data: JSON.stringify(feedbackData),
+                    contentType: 'application/json',
+                    success: function (result) {
+                       if(result && result.data){
+                           CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
+                           KommunicateUI.showClosedConversationBanner(true);
+                       }
+                    },
+                    error : function(){
+                        console.log('Error submitting feedback')
+                    }
+                });
+            },
             _this.getPreLeadDataForAskUserDetail = function(){
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
@@ -1861,6 +1913,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
+                document.getElementById('mck-rated-text').innerHTML= MCK_LABELS['csat.rating'].CONVERSATION_RATED;
+                document.getElementById('mck-rate-conversation').innerHTML= MCK_LABELS['csat.rating'].RATE_CONVERSATION;
+                document.getElementById('mck-other-queries').innerHTML= MCK_LABELS['csat.rating'].OTHER_QUERIES;
+                document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
+                document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 // $applozic(".fancybox-kommunicate").click(function(e){
@@ -2118,6 +2175,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
             var CONVERSATION_CLOSE_UPDATE_URL = "/rest/ws/conversation/close";
             var CONVERSATION_DELETE_URL = "/rest/ws/message/delete/conversation";
             var CONVERSATION_READ_UPDATE_URL = "/rest/ws/message/read/conversation";
+            var FEEDBACK_UPDATE_URL = '/feedback'
             var offlineblk = '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
@@ -3495,6 +3553,7 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                 var isAgentOffline = false;
                 var append =false;
                 if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
+                    CURRENT_GROUP_DATA.tabId = parseInt(params.tabId);
                     reqData = (params.isGroup) ? "&groupId=" + params.tabId : "&userId=" + encodeURIComponent(params.tabId);
                     individual = true;
                     if (params.startTime) {
@@ -3537,6 +3596,11 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
                     success: function (data) {
                         var isMessages = true;
                         //Display/hide lead(email) collection template
+                        CURRENT_GROUP_DATA.isgroup = params.isGroup;
+                        CURRENT_GROUP_DATA.conversationStatus = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
+                        CURRENT_GROUP_DATA.conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                        CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
+                        CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
                         if (params.isGroup) {
                             Kommunicate.conversation.processConversationOpenedFromList(data);
                             var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
