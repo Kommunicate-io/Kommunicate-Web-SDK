@@ -3599,7 +3599,7 @@ var CURRENT_GROUP_DATA={};
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
                         CURRENT_GROUP_DATA.conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        CURRENT_GROUP_DATA.groupMembers = data.groupFeeds[0] && data.groupFeeds[0].groupUsers;
+                        CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
                         if (params.isGroup) {
                             Kommunicate.conversation.processConversationOpenedFromList(data);

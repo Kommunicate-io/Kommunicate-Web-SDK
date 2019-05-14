@@ -131,7 +131,7 @@ function KommunicateCommons() {
         var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function(member){
             return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
         });
-        return filtered[0] && filtered[0].role == 2;
+        return filtered[0] && filtered[0].role ==  KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
 
     }  
 
