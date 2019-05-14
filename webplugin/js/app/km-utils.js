@@ -315,7 +315,6 @@ KommunicateUtils = {
     },
     isActiveConversationNeedsToBeOpened : function(activeConversationInfo, data) {
         var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
-        if (activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId && userId == activeConversationInfo.userId ))return true
-        return false
+        return (activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId && userId == activeConversationInfo.userId ))
     }
 }
