@@ -5907,7 +5907,10 @@ div#mck-rated:before{
     border: none;
     outline: none;
 }
-.mck-feedback-text-wrapper textarea::-webkit-input-placeholder {
+.mck-feedback-text-wrapper textarea::-webkit-input-placeholder, 
+.mck-feedback-text-wrapper textarea::-moz-placeholder, 
+.mck-feedback-text-wrapper textarea:-ms-input-placeholder,
+.mck-feedback-text-wrapper textarea:-moz-placeholder{
     font-size: 13px;
 }
 

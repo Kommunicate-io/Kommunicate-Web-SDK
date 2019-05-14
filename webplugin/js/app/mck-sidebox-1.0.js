@@ -1798,44 +1798,35 @@ var CURRENT_GROUP_DATA={};
                     feedbackObject.comments = [document.getElementById("mck-feedback-comment").value];
                     feedbackObject.rating = CURRENT_GROUP_DATA.currentGroupFeedback.rating;
                     feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                    mckUtils.ajax({
-                        type: 'POST',
-                        url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL,
-                        global: false,
-                        data: JSON.stringify(feedbackObject),
-                        contentType: 'application/json',
-                        success: function (data) {
-                            if(data.data){
-                                CURRENT_GROUP_DATA.currentGroupFeedback = data.data.data;
-                                kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
-                                kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2"]}, "n-vis");
-                                document.getElementById('csat-3').innerHTML = '\"' + data.data.data.comments[0] + '\"';
-                            }
-                        }
-                    });
+                    _this.sendFeedback(feedbackObject);
                 });
                 for (var i = 0; i < ratingSmilies.length; i++) {
                     ratingSmilies[i].addEventListener('click',function(e){
+                        feedbackObject.comments = [];
                         feedbackObject.rating = parseInt(this.getAttribute("data-rating"));
                         feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                        mckUtils.ajax({
-                            type: 'POST',
-                            url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL,
-                            global: false,
-                            data: JSON.stringify(feedbackObject),
-                            contentType: 'application/json',
-                            success: function (data) {
-                                if(data.data){
-                                    CURRENT_GROUP_DATA.currentGroupFeedback = data.data.data;
-                                    kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
-                                    kommunicateCommons.modifyClassList( {id : ["csat-1",]}, "n-vis");
-                                    document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(data.data.data.rating);
-                                }
-                            }
-                        });
+                        _this.sendFeedback(feedbackObject);                     
                     })
                 }
             }
+            _this.sendFeedback = function(feedbackData){
+                mckUtils.ajax({
+                    type: 'POST',
+                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL,
+                    global: false,
+                    data: JSON.stringify(feedbackData),
+                    contentType: 'application/json',
+                    success: function (result) {
+                       if(result && result.data){
+                           CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
+                           KommunicateUI.showClosedConversationBanner(true);
+                       }
+                    },
+                    error : function(){
+                        console.log('Error submitting feedback')
+                    }
+                });
+            },
             _this.getPreLeadDataForAskUserDetail = function(){
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
