@@ -1715,6 +1715,7 @@ var CURRENT_GROUP_DATA={};
                 jqXHR.setRequestHeader("UserId-Enabled", true);
                 if (AUTH_CODE) {
                     jqXHR.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
+                    jqXHR.setRequestHeader("Application-User", "Basic " + AUTH_CODE);
                 }
                 jqXHR.setRequestHeader("Application-Key", MCK_APP_ID);
                 if (USER_DEVICE_KEY) {
