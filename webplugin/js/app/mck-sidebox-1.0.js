@@ -1795,10 +1795,10 @@ var CURRENT_GROUP_DATA={};
                 })
 
                 sendFeedbackComment.addEventListener('click',function(){
-                    feedbackObject.comments = [document.getElementById("mck-feedback-comment").value];
+                    document.getElementById("mck-feedback-comment").trim() && (feedbackObject.comments = [document.getElementById("mck-feedback-comment").value]);
                     feedbackObject.rating = CURRENT_GROUP_DATA.currentGroupFeedback.rating;
                     feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                    _this.sendFeedback(feedbackObject);
+                    feedbackObject.comments && _this.sendFeedback(feedbackObject);
                 });
                 for (var i = 0; i < ratingSmilies.length; i++) {
                     ratingSmilies[i].addEventListener('click',function(e){
@@ -1820,6 +1820,7 @@ var CURRENT_GROUP_DATA={};
                        if(result && result.data){
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
+                           document.getElementById("mck-feedback-comment").value = '';
                        }
                     },
                     error : function(){
