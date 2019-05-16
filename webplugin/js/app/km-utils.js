@@ -209,13 +209,13 @@ KommunicateUtils = {
         return text;
     },
     getDataFromKmSession: function (key) {
-        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+        if(KommunicateUtils.isSessionStorageAvailable()) {
             var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             return session ? JSON.parse(session)[key] : "";  
         }
     },
     storeDataIntoKmSession: function (key, data) {
-        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+        if(KommunicateUtils.isSessionStorageAvailable()) {
             var session = (typeof sessionStorage !== 'undefined') && sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             session = session ? JSON.parse(session) : {};
             session[key] = data;
@@ -224,7 +224,7 @@ KommunicateUtils = {
 
     },
     deleteDataFromKmSession : function (key) {
-        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+        if(KommunicateUtils.isSessionStorageAvailable()) {
             var session = (typeof sessionStorage !== 'undefined') && sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             session = session ? JSON.parse(session) : {};
             delete session[key];
@@ -260,13 +260,13 @@ KommunicateUtils = {
         return key&&settings?settings[key]:(settings?settings:"");
     },
     getItemFromLocalStorage: function(key) {
-        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+        if(KommunicateUtils.isSessionStorageAvailable()) {
             var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             return session ? JSON.parse(session)[key] : "";
         } 
     },
     removeItemFromLocalStorage: function(key) {
-        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+        if(KommunicateUtils.isSessionStorageAvailable()) {
             var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             session = session ? JSON.parse(session) : {};
             delete session[key];
@@ -274,7 +274,7 @@ KommunicateUtils = {
         }
     },
     setItemToLocalStorage: function(key,data) {
-        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+        if(KommunicateUtils.isSessionStorageAvailable()) {
             var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             session = session ? JSON.parse(session) : {};
             session[key] = data;
@@ -334,7 +334,7 @@ KommunicateUtils = {
         var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         return (activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId && userId == activeConversationInfo.userId ));
     },
-    checkIsSessionStorageAvailable: function() {
+    isSessionStorageAvailable: function() {
         try {
             return typeof (w.sessionStorage) !== "undefined"
         } catch (e) {
