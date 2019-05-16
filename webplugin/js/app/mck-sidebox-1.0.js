@@ -511,6 +511,7 @@ var CURRENT_GROUP_DATA={};
             kmCustomTheme.init(appOptions);
             kommunicateCommons.init(appOptions);
             alNotificationService.init(appOptions);
+            mckGroupService.init(appOptions);
             mckMessageLayout.init();
             notificationtoneoption.loop = false;
             if(MCK_NOTIFICATION_TONE_LINK){
@@ -4527,6 +4528,9 @@ var CURRENT_GROUP_DATA={};
                         $mck_msg_error.removeClass('n-vis').addClass('vis').addClass('mck-no-mb');
                         $mck_msg_form.removeClass('vis').addClass('n-vis');
                     }
+                    var name = _this.getTabDisplayName(params.tabId, params.isGroup, params.userName);
+                    $mck_tab_title.html(name);
+                    $mck_tab_title.attr('title', name);
                     $mck_tab_conversation.removeClass('vis').addClass('n-vis');
                     $mck_search_tabview_box.removeClass('vis').addClass('n-vis');
                     $mck_tab_individual.removeClass('n-vis').addClass('vis');
