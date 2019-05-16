@@ -1796,7 +1796,7 @@ var CURRENT_GROUP_DATA={};
                 })
 
                 sendFeedbackComment.addEventListener('click',function(){
-                    document.getElementById("mck-feedback-comment").trim() && (feedbackObject.comments = [document.getElementById("mck-feedback-comment").value]);
+                    document.getElementById("mck-feedback-comment") && document.getElementById("mck-feedback-comment").value.trim() && (feedbackObject.comments = [document.getElementById("mck-feedback-comment").value]);
                     feedbackObject.rating = CURRENT_GROUP_DATA.currentGroupFeedback.rating;
                     feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
                     feedbackObject.comments && _this.sendFeedback(feedbackObject);
