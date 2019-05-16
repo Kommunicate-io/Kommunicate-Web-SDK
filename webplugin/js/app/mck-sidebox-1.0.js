@@ -741,7 +741,7 @@ var CURRENT_GROUP_DATA={};
             }
         };
         _this.reset = function (optns) {
-            w.sessionStorage.clear();
+            ALStorage.clearSessionStorageElements();
             MCK_TOKEN = '';
             AUTH_CODE = '';
             FILE_META = [];
@@ -830,12 +830,10 @@ var CURRENT_GROUP_DATA={};
         _this.logout = function () {
             if (typeof mckInitializeChannel !== 'undefined') {
                 mckInitializeChannel.disconnect();
-                ALStorage.clearMckMessageArray();
-                KommunicateUtils.removeItemFromLocalStorage("kommunicate");
+                sessionStorage.removeItem("kommunicate");
                 window.Applozic.ALApiService.setAjaxHeaders('','','','','');
-                ALStorage.clearMckMessageArray();
-                ALStorage.clearMckContactNameArray();
-                ALStorage.clearAppHeaders();
+                // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
+                ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic("reset", appOptions);
                 KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
                 KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: KommunicateUtils.getDomainFromUrl()});
@@ -3945,7 +3943,7 @@ var CURRENT_GROUP_DATA={};
                     },
                     error: function (xhr, desc, err) {
                         if (xhr.status === 401) {
-                            sessionStorage.clear();
+                            ALStorage.clearSessionStorageElements();
                             console.log('Please reload page.');
                         }
                         CONTACT_SYNCING = false;
