@@ -1366,7 +1366,9 @@
 	right: 0;
 	bottom: 0px;
 	left: 0;
-	overflow: visible;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+
 }
 #mck-contacts-content{
 	position: absolute;
