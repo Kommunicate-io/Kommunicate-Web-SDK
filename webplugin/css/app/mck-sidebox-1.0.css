@@ -1366,7 +1366,7 @@
 	right: 0;
 	bottom: 0px;
 	left: 0;
-	overflow: auto;
+	overflow: visible;
 }
 #mck-contacts-content{
 	position: absolute;
@@ -1425,7 +1425,7 @@
 }
 .mck-box-ft .mck-box-form {
 	padding: 10px 5px 10px 0px;
-    border: 0.5px solid #cecbcb;
+    border: thin solid #cecbcb;
 	border-radius: 4px;
 	background-color: white;
 	position: relative;
@@ -5933,6 +5933,11 @@ div#mck-rated:before{
 
 .mck-send-feedback{
 	cursor: pointer;
+}
+
+.mck-box-body .mck-message-inner {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 @keyframes kmOpeningAnimation {
