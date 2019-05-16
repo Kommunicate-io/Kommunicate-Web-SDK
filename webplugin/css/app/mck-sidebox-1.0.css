@@ -1366,7 +1366,7 @@
 	right: 0;
 	bottom: 0px;
 	left: 0;
-	overflow: auto;
+	overflow: scroll;
 	-webkit-overflow-scrolling: touch;
 
 }
