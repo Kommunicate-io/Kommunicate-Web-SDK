@@ -3607,7 +3607,7 @@ var CURRENT_GROUP_DATA={};
                             var conversationAssigneeDetails = data.userDetails.filter(function (item) {
                                 return item.userId == conversationAssignee;
                             })[0];
-                            var userSession = JSON.parse(sessionStorage.kommunicate);
+                            var userSession = (KommunicateUtils.checkIsSessionStorageAvailable()) ? JSON.parse(sessionStorage.kommunicate) : {};
                             var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
                             if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
                                 Kommunicate.getAwayMessage({

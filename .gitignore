@@ -4,3 +4,4 @@ package-lock.json
 .DS_Store
 webplugin/build/*.*
 webplugin/css/app/bin/
+webplugin/build/test.txt

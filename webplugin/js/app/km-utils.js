@@ -209,21 +209,27 @@ KommunicateUtils = {
         return text;
     },
     getDataFromKmSession: function (key) {
-        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        return session ? JSON.parse(session)[key] : "";
+        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+            var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            return session ? JSON.parse(session)[key] : "";  
+        }
     },
     storeDataIntoKmSession: function (key, data) {
-        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        session[key] = data;
-        sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+            var session = (typeof sessionStorage !== 'undefined') && sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            session[key] = data;
+            (typeof sessionStorage !== 'undefined') && sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
 
     },
     deleteDataFromKmSession : function (key) {
-        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        delete session[key];
-        sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+            var session = (typeof sessionStorage !== 'undefined') && sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            delete session[key];
+            (typeof sessionStorage !== 'undefined') && sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
     },
     triggerCustomEvent: function(eventName, options, kmPluginVersion) {
 
@@ -254,20 +260,26 @@ KommunicateUtils = {
         return key&&settings?settings[key]:(settings?settings:"");
     },
     getItemFromLocalStorage: function(key) {
-        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        return session ? JSON.parse(session)[key] : "";
+        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+            var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            return session ? JSON.parse(session)[key] : "";
+        } 
     },
     removeItemFromLocalStorage: function(key) {
-        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        delete session[key];
-        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+            var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            delete session[key];
+            localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
     },
     setItemToLocalStorage: function(key,data) {
-        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        session[key] = data;
-        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.checkIsSessionStorageAvailable()) {
+            var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            session[key] = data;
+            localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
     },
     getDomainFromUrl: function (hostName) {
         hostName = hostName || parent.window.location.hostname;
@@ -321,5 +333,12 @@ KommunicateUtils = {
     isActiveConversationNeedsToBeOpened : function(activeConversationInfo, data) {
         var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         return (activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId && userId == activeConversationInfo.userId ));
+    },
+    checkIsSessionStorageAvailable: function() {
+        try {
+            return typeof (w.sessionStorage) !== "undefined"
+        } catch (e) {
+            return false
+        }
     }
 }
