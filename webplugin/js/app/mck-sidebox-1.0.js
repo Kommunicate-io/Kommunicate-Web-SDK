@@ -395,6 +395,8 @@ var CURRENT_GROUP_DATA={};
         var MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT = (typeof appOptions.msgTriggerTimeout === "number") ? appOptions.msgTriggerTimeout : 0;
         MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = (typeof appOptions.automaticChatOpenOnNavigation === "boolean") ? appOptions.automaticChatOpenOnNavigation : false;
         var MCK_ATTACHMENT = (typeof appOptions.attachment === "boolean") ? appOptions.attachment : true;
+        var CURRENT_PAGE_TITLE = parent.document.title;
+        var FLASH_PAGE_TITLE;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -2033,6 +2035,8 @@ var CURRENT_GROUP_DATA={};
                             mckInitializeChannel.checkConnected(true);
                         }
                         _this.stopIdleTimeCounter();
+                        clearInterval(FLASH_PAGE_TITLE);
+                        parent.document.title = CURRENT_PAGE_TITLE;
                     } else {
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0);
@@ -8606,6 +8610,13 @@ var CURRENT_GROUP_DATA={};
                             iconLink = imgsrc;
                         }
                     }
+                    FLASH_PAGE_TITLE = setInterval(function() {
+                        if(parent.document.title === CURRENT_PAGE_TITLE) {
+                            parent.document.title = MCK_LABELS['page.title.on.new.message'] + displayName;
+                        } else {
+                            parent.document.title = CURRENT_PAGE_TITLE;
+                        }
+                    }, 1000);
                     if(notificationsound){
                     	mckNotificationUtils.sendDesktopNotification(displayName, iconLink, msg, notificationsound);
                     }else{
