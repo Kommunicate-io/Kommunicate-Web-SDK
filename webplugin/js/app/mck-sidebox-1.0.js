@@ -2227,9 +2227,11 @@ var CURRENT_GROUP_DATA={};
             _this.getUserMetadata = function () {
                 var KM_USER_DETAIL = ['name', 'email', 'phone','password'];
                 var metadata = {};
-                KM_PRELEAD_COLLECTION.filter(function (element) {
-                    if (KM_USER_DETAIL.indexOf(element.field) === -1) {
-                        metadata[element.field] = $applozic("#km-" + element.field).val();
+                var field = "";
+                KM_PRELEAD_COLLECTION.map(function (element) {
+                    field = element.field && element.field.toLowerCase();
+                    if (KM_USER_DETAIL.indexOf(field) === -1) {
+                        metadata[element.field] = $applozic("#km-" + field).val();
                     }
                 });
                 return metadata;
