@@ -1170,10 +1170,9 @@
     outline: none;
 }
 .km-cta-multi-button-container button.km-quick-replies {
-    font-size: 14px;
+    font-size: 12px;
     border: 1px solid;
     background-color: white;
-    font-size: 14px;
 }
 .km-carousel-card-footer .km-cta-multi-button-container button.km-quick-replies {
     border-bottom: none;
