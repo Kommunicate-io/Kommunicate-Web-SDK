@@ -468,6 +468,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         var requestType;
         for (var i = 0; i < buttons.length; i++) { 
             if(buttons[i].action.type == "quickReply") {
+                buttons[i].action.payload.title = buttons[i].action.payload.title || buttons[i].name
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
                 cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL))
             } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
