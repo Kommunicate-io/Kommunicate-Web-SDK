@@ -1584,8 +1584,10 @@ var CURRENT_GROUP_DATA={};
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
                 _this.setLabels();
-                KOMMUNICATE_VERSION === "v2" && _this.configureIframe();
-                KOMMUNICATE_VERSION === "v2" &&  _this.restrictScrollOnHandHeldDevices();
+                if(KOMMUNICATE_VERSION === "v2"){
+                    _this.configureIframe();
+                    _this.restrictScrollOnHandHeldDevices();
+                }; 
                 _this.configureRatingElements();
                 $applozic('.applozic-launcher').each(function () {
                     if (!$applozic(this).hasClass('mck-msg-preview')) {
