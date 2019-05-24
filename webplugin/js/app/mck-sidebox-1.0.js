@@ -1584,7 +1584,10 @@ var CURRENT_GROUP_DATA={};
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
                 _this.setLabels();
-                KOMMUNICATE_VERSION === "v2" && _this.configureIframe();
+                if(KOMMUNICATE_VERSION === "v2"){
+                    _this.configureIframe();
+                    _this.restrictScrollOnHandHeldDevices();
+                }; 
                 _this.configureRatingElements();
                 $applozic('.applozic-launcher').each(function () {
                     if (!$applozic(this).hasClass('mck-msg-preview')) {
@@ -1777,6 +1780,33 @@ var CURRENT_GROUP_DATA={};
                         document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
                     }
                 });
+            };
+
+            _this.restrictScrollOnHandHeldDevices = function() {
+                var sideboxLauncher = document.getElementById('mck-sidebox-launcher');
+                var sideboxCloseButton = document.getElementById('km-chat-widget-close-button');
+                var parentBody = parent && parent.document.body;
+                var parentHead = parent && parent.document.head;
+                var parentHtmlTag = parent && parent.document.getElementsByTagName('html')[0];
+                var style = document.createElement('style');
+                var restrictCss = '.mck-restrict-scroll{position:fixed!important; overflow:hidden!important;}';
+                style.type = 'text/css';
+                style.innerHTML = restrictCss;
+                parentHead && parentHead.appendChild(style);
+
+                sideboxLauncher.addEventListener('click',function(){
+                   kommunicateCommons.checkIfDeviceIsHandheld() && (
+                    parentBody && parentBody.classList.add('mck-restrict-scroll'),
+                    parentHtmlTag && parentHtmlTag.classList.add('mck-restrict-scroll')
+                   )
+                });
+                sideboxCloseButton.addEventListener('click',function(){
+                    kommunicateCommons.checkIfDeviceIsHandheld() && (
+                        parentBody && parentBody.classList.remove('mck-restrict-scroll'),
+                        parentHtmlTag && parentHtmlTag.classList.remove('mck-restrict-scroll')
+                    )
+                });
+
             };
 
             _this.configureRatingElements = function(){
