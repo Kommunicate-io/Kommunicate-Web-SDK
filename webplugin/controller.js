@@ -24,7 +24,6 @@ exports.getPlugin = (req, res) => {
       .replace(":MCK_THIRD_PARTY_INTEGRATION", JSON.stringify(MCK_THIRD_PARTY_INTEGRATION))
       .replace(":MCK_STATICPATH", MCK_STATICPATH).replace(":PRODUCT_ID", "kommunicate")
       .replace(":MCK_PLUGIN_VERSION", MCK_PLUGIN_VERSION).replace(":PLUGIN_SETTINGS", JSON.stringify(PLUGIN_SETTING))
-      .replace(":MCK_STATICPATH", MCK_STATICPATH).replace(":PRODUCT_ID", "kommunicate");
     res.setHeader('content-type', 'application/javascript');
     res.send(plugin);
     console.log("plugin code sent successfully");

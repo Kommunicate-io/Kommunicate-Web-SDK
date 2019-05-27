@@ -1406,6 +1406,9 @@ var CURRENT_GROUP_DATA={};
                 if (optns.metadata) {
                     userPxy.metadata = optns.metadata;
                 }
+                if (window.applozic.PRODUCT_ID == 'applozic') {
+                    document.getElementById("mck-tab-option-panel").style.display = null;
+                }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
                 userPxy.deviceType= 0;

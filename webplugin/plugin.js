@@ -4,7 +4,7 @@ var MCK_ONINIT = "";
 var KM_PLUGIN_SETTINGS = JSON.parse(':PLUGIN_SETTINGS');
 var MCK_PLUGIN_VERSION = ":MCK_PLUGIN_VERSION";
 var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
-var PRODUCT_ID = ":PRODUCT_ID";
+var PRODUCT_ID = "kommunicate";
 
 
 // iframe class
@@ -117,6 +117,8 @@ function addKommunicatePluginToIframe() {
   var options = addableWindow.applozic._globals;
   options.isAnonymousChat = options.isAnonymousChat;
   options.KM_VER = MCK_PLUGIN_VERSION;
+  PRODUCT_ID = options.productId || PRODUCT_ID;
+  addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
   if (typeof options !== 'undefined') {
     addableWindow.MCK_ONINIT = options.onInit;
   }
