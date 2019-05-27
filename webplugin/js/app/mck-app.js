@@ -55,8 +55,9 @@ function ApplozicSidebox() {
           "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
     } ];
     this.load = function() {
+        var scriptCounter = 0;
         try {
-            function loadExternalFiles(index) {
+            for (var index in mck_external_scripts) {
                 var externalFileDetails = mck_external_scripts[index];
                 var head = document.getElementsByTagName('head')[0];
                 var script = document.createElement('script');
@@ -67,19 +68,20 @@ function ApplozicSidebox() {
                     script.onreadystatechange = function () {
                         if (script.readyState === "loaded" || script.readyState === "complete") {
                             script.onreadystatechange = null;
-                            index < mck_external_scripts.length - 1 ? loadExternalFiles(++index) : mckinitPlugin();
+                            ++scriptCounter;
+                            scriptCounter >= mck_external_scripts.length && mckinitPlugin();
                         }
                     };
                 } else { // Others
                     script.onload = function () {
-                        index < mck_external_scripts.length - 1 ? loadExternalFiles(++index) : mckinitPlugin();
+                        ++scriptCounter;
+                        scriptCounter >= mck_external_scripts.length && mckinitPlugin();
                     };
                 }
                 head.appendChild(script);
-            }
-            loadExternalFiles(0); // Passing initial index to start iteration without using loops.
+            }  
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
+            console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }
@@ -109,7 +111,7 @@ function ApplozicSidebox() {
                     }
             });
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
+            console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }
