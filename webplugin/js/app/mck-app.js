@@ -23,16 +23,23 @@ var applozicSideBox = new ApplozicSidebox();
 applozicSideBox.load();
 function ApplozicSidebox() {
 	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
+    var mck_external_scripts = [
+        {
+            "name": "jquery",
+            "url": "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
+            "crossOrigin": "anonymous"
+        },
+        {
+            "name": "applozic-min-js",
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.5.2.min.js" // update the url with every new release of applozic-web-plugin
+        }
+    ];
     var mck_style_loader = [
     {
             "name": "mck-sidebox", 
             "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS
     } ];
     var mck_script_loader1 = [
-    {
-            "name": "applozic-min-js", 
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.5.2.min.js" // update the url with every new release of applozic-web-plugin
-    },
     {
             "name": "km-utils", 
             "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
@@ -49,26 +56,29 @@ function ApplozicSidebox() {
     } ];
     this.load = function() {
         try {
-            var head = document.getElementsByTagName('head')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.crossOrigin = "anonymous";
-            script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
-            if (script.readyState) { // IE
-                script.onreadystatechange = function() {
-                    if (script.readyState === "loaded" || script.readyState === "complete") {
-                        script.onreadystatechange = null;
-                        mckinitPlugin();
-                    }
-                };
-            } else { // Others
-                script.onload = function() {
-                    mckinitPlugin();
-                };
+            function loadExternalFiles(index) {
+                var externalFileDetails = mck_external_scripts[index];
+                var head = document.getElementsByTagName('head')[0];
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
+                script.src = externalFileDetails.url;
+                if (script.readyState) { // IE
+                    script.onreadystatechange = function () {
+                        if (script.readyState === "loaded" || script.readyState === "complete") {
+                            script.onreadystatechange = null;
+                            index < mck_external_scripts.length - 1 ? loadExternalFiles(++index) : mckinitPlugin();
+                        }
+                    };
+                } else { // Others
+                    script.onload = function () {
+                        index < mck_external_scripts.length - 1 ? loadExternalFiles(++index) : mckinitPlugin();
+                    };
+                }
+                head.appendChild(script);
             }
-            head.appendChild(script);
+            loadExternalFiles(0); // Passing initial index to start iteration without using loops.
         } catch (e) {
-
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
@@ -190,11 +200,9 @@ function ApplozicSidebox() {
                     } catch (e) {
                         mckLoadScript(data.url), null, true;
                     }
-                } else if (data.name === "applozic-min-js"){
-                    mckLoadScript(data.url, null, true)
-                } 
+                }  
                 else {
-                    mckLoadScript(data.url);
+                    mckLoadScript(data.url);    
                 }
             });
              if (typeof applozic._globals !== 'undefined'&& applozic._globals.video === true) {
