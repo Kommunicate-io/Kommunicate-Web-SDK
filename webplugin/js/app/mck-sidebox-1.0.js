@@ -367,6 +367,7 @@ var CURRENT_GROUP_DATA={};
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
+        var MCK_SELF_CHAT_DISABLE = (appOptions.disableSelfChat)?appOptions.disableSelfChat :false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : MCK_CONTEXTPATH+ "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
@@ -5294,7 +5295,7 @@ var CURRENT_GROUP_DATA={};
       			_this.getContactImageLink = function(contact, displayName) {
                         var imgsrctag = '';
                         if(!contact.isGroup){
-                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId] && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
                             contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
                           }
                         }
@@ -6793,6 +6794,7 @@ var CURRENT_GROUP_DATA={};
             var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
             var $mck_tab_message_option = $applozic(".mck-tab-message-option");
             var $mck_loading = $applozic("#mck-contact-loading");
+            var $mck_gm_search_box = $applozic("#mck-gm-search-box");
             var USER_BLOCK_URL = "/rest/ws/user/block";
             var CONTACT_NAME_URL = "/rest/ws/user/info";
             var USER_DETAIL_URL = "/rest/ws/user/v2/detail";
@@ -6825,14 +6827,15 @@ var CURRENT_GROUP_DATA={};
 									url:url,
 									baseUrl: MCK_BASE_URL,
                     success: function (data) {
-                        if ($mck_sidebox_search.hasClass('vis')) {
-                            if (typeof data === 'object' && data.users.length > 0) {
-                                $applozic.each(data.users, function (i, user) {
+                        if ($mck_gm_search_box.hasClass('vis') || $mck_gm_search_box.css('visibility') == 'visible') {
+                            if (typeof data === 'object' && data.response.users.length > 0) {
+                                $applozic.each(data.response.users, function (i, user) {
                                     if (typeof user.userId !== 'undefined') {
                                         var contact = mckMessageLayout.getContact('' + user.userId);
                                         contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
                                         MCK_CONTACT_ARRAY.push(contact);
                                         mckContactNameArray.push([user.userId, contact.displayName]);
+                                        MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
                                         if (user.connected) {
                                             w.MCK_OL_MAP[user.userId] = true;
                                         } else {
@@ -6843,7 +6846,7 @@ var CURRENT_GROUP_DATA={};
                                         }
                                     }
                                 });
-                                mckContactService.getUsersDetail(contactNameArray, { 'async': false });
+                                mckContactService.getUsersDetail(mckContactNameArray, { 'async': false });
                                 if (mckContactNameArray.length > 0) {
                                     ALStorage.updateMckContactNameArray(mckContactNameArray);
                                 }
@@ -7182,8 +7185,8 @@ var CURRENT_GROUP_DATA={};
             $mck_group_name_edit.on('click', function () {
                 $mck_group_title.attr('contenteditable', true).focus();
                 mckUtils.setEndOfContenteditable($mck_group_title[0]);
-                $mck_group_name_save.removeClass('n-vis').addClass('vis');
                 $mck_group_name_edit.removeClass('vis').addClass('n-vis');
+                $mck_group_name_save.removeClass('n-vis').addClass('vis');
             });
             $mck_group_name_save.on('click', function () {
                 var groupName = $applozic.trim($mck_group_title.text());
