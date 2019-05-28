@@ -5,6 +5,7 @@
         var KM_API_URL = "https://api.kommunicate.io";
         var KB_URL = "/kb/search?appId=:appId";
         var SOURCES = {kommunicate : 'KOMMUNICATE', helpdocs: 'HELPDOCS'};
+        var SEARCH_ELASTIC = '/kb/_search';
 
         //KommunicateKB.init("https://api.kommunicate.io");
         KommunicateKB.init = function (url) {
@@ -164,6 +165,73 @@
                 }
             });
         }
+
+        KommunicateKB.searchFaqs = function (options) {
+            let data = {
+                query: {
+                  bool: {
+                    must: {
+                      multi_match: {
+                        query: options.data.query,
+                        type: "phrase_prefix",
+                        fields: ["content", "name"]
+                      }
+                    },
+                    filter: {
+                      bool: {
+                        must: [
+                          {
+                            term: {
+                              "applicationId.keyword": options.data.appId
+                            }
+                          },
+                          {
+                            term: {
+                              "type.keyword": "faq"
+                            }
+                          },
+                          {
+                            term: {
+                              deleted: false
+                            }
+                          },
+                          {
+                            term: {
+                              "status.keyword": "published"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+              var url = KM_API_URL + SEARCH_ELASTIC;
+   
+   
+            var response = new Object();
+            KMCommonUtils.ajax({
+                url: url,
+                async: (typeof options.async !== 'undefined') ? options.async : true,
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (data) {
+                    response.status = "success";
+                    response.data = data.data;
+                    if (options.success) {
+                        options.success(response);
+                    }
+                    return;
+                },
+                error: function (xhr, desc, err) {
+                    response.status = "error";
+                    if (options.error) {
+                        options.error(response);
+                    }
+                }
+            });
+        }      
 
         //KommunicateKB.getFaq({data: {appId: 'kommunicate-support', articleId: 1}, success: function(response) {console.log(response);}, error: function() {}});
         //Note: server side not supported yet
