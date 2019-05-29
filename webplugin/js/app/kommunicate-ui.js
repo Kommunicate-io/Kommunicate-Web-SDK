@@ -320,7 +320,7 @@ searchFaqUI: function (response) {
         kommunicateCommons.modifyClassList({
             class: ["km-no-results-found-container", "km-talk-to-human-div"]
         }, "vis", "n-vis");
-        document.querySelector(".km-talk-to-human-div p").innerHTML = MCK_LABELS['We.are.here.to.help'];
+        document.querySelector(".km-talk-to-human-div p").innerHTML = MCK_LABELS['no-faq-found'];
     } else {
         kommunicateCommons.modifyClassList({
             class: ["km-no-results-found-container"]

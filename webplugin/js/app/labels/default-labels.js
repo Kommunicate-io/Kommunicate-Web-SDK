@@ -82,7 +82,7 @@ Kommunicate.defaultLabels = {
     'closed.conversation.message':'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
     'search.faq':'Search in FAQs...',
     'looking.for.something.else':'Looking for something else?',
-    'We.are.here.to.help':'We are here to help.',
+    'no-faq-found':'We are here to help.',
     'talk.to.agent': 'Talk to an agent',
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
