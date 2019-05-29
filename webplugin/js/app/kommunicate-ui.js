@@ -318,10 +318,7 @@ KommunicateUI={
 searchFaqUI: function (response) {
     if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
         kommunicateCommons.modifyClassList({
-            class: ["km-no-results-found-container"]
-        }, "vis", "n-vis");
-        kommunicateCommons.modifyClassList({
-            class: ["km-talk-to-human-div"]
+            class: ["km-no-results-found-container", "km-talk-to-human-div"]
         }, "vis", "n-vis");
         document.querySelector(".km-talk-to-human-div p").innerHTML = MCK_LABELS['We.are.here.to.help'];
     } else {
@@ -337,7 +334,7 @@ searchFaqUI: function (response) {
     $applozic.each(response.data, function (i, faq) {
         var id = faq.id || faq.articleId;
         var title = faq.name || faq.title;
-        $applozic("#km-faq-list-container").append('<li class="km-faq-list"  data-articleId="' + id + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + title + '</div></a></li>');
+        document.getElementById("km-faq-list-container").innerHTML += '<li class="km-faq-list"  data-articleId="' + id + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + title + '</div></a></li>';
     });
 },
 searchFaqs: function (data, helpdocsKey) {
