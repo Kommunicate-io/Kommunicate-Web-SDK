@@ -308,13 +308,6 @@ KommunicateUI={
         }
     });
 },
- deleteChild: function(elem) {  
-    var child = elem.lastElementChild;  
-    while (child) { 
-        elem.removeChild(child); 
-        child = elem.lastElementChild; 
-    } 
-},
 searchFaqUI: function (response) {
     if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
         kommunicateCommons.modifyClassList({
@@ -330,7 +323,7 @@ searchFaqUI: function (response) {
             class: ["km-talk-to-human-div"]
         }, "vis", "n-vis");
     }
-    KommunicateUI.deleteChild(document.getElementById("km-faq-list-container"));
+    document.getElementById("km-faq-list-container").innerHTML ="";
     $applozic.each(response.data, function (i, faq) {
         var id = faq.id || faq.articleId;
         var title = faq.name || faq.title;
