@@ -2059,14 +2059,14 @@ var CURRENT_GROUP_DATA={};
                         IS_MCK_TAB_FOCUSED = evtMap[evt.type];
                     } else {
                         IS_MCK_TAB_FOCUSED = this[hidden] ? false : true;
+                        mckNotificationService.clearFlashPageTitleInterval();
                     }
                     if (IS_MCK_TAB_FOCUSED) {
                         if (MCK_IDLE_TIME_COUNTER < 1 && IS_LOGGED_IN) {
                             mckInitializeChannel.checkConnected(true);
                         }
                         _this.stopIdleTimeCounter();
-                        clearInterval(FLASH_PAGE_TITLE);
-                        parent.document.title = CURRENT_PAGE_TITLE;
+                        mckNotificationService.clearFlashPageTitleInterval();
                     } else {
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0);
@@ -8657,6 +8657,11 @@ var CURRENT_GROUP_DATA={};
                 }
             };
 
+            _this.clearFlashPageTitleInterval = function() {
+                clearInterval(FLASH_PAGE_TITLE);
+                parent.document.title = CURRENT_PAGE_TITLE;
+            };
+
             _this.handleIframeNotification = function (){
                 var kmIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 var notificationMessageWidth = document.getElementById("mck-msg-preview-visual-indicator").offsetWidth;
@@ -8789,6 +8794,7 @@ var CURRENT_GROUP_DATA={};
                 $applozic(d).on("click", " #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
                     _this.hideMessagePreview();
                 });
+                !IS_MCK_TAB_FOCUSED && mckNotificationService.clearFlashPageTitleInterval();
             };
 
         }
