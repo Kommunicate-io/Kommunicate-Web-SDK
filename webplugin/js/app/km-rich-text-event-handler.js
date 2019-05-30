@@ -2,11 +2,7 @@
 /**
  * Attach all event listeners.
  */
-const mck_actionable_message_plugin_svgs = {
-    arrow:{
-        left:'<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 19"><path fill="#5B5959" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>'
-    }
-}
+
 Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-increment-guest-count',Kommunicate.richMsgEventHandler.incrementGuestCount);
     $applozic("#mck-message-cell").on('click','.km-decrement-guest-count',Kommunicate.richMsgEventHandler.decrementGuestCount);//
@@ -144,6 +140,9 @@ Kommunicate.attachmentEventHandler= {
 }
 
 Kommunicate.richMsgEventHandler = {
+    svg:{
+        arrow: '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 19"><path fill="#5B5959" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>'
+    },
     initializeSlick: function ($cardMessageContainer) {
         if ($cardMessageContainer.length > 0) {
             var slider = tns({
@@ -152,7 +151,7 @@ Kommunicate.richMsgEventHandler = {
                 items: 1,
                 slideBy: 'page',
                 loop: false,
-                controlsText:[mck_actionable_message_plugin_svgs.arrow.left, mck_actionable_message_plugin_svgs.arrow.left],
+                controlsText:[Kommunicate.richMsgEventHandler.svg.arrow, Kommunicate.richMsgEventHandler.svg.arrow],
                 "mouseDrag": true,
                 "arrowKeys": true,
                 onInit : function(){
