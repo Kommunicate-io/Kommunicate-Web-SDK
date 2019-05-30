@@ -112,5 +112,6 @@ Kommunicate.defaultLabels = {
         'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a comment…',
         'OTHER_QUERIES' : 'If you have any other queries, just',
         'RESTART_CONVERSATION' : 'restart this conversation',
-    } 
+    },
+    'page.title.on.new.message': 'New message from '
 }
