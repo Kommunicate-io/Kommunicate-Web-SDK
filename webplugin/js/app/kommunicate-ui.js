@@ -232,12 +232,12 @@ KommunicateUI={
             $applozic(".km-clear-faq-search-icon").addClass("n-vis").removeClass("vis");
         }
         if (e.which == 32 || e.which == 13) {
-            KommunicateUI.searchFaqs(data,helpdocsKey);
+            KommunicateUI.searchFaqs(data);
            return;
         }
         clearTimeout(mcktimer);
         mcktimer = setTimeout(function validate() {
-            KommunicateUI.searchFaqs(data,helpdocsKey);
+            KommunicateUI.searchFaqs(data);
         }, 500);
     });
 
@@ -337,13 +337,12 @@ searchFaqUI: function (response) {
         document.getElementById("km-faq-list-container").innerHTML += '<li class="km-faq-list"  data-articleId="' + id + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + title + '</div></a></li>';
     });
 },
-searchFaqs: function (data, helpdocsKey) {
+searchFaqs: function (data) {
     if (!document.getElementById("km-faq-search-input").value) {
         KommunicateKB.getArticles({
             data: {
                 appId: data.appId,
-                query: document.getElementById("km-faq-search-input").value,
-                helpdocsAccessKey: helpdocsKey
+                query: document.getElementById("km-faq-search-input").value
             },
             success: function (response) {
                 KommunicateUI.searchFaqUI(response);
