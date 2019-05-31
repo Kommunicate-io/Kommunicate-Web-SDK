@@ -238,7 +238,7 @@
         KommunicateKB.getFaq = function (options) {
             var response = new Object();
 
-            let url = KM_API_URL + KB_URL.replace(":appId", options.data.appId);
+            var url = KM_API_URL + KB_URL.replace(":appId", options.data.appId);
             if(options.data && options.data.articleId){
                 url += "&articleId=" + options.data.articleId;
             }

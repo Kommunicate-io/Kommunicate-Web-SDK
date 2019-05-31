@@ -2986,7 +2986,7 @@ var CURRENT_GROUP_DATA={};
                     $mck_msg_error.html('');
                     $mck_response_text.html('');
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
-                    let sendMsgCount = $applozic("[data-msgtype=5]").length;
+                    var sendMsgCount = $applozic("[data-msgtype=5]").length;
                     //Lead Collection -Email Validation
                     if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1)||(KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&KommunicateUI.anonymousUser))) {
                         var isValid = KommunicateUI.validateEmail(messagePxy.message);
@@ -3435,7 +3435,7 @@ var CURRENT_GROUP_DATA={};
                             }
                         }
                         // Lead Collection (Email)
-                        let sendMsgCount = $applozic("[data-msgtype=5]").length;
+                        var sendMsgCount = $applozic("[data-msgtype=5]").length;
                         if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) || (KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage && KommunicateUI.anonymousUser)) ) {
                             KommunicateUI.displayLeadCollectionTemplate(null)
                         } 
@@ -4173,7 +4173,7 @@ var CURRENT_GROUP_DATA={};
                }
                groupInfo.metadata = (params.metadata) ? params.metadata : MCK_LABELS['group.metadata'];
                var response = new Object();
-               let header = {
+               var header = {
                    "UserId-Enabled": true,
                    "Authorization": "Basic " + AUTH_CODE,
                    "Application-Key": MCK_APP_ID,

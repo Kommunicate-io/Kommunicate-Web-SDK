@@ -123,7 +123,7 @@ function KommunicateCommons() {
       };
 
     _this.removeHtmlTag = function(html){
-        let temporalDivElement = document.createElement("div");
+        var temporalDivElement = document.createElement("div");
         temporalDivElement.innerHTML = html;
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     }  

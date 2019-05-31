@@ -17,7 +17,7 @@ Kommunicate.messageTemplate = {
         return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
     },
     getProgressMeterContanier:function(key) {
-        let data = {key: key};
+        var data = {key: key};
         return Mustache.to_html(Kommunicate.messageTemplate.getProgressMeter(), data);
     }
 }

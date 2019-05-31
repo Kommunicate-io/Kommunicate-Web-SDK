@@ -1,6 +1,6 @@
 Kommunicate.attachmentService = {
     getFileMeta: function (file, tabId, callback) {
-        let messagePxy = {
+        var messagePxy = {
             groupId: tabId,
             contentType: 1,
             type: 5,
