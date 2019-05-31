@@ -33,7 +33,7 @@ Kommunicate.attachmentEventHandler= {
         var stopUploadIconHidden = $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon').hasClass('n-vis');
         var uploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
         var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
-        let msgkey = attachmentDiv[0].dataset.msgkey;
+        var msgkey = attachmentDiv[0].dataset.msgkey;
         var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');      
         if(Kommunicate.internetStatus) {
             if(!stopUploadIconHidden && uploadIconHidden) {
@@ -47,13 +47,13 @@ Kommunicate.attachmentEventHandler= {
           
             } else {
                 KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
-                let fileMetaKey = attachmentDiv[0].dataset.filemetakey;
-                let fileName = attachmentDiv[0].dataset.filename;
-                let fileSize = attachmentDiv[0].dataset.filesize;
-                let fileUrl = attachmentDiv[0].dataset.fileurl;
-                let fileType = attachmentDiv[0].dataset.filetype
-                let groupId = attachmentDiv[0].dataset.groupid;
-                let thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
+                var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
+                var fileName = attachmentDiv[0].dataset.filename;
+                var fileSize = attachmentDiv[0].dataset.filesize;
+                var fileUrl = attachmentDiv[0].dataset.fileurl;
+                var fileType = attachmentDiv[0].dataset.filetype
+                var groupId = attachmentDiv[0].dataset.groupid;
+                var thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
                 if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) { 
                     messagePxy = {
                         contentType: 1,
@@ -75,7 +75,7 @@ Kommunicate.attachmentEventHandler= {
                     var optns = {
                         tabId: groupId,
                     };
-                    let params = {
+                    var params = {
                         messagePxy: messagePxy,
                         optns: optns
                     };
@@ -99,7 +99,7 @@ Kommunicate.attachmentEventHandler= {
                         type:5,
                         metadata:{}
                     }
-                    let file = KM_PENDING_ATTACHMENT_FILE[msgkey];
+                    var file = KM_PENDING_ATTACHMENT_FILE[msgkey];
                     params = {
                         params: {
                             file: file,
@@ -123,8 +123,8 @@ Kommunicate.attachmentEventHandler= {
     },
     progressMeter : function (value, key) {
         var control = document.getElementById('km-progress-meter-input');
-        let selector = ".progress-meter-"+key+ " .km-progress-value";
-        let stopUpload = KommunicateUI.getAttachmentStopUploadStatus(key);
+        var selector = ".progress-meter-"+key+ " .km-progress-value";
+        var stopUpload = KommunicateUI.getAttachmentStopUploadStatus(key);
         if(stopUpload) {
             value = 100;
         }
@@ -204,8 +204,8 @@ Kommunicate.richMsgEventHandler = {
 
         var message = ""
         for (var i = 0; i < roomGuest.length; i++) {
-            let noOfChild = NoOfChild[i].value;
-            let arr = Array(noOfChild * 1).fill(10)
+            var noOfChild = NoOfChild[i].value;
+            var arr = Array(noOfChild * 1).fill(10)
             roomGuestJson.push({ "NoOfAdults": roomGuest[i].value, "NoOfChild": noOfChild, "ChildAge": arr });
             message += "Room " + (i + 1) + " Guest " + roomGuest[i].value + "\n";
         }

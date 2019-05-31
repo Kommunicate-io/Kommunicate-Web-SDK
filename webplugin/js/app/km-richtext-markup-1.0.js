@@ -98,8 +98,8 @@ getHotelCardTemplate : function(options,sessionId){
 },
 
 getRoomDetailTemplate: function (options, sessionId) {
-    let guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
-    let dayRates = (options.DayRates.Amount)?options.DayRates.Amount:options.Price.RoomPrice;
+    var guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
+    var dayRates = (options.DayRates.Amount)?options.DayRates.Amount:options.Price.RoomPrice;
 
     return `<div class="km-single-card-message">
                 <div class="message received km-blocked-room">
@@ -132,7 +132,7 @@ getRoomDetailTemplate: function (options, sessionId) {
 },
 
 getButtonTemplate:function(options,requestType, buttonClass){
-    let linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
+    var linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
 
     if(options.type=="link"){
         return'<button title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
@@ -354,7 +354,7 @@ for(var i= 0;i<hotelList.length;i++){
 }
 
 Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, sessionId) {
-    let roomDetails=roomList.HotelRoomsDetails;
+    var roomDetails=roomList.HotelRoomsDetails;
     var roomListMarkup = "";
     for (var i = 0; i < roomDetails.length; i++) {
         roomListMarkup = roomListMarkup + Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
@@ -443,7 +443,7 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
 }
 Kommunicate.markup.getImageContainer = function(options) {
     if (options && options.payload) {
-        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = payload;
         return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
     }
@@ -477,7 +477,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
                 buttons[i].action.payload["buttonClass"] = "km-carousel-card-button";
                 buttons[i].action.payload["name"] = buttons[i].name;
                 cardFooter = cardFooter.concat(Kommunicate.markup.getButtonTemplate(buttons[i].action.payload,requestType,"km-carousel-card-button"))
-                let formData = buttons[i].action.payload.formData;
+                var formData = buttons[i].action.payload.formData;
                 buttons[i].action.payload.formAction && (buttons[i].action["formAction"] = buttons[i].action.payload.formAction);
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload])
                 formData && (buttons[i].action["formData"] = JSON.stringify(formData))
@@ -488,7 +488,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         return cardFooter;
     }
     if (options && options.payload) {
-        let cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        var cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
         options.payload = cards;
         for (var i = 0; i < cards.length; i++) {
             var item = cards[i];
@@ -508,7 +508,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             cardList[i] = $applozic.extend([], cardHtml);
         }
     }
-    let cardCarousel = {payload:cardList};
+    var cardCarousel = {payload:cardList};
 
     return Mustache.to_html(Kommunicate.markup.getCarouselTemplate(),cardCarousel)
 

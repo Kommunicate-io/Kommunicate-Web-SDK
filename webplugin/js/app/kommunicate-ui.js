@@ -57,9 +57,9 @@ KommunicateUI={
     },
 
     displayLeadCollectionTemplate: function (messageList) {
-        let countMsg = 0;
+        var countMsg = 0;
         if (messageList && messageList.length) {
-            let countMsg = 0;
+            var countMsg = 0;
             for (var i = 0; i < messageList.length; i++) {
 
                 if (messageList[i].type == 5) {
@@ -100,8 +100,8 @@ KommunicateUI={
 
     },
     updateImageAttachmentPreview: function(fileMeta, key) {
-        let template = $applozic(".mck-attachment-"+key)[0];
-        let thumbnailUrl = template && template.dataset && template.dataset.thumbnailurl;
+        var template = $applozic(".mck-attachment-"+key)[0];
+        var thumbnailUrl = template && template.dataset && template.dataset.thumbnailurl;
         thumbnailUrl && $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
@@ -125,8 +125,8 @@ KommunicateUI={
         }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
-        let template = document.querySelector(".mck-message-inner.mck-group-inner");
-        let attachment = template && template.querySelector(".mck-attachment-"+key);
+        var template = document.querySelector(".mck-message-inner.mck-group-inner");
+        var attachment = template && template.querySelector(".mck-attachment-"+key);
         attachment && attachment.setAttribute("data-stopupload", status);
     },
     getAttachmentStopUploadStatus: function (key) {
@@ -278,7 +278,7 @@ KommunicateUI={
                 $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
                 $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
                  $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
-                let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
+                var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                 KommunicateUI.activateTypingField();

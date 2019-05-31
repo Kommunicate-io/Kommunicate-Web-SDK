@@ -216,7 +216,7 @@ $applozic.extend(true,Kommunicate,{
         if (typeof (callback) !== 'function') {
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
         }
-        let data = {
+        var data = {
             "groupId": options.groupId,
             "participantUserId": options.participantUserId,
             "createdBy": options.participantUserId,
@@ -413,7 +413,7 @@ $applozic.extend(true,Kommunicate,{
        7. WELCOME_MESSAGE
    */
     updateSettings:function(options){
-        let type = typeof options;
+        var type = typeof options;
         if(type !='object'){
             throw new error("update settings expects an object, found "+type);
         }
