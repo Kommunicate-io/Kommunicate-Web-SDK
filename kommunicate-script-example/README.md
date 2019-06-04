@@ -17,9 +17,8 @@ Example:
 			document.getElementsByTagName('head')[0].appendChild(iframeStyle);
 			var launcherIconStyle = "@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}";
 			Kommunicate.customizeWidgetCss(launcherIconStyle);
-			var iframe = window.top.document.getElementsByTagName("iframe")[0];
-			var addClassToIframe = iframe.contentDocument.getElementById("kommunicate-widget-iframe");
-			addClassToIframe.classList.add("change-kommunicate-iframe-height");  
+			var iframe = window.top.document.getElementById("kommunicate-widget-iframe");
+			iframe.classList.add("change-kommunicate-iframe-height");  
 			KommunicateGlobal.document.getElementById('km-chat-widget-close-button').addEventListener('click',function(){
 				var closeButtonClick = parent.document.getElementById("kommunicate-widget-iframe");
 				closeButtonClick.classList.add("change-kommunicate-iframe-height");
@@ -27,7 +26,7 @@ Example:
 		}
 	};
 	var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-	s.src = "https://api.kommunicate.io/v2/kommunicate.app";
+	s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
 	var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
 	window.kommunicate = m; m._globals = kommunicateSettings;
 })(document, window.kommunicate || {});
@@ -59,7 +58,7 @@ Example:
 	    		}
 	    	};
          	var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-          	s.src = "https://api.kommunicate.io/v2/kommunicate.app";
+          	s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
           	var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
           	window.kommunicate = m; m._globals = kommunicateSettings;
         })(document, window.kommunicate || {});
