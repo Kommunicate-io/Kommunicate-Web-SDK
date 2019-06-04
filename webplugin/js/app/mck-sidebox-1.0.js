@@ -1411,6 +1411,7 @@ var CURRENT_GROUP_DATA={};
                 }
                 if (window.applozic.PRODUCT_ID == 'applozic') {
                     document.getElementById("mck-tab-option-panel").style.display = null;
+                    document.getElementsByClassName('mck-start-new-menu-item')[0].style.display = null;
                 }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
