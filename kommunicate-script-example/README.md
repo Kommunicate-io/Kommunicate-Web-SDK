@@ -18,8 +18,7 @@ Example:
 			var launcherIconStyle = "@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}";
 			Kommunicate.customizeWidgetCss(launcherIconStyle);
 			var iframe = window.top.document.getElementById("kommunicate-widget-iframe");
-			var addClassToIframe = iframe.contentDocument.getElementById("kommunicate-widget-iframe");
-			addClassToIframe.classList.add("change-kommunicate-iframe-height");  
+			iframe.classList.add("change-kommunicate-iframe-height");  
 			KommunicateGlobal.document.getElementById('km-chat-widget-close-button').addEventListener('click',function(){
 				var closeButtonClick = parent.document.getElementById("kommunicate-widget-iframe");
 				closeButtonClick.classList.add("change-kommunicate-iframe-height");
