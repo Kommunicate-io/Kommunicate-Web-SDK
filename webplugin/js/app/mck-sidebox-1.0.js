@@ -1791,7 +1791,7 @@ var CURRENT_GROUP_DATA={};
                 var parentHead = parent && parent.document.head;
                 var parentHtmlTag = parent && parent.document.getElementsByTagName('html')[0];
                 var style = document.createElement('style');
-                var restrictCss = '.mck-restrict-scroll{position:fixed!important; overflow:hidden!important;}';
+                var restrictCss = '.mck-restrict-scroll{position:fixed!important; overflow:hidden!important;margin:0;height:100vh;width:100vw;}';
                 style.type = 'text/css';
                 style.innerHTML = restrictCss;
                 parentHead && parentHead.appendChild(style);
