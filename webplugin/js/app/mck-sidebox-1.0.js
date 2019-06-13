@@ -1575,7 +1575,9 @@ var CURRENT_GROUP_DATA={};
                     kommunicateIframe.style.boxShadow="none";
                     POPUP_WIDGET && (popUpcloseButton.style.display='none');
                     kommunicateIframe.classList.add('km-iframe-closed');
-                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query', 'km-iframe-dimension-with-popup',  'km-iframe-dimension-no-popup');
+                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
+                    kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
+                    kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
                   }
                   kmChatLoginModal.style.display='none';
                   kmAnonymousChatLauncher.classList.remove('n-vis');
@@ -1764,7 +1766,9 @@ var CURRENT_GROUP_DATA={};
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
                     kommunicateIframe.classList.add('km-iframe-closed');
-                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query', 'km-iframe-dimension-with-popup',  'km-iframe-dimension-no-popup');
+                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
+                    kommunicateIframe.classList.remove('km-iframe-dimension-with-popup');
+                    kommunicateIframe.classList.remove('km-iframe-dimension-no-popup');
                     kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'','n-vis')
                 }
                 closeButton.addEventListener("click", closeChatBox);
@@ -8786,7 +8790,9 @@ var CURRENT_GROUP_DATA={};
                 mckInitializeChannel.onNotificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn", function(e) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                    kommunicateIframe.classList.remove("km-iframe-dimension-no-popup", "km-iframe-notification", "km-iframe-dimension-with-popup");
+                    kommunicateIframe.classList.remove("km-iframe-dimension-no-popup");
+                    kommunicateIframe.classList.remove("km-iframe-notification");
+                    kommunicateIframe.classList.remove("km-iframe-dimension-with-popup");
                     document.getElementById("km-popup-close-button").style.display = "none";
                     _this.hideMessagePreview();
                     kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'','n-vis')
