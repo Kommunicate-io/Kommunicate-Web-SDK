@@ -450,7 +450,8 @@ $applozic.extend(true,Kommunicate,{
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
         var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
         kommunicateIframe.style.width = '';
-        kommunicateIframe.classList.remove('km-iframe-notification','km-iframe-closed');
+        kommunicateIframe.classList.remove('km-iframe-notification');
+        kommunicateIframe.classList.remove('km-iframe-closed');
         isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
