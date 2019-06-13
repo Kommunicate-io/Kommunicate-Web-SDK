@@ -29,11 +29,6 @@ var kmCustomIframe =
     '   width: 100% !important;' +
     '   max-height: 100% !important;' +
     '} } \n' + 
-    '.km-iframe-closed{ '+
-    '    height: 75px; '+
-    '    width:  75px; '+
-    '    box-shadow: none!important; '+
-    '}\n' + 
     '.km-iframe-notification{ '+
     '    height:80px; '+ 
     '} \n '+
@@ -45,7 +40,12 @@ var kmCustomIframe =
     '.km-iframe-dimension-with-popup{ '+
     '    height: 700px; '+
     '    width: 442px; '+
-    '} \n '
+    '} \n ' + 
+    '.km-iframe-closed{ '+
+    '    height: 75px; '+
+    '    width:  75px; '+
+    '    box-shadow: none!important; '+
+    '}\n';
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 
