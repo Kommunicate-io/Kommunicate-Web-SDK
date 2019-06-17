@@ -72,7 +72,6 @@ function ApplozicSidebox() {
     };
     function loadExternalFiles(externalFileDetails) {
         try {   
-            // scriptCounter = 0;
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
