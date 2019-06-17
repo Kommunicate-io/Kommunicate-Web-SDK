@@ -20,6 +20,7 @@ if (typeof jQuery !== 'undefined') {
 })(window);
 
 var applozicSideBox = new ApplozicSidebox();
+var scriptCounter = 0;
 applozicSideBox.load();
 function ApplozicSidebox() {
 	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
@@ -31,7 +32,8 @@ function ApplozicSidebox() {
         },
         {
             "name": "applozic-min-js",
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.min.js" // update the url with every new release of applozic-web-plugin
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.min.js", // update the url with every new release of applozic-web-plugin
+            "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-5.6.min.js"
         }
     ];
     var mck_style_loader = [
@@ -55,30 +57,10 @@ function ApplozicSidebox() {
           "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
     } ];
     this.load = function() {
-        var scriptCounter = 0;
         try {
             for (var index in mck_external_scripts) {
                 var externalFileDetails = mck_external_scripts[index];
-                var head = document.getElementsByTagName('head')[0];
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
-                script.src = externalFileDetails.url;
-                if (script.readyState) { // IE
-                    script.onreadystatechange = function () {
-                        if (script.readyState === "loaded" || script.readyState === "complete") {
-                            script.onreadystatechange = null;
-                            ++scriptCounter;
-                            scriptCounter >= mck_external_scripts.length && mckinitPlugin();
-                        }
-                    };
-                } else { // Others
-                    script.onload = function () {
-                        ++scriptCounter;
-                        scriptCounter >= mck_external_scripts.length && mckinitPlugin();
-                    };
-                }
-                head.appendChild(script);
+                loadExternalFiles(externalFileDetails);
             }  
         } catch (e) {
             console.log("Plugin loading error. Refresh page.", e);
@@ -86,6 +68,48 @@ function ApplozicSidebox() {
                 MCK_ONINIT("error");
             }
             return false;
+        }
+    };
+    function loadExternalFiles(externalFileDetails) {
+        try {   
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
+            script.src = externalFileDetails.url;
+            if (script.readyState) { // IE
+                script.onreadystatechange = function () {
+                    if (script.readyState === "loaded" || script.readyState === "complete") {
+                        script.onreadystatechange = null;
+                        ++scriptCounter;
+                        scriptCounter >= mck_external_scripts.length && mckinitPlugin();
+                    }
+                };
+            } else { // Others
+                script.onload = function () {
+                    ++scriptCounter;
+                    scriptCounter >= mck_external_scripts.length && mckinitPlugin();
+                };
+            }
+            script.onerror = function (error) {
+                handleFileLoadError(error);
+            }
+            head.appendChild(script);
+            
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
+    function handleFileLoadError(err) {
+        if (err && err.target && err.target.src) {
+            var data = mck_external_scripts.filter(function (item) {
+                return item.url == err.target.src;
+            })[0];
+            if (data) {
+                data.url = data.alternateUrl;
+                loadExternalFiles(data);
+            }
         }
     };
     function mckinitPlugin() {
