@@ -9160,6 +9160,9 @@ var CURRENT_GROUP_DATA={};
                     var resp = $applozic.parseJSON(obj.body);
                     typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                     var messageType = resp.type;
+                    if (typeof resp.message == "object" && resp.message.message === 'Status changed to Resolved'){
+                        KommunicateUI.showClosedConversationBanner(true);
+                    }
                     if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
                         $applozic("." + resp.message.split(",")[0] + " .mck-message-status").removeClass('mck-pending-icon').removeClass('mck-sent-icon').addClass('mck-delivered-icon').attr('title', 'delivered');
                         mckMessageLayout.addTooltip(resp.message.split(",")[0]);
