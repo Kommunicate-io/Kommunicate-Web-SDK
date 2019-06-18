@@ -1409,7 +1409,7 @@ var CURRENT_GROUP_DATA={};
                 if (optns.metadata) {
                     userPxy.metadata = optns.metadata;
                 }
-                if (window.applozic.PRODUCT_ID == 'applozic') {
+                if (window.applozic.PRODUCT_ID == APPLOZIC) {
                     document.getElementById("mck-tab-option-panel").style.display = null;
                     document.getElementsByClassName('mck-start-new-menu-item')[0].style.display = null;
                 }
@@ -2271,7 +2271,7 @@ var CURRENT_GROUP_DATA={};
                     if(err){
                          console.log("error while fetching group detail by type",err)
                          return;
-                    }else if (result.response.length ==0) {
+                    }else if (result.response.length ==0 && window.applozic.PRODUCT_ID == KOMMUNICATE) {
                         var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                         mckMessageService.createNewConversation( conversationDetail , function(groupId){
                            /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
