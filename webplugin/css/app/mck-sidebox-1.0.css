@@ -5966,3 +5966,19 @@ div#mck-rated:before{
 		opacity: 1;
 	}
 }
+.mck-mic-btn {
+	display: inline-block;
+	float: left;
+	margin-top: 12px;
+}
+.mck-mike-btn {
+	background-image: url(../css/app/images/mck-mic-btn.png);
+	background-repeat: no-repeat;
+	float :left !important;
+	margin-top: 7px;
+	height:18px;
+	width:19px;
+	  overflow: hidden;
+	background-size: 20px;
+	cursor: pointer;
+}
