@@ -5941,6 +5941,11 @@ div#mck-rated:before{
     -webkit-backface-visibility: hidden;
 }
 
+.mck-msg-preview-visual-indicator-text.applozic-launcher p {
+	text-overflow: initial;
+	max-height: 60px;
+}
+
 @keyframes kmOpeningAnimation {
 	from {
 		opacity: 0.6;
