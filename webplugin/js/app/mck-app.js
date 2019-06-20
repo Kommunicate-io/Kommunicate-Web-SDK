@@ -361,7 +361,7 @@ function ApplozicSidebox() {
             if (typeof options !== 'undefined') {
                 options.ojq = $original;
                 options.obsm = oModal;
-                $.fn.applozic(options);
+                $applozic.fn.applozic(options);
             }
         } catch (e) {
             console.log(e);
@@ -392,7 +392,7 @@ function ApplozicSidebox() {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        $.ajax({
+        $applozic.ajax({
             url: KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings",
             method: 'GET',
             data: data,
