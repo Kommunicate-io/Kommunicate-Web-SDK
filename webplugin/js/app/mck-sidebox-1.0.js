@@ -9364,6 +9364,9 @@ var CURRENT_GROUP_DATA={};
                                 'messageKey': message.key
                             });
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
+                            if (typeof resp.message == "object" && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS){
+                                KommunicateUI.showClosedConversationBanner(true);
+                            }
                             ALStorage.updateLatestMessage(message);
                             var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
                                 var $mck_sidebox_content = $applozic("#mck-sidebox-content");
