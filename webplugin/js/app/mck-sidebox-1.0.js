@@ -3338,7 +3338,7 @@ var CURRENT_GROUP_DATA={};
 										mckMessageLayout.addMessage(message, contact, true, true, false);
 										});
                 }
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     type: 'GET',
                     url: MCK_BASE_URL + MESSAGE_ADD_INBOX_URL,
                     global: false,
@@ -3379,7 +3379,7 @@ var CURRENT_GROUP_DATA={};
                 $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(_this.getChatContext(messagePxy))});
                
                 messagePxy.metadata = metadata;
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     type: 'POST',
                     url: MCK_BASE_URL + MESSAGE_SEND_URL,
                     global: false,
@@ -3474,7 +3474,7 @@ var CURRENT_GROUP_DATA={};
                    console.log('empty metadata');
                    return;
                }
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     type: 'POST',
                     url: MCK_BASE_URL + UPDATE_MESSAGE_METADATA,
                     global: false,
@@ -3521,7 +3521,7 @@ var CURRENT_GROUP_DATA={};
             _this.deleteMessage = function (msgKey) {
                 var tabId = $mck_msg_inner.data('mck-id');
                 if (typeof tabId !== 'undefined') {
-                    mckUtils.ajax({
+                    window.Applozic.ALApiService.ajax({
                         url: MCK_BASE_URL + MESSAGE_DELETE_URL + "?key=" + msgKey,
                         type: 'get',
                         success: function (data) {
@@ -3629,7 +3629,7 @@ var CURRENT_GROUP_DATA={};
                     append= true;
                 }
                 
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     url: MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
                     type: 'get',
                     global: false,
@@ -4184,7 +4184,7 @@ var CURRENT_GROUP_DATA={};
                    "Device-Key": USER_DEVICE_KEY,
                    "Access-Token": MCK_ACCESS_TOKEN
                }
-               mckUtils.ajax({
+               window.Applozic.ALApiService.ajax({
                  url: MCK_BASE_URL + GROUP_CREATE_URL,
                  global: false,
                  data: w.JSON.stringify(groupInfo),
@@ -4762,7 +4762,7 @@ var CURRENT_GROUP_DATA={};
                     metadata: msg_metadata
                 });
 
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     type : "POST",
                     url : MCK_BASE_URL + "/rest/ws/message/update/metadata",
                     global : false,
@@ -6122,7 +6122,7 @@ var CURRENT_GROUP_DATA={};
 								var startIndex =data.startIndex?data.startIndex:'0';
 								var pageSize = data.pageSize?data.pageSize:'50';
 								var url = MCK_BASE_URL + '/rest/ws/user/filter?startIndex='+startIndex+'&pageSize='+pageSize+'&orderBy=1';
-								mckUtils.ajax({
+								window.Applozic.ALApiService.ajax({
 											url: url,
 											type: 'get',
 											global: false,
@@ -6968,7 +6968,7 @@ var CURRENT_GROUP_DATA={};
                     return;
                 }
                 var data = 'newUserId='+ encodeURIComponent(params.newUserId);
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     url: MCK_BASE_URL + USER_IDENTITY_UPDATE_URL,
                     type: 'get',
                     data: data,
@@ -6993,7 +6993,7 @@ var CURRENT_GROUP_DATA={};
             };
 
             _this.updateUser = function(options) {
-                mckUtils.ajax({
+                window.Applozic.ALApiService.ajax({
                     type: "POST",
                     url: MCK_BASE_URL + "/rest/ws/user/update",
                     data: w.JSON.stringify(options.data),

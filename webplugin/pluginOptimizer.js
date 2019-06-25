@@ -10,7 +10,7 @@ const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 
 // Change "env" to "false" to uncompress all files.
-let env = config.getEnvId();
+let env = config.getEnvId() !== "development";
 
 let jsCompressor = !env ?"no-compress" : "gcc"; 
 let uglifyCompressor = !env? "no-compress" : "uglify-es";
@@ -109,6 +109,11 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/km-post-initialization.js'),
             path.resolve(__dirname, 'js/app/mck-ringtone-service.js')
         ],
+        options: {
+            compress: {
+                drop_console: true
+            }
+        },
         output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`),
         callback: function (err, min) {
             if (!err)
