@@ -331,14 +331,24 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
+            var widgetSettings = data.chatWidget || data.widgetTheme;
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
-            options["widgetSettings"]=data.widgetTheme;
+            options["widgetSettings"] = widgetSettings;
             options["customerCreatedAt"]=data.customerCreatedAt;
             options["collectFeedback"]=data.collectFeedback;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
+
+            if(widgetSettings && widgetSettings.sessionTimeout){
+                logoutAfterSessionExpiry(widgetSettings);
+                var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
+                !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
+                details.sessionTimeout = data.widgetTheme.sessionTimeout;
+                data.widgetTheme && data.widgetTheme.sessionTimeout && KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+            }
+
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 var accessTokenFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.ACCESS_TOKEN);
                 var userIdFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
@@ -430,6 +440,21 @@ function ApplozicSidebox() {
             var encodedToken = window.btoa(kommunicateSettings.accessToken);
             KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.ACCESS_TOKEN,"value": encodedToken || "", "expiresInDays":30,domain: cookieDomain});
         }
-    }
-
+    };
+    
+    function logoutAfterSessionExpiry(settings) {
+        var widgetSettings, timeStampDifference;
+        applozic._globals.appId && (widgetSettings = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId));
+        var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
+        if (widgetSettings && settings && settings.sessionTimeout && timeStampDifference > settings.sessionTimeout) {
+            KommunicateUtils.deleteUserCookiesOnLogout();
+        };
+        window.addEventListener('beforeunload', (event) => {
+            // Cancel the event as stated by the standard.
+            event.preventDefault();
+            var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
+            details.sessionEndTime = new Date().getTime();
+            KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+        });
+    };
 }
