@@ -16,7 +16,7 @@ Kommunicate.client={
     */
      getGroupDetailByType: function(options,callback){
         var formData = "type=" + options.type + "&startIndex=" +options.startIndex + "&limit=" + options.limit;
-        $applozic.ajax({
+        window.Applozic.ALApiService.ajax({
             url: MCK_BASE_URL + "/rest/ws/group/bytype",
             type: "get",
             data: formData,
