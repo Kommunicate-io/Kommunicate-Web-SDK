@@ -448,6 +448,8 @@ function ApplozicSidebox() {
         var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
         if (widgetSettings && settings && settings.sessionTimeout != null && timeStampDifference > settings.sessionTimeout) {
             KommunicateUtils.deleteUserCookiesOnLogout();
+            sessionStorage.removeItem("kommunicate");
+            ALStorage.clearSessionStorageElements();
         };
         window.addEventListener('beforeunload', (event) => {
             // Cancel the event as stated by the standard.
