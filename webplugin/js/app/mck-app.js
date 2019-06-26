@@ -341,12 +341,12 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
 
-            if(widgetSettings && widgetSettings.sessionTimeout){
+            if(widgetSettings && widgetSettings.sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
                 logoutAfterSessionExpiry(widgetSettings);
                 var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
                 details.sessionTimeout = data.widgetTheme.sessionTimeout;
-                data.widgetTheme && data.widgetTheme.sessionTimeout && KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+                data.widgetTheme && data.widgetTheme.sessionTimeout != null && KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
@@ -446,7 +446,7 @@ function ApplozicSidebox() {
         var widgetSettings, timeStampDifference;
         applozic._globals.appId && (widgetSettings = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId));
         var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
-        if (widgetSettings && settings && settings.sessionTimeout && timeStampDifference > settings.sessionTimeout) {
+        if (widgetSettings && settings && settings.sessionTimeout != null && timeStampDifference > settings.sessionTimeout) {
             KommunicateUtils.deleteUserCookiesOnLogout();
         };
         window.addEventListener('beforeunload', (event) => {
