@@ -5945,7 +5945,6 @@ div#mck-rated:before{
 	text-overflow: initial;
 	max-height: 60px;
 }
-
 @keyframes kmOpeningAnimation {
 	from {
 		opacity: 0.6;
@@ -5977,3 +5976,85 @@ div#mck-rated:before{
 		opacity: 1;
 	}
 }
+.mck-mic-animation-container {
+	width: 30px;
+	height:  30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	float: right;
+  }
+  .mck-mic-animation-container svg {
+	width: 25px;
+	height: 25px;
+	position: relative;
+	z-index: 2;
+  }
+  .mck-animation-outer {
+	width: 20px;
+	height: 20px;
+	-webkit-transform: scale(0);
+	border-radius: 100%;
+	position: absolute;
+	background-color: #e74c3c;
+	z-index: 0;
+	transition: 1.5s all ease;
+	-webkit-animation: woong 1.5s infinite;
+	-moz-animation: woong 1.5s infinite;
+	-o-animation: woong 1.5s infinite;
+	animation: woong 1.5s infinite;
+  }
+  
+  @-o-keyframes woong {
+	0% {
+	  -webkit-trasform: scale(1.2);
+	}
+	50% {
+	  -webkit-transform: scale(1.8);
+	  opacity: 0.2;
+	}
+	100% {
+	  -webkit-transform: scale(2.4);
+	  opacity: 0;
+	}
+  }
+  @-webkit-keyframes woong {
+	0% {
+	  -webkit-trasform: scale(1.2);
+	}
+	50% {
+	  -webkit-transform: scale(1.8);
+	  opacity: 0.2;
+	}
+	100% {
+	  -webkit-transform: scale(2.4);
+	  opacity: 0;
+	}
+  }
+  @-moz-keyframes woong {
+	0% {
+	  -webkit-trasform: scale(1.2);
+	}
+	50% {
+	  -webkit-transform: scale(1.8);
+	  opacity: 0.2;
+	}
+	100% {
+	  -webkit-transform: scale(2.4);
+	  opacity: 0;
+	}
+  }
+  @keyframes woong {
+	0% {
+	  -webkit-trasform: scale(1.2);
+	}
+	50% {
+	  -webkit-transform: scale(1.8);
+	  opacity: 0.2;
+	}
+	100% {
+	  -webkit-transform: scale(2.4);
+	  opacity: 0;
+	}
+  }
+

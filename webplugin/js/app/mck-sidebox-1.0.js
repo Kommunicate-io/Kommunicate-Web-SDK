@@ -220,6 +220,9 @@ var CURRENT_GROUP_DATA={};
                     case 'submitMessage':
                         return oInstance.submitMessage(params);
                         break;
+                    case 'toggleMediaOptions':
+                        return oInstance.toggleMediaOptions();
+                        break;
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -443,6 +446,11 @@ var CURRENT_GROUP_DATA={};
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
 
+        _this.toggleMediaOptions = function(){
+            var mckTypingBox = document.getElementById("mck-text-box");
+            mckMessageService.toggleMediaOptions(mckTypingBox);
+        }
+
         _this.submitMessage = function (params) {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
         }
@@ -530,6 +538,7 @@ var CURRENT_GROUP_DATA={};
               mckMessageLayout.initEmojis();
             }
             !MCK_ATTACHMENT && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
+            Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();
@@ -2240,8 +2249,7 @@ var CURRENT_GROUP_DATA={};
                 !IS_MCK_LOCSHARE ? kommunicateCommons.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommons.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
                 !EMOJI_LIBRARY ? "" : kommunicateCommons.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
             }
-
-            _this.toggleSendButton = function(el) {
+            _this.toggleMediaOptions = function(el) {
                 var text = "";
                 if(el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
                     text = el.value;
@@ -2250,8 +2258,10 @@ var CURRENT_GROUP_DATA={};
                 }
                 if(text == "" || !text.replace(/\s/g, '').length){
                     _this.hideSendButton();
+                    Kommunicate.typingAreaService.showMicButton();
                 }   else {
                     _this.showSendButton();
+                    Kommunicate.typingAreaService.hideMicButton();
                 }
             }
 
@@ -2427,7 +2437,8 @@ var CURRENT_GROUP_DATA={};
                 });
 
                 mck_text_box.addEventListener("keyup",function(){
-                    _this.toggleSendButton(this);
+                    _this.toggleMediaOptions(this);
+
                 });
                 $mck_text_box.keydown(function (e) {
                     if ($mck_text_box.hasClass('mck-text-req')) {
@@ -5631,7 +5642,7 @@ var CURRENT_GROUP_DATA={};
              */
 
             $mck_autosuggest_search_input.on("keyup", function(e) {
-                mckMessageService.toggleSendButton(this);
+                mckMessageService.toggleMediaOptions(this);
                 $mck_text_box.text($mck_autosuggest_search_input.val());
                 if((!(document.querySelector("ul.mcktypeahead.mck-auto-suggest-menu").style.display === "block")) && e.keyCode === 13) {
                     e.preventDefault();

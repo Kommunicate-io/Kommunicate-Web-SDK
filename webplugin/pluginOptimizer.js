@@ -107,7 +107,11 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/events/applozic-event-listener.js'),
             path.resolve(__dirname, 'js/app/events/applozic-event-handler.js'),
             path.resolve(__dirname, 'js/app/km-post-initialization.js'),
-            path.resolve(__dirname, 'js/app/mck-ringtone-service.js')
+            path.resolve(__dirname, 'js/app/mck-ringtone-service.js'),
+            path.resolve(__dirname, 'js/app/media/typing-area-dom-service.js'),
+            path.resolve(__dirname, 'js/app/media/media-service.js'),
+            path.resolve(__dirname, 'js/app/media/media-dom-event-listener.js')
+            
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`),
         callback: function (err, min) {
