@@ -1749,6 +1749,7 @@ var CURRENT_GROUP_DATA={};
 
                 // handle click events for openning and closing of sidebox
                 var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                kommunicateIframe.style.display = "block";
                 var chatbox = document.getElementById("mck-sidebox-launcher");
                 var popUpcloseButton = document.getElementById("km-popup-close-button");
                 chatbox.addEventListener("click", function(){
