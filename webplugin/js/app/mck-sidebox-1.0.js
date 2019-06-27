@@ -3004,7 +3004,8 @@ var CURRENT_GROUP_DATA={};
                     $applozic(this).addClass('active');
                 });
             };
-            $applozic('.mck-sidebox').on("click", "#mck-mike-btn", function () {
+            $applozic('.mck-sidebox').on("click", "#mck-mike-btn", function (event) {
+                event.preventDefault();
                 $applozic(this).removeClass('vis').addClass('n-vis');
                 $applozic(".mck-stop-btn").addClass("vis").removeClass("n-vis");
                 Fr.voice.record(false, function () {
@@ -3012,7 +3013,8 @@ var CURRENT_GROUP_DATA={};
                     mckMessageService.timer();
                 });
             });
-            $applozic('.mck-sidebox').on("click", "#mck-stop-recording", function () {
+            $applozic('.mck-sidebox').on("click", "#mck-stop-recording", function (event) {
+                event.preventDefault();
                 $applozic("#mck-mike-btn").addClass('vis').removeClass('n-vis');
                 $applozic(".mck-stop-btn").addClass("n-vis").removeClass("vis");
                 $applozic("#mck-audio").removeClass('vis').addClass('n-vis');
