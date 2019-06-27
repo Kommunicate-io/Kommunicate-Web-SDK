@@ -7207,13 +7207,15 @@ var CURRENT_GROUP_DATA={};
             }).on('mouseleave', '.mck-group-info-icon-box.mck-hover-on', function () {
                 $applozic(this).find('.mck-overlay-box').addClass('n-vis');
             });
-            $mck_group_name_edit.on('click', function () {
+            $mck_group_name_edit.on('click', function (event) {
+                event.preventDefault();
                 $mck_group_title.attr('contenteditable', true).focus();
                 mckUtils.setEndOfContenteditable($mck_group_title[0]);
                 $mck_group_name_edit.removeClass('vis').addClass('n-vis');
                 $mck_group_name_save.removeClass('n-vis').addClass('vis');
             });
             $mck_group_name_save.on('click', function () {
+                event.preventDefault();
                 var groupName = $applozic.trim($mck_group_title.text());
                 if (groupName.length > 0) {
                     var currTabId = $mck_msg_inner.data('mck-id');
