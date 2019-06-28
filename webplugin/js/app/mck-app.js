@@ -27,7 +27,7 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             "name": "jquery",
-            "url": "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js",
+            "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js",
             "crossOrigin": "anonymous"
         },
         {
