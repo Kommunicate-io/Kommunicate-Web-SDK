@@ -2332,7 +2332,7 @@ display: none;
 
 .mck-sidebox-launcher {
 	white-space: pre;
-	position: fixed;
+	position: absolute;
 	z-index: 2243000;
 	bottom: 45px;
 	right: 35px;
