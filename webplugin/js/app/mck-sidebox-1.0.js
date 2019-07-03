@@ -59,7 +59,7 @@ var CURRENT_GROUP_DATA={};
             'disableChatForNonGroupMember': false,
             'defaultChatDisabledMessage': 'Chat Disabled!'
         },
-        enableVoiceInput:false
+        voiceInput:false
     };
     var message_default_options = {
         'messageType': 5,
@@ -446,7 +446,7 @@ var CURRENT_GROUP_DATA={};
         var USE_BRANDING = typeof appOptions.useBranding  == 'boolean'? appOptions.useBranding : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
-        var VOICE_INPUT_ENABLED = appOptions.enableVoiceInput;
+        var VOICE_INPUT_ENABLED = appOptions.voiceInput;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
