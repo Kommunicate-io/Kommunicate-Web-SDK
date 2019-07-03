@@ -36,7 +36,6 @@ Kommunicate.mediaService = {
             }
             recognition.onend = function () {
                 // stop mic effect
-                console.log("speech recognition completed")
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
 ;            }

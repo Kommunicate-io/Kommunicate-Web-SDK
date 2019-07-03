@@ -58,7 +58,8 @@ var CURRENT_GROUP_DATA={};
             'allowInfoAccessGroupMembers': true,
             'disableChatForNonGroupMember': false,
             'defaultChatDisabledMessage': 'Chat Disabled!'
-        }
+        },
+        enableVoiceInput:false
     };
     var message_default_options = {
         'messageType': 5,
@@ -445,6 +446,7 @@ var CURRENT_GROUP_DATA={};
         var USE_BRANDING = typeof appOptions.useBranding  == 'boolean'? appOptions.useBranding : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
+        var VOICE_INPUT_ENABLED = appOptions.enableVoiceInput;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -538,7 +540,7 @@ var CURRENT_GROUP_DATA={};
               mckMessageLayout.initEmojis();
             }
             !MCK_ATTACHMENT && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
-            Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+            VOICE_INPUT_ENABLED && Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();
@@ -3010,6 +3012,7 @@ var CURRENT_GROUP_DATA={};
                         }
                     }
                     _this.hideSendButton();
+                    Kommunicate.typingAreaService.showMicButton();
                     _this.sendMessage(messagePxy);
                     return false;
                 });

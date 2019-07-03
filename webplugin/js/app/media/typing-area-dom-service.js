@@ -31,6 +31,9 @@ Kommunicate.typingAreaService ={
             console.log("browser do not support speech recogization");
             this.hideMicButton();
         } 
+        else{
+            this.showMicButton();
+        }
     },
     hideMicButton: function(){
         kommunicateCommons.modifyClassList({id:["mck-mic-animation-container"]}, "n-vis","vis");

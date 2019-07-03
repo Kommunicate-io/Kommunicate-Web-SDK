@@ -5979,7 +5979,7 @@ div#mck-rated:before{
 .mck-mic-animation-container {
 	width: 30px;
 	height:  30px;
-	display: flex;
+	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	float: right;
