@@ -137,7 +137,7 @@ getButtonTemplate:function(options,requestType, buttonClass){
     if(options.type=="link"){
         return'<button title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
     }else{
-        return'<button title= "'+ (options.replyText || options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
+        return'<button title= "'+ (options.replyText || (options.action && options.action.message)||options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
@@ -146,6 +146,9 @@ getQuickRepliesTemplate:function(){
                  <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
             {{/payload}}
             </div>`;
+},
+getGenericSuggestedReplyButton : function(){
+    return `<button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{name}}</button>`
 },
 getPassangerDetail : function(options){
     if(!options.sessionId){
@@ -299,18 +302,18 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     return containerMarkup;
 }
 Kommunicate.markup.getFormMarkup = function(options) {
-    var payload = JSON.parse(options.payload);
-    var formData= payload? JSON.parse(options.formData||"{}"):"";
+    var payload = typeof options.payload == "string" ?JSON.parse(options.payload):options.payload;
+    var formData= payload && options.formData ? JSON.parse(options.formData||"{}"):payload.formData||"";
     var formMarkup="";
     if(formData){
-        formMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+options.formAction+ ">";
+        formMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+(options.formAction||payload.formAction)+ ">";
         for (var key in formData) {
             if (formData.hasOwnProperty(key)) {
                 formMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
             }
         } 
         formMarkup+='</form>';
-        return formMarkup
+        return formMarkup;
     }
 }
 Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
@@ -523,3 +526,35 @@ Kommunicate.markup.getLinkTarget= function(buttonInfo) {
     buttonInfo.openLinkInNewTab = (typeof buttonInfo.openLinkInNewTab  !='undefined' && !buttonInfo.openLinkInNewTab ) ? buttonInfo.openLinkInNewTab:true;
     return buttonInfo.openLinkInNewTab ? "_blank" : "_parent";
 }
+
+Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
+    var buttonPayloadList = metadata.payload ? JSON.parse(metadata.payload) : [];
+    var buttonContainerHtml = '<div class="km-cta-multi-button-container">';
+    var buttonClass = " km-custom-widget-border-color " + (buttonPayloadList.length == 1 ? "km-cta-button-1" : (buttonPayloadList.length == 2 ? "km-cta-button-2" : "km-cta-button-many"));
+    for (var i = 0; i < buttonPayloadList.length; i++) {
+        var singlePayload = buttonPayloadList[i];
+        typeof (singlePayload.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
+        if (singlePayload.action && (singlePayload.action.type == "link" || singlePayload.action.type == "submit")) {
+            singlePayload.type = buttonPayloadList[i].action.type;
+            singlePayload.url = buttonPayloadList[i].action.url;
+            singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
+            buttonClass += buttonClass + " km-add-more-rooms";
+            buttonContainerHtml += Kommunicate.markup.getButtonTemplate(singlePayload, singlePayload.action.requestType, buttonClass);
+            singlePayload.action.type == "submit" && (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
+                "payload": singlePayload.action
+            }))
+
+        } else if (singlePayload.action && singlePayload.action.type == "quickReply") {
+            singlePayload.buttonClass = "km-quick-rpy-btn " + buttonClass;
+            singlePayload.message = singlePayload.message || singlePayload.name;
+            buttonContainerHtml += Mustache.to_html(Kommunicate.markup.getGenericSuggestedReplyButton(), singlePayload);
+        } else if (singlePayload.action && singlePayload.action.type == "submit") {
+
+
+        }
+
+    }
+    return buttonContainerHtml + "</div>";
+
+}
+        
