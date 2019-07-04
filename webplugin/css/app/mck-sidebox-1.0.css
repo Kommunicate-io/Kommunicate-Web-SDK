@@ -2690,6 +2690,8 @@ display: none;
 	padding: 6px 12px;
 	line-height: 20px;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+	margin-left:auto;
+	margin-right:auto;
 }
 
 .mck-msg-center .mck-context-menu, .mck-msg-center-muted {
