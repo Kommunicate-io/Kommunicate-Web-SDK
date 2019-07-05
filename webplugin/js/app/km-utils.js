@@ -93,7 +93,8 @@ KommunicateConstants = {
         LIST:"7",
         DIALOG_BOX:"8",
         IMAGE:"9",
-        CARD_CAROUSEL:"10"
+        CARD_CAROUSEL:"10",
+        GENERIC_BUTTONS:"11" // supports link button/submit buttons and suggested replies 
     },
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",

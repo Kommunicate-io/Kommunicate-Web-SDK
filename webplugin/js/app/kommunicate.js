@@ -391,6 +391,8 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return Kommunicate.markup.getCarouselMarkup(metadata);
                     break;
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
+                    return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 default:
                     return "";
                     break;
