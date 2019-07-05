@@ -3,7 +3,8 @@
             _this.loadRingTone = function (url,notificationtoneoption) {
                 return new Howl({
                     src: [url],
-                    loop: notificationtoneoption.loop
+                    loop: notificationtoneoption.loop,
+                    html5: true
                 });
                 return null;
             };
