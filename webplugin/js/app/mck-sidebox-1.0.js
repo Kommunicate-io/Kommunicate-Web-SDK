@@ -3964,10 +3964,15 @@ var CURRENT_GROUP_DATA={};
 
                                     if (data && data.groupFeeds[0] && data.groupFeeds[0].imageUrl) {
                                         imageUrl = data.groupFeeds[0].imageUrl;
+                                        $applozic(".mck-agent-image-container img").removeClass("n-vis");
+                                        $applozic(".mck-agent-image-container .mck-agent-image-svg-container").addClass("n-vis");
                                     }
                                     else {
                                         //DEFAULT_PROFILE_IMAGE
-                                        imageUrl = KommunicateConstants.DEFAULT_PROFILE_IMAGE.URL;
+                                        imageUrl = "";
+                                        $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(kommunicateCommons.getDefaultAvatarImageSvg());
+                                        $applozic(".mck-agent-image-container .mck-agent-image-svg-container").removeClass("n-vis");
+                                        $applozic(".mck-agent-image-container img").addClass("n-vis");
                                     }
                                     $applozic(".mck-agent-image-container img").attr("src", imageUrl);
 

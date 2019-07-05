@@ -138,4 +138,8 @@ function KommunicateCommons() {
     _this.getRatingSmilies = function (rating) {
         return KommunicateConstants.RATINGS_SVG[rating];
     }
-    };
+
+    _this.getDefaultAvatarImageSvg = function() {
+        return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
+    }
+};
