@@ -5542,6 +5542,19 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-agent-image-container .mck-agent-status-indicator.mck-status--offline {
 	background-color: #e2e2e2;
 }
+.mck-agent-image-svg-container {
+	width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #3289c8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mck-agent-image-svg-container svg {
+	width: 38px;
+    height: 38px;
+}
 .mck-sidebox .force-n-vis {
 	display:none !important;
 }
