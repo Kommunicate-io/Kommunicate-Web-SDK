@@ -8,6 +8,12 @@ const buildDir = path.resolve(__dirname,'build');
 const config = require("../server/config/config-env");
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
+const PLUGIN_SETTING = config.pluginProperties;
+const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+const pluginVersions = ["v1","v2"];
+PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
+PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
+let PLUGIN_FILE_DATA = new Object();
 
 // Change "env" to "false" to uncompress all files.
 let env = config.getEnvId() !== "development";
@@ -165,8 +171,10 @@ const generateBuildFiles = () => {
         }
         var mckApp = data.replace('MCK_APP_JS', `"${MCK_STATIC_PATH}/build/mck-app.${version}.js"`)
         fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
-            if (err){
-                console.log("plugin.js generation error");}
+            if (err) {
+                console.log("plugin.js generation error");
+            }
+            generateFilesByVersion('build/plugin.js');
         })
     });
     // Generate mck-app.js file for build folder.
@@ -184,10 +192,33 @@ const generateBuildFiles = () => {
                 minifyMckAppJs();
         })
     });
-}
+};
 
+const generateFilesByVersion = (location) => {
+    fs.readFile(path.join(__dirname, location), 'utf8', function (err, data) {
+        if (err) {
+            console.log("error while generating plugin.js", err);
+        }
+        try {
+            var plugin = data.replace(":MCK_CONTEXTPATH", MCK_CONTEXT_PATH)
+                .replace(":MCK_THIRD_PARTY_INTEGRATION", JSON.stringify(MCK_THIRD_PARTY_INTEGRATION))
+                .replace(":MCK_STATICPATH", MCK_STATIC_PATH).replace(":PRODUCT_ID", "kommunicate")
+                .replace(":PLUGIN_SETTINGS", JSON.stringify(PLUGIN_SETTING));
+
+            for (var i = 0; i < pluginVersions.length; i++) {
+                var data = plugin.replace(":MCK_PLUGIN_VERSION", pluginVersions[i]);
+                PLUGIN_FILE_DATA[pluginVersions[i]] = data;
+            };
+            console.log("plugin files generated for all versions successfully")
+        } catch (error) {
+            console.log(error);
+        }
+
+    });
+};
 removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();
 
 exports.pluginVersion = version;
+exports.pluginVersionData = PLUGIN_FILE_DATA;
