@@ -11,7 +11,7 @@ exports.getPlugin = async (req, res) => {
     return console.log("unable to get plugin version");
   }
   var data = Object.keys(pluginVersionData).length ? pluginVersionData[MCK_PLUGIN_VERSION] : await generatePluginFile(req, res);
-  res.setHeader('content-type', 'application/javascript');
+  res.setHeader('Content-Type', 'application/javascript');
   res.send(data);
 };
 
@@ -29,7 +29,6 @@ const generatePluginFile = async (req, res) => {
   var plugin =
     data.replace(":MCK_CONTEXTPATH", MCK_CONTEXTPATH)
     .replace(":MCK_THIRD_PARTY_INTEGRATION", JSON.stringify(MCK_THIRD_PARTY_INTEGRATION))
-    .replace(":MCK_STATICPATH", MCK_STATICPATH).replace(":PRODUCT_ID", "kommunicate")
     .replace(":MCK_PLUGIN_VERSION", MCK_PLUGIN_VERSION).replace(":PLUGIN_SETTINGS", JSON.stringify(PLUGIN_SETTING))
     .replace(":MCK_STATICPATH", MCK_STATICPATH).replace(":PRODUCT_ID", "kommunicate");
   return plugin;
