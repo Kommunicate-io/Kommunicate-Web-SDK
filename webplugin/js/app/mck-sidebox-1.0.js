@@ -6371,12 +6371,12 @@ var CURRENT_GROUP_DATA={};
                         e.preventDefault();
                     }, false);
                 } else {
-                    $messageBox.bind('contextmenu', function (e) {
-                        e.preventDefault();
-                        $applozic(".mck-context-menu").removeClass("vis").addClass("n-vis");
-                        $applozic("." + messageKey + " .mck-context-menu").removeClass("n-vis").addClass("vis");
-                        w.event.returnValue = false;
-                    });
+                //     $messageBox.bind('contextmenu', function (e) {
+                //         e.preventDefault();
+                //         $applozic(".mck-context-menu").removeClass("vis").addClass("n-vis");
+                //         $applozic("." + messageKey + " .mck-context-menu").removeClass("n-vis").addClass("vis");
+                //         w.event.returnValue = false;
+                //     });
                 }
             };
             _this.isValidMetaData = function (message) {
