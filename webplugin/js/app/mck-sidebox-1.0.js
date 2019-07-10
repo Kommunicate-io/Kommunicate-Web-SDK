@@ -3592,7 +3592,7 @@ var CURRENT_GROUP_DATA={};
 
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
-                if (message && message.code === "AGENTS_ONLINE") {
+                if (message && message.code === "AGENTS_ONLINE" && !isAgentOffline) {
                     KommunicateUI.setAvailabilityStatus("online");
                 } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
                     KommunicateUI.setAvailabilityStatus("away");
