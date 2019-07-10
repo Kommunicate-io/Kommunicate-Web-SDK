@@ -39,7 +39,11 @@ Kommunicate.typingAreaService ={
         kommunicateCommons.modifyClassList({id:["mck-mic-animation-container"]}, "n-vis","vis");
     },
     showMicButton: function(){
-        kommunicateCommons.modifyClassList({id:["mck-mic-animation-container"]}, "vis","n-vis");
+        var appOption = KommunicateUtils.getDataFromKmSession("appOptions");
+        if(appOption && appOption.voiceInput){
+            kommunicateCommons.modifyClassList({id:["mck-mic-animation-container"]}, "vis","n-vis");
+        }
+        
     },
     hideMiceRecordingAnimation : function(){
         kommunicateCommons.modifyClassList({id:["mck-animation-outer"]}, "n-vis","vis");
