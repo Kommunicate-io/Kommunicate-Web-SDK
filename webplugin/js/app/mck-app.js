@@ -451,7 +451,7 @@ function ApplozicSidebox() {
             sessionStorage.removeItem("kommunicate");
             ALStorage.clearSessionStorageElements();
         };
-        window.addEventListener('beforeunload', (event) => {
+        window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
             event.preventDefault();
             var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
