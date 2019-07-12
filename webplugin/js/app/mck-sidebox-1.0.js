@@ -295,6 +295,7 @@ var CURRENT_GROUP_DATA={};
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
         var MCK_TOKEN;
         var AUTH_CODE;
+        var ACTIVE_TAB_ID = '';
         MCK_GROUP_MAP = [];
         var FILE_META = [];
         var USER_DEVICE_KEY;
@@ -757,6 +758,7 @@ var CURRENT_GROUP_DATA={};
             ALStorage.clearSessionStorageElements();
             MCK_TOKEN = '';
             AUTH_CODE = '';
+            ACTIVE_TAB_ID = '';
             FILE_META = [];
             MCK_GROUP_MAP = [];
             IS_LOGGED_IN = true;
@@ -1855,7 +1857,7 @@ var CURRENT_GROUP_DATA={};
                         _this.sendFeedback(feedbackObject);                     
                     })
                 }
-            }
+            };
             _this.sendFeedback = function(feedbackData){
                 mckUtils.ajax({
                     type: 'POST',
@@ -1874,7 +1876,7 @@ var CURRENT_GROUP_DATA={};
                         console.log('Error submitting feedback')
                     }
                 });
-            },
+            };
             _this.getPreLeadDataForAskUserDetail = function(){
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 var KM_USER_DETAIL_TYPE_MAP = {'email':'email', 'phone':'number'};
@@ -1889,7 +1891,7 @@ var CURRENT_GROUP_DATA={};
                     KM_PRELEAD_COLLECTION.push(obj);
                     }
                 }
-            }
+            };
             _this.addLeadCollectionInputDiv = function() {
                     KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
                 for(var i=0; i<KM_PRELEAD_COLLECTION.length; i++){
@@ -1908,7 +1910,7 @@ var CURRENT_GROUP_DATA={};
                      $applozic('.km-last-child').append(kmChatInputDiv);
                      $applozic(kmChatInputDiv).append(kmChatInput);
                 }
-            }
+            };
 
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
@@ -4466,6 +4468,7 @@ var CURRENT_GROUP_DATA={};
                 clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
+                ACTIVE_TAB_ID = params.tabId || currTabId;
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
                         var text = $mck_text_box.html();
@@ -9384,7 +9387,8 @@ var CURRENT_GROUP_DATA={};
                                 'messageKey': message.key
                             });
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
-                            if (kommunicateCommons.isObject(resp.message) && resp.message.metadata && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                            if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == ACTIVE_TAB_ID && resp.message.metadata && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                                console.log(resp.message);                      
                                 KommunicateUI.showClosedConversationBanner(true);
                             }
                             ALStorage.updateLatestMessage(message);
