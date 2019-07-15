@@ -295,7 +295,6 @@ var CURRENT_GROUP_DATA={};
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
         var MCK_TOKEN;
         var AUTH_CODE;
-        var ACTIVE_TAB_ID = '';
         MCK_GROUP_MAP = [];
         var FILE_META = [];
         var USER_DEVICE_KEY;
@@ -758,7 +757,6 @@ var CURRENT_GROUP_DATA={};
             ALStorage.clearSessionStorageElements();
             MCK_TOKEN = '';
             AUTH_CODE = '';
-            ACTIVE_TAB_ID = '';
             FILE_META = [];
             MCK_GROUP_MAP = [];
             IS_LOGGED_IN = true;
@@ -4468,7 +4466,6 @@ var CURRENT_GROUP_DATA={};
                 clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
-                ACTIVE_TAB_ID = params.tabId || currTabId;
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
                         var text = $mck_text_box.html();
@@ -9387,14 +9384,13 @@ var CURRENT_GROUP_DATA={};
                                 'messageKey': message.key
                             });
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
-                            if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == ACTIVE_TAB_ID && resp.message.metadata && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
-                                console.log(resp.message);                      
-                                KommunicateUI.showClosedConversationBanner(true);
-                            }
                             ALStorage.updateLatestMessage(message);
                             var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
                                 var $mck_sidebox_content = $applozic("#mck-sidebox-content");
                                 var tabId = $mck_message_inner.data('mck-id');
+                                if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                                    KommunicateUI.showClosedConversationBanner(true);
+                                };
                                 if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
                                     var messageFeed = mckMessageLayout.getMessageFeed(message);
                                     events.onMessageReceived({
