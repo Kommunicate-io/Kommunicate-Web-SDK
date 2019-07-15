@@ -804,29 +804,3 @@
 <div id="km-anonymous-chat-launcher" class="km-hide-logo n-vis">
 </div>
 
-<script>
-function showAfterLoad(){
-	var mckSidebox = document.getElementById("mck-sidebox");
-	mckSidebox.style.visibility='visible';
-	var mckLocBox = document.getElementById("mck-loc-box");
-	mckLocBox.style.visibility='visible';
-	var mckGmSearchBox = document.getElementById("mck-gm-search-box");
-	mckGmSearchBox.style.visibility='visible';
-};
-	if(navigator.userAgent.indexOf('MSIE')!==-1
-|| navigator.appVersion.indexOf('Trident/') > 0){
-
-	showAfterLoad();
-} else {
-	var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
-	if (isScriptV2){
-		window.parent.document.addEventListener('kmInitilized', function() {
-			showAfterLoad();
-		}, false);
-	}else{
-		window.addEventListener('kmInitilized', function() {
-			showAfterLoad();
-		}, false);	
-	}
-}
-</script>

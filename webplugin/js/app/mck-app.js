@@ -143,6 +143,7 @@ function ApplozicSidebox() {
             return false;
         }
     };
+            "var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');"+
     function mckLoadStyle(url) {
         var head = document.getElementsByTagName('head')[0];
         var style = document.createElement('link');
