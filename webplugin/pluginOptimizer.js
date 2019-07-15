@@ -38,7 +38,7 @@ const compressAndOptimize = () => {
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
-            path.resolve(__dirname, 'lib/js/mck-emojis.min.js'),
+            // path.resolve(__dirname, 'lib/js/mck-emojis.min.js'),
             path.resolve(__dirname, 'lib/js/howler-2.0.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
