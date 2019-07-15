@@ -157,7 +157,7 @@ function ApplozicSidebox() {
             };
             if (navigator.userAgent.indexOf('MSIE') !== -1 ||
                 navigator.appVersion.indexOf('Trident/') > 0) {
-                showAfterLoad;
+                showAfterLoad();
             } else {
                 var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
                 if (isScriptV2) {
