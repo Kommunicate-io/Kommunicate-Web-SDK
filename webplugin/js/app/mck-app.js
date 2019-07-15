@@ -53,6 +53,9 @@ function ApplozicSidebox() {
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     } ];
+   var mck_videocall = [ {
+          "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
+    } ];
     this.load = function() {
         try {
             for (var index in mck_external_scripts) {
@@ -121,22 +124,16 @@ function ApplozicSidebox() {
             }
         }
         try {
-            for (var index in mck_style_loader) {
-                mck_style_loader[index] && mckLoadStyle(mck_style_loader[index].url);
-            }
-            var url = MCK_SIDEBOX_HTML;
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    // var data = JSON.parse(this.responseText);
-                    var body = document.getElementsByTagName('body')[0];
-                    body.innerHTML = this.responseText;
-                    mckInitPluginScript();
-                    // mckInitSidebox(data.response, userId);
-                }
-            };
-            xhr.open("GET", url, true);
-            xhr.send(null);
+            $.each(mck_style_loader, function(i, data) {
+                mckLoadStyle(data.url);
+            });
+            $.ajax({
+                    url: MCK_SIDEBOX_HTML, crossDomain: true, success: function(data) {
+                        data = data.replace(/MCK_STATICPATH/g, MCK_STATICPATH);
+                        $("body").append(data);
+                        mckInitPluginScript();
+                    }
+            });
         } catch (e) {
             console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
@@ -199,8 +196,7 @@ function ApplozicSidebox() {
                 }
                     applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
        	    }
-            for (var index in mck_script_loader1) {
-                var data = mck_script_loader1[index];
+            $.each(mck_script_loader1, function(i, data) {
                 if (data.name === "km-utils") {
                     try {
                        var options = applozic._globals;
@@ -234,7 +230,12 @@ function ApplozicSidebox() {
                 else {
                     mckLoadScript(data.url);    
                 }
-            };
+            });
+             if (typeof applozic._globals !== 'undefined'&& applozic._globals.video === true) {
+                          $.each(mck_videocall, function(i, data) {
+                          mckLoadScript(data.url);
+                 });
+               }
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             console.log(e);
@@ -246,12 +247,11 @@ function ApplozicSidebox() {
     };
     function mckLoadScript2() {
         try {
-            for (var index in mck_script_loader2) {
-                var data = mck_script_loader1[index];
+            $.each(mck_script_loader2, function(i, data) {
                 if (data.name === "locationpicker") {
                     mckLoadScript(data.url, mckLoadAppScript);
                 }
-            };
+            });
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
@@ -332,8 +332,6 @@ function ApplozicSidebox() {
         try {
             var options = applozic._globals;
             var widgetSettings = data.chatWidget || data.widgetTheme;
-            var sessionTimeout = options.sessionTimeout;
-            sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
             options["widgetSettings"] = widgetSettings;
@@ -343,12 +341,12 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
 
-            if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
-                logoutAfterSessionExpiry(sessionTimeout);
+            if(widgetSettings && widgetSettings.sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
+                logoutAfterSessionExpiry(widgetSettings);
                 var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
-                details.sessionTimeout = sessionTimeout;
-                KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+                details.sessionTimeout = data.widgetTheme.sessionTimeout;
+                data.widgetTheme && data.widgetTheme.sessionTimeout != null && KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
@@ -404,16 +402,18 @@ function ApplozicSidebox() {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        var url = KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings?appId=" + applozic._globals.appId;
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var data = JSON.parse(this.responseText);
+        $applozic.ajax({
+            url: KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings",
+            method: 'GET',
+            data: data,
+            success: function (data) {
                 mckInitSidebox(data.response, userId);
+            },
+            error: function (error) {
+                console.log(error);
             }
-        };
-        xhr.open("GET", url, true);
-        xhr.send(data);
+
+        })
     };
     function loadErrorTracking(userId) {
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
@@ -442,11 +442,11 @@ function ApplozicSidebox() {
         }
     };
     
-    function logoutAfterSessionExpiry(sessionTimeout) {
+    function logoutAfterSessionExpiry(settings) {
         var widgetSettings, timeStampDifference;
         applozic._globals.appId && (widgetSettings = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId));
         var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
-        if (widgetSettings && sessionTimeout != null && timeStampDifference > sessionTimeout) {
+        if (widgetSettings && settings && settings.sessionTimeout != null && timeStampDifference > settings.sessionTimeout) {
             KommunicateUtils.deleteUserCookiesOnLogout();
             sessionStorage.removeItem("kommunicate");
             ALStorage.clearSessionStorageElements();
