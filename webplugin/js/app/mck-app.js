@@ -130,7 +130,7 @@ function ApplozicSidebox() {
                 if (this.readyState == 4 && this.status == 200) {
                     var body = document.getElementsByTagName('body')[0];
                     body.innerHTML = this.responseText;
-                    var scriptContent = addScriptInstideHtml();
+                    var scriptContent = addScriptInsideHtml();
                     body.appendChild(scriptContent);
                     mckInitPluginScript();
                 }
@@ -145,7 +145,7 @@ function ApplozicSidebox() {
             return false;
         }
     };
-    function addScriptInstideHtml() {
+    function addScriptInsideHtml() {
         var script =  
         "function showAfterLoad(){"+
             "var mckSidebox = document.getElementById(\"mck-sidebox\");"+
