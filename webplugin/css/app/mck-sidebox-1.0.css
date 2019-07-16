@@ -4472,15 +4472,18 @@ color: rgba(0,0,0,0.5);
   }
 /********** Guest Details Form Ends Here ***********/
 
-.mck-away-msg{
-	font-family: 'Roboto', sans-serif!important;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    text-align: center;
+.mck-away-msg {
+	font-family: 'Roboto', sans-serif !important;
+	font-size: 14px;
+	letter-spacing: 0.5px;
+	text-align: center;
 	color: #8f8f8f;
 	margin-bottom: 0px;
-
-
+	min-height: 20px;
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+	padding-bottom: 5px;
 }
 .km-faq-list-container {
 	list-style: none;
@@ -5842,7 +5845,7 @@ div[name="message"]:last-child {
 }
 .mck-csat-text-1 span{
 	color: #8b8888;
-	display: block;
+	display: inline-block;
 	max-width: 85%;
     margin: 20 auto 5px;
 }
@@ -5856,7 +5859,14 @@ div[name="message"]:last-child {
 .mck-rating-box:hover{
 	transform: scale(1.2);
 }
-
+.mck-rating-box div {
+	margin-top: 4px;
+	visibility: hidden;
+	color: #222222
+}
+.mck-rating-box:hover div {
+	visibility: visible;
+}
 .mck-conversation-comment{
 	background: white;
     padding: 19px 10px;
@@ -5916,10 +5926,11 @@ div#mck-rated:before{
     max-width: 90%;
     margin: 18px auto;
 }
-.mck-feedback-text-wrapper textarea{
-    background: none;
-    border: none;
-    outline: none;
+.mck-feedback-text-wrapper textarea {
+	background: none;
+	border: none;
+	outline: none;
+	width: 100%;
 }
 .mck-feedback-text-wrapper textarea::-webkit-input-placeholder, 
 .mck-feedback-text-wrapper textarea::-moz-placeholder, 

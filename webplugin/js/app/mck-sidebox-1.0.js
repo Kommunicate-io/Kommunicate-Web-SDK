@@ -447,6 +447,11 @@ var CURRENT_GROUP_DATA={};
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
+        var RATING_EMOJI_HOVER_TEXT_MAP = {
+            1 : MCK_LABELS['emoji.hover.text'].poor,
+            5 : MCK_LABELS['emoji.hover.text'].average,
+            10 : MCK_LABELS['emoji.hover.text'].great
+        }; 
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -1599,6 +1604,7 @@ var CURRENT_GROUP_DATA={};
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
                 _this.setLabels();
+                _this.setEmojiHoverText();
                 if(KOMMUNICATE_VERSION === "v2"){
                     _this.configureIframe();
                     _this.restrictScrollOnHandHeldDevices();
@@ -1914,6 +1920,18 @@ var CURRENT_GROUP_DATA={};
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 document.getElementById('km-submit-chat-login').innerHTML= LEAD_COLLECTION_LABEL.submit;
                 document.getElementById('km-lead-collection-heading').innerHTML= LEAD_COLLECTION_LABEL.heading;           
+            };
+            _this.setEmojiHoverText = function () {
+                var ratingList = document.getElementsByClassName("mck-rating-box");
+                var ratingListLength = ratingList && ratingList.length;
+                if(ratingListLength){
+                    for (var a = 0; a < ratingListLength; a++) {
+                        var ratingElement = ratingList[a];
+                        var dateSpan = document.createElement('div');
+                        dateSpan.innerHTML = RATING_EMOJI_HOVER_TEXT_MAP[ratingElement.dataset.rating];
+                        ratingElement.appendChild(dateSpan);
+                    }
+                }
             };
             _this.setLabels = function () {
                 $applozic('#mck-conversation-title').html(MCK_LABELS['conversations.title']).attr('title', MCK_LABELS['conversations.title']);
