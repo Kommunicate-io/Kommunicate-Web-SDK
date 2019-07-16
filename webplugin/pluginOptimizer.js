@@ -141,6 +141,15 @@ const minifyMckAppJs = () => {
         input: [
             path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
         ],
+        options: {
+            compress: {
+                drop_console: true,
+                keep_fnames: true
+            },
+            mangle : {
+                keep_fnames: true
+            }
+        },
         output: path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
         callback: function (err, min) {
             if (!err) {
