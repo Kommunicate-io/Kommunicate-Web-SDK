@@ -738,6 +738,15 @@
 	width: 20px;
 }
 
+.mck-box-top-flex {
+	display: flex;
+	align-items: center;
+}
+
+.mck-group-back-link {
+	height: 45px;
+}
+
 .mck-sidebox-search .mck-box-top, .mck-search-tab-box {
 	padding-right: 0;
 }
@@ -1094,6 +1103,9 @@
 }
 .mck-box .mck-contact-list li:last-child {
 	margin-bottom: 67px;
+}
+#mck-group-admin-menu li:last-child {
+	margin-bottom: 0px;
 }
 
 .mck-contact-list li .blk-lg-3, .mck-sidebox-launcher .blk-lg-3,

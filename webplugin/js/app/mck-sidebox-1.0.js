@@ -7237,7 +7237,8 @@ var CURRENT_GROUP_DATA={};
                     $mck_group_title.addClass('mck-req-border');
                 }
             });
-            $mck_btn_group_icon_save.on('click', function () {
+            $mck_btn_group_icon_save.on('click', function (event) {
+                event.preventDefault();
                 var iconUrl = $mck_group_info_icon.data('iconurl');
                 if (iconUrl) {
                     var currTabId = $mck_msg_inner.data('mck-id');
