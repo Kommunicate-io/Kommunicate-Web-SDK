@@ -31,7 +31,7 @@ function ApplozicSidebox() {
     var mck_script_loader1 = [
     {
             "name": "applozic-min-js", 
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.4.2.min.js" // update the url with every new release of applozic-web-plugin
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.1.min.js" // update the url with every new release of applozic-web-plugin
     },
     {
             "name": "km-utils", 
