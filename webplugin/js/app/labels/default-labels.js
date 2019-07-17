@@ -111,8 +111,13 @@ Kommunicate.defaultLabels = {
         'CONVERSATION_RATED' : 'You rated the conversation',
         'RATE_CONVERSATION' : 'Rate your conversation',
         'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a comment…',
-        'OTHER_QUERIES' : 'If you have any other queries, just',
-        'RESTART_CONVERSATION' : 'restart this conversation',
+        'OTHER_QUERIES' : 'Have other queries? ',
+        'RESTART_CONVERSATION' : 'Restart this conversation',
     },
-    'page.title.on.new.message': 'New message from '
+    'page.title.on.new.message': 'New message from ',
+    'emoji.hover.text' : {
+        'poor': "Poor",
+        'great': "Great",
+        'average': "Average"
+    }
 }
