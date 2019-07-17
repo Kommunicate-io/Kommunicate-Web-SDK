@@ -7585,16 +7585,16 @@ var CURRENT_GROUP_DATA={};
                 var groupInfo = params.groupInfo;
                 var group = mckGroupUtils.getGroup(groupId);
                 if (typeof group === 'object') {
-                    if (groupInfo.imageUrl) {
+                    if (groupInfo && groupInfo.imageUrl) {
                         group.imageUrl = groupInfo.imageUrl;
                     }
-                    if (groupInfo.newName) {
+                    if (groupInfo && groupInfo.newName) {
                         group.displayName = groupInfo.newName;
                     }
-                    if (groupInfo.metadata) {
+                    if (groupInfo && groupInfo.metadata) {
 					              group.metadata = groupInfo.metadata;
 					          }
-                    if (groupInfo.users && groupInfo.users.length > 0) {
+                    if (groupInfo && groupInfo.users && groupInfo.users.length > 0) {
                         $applozic.each(groupInfo.users, function (i, user) {
                             if (user.userId) {
                                 group.users[user.userId] = user;
@@ -7602,11 +7602,11 @@ var CURRENT_GROUP_DATA={};
                         });
                     }
                     if ($mck_group_info_tab.hasClass('vis')) {
-                        if (groupInfo.imageUrl) {
+                        if (groupInfo && groupInfo.imageUrl) {
                             $mck_group_info_icon.html(mckGroupService.getGroupImage(group.imageUrl));
                         }
                         $mck_group_title.html(group.displayName);
-                        if (groupInfo.users && groupInfo.users.length > 0) {
+                        if (groupInfo && groupInfo.users && groupInfo.users.length > 0) {
                             $mck_group_member_List.html('');
                             _this.addMembersToGroupInfoList(group);
                             (group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');
