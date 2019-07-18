@@ -129,7 +129,7 @@ function ApplozicSidebox() {
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     var body = document.getElementsByTagName('body')[0];
-                    body.innerHTML += this.responseText;
+                    body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
                     body.appendChild(scriptContent);
                     mckInitPluginScript();
