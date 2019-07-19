@@ -124,19 +124,14 @@ function ApplozicSidebox() {
             for (var index in mck_style_loader) {
                 mck_style_loader[index] && mckLoadStyle(mck_style_loader[index].url);
             }
-            var url = MCK_SIDEBOX_HTML;
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var body = document.getElementsByTagName('body')[0];
-                    body.insertAdjacentHTML('beforeend', this.responseText);
-                    var scriptContent = addScriptInsideHtml();
-                    body.appendChild(scriptContent);
+            $.ajax({
+                url: MCK_SIDEBOX_HTML,
+                crossDomain: true,
+                success: function (data) {
+                    $("body").append(data);
                     mckInitPluginScript();
                 }
-            };
-            xhr.open("GET", url, true);
-            xhr.send(null);
+            });
         } catch (e) {
             console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
@@ -144,38 +139,6 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    };
-    function addScriptInsideHtml() {
-        var scriptData = function detectBrowserAndMakeUiVisible() {
-            function showAfterLoad() {
-                var mckSidebox = document.getElementById("mck-sidebox");
-                mckSidebox.style.visibility = 'visible';
-                var mckLocBox = document.getElementById("mck-loc-box");
-                mckLocBox.style.visibility = 'visible';
-                var mckGmSearchBox = document.getElementById("mck-gm-search-box");
-                mckGmSearchBox.style.visibility = 'visible';
-            };
-            if (navigator.userAgent.indexOf('MSIE') !== -1 ||
-                navigator.appVersion.indexOf('Trident/') > 0) {
-                showAfterLoad();
-            } else {
-                var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
-                if (isScriptV2) {
-                    window.parent.document.addEventListener('kmInitilized', function () {
-                        showAfterLoad();
-                    }, false);
-                } else {
-                    window.addEventListener('kmInitilized', function () {
-                        showAfterLoad();
-                    }, false);
-                }
-            };
-        };
-
-        var script = String(scriptData) + "detectBrowserAndMakeUiVisible();"
-        var tag = document.createElement('script');
-        tag.innerHTML = script;
-        return tag;
     };
     function mckLoadStyle(url) {
         var head = document.getElementsByTagName('head')[0];
@@ -436,16 +399,17 @@ function ApplozicSidebox() {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        var url = KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings?appId=" + applozic._globals.appId;
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var data = JSON.parse(this.responseText);
+        $applozic.ajax({
+            url: KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings",
+            method: 'GET',
+            data: data,
+            success: function (data) {
                 mckInitSidebox(data.response, userId);
+            },
+            error: function (error) {	
+                console.log(error);	
             }
-        };
-        xhr.open("GET", url, true);
-        xhr.send(data);
+        });
     };
     function loadErrorTracking(userId) {
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
