@@ -23,11 +23,11 @@ const configEnv = {
     }
   },
   "test": {
-    "port": "3030",
+    "port": "3032",
     "urls": {
       "applozicBaseUrl": "https://apps-test.applozic.com",
       "kommunicateBaseUrl": "https://api-test.kommunicate.io",
-      "hostUrl": "https://widget-test.kommunicate.io"
+      "hostUrl": "https://plugin-test.kommunicate.io"
     },
     "pluginProperties": {
       "pseudoNameEnabled": true
@@ -46,11 +46,11 @@ const configEnv = {
     }
   },
   "staging": {
-    "port": "3031",
+    "port": "3033",
     "urls": {
       "applozicBaseUrl": "https://apps-test.applozic.com",
       "kommunicateBaseUrl": "https://api-staging.kommunicate.io",
-      "hostUrl": "https://widget-staging.kommunicate.io"
+      "hostUrl": "https://plugin-staging.kommunicate.io"
     },
     "pluginProperties": {
       "pseudoNameEnabled": true
@@ -69,11 +69,11 @@ const configEnv = {
     }
   },
   "prod": {
-    "port": "3030",
+    "port": "3032",
     "urls": {
       "applozicBaseUrl": "https://chat.kommunicate.io",
       "kommunicateBaseUrl": "https://api.kommunicate.io",
-      "hostUrl": "https://widget.kommunicate.io"
+      "hostUrl": "https://plugin.kommunicate.io"
     },
     "pluginProperties": {
       "pseudoNameEnabled": true
@@ -96,7 +96,7 @@ const configEnv = {
     "urls": {
       "applozicBaseUrl": "https://chat-ca.kommunicate.io",
       "kommunicateBaseUrl": "https://api-ca.kommunicate.io",
-      "hostUrl": "https://widget-ca.kommunicate.io"
+      "hostUrl": "https://plugin-ca.kommunicate.io"
     },
     "pluginProperties": {
       "pseudoNameEnabled": true
