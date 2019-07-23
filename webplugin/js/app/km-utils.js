@@ -128,6 +128,10 @@ KommunicateConstants = {
         KM_CHAT_CONTEXT: "KM_CHAT_CONTEXT",
         KM_USER_LANGUAGE_CODE:"kmUserLanguageCode",
         KM_USER_TIMEZONE:"kmUserTimezone"
+    },
+    AVAILABILITY_STATUS : {
+        ONLINE: "online",
+        OFFLINE: "offline"
     }
 }
 
