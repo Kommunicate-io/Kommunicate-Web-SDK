@@ -5371,7 +5371,7 @@ var CURRENT_GROUP_DATA={};
             _this.getImageUrlForGroupType = function (contact, displayName) {
                 return contact.imageUrl? '<img src="' + contact.imageUrl + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
-      			_this.getContactImageLink = function(contact, displayName) {
+      			_this.getContactImageLink = function(contact, displayName, message) {
                         var imgsrctag = '';
                         if(!contact.isGroup){
                           if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
@@ -5379,7 +5379,11 @@ var CURRENT_GROUP_DATA={};
                           }
                         }
       				if(contact.members && contact.type==10){
-      					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
+                        if(message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
+                            imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
+                        } else {
+                            imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
+                        }
               }
               else if (contact.isGroup && contact.type !== 7) {
                   imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
@@ -8764,7 +8768,7 @@ var CURRENT_GROUP_DATA={};
                 var conversationId = (message.conversationId) ? message.conversationId : '';
                 $mck_msg_preview_visual_indicator_text.data('mck-conversationid', conversationId);
                 // $mck_msg_preview.data('mck-conversationid', conversationId);
-                var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
+                var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName, message);
                 if (message.message) {
                     var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact);
                     // $mck_preview_msg_content.html('');
