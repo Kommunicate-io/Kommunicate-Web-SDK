@@ -532,7 +532,11 @@ var CURRENT_GROUP_DATA={};
             notificationtoneoption.loop = false;
             if(MCK_NOTIFICATION_TONE_LINK){
                 ringToneService = new RingToneService();
-                mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
+                try {
+                    mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
+                } catch (e) {
+                    console.log(e, "error while loading ringTone service")
+                }  
             }
             mckMessageService.init();
             mckFileService.init();
