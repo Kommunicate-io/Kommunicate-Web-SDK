@@ -279,7 +279,7 @@ function ApplozicSidebox() {
     function mckLoadScript2() {
         try {
             for (var index in mck_script_loader2) {
-                var data = mck_script_loader1[index];
+                var data = mck_script_loader2[index];
                 if (data.name === "locationpicker") {
                     mckLoadScript(data.url, mckLoadAppScript);
                 }
