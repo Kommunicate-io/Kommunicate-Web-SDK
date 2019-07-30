@@ -42,11 +42,6 @@ Kommunicate.client={
      */
      createConversation : function(conversationDetail,callback){
         var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
-        var userLocale = kommunicate._globals.userLocale;
-        var currentLanguage = {
-            'kmUserLocale': userLocale ? userLocale.split("-")[0] : (window.navigator.language || window.navigator.userLanguage).split('-')[0]
-        };
-        chatContext = $applozic.extend(chatContext, currentLanguage);
 
         var groupMetadata = {
             CREATE_GROUP_MESSAGE: "",
