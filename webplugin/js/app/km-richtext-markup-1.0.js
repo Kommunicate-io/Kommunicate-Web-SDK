@@ -135,20 +135,20 @@ getButtonTemplate:function(options,requestType, buttonClass){
     var linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
 
     if(options.type=="link"){
-        return'<button title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
+        return'<button aria-label="' + (options.replyText || options.name) + '" title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
     }else{
-        return'<button title= "'+ (options.replyText || (options.action && options.action.message)||options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
+        return'<button aria-label="' + (options.replyText || (options.action && options.action.message)||options.name) + '" title= "'+ (options.replyText || (options.action && options.action.message)||options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
-                 <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
+                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
             {{/payload}}
             </div>`;
 },
 getGenericSuggestedReplyButton : function(){
-    return `<button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{name}}</button>`
+    return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{name}}</button>`
 },
 getPassangerDetail : function(options){
     if(!options.sessionId){
@@ -215,7 +215,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                     {{#buttons}}
-                        <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                     {{/buttons}}  
              </div>
          </div>
@@ -235,7 +235,7 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
+                 <button aria-label="{{name}}" class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>
@@ -266,7 +266,7 @@ return `<div class="mck-msg-box-rich-text-container km-card-message-container  k
         </div>`
 },
 getButtonListTemplate: function() {
-    return `{{#buttons}}<button class="km-carousel-card-button {{{class}}}">{{action.payload.title}}</button>{{/buttons}}`
+    return `{{#buttons}}<button aria-label="{{action.payload.title}}" class="km-carousel-card-button {{{class}}}">{{action.payload.title}}</button>{{/buttons}}`
 },
 getCardHeaderTemplate: function() {
     return `<img class="{{headerImageClass}}" src="{{imgSrc}}"></img>
