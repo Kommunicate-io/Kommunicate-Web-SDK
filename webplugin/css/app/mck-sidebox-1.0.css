@@ -132,6 +132,9 @@
 	-webkit-box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3);
     box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3);
 }
+.mck-sidebox-launcher:focus {
+	box-shadow: #5553B7 0px 0px 0px 5px;
+}
 .mck-powered-by{
 	text-decoration: none;
 	color: #aeaaaa !important;
@@ -6095,7 +6098,3 @@ div#mck-rated:before{
 	  opacity: 0;
 	}
   }
-
-*:focus {
-	outline: none;
-}

@@ -72,6 +72,7 @@ function createKommunicateIframe() {
   kommunicateIframe.setAttribute("style", "overflow:hidden;"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("id", "kommunicate-widget-iframe");
+  kommunicateIframe.setAttribute("title", "Kommunicate live chat");
   kommunicateIframe.setAttribute("class", "kommunicate-custom-iframe");
   kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
   kommunicateIframe.setAttribute('data-url', window.location.href);
