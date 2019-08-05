@@ -1651,7 +1651,9 @@ var CURRENT_GROUP_DATA={};
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
                 var showPoweredBy = kommunicateCommons.showPoweredBy(data);
                 if (showPoweredBy) {
-                    var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
+                    var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    var utmSourceUrl = kommunicateIframe ? (kommunicateIframe.getAttribute('data-url') || parent.window.location.href) : w.location.href;
+                    var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
                  }
