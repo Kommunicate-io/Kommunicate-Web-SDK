@@ -132,6 +132,9 @@
 	-webkit-box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3);
     box-shadow: 0 1.5rem 2rem rgba(0,0,0,.3);
 }
+.mck-sidebox-launcher:focus {
+	box-shadow: #5553B7 0px 0px 0px 5px;
+}
 .mck-powered-by{
 	text-decoration: none;
 	color: #aeaaaa !important;
@@ -1368,6 +1371,9 @@
 	left: 0;
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
+}
+.mck-box-body .mck-message-inner:focus {
+	outline: none;
 }
 #mck-contacts-content{
 	position: absolute;
@@ -5011,6 +5017,16 @@ textarea::placeholder {
 	letter-spacing: 0.7px;
 	color: #ffffff;
 }
+#mck-conversation-back-btn {
+	-webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+	height: 50px;
+	width: 45px;
+    outline: none;
+}
 #mck-conversation-back-btn, .mck-close-sidebox {
 	border-radius: 6px;
 	transition: background-color .2s ease-in-out;
@@ -6007,6 +6023,7 @@ div#mck-rated:before{
 	align-items: center;
 	justify-content: center;
 	float: right;
+	cursor: pointer;
   }
   .mck-mic-animation-container svg {
 	width: 25px;
@@ -6081,4 +6098,3 @@ div#mck-rated:before{
 	  opacity: 0;
 	}
   }
-

@@ -54,7 +54,7 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
                 $applozic(".km-kb-container").removeClass('n-vis').addClass('vis');
             }
             $applozic.each(response.data, function (i, faq) {
-                $applozic("#km-faq-list-container").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"><div class="km-faqimage">' + faqSVGImage + '</div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
+                $applozic("#km-faq-list-container").append('<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"><div class="km-faqimage">' + faqSVGImage + '</div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
             });
             KommunicateUI.faqEvents(data, helpdocsKey);
         }, error: function () { }
