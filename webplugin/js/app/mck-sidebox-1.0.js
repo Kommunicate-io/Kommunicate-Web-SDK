@@ -4016,6 +4016,7 @@ var CURRENT_GROUP_DATA={};
             };
             _this.updateConversationHeader = function (params) {
                 var imageUrl;
+                var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
                 if (params.imageUrl) {
@@ -4029,7 +4030,10 @@ var CURRENT_GROUP_DATA={};
                     $applozic(".mck-agent-image-container .mck-agent-image-svg-container").removeClass("n-vis");
                     $applozic(".mck-agent-image-container img").addClass("n-vis");
                 }
-                $applozic(".mck-agent-image-container img").attr("src", imageUrl);
+                $applozic(".mck-agent-image-container img").attr({
+                    "src": imageUrl,
+                    "alt": profileImage
+                });
                 KommunicateUI.setAvailabilityStatus(params.availibilityStatus);
             };
             _this.updateAssigneeDetails = function (data) {
@@ -5369,10 +5373,12 @@ var CURRENT_GROUP_DATA={};
             };
 
             _this.getImageUrlForGroupType = function (contact, displayName) {
-                return contact.imageUrl? '<img src="' + contact.imageUrl + '"/>' :  _this.getContactImageByAlphabet(displayName);
+                var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
+                return contact.imageUrl? '<img src="' + contact.imageUrl + '" alt="' + profileDisplayName + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
       			_this.getContactImageLink = function(contact, displayName, message) {
                         var imgsrctag = '';
+                        var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
                         if(!contact.isGroup){
                           if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
                             contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
@@ -5380,7 +5386,7 @@ var CURRENT_GROUP_DATA={};
                         }
       				if(contact.members && contact.type==10){
                         if(message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
-                            imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
+                            imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '" alt="' + profileDisplayName + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
                         } else {
                             imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
                         }
@@ -5402,13 +5408,13 @@ var CURRENT_GROUP_DATA={};
                   }
                   if (!imgsrctag) {
                       if (contact.photoSrc) {
-                          imgsrctag = '<img src="' + contact.photoSrc + '"/>';
+                          imgsrctag = '<img src="' + contact.photoSrc + '" alt="' + profileDisplayName + '"/>';
                       } else if (contact.photoData) {
-                          imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '"/>';
+                          imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '" alt="' + profileDisplayName + '"/>';
                       } else if (contact.photoLink) {
-                          imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
+                          imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
                       } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                          imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.svg' + '"/>';
+                          imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.svg' + '" alt="' + profileDisplayName + '"/>';
                       } else {
                           if (!displayName) {
                               displayName = contact.displayName;
