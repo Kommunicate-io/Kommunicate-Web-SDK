@@ -1369,7 +1369,7 @@ var CURRENT_GROUP_DATA={};
             _this.getLauncherHtml = function (isAnonymousChat) {
 
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
-                var CHAT_CLOSE_BUTTON = `<div id="km-popup-close-button" class="km-custom-widget-background-color">
+                var CHAT_CLOSE_BUTTON = `<div id="km-popup-close-button" aria-label="Close" role="button" class="km-custom-widget-background-color">
                     <svg width="64" xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 64 64">
                         <path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z" stroke-width="6" stroke="#fff"/>
                     </svg>
@@ -4428,11 +4428,11 @@ var CURRENT_GROUP_DATA={};
                                     '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>'+
                                     '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>'+
                                 '</div>'+
-                                '<div class="mck-msg-text mck-msg-content notranslate"></div>'+
+                                '<div class="mck-msg-text mck-msg-content notranslate" tabindex="-1"></div>'+
                                 '</div>'+ 
                                 '<div class="km-msg-box-attachment ${attachmentBoxExpr} ">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter ${progressMeterClassExpr} ">{{html progressMeter}}</div></div>'+
                                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">'+'<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>'+
-                                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><span class="mck-created-at-time notranslate">${createdAtTimeExpr}</span> <span class="mck-message-status notranslate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate"><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed</p></span></div>'+
+                                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><span class="mck-created-at-time notranslate">${createdAtTimeExpr}</span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true" ><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed</p></span></div>'+
                             '</div>'+
                         '</div>'+
                 '</div>'+
@@ -4918,6 +4918,7 @@ var CURRENT_GROUP_DATA={};
                 var nameTextExpr = '';
                 var showNameExpr = 'n-vis';
                 var msgAvatorClassExpr = '';
+                var messageStatusAriaTag = ''
 
                 alUserService.loadUserProfile(msg.to);
 
@@ -4933,8 +4934,10 @@ var CURRENT_GROUP_DATA={};
                     if (floatWhere === "mck-msg-right") {
                         fromContact = mckMessageLayout.fetchContact(MCK_USER_ID);
                         fromDisplayName = _this.getTabDisplayName(fromContact.displayName, false);
+                        messageStatusAriaTag = 'false';
                     } else if (floatWhere === "mck-msg-left") {
                         fromContact = (msg.groupId) ? mckMessageLayout.fetchContact(msg.to) : contact;
+                        messageStatusAriaTag = 'true';
                     }
                     if (fromContact) {
                         imgsrctag = _this.getContactImageLink(fromContact, fromDisplayName);
@@ -5003,6 +5006,7 @@ var CURRENT_GROUP_DATA={};
                     msgImgExpr: imgsrctag,
                     nameTextExpr: nameTextExpr,
                     msgFloatExpr: floatWhere,
+                    msgStatusAriaTag: messageStatusAriaTag,
                     timeStampExpr:timeStamp,
                     replyIdExpr: replyId,
                     createdAtTimeExpr: mckDateUtils.getDate(msg.createdAtTime),
