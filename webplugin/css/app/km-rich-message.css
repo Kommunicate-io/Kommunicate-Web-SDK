@@ -1215,11 +1215,11 @@
     color: #929090;
     font-size: 12px;
 }
-.mck-form-template-wrapper input::-ms-input-placeholder {
+.mck-form-template-wrapper input:-ms-input-placeholder {
     color: #929090;
     font-size: 12px;
 }
-.mck-form-template-wrapper input::-moz-placeholder {
+.mck-form-template-wrapper input:-moz-placeholder {
     color: #929090;
     font-size: 12px;
 }
