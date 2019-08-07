@@ -394,7 +394,7 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
-                    return Kommunicate.markup.getNewFormMarkup(metadata);
+                    return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
                 default:
                     return "";
