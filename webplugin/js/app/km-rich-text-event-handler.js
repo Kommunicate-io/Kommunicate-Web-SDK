@@ -281,7 +281,7 @@ Kommunicate.richMsgEventHandler = {
         var buttonType = target.dataset.buttontype || target.type;
         var data = {};
         var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
-        var isActionableForm = (form.id == "mck-actionable-form");
+        var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
         var replyText = !isActionableForm ? (target.title || target.innerHTML) : target.title;
        if(buttonType !="submit"){   
         return ;

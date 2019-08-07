@@ -283,7 +283,7 @@ getCardInfoTemplate: function() {
 getFormTemplate: function() {
     return `<div class="mck-msg-box-rich-text-container mck-form-template-container">
                 <div class="mck-form-template-wrapper">
-                    <form id="mck-actionable-form" class="km-btn-hidden-form" action="{{actionUrl}}" method="post" target="_blank">
+                    <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" target="_blank">
                         {{#payload}}
                             <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
                             <input id="{{label}}" type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
