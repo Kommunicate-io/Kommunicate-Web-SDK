@@ -307,7 +307,7 @@ Kommunicate.richMsgEventHandler = {
             form.submit();
         }
         var messagePxy = {};
-        replyText && (messagePxy.message = replyText);
+        replyText && (messagePxy.message = replyText); //message to send
         (isActionableForm && !KommunicateUtils.isURL(form.action)) && (messagePxy.metadata = {"KM_CHAT_CONTEXT":{"formData":data}});
         (replyText || !KommunicateUtils.isURL(form.action)) && Kommunicate.sendMessage(messagePxy);
     },
