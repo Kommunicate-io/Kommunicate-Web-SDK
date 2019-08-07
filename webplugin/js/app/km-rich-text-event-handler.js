@@ -278,10 +278,11 @@ Kommunicate.richMsgEventHandler = {
 
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
-        var replyText = target.title || target.innerHTML;
-        var buttonType = target.dataset.buttontype;
+        var buttonType = target.dataset.buttontype || target.type;
         var data = {};
-        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
+        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
+        var isActionableForm = (form.id == "mck-actionable-form");
+        var replyText = !isActionableForm ? (target.title || target.innerHTML) : target.title;
        if(buttonType !="submit"){   
         return ;
        }
@@ -290,7 +291,7 @@ Kommunicate.richMsgEventHandler = {
            for(var i = 0; i<inputs.length;i++){
             data[inputs[i].name] = inputs[i].value; 
            }  
-           window.Applozic.ALApiService.ajax({
+           KommunicateUtils.isURL(form.action) && window.Applozic.ALApiService.ajax({
             url: form.action,
             async: false,
             type: "post",
@@ -305,14 +306,10 @@ Kommunicate.richMsgEventHandler = {
         } else {
             form.submit();
         }
-        if(replyText){
-            var messagePxy = {
-                'message': replyText, //message to send 
-            };
-    
-            Kommunicate.sendMessage(messagePxy);
-        }
-
+        var messagePxy = {};
+        replyText && (messagePxy.message = replyText);
+        (isActionableForm && !KommunicateUtils.isURL(form.action)) && (messagePxy.metadata = {"KM_CHAT_CONTEXT":{"formData":data}});
+        (replyText || !KommunicateUtils.isURL(form.action)) && Kommunicate.sendMessage(messagePxy);
     },
    
     handlleSubmitPersonDetail: function (e) {
