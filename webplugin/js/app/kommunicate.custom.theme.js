@@ -11,7 +11,7 @@ function KmCustomTheme() {
     };
 
     _this.KmCustomImageIcon = function (widgetImageLink) {
-        return '<img src=' + widgetImageLink + '></img>'
+        return '<img src=' + widgetImageLink + ' alt="Live chat"></img>'
     };
 
     _this.createCustomClasses = function (classSettings) {

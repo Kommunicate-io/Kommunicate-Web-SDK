@@ -934,6 +934,11 @@
         color:#646262;
     }
 
+.km-faq-answer--body .km-faq-answer--body_container img {
+    width: 100%;
+    height: auto;
+}
+
 #mck-email-collection-box .svg-container, #mck-email-error-alert-box .svg-container {
     width: 45px;
     height: 45px;
