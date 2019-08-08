@@ -96,7 +96,8 @@ KommunicateConstants = {
         DIALOG_BOX:"8",
         IMAGE:"9",
         CARD_CAROUSEL:"10",
-        GENERIC_BUTTONS:"11" // supports link button/submit buttons and suggested replies 
+        GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
+        FORM:"12"
     },
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
@@ -132,7 +133,8 @@ KommunicateConstants = {
     AVAILABILITY_STATUS : {
         ONLINE: "online",
         OFFLINE: "offline"
-    }
+    },
+    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform"
 }
 
 /**
@@ -348,5 +350,14 @@ KommunicateUtils = {
         } catch (e) {
             return false
         }
+    },
+    isURL(str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        return pattern.test(str);
     }
 }
