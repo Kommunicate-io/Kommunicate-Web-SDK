@@ -286,12 +286,12 @@ getFormTemplate: function() {
                     <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" target="_blank">
                         {{#payload}}
                             <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
-                            <input id="{{label}}" type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
+                            <input type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
                         {{/payload}}
                     </form>  
                 </div>
                 {{#buttons}}
-                    <button id="{{label}}" type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
+                    <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
                 {{/buttons}}      
             </div>`
 }
