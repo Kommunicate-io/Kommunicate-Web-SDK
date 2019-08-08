@@ -133,7 +133,8 @@ KommunicateConstants = {
     AVAILABILITY_STATUS : {
         ONLINE: "online",
         OFFLINE: "offline"
-    }
+    },
+    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform"
 }
 
 /**
