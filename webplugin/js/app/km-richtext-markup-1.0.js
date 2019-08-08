@@ -477,7 +477,7 @@ Kommunicate.markup.getHtmlMessageMarkups = function (message) {
 Kommunicate.markup.getActionableFormMarkup = function(options) {
     var action = {};
     if (options && options.payload) {
-        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = payload;
         options.buttons = [];
         options.payload.forEach(function (item,index) {
