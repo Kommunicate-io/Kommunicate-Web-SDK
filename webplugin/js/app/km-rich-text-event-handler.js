@@ -278,19 +278,20 @@ Kommunicate.richMsgEventHandler = {
 
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
-        var replyText = target.title || target.innerHTML;
-        var buttonType = target.dataset.buttontype;
+        var buttonType = target.dataset.buttontype || target.type;
         var data = {};
-        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
+        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
+        var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
+        var replyText = target.title || target.innerHTML;
        if(buttonType !="submit"){   
         return ;
        }
-        if (requestType == "json") {
-           var  inputs = form.getElementsByTagName('input');
-           for(var i = 0; i<inputs.length;i++){
+        var  inputs = form.getElementsByTagName('input');
+        for(var i = 0; i<inputs.length;i++){
             data[inputs[i].name] = inputs[i].value; 
-           }  
-           window.Applozic.ALApiService.ajax({
+        }
+        if (requestType == "json") {  
+           KommunicateUtils.isURL(form.action) && window.Applozic.ALApiService.ajax({
             url: form.action,
             async: false,
             type: "post",
@@ -305,14 +306,13 @@ Kommunicate.richMsgEventHandler = {
         } else {
             form.submit();
         }
-        if(replyText){
-            var messagePxy = {
-                'message': replyText, //message to send 
-            };
-    
-            Kommunicate.sendMessage(messagePxy);
-        }
-
+        var messagePxy = {};
+        var msgMetadata ={};
+        replyText && (messagePxy.message = replyText); //message to send
+        
+        (isActionableForm && requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM) && (msgMetadata["KM_CHAT_CONTEXT"]= {"formData":data});
+        Object.keys(msgMetadata).length > 0 && (messagePxy["metadata"] = msgMetadata);
+        (Object.keys(msgMetadata).length > 0 || Object.keys(messagePxy).length > 0 ) && Kommunicate.sendMessage(messagePxy);
     },
    
     handlleSubmitPersonDetail: function (e) {

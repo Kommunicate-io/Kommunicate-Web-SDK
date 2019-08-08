@@ -1188,3 +1188,62 @@
 .km-cta-multi-button-container .km-quick-replies.km-carousel-card-button {
     border-color: #e7e4e4
 }
+.mck-form-template-wrapper input {
+    width: 93%;
+    padding: 9px;
+    margin-bottom: 2px;
+    display: inline-block;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 10px;
+    margin-bottom: 12px;
+}
+.mck-form-template-wrapper label {
+    margin-bottom: 2px;
+    margin-left: 2px;
+}
+.mck-form-template-wrapper input::placeholder {
+    color: #929090;
+    font-size: 12px;
+}
+.mck-form-template-wrapper input::-webkit-input-placeholder {
+    color: #929090;
+    font-size: 12px;
+}
+.mck-form-template-wrapper input::-moz-placeholder {
+    color: #929090;
+    font-size: 12px;
+}
+.mck-form-template-wrapper input:-ms-input-placeholder {
+    color: #929090;
+    font-size: 12px;
+}
+.mck-form-template-wrapper input:-moz-placeholder {
+    color: #929090;
+    font-size: 12px;
+}
+.mck-form-template-wrapper input:focus{
+  border-color:  #000000;
+  outline: none;
+}
+.mck-form-template-wrapper {
+    background-color: #e5e5ed;
+    border-radius: 3px;
+    padding: 16px;
+    margin-top: 5px;
+}
+.mck-form-template-wrapper form {
+    margin: 0px;
+}
+.mck-form-label {
+  font-size: 12px;
+  letter-spacing: 0.36px;
+  color: #333333;
+}
+.mck-form-template-container button {
+    width: 23%;
+    border-radius: 19px;
+    padding: 5px;
+    margin-top: 12px;
+}

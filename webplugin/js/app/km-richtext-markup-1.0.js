@@ -279,6 +279,21 @@ getCardInfoTemplate: function() {
             </div>
             <div class="km-carousel-card-sub-title">{{subtitle}}</div>
             <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`
+},
+getFormTemplate: function() {
+    return `<div class="mck-msg-box-rich-text-container mck-form-template-container">
+                <div class="mck-form-template-wrapper">
+                    <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" target="_blank">
+                        {{#payload}}
+                            <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                            <input type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
+                        {{/payload}}
+                    </form>  
+                </div>
+                {{#buttons}}
+                    <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
+                {{/buttons}}      
+            </div>`
 }
 
 };
@@ -458,6 +473,24 @@ Kommunicate.markup.getHtmlMessageMarkups = function (message) {
         return "<iframe class='km-mail-fixed-view' id=" + uniqueId + " ></iframe>";
     }
     return ""; 
+}
+Kommunicate.markup.getActionableFormMarkup = function(options) {
+    var action = {};
+    if (options && options.payload) {
+        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        options.buttons = [];
+        options.payload.forEach(function (item,index) {
+            if(item.type == "submit") {
+                options.actionUrl = item.formAction;
+                options.requestType = item.requestType;
+                options.payload[index].className = "km-cta-button";
+                options.buttons.push(item);
+                options.payload.splice(index,1);
+            }
+        });
+        return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
+    }
 }
 Kommunicate.markup.getCarouselMarkup = function(options) {
     var cardList =[]; 
