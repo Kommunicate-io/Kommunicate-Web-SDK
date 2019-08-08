@@ -278,20 +278,19 @@ Kommunicate.richMsgEventHandler = {
 
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
-        var buttonType = target.dataset.buttontype || target.type;
-        var data = {};
-        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
-        var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
         var replyText = target.title || target.innerHTML;
+        var buttonType = target.dataset.buttontype;
+        var data = {};
+        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
        if(buttonType !="submit"){   
         return ;
        }
-        var  inputs = form.getElementsByTagName('input');
-        for(var i = 0; i<inputs.length;i++){
+        if (requestType == "json") {
+           var  inputs = form.getElementsByTagName('input');
+           for(var i = 0; i<inputs.length;i++){
             data[inputs[i].name] = inputs[i].value; 
-        }
-        if (requestType == "json") {  
-           KommunicateUtils.isURL(form.action) && window.Applozic.ALApiService.ajax({
+           }  
+           window.Applozic.ALApiService.ajax({
             url: form.action,
             async: false,
             type: "post",
@@ -306,13 +305,14 @@ Kommunicate.richMsgEventHandler = {
         } else {
             form.submit();
         }
-        var messagePxy = {};
-        var msgMetadata ={};
-        replyText && (messagePxy.message = replyText); //message to send
-        
-        (isActionableForm && requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM) && (msgMetadata["KM_CHAT_CONTEXT"]= {"formData":data});
-        Object.keys(msgMetadata).length > 0 && (messagePxy["metadata"] = msgMetadata);
-        (Object.keys(msgMetadata).length > 0 || Object.keys(messagePxy).length > 0 ) && Kommunicate.sendMessage(messagePxy);
+        if(replyText){
+            var messagePxy = {
+                'message': replyText, //message to send 
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
+        }
+
     },
    
     handlleSubmitPersonDetail: function (e) {
