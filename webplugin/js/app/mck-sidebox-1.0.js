@@ -3393,7 +3393,7 @@ var CURRENT_GROUP_DATA={};
                 var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
                 chatContext = typeof chatContext == 'object'?chatContext : {};
                 MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
-                return $applozic.extend(MCK_DEFAULT_MESSAGE_METADATA,chatContext,existingContextFromMetadata);
+                return $applozic.extend({},chatContext,MCK_DEFAULT_MESSAGE_METADATA,existingContextFromMetadata);
             } 
 
             _this.submitMessage = function (messagePxy, optns) {
