@@ -579,7 +579,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
 
         } else if (singlePayload.action && singlePayload.action.type == "quickReply") {
             singlePayload.buttonClass = "km-quick-rpy-btn " + buttonClass;
-            singlePayload.message = singlePayload.message || singlePayload.name;
+            singlePayload.message = singlePayload.action.message || singlePayload.name;
             buttonContainerHtml += Mustache.to_html(Kommunicate.markup.getGenericSuggestedReplyButton(), singlePayload);
         } else if (singlePayload.action && singlePayload.action.type == "submit") {
 
