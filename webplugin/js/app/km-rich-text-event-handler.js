@@ -9,7 +9,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-btn-add-more-rooms',Kommunicate.richMsgEventHandler.addMoreRoom);//
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
-    $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
+    $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handleRichButtonClick);
     $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
     $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
     $applozic("#mck-message-cell").on('click', '.km-quick-replies', Kommunicate.richMsgEventHandler.processQuickReplies);
@@ -273,19 +273,19 @@ Kommunicate.richMsgEventHandler = {
     },
 
 
-    handlleRichButtonClick: function (e) {
+    handleRichButtonClick: function (e) {
         //console.log("event generated: ", e);
 
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
         var buttonType = target.dataset.buttontype || target.type;
-        var data = {};
         var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
+        if(buttonType !="submit"){   
+            return ;
+        }
+        var data = {};
         var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
         var replyText = target.title || target.innerHTML;
-       if(buttonType !="submit"){   
-        return ;
-       }
         var  inputs = form.getElementsByTagName('input');
         for(var i = 0; i<inputs.length;i++){
             data[inputs[i].name] = inputs[i].value; 
