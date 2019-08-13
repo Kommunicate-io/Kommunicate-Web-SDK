@@ -2502,7 +2502,6 @@ var CHAR_CHECK;
             }
                 });
                 $mck_text_box.keydown(function (e) {
-                    //console.log(e.keyCode)
                     if ($mck_text_box.hasClass('mck-text-req')) {
                         $mck_text_box.removeClass('mck-text-req');
                     }
