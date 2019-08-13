@@ -280,7 +280,7 @@ Kommunicate.richMsgEventHandler = {
         var requestType = target.dataset.requesttype;
         var buttonType = target.dataset.buttontype || target.type;
         var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
-        if(typeof form === "undefined"){   
+        if(buttonType !="submit"){   
             return ;
         }
         var data = {};
