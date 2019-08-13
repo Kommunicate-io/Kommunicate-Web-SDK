@@ -491,7 +491,142 @@
 .mck-box-footer .mck-btn {
 	font-size: 12px;
 }
+.mck-char-warning{
+	width: auto;
+	height: 62px;
+	margin-bottom: -70px;
+	padding-top:15px;
+	border-radius: 4px;
+	opacity:0;  
+  	background-color: #5451e2;
+}
+.warning-slide-up{
+	animation: animslideup;
+	-webkit-animation: animslideup;
+	-moz-animation: animslideup;
+	-o-animation: animslideup;
+	animation-duration: 0.5s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+.warning-slide-down{
+	animation: animslidedown;
+	-webkit-animation: animslidedown;
+	-moz-animation: animslidedown;
+	-o-animation: animslidedown;
+	animation-duration: 0.5s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+@keyframes animslideup{
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@keyframes animslidedown{
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-webkit-keyframes animslideup{
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-webkit-keyframes animslidedown{
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-moz-keyframes animslideup{
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-moz-keyframes animslidedown{
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-o-keyframes animslideup{
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-o-keyframes animslidedown{
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
 
+.mck-char-warning-text{
+		width: auto;
+		height: 34px;
+		font-family: Roboto;
+		font-size: 14px;
+		padding-left:5%;	
+		text-align:left;
+		font-weight: normal;
+		font-style: normal;
+		font-stretch: normal;
+		line-height: 1.31;
+		letter-spacing: 0.2px;
+		color: #ffffff;
+}
+
+.mck-char-count{
+  width: 87px;
+  height: 17px;
+  opacity: 0.73;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.42;
+  letter-spacing: 0.28px;
+  color: #ffffff;
+}
 .footer-controls {
     float:right!important;
     margin-right: 90px;

@@ -9,6 +9,7 @@ var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA={};
+var CHAR_CHECK;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -19,6 +20,7 @@ var CURRENT_GROUP_DATA={};
     var default_options = {
         baseUrl: KM_PLUGIN_SETTINGS.applozicBaseUrl ||'https://chat.kommunicate.io',
         fileBaseUrl: 'https://applozic.appspot.com',
+        botPlatformAPI: 'https://bots-test.applozic.com',
         customFileUrl:'https://googleupload.applozic.com', // google cloud file upload url
         genereateCloudFileUrl: "https://googleupload.applozic.com/files/url?key={key}", // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
@@ -311,6 +313,7 @@ var CURRENT_GROUP_DATA={};
         var MCK_BLOCKED_BY_MAP = [];
         var MCK_IDLE_TIME_LIMIT = 90;
         var MCK_USER_DETAIL_MAP = [];
+        var MCK_BOT_API = appOptions.botPlatformAPI;
         var MCK_TOPIC_DETAIL_MAP = [];
         var MCK_LAST_SEEN_AT_MAP = [];
         var MCK_CONVERSATION_MAP = [];
@@ -2184,6 +2187,7 @@ var CURRENT_GROUP_DATA={};
             var $mck_btn_attach = $applozic("#mck-btn-attach");
             var $mck_tab_status = $applozic("#mck-tab-status");
             var $mck_msg_cell = $applozic("#mck-message-cell");
+            var $mck_char_count = $applozic(".mck-char-count");
             var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_gms_loading = $applozic("#mck-gms-loading");
             var $mck_group_title = $applozic("#mck-group-title");
@@ -2217,6 +2221,7 @@ var CURRENT_GROUP_DATA={};
             var $mck_no_conversations = $applozic('#mck-no-conversations');
             var $mck_group_create_title = $applozic("#mck-group-create-title");
             var $mck_group_menu_options = $applozic(".mck-group-menu-options");
+            var $mck_char_warning = $applozic(".mck-char-warning");
             var $mck_tab_message_option = $applozic(".mck-tab-message-option");
             var $mck_group_admin_options = $applozic(".mck-group-admin-options");
             var $mck_group_member_search = $applozic("#mck-group-member-search");
@@ -2461,7 +2466,42 @@ var CURRENT_GROUP_DATA={};
                     _this.toggleMediaOptions(this);
 
                 });
+                $mck_text_box.keyup(function (){
+                    if(CHAR_CHECK){
+                        if($mck_text_box.text().length > 199){
+                            if($mck_text_box.text().length > 256){
+                                let rem = $mck_text_box.text().length - 256; 
+                                var remtxt ="(Remove " + rem + " characters)" ;  
+
+                            }else{
+                                var rem = 256 - $mck_text_box.text().length;
+                                var remtxt = "(" + rem + " characters remaining)";
+                            }
+                            $mck_char_count.text(remtxt);
+                            if($mck_char_warning.hasClass("n-vis")){
+                                $mck_char_warning.removeClass("n-vis");
+                                if(!($mck_char_warning.hasClass('warning-slide-up'))){
+                                    $mck_char_warning.addClass('warning-slide-up');
+                                    $mck_char_warning.removeClass('warning-slide-down');
+                                }
+                            }
+                        }else{
+                          if(!($mck_char_warning.hasClass("n-vis"))){
+                            if(!($mck_char_warning.hasClass('warning-slide-down'))){
+                                $mck_char_warning.addClass('warning-slide-down');
+                                $mck_char_warning.removeClass('warning-slide-up');
+                                setTimeout(function(){
+                                    $mck_char_warning.addClass("n-vis");
+                                },700); 
+                            }
+                               
+                              
+                        }
+                }
+            }
+                });
                 $mck_text_box.keydown(function (e) {
+                    //console.log(e.keyCode)
                     if ($mck_text_box.hasClass('mck-text-req')) {
                         $mck_text_box.removeClass('mck-text-req');
                     }
@@ -4019,6 +4059,8 @@ var CURRENT_GROUP_DATA={};
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
+                        mckGroupLayout.getBotDetails();
+
                     },
                     error: function (xhr, desc, err) {
                         if (xhr.status === 401) {
@@ -4660,7 +4702,7 @@ var CURRENT_GROUP_DATA={};
                     }
                 }
 
-                mckMessageService.loadMessageList(params, callback);
+                mckMessageService.loadMessageList(params, callback);  
                 // _this.openConversation();
             };
             _this.setProductProperties = function (topicDetail, topicId) {
@@ -7313,7 +7355,44 @@ var CURRENT_GROUP_DATA={};
                 };
                 return conversationDetail;
             };
-
+            _this.getBotDetails = function () {
+                window.Applozic.ALApiService.ajax({
+                    url: MCK_BOT_API + "/bot/" + MCK_APP_ID,
+                    type: 'get',
+                    global: false,
+                    success: function (data) {
+                    var flag = false;
+                    console.log(data);
+                    for (var key in data)
+                    {
+                        if (data.hasOwnProperty(key)) {
+                            if(data[key].name == CURRENT_GROUP_DATA.conversationAssignee){
+                                //console.log(data[key].name);
+                                if(data[key].aiPlatform == 'dialogflow')
+                                {
+                                    if(!data[key].autoHumanHandoff){
+                                        CHAR_CHECK = true;
+                                        document.getElementsByClassName('mck-char-warning')[0].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+                                        break;
+                                    }else{
+                                        CHAR_CHECK = false;
+                                    }
+                                }else{
+                                    CHAR_CHECK = false;
+                                }
+                            }else{
+                                CHAR_CHECK = false;
+                            }
+                        }
+                    }
+                    },
+                    error: function () {
+                            w.console.log('Unable to load bot info. Please reload page.');
+                            CHAR_CHECK = false;
+                    }
+            });
+            //console.log(MCK_BOT_API);
+            }
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();
