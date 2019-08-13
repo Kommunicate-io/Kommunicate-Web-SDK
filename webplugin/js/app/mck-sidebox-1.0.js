@@ -2187,7 +2187,6 @@ var CHAR_CHECK;
             var $mck_btn_attach = $applozic("#mck-btn-attach");
             var $mck_tab_status = $applozic("#mck-tab-status");
             var $mck_msg_cell = $applozic("#mck-message-cell");
-            var $mck_char_count = $applozic(".mck-char-count");
             var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_gms_loading = $applozic("#mck-gms-loading");
             var $mck_group_title = $applozic("#mck-group-title");
@@ -2221,7 +2220,6 @@ var CHAR_CHECK;
             var $mck_no_conversations = $applozic('#mck-no-conversations');
             var $mck_group_create_title = $applozic("#mck-group-create-title");
             var $mck_group_menu_options = $applozic(".mck-group-menu-options");
-            var $mck_char_warning = $applozic(".mck-char-warning");
             var $mck_tab_message_option = $applozic(".mck-tab-message-option");
             var $mck_group_admin_options = $applozic(".mck-group-admin-options");
             var $mck_group_member_search = $applozic("#mck-group-member-search");
@@ -2468,30 +2466,33 @@ var CHAR_CHECK;
                 });
                 $mck_text_box.keyup(function (){
                     if(CHAR_CHECK){
-                        if($mck_text_box.text().length > 199){
-                            if($mck_text_box.text().length > 256){
-                                let rem = $mck_text_box.text().length - 256; 
-                                var remtxt ="(Remove " + rem + " characters)" ;  
-
+                        var warning_box = document.getElementsByClassName('mck-char-warning')[0];
+                        var char_count = document.getElementsByClassName('mck-char-count')[0];
+                        var str = ($mck_text_box.text().toString()).trim();
+                        var len = str.length;
+                        if(len > 199){
+                            if(len > 256){
+                                var rem = len - 256; 
+                                var remtxt ="(Remove " + rem + " characters)";
                             }else{
-                                var rem = 256 - $mck_text_box.text().length;
+                                var rem = 256 - len;
                                 var remtxt = "(" + rem + " characters remaining)";
                             }
-                            $mck_char_count.text(remtxt);
-                            if($mck_char_warning.hasClass("n-vis")){
-                                $mck_char_warning.removeClass("n-vis");
-                                if(!($mck_char_warning.hasClass('warning-slide-up'))){
-                                    $mck_char_warning.addClass('warning-slide-up');
-                                    $mck_char_warning.removeClass('warning-slide-down');
+                            char_count.innerHTML = remtxt;
+                            if(warning_box.classList.contains("n-vis")){
+                                warning_box.classList.remove("n-vis");
+                                if(!(warning_box.classList.contains('warning-slide-up'))){
+                                    warning_box.classList.add('warning-slide-up');
+                                    warning_box.classList.remove('warning-slide-down');
                                 }
                             }
                         }else{
-                          if(!($mck_char_warning.hasClass("n-vis"))){
-                            if(!($mck_char_warning.hasClass('warning-slide-down'))){
-                                $mck_char_warning.addClass('warning-slide-down');
-                                $mck_char_warning.removeClass('warning-slide-up');
+                          if(!(warning_box.classList.contains("n-vis"))){
+                            if(!(warning_box.classList.contains('warning-slide-down'))){
+                                warning_box.classList.add('warning-slide-down');
+                                warning_box.classList.remove('warning-slide-up');
                                 setTimeout(function(){
-                                    $mck_char_warning.addClass("n-vis");
+                                    warning_box.classList.add("n-vis");
                                 },700); 
                             }
                                

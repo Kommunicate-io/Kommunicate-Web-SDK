@@ -505,7 +505,7 @@
 	-webkit-animation: animslideup;
 	-moz-animation: animslideup;
 	-o-animation: animslideup;
-	animation-duration: 0.5s;
+	animation-duration: 0.7s;
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards; 
 }
@@ -514,7 +514,7 @@
 	-webkit-animation: animslidedown;
 	-moz-animation: animslidedown;
 	-o-animation: animslidedown;
-	animation-duration: 0.5s;
+	animation-duration: 0.7s;
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards; 
 }
@@ -600,32 +600,32 @@
 }
 
 .mck-char-warning-text{
-		width: auto;
-		height: 34px;
-		font-family: Roboto;
-		font-size: 14px;
-		padding-left:5%;	
-		text-align:left;
-		font-weight: normal;
-		font-style: normal;
-		font-stretch: normal;
-		line-height: 1.31;
-		letter-spacing: 0.2px;
-		color: #ffffff;
+	width: auto;
+	height: 34px;
+	font-family: Roboto;
+	font-size: 14px;
+	padding-left:5%;	
+	text-align:left;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.31;
+	letter-spacing: 0.2px;
+	color: #ffffff;
 }
 
 .mck-char-count{
-  width: 87px;
-  height: 17px;
-  opacity: 0.73;
-  font-family: Roboto;
-  font-size: 12px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.42;
-  letter-spacing: 0.28px;
-  color: #ffffff;
+	width: 87px;
+  	height: 17px;
+  	opacity: 0.73;
+  	font-family: Roboto;
+  	font-size: 12px;
+  	font-weight: normal;
+  	font-style: normal;
+  	font-stretch: normal;
+  	line-height: 1.42;
+  	letter-spacing: 0.28px;
+  	color: #ffffff;
 }
 .footer-controls {
     float:right!important;
