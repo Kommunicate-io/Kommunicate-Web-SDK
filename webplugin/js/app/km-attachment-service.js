@@ -1,12 +1,11 @@
 Kommunicate.attachmentService = {
-    getFileMeta: function (file, tabId, callback) {
+    getFileMeta: function (file, tabId, callback, isOneToOne) {
         let messagePxy = {
-            groupId: tabId,
             contentType: 1,
             type: 5,
             message: ""
         }
-
+        isOneToOne ? (messagePxy.to = tabId) : (messagePxy.groupId = tabId);
         var reader = new FileReader();
         reader.onload = function (theFile) {
             return function (e) {

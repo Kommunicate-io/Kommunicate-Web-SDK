@@ -8084,6 +8084,8 @@ var CURRENT_GROUP_DATA={};
                                         var file = $applozic(this)[0].files[0];
                                         var tabId = $mck_msg_inner.data('mck-id');
                                         if(file.type.indexOf("image/") != -1 ){
+                                            var mck_message_inner = $applozic("#mck-message-cell .mck-message-inner");
+                                            var isOneToOne = !mck_message_inner.data('isgroup');
                                             Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
                                                 FILE_META = file_meta
                                                 mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {
@@ -8093,7 +8095,7 @@ var CURRENT_GROUP_DATA={};
                                                     params.name = file.name;
                                                     Kommunicate.attachmentService.uploadAttachment(params, messagePxy, MCK_CUSTOM_UPLOAD_SETTINGS);
                                                 });
-                                            });
+                                            }, isOneToOne);
                                         } else {
                                             var params = {};
                                             params.file = file;
