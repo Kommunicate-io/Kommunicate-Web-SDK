@@ -9,7 +9,6 @@ var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA={};
-var CHAR_CHECK;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -20,7 +19,7 @@ var CHAR_CHECK;
     var default_options = {
         baseUrl: KM_PLUGIN_SETTINGS.applozicBaseUrl ||'https://chat.kommunicate.io',
         fileBaseUrl: 'https://applozic.appspot.com',
-        botPlatformAPI: 'https://bots-test.applozic.com',
+        botPlatformAPI: KM_PLUGIN_SETTINGS.botPlatformApi,
         customFileUrl:'https://googleupload.applozic.com', // google cloud file upload url
         genereateCloudFileUrl: "https://googleupload.applozic.com/files/url?key={key}", // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
@@ -1977,6 +1976,7 @@ var CHAR_CHECK;
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
                 document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
+                document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char-limit-warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
@@ -2465,41 +2465,41 @@ var CHAR_CHECK;
 
                 });
                 $mck_text_box.keyup(function (){
-                    if(CHAR_CHECK){
-                        var warning_box = document.getElementsByClassName('mck-char-warning')[0];
-                        var char_count = document.getElementsByClassName('mck-char-count')[0];
+                    if(CURRENT_GROUP_DATA.CHAR_CHECK){
+                        var warning_box = document.getElementById('mck-char-warning');
+                        if(!(document.getElementById('mck-char-count'))){
+                            document.getElementById('mck-char-warning-text').innerHTML += "<span> | </span><span id=" + "mck-char-count" + "></span>"
+                        }
+                        var remtxt;
+                        var char_count = document.getElementById('mck-char-count');
                         var str = ($mck_text_box.text().toString()).trim();
                         var len = str.length;
                         if(len > 199){
                             if(len > 256){
-                                var rem = len - 256; 
-                                var remtxt ="(Remove " + rem + " characters)";
+                                remtxt ="(Remove " + (len - 256) + " characters)";
                             }else{
-                                var rem = 256 - len;
-                                var remtxt = "(" + rem + " characters remaining)";
+                                remtxt = "(" + (256 - len) + " characters remaining)";
                             }
                             char_count.innerHTML = remtxt;
-                            if(warning_box.classList.contains("n-vis")){
-                                warning_box.classList.remove("n-vis");
-                                if(!(warning_box.classList.contains('warning-slide-up'))){
-                                    warning_box.classList.add('warning-slide-up');
-                                    warning_box.classList.remove('warning-slide-down');
-                                }
+                            warning_box.classList.remove("n-vis");
+                            if(!(warning_box.classList.contains('mck-warning-slide-up'))){
+                                warning_box.classList.add('mck-warning-slide-up');
+                                warning_box.classList.remove('mck-warning-slide-down');
                             }
                         }else{
                           if(!(warning_box.classList.contains("n-vis"))){
-                            if(!(warning_box.classList.contains('warning-slide-down'))){
-                                warning_box.classList.add('warning-slide-down');
-                                warning_box.classList.remove('warning-slide-up');
-                                setTimeout(function(){
-                                    warning_box.classList.add("n-vis");
-                                },700); 
-                            }
+                                if(!(warning_box.classList.contains('mck-warning-slide-down'))){
+                                    warning_box.classList.add('mck-warning-slide-down');
+                                    warning_box.classList.remove('mck-warning-slide-up');
+                                    setTimeout(function(){
+                                        warning_box.classList.add("n-vis");
+                                    },700); 
+                                 }
                                
                               
-                        }
-                }
-            }
+                            }
+                        }   
+                    }
                 });
                 $mck_text_box.keydown(function (e) {
                     if ($mck_text_box.hasClass('mck-text-req')) {
@@ -7361,37 +7361,26 @@ var CHAR_CHECK;
                     type: 'get',
                     global: false,
                     success: function (data) {
-                    var flag = false;
-                    console.log(data);
-                    for (var key in data)
-                    {
-                        if (data.hasOwnProperty(key)) {
-                            if(data[key].name == CURRENT_GROUP_DATA.conversationAssignee){
-                                //console.log(data[key].name);
-                                if(data[key].aiPlatform == 'dialogflow')
-                                {
-                                    if(!data[key].autoHumanHandoff){
-                                        CHAR_CHECK = true;
-                                        document.getElementsByClassName('mck-char-warning')[0].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+                        var flag = false;
+                        for (var key in data){
+                            if (data.hasOwnProperty(key)) {
+                                if(data[key].name == CURRENT_GROUP_DATA.conversationAssignee && data[key].aiPlatform == 'dialogflow' && (!data[key].autoHumanHandoff)){
+                                        CURRENT_GROUP_DATA.CHAR_CHECK = true;
+                                        if(WIDGET_SETTINGS){
+                                            document.getElementById('mck-char-warning').style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+                                        }
                                         break;
-                                    }else{
-                                        CHAR_CHECK = false;
-                                    }
                                 }else{
-                                    CHAR_CHECK = false;
+                                    CURRENT_GROUP_DATA.CHAR_CHECK = false;
                                 }
-                            }else{
-                                CHAR_CHECK = false;
                             }
                         }
-                    }
                     },
                     error: function () {
-                            w.console.log('Unable to load bot info. Please reload page.');
-                            CHAR_CHECK = false;
+                            console.log('Unable to load bot info. Please reload page.');
+                            CURRENT_GROUP_DATA.CHAR_CHECK = false;
                     }
             });
-            //console.log(MCK_BOT_API);
             }
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());

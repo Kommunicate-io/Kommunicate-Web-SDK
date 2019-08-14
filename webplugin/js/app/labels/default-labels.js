@@ -6,6 +6,7 @@ Kommunicate.defaultLabels = {
     'start.new': 'Start New Conversation',
     'search.contacts': 'Contacts',
     'search.groups': 'Groups',
+    'char-limit-warn': 'Keep your message within 256 characters to help the bot understand easily',
     'empty.groups': 'No groups yet!',
     'empty.contacts': 'No contacts yet!',
     'empty.messages': 'No messages yet!',

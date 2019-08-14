@@ -491,7 +491,7 @@
 .mck-box-footer .mck-btn {
 	font-size: 12px;
 }
-.mck-char-warning{
+#mck-char-warning {
 	width: auto;
 	height: 62px;
 	margin-bottom: -70px;
@@ -500,7 +500,7 @@
 	opacity:0;  
   	background-color: #5451e2;
 }
-.warning-slide-up{
+.mck-warning-slide-up {
 	animation: animslideup;
 	-webkit-animation: animslideup;
 	-moz-animation: animslideup;
@@ -509,7 +509,7 @@
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards; 
 }
-.warning-slide-down{
+.mck-warning-slide-down {
 	animation: animslidedown;
 	-webkit-animation: animslidedown;
 	-moz-animation: animslidedown;
@@ -518,7 +518,7 @@
 	animation-iteration-count: 1;
 	animation-fill-mode: forwards; 
 }
-@keyframes animslideup{
+@keyframes animslideup {
 	from{
 		opacity:0;
 		margin-bottom:-70px;
@@ -528,7 +528,7 @@
 		margin-bottom:-15px;
 	}
 }
-@keyframes animslidedown{
+@keyframes animslidedown {
 	from{
 		opacity:1;
 		margin-bottom:-15px;
@@ -538,7 +538,7 @@
 		margin-bottom:-70px;
 	}
 }
-@-webkit-keyframes animslideup{
+@-webkit-keyframes animslideup {
 	from{
 		opacity:0;
 		margin-bottom:-70px;
@@ -548,7 +548,7 @@
 		margin-bottom:-15px;
 	}
 }
-@-webkit-keyframes animslidedown{
+@-webkit-keyframes animslidedown {
 	from{
 		opacity:1;
 		margin-bottom:-15px;
@@ -558,7 +558,7 @@
 		margin-bottom:-70px;
 	}
 }
-@-moz-keyframes animslideup{
+@-moz-keyframes animslideup {
 	from{
 		opacity:0;
 		margin-bottom:-70px;
@@ -568,7 +568,7 @@
 		margin-bottom:-15px;
 	}
 }
-@-moz-keyframes animslidedown{
+@-moz-keyframes animslidedown {
 	from{
 		opacity:1;
 		margin-bottom:-15px;
@@ -578,7 +578,7 @@
 		margin-bottom:-70px;
 	}
 }
-@-o-keyframes animslideup{
+@-o-keyframes animslideup {
 	from{
 		opacity:0;
 		margin-bottom:-70px;
@@ -588,7 +588,7 @@
 		margin-bottom:-15px;
 	}
 }
-@-o-keyframes animslidedown{
+@-o-keyframes animslidedown {
 	from{
 		opacity:1;
 		margin-bottom:-15px;
@@ -599,30 +599,22 @@
 	}
 }
 
-.mck-char-warning-text{
+#mck-char-warning-text {
 	width: auto;
 	height: 34px;
-	font-family: Roboto;
 	font-size: 14px;
 	padding-left:5%;	
 	text-align:left;
-	font-weight: normal;
-	font-style: normal;
-	font-stretch: normal;
 	line-height: 1.31;
 	letter-spacing: 0.2px;
 	color: #ffffff;
 }
 
-.mck-char-count{
+#mck-char-count {
 	width: 87px;
   	height: 17px;
   	opacity: 0.73;
-  	font-family: Roboto;
   	font-size: 12px;
-  	font-weight: normal;
-  	font-style: normal;
-  	font-stretch: normal;
   	line-height: 1.42;
   	letter-spacing: 0.28px;
   	color: #ffffff;
