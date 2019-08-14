@@ -282,17 +282,17 @@ getCardInfoTemplate: function() {
 },
 getFormTemplate: function() {
     return `<div class="mck-msg-box-rich-text-container mck-form-template-container">
-                <div class="mck-form-template-wrapper">
-                    <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" target="_blank">
+                <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post">
+                    <div class="mck-form-template-wrapper">
                         {{#payload}}
                             <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
                             <input type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
                         {{/payload}}
-                    </form>  
-                </div>
-                {{#buttons}}
-                    <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
-                {{/buttons}}      
+                    </div>
+                        {{#buttons}}
+                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
+                        {{/buttons}}   
+                </form>   
             </div>`
 }
 
@@ -482,7 +482,7 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
         options.buttons = [];
         options.payload.forEach(function (item,index) {
             if(item.type == "submit") {
-                options.actionUrl = item.formAction;
+                options.actionUrl = item.formAction || "javascript:void(0);";
                 options.requestType = item.requestType;
                 options.payload[index].className = "km-cta-button";
                 options.buttons.push(item);
