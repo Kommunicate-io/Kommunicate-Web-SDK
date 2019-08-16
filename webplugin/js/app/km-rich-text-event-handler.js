@@ -9,6 +9,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-btn-add-more-rooms',Kommunicate.richMsgEventHandler.addMoreRoom);//
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
+    $applozic("#mck-message-cell").on('click', ".mck-form-submit-button",Kommunicate.richMsgEventHandler.handleFormSubmit); 
     $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handleRichButtonClick);
     $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
     $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
@@ -18,7 +19,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click', '.km-faq-dialog-button', Kommunicate.richMsgEventHandler.processClickOnDialogButton); 
     $applozic("#mck-message-cell").on('click', ".km-progress-meter-container",Kommunicate.attachmentEventHandler.manageUploadAttachment);
     $applozic("#mck-message-cell").on('click', ".km-link-button",Kommunicate.richMsgEventHandler.handleLinkButtonClick); 
-    
+
     
 }
 
@@ -279,7 +280,7 @@ Kommunicate.richMsgEventHandler = {
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
         var buttonType = target.dataset.buttontype || target.type;
-        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0]
+        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0] || target.parentElement;
         if(buttonType !="submit"){   
             return ;
         }
@@ -304,7 +305,10 @@ Kommunicate.richMsgEventHandler = {
             }
         })    
         } else {
-            form.submit();
+            !isActionableForm && form.submit(); // called for submit button
+            isActionableForm && KommunicateUtils.isURL(form.action) && $applozic.post(form.action, data).done(function(data) {
+                // console.log("ResponseText:" + data);
+            });
         }
         var messagePxy = {};
         var msgMetadata ={};
@@ -438,6 +442,9 @@ Kommunicate.richMsgEventHandler = {
     handleLinkButtonClick: function(e) {
         var url  = decodeURI(e.target.dataset.url);
         window.open(url, e.target.dataset.target);
+    },
+    handleFormSubmit: function(e) {
+        e.preventDefault();
     }
 
 
