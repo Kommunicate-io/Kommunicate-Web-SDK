@@ -4059,7 +4059,11 @@ var CURRENT_GROUP_DATA={};
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-                        mckGroupLayout.getBotDetails();
+                        for(var key in data.groupFeeds[0].groupUsers){
+                            if(data.groupFeeds[0].groupUsers[key].userId && data.groupFeeds[0].groupUsers[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.groupFeeds[0].groupUsers[key].role == '2'){
+                                mckGroupLayout.getBotDetails();
+                            }
+                        }
 
                     },
                     error: function (xhr, desc, err) {
@@ -7357,24 +7361,19 @@ var CURRENT_GROUP_DATA={};
             };
             _this.getBotDetails = function () {
                 window.Applozic.ALApiService.ajax({
-                    url: MCK_BOT_API + "/bot/" + MCK_APP_ID,
+                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,
                     type: 'get',
                     global: false,
                     success: function (data) {
-                        var flag = false;
-                        for (var key in data){
-                            if (data.hasOwnProperty(key)) {
-                                if(data[key].name == CURRENT_GROUP_DATA.conversationAssignee && data[key].aiPlatform == 'dialogflow' && (!data[key].autoHumanHandoff)){
-                                        CURRENT_GROUP_DATA.CHAR_CHECK = true;
-                                        if(WIDGET_SETTINGS){
-                                            document.getElementById('mck-char-warning').style.backgroundColor = WIDGET_SETTINGS.primaryColor;
-                                        }
-                                        break;
+                              var  botData = data.data[0];
+                                if(botData.aiPlatform == 'dialogflow' && (!botData.autoHumanHandoff)){
+                                    CURRENT_GROUP_DATA.CHAR_CHECK = true;
+                                    if(WIDGET_SETTINGS){
+                                        document.getElementById('mck-char-warning').style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+                                    }
                                 }else{
                                     CURRENT_GROUP_DATA.CHAR_CHECK = false;
                                 }
-                            }
-                        }
                     },
                     error: function () {
                             console.log('Unable to load bot info. Please reload page.');
