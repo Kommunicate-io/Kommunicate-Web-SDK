@@ -7370,9 +7370,6 @@ var CURRENT_GROUP_DATA={};
                               var  botData = data.data[0];
                                 if (botData.aiPlatform == 'dialogflow' && (!botData.autoHumanHandoff)) {
                                     CURRENT_GROUP_DATA.CHAR_CHECK = true;
-                                    if (WIDGET_SETTINGS) {
-                                        warningBox.style.backgroundColor = WIDGET_SETTINGS.primaryColor;
-                                    }
                                 } else {
                                     CURRENT_GROUP_DATA.CHAR_CHECK = false;
                                 }
