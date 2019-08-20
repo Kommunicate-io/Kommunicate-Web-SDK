@@ -2251,6 +2251,8 @@ var CURRENT_GROUP_DATA={};
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
+            var warningBox = document.getElementById("mck-char-warning");
+            var warningText = document.getElementById('mck-char-warning-text');
 
             _this.hideAutoSuggestionBoxEnableTxtBox= function(){
                 if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
@@ -2466,12 +2468,10 @@ var CURRENT_GROUP_DATA={};
                 });
                 $mck_text_box.keyup(function (){
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warning_box = document.getElementById('mck-char-warning');
                         if (!(document.getElementById('mck-char-count'))) {
-                            document.getElementById('mck-char-warning-text').innerHTML += "<span> | </span><span id=" + "mck-char-count" + "></span>"
+                            warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var charCount = document.getElementById('mck-char-count');
                         var str = ($mck_text_box.text().toString()).trim();
                         var len = str.length;
                         if (len > 199) {
@@ -2480,19 +2480,19 @@ var CURRENT_GROUP_DATA={};
                             } else {
                                 remtxt = "(" + (256 - len) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
-                            charCount.innerHTML = remtxt;
-                            warning_box.classList.remove("n-vis");
-                            if (!(warning_box.classList.contains('mck-warning-slide-up'))) {
-                                warning_box.classList.add('mck-warning-slide-up');
-                                warning_box.classList.remove('mck-warning-slide-down');
+                            document.getElementById('mck-char-count').innerHTML = remtxt;
+                            warningBox.classList.remove("n-vis");
+                            if (!(warningBox.classList.contains('mck-warning-slide-up'))) {
+                                warningBox.classList.add('mck-warning-slide-up');
+                                warningBox.classList.remove('mck-warning-slide-down');
                             }
                         } else {
-                          if (!(warning_box.classList.contains("n-vis"))) {
-                                if (!(warning_box.classList.contains('mck-warning-slide-down'))) {
-                                    warning_box.classList.add('mck-warning-slide-down');
-                                    warning_box.classList.remove('mck-warning-slide-up');
+                          if (!(warningBox.classList.contains("n-vis"))) {
+                                if (!(warningBox.classList.contains('mck-warning-slide-down'))) {
+                                    warningBox.classList.add('mck-warning-slide-down');
+                                    warningBox.classList.remove('mck-warning-slide-up');
                                     setTimeout(function(){
-                                        warning_box.classList.add("n-vis");
+                                        warningBox.classList.add("n-vis");
                                     },700); 
                                  }
                                
@@ -7179,6 +7179,7 @@ var CURRENT_GROUP_DATA={};
             var $mck_group_create_icon = $applozic("#mck-group-create-icon-box .mck-group-icon");
             var $mck_group_create_overlay_box = $applozic("#mck-group-create-icon-box .mck-overlay-box");
             var $mck_gc_overlay_label = $applozic("#mck-gc-overlay-label");
+            var warningBox = document.getElementById('mck-char-warning');
             var groupContactbox = '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}" data-role="${roleVal}" data-alpha="${contFirstAlphaExpr}">' +
                 '<div class="mck-row mck-group-member-info" title="${contNameExpr}">' +
                 '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' +
@@ -7369,7 +7370,7 @@ var CURRENT_GROUP_DATA={};
                                 if (botData.aiPlatform == 'dialogflow' && (!botData.autoHumanHandoff)) {
                                     CURRENT_GROUP_DATA.CHAR_CHECK = true;
                                     if (WIDGET_SETTINGS) {
-                                        document.getElementById('mck-char-warning').style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+                                        warningBox.style.backgroundColor = WIDGET_SETTINGS.primaryColor;
                                     }
                                 } else {
                                     CURRENT_GROUP_DATA.CHAR_CHECK = false;
