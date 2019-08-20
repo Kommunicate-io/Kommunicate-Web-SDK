@@ -7367,13 +7367,8 @@ var CURRENT_GROUP_DATA={};
                     type: 'get',
                     global: false,
                     success: function (data) {
-                              var  botData = data.data[0];
-                                if (botData.aiPlatform == 'dialogflow' && (!botData.autoHumanHandoff)) {
-                                    CURRENT_GROUP_DATA.CHAR_CHECK = true;
-                                } else {
-                                    CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                                }
-                    },
+                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] ? ((data.data[0].aiPlatform == 'dialogflow' && !((data.data[0]).autoHumanHandoff)) ? true : false) : false ;
+                            },
                     error: function () {
                             console.log('Unable to load bot info. Please reload page.');
                             CURRENT_GROUP_DATA.CHAR_CHECK = false;
