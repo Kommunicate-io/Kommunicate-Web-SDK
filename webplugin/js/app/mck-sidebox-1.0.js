@@ -312,7 +312,6 @@ var CURRENT_GROUP_DATA={};
         var MCK_BLOCKED_BY_MAP = [];
         var MCK_IDLE_TIME_LIMIT = 90;
         var MCK_USER_DETAIL_MAP = [];
-        var MCK_BOT_API = appOptions.botPlatformAPI;
         var MCK_TOPIC_DETAIL_MAP = [];
         var MCK_LAST_SEEN_AT_MAP = [];
         var MCK_CONVERSATION_MAP = [];
@@ -329,6 +328,7 @@ var CURRENT_GROUP_DATA={};
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
+        var MCK_BOT_API = appOptions.botPlatformAPI;
         var MCK_CUSTOM_URL = appOptions.customFileUrl;
 		var MCK_STORAGE_URL = appOptions.customUploadUrl;
         var MCK_APP_ID = appOptions.appId;
@@ -1976,7 +1976,7 @@ var CURRENT_GROUP_DATA={};
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
                 document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
-                document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char-limit-warn'];
+                document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
@@ -2465,30 +2465,30 @@ var CURRENT_GROUP_DATA={};
 
                 });
                 $mck_text_box.keyup(function (){
-                    if(CURRENT_GROUP_DATA.CHAR_CHECK){
+                    if (CURRENT_GROUP_DATA.CHAR_CHECK) {
                         var warning_box = document.getElementById('mck-char-warning');
-                        if(!(document.getElementById('mck-char-count'))){
+                        if (!(document.getElementById('mck-char-count'))) {
                             document.getElementById('mck-char-warning-text').innerHTML += "<span> | </span><span id=" + "mck-char-count" + "></span>"
                         }
                         var remtxt;
-                        var char_count = document.getElementById('mck-char-count');
+                        var charCount = document.getElementById('mck-char-count');
                         var str = ($mck_text_box.text().toString()).trim();
                         var len = str.length;
-                        if(len > 199){
-                            if(len > 256){
-                                remtxt ="(Remove " + (len - 256) + " characters)";
-                            }else{
-                                remtxt = "(" + (256 - len) + " characters remaining)";
+                        if (len > 199) {
+                            if (len > 256) {
+                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (len - 256) + " " + MCK_LABELS['limit.characters'] + ")";
+                            } else {
+                                remtxt = "(" + (256 - len) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
-                            char_count.innerHTML = remtxt;
+                            charCount.innerHTML = remtxt;
                             warning_box.classList.remove("n-vis");
-                            if(!(warning_box.classList.contains('mck-warning-slide-up'))){
+                            if (!(warning_box.classList.contains('mck-warning-slide-up'))) {
                                 warning_box.classList.add('mck-warning-slide-up');
                                 warning_box.classList.remove('mck-warning-slide-down');
                             }
-                        }else{
-                          if(!(warning_box.classList.contains("n-vis"))){
-                                if(!(warning_box.classList.contains('mck-warning-slide-down'))){
+                        } else {
+                          if (!(warning_box.classList.contains("n-vis"))) {
+                                if (!(warning_box.classList.contains('mck-warning-slide-down'))) {
                                     warning_box.classList.add('mck-warning-slide-down');
                                     warning_box.classList.remove('mck-warning-slide-up');
                                     setTimeout(function(){
@@ -4059,9 +4059,9 @@ var CURRENT_GROUP_DATA={};
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-                        for(var key in data.groupFeeds[0].groupUsers){
-                            if(data.groupFeeds[0].groupUsers[key].userId && data.groupFeeds[0].groupUsers[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.groupFeeds[0].groupUsers[key].role == '2'){
-                                mckGroupLayout.getBotDetails();
+                        for (var key in data.userDetails) {
+                            if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
+                                mckGroupLayout.checkBotDetail();
                             }
                         }
 
@@ -7359,19 +7359,19 @@ var CURRENT_GROUP_DATA={};
                 };
                 return conversationDetail;
             };
-            _this.getBotDetails = function () {
+            _this.checkBotDetail = function () {
                 window.Applozic.ALApiService.ajax({
                     url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,
                     type: 'get',
                     global: false,
                     success: function (data) {
                               var  botData = data.data[0];
-                                if(botData.aiPlatform == 'dialogflow' && (!botData.autoHumanHandoff)){
+                                if (botData.aiPlatform == 'dialogflow' && (!botData.autoHumanHandoff)) {
                                     CURRENT_GROUP_DATA.CHAR_CHECK = true;
-                                    if(WIDGET_SETTINGS){
+                                    if (WIDGET_SETTINGS) {
                                         document.getElementById('mck-char-warning').style.backgroundColor = WIDGET_SETTINGS.primaryColor;
                                     }
-                                }else{
+                                } else {
                                     CURRENT_GROUP_DATA.CHAR_CHECK = false;
                                 }
                     },
