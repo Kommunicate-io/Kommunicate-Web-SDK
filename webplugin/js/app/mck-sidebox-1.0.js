@@ -4053,10 +4053,14 @@ var CURRENT_GROUP_DATA={};
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
+
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                 mckGroupLayout.checkBotDetail();
+                                console.log('entered bot check');
                                 break;
+                            } else {
+                                CURRENT_GROUP_DATA.CHAR_CHECK = false;
                             }
                         }
 
@@ -4700,7 +4704,7 @@ var CURRENT_GROUP_DATA={};
                         return;
                     }
                 }
-
+                mckGroupLayout.checkWarningBox();
                 mckMessageService.loadMessageList(params, callback);  
                 // _this.openConversation();
             };
@@ -7355,6 +7359,11 @@ var CURRENT_GROUP_DATA={};
                 };
                 return conversationDetail;
             };
+            _this.checkWarningBox = function () {
+                if(!(warningBox.classList.contains('n-vis'))){
+                         warningBox.classList.add('n-vis');
+                }
+            }
             _this.checkBotDetail = function () {
                 window.Applozic.ALApiService.ajax({
                     url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,
