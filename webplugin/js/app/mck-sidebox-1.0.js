@@ -19,7 +19,6 @@ var CURRENT_GROUP_DATA={};
     var default_options = {
         baseUrl: KM_PLUGIN_SETTINGS.applozicBaseUrl ||'https://chat.kommunicate.io',
         fileBaseUrl: 'https://applozic.appspot.com',
-        botPlatformAPI: KM_PLUGIN_SETTINGS.botPlatformApi,
         customFileUrl:'https://googleupload.applozic.com', // google cloud file upload url
         genereateCloudFileUrl: "https://googleupload.applozic.com/files/url?key={key}", // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
@@ -328,7 +327,6 @@ var CURRENT_GROUP_DATA={};
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
-        var MCK_BOT_API = appOptions.botPlatformAPI;
         var MCK_CUSTOM_URL = appOptions.customFileUrl;
 		var MCK_STORAGE_URL = appOptions.customUploadUrl;
         var MCK_APP_ID = appOptions.appId;
@@ -2487,16 +2485,12 @@ var CURRENT_GROUP_DATA={};
                                 warningBox.classList.remove('mck-warning-slide-down');
                             }
                         } else {
-                          if (!(warningBox.classList.contains("n-vis"))) {
-                                if (!(warningBox.classList.contains('mck-warning-slide-down'))) {
+                          if (!(warningBox.classList.contains("n-vis")) && !(warningBox.classList.contains('mck-warning-slide-down'))) {
                                     warningBox.classList.add('mck-warning-slide-down');
                                     warningBox.classList.remove('mck-warning-slide-up');
                                     setTimeout(function(){
                                         warningBox.classList.add("n-vis");
                                     },700); 
-                                 }
-                               
-                              
                             }
                         }   
                     }
@@ -7129,7 +7123,7 @@ var CURRENT_GROUP_DATA={};
                 2: MCK_LABELS['moderator'],
                 3: MCK_LABELS['member']
             };
-
+            var MCK_BOT_API = KM_PLUGIN_SETTINGS.botPlatformApi;
             var select = document.getElementById( 'mck-group-create-type' );
 						select.options[select.options.length] = new Option( MCK_LABELS['public'], '1');
 						select.options[select.options.length] = new Option( MCK_LABELS['private'], '2');
@@ -7367,10 +7361,9 @@ var CURRENT_GROUP_DATA={};
                     type: 'get',
                     global: false,
                     success: function (data) {
-                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] ? ((data.data[0].aiPlatform == 'dialogflow' && !((data.data[0]).autoHumanHandoff)) ? true : false) : false ;
+                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);
                             },
                     error: function () {
-                            console.log('Unable to load bot info. Please reload page.');
                             CURRENT_GROUP_DATA.CHAR_CHECK = false;
                     }
             });
