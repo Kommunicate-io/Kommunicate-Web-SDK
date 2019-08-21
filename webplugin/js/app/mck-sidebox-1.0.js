@@ -4057,7 +4057,6 @@ var CURRENT_GROUP_DATA={};
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                 mckGroupLayout.checkBotDetail();
-                                console.log('entered bot check');
                                 break;
                             } else {
                                 CURRENT_GROUP_DATA.CHAR_CHECK = false;
