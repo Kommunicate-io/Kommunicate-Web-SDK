@@ -4583,6 +4583,7 @@ var CURRENT_GROUP_DATA={};
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
+                document.getElementById('mck-char-warning').classList.add('n-vis');
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -4703,7 +4704,6 @@ var CURRENT_GROUP_DATA={};
                         return;
                     }
                 }
-                mckGroupLayout.checkWarningBox();
                 mckMessageService.loadMessageList(params, callback);  
                 // _this.openConversation();
             };
@@ -7358,10 +7358,6 @@ var CURRENT_GROUP_DATA={};
                 };
                 return conversationDetail;
             };
-            _this.checkWarningBox = function () {
-                !(warningBox.classList.contains('n-vis')) && warningBox.classList.add('n-vis');
-                
-            }
             _this.checkBotDetail = function () {
                 window.Applozic.ALApiService.ajax({
                     url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,
