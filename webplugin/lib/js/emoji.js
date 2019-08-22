@@ -164,6 +164,10 @@
             }
         }
         if (ua.match(/(iPhone|iPod|iPad|iPhone\s+Simulator)/i)) {
+            if (ua.match(/OS\s+[1][0-9]/i)) {
+                emoji.replace_mode = 'softbank';
+                return;
+            }
             if (ua.match(/OS\s+[12345]/i)) {
                 emoji.replace_mode = 'softbank';
                 return;
