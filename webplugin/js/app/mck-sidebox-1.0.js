@@ -7359,9 +7359,8 @@ var CURRENT_GROUP_DATA={};
                 return conversationDetail;
             };
             _this.checkWarningBox = function () {
-                if(!(warningBox.classList.contains('n-vis'))){
-                         warningBox.classList.add('n-vis');
-                }
+                !(warningBox.classList.contains('n-vis')) && warningBox.classList.add('n-vis');
+                
             }
             _this.checkBotDetail = function () {
                 window.Applozic.ALApiService.ajax({
