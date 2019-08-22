@@ -4041,10 +4041,13 @@ var CURRENT_GROUP_DATA={};
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
+
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                 mckGroupLayout.checkBotDetail();
                                 break;
+                            } else {
+                                CURRENT_GROUP_DATA.CHAR_CHECK = false;
                             }
                         }
 
@@ -4601,6 +4604,7 @@ var CURRENT_GROUP_DATA={};
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
+                document.getElementById('mck-char-warning').classList.add('n-vis');
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -4721,7 +4725,6 @@ var CURRENT_GROUP_DATA={};
                         return;
                     }
                 }
-
                 mckMessageService.loadMessageList(params, callback);  
                 // _this.openConversation();
             };
