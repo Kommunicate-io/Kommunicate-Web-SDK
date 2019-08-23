@@ -1,4 +1,4 @@
-<img src="https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/images/KM%20Live%20chat%20plugin.png" />
+<img src="https://applozic.appspot.com/rest/ws/aws/file/AMIfv97t6Kire0C1eUeb9tazW-OuVWbjAgCLPPAOVdASD_Mh_7J_jWNemm94UzF8gH33cI1Lm51EIeZCSIXm9gRlrH6YgORiFRctRpPeiHSrR3NKaTJZU8MJ3WzPKxX4wJD-apEGqzHY3Q5Uq6zjr2bPXyKr6gqp6nEGn9ag55sBTXBYVNFgDi9IV6CXU3DxVM4nwgFD9VUXudYAHZL1o6Y7AvepIOJLa8kpD_9W8jbzbUKcKko5izS3i_EoSJdxMVY5Fcx0XSEStb_ILSzCIwoQv5O_cmreT_i5nkPQ_NdB0WqPU9Gksng" />
 
 # [Kommunicate ](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web)Live Chat Plugin For Web
 
