@@ -216,7 +216,7 @@ $applozic.extend(true,Kommunicate,{
         if (typeof (callback) !== 'function') {
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
         }
-        let data = {
+        var data = {
             "groupId": options.groupId,
             "participantUserId": options.participantUserId,
             "createdBy": options.participantUserId,
@@ -391,6 +391,11 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return Kommunicate.markup.getCarouselMarkup(metadata);
                     break;
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
+                    return Kommunicate.markup.getGenericButtonMarkup(metadata);
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
+                    return Kommunicate.markup.getActionableFormMarkup(metadata);
+                    break;
                 default:
                     return "";
                     break;
@@ -413,7 +418,7 @@ $applozic.extend(true,Kommunicate,{
        7. WELCOME_MESSAGE
    */
     updateSettings:function(options){
-        let type = typeof options;
+        var type = typeof options;
         if(type !='object'){
             throw new error("update settings expects an object, found "+type);
         }
@@ -450,7 +455,8 @@ $applozic.extend(true,Kommunicate,{
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
         var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
         kommunicateIframe.style.width = '';
-        kommunicateIframe.classList.remove('km-iframe-notification','km-iframe-closed');
+        kommunicateIframe.classList.remove('km-iframe-notification');
+        kommunicateIframe.classList.remove('km-iframe-closed');
         isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },

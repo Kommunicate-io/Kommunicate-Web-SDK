@@ -57,9 +57,9 @@ KommunicateUI={
     },
 
     displayLeadCollectionTemplate: function (messageList) {
-        let countMsg = 0;
+        var countMsg = 0;
         if (messageList && messageList.length) {
-            let countMsg = 0;
+            var countMsg = 0;
             for (var i = 0; i < messageList.length; i++) {
 
                 if (messageList[i].type == 5) {
@@ -100,8 +100,8 @@ KommunicateUI={
 
     },
     updateImageAttachmentPreview: function(fileMeta, key) {
-        let template = $applozic(".mck-attachment-"+key)[0];
-        let thumbnailUrl = template && template.dataset && template.dataset.thumbnailurl;
+        var template = $applozic(".mck-attachment-"+key)[0];
+        var thumbnailUrl = template && template.dataset && template.dataset.thumbnailurl;
         thumbnailUrl && $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
@@ -125,8 +125,8 @@ KommunicateUI={
         }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
-        let template = document.querySelector(".mck-message-inner.mck-group-inner");
-        let attachment = template && template.querySelector(".mck-attachment-"+key);
+        var template = document.querySelector(".mck-message-inner.mck-group-inner");
+        var attachment = template && template.querySelector(".mck-attachment-"+key);
         attachment && attachment.setAttribute("data-stopupload", status);
     },
     getAttachmentStopUploadStatus: function (key) {
@@ -231,54 +231,14 @@ KommunicateUI={
         } else {
             $applozic(".km-clear-faq-search-icon").addClass("n-vis").removeClass("vis");
         }
+        if (e.which == 32 || e.which == 13) {
+            KommunicateUI.searchFaqs(data);
+           return;
+        }
         clearTimeout(mcktimer);
         mcktimer = setTimeout(function validate() {
-            KommunicateKB.getArticles({
-                data:
-
-                    { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
-                , success: function (response) {
-                    if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
-                        $applozic(".km-no-results-found-container").addClass("vis").removeClass("n-vis");
-                        $applozic(".km-talk-to-human-div p").text("We are here to help.");
-                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
-                    } else {
-                        $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
-                        $applozic(".km-talk-to-human-div p").text(MCK_LABELS['looking.for.something.else']);
-                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
-                    }
-                    
-                    $applozic('#km-faq-list-container').empty();
-                    $applozic.each(response.data, function (i, faq) {
-                        $applozic("#km-faq-list-container").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + faq.title + '</div></a></li>');
-                    });                    
-                    
-                }, error: function () { }
-            });
+            KommunicateUI.searchFaqs(data);
         }, 500);
-        if (e.which == 32 || e.which == 13) {
-            KommunicateKB.getArticles({
-                data:
-                    { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
-                , success: function (response) {
-                    if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
-                        $applozic(".km-no-results-found-container").addClass("vis").removeClass("n-vis");
-                        $applozic(".km-talk-to-human-div p").text("We are here to help. ");
-                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
-                    } else {
-                        $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
-                        $applozic(".km-talk-to-human-div p").text(MCK_LABELS['looking.for.something.else']);
-                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
-                    }
-
-                    $applozic('#km-faq-list-container').empty();
-                    $applozic.each(response.data, function (i, faq) {
-                        $applozic("#km-faq-list-container").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div> <div class="km-faqanchor ">' + faq.title + '</div></a></li>');
-                    });
-                    
-                }, error: function () { }
-            });
-        }
     });
 
     $applozic(d).on("click", ".km-clear-faq-search-icon", function() {
@@ -318,7 +278,7 @@ KommunicateUI={
                 $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
                 $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
                  $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
-                let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
+                var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                 KommunicateUI.activateTypingField();
@@ -347,6 +307,59 @@ KommunicateUI={
             return;
         }
     });
+},
+searchFaqUI: function (response) {
+    if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
+        kommunicateCommons.modifyClassList({
+            class: ["km-no-results-found-container", "km-talk-to-human-div"]
+        }, "vis", "n-vis");
+        document.querySelector(".km-talk-to-human-div p").innerHTML = MCK_LABELS['no-faq-found'];
+    } else {
+        kommunicateCommons.modifyClassList({
+            class: ["km-no-results-found-container"]
+        }, "n-vis", "vis");
+        document.querySelector(".km-talk-to-human-div p").innerHTML = MCK_LABELS['looking.for.something.else'];
+        kommunicateCommons.modifyClassList({
+            class: ["km-talk-to-human-div"]
+        }, "vis", "n-vis");
+    }
+    document.getElementById("km-faq-list-container").innerHTML ="";
+    $applozic.each(response.data, function (i, faq) {
+        var id = faq.id || faq.articleId;
+        var title = faq.name || faq.title;
+        document.getElementById("km-faq-list-container").innerHTML += '<li class="km-faq-list"  data-articleId="' + id + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + title + '</div></a></li>';
+    });
+},
+searchFaqs: function (data) {
+    if (!document.getElementById("km-faq-search-input").value) {
+        KommunicateKB.getArticles({
+            data: {
+                appId: data.appId,
+                query: document.getElementById("km-faq-search-input").value
+            },
+            success: function (response) {
+                KommunicateUI.searchFaqUI(response);
+
+            },
+            error: function () {
+                console.log("error while searching faq", err);
+            }
+        });
+    } else {
+        KommunicateKB.searchFaqs({
+            data: {
+                appId: data.appId,
+                query: document.getElementById("km-faq-search-input").value
+            },
+            success: function (response) {
+                KommunicateUI.searchFaqUI(response);
+
+            },
+            error: function (err) {
+                console.log("error while searching faq", err);
+            }
+        });
+    }
 },
 hideFaq:function(){  
     $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");

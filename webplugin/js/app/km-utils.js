@@ -25,6 +25,15 @@ KommunicateConstants = {
         EARLY_BIRD_MONTHLY:107,
         EARLY_BIRD_YEARLY:108,
    },
+    BOT_PLATFORM : { 
+        DIALOGFLOW:"dialogflow",
+        APIAI:"api.ai",
+        HELPDOCS:"helpdocs.io",
+        AMAZONLEX:"amazonlex",
+        RASA:"rasa",
+        CUSTOM:'custom'
+   },
+   KM_NOTIFICATION_TONE_URL: "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3",
    CUSTOM_WIDGETS_SVG : {
     1: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 22 20\"><path fill=\"#FFF\" d=\"M21.25 18.48V7.31a7.3 7.3 0 0 0-7.3-7.3H7.31a7.3 7.3 0 1 0 0 14.6h7.2s.58.04.93.17c.34.12.71.42.71.42l4.44 3.66s.4.34.55.27c.15-.07.11-.65.11-.65zM7.51 8.8c0 .49-.42.88-.95.88-.52 0-.95-.4-.95-.88V5.67c0-.49.43-.88.95-.88.53 0 .95.4.95.88V8.8zm4.07 1.48c0 .49-.43.88-.95.88s-.95-.39-.95-.88v-6.1c0-.48.43-.88.95-.88s.95.4.95.88v6.1zm4.06-1.48c0 .49-.42.88-.95.88-.52 0-.94-.4-.94-.88V5.67c0-.49.42-.88.94-.88.53 0 .95.4.95.88V8.8z\"/></svg>",
     2: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 22 18\"><path fill=\"#FFF\" d=\"M3.35 18a.48.48 0 0 1-.44-.3.47.47 0 0 1 .1-.5c.53-.53 1.49-1.82 2.12-3.21C1.95 12.61 0 10.19 0 7.58 0 3.4 4.93 0 11 0s11 3.4 11 7.58-4.93 7.58-11 7.58c-.4 0-.78-.02-1.16-.05A8.63 8.63 0 0 1 3.34 18z\"/></svg>",
@@ -36,6 +45,8 @@ KommunicateConstants = {
     5: '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"><g fill="none" fill-rule="evenodd"><circle cx="17.497" cy="17.497" r="17.497" fill="#FFCC4D"/><g fill="#6F543A" transform="translate(8.089 8.713)"> <circle cx="4.411" cy="2.787" r="2.5"/><circle cx="14.411" cy="2.787" r="2.5"/><path d="M1.499 15.287h16.825c.783 0 .783-1 0-1H1.499c-.783 0-.783 1 0 1z"/></g></g></svg>',
     10: '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"> <g fill="none" fill-rule="evenodd"><path fill="#FFCC4D" d="M34.932 17.466c0 9.646-7.82 17.466-17.466 17.466S0 27.112 0 17.466 7.82 0 17.466 0s17.466 7.82 17.466 17.466"/><path fill="#6F543A" d="M17.466 20.377c-3.516 0-5.848-.41-8.733-.97-.659-.128-1.94 0-1.94 1.94 0 3.881 4.458 8.733 10.673 8.733 6.214 0 10.674-4.852 10.674-8.733 0-1.94-1.282-2.069-1.941-1.94-2.885.56-5.218.97-8.733.97"/><path fill="#FFF" d="M8.733 21.347s2.91.97 8.733.97c5.822 0 8.733-.97 8.733-.97s-1.94 3.881-8.733 3.881c-6.792 0-8.733-3.88-8.733-3.88"/><path fill="#6F543A" d="M14.07 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396M26.737 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396"/></g></svg>'
     },
+    DEFAULT_AVATAR_IMAGE : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
+    CONVERSATION_CLOSED_STATUS : 'Resolved',
     MESSAGE_SOURCE: {
         DEVICE: 0,
         WEB: 1,
@@ -92,7 +103,9 @@ KommunicateConstants = {
         LIST:"7",
         DIALOG_BOX:"8",
         IMAGE:"9",
-        CARD_CAROUSEL:"10"
+        CARD_CAROUSEL:"10",
+        GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
+        FORM:"12"
     },
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
@@ -124,7 +137,12 @@ KommunicateConstants = {
         KM_CHAT_CONTEXT: "KM_CHAT_CONTEXT",
         KM_USER_LANGUAGE_CODE:"kmUserLanguageCode",
         KM_USER_TIMEZONE:"kmUserTimezone"
-    }
+    },
+    AVAILABILITY_STATUS : {
+        ONLINE: "online",
+        OFFLINE: "offline"
+    },
+    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform"
 }
 
 /**
@@ -209,21 +227,27 @@ KommunicateUtils = {
         return text;
     },
     getDataFromKmSession: function (key) {
-        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        return session ? JSON.parse(session)[key] : "";
+        if(KommunicateUtils.isSessionStorageAvailable()) {
+            var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            return session ? JSON.parse(session)[key] : "";  
+        }
     },
     storeDataIntoKmSession: function (key, data) {
-        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        session[key] = data;
-        sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.isSessionStorageAvailable()) {
+            var session = (typeof sessionStorage !== 'undefined') && sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            session[key] = data;
+            (typeof sessionStorage !== 'undefined') && sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
 
     },
     deleteDataFromKmSession : function (key) {
-        var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        delete session[key];
-        sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.isSessionStorageAvailable()) {
+            var session = (typeof sessionStorage !== 'undefined') && sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            delete session[key];
+            (typeof sessionStorage !== 'undefined') && sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
     },
     triggerCustomEvent: function(eventName, options, kmPluginVersion) {
 
@@ -254,20 +278,26 @@ KommunicateUtils = {
         return key&&settings?settings[key]:(settings?settings:"");
     },
     getItemFromLocalStorage: function(key) {
-        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        return session ? JSON.parse(session)[key] : "";
+        if(KommunicateUtils.isSessionStorageAvailable()) {
+            var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            return session ? JSON.parse(session)[key] : "";
+        } 
     },
     removeItemFromLocalStorage: function(key) {
-        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        delete session[key];
-        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.isSessionStorageAvailable()) {
+            var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            delete session[key];
+            localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
     },
     setItemToLocalStorage: function(key,data) {
-        var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-        session = session ? JSON.parse(session) : {};
-        session[key] = data;
-        localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        if(KommunicateUtils.isSessionStorageAvailable()) {
+            var session = localStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            session = session ? JSON.parse(session) : {};
+            session[key] = data;
+            localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
+        }
     },
     getDomainFromUrl: function (hostName) {
         hostName = hostName || parent.window.location.hostname;
@@ -321,5 +351,21 @@ KommunicateUtils = {
     isActiveConversationNeedsToBeOpened : function(activeConversationInfo, data) {
         var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         return (activeConversationInfo && typeof data != "undefined" && (data.appId == activeConversationInfo.appId && userId == activeConversationInfo.userId ));
+    },
+    isSessionStorageAvailable: function() {
+        try {
+            return typeof (w.sessionStorage) !== "undefined"
+        } catch (e) {
+            return false
+        }
+    },
+    isURL: function (str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        return pattern.test(str);
     }
 }

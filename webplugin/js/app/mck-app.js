@@ -20,19 +20,28 @@ if (typeof jQuery !== 'undefined') {
 })(window);
 
 var applozicSideBox = new ApplozicSidebox();
+var scriptCounter = 0;
 applozicSideBox.load();
 function ApplozicSidebox() {
 	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
+    var mck_external_scripts = [
+        {
+            "name": "jquery",
+            "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js",
+            "crossOrigin": "anonymous"
+        },
+        {
+            "name": "applozic-min-js",
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.min.js", // update the url with every new release of applozic-web-plugin
+            "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-5.6.min.js"
+        }
+    ];
     var mck_style_loader = [
     {
             "name": "mck-sidebox", 
             "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS
     } ];
     var mck_script_loader1 = [
-    {
-            "name": "applozic-min-js", 
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.1.min.js" // update the url with every new release of applozic-web-plugin
-    },
     {
             "name": "km-utils", 
             "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
@@ -44,36 +53,60 @@ function ApplozicSidebox() {
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     } ];
-   var mck_videocall = [ {
-          "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
-    } ];
     this.load = function() {
         try {
-            var head = document.getElementsByTagName('head')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.crossOrigin = "anonymous";
-            script.src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
-            if (script.readyState) { // IE
-                script.onreadystatechange = function() {
-                    if (script.readyState === "loaded" || script.readyState === "complete") {
-                        script.onreadystatechange = null;
-                        mckinitPlugin();
-                    }
-                };
-            } else { // Others
-                script.onload = function() {
-                    mckinitPlugin();
-                };
-            }
-            head.appendChild(script);
+            for (var index in mck_external_scripts) {
+                var externalFileDetails = mck_external_scripts[index];
+                loadExternalFiles(externalFileDetails);
+            }  
         } catch (e) {
-
-            console.log("Plugin loading error. Refresh page.");
+            console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }
             return false;
+        }
+    };
+    function loadExternalFiles(externalFileDetails) {
+        try {   
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
+            script.src = externalFileDetails.url;
+            if (script.readyState) { // IE
+                script.onreadystatechange = function () {
+                    if (script.readyState === "loaded" || script.readyState === "complete") {
+                        script.onreadystatechange = null;
+                        ++scriptCounter;
+                        scriptCounter >= mck_external_scripts.length && mckinitPlugin();
+                    }
+                };
+            } else { // Others
+                script.onload = function () {
+                    ++scriptCounter;
+                    scriptCounter >= mck_external_scripts.length && mckinitPlugin();
+                };
+            }
+            script.onerror = function (error) {
+                handleFileLoadError(error);
+            }
+            head.appendChild(script);
+            
+        } catch (error) {
+            console.log(error);
+        }
+
+    };
+    function handleFileLoadError(err) {
+        if (err && err.target && err.target.src) {
+            var data = mck_external_scripts.filter(function (item) {
+                return item.url == err.target.src;
+            })[0];
+            if (data) {
+                data.url = data.alternateUrl;
+                loadExternalFiles(data);
+            }
         }
     };
     function mckinitPlugin() {
@@ -88,23 +121,61 @@ function ApplozicSidebox() {
             }
         }
         try {
-            $.each(mck_style_loader, function(i, data) {
-                mckLoadStyle(data.url);
-            });
-            $.ajax({
-                    url: MCK_SIDEBOX_HTML, crossDomain: true, success: function(data) {
-                        data = data.replace(/MCK_STATICPATH/g, MCK_STATICPATH);
-                        $("body").append(data);
-                        mckInitPluginScript();
-                    }
-            });
+            for (var index in mck_style_loader) {
+                mck_style_loader[index] && mckLoadStyle(mck_style_loader[index].url);
+            }
+            var url = MCK_SIDEBOX_HTML;
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var body = document.getElementsByTagName('body')[0];
+                    body.insertAdjacentHTML('beforeend', this.responseText);
+                    var scriptContent = addScriptInsideHtml();
+                    body.appendChild(scriptContent);
+                    mckInitPluginScript();
+                }
+            };
+            xhr.open("GET", url, true);
+            xhr.send(null);
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
+            console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }
             return false;
         }
+    };
+    function addScriptInsideHtml() {
+        var scriptData = function detectBrowserAndMakeUiVisible() {
+            function showAfterLoad() {
+                var mckSidebox = document.getElementById("mck-sidebox");
+                mckSidebox.style.visibility = 'visible';
+                var mckLocBox = document.getElementById("mck-loc-box");
+                mckLocBox.style.visibility = 'visible';
+                var mckGmSearchBox = document.getElementById("mck-gm-search-box");
+                mckGmSearchBox.style.visibility = 'visible';
+            };
+            if (navigator.userAgent.indexOf('MSIE') !== -1 ||
+                navigator.appVersion.indexOf('Trident/') > 0) {
+                showAfterLoad();
+            } else {
+                var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
+                if (isScriptV2) {
+                    window.parent.document.addEventListener('kmInitilized', function () {
+                        showAfterLoad();
+                    }, false);
+                } else {
+                    window.addEventListener('kmInitilized', function () {
+                        showAfterLoad();
+                    }, false);
+                }
+            };
+        };
+
+        var script = String(scriptData) + "detectBrowserAndMakeUiVisible();"
+        var tag = document.createElement('script');
+        tag.innerHTML = script;
+        return tag;
     };
     function mckLoadStyle(url) {
         var head = document.getElementsByTagName('head')[0];
@@ -160,7 +231,8 @@ function ApplozicSidebox() {
                 }
                     applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
        	    }
-            $.each(mck_script_loader1, function(i, data) {
+            for (var index in mck_script_loader1) {
+                var data = mck_script_loader1[index];
                 if (data.name === "km-utils") {
                     try {
                        var options = applozic._globals;
@@ -190,18 +262,11 @@ function ApplozicSidebox() {
                     } catch (e) {
                         mckLoadScript(data.url), null, true;
                     }
-                } else if (data.name === "applozic-min-js"){
-                    mckLoadScript(data.url, null, true)
-                } 
+                }  
                 else {
-                    mckLoadScript(data.url);
+                    mckLoadScript(data.url);    
                 }
-            });
-             if (typeof applozic._globals !== 'undefined'&& applozic._globals.video === true) {
-                          $.each(mck_videocall, function(i, data) {
-                          mckLoadScript(data.url);
-                 });
-               }
+            };
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             console.log(e);
@@ -213,11 +278,12 @@ function ApplozicSidebox() {
     };
     function mckLoadScript2() {
         try {
-            $.each(mck_script_loader2, function(i, data) {
+            for (var index in mck_script_loader2) {
+                var data = mck_script_loader2[index];
                 if (data.name === "locationpicker") {
                     mckLoadScript(data.url, mckLoadAppScript);
                 }
-            });
+            };
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
@@ -297,14 +363,26 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
+            var widgetSettings = data.chatWidget || data.widgetTheme;
+            var sessionTimeout = options.sessionTimeout;
+            sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
-            options["widgetSettings"]=data.widgetTheme;
+            options["widgetSettings"] = widgetSettings;
             options["customerCreatedAt"]=data.customerCreatedAt;
             options["collectFeedback"]=data.collectFeedback;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
+
+            if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
+                logoutAfterSessionExpiry(sessionTimeout);
+                var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
+                !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
+                details.sessionTimeout = sessionTimeout;
+                KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+            }
+
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 var accessTokenFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.ACCESS_TOKEN);
                 var userIdFromCookie = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
@@ -358,18 +436,16 @@ function ApplozicSidebox() {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        $applozic.ajax({
-            url: KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings",
-            method: 'GET',
-            data: data,
-            success: function (data) {
+        var url = KM_PLUGIN_SETTINGS.kommunicateApiUrl + "/users/v2/chat/plugin/settings?appId=" + applozic._globals.appId;
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var data = JSON.parse(this.responseText);
                 mckInitSidebox(data.response, userId);
-            },
-            error: function (error) {
-                console.log(error);
             }
-
-        })
+        };
+        xhr.open("GET", url, true);
+        xhr.send(data);
     };
     function loadErrorTracking(userId) {
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
@@ -396,6 +472,23 @@ function ApplozicSidebox() {
             var encodedToken = window.btoa(kommunicateSettings.accessToken);
             KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.ACCESS_TOKEN,"value": encodedToken || "", "expiresInDays":30,domain: cookieDomain});
         }
-    }
-
+    };
+    
+    function logoutAfterSessionExpiry(sessionTimeout) {
+        var widgetSettings, timeStampDifference;
+        applozic._globals.appId && (widgetSettings = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId));
+        var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
+        if (widgetSettings && sessionTimeout != null && timeStampDifference > sessionTimeout) {
+            KommunicateUtils.deleteUserCookiesOnLogout();
+            sessionStorage.removeItem("kommunicate");
+            ALStorage.clearSessionStorageElements();
+        };
+        window.addEventListener('beforeunload', function (event) {
+            // Cancel the event as stated by the standard.
+            event.preventDefault();
+            var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
+            details.sessionEndTime = new Date().getTime();
+            KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+        });
+    };
 }

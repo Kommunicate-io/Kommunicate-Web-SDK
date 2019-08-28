@@ -29,11 +29,6 @@ var kmCustomIframe =
     '   width: 100% !important;' +
     '   max-height: 100% !important;' +
     '} } \n' + 
-    '.km-iframe-closed{ '+
-    '    height: 75px; '+
-    '    width:  75px; '+
-    '    box-shadow: none!important; '+
-    '}\n' + 
     '.km-iframe-notification{ '+
     '    height:80px; '+ 
     '} \n '+
@@ -45,7 +40,12 @@ var kmCustomIframe =
     '.km-iframe-dimension-with-popup{ '+
     '    height: 700px; '+
     '    width: 442px; '+
-    '} \n '
+    '} \n ' + 
+    '.km-iframe-closed{ '+
+    '    height: 75px; '+
+    '    width:  75px; '+
+    '    box-shadow: none!important; '+
+    '}\n';
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 
@@ -72,6 +72,7 @@ function createKommunicateIframe() {
   kommunicateIframe.setAttribute("style", "overflow:hidden;"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("id", "kommunicate-widget-iframe");
+  kommunicateIframe.setAttribute("title", "Live chat");
   kommunicateIframe.setAttribute("class", "kommunicate-custom-iframe");
   kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
   kommunicateIframe.setAttribute('data-url', window.location.href);
@@ -123,7 +124,7 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = options.onInit;
   }
   addableWindow.addEventListener('error', function (e) {
-    let sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
+    var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
     sentryConfig.enable && typeof Sentry != "undefined" && Sentry.withScope(function (scope) {
       scope.setTag("applicationId", options.appId);
       scope.setTag("userId", options.userId);

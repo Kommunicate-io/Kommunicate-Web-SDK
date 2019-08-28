@@ -11,23 +11,26 @@ Example:
 	var kommunicateSettings = {"appId":"<APP_ID>","conversationTitle":"<CONVERSATION_TITLE>",
 		"onInit": function() {
 			var iframeStyle = document.createElement('style');
-			var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
-			iframeStyle.type = 'text/css';
-			iframeStyle.innerHTML = classSettings;
-			document.getElementsByTagName('head')[0].appendChild(iframeStyle);
-			var launcherIconStyle = "@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}";
-			Kommunicate.customizeWidgetCss(launcherIconStyle);
-			var iframe = window.top.document.getElementsByTagName("iframe")[0];
-			var addClassToIframe = iframe.contentDocument.getElementById("kommunicate-widget-iframe");
-			addClassToIframe.classList.add("change-kommunicate-iframe-height");  
-			KommunicateGlobal.document.getElementById('km-chat-widget-close-button').addEventListener('click',function(){
-				var closeButtonClick = parent.document.getElementById("kommunicate-widget-iframe");
-				closeButtonClick.classList.add("change-kommunicate-iframe-height");
-			});
+                    	var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
+                    	iframeStyle.type = 'text/css';
+                    	iframeStyle.innerHTML = classSettings;
+                    	document.getElementsByTagName('head')[0].appendChild(iframeStyle);
+                    	var launcherIconStyle = "@media(min-width: 510px){.mck-sidebox.fade.in,.mck-box .mck-box-sm{width:100%; height:100%;max-height:100%!important;border-radius:0px!important;}.mck-sidebox{right:0!important;bottom:0!important;}}";
+                    	Kommunicate.customizeWidgetCss(launcherIconStyle);
+
+                    	KommunicateGlobal.document.getElementById('mck-sidebox-launcher').addEventListener('click',function(){
+                        	var iframeClick = parent.document.getElementById("kommunicate-widget-iframe");
+                        	iframeClick.classList.add("change-kommunicate-iframe-height");
+                    	});
+
+                    	KommunicateGlobal.document.getElementById('km-chat-widget-close-button').addEventListener('click',function(){
+                        	var closeButtonClick = parent.document.getElementById("kommunicate-widget-iframe");
+                        	closeButtonClick.classList.remove("change-kommunicate-iframe-height");
+                    	});
 		}
 	};
 	var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-	s.src = "https://api.kommunicate.io/v2/kommunicate.app";
+	s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
 	var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
 	window.kommunicate = m; m._globals = kommunicateSettings;
 })(document, window.kommunicate || {});
@@ -59,7 +62,7 @@ Example:
 	    		}
 	    	};
          	var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-          	s.src = "https://api.kommunicate.io/v2/kommunicate.app";
+          	s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
           	var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
           	window.kommunicate = m; m._globals = kommunicateSettings;
         })(document, window.kommunicate || {});

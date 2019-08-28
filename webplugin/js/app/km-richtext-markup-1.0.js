@@ -98,8 +98,8 @@ getHotelCardTemplate : function(options,sessionId){
 },
 
 getRoomDetailTemplate: function (options, sessionId) {
-    let guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
-    let dayRates = (options.DayRates.Amount)?options.DayRates.Amount:options.Price.RoomPrice;
+    var guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
+    var dayRates = (options.DayRates.Amount)?options.DayRates.Amount:options.Price.RoomPrice;
 
     return `<div class="km-single-card-message">
                 <div class="message received km-blocked-room">
@@ -132,20 +132,23 @@ getRoomDetailTemplate: function (options, sessionId) {
 },
 
 getButtonTemplate:function(options,requestType, buttonClass){
-    let linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
+    var linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
 
     if(options.type=="link"){
-        return'<button title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
+        return'<button aria-label="' + (options.replyText || options.name) + '" title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-buttontype="button" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
     }else{
-        return'<button title= "'+ (options.replyText || options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
+        return'<button aria-label="' + (options.replyText || (options.action && options.action.message)||options.name) + '" title= "'+ (options.replyText || (options.action && options.action.message)||options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(){
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
-                 <button title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
+                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
             {{/payload}}
             </div>`;
+},
+getGenericSuggestedReplyButton : function(){
+    return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{name}}</button>`
 },
 getPassangerDetail : function(options){
     if(!options.sessionId){
@@ -212,7 +215,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                     {{#buttons}}
-                        <button class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                     {{/buttons}}  
              </div>
          </div>
@@ -232,7 +235,7 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
+                 <button aria-label="{{name}}" class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>
@@ -263,7 +266,7 @@ return `<div class="mck-msg-box-rich-text-container km-card-message-container  k
         </div>`
 },
 getButtonListTemplate: function() {
-    return `{{#buttons}}<button class="km-carousel-card-button {{{class}}}">{{action.payload.title}}</button>{{/buttons}}`
+    return `{{#buttons}}<button aria-label="{{action.payload.title}}" class="km-carousel-card-button {{{class}}}">{{action.payload.title}}</button>{{/buttons}}`
 },
 getCardHeaderTemplate: function() {
     return `<img class="{{headerImageClass}}" src="{{imgSrc}}"></img>
@@ -276,6 +279,21 @@ getCardInfoTemplate: function() {
             </div>
             <div class="km-carousel-card-sub-title">{{subtitle}}</div>
             <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`
+},
+getFormTemplate: function() {
+    return `<div class="mck-msg-box-rich-text-container mck-form-template-container">
+                <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post">
+                    <div class="mck-form-template-wrapper">
+                        {{#payload}}
+                            <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                            <input type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
+                        {{/payload}}
+                    </div>
+                        {{#buttons}}
+                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
+                        {{/buttons}}   
+                </form>   
+            </div>`
 }
 
 };
@@ -299,18 +317,18 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     return containerMarkup;
 }
 Kommunicate.markup.getFormMarkup = function(options) {
-    var payload = JSON.parse(options.payload);
-    var formData= payload? JSON.parse(options.formData||"{}"):"";
+    var payload = typeof options.payload == "string" ?JSON.parse(options.payload):options.payload;
+    var formData= payload && options.formData ? JSON.parse(options.formData||"{}"):payload.formData||"";
     var formMarkup="";
     if(formData){
-        formMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+options.formAction+ ">";
+        formMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+(options.formAction||payload.formAction)+ ">";
         for (var key in formData) {
             if (formData.hasOwnProperty(key)) {
                 formMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
             }
         } 
         formMarkup+='</form>';
-        return formMarkup
+        return formMarkup;
     }
 }
 Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
@@ -354,7 +372,7 @@ for(var i= 0;i<hotelList.length;i++){
 }
 
 Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, sessionId) {
-    let roomDetails=roomList.HotelRoomsDetails;
+    var roomDetails=roomList.HotelRoomsDetails;
     var roomListMarkup = "";
     for (var i = 0; i < roomDetails.length; i++) {
         roomListMarkup = roomListMarkup + Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
@@ -443,7 +461,7 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
 }
 Kommunicate.markup.getImageContainer = function(options) {
     if (options && options.payload) {
-        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = payload;
         return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
     }
@@ -455,6 +473,24 @@ Kommunicate.markup.getHtmlMessageMarkups = function (message) {
         return "<iframe class='km-mail-fixed-view' id=" + uniqueId + " ></iframe>";
     }
     return ""; 
+}
+Kommunicate.markup.getActionableFormMarkup = function(options) {
+    var action = {};
+    if (options && options.payload) {
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        options.buttons = [];
+        options.payload.forEach(function (item,index) {
+            if(item.type == "submit") {
+                options.actionUrl = item.formAction || "javascript:void(0);";
+                options.requestType = item.requestType;
+                options.payload[index].className = "km-cta-button";
+                options.buttons.push(item);
+                options.payload.splice(index,1);
+            }
+        });
+        return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
+    }
 }
 Kommunicate.markup.getCarouselMarkup = function(options) {
     var cardList =[]; 
@@ -468,6 +504,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         var requestType;
         for (var i = 0; i < buttons.length; i++) { 
             if(buttons[i].action.type == "quickReply") {
+                buttons[i].action.payload.title = buttons[i].action.payload.title || buttons[i].name
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
                 cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL))
             } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
@@ -476,7 +513,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
                 buttons[i].action.payload["buttonClass"] = "km-carousel-card-button";
                 buttons[i].action.payload["name"] = buttons[i].name;
                 cardFooter = cardFooter.concat(Kommunicate.markup.getButtonTemplate(buttons[i].action.payload,requestType,"km-carousel-card-button"))
-                let formData = buttons[i].action.payload.formData;
+                var formData = buttons[i].action.payload.formData;
                 buttons[i].action.payload.formAction && (buttons[i].action["formAction"] = buttons[i].action.payload.formAction);
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload])
                 formData && (buttons[i].action["formData"] = JSON.stringify(formData))
@@ -487,7 +524,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
         return cardFooter;
     }
     if (options && options.payload) {
-        let cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
+        var cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
         options.payload = cards;
         for (var i = 0; i < cards.length; i++) {
             var item = cards[i];
@@ -507,7 +544,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             cardList[i] = $applozic.extend([], cardHtml);
         }
     }
-    let cardCarousel = {payload:cardList};
+    var cardCarousel = {payload:cardList};
 
     return Mustache.to_html(Kommunicate.markup.getCarouselTemplate(),cardCarousel)
 
@@ -522,3 +559,35 @@ Kommunicate.markup.getLinkTarget= function(buttonInfo) {
     buttonInfo.openLinkInNewTab = (typeof buttonInfo.openLinkInNewTab  !='undefined' && !buttonInfo.openLinkInNewTab ) ? buttonInfo.openLinkInNewTab:true;
     return buttonInfo.openLinkInNewTab ? "_blank" : "_parent";
 }
+
+Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
+    var buttonPayloadList = metadata.payload ? JSON.parse(metadata.payload) : [];
+    var buttonContainerHtml = '<div class="km-cta-multi-button-container">';
+    var buttonClass = " km-custom-widget-border-color " + (buttonPayloadList.length == 1 ? "km-cta-button-1" : (buttonPayloadList.length == 2 ? "km-cta-button-2" : "km-cta-button-many"));
+    for (var i = 0; i < buttonPayloadList.length; i++) {
+        var singlePayload = buttonPayloadList[i];
+        typeof (singlePayload.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
+        if (singlePayload.action && (singlePayload.action.type == "link" || singlePayload.action.type == "submit")) {
+            singlePayload.type = buttonPayloadList[i].action.type;
+            singlePayload.url = buttonPayloadList[i].action.url;
+            singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
+            buttonClass += buttonClass + " km-add-more-rooms";
+            buttonContainerHtml += Kommunicate.markup.getButtonTemplate(singlePayload, singlePayload.action.requestType, buttonClass);
+            singlePayload.action.type == "submit" && (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
+                "payload": singlePayload.action
+            }))
+
+        } else if (singlePayload.action && singlePayload.action.type == "quickReply") {
+            singlePayload.buttonClass = "km-quick-rpy-btn " + buttonClass;
+            singlePayload.message = singlePayload.action.message || singlePayload.name;
+            buttonContainerHtml += Mustache.to_html(Kommunicate.markup.getGenericSuggestedReplyButton(), singlePayload);
+        } else if (singlePayload.action && singlePayload.action.type == "submit") {
+
+
+        }
+
+    }
+    return buttonContainerHtml + "</div>";
+
+}
+        

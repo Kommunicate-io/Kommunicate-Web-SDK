@@ -1,0 +1,1 @@
+$applozic("#mck-mic-btn").on('click', Kommunicate.mediaService.processMicClickedEvent)

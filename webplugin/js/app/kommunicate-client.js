@@ -16,7 +16,7 @@ Kommunicate.client={
     */
      getGroupDetailByType: function(options,callback){
         var formData = "type=" + options.type + "&startIndex=" +options.startIndex + "&limit=" + options.limit;
-        $applozic.ajax({
+        window.Applozic.ALApiService.ajax({
             url: MCK_BASE_URL + "/rest/ws/group/bytype",
             type: "get",
             data: formData,
@@ -42,6 +42,11 @@ Kommunicate.client={
      */
      createConversation : function(conversationDetail,callback){
         var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+        var userLocale = kommunicate._globals.userLocale;
+        var currentLanguage = {
+            'kmUserLocale': userLocale ? userLocale.split("-")[0] : (window.navigator.language || window.navigator.userLanguage).split('-')[0]
+        };
+        chatContext = $applozic.extend(chatContext, currentLanguage);
 
         var groupMetadata = {
             CREATE_GROUP_MESSAGE: "",
@@ -60,7 +65,8 @@ Kommunicate.client={
             //ALERT: "false",
             HIDE: "true",
             SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
-            KM_CHAT_CONTEXT: JSON.stringify(chatContext)
+            KM_CHAT_CONTEXT: JSON.stringify(chatContext),
+            GROUP_CREATION_URL: parent.location.href
         };
 
         if (conversationDetail.skipBotEvent) {
