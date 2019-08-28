@@ -1635,7 +1635,7 @@
 	resize: none;
 	background-color: white;
 	width: auto;
-	outline: none;
+	outline: none !important;
 	margin: 0px;
 	font-size: 16px;
 	overflow: auto;
