@@ -5994,7 +5994,7 @@ var CURRENT_GROUP_DATA={};
                     var unreadCount = _this.getUnreadCount(ucTabId);
                     var emoji_template = _this.getMessageTextForContactPreview(message, contact);
                     if(message && message.metadata && message.metadata.feedback){
-                        emoji_template ="You "+emoji_template;
+                        emoji_template = MCK_LABELS["you"] + " " + emoji_template;
                     }
                     if(typeof emoji_template =="undefined"){
                         return;
@@ -6111,7 +6111,7 @@ var CURRENT_GROUP_DATA={};
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 emoji_template = _this.getScriptMessagePreview(message, emoji_template);
                 if(message && message.metadata && message.metadata.feedback){
-                    emoji_template ="You "+emoji_template;
+                    emoji_template = MCK_LABELS["you"] + " " + emoji_template;
                 }
                 (kommunicateCommons.isObject(emoji_template)) ? $textMessage.append(emoji_template): $textMessage.html(emoji_template);
                 if (typeof emoji_template == "undefined") {
