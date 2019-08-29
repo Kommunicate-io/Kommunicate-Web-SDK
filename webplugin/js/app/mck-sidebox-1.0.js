@@ -1882,7 +1882,7 @@ var CURRENT_GROUP_DATA={};
                            document.getElementById("mck-feedback-comment").value = '';
                            if(feedbackData.rating && feedbackData.comments[0]){
                             var feedback =JSON.stringify({"rating":feedbackData.rating,comments:feedbackData.comments[0]});
-                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":"rated the conversation","metadata":{"feedback":feedback}});
+                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback}});
                            }
                        }
                     },
@@ -4427,7 +4427,7 @@ var CURRENT_GROUP_DATA={};
                     '<div class="blk-lg-12">'+
                        '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>'+
                         '<div class ="km-conversation-container-right">'+
-                            '<div class="mck-msg-box ${msgClassExpr}" style= "background-color: ${msgBoxColor}">'+
+                            '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">'+
                                 '<div class="move-right mck-msg-text"></div>'+
                                 '<div class="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">'+
                                     '<div class="mck-msgto">${msgReplyTo} </div>'+
@@ -4918,9 +4918,9 @@ var CURRENT_GROUP_DATA={};
                 if (msg.contentType === 4 || msg.contentType === 10 || msg.contentType === 103) {
                     floatWhere = 'mck-msg-center';
                 }
-                if(floatWhere === "mck-msg-right" && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.primaryColor){
-                    msgBoxColorStyle = WIDGET_SETTINGS.primaryColor;
-                }
+                msgBoxColorStyle = (floatWhere === "mck-msg-right") ? "km-custom-widget-background-color" : "km-custom-widget-background-color-secondary";
+                
+                
                 statusIcon = _this.getStatusIconName(msg);
                 var replyId = msg.key;
                 var replyMessageParameters = "'" + msg.deviceKey + "'," + "'" + msg.to + "'" + ",'" + msg.to + "'" + ",'" + replyId + "'";
