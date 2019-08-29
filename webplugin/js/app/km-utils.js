@@ -47,6 +47,13 @@ KommunicateConstants = {
     },
     DEFAULT_AVATAR_IMAGE : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
     CONVERSATION_CLOSED_STATUS : 'Resolved',
+    CONVERSATION_STATUS :{
+        'Open': 0,
+        'Resolved':2,
+        'closed':2,
+        'Spam/Irrelevant':3,
+        'Duplicate':4
+    },
     MESSAGE_SOURCE: {
         DEVICE: 0,
         WEB: 1,
