@@ -4477,7 +4477,7 @@ var CURRENT_GROUP_DATA={};
                     '<div class="blk-lg-12">'+
                        '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>'+
                         '<div class ="km-conversation-container-right">'+
-                            '<div class="mck-msg-box ${msgClassExpr}" style= "background-color: ${msgBoxColor}">'+
+                            '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">'+
                                 '<div class="move-right mck-msg-text"></div>'+
                                 '<div class="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">'+
                                     '<div class="mck-msgto">${msgReplyTo} </div>'+
@@ -4964,16 +4964,12 @@ var CURRENT_GROUP_DATA={};
                 var timeStamp = "mck-timestamp-"+msg.key;
                 if (msg.type === 0 || msg.type === 4 || msg.type === 6) {
                     floatWhere = 'mck-msg-left';
-                    if (kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.secondaryColor) {
-                        msgBoxColorStyle = WIDGET_SETTINGS.secondaryColor;
-                    }
                 }
                 if (msg.contentType === 4 || msg.contentType === 10 || msg.contentType === 103) {
                     floatWhere = 'mck-msg-center';
                 }
-                if(floatWhere === "mck-msg-right" && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.primaryColor){
-                    msgBoxColorStyle = WIDGET_SETTINGS.primaryColor;
-                }
+                msgBoxColorStyle = (floatWhere === "mck-msg-right") ? "km-custom-widget-background-color" : "km-custom-widget-background-color-secondary";
+                
                 
                 statusIcon = _this.getStatusIconName(msg);
                 var replyId = msg.key;
