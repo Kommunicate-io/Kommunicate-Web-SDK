@@ -66,8 +66,7 @@ Kommunicate.client={
             //ALERT: "false",
             HIDE: "true",
             SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
-            KM_CHAT_CONTEXT: JSON.stringify(chatContext),
-            GROUP_CREATION_URL: parent.location.href
+            KM_CHAT_CONTEXT: JSON.stringify(chatContext)
         };
 
         if (conversationDetail.skipBotEvent) {
