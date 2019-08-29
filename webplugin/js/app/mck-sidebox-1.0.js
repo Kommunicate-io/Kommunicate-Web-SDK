@@ -1888,7 +1888,7 @@ var CURRENT_GROUP_DATA={};
                            document.getElementById("mck-feedback-comment").value = '';
                            if(feedbackData.rating && feedbackData.comments[0]){
                             var feedback =JSON.stringify({"rating":feedbackData.rating,comments:feedbackData.comments[0]});
-                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":"rated the conversation","metadata":{"feedback":feedback}});
+                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback}});
                            }
                        }
                     },
