@@ -4,6 +4,7 @@ function KmCustomTheme() {
     var _this = this;
     var WIDGET_SETTINGS;
     var DEFAULT_BACKGROUND_COLOR = "#5553B7";
+    var DEFAULT_SECONDARY_BACKGROUND_COLOR = "#e6e5ec";
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -25,9 +26,11 @@ function KmCustomTheme() {
         var primaryColor = DEFAULT_BACKGROUND_COLOR;
         if(kommunicateCommons.isObject(WIDGET_SETTINGS)){
             primaryColor = (WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor) ? WIDGET_SETTINGS.primaryColor : DEFAULT_BACKGROUND_COLOR;
+            secondaryColor = (WIDGET_SETTINGS && WIDGET_SETTINGS.secondaryColor) ? WIDGET_SETTINGS.secondaryColor : DEFAULT_SECONDARY_BACKGROUND_COLOR;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
             var kmCustomWidgetCustomCSS = '.km-custom-widget-background-color { background: ' + primaryColor + ' !important;} '+
+            '.km-custom-widget-background-color-secondary { background: ' + secondaryColor + ' !important;} '+
             '.km-custom-widget-border-color { border-color: ' + primaryColor + ' !important;} '+
             '.km-custom-widget-text-color { color: ' + primaryColor + ' !important;} '+
             '.km-custom-widget-fill { fill: ' + primaryColor + ' !important;} '+
