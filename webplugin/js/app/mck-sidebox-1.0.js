@@ -1841,7 +1841,7 @@ var CURRENT_GROUP_DATA={};
                         feedbackObject.comments = [];
                         feedbackObject.rating = parseInt(this.getAttribute("data-rating"));
                         feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                        _this.sendFeedback(feedbackObject);                     
+                        _this.sendFeedback(feedbackObject);  
                     })
                 }
             }
@@ -1857,6 +1857,10 @@ var CURRENT_GROUP_DATA={};
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
                            document.getElementById("mck-feedback-comment").value = '';
+                           if(feedbackData.rating && feedbackData.comments[0]){
+                            var feedback =JSON.stringify({"rating":feedbackData.rating,comments:feedbackData.comments[0]});
+                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback}});
+                           }
                        }
                     },
                     error : function(){
@@ -4365,7 +4369,7 @@ var CURRENT_GROUP_DATA={};
                     '<div class="blk-lg-12">'+
                        '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>'+
                         '<div class ="km-conversation-container-right">'+
-                            '<div class="mck-msg-box ${msgClassExpr}" style= "background-color: ${msgBoxColor}">'+
+                            '<div class="mck-msg-box ${msgClassExpr} ${msgBoxColor}">'+
                                 '<div class="move-right mck-msg-text"></div>'+
                                 '<div class="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">'+
                                     '<div class="mck-msgto">${msgReplyTo} </div>'+
@@ -4787,6 +4791,9 @@ var CURRENT_GROUP_DATA={};
                 var messageClass= "vis";
                 var progressMeterClass = "n-vis";
                 var attachmentBox = "n-vis";
+                if(msg && msg.metadata && msg.metadata.feedback){
+                    return;
+                }
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
                     metadatarepiledto = msg.metadata.AL_REPLY;
                     replyMsg = alMessageService.getReplyMessageByKey(metadatarepiledto);
@@ -4853,9 +4860,9 @@ var CURRENT_GROUP_DATA={};
                 if (msg.contentType === 4 || msg.contentType === 10 || msg.contentType === 103) {
                     floatWhere = 'mck-msg-center';
                 }
-                if(floatWhere === "mck-msg-right" && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.primaryColor){
-                    msgBoxColorStyle = WIDGET_SETTINGS.primaryColor;
-                }
+                msgBoxColorStyle = (floatWhere === "mck-msg-right") ? "km-custom-widget-background-color" : "km-custom-widget-background-color-secondary";
+                
+                
                 statusIcon = _this.getStatusIconName(msg);
                 var replyId = msg.key;
                 var replyMessageParameters = "'" + msg.deviceKey + "'," + "'" + msg.to + "'" + ",'" + msg.to + "'" + ",'" + replyId + "'";
@@ -5864,6 +5871,9 @@ var CURRENT_GROUP_DATA={};
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
                     var emoji_template = _this.getMessageTextForContactPreview(message, contact);
+                    if(message && message.metadata && message.metadata.feedback){
+                        emoji_template = MCK_LABELS["you"] + " " + emoji_template;
+                    }
                     if(typeof emoji_template =="undefined"){
                         return;
                     }
@@ -5978,6 +5988,9 @@ var CURRENT_GROUP_DATA={};
                 }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 emoji_template = _this.getScriptMessagePreview(message, emoji_template);
+                if(message && message.metadata && message.metadata.feedback){
+                    emoji_template = MCK_LABELS["you"] + " " + emoji_template;
+                }
                 (kommunicateCommons.isObject(emoji_template)) ? $textMessage.append(emoji_template): $textMessage.html(emoji_template);
                 if (typeof emoji_template == "undefined") {
                     $textMessage.html("");
