@@ -4957,6 +4957,9 @@ var CURRENT_GROUP_DATA={};
                 var timeStamp = "mck-timestamp-"+msg.key;
                 if (msg.type === 0 || msg.type === 4 || msg.type === 6) {
                     floatWhere = 'mck-msg-left';
+                    if (kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.secondaryColor) {
+                        msgBoxColorStyle = WIDGET_SETTINGS.secondaryColor;
+                    }
                 }
                 if (msg.contentType === 4 || msg.contentType === 10 || msg.contentType === 103) {
                     floatWhere = 'mck-msg-center';
@@ -4964,6 +4967,7 @@ var CURRENT_GROUP_DATA={};
                 if(floatWhere === "mck-msg-right" && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.primaryColor){
                     msgBoxColorStyle = WIDGET_SETTINGS.primaryColor;
                 }
+                
                 statusIcon = _this.getStatusIconName(msg);
                 var replyId = msg.key;
                 var replyMessageParameters = "'" + msg.deviceKey + "'," + "'" + msg.to + "'" + ",'" + msg.to + "'" + ",'" + replyId + "'";
