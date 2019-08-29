@@ -9511,14 +9511,10 @@ var CURRENT_GROUP_DATA={};
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
                             ALStorage.updateLatestMessage(message);
                             var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
-                            if (contact && message.metadata && message.metadata.KM_STATUS) {
-                                 contact.metadata.CONVERSATION_STATUS = KommunicateConstants.CONVERSATION_STATUS[message.metadata.KM_STATUS];
-                                 MCK_GROUP_MAP[message.groupId] = contact;
-                            }
                                 var $mck_sidebox_content = $applozic("#mck-sidebox-content");
                                 var tabId = $mck_message_inner.data('mck-id');
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
-                                    contact && contact.metadata && contact.metadata.CONVERSATION_STATUS && contact.metadata.CONVERSATION_STATUS === KommunicateConstants.CONVERSATION_STATUS.Resolved && KommunicateUI.showClosedConversationBanner(true);
+                                    resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
                                     if (message && message.metadata && message.metadata.KM_ASSIGN) {
                                         var getUsersDetailparams = {
                                             "cached": false
