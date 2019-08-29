@@ -90,6 +90,7 @@ Kommunicate.defaultLabels = {
     'talk.to.agent': 'Talk to an agent',
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
+    'conversation.rated':'rated the conversation',
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
         'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
