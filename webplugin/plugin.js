@@ -6,6 +6,16 @@ var MCK_PLUGIN_VERSION = ":MCK_PLUGIN_VERSION";
 var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ":PRODUCT_ID";
 
+var kmCustomElements = {
+  "iframe": {
+    id: "kommunicate-widget-iframe",
+    styleSheetId: "kommunicate-style-sheet"
+  },
+  "imageModal": {
+    id: "km-fullscreen-image-modal",
+    styleSheetId: "km-fullscreen-image-modal-style-sheet"
+  }
+};
 
 // iframe class
 var kmCustomIframe =   
@@ -45,10 +55,38 @@ var kmCustomIframe =
     '    height: 75px; '+
     '    width:  75px; '+
     '    box-shadow: none!important; '+
-    '}\n';
+    '} \n' +
+    '.mck-restrict-scroll{ '+
+        'position:fixed!important;'+
+        'overflow:hidden!important;'+
+        'margin:0;'+
+        'height:100vh;'+
+        'width:100vw;'+
+    '} \n';
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 
+function removeKommunicateScripts() {
+
+  window.KommunicateGlobal = null;
+  window.Kommunicate = null;
+  // delete iframe, kommunicate style sheet, image view modal, origin file
+  removeElementFromHtmlById([
+    kmCustomElements.imageModal.styleSheetId,
+    kmCustomElements.imageModal.id,
+    kmCustomElements.iframe.id,
+    kmCustomElements.iframe.styleSheetId
+  ]);
+  var originFile = document.querySelector("script[src*='kommunicate.app']");
+  originFile && originFile.parentNode.removeChild(originFile);
+};
+
+function removeElementFromHtmlById(elementIdArray) {
+  for (var index in elementIdArray){
+    var element = document.getElementById(elementIdArray[index]);
+    element && element.parentNode.removeChild(element);
+  };
+};
 function appendIframe() {
   createKommunicateIframe();
   createCustomClasses(kmCustomIframe); // Add class to document
@@ -61,6 +99,7 @@ function isV1Script() {
 function createCustomClasses(classSettings) {
   // Create custom classes 
   var style = document.createElement('style');
+  style.id = "kommunicate-style-sheet";
   style.type = 'text/css';
   style.innerHTML = classSettings;
   document.getElementsByTagName('head')[0].appendChild(style);
@@ -243,6 +282,7 @@ function addFullviewImageModal () {
 
       // Append CSS of image fullview viewer modal to body of html page
       var style = document.createElement('style');
+      style.id = 'km-fullscreen-image-modal-style-sheet';
       style.type = 'text/css';
       style.innerHTML = addFullviewImageModalCss;
       document.getElementsByTagName('head')[0].appendChild(style);

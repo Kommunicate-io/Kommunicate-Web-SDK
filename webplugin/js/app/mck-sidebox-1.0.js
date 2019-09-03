@@ -867,7 +867,7 @@ var CURRENT_GROUP_DATA={};
                 KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: KommunicateUtils.getDomainFromUrl()});
                 $applozic("#mck-sidebox").hide();
                 $applozic("#mck-sidebox-launcher").hide();
-                parent.document.getElementById("kommunicate-widget-iframe") && (parent.document.getElementById("kommunicate-widget-iframe").style.display = "none")
+                parent.document.getElementById("kommunicate-widget-iframe") && (parent.document.getElementById("kommunicate-widget-iframe").style.display = "none");
             }
             IS_LOGGED_IN = false;
         };
@@ -1824,11 +1824,6 @@ var CURRENT_GROUP_DATA={};
                 var parentBody = parent && parent.document.body;
                 var parentHead = parent && parent.document.head;
                 var parentHtmlTag = parent && parent.document.getElementsByTagName('html')[0];
-                var style = document.createElement('style');
-                var restrictCss = '.mck-restrict-scroll{position:fixed!important; overflow:hidden!important;margin:0;height:100vh;width:100vw;}';
-                style.type = 'text/css';
-                style.innerHTML = restrictCss;
-                parentHead && parentHead.appendChild(style);
 
                 sideboxLauncher.addEventListener('click',function(){
                    kommunicateCommons.checkIfDeviceIsHandheld() && (

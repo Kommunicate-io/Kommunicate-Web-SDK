@@ -243,6 +243,7 @@ $applozic.extend(true,Kommunicate,{
             window.$applozic.fn.applozic('logout');
         };
         KommunicateUtils.deleteUserCookiesOnLogout();
+        parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
         window.$applozic.fn.applozic("mckLaunchSideboxChat");
