@@ -110,7 +110,6 @@ function createKommunicateIframe() {
   if(document.getElementById(kmCustomElements.iframe.id)){
     throw new Error(" Kommunicate script is already loaded, please check if you're loading it more than once.");
   };
-  console.log("error");
   var kommunicateIframe = document.createElement("iframe");
   kommunicateIframe.setAttribute("style", "overflow:hidden;"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
