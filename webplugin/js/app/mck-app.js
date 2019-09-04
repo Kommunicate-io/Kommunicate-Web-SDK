@@ -306,14 +306,14 @@ function ApplozicSidebox() {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
                         sentryConfig.enable && loadErrorTracking(userId);
-                        loadPseudoName(userId);
+                        getApplicationSettings(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
                     sentryConfig.enable && loadErrorTracking(userId);
-                    loadPseudoName(userId);
+                    getApplicationSettings(userId);
                 };
             }
             body.appendChild(script);
@@ -382,7 +382,7 @@ function ApplozicSidebox() {
         }
     };
     
-    function loadPseudoName(userId) {
+    function getApplicationSettings(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
