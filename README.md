@@ -1,13 +1,14 @@
-<img src="https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/images/KM%20Live%20chat%20plugin.png" />
+<img src="https://kommunicate-prod.s3.amazonaws.com/logo/Header.jpg" />
 
 # [Kommunicate ](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web)Live Chat Plugin For Web
 
 
 ### Overview :
+
 Kommunicate provides open source live chat Plugin. The Kommunicate plugin is flexible, lightweight and easily integrable. 
-It lets you easily add real time live chat and in-app messaging in your mobile applications and websites for customer support.
-The live chat plugin is equipped with advance messaging options such as sending attachments, sharing location and rich messaging.
-<img src="https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/images/KM%20Plugin.gif" />
+It lets you easily add real-time live chat and in-app messaging in your websites and web apps for customer support. The live chat plugin is equipped with advance messaging options such as real-time chat, sending attachments, sharing location and rich messaging.
+
+Kommunicate has a powerful human+ chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
 
 
 ### Features:
@@ -20,19 +21,17 @@ Conversations: Manage all your customer queries coming from the live chat plugin
 
 Dashboard: A powerful dashboard to see, analyze and act upon your customer conversation data. Helps you analyze the performance of support agents as well.
 
-FAQs: Create Frequently Asked Questions (FAQs) to cater to generic and recurring customer queries. Your customers will be able to directly access FAQs in chat.
+Helpcenter: Create your knowledge base and deploy on a dedicated page to cater to generic and recurring customer queries. Your customers will also be able to directly access FAQs in chat.
 
-Mailbox: A simple and powerful team inbox for managing, receiving and replying to all your customer support emails. 
+Mailbox: A simple and powerful team inbox for ticketing, managing, receiving and replying to all your customer support emails. 
 
 Integrations: Easily move data between Kommunicate and your other favorite apps. Integrate your favorite CRM, knowledge base software and other apps.
 
-Conversation Routing: Select routing rules for incoming conversations for both your agents and bots. Choose between a round robin assignment or to notify all.
+Conversation Routing: Select routing rules for incoming conversations for both your agents and bots. Choose between automatic assignments or to notify all.
 
-Smart Actionable Rich Messaging: Leverage actionable rich messages using buttons, cards or lists to provide an exquisite support chat experience to your customers.
+Smart Rich Messaging: Leverage rich messages using buttons, cards, carousels, forms or lists to provide an exquisite support chat experience to your customers.
 
 Quick Replies: Quickly respond to generic user queries using Quick Replies. Easily create and manage templated messages from your dashboard.
-
-Welcome Messages: Create custom and conditional welcome messages based on whether your customer support agents are online or offline. 
 
 ### Example :
 
@@ -40,13 +39,12 @@ https://jsfiddle.net/Kommunicate/wgLuLLbu/
 
 ### Getting Started :
 
-Create your account by [signing](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web) up for Kommunicate. If you already have a Kommunicate account, log in to your account and go to Settings -> Install section and copy the script.
+Create your account by [signing](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web) up for Kommunicate. If you already have a Kommunicate account, log in to your account and go to [Settings -> Install](https://dashboard.kommunicate.io/settings/install) section and copy the script.
 
 Or
 
-You can copy the below script and replace required parameters manually.
+You can copy the below script and replace the required parameters manually. Note: You will get your <APP_ID> in the [Install](https://dashboard.kommunicate.io/settings/install) section. 
 
-Script
 
 ```
 <script type="text/javascript">
@@ -54,7 +52,7 @@ Script
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {"appId": appId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
+     var kommunicateSettings = {"appId": <APP_ID>,"conversationTitle":<YOUR_CONVERSATION_TITLE>,"botIds":<BOT_IDs>,"onInit":callback};
 
     /*----------------- Kommunicate settings end ------------------*/
 
@@ -72,4 +70,4 @@ Script
 
 ### Docs:
 
-Please check out the detailed [Documentation](https://docs.kommunicate.io/docs/web-installation.html) for more features, implementation, and customizations.
+Please check out the detailed [documentation](https://docs.kommunicate.io/docs/web-installation.html) for more features, implementation and customizations.
