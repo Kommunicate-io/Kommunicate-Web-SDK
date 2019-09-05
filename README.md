@@ -8,7 +8,7 @@
 Kommunicate provides open source live chat Plugin. The Kommunicate plugin is flexible, lightweight and easily integrable. 
 It lets you easily add real-time live chat and in-app messaging in your websites and web apps for customer support. The live chat plugin is equipped with advance messaging options such as real-time chat, sending attachments, sharing location and rich messaging.
 
-Kommunicate has a powerful human+ chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
+Kommunicate has a powerful human + chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
 
 
 ### Features:
@@ -52,14 +52,24 @@ You can copy the below script and replace the required parameters manually. Note
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {"appId": <APP_ID>,"conversationTitle":<YOUR_CONVERSATION_TITLE>,"botIds":<BOT_IDs>,"onInit":callback};
+     var kommunicateSettings = {
+      "appId": "<APP_ID>",  
+      "automaticChatOpenOnNavigation": true,
+      "popupWidget": true
+      /*
+      "onInit": function (){
+        // paste your code here
+      },
+        "botIds":["<BOT_ID_1>","<BOT_ID_2>"]
+      */
+      };
 
     /*----------------- Kommunicate settings end ------------------*/
 
      var s = document.createElement("script");
       s.type = "text/javascript";
       s.async = true;
-      s.src = "https://api.kommunicate.io/kommunicate.app";
+      s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
       var h = document.getElementsByTagName("head")[0];
       h.appendChild(s);
       window.kommunicate = m;
