@@ -559,6 +559,12 @@ var CURRENT_GROUP_DATA={};
             if (KOMMUNICATE_VERSION === "v2" && window.frameElement.getAttribute('data-protocol') == "file:" && !window.top.hasOwnProperty('cordova')) {
                 kommunicateCommons.modifyClassList( {id : ["km-local-file-system-warning"]}, "vis","n-vis");
             }
+            document.addEventListener('keydown', function(e) {
+                document.body.classList.add("accesibility");
+            });
+            document.addEventListener('mousedown', function(e) {
+                document.body.classList.remove("accesibility");
+            });
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
@@ -3675,8 +3681,8 @@ var CURRENT_GROUP_DATA={};
                         var isMessages = true;
                         //Display/hide lead(email) collection template
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
-                        CURRENT_GROUP_DATA.conversationStatus = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
-                        CURRENT_GROUP_DATA.conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                        CURRENT_GROUP_DATA.conversationStatus = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
+                        CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
                         if (params.isGroup) {

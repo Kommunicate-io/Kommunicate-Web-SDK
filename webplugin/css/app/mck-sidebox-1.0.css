@@ -1508,7 +1508,7 @@
 	resize: none;
 	background-color: white;
 	width: auto;
-	outline: none;
+	outline: none !important;
 	margin: 0px;
 	font-size: 16px;
 	overflow: auto;
@@ -6098,3 +6098,10 @@ div#mck-rated:before{
 	  opacity: 0;
 	}
   }
+
+body:not(.accesibility) :focus {
+	outline: none;
+}
+body.accesibility :focus {
+	outline: 5px auto #3b99fc;
+}
