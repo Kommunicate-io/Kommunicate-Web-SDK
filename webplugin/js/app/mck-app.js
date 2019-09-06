@@ -294,12 +294,47 @@ function ApplozicSidebox() {
     };
     function mckLoadAppScript() {
         var userId = KommunicateUtils.getRandomId();
+        var cookiePrefix = KommunicateUtils.getCookiePrefix();
+        var mapCookies = [{
+            oldName: 'kommunicate-id',
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+            skipPrefix: true
+        }, {
+            oldName: "userName",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+            skipPrefix: true
+
+        }, {
+            oldName: "km_id",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+            skipPrefix: true
+        }, {
+            oldName: "km_user_name",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+            skipPrefix: true
+        }, {
+            oldName: "km_lead_collection",
+            newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+            skipPrefix: true
+        },{
+            oldName: "_kom_km_id",
+            //skip newName to delete the cookie  
+            skipPrefix: true
+        },{
+            oldName: "_kom_km_lead_collection",
+            skipPrefix: true
+        },{
+            oldName: "_kom_km_user_name",
+            skipPrefix: true
+        }];
+        
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.crossOrigin = "anonymous";
             script.src = KOMMUNICATE_PLUGIN_MIN_JS;
+            seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
@@ -382,6 +417,21 @@ function ApplozicSidebox() {
         }
     };
     
+    function seekReplaceDestroyCookies (mapCookies){
+       var  hostName = parent.window.location.hostname;
+        mapCookies && mapCookies.forEach(function(arrayItem){
+            if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
+                var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
+                if(arrayItem.newName){
+                    KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
+                }
+                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
+                // deleting for old version where domain is set as hostname
+                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
+            }
+        })
+    };
+
     function loadPseudoName(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
