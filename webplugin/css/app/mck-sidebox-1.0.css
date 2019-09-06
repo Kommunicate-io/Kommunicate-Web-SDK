@@ -3680,11 +3680,11 @@ display: none;
 	position: relative;
 	vertical-align: middle;
 } */
-.mck-icon--location, .mck-icon--email {
+.mck-icon--location, .mck-icon--email, .mck-icon--rich-message {
 	vertical-align: middle;
 	margin-right: 5px;
 }
-.mck-icon--location svg, .mck-icon--email svg {
+.mck-icon--location svg, .mck-icon--email svg, .mck-icon--rich-message svg {
 	vertical-align: sub;
 	margin-right: 7px;
 }
