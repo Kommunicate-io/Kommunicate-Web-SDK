@@ -2480,19 +2480,88 @@ var CURRENT_GROUP_DATA={};
                     _this.toggleMediaOptions(this);
 
                 });
-                $mck_text_box.keyup(function (){
+             
+            _this.cursorPosition =  function () {
+                var sel = document.getSelection();
+                sel.modify("extend", "backward", "documentboundary");
+                var pos = sel.toString().length;
+                if(sel.anchorNode != undefined) sel.collapseToEnd();
+                return pos;
+            }
+            _this.disableSendButton = function () {
+                let sendButton = document.getElementById('mck-msg-sbmt');
+                sendButton.setAttribute("disabled", true);
+                CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = true;
+            }
+            _this.enableSendButton = function () {
+                let sendButton = document.getElementById('mck-msg-sbmt');
+                sendButton.removeAttribute("disabled", false);
+                CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = false;
+            }
+                $mck_text_box.on('input paste', function (event){
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
+                        let warningLength = 199;
+                        let maxLength = 256;
+                        let textBox = $mck_text_box[0]; //using seperate selector for vanilla JS functions
                         if (!(document.getElementById('mck-char-count'))) {
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var str = ($mck_text_box.text().toString()).trim();
-                        var len = str.length;
-                        if (len > 199) {
-                            if (len > 256) {
-                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (len - 256) + " " + MCK_LABELS['limit.characters'] + ")";
+                        let textVal = mckUtils.textVal(textBox);
+                        let str = textVal.trim();
+                        var textLength = str.length;
+                        if (textLength > warningLength) {
+                            let caretPosition = _this.cursorPosition();
+                            if (textLength > maxLength) {
+                                _this.disableSendButton();
+                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (textLength - maxLength) + " " + MCK_LABELS['limit.characters'] + ")";
+                                let preSpanContent = str.slice(0,maxLength);
+                                preSpanContent = preSpanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                let spanContent = str.slice(maxLength);
+                                spanContent = spanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                let warningSpan = document.getElementById('mck-text-warning-span');
+                                let normalSpan = document.getElementById('mck-normal-span');
+                                if (warningSpan && !(event.type == 'paste')) {
+                                    if(caretPosition <= (maxLength + 1)) {
+                                        warningSpan.innerHTML = spanContent;
+                                        normalSpan.innerHTML = preSpanContent;
+                                        let selection = document.getSelection();
+                                        (caretPosition > maxLength) ? selection.collapse(warningSpan.firstChild,caretPosition - maxLength) : selection.collapse(normalSpan.firstChild,caretPosition);
+                                    }
+                                } else if(warningSpan && (event.type == 'paste')) {
+                                    textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true" style="background-color:rgb(255,184,194);" id="mck-text-warning-span"></span>';
+                                    normalSpan = document.getElementById('mck-normal-span');
+                                    normalSpan.innerHTML = preSpanContent;
+                                    warningSpan = document.getElementById('mck-text-warning-span');
+                                    warningSpan.innerHTML = spanContent;
+                                    let selection = document.getSelection();
+                                    (caretPosition > maxLength) ? selection.collapse(warningSpan.firstChild,caretPosition - maxLength) : selection.collapse(normalSpan.firstChild,caretPosition);
+                                } else {
+                                    textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true" id="mck-text-warning-span"></span>';
+                                    normalSpan = document.getElementById('mck-normal-span');
+                                    normalSpan.innerHTML = preSpanContent;
+                                    warningSpan = document.getElementById('mck-text-warning-span');
+                                    warningSpan.innerHTML = spanContent;
+                                    let selection = document.getSelection();
+                                    (caretPosition > maxLength) ? selection.collapse(warningSpan.firstChild,caretPosition - maxLength) : selection.collapse(normalSpan.firstChild,caretPosition);
+                                }
                             } else {
-                                remtxt = "(" + (256 - len) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
+                                let normalSpan = document.getElementById('mck-normal-span');
+                                let warningSpan = document.getElementById('mck-text-warning-span');
+                                var spanRemains = '';
+                                if (normalSpan) {
+                                    spanRemains = normalSpan.innerHTML;
+                                }
+                                if (warningSpan) {
+                                    spanRemains += warningSpan.innerHTML;
+                                }
+                                if (spanRemains.length > 1) {
+                                    textBox.innerHTML = spanRemains;
+                                    let selection = document.getSelection();
+                                    selection.collapse(textBox.firstChild,caretPosition);
+                                }
+                                _this.enableSendButton();
+                                remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
                             document.getElementById('mck-char-count').innerHTML = remtxt;
                             warningBox.classList.remove("n-vis");
@@ -2501,6 +2570,7 @@ var CURRENT_GROUP_DATA={};
                                 warningBox.classList.remove('mck-warning-slide-down');
                             }
                         } else {
+                            _this.enableSendButton();
                           if (!(warningBox.classList.contains("n-vis")) && !(warningBox.classList.contains('mck-warning-slide-down'))) {
                                     warningBox.classList.add('mck-warning-slide-down');
                                     warningBox.classList.remove('mck-warning-slide-up');
@@ -2534,7 +2604,7 @@ var CURRENT_GROUP_DATA={};
                             }, 0);
                             return false;
                         }
-                    } else if (e.keyCode === 13) {
+                    } else if (e.keyCode === 13 && !CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
                         e.preventDefault();
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0, $mck_msg_inner.data('mck-id'));
