@@ -6232,3 +6232,78 @@ body:not(.accesibility) :focus {
 body.accesibility :focus {
 	outline: 5px auto #3b99fc;
 }
+
+/* Chat Popup Template Code Starts */
+
+.chat-popup-widget-container {
+    box-shadow: 0 2px 9px 2px rgba(0, 0, 0, 0.17);
+    background-color: #ffffff;
+    position: absolute;
+	min-height: 70px;
+	font-family: 'Roboto', sans-serif;
+	width: 100%;
+	max-width: 380px;
+	cursor: pointer;
+}
+
+.chat-popup-widget-container--horizontal {
+	border-radius: 40px;
+	bottom: 5px;
+	right: 5px;
+}
+
+.chat-popup-widget-container--vertical {
+	border-radius: 10px;
+    bottom: 7px;
+	right: 85px;
+	min-height: 75px;
+	max-width: 300px;
+}
+
+.chat-popup-widget-text-wrapper {
+
+}
+
+.chat-popup-widget-text {
+	font-size: 16px;
+	line-height: 1.2;
+	letter-spacing: 0.49px;
+	color: #212121;
+}
+
+.chat-popup-widget-container .chat-popup-widget-text-wrapper {
+	min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chat-popup-widget-container .chat-popup-widget-text {
+	margin: 15px;
+}
+
+.chat-popup-widget-container--vertical .chat-popup-widget-text-wrapper {
+	min-height: 75px;
+}
+
+.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
+	padding-left: 15px;
+}
+
+.km-no-box-shadow {
+	box-shadow: none;
+}
+
+.chat-popup-widget-container--vertical.km-animate {
+	/* animation: reveal 7s 1; */
+}
+
+@keyframes reveal {
+    0% {opacity:0;width:0px;}
+    20% {opacity:1;width:0px;}
+    30% {width:380px;}
+    80% {opacity:1;}
+    100% {opacity:1;width:380px;}
+}
+
+/* Chat Popup Template Code Ends */

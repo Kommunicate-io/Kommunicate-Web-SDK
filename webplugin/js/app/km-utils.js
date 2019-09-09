@@ -142,7 +142,11 @@ KommunicateConstants = {
         ONLINE: "online",
         OFFLINE: "offline"
     },
-    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform"
+    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform",
+    CHAT_POPUP_TEMPLATE: {
+        HORIZONTAL: 1,
+        VERTICAL: 2
+    }
 }
 
 /**
