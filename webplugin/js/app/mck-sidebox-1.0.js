@@ -6358,7 +6358,7 @@ var CURRENT_GROUP_DATA={};
                 }
             };
             _this.getScriptMessagePreview = function(message,emoji_template){
-				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && !Kommunicate.isRichTextMessage(message.metadata)) {
 					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
 						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 					}
@@ -6386,6 +6386,9 @@ var CURRENT_GROUP_DATA={};
                             var emailSvg = '<span class="mck-icon--email"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-6.54 4.09c-.65.41-1.47.41-2.12 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72z" fill="rgba(38,50,56,.52)"/></svg>';
 
                             emoji_template = result ? emailSvg + result[0]  : emailSvg + '</span><span>Email</span>';
+                        } else if(Kommunicate.isRichTextMessage(message.metadata)) {
+                            emoji_template = '<span class="mck-icon--rich-message"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg></span><span>'+message.message || MCK_LABELS['rich.message']['notification.preview']+'</span>';
+
                         } else {
                             var msg = message.message;
                             if (mckUtils.startsWith(msg, "<img")) {
@@ -6417,7 +6420,7 @@ var CURRENT_GROUP_DATA={};
                         if (message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE && contact.type !== KommunicateConstants.GROUP_TYPE.SUPPORT) {
                             emoji_template = msgFrom + ": " + emoji_template;
                         }
-                        if (emoji_template.indexOf('emoji-inner') === -1 && message && message.message && message.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
+                        if (emoji_template.indexOf('emoji-inner') === -1 && message && message.message && message.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT && !Kommunicate.isRichTextMessage(message.metadata)) {
                             var x = d.createElement('p');
                             x.appendChild(d.createTextNode(emoji_template));
                             emoji_template = x;
