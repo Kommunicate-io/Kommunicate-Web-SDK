@@ -120,5 +120,8 @@ Kommunicate.defaultLabels = {
         'poor': "Poor",
         'great': "Great",
         'average': "Average"
+    },
+    'rich.message':{
+        'notification.preview' : "Message"
     }
 }
