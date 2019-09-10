@@ -3670,7 +3670,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     KommunicateUI.setAvailabilityStatus("away");
                 }
                 KommunicateUI.populateAwayMessage(err, message);
-                KommunicateUI.updateLeadCollectionStatus(err, message, data.message)
+                KommunicateUI.updateLeadCollectionStatus(err, message, data.message || []);
             };
 
             _this.loadMessageList = function (params, callback) {
@@ -3728,27 +3728,6 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                         CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
-                        if (params.isGroup) {
-                            Kommunicate.conversation.processConversationOpenedFromList(data);
-                            var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                            var conversationAssigneeDetails = data.userDetails.filter(function (item) {
-                                return item.userId == conversationAssignee;
-                            })[0];
-                            var userSession = (KommunicateUtils.isSessionStorageAvailable()) ? JSON.parse(sessionStorage.kommunicate) : {};
-                            var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
-                            if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
-                                Kommunicate.getAwayMessage({
-                                        "applicationId": MCK_APP_ID,
-                                        "conversationId": params.tabId,
-                                        "languageCode": languageCode||"default"
-                                    },
-                                    function (err, message) {
-                                        _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
-                                    }
-                                );
-                            }
-                        }
-                        
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
@@ -4009,10 +3988,16 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
                                 }
-
+                                if (params.isGroup) {
+                                    Kommunicate.conversation.processConversationOpenedFromList(data);
+                                    var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    var conversationAssigneeDetails = data.userDetails.filter(function (item) {
+                                        return item.userId == conversationAssignee;
+                                    })[0];
+                                };
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
                                 if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
-                                    var CONVERSATION_ASSIGNEE, detailOfAssignedUser, name;
+                                    var name;
                                     var updateConversationHeaderParams = new Object();
                                     if(data.groupFeeds[0].name){
                                         name = data.groupFeeds[0].name;
@@ -4022,27 +4007,14 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                     } else {
                                         name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, params.userName);
                                     };
-                                    CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                                     updateConversationHeaderParams.name = name;
-                                    $applozic.each(data.userDetails, function (i, userDetail) {
-                                        if(userDetail.userId == CONVERSATION_ASSIGNEE || userDetail.displayName == CONVERSATION_ASSIGNEE) {
-                                            detailOfAssignedUser = userDetail;
-                                            return false;
-                                        }
-                                    });
                                     data && data.groupFeeds[0] && (updateConversationHeaderParams.imageUrl = data.groupFeeds[0].imageUrl);
-                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                                        // Checking if the CONVERSATION_ASSIGNEE is bot or not
-                                        updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
-                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
-                                        if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
-                                            updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
-                                        } else {
-                                            updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
-                                            isAgentOffline = true;
-                                        }
-                                    }
-                                    _this.updateConversationHeader(updateConversationHeaderParams);
+                                    _this.getUserAvailabilityStatus(conversationAssigneeDetails, function(data){
+                                        updateConversationHeaderParams.availabilityStatus = data.availabilityStatus;
+                                        isAgentOffline = data.isAgentOffline;
+                                        _this.getAndSetAwayMessage(data, params, conversationAssigneeDetails, isAgentOffline);
+                                        _this.updateConversationHeader(updateConversationHeaderParams);
+                                    });
                                 }
                             }
                         }
@@ -4078,6 +4050,37 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     }
                 });
             };
+
+            _this.getAndSetAwayMessage = function (data, params, conversationAssigneeDetails, isAgentOffline) {
+                var userSession = (KommunicateUtils.isSessionStorageAvailable()) ? JSON.parse(sessionStorage.kommunicate) : {};
+                var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
+                if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
+                    Kommunicate.getAwayMessage({
+                            "applicationId": MCK_APP_ID,
+                            "conversationId": params.tabId,
+                            "languageCode": languageCode||"default"
+                        },
+                        function (err, message) {
+                            _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
+                        }
+                    );
+                }
+            };
+            _this.getUserAvailabilityStatus = function (detailOfAssignedUser, callback) {
+                var data = new Object();
+                if (typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
+                    // Checking if the CONVERSATION_ASSIGNEE is bot or not
+                    data.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
+                } else if (typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
+                    if (typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
+                        data.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
+                    } else {
+                        data.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
+                        data.isAgentOffline = true;
+                    }
+                }
+                typeof callback == 'function' && callback(data);
+            };
             _this.updateConversationHeader = function (params) {
                 var imageUrl;
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
@@ -4098,16 +4101,16 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     "src": imageUrl,
                     "alt": profileImage
                 });
-                KommunicateUI.setAvailabilityStatus(params.availibilityStatus);
+                KommunicateUI.setAvailabilityStatus(params.availabilityStatus);
             };
             _this.updateAssigneeDetails = function (data) {
                 var updateConversationHeaderParams = new Object();
                 data.displayName && (updateConversationHeaderParams.name = data.displayName);
                 data.imageLink && (updateConversationHeaderParams.imageUrl = data.imageLink);
                 if (data.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                    updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
+                    updateConversationHeaderParams.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
                 } else {
-                    updateConversationHeaderParams.availibilityStatus = data.connected ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
+                    updateConversationHeaderParams.availabilityStatus = data.connected ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
                 };
                 mckMessageService.updateConversationHeader(updateConversationHeaderParams);
             };
@@ -4334,6 +4337,8 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                }
                                params.tabId = group.contactId;
                                params.isGroup = true;
+                               params.viaCreateGroup = true;
+                               params.groupDetails = groupPxy;
                                if (params.isMessage) {
                                    mckMessageLayout.loadTab(params, alMessageService.dispatchMessage)
                                } else {
@@ -4739,8 +4744,25 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                         return;
                     }
                 }
-                mckMessageService.loadMessageList(params, callback);  
-                // _this.openConversation();
+                if (params.viaCreateGroup) {
+                    var groupDetails = params.groupDetails;
+                    var conversationAssignee = groupDetails && groupDetails.metadata.CONVERSATION_ASSIGNEE;
+                    var conversationAssigneeDetails = groupDetails.users.filter(function (item) {
+                        return item.userId == conversationAssignee;
+                    })[0];
+                    var updateConversationHeaderParams = {
+                        'name': params.groupDetails.name,
+                        'imageUrl': params.groupDetails.imageUrl,
+                    };
+                    mckMessageService.getUserAvailabilityStatus(conversationAssigneeDetails, function(data){
+                        updateConversationHeaderParams.availabilityStatus = data.availabilityStatus;
+                        var isAgentOffline = data.isAgentOffline;
+                        mckMessageService.getAndSetAwayMessage({}, params, conversationAssigneeDetails, isAgentOffline);
+                        mckMessageService.updateConversationHeader(updateConversationHeaderParams);
+                    });
+                } else {
+                    mckMessageService.loadMessageList(params, callback);
+                }
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
