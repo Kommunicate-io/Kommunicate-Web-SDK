@@ -1715,9 +1715,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     $applozic.fn.applozic("triggerMsgNotification");
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT);
                     if($mck_sidebox.css('display') === 'block') {
-                        clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
-                        clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
-                        KommunicateUI.togglePopupChatTemplate();
+                        mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
                 }
                 // calling Kommunicate for post initialization processing. error first style.
@@ -2182,6 +2180,12 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 }
                 offlineIntervalId = '';
             };
+
+            _this.clearMsgTriggerAndChatPopuTimeouts = function() {
+                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
+                KommunicateUI.togglePopupChatTemplate();
+            }
         }
 
         function MckMessageService() {
@@ -2432,9 +2436,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     if ($applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).hide();
                     }
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
-                    clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
-                    KommunicateUI.togglePopupChatTemplate();
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
@@ -2445,9 +2447,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
-                    clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
-                    KommunicateUI.togglePopupChatTemplate();
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
                         document.getElementById('launcher-agent-img-container').classList.add('n-vis');
@@ -2684,9 +2684,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     $applozic.fn.applozic("mckLaunchSideboxChat");
                     // var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
-                    clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
-                    KommunicateUI.togglePopupChatTemplate();
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -4563,9 +4561,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             _this.loadTab = function (params, callback) {
                 var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                 (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab()
-                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
-                clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
-                KommunicateUI.togglePopupChatTemplate();
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {

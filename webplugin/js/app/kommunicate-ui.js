@@ -485,14 +485,15 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
 
         if(showTemplate) {
-            kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
+            popupTemplateKey && popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL && kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
             popupTemplateKey && popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
+            kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "km-animate", "n-vis");
         } else {
             kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "", "km-no-box-shadow");
+            kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "", "km-animate");
             kommunicateIframe.classList.remove("chat-popup-widget-horizontal");
             kommunicateIframe.classList.remove("chat-popup-widget-vertical");
-            chatPopupContainer && chatPopupContainer.classList.add('n-vis');
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "n-vis", "km-animate");
         }
     }
