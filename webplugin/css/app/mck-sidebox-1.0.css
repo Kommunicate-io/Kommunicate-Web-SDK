@@ -6469,7 +6469,7 @@ body.accesibility :focus {
 
 @-webkit-keyframes km-reveal-animation-vertical {
 	from {
-		opacity: 1;
+		opacity: 0.6;
 	}
 	to {
 		opacity: 1;
@@ -6479,7 +6479,7 @@ body.accesibility :focus {
 }
 @-moz-keyframes km-reveal-animation-vertical {
 	from {
-		opacity: 1;
+		opacity: 0.6;
 	}
 	to {
 		opacity: 1;
@@ -6488,7 +6488,7 @@ body.accesibility :focus {
 }
 @-o-keyframes km-reveal-animation-vertical {
 	from {
-		opacity: 1;
+		opacity: 0.6;
 	}
 	to {
 		opacity: 1;
@@ -6497,7 +6497,7 @@ body.accesibility :focus {
 }
 @keyframes km-reveal-animation-vertical {
 	from {
-		opacity: 1;
+		opacity: 0.6;
 	}
 	to {
 		opacity: 1;
