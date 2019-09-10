@@ -370,6 +370,7 @@ function ApplozicSidebox() {
             options["widgetSettings"] = widgetSettings;
             options["customerCreatedAt"]=data.customerCreatedAt;
             options["collectFeedback"]=data.collectFeedback;
+            options['chatPopupMessage'] = data.chatPopupMessage;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");

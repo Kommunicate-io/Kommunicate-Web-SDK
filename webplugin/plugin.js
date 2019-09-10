@@ -62,7 +62,24 @@ var kmCustomIframe =
         'margin:0;'+
         'height:100vh;'+
         'width:100vw;'+
-    '} \n';
+    '} \n' + 
+    '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' + 
+    '   width: 410px;' + 
+    '   height: 80px;' + 
+    '} \n' + 
+    '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
+    '   width: 390px;' + 
+    '   height: 120px;' + 
+    '} \n' + 
+    '@media only screen and (max-width: 420px) { ' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
+        'width: 100%;' + 
+        'height: 155px;' + 
+      '} \n' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' + 
+        'width: 100%;' + 
+      '} \n' + 
+    '} \n ';
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 

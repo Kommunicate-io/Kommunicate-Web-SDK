@@ -9,6 +9,7 @@ var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA={};
+var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -401,6 +402,7 @@ var CURRENT_GROUP_DATA={};
         var MCK_ATTACHMENT = (typeof appOptions.attachment === "boolean") ? appOptions.attachment : true;
         var CURRENT_PAGE_TITLE = parent.document.title;
         var FLASH_PAGE_TITLE;
+        var MCK_POPUP_WIDGET_CONTENT = appOptions.chatPopupMessage;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -1390,7 +1392,7 @@ var CURRENT_GROUP_DATA={};
                   if (isAnonymousChat) {
                       return '<a href="#" target="_self" aria-label="Open Chat" tabindex="0" role="button">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ? customLauncherHtml : defaultHtml) + '</a>';
                   } else {
-                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" aria-label="Open Chat" role="button" tabindex="0" aria-live="polite" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" aria-label="Open Chat" role="button" tabindex="0" aria-live="polite" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + Kommunicate.popupChatTemplate.getPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT) + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
                   }
                   
              };
@@ -1710,8 +1712,9 @@ var CURRENT_GROUP_DATA={};
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT);
                     if($mck_sidebox.css('display') === 'block') {
-                        clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                        mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
                 }
                 // calling Kommunicate for post initialization processing. error first style.
@@ -2176,6 +2179,12 @@ var CURRENT_GROUP_DATA={};
                 }
                 offlineIntervalId = '';
             };
+
+            _this.clearMsgTriggerAndChatPopuTimeouts = function() {
+                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
+                KommunicateUI.togglePopupChatTemplate();
+            }
         }
 
         function MckMessageService() {
@@ -2426,7 +2435,7 @@ var CURRENT_GROUP_DATA={};
                     if ($applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).hide();
                     }
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
@@ -2437,7 +2446,7 @@ var CURRENT_GROUP_DATA={};
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
                         document.getElementById('launcher-agent-img-container').classList.add('n-vis');
@@ -2674,7 +2683,7 @@ var CURRENT_GROUP_DATA={};
                     $applozic.fn.applozic("mckLaunchSideboxChat");
                     // var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -4551,7 +4560,7 @@ var CURRENT_GROUP_DATA={};
             _this.loadTab = function (params, callback) {
                 var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                 (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab()
-                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
@@ -8778,6 +8787,7 @@ var CURRENT_GROUP_DATA={};
 
                 var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, isGroup);
                 var notificationsound = mckNotificationTone;
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 _this.showNewMessageNotification(message, contact, displayName);
                 (KOMMUNICATE_VERSION === "v2" && !OPEN_CONVERSATION_ON_NEW_MESSAGE) && _this.handleIframeNotification();
                 if (IS_MCK_NOTIFICATION && !IS_MCK_TAB_FOCUSED) {

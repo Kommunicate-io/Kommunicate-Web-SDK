@@ -20,4 +20,15 @@ Kommunicate.messageTemplate = {
         var data = {key: key};
         return Mustache.to_html(Kommunicate.messageTemplate.getProgressMeter(), data);
     }
+};
+
+Kommunicate.popupChatTemplate = {
+
+    getPopupChatTemplate: function(popupWidgetContent) {
+        var index = (popupWidgetContent.length && popupWidgetContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
+        var templateCss = index === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? 'chat-popup-widget-container--horizontal' : 'chat-popup-widget-container--vertical';
+        var chatPopupTemplateMarkup = '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' + templateCss + ' n-vis applozic-launcher"><div class="chat-popup-widget-text-wrapper"><p class="chat-popup-widget-text">' + (popupWidgetContent.length && popupWidgetContent[0].message) + '</p></div></div>';
+
+        return chatPopupTemplateMarkup;
+    }
 }
