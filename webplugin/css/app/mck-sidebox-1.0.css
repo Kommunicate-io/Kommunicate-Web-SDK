@@ -6506,4 +6506,13 @@ body.accesibility :focus {
 	}
 }
 
+
+@media only screen and (max-width: 420px) {
+	.chat-popup-widget-container {
+		width: calc(100% - 105px);
+	}
+	.chat-popup-widget-container--horizontal {
+		padding-right: 70px;
+	}
+}
 /* Chat Popup Template Code Ends */
