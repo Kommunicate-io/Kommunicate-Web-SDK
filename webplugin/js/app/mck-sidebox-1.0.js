@@ -8788,7 +8788,6 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 
                 var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, isGroup);
                 var notificationsound = mckNotificationTone;
-                clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
                 KommunicateUI.togglePopupChatTemplate();
                 _this.showNewMessageNotification(message, contact, displayName);
                 (KOMMUNICATE_VERSION === "v2" && !OPEN_CONVERSATION_ON_NEW_MESSAGE) && _this.handleIframeNotification();
