@@ -5794,6 +5794,13 @@ div[name="message"]:last-child {
 	text-overflow: ellipsis;
 	margin: 0;
 }
+.mck-msg-preview-visual-indicator-text.applozic-launcher .mck-icon--rich-message{
+	min-width: 25px;
+}
+.mck-msg-preview-visual-indicator-text.applozic-launcher .mck-icon--rich-message + span{
+	white-space: nowrap;
+}
+
 
 @media only screen and (width: 442px) {
 	.mck-sidebox.fade.in.popup-enabled, #km-chat-login-modal.km-sidemodal {
