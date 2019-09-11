@@ -5507,7 +5507,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                       } else if (contact.photoLink) {
                           imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
                       } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                          imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.svg' + '" alt="' + profileDisplayName + '"/>';
+                          imgsrctag = '<img src="' + 'https://cdn.kommunicate.io/kommunicate/bot_default_image.png' + '" alt="' + profileDisplayName + '"/>';
                       } else {
                           if (!displayName) {
                               displayName = contact.displayName;
