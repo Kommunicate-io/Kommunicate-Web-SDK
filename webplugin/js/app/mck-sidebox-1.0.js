@@ -6739,11 +6739,10 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated, null, function() {
                                                     _this.processMessageInQueue(message);
                                                 });
-                                                mckMessageLayout.messageClubbing(false);
                                             } else {
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated);
-                                                mckMessageLayout.messageClubbing(false);
                                             }
+                                            mckMessageLayout.messageClubbing(false);
 
                                             
                                           }
@@ -6814,7 +6813,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             };
 
             _this.isMessageSentByBot = function(message, contact) {
-                return contact.users && contact.users[message.to] && contact.users[message.to].userId !== 'bot' && contact.users[message.to].role === 2;
+                return contact.users && contact.users[message.to] && contact.users[message.to].userId !== 'bot' && contact.users[message.to].role === KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT;
             }
 
             _this.processMessageInQueue = function(message) {
