@@ -454,6 +454,8 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             5 : MCK_LABELS['emoji.hover.text'].average,
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
+        var MCK_BOT_MESSAGE_QUEUE = [];
+        var MCK_BOT_MESSAGE_DELAY = (typeof appOptions.botMessageDelay === "number") ? appOptions.botMessageDelay : 0;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -4480,7 +4482,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=  '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
-                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">'+
+                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr}">'+
                 '<div class="mck-clear">'+
                     '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>'+
                     '<div class="blk-lg-12">'+
@@ -4912,7 +4914,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     }
                 });
             }
-            _this.addMessage = function(msg, contact, append, scroll, appendContextMenu, enableAttachment) {
+            _this.addMessage = function(msg, contact, append, scroll, appendContextMenu, enableAttachment, callback) {
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -5065,6 +5067,10 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     attachmentBox = attachment ? "vis" : "n-vis";
                     var progressMeter = attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey ? Kommunicate.messageTemplate.getProgressMeterContanier(msg.key) : "";
                 }
+                var botMessageDelayClass = 'vis';
+                if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
+                    botMessageDelayClass = 'n-vis';
+                }
                 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -5118,7 +5124,8 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     containerType: containerType,
                     emailMsgIndicatorExpr: emailMsgIndicator,
                     attachmentTemplate:attachmentTemplate,
-                    progressMeter:progressMeter
+                    progressMeter:progressMeter,
+                    botMsgDelayExpr: botMessageDelayClass
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
@@ -5338,6 +5345,10 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     $applozic(".mck-msg-box-rich-text-container .km-faq-answer--body_ans").linkify({
                         target: '_blank'
                     });
+                }
+
+                if(typeof callback == 'function') {
+                    callback();
                 }
             };
             _this.addContactForSearchList = function (contact, $listId) {
@@ -6621,8 +6632,9 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             };
             _this.populateMessage = function (messageType, message, notifyUser) {
                 var callDuration = mckDateUtils.convertMilisIntoTime(message.metadata.CALL_DURATION);
+                var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
                 alUserService.loadUserProfile(message.to);
-                $applozic('.km-typing-wrapper').remove();
+               !_this.isMessageSentByBot(message, contact) && $applozic('.km-typing-wrapper').remove();
 
                 if (message.contentType == 103) {
                     if (message.type == 4 && message.metadata.MSG_TYPE == "CALL_REJECTED") {
@@ -6644,7 +6656,6 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isValidMeta = mckMessageLayout.isValidMetaData(message);
-                var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
                 if ((typeof tabId === 'undefined') || tabId === '') {
                     var mckContactListLength = $applozic("#mck-contact-list").length;
                     if (mckContactListLength > 0 && isValidMeta) {
@@ -6723,8 +6734,17 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                         }
 
                                         if (!message.metadata || (message.metadata.category !== 'HIDDEN' && message.metadata.hide !== "true" && contact.type !== 7)) {
-                                            mckMessageLayout.addMessage(message, contact, true, true, validated);
+
+                                            if(MCK_BOT_MESSAGE_DELAY !== 0 && _this.isMessageSentByBot(message, contact)) {
+                                                mckMessageLayout.addMessage(message, contact, true, true, validated, null, function() {
+                                                    _this.processMessageInQueue(message);
+                                                });
+                                            } else {
+                                                mckMessageLayout.addMessage(message, contact, true, true, validated);
+                                            }
                                             mckMessageLayout.messageClubbing(false);
+
+                                            
                                           }
                                             alMessageService.sendReadUpdate(message.pairedMessageKey);
                                     }
@@ -6791,6 +6811,37 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 }
                 $mck_loading.removeClass('vis').addClass('n-vis');
             };
+
+            _this.isMessageSentByBot = function(message, contact) {
+                return contact.users && contact.users[message.to] && contact.users[message.to].userId !== 'bot' && contact.users[message.to].role === KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT;
+            }
+
+            _this.processMessageInQueue = function(message) {
+                message && message.key && (MCK_BOT_MESSAGE_QUEUE.push(message.key));     
+                MCK_BOT_MESSAGE_QUEUE.length == 1 && _this.procesMessageTimerDelay();
+            }
+
+            _this.procesMessageTimerDelay = function() {
+                var messageContainer = document.getElementById('mck-message-cell'),
+                    message;
+
+                    $mck_msg_inner.append('<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>');
+                    $mck_msg_inner.animate({
+                        scrollTop: $mck_msg_inner.prop("scrollHeight")
+                    }, 0);
+
+                setTimeout(function() {
+                    message = messageContainer.querySelector('div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]');
+                    $applozic('.km-typing-wrapper').remove();
+                    message.classList.remove('n-vis');
+                    $mck_msg_inner.animate({
+                        scrollTop: $mck_msg_inner.prop("scrollHeight")
+                    }, 0);
+                    MCK_BOT_MESSAGE_QUEUE.shift();
+                    MCK_BOT_MESSAGE_QUEUE.length != 0 && _this.procesMessageTimerDelay();
+                }, MCK_BOT_MESSAGE_DELAY);
+            }
+
             _this.getMessageFeed = function (message) {
                 var messageFeed = {};
                 messageFeed.key = message.key;
