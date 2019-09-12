@@ -5068,7 +5068,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     var progressMeter = attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey ? Kommunicate.messageTemplate.getProgressMeterContanier(msg.key) : "";
                 }
                 var botMessageDelayClass = 'vis';
-                if(mckMessageLayout.isMessageSentByBot(msg, contact) && append && MCK_BOT_MESSAGE_DELAY !== 0) {
+                if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
                     botMessageDelayClass = 'n-vis';
                 }
                 
@@ -6735,7 +6735,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 
                                         if (!message.metadata || (message.metadata.category !== 'HIDDEN' && message.metadata.hide !== "true" && contact.type !== 7)) {
 
-                                            if(_this.isMessageSentByBot(message, contact) && MCK_BOT_MESSAGE_DELAY !== 0) {
+                                            if(MCK_BOT_MESSAGE_DELAY !== 0 && _this.isMessageSentByBot(message, contact)) {
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated, null, function() {
                                                     _this.processMessageInQueue(message);
                                                 });
