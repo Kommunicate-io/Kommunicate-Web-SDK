@@ -470,8 +470,8 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
     },
     displayPopupChatTemplate: function(popupChatContent) {
 
-        var delay = popupChatContent.length ? popupChatContent[0].delay : -1;
-        var popupTemplateKey = (popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
+        var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
+        var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
 
         if(delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
@@ -485,8 +485,8 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
 
         if(showTemplate) {
-            popupTemplateKey && popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL && kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
-            popupTemplateKey && popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
+            popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL && kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
+            popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "km-animate", "n-vis");
         } else {
