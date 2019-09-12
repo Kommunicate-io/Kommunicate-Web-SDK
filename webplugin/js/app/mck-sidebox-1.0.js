@@ -2489,12 +2489,12 @@ var CURRENT_GROUP_DATA={};
                     return pos;
                 }
                 _this.disableSendButton = function () {
-                    let sendButton = document.getElementById('mck-msg-sbmt');
+                    var sendButton = document.getElementById('mck-msg-sbmt');
                     sendButton.setAttribute("disabled", true);
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = true;
                 }
                 _this.enableSendButton = function () {
-                    let sendButton = document.getElementById('mck-msg-sbmt');
+                    var sendButton = document.getElementById('mck-msg-sbmt');
                     sendButton.removeAttribute("disabled", false);
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = false;
                 }
