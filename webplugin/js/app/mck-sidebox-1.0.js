@@ -6741,6 +6741,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                                 });
                                             } else {
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated);
+                                                $applozic('.km-typing-wrapper').remove();
                                             }
                                             mckMessageLayout.messageClubbing(false);
 
