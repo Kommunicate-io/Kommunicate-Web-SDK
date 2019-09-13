@@ -6663,6 +6663,7 @@ var CURRENT_GROUP_DATA={};
                                                 });
                                             } else {
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated);
+                                                $applozic('.km-typing-wrapper').remove();
                                             }
                                             mckMessageLayout.messageClubbing(false);
 
