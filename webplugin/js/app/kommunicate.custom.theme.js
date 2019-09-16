@@ -50,7 +50,7 @@ function KmCustomTheme() {
     };
 
     _this.returnCustomWidget = function () {
-        if (kommunicateCommons.isObject(WIDGET_SETTINGS)) {
+        if (kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.iconIndex) {
             if ( WIDGET_SETTINGS.iconIndex === "image"){
                 return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);
             }

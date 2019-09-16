@@ -468,12 +468,13 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
     },
-    displayPopupChatTemplate: function(popupChatContent) {
+    displayPopupChatTemplate: function(popupChatContent, widgetTheme) {
 
+        var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
 
-        if(delay > -1) {
+        if(isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
                 KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true);
             }, delay);
