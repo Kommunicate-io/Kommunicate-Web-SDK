@@ -5532,7 +5532,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 #launcher-agent-img-container img {
 	width: 60px;
-	height: auto;
+	height: 60px;
+	object-fit: cover;
 }
 #launcher-agent-img-container .mck-videocall-image {
 	width: 60px;
