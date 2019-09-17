@@ -2323,6 +2323,7 @@ var CURRENT_GROUP_DATA={};
                 Kommunicate.startConversation(params,callback);
             }
             _this.openChatbox = function (params, callback) {
+                kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
                     $mck_sidebox.mckModal();
@@ -2331,7 +2332,6 @@ var CURRENT_GROUP_DATA={};
                 $mck_msg_to.focus(); 
             }
             _this.loadConversationWithAgents = function (params, callback) {
-                
                 _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == "kommunicate") {
                     $mck_btn_leave_group
@@ -4496,7 +4496,7 @@ var CURRENT_GROUP_DATA={};
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     var kommunicateIframeDocument = kommunicateIframe.contentDocument;
                     var chatbox = kommunicateIframeDocument.getElementById("mck-sidebox-launcher");
-                    chatbox.click();
+                    !kommunicateCommons.isWidgetOpen() && chatbox.click();
                 };
 
                 if ($mck_sidebox.css('display') === 'none') {
