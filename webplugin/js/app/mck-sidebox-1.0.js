@@ -2480,13 +2480,24 @@ var CURRENT_GROUP_DATA={};
                     _this.toggleMediaOptions(this);
 
                 });
-             
-                _this.cursorPosition =  function () {
-                    var sel = document.getSelection();
-                    sel.modify("extend", "backward", "documentboundary");
-                    var pos = sel.toString().length;
-                    if(sel.anchorNode != undefined) sel.collapseToEnd();
-                    return pos;
+                _this.cursorPosition = function (element) {
+                    var selection = window.getSelection();
+                    var currentRange = selection.getRangeAt(element);
+                    var endOffset = currentRange.startOffset;
+                    var startNode = element.firstChild;
+                    var normalSpan = document.getElementById('mck-normal-span');
+                    var currentNode = selection.focusNode;
+                    if(normalSpan) {
+                        startNode = normalSpan.firstChild;
+                    }
+                    var newRange = document.createRange();
+                    newRange.setStart(startNode,0);
+                    newRange.setEnd(currentNode,endOffset);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                    var position = selection.toString().length;
+                    selection.collapseToEnd();
+                    return position;
                 }
                 _this.disableSendButton = function () {
                     var sendButton = document.getElementById('mck-msg-sbmt');
@@ -2511,7 +2522,7 @@ var CURRENT_GROUP_DATA={};
                         var str = textVal.trim();
                         var textLength = str.length;
                         if (textLength > warningLength) {
-                            var caretPosition = _this.cursorPosition();
+                            var caretPosition = _this.cursorPosition(textBox);
                             if (textLength > maxLength) {
                                 _this.disableSendButton();
                                 var selection;
@@ -2557,6 +2568,7 @@ var CURRENT_GROUP_DATA={};
                                     spanRemains += warningSpan.innerHTML;
                                 }
                                 if (spanRemains.length > 1) {
+
                                     textBox.innerHTML = spanRemains;
                                     selection = document.getSelection();
                                     selection.collapse(textBox.firstChild,caretPosition);
