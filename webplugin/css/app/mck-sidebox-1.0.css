@@ -6527,3 +6527,66 @@ body.accesibility :focus {
 	}
 }
 /* Chat Popup Template Code Ends */
+
+/* Chat launcher animation for initial load Code Starts */
+.mck-sidebox-launcher.km-launcher-animation {
+	-webkit-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	   -moz-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	     -o-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	        animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+}
+
+@-webkit-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(0.5, 0.5);
+		        transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1, 1);
+		        transform: scale(1, 1);
+	}
+}
+@-moz-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-moz-transform: scale(0.5, 0.5);
+		     transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-moz-transform: scale(1, 1);
+		     transform: scale(1, 1);
+	}
+}
+@-o-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-o-transform: scale(0.5, 0.5);
+		   transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-o-transform: scale(1, 1);
+		   transform: scale(1, 1);
+	}
+}
+@keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(0.5, 0.5);
+		   -moz-transform: scale(0.5, 0.5);
+		     -o-transform: scale(0.5, 0.5);
+		        transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1, 1);
+		   -moz-transform: scale(1, 1);
+		     -o-transform: scale(1, 1);
+		        transform: scale(1, 1);
+	}
+}
+
+/* Chat launcher animation for initial load Code Ends */
