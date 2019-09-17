@@ -69,9 +69,8 @@ Kommunicate.client={
             GROUP_CREATION_URL: parent.location.href
         };
 
-        if (conversationDetail.skipBotEvent) {
-            groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent;
-        }
+        conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
+        conversationDetail.skipBotEvent && (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
 
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
         conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE)

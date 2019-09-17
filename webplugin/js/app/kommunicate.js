@@ -50,11 +50,11 @@ $applozic.extend(true,Kommunicate,{
                 user.push({ "userId": params.botIds[i], "groupRole": 2 });
             }
         }
-        var groupName = params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
+        var groupName = params.defaultGroupName || params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
         var assignee = params.defaultAssignee || params.assignee || params.agentId;
 
         var groupMetadata = {};
-
+        params.defaultGroupName && (groupMetadata.KM_ORIGINAL_TITLE = true);
         ((typeof params.metadata == "object"  && typeof params.metadata['KM_CHAT_CONTEXT'] == "object")) && (groupMetadata.KM_CHAT_CONTEXT = params.metadata['KM_CHAT_CONTEXT']);
 
         params.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);

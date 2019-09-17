@@ -9597,7 +9597,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                 var tabId = $mck_message_inner.data('mck-id');
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
-                                    if (message && message.metadata && message.metadata.KM_ASSIGN) {
+                                    if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                         var getUsersDetailparams = {
                                             "cached": false
                                         };
