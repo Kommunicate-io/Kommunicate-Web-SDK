@@ -85,7 +85,7 @@ const configEnv = {
     "thirdPartyIntegration": {
       "sentry": {
         "plugin": {
-          "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+          "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
           "enable": true
         },
         "server": {
@@ -108,7 +108,7 @@ const configEnv = {
     "thirdPartyIntegration": {
       "sentry": {
         "plugin": {
-          "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+          "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
           "enable": true
         },
         "server": {

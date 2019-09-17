@@ -182,13 +182,13 @@ function addKommunicatePluginToIframe() {
   }
   addableWindow.addEventListener('error', function (e) {
     var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
-    sentryConfig.enable && typeof Sentry != "undefined" && Sentry.withScope(function (scope) {
+    sentryConfig.enable && typeof KommunicateGlobal != "undefined" && typeof KommunicateGlobal.Sentry != "undefined" && KommunicateGlobal.Sentry.withScope(function (scope) {
       scope.setTag("applicationId", options.appId);
       scope.setTag("userId", options.userId);
       scope.setUser({
         id: options.appId
       });
-      Sentry.captureException(e);
+      KommunicateGlobal.Sentry.captureException(e);
     });
     if (typeof (e.target.src) !== 'undefined' && e.target.src.indexOf('sidebox') !== -1 && typeof MCK_ONINIT === 'function') {
       console.log("Plugin loading error. Refresh page.");
