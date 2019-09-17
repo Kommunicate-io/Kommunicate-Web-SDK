@@ -2480,7 +2480,7 @@ var CURRENT_GROUP_DATA={};
                     _this.toggleMediaOptions(this);
 
                 });
-                _this.cursorPosition = function (element) {
+                 _this.cursorPosition = function (element) {
                     var selection = window.getSelection();
                     var currentRange = selection.getRangeAt(element);
                     var endOffset = currentRange.startOffset;
@@ -6382,6 +6382,7 @@ var CURRENT_GROUP_DATA={};
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
+                document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];
