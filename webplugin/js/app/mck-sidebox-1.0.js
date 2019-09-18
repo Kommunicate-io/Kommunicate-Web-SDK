@@ -2501,7 +2501,7 @@ var CURRENT_GROUP_DATA={};
                 }
                 _this.disableSendButton = function (value) {
                     var sendButton = document.getElementById('mck-msg-sbmt');
-                    sendButton.setAttribute("disabled", value);
+                    value ? sendButton.setAttribute("disabled", value) : sendButton.removeAttribute("disabled");
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
                 }
                 $mck_text_box.on('input paste', function (event){
@@ -2619,6 +2619,8 @@ var CURRENT_GROUP_DATA={};
                         }
                         ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
                         mckMessageLayout.messageClubbing(false);
+                    } else if(e.keyCode === 13 && CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
+                        e.preventDefault();
                     } else if (MCK_TYPING_STATUS === 0) {
                         mckInitializeChannel.sendTypingStatus(1, $mck_msg_inner.data('mck-id'));
                     }
