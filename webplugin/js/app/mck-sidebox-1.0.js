@@ -4095,7 +4095,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 } else {
                     //DEFAULT_PROFILE_IMAGE
                     imageUrl = "";
-                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(kommunicateCommons.getDefaultAvatarImageSvg());
+                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(mckMessageLayout.getContactImageLink(null, params.name));
                     $applozic(".mck-agent-image-container .mck-agent-image-svg-container").removeClass("n-vis");
                     $applozic(".mck-agent-image-container img").addClass("n-vis");
                 }
@@ -5483,23 +5483,23 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
       			_this.getContactImageLink = function(contact, displayName, message) {
                         var imgsrctag = '';
                         var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
-                        if(!contact.isGroup){
+                        if(contact && !contact.isGroup){
                           if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
                             contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
                           }
                         }
-      				if(contact.members && contact.type==10){
+      				if(contact && contact.members && contact.type==10){
                         if(message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
                             imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '" alt="' + profileDisplayName + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
                         } else {
                             imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
                         }
               }
-              else if (contact.isGroup && contact.type !== 7) {
+              else if (contact && contact.isGroup && contact.type !== 7) {
                   imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
               }
               else {
-                  if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
+                  if (contact && contact.isGroup && contact.type === 7 && contact.members.length > 1) {
                       mckGroupService.getContactFromGroupOfTwo(contact, function(user){
                     contact = mckMessageLayout.fetchContact(user);
                   });
@@ -5511,13 +5511,13 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                       }
                   }
                   if (!imgsrctag) {
-                      if (contact.photoSrc) {
+                      if (contact && contact.photoSrc) {
                           imgsrctag = '<img src="' + contact.photoSrc + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.photoData) {
+                      } else if (contact && contact.photoData) {
                           imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.photoLink) {
+                      } else if (contact && contact.photoLink) {
                           imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
+                      } else if (contact && contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
                           imgsrctag = '<img src="' + 'https://cdn.kommunicate.io/kommunicate/bot_default_image.png' + '" alt="' + profileDisplayName + '"/>';
                       } else {
                           if (!displayName) {
