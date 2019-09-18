@@ -1,6 +1,6 @@
 var $original;
 var oModal = "";
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -339,14 +339,14 @@ function ApplozicSidebox() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
-                        sentryConfig.enable && loadErrorTracking(userId);
+                        sentryConfig.enabled && loadErrorTracking(userId);
                         getApplicationSettings(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
-                    sentryConfig.enable && loadErrorTracking(userId);
+                    sentryConfig.enabled && loadErrorTracking(userId);
                     getApplicationSettings(userId);
                 };
             }

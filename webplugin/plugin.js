@@ -181,8 +181,7 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = options.onInit;
   }
   addableWindow.addEventListener('error', function (e) {
-    var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
-    sentryConfig.enable && typeof KommunicateGlobal != "undefined" && typeof KommunicateGlobal.Sentry != "undefined" && KommunicateGlobal.Sentry.withScope(function (scope) {
+    MCK_THIRD_PARTY_INTEGRATION.sentry.enabled && typeof KommunicateGlobal != "undefined" && typeof KommunicateGlobal.Sentry != "undefined" && KommunicateGlobal.Sentry.withScope(function (scope) {
       scope.setTag("applicationId", options.appId);
       scope.setTag("userId", options.userId);
       scope.setUser({

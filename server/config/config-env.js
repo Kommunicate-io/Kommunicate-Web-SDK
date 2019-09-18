@@ -12,14 +12,8 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-        "plugin": {
           "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
-          "enable": false
-        },
-        "server": {
-          "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
-          "enable": false
-        }
+          "enabled": false
       }
     }
   },
@@ -36,14 +30,8 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-        "plugin": {
           "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
-          "enable": true
-        },
-        "server": {
-          "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
-          "enable": false
-        }
+          "enabled": true
       }
     }
   },
@@ -60,14 +48,8 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-        "plugin": {
           "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
-          "enable": true
-        },
-        "server": {
-          "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
-          "enable": false
-        }
+          "enabled": true
       }
     }
   },
@@ -84,14 +66,8 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-        "plugin": {
           "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enable": true
-        },
-        "server": {
-          "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
-          "enable": true
-        }
+          "enabled": true
       }
     }
   },
@@ -107,14 +83,8 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-        "plugin": {
           "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enable": true
-        },
-        "server": {
-          "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
-          "enable": true
-        }
+          "enabled": true
       }
     }
   },
