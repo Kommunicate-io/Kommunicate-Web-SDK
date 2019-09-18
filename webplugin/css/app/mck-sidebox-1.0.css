@@ -494,6 +494,11 @@
 .mck-box-footer .mck-btn {
 	font-size: 12px;
 }
+
+#mck-text-warning-span {
+	background-color:rgb(255,184,194);
+}
+
 #mck-char-warning {
 	width: auto;
 	height: 62px;
