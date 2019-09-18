@@ -423,16 +423,22 @@ function ApplozicSidebox() {
         if(widgetTheme && widgetTheme.widgetImageLink) {
             var img = new Image();
             img.onload = function () {
-                var launcherInterval = setInterval(function(){
-                    if(document.getElementById("mck-sidebox-launcher")){
-                        document.getElementById("mck-sidebox-launcher").classList.remove("n-vis");
-                        document.getElementById("mck-sidebox-launcher").classList.add("km-launcher-animation");
-                        clearInterval(launcherInterval);
-                    }
-                }, 100);   
+                preLoadLauncherIconInterval();
             }
             img.src = widgetTheme.widgetImageLink;
+        } else { // This condition is to check if there is no custom launcher icon image.
+            preLoadLauncherIconInterval();
         }
+    }
+
+    function preLoadLauncherIconInterval() {
+        var launcherInterval = setInterval(function() {
+            if(document.getElementById("mck-sidebox-launcher")){
+                document.getElementById("mck-sidebox-launcher").classList.remove("n-vis");
+                document.getElementById("mck-sidebox-launcher").classList.add("km-launcher-animation");
+                clearInterval(launcherInterval);
+            }
+        }, 100);
     }
     
     // function seekReplaceDestroyCookies (mapCookies){
