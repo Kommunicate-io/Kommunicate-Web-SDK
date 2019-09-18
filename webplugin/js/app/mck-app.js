@@ -407,6 +407,7 @@ function ApplozicSidebox() {
                 options.obsm = oModal;
                 $applozic.fn.applozic(options);
             }
+            preLoadLauncherIcon(widgetSettings);
         } catch (e) {
             console.log(e);
             console.log("Plugin loading error. Refresh page.", e);
@@ -416,6 +417,23 @@ function ApplozicSidebox() {
             return false;
         }
     };
+
+
+    function preLoadLauncherIcon(widgetTheme) {
+        if(widgetTheme && widgetTheme.widgetImageLink) {
+            var img = new Image();
+            img.onload = function () {
+                var launcherInterval = setInterval(function(){
+                    if(document.getElementById("mck-sidebox-launcher")){
+                        document.getElementById("mck-sidebox-launcher").classList.remove("n-vis");
+                        document.getElementById("mck-sidebox-launcher").classList.add("km-launcher-animation");
+                        clearInterval(launcherInterval);
+                    }
+                }, 100);   
+            }
+            img.src = widgetTheme.widgetImageLink;
+        }
+    }
     
     // function seekReplaceDestroyCookies (mapCookies){
     //    var  hostName = parent.window.location.hostname;
