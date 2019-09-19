@@ -4095,7 +4095,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 } else {
                     //DEFAULT_PROFILE_IMAGE
                     imageUrl = "";
-                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(kommunicateCommons.getDefaultAvatarImageSvg());
+                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(mckMessageLayout.getContactImageByAlphabet(params.name));
                     $applozic(".mck-agent-image-container .mck-agent-image-svg-container").removeClass("n-vis");
                     $applozic(".mck-agent-image-container img").addClass("n-vis");
                 }

@@ -5702,6 +5702,13 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	width: 38px;
     height: 38px;
 }
+.mck-agent-image-svg-container .mck-videocall-image {
+	width: 38px;
+	height: 38px;
+	margin-right: 0;
+	line-height: 40px;
+	cursor: default;
+}
 .mck-sidebox .force-n-vis {
 	display:none !important;
 }
