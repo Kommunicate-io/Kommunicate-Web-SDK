@@ -6826,10 +6826,12 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 var messageContainer = document.getElementById('mck-message-cell'),
                     message;
 
+                if(!document.querySelector('.km-typing-wrapper')) {
                     $mck_msg_inner.append('<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>');
                     $mck_msg_inner.animate({
                         scrollTop: $mck_msg_inner.prop("scrollHeight")
                     }, 0);
+                }
 
                 setTimeout(function() {
                     message = messageContainer.querySelector('div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]');
