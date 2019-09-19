@@ -455,7 +455,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_QUEUE = [];
-        var MCK_BOT_MESSAGE_DELAY = (typeof appOptions.botMessageDelay === "number") ? appOptions.botMessageDelay : 0;
+        var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
