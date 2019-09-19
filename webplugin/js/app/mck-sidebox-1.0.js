@@ -2482,6 +2482,8 @@ var CURRENT_GROUP_DATA={};
                 });
                  _this.cursorPosition = function (element) {
                     var selection = window.getSelection();
+                    var nodeCount = 0;
+                    var emptyNodes=0;
                     var currentRange = selection.getRangeAt(element);
                     var endOffset = currentRange.startOffset;
                     var startNode = element.firstChild;
@@ -2493,11 +2495,27 @@ var CURRENT_GROUP_DATA={};
                     var newRange = document.createRange();
                     newRange.setStart(startNode,0);
                     newRange.setEnd(currentNode,endOffset);
+                    var allNodes = newRange.commonAncestorContainer.childNodes;
+                    for(nodeCount = 0;nodeCount<allNodes.length;nodeCount++)
+                    { 
+                        if(allNodes[nodeCount].nodeType && allNodes[nodeCount].nodeType == "3" && allNodes[nodeCount].nodeValue == "") {
+                            emptyNodes++;
+                          }
+                      if(allNodes[nodeCount] == newRange.endContainer && allNodes[nodeCount].nodeType == "3") {
+                        break;
+                      }
+                    }  
+                    nodeCount = nodeCount - emptyNodes;
                     selection.removeAllRanges();
                     selection.addRange(newRange);
-                    var position = selection.toString().length;
+                    var length = selection.toString().length;
                     selection.collapseToEnd();
-                    return position;
+                    var details = {
+                        position:endOffset,
+                        node:nodeCount,
+                        totalLength:length
+                    }
+                    return details;
                 }
                 _this.disableSendButton = function (value) {
                     var sendButton = document.getElementById('mck-msg-sbmt');
@@ -2508,7 +2526,7 @@ var CURRENT_GROUP_DATA={};
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
                         var warningLength = 199;
                         var maxLength = 256;
-                        var textBox = $mck_text_box[0]; //using seperate selector for vanilla JS functions
+                        var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!(document.getElementById('mck-char-count'))) {
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
@@ -2517,7 +2535,10 @@ var CURRENT_GROUP_DATA={};
                         var str = textVal.trim();
                         var textLength = str.length;
                         if (textLength > warningLength) {
-                            var caretPosition = _this.cursorPosition(textBox);
+                            var caretObject = _this.cursorPosition(textBox);
+                            var nodeOffset = caretObject.position;
+                            var caretPosition = caretObject.totalLength;
+                            var caretNode = caretObject.node;
                             if (textLength > maxLength) {
                                 _this.disableSendButton(true);
                                 var selection;
@@ -2529,20 +2550,23 @@ var CURRENT_GROUP_DATA={};
                                 var warningSpan = document.getElementById('mck-text-warning-span');
                                 var normalSpan = document.getElementById('mck-normal-span');
                                 if (warningSpan && !(event.type == 'paste')) {
-                                    if(caretPosition <= (maxLength + 1)) {
+                                    selection = document.getSelection();
+                                    if(caretPosition <= (maxLength + 1) && (selection.focusNode != warningSpan.firstChild)) {
                                         warningSpan.innerHTML = spanContent;
                                         normalSpan.innerHTML = preSpanContent;
                                         selection = document.getSelection();
-                                        (caretPosition > maxLength) ? selection.collapse(warningSpan.firstChild,caretPosition - maxLength) : selection.collapse(normalSpan.firstChild,caretPosition);
+                                        if(caretPosition >= maxLength + 1) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if(caretPosition > maxLength) {
+                                                nodeOffset = caretPosition - maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                        console.log(targetNode);
+                                        selection.collapse(targetNode,nodeOffset);
                                     }
-                                } else if(warningSpan && (event.type == 'paste')) {
-                                    textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true"  id="mck-text-warning-span"></span>';
-                                    normalSpan = document.getElementById('mck-normal-span');
-                                    normalSpan.innerHTML = preSpanContent;
-                                    warningSpan = document.getElementById('mck-text-warning-span');
-                                    warningSpan.innerHTML = spanContent;
-                                    selection = document.getSelection();
-                                    (caretPosition > maxLength) ? selection.collapse(warningSpan.firstChild,caretPosition - maxLength) : selection.collapse(normalSpan.firstChild,caretPosition);
                                 } else {
                                     textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true" id="mck-text-warning-span"></span>';
                                     normalSpan = document.getElementById('mck-normal-span');
@@ -2550,7 +2574,24 @@ var CURRENT_GROUP_DATA={};
                                     warningSpan = document.getElementById('mck-text-warning-span');
                                     warningSpan.innerHTML = spanContent;
                                     selection = document.getSelection();
-                                    (caretPosition > maxLength) ? selection.collapse(warningSpan.firstChild,caretPosition - maxLength) : selection.collapse(normalSpan.firstChild,caretPosition);
+                                    var targetNode;
+                                    if(caretNode == 0 && caretPosition > 256) {
+                                        targetNode = warningSpan.firstChild;
+                                        nodeOffset = caretPosition-maxLength;
+                                    }else{
+                                        if(caretPosition > maxLength) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if(nodeOffset > targetNode.nodeValue.length) {
+                                                nodeOffset = caretPosition-maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                    }
+                                    
+                                    selection.collapse(targetNode,nodeOffset);
+                                
                                 }
                             } else {
                                 normalSpan = document.getElementById('mck-normal-span');
@@ -2566,7 +2607,7 @@ var CURRENT_GROUP_DATA={};
 
                                     textBox.innerHTML = spanRemains;
                                     selection = document.getSelection();
-                                    selection.collapse(textBox.firstChild,caretPosition);
+                                    selection.collapse(textBox.childNodes[caretNode],nodeOffset);
                                 }
                                 _this.disableSendButton(false);
                                 remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
