@@ -2564,7 +2564,6 @@ var CURRENT_GROUP_DATA={};
                                         else {
                                             targetNode = normalSpan.childNodes[caretNode];
                                         }
-                                        console.log(targetNode);
                                         selection.collapse(targetNode,nodeOffset);
                                     }
                                 } else {
@@ -2575,7 +2574,7 @@ var CURRENT_GROUP_DATA={};
                                     warningSpan.innerHTML = spanContent;
                                     selection = document.getSelection();
                                     var targetNode;
-                                    if(caretNode == 0 && caretPosition > 256) {
+                                    if(caretNode == 0 && caretPosition > maxLength) {
                                         targetNode = warningSpan.firstChild;
                                         nodeOffset = caretPosition-maxLength;
                                     }else{
@@ -2589,7 +2588,6 @@ var CURRENT_GROUP_DATA={};
                                             targetNode = normalSpan.childNodes[caretNode];
                                         }
                                     }
-                                    
                                     selection.collapse(targetNode,nodeOffset);
                                 
                                 }
