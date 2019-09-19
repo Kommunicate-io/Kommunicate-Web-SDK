@@ -2489,19 +2489,18 @@ var CURRENT_GROUP_DATA={};
                     var startNode = element.firstChild;
                     var normalSpan = document.getElementById('mck-normal-span');
                     var currentNode = selection.focusNode;
-                    if(normalSpan) {
+                    if (normalSpan) {
                         startNode = normalSpan.firstChild;
                     }
                     var newRange = document.createRange();
                     newRange.setStart(startNode,0);
                     newRange.setEnd(currentNode,endOffset);
                     var allNodes = newRange.commonAncestorContainer.childNodes;
-                    for(nodeCount = 0;nodeCount<allNodes.length;nodeCount++)
-                    { 
-                        if(allNodes[nodeCount].nodeType && allNodes[nodeCount].nodeType == "3" && allNodes[nodeCount].nodeValue == "") {
+                    for (nodeCount = 0;nodeCount<allNodes.length;nodeCount++) { 
+                        if (allNodes[nodeCount].nodeType && allNodes[nodeCount].nodeType == "3" && allNodes[nodeCount].nodeValue == "") {
                             emptyNodes++;
-                          }
-                      if(allNodes[nodeCount] == newRange.endContainer && allNodes[nodeCount].nodeType == "3") {
+                        }
+                      if (allNodes[nodeCount] == newRange.endContainer && allNodes[nodeCount].nodeType == "3") {
                         break;
                       }
                     }  
@@ -2551,7 +2550,7 @@ var CURRENT_GROUP_DATA={};
                                 var normalSpan = document.getElementById('mck-normal-span');
                                 if (warningSpan && !(event.type == 'paste')) {
                                     selection = document.getSelection();
-                                    if(caretPosition <= (maxLength + 1) && (selection.focusNode != warningSpan.firstChild)) {
+                                    if (caretPosition <= (maxLength + 1) && (selection.focusNode != warningSpan.firstChild)) {
                                         warningSpan.innerHTML = spanContent;
                                         normalSpan.innerHTML = preSpanContent;
                                         selection = document.getSelection();
@@ -2577,10 +2576,10 @@ var CURRENT_GROUP_DATA={};
                                     if(caretNode == 0 && caretPosition > maxLength) {
                                         targetNode = warningSpan.firstChild;
                                         nodeOffset = caretPosition-maxLength;
-                                    }else{
-                                        if(caretPosition > maxLength) {
+                                    } else {
+                                        if (caretPosition > maxLength) {
                                             targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
-                                            if(nodeOffset > targetNode.nodeValue.length) {
+                                            if (nodeOffset > targetNode.nodeValue.length) {
                                                 nodeOffset = caretPosition-maxLength;
                                             }
                                         }
@@ -2656,7 +2655,7 @@ var CURRENT_GROUP_DATA={};
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0, $mck_msg_inner.data('mck-id'));
                         }
-                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
+                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert(MCK_LABELS['file.uploading.wait']) : $mck_msg_form.submit();
                         mckMessageLayout.messageClubbing(false);
                     } else if(e.keyCode === 13 && CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
                         e.preventDefault();
