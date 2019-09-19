@@ -494,6 +494,119 @@
 .mck-box-footer .mck-btn {
 	font-size: 12px;
 }
+
+#mck-text-warning-span {
+	background-color:rgb(255,184,194);
+}
+
+#mck-char-warning {
+	width: auto;
+	height: 62px;
+	margin-bottom: -70px;
+	padding-top:15px;
+	border-radius: 4px;
+	opacity:0;  
+  	background-color: #5451e2;
+}
+.mck-warning-slide-up {
+	animation: animslideup;
+	-webkit-animation: animslideup;
+	-moz-animation: animslideup;
+	-o-animation: animslideup;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+.mck-warning-slide-down {
+	animation: animslidedown;
+	-webkit-animation: animslidedown;
+	-moz-animation: animslidedown;
+	-o-animation: animslidedown;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+@keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-webkit-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-webkit-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-moz-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-moz-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-o-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-o-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+
 #mck-char-warning {
 	width: auto;
 	height: 62px;
@@ -612,7 +725,10 @@
 	letter-spacing: 0.2px;
 	color: #ffffff;
 }
-
+#mck-msg-sbmt:disabled {
+	opacity:0.3;
+	cursor: default;
+}
 #mck-char-count {
 	width: 87px;
   	height: 17px;
@@ -621,6 +737,9 @@
   	line-height: 1.42;
   	letter-spacing: 0.28px;
   	color: #ffffff;
+}
+#mck-text-warning-span {
+	background-color: rgb(255,184,194);
 }
 .footer-controls {
     float:right!important;

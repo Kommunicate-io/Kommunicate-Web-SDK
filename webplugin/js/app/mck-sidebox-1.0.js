@@ -2486,19 +2486,134 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     _this.toggleMediaOptions(this);
 
                 });
-                $mck_text_box.keyup(function (){
+                 _this.cursorPosition = function (element) {
+                    var selection = window.getSelection();
+                    var nodeCount = 0;
+                    var emptyNodes = 0;
+                    var currentRange = selection.getRangeAt(element);
+                    var endOffset = currentRange.startOffset;
+                    var startNode = element.firstChild;
+                    var normalSpan = document.getElementById('mck-normal-span');
+                    var currentNode = selection.focusNode;
+                    if (normalSpan) {
+                        startNode = normalSpan.firstChild;
+                    }
+                    var newRange = document.createRange();
+                    newRange.setStart(startNode,0);
+                    newRange.setEnd(currentNode,endOffset);
+                    var allNodes = newRange.commonAncestorContainer.childNodes;
+                    for (nodeCount = 0;nodeCount<allNodes.length;nodeCount++) { 
+                        if (allNodes[nodeCount].nodeType && allNodes[nodeCount].nodeType == "3" && allNodes[nodeCount].nodeValue == "") {
+                            emptyNodes++;
+                        }
+                      if (allNodes[nodeCount] == newRange.endContainer && allNodes[nodeCount].nodeType == "3") {
+                        break;
+                      }
+                    }  
+                    nodeCount = nodeCount - emptyNodes;
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                    var length = selection.toString().length;
+                    selection.collapseToEnd();
+                    var details = {
+                        position:endOffset,
+                        node:nodeCount,
+                        totalLength:length
+                    }
+                    return details;
+                }
+                _this.disableSendButton = function (value) {
+                    var sendButton = document.getElementById('mck-msg-sbmt');
+                    value ? sendButton.setAttribute("disabled", value) : sendButton.removeAttribute("disabled");
+                    CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+                }
+                $mck_text_box.on('input paste', function (event){
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
+                        var warningLength = 199;
+                        var maxLength = 256;
+                        var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!(document.getElementById('mck-char-count'))) {
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var str = ($mck_text_box.text().toString()).trim();
-                        var len = str.length;
-                        if (len > 199) {
-                            if (len > 256) {
-                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (len - 256) + " " + MCK_LABELS['limit.characters'] + ")";
+                        var textVal = mckUtils.textVal(textBox);
+                        var str = textVal.trim();
+                        var textLength = str.length;
+                        if (textLength > warningLength) {
+                            var caretObject = _this.cursorPosition(textBox);
+                            var nodeOffset = caretObject.position;
+                            var caretPosition = caretObject.totalLength;
+                            var caretNode = caretObject.node;
+                            if (textLength > maxLength) {
+                                _this.disableSendButton(true);
+                                var selection;
+                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (textLength - maxLength) + " " + MCK_LABELS['limit.characters'] + ")";
+                                var preSpanContent = str.slice(0,maxLength);
+                                preSpanContent = preSpanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                var spanContent = str.slice(maxLength);
+                                spanContent = spanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                var warningSpan = document.getElementById('mck-text-warning-span');
+                                var normalSpan = document.getElementById('mck-normal-span');
+                                if (warningSpan && !(event.type == 'paste')) {
+                                    selection = document.getSelection();
+                                    if (caretPosition <= (maxLength + 1) && (selection.focusNode != warningSpan.firstChild)) {
+                                        warningSpan.innerHTML = spanContent;
+                                        normalSpan.innerHTML = preSpanContent;
+                                        selection = document.getSelection();
+                                        if(caretPosition >= maxLength + 1) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if(caretPosition > maxLength) {
+                                                nodeOffset = caretPosition - maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                        selection.collapse(targetNode,nodeOffset);
+                                    }
+                                } else {
+                                    textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true" id="mck-text-warning-span"></span>';
+                                    normalSpan = document.getElementById('mck-normal-span');
+                                    normalSpan.innerHTML = preSpanContent;
+                                    warningSpan = document.getElementById('mck-text-warning-span');
+                                    warningSpan.innerHTML = spanContent;
+                                    selection = document.getSelection();
+                                    var targetNode;
+                                    if(caretNode == 0 && caretPosition > maxLength) {
+                                        targetNode = warningSpan.firstChild;
+                                        nodeOffset = caretPosition-maxLength;
+                                    } else {
+                                        if (caretPosition > maxLength) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if (nodeOffset > targetNode.nodeValue.length) {
+                                                nodeOffset = caretPosition-maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                    }
+                                    selection.collapse(targetNode,nodeOffset);
+                                
+                                }
                             } else {
-                                remtxt = "(" + (256 - len) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
+                                normalSpan = document.getElementById('mck-normal-span');
+                                warningSpan = document.getElementById('mck-text-warning-span');
+                                var spanRemains = '';
+                                if (normalSpan) {
+                                    spanRemains = normalSpan.innerHTML;
+                                }
+                                if (warningSpan) {
+                                    spanRemains += warningSpan.innerHTML;
+                                }
+                                if (spanRemains.length > 1) {
+
+                                    textBox.innerHTML = spanRemains;
+                                    selection = document.getSelection();
+                                    selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+                                }
+                                _this.disableSendButton(false);
+                                remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
                             document.getElementById('mck-char-count').innerHTML = remtxt;
                             warningBox.classList.remove("n-vis");
@@ -2507,6 +2622,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                 warningBox.classList.remove('mck-warning-slide-down');
                             }
                         } else {
+                            _this.disableSendButton(false);
                           if (!(warningBox.classList.contains("n-vis")) && !(warningBox.classList.contains('mck-warning-slide-down'))) {
                                     warningBox.classList.add('mck-warning-slide-down');
                                     warningBox.classList.remove('mck-warning-slide-up');
@@ -2540,13 +2656,15 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                             }, 0);
                             return false;
                         }
-                    } else if (e.keyCode === 13) {
+                    } else if (e.keyCode === 13 && !CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
                         e.preventDefault();
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0, $mck_msg_inner.data('mck-id'));
                         }
-                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
+                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert(MCK_LABELS['file.uploading.wait']) : $mck_msg_form.submit();
                         mckMessageLayout.messageClubbing(false);
+                    } else if(e.keyCode === 13 && CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
+                        e.preventDefault();
                     } else if (MCK_TYPING_STATUS === 0) {
                         mckInitializeChannel.sendTypingStatus(1, $mck_msg_inner.data('mck-id'));
                     }
@@ -6336,6 +6454,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
+                document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];
