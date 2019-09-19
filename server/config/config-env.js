@@ -12,7 +12,7 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+          "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
           "enabled": false
       }
     }
@@ -30,7 +30,7 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+          "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
           "enabled": true
       }
     }
@@ -48,7 +48,7 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+          "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
           "enabled": true
       }
     }
