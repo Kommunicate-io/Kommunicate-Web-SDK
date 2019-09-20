@@ -453,7 +453,7 @@ var CURRENT_GROUP_DATA={};
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_QUEUE = [];
-        var MCK_BOT_MESSAGE_DELAY = (typeof appOptions.botMessageDelay === "number") ? appOptions.botMessageDelay : 0;
+        var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -6751,10 +6751,12 @@ var CURRENT_GROUP_DATA={};
                 var messageContainer = document.getElementById('mck-message-cell'),
                     message;
 
+                if(!document.querySelector('.km-typing-wrapper')) {
                     $mck_msg_inner.append('<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>');
                     $mck_msg_inner.animate({
                         scrollTop: $mck_msg_inner.prop("scrollHeight")
                     }, 0);
+                }
 
                 setTimeout(function() {
                     message = messageContainer.querySelector('div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]');
