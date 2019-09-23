@@ -373,6 +373,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KommunicateConstants.KM_NOTIFICATION_TONE_URL;
+        var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -434,6 +435,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckCallService = new MckCallService();
         var mckNotificationTone = null;
+        var mckChatPopupNotificationTone = null;
         var notificationtoneoption = {};
         var ringToneService;
         var lastFetchTime;
@@ -540,6 +542,14 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
                 } catch (e) {
                     console.log(e, "error while loading ringTone service")
+                }  
+            }
+            if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
+                ringToneService = new RingToneService();
+                try {
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK);
+                } catch (e) {
+                    console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
             }
             mckMessageService.init();
@@ -1714,7 +1724,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
-                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS);
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                     if($mck_sidebox.css('display') === 'block') {
                         mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
