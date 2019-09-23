@@ -373,7 +373,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KommunicateConstants.KM_NOTIFICATION_TONE_URL;
-        var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
+        var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
