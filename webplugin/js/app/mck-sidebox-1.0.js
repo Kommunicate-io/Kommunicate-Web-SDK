@@ -4514,7 +4514,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     '</ul>'+
                 '</div>'+
             '</div>';
-            var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
+            var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             _this.latestMessageReceivedTime ="";
@@ -5737,6 +5737,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 } else {
                     _this.addContact(contact, $listId, message);
                 }
+                KommunicateUI.showShowAllConversationBanner();
             };
             _this.addContactsToSearchList = function () {
                 var contactsArray = [],
@@ -6133,8 +6134,11 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     titleExpr: title,
                     groupUserCountExpr: isGroupTab ? contact.userCount : '',
                     displayGroupUserCountExpr: displayCount ? "vis" : "n-vis",
-                    msgCreatedDateExpr: message ? kommunicateCommons.getTimeOrDate(message.createdAtTime, true) : ''
+                    msgCreatedDateExpr: message ? kommunicateCommons.getTimeOrDate(message.createdAtTime, true) : '',
+                    conversationStatusClass: contact.metadata.CONVERSATION_STATUS == "2" ? "mck-conversation-closed" : "mck-conversation-open"
                 }];
+                console.log(contact);
+                console.log(contactList);
                 var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
                 if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : '') >= latestCreatedAtTime || ($listId.indexOf("search") !== -1 && prepend)) {
                     $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
@@ -9595,6 +9599,16 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                             var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
                                 var $mck_sidebox_content = $applozic("#mck-sidebox-content");
                                 var tabId = $mck_message_inner.data('mck-id');
+                                if (resp.message.metadata.KM_STATUS) {
+                                    var groupId = 'li-group-' + resp.message.groupId;
+                                    if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                                        kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-closed", "mck-conversation-open");
+                                    } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {
+                                        kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-open", "mck-conversation-closed");
+                                    }
+                                    console.log(resp.message.metadata.KM_STATUS);
+                                    console.log(document.getElementById('li-group-' + resp.message.groupId));
+                                }
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
                                     if (message && message.metadata && message.metadata.KM_ASSIGN) {

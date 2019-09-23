@@ -127,5 +127,11 @@ Kommunicate.defaultLabels = {
     },
     'rich.message':{
         'notification.preview' : "Message"
+    },
+    'filter.conversation.list': {
+        'ALL_CONVERSATIONS': 'All conversations',
+        'OPEN_CONVERSATIONS': 'Open conversations',
+        'SEE_MORE': 'See more',
+        'SEE_LESS': 'See less'
     }
 }
