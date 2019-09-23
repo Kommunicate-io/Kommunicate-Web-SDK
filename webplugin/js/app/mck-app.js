@@ -1,6 +1,6 @@
 var $original;
 var oModal = "";
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -32,7 +32,7 @@ function ApplozicSidebox() {
         },
         {
             "name": "applozic-min-js",
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.min.js", // update the url with every new release of applozic-web-plugin
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.7.min.js", // update the url with every new release of applozic-web-plugin
             "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-5.6.min.js"
         }
     ];
@@ -294,39 +294,38 @@ function ApplozicSidebox() {
     };
     function mckLoadAppScript() {
         var userId = KommunicateUtils.getRandomId();
-        var cookiePrefix = KommunicateUtils.getCookiePrefix();
-        var mapCookies = [{
-            oldName: 'kommunicate-id',
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-            skipPrefix: true
-        }, {
-            oldName: "userName",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-            skipPrefix: true
-
-        }, {
-            oldName: "km_id",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-            skipPrefix: true
-        }, {
-            oldName: "km_user_name",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-            skipPrefix: true
-        }, {
-            oldName: "km_lead_collection",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
-            skipPrefix: true
-        },{
-            oldName: "_kom_km_id",
-            //skip newName to delete the cookie  
-            skipPrefix: true
-        },{
-            oldName: "_kom_km_lead_collection",
-            skipPrefix: true
-        },{
-            oldName: "_kom_km_user_name",
-            skipPrefix: true
-        }];
+        // var cookiePrefix = KommunicateUtils.getCookiePrefix();
+        // var mapCookies = [{
+        //     oldName: 'kommunicate-id',
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "userName",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "km_id",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "km_user_name",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "km_lead_collection",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+        //     skipPrefix: true
+        // },{
+        //     oldName: "_kom_km_id",
+        //     //skip newName to delete the cookie  
+        //     skipPrefix: true
+        // },{
+        //     oldName: "_kom_km_lead_collection",
+        //     skipPrefix: true
+        // },{
+        //     oldName: "_kom_km_user_name",
+        //     skipPrefix: true
+        // }];
         
         try {
             var body = document.getElementsByTagName('body')[0];
@@ -334,21 +333,21 @@ function ApplozicSidebox() {
             script.type = 'text/javascript';
             script.crossOrigin = "anonymous";
             script.src = KOMMUNICATE_PLUGIN_MIN_JS;
-            seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
+            // seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
-                        sentryConfig.enable && loadErrorTracking(userId);
-                        loadPseudoName(userId);
+                        sentryConfig.enabled && loadErrorTracking(userId);
+                        getApplicationSettings(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
-                    sentryConfig.enable && loadErrorTracking(userId);
-                    loadPseudoName(userId);
+                    sentryConfig.enabled && loadErrorTracking(userId);
+                    getApplicationSettings(userId);
                 };
             }
             body.appendChild(script);
@@ -371,6 +370,7 @@ function ApplozicSidebox() {
             options["widgetSettings"] = widgetSettings;
             options["customerCreatedAt"]=data.customerCreatedAt;
             options["collectFeedback"]=data.collectFeedback;
+            options['chatPopupMessage'] = data.chatPopupMessage;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             KommunicateUtils.deleteDataFromKmSession("settings");
@@ -407,6 +407,7 @@ function ApplozicSidebox() {
                 options.obsm = oModal;
                 $applozic.fn.applozic(options);
             }
+            preLoadLauncherIcon(widgetSettings);
         } catch (e) {
             console.log(e);
             console.log("Plugin loading error. Refresh page.", e);
@@ -416,23 +417,46 @@ function ApplozicSidebox() {
             return false;
         }
     };
-    
-    function seekReplaceDestroyCookies (mapCookies){
-       var  hostName = parent.window.location.hostname;
-        mapCookies && mapCookies.forEach(function(arrayItem){
-            if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
-                var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
-                if(arrayItem.newName){
-                    KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
-                }
-                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
-                // deleting for old version where domain is set as hostname
-                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
-            }
-        })
-    };
 
-    function loadPseudoName(userId) {
+
+    function preLoadLauncherIcon(widgetTheme) {
+        if(widgetTheme && widgetTheme.widgetImageLink) {
+            var img = new Image();
+            img.onload = function () {
+                preLoadLauncherIconInterval();
+            }
+            img.src = widgetTheme.widgetImageLink;
+        } else { // This condition is to check if there is no custom launcher icon image.
+            preLoadLauncherIconInterval();
+        }
+    }
+
+    function preLoadLauncherIconInterval() {
+        var launcherInterval = setInterval(function() {
+            if(document.getElementById("mck-sidebox-launcher")){
+                document.getElementById("mck-sidebox-launcher").classList.remove("n-vis");
+                document.getElementById("mck-sidebox-launcher").classList.add("km-launcher-animation");
+                clearInterval(launcherInterval);
+            }
+        }, 100);
+    }
+    
+    // function seekReplaceDestroyCookies (mapCookies){
+    //    var  hostName = parent.window.location.hostname;
+    //     mapCookies && mapCookies.forEach(function(arrayItem){
+    //         if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
+    //             var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
+    //             if(arrayItem.newName){
+    //                 KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
+    //             }
+    //             KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
+    //             // deleting for old version where domain is set as hostname
+    //             KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
+    //         }
+    //     })
+    // };
+
+    function getApplicationSettings(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.

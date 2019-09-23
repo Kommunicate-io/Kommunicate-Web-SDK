@@ -62,7 +62,24 @@ var kmCustomIframe =
         'margin:0;'+
         'height:100vh;'+
         'width:100vw;'+
-    '} \n';
+    '} \n' + 
+    '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' + 
+    '   width: 410px;' + 
+    '   height: 80px;' + 
+    '} \n' + 
+    '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
+    '   width: 390px;' + 
+    '   height: 120px;' + 
+    '} \n' + 
+    '@media only screen and (max-width: 420px) { ' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
+        'width: 100%;' + 
+        'height: 155px;' + 
+      '} \n' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' + 
+        'width: 100%;' + 
+      '} \n' + 
+    '} \n ';
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 
@@ -164,14 +181,13 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = options.onInit;
   }
   addableWindow.addEventListener('error', function (e) {
-    var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
-    sentryConfig.enable && typeof Sentry != "undefined" && Sentry.withScope(function (scope) {
+    MCK_THIRD_PARTY_INTEGRATION.sentry.enabled && typeof KommunicateGlobal != "undefined" && typeof KommunicateGlobal.Sentry != "undefined" && KommunicateGlobal.Sentry.withScope(function (scope) {
       scope.setTag("applicationId", options.appId);
       scope.setTag("userId", options.userId);
       scope.setUser({
         id: options.appId
       });
-      Sentry.captureException(e);
+      KommunicateGlobal.Sentry.captureException(e);
     });
     if (typeof (e.target.src) !== 'undefined' && e.target.src.indexOf('sidebox') !== -1 && typeof MCK_ONINIT === 'function') {
       console.log("Plugin loading error. Refresh page.");

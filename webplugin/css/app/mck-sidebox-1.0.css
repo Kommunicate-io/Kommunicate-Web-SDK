@@ -495,6 +495,252 @@
 	font-size: 12px;
 }
 
+#mck-text-warning-span {
+	background-color:rgb(255,184,194);
+}
+
+#mck-char-warning {
+	width: auto;
+	height: 62px;
+	margin-bottom: -70px;
+	padding-top:15px;
+	border-radius: 4px;
+	opacity:0;  
+  	background-color: #5451e2;
+}
+.mck-warning-slide-up {
+	animation: animslideup;
+	-webkit-animation: animslideup;
+	-moz-animation: animslideup;
+	-o-animation: animslideup;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+.mck-warning-slide-down {
+	animation: animslidedown;
+	-webkit-animation: animslidedown;
+	-moz-animation: animslidedown;
+	-o-animation: animslidedown;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+@keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-webkit-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-webkit-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-moz-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-moz-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-o-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-o-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+
+#mck-char-warning {
+	width: auto;
+	height: 62px;
+	margin-bottom: -70px;
+	padding-top:15px;
+	border-radius: 4px;
+	opacity:0;  
+  	background-color: #5451e2;
+}
+.mck-warning-slide-up {
+	animation: animslideup;
+	-webkit-animation: animslideup;
+	-moz-animation: animslideup;
+	-o-animation: animslideup;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+.mck-warning-slide-down {
+	animation: animslidedown;
+	-webkit-animation: animslidedown;
+	-moz-animation: animslidedown;
+	-o-animation: animslidedown;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+@keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-webkit-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-webkit-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-moz-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-moz-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-o-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-o-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+
+#mck-char-warning-text {
+	width: auto;
+	height: 34px;
+	font-size: 14px;
+	padding-left:10px;	
+	text-align:left;
+	line-height: 1.31;
+	letter-spacing: 0.2px;
+	color: #ffffff;
+}
+#mck-msg-sbmt:disabled {
+	opacity:0.3;
+	cursor: default;
+}
+#mck-char-count {
+	width: 87px;
+  	height: 17px;
+  	opacity: 0.73;
+  	font-size: 12px;
+  	line-height: 1.42;
+  	letter-spacing: 0.28px;
+  	color: #ffffff;
+}
+#mck-text-warning-span {
+	background-color: rgb(255,184,194);
+}
 .footer-controls {
     float:right!important;
     margin-right: 90px;
@@ -5405,7 +5651,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 #launcher-agent-img-container img {
 	width: 60px;
-	height: auto;
+	height: 60px;
+	object-fit: cover;
 }
 #launcher-agent-img-container .mck-videocall-image {
 	width: 60px;
@@ -5573,6 +5820,13 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-agent-image-svg-container svg {
 	width: 38px;
     height: 38px;
+}
+.mck-agent-image-svg-container .mck-videocall-image {
+	width: 38px;
+	height: 38px;
+	margin-right: 0;
+	line-height: 40px;
+	cursor: default;
 }
 .mck-sidebox .force-n-vis {
 	display:none !important;
@@ -6115,3 +6369,350 @@ body:not(.accesibility) :focus {
 body.accesibility :focus {
 	outline: 5px auto #3b99fc;
 }
+
+/* Chat Popup Template Code Starts */
+
+.chat-popup-widget-container {
+    box-shadow: 0 2px 9px 2px rgba(0, 0, 0, 0.17);
+    background-color: #ffffff;
+    position: absolute;
+	min-height: 70px;
+	font-family: 'Roboto', sans-serif;
+	width: 100%;
+	max-width: 380px;
+	cursor: pointer;
+}
+
+.chat-popup-widget-container--horizontal {
+	border-radius: 40px;
+	bottom: 5px;
+	right: 5px;
+}
+
+.chat-popup-widget-container--vertical {
+	border-radius: 10px;
+    bottom: 7px;
+	right: 85px;
+	min-height: 75px;
+	max-width: 300px;
+}
+
+.chat-popup-widget-text {
+	font-size: 16px;
+	line-height: 1.2;
+	letter-spacing: 0.49px;
+	color: #212121;
+}
+
+.chat-popup-widget-container .chat-popup-widget-text-wrapper {
+	min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.chat-popup-widget-container .chat-popup-widget-text {
+	margin: 15px;
+}
+
+.chat-popup-widget-container--vertical .chat-popup-widget-text-wrapper {
+	min-height: 75px;
+}
+
+.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
+	padding-left: 15px;
+}
+
+.km-no-box-shadow {
+	box-shadow: none;
+}
+
+.chat-popup-widget-container--vertical.km-animate {
+	-webkit-clip-path: circle(55px at 355px 50px);
+	clip-path: circle(55px at 355px 50px);
+	-webkit-animation: km-reveal-animation-vertical .3s ease-in-out .3s 1 forwards;
+	-moz-animation: km-reveal-animation-vertical .3s ease-in-out .3s 1 forwards;
+	-o-animation: km-reveal-animation-vertical .3s ease-in-out .3s 1 forwards;
+	animation: km-reveal-animation-vertical .3s ease-in-out .3s 1 forwards;
+}
+.chat-popup-widget-container--horizontal.km-animate {
+	opacity: 0;
+	-webkit-clip-path: circle(35px at 345px 35px);
+	clip-path: circle(35px at 345px 35px);
+	-webkit-animation: km-reveal-animation-horizontal .3s ease-in-out .3s 1 forwards;
+	-moz-animation: km-reveal-animation-horizontal .3s ease-in-out .3s 1 forwards;
+	-o-animation: km-reveal-animation-horizontal .3s ease-in-out .3s 1 forwards;
+	animation: km-reveal-animation-horizontal .3s ease-in-out .3s 1 forwards;
+}
+#launcher-svg-container.km-animate {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+	-webkit-animation: km-scale-animation .5s ease-in-out 1 forwards;
+	-moz-animation: km-scale-animation .5s ease-in-out 1 forwards;
+	-o-animation: km-scale-animation .5s ease-in-out 1 forwards;
+	animation: km-scale-animation .5s ease-in-out 1 forwards;
+}
+.chat-popup-widget-container--horizontal.km-animate .chat-popup-widget-text, .chat-popup-widget-container--vertical.km-animate .chat-popup-widget-text {
+	opacity: 0;
+	-webkit-animation: km-slide-in-animation .5s ease .5s 1 forwards;
+	-moz-animation: km-slide-in-animation .5s ease .5s 1 forwards;
+	-o-animation: km-slide-in-animation .5s ease .5s 1 forwards;
+	animation: km-slide-in-animation .5s ease .5s 1 forwards;
+}
+
+@-webkit-keyframes km-reveal-animation-horizontal {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 1;
+		-webkit-clip-path: circle(345px at 345px 35px);
+		clip-path: circle(345px at 345px 35px);
+	}
+}
+@-moz-keyframes km-reveal-animation-horizontal {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 1;
+		clip-path: circle(345px at 345px 35px);
+	}
+}
+@-o-keyframes km-reveal-animation-horizontal {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 1;
+		clip-path: circle(345px at 345px 35px);
+	}
+}
+@keyframes km-reveal-animation-horizontal {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 1;
+		-webkit-clip-path: circle(345px at 345px 35px);
+		clip-path: circle(345px at 345px 35px);
+	}
+}
+@-webkit-keyframes km-scale-animation {
+	0% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+	50% {
+		-webkit-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+	100% {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+	}
+}
+@-moz-keyframes km-scale-animation {
+	0% {
+		-moz-transform: scale(1);
+		transform: scale(1);
+	}
+	50% {
+		-moz-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+	100% {
+		-moz-transform: scale(1);
+		transform: scale(1);
+	}
+}
+@-o-keyframes km-scale-animation {
+	0% {
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+	50% {
+		-o-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+	100% {
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+}
+@keyframes km-scale-animation {
+	0% {
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+	50% {
+		-webkit-transform: scale(1.3);
+		-moz-transform: scale(1.3);
+		-o-transform: scale(1.3);
+		transform: scale(1.3);
+	}
+	100% {
+		-webkit-transform: scale(1);
+		-moz-transform: scale(1);
+		-o-transform: scale(1);
+		transform: scale(1);
+	}
+}
+@-webkit-keyframes km-slide-in-animation {
+	from {
+		opacity: 0;
+		padding-left: 5px;
+	}
+	to {
+		opacity: 1;
+		padding-left: 0;
+	}
+}
+@-moz-keyframes km-slide-in-animation {
+	from {
+		opacity: 0;
+		padding-left: 5px;
+	}
+	to {
+		opacity: 1;
+		padding-left: 0;
+	}
+}
+@-o-keyframes km-slide-in-animation {
+	from {
+		opacity: 0;
+		padding-left: 5px;
+	}
+	to {
+		opacity: 1;
+		padding-left: 0;
+	}
+}
+@keyframes km-slide-in-animation {
+	from {
+		opacity: 0;
+		padding-left: 5px;
+	}
+	to {
+		opacity: 1;
+		padding-left: 0;
+	}
+}
+
+@-webkit-keyframes km-reveal-animation-vertical {
+	from {
+		opacity: 0.6;
+	}
+	to {
+		opacity: 1;
+		-webkit-clip-path: circle(365px at 355px 50px);
+		clip-path: circle(365px at 355px 50px);
+	}
+}
+@-moz-keyframes km-reveal-animation-vertical {
+	from {
+		opacity: 0.6;
+	}
+	to {
+		opacity: 1;
+		clip-path: circle(365px at 355px 50px);
+	}
+}
+@-o-keyframes km-reveal-animation-vertical {
+	from {
+		opacity: 0.6;
+	}
+	to {
+		opacity: 1;
+		clip-path: circle(365px at 355px 50px);
+	}
+}
+@keyframes km-reveal-animation-vertical {
+	from {
+		opacity: 0.6;
+	}
+	to {
+		opacity: 1;
+		-webkit-clip-path: circle(365px at 355px 50px);
+		clip-path: circle(365px at 355px 50px);
+	}
+}
+
+
+@media only screen and (max-width: 420px) {
+	.chat-popup-widget-container {
+		width: calc(100% - 105px);
+	}
+	.chat-popup-widget-container--horizontal {
+		padding-right: 70px;
+	}
+}
+/* Chat Popup Template Code Ends */
+
+/* Chat launcher animation for initial load Code Starts */
+.mck-sidebox-launcher.km-launcher-animation {
+	-webkit-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	   -moz-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	     -o-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	        animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+}
+
+@-webkit-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(0.5, 0.5);
+		        transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1, 1);
+		        transform: scale(1, 1);
+	}
+}
+@-moz-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-moz-transform: scale(0.5, 0.5);
+		     transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-moz-transform: scale(1, 1);
+		     transform: scale(1, 1);
+	}
+}
+@-o-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-o-transform: scale(0.5, 0.5);
+		   transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-o-transform: scale(1, 1);
+		   transform: scale(1, 1);
+	}
+}
+@keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(0.5, 0.5);
+		   -moz-transform: scale(0.5, 0.5);
+		     -o-transform: scale(0.5, 0.5);
+		        transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1, 1);
+		   -moz-transform: scale(1, 1);
+		     -o-transform: scale(1, 1);
+		        transform: scale(1, 1);
+	}
+}
+
+/* Chat launcher animation for initial load Code Ends */

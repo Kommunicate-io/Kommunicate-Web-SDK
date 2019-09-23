@@ -467,6 +467,38 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         enableAttachment == "true" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "vis", "n-vis");
         enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
-}
+    },
+    displayPopupChatTemplate: function(popupChatContent, widgetTheme, mckChatPopupNotificationTone) {
+
+        var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
+        var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
+        var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
+
+        if(isPopupEnabled && delay > -1) {
+            MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
+                KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true);
+                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
+            }, delay);
+        }
+
+    },
+    togglePopupChatTemplate: function(popupTemplateKey, showTemplate) {
+        
+        var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+
+        if(showTemplate) {
+            popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL && kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
+            popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
+            kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
+            kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "km-animate", "n-vis");
+        } else {
+            kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "", "km-no-box-shadow");
+            kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "", "km-animate");
+            kommunicateIframe.classList.remove("chat-popup-widget-horizontal");
+            kommunicateIframe.classList.remove("chat-popup-widget-vertical");
+            kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "n-vis", "km-animate");
+        }
+    }
+
 
 }

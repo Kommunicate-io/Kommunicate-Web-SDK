@@ -9,6 +9,7 @@ var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA={};
+var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -372,6 +373,7 @@ var CURRENT_GROUP_DATA={};
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KommunicateConstants.KM_NOTIFICATION_TONE_URL;
+        var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -401,6 +403,7 @@ var CURRENT_GROUP_DATA={};
         var MCK_ATTACHMENT = (typeof appOptions.attachment === "boolean") ? appOptions.attachment : true;
         var CURRENT_PAGE_TITLE = parent.document.title;
         var FLASH_PAGE_TITLE;
+        var MCK_POPUP_WIDGET_CONTENT = appOptions.chatPopupMessage;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -432,6 +435,7 @@ var CURRENT_GROUP_DATA={};
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckCallService = new MckCallService();
         var mckNotificationTone = null;
+        var mckChatPopupNotificationTone = null;
         var notificationtoneoption = {};
         var ringToneService;
         var lastFetchTime;
@@ -538,6 +542,14 @@ var CURRENT_GROUP_DATA={};
                     mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
                 } catch (e) {
                     console.log(e, "error while loading ringTone service")
+                }  
+            }
+            if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
+                ringToneService = new RingToneService();
+                try {
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK);
+                } catch (e) {
+                    console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
             }
             mckMessageService.init();
@@ -1392,7 +1404,7 @@ var CURRENT_GROUP_DATA={};
                   if (isAnonymousChat) {
                       return '<a href="#" target="_self" aria-label="Open Chat" tabindex="0" role="button">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ? customLauncherHtml : defaultHtml) + '</a>';
                   } else {
-                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" aria-label="Open Chat" role="button" tabindex="0" aria-live="polite" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow n-vis"><a href="#" target="_self" aria-label="Open Chat" role="button" tabindex="0" aria-live="polite" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + Kommunicate.popupChatTemplate.getPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS) + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
                   }
                   
              };
@@ -1712,8 +1724,9 @@ var CURRENT_GROUP_DATA={};
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                     if($mck_sidebox.css('display') === 'block') {
-                        clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                        mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
                 }
                 // calling Kommunicate for post initialization processing. error first style.
@@ -2177,6 +2190,12 @@ var CURRENT_GROUP_DATA={};
                 }
                 offlineIntervalId = '';
             };
+
+            _this.clearMsgTriggerAndChatPopuTimeouts = function() {
+                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
+                KommunicateUI.togglePopupChatTemplate();
+            }
         }
 
         function MckMessageService() {
@@ -2323,6 +2342,7 @@ var CURRENT_GROUP_DATA={};
                 Kommunicate.startConversation(params,callback);
             }
             _this.openChatbox = function (params, callback) {
+                kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
                     $mck_sidebox.mckModal();
@@ -2331,7 +2351,6 @@ var CURRENT_GROUP_DATA={};
                 $mck_msg_to.focus(); 
             }
             _this.loadConversationWithAgents = function (params, callback) {
-                
                 _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == "kommunicate") {
                     $mck_btn_leave_group
@@ -2425,7 +2444,7 @@ var CURRENT_GROUP_DATA={};
                     if ($applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).hide();
                     }
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
@@ -2436,7 +2455,7 @@ var CURRENT_GROUP_DATA={};
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
                         document.getElementById('launcher-agent-img-container').classList.add('n-vis');
@@ -2474,6 +2493,153 @@ var CURRENT_GROUP_DATA={};
                     _this.toggleMediaOptions(this);
 
                 });
+                 _this.cursorPosition = function (element) {
+                    var selection = window.getSelection();
+                    var nodeCount = 0;
+                    var emptyNodes = 0;
+                    var currentRange = selection.getRangeAt(element);
+                    var endOffset = currentRange.startOffset;
+                    var startNode = element.firstChild;
+                    var normalSpan = document.getElementById('mck-normal-span');
+                    var currentNode = selection.focusNode;
+                    if (normalSpan) {
+                        startNode = normalSpan.firstChild;
+                    }
+                    var newRange = document.createRange();
+                    newRange.setStart(startNode,0);
+                    newRange.setEnd(currentNode,endOffset);
+                    var allNodes = newRange.commonAncestorContainer.childNodes;
+                    for (nodeCount = 0;nodeCount<allNodes.length;nodeCount++) { 
+                        if (allNodes[nodeCount].nodeType && allNodes[nodeCount].nodeType == "3" && allNodes[nodeCount].nodeValue == "") {
+                            emptyNodes++;
+                        }
+                      if (allNodes[nodeCount] == newRange.endContainer && allNodes[nodeCount].nodeType == "3") {
+                        break;
+                      }
+                    }  
+                    nodeCount = nodeCount - emptyNodes;
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                    var length = selection.toString().length;
+                    selection.collapseToEnd();
+                    var details = {
+                        position:endOffset,
+                        node:nodeCount,
+                        totalLength:length
+                    }
+                    return details;
+                }
+                _this.disableSendButton = function (value) {
+                    var sendButton = document.getElementById('mck-msg-sbmt');
+                    value ? sendButton.setAttribute("disabled", value) : sendButton.removeAttribute("disabled");
+                    CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+                }
+                $mck_text_box.on('input paste', function (event){
+                    if (CURRENT_GROUP_DATA.CHAR_CHECK) {
+                        var warningLength = 199;
+                        var maxLength = 256;
+                        var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
+                        if (!(document.getElementById('mck-char-count'))) {
+                            warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
+                        }
+                        var remtxt;
+                        var textVal = mckUtils.textVal(textBox);
+                        var str = textVal.trim();
+                        var textLength = str.length;
+                        if (textLength > warningLength) {
+                            var caretObject = _this.cursorPosition(textBox);
+                            var nodeOffset = caretObject.position;
+                            var caretPosition = caretObject.totalLength;
+                            var caretNode = caretObject.node;
+                            if (textLength > maxLength) {
+                                _this.disableSendButton(true);
+                                var selection;
+                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (textLength - maxLength) + " " + MCK_LABELS['limit.characters'] + ")";
+                                var preSpanContent = str.slice(0,maxLength);
+                                preSpanContent = preSpanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                var spanContent = str.slice(maxLength);
+                                spanContent = spanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                var warningSpan = document.getElementById('mck-text-warning-span');
+                                var normalSpan = document.getElementById('mck-normal-span');
+                                if (warningSpan && !(event.type == 'paste')) {
+                                    selection = document.getSelection();
+                                    if (caretPosition <= (maxLength + 1) && (selection.focusNode != warningSpan.firstChild)) {
+                                        warningSpan.innerHTML = spanContent;
+                                        normalSpan.innerHTML = preSpanContent;
+                                        selection = document.getSelection();
+                                        if(caretPosition >= maxLength + 1) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if(caretPosition > maxLength) {
+                                                nodeOffset = caretPosition - maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                        selection.collapse(targetNode,nodeOffset);
+                                    }
+                                } else {
+                                    textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true" id="mck-text-warning-span"></span>';
+                                    normalSpan = document.getElementById('mck-normal-span');
+                                    normalSpan.innerHTML = preSpanContent;
+                                    warningSpan = document.getElementById('mck-text-warning-span');
+                                    warningSpan.innerHTML = spanContent;
+                                    selection = document.getSelection();
+                                    var targetNode;
+                                    if(caretNode == 0 && caretPosition > maxLength) {
+                                        targetNode = warningSpan.firstChild;
+                                        nodeOffset = caretPosition-maxLength;
+                                    } else {
+                                        if (caretPosition > maxLength) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if (nodeOffset > targetNode.nodeValue.length) {
+                                                nodeOffset = caretPosition-maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                    }
+                                    selection.collapse(targetNode,nodeOffset);
+                                
+                                }
+                            } else {
+                                normalSpan = document.getElementById('mck-normal-span');
+                                warningSpan = document.getElementById('mck-text-warning-span');
+                                var spanRemains = '';
+                                if (normalSpan) {
+                                    spanRemains = normalSpan.innerHTML;
+                                }
+                                if (warningSpan) {
+                                    spanRemains += warningSpan.innerHTML;
+                                }
+                                if (spanRemains.length > 1) {
+
+                                    textBox.innerHTML = spanRemains;
+                                    selection = document.getSelection();
+                                    selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+                                }
+                                _this.disableSendButton(false);
+                                remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
+                            }
+                            document.getElementById('mck-char-count').innerHTML = remtxt;
+                            warningBox.classList.remove("n-vis");
+                            if (!(warningBox.classList.contains('mck-warning-slide-up'))) {
+                                warningBox.classList.add('mck-warning-slide-up');
+                                warningBox.classList.remove('mck-warning-slide-down');
+                            }
+                        } else {
+                            _this.disableSendButton(false);
+                          if (!(warningBox.classList.contains("n-vis")) && !(warningBox.classList.contains('mck-warning-slide-down'))) {
+                                    warningBox.classList.add('mck-warning-slide-down');
+                                    warningBox.classList.remove('mck-warning-slide-up');
+                                    setTimeout(function(){
+                                        warningBox.classList.add("n-vis");
+                                    },700); 
+                            }
+                        }   
+                    }
+                });
                 $mck_text_box.keydown(function (e) {
                     if ($mck_text_box.hasClass('mck-text-req')) {
                         $mck_text_box.removeClass('mck-text-req');
@@ -2497,13 +2663,15 @@ var CURRENT_GROUP_DATA={};
                             }, 0);
                             return false;
                         }
-                    } else if (e.keyCode === 13) {
+                    } else if (e.keyCode === 13 && !CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
                         e.preventDefault();
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0, $mck_msg_inner.data('mck-id'));
                         }
-                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
+                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert(MCK_LABELS['file.uploading.wait']) : $mck_msg_form.submit();
                         mckMessageLayout.messageClubbing(false);
+                    } else if(e.keyCode === 13 && CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
+                        e.preventDefault();
                     } else if (MCK_TYPING_STATUS === 0) {
                         mckInitializeChannel.sendTypingStatus(1, $mck_msg_inner.data('mck-id'));
                     }
@@ -2642,7 +2810,7 @@ var CURRENT_GROUP_DATA={};
                     $applozic.fn.applozic("mckLaunchSideboxChat");
                     // var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
-                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    mckInit.clearMsgTriggerAndChatPopuTimeouts();
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -3629,7 +3797,7 @@ var CURRENT_GROUP_DATA={};
                     KommunicateUI.setAvailabilityStatus("away");
                 }
                 KommunicateUI.populateAwayMessage(err, message);
-                KommunicateUI.updateLeadCollectionStatus(err, message, data.message)
+                KommunicateUI.updateLeadCollectionStatus(err, message, data.message || []);
             };
 
             _this.loadMessageList = function (params, callback) {
@@ -3687,27 +3855,6 @@ var CURRENT_GROUP_DATA={};
                         CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
-                        if (params.isGroup) {
-                            Kommunicate.conversation.processConversationOpenedFromList(data);
-                            var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                            var conversationAssigneeDetails = data.userDetails.filter(function (item) {
-                                return item.userId == conversationAssignee;
-                            })[0];
-                            var userSession = (KommunicateUtils.isSessionStorageAvailable()) ? JSON.parse(sessionStorage.kommunicate) : {};
-                            var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
-                            if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
-                                Kommunicate.getAwayMessage({
-                                        "applicationId": MCK_APP_ID,
-                                        "conversationId": params.tabId,
-                                        "languageCode": languageCode||"default"
-                                    },
-                                    function (err, message) {
-                                        _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
-                                    }
-                                );
-                            }
-                        }
-                        
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
@@ -3968,10 +4115,16 @@ var CURRENT_GROUP_DATA={};
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
                                 }
-
+                                if (params.isGroup) {
+                                    Kommunicate.conversation.processConversationOpenedFromList(data);
+                                    var conversationAssignee = data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    var conversationAssigneeDetails = data.userDetails.filter(function (item) {
+                                        return item.userId == conversationAssignee;
+                                    })[0];
+                                };
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
                                 if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
-                                    var CONVERSATION_ASSIGNEE, detailOfAssignedUser, name;
+                                    var name;
                                     var updateConversationHeaderParams = new Object();
                                     if(data.groupFeeds[0].name){
                                         name = data.groupFeeds[0].name;
@@ -3981,27 +4134,14 @@ var CURRENT_GROUP_DATA={};
                                     } else {
                                         name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, params.userName);
                                     };
-                                    CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                                     updateConversationHeaderParams.name = name;
-                                    $applozic.each(data.userDetails, function (i, userDetail) {
-                                        if(userDetail.userId == CONVERSATION_ASSIGNEE || userDetail.displayName == CONVERSATION_ASSIGNEE) {
-                                            detailOfAssignedUser = userDetail;
-                                            return false;
-                                        }
-                                    });
                                     data && data.groupFeeds[0] && (updateConversationHeaderParams.imageUrl = data.groupFeeds[0].imageUrl);
-                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                                        // Checking if the CONVERSATION_ASSIGNEE is bot or not
-                                        updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
-                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
-                                        if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
-                                            updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
-                                        } else {
-                                            updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
-                                            isAgentOffline = true;
-                                        }
-                                    }
-                                    _this.updateConversationHeader(updateConversationHeaderParams);
+                                    _this.getUserAvailabilityStatus(conversationAssigneeDetails, function(data){
+                                        updateConversationHeaderParams.availabilityStatus = data.availabilityStatus;
+                                        isAgentOffline = data.isAgentOffline;
+                                        _this.getAndSetAwayMessage(data, params, conversationAssigneeDetails, isAgentOffline);
+                                        _this.updateConversationHeader(updateConversationHeaderParams);
+                                    });
                                 }
                             }
                         }
@@ -4014,6 +4154,16 @@ var CURRENT_GROUP_DATA={};
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
+
+                        // for (var key in data.userDetails) {
+                        //     if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
+                        //         mckGroupLayout.checkBotDetail();
+                        //         break;
+                        //     } else {
+                        //         CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                        //     }
+                        // }
+
                     },
                     error: function (xhr, desc, err) {
                         if (xhr.status === 401) {
@@ -4027,6 +4177,37 @@ var CURRENT_GROUP_DATA={};
                     }
                 });
             };
+
+            _this.getAndSetAwayMessage = function (data, params, conversationAssigneeDetails, isAgentOffline) {
+                var userSession = (KommunicateUtils.isSessionStorageAvailable()) ? JSON.parse(sessionStorage.kommunicate) : {};
+                var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
+                if(conversationAssigneeDetails && conversationAssigneeDetails.roleType !== KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT){
+                    Kommunicate.getAwayMessage({
+                            "applicationId": MCK_APP_ID,
+                            "conversationId": params.tabId,
+                            "languageCode": languageCode||"default"
+                        },
+                        function (err, message) {
+                            _this.populateAwayStatusAndMessage(data, isAgentOffline, err, message);
+                        }
+                    );
+                }
+            };
+            _this.getUserAvailabilityStatus = function (detailOfAssignedUser, callback) {
+                var data = new Object();
+                if (typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
+                    // Checking if the CONVERSATION_ASSIGNEE is bot or not
+                    data.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
+                } else if (typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.APPLICATION_WEB_ADMIN) {
+                    if (typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
+                        data.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
+                    } else {
+                        data.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
+                        data.isAgentOffline = true;
+                    }
+                }
+                typeof callback == 'function' && callback(data);
+            };
             _this.updateConversationHeader = function (params) {
                 var imageUrl;
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
@@ -4039,7 +4220,7 @@ var CURRENT_GROUP_DATA={};
                 } else {
                     //DEFAULT_PROFILE_IMAGE
                     imageUrl = "";
-                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(kommunicateCommons.getDefaultAvatarImageSvg());
+                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(mckMessageLayout.getContactImageByAlphabet(params.name));
                     $applozic(".mck-agent-image-container .mck-agent-image-svg-container").removeClass("n-vis");
                     $applozic(".mck-agent-image-container img").addClass("n-vis");
                 }
@@ -4047,16 +4228,16 @@ var CURRENT_GROUP_DATA={};
                     "src": imageUrl,
                     "alt": profileImage
                 });
-                KommunicateUI.setAvailabilityStatus(params.availibilityStatus);
+                KommunicateUI.setAvailabilityStatus(params.availabilityStatus);
             };
             _this.updateAssigneeDetails = function (data) {
                 var updateConversationHeaderParams = new Object();
                 data.displayName && (updateConversationHeaderParams.name = data.displayName);
                 data.imageLink && (updateConversationHeaderParams.imageUrl = data.imageLink);
                 if (data.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                    updateConversationHeaderParams.availibilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
+                    updateConversationHeaderParams.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
                 } else {
-                    updateConversationHeaderParams.availibilityStatus = data.connected ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
+                    updateConversationHeaderParams.availabilityStatus = data.connected ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
                 };
                 mckMessageService.updateConversationHeader(updateConversationHeaderParams);
             };
@@ -4283,6 +4464,8 @@ var CURRENT_GROUP_DATA={};
                                }
                                params.tabId = group.contactId;
                                params.isGroup = true;
+                               params.viaCreateGroup = true;
+                               params.groupDetails = groupPxy;
                                if (params.isMessage) {
                                    mckMessageLayout.loadTab(params, alMessageService.dispatchMessage)
                                } else {
@@ -4496,7 +4679,7 @@ var CURRENT_GROUP_DATA={};
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     var kommunicateIframeDocument = kommunicateIframe.contentDocument;
                     var chatbox = kommunicateIframeDocument.getElementById("mck-sidebox-launcher");
-                    chatbox.click();
+                    !kommunicateCommons.isWidgetOpen() && chatbox.click();
                 };
 
                 if ($mck_sidebox.css('display') === 'none') {
@@ -4509,7 +4692,7 @@ var CURRENT_GROUP_DATA={};
             _this.loadTab = function (params, callback) {
                 var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
                 (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab()
-                clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
@@ -4567,6 +4750,7 @@ var CURRENT_GROUP_DATA={};
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
+                document.getElementById('mck-char-warning').classList.add('n-vis');
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -4687,9 +4871,25 @@ var CURRENT_GROUP_DATA={};
                         return;
                     }
                 }
-
-                mckMessageService.loadMessageList(params, callback);
-                // _this.openConversation();
+                if (params.viaCreateGroup) {
+                    var groupDetails = params.groupDetails;
+                    var conversationAssignee = groupDetails && groupDetails.metadata.CONVERSATION_ASSIGNEE;
+                    var conversationAssigneeDetails = groupDetails.users.filter(function (item) {
+                        return item.userId == conversationAssignee;
+                    })[0];
+                    var updateConversationHeaderParams = {
+                        'name': params.groupDetails.name,
+                        'imageUrl': params.groupDetails.imageUrl,
+                    };
+                    mckMessageService.getUserAvailabilityStatus(conversationAssigneeDetails, function(data){
+                        updateConversationHeaderParams.availabilityStatus = data.availabilityStatus;
+                        var isAgentOffline = data.isAgentOffline;
+                        mckMessageService.getAndSetAwayMessage({}, params, conversationAssigneeDetails, isAgentOffline);
+                        mckMessageService.updateConversationHeader(updateConversationHeaderParams);
+                    });
+                } else {
+                    mckMessageService.loadMessageList(params, callback);
+                }
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
@@ -6261,6 +6461,7 @@ var CURRENT_GROUP_DATA={};
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
+                document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];
@@ -8775,6 +8976,7 @@ var CURRENT_GROUP_DATA={};
 
                 var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, isGroup);
                 var notificationsound = mckNotificationTone;
+                mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 _this.showNewMessageNotification(message, contact, displayName);
                 (KOMMUNICATE_VERSION === "v2" && !OPEN_CONVERSATION_ON_NEW_MESSAGE) && _this.handleIframeNotification();
                 if (IS_MCK_NOTIFICATION && !IS_MCK_TAB_FOCUSED) {
@@ -9510,7 +9712,7 @@ var CURRENT_GROUP_DATA={};
                                 var tabId = $mck_message_inner.data('mck-id');
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
-                                    if (message && message.metadata && message.metadata.KM_ASSIGN) {
+                                    if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                         var getUsersDetailparams = {
                                             "cached": false
                                         };

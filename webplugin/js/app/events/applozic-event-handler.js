@@ -14,7 +14,7 @@ Kommunicate.KmEventHandler = {
         }
     },
     'notificationEvent': function (message) {
-        if (KommunicateUtils.getDataFromKmSession("appOptions").openConversationOnNewMessage) {
+        if (KommunicateUtils.getDataFromKmSession("appOptions") && KommunicateUtils.getDataFromKmSession("appOptions").openConversationOnNewMessage) {
             Kommunicate.KmEventHandler.openChatOnNotification(message);
         } else if(document.getElementById('launcher-agent-img-container').classList.contains('vis')) {
             document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.add("n-vis");
