@@ -4750,7 +4750,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
-                document.getElementById('mck-char-warning').classList.add('n-vis');
+                document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -6461,7 +6461,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
-                document.getElementById('mck-char-warning').classList.add('n-vis');
+                document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];
