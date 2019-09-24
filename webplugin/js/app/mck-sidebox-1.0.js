@@ -6703,6 +6703,9 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 if(isTotalUpdate){
                      mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
                 }
+                if(kommunicateCommons.isWidgetOpen()){
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'n-vis','');
+                }
             };
             _this.incrementUnreadCount = function (tabId) {
                 MCK_TOTAL_UNREAD_COUNT += 1;
