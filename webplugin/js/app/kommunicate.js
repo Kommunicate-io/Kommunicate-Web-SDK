@@ -71,8 +71,26 @@ $applozic.extend(true,Kommunicate,{
             "skipRouting": params.skipRouting,
             "skipBotEvent": params.skipBotEvent,
             "metadata": groupMetadata
+        };
+        if (IS_SOCKET_CONNECTED) {
+            Kommunicate.client.createConversation(conversationDetail, callback);
+        } else {
+            var SET_INTERVAL_DURATION = 500;
+            var SET_TIMEOUT_DURATION = 3500;
+            var interval = setInterval(function(){
+                // socket connected check
+                if (IS_SOCKET_CONNECTED) {
+                    Kommunicate.client.createConversation(conversationDetail, callback);
+                    clearInterval(interval);
+                    timeout && clearTimeout(timeout)
+                };
+            },SET_INTERVAL_DURATION);
+            var timeout = setTimeout(function() {
+                conversationDetail.allowMessagesViaSocket = true;
+                Kommunicate.client.createConversation(conversationDetail, callback);
+                clearInterval(interval);
+            }, SET_TIMEOUT_DURATION);
         }
-        Kommunicate.client.createConversation(conversationDetail, callback);
     },
     updateConversationDetail: function(conversationDetail){
         var kommunicateSettings = KommunicateUtils.getDataFromKmSession("settings");

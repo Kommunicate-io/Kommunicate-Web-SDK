@@ -10,6 +10,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA={};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
+var IS_SOCKET_CONNECTED = false;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -490,11 +491,14 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         _this.events = {
             'onConnectFailed': function () {
                 console.log("onconnect failed");
+                IS_SOCKET_CONNECTED = false;
 				if (navigator.onLine) {
 					mckInitializeChannel.reconnect();
 				}
 			 },
-            'onConnect': function () { },
+            'onConnect': function () { 
+                IS_SOCKET_CONNECTED = true;
+            },
             'onMessageDelivered': function () { },
             'onMessageRead': function () { },
             'onMessageDeleted': function () { },
@@ -1722,6 +1726,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 
                 if((KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0) || (KM_PRELEAD_COLLECTION && KM_PRELEAD_COLLECTION.length !==0)){
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
+                    !PRE_CHAT_LEAD_COLLECTION_POPUP_ON && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
@@ -4464,7 +4469,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                }
                                params.tabId = group.contactId;
                                params.isGroup = true;
-                               params.viaCreateGroup = true;
+                               !params.allowMessagesViaSocket && (params.viaCreateGroup = true);
                                params.groupDetails = groupPxy;
                                if (params.isMessage) {
                                    mckMessageLayout.loadTab(params, alMessageService.dispatchMessage)
@@ -6701,6 +6706,9 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 }
                 if(isTotalUpdate){
                      mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
+                }
+                if(kommunicateCommons.isWidgetOpen()){
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'n-vis','');
                 }
             };
             _this.incrementUnreadCount = function (tabId) {
@@ -9389,6 +9397,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             };
             _this.reconnect = function () {
                 console.log("socket trying to reconnect",new Date());
+                IS_SOCKET_CONNECTED = false;
                 _this.unsubscibeToTypingChannel();
                 _this.unsubscibeToNotification();
                 _this.disconnect();

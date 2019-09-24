@@ -86,6 +86,7 @@ Kommunicate.client={
             isMessage: conversationDetail.isMessage,
             isInternal: conversationDetail.isInternal,
             metadata: groupMetadata,
+            allowMessagesViaSocket: conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
