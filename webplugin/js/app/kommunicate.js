@@ -75,6 +75,8 @@ $applozic.extend(true,Kommunicate,{
         if (IS_SOCKET_CONNECTED) {
             Kommunicate.client.createConversation(conversationDetail, callback);
         } else {
+            var SET_INTERVAL_DURATION = 500;
+            var SET_TIMEOUT_DURATION = 3500;
             var interval = setInterval(function(){
                 // socket connected check
                 if (IS_SOCKET_CONNECTED) {
@@ -82,12 +84,12 @@ $applozic.extend(true,Kommunicate,{
                     clearInterval(interval);
                     timeout && clearTimeout(timeout)
                 };
-            },500);
+            },SET_INTERVAL_DURATION);
             var timeout = setTimeout(function() {
                 conversationDetail.allowMessagesViaSocket = true;
                 Kommunicate.client.createConversation(conversationDetail, callback);
                 clearInterval(interval);
-            }, 3500);
+            }, SET_TIMEOUT_DURATION);
         }
     },
     updateConversationDetail: function(conversationDetail){
