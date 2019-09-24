@@ -491,6 +491,7 @@ var IS_SOCKET_CONNECTED = false;
         _this.events = {
             'onConnectFailed': function () {
                 console.log("onconnect failed");
+                IS_SOCKET_CONNECTED = false;
 				if (navigator.onLine) {
 					mckInitializeChannel.reconnect();
 				}
