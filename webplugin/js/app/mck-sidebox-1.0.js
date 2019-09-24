@@ -6962,10 +6962,12 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 setTimeout(function() {
                     message = messageContainer.querySelector('div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]');
                     $applozic('.km-typing-wrapper').remove();
-                    message.classList.remove('n-vis');
-                    $mck_msg_inner.animate({
-                        scrollTop: $mck_msg_inner.prop("scrollHeight")
-                    }, 0);
+                    if(message) {
+                        message.classList.remove('n-vis');
+                        $mck_msg_inner.animate({
+                            scrollTop: $mck_msg_inner.prop("scrollHeight")
+                        }, 0);
+                    }
                     MCK_BOT_MESSAGE_QUEUE.shift();
                     MCK_BOT_MESSAGE_QUEUE.length != 0 && _this.procesMessageTimerDelay();
                 }, MCK_BOT_MESSAGE_DELAY);
