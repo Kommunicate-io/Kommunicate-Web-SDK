@@ -328,6 +328,7 @@ function ApplozicSidebox() {
         // }];
         
         try {
+            ((navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0)) && (sentryConfig.enabled = false);
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
