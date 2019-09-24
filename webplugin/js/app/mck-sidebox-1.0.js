@@ -1722,6 +1722,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 
                 if((KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0) || (KM_PRELEAD_COLLECTION && KM_PRELEAD_COLLECTION.length !==0)){
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
+                    !PRE_CHAT_LEAD_COLLECTION_POPUP_ON && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
