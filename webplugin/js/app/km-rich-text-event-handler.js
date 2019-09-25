@@ -364,6 +364,8 @@ Kommunicate.richMsgEventHandler = {
             metadata=  JSON.parse(e.target.dataset.metadata);
         }catch(e){
         }
+        var languageCode = e.target.dataset.languagecode;
+        languageCode && Kommunicate.updateUserLanguage(languageCode);
         var messagePxy = {
             'message': message, //message to send 
             'metadata': metadata
@@ -378,6 +380,7 @@ Kommunicate.richMsgEventHandler = {
         var type = target.dataset.type;
         var articleId = target.dataset.articleid;
         var source = target.dataset.source;
+        var languageCode = target.dataset.languagecode;
         var metadata = {};
         try{
             metadata=  JSON.parse(target.dataset.metadata);
@@ -386,6 +389,7 @@ Kommunicate.richMsgEventHandler = {
         metadata.KM_FAQ_ID =articleId;
         metadata.source= source;
         if(type && type =="quick_reply"){
+            languageCode && Kommunicate.updateUserLanguage(languageCode);
             var messagePxy = {
                 'message': reply, //message to send 
                 'metadata': metadata
@@ -402,6 +406,7 @@ Kommunicate.richMsgEventHandler = {
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
+        var languageCode = target.dataset.languagecode;
         var metadata = {};
         try{
             metadata=  JSON.parse(target.dataset.metadata);
@@ -410,6 +415,7 @@ Kommunicate.richMsgEventHandler = {
         }
         metadata.KM_BUTTON_CLICKED =true;
         if(type && type =="quick_reply"){
+            languageCode && Kommunicate.updateUserLanguage(languageCode);
             var messagePxy = {
                 'message': reply, //message to send 
                 'metadata': metadata
