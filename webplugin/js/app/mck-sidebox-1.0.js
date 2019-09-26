@@ -2530,9 +2530,9 @@ var CURRENT_GROUP_DATA={};
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var textVal = mckUtils.textVal(textBox);
-                        var str = textVal.trim();
-                        var textLength = str.length;
+                        var str = mckUtils.textVal(textBox);
+                        var newstr = str.trim();
+                        var textLength = newstr.length;
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
@@ -2601,11 +2601,13 @@ var CURRENT_GROUP_DATA={};
                                     spanRemains += warningSpan.innerHTML;
                                 }
                                 if (spanRemains.length > 1) {
-
                                     textBox.innerHTML = spanRemains;
                                     selection = document.getSelection();
-                                    selection.collapse(textBox.childNodes[caretNode],nodeOffset);
-                                }
+                                    if (caretPosition > maxLength) {
+                                        selection.collapse(textBox.lastChild,textBox.lastChild.length - 1);
+                                    } else {
+                                        selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+                                    }                                }
                                 _this.disableSendButton(false);
                                 remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
