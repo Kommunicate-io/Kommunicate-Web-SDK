@@ -2552,7 +2552,7 @@ var IS_SOCKET_CONNECTED = false;
                         }
                         var remtxt;
                         var str = mckUtils.textVal(textBox);
-                        var trimmedStr = textVal.trim();
+                        var trimmedStr = str.trim();
                         var textLength = trimmedStr.length;
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
@@ -2622,15 +2622,16 @@ var IS_SOCKET_CONNECTED = false;
                                     spanRemains += warningSpan.innerHTML;
                                 }
                                 if (spanRemains.length > 1) {
-
                                     textBox.innerHTML = spanRemains;
                                     selection = document.getSelection();
                                     if (caretPosition > maxLength) {
                                         selection.collapse(textBox.lastChild,textBox.lastChild.length - 1);
                                     } else {
                                         selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+
                                     }
                                 }
+
                                 _this.disableSendButton(false);
                                 remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
