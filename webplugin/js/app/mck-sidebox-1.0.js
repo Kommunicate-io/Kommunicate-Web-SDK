@@ -2531,8 +2531,8 @@ var CURRENT_GROUP_DATA={};
                         }
                         var remtxt;
                         var str = mckUtils.textVal(textBox);
-                        var newstr = str.trim();
-                        var textLength = newstr.length;
+                        var trimmedStr = str.trim();
+                        var textLength = trimmedStr.length;
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
