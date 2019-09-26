@@ -2548,9 +2548,9 @@ var IS_SOCKET_CONNECTED = false;
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var textVal = mckUtils.textVal(textBox);
-                        var str = textVal.trim();
-                        var textLength = str.length;
+                        var str = mckUtils.textVal(textBox);
+                        var trimmedStr = str.trim();
+                        var textLength = trimmedStr.length;
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
@@ -2619,11 +2619,13 @@ var IS_SOCKET_CONNECTED = false;
                                     spanRemains += warningSpan.innerHTML;
                                 }
                                 if (spanRemains.length > 1) {
-
                                     textBox.innerHTML = spanRemains;
                                     selection = document.getSelection();
-                                    selection.collapse(textBox.childNodes[caretNode],nodeOffset);
-                                }
+                                    if (caretPosition > maxLength) {
+                                        selection.collapse(textBox.lastChild,textBox.lastChild.length - 1);
+                                    } else {
+                                        selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+                                    }                                }
                                 _this.disableSendButton(false);
                                 remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
