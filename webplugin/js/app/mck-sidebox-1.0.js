@@ -2005,6 +2005,7 @@ var IS_SOCKET_CONNECTED = false;
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
                 document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
+                document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
@@ -2285,6 +2286,8 @@ var IS_SOCKET_CONNECTED = false;
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
+            var warningBox = document.getElementById("mck-char-warning");	
+            var warningText = document.getElementById('mck-char-warning-text');
 
             _this.hideAutoSuggestionBoxEnableTxtBox= function(){
                 if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
@@ -2548,9 +2551,9 @@ var IS_SOCKET_CONNECTED = false;
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var textVal = mckUtils.textVal(textBox);
-                        var str = textVal.trim();
-                        var textLength = str.length;
+                        var str = mckUtils.textVal(textBox);
+                        var trimmedStr = textVal.trim();
+                        var textLength = trimmedStr.length;
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
@@ -2622,7 +2625,11 @@ var IS_SOCKET_CONNECTED = false;
 
                                     textBox.innerHTML = spanRemains;
                                     selection = document.getSelection();
-                                    selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+                                    if (caretPosition > maxLength) {
+                                        selection.collapse(textBox.lastChild,textBox.lastChild.length - 1);
+                                    } else {
+                                        selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+                                    }
                                 }
                                 _this.disableSendButton(false);
                                 remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
@@ -4160,14 +4167,14 @@ var IS_SOCKET_CONNECTED = false;
 
                         mckMessageLayout.messageClubbing(true);
 
-                        // for (var key in data.userDetails) {
-                        //     if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                        //         mckGroupLayout.checkBotDetail();
-                        //         break;
-                        //     } else {
-                        //         CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                        //     }
-                        // }
+                        for (var key in data.userDetails) {
+                            if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
+                                 mckGroupLayout.checkBotDetail();
+                                 break;
+                             } else {
+                                 CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                             }
+                         }
 
                     },
                     error: function (xhr, desc, err) {
@@ -7395,7 +7402,7 @@ var IS_SOCKET_CONNECTED = false;
                 2: MCK_LABELS['moderator'],
                 3: MCK_LABELS['member']
             };
-
+            var MCK_BOT_API = KM_PLUGIN_SETTINGS.botPlatformApi;
             var select = document.getElementById( 'mck-group-create-type' );
 						select.options[select.options.length] = new Option( MCK_LABELS['public'], '1');
 						select.options[select.options.length] = new Option( MCK_LABELS['private'], '2');
@@ -7446,6 +7453,7 @@ var IS_SOCKET_CONNECTED = false;
             var $mck_group_create_icon = $applozic("#mck-group-create-icon-box .mck-group-icon");
             var $mck_group_create_overlay_box = $applozic("#mck-group-create-icon-box .mck-overlay-box");
             var $mck_gc_overlay_label = $applozic("#mck-gc-overlay-label");
+            var warningBox = document.getElementById('mck-char-warning');	
             var groupContactbox = '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}" data-role="${roleVal}" data-alpha="${contFirstAlphaExpr}">' +
                 '<div class="mck-row mck-group-member-info" title="${contNameExpr}">' +
                 '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' +
@@ -7626,7 +7634,19 @@ var IS_SOCKET_CONNECTED = false;
                 };
                 return conversationDetail;
             };
-
+            _this.checkBotDetail = function () {	
+                window.Applozic.ALApiService.ajax({	
+                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,	
+                    type: 'get',	
+                    global: false,	
+                    success: function (data) {	
+                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
+                            },	
+                    error: function () {	
+                            CURRENT_GROUP_DATA.CHAR_CHECK = false;	
+                    }	
+            });	
+            }
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();

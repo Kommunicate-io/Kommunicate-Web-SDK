@@ -4,6 +4,7 @@ const configEnv = {
     "urls": {
       "applozicBaseUrl": "https://apps-test.applozic.com",
       "kommunicateBaseUrl": "https://api-test.kommunicate.io",
+      "botPlatformApi": "https://bots-test.applozic.com",
       "hostUrl": "http://localhost:3030"
     },
     "pluginProperties": {
@@ -21,6 +22,7 @@ const configEnv = {
     "urls": {
       "applozicBaseUrl": "https://apps-test.applozic.com",
       "kommunicateBaseUrl": "https://api-test.kommunicate.io",
+      "botPlatformApi": "https://bots-test.applozic.com",
       "hostUrl": "https://widget-test.kommunicate.io"
     },
     "pluginProperties": {
@@ -38,6 +40,7 @@ const configEnv = {
     "urls": {
       "applozicBaseUrl": "https://apps-test.applozic.com",
       "kommunicateBaseUrl": "https://api-staging.kommunicate.io",
+      "botPlatformApi": "https://bots-test.applozic.com",
       "hostUrl": "https://widget-staging.kommunicate.io"
     },
     "pluginProperties": {
@@ -55,6 +58,7 @@ const configEnv = {
     "urls": {
       "applozicBaseUrl": "https://chat.kommunicate.io",
       "kommunicateBaseUrl": "https://api.kommunicate.io",
+      "botPlatformApi": "https://bots.applozic.com",
       "hostUrl": "https://widget.kommunicate.io"
     },
     "pluginProperties": {
