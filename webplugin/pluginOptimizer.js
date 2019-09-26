@@ -12,6 +12,7 @@ const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
 const pluginVersions = ["v1","v2"];
 PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
+PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 let PLUGIN_FILE_DATA = new Object();
 

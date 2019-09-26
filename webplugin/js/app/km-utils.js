@@ -25,6 +25,14 @@ KommunicateConstants = {
         EARLY_BIRD_MONTHLY:107,
         EARLY_BIRD_YEARLY:108,
    },
+   BOT_PLATFORM : { 	
+        DIALOGFLOW:"dialogflow",	
+        APIAI:"api.ai",	
+        HELPDOCS:"helpdocs.io",	
+        AMAZONLEX:"amazonlex",	
+        RASA:"rasa",	
+        CUSTOM:'custom'	
+    },
    KM_NOTIFICATION_TONE_URL: "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3",
    KM_CHAT_POPUP_NOTIFICATION_URL: "https://cdn.kommunicate.io/kommunicate/chat-popup-notification-tone.mp3",
    CUSTOM_WIDGETS_SVG : {
