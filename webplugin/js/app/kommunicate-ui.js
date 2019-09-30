@@ -469,7 +469,7 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
     },
-    displayPopupChatTemplate: function(popupChatContent, widgetTheme) {
+    displayPopupChatTemplate: function(popupChatContent, widgetTheme, mckChatPopupNotificationTone) {
 
         var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
@@ -478,6 +478,7 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         if(isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
                 KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true);
+                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
             }, delay);
         }
 

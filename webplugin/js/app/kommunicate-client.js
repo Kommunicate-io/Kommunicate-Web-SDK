@@ -42,6 +42,7 @@ Kommunicate.client={
      */
      createConversation : function(conversationDetail,callback){
         var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+
         var userLocale = kommunicate._globals.userLocale;
         var currentLanguage = {
             'kmUserLocale': userLocale ? userLocale.split("-")[0] : (window.navigator.language || window.navigator.userLanguage).split('-')[0]
@@ -69,9 +70,8 @@ Kommunicate.client={
             GROUP_CREATION_URL: parent.location.href
         };
 
-        if (conversationDetail.skipBotEvent) {
-            groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent;
-        }
+        conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
+        conversationDetail.skipBotEvent && (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
 
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
         conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE)
@@ -86,6 +86,7 @@ Kommunicate.client={
             isMessage: conversationDetail.isMessage,
             isInternal: conversationDetail.isInternal,
             metadata: groupMetadata,
+            allowMessagesViaSocket: conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {

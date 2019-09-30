@@ -181,14 +181,13 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = options.onInit;
   }
   addableWindow.addEventListener('error', function (e) {
-    var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
-    sentryConfig.enable && typeof Sentry != "undefined" && Sentry.withScope(function (scope) {
+    MCK_THIRD_PARTY_INTEGRATION.sentry.enabled && typeof KommunicateGlobal != "undefined" && KommunicateGlobal != null && KommunicateGlobal.Sentry != null && KommunicateGlobal.Sentry.withScope(function (scope) {
       scope.setTag("applicationId", options.appId);
       scope.setTag("userId", options.userId);
       scope.setUser({
         id: options.appId
       });
-      Sentry.captureException(e);
+      KommunicateGlobal.Sentry.captureException(e);
     });
     if (typeof (e.target.src) !== 'undefined' && e.target.src.indexOf('sidebox') !== -1 && typeof MCK_ONINIT === 'function') {
       console.log("Plugin loading error. Refresh page.");

@@ -1,6 +1,6 @@
 var $original;
 var oModal = "";
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -328,6 +328,7 @@ function ApplozicSidebox() {
         // }];
         
         try {
+            ((navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0)) && (sentryConfig.enabled = false);
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
@@ -339,14 +340,14 @@ function ApplozicSidebox() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
-                        sentryConfig.enable && loadErrorTracking(userId);
+                        sentryConfig.enabled && loadErrorTracking(userId);
                         getApplicationSettings(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
-                    sentryConfig.enable && loadErrorTracking(userId);
+                    sentryConfig.enabled && loadErrorTracking(userId);
                     getApplicationSettings(userId);
                 };
             }
@@ -407,6 +408,7 @@ function ApplozicSidebox() {
                 options.obsm = oModal;
                 $applozic.fn.applozic(options);
             }
+            preLoadLauncherIcon(widgetSettings);
         } catch (e) {
             console.log(e);
             console.log("Plugin loading error. Refresh page.", e);
@@ -416,6 +418,29 @@ function ApplozicSidebox() {
             return false;
         }
     };
+
+
+    function preLoadLauncherIcon(widgetTheme) {
+        if(widgetTheme && widgetTheme.widgetImageLink) {
+            var img = new Image();
+            img.onload = function () {
+                preLoadLauncherIconInterval();
+            }
+            img.src = widgetTheme.widgetImageLink;
+        } else { // This condition is to check if there is no custom launcher icon image.
+            preLoadLauncherIconInterval();
+        }
+    }
+
+    function preLoadLauncherIconInterval() {
+        var launcherInterval = setInterval(function() {
+            if(document.getElementById("mck-sidebox-launcher")){
+                document.getElementById("mck-sidebox-launcher").classList.remove("n-vis");
+                document.getElementById("mck-sidebox-launcher").classList.add("km-launcher-animation");
+                clearInterval(launcherInterval);
+            }
+        }, 100);
+    }
     
     // function seekReplaceDestroyCookies (mapCookies){
     //    var  hostName = parent.window.location.hostname;

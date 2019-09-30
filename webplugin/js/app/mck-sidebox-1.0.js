@@ -10,6 +10,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA={};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
+var IS_SOCKET_CONNECTED = false;
 
 (function ($applozic, w, d) {
     "use strict";
@@ -373,6 +374,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KommunicateConstants.KM_NOTIFICATION_TONE_URL;
+        var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -434,6 +436,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckCallService = new MckCallService();
         var mckNotificationTone = null;
+        var mckChatPopupNotificationTone = null;
         var notificationtoneoption = {};
         var ringToneService;
         var lastFetchTime;
@@ -455,7 +458,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_QUEUE = [];
-        var MCK_BOT_MESSAGE_DELAY = (typeof appOptions.botMessageDelay === "number") ? appOptions.botMessageDelay : 0;
+        var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -488,11 +491,14 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
         _this.events = {
             'onConnectFailed': function () {
                 console.log("onconnect failed");
+                IS_SOCKET_CONNECTED = false;
 				if (navigator.onLine) {
 					mckInitializeChannel.reconnect();
 				}
 			 },
-            'onConnect': function () { },
+            'onConnect': function () { 
+                IS_SOCKET_CONNECTED = true;
+            },
             'onMessageDelivered': function () { },
             'onMessageRead': function () { },
             'onMessageDeleted': function () { },
@@ -540,6 +546,14 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
                 } catch (e) {
                     console.log(e, "error while loading ringTone service")
+                }  
+            }
+            if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
+                ringToneService = new RingToneService();
+                try {
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK);
+                } catch (e) {
+                    console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
             }
             mckMessageService.init();
@@ -1394,7 +1408,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                   if (isAnonymousChat) {
                       return '<a href="#" target="_self" aria-label="Open Chat" tabindex="0" role="button">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ? customLauncherHtml : defaultHtml) + '</a>';
                   } else {
-                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" aria-label="Open Chat" role="button" tabindex="0" aria-live="polite" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + Kommunicate.popupChatTemplate.getPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS) + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+                      return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow n-vis"><a href="#" target="_self" aria-label="Open Chat" role="button" tabindex="0" aria-live="polite" class="applozic-launcher">' + CHAT_CLOSE_BUTTON + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container" class="n-vis"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"/></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + Kommunicate.popupChatTemplate.getPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS) + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
                   }
                   
              };
@@ -1712,9 +1726,10 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 
                 if((KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0) || (KM_PRELEAD_COLLECTION && KM_PRELEAD_COLLECTION.length !==0)){
                     PRE_CHAT_LEAD_COLLECTION_POPUP_ON && $applozic.fn.applozic("mckLaunchSideboxChat");
+                    !PRE_CHAT_LEAD_COLLECTION_POPUP_ON && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                 } else {
                     $applozic.fn.applozic("triggerMsgNotification");
-                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS);
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                     if($mck_sidebox.css('display') === 'block') {
                         mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
@@ -1888,7 +1903,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                            document.getElementById("mck-feedback-comment").value = '';
                            if(feedbackData.rating && feedbackData.comments[0]){
                             var feedback =JSON.stringify({"rating":feedbackData.rating,comments:feedbackData.comments[0]});
-                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback}});
+                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback,"skipBot":true}});
                            }
                        }
                     },
@@ -2271,7 +2286,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
-            var warningBox = document.getElementById("mck-char-warning");
+            var warningBox = document.getElementById("mck-char-warning");	
             var warningText = document.getElementById('mck-char-warning-text');
 
             _this.hideAutoSuggestionBoxEnableTxtBox= function(){
@@ -2486,19 +2501,139 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     _this.toggleMediaOptions(this);
 
                 });
-                $mck_text_box.keyup(function (){
+                 _this.cursorPosition = function (element) {
+                    var selection = window.getSelection();
+                    var nodeCount = 0;
+                    var emptyNodes = 0;
+                    var currentRange = selection.getRangeAt(element);
+                    var endOffset = currentRange.startOffset;
+                    var startNode = element.firstChild;
+                    var normalSpan = document.getElementById('mck-normal-span');
+                    var currentNode = selection.focusNode;
+                    if (normalSpan) {
+                        startNode = normalSpan.firstChild;
+                    }
+                    var newRange = document.createRange();
+                    newRange.setStart(startNode,0);
+                    newRange.setEnd(currentNode,endOffset);
+                    var allNodes = newRange.commonAncestorContainer.childNodes;
+                    for (nodeCount = 0;nodeCount<allNodes.length;nodeCount++) { 
+                        if (allNodes[nodeCount].nodeType && allNodes[nodeCount].nodeType == "3" && allNodes[nodeCount].nodeValue == "") {
+                            emptyNodes++;
+                        }
+                      if (allNodes[nodeCount] == newRange.endContainer && allNodes[nodeCount].nodeType == "3") {
+                        break;
+                      }
+                    }  
+                    nodeCount = nodeCount - emptyNodes;
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                    var length = selection.toString().length;
+                    selection.collapseToEnd();
+                    var details = {
+                        position:endOffset,
+                        node:nodeCount,
+                        totalLength:length
+                    }
+                    return details;
+                }
+                _this.disableSendButton = function (value) {
+                    var sendButton = document.getElementById('mck-msg-sbmt');
+                    value ? sendButton.setAttribute("disabled", value) : sendButton.removeAttribute("disabled");
+                    CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+                }
+                $mck_text_box.on('input paste', function (event){
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
+                        var warningLength = 199;
+                        var maxLength = 256;
+                        var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!(document.getElementById('mck-char-count'))) {
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var str = ($mck_text_box.text().toString()).trim();
-                        var len = str.length;
-                        if (len > 199) {
-                            if (len > 256) {
-                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (len - 256) + " " + MCK_LABELS['limit.characters'] + ")";
+                        var str = mckUtils.textVal(textBox);
+                        var trimmedStr = str.trim();
+                        var textLength = trimmedStr.length;
+                        if (textLength > warningLength) {
+                            var caretObject = _this.cursorPosition(textBox);
+                            var nodeOffset = caretObject.position;
+                            var caretPosition = caretObject.totalLength;
+                            var caretNode = caretObject.node;
+                            if (textLength > maxLength) {
+                                _this.disableSendButton(true);
+                                var selection;
+                                remtxt = "(" + MCK_LABELS['limit.remove'] + " " + (textLength - maxLength) + " " + MCK_LABELS['limit.characters'] + ")";
+                                var preSpanContent = str.slice(0,maxLength);
+                                preSpanContent = preSpanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                var spanContent = str.slice(maxLength);
+                                spanContent = spanContent.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                                var warningSpan = document.getElementById('mck-text-warning-span');
+                                var normalSpan = document.getElementById('mck-normal-span');
+                                if (warningSpan && !(event.type == 'paste')) {
+                                    selection = document.getSelection();
+                                    if (caretPosition <= (maxLength + 1) && (selection.focusNode != warningSpan.firstChild)) {
+                                        warningSpan.innerHTML = spanContent;
+                                        normalSpan.innerHTML = preSpanContent;
+                                        selection = document.getSelection();
+                                        if(caretPosition >= maxLength + 1) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if(caretPosition > maxLength) {
+                                                nodeOffset = caretPosition - maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                        selection.collapse(targetNode,nodeOffset);
+                                    }
+                                } else {
+                                    textBox.innerHTML = '<span id = "mck-normal-span"></span><span contenteditable="true" id="mck-text-warning-span"></span>';
+                                    normalSpan = document.getElementById('mck-normal-span');
+                                    normalSpan.innerHTML = preSpanContent;
+                                    warningSpan = document.getElementById('mck-text-warning-span');
+                                    warningSpan.innerHTML = spanContent;
+                                    selection = document.getSelection();
+                                    var targetNode;
+                                    if(caretNode == 0 && caretPosition > maxLength) {
+                                        targetNode = warningSpan.firstChild;
+                                        nodeOffset = caretPosition-maxLength;
+                                    } else {
+                                        if (caretPosition > maxLength) {
+                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                            if (nodeOffset > targetNode.nodeValue.length) {
+                                                nodeOffset = caretPosition-maxLength;
+                                            }
+                                        }
+                                        else {
+                                            targetNode = normalSpan.childNodes[caretNode];
+                                        }
+                                    }
+                                    selection.collapse(targetNode,nodeOffset);
+                                
+                                }
                             } else {
-                                remtxt = "(" + (256 - len) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
+                                normalSpan = document.getElementById('mck-normal-span');
+                                warningSpan = document.getElementById('mck-text-warning-span');
+                                var spanRemains = '';
+                                if (normalSpan) {
+                                    spanRemains = normalSpan.innerHTML;
+                                }
+                                if (warningSpan) {
+                                    spanRemains += warningSpan.innerHTML;
+                                }
+                                if (spanRemains.length > 1) {
+                                    textBox.innerHTML = spanRemains;
+                                    selection = document.getSelection();
+                                    if (caretPosition > maxLength) {
+                                        selection.collapse(textBox.lastChild,textBox.lastChild.length - 1);
+                                    } else {
+                                        selection.collapse(textBox.childNodes[caretNode],nodeOffset);
+
+                                    }
+                                }
+
+                                _this.disableSendButton(false);
+                                remtxt = "(" + (maxLength - textLength) + " " + MCK_LABELS['limit.characters'] + " " + MCK_LABELS['limit.remaining'] + ")";
                             }
                             document.getElementById('mck-char-count').innerHTML = remtxt;
                             warningBox.classList.remove("n-vis");
@@ -2507,6 +2642,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                 warningBox.classList.remove('mck-warning-slide-down');
                             }
                         } else {
+                            _this.disableSendButton(false);
                           if (!(warningBox.classList.contains("n-vis")) && !(warningBox.classList.contains('mck-warning-slide-down'))) {
                                     warningBox.classList.add('mck-warning-slide-down');
                                     warningBox.classList.remove('mck-warning-slide-up');
@@ -2540,13 +2676,15 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                             }, 0);
                             return false;
                         }
-                    } else if (e.keyCode === 13) {
+                    } else if (e.keyCode === 13 && !CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
                         e.preventDefault();
                         if (MCK_TYPING_STATUS === 1) {
                             mckInitializeChannel.sendTypingStatus(0, $mck_msg_inner.data('mck-id'));
                         }
-                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert('Please wait file is uploading.') : $mck_msg_form.submit();
+                        ($mck_msg_sbmt.is(':disabled') && $mck_file_box.hasClass('vis')) ? alert(MCK_LABELS['file.uploading.wait']) : $mck_msg_form.submit();
                         mckMessageLayout.messageClubbing(false);
+                    } else if(e.keyCode === 13 && CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE) {
+                        e.preventDefault();
                     } else if (MCK_TYPING_STATUS === 0) {
                         mckInitializeChannel.sendTypingStatus(1, $mck_msg_inner.data('mck-id'));
                     }
@@ -4032,12 +4170,12 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                                mckGroupLayout.checkBotDetail();
-                                break;
-                            } else {
-                                CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                            }
-                        }
+                                 mckGroupLayout.checkBotDetail();
+                                 break;
+                             } else {
+                                 CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                             }
+                         }
 
                     },
                     error: function (xhr, desc, err) {
@@ -4095,7 +4233,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 } else {
                     //DEFAULT_PROFILE_IMAGE
                     imageUrl = "";
-                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(kommunicateCommons.getDefaultAvatarImageSvg());
+                    $applozic(".mck-agent-image-container .mck-agent-image-svg-container").html(mckMessageLayout.getContactImageByAlphabet(params.name));
                     $applozic(".mck-agent-image-container .mck-agent-image-svg-container").removeClass("n-vis");
                     $applozic(".mck-agent-image-container img").addClass("n-vis");
                 }
@@ -4339,7 +4477,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                }
                                params.tabId = group.contactId;
                                params.isGroup = true;
-                               params.viaCreateGroup = true;
+                               !params.allowMessagesViaSocket && (params.viaCreateGroup = true);
                                params.groupDetails = groupPxy;
                                if (params.isMessage) {
                                    mckMessageLayout.loadTab(params, alMessageService.dispatchMessage)
@@ -4625,7 +4763,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
-                document.getElementById('mck-char-warning').classList.add('n-vis');
+                document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -6340,6 +6478,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
+                document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
                 FILE_META = [];
@@ -6579,6 +6718,9 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 }
                 if(isTotalUpdate){
                      mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
+                }
+                if(kommunicateCommons.isWidgetOpen()){
+                    kommunicateCommons.modifyClassList({id:['applozic-badge-count']},'n-vis','');
                 }
             };
             _this.incrementUnreadCount = function (tabId) {
@@ -6830,18 +6972,22 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 var messageContainer = document.getElementById('mck-message-cell'),
                     message;
 
+                if(!document.querySelector('.km-typing-wrapper')) {
                     $mck_msg_inner.append('<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>');
                     $mck_msg_inner.animate({
                         scrollTop: $mck_msg_inner.prop("scrollHeight")
                     }, 0);
+                }
 
                 setTimeout(function() {
                     message = messageContainer.querySelector('div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]');
                     $applozic('.km-typing-wrapper').remove();
-                    message.classList.remove('n-vis');
-                    $mck_msg_inner.animate({
-                        scrollTop: $mck_msg_inner.prop("scrollHeight")
-                    }, 0);
+                    if(message) {
+                        message.classList.remove('n-vis');
+                        $mck_msg_inner.animate({
+                            scrollTop: $mck_msg_inner.prop("scrollHeight")
+                        }, 0);
+                    }
                     MCK_BOT_MESSAGE_QUEUE.shift();
                     MCK_BOT_MESSAGE_QUEUE.length != 0 && _this.procesMessageTimerDelay();
                 }, MCK_BOT_MESSAGE_DELAY);
@@ -7312,7 +7458,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             var $mck_group_create_icon = $applozic("#mck-group-create-icon-box .mck-group-icon");
             var $mck_group_create_overlay_box = $applozic("#mck-group-create-icon-box .mck-overlay-box");
             var $mck_gc_overlay_label = $applozic("#mck-gc-overlay-label");
-            var warningBox = document.getElementById('mck-char-warning');
+            var warningBox = document.getElementById('mck-char-warning');	
             var groupContactbox = '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}" data-role="${roleVal}" data-alpha="${contFirstAlphaExpr}">' +
                 '<div class="mck-row mck-group-member-info" title="${contNameExpr}">' +
                 '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' +
@@ -7493,18 +7639,18 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                 };
                 return conversationDetail;
             };
-            _this.checkBotDetail = function () {
-                window.Applozic.ALApiService.ajax({
-                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,
-                    type: 'get',
-                    global: false,
-                    success: function (data) {
-                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);
-                            },
-                    error: function () {
-                            CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                    }
-            });
+            _this.checkBotDetail = function () {	
+                window.Applozic.ALApiService.ajax({	
+                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,	
+                    type: 'get',	
+                    global: false,	
+                    success: function (data) {	
+                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
+                            },	
+                    error: function () {	
+                            CURRENT_GROUP_DATA.CHAR_CHECK = false;	
+                    }	
+            });	
             }
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
@@ -9276,6 +9422,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
             };
             _this.reconnect = function () {
                 console.log("socket trying to reconnect",new Date());
+                IS_SOCKET_CONNECTED = false;
                 _this.unsubscibeToTypingChannel();
                 _this.unsubscibeToNotification();
                 _this.disconnect();
@@ -9611,7 +9758,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
                                 }
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
-                                    if (message && message.metadata && message.metadata.KM_ASSIGN) {
+                                    if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                         var getUsersDetailparams = {
                                             "cached": false
                                         };

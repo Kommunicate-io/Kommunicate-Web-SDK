@@ -10,6 +10,7 @@ Kommunicate.defaultLabels = {
     'limit.remove': 'Remove',
     'limit.characters': 'characters',
     'limit.remaining': 'remaining',
+    'file.uploading.wait': 'Please wait file is uploading.',
     'empty.groups': 'No groups yet!',
     'empty.contacts': 'No contacts yet!',
     'empty.messages': 'No messages yet!',

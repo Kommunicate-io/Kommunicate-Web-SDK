@@ -494,6 +494,119 @@
 .mck-box-footer .mck-btn {
 	font-size: 12px;
 }
+
+#mck-text-warning-span {
+	background-color:rgb(255,184,194);
+}
+
+#mck-char-warning {
+	width: auto;
+	height: 62px;
+	margin-bottom: -70px;
+	padding-top:15px;
+	border-radius: 4px;
+	opacity:0;  
+  	background-color: #5451e2;
+}
+.mck-warning-slide-up {
+	animation: animslideup;
+	-webkit-animation: animslideup;
+	-moz-animation: animslideup;
+	-o-animation: animslideup;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+.mck-warning-slide-down {
+	animation: animslidedown;
+	-webkit-animation: animslidedown;
+	-moz-animation: animslidedown;
+	-o-animation: animslidedown;
+	animation-duration: 0.7s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards; 
+}
+@keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-webkit-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-webkit-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-moz-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-moz-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+@-o-keyframes animslideup {
+	from{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+	to{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+}
+@-o-keyframes animslidedown {
+	from{
+		opacity:1;
+		margin-bottom:-15px;
+	}
+	to{
+		opacity:0;
+		margin-bottom:-70px;
+	}
+}
+
 #mck-char-warning {
 	width: auto;
 	height: 62px;
@@ -612,7 +725,10 @@
 	letter-spacing: 0.2px;
 	color: #ffffff;
 }
-
+#mck-msg-sbmt:disabled {
+	opacity:0.3;
+	cursor: default;
+}
 #mck-char-count {
 	width: 87px;
   	height: 17px;
@@ -621,6 +737,9 @@
   	line-height: 1.42;
   	letter-spacing: 0.28px;
   	color: #ffffff;
+}
+#mck-text-warning-span {
+	background-color: rgb(255,184,194);
 }
 .footer-controls {
     float:right!important;
@@ -5702,6 +5821,13 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	width: 38px;
     height: 38px;
 }
+.mck-agent-image-svg-container .mck-videocall-image {
+	width: 38px;
+	height: 38px;
+	margin-right: 0;
+	line-height: 40px;
+	cursor: default;
+}
 .mck-sidebox .force-n-vis {
 	display:none !important;
 }
@@ -6545,3 +6671,66 @@ body.accesibility :focus {
 	}
 }
 /* Chat Popup Template Code Ends */
+
+/* Chat launcher animation for initial load Code Starts */
+.mck-sidebox-launcher.km-launcher-animation {
+	-webkit-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	   -moz-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	     -o-animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+	        animation: 250ms ease 0s 1 normal none running km-animation-launcher-icon;
+}
+
+@-webkit-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(0.5, 0.5);
+		        transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1, 1);
+		        transform: scale(1, 1);
+	}
+}
+@-moz-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-moz-transform: scale(0.5, 0.5);
+		     transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-moz-transform: scale(1, 1);
+		     transform: scale(1, 1);
+	}
+}
+@-o-keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-o-transform: scale(0.5, 0.5);
+		   transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-o-transform: scale(1, 1);
+		   transform: scale(1, 1);
+	}
+}
+@keyframes km-animation-launcher-icon {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale(0.5, 0.5);
+		   -moz-transform: scale(0.5, 0.5);
+		     -o-transform: scale(0.5, 0.5);
+		        transform: scale(0.5, 0.5);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: scale(1, 1);
+		   -moz-transform: scale(1, 1);
+		     -o-transform: scale(1, 1);
+		        transform: scale(1, 1);
+	}
+}
+
+/* Chat launcher animation for initial load Code Ends */
