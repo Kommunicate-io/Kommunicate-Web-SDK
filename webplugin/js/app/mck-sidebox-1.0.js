@@ -2548,9 +2548,9 @@ var IS_SOCKET_CONNECTED = false;
                             warningText.innerHTML += '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var textVal = mckUtils.textVal(textBox);
-                        var str = textVal.trim();
-                        var textLength = str.length;
+                        var str = mckUtils.textVal(textBox);
+                        var trimmedStr = str.trim();
+                        var textLength = trimmedStr.length;
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
@@ -2590,23 +2590,35 @@ var IS_SOCKET_CONNECTED = false;
                                     warningSpan = document.getElementById('mck-text-warning-span');
                                     warningSpan.innerHTML = spanContent;
                                     selection = document.getSelection();
-                                    var targetNode;
-                                    if(caretNode == 0 && caretPosition > maxLength) {
-                                        targetNode = warningSpan.firstChild;
-                                        nodeOffset = caretPosition-maxLength;
-                                    } else {
-                                        if (caretPosition > maxLength) {
-                                            targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
-                                            if (nodeOffset > targetNode.nodeValue.length) {
-                                                nodeOffset = caretPosition-maxLength;
+                                    try {
+                                        var targetNode;
+                                        if(caretNode == 0 && caretPosition > maxLength) {
+                                            targetNode = warningSpan.firstChild;
+                                            nodeOffset = caretPosition-maxLength;
+                                        } else {
+                                            if (caretPosition > maxLength) {
+                                                var nodeNum = caretNode - (normalSpan.childNodes.length - 1);
+                                                if(nodeNum >= warningSpan.childNodes.length) {
+                                                    targetNode = warningSpan.lastChild;
+                                                    nodeOffset = warningSpan.lastChild.length;
+                                                } else {
+                                                    targetNode = warningSpan.childNodes[caretNode - (normalSpan.childNodes.length - 1)];
+                                                    if (nodeOffset > targetNode.nodeValue.length) {
+                                                        nodeOffset = caretPosition-maxLength;
+                                                    }
+                                                }
+                                            }
+                                            else {
+                                                targetNode = normalSpan.childNodes[caretNode];
                                             }
                                         }
-                                        else {
-                                            targetNode = normalSpan.childNodes[caretNode];
-                                        }
+                                        selection.collapse(targetNode,nodeOffset);
+                                    } catch(err) {
+                                        console.log(err);
+                                        targetNode = warningSpan.lastChild;
+                                        nodeOffset = warningSpan.lastChild.length;
+                                        selection.collapse(targetNode,nodeOffset);
                                     }
-                                    selection.collapse(targetNode,nodeOffset);
-                                
                                 }
                             } else {
                                 normalSpan = document.getElementById('mck-normal-span');
