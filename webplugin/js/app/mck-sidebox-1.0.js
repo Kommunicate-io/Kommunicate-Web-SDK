@@ -294,6 +294,7 @@ var IS_SOCKET_CONNECTED = false;
 
     function Applozic(appOptions) {
         var _this = this;
+        var IS_SOCKET_INITIALIZED = false;
         var INIT_APP_DATA = {};
         var IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = false;
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
@@ -9239,12 +9240,13 @@ var IS_SOCKET_CONNECTED = false;
                                 "allowReload": true
                             })
                         } else {
-                            // do we need this? 
+                            // Below code will update the all conversation list
                             ALStorage.clearMckMessageArray();
-                            mckMessageLayout.loadTab({
+                            IS_SOCKET_INITIALIZED && mckMessageLayout.loadTab({
                                 'tabId': '',
                                 'isGroup': false
                             });
+                            IS_SOCKET_INITIALIZED = true;
                         }
                     }
                 if (!stompClient.connected) {
