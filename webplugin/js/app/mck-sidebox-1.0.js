@@ -4174,7 +4174,7 @@ var IS_SOCKET_CONNECTED = false;
 
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
-                                 mckGroupLayout.checkBotDetail();
+                                 mckGroupLayout.checkBotDetail(CURRENT_GROUP_DATA.conversationAssignee);
                                  break;
                              } else {
                                  CURRENT_GROUP_DATA.CHAR_CHECK = false;
@@ -7614,19 +7614,34 @@ var IS_SOCKET_CONNECTED = false;
                 };
                 return conversationDetail;
             };
-            _this.checkBotDetail = function () {	
+            _this.checkBotDetail = function (userId) {	
                 window.Applozic.ALApiService.ajax({	
-                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + CURRENT_GROUP_DATA.conversationAssignee,	
+                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + userId,	
                     type: 'get',	
                     global: false,	
                     success: function (data) {	
                                 CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
+                                if(CURRENT_GROUP_DATA.CHAR_CHECK == false) {
+                                    _this.removeWarningsFromTextBox();
+                                }
                             },	
                     error: function () {	
                             CURRENT_GROUP_DATA.CHAR_CHECK = false;	
+                            _this.removeWarningsFromTextBox();
                     }	
             });	
             }
+            _this.removeWarningsFromTextBox = function () {
+                document.getElementById('mck-char-warning').classList.add('n-vis');
+                var textBox = document.getElementById('mck-text-box');
+                var spanContent;
+                if (document.getElementById('mck-text-warning-span')) { 
+                    spanContent = document.getElementById('mck-normal-span').innerHTML;
+                    spanContent += document.getElementById('mck-text-warning-span').innerHTML;
+                    textBox.innerHTML = spanContent;
+                }
+            }
+
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();
@@ -9731,9 +9746,16 @@ var IS_SOCKET_CONNECTED = false;
                                             if (result && result.data && result.data.response && result.data.response.length !== 0) {
                                                 var updatedAssignee = result.data.response[0];
                                                 mckMessageService.updateAssigneeDetails(updatedAssignee);
+                                                if (updatedAssignee.roleType != 1) {
+                                                    CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                                                    mckGroupLayout.removeWarningsFromTextBox();
+                                                } else {
+                                                    mckGroupLayout.checkBotDetail(updatedAssignee.userId);
+                                                }
+
                                             };
                                         };
-                                        mckContactService.getUsersDetail([message.metadata.KM_ASSIGN], getUsersDetailparams);
+                                        mckContactService.getUsersDetail([message.metadata.KM_ASSIGN], getUsersDetailparams); 
                                     };
                                 };
                                 if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
