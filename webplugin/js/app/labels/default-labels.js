@@ -131,8 +131,8 @@ Kommunicate.defaultLabels = {
     },
     'filter.conversation.list': {
         'ALL_CONVERSATIONS': 'All conversations',
-        'OPEN_CONVERSATIONS': 'Open conversations',
-        'SEE_MORE': 'See more',
-        'SEE_LESS': 'See less'
+        'ACTIVE_CONVERSATIONS': 'Active conversations',
+        'HIDE_RESOLVED': 'Hide resolved',
+        'SHOW_RESOLVED': 'Show resolved'
     }
 }

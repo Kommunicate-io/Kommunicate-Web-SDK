@@ -5875,7 +5875,7 @@ var IS_SOCKET_CONNECTED = false;
                 } else {
                     _this.addContact(contact, $listId, message);
                 }
-                KommunicateUI.showShowAllConversationBanner();
+                KommunicateUI.handleConversationBanner();
             };
             _this.addContactsToSearchList = function () {
                 var contactsArray = [],
@@ -6275,8 +6275,6 @@ var IS_SOCKET_CONNECTED = false;
                     msgCreatedDateExpr: message ? kommunicateCommons.getTimeOrDate(message.createdAtTime, true) : '',
                     conversationStatusClass: contact.metadata.CONVERSATION_STATUS == "2" ? "mck-conversation-closed" : "mck-conversation-open"
                 }];
-                console.log(contact);
-                console.log(contactList);
                 var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
                 if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : '') >= latestCreatedAtTime || ($listId.indexOf("search") !== -1 && prepend)) {
                     $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
@@ -9750,11 +9748,14 @@ var IS_SOCKET_CONNECTED = false;
                                     var groupId = 'li-group-' + resp.message.groupId;
                                     if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
                                         kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-closed", "mck-conversation-open");
+                                        MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.CLOSED;
                                     } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {
                                         kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-open", "mck-conversation-closed");
+                                        MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN;
                                     }
                                     console.log(resp.message.metadata.KM_STATUS);
                                     console.log(document.getElementById('li-group-' + resp.message.groupId));
+                                    KommunicateUI.handleConversationBanner();
                                 }
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);

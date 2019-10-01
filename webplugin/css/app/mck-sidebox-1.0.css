@@ -6463,7 +6463,11 @@ body.accesibility :focus {
 	animation: km-slide-in-animation .5s ease .5s 1 forwards;
 }
 .mck-conversation-closed{
-	background: red;
+	display: none !important;
+}
+.mck-conversation-closed.mck-show-closed-conversation{
+	opacity: 0.5;
+	display: block! important;
 }
 #mck-conversation-filter{
 	padding: 10px 20px;
