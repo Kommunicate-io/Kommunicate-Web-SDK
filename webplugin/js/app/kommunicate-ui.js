@@ -502,35 +502,35 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         }
     },
     handleConversationBanner: function (showBanner) {
-        var totalConversations = document.querySelectorAll('ul#mck-contact-list li').length;
+        var totalConversations = document.querySelectorAll('ul#mck-contact-list li') && document.querySelectorAll('ul#mck-contact-list li').length;
         var showAllBannerHtml = "<div id=\"mck-conversation-filter\"><span id=\"mck-conversation-banner-heading\">".concat(MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS, "</span><span id=\"mck-conversation-banner-action\" onclick=\"KommunicateUI.toggleShowClosedConversationsStatus(),KommunicateUI.handleClosedConversationsList()\">").concat(MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED, "</span></div>");
-        var closedConversations = document.getElementsByClassName('mck-conversation-closed').length;
-        var openConversations = document.getElementsByClassName('mck-conversation-open').length;
+        var closedConversations = document.getElementsByClassName('mck-conversation-resolved') && document.getElementsByClassName('mck-conversation-resolved').length;
+        var openConversations = document.getElementsByClassName('mck-conversation-open') && document.getElementsByClassName('mck-conversation-open').length;
         var bannerParent = document.querySelector('.mck-conversation.vis .mck-message-inner');
         var conversationFilterBanner = document.getElementById('mck-conversation-filter');
         if (totalConversations !== openConversations && totalConversations !== closedConversations && !conversationFilterBanner && bannerParent) {
             bannerParent.insertAdjacentHTML('afterbegin', showAllBannerHtml);
-        }else if(totalConversations === closedConversations){
+        } else if (totalConversations === closedConversations) {
             conversationFilterBanner && conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
-            KommunicateUI.showClosedConversations = true; 
-        }else if(conversationFilterBanner && totalConversations == openConversations) {
-            conversationFilterBanner&& conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
+            KommunicateUI.showClosedConversations = true;
+        } else if (conversationFilterBanner && totalConversations == openConversations) {
+            conversationFilterBanner && conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
             KommunicateUI.showClosedConversations = false;
         }
         KommunicateUI.handleClosedConversationsList();
     },
-    toggleShowClosedConversationsStatus: function(){
+    toggleShowClosedConversationsStatus: function () {
         KommunicateUI.showClosedConversations = !KommunicateUI.showClosedConversations;
     },
-    handleClosedConversationsList: function(){
+    handleClosedConversationsList: function () {
         var bannerHeading = document.getElementById('mck-conversation-banner-heading');
         var bannerAction = document.getElementById('mck-conversation-banner-action');
         if (KommunicateUI.showClosedConversations) {
-            kommunicateCommons.modifyClassList({ class: ["mck-conversation-closed"] }, "mck-show-closed-conversation");
+            kommunicateCommons.modifyClassList({ class: ["mck-conversation-resolved"] }, "mck-show-resolved-conversation");
             bannerHeading && (bannerHeading.innerHTML = MCK_LABELS['filter.conversation.list'].ALL_CONVERSATIONS);
             bannerAction && (bannerAction.innerHTML = MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED);
-        }else{
-            kommunicateCommons.modifyClassList({ class: ["mck-conversation-closed"] }, "", "mck-show-closed-conversation");
+        } else {
+            kommunicateCommons.modifyClassList({ class: ["mck-conversation-resolved"] }, "", "mck-show-resolved-conversation");
             bannerHeading && (bannerHeading.innerHTML = MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS);
             bannerAction && (bannerAction.innerHTML = MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED);
         }

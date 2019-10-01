@@ -6462,15 +6462,16 @@ body.accesibility :focus {
 	-o-animation: km-slide-in-animation .5s ease .5s 1 forwards;
 	animation: km-slide-in-animation .5s ease .5s 1 forwards;
 }
-.mck-conversation-closed{
+.mck-conversation-resolved{
 	display: none !important;
 }
-.mck-conversation-closed.mck-show-closed-conversation{
-	opacity: 0.5;
-	display: block! important;
+.mck-conversation-resolved.mck-show-resolved-conversation {
+    opacity: 0.5;
+    display: block ! important;
 }
-#mck-conversation-filter{
-	padding: 10px 20px;
+
+#mck-conversation-filter {
+    padding: 10px 20px;
     font-size: 14px;
     background: #f9f9f9;
     display: flex;

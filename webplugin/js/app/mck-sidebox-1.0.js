@@ -6273,7 +6273,7 @@ var IS_SOCKET_CONNECTED = false;
                     groupUserCountExpr: isGroupTab ? contact.userCount : '',
                     displayGroupUserCountExpr: displayCount ? "vis" : "n-vis",
                     msgCreatedDateExpr: message ? kommunicateCommons.getTimeOrDate(message.createdAtTime, true) : '',
-                    conversationStatusClass: contact.metadata.CONVERSATION_STATUS == "2" ? "mck-conversation-closed" : "mck-conversation-open"
+                    conversationStatusClass: contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.CLOSED ? "mck-conversation-resolved" : "mck-conversation-open"
                 }];
                 var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
                 if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : '') >= latestCreatedAtTime || ($listId.indexOf("search") !== -1 && prepend)) {
@@ -9747,14 +9747,12 @@ var IS_SOCKET_CONNECTED = false;
                                 if (resp.message.metadata.KM_STATUS) {
                                     var groupId = 'li-group-' + resp.message.groupId;
                                     if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
-                                        kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-closed", "mck-conversation-open");
+                                        kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-resolved", "mck-conversation-open");
                                         MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.CLOSED;
                                     } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {
-                                        kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-open", "mck-conversation-closed");
+                                        kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-open", "mck-conversation-resolved");
                                         MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN;
                                     }
-                                    console.log(resp.message.metadata.KM_STATUS);
-                                    console.log(document.getElementById('li-group-' + resp.message.groupId));
                                     KommunicateUI.handleConversationBanner();
                                 }
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
