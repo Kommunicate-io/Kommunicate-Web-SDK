@@ -20,7 +20,7 @@ let PLUGIN_FILE_DATA = new Object();
 let env = config.getEnvId() !== "development";
 
 let jsCompressor = !env ?"no-compress" : "gcc"; 
-let uglifyCompressor = !env? "no-compress" : "uglify-es";
+let terserCompressor = !env? "no-compress" : "terser";
 let cssCompressor =  !env? "no-compress" : "clean-css";
 
 const removeExistingFile = function (dirPath) {
@@ -39,7 +39,6 @@ const compressAndOptimize = () => {
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
-            path.resolve(__dirname, 'lib/js/mck-emojis.min.js'),
             path.resolve(__dirname, 'lib/js/howler-2.0.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
@@ -78,7 +77,8 @@ const compressAndOptimize = () => {
             advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
             aggressiveMerging: true, // set to false to disable aggressive merging of properties.
             compatibility: '', // To add vendor prefixes for IE8+
-            sourceMap: true
+            sourceMap: true,
+            level: 2
         },
         callback: function (err, min) {
             if (!err) {
@@ -91,7 +91,7 @@ const compressAndOptimize = () => {
     });
 
     compressor.minify({
-         compressor: uglifyCompressor,
+         compressor: terserCompressor,
         input: [
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
@@ -138,7 +138,7 @@ const compressAndOptimize = () => {
 
 const minifyMckAppJs = () => {
     compressor.minify({
-        compressor: uglifyCompressor,
+        compressor: terserCompressor,
         input: [
             path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
         ],

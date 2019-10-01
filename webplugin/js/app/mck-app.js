@@ -49,6 +49,10 @@ function ApplozicSidebox() {
     {
             "name": "maps",
             "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
+    },
+    {
+            "name": "emojiLibrary",
+            "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
     }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
@@ -71,6 +75,7 @@ function ApplozicSidebox() {
         try {   
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
+            script.async = false;
             script.type = 'text/javascript';
             externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
             script.src = externalFileDetails.url;
@@ -230,7 +235,7 @@ function ApplozicSidebox() {
                     throw new Error("excludeGoogleMap should be a boolean value");
                 }
                     applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-       	    }
+               }
             for (var index in mck_script_loader1) {
                 var data = mck_script_loader1[index];
                 if (data.name === "km-utils") {
@@ -244,13 +249,18 @@ function ApplozicSidebox() {
                     } catch (e) {
                         mckLoadScript(data.url, mckLoadAppScript);
                     }
-                }
-                 else if (data.name === "maps") {
+                } else if (data.name === "emojiLibrary") {
+                    if(options.emojilibrary){
+                        mckLoadScript(data.url, null, true)
+                    } else {
+                        continue;
+                    }
+                } else if (data.name === "maps") {
                     try {
                         var options = applozic._globals;
                         if (typeof options !== 'undefined') {
                             if (options.excludeGoogleMap) {
-                                return true;
+                                continue;
                             }
                             if (options.googleApiKey) {
                                 var url = data.url + "&key=" + options.googleApiKey;
@@ -260,10 +270,9 @@ function ApplozicSidebox() {
                             mckLoadScript(data.url, null, true);
                         }
                     } catch (e) {
-                        mckLoadScript(data.url), null, true;
+                        mckLoadScript(data.url, null, true);
                     }
-                }  
-                else {
+                } else {
                     mckLoadScript(data.url);    
                 }
             };
