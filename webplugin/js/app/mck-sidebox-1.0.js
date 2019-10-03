@@ -9189,6 +9189,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 });
                 $applozic(d).on("click", " #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
                     _this.hideMessagePreview();
+                    KommunicateUI.hideFaq();
                 });
                 !IS_MCK_TAB_FOCUSED && mckNotificationService.clearFlashPageTitleInterval();
             };
