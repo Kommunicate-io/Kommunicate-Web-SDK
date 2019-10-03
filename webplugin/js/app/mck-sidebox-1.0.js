@@ -7632,7 +7632,7 @@ var IS_SOCKET_CONNECTED = false;
             });	
             }
             _this.removeWarningsFromTextBox = function () {
-                document.getElementById('mck-char-warning').classList.add('n-vis');
+                kommunicateCommons.modifyClassList( {id : ["mck-char-warning"]}, "n-vis", "");
                 var textBox = document.getElementById('mck-text-box');
                 var spanContent;
                 if (document.getElementById('mck-text-warning-span')) { 
@@ -9746,7 +9746,7 @@ var IS_SOCKET_CONNECTED = false;
                                             if (result && result.data && result.data.response && result.data.response.length !== 0) {
                                                 var updatedAssignee = result.data.response[0];
                                                 mckMessageService.updateAssigneeDetails(updatedAssignee);
-                                                if (updatedAssignee.roleType != 1) {
+                                                if (updatedAssignee.roleType != KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                                     CURRENT_GROUP_DATA.CHAR_CHECK = false;
                                                     mckGroupLayout.removeWarningsFromTextBox();
                                                 } else {
