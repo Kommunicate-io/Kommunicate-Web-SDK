@@ -7625,6 +7625,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     success: function (data) {	
                                 CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
                                 !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
+                                CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
+
                             },	
                     error: function () {	
                             CURRENT_GROUP_DATA.CHAR_CHECK = false;	
@@ -7640,12 +7642,14 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     spanContent = document.getElementById('mck-normal-span').innerHTML;
                     spanContent += document.getElementById('mck-text-warning-span').innerHTML;
                     textBox.innerHTML = spanContent;
-                    var sendButton = document.getElementById('mck-msg-sbmt');
-                    sendButton.removeAttribute("disabled");
-                    CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = false;
+                    _this.disableSendButton(false);
                 }
             }
-
+            _this.disableSendButton = function (value) {
+                var sendButton = document.getElementById('mck-msg-sbmt');
+                value ? sendButton.setAttribute("disabled", value) : sendButton.removeAttribute("disabled");
+                CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+            }
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();
