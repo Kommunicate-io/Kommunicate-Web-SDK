@@ -4899,7 +4899,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         mckMessageService.getAndSetAwayMessage({}, params, conversationAssigneeDetails, isAgentOffline);
                         mckMessageService.updateConversationHeader(updateConversationHeaderParams);
                     });
-                    (conversationAssigneeDetails.roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) ? mckGroupLayout.checkBotDetail(params.groupDetails.users[key].userId) : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                  
+                    (conversationAssigneeDetails.roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) ? mckGroupLayout.checkBotDetail(conversationAssignee) : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
                     
                 } else {
                     mckMessageService.loadMessageList(params, callback);
