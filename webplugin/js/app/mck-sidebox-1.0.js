@@ -7640,6 +7640,9 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     spanContent = document.getElementById('mck-normal-span').innerHTML;
                     spanContent += document.getElementById('mck-text-warning-span').innerHTML;
                     textBox.innerHTML = spanContent;
+                    var sendButton = document.getElementById('mck-msg-sbmt');
+                    sendButton.removeAttribute("disabled");
+                    CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = false;
                 }
             }
 
