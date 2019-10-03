@@ -9748,10 +9748,10 @@ var IS_SOCKET_CONNECTED = false;
                                     var groupId = 'li-group-' + resp.message.groupId;
                                     if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
                                         kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-resolved", "mck-conversation-open");
-                                        MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.CLOSED;
+                                        MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.CLOSED);
                                     } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {
                                         kommunicateCommons.modifyClassList({ id: [groupId] }, "mck-conversation-open", "mck-conversation-resolved");
-                                        MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN;
+                                        MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN);
                                     }
                                     KommunicateUI.handleConversationBanner();
                                 }
