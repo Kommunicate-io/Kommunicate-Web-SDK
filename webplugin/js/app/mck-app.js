@@ -482,6 +482,8 @@ function ApplozicSidebox() {
         xhr.send(data);
     };
     function loadErrorTracking(userId) {
+        var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        var url = kommunicateIframe ? kommunicateIframe.getAttribute('data-url') : parent.window.location.href;
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
         Sentry.init({
             dsn: sentryConfig.dsn,
@@ -490,6 +492,7 @@ function ApplozicSidebox() {
         Sentry.configureScope(function (scope) {
             scope.setTag("applicationId", applozic._globals.appId);
             scope.setTag("userId", userId);
+            scope.setTag("url", url);
             scope.setUser({
                 id: applozic._globals.appId
             });
