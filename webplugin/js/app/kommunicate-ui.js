@@ -202,6 +202,7 @@ KommunicateUI={
         KommunicateUI.showHeader();
         KommunicateUI.awayMessageScroll = true;
         MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "km-faq-list" && MCK_EVENT_HISTORY.push("km-faq-list");
+        MCK_BOT_MESSAGE_QUEUE = [];
         $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
         $applozic('#km-faq').removeClass("vis").addClass("n-vis");
         $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
@@ -257,6 +258,7 @@ KommunicateUI={
         KommunicateUI.awayMessageScroll = true;
         KommunicateUI.hideAwayMessage();
         KommunicateUI.hideLeadCollectionTemplate();
+        MCK_BOT_MESSAGE_QUEUE = [];
         if (MCK_EVENT_HISTORY.length >= 2) {
             if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
                 KommunicateUI.showHeader();
