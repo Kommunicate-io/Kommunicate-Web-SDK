@@ -480,17 +480,17 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
 
         if(isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
-                KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true);
-                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
+                KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true, mckChatPopupNotificationTone);
             }, delay);
         }
 
     },
-    togglePopupChatTemplate: function(popupTemplateKey, showTemplate) {
+    togglePopupChatTemplate: function(popupTemplateKey, showTemplate, mckChatPopupNotificationTone) {
         
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
 
-        if(showTemplate) {
+        if(showTemplate && !kommunicateCommons.isWidgetOpen()) {
+            mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL && kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
