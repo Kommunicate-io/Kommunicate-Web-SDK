@@ -7621,9 +7621,7 @@ var IS_SOCKET_CONNECTED = false;
                     global: false,	
                     success: function (data) {	
                                 CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
-                                if(CURRENT_GROUP_DATA.CHAR_CHECK == false) {
-                                    _this.removeWarningsFromTextBox();
-                                }
+                                !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
                             },	
                     error: function () {	
                             CURRENT_GROUP_DATA.CHAR_CHECK = false;	
