@@ -6492,8 +6492,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(345px at 345px 35px);
-		clip-path: circle(345px at 345px 35px);
+		-webkit-clip-path: circle(345px at 335px 35px);
+		clip-path: circle(345px at 335px 35px);
 	}
 }
 @-moz-keyframes km-reveal-animation-horizontal {
@@ -6502,7 +6502,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(345px at 345px 35px);
+		clip-path: circle(345px at 335px 35px);
 	}
 }
 @-o-keyframes km-reveal-animation-horizontal {
@@ -6511,7 +6511,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(345px at 345px 35px);
+		clip-path: circle(345px at 335px 35px);
 	}
 }
 @keyframes km-reveal-animation-horizontal {
@@ -6520,8 +6520,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(345px at 345px 35px);
-		clip-path: circle(345px at 345px 35px);
+		-webkit-clip-path: circle(345px at 335px 35px);
+		clip-path: circle(345px at 335px 35px);
 	}
 }
 @-webkit-keyframes km-scale-animation {
@@ -6633,8 +6633,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(365px at 355px 50px);
-		clip-path: circle(365px at 355px 50px);
+		-webkit-clip-path: circle(365px at 345px 50px);
+		clip-path: circle(365px at 345px 50px);
 	}
 }
 @-moz-keyframes km-reveal-animation-vertical {
@@ -6643,7 +6643,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(365px at 355px 50px);
+		clip-path: circle(365px at 345px 50px);	
 	}
 }
 @-o-keyframes km-reveal-animation-vertical {
@@ -6652,7 +6652,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(365px at 355px 50px);
+		clip-path: circle(365px at 345px 50px);
 	}
 }
 @keyframes km-reveal-animation-vertical {
@@ -6661,8 +6661,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(365px at 355px 50px);
-		clip-path: circle(365px at 355px 50px);
+		-webkit-clip-path: circle(365px at 345px 50px);
+		clip-path: circle(365px at 345px 50px);
 	}
 }
 
