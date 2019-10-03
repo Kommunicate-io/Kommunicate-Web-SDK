@@ -78,7 +78,7 @@ const compressAndOptimize = () => {
             aggressiveMerging: true, // set to false to disable aggressive merging of properties.
             compatibility: '', // To add vendor prefixes for IE8+
             sourceMap: true,
-            level: 2
+            level: { 2: { skipProperties: ['animation'] } }
         },
         callback: function (err, min) {
             if (!err) {
