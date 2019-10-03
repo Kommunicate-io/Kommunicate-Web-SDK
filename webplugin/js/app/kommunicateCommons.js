@@ -127,6 +127,9 @@ function KommunicateCommons() {
         temporalDivElement.innerHTML = html;
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     };
+    _this.formatHtmlTag = function (html) {
+        return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
     _this.isConversationClosedByBot = function () {
         var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
             return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;

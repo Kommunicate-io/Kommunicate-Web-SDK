@@ -6379,7 +6379,7 @@ body.accesibility :focus {
 	min-height: 70px;
 	font-family: 'Roboto', sans-serif;
 	width: 100%;
-	max-width: 380px;
+	max-width: 410px;
 	cursor: pointer;
 }
 
@@ -6461,6 +6461,29 @@ body.accesibility :focus {
 	-moz-animation: km-slide-in-animation .5s ease .5s 1 forwards;
 	-o-animation: km-slide-in-animation .5s ease .5s 1 forwards;
 	animation: km-slide-in-animation .5s ease .5s 1 forwards;
+}
+.mck-conversation-resolved{
+	display: none !important;
+}
+.mck-conversation-resolved.mck-show-resolved-conversation {
+    opacity: 0.5;
+    display: block ! important;
+}
+
+#mck-conversation-filter {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#mck-conversation-filter span:last-child{
+	cursor: pointer;
+	color: #4a39ff;	
+}
+#mck-conversation-filter span:last-child:hover{
+	text-decoration: underline;
 }
 
 @-webkit-keyframes km-reveal-animation-horizontal {

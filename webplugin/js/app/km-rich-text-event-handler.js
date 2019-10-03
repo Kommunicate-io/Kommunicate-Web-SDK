@@ -446,8 +446,8 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function(e) {
-        var url  = decodeURI(e.target.dataset.url);
-        window.open(url, e.target.dataset.target);
+        var url  = decodeURI(e.currentTarget.dataset.url);
+        window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function(e) {
         e.preventDefault();
