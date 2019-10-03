@@ -4899,6 +4899,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         mckMessageService.getAndSetAwayMessage({}, params, conversationAssigneeDetails, isAgentOffline);
                         mckMessageService.updateConversationHeader(updateConversationHeaderParams);
                     });
+                    (conversationAssigneeDetails.roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) ? mckGroupLayout.checkBotDetail(params.groupDetails.users[key].userId) : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                    
                 } else {
                     mckMessageService.loadMessageList(params, callback);
                 }
@@ -7646,9 +7648,21 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 }
             }
             _this.disableSendButton = function (value) {
+                var textBox = document.getElementById('mck-text-box');
+                var str = mckUtils.textVal(textBox);
+                var maxLength = 256;
                 var sendButton = document.getElementById('mck-msg-sbmt');
-                value ? sendButton.setAttribute("disabled", value) : sendButton.removeAttribute("disabled");
-                CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+                var trimmedStr = str.trim();
+                var textLength = trimmedStr.length;
+                if(value) {
+                    if(textLength > maxLength) {
+                        sendButton.setAttribute("disabled", value);
+                        CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+                    }
+                } else {
+                    sendButton.removeAttribute("disabled");
+                    CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
+                }
             }
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
