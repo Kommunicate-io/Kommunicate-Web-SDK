@@ -10,9 +10,10 @@ KommunicateUI={
     welcomeMessageEnabled : false,
     leadCollectionEnabledOnWelcomeMessage:false,
     anonymousUser:false,
+    showResolvedConversations: false,
     faqSVGImage: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><circle class="km-custom-widget-fill" cx="12" cy="12" r="12" fill="#5553B7" fill-rule="nonzero" opacity=".654"/><g transform="translate(6.545 5.818)"><polygon fill="#FFF" points=".033 2.236 .033 12.057 10.732 12.057 10.732 .02 3.324 .02"/><rect class="km-custom-widget-fill" width="6.433" height="1" x="2.144" y="5.468" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><rect class="km-custom-widget-fill" width="4.289" height="1" x="2.144" y="8.095" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><polygon class="km-custom-widget-fill" fill="#5553B7" points="2.656 .563 3.384 2.487 1.162 3.439" opacity=".65" transform="rotate(26 2.273 2.001)"/></g></g></svg>',
     CONSTS:{
-
+        
     },
     updateLeadCollectionStatus:function(err,message,data){
         KommunicateUI.awayMessageInfo = {};
@@ -304,6 +305,7 @@ KommunicateUI={
             $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("vis").addClass("n-vis");
             document.getElementById("mck-tab-title").textContent = "";
             MCK_EVENT_HISTORY.length = 0 ;
+            KommunicateUI.handleConversationBanner();
             return;
         }
     });
@@ -497,6 +499,40 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             kommunicateIframe.classList.remove("chat-popup-widget-horizontal");
             kommunicateIframe.classList.remove("chat-popup-widget-vertical");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "n-vis", "km-animate");
+        }
+    },
+    handleConversationBanner: function (showBanner) {
+        var totalConversations = document.querySelectorAll('ul#mck-contact-list li') && document.querySelectorAll('ul#mck-contact-list li').length;
+        var showAllBannerHtml = "<div id=\"mck-conversation-filter\"><span id=\"mck-conversation-banner-heading\">".concat(MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS, "</span><span id=\"mck-conversation-banner-action\" onclick=\"KommunicateUI.toggleShowResolvedConversationsStatus(),KommunicateUI.handleResolvedConversationsList()\">").concat(MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED, "</span></div>");
+        var resolvedConversations = document.getElementsByClassName('mck-conversation-resolved') && document.getElementsByClassName('mck-conversation-resolved').length;
+        var openConversations = document.getElementsByClassName('mck-conversation-open') && document.getElementsByClassName('mck-conversation-open').length;
+        var bannerParent = document.querySelector('.mck-conversation.vis .mck-message-inner');
+        var conversationFilterBanner = document.getElementById('mck-conversation-filter');
+        if (totalConversations !== openConversations && totalConversations !== resolvedConversations && !conversationFilterBanner && bannerParent) {
+            bannerParent.insertAdjacentHTML('afterbegin', showAllBannerHtml);
+        } else if (totalConversations === resolvedConversations) {
+            conversationFilterBanner && conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
+            KommunicateUI.showResolvedConversations = true;
+        } else if (conversationFilterBanner && totalConversations == openConversations) {
+            conversationFilterBanner && conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
+            KommunicateUI.showResolvedConversations = false;
+        }
+        KommunicateUI.handleResolvedConversationsList();
+    },
+    toggleShowResolvedConversationsStatus: function () {
+        KommunicateUI.showResolvedConversations = !KommunicateUI.showResolvedConversations;
+    },
+    handleResolvedConversationsList: function () {
+        var bannerHeading = document.getElementById('mck-conversation-banner-heading');
+        var bannerAction = document.getElementById('mck-conversation-banner-action');
+        if (KommunicateUI.showResolvedConversations) {
+            kommunicateCommons.modifyClassList({ class: ["mck-conversation-resolved"] }, "mck-show-resolved-conversation");
+            bannerHeading && (bannerHeading.innerHTML = MCK_LABELS['filter.conversation.list'].ALL_CONVERSATIONS);
+            bannerAction && (bannerAction.innerHTML = MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED);
+        } else {
+            kommunicateCommons.modifyClassList({ class: ["mck-conversation-resolved"] }, "", "mck-show-resolved-conversation");
+            bannerHeading && (bannerHeading.innerHTML = MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS);
+            bannerAction && (bannerAction.innerHTML = MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED);
         }
     }
 
