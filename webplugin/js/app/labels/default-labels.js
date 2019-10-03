@@ -128,5 +128,11 @@ Kommunicate.defaultLabels = {
     },
     'rich.message':{
         'notification.preview' : "Message"
+    },
+    'filter.conversation.list': {
+        'ALL_CONVERSATIONS': 'All conversations',
+        'ACTIVE_CONVERSATIONS': 'Active conversations',
+        'HIDE_RESOLVED': 'Hide resolved',
+        'SHOW_RESOLVED': 'Show resolved'
     }
 }

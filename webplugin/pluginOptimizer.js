@@ -12,6 +12,7 @@ const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
 const pluginVersions = ["v1","v2"];
 PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
+PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 let PLUGIN_FILE_DATA = new Object();
 
@@ -19,7 +20,7 @@ let PLUGIN_FILE_DATA = new Object();
 let env = config.getEnvId() !== "development";
 
 let jsCompressor = !env ?"no-compress" : "gcc"; 
-let uglifyCompressor = !env? "no-compress" : "uglify-es";
+let terserCompressor = !env? "no-compress" : "terser";
 let cssCompressor =  !env? "no-compress" : "clean-css";
 
 const removeExistingFile = function (dirPath) {
@@ -38,7 +39,6 @@ const compressAndOptimize = () => {
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
-            path.resolve(__dirname, 'lib/js/mck-emojis.min.js'),
             path.resolve(__dirname, 'lib/js/howler-2.0.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
@@ -90,7 +90,7 @@ const compressAndOptimize = () => {
     });
 
     compressor.minify({
-         compressor: uglifyCompressor,
+         compressor: terserCompressor,
         input: [
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
@@ -137,7 +137,7 @@ const compressAndOptimize = () => {
 
 const minifyMckAppJs = () => {
     compressor.minify({
-        compressor: uglifyCompressor,
+        compressor: terserCompressor,
         input: [
             path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
         ],
