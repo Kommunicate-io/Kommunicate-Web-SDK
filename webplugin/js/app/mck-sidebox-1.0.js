@@ -1707,6 +1707,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
                 }
+                // calling Kommunicate for post initialization processing. error first style.
+                Kommunicate.postPluginInitialization(null,data);
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                     KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
@@ -1737,8 +1739,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
                 };
-                // calling Kommunicate for post initialization processing. error first style.
-                Kommunicate.postPluginInitialization(null, data);
                 _this.setEmojiHoverText();
                 _this.configureRatingElements();
             };
