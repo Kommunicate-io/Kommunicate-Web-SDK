@@ -6231,6 +6231,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var olStatus = 'n-vis';
                 var contHtmlExpr = (isGroupTab) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 var displayCount = isGroupTab && IS_MCK_GROUPUSERCOUNT;
+                var statusClass = (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.CLOSED) ? "mck-conversation-resolved" : "mck-conversation-open";
+
                 $applozic("#li-" + contHtmlExpr + " .mck-group-count-text").html(groupUserCount);
                 $applozic("#li-" + contHtmlExpr + " .mck-group-count-box").removeClass('n-vis').addClass('vis');
                 if (!isGroupTab && !MCK_BLOCKED_TO_MAP[contact.contactId] && !MCK_BLOCKED_BY_MAP[contact.contactId] && IS_MCK_OL_STATUS && w.MCK_OL_MAP[contact.contactId]) {
@@ -6275,7 +6277,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     groupUserCountExpr: isGroupTab ? contact.userCount : '',
                     displayGroupUserCountExpr: displayCount ? "vis" : "n-vis",
                     msgCreatedDateExpr: message ? kommunicateCommons.getTimeOrDate(message.createdAtTime, true) : '',
-                    conversationStatusClass: contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.CLOSED ? "mck-conversation-resolved" : "mck-conversation-open"
+                    conversationStatusClass: statusClass
                 }];
                 var latestCreatedAtTime = $applozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
                 if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : '') >= latestCreatedAtTime || ($listId.indexOf("search") !== -1 && prepend)) {
