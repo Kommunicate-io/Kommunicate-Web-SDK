@@ -6231,7 +6231,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var olStatus = 'n-vis';
                 var contHtmlExpr = (isGroupTab) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 var displayCount = isGroupTab && IS_MCK_GROUPUSERCOUNT;
-                var statusClass = (contact && contact.metadata) ? (contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.CLOSED ? "mck-conversation-resolved" : "mck-conversation-open") : "mck-conversation-open";
+                var statusClass = (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.CLOSED) ? "mck-conversation-resolved" : "mck-conversation-open";
 
                 $applozic("#li-" + contHtmlExpr + " .mck-group-count-text").html(groupUserCount);
                 $applozic("#li-" + contHtmlExpr + " .mck-group-count-box").removeClass('n-vis').addClass('vis');
