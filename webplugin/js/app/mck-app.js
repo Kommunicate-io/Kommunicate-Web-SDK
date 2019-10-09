@@ -522,7 +522,6 @@ function ApplozicSidebox() {
         };
         window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
-            // event.preventDefault();
             var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
             details.sessionEndTime = new Date().getTime();
             KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
