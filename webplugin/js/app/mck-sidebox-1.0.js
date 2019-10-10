@@ -1707,8 +1707,13 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         mckInit.clearMsgTriggerAndChatPopuTimeouts();
                     }
                 }
-                // calling Kommunicate for post initialization processing. error first style.
-                Kommunicate.postPluginInitialization(null,data);
+
+                Kommunicate.initilizeEventListners();
+                // hiding away message when new message received from agents.
+                $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
+                var activeConversationInfo = Kommunicate.getActiveConversation();
+                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && Kommunicate.openConversation(activeConversationInfo.groupId);
+                MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && !KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                     KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
@@ -1725,6 +1730,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
+                // calling Kommunicate for post initialization processing. error first style.
+                Kommunicate.postPluginInitialization(null,data);
                 mckMessageLayout.createContactWithDetail({
                     'userId': MCK_USER_ID,
                     'displayName': data.displayName,

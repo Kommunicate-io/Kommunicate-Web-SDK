@@ -196,7 +196,7 @@ function addKommunicatePluginToIframe() {
   var imported = addableDocument.createElement('script');
   imported.async = false;
   imported.type = 'text/javascript';
-  imported.src = 'https://cdn-test.applozic.com/applozic/kommunicate.2bf87ae98.min.js';
+  imported.src = 'https://cdn-test.applozic.com/applozic/kommunicate.ad606a72a.min.js';
   // imported.crossOrigin = "anonymous";
   addableDocument.head.appendChild(imported);
   addFullviewImageModal();
