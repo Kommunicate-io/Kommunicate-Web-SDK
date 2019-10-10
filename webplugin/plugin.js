@@ -143,11 +143,11 @@ function createKommunicateIframe() {
     // Do Firefox-related activities
     var testClick = window.document.getElementById("kommunicate-widget-iframe");
     testClick.onload = function () {
-      addKommunicatePluginToIframe();
+      injectJquery();
     };
   } else {
     window.setTimeout(function () {
-      addKommunicatePluginToIframe();
+      injectJquery();
     }, 500);
   }
 };
@@ -164,7 +164,6 @@ function addKommunicatePluginToIframe() {
     addableWindow = kommunicateIframe.contentWindow;
     addableDocument = iframeDocument;
   }
-
   addableWindow.applozic = (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate) || {};
   addableWindow.MCK_CONTEXTPATH = MCK_CONTEXTPATH;
   addableWindow.MCK_STATICPATH = MCK_STATICPATH;
@@ -195,10 +194,44 @@ function addKommunicatePluginToIframe() {
     }
   }, true);
   var imported = addableDocument.createElement('script');
-  imported.src = MCK_APP_JS;
+  imported.src = KOMMUNICATE_MIN_JS;
   imported.crossOrigin = "anonymous";
   addableDocument.head.appendChild(imported);
   addFullviewImageModal();
+};
+
+function injectJquery() {
+  var addableWindow, addableDocument;
+  if (isV1Script()) {
+    addableWindow = window;
+    addableDocument = document;
+  } else {
+    var kommunicateIframe = window.document.getElementById("kommunicate-widget-iframe");
+    var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+    addableWindow = kommunicateIframe.contentWindow;
+    addableDocument = iframeDocument;
+  }
+  var head = addableDocument.getElementsByTagName('head')[0];
+  var script = addableDocument.createElement('script');
+  script.async = false;
+  script.type = 'text/javascript';
+  script.crossOrigin = "anonymous";
+  script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js";
+  if (script.readyState) { // IE
+    script.onreadystatechange = function () {
+      if (script.readyState === "loaded" || script.readyState === "complete") {
+        addKommunicatePluginToIframe();
+      };
+    }
+  } else { // Others
+    script.onload = function () {
+      addKommunicatePluginToIframe();
+    };
+  }
+  script.onerror = function (error) {
+    throw new Error("Error while loading Jquery file.");
+  }
+  head.appendChild(script);
 };
 
 /*
