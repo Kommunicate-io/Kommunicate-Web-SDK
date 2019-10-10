@@ -180,7 +180,7 @@ const generateBuildFiles = () => {
         if (err) {
             console.log("error while generating plugin.js", err);
         }
-        var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.js"`)
+        var mckApp = data.replace('KOMMUNICATE_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.js"`)
         fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
             if (err) {
                 console.log("plugin.js generation error");
@@ -193,7 +193,7 @@ const generateBuildFiles = () => {
         if (err) {
             console.log("error while generating mck app", err);
         }
-        var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.css"`)
+        var mckApp = data.replace('KOMMUNICATE_MIN_CSS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.css"`)
             .replace('MCK_SIDEBOX_HTML', `"${MCK_STATIC_PATH}/build/mck-sidebox.${version}.html"`);
         fs.writeFile(`${buildDir}/mck-app.${version}.js`, mckApp, function (err) {
             if (err){

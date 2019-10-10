@@ -33,7 +33,7 @@ function ApplozicSidebox() {
     var mck_style_loader = [
     {
             "name": "mck-sidebox", 
-            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS
+            "url": KOMMUNICATE_MIN_CSS
     } ];
     var mck_third_party_scripts = [
     {
