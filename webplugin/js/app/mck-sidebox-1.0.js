@@ -4199,17 +4199,11 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             };
 
             _this.adjustConversationTitleHeadingWidth = function() {
-                if(POPUP_WIDGET) {
-                    if(document.querySelector(".km-kb-container").classList.contains("vis")) {
-                        $mck_tab_title.addClass('mck-title-width-with-faq');
-                    }
-                } else {
-                    if(document.querySelector(".km-kb-container").classList.contains("vis")) {
-                        $mck_tab_title.addClass('mck-title-width-with-faq-close-btn');
-                    } else {
-                        $mck_tab_title.addClass('mck-title-width-wo-faq-with-close-btn');
-                    }
+                var titleClassName = 'mck-title-width-wo-faq-with-close-btn';
+                if(document.querySelector(".km-kb-container").classList.contains("vis")) {
+                    titleClassName = POPUP_WIDGET ? 'mck-title-width-with-faq' : 'mck-title-width-with-faq-close-btn';
                 }
+                $mck_tab_title.addClass(titleClassName);
             };
 
             _this.getAndSetAwayMessage = function (data, params, conversationAssigneeDetails, isAgentOffline) {
