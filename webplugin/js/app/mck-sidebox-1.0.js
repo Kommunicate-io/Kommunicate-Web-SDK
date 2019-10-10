@@ -9787,6 +9787,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                     KommunicateUI.handleConversationBanner();
                                 }
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
+                                    CURRENT_GROUP_DATA.tabId = resp.message.groupId;
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
                                     if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                         var getUsersDetailparams = {
