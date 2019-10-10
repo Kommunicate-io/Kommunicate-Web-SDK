@@ -43,19 +43,18 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
             path.resolve(__dirname, 'lib/js/aes.js'),
-            path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
         ],
-        output: path.resolve(__dirname, `${buildDir}/kommunicatepluginrequirements.${version}.min.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.${version}.min.js`),
         options: {
             compilationLevel: 'WHITESPACE_ONLY',
         },
         callback: function (err, min) {
             if (!err) {
-                console.log( `kommunicatepluginrequirements.${version}.min.js combined successfully`);
+                console.log( `kommunicateThirdParty.${version}.min.js combined successfully`);
             }
             else {
-                console.log(`err while minifying kommunicatepluginrequirements.${version}.min.js`, err);
+                console.log(`err while minifying kommunicateThirdParty.${version}.min.js`, err);
             }
         }
     });
@@ -72,7 +71,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/css/tiny-slider-2.4.0.css'),
             path.resolve(__dirname, 'css/app/km-sidebox.css'),
         ],
-        output: path.resolve(__dirname, `${buildDir}/kommunicatepluginrequirements.${version}.min.css`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.css`),
         options: {
             advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
             aggressiveMerging: true, // set to false to disable aggressive merging of properties.
@@ -81,10 +80,10 @@ const compressAndOptimize = () => {
         },
         callback: function (err, min) {
             if (!err) {
-                console.log(`kommunicatepluginrequirements.${version}.min.css combined successfully`);
+                console.log(`kommunicate.${version}.min.css combined successfully`);
             }
             else {
-                console.log(`err while minifying kommunicatepluginrequirements.${version}.min.css`, err);
+                console.log(`err while minifying kommunicate.${version}.min.css`, err);
             }
         }
     });
@@ -92,6 +91,7 @@ const compressAndOptimize = () => {
     compressor.minify({
          compressor: terserCompressor,
         input: [
+            path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
             path.resolve(__dirname, 'knowledgebase/helpdocs.js'),
@@ -135,11 +135,13 @@ const compressAndOptimize = () => {
     });
 };
 
-const minifyMckAppJs = () => {
+const combineJsFiles = () => {
     compressor.minify({
         compressor: terserCompressor,
         input: [
             path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
+            path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.${version}.min.js`),
+            path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`)
         ],
         options: {
             compress: {
@@ -150,13 +152,13 @@ const minifyMckAppJs = () => {
                 keep_fnames: true
             }
         },
-        output: path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.js`),
         callback: function (err, min) {
             if (!err) {
-                console.log( `mck-app.${version}.js combined successfully`);
+                console.log( `kommunicate.${version}.js combined successfully`);
             }
             else {
-                console.log(`err while minifying mck-app.${version}.js`, err);
+                console.log(`err while minifying kommunicate.${version}.js`, err);
             }
         }
     });
@@ -178,7 +180,7 @@ const generateBuildFiles = () => {
         if (err) {
             console.log("error while generating plugin.js", err);
         }
-        var mckApp = data.replace('MCK_APP_JS', `"${MCK_STATIC_PATH}/build/mck-app.${version}.js"`)
+        var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.js"`)
         fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
             if (err) {
                 console.log("plugin.js generation error");
@@ -191,14 +193,12 @@ const generateBuildFiles = () => {
         if (err) {
             console.log("error while generating mck app", err);
         }
-        var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS', `"${MCK_STATIC_PATH}/build/kommunicatepluginrequirements.${version}.min.css"`)
-            .replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicatepluginrequirements.${version}.min.js"`)
-            .replace('KOMMUNICATE_PLUGIN_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate-plugin.${version}.min.js"`)
+        var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.css"`)
             .replace('MCK_SIDEBOX_HTML', `"${MCK_STATIC_PATH}/build/mck-sidebox.${version}.html"`);
         fs.writeFile(`${buildDir}/mck-app.${version}.js`, mckApp, function (err) {
             if (err){
                 console.log("mck-file generation error");}
-                minifyMckAppJs();
+                combineJsFiles();
         })
     });
 };
