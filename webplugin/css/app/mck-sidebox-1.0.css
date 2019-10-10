@@ -3001,8 +3001,12 @@ display: none;
 }
 
 .mck-sidebox .mck-box-top .blk-lg-10 {
-	width: calc(100% - 20px);
+	/* width: calc(100% - 20px); */
 	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+    width: 100%;
 }
 
 .mck-sidebox .mck-box-top .blk-lg-2 {
@@ -5234,8 +5238,8 @@ textarea::placeholder {
 	width: 45px !important;
 }
 #mck-tab-individual .mck-name-status-container.mck-box-title {
-	max-width: 190px;
-    width: 100%;
+	max-width: none;
+    width: auto;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -5253,7 +5257,13 @@ textarea::placeholder {
 .mck-name-status-container .mck-tab-title-w-status, .mck-name-status-container .mck-tab-title-w-typing {
 	line-height: 22px;
 	height: auto;
-	width:142px;
+	width: 225px;
+}
+.mck-sidebox.fade.in.popup-enabled .mck-name-status-container .mck-tab-title-w-status.mck-title-width-with-faq, 	.mck-sidebox.fade.in.popup-enabled .mck-name-status-container .mck-tab-title-w-status.mck-title-width-with-faq-close-btn {
+	width: 155px;
+}
+.mck-sidebox.fade.in.popup-enabled .mck-name-status-container .mck-tab-title-w-status.mck-title-width-wo-faq-with-close-btn {
+	width: 205px;
 }
 #mck-tab-title.mck-tab-title-w-status {
 	font-size: 18px;
@@ -6070,6 +6080,18 @@ div[name="message"]:last-child {
 		width: 0!important;
 		overflow: hidden;
 	}
+	.mck-sidebox.fade.in .mck-name-status-container .mck-tab-title-w-status.mck-title-width-with-faq {
+		width: 205px !important;
+	}
+	.mck-sidebox.fade.in .mck-name-status-container .mck-tab-title-w-status.mck-title-width-with-faq-close-btn {
+		width: 155px !important;
+	}
+	.mck-sidebox.fade.in .mck-name-status-container .mck-tab-title-w-status.mck-title-width-wo-faq-with-close-btn {
+		width: 215px !important;
+	}
+	.mck-name-status-container .mck-tab-title-w-status, .mck-name-status-container .mck-tab-title-w-typing {
+		width: 270px;
+	}
 }
 
 /* Dialogflow HTML Headers Fix */
@@ -6739,3 +6761,11 @@ body.accesibility :focus {
 }
 
 /* Chat launcher animation for initial load Code Ends */
+
+
+.km-conversation-header-title-container {
+    width: 100%;
+}
+.km-faq-and-close-btn-container {
+	justify-content: flex-end;
+}
