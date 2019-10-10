@@ -3960,6 +3960,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                                     var name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, userDetail.userName);
                                                     $mck_tab_title.html(name);
                                                     $mck_tab_title.attr('title', name);
+                                                    _this.adjustConversationTitleHeadingWidth();
+
                                                 }
                                             }
                                         });
@@ -4196,6 +4198,14 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 });
             };
 
+            _this.adjustConversationTitleHeadingWidth = function() {
+                var titleClassName = 'mck-title-width-wo-faq-with-close-btn';
+                if(document.querySelector(".km-kb-container").classList.contains("vis")) {
+                    titleClassName = POPUP_WIDGET ? 'mck-title-width-with-faq' : 'mck-title-width-with-faq-close-btn';
+                }
+                $mck_tab_title.addClass(titleClassName);
+            };
+
             _this.getAndSetAwayMessage = function (data, params, conversationAssigneeDetails, isAgentOffline) {
                 var userSession = (KommunicateUtils.isSessionStorageAvailable()) ? JSON.parse(sessionStorage.kommunicate) : {};
                 var languageCode = userSession && userSession.settings && userSession.settings.KM_CHAT_CONTEXT && userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
@@ -4231,6 +4241,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
+                _this.adjustConversationTitleHeadingWidth();
+
                 if (params.imageUrl) {
                     imageUrl = params.imageUrl;
                     $applozic(".mck-agent-image-container img").removeClass("n-vis");
