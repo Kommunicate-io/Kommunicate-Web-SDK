@@ -45,16 +45,16 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/aes.js'),
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
         ],
-        output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.${version}.min.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
         options: {
             compilationLevel: 'WHITESPACE_ONLY',
         },
         callback: function (err, min) {
             if (!err) {
-                console.log( `kommunicateThirdParty.${version}.min.js combined successfully`);
+                console.log( `kommunicateThirdParty.min.js combined successfully`);
             }
             else {
-                console.log(`err while minifying kommunicateThirdParty.${version}.min.js`, err);
+                console.log(`err while minifying kommunicateThirdParty.min.js`, err);
             }
         }
     });
@@ -124,12 +124,12 @@ const compressAndOptimize = () => {
                 drop_console: true
             }
         },
-        output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
         callback: function (err, min) {
             if (!err)
-                console.log(`kommunicate-plugin.${version}.min.js combined successfully`);
+                console.log(`kommunicate-plugin.min.js combined successfully`);
             else {
-                console.log(`err while minifying kommunicate-plugin.${version}.min.js`, err);
+                console.log(`err while minifying kommunicate-plugin.min.js`, err);
             }
         }
     });
@@ -139,9 +139,9 @@ const combineJsFiles = () => {
     compressor.minify({
         compressor: terserCompressor,
         input: [
-            path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
-            path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.${version}.min.js`),
-            path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`)
+            path.resolve(__dirname, `${buildDir}/mck-app.js`),
+            path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
+            path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`)
         ],
         options: {
             compress: {
@@ -195,7 +195,7 @@ const generateBuildFiles = () => {
         }
         var mckApp = data.replace('KOMMUNICATE_MIN_CSS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.css"`)
             .replace('MCK_SIDEBOX_HTML', `"${MCK_STATIC_PATH}/build/mck-sidebox.${version}.html"`);
-        fs.writeFile(`${buildDir}/mck-app.${version}.js`, mckApp, function (err) {
+        fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
             if (err){
                 console.log("mck-file generation error");}
                 combineJsFiles();
