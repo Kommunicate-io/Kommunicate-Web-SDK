@@ -194,6 +194,8 @@ function addKommunicatePluginToIframe() {
     }
   }, true);
   var imported = addableDocument.createElement('script');
+  imported.async = false;
+  imported.type = 'text/javascript';
   imported.src = KOMMUNICATE_MIN_JS;
   imported.crossOrigin = "anonymous";
   addableDocument.head.appendChild(imported);

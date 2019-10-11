@@ -5,9 +5,6 @@
  */
 
 Kommunicate.postPluginInitialization = function (err, data) {
-    Kommunicate.initilizeEventListners();
-    // hiding away message when new message received from agents.
-        $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
     // get the third party settings
     // 1: for helpDocs
     KommunicateKB.init(Kommunicate.getBaseUrl());
@@ -35,9 +32,6 @@ Kommunicate.postPluginInitialization = function (err, data) {
     } else {
         Kommunicate.helpdocsInitialization(data, helpdocsAccessKey);
     }
-    var activeConversationInfo = Kommunicate.getActiveConversation();
-    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && Kommunicate.openConversation(activeConversationInfo.groupId);
-    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && !KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
 
 }
 
