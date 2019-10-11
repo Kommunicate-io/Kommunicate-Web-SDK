@@ -52,6 +52,7 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
         success: function (response) {
             if (response.data && response.data.length > 0 && $applozic(".km-kb-container").hasClass("n-vis")) {
                 $applozic(".km-kb-container").removeClass('n-vis').addClass('vis');
+                KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
             }
             $applozic.each(response.data, function (i, faq) {
                 $applozic("#km-faq-list-container").append('<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"><div class="km-faqimage">' + faqSVGImage + '</div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
