@@ -488,9 +488,14 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
     togglePopupChatTemplate: function(popupTemplateKey, showTemplate, mckChatPopupNotificationTone) {
         
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        var playPopupTone = KommunicateUtils.getDataFromKmSession("playChatPopupNotificationTone");
 
         if(showTemplate && !kommunicateCommons.isWidgetOpen()) {
-            mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
+            if(playPopupTone == null || playPopupTone) {
+                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
+                KommunicateUtils.storeDataIntoKmSession("playChatPopupNotificationTone", false);
+            }
+            
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL && kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "km-no-box-shadow", "");
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
