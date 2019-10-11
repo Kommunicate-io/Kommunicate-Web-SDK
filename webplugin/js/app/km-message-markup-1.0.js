@@ -24,18 +24,24 @@ Kommunicate.messageTemplate = {
 
 Kommunicate.popupChatTemplate = {
 
-    getPopupChatTemplate: function(popupWidgetContent, widgetTheme) {
+    getPopupChatTemplate: function(popupWidgetContent, widgetTheme, isAnonymousChat) {
         var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
         var chatPopupTemplateMarkup = "";
         var popupMessageContent = popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].message;
         
         if(isPopupEnabled) {
+            var launcherClass = isAnonymousChat ? "km-anonymous-chat-launcher" : "applozic-launcher";
             var index = (popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
             var templateCss = index === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? 'chat-popup-widget-container--horizontal' : 'chat-popup-widget-container--vertical';
-            chatPopupTemplateMarkup = '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' + templateCss + ' n-vis applozic-launcher"><div class="chat-popup-widget-text-wrapper"><p class="chat-popup-widget-text">' + (popupMessageContent && kommunicateCommons.formatHtmlTag(popupMessageContent)) + '</p></div></div>';
+            chatPopupTemplateMarkup = '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' + templateCss + ' n-vis ' + launcherClass + '"><div class="chat-popup-widget-text-wrapper"><p class="chat-popup-widget-text">' + (popupMessageContent && kommunicateCommons.formatHtmlTag(popupMessageContent)) + '</p></div></div>';
         };
         
-
-        return chatPopupTemplateMarkup;
+        if(isAnonymousChat) {
+            var anonymousLauncherContainer = document.getElementById('km-anonymous-chat-launcher');
+            anonymousLauncherContainer.insertAdjacentHTML('afterEnd', chatPopupTemplateMarkup);
+        } else {
+            return chatPopupTemplateMarkup;
+        }
+        
     }
 }

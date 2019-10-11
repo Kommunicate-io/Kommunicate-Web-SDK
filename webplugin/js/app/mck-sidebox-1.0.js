@@ -1477,7 +1477,9 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             mckInit.initialize(options);
                             return false;
                         }
+                        Kommunicate.popupChatTemplate.getPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, true);
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
+                        var kmAnonymousChatLauncherClass = document.getElementsByClassName('km-anonymous-chat-launcher');
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         
                         if (KOMMUNICATE_VERSION === "v2"){
@@ -1499,27 +1501,31 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             event.stopPropagation();
                             _this.closeLeadCollectionWindow();
                         });
-                        
-                        kmAnonymousChatLauncher.addEventListener("click", function(event){
-                          event.preventDefault();
-                          if (KOMMUNICATE_VERSION === "v2"){
-                            Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-                            kmAnonymousChatLauncher.style.right='10px';
-                            kmAnonymousChatLauncher.style.bottom='10px';
-                            kmChatLoginModal.classList.add("km-iframe-sidebox-border-radius");
-                            var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                            !POPUP_WIDGET && (kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)");
-                          }
-                          kmChatLoginModal.style.display='block';
-                          !POPUP_WIDGET && (
-                              kmAnonymousChatLauncher.classList.remove('vis'),
-                              kmAnonymousChatLauncher.classList.add('n-vis')
-                          )
-                        });
+                        for(var i = 0; i < kmAnonymousChatLauncherClass.length; i++) {
+                            kmAnonymousChatLauncherClass[i].addEventListener("click", function(event){
+                                event.preventDefault();
+                                if (KOMMUNICATE_VERSION === "v2"){
+                                  Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
+                                  kmAnonymousChatLauncher.style.right='10px';
+                                  kmAnonymousChatLauncher.style.bottom='10px';
+                                  kmChatLoginModal.classList.add("km-iframe-sidebox-border-radius");
+                                  var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                                  !POPUP_WIDGET && (kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)");
+                                }
+                                kmChatLoginModal.style.display='block';
+                                !POPUP_WIDGET && (
+                                    kmAnonymousChatLauncher.classList.remove('vis'),
+                                    kmAnonymousChatLauncher.classList.add('n-vis')
+                                )
+                                mckInit.clearMsgTriggerAndChatPopuTimeouts();
+                            });
+                        }
+            
                         document.getElementById("km-tab-title").innerHTML = optns.conversationTitle;
                         if ($applozic("#km-form-chat-login .km-form-group input").hasClass("n-vis")){
                             $applozic("#km-form-chat-login .km-form-group .km-form-control.n-vis").prop('required',null);
                         }
+                        KommunicateUI.displayPopupChatTemplate(MCK_POPUP_WIDGET_CONTENT, WIDGET_SETTINGS, mckChatPopupNotificationTone);
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -9773,6 +9779,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                     KommunicateUI.handleConversationBanner();
                                 }
                                 if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
+                                    CURRENT_GROUP_DATA.tabId = resp.message.groupId;
                                     resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
                                     if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                         var getUsersDetailparams = {
