@@ -9609,10 +9609,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var contact = mckMessageLayout.fetchContact(userId);
                         var tabId = $mck_message_inner.data('mck-id');  
                         if (!MCK_BLOCKED_TO_MAP[userId] && !MCK_BLOCKED_BY_MAP[userId]) {
-                            if (tabId === contact.contactId && $mck_message_inner.data('isgroup')) {
-                                KommunicateUI.hideAwayMessage();
-                            }
-                           
                             if (tabId === contact.contactId && !$mck_message_inner.data('isgroup')) {
                                 $applozic('#mck-tab-status').html(MCK_LABELS['online']);
                                 if (IS_OFFLINE_MESSAGE_ENABLED) {
