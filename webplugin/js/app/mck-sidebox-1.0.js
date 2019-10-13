@@ -9609,9 +9609,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var contact = mckMessageLayout.fetchContact(userId);
                         var tabId = $mck_message_inner.data('mck-id');  
                         if (!MCK_BLOCKED_TO_MAP[userId] && !MCK_BLOCKED_BY_MAP[userId]) {
-                            console.log(contact);
                             if (tabId === contact.contactId && $mck_message_inner.data('isgroup')) {
-                                console.log("hiding away message")
                                 KommunicateUI.hideAwayMessage();
                             }
                            
