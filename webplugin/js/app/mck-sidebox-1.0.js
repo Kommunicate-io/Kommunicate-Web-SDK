@@ -1543,37 +1543,41 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             ALStorage.clearMckMessageArray();
                             ALStorage.clearMckContactNameArray();
                             if (result === "INVALID_PASSWORD") {
+                                Kommunicate.showKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
                                         'errorMessage': 'INVALID PASSWORD'
                                     });
                                 }
-                                return;
+                                throw new Error ("INVALID_PASSWORD");
                             } else if (result === 'INVALID_APPID') {
+                                Kommunicate.showKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
                                         'errorMessage': 'INVALID APPLICATION ID'
                                     });
                                 }
-                                return;
+                                throw new Error ("INVALID APPLICATION ID");
                             } else if (result === 'error' || result === 'USER_NOT_FOUND') {
+                                Kommunicate.showKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
                                         'errorMessage': 'USER NOT FOUND'
                                     });
                                 }
-                                return;
+                                throw new Error ("USER_NOT_FOUND");
                             } else if (result === 'APPMODULE_NOT_FOUND') {
+                                Kommunicate.showKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
                                         'errorMessage': 'APPMODULE NOT FOUND'
                                     });
                                 }
-                                return;
+                                throw new Error ("APPMODULE_NOT_FOUND");
                             }
                             if (typeof result === 'object' && result !== null && result.token) {
                                 result.appId = userPxy.applicationId;
@@ -1584,22 +1588,26 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 _this.onInitApp(result);
                                 // mckUtils.manageIdleTime();
                             } else {
+                                Kommunicate.showKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
                                         'errorMessage': 'UNABLE TO PROCESS REQUEST'
                                     });
                                 }
+                                throw new Error ("UNABLE TO PROCESS REQUEST");
                             }
                         },
                         error: function () {
                             ALStorage.clearMckMessageArray();
+                            Kommunicate.showKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === "function") {
                                 MCK_ON_PLUGIN_INIT({
                                     'status': 'error',
                                     'errorMessage': 'UNABLE TO PROCESS REQUEST'
                                 });
                             }
+                            throw new Error ("UNABLE TO PROCESS REQUEST");
                         }
                     });
                     
