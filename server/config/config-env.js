@@ -49,7 +49,7 @@ const configEnv = {
     "thirdPartyIntegration": {
       "sentry": {
           "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
-          "enabled": true
+          "enabled": false
       }
     }
   },
@@ -67,7 +67,7 @@ const configEnv = {
     "thirdPartyIntegration": {
       "sentry": {
           "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enabled": true
+          "enabled": false
       }
     }
   },
@@ -84,7 +84,7 @@ const configEnv = {
     "thirdPartyIntegration": {
       "sentry": {
           "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enabled": true
+          "enabled": false
       }
     }
   },
