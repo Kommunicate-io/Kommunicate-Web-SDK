@@ -6706,14 +6706,11 @@ body.accesibility :focus {
 		padding-right: 70px;
 	}
 
-	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq {
-		width: 205px !important;
+	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq, .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
+		width: 145px !important;
 	}
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
 		width: 205px !important;
-	}
-	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
-		width: 145px !important;
 	}
 	.mck-name-status-container #mck-tab-title, .mck-name-status-container .mck-tab-title-w-typing {
 		width: 270px;
