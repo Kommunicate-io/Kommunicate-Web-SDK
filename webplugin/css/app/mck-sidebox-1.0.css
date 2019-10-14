@@ -5259,10 +5259,10 @@ textarea::placeholder {
 	height: auto;
 	width: 225px;
 }
-.mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
+.mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn, .mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq {
 	width: 205px;
 }
-.mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq, 	.mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
+.mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
 	width: 155px;
 }
 
@@ -6081,18 +6081,6 @@ div[name="message"]:last-child {
 		width: 0!important;
 		overflow: hidden;
 	}
-	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq {
-		width: 205px !important;
-	}
-	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
-		width: 205px !important;
-	}
-	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
-		width: 155px !important;
-	}
-	.mck-name-status-container #mck-tab-title, .mck-name-status-container .mck-tab-title-w-typing {
-		width: 270px;
-	}
 }
 
 /* Dialogflow HTML Headers Fix */
@@ -6696,6 +6684,39 @@ body.accesibility :focus {
 	}
 	.chat-popup-widget-container--horizontal {
 		padding-right: 70px;
+	}
+}
+
+@media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
+	.chat-popup-widget-container--horizontal {
+		width: 53% !important;
+		padding-right: 70px;
+	}
+	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
+		width: 187px !important;
+	}
+	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
+		width: 130px !important;
+	}
+}
+
+@media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
+	.chat-popup-widget-container--horizontal {
+		width: 65% !important;
+		padding-right: 70px;
+	}
+
+	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq {
+		width: 205px !important;
+	}
+	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
+		width: 205px !important;
+	}
+	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
+		width: 145px !important;
+	}
+	.mck-name-status-container #mck-tab-title, .mck-name-status-container .mck-tab-title-w-typing {
+		width: 270px;
 	}
 }
 /* Chat Popup Template Code Ends */

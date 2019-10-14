@@ -545,6 +545,7 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
     adjustConversationTitleHeadingWidth: function(isPopupWidgetEnabled) {
         var titleClassName = 'mck-title-width-wo-faq-with-close-btn';
         var mckTabTitle = document.getElementById("mck-tab-title");
+        mckTabTitle.classList.remove(titleClassName);
         if(document.querySelector(".km-kb-container").classList.contains("vis")) {
             titleClassName = isPopupWidgetEnabled ? 'mck-title-width-with-faq' : 'mck-title-width-with-faq-close-btn';
         }
