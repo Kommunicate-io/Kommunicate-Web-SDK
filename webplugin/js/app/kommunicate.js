@@ -501,10 +501,10 @@ $applozic.extend(true,Kommunicate,{
         };
     },
     /**
-     * @param {Boolean} hide 
+     * @param {Boolean} display 
      */
-    showKommunicateWidget: function(hide) {
+    displayKommunicateWidget: function(display) {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
-        hide ? kommunicateIframe.classList.remove("kommunicate-hide-custom-iframe") : kommunicateIframe.classList.add("kommunicate-hide-custom-iframe");
+        display ? kommunicateIframe.classList.remove("kommunicate-hide-custom-iframe") : kommunicateIframe.classList.add("kommunicate-hide-custom-iframe");
     }
 });

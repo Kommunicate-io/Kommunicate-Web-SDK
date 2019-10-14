@@ -1543,7 +1543,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             ALStorage.clearMckMessageArray();
                             ALStorage.clearMckContactNameArray();
                             if (result === "INVALID_PASSWORD") {
-                                Kommunicate.showKommunicateWidget(false);
+                                Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
@@ -1552,7 +1552,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 }
                                 throw new Error ("INVALID_PASSWORD");
                             } else if (result === 'INVALID_APPID') {
-                                Kommunicate.showKommunicateWidget(false);
+                                Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
@@ -1561,7 +1561,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 }
                                 throw new Error ("INVALID APPLICATION ID");
                             } else if (result === 'error' || result === 'USER_NOT_FOUND') {
-                                Kommunicate.showKommunicateWidget(false);
+                                Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
@@ -1570,7 +1570,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 }
                                 throw new Error ("USER_NOT_FOUND");
                             } else if (result === 'APPMODULE_NOT_FOUND') {
-                                Kommunicate.showKommunicateWidget(false);
+                                Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
@@ -1588,7 +1588,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 _this.onInitApp(result);
                                 // mckUtils.manageIdleTime();
                             } else {
-                                Kommunicate.showKommunicateWidget(false);
+                                Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
                                         'status': 'error',
@@ -1600,7 +1600,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         },
                         error: function () {
                             ALStorage.clearMckMessageArray();
-                            Kommunicate.showKommunicateWidget(false);
+                            Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === "function") {
                                 MCK_ON_PLUGIN_INIT({
                                     'status': 'error',
