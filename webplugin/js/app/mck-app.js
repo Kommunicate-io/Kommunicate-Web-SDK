@@ -324,6 +324,7 @@ function ApplozicSidebox() {
             options['chatPopupMessage'] = data.chatPopupMessage;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
+            options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
             if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
