@@ -315,7 +315,7 @@ $applozic.extend(true,Kommunicate,{
     },
     appendEmailToIframe:function (message){
         var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
-        if(richText && message.source === 7){
+        if(richText && message.source === 7 && message.message){
             var iframeID = "km-iframe-"+ message.groupId;
             var iframe = document.getElementById(iframeID);
             var doc = iframe.contentDocument || iframe.contentWindow.document;
