@@ -2034,53 +2034,24 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
-                // $applozic(".fancybox-kommunicate").click(function(e){
                 e.preventDefault();
                 var $this = $applozic(this);
-                var contentType = $this.data('type');
-                if (contentType.indexOf("video") !== -1) {
-                    var videoTag = $this.find('.mck-video-box').html(),
-                        video;
-                    $this.fancybox({
-                        content: videoTag,
-                        title: $this.data('name'),
-                        padding: 0,
-                        'openEffect': 'none',
-                        'closeEffect': 'none',
-                        helpers: {
-                            overlay: {
-                                locked: false,
-                                css: {
-                                    'background': 'rgba(0, 0, 0, 0.8)'
-                                }
-                            }
-                        },
-                        beforeShow: function () {
-                            video = $applozic('.fancybox-inner').find('video').get(0);
-                            video.load();
-                            video.play();
-                        }
+                var href = $this.data('url');
+                var title= $this.data('name');
+                if(href === ""){
+                    var key;
+                    key = $this.data("blobkey");
+                    alFileService.generateCloudUrl(key, function(result) {
+                        href= result;
                     });
-                } else {
-                    var href = $this.data('url');
-                    var title= $this.data('name');
-                    if(href === ""){
-                        var key;
-                        var fileUrl;
-                        key = $this.data("blobkey");
-                        alFileService.generateCloudUrl(key, function(result) {
-                          href= result;
-                        });
-                    }
-                    // Get the modal
-                    var modal = parent.document.getElementById('km-fullscreen-image-modal');
-                    var modalImg = parent.document.getElementById("km-fullscreen-image-modal-content");
-                    var captionText = parent.document.getElementById("km-fullscreen-image-modal-caption");
-                    modal.style.display = "block";
-                    modalImg.src = href;
-                    captionText.innerHTML = title ? title : "";
-
                 }
+                // Get the modal
+                var modal = parent.document.getElementById('km-fullscreen-image-modal');
+                var modalImg = parent.document.getElementById("km-fullscreen-image-modal-content");
+                var captionText = parent.document.getElementById("km-fullscreen-image-modal-caption");
+                modal.style.display = "block";
+                modalImg.src = href;
+                captionText.innerHTML = title ? title : "";
             });
 
             parent.document.getElementById("km-fullscreen-image-modal-close").onclick = function(){
