@@ -5080,7 +5080,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var messageClass= "vis";
                 var progressMeterClass = "n-vis";
                 var attachmentBox = "n-vis";
-                if((msg && msg.metadata && msg.metadata.feedback) || msg.metadata.KM_ASSIGN_TO){ // KM_ASSIGN_TO parameter comes when we change assigne by bot message.
+                if((msg && msg.metadata && msg.metadata.feedback) || msg.metadata.KM_ASSIGN_TO){ // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
                     return;
                 }
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
