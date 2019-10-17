@@ -23,13 +23,7 @@ var applozicSideBox = new ApplozicSidebox();
 var scriptCounter = 0;
 applozicSideBox.load();
 function ApplozicSidebox() {
-	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
     var mck_external_scripts = [
-        {
-            "name": "jquery",
-            "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js",
-            "crossOrigin": "anonymous"
-        },
         {
             "name": "applozic-min-js",
             "url": "https://cdn.applozic.com/applozic/applozic.chat-5.7.min.js", // update the url with every new release of applozic-web-plugin
@@ -39,24 +33,21 @@ function ApplozicSidebox() {
     var mck_style_loader = [
     {
             "name": "mck-sidebox", 
-            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS
+            "url": KOMMUNICATE_MIN_CSS
     } ];
-    var mck_script_loader1 = [
-    {
-            "name": "km-utils", 
-            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
-    },
+    var mck_third_party_scripts = [
     {
             "name": "maps",
-            "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
+            "url": "https://maps.google.com/maps/api/js?libraries=places"
+    },
+    {
+            "name": "locationPicker", 
+            "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     },
     {
             "name": "emojiLibrary",
             "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
     }];
-    var mck_script_loader2 = [ {
-            "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
-    } ];
     this.load = function() {
         try {
             for (var index in mck_external_scripts) {
@@ -190,6 +181,7 @@ function ApplozicSidebox() {
         style.href = url;
         head.appendChild(style);
     };
+    // Below function adds the script to document
     function mckLoadScript(url, callback, removeCrossOrigin) {
         try {
             var body = document.getElementsByTagName('body')[0];
@@ -223,41 +215,28 @@ function ApplozicSidebox() {
     };
     function mckInitPluginScript() {
         try {
-            if(applozic.PRODUCT_ID =='kommunicate'){
+            if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (typeof applozic._globals.locShare === 'undefined') {
                     applozic._globals.locShare = false;
                 } else if (typeof applozic._globals.locShare === 'string') {
                     throw new Error("locShare should be a boolean value");
                 }
                 if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
-                    applozic._globals.excludeGoogleMap = applozic._globals.locShare ? false : true;
-                } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
+                    applozic._globals.excludeGoogleMap = !applozic._globals.locShare;
+                } else if (typeof applozic._globals.excludeGoogleMap === 'string') {
                     throw new Error("excludeGoogleMap should be a boolean value");
                 }
-                    applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-               }
-            for (var index in mck_script_loader1) {
-                var data = mck_script_loader1[index];
-                if (data.name === "km-utils") {
-                    try {
-                       var options = applozic._globals;
-                        if (typeof options !== 'undefined' && options.locShare === true) {
-                            mckLoadScript(data.url, mckLoadScript2);
-                        } else {
-                            mckLoadScript(data.url, mckLoadAppScript);
-                        }
-                    } catch (e) {
-                        mckLoadScript(data.url, mckLoadAppScript);
-                    }
+                applozic._globals.googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey) ? applozic._globals.googleApiKey : "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
+            }
+            var options = applozic._globals;
+            for (var index in mck_third_party_scripts) {
+                var data = mck_third_party_scripts[index];
+                if (data.name === "locationPicker") {
+                    options.locShare && mckLoadScript(data.url);
                 } else if (data.name === "emojiLibrary") {
-                    if(options.emojilibrary){
-                        mckLoadScript(data.url, null, true)
-                    } else {
-                        continue;
-                    }
+                    options.emojilibrary && mckLoadScript(data.url, null, true);
                 } else if (data.name === "maps") {
                     try {
-                        var options = applozic._globals;
                         if (typeof options !== 'undefined') {
                             if (options.excludeGoogleMap) {
                                 continue;
@@ -273,9 +252,10 @@ function ApplozicSidebox() {
                         mckLoadScript(data.url, null, true);
                     }
                 } else {
-                    mckLoadScript(data.url);    
+                    mckLoadScript(data.url);
                 }
             };
+            mckLoadAppScript();
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             console.log(e);
@@ -285,24 +265,7 @@ function ApplozicSidebox() {
             return false;
         }
     };
-    function mckLoadScript2() {
-        try {
-            for (var index in mck_script_loader2) {
-                var data = mck_script_loader2[index];
-                if (data.name === "locationpicker") {
-                    mckLoadScript(data.url, mckLoadAppScript);
-                }
-            };
-        } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
-            if (typeof MCK_ONINIT === 'function') {
-                MCK_ONINIT("error");
-            }
-            return false;
-        }
-    };
     function mckLoadAppScript() {
-        var userId = KommunicateUtils.getRandomId();
         // var cookiePrefix = KommunicateUtils.getCookiePrefix();
         // var mapCookies = [{
         //     oldName: 'kommunicate-id',
@@ -335,32 +298,11 @@ function ApplozicSidebox() {
         //     oldName: "_kom_km_user_name",
         //     skipPrefix: true
         // }];
-        
+        var userId = KommunicateUtils.getRandomId();
         try {
             ((navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0)) && (sentryConfig.enabled = false);
-            var body = document.getElementsByTagName('body')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.crossOrigin = "anonymous";
-            script.src = KOMMUNICATE_PLUGIN_MIN_JS;
-            // seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
-            if (script.readyState) { // IE
-                script.onreadystatechange = function() {
-                    if (script.readyState === "loaded" || script.readyState === "complete") {
-                        script.onreadystatechange = null;
-                        // mckInitSidebox();
-                        sentryConfig.enabled && loadErrorTracking(userId);
-                        getApplicationSettings(userId);
-                    }
-                };
-            } else { // Others
-                script.onload = function() {
-                    // mckInitSidebox();
-                    sentryConfig.enabled && loadErrorTracking(userId);
-                    getApplicationSettings(userId);
-                };
-            }
-            body.appendChild(script);
+            sentryConfig.enabled && loadErrorTracking(userId);
+            getApplicationSettings(userId);
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
@@ -383,6 +325,7 @@ function ApplozicSidebox() {
             options['chatPopupMessage'] = data.chatPopupMessage;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
+            options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
             if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
@@ -475,7 +418,7 @@ function ApplozicSidebox() {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var data = JSON.parse(this.responseText);
-                mckInitSidebox(data.response, userId);
+                mckInitSidebox(data.response, userId); // This function will initialize the Sidebox code.
             }
         };
         xhr.open("GET", url, true);

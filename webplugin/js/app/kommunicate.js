@@ -315,7 +315,7 @@ $applozic.extend(true,Kommunicate,{
     },
     appendEmailToIframe:function (message){
         var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
-        if(richText && message.source === 7){
+        if(richText && message.source === 7 && message.message){
             var iframeID = "km-iframe-"+ message.groupId;
             var iframe = document.getElementById(iframeID);
             var doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -472,14 +472,13 @@ $applozic.extend(true,Kommunicate,{
         !kommunicateCommons.checkIfDeviceIsHandheld() && kommunicateCommons.modifyClassList( {id : ["mck-sidebox"]}, "popup-enabled","");
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
-        var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
+        var popUpCloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
         kommunicateIframe.style.width = '';
         kommunicateIframe.classList.remove('km-iframe-notification');
         kommunicateIframe.classList.remove('km-iframe-closed');
-        isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+        isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpCloseButton && (popUpCloseButton.style.display = 'flex')) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
-
     // add css to style component in window
     customizeWidgetCss : function (classSettings) {
             var style = document.createElement('style');
@@ -487,20 +486,25 @@ $applozic.extend(true,Kommunicate,{
             style.innerHTML = classSettings;
             document.getElementsByTagName('head')[0].appendChild(style);
     },
-
     // subscribe to custom events
     subscribeToEvents : function (events) {
         $applozic.fn.applozic('subscribeToEvents', events);
     },
     /**
-     * 
      * @param {String} timezone 
      */
-    updateUserTimezone: function(timezone){
-        if (KommunicateUtils.isValidTimeZone(timezone)){
+    updateUserTimezone: function (timezone) {
+        if (KommunicateUtils.isValidTimeZone(timezone)) {
             var chatContext = KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
             chatContext[KommunicateConstants.SETTINGS.KM_USER_TIMEZONE] = timezone;
             Kommunicate.updateChatContext(chatContext);
-        } 
+        };
+    },
+    /**
+     * @param {Boolean} display 
+     */
+    displayKommunicateWidget: function(display) {
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        display ? kommunicateIframe.classList.remove("kommunicate-hide-custom-iframe") : kommunicateIframe.classList.add("kommunicate-hide-custom-iframe");
     }
 });
