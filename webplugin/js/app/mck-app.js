@@ -300,6 +300,7 @@ function ApplozicSidebox() {
         // }];
         var userId = KommunicateUtils.getRandomId();
         try {
+            ((navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0)) && (sentryConfig.enabled = false);
             sentryConfig.enabled && loadErrorTracking(userId);
             getApplicationSettings(userId);
         } catch (e) {
