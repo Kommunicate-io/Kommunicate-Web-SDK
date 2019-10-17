@@ -220,6 +220,7 @@ KommunicateUI={
         $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
         $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis").addClass('vis-table');
         $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding")
+        KommunicateUI.checkSingleThreadedConversationSettings(true);
     });
 
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
@@ -550,6 +551,14 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             titleClassName = isPopupWidgetEnabled ? 'mck-title-width-with-faq' : 'mck-title-width-with-faq-close-btn';
         }
         mckTabTitle.classList.add(titleClassName);
+    },
+    checkSingleThreadedConversationSettings: function (hasMultipleConversations) {
+        if(kommunicateCommons.isObject(kommunicate._globals.widgetSettings) && kommunicate._globals.widgetSettings.isSingleThreaded) {
+            var startConversationButton = document.getElementById('mck-contacts-content');
+            var backButton = document.querySelector('.mck-back-btn-container');
+            startConversationButton.classList.add('force-n-vis');
+            hasMultipleConversations ? backButton.classList.remove('force-n-vis') : backButton.classList.add('force-n-vis')
+        }
     }
 
 

@@ -1739,6 +1739,9 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
                 var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                 kmChatLoginModal.style.visibility='hidden';
+
+                KommunicateUI.checkSingleThreadedConversationSettings();
+
             };
 
             _this.loadDataPostInitialization = function () {
@@ -4850,6 +4853,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             isGroup: params.isGroup
                         });
                     }
+                    KommunicateUI.checkSingleThreadedConversationSettings(Object.keys(MCK_GROUP_MAP).length > 1);
                 } else {
                     params.tabId = '';
                     if (IS_OFFLINE_MESSAGE_ENABLED) {
@@ -6277,6 +6281,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
                 } else {
                     $applozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
+                    KommunicateUI.checkSingleThreadedConversationSettings(true);
                 }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 emoji_template = _this.getScriptMessagePreview(message, emoji_template);
