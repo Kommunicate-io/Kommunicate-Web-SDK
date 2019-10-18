@@ -1726,8 +1726,24 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 // hiding away message when new message received from agents.
                 $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
                 var activeConversationInfo = Kommunicate.getActiveConversation();
+                
+                // Calling "loadMessageList" with empty parameters to get the count of the total conversations to show the back button if
+                // Single Threaded Conversations settings (isSingleThreaded) is enabled.
+                if(MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && (WIDGET_SETTINGS && WIDGET_SETTINGS.isSingleThreaded)) {
+                    mckMessageService.loadMessageList({
+                        'tabId': '',
+                        'isGroup': false
+                    }, function(data) {
+                        KommunicateUI.checkSingleThreadedConversationSettings(data && data.groupFeeds && data.groupFeeds.length > 1);
+                    });
+                } else {
+                    KommunicateUI.checkSingleThreadedConversationSettings();
+                }
+                
+
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && Kommunicate.openConversation(activeConversationInfo.groupId);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && !KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
+
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                     KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
@@ -1739,8 +1755,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
                 var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                 kmChatLoginModal.style.visibility='hidden';
-
-                KommunicateUI.checkSingleThreadedConversationSettings();
 
             };
 
@@ -3322,7 +3336,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var isGroup = ($this.data("isgroup") === true);
                 var conversationId = $this.data("mck-conversationid");
                 conversationId = (typeof conversationId !== "undefined" && conversationId !== '') ? conversationId.toString() : '';
-
+                KommunicateUI.checkSingleThreadedConversationSettings(Object.keys(MCK_GROUP_MAP).length > 1);
                 if (topicId && !conversationId) {
                     var topicStatus = $applozic(elem).data("mck-topic-status");
                     if (topicStatus) {
@@ -4710,7 +4724,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.loadTab = function (params, callback) {
                 var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
-                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab()
+                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab();
                 mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
@@ -4853,7 +4867,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             isGroup: params.isGroup
                         });
                     }
-                    KommunicateUI.checkSingleThreadedConversationSettings(Object.keys(MCK_GROUP_MAP).length > 1);
                 } else {
                     params.tabId = '';
                     if (IS_OFFLINE_MESSAGE_ENABLED) {
