@@ -2200,6 +2200,11 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
                 KommunicateUI.togglePopupChatTemplate();
             }
+
+            $applozic(d).on("click", ".chat-popup-widget-close-btn-container", function(){
+                KommunicateUI.togglePopupChatTemplate();
+            });
+
         }
 
         function MckMessageService() {
