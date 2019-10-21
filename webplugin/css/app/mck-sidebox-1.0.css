@@ -5815,7 +5815,7 @@ body.accesibility :focus {
 
 @media only screen and (max-width: 420px) {
 	.chat-popup-widget-container {
-		width: calc(100% - 105px);
+		width: calc(100% - 140px);
 	}
 	.chat-popup-widget-container--horizontal {
 		padding-right: 70px;
@@ -5824,7 +5824,7 @@ body.accesibility :focus {
 
 @media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
 	.chat-popup-widget-container--horizontal {
-		width: 53% !important;
+		width: 61% !important;
 		padding-right: 70px;
 	}
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
@@ -5833,6 +5833,9 @@ body.accesibility :focus {
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
 		width: 130px !important;
 	}
+	.chat-popup-widget-container .chat-popup-widget-close-btn-container {
+		display: block;
+	}
 }
 
 @media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
@@ -5840,7 +5843,9 @@ body.accesibility :focus {
 		width: 65% !important;
 		padding-right: 70px;
 	}
-
+	.chat-popup-widget-container .chat-popup-widget-close-btn-container {
+		display: block;
+	}
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq, .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
 		width: 145px !important;
 	}
@@ -5849,6 +5854,16 @@ body.accesibility :focus {
 	}
 	.mck-name-status-container #mck-tab-title, .mck-name-status-container .mck-tab-title-w-typing {
 		width: 270px;
+	}
+}
+
+@media only screen and (max-device-width: 320px) {
+	.chat-popup-widget-container--horizontal {
+		width: 61% !important;
+		padding-right: 70px;
+	}
+	.chat-popup-widget-container--horizontal.km-animate .chat-popup-widget-text {
+		margin: 7px 7px 7px 15px;
 	}
 }
 /* Chat Popup Template Code Ends */
