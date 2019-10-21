@@ -292,18 +292,16 @@ Kommunicate.richMsgEventHandler = {
             data[inputs[i].name] = inputs[i].value; 
         }
         if (requestType == "json") {  
-           KommunicateUtils.isURL(form.action) && window.Applozic.ALApiService.ajax({
-            url: form.action,
-            async: false,
-            type: "post",
-            data:JSON.stringify(data),
-            contentType:"application/json",
-            success: function (data) { 
-            },
-            error: function (xhr,desc, err) {
-               console.log("error while sending data ",err); 
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            // success response    
+            // console.log(this.responseText);
             }
-        })    
+          };
+        xhr.open("POST", form.action);
+        xhr.send(JSON.stringify(data));
+        
         } else {
             !isActionableForm && form.submit(); // called for submit button
             isActionableForm && KommunicateUtils.isURL(form.action) && $applozic.post(form.action, data).done(function(data) {
