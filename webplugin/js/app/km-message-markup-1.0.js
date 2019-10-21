@@ -33,7 +33,7 @@ Kommunicate.popupChatTemplate = {
             var launcherClass = isAnonymousChat ? "km-anonymous-chat-launcher" : "applozic-launcher";
             var index = (popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
             var templateCss = index === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? 'chat-popup-widget-container--horizontal' : 'chat-popup-widget-container--vertical';
-            chatPopupTemplateMarkup = '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' + templateCss + ' n-vis ' + launcherClass + '"><div class="chat-popup-widget-text-wrapper"><p class="chat-popup-widget-text">' + (popupMessageContent && kommunicateCommons.formatHtmlTag(popupMessageContent)) + '</p></div></div>';
+            chatPopupTemplateMarkup = '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' + templateCss + ' n-vis"><div class="chat-popup-widget-text-wrapper '  + launcherClass + '"><p class="chat-popup-widget-text">' + (popupMessageContent && kommunicateCommons.formatHtmlTag(popupMessageContent)) + '</p></div>' + '<div class="chat-popup-widget-close-btn-container"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"></path></svg></span></div></div>' + '</div>';
         };
         
         if(isAnonymousChat) {
