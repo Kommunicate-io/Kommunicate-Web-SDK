@@ -295,8 +295,7 @@ Kommunicate.richMsgEventHandler = {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-            // success response    
-            // console.log(this.responseText);
+            // for success response : this.responseText   
             }
           };
         xhr.open("POST", form.action);
