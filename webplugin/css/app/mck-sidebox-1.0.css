@@ -4766,7 +4766,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     align-items: center;
 	justify-content: flex-start;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn-container {
+.mck-msg-preview-visual-indicator-container .mck-close-btn-container, .chat-popup-widget-container .chat-popup-widget-close-btn-container {
 	position: absolute;
     top: 50%;
     left: -26px;
@@ -4794,7 +4794,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
 	display: block;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg {
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg, .chat-popup-widget-container .chat-popup-widget-close-btn .hat-popup-widget-close-icon-svg svg {
 	vertical-align: middle;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-text {
@@ -5592,6 +5592,10 @@ body.accesibility :focus {
 	box-shadow: none;
 }
 
+.chat-popup-widget-container:hover .chat-popup-widget-close-btn-container {
+	display: block;
+}
+
 .chat-popup-widget-container--vertical.km-animate {
 	-webkit-clip-path: circle(55px at 355px 50px);
 	clip-path: circle(55px at 355px 50px);
@@ -5627,29 +5631,6 @@ body.accesibility :focus {
 	-o-animation: km-slide-in-animation .5s ease .5s 1 forwards;
 	animation: km-slide-in-animation .5s ease .5s 1 forwards;
 }
-.mck-conversation-resolved{
-	display: none !important;
-}
-.mck-conversation-resolved.mck-show-resolved-conversation {
-    opacity: 0.5;
-    display: block ! important;
-}
-
-#mck-conversation-filter {
-    padding: 10px 20px;
-    font-size: 14px;
-    background: #f9f9f9;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-#mck-conversation-filter span:last-child{
-	cursor: pointer;
-	color: #4a39ff;	
-}
-#mck-conversation-filter span:last-child:hover{
-	text-decoration: underline;
-}
 
 @-webkit-keyframes km-reveal-animation-horizontal {
 	from {
@@ -5657,8 +5638,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(345px at 335px 35px);
-		clip-path: circle(345px at 335px 35px);
+		-webkit-clip-path: circle(345px at 315px 35px);
+		clip-path: circle(345px at 315px 35px);
 	}
 }
 @-moz-keyframes km-reveal-animation-horizontal {
@@ -5667,7 +5648,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(345px at 335px 35px);
+		clip-path: circle(345px at 315px 35px);
 	}
 }
 @-o-keyframes km-reveal-animation-horizontal {
@@ -5676,7 +5657,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(345px at 335px 35px);
+		clip-path: circle(345px at 315px 35px);
 	}
 }
 @keyframes km-reveal-animation-horizontal {
@@ -5685,8 +5666,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(345px at 335px 35px);
-		clip-path: circle(345px at 335px 35px);
+		-webkit-clip-path: circle(345px at 315px 35px);
+		clip-path: circle(345px at 315px 35px);
 	}
 }
 @-webkit-keyframes km-scale-animation {
@@ -5798,8 +5779,8 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(365px at 345px 50px);
-		clip-path: circle(365px at 345px 50px);
+		-webkit-clip-path: circle(365px at 335px 50px);
+		clip-path: circle(365px at 335px 50px);
 	}
 }
 @-moz-keyframes km-reveal-animation-vertical {
@@ -5808,7 +5789,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(365px at 345px 50px);	
+		clip-path: circle(365px at 335px 50px);	
 	}
 }
 @-o-keyframes km-reveal-animation-vertical {
@@ -5817,7 +5798,7 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		clip-path: circle(365px at 345px 50px);
+		clip-path: circle(365px at 335px 50px);
 	}
 }
 @keyframes km-reveal-animation-vertical {
@@ -5826,15 +5807,15 @@ body.accesibility :focus {
 	}
 	to {
 		opacity: 1;
-		-webkit-clip-path: circle(365px at 345px 50px);
-		clip-path: circle(365px at 345px 50px);
+		-webkit-clip-path: circle(365px at 335px 50px);
+		clip-path: circle(365px at 335px 50px);
 	}
 }
 
 
 @media only screen and (max-width: 420px) {
 	.chat-popup-widget-container {
-		width: calc(100% - 105px);
+		width: calc(100% - 140px);
 	}
 	.chat-popup-widget-container--horizontal {
 		padding-right: 70px;
@@ -5843,7 +5824,7 @@ body.accesibility :focus {
 
 @media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
 	.chat-popup-widget-container--horizontal {
-		width: 53% !important;
+		width: 61% !important;
 		padding-right: 70px;
 	}
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
@@ -5852,6 +5833,9 @@ body.accesibility :focus {
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
 		width: 130px !important;
 	}
+	.chat-popup-widget-container .chat-popup-widget-close-btn-container {
+		display: block;
+	}
 }
 
 @media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
@@ -5859,7 +5843,9 @@ body.accesibility :focus {
 		width: 65% !important;
 		padding-right: 70px;
 	}
-
+	.chat-popup-widget-container .chat-popup-widget-close-btn-container {
+		display: block;
+	}
 	.mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq, .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq-close-btn {
 		width: 145px !important;
 	}
@@ -5868,6 +5854,16 @@ body.accesibility :focus {
 	}
 	.mck-name-status-container #mck-tab-title, .mck-name-status-container .mck-tab-title-w-typing {
 		width: 270px;
+	}
+}
+
+@media only screen and (max-device-width: 320px) {
+	.chat-popup-widget-container--horizontal {
+		width: 61% !important;
+		padding-right: 70px;
+	}
+	.chat-popup-widget-container--horizontal.km-animate .chat-popup-widget-text {
+		margin: 7px 7px 7px 15px;
 	}
 }
 /* Chat Popup Template Code Ends */
@@ -5941,4 +5937,28 @@ body.accesibility :focus {
 }
 .km-faq-and-close-btn-container {
 	justify-content: flex-end;
+}
+
+.mck-conversation-resolved{
+	display: none !important;
+}
+.mck-conversation-resolved.mck-show-resolved-conversation {
+    opacity: 0.5;
+    display: block ! important;
+}
+
+#mck-conversation-filter {
+    padding: 10px 20px;
+    font-size: 14px;
+    background: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#mck-conversation-filter span:last-child{
+	cursor: pointer;
+	color: #4a39ff;	
+}
+#mck-conversation-filter span:last-child:hover{
+	text-decoration: underline;
 }

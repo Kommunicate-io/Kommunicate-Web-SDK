@@ -564,10 +564,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
-              document.getElementById('mck-btn-smiley-box').classList.remove("n-vis");
-              mckMessageLayout.initEmojis();
-            }
             !MCK_ATTACHMENT && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
             VOICE_INPUT_ENABLED && Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
             
@@ -787,6 +783,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             ALStorage.clearSessionStorageElements();
             MCK_TOKEN = '';
             AUTH_CODE = '';
+            window.Applozic.ALApiService.AUTH_TOKEN = null;
             FILE_META = [];
             MCK_GROUP_MAP = [];
             IS_LOGGED_IN = true;
@@ -1447,11 +1444,12 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     userPxy.metadata = optns.metadata;
                 }
                 userPxy.enableEncryption = true;
-                userPxy.appVersionCode = 108;
+                userPxy.appVersionCode = 111;
                 userPxy.deviceType= 0;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
                 userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
+                window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
                 if (KommunicateUtils.getCookie(KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION) && !JSON.parse(KommunicateUtils.getCookie(KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION))&&  KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !==0){
                     ALStorage.clearMckMessageArray();
@@ -1647,7 +1645,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     }
                 });
                 MCK_TOKEN = data.token;
-                mckUtils.setEncryptionKey(data.encryptionKey);
                 MCK_USER_ID = data.userId;
                 USER_COUNTRY_CODE = data.countryCode;
                 USER_DEVICE_KEY = data.deviceKey;
@@ -1658,7 +1655,20 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 MCK_FILE_URL = data.fileBaseUrl;
                 IS_MCK_USER_DEACTIVATED = data.deactivated;
                 AUTH_CODE = btoa(data.userId + ':' + data.deviceKey);
+                window.Applozic.ALApiService.AUTH_TOKEN = data.authToken;
                 window.Applozic.ALApiService.setAjaxHeaders(AUTH_CODE,MCK_APP_ID,USER_DEVICE_KEY,MCK_ACCESS_TOKEN,MCK_APP_MODULE_NAME);
+                window.Applozic.ALApiService.setEncryptionKeys(data.encryptionKey, data.userEncryptionKey);
+                if (!EMOJI_LIBRARY || data.encryptionKey) { 
+                    // EMOJI_LIBRARY = false ->hide emoticon from chat widget
+                    //Below code might be required once emoticons are added
+                    /*document.getElementById('mck-textbox-container').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
+                    document.getElementById('mck-text-box').classList.add('mck-text-box-width-increase');*/
+                } else {              
+                    // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
+                    document.getElementById('mck-btn-smiley-box').classList.remove("n-vis");
+                    mckMessageLayout.initEmojis();
+                }
+
                 MCK_TOTAL_UNREAD_COUNT = data.totalUnreadCount;
                 mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
                 MCK_CONNECTED_CLIENT_COUNT = data.connectedClientCount;
@@ -1670,7 +1680,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     if (!options.beforeSend && (options.url.indexOf(MCK_BASE_URL) !== -1)) {
                         // _this.manageIdleTime();
                         options.beforeSend = function (jqXHR) {
-                            _this.setHeaders(jqXHR);
+                            window.Applozic.ALApiService.addRequestHeaders(jqXHR);
                         };
                     }
                 });
@@ -1726,8 +1736,24 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 // hiding away message when new message received from agents.
                 $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
                 var activeConversationInfo = Kommunicate.getActiveConversation();
+                
+                // Calling "loadMessageList" with empty parameters to get the count of the total conversations to show the back button if
+                // Single Threaded Conversations settings (isSingleThreaded) is enabled.
+                if(MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && (WIDGET_SETTINGS && WIDGET_SETTINGS.isSingleThreaded)) {
+                    mckMessageService.loadMessageList({
+                        'tabId': '',
+                        'isGroup': false
+                    }, function(data) {
+                        KommunicateUI.checkSingleThreadedConversationSettings(data && data.groupFeeds && data.groupFeeds.length > 1);
+                    });
+                } else {
+                    KommunicateUI.checkSingleThreadedConversationSettings();
+                }
+                
+
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && Kommunicate.openConversation(activeConversationInfo.groupId);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && !KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
+
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                     KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
@@ -1739,6 +1765,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
                 var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                 kmChatLoginModal.style.visibility='hidden';
+
             };
 
             _this.loadDataPostInitialization = function () {
@@ -1781,23 +1808,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 }
 
             };
-            _this.setHeaders = function (jqXHR) {
-                jqXHR.setRequestHeader("UserId-Enabled", true);
-                if (AUTH_CODE) {
-                    jqXHR.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
-                    jqXHR.setRequestHeader("Application-User", "Basic " + AUTH_CODE);
-                }
-                jqXHR.setRequestHeader("Application-Key", MCK_APP_ID);
-                if (USER_DEVICE_KEY) {
-                    jqXHR.setRequestHeader("Device-Key", USER_DEVICE_KEY);
-                }
-                if (MCK_ACCESS_TOKEN) {
-                    jqXHR.setRequestHeader("Access-Token", MCK_ACCESS_TOKEN);
-                }
-                if (MCK_APP_MODULE_NAME) {
-                    jqXHR.setRequestHeader("App-Module-Name", MCK_APP_MODULE_NAME);
-                }
-            };
+
 
             _this.configurePopupWidget = function(){
                 !kommunicateCommons.checkIfDeviceIsHandheld() && kommunicateCommons.modifyClassList( {id : ["mck-sidebox"]}, "popup-enabled","");
@@ -2189,6 +2200,11 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 clearTimeout(MCK_CHAT_POPUP_TEMPLATE_TIMER);
                 KommunicateUI.togglePopupChatTemplate();
             }
+
+            $applozic(d).on("click", ".chat-popup-widget-close-btn-container", function(){
+                KommunicateUI.togglePopupChatTemplate();
+            });
+
         }
 
         function MckMessageService() {
@@ -3319,7 +3335,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var isGroup = ($this.data("isgroup") === true);
                 var conversationId = $this.data("mck-conversationid");
                 conversationId = (typeof conversationId !== "undefined" && conversationId !== '') ? conversationId.toString() : '';
-
+                KommunicateUI.checkSingleThreadedConversationSettings(Object.keys(MCK_GROUP_MAP).length > 1);
                 if (topicId && !conversationId) {
                     var topicStatus = $applozic(elem).data("mck-topic-status");
                     if (topicStatus) {
@@ -4440,19 +4456,11 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                }
                groupInfo.metadata = (params.metadata) ? params.metadata : MCK_LABELS['group.metadata'];
                var response = new Object();
-               var header = {
-                   "UserId-Enabled": true,
-                   "Authorization": "Basic " + AUTH_CODE,
-                   "Application-Key": MCK_APP_ID,
-                   "Device-Key": USER_DEVICE_KEY,
-                   "Access-Token": MCK_ACCESS_TOKEN
-               }
                window.Applozic.ALApiService.ajax({
                  url: MCK_BASE_URL + GROUP_CREATE_URL,
                  global: false,
                  data: w.JSON.stringify(groupInfo),
                  type: 'post',
-                 headers:header,
                  contentType: 'application/json',
                    success: function (data) {
                        if (params.isInternal) {
@@ -4707,7 +4715,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.loadTab = function (params, callback) {
                 var userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
-                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab()
+                (KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo",{groupId:params.tabId}) || kommunicateCommons.isWidgetOpen() ) && _this.handleLoadTab();
                 mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && params.isGroup && params.tabId && KommunicateUtils.setItemToLocalStorage("mckActiveConversationInfo",{groupId:params.tabId, "appId":appOptions.appId, "userId":userId});
                 var currTabId = $mck_msg_inner.data('mck-id');
@@ -6277,6 +6285,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
                 } else {
                     $applozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
+                    KommunicateUI.checkSingleThreadedConversationSettings(true);
                 }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
                 emoji_template = _this.getScriptMessagePreview(message, emoji_template);
@@ -6431,7 +6440,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 								window.Applozic.ALApiService.ajax({
 											url: url,
 											type: 'get',
-											global: false,
+                                            global: false,
+                                            encryptionKey: window.Applozic.ALApiService.getEncryptionKey(),
 											success: function (data) {
 											console.log(data);
 											},
@@ -8629,14 +8639,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var url = MCK_CUSTOM_URL + CUSTOM_FILE_UPLOAD_URL;
 
                         xhr.open('post', url , true);
-                        xhr.setRequestHeader("UserId-Enabled", true);
-                        xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
-                        xhr.setRequestHeader("Application-Key", MCK_APP_ID);
-                        xhr.setRequestHeader("Device-Key", USER_DEVICE_KEY);
-
-                        if (MCK_ACCESS_TOKEN) {
-                            xhr.setRequestHeader("Access-Token", MCK_ACCESS_TOKEN);
-                        }
+                        window.Applozic.ALApiService.addRequestHeaders(xhr);
                         xhr.send(data);
 
                     }
@@ -8865,13 +8868,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         });
                         var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL
                         xhr.open('post', url, true);
-                        xhr.setRequestHeader("UserId-Enabled", true);
-                        xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
-                        xhr.setRequestHeader("Application-Key", MCK_APP_ID);
-                        xhr.setRequestHeader("Device-Key", USER_DEVICE_KEY);
-                        if (MCK_ACCESS_TOKEN) {
-                            xhr.setRequestHeader("Access-Token", MCK_ACCESS_TOKEN);
-                        }
+                        window.Applozic.ALApiService.addRequestHeaders(xhr);
                         xhr.send(data);
                     }
                     return false;
@@ -8928,13 +8925,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     });
                     data.append("file", file);
                     xhr.open('post', MCK_BASE_URL + FILE_AWS_UPLOAD_URL, true);
-                    xhr.setRequestHeader("UserId-Enabled", true);
-                    xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
-                    xhr.setRequestHeader("Application-Key", MCK_APP_ID);
-                    xhr.setRequestHeader("Device-Key", USER_DEVICE_KEY);
-                    if (MCK_ACCESS_TOKEN) {
-                        xhr.setRequestHeader("Access-Token", MCK_ACCESS_TOKEN);
-                    }
+                    window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);
                 }
             };

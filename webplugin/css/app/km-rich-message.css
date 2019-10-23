@@ -994,7 +994,7 @@
     background-color: #fff;
     border-radius: 5px 5px 0px 0px;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn {
+.mck-msg-preview-visual-indicator-container .mck-close-btn, .chat-popup-widget-container .chat-popup-widget-close-btn {
     border-radius: 100px;
     background-color: #a19e9e;
     width: 20px;

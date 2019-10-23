@@ -510,6 +510,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
                 cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL))
             } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
+                buttons[i].action.type == "link" && (buttons[i].action.payload["openLinkInNewTab"] = typeof buttons[i].action.openLinkInNewTab == "undefined" ? true : buttons[i].action.openLinkInNewTab);
                 requestType = buttons[i].action.payload.requestType ? buttons[i].action.payload.requestType :"";
                 buttons[i].action.payload["type"] = buttons[i].action.type;
                 buttons[i].action.payload["buttonClass"] = "km-carousel-card-button";
