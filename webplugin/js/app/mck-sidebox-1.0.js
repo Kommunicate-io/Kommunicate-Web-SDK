@@ -7627,7 +7627,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             _this.checkBotDetail = function (userId) {	
                 window.Applozic.ALApiService.ajax({	
                     url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + userId,	
-                    type: 'get',	
+                    type: 'get',
+                    skipEncryption: true,	
                     global: false,	
                     success: function (data) {	
                                 CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
