@@ -300,6 +300,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         var IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = false;
         var PRE_CHAT_LEAD_COLLECTION_POPUP_ON = true;
         var MCK_TOKEN;
+        var USER_ENCRYPTION_KEY;
         var AUTH_CODE;
         MCK_GROUP_MAP = [];
         var FILE_META = [];
@@ -782,6 +783,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         _this.reset = function (optns) {
             ALStorage.clearSessionStorageElements();
             MCK_TOKEN = '';
+            USER_ENCRYPTION_KEY = '';
             AUTH_CODE = '';
             window.Applozic.ALApiService.AUTH_TOKEN = null;
             FILE_META = [];
@@ -1658,6 +1660,9 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 window.Applozic.ALApiService.AUTH_TOKEN = data.authToken;
                 window.Applozic.ALApiService.setAjaxHeaders(AUTH_CODE,MCK_APP_ID,USER_DEVICE_KEY,MCK_ACCESS_TOKEN,MCK_APP_MODULE_NAME);
                 window.Applozic.ALApiService.setEncryptionKeys(data.encryptionKey, data.userEncryptionKey);
+                if (data.encryptionKey) {
+                    USER_ENCRYPTION_KEY = data.userEncryptionKey;
+                }
                 if (!EMOJI_LIBRARY || data.encryptionKey) { 
                     // EMOJI_LIBRARY = false ->hide emoticon from chat widget
                     //Below code might be required once emoticons are added
@@ -7629,6 +7634,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 window.Applozic.ALApiService.ajax({	
                     url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + userId,	
                     type: 'get',	
+                    skipEncryption: true,
                     global: false,	
                     success: function (data) {	
                                 CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
@@ -9446,17 +9452,18 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 }
             };
             _this.onConnect = function () {
+                var topic = "/topic/" + (USER_ENCRYPTION_KEY ? "encr-":"") + MCK_TOKEN;
                 console.log("inside onconnect");
                 if (stompClient.connected) {
                     if (subscriber) {
                         _this.unsubscibeToNotification();
                     }
-                    subscriber = stompClient.subscribe("/topic/" + MCK_TOKEN, _this.onMessage);
+                    subscriber = stompClient.subscribe(topic, _this.onMessage);
                     _this.sendStatus(1);
                     _this.checkConnected(true);
                 } else {
                     setTimeout(function () {
-                        subscriber = stompClient.subscribe("/topic/" + MCK_TOKEN, _this.onMessage);
+                        subscriber = stompClient.subscribe(topic, _this.onMessage);
                         _this.sendStatus(1);
                         _this.checkConnected(true);
                     }, 5000);
@@ -9536,7 +9543,9 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             };
             _this.onMessage = function (obj) {
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
-                    var resp = $applozic.parseJSON(obj.body);
+                    var res = mckUtils.decrypt(obj.body, USER_ENCRYPTION_KEY);
+                    var resp = JSON.parse(res);
+
                     typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                     var messageType = resp.type;
                     if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
