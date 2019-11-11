@@ -6,6 +6,7 @@ const version = require('child_process')
   .toString().trim();
 const buildDir = path.resolve(__dirname,'build');
 const config = require("../server/config/config-env");
+const pluginClient = require("../server/src/pluginClient");
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 const PLUGIN_SETTING = config.pluginProperties;
@@ -135,7 +136,7 @@ const compressAndOptimize = () => {
     });
 };
 
-const combineJsFiles = () => {
+const combineJsFiles =  () => {
     compressor.minify({
         compressor: terserCompressor,
         input: [
@@ -156,6 +157,7 @@ const combineJsFiles = () => {
         callback: function (err, min) {
             if (!err) {
                 console.log( `kommunicate.${version}.js combined successfully`);
+                uploadFilesToCdn(buildDir, version);
             }
             else {
                 console.log(`err while minifying kommunicate.${version}.js`, err);
@@ -225,6 +227,12 @@ const generateFilesByVersion = (location) => {
 
     });
 };
+
+const uploadFilesToCdn = async(buildDir, version) => {
+    await pluginClient.upload(buildDir, version);
+    console.log("Uploaded all file to CDN");
+};
+// uploadFilesToCdn(buildDir, version);
 removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();
