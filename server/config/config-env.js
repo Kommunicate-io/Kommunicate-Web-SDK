@@ -88,29 +88,6 @@ const configEnv = {
       }
     }
   },
-    "prod_ire": {
-    "port": "3030",
-    "urls": {
-      "applozicBaseUrl": "https://chat-ire.kommunicate.io",
-      "kommunicateBaseUrl": "https://api-ire.kommunicate.io",
-      "hostUrl": "https://widget-ire.kommunicate.io"
-    },
-    "pluginProperties": {
-      "pseudoNameEnabled": true
-    },
-    "thirdPartyIntegration": {
-      "sentry": {
-        "plugin": {
-          "dsn": "https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
-          "enable": true
-        },
-        "server": {
-          "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
-          "enable": true
-        }
-      }
-    }
-  },
   "commonResources": {
     // add common resources for all environments below
   }
