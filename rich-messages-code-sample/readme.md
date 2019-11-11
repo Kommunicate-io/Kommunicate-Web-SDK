@@ -3,7 +3,7 @@
 
 You can configure the rich messages while working with the dialogflow fulfillment. You can either add the rich message metadata as custom payload response or use the default templates provided by the `dialogflow-fulfillment` library. 
 
-Here is the sample code to for different message: 
+Here are the code samples  to for different message. These samples are tested in Dialogflow's inline editor. You can also use them as firebase functions as well.
 
 1) Using  custom payload
 - [Buttons](dialogflow-fulfillment/buttons-using-custom-payload.js)
