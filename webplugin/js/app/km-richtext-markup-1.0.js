@@ -235,7 +235,7 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button aria-label="{{name}}" class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
+                 <button aria-label="{{name}}" class="km-faq-dialog-button km-quick-replies km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>

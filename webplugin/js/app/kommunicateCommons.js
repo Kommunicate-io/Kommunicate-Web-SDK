@@ -131,11 +131,14 @@ function KommunicateCommons() {
         return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
     _this.isConversationClosedByBot = function () {
-        var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
-            return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
-        });
-        return filtered[0] && filtered[0].role == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
-
+        if (CURRENT_GROUP_DATA.groupMembers && Array.isArray(CURRENT_GROUP_DATA.groupMembers)) {
+            var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
+                return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
+            });
+            return filtered[0] && filtered[0].role == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
+        } else {
+            return false
+        }
     };
 
     _this.getRatingSmilies = function (rating) {
