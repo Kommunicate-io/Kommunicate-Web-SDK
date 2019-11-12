@@ -461,8 +461,10 @@ function ApplozicSidebox() {
         if (widgetSettings && sessionTimeout != null && timeStampDifference > sessionTimeout) {
             KommunicateUtils.deleteUserCookiesOnLogout();
             sessionStorage.removeItem("kommunicate");
+            KommunicateUtils.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
         };
+        // TODO: Handle case where internet disconnects and sessionEndTime is not updated.
         window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
             var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
