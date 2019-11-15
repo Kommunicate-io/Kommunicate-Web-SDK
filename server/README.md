@@ -14,7 +14,7 @@ Step-2: Change the current working directory to Kommunicate-Web-SDK directory.
 Step-3: Move to the server folder in Kommunicate-Web-SDK directory.
 > $ cd server
 
-Step-4"  To run the node server run the below command.
+Step-4  To run the node server run the below command.
 > $ NODE_ENV=prod node app
 
 Step-5: Open your web browser and enter http://localhost:3030 to run the demo.
