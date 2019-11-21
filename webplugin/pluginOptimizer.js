@@ -251,7 +251,7 @@ const deleteFilesUsingPath = (path) => {
 
 const uploadFilesToCdn = async(buildDir, version) => {
     await pluginClient.upload(buildDir, version);
-    console.log("Uploaded all file to CDN");
+    console.log("Uploaded all files to CDN");
 };
 removeExistingFile(buildDir);
 compressAndOptimize();
