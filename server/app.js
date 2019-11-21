@@ -11,7 +11,6 @@ const routes = require("./routers/routes.js");
 console.log("Build process started at :", new Date().toString());
 console.log("Version: ", version);
 require('../webplugin/pluginOptimizer');
-require('./src/pluginClient.js');
 
 console.log("Host url: ", config.urls.hostUrl);
 app.use(cors());
