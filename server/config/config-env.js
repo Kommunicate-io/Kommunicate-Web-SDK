@@ -14,6 +14,10 @@ const configEnv = {
       "sentry": {
           "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
           "enabled": false
+      },
+      "aws": {
+         "cdnUrl": "https://cdn-test.kommunicate.io",
+         "bucket": "cdn-kommunicate"
       }
     }
   },
@@ -32,6 +36,10 @@ const configEnv = {
       "sentry": {
           "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
           "enabled": true
+      },
+      "aws": {
+         "cdnUrl": "https://cdn-test.kommunicate.io",
+         "bucket": "cdn-kommunicate"
       }
     }
   },
@@ -50,6 +58,10 @@ const configEnv = {
       "sentry": {
           "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
           "enabled": true
+      },
+      "aws": {
+         "cdnUrl": "https://cdn-test.kommunicate.io",
+         "bucket": "cdn-kommunicate"
       }
     }
   },
@@ -68,6 +80,10 @@ const configEnv = {
       "sentry": {
           "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
           "enabled": true
+      },
+      "aws": {
+         "cdnUrl": "https://cdn.kommunicate.io",
+         "bucket": "kommunicate-cdn"
       }
     }
   },
@@ -85,6 +101,10 @@ const configEnv = {
       "sentry": {
           "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
           "enabled": true
+      },
+      "aws": {
+         "cdnUrl": "https://cdn.kommunicate.io",
+         "bucket": "kommunicate-cdn"
       }
     }
   },

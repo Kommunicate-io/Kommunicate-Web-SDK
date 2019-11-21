@@ -1,12 +1,10 @@
 const config = require("../config/config-env");
 const FormData = require('form-data');
 const fs = require('fs');
-const argv = require('minimist')(process.argv.slice(2));
 const fetch = require('node-fetch');
 const path = require('path');
-const util = require('util');
 const KOMMUNICATE_BASE_URL = config.urls.kommunicateBaseUrl;
-
+const AWS = config.thirdPartyIntegration.aws;
 /*
     We're using node-fetch to upload files for web-plugin server.
     What is node-fetch ?
@@ -25,31 +23,27 @@ const KOMMUNICATE_BASE_URL = config.urls.kommunicateBaseUrl;
     url = http://Example.com/?a=4
 */
 exports.upload = async (buildDir, version) => {
-    console.log(argv);
-    let i = 0;
     try {
-        let buildFolder = fs.readdirSync(path.resolve(__dirname,'../../webplugin/build'));
+        let buildFolder = fs.readdirSync(path.resolve(__dirname, '../../webplugin/build'));
         for (let file of buildFolder) {
             var filePath = path.resolve(__dirname, (buildDir + '/' + file).toString())
-            console.log(filePath);
             await uploadFileToS3(filePath, version);
-            console.log(++i);
         }
     } catch (error) {
         console.log(error);
     }
 };
 
-const uploadFileToS3 = async(filePath, folderName) => {
+const uploadFileToS3 = async (filePath, folderName) => {
     try {
         let uploadUrl = KOMMUNICATE_BASE_URL + "/file/upload";
         let fileStream = fs.createReadStream(filePath);
         fileStream.on('error', function (err) {
-            logger.info('Error while reading file data', err);
+            console.log('Error while reading file data', err);
         });
         let form = new FormData();
         form.append('key', folderName);
-        form.append('bucket', 'applozicminifiedfiles');
+        form.append('bucket', AWS.bucket);
         form.append('cacheControl', 'max-age=2628000');
         form.append('file', fileStream);
 

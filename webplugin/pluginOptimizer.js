@@ -1,6 +1,7 @@
 const compressor = require('node-minify');
 const path = require('path');
 const fs = require('fs');
+const argv = require('minimist')(process.argv.slice(2));
 const version = require('child_process')
   .execSync('git rev-parse --short HEAD', {cwd: __dirname})
   .toString().trim();
@@ -11,13 +12,15 @@ const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+const CDN_HOST_URL = MCK_THIRD_PARTY_INTEGRATION.aws.cdnUrl;
 const pluginVersions = ["v1","v2"];
 PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
 PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 let PLUGIN_FILE_DATA = new Object();
-
-// Change "env" to "false" to uncompress all files.
+let isAwsUploadEnabled = argv.upload;
+let BUILD_URL = isAwsUploadEnabled ? CDN_HOST_URL + "/" + version : MCK_STATIC_PATH + "/build";
+// Change "env" to "false" to un-compress all files.
 let env = config.getEnvId() !== "development";
 
 let jsCompressor = !env ?"no-compress" : "gcc"; 
@@ -25,13 +28,20 @@ let terserCompressor = !env? "no-compress" : "terser";
 let cssCompressor =  !env? "no-compress" : "clean-css";
 
 const removeExistingFile = function (dirPath) {
-    try { var files = fs.readdirSync(dirPath); }
-    catch (e) { return; }
-    files && files.map(file => {
-        if (fs.statSync(dirPath + '/' + file).isFile())
-            fs.unlinkSync(dirPath + '/' + file);
-    })
-    //fs.rmdirSync(dirPath);
+    if (!fs.existsSync(dirPath)){
+        fs.mkdirSync(dirPath);
+    } else {
+        try {
+            var files = fs.readdirSync(dirPath);
+        } catch (e) {
+            return;
+        }
+        files && files.map(file => {
+            if (fs.statSync(dirPath + '/' + file).isFile()) {
+                fs.unlinkSync(dirPath + '/' + file)
+            };
+        })
+    }
 };
 
 const compressAndOptimize = () => {
@@ -136,14 +146,15 @@ const compressAndOptimize = () => {
     });
 };
 
-const combineJsFiles =  () => {
+const combineJsFiles = () => {
+    var paths = [
+        path.resolve(__dirname, `${buildDir}/mck-app.js`),
+        path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
+        path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`)
+    ];
     compressor.minify({
         compressor: terserCompressor,
-        input: [
-            path.resolve(__dirname, `${buildDir}/mck-app.js`),
-            path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
-            path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`)
-        ],
+        input: paths,
         options: {
             compress: {
                 drop_console: true,
@@ -157,7 +168,10 @@ const combineJsFiles =  () => {
         callback: function (err, min) {
             if (!err) {
                 console.log( `kommunicate.${version}.js combined successfully`);
-                uploadFilesToCdn(buildDir, version);
+                paths.forEach(async function(value) {
+                    await deleteFilesUsingPath(value);
+                })
+                isAwsUploadEnabled && uploadFilesToCdn(buildDir, version);
             }
             else {
                 console.log(`err while minifying kommunicate.${version}.js`, err);
@@ -168,21 +182,18 @@ const combineJsFiles =  () => {
 
 const generateBuildFiles = () => {
     // Generate mck-sidebox.html file for build folder.
-    fs.readFile(path.join(__dirname, "template/mck-sidebox.html"), 'utf8', function (err, data) {
+    fs.copyFile(path.join(__dirname, "template/mck-sidebox.html"), `${buildDir}/mck-sidebox.${version}.html`, (err) => {
         if (err) {
             console.log("error while generating mck-sidebox.html", err);
-        }
-        fs.writeFile(`${buildDir}/mck-sidebox.${version}.html`, data, function (err) {
-            if (err){
-                console.log("mck-file generation error");}
-        })
+        };
+        console.log('mck-sidebox.html generated successfully');
     });
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, "plugin.js"), 'utf8', function (err, data) {
         if (err) {
             console.log("error while generating plugin.js", err);
         }
-        var mckApp = data.replace('KOMMUNICATE_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.js"`)
+        var mckApp = data.replace('KOMMUNICATE_MIN_JS', `"${BUILD_URL}/kommunicate.${version}.min.js"`)
         fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
             if (err) {
                 console.log("plugin.js generation error");
@@ -195,12 +206,13 @@ const generateBuildFiles = () => {
         if (err) {
             console.log("error while generating mck app", err);
         }
-        var mckApp = data.replace('KOMMUNICATE_MIN_CSS', `"${MCK_STATIC_PATH}/build/kommunicate.${version}.min.css"`)
-            .replace('MCK_SIDEBOX_HTML', `"${MCK_STATIC_PATH}/build/mck-sidebox.${version}.html"`);
+        var mckApp = data.replace('KOMMUNICATE_MIN_CSS', `"${BUILD_URL}/kommunicate.${version}.min.css"`)
+            .replace('MCK_SIDEBOX_HTML', `"${BUILD_URL}/mck-sidebox.${version}.html"`);
         fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
-            if (err){
-                console.log("mck-file generation error");}
-                combineJsFiles();
+            if (err) {
+                console.log("mck-file generation error");
+            }
+            combineJsFiles();
         })
     });
 };
@@ -228,11 +240,19 @@ const generateFilesByVersion = (location) => {
     });
 };
 
+const deleteFilesUsingPath = (path) => {
+    // Assuming that 'path/file.txt' is a regular file.
+    try {
+        fs.unlinkSync(path);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const uploadFilesToCdn = async(buildDir, version) => {
     await pluginClient.upload(buildDir, version);
     console.log("Uploaded all file to CDN");
 };
-// uploadFilesToCdn(buildDir, version);
 removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();
