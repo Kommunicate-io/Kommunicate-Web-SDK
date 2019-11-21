@@ -5301,7 +5301,7 @@ div[name="message"]:last-child {
 	cursor: pointer;
 	transition: all .2s;
 }
-.mck-rating-box:hover{
+.mck-rating-box:hover, .mck-rating-box.selected{
 	transform: scale(1.2);
 }
 .mck-rating-box div {
@@ -5309,7 +5309,7 @@ div[name="message"]:last-child {
 	visibility: hidden;
 	color: #222222
 }
-.mck-rating-box:hover div {
+.mck-rating-box:hover div, .mck-rating-box.selected div {
 	visibility: visible;
 }
 .mck-conversation-comment{
@@ -5358,8 +5358,6 @@ div#mck-rated:before{
 	right: 80%;
 }
 .mck-feedback-text-wrapper{
-	max-height: 80px;
-    background: white;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -5367,15 +5365,17 @@ div#mck-rated:before{
     border-radius: 3px;
     margin-top: 18px;
     padding: 7px;
-    border: solid 0.5px #cecbcb;
     max-width: 90%;
-    margin: 18px auto;
+	margin: 18px auto;
+	flex-direction: column;
 }
 .mck-feedback-text-wrapper textarea {
-	background: none;
-	border: none;
-	outline: none;
-	width: 100%;
+	background: white;
+    border: solid 0.5px #cecbcb;
+    outline: none;
+    width: 100%;
+    padding: 10px 6px;
+    border-radius: 4px;
 }
 .mck-feedback-text-wrapper textarea::-webkit-input-placeholder, 
 .mck-feedback-text-wrapper textarea::-moz-placeholder, 
@@ -5385,9 +5385,12 @@ div#mck-rated:before{
 }
 
 .mck-send-feedback {
-	margin-left: 6px;
-    border-left: 1px solid #f6f5f5;
-	padding: 7px;
+	margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+	border-radius: 4px;
+	color: #fff;
+    font-size: 15px;
 }
 
 #csat-1, #csat-2, #csat-3, #mck-sidebox-ft, #mck-rated, .mck-csat-text-1{

@@ -116,7 +116,7 @@ Kommunicate.defaultLabels = {
     'csat.rating': {
         'CONVERSATION_RATED' : 'You rated the conversation',
         'RATE_CONVERSATION' : 'Rate your conversation',
-        'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a comment…',
+        'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a feedback (optional)',
         'OTHER_QUERIES' : 'Have other queries? ',
         'RESTART_CONVERSATION' : 'Restart this conversation',
     },
