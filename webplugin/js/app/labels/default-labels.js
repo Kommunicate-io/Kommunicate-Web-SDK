@@ -119,6 +119,7 @@ Kommunicate.defaultLabels = {
         'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a feedback (optional)',
         'OTHER_QUERIES' : 'Have other queries? ',
         'RESTART_CONVERSATION' : 'Restart this conversation',
+        'SUBMIT_RATING' : 'Submit your rating',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text' : {
