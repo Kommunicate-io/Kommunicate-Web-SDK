@@ -82,7 +82,10 @@ var kmCustomIframe =
       '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' + 
         'width: 100%;' + 
       '} \n' + 
-    '} \n ';
+    '} \n' +
+    '.kommunicate-hide-custom-iframe { ' +
+    '   display: none!important' +
+    '} \n';
 
 isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
 
