@@ -3,8 +3,10 @@ const FormData = require('form-data');
 const fs = require('fs');
 const fetch = require('node-fetch');
 const path = require('path');
+const argv = require('minimist')(process.argv.slice(2));
 const KOMMUNICATE_BASE_URL = config.urls.kommunicateBaseUrl;
 const AWS = config.thirdPartyIntegration.aws;
+const FILE_UPLOAD_PATH =  argv && argv.path;
 /*
     We're using node-fetch to upload files for web-plugin server.
     What is node-fetch ?
@@ -27,16 +29,17 @@ exports.upload = async (buildDir, version) => {
         let buildFolder = fs.readdirSync(path.resolve(__dirname, '../../webplugin/build'));
         for (let file of buildFolder) {
             var filePath = path.resolve(__dirname, (buildDir + '/' + file).toString())
+            console.log(filePath);
             await uploadFileToS3(filePath, version);
         }
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 };
 
 const uploadFileToS3 = async (filePath, folderName) => {
     try {
-        let uploadUrl = KOMMUNICATE_BASE_URL + "/file/upload";
+        let uploadUrl = KOMMUNICATE_BASE_URL + FILE_UPLOAD_PATH;
         let fileStream = fs.createReadStream(filePath);
         fileStream.on('error', function (err) {
             console.log('Error while reading file data', err);
@@ -53,10 +56,10 @@ const uploadFileToS3 = async (filePath, folderName) => {
             body: form
         }).then(res => res.json()).then(json => {
             console.log(json);
-        }).catch(err => {
-            console.error(err)
+        }).catch(error => {
+            throw error;
         });
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 };

@@ -250,8 +250,13 @@ const deleteFilesUsingPath = (path) => {
 };
 
 const uploadFilesToCdn = async(buildDir, version) => {
-    await pluginClient.upload(buildDir, version);
-    console.log("Uploaded all files to CDN");
+    try {
+        await pluginClient.upload(buildDir, version);
+        console.log("Uploaded all files to CDN");
+    } catch (error) {
+        console.log('The server has stopped due to some error, please check server logs for better understanding.', error);
+        process.kill(process.pid);
+    };
 };
 removeExistingFile(buildDir);
 compressAndOptimize();
