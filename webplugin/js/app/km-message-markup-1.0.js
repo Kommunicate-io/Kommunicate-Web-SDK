@@ -28,7 +28,6 @@ Kommunicate.popupChatTemplate = {
         var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
         var chatPopupTemplateMarkup = "";
         var popupMessageContent = popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].message;
-        isPopupEnabled = !kommunicate._globals.disablePreChatPopup
         
         if(isPopupEnabled) {
             var launcherClass = isAnonymousChat ? "km-anonymous-chat-launcher" : "applozic-launcher";

@@ -462,9 +462,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
-        if(typeof appOptions.preChatPopupMessage === 'string' && MCK_POPUP_WIDGET_CONTENT && MCK_POPUP_WIDGET_CONTENT) {
-            MCK_POPUP_WIDGET_CONTENT[0].message = appOptions.preChatPopupMessage;
-        }
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
