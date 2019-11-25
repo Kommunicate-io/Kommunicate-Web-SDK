@@ -1908,16 +1908,16 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
                 sendFeedbackComment.addEventListener('click',function(){
                     document.getElementById("mck-feedback-comment") && document.getElementById("mck-feedback-comment").value.trim() && (feedbackObject.comments = [document.getElementById("mck-feedback-comment").value]);
-                    feedbackObject.rating = CURRENT_GROUP_DATA.currentGroupFeedback.rating;
+                    feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
                     feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                    feedbackObject.comments && _this.sendFeedback(feedbackObject);
+                    _this.sendFeedback(feedbackObject);
                 });
                 for (var i = 0; i < ratingSmilies.length; i++) {
                     ratingSmilies[i].addEventListener('click',function(e){
-                        feedbackObject.comments = [];
-                        feedbackObject.rating = parseInt(this.getAttribute("data-rating"));
-                        feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                        _this.sendFeedback(feedbackObject);  
+                        kommunicateCommons.modifyClassList( {id : ["csat-2"]}, "","n-vis");
+                        kommunicateCommons.modifyClassList( {id : ["mck-rate-conversation"]}, "n-vis","");
+                        kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+                        e.currentTarget.classList.add('selected');
                     })
                 }
             };
@@ -2048,6 +2048,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 document.getElementById('mck-other-queries').innerHTML= MCK_LABELS['csat.rating'].OTHER_QUERIES;
                 document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
+                document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
