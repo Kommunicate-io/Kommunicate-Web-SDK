@@ -8,7 +8,7 @@ To make the Kommunnicate widget Full screen copy and paste the following code in
 Example:
 ```javascript
 (function(d, m){
-	var kommunicateSettings = {"appId":"<APP_ID>","conversationTitle":"<CONVERSATION_TITLE>",
+	var kommunicateSettings = {"appId":"<APP_ID>", 
 		"onInit": function() {
 			var iframeStyle = document.createElement('style');
                     	var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
