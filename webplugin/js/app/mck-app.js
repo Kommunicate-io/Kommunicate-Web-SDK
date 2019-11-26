@@ -326,7 +326,7 @@ function ApplozicSidebox() {
             options["collectFeedback"]=options.appSettings.collectFeedback;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
             
-            var pseudoNameEnabled = (typeof widgetSettings.pseudonymsEnabled !== 'undefined') ? widgetSettings.isPseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            var pseudoNameEnabled = (typeof widgetSettings.pseudonymsEnabled !== 'undefined') ? widgetSettings.pseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             KommunicateUtils.deleteDataFromKmSession("settings");
