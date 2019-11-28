@@ -306,6 +306,8 @@ KommunicateUI={
             $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
             $applozic('.mck-agent-image-container').removeClass("vis").addClass("n-vis");
             $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("vis").addClass("n-vis");
+            kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+            kommunicateCommons.modifyClassList( {id : ["mck-rate-conversation"]}, "","n-vis");
             document.getElementById("mck-tab-title").textContent = "";
             MCK_EVENT_HISTORY.length = 0 ;
             KommunicateUI.handleConversationBanner();

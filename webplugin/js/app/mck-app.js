@@ -317,13 +317,16 @@ function ApplozicSidebox() {
             var widgetSettings = data.chatWidget || data.widgetTheme;
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
-            options["agentId"]= data.agentId;
-            options["agentName"]=data.agentName;
+            options['appSettings'] = $applozic.extend(true, data, options.appSettings);
+
+            options["agentId"]= options.appSettings.agentId;
+            options["agentName"]=options.appSettings.agentName;
             options["widgetSettings"] = widgetSettings;
-            options["customerCreatedAt"]=data.customerCreatedAt;
-            options["collectFeedback"]=data.collectFeedback;
-            options['chatPopupMessage'] = data.chatPopupMessage;
-            var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            options["customerCreatedAt"]=options.appSettings.customerCreatedAt;
+            options["collectFeedback"]=options.appSettings.collectFeedback;
+            options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
+            
+            var pseudoNameEnabled = (typeof widgetSettings.pseudonymsEnabled !== 'undefined') ? widgetSettings.pseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             KommunicateUtils.deleteDataFromKmSession("settings");
