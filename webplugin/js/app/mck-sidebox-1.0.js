@@ -1941,7 +1941,15 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                            KommunicateUI.showClosedConversationBanner(true);
                            document.getElementById("mck-feedback-comment").value = '';
                            var feedback = JSON.stringify({ "rating": feedbackData.rating, comments: feedbackData.comments[0] });
-                           mckMessageService.sendMessage({ "groupId": feedbackData.groupId, "contentType": 10, "message": MCK_LABELS["conversation.rated"], "metadata": { "feedback": feedback, "skipBot": true } });
+                           mckMessageService.sendMessage({
+                               "groupId": feedbackData.groupId,
+                               "contentType": 10,
+                               "message": MCK_LABELS["conversation.rated"],
+                               "metadata": {
+                                   "feedback": feedback,
+                                   "skipBot": true
+                               }
+                           });
                            kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
