@@ -1907,7 +1907,13 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 })
 
                 sendFeedbackComment.addEventListener('click',function(){
-                    document.getElementById("mck-feedback-comment") && document.getElementById("mck-feedback-comment").value.trim() && (feedbackObject.comments = [document.getElementById("mck-feedback-comment").value]);
+                    feedbackObject = {
+                        groupId:0,
+                        comments:[],
+                        rating:0
+                    };
+                    var comment = document.getElementById("mck-feedback-comment");
+                    comment && comment.value.trim() && (feedbackObject.comments = [comment.value]);
                     feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
                     feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
                     _this.sendFeedback(feedbackObject);
@@ -1917,6 +1923,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         kommunicateCommons.modifyClassList( {id : ["csat-2"]}, "","n-vis");
                         kommunicateCommons.modifyClassList( {id : ["mck-rate-conversation"]}, "n-vis","");
                         kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+                        kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "","n-vis");
                         e.currentTarget.classList.add('selected');
                     })
                 }
@@ -1933,10 +1940,17 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
                            document.getElementById("mck-feedback-comment").value = '';
-                           if(feedbackData.rating && feedbackData.comments[0]){
-                            var feedback =JSON.stringify({"rating":feedbackData.rating,comments:feedbackData.comments[0]});
-                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback,"skipBot":true}});
-                           }
+                           var feedback = JSON.stringify({ "rating": feedbackData.rating, comments: feedbackData.comments[0] });
+                           mckMessageService.sendMessage({
+                               "groupId": feedbackData.groupId,
+                               "contentType": 10,
+                               "message": MCK_LABELS["conversation.rated"],
+                               "metadata": {
+                                   "feedback": feedback,
+                                   "skipBot": true
+                               }
+                           });
+                           kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
                     error : function(){
