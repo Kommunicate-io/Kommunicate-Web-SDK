@@ -9222,8 +9222,11 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             SOCKET = new SockJS(MCK_WEBSOCKET_URL + ":" + port + "/stomp");
                         }
                         stompClient = w.Stomp.over(SOCKET);
-                        stompClient.heartbeat.outgoing = 0;
+                        stompClient.heartbeat.outgoing = 10000;
                         stompClient.heartbeat.incoming = 0;
+                        stompClient.reconnect_delay = 30000;
+                        stompClient.debug = null;
+
                         stompClient.onclose = function () {
                             _this.disconnect();
                         };
