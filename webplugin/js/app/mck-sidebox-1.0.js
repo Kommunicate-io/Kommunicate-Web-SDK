@@ -1907,17 +1907,24 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 })
 
                 sendFeedbackComment.addEventListener('click',function(){
-                    document.getElementById("mck-feedback-comment") && document.getElementById("mck-feedback-comment").value.trim() && (feedbackObject.comments = [document.getElementById("mck-feedback-comment").value]);
-                    feedbackObject.rating = CURRENT_GROUP_DATA.currentGroupFeedback.rating;
+                    feedbackObject = {
+                        groupId:0,
+                        comments:[],
+                        rating:0
+                    };
+                    var comment = document.getElementById("mck-feedback-comment");
+                    comment && comment.value.trim() && (feedbackObject.comments = [comment.value]);
+                    feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
                     feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                    feedbackObject.comments && _this.sendFeedback(feedbackObject);
+                    _this.sendFeedback(feedbackObject);
                 });
                 for (var i = 0; i < ratingSmilies.length; i++) {
                     ratingSmilies[i].addEventListener('click',function(e){
-                        feedbackObject.comments = [];
-                        feedbackObject.rating = parseInt(this.getAttribute("data-rating"));
-                        feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
-                        _this.sendFeedback(feedbackObject);  
+                        kommunicateCommons.modifyClassList( {id : ["csat-2"]}, "","n-vis");
+                        kommunicateCommons.modifyClassList( {id : ["mck-rate-conversation"]}, "n-vis","");
+                        kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+                        kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "","n-vis");
+                        e.currentTarget.classList.add('selected');
                     })
                 }
             };
@@ -1933,10 +1940,17 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
                            document.getElementById("mck-feedback-comment").value = '';
-                           if(feedbackData.rating && feedbackData.comments[0]){
-                            var feedback =JSON.stringify({"rating":feedbackData.rating,comments:feedbackData.comments[0]});
-                            mckMessageService.sendMessage({"groupId":feedbackData.groupId,"contentType":10,"message":MCK_LABELS["conversation.rated"],"metadata":{"feedback":feedback,"skipBot":true}});
-                           }
+                           var feedback = JSON.stringify({ "rating": feedbackData.rating, comments: feedbackData.comments[0] });
+                           mckMessageService.sendMessage({
+                               "groupId": feedbackData.groupId,
+                               "contentType": 10,
+                               "message": MCK_LABELS["conversation.rated"],
+                               "metadata": {
+                                   "feedback": feedback,
+                                   "skipBot": true
+                               }
+                           });
+                           kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
                     error : function(){
@@ -2048,6 +2062,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 document.getElementById('mck-other-queries').innerHTML= MCK_LABELS['csat.rating'].OTHER_QUERIES;
                 document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
+                document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -4536,6 +4551,21 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                });
            };
 
+            _this.sendDeliveryUpdate = function (key) {
+                if (typeof key !== "undefined" && key !== "") {
+                    /* New implementation to send delivery report to server via Web Socket Connection */
+                    var deliveryStatus = 4;
+                    mckInitializeChannel.sendMessageStatus(key, deliveryStatus);
+                }
+            };
+            _this.sendReadUpdate = function (key) {
+                if (typeof key !== "undefined" && key !== "") {
+                    /* New implementation to send read report to server via Web Socket Connection */
+                    var readStatus = 1;
+                    mckInitializeChannel.sendMessageStatus(key, readStatus);
+                }
+            };
+
         }
 
         function MckMessageLayout() {
@@ -6829,7 +6859,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
                             $applozic("#li-" + contactHtmlExpr + " .mck-unread-count-box").removeClass("n-vis").addClass("vis");
                         }
-                        alMessageService.sendDeliveryUpdate(message);
+                        mckMessageService.sendDeliveryUpdate(message.pairedMessageKey);
                     }
                 } else {
                     if (typeof contact === 'undefined') {
@@ -6850,7 +6880,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                             if (!message.metadata || message.metadata.category !== 'HIDDEN') {
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated);
                                             }
-                                            alMessageService.sendReadUpdate(message.pairedMessageKey);
+                                            mckMessageService.sendReadUpdate(message.pairedMessageKey);
                                         } else if (IS_LAUNCH_TAB_ON_NEW_MESSAGE) {
                                             mckMessageLayout.loadTab({
                                                 'tabId': contact.contactId,
@@ -6883,8 +6913,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                             mckMessageLayout.messageClubbing(false);
 
                                             
-                                          }
-                                            alMessageService.sendReadUpdate(message.pairedMessageKey);
+                                        }
+                                        mckMessageService.sendReadUpdate(message.pairedMessageKey);
                                     }
                                     if (!message.groupId) {
                                         $applozic('#mck-tab-status').html(MCK_LABELS['online']);
@@ -6913,7 +6943,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                         }
                                     
                                     
-                                    alMessageService.sendDeliveryUpdate(message);
+                                    mckMessageService.sendDeliveryUpdate(message.pairedMessageKey);
                                 }
                                 if (notifyUser && contact.type !== 6) {
                                     if (!(document.getElementById("mck-sidebox").style.display === "block")){
@@ -9336,6 +9366,13 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     _this.reconnect();
                 }
             };
+            _this.sendMessageStatus = function (messageKey, status) {
+				if (stompClient && stompClient.connected) {
+					stompClient.send("/topic/message-status", {
+						"content-type": "text/plain"
+					}, MCK_USER_ID + "," + messageKey + "," + status);
+				}
+			};
             _this.subscribeToOpenGroup = function (group) {
                 if (stompClient && stompClient.connected) {
                     var subs = stompClient.subscribe("/topic/group-" + MCK_APP_ID + "-" + group.contactId, _this.onOpenGroupMessage);
