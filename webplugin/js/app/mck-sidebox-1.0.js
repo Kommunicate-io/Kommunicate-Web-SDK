@@ -4585,7 +4585,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 if (typeof key !== "undefined" && key !== "") {
                     /* New implementation to send delivery report to server via Web Socket Connection */
                     var deliveryStatus = 4;
-                    console.log(MCK_USER_ID);
                     window.Applozic.ALSocket.sendMessageStatus(key, deliveryStatus, MCK_USER_ID);
                 }
             };
