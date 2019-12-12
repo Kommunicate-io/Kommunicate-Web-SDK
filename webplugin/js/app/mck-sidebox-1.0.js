@@ -7684,9 +7684,10 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.createGroupDefaultSettings = function() {
                 var defaultSettings = KommunicateUtils.getDataFromKmSession("settings");
-                 var conversationDetail = {
-                    groupName : ( defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
-                    botIds :  (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
+                var conversationDetail = {
+                    groupName: (defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
+                    agentId: (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    botIds: (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
                 };
                 return conversationDetail;
             };
