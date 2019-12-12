@@ -203,7 +203,6 @@ function addKommunicatePluginToIframe() {
   imported.async = false;
   imported.type = 'text/javascript';
   imported.src = KOMMUNICATE_MIN_JS;
-  imported.crossOrigin = "anonymous";
   addableDocument.head.appendChild(imported);
   addFullviewImageModal();
 };
@@ -223,7 +222,6 @@ function injectJquery() {
   var script = addableDocument.createElement('script');
   script.async = false;
   script.type = 'text/javascript';
-  script.crossOrigin = "anonymous";
   script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js";
   if (script.readyState) { // IE
     script.onreadystatechange = function () {
