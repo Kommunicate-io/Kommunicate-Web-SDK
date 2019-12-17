@@ -289,7 +289,12 @@ Kommunicate.richMsgEventHandler = {
         var replyText = target.title || target.innerHTML;
         var  inputs = form.getElementsByTagName('input');
         for(var i = 0; i<inputs.length;i++){
-            data[inputs[i].name] = inputs[i].value; 
+            if (inputs[i].type == 'text' || inputs[i].type == 'hidden' || (inputs[i].type == 'radio' && inputs[i].checked == true)) {
+                data[inputs[i].name] = inputs[i].value; 
+            } else if(inputs[i].type == 'checkbox' && inputs[i].checked == true){
+                !data[inputs[i].name] && (data[inputs[i].name] = []);
+                data[inputs[i].name].push(inputs[i].value);
+            }
         }
         if (requestType == "json") {  
         var xhr = new XMLHttpRequest();
