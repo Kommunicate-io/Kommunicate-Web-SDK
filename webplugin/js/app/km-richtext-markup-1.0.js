@@ -297,6 +297,17 @@ getFormTemplate: function() {
                                         {{/options}}
                                     </div>
                                 {{/radio}}
+                                {{#checkbox}}
+                                    <p class="mck-radio-group-title">{{title}}</p>
+                                    <div class="mck-form-radio-wrapper">
+                                        {{#options}}
+                                            <div>
+                                                <input type="{{type}}" name="{{name}}" value="{{value}}">
+                                                <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
+                                            </div>                                     
+                                        {{/options}}
+                                    </div>
+                                {{/checkbox}}
                                 {{#text}}
                                     <div class="mck-form-text-wrapper">
                                         <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
@@ -510,14 +521,8 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
                 options.buttons.push(item);
                 options.payload.splice(index,1);
             }
-            else if(item.type == 'hidden') {
-                options.payload[index].hidden = true;
-            }
-            else if(item.type == 'radio' || item.type == 'checkbox') {
-                options.payload[index].radio = true;
-            }
-            else if(item.type == 'text') {
-                options.payload[index].text = true;
+            else if(item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text') {
+                options.payload[index][item.type] = true;
             }
         });
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
