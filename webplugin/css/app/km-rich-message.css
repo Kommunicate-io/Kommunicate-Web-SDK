@@ -1190,26 +1190,26 @@
     border-color: #e7e4e4
 }
 .mck-form-template-wrapper div {
-    margin-bottom:13px;
+    margin-bottom: 13px;
 }
 .mck-form-text-wrapper {
-    margin-bottom:15px;
+    margin-bottom: 15px;
 }
 .mck-radio-group-title {
-    color:black;
-    margin-bottom:5px;
+    color: black;
+    margin-bottom: 5px;
 }
 .mck-form-radio-wrapper {
-    width:100%;
-    display:flex;
+    width: 100%;
+    display: flex;
     flex-wrap: wrap;
 }
 .mck-form-radio-wrapper div {
-    margin-right:10px;
+    margin-right: 10px;
 }
 .mck-form-radio-wrapper input {
     font-size: 11px;
-    margin-right:3px;
+    margin-right: 3px;
 }
 
 .mck-form-text-wrapper input {
@@ -1247,7 +1247,7 @@
     font-size: 12px;
 }
 .mck-form-text-wrapper input:focus{
-  border:1px solid black;
+  border: 1px solid black;
   outline: none;
 }
 .mck-form-template-wrapper {
