@@ -35,9 +35,10 @@ Kommunicate.attachmentEventHandler= {
         var uploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
         var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
         var msgkey = attachmentDiv[0].dataset.msgkey;
-        var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');      
+        var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');  
+        var fileMetaKey = attachmentDiv[0].dataset.filemetakey;    
         if(Kommunicate.internetStatus) {
-            if(!stopUploadIconHidden && uploadIconHidden) {
+            if((!stopUploadIconHidden && uploadIconHidden) || fileMetaKey == "undefined") {
                 KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
                 $applozic(".km-progress-stop-upload-icon-"+msgkey).removeClass("vis").addClass("n-vis");
@@ -48,7 +49,6 @@ Kommunicate.attachmentEventHandler= {
           
             } else {
                 KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
-                var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
                 var fileName = attachmentDiv[0].dataset.filename;
                 var fileSize = attachmentDiv[0].dataset.filesize;
                 var fileUrl = attachmentDiv[0].dataset.fileurl;
