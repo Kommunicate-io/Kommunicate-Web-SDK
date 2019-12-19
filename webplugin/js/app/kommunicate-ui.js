@@ -118,10 +118,10 @@ KommunicateUI={
         var template = document.querySelector(".mck-message-inner.mck-group-inner");
         template && key && (attachment = template.querySelector(".mck-attachment-"+key));
         if (attachment) {
-            attachment.setAttribute("data-filemetakey", file_meta.blobKey);
-            attachment.setAttribute("data-filename", file_meta.name);
+            file_meta.blobKey && attachment.setAttribute("data-filemetakey", file_meta.blobKey);
+            file_meta.name && attachment.setAttribute("data-filename", file_meta.name);
             attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
-            attachment.setAttribute("data-filesize", file_meta.size);
+            file_meta.size && attachment.setAttribute("data-filesize", file_meta.size);
             attachment.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
         }
     },

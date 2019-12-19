@@ -30,16 +30,17 @@ Kommunicate.attachEvents = function($applozic){
  * define your event listeners.
  */
 Kommunicate.attachmentEventHandler= {
-    manageUploadAttachment: function (e) {
+    manageUploadAttachment: function (e) { 
         var stopUploadIconHidden = $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon').hasClass('n-vis');
         var uploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
         var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
         var msgkey = attachmentDiv[0].dataset.msgkey;
         var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');  
-        var fileMetaKey = attachmentDiv[0].dataset.filemetakey;    
+        var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
+        var file = KM_PENDING_ATTACHMENT_FILE[msgkey];   
+        KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true); 
         if(Kommunicate.internetStatus) {
-            if((!stopUploadIconHidden && uploadIconHidden) || fileMetaKey == "undefined") {
-                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
+            if((!stopUploadIconHidden && uploadIconHidden)) {
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
                 $applozic(".km-progress-stop-upload-icon-"+msgkey).removeClass("vis").addClass("n-vis");
                 $applozic(".km-progress-upload-icon-"+msgkey).removeClass("n-vis").addClass("vis");
@@ -48,14 +49,14 @@ Kommunicate.attachmentEventHandler= {
                 deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
           
             } else {
-                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                 var fileName = attachmentDiv[0].dataset.filename;
                 var fileSize = attachmentDiv[0].dataset.filesize;
                 var fileUrl = attachmentDiv[0].dataset.fileurl;
                 var fileType = attachmentDiv[0].dataset.filetype
                 var groupId = attachmentDiv[0].dataset.groupid;
                 var thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
-                if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) { 
+                if(fileSize && fileUrl && fileMetaKey  && fileName && fileType ) { 
+                    KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                     messagePxy = {
                         contentType: 1,
                         groupId:groupId,
@@ -86,7 +87,7 @@ Kommunicate.attachmentEventHandler= {
                     $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis");
                     deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";              
                 } 
-                else if (thumbnailUrl  && groupId  && msgkey ) {
+                else if (thumbnailUrl  && groupId  && msgkey && file) {
                     messagePxy = {
                         contentType: 1,
                         groupId:groupId,
@@ -100,7 +101,6 @@ Kommunicate.attachmentEventHandler= {
                         type:5,
                         metadata:{}
                     }
-                    var file = KM_PENDING_ATTACHMENT_FILE[msgkey];
                     params = {
                         params: {
                             file: file,
@@ -108,6 +108,7 @@ Kommunicate.attachmentEventHandler= {
                         },
                         messagePxy: messagePxy
                     };
+                    KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                     $applozic.fn.applozic("uploadAttachemnt", params);
                     $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis");
                     deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none"; 
