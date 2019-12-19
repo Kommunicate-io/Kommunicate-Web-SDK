@@ -425,6 +425,7 @@ showClosedConversationBanner  : function(isConversationClosed){
     var messageText = MCK_LABELS["closed.conversation.message"];
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
     var isCSATenabled = kommunicate._globals.collectFeedback;
+    var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
     isConversationClosed && kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
     if(isCSATenabled && isConversationClosed && !kommunicateCommons.isConversationClosedByBot()){
         mckUtils.ajax({
@@ -447,6 +448,9 @@ showClosedConversationBanner  : function(isConversationClosed){
                 }else {
                     kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "", "n-vis");
                 }
+                $mck_msg_inner.animate({
+                    scrollTop: $mck_msg_inner.prop("scrollHeight")
+                }, 0);
             },
             error : function(){
                 console.log('Error fetching feedback')
