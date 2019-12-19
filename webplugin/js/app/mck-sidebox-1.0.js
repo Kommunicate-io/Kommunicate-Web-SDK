@@ -9654,7 +9654,15 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
-                            resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
+                            if(resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                                if(MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(resp.message, contact)) {
+                                    setTimeout(function() {
+                                        KommunicateUI.showClosedConversationBanner(true);
+                                    }, MCK_BOT_MESSAGE_DELAY);
+                                } else {
+                                    KommunicateUI.showClosedConversationBanner(true);
+                                }
+                            }
                             if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                 var getUsersDetailparams = {
                                     "cached": false
