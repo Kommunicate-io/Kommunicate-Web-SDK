@@ -528,12 +528,8 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
                 options.payload[index].className = "km-cta-button";
                 options.buttons.push(item);
                 options.payload.splice(index,1);
-            }
-            else if(item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text') {
-                options.payload[index].supported = true;
-                options.payload[index][item.type] = true;
             } else {
-                options.payload[index].supported = false;
+                options.payload[index].supported = item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text';
                 options.payload[index][item.type] = true;
             }
         });
