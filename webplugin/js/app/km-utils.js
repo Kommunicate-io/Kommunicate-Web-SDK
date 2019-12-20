@@ -36,7 +36,7 @@ KommunicateConstants = {
    KM_NOTIFICATION_TONE_URL: "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3",
     NOTIFICATION_RINGTONES: {
     'default': 'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3',
-    'choose_me': 'https://cdn.kommunicate.io/kommunicate/chooseMe.mp3',
+    'choose_me': 'https://cdn.kommunicate.io/kommunicate/choose_me.mp3',
     'intuition': 'https://cdn.kommunicate.io/kommunicate/intuition.mp3',
     'light': 'https://cdn.kommunicate.io/kommunicate/light.mp3',
     'open_ended': 'https://cdn.kommunicate.io/kommunicate/open_ended.mp3'
