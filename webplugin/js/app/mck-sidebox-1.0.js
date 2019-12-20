@@ -378,7 +378,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
-        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KommunicateConstants.KM_NOTIFICATION_TONE_URL;
+        var MCK_NOTIFICATION_TONE_LINK = (WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone) ? KommunicateConstants.NOTIFICATION_RINGTONES[WIDGET_SETTINGS.notificationTone] : KommunicateConstants.NOTIFICATION_RINGTONES['default'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
@@ -9654,7 +9654,15 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
-                            resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS && KommunicateUI.showClosedConversationBanner(true);
+                            if(resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                                if(MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(resp.message, contact)) {
+                                    setTimeout(function() {
+                                        KommunicateUI.showClosedConversationBanner(true);
+                                    }, MCK_BOT_MESSAGE_DELAY);
+                                } else {
+                                    KommunicateUI.showClosedConversationBanner(true);
+                                }
+                            }
                             if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                 var getUsersDetailparams = {
                                     "cached": false
