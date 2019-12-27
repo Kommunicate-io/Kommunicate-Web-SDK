@@ -114,7 +114,7 @@ const configEnv = {
     "urls": {
       "applozicBaseUrl": "https://chat-in.kommunicate.io",
       "kommunicateBaseUrl": "https://api-in.kommunicate.io",
-      "botPlatformApi": "https://socket-in.kommunicate.io",
+      "botPlatformApi": "https://bots-in.kommunicate.io",
       "hostUrl": "https://widget-in.kommunicate.io"
     },
     "pluginProperties": {
