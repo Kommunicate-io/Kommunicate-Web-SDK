@@ -8849,18 +8849,15 @@ var CURRENT_GROUP_DATA={};
 
             _this.init = function () {
                 if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
-                    var port = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
-                    if (typeof MCK_WEBSOCKET_PORT !== 'undefined') {
-						port = MCK_WEBSOCKET_PORT;
-					}
-
-                    if (typeof w.SockJS === 'function') {
-                        if (!SOCKET) {
-                            SOCKET = new SockJS(MCK_WEBSOCKET_URL + ":" + port + "/stomp");
-                        }
+                    if (w.WebSocket) {
+                        MCK_WEBSOCKET_URL = MCK_WEBSOCKET_URL.replace("https://", "");
+                        SOCKET = new WebSocket("wss://" + MCK_WEBSOCKET_URL + ":" + MCK_WEBSOCKET_PORT+ "/ws");
+     
                         stompClient = w.Stomp.over(SOCKET);
-                        stompClient.heartbeat.outgoing = 0;
+                        stompClient.heartbeat.outgoing = 10000;
                         stompClient.heartbeat.incoming = 0;
+                        stompClient.reconnect_delay = 30000;
+                        stompClient.debug = null;
                         stompClient.onclose = function () {
                             _this.disconnect();
                         };
