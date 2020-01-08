@@ -87,7 +87,7 @@ var kmCustomIframe =
     '   display: none!important' +
     '} \n';
 
-isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
+isV1Script() ? injectJquery() : appendIframe();
 
 function removeKommunicateScripts() {
 
