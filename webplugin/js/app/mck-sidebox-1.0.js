@@ -378,6 +378,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
+
+        var MCK_NOTIFICATION_TONE_VOLUME = (typeof WIDGET_SETTINGS.notificationVolume === "number") ? WIDGET_SETTINGS.notificationVolume : 1; // Volume range for howler library is from 0->1.
         var MCK_NOTIFICATION_TONE_LINK = (WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone) ? KommunicateConstants.NOTIFICATION_RINGTONES[WIDGET_SETTINGS.notificationTone] : KommunicateConstants.NOTIFICATION_RINGTONES['default'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
@@ -573,6 +575,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
             notificationtoneoption.loop = false;
+            notificationtoneoption.volume = MCK_NOTIFICATION_TONE_VOLUME;
             if(MCK_NOTIFICATION_TONE_LINK){
                 ringToneService = new RingToneService();
                 try {
@@ -4592,7 +4595,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 if (typeof key !== "undefined" && key !== "") {
                     /* New implementation to send read report to server via Web Socket Connection */
                     var readStatus = 1;
-                    console.log(MCK_USER_ID);
                     window.Applozic.ALSocket.sendMessageStatus(key, readStatus, MCK_USER_ID);
                 }
             };

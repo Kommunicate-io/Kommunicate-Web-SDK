@@ -510,8 +510,8 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         } else {
             kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "", "km-no-box-shadow");
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "", "km-animate");
-            kommunicateIframe.classList.remove("chat-popup-widget-horizontal");
-            kommunicateIframe.classList.remove("chat-popup-widget-vertical");
+            kommunicateIframe && kommunicateIframe.classList.remove("chat-popup-widget-horizontal");
+            kommunicateIframe && kommunicateIframe.classList.remove("chat-popup-widget-vertical");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "n-vis", "km-animate");
         }
     },
