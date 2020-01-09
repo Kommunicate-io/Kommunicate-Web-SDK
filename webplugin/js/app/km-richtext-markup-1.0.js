@@ -612,17 +612,18 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     for (var i = 0; i < buttonPayloadList.length; i++) {
         var singlePayload = buttonPayloadList[i];
         typeof (singlePayload.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
-        if (singlePayload.action && (singlePayload.action.type == "link" || singlePayload.action.type == "submit")) {
-            singlePayload.type = buttonPayloadList[i].action.type;
-            singlePayload.url = buttonPayloadList[i].action.url;
+        !singlePayload.type && singlePayload.action && (singlePayload.type = singlePayload.action.type);
+        !singlePayload.replyMetadata && singlePayload.action && singlePayload.action.replyMetadata && typeof (singlePayload.action.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
+        if (singlePayload.type == "link" || singlePayload.type == "submit") {
+            singlePayload.url = buttonPayloadList[i].action.url || buttonPayloadList[i].action.formAction;
             singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
             buttonClass += buttonClass + " km-add-more-rooms";
             buttonContainerHtml += Kommunicate.markup.getButtonTemplate(singlePayload, singlePayload.action.requestType, buttonClass);
-            singlePayload.action.type == "submit" && (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
+            singlePayload.type == "submit" && (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
                 "payload": singlePayload.action
             }))
 
-        } else if (singlePayload.action && singlePayload.action.type == "quickReply") {
+        } else if (singlePayload.type == "quickReply" || singlePayload.type == "suggestedReply") {
             singlePayload.buttonClass = "km-quick-rpy-btn " + buttonClass;
             singlePayload.message = singlePayload.action.message || singlePayload.name;
             buttonContainerHtml += Mustache.to_html(Kommunicate.markup.getGenericSuggestedReplyButton(), singlePayload);
@@ -635,4 +636,5 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     return buttonContainerHtml + "</div>";
 
 }
+
         
