@@ -613,7 +613,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
         var singlePayload = buttonPayloadList[i];
         typeof (singlePayload.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
         !singlePayload.type && singlePayload.action && (singlePayload.type = singlePayload.action.type);
-        !singlePayload.replyMetadata && singlePayload.action && singlePayload.action.replyMetadata && typeof (singlePayload.action.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
+        !singlePayload.replyMetadata && singlePayload.action && singlePayload.action.replyMetadata && kommunicateCommons.isObject(singlePayload.action.replyMetadata) && (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
         if (singlePayload.type == "link" || singlePayload.type == "submit") {
             singlePayload.url = buttonPayloadList[i].action.url || buttonPayloadList[i].action.formAction;
             singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
