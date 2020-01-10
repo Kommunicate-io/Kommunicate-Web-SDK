@@ -311,7 +311,8 @@ $applozic.extend(true,Kommunicate,{
     },
     isRichTextMessage: function (metadata) {
         // contentType should be 300 for rich text message in metadata
-        return metadata && metadata.contentType == 300;
+        // contentType 300 is removed from rich message payload since Jan-2020 and old payload this may getting used.
+        return metadata && (metadata.hasOwnProperty('templateId') || metadata.contentType == 300);
     },
     appendEmailToIframe:function (message){
         var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
