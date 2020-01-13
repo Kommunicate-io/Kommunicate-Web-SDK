@@ -114,7 +114,8 @@ KommunicateConstants = {
         IMAGE:"9",
         CARD_CAROUSEL:"10",
         GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
-        FORM:"12"
+        FORM:"12",
+        GENERIC_BUTTONS_V2:"13"
     },
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
