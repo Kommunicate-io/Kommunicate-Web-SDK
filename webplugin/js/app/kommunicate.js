@@ -450,7 +450,6 @@ $applozic.extend(true,Kommunicate,{
         for (var key in options){
             settings[key]= options[key];
         }
-        console.log("#storing settings: " + settings);
         KommunicateUtils.storeDataIntoKmSession("settings",settings);
     },
     getSettings:function(setting){
