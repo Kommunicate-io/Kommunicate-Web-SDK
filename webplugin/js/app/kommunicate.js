@@ -105,6 +105,7 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
         conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
+        conversationDetail.customWelcomeEvent = conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
 
         return conversationDetail;
     },
@@ -451,6 +452,7 @@ $applozic.extend(true,Kommunicate,{
         for (var key in options){
             settings[key]= options[key];
         }
+        console.log("#storing settings: " + settings);
         KommunicateUtils.storeDataIntoKmSession("settings",settings);
     },
     getSettings:function(setting){
