@@ -105,7 +105,6 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
         conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
-        conversationDetail.customWelcomeEvent = conversationDetail.customWelcomeEvent;
 
         return conversationDetail;
     },
