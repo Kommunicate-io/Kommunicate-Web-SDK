@@ -1419,7 +1419,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             var $mck_tab_individual = $applozic("#mck-tab-individual");
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
-            var FEEDBACK_UPDATE_URL = "/feedback";
+            var FEEDBACK_UPDATE_URL = "/feedback/v2";
             _this.getLauncherHtml = function (isAnonymousChat) {
 
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
@@ -1945,7 +1945,15 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var comment = document.getElementById("mck-feedback-comment");
                     comment && comment.value.trim() && (feedbackObject.comments = [comment.value]);
                     feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
-                    feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
+                    feedbackObject.groupId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
+                    feedbackObject.supportAgentName = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.conversationAssignee;
+                    feedbackObject.applicationId = MCK_APP_ID;
+                    let LOGGED_USER = alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
+                    feedbackObject.userInfo = {
+                        "name":  LOGGED_USER.userName,
+                        "userName": MCK_USER_ID,
+                        "email": LOGGED_USER.email
+                    }            
                     _this.sendFeedback(feedbackObject);
                 });
                 for (var i = 0; i < ratingSmilies.length; i++) {
