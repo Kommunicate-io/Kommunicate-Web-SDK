@@ -1951,11 +1951,11 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     feedbackObject.groupId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
                     feedbackObject.supportAgentName = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.conversationAssignee;
                     feedbackObject.applicationId = MCK_APP_ID;
-                    let LOGGED_USER = alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
+                    let LOGGED_IN_USER = alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
                     feedbackObject.userInfo = {
-                        "name":  LOGGED_USER.userName,
+                        "name":  LOGGED_IN_USER.userName,
                         "userName": MCK_USER_ID,
-                        "email": LOGGED_USER.email
+                        "email": LOGGED_IN_USER.email
                     }            
                     _this.sendFeedback(feedbackObject);
                 });
