@@ -70,6 +70,7 @@ $applozic.extend(true,Kommunicate,{
             "isInternal": params.isInternal,
             "skipRouting": params.skipRouting,
             "skipBotEvent": params.skipBotEvent,
+            "customWelcomeEvent": params.customWelcomeEvent,
             "metadata": groupMetadata
         };
         if (IS_SOCKET_CONNECTED) {
@@ -104,6 +105,7 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
         conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
+        conversationDetail.customWelcomeEvent = conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
 
         return conversationDetail;
     },
@@ -435,6 +437,7 @@ $applozic.extend(true,Kommunicate,{
        5. skipBotEvent [multiple values]
        6. KM_CHAT_CONTEXT
        7. WELCOME_MESSAGE
+       8. customWelcomeEvent [single value]
    */
     updateSettings:function(options){
         var type = typeof options;

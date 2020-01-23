@@ -72,9 +72,10 @@ Kommunicate.client={
 
         conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
         conversationDetail.skipBotEvent && (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
+        conversationDetail.customWelcomeEvent && (groupMetadata.CUSTOM_WELCOME_EVENT = conversationDetail.customWelcomeEvent);
 
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
-        conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE)
+        conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE);
 
         $applozic.fn.applozic("createGroup", {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
