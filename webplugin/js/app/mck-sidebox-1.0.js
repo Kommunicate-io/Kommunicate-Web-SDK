@@ -4971,6 +4971,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var conversationAssigneeDetails = groupDetails.users.filter(function (item) {
                         return item.userId == conversationAssignee;
                     })[0];
+                    CURRENT_GROUP_DATA.conversationAssignee = conversationAssignee;
                     var updateConversationHeaderParams = {
                         'name': params.groupDetails.name,
                         'imageUrl': params.groupDetails.imageUrl,
