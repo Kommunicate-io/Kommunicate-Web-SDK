@@ -1732,11 +1732,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         }
                     }
                 }
-                alUserService.checkUserConnectedStatus(function(otherUserIdArray){
-									(otherUserIdArray.length > 0) ? mckContactService.getUsersDetail(otherUserIdArray, {
-			                setStatus: true
-			            }): mckUserUtils.updateUserConnectedStatus();
-								});
+                mckUserUtils.checkUserConnectedStatus();
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
@@ -7173,6 +7169,29 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             var $mck_block_button = $applozic("#mck-block-button");
             var $mck_message_inner = $applozic("#mck-message-cell .mck-message-inner");
 
+            _this.checkUserConnectedStatus = function () {
+                var userIdArray = new Array();
+                var otherUserIdArray = new Array();
+                $applozic(".mck-user-ol-status").each(function () {
+                    var tabId = $applozic(this).data('mck-id');
+                    if (typeof tabId !== "undefined" && tabId !== '') {
+                        userIdArray.push(tabId);
+                        var htmlId = mckContactUtils.formatContactId('' + tabId);
+                        $applozic(this).addClass(htmlId);
+                        $applozic(this).next().addClass(htmlId);
+                    }
+                });
+                if (userIdArray.length > 0) {
+                    $applozic.each(userIdArray, function (i, userId) {
+                        if (typeof alUserService.MCK_USER_DETAIL_MAP[userId] === 'undefined') {
+                            otherUserIdArray.push(userId);
+                        }
+                    });
+                    (otherUserIdArray.length > 0) ? mckContactService.getUsersDetail(otherUserIdArray, {
+                        setStatus: true
+                    }): _this.updateUserConnectedStatus();
+                }
+            };
             _this.updateUserConnectedStatus = function () {
                 $applozic('.mck-user-ol-status').each(function () {
                     var $this = $applozic(this);
