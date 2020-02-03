@@ -443,7 +443,7 @@ showClosedConversationBanner  : function(isConversationClosed){
                 /*
                 csat-1 : csat rating first screen where you can rate via emoticons.
                 csat-2 : csat rating second screen where you can add comments.
-                csat-3 : csat result screen where you show the result.
+                csat-3 : csat result screen where you show overall feedback.
                 */
                 if (feedback && feedback.rating) {
                     if(feedback.comments.length > 0){ // if comments are there in feedback 
