@@ -434,26 +434,34 @@ showClosedConversationBanner  : function(isConversationClosed){
             global: false,
             contentType: 'application/json',
             success: function (data) {
-                CURRENT_GROUP_DATA.currentGroupFeedback = data.data;
+                var feedback = data.data
+                CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
                 kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
                 kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]}, "","n-vis");
                 kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
                 kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3"]}, "n-vis");
-                if( data.data && data.data.rating && data.data.comments.length> 0){
-                    kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
-                    document.getElementById('csat-3').innerHTML = '\"' + data.data.comments[0] + '\"';
-                }else if( data.data && data.data.rating) {
-                    kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
-                    document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(data.data.rating);
-                }else {
+                /*
+                csat-1 : csat rating first screen where you can rate via emoticons.
+                csat-2 : csat rating second screen where you can add comments.
+                csat-3 : csat result screen where you show overall feedback.
+                */
+                if (feedback && feedback.rating) {
+                    if(feedback.comments.length > 0){ // if comments are there in feedback 
+                        kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
+                        document.getElementById('csat-3').innerHTML = '\"' + feedback.comments[0] + '\"';
+                    } else { // only rating via emoticons
+                        kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
+                    }
+                    document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(feedback.rating);
+                } else { // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "", "n-vis");
                 }
                 $mck_msg_inner.animate({
                     scrollTop: $mck_msg_inner.prop("scrollHeight")
                 }, 0);
             },
-            error : function(){
-                console.log('Error fetching feedback')
+            error : function(err){
+                console.log('Error fetching feedback', err);
             }
         });  
     }else if(isConversationClosed){
