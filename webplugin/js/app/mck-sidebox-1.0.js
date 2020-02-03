@@ -4320,6 +4320,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var updateConversationHeaderParams = new Object();
                 data.displayName && (updateConversationHeaderParams.name = data.displayName);
                 data.imageLink && (updateConversationHeaderParams.imageUrl = data.imageLink);
+                CURRENT_GROUP_DATA.conversationAssignee = data && data.userId;
                 if (data.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                     updateConversationHeaderParams.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
                 } else {
