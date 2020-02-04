@@ -135,5 +135,8 @@ Kommunicate.defaultLabels = {
         'ACTIVE_CONVERSATIONS': 'Active conversations',
         'HIDE_RESOLVED': 'Hide resolved',
         'SHOW_RESOLVED': 'Show resolved'
+    },
+    'rich.form': {
+        'errorText':'Please enter valid data'
     }
 }
