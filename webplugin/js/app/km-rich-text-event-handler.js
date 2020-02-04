@@ -479,8 +479,8 @@ Kommunicate.richMsgEventHandler = {
     handleFormSubmit: function(e) {
         e.preventDefault();
     },
-    isValidString: function (string, value) {
-        var regex = new RegExp(string);
+    isValidString: function (str, value) {
+        var regex = new RegExp(str);
         return regex.test(value);
     }
 
