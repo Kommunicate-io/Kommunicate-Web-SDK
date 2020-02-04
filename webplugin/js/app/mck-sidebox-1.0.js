@@ -380,7 +380,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
 
         var MCK_NOTIFICATION_TONE_VOLUME = (typeof WIDGET_SETTINGS.notificationVolume === "number") ? WIDGET_SETTINGS.notificationVolume : 1; // Volume range for howler library is from 0->1.
-        var MCK_NOTIFICATION_TONE_LINK = (WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone) ? KommunicateConstants.NOTIFICATION_RINGTONES[WIDGET_SETTINGS.notificationTone] : KommunicateConstants.NOTIFICATION_RINGTONES['default'];
+        var MCK_NOTIFICATION_TONE_LINK = (WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone) ? KommunicateConstants.NOTIFICATION_RINGTONES[WIDGET_SETTINGS.notificationTone] : KommunicateConstants.NOTIFICATION_RINGTONES['subtle'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';

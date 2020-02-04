@@ -35,8 +35,10 @@ KommunicateConstants = {
     },
    KM_NOTIFICATION_TONE_URL: "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3",
     NOTIFICATION_RINGTONES: {
-    'default': 'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3',
-    'choose_me': 'https://cdn.kommunicate.io/kommunicate/choose_me.mp3',
+    'default': "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3", // renamed to eventually
+    'choose_me': "https://cdn.kommunicate.io/kommunicate/choose_me.mp3", // renamed to subtle
+    'eventually': "https://cdn.kommunicate.io/kommunicate/eventually.mp3",
+    'subtle': "https://cdn.kommunicate.io/kommunicate/subtle.mp3",
     'intuition': 'https://cdn.kommunicate.io/kommunicate/intuition.mp3',
     'light': 'https://cdn.kommunicate.io/kommunicate/light.mp3',
     'open_ended': 'https://cdn.kommunicate.io/kommunicate/open_ended.mp3'
