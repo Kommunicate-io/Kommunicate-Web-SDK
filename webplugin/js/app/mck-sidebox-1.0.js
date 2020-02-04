@@ -1422,7 +1422,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             var $mck_tab_individual = $applozic("#mck-tab-individual");
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
-            var FEEDBACK_UPDATE_URL = "/feedback";
+            var FEEDBACK_UPDATE_URL = "/feedback/v2";
             _this.getLauncherHtml = function (isAnonymousChat) {
 
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
@@ -1944,7 +1944,15 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var comment = document.getElementById("mck-feedback-comment");
                     comment && comment.value.trim() && (feedbackObject.comments = [comment.value]);
                     feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
-                    feedbackObject.groupId = CURRENT_GROUP_DATA.tabId;
+                    feedbackObject.groupId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
+                    feedbackObject.supportAgentName = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.conversationAssignee;
+                    feedbackObject.applicationId = MCK_APP_ID;
+                    var LOGGED_IN_USER = alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
+                    feedbackObject.userInfo = {
+                        "name":  LOGGED_IN_USER.userName,
+                        "userName": MCK_USER_ID,
+                        "email": LOGGED_IN_USER.email
+                    }            
                     _this.sendFeedback(feedbackObject);
                 });
                 for (var i = 0; i < ratingSmilies.length; i++) {
@@ -2332,7 +2340,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             var CONVERSATION_CLOSE_UPDATE_URL = "/rest/ws/conversation/close";
             var CONVERSATION_DELETE_URL = "/rest/ws/message/delete/conversation";
             var CONVERSATION_READ_UPDATE_URL = "/rest/ws/message/read/conversation";
-            var FEEDBACK_UPDATE_URL = '/feedback'
+            var FEEDBACK_UPDATE_URL = "/feedback/v2";
             var offlineblk = '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
@@ -4308,6 +4316,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var updateConversationHeaderParams = new Object();
                 data.displayName && (updateConversationHeaderParams.name = data.displayName);
                 data.imageLink && (updateConversationHeaderParams.imageUrl = data.imageLink);
+                CURRENT_GROUP_DATA.conversationAssignee = data && data.userId;
                 if (data.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                     updateConversationHeaderParams.availabilityStatus = KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
                 } else {
@@ -4959,6 +4968,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var conversationAssigneeDetails = groupDetails.users.filter(function (item) {
                         return item.userId == conversationAssignee;
                     })[0];
+                    CURRENT_GROUP_DATA.conversationAssignee = conversationAssignee;
                     var updateConversationHeaderParams = {
                         'name': params.groupDetails.name,
                         'imageUrl': params.groupDetails.imageUrl,
