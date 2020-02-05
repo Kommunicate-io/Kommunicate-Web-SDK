@@ -480,8 +480,7 @@ Kommunicate.richMsgEventHandler = {
         e.preventDefault();
     },
     isValidString: function (str, value) {
-        var regex = new RegExp(str);
-        return regex.test(value);
+        return new RegExp(str).test(value);
     }
 
 
