@@ -88,7 +88,7 @@ const configEnv = {
     }
   },
   "prod_ca": {
-    "port": "3031",
+    "port": "3030",
     "urls": {
       "applozicBaseUrl": "https://chat-ca.kommunicate.io",
       "kommunicateBaseUrl": "https://api-ca.kommunicate.io",
