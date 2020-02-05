@@ -276,8 +276,9 @@ Kommunicate.richMsgEventHandler = {
 
 
     handleRichButtonClick: function (e) {
-        //console.log("event generated: ", e);
-
+        var validationResults = [];
+        var validString = "";
+        var inputElement = "";
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
         var buttonType = target.dataset.buttontype || target.type;
@@ -301,7 +302,24 @@ Kommunicate.richMsgEventHandler = {
                 }
             } else {
                 data[inputs[i].name] = inputs[i].value;
+                try {
+                    if(inputs[i].dataset.regex) {
+                        validString = Kommunicate.richMsgEventHandler.isValidString(inputs[i].dataset.regex, inputs[i].value);
+                        validationResults.push(validString);
+                        inputElement = form.getElementsByClassName("mck-form-error-"+inputs[i].name.toLowerCase().replace(/ +/g, ""))[0];
+                        if(!validString) {
+                            inputElement.innerHTML = inputs[i].dataset.errorText || MCK_LABELS["rich.form"].errorText;
+                        } else {
+                            inputElement.innerHTML = "";
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
             }
+        }
+        if(isActionableForm && validationResults.indexOf(false) != -1 ) {
+            return;
         }
         if (requestType == "json") {  
         var xhr = new XMLHttpRequest();
@@ -460,6 +478,9 @@ Kommunicate.richMsgEventHandler = {
     },
     handleFormSubmit: function(e) {
         e.preventDefault();
+    },
+    isValidString: function (str, value) {
+        return new RegExp(str).test(value);
     }
 
 

@@ -312,7 +312,10 @@ getFormTemplate: function() {
                                     {{#text}}
                                         <div class="mck-form-text-wrapper">
                                             <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
-                                            <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" >
+                                            <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}">
+                                            {{#validation}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/validation}}
                                         </div>
                                     {{/text}}
                                     {{#hidden}}
@@ -531,6 +534,7 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
             } else {
                 options.payload[index].supported = item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text';
                 options.payload[index][item.type] = true;
+                options.payload[index].className = item.label.toLowerCase().replace(/ +/g, "");
             }
         });
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
