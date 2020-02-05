@@ -81,7 +81,6 @@ Kommunicate.client={
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
             type: conversationDetail.type,
-            admin: conversationDetail.agentId,
             users: conversationDetail.users,
             clientGroupId:conversationDetail.clientGroupId,
             isMessage: conversationDetail.isMessage,
