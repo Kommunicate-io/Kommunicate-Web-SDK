@@ -5698,7 +5698,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var imgsrctag = '';
                         var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
                         if(!contact.isGroup){
-                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId] && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
                             contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
                           }
                         }
