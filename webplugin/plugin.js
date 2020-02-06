@@ -57,7 +57,6 @@ var kmCustomIframe =
     '    box-shadow: none!important; '+
     '} \n' +
     '.mck-restrict-scroll{ '+
-        'position:fixed!important;'+
         'overflow:hidden!important;'+
         'margin:0;'+
         'height:100vh;'+
