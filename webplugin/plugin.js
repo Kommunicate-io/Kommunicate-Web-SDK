@@ -57,7 +57,6 @@ var kmCustomIframe =
     '    box-shadow: none!important; '+
     '} \n' +
     '.mck-restrict-scroll{ '+
-        'position:fixed!important;'+
         'overflow:hidden!important;'+
         'margin:0;'+
         'height:100vh;'+
@@ -87,7 +86,7 @@ var kmCustomIframe =
     '   display: none!important' +
     '} \n';
 
-isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
+isV1Script() ? injectJquery() : appendIframe();
 
 function removeKommunicateScripts() {
 
