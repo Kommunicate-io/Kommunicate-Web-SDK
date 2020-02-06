@@ -2365,7 +2365,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.hideSendButton = function(){
                 kommunicateCommons.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
-                kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                MCK_ATTACHMENT && kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
                 !IS_MCK_LOCSHARE ? kommunicateCommons.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommons.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
                 !EMOJI_LIBRARY ? "" : kommunicateCommons.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
             }
