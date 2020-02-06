@@ -2378,7 +2378,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 }
                 if(text == "" || !text.replace(/\s/g, '').length){
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicButton();
+                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
                 }   else {
                     _this.showSendButton();
                     Kommunicate.typingAreaService.hideMicButton();
@@ -3295,7 +3295,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         }
                     }
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicButton();
+                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
                     _this.sendMessage(messagePxy);
                     return false;
                 });
