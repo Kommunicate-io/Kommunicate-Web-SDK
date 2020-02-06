@@ -1217,7 +1217,7 @@
     color: #000000;
     width: 93%;
     padding: 9px;
-    margin-bottom: 18px;
+    margin-bottom: 3px;
     display: inline-block;
     background-color: #ffffff;
     font-size: 10px;
@@ -1270,4 +1270,10 @@
     border-radius: 19px;
     padding: 5px;
     margin-top: 12px;
+    background-color: white;
+}
+.mck-form-error-text {
+    display: block;
+    color: red;
+    margin-left: 2px;
 }

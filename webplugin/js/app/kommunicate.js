@@ -313,7 +313,8 @@ $applozic.extend(true,Kommunicate,{
     },
     isRichTextMessage: function (metadata) {
         // contentType should be 300 for rich text message in metadata
-        return metadata && metadata.contentType == 300;
+        // contentType 300 is removed from rich message payload since Jan-2020 and old payload this may getting used.
+        return metadata && (metadata.hasOwnProperty('templateId') || metadata.contentType == 300);
     },
     appendEmailToIframe:function (message){
         var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
@@ -413,6 +414,7 @@ $applozic.extend(true,Kommunicate,{
                     return Kommunicate.markup.getCarouselMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
