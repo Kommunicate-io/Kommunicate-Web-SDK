@@ -9260,7 +9260,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 // setTimeout(function () {
                 //     $mck_msg_preview.fadeOut(1000);
                 // }, 10000);
-                window.Applozic.ALSocket.events.onMessageNotification(msg);
+                window.Applozic.ALSocket.events.onMessageNotification(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn", function(e) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     kommunicateIframe.classList.remove("km-iframe-dimension-no-popup");
