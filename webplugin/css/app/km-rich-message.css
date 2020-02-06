@@ -1270,6 +1270,7 @@
     border-radius: 19px;
     padding: 5px;
     margin-top: 12px;
+    background-color: white;
 }
 .mck-form-error-text {
     display: block;
