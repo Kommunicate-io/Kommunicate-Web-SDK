@@ -107,11 +107,11 @@ Kommunicate.defaultLabels = {
         'HIDE': ''
     },
     'lead.collection': {
-                'email':'Email',
-                'name':'Name',
-                'phone':'Contact Number',
-                'heading':'Before starting, we just need a few details so that we may serve you better',
-                'submit':'Start Conversation',
+        'email':'Email',
+        'name':'Name',
+        'phone':'Contact Number',
+        'heading':'Before starting, we just need a few details so that we may serve you better',
+        'submit':'Start Conversation',
     },
     'csat.rating': {
         'CONVERSATION_RATED' : 'You rated the conversation',
@@ -138,5 +138,9 @@ Kommunicate.defaultLabels = {
     },
     'rich.form': {
         'errorText':'Please enter valid data'
+    },
+    'faq.query.message': {
+        'QUERY_REGARDING': 'Hi, I have a query regarding',
+        'HELP_YOU': 'Can you help me out?'
     }
 }
