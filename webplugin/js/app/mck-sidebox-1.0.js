@@ -2364,7 +2364,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.hideSendButton = function(){
                 kommunicateCommons.modifyClassList({id:["send-button-wrapper"]}, "n-vis","vis");
-                kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
+                MCK_ATTACHMENT && kommunicateCommons.modifyClassList({id:["mck-file-up"]}, "vis" , "n-vis");
                 !IS_MCK_LOCSHARE ? kommunicateCommons.modifyClassList({id: ["mck-file-up2"]}, "vis" , "n-vis") : kommunicateCommons.modifyClassList({id:["mck-btn-loc"]}, "vis" , "n-vis");
                 !EMOJI_LIBRARY ? "" : kommunicateCommons.modifyClassList({id:["mck-btn-smiley-box"]}, "vis" , "n-vis");
             }
@@ -2377,7 +2377,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 }
                 if(text == "" || !text.replace(/\s/g, '').length){
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicButton();
+                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
                 }   else {
                     _this.showSendButton();
                     Kommunicate.typingAreaService.hideMicButton();
@@ -3294,7 +3294,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         }
                     }
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicButton();
+                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
                     _this.sendMessage(messagePxy);
                     return false;
                 });

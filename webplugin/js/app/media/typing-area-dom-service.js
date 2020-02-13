@@ -28,7 +28,7 @@ Kommunicate.typingAreaService ={
     },
     showMicIfSpeechRecognitionSupported : function(){
         if (!(window.hasOwnProperty('webkitSpeechRecognition'))) {
-            console.log("browser do not support speech recogization");
+            console.log("browser do not support speech recognition");
             this.hideMicButton();
         } 
         else{
