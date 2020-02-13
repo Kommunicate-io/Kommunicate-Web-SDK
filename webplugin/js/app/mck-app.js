@@ -331,7 +331,7 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
-            var widgetSettings = data.chatWidget || data.widgetTheme;
+            var widgetSettings = data.chatWidget;
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
             options["widgetSettings"] = widgetSettings;
@@ -345,8 +345,8 @@ function ApplozicSidebox() {
                 logoutAfterSessionExpiry(widgetSettings);
                 var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
-                details.sessionTimeout = data.widgetTheme.sessionTimeout;
-                data.widgetTheme && data.widgetTheme.sessionTimeout != null && KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
+                details.sessionTimeout = data.chatWidget.sessionTimeout;
+                data.chatWidget && data.chatWidget.sessionTimeout != null && KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
