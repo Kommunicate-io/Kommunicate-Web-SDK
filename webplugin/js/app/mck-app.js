@@ -314,7 +314,7 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
-            var widgetSettings = data.chatWidget || data.widgetTheme;
+            var widgetSettings = data.chatWidget;
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
             options['appSettings'] = $applozic.extend(true, data, options.appSettings);
@@ -375,13 +375,13 @@ function ApplozicSidebox() {
     };
 
 
-    function preLoadLauncherIcon(widgetTheme) {
-        if(widgetTheme && widgetTheme.widgetImageLink) {
+    function preLoadLauncherIcon(chatWidget) {
+        if(chatWidget && chatWidget.widgetImageLink) {
             var img = new Image();
             img.onload = function () {
                 preLoadLauncherIconInterval();
             }
-            img.src = widgetTheme.widgetImageLink;
+            img.src = chatWidget.widgetImageLink;
         } else { // This condition is to check if there is no custom launcher icon image.
             preLoadLauncherIconInterval();
         }
