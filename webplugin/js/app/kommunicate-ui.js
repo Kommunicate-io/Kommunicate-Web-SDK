@@ -399,7 +399,7 @@ showHeader :function(){
 
 sendFaqQueryAsMsg: function(groupId){
     var messageInput = $applozic("#km-faq-search-input").val();
-    var msgTemplate = 'Hi, I have a query regarding \n' + '"' + messageInput +'"' + '\n\n Can you help me out?';
+    var msgTemplate = MCK_LABELS['faq.query.message'].QUERY_REGARDING +' \n"' + messageInput +'"\n\n' + MCK_LABELS['faq.query.message'].HELP_YOU;
     if(messageInput !== ""){
         var messagePxy = {
             "groupId": groupId,
