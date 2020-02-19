@@ -37,14 +37,12 @@ $applozic.extend(true,Kommunicate,{
         if (!params.agentId && !params.agentIds) {
             params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
-        var user = [{ "userId": "bot", "groupRole": 2 }];
+        var user = [];
         if (params.agentIds) {
             for (var i = 0; i < params.agentIds.length; i++) {
                 user.push({ "userId": params.agentIds[i], "groupRole": 1 });
             }
-        } else {
-            user.push({ "userId": params.agentId, "groupRole": 1 });
-        }
+        } 
         if (params.botIds) {
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({ "userId": params.botIds[i], "groupRole": 2 });
