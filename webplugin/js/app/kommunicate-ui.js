@@ -487,9 +487,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
     },
-    displayPopupChatTemplate: function(popupChatContent, widgetTheme, mckChatPopupNotificationTone) {
+    displayPopupChatTemplate: function(popupChatContent, chatWidget, mckChatPopupNotificationTone) {
 
-        var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
+        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
 
