@@ -108,6 +108,29 @@ const configEnv = {
       }
     }
   },
+  
+  "prod_in": {
+    "port": "3030",
+    "urls": {
+      "applozicBaseUrl": "https://chat-in.kommunicate.io",
+      "kommunicateBaseUrl": "https://api-in.kommunicate.io",
+      "botPlatformApi": "https://bots-in.kommunicate.io",
+      "hostUrl": "https://widget-in.kommunicate.io"
+    },
+    "pluginProperties": {
+      "pseudoNameEnabled": true
+    },
+    "thirdPartyIntegration": {
+      "sentry": {
+          "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+          "enabled": false
+      },
+      "aws": {
+         "cdnUrl": "https://cdn.kommunicate.io",
+         "bucket": "kommunicate-cdn"
+      }
+    }
+  },
     "prod_ire": {
     "port": "3030",
     "urls": {
