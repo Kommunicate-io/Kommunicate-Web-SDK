@@ -71,10 +71,8 @@ Kommunicate.client={
         conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE)
 
         $applozic.fn.applozic("createGroup", {
-            //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
             type: conversationDetail.type,
-            admin: conversationDetail.agentId,
             users: conversationDetail.users,
             clientGroupId:conversationDetail.clientGroupId,
             isMessage: conversationDetail.isMessage,
