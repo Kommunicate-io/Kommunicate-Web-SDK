@@ -1851,10 +1851,14 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.configureIframe = function (){
                 // update sidebox css for kommunicate v2 version
-                var kmLauncher = document.getElementById("mck-sidebox-launcher");
-                MOVE_WIDGET_TO_LEFT ? kmLauncher.style.left='10px' : kmLauncher.style.right='10px';
+                var chatbox = document.getElementById("mck-sidebox-launcher");
+                MOVE_WIDGET_TO_LEFT ? chatbox.style.left='10px' : chatbox.style.right='10px';
+                if (MOVE_WIDGET_TO_LEFT){
+                    kommunicateIframe.classList.add('align-left');
+                    kommunicateCommons.modifyClassList({id:['mck-sidebox']},'align-left')
+                  }
 
-                document.getElementById("mck-sidebox-launcher").style.bottom='10px';
+                chatbox.style.bottom='10px';
                 document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
 
                 var badgeCount = document.getElementById('applozic-badge-count');
@@ -1863,7 +1867,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 // handle click events for openning and closing of sidebox
                 var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 kommunicateIframe.style.display = "block";
-                var chatbox = document.getElementById("mck-sidebox-launcher");
                 var popUpcloseButton = document.getElementById("km-popup-close-button");
                 chatbox.addEventListener("click", function(){
                     kommunicateCommons.setWidgetStateOpen(true);
@@ -1901,10 +1904,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     }
                 });
 
-                if (MOVE_WIDGET_TO_LEFT){
-                    kommunicateIframe.classList.add('align-left');
-                    kommunicateCommons.modifyClassList({id:['mck-sidebox']},'align-left')
-                  }
             };
 
             _this.restrictScrollOnHandHeldDevices = function() {
