@@ -1852,10 +1852,14 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             _this.configureIframe = function (){
                 // update sidebox css for kommunicate v2 version
                 var chatbox = document.getElementById("mck-sidebox-launcher");
-                MOVE_WIDGET_TO_LEFT ? chatbox.style.left='10px' : chatbox.style.right='10px';
+                var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+
                 if (MOVE_WIDGET_TO_LEFT){
+                    chatbox.style.left='10px'
                     kommunicateIframe.classList.add('align-left');
                     kommunicateCommons.modifyClassList({id:['mck-sidebox']},'align-left')
+                  }else{
+                    chatbox.style.right='10px'
                   }
 
                 chatbox.style.bottom='10px';
@@ -1865,7 +1869,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 badgeCount.classList.add("km-iframe-badge-count");
 
                 // handle click events for openning and closing of sidebox
-                var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 kommunicateIframe.style.display = "block";
                 var popUpcloseButton = document.getElementById("km-popup-close-button");
                 chatbox.addEventListener("click", function(){
