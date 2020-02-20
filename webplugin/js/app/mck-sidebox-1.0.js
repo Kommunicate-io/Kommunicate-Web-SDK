@@ -463,7 +463,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
-        var MOVE_WIDGET_TO_LEFT = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('moveWidgetToLeft') ? WIDGET_SETTINGS.moveWidgetToLeft : false;
+        var MOVE_WIDGET_TO_LEFT = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('moveWidgetToLeft') && WIDGET_SETTINGS.moveWidgetToLeft;
        
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
