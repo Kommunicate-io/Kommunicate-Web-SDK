@@ -515,6 +515,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "km-animate", "n-vis");
+            var moveWidgetToLeft = kommunicate && kommunicate._globals && kommunicate._globals.widgetSettings && kommunicate._globals.widgetSettings.hasOwnProperty('moveWidgetToLeft') ? kommunicate._globals.widgetSettings.moveWidgetToLeft : false;
+            moveWidgetToLeft && kommunicateCommons.modifyClassList({class: ['chat-popup-widget-close-btn-container','chat-popup-widget-container--vertical','chat-popup-widget-text-wrapper','chat-popup-widget-container--horizontal']},'align-left');
+
         } else {
             kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "", "km-no-box-shadow");
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "", "km-animate");
