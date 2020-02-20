@@ -1854,13 +1854,13 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var chatbox = document.getElementById("mck-sidebox-launcher");
                 var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
 
-                if (MOVE_WIDGET_TO_LEFT){
-                    chatbox.style.left='10px'
+                if (MOVE_WIDGET_TO_LEFT) {
+                    chatbox.style.left = '10px'
                     kommunicateIframe.classList.add('align-left');
-                    kommunicateCommons.modifyClassList({id:['mck-sidebox']},'align-left')
-                  }else{
-                    chatbox.style.right='10px'
-                  }
+                    kommunicateCommons.modifyClassList({ id: ['mck-sidebox'] }, 'align-left')
+                } else {
+                    chatbox.style.right = '10px'
+                }
 
                 chatbox.style.bottom='10px';
                 document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
