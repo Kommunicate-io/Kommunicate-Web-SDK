@@ -1902,7 +1902,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 });
 
                 if (MOVE_WIDGET_TO_LEFT){
-                    var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     kommunicateIframe.classList.add('align-left');
                     kommunicateCommons.modifyClassList({id:['mck-sidebox']},'align-left')
                   }
