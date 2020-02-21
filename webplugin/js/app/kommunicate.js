@@ -42,7 +42,7 @@ $applozic.extend(true,Kommunicate,{
             for (var i = 0; i < params.agentIds.length; i++) {
                 user.push({ "userId": params.agentIds[i], "groupRole": 1 });
             }
-        } 
+        }
         if (params.botIds) {
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({ "userId": params.botIds[i], "groupRole": 2 });
