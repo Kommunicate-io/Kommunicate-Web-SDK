@@ -515,8 +515,8 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "km-animate", "n-vis");
-            var moveWidgetToLeft = kommunicate && kommunicate._globals && kommunicate._globals.widgetSettings && kommunicate._globals.widgetSettings.hasOwnProperty('moveWidgetToLeft') && kommunicate._globals.widgetSettings.moveWidgetToLeft;
-            moveWidgetToLeft && kommunicateCommons.modifyClassList({class: ['chat-popup-widget-close-btn-container','chat-popup-widget-container--vertical','chat-popup-widget-text-wrapper','chat-popup-widget-container--horizontal']},'align-left');
+            var WIDGET_POSITION = kommunicate && kommunicate._globals && kommunicate._globals.widgetSettings && kommunicate._globals.widgetSettings.hasOwnProperty('position') ? kommunicate._globals.widgetSettings.position : 'right';
+            WIDGET_POSITION === 'left' && kommunicateCommons.modifyClassList({class: ['chat-popup-widget-close-btn-container','chat-popup-widget-container--vertical','chat-popup-widget-text-wrapper','chat-popup-widget-container--horizontal']},'align-left');
 
         } else {
             kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "", "km-no-box-shadow");
