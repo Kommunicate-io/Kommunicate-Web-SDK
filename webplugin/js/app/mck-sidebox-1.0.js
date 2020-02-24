@@ -1949,7 +1949,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var LOGGED_IN_USER = alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
                     feedbackObject.userInfo = {
                         "name":  LOGGED_IN_USER.userName,
-                        "userName": MCK_USER_ID,
+                        "userId": MCK_USER_ID,
                         "email": LOGGED_IN_USER.email
                     }            
                     _this.sendFeedback(feedbackObject);
@@ -1967,7 +1967,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             _this.sendFeedback = function(feedbackData){
                 mckUtils.ajax({
                     type: 'POST',
-                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL,
+                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL+"?sendAsMessage=true",
                     global: false,
                     data: JSON.stringify(feedbackData),
                     contentType: 'application/json',
@@ -1976,16 +1976,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
                            document.getElementById("mck-feedback-comment").value = '';
-                           var feedback = JSON.stringify({ "rating": feedbackData.rating, comments: feedbackData.comments[0] });
-                           mckMessageService.sendMessage({
-                               "groupId": feedbackData.groupId,
-                               "contentType": 10,
-                               "message": MCK_LABELS["conversation.rated"],
-                               "metadata": {
-                                   "feedback": feedback,
-                                   "skipBot": true
-                               }
-                           });
                            kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
