@@ -1241,7 +1241,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             if (typeof params === 'object') {
                 if (typeof params.callback === 'function') {
                     var users = params.users;
-                    if (typeof users === 'undefined' || users.length < 1) {
+                    if (typeof users === 'undefined') {
                         params.callback({
                             'status': 'error',
                             'errorMessage': 'Users list required'
