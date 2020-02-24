@@ -166,7 +166,8 @@ KommunicateConstants = {
         MEMBER: 3
     },
     POSITION: {
-        LEFT: 'left'
+        LEFT: 'left',
+        RIGHT: 'right'
     }
 }
 

@@ -1516,7 +1516,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         
                         if (KOMMUNICATE_VERSION === "v2"){
-                            WIDGET_POSITION === 'left' ? kmAnonymousChatLauncher.style.left='10px' : kmAnonymousChatLauncher.style.right='10px';
+                            WIDGET_POSITION === KommunicateConstants.POSITION.LEFT ? kmAnonymousChatLauncher.style.left='10px' : kmAnonymousChatLauncher.style.right='10px';
                             kmAnonymousChatLauncher.style.bottom='10px';
                         }
 
@@ -1539,7 +1539,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 event.preventDefault();
                                 if (KOMMUNICATE_VERSION === "v2"){
                                   Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-                                  WIDGET_POSITION === 'left' ? kmAnonymousChatLauncher.style.left='10px' : kmAnonymousChatLauncher.style.right='10px';
+                                  WIDGET_POSITION === KommunicateConstants.POSITION.LEFT ? kmAnonymousChatLauncher.style.left='10px' : kmAnonymousChatLauncher.style.right='10px';
                                   kmAnonymousChatLauncher.style.bottom='10px';
                                   kmChatLoginModal.classList.add("km-iframe-sidebox-border-radius");
                                   var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
@@ -1853,7 +1853,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var chatbox = document.getElementById("mck-sidebox-launcher");
                 var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
 
-                if (WIDGET_POSITION === 'left') {
+                if (WIDGET_POSITION === KommunicateConstants.POSITION.LEFT) {
                     chatbox.style.left = '10px'
                     kommunicateIframe.classList.add('align-left');
                     kommunicateCommons.modifyClassList({ id: ['mck-sidebox'] }, 'align-left')
@@ -9150,7 +9150,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             };
 
             _this.handleIframeNotification = function (){
-                WIDGET_POSITION === 'left' && kommunicateCommons.modifyClassList({class: ['mck-msg-preview-visual-indicator-container','mck-close-btn-container']},'align-left');
+                WIDGET_POSITION === KommunicateConstants.POSITION.LEFT && kommunicateCommons.modifyClassList({class: ['mck-msg-preview-visual-indicator-container','mck-close-btn-container']},'align-left');
                 var kmIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 var notificationMessageWidth = document.getElementById("mck-msg-preview-visual-indicator").offsetWidth;
                 var launcherIconWidth = document.getElementById("mck-sidebox-launcher").offsetWidth;
