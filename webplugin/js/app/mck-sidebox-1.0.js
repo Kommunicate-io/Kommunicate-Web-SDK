@@ -442,7 +442,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
-        var notificationtoneoption = {};
+        var notificationToneOption = {};
         var ringToneService;
         var lastFetchTime;
         var isUserDeleted = false;
@@ -573,12 +573,12 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             kommunicateCommons.init(appOptions);
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
-            notificationtoneoption.loop = false;
-            notificationtoneoption.volume = MCK_NOTIFICATION_TONE_VOLUME;
+            notificationToneOption.loop = false;
+            notificationToneOption.volume = MCK_NOTIFICATION_TONE_VOLUME;
             if(MCK_NOTIFICATION_TONE_LINK){
                 ringToneService = new RingToneService();
                 try {
-                    mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
+                    mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationToneOption);
                 } catch (e) {
                     console.log(e, "error while loading ringTone service")
                 }  
