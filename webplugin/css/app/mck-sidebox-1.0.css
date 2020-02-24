@@ -1892,6 +1892,51 @@
 	border-radius: 5px;
 }
 
+.km-msg-box-attachment > .km-application-attachment-wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+.km-msg-box-attachment > .km-attachment-wrapper .mck-msg-box {
+	align-self: flex-end;
+	margin-right: 0;
+	max-width: 220px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+.km-attachment-progress-bar {
+	background: #64D9A8;
+    border-radius: 4px;
+    height: 4px;
+	margin: 3px 3px;
+	width: 220px;
+}
+.km-attachment-wrapper .km-attachment-cancel-icon, .km-attachment-wrapper .km-attachment-upload-icon, .km-attachment-wrapper .km-attachment-download-icon{
+	margin-right: 6px;
+}
+.km-attachment-progress-bar-wrapper {
+	margin: 3px 3px;
+	width: 242px;
+}
+.km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success {
+	background: #64D9A8;
+	height: 4px;
+	transition: width .6s ease;
+	width: 0%;
+	border-radius: 4px;
+}
+.km-attachment-cancel-icon:hover, .km-attachment-download-icon:hover, .km-attachment-upload-icon:hover {
+	cursor: pointer;
+}
+.mck-attachment .mck-msg-box a {
+	display: flex;
+	text-decoration: none !important;
+}
+.mck-attachment .mck-msg-box a:hover {
+	text-decoration: underline !important;
+	color: #fff !important;
+}
 
 .km-progress-svg {
 	position: absolute;
