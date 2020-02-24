@@ -4308,6 +4308,13 @@ display: none;
     align-items: center;
     justify-content: space-between;
 }
+.km-header-container{
+	display: flex;
+	align-items: center;
+	width: 100%;
+    justify-content: space-between;
+}
+
 #km-faq-search-input:placeholder {
     font-family: 'Roboto', sans-serif;
 	font-size: 14px;
@@ -4392,7 +4399,6 @@ textarea::placeholder {
 	width: 45px !important;
 }
 #mck-tab-individual .mck-name-status-container.mck-box-title {
-	max-width: none;
     width: auto;
     display: flex;
     flex-direction: row;
@@ -5945,7 +5951,10 @@ body.accesibility :focus {
 
 
 .km-conversation-header-title-container {
-    width: 100%;
+    width: 65%;
+}
+#mck-tab-individual{
+	display: flex;
 }
 .km-faq-and-close-btn-container {
 	justify-content: flex-end;

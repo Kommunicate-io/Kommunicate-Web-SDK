@@ -24,8 +24,8 @@ Kommunicate.messageTemplate = {
 
 Kommunicate.popupChatTemplate = {
 
-    getPopupChatTemplate: function(popupWidgetContent, widgetTheme, isAnonymousChat) {
-        var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
+    getPopupChatTemplate: function(popupWidgetContent, chatWidget, isAnonymousChat) {
+        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
         var chatPopupTemplateMarkup = "";
         var popupMessageContent = popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].message;
         
