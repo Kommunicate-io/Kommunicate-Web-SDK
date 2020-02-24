@@ -127,7 +127,7 @@ KommunicateUI={
             attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || (file_meta.fileMeta &&file_meta.fileMeta.thumbnailUrl));
             file_meta.size && attachment.setAttribute("data-filesize", file_meta.size);
             attachment.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
-            file_meta.previewUrl && $applozic(".km-attachment-preview-href-"+key).attr("href", file_meta.previewUrl);
+            file_meta.url && $applozic(".km-attachment-preview-href-"+key).attr("href", file_meta.url);
         }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
