@@ -258,7 +258,7 @@
 }
 
 .mck-sidebox .mck-box-title {
-	max-width: 170px;
+	/* max-width: 170px; */
 	font-size: 18px;
 	font-style: normal;
 	font-stretch: normal;
@@ -4434,6 +4434,9 @@ textarea::placeholder {
 	letter-spacing: 0.7px;
 	color: #ffffff;
 }
+div#mck-tab-title.mck-tab-title{
+	text-overflow: ellipsis;
+}
 #mck-conversation-back-btn {
 	-webkit-appearance: none;
     padding: 0;
@@ -4772,16 +4775,30 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     align-items: center;
 	justify-content: flex-start;
 }
+.chat-popup-widget-container .chat-popup-widget-close-btn-container.align-left {
+	left: 260px;
+}
+.chat-popup-widget-container.chat-popup-widget-container--horizontal .chat-popup-widget-close-btn-container.align-left {
+	left: 390px;
+}
+#mck-msg-preview-visual-indicator .mck-close-btn-container.align-left{
+	left: 198px;
+}
 .mck-msg-preview-visual-indicator-container .mck-close-btn-container, .chat-popup-widget-container .chat-popup-widget-close-btn-container {
 	position: absolute;
     top: 50%;
-    left: -26px;
     display: none;
     transition: all 0.3s ease-in-out;
     transform: translateY(-50%);
     height: 100%;
-    width: 26px;
+	width: 26px;
+	left: -53px;
+    padding: 14px;
 }
+.mck-msg-preview-visual-indicator-container.align-left{
+	right: -235px;
+}
+
 .km-mail-fixed-view{
 	background-color: white;
 	border-radius: 5px;
@@ -5237,6 +5254,9 @@ div[name="message"]:last-child {
 		margin: 10px 34px 0 !important;
 		box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
 	}
+	.mck-sidebox.fade.in.popup-enabled.align-left, #km-chat-login-modal.km-sidemodal.align-left {
+		margin: 10px 12px 0 !important;
+	}
 	.mck-sidebox.fade.in.popup-enabled .mck-close-btn, #km-chat-login-modal.km-sidemodal .mck-close-btn {
 		width: 0!important;
 		overflow: hidden;
@@ -5562,6 +5582,9 @@ body.accesibility :focus {
 	bottom: 5px;
 	right: 5px;
 }
+.chat-popup-widget-container--horizontal.align-left {
+	right: 30px;
+}
 
 .chat-popup-widget-container--vertical {
 	border-radius: 10px;
@@ -5569,6 +5592,9 @@ body.accesibility :focus {
 	right: 85px;
 	min-height: 75px;
 	max-width: 300px;
+}
+.chat-popup-widget-container--vertical.align-left {
+	left: 85px;
 }
 
 .chat-popup-widget-text {
@@ -5882,6 +5908,9 @@ body.accesibility :focus {
 @media only screen and (min-device-width: 420px) {
 	.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper {
 		padding: 0 65px 0 15px;
+	}
+	.chat-popup-widget-container--horizontal .chat-popup-widget-text-wrapper.align-left {
+		padding: 0 15px 0 65px;
 	}
 }
 /* Chat Popup Template Code Ends */

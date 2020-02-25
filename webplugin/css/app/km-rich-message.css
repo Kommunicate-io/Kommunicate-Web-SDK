@@ -1007,7 +1007,7 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 0;
+    left: 26px;
 }
 .mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email{
 	margin-left: 10px;

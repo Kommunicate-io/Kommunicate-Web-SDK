@@ -164,6 +164,10 @@ KommunicateConstants = {
         ADMIN: 1,
         MODERATOR_OR_BOT: 2,
         MEMBER: 3
+    },
+    POSITION: {
+        LEFT: 'left',
+        RIGHT: 'right'
     }
 }
 
