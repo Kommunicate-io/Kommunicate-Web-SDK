@@ -258,7 +258,7 @@
 }
 
 .mck-sidebox .mck-box-title {
-	max-width: 170px;
+	/* max-width: 170px; */
 	font-size: 18px;
 	font-style: normal;
 	font-stretch: normal;
@@ -4433,6 +4433,9 @@ textarea::placeholder {
 	font-stretch: normal;
 	letter-spacing: 0.7px;
 	color: #ffffff;
+}
+div#mck-tab-title.mck-tab-title{
+	text-overflow: ellipsis;
 }
 #mck-conversation-back-btn {
 	-webkit-appearance: none;
