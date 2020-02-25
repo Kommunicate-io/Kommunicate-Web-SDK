@@ -12,6 +12,7 @@ var CURRENT_GROUP_DATA={};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
+var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
 (function ($applozic, w, d) {
     "use strict";
@@ -3537,6 +3538,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var randomId = mckUtils.randomId();
                         messagePxy.key = randomId;
                         messagePxy.fileMeta = fileMeta;
+                        file && file.size && (messagePxy.fileMeta.size = file.size);
                         messagePxy.contentType = 1;
                         if (messagePxy.contentType !== 12 && tabId && tabId.toString() === contact.contactId) {
                           alMessageService.addMessageToTab(messagePxy, contact, function(message, contact){
@@ -3550,13 +3552,13 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                         if(!Kommunicate.internetStatus || stopUpload) {
                             KM_PENDING_ATTACHMENT_FILE[messagePxy.key] = file;
-                            KommunicateUI.displayUploadIconForAttachment(messagePxy.key, false);
+                            file.type.indexOf("image/") != -1 && KommunicateUI.displayUploadIconForAttachment(messagePxy.key, false);
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, true);
                             return
                         }
-                        if(FILE_META && (FILE_META[0].contentType.indexOf("image/") != -1 )) {
+                        if(FILE_META && (KommunicateUI.isAttachmentV2(FILE_META[0].contentType))) {
                             $applozic(".mck-timestamp-"+messagePxy.key).removeClass("vis").addClass("n-vis");
-                            KommunicateUI.displayProgressMeter(messagePxy.key);
+                            FILE_META[0].contentType.indexOf("image/") != -1 && KommunicateUI.displayProgressMeter(messagePxy.key);
                             KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
                             if(typeof callback =="function"){
                                 callback(messagePxy);
@@ -3682,13 +3684,15 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.indexOf("image/") != -1) {
+                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && (KommunicateUI.isAttachmentV2(messagePxy.fileMeta.contentType))) {
                             $applozic(".mck-timestamp-"+messagePxy.key).removeClass("n-vis").addClass("vis");
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
                         }
                         var currentTabId = $mck_msg_inner.data('mck-id');
                         if (typeof data === 'object') {
                             KommunicateUI.deleteProgressMeter(messagePxy.key, true);
+                            kommunicateCommons.modifyClassList( {class : ["km-attachment-cancel-icon-"+messagePxy.key, "km-attachment-progress-bar-wrapper-"+messagePxy.key]}, "n-vis","vis"); 
+                            kommunicateCommons.modifyClassList( {class : ["km-attachment-download-icon-"+messagePxy.key]}, "vis","n-vis");
                             var messageKey = data.messageKey;
                             if (currentTabId && (currentTabId.toString() === optns.tabId)) {
                                 var conversationId = data.conversationId;
@@ -5275,6 +5279,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
+                msg.fileMeta && msg.fileMeta.size && (msg.fileMeta.previewSize = alFileService.getFilePreviewSize(msg.fileMeta.size));
+                msg.fileMeta && msg.fileMeta.blobKey && (msg.fileMeta.previewUrl = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+ msg.fileMeta.blobKey);
                 var attachmentTemplate = attachment ? Kommunicate.messageTemplate.getAttachmentContanier(msg,mckMessageLayout.getFilePath(msg), alFileService.getFileAttachment(msg), alFileService.getFileurl(msg)):"";
                 if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
                     var progressMeterClass = attachment ? "n-vis" : "vis";
@@ -8570,7 +8576,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 $mck_file_input.on('change', function () {
                                         var file = $applozic(this)[0].files[0];
                                         var tabId = $mck_msg_inner.data('mck-id');
-                                        if(file.type.indexOf("image/") != -1 ){
+                                        if(KommunicateUI.isAttachmentV2(file.type)){
                                             Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
                                                 FILE_META = file_meta
                                                 mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {
@@ -8760,6 +8766,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var data = new Object();
                 var stopUpload = false
                 var uploadErrors = [];
+                var $attchement_progressbar = "";
                 if (typeof file === 'undefined') {
                     return;
                 }
@@ -8783,6 +8790,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
                     var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-"+messagePxy.key));
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
@@ -8802,6 +8810,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            $attchement_progressbar && $attchement_progressbar.css('width', progress + '%');
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
                         });
                         xhr.addEventListener('load', function (e) {
@@ -8809,6 +8818,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             if (typeof responseJson.fileMeta === "object") {
                                 var file_meta = responseJson.fileMeta;
                                 if (messagePxy) {
+                                    file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
                                     messagePxy["fileMeta"] = file_meta
                                     var optns = {
                                         tabId: messagePxy.groupId
@@ -8873,7 +8883,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var file = params.file;
                 var data = new FormData();
                 var uploadErrors = [];
-                var stopUpload = false
+                var stopUpload = false;
+                var $attchement_progressbar = "";
                 if (typeof file === 'undefined') {
                     return;
                 }
@@ -8897,6 +8908,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
                     var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-"+messagePxy.key));
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
@@ -8914,6 +8926,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var xhr = new XMLHttpRequest();
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
+                            $attchement_progressbar && $attchement_progressbar.css('width', progress + '%');
                             $file_progressbar.css('width', progress + '%');
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key)
                         });

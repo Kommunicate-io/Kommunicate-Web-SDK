@@ -106,12 +106,16 @@ KommunicateUI={
         thumbnailUrl && $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
-        if(file.type.indexOf("image/") != -1) {
+        if(KommunicateUI.isAttachmentV2(file.type)) {
             $file_box.removeClass('vis').addClass('n-vis');
             $mck_file_upload.attr("disabled", false);
         } else {
             $file_box.removeClass('n-vis').addClass('vis');
         }
+    },
+    isAttachmentV2: function (mediaType) {
+        var type = mediaType.substring(0, mediaType.indexOf('/'));
+        return KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES.indexOf(type) != -1;
     },
     updateAttachmentTemplate: function(file_meta,key){
         var attachment;
@@ -120,9 +124,10 @@ KommunicateUI={
         if (attachment) {
             file_meta.blobKey && attachment.setAttribute("data-filemetakey", file_meta.blobKey);
             file_meta.name && attachment.setAttribute("data-filename", file_meta.name);
-            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
+            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || (file_meta.fileMeta &&file_meta.fileMeta.thumbnailUrl));
             file_meta.size && attachment.setAttribute("data-filesize", file_meta.size);
             attachment.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+            file_meta.url && $applozic(".km-attachment-preview-href-"+key).attr("href", file_meta.url);
         }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
