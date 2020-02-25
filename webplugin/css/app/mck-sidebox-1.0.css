@@ -4436,6 +4436,7 @@ textarea::placeholder {
 }
 div#mck-tab-title.mck-tab-title{
 	text-overflow: ellipsis;
+	max-width: 140px;
 }
 #mck-conversation-back-btn {
 	-webkit-appearance: none;
