@@ -260,6 +260,7 @@ $applozic.extend(true,Kommunicate,{
         if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" && typeof window.$applozic.fn.applozic !== "undefined") {
             window.$applozic.fn.applozic('logout');
         };
+        KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
         KommunicateUtils.deleteUserCookiesOnLogout();
         parent.window && parent.window.removeKommunicateScripts();
     },
