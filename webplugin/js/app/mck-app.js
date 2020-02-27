@@ -457,6 +457,7 @@ function ApplozicSidebox() {
             sessionStorage.removeItem("kommunicate");
             KommunicateUtils.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
+            KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
         };
         // TODO: Handle case where internet disconnects and sessionEndTime is not updated.
         window.addEventListener('beforeunload', function (event) {
