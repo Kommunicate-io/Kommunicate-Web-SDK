@@ -1919,6 +1919,12 @@
 	margin: 3px 3px;
 	width: 242px;
 }
+.km-attachment-wrapper .km-attachment-file-name {
+	white-space: nowrap;
+    width: 187px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success {
 	background: #64D9A8;
 	height: 4px;
