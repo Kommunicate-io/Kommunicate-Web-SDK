@@ -3,9 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const argv = require('minimist')(process.argv.slice(2));
 const version = require('child_process')
-  .execSync('git rev-parse --short HEAD', {cwd: __dirname})
-  .toString().trim();
-const buildDir = path.resolve(__dirname,'build');
+    .execSync('git rev-parse --short HEAD', {
+        cwd: __dirname
+    })
+    .toString().trim();
+const buildDir = path.resolve(__dirname, 'build');
 const config = require("../server/config/config-env");
 const pluginClient = require("../server/src/pluginClient");
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
@@ -13,7 +15,7 @@ const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
 const CDN_HOST_URL = MCK_THIRD_PARTY_INTEGRATION.aws.cdnUrl;
-const pluginVersions = ["v1","v2"];
+const pluginVersions = ["v1", "v2"];
 PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
 PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
@@ -23,12 +25,12 @@ let BUILD_URL = isAwsUploadEnabled ? CDN_HOST_URL + "/" + version : MCK_STATIC_P
 // Change "env" to "false" to un-compress all files.
 let env = config.getEnvId() !== "development";
 
-let jsCompressor = !env ?"no-compress" : "gcc"; 
-let terserCompressor = !env? "no-compress" : "terser";
-let cssCompressor =  !env? "no-compress" : "clean-css";
+let jsCompressor = !env ? "no-compress" : "gcc";
+let terserCompressor = !env ? "no-compress" : "terser";
+let cssCompressor = !env ? "no-compress" : "clean-css";
 
 const removeExistingFile = function (dirPath) {
-    if (!fs.existsSync(dirPath)){
+    if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
     } else {
         try {
@@ -62,9 +64,8 @@ const compressAndOptimize = () => {
         },
         callback: function (err, min) {
             if (!err) {
-                console.log( `kommunicateThirdParty.min.js combined successfully`);
-            }
-            else {
+                console.log(`kommunicateThirdParty.min.js combined successfully`);
+            } else {
                 console.log(`err while minifying kommunicateThirdParty.min.js`, err);
             }
         }
@@ -92,15 +93,14 @@ const compressAndOptimize = () => {
         callback: function (err, min) {
             if (!err) {
                 console.log(`kommunicate.${version}.min.css combined successfully`);
-            }
-            else {
+            } else {
                 console.log(`err while minifying kommunicate.${version}.min.css`, err);
             }
         }
     });
 
     compressor.minify({
-         compressor: terserCompressor,
+        compressor: terserCompressor,
         input: [
             path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
@@ -128,7 +128,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/media/typing-area-dom-service.js'),
             path.resolve(__dirname, 'js/app/media/media-service.js'),
             path.resolve(__dirname, 'js/app/media/media-dom-event-listener.js')
-            
+
         ],
         options: {
             compress: {
@@ -160,20 +160,19 @@ const combineJsFiles = () => {
                 drop_console: true,
                 keep_fnames: true
             },
-            mangle : {
+            mangle: {
                 keep_fnames: true
             }
         },
         output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.js`),
         callback: function (err, min) {
             if (!err) {
-                console.log( `kommunicate.${version}.js combined successfully`);
-                paths.forEach(async function(value) {
+                console.log(`kommunicate.${version}.js combined successfully`);
+                paths.forEach(async function (value) {
                     await deleteFilesUsingPath(value);
                 })
                 isAwsUploadEnabled && uploadFilesToCdn(buildDir, version);
-            }
-            else {
+            } else {
                 console.log(`err while minifying kommunicate.${version}.js`, err);
             }
         }
@@ -249,7 +248,7 @@ const deleteFilesUsingPath = (path) => {
     }
 };
 
-const uploadFilesToCdn = async(buildDir, version) => {
+const uploadFilesToCdn = async (buildDir, version) => {
     try {
         await pluginClient.upload(buildDir, version);
         console.log("Uploaded all files to CDN");
