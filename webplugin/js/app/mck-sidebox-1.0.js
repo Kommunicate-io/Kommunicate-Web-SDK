@@ -69,7 +69,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         'messageType': 5,
         'type': 0
     };
-    $applozic.fn.applozic = function (appOptions, params,callback) {
+    $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
             // storing custum appOptions into session Storage.
@@ -228,6 +228,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     case 'toggleMediaOptions':
                         return oInstance.toggleMediaOptions();
                         break;
+                    case 'setSocketDisconnectProcedure':
+                        return oInstance.setSocketDisconnectProcedure(params, callback);
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -465,10 +467,27 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         }; 
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
         var WIDGET_POSITION = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('position') ? WIDGET_SETTINGS.position : KommunicateConstants.POSITION.RIGHT;
+        var SOCKET_DISCONNECT_PROCEDURE = {
+            SOCKET_DISCONNECT_TIMER_VALUE: 240000, // 4 minutes : 240000 milliSeconds
+            "start": function () {
+                this.SOCKET_DISCONNECT_TIMEOUT = setTimeout(function () {
+                    mckUserUtils.checkIfUserHasConversations();
+                }, this.SOCKET_DISCONNECT_TIMER_VALUE);
+            },
+            "stop": function () {
+                clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
+            }
+        };
+        
+        _this.setSocketDisconnectProcedure = function (enable, callback) {
+            enable ? SOCKET_DISCONNECT_PROCEDURE.start() : SOCKET_DISCONNECT_PROCEDURE.stop()
+            typeof callback == 'function' && callback(data);
+        };
+
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
             mckMessageService.toggleMediaOptions(mckTypingBox);
-        }
+        };
 
         _this.submitMessage = function (params) {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
@@ -1291,12 +1310,12 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    _this.getLatestConversationForMsgTriggetTimerout();
+                    _this.getLatestConversationForMsgTriggerTimeout();
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
             }
         }
 
-        _this.getLatestConversationForMsgTriggetTimerout = function () {
+        _this.getLatestConversationForMsgTriggerTimeout = function () {
             var params = {
                 'tabId': '',
                 'isGroup': false
@@ -1712,7 +1731,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
                 MCK_CONNECTED_CLIENT_COUNT = data.connectedClientCount;
                 if (!IS_MCK_VISITOR && MCK_USER_ID !== 'guest' && MCK_USER_ID !== '0' && MCK_USER_ID !== 'C0') {
-                    (IS_REINITIALIZE) ? window.Applozic.ALSocket.reconnect(): window.Applozic.ALSocket.init(MCK_APP_ID, data, EVENTS);
+                    IS_REINITIALIZE ? window.Applozic.ALSocket.reconnect(): window.Applozic.ALSocket.init(MCK_APP_ID, data, EVENTS);
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && SOCKET_DISCONNECT_PROCEDURE.start(); // Disconnect open sockets if user has no conversations.
                     // mckGroupService.loadGroups();
                 }
                 $applozic.ajaxPrefilter(function (options) {
@@ -2425,33 +2445,33 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         .addClass("n-vis");
                 }
 
-                var options = {type:10,startIndex:0,limit:10};
+                var options = {
+                    type: 10,
+                    startIndex: 0,
+                    limit: 10
+                };
                 //TO DO: set group detail data in session and fetch from their instead of making call every time.
-                Kommunicate.client.getGroupDetailByType(options, function(err,result){
-                    if(err){
-                         console.log("error while fetching group detail by type",err)
-                         return;
-                    }else if (result.response.length ==0) {
+                Kommunicate.client.getGroupDetailByType(options, function (err, result) {
+                    if (err) {
+                        console.log("error while fetching group detail by type", err)
+                        return;
+                    } else if (result.response.length == 0) {
                         var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                        mckMessageService.createNewConversation( conversationDetail , function(groupId){
-                           /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
+                        mckMessageService.createNewConversation(conversationDetail, function (groupId) {
+                            /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
                             callback();
-
                         });
-                    } else if(result.response.length ==1) {
+                    } else if (result.response.length == 1) {
                         var groupId = result.response[0].id;
-                        $applozic.fn.applozic("loadGroupTab", groupId,callback);
-                    }else {
-                        if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                        $applozic.fn.applozic("loadGroupTab", groupId, callback);
+                    } else {
+                        if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
                             ALStorage.clearMckMessageArray();
                         }
-                        $applozic.fn.applozic("loadTab",null,callback);
-
+                        $applozic.fn.applozic("loadTab", null, callback);
                     }
-                  
                 });
             };
-
             _this.timer = function () {
                 var totalSeconds = 0;
                 var that = this;
@@ -2895,7 +2915,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     // var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
-
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
@@ -7264,6 +7283,26 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 }
             };
+            _this.checkIfUserHasConversations = function () {
+                /*
+                    For a fresh user, if there are no conversation then we will disconnect the socket after n minutes.
+                    To change the socket disconnect time interval refer to SOCKET_DISCONNECT_TIMER_VALUE
+                */
+                var options = {
+                    type: 10,
+                    startIndex: 0,
+                    limit: 10
+                };
+                Kommunicate.client.getGroupDetailByType(options, function (err, result) {
+                    if (err) {
+                        console.log("error while fetching group detail by type", err)
+                        return;
+                    } else if (result.response.length == 0) { // No conversations are present for the user.
+                        window.Applozic && window.Applozic.ALSocket.disconnect();
+                        IS_SOCKET_CONNECTED = false;
+                    }
+                });
+            };
         }
 
         function MckContactService() {
@@ -9152,13 +9191,13 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 parent.document.title = CURRENT_PAGE_TITLE;
             };
 
-            _this.handleIframeNotification = function (){
+            _this.handleIframeNotification = function () {
                 WIDGET_POSITION === KommunicateConstants.POSITION.LEFT && kommunicateCommons.modifyClassList({class: ['mck-msg-preview-visual-indicator-container','mck-close-btn-container']},'align-left');
                 var kmIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 var notificationMessageWidth = document.getElementById("mck-msg-preview-visual-indicator").offsetWidth;
                 var launcherIconWidth = document.getElementById("mck-sidebox-launcher").offsetWidth;
                 kmIframe.classList.add("km-iframe-notification");
-                // kmIframe.style.width = notificationMessageWidth + launcherIconWidth + 50 + 'px';
+                kmIframe.style.width = notificationMessageWidth + launcherIconWidth + 50 + 'px';
             };
 
             _this.hideMessagePreview = function(){
