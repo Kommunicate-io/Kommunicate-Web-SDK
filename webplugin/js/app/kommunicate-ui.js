@@ -124,7 +124,7 @@ KommunicateUI={
         if (attachment) {
             file_meta.blobKey && attachment.setAttribute("data-filemetakey", file_meta.blobKey);
             file_meta.name && attachment.setAttribute("data-filename", file_meta.name);
-            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || (file_meta.fileMeta &&file_meta.fileMeta.thumbnailUrl));
+            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.url);
             file_meta.size && attachment.setAttribute("data-filesize", file_meta.size);
             attachment.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
             file_meta.url && $applozic(".km-attachment-preview-href-"+key).attr("href", file_meta.url);
