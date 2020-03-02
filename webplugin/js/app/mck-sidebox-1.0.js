@@ -3710,8 +3710,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         var currentTabId = $mck_msg_inner.data('mck-id');
                         if (typeof data === 'object') {
                             KommunicateUI.deleteProgressMeter(messagePxy.key, true);
-                            kommunicateCommons.modifyClassList( {class : ["km-attachment-cancel-icon-"+messagePxy.key, "km-attachment-progress-bar-wrapper-"+messagePxy.key]}, "n-vis","vis"); 
-                            kommunicateCommons.modifyClassList( {class : ["km-attachment-download-icon-"+messagePxy.key]}, "vis","n-vis");
+                            $applozic(".km-attachment-progress-bar-wrapper-"+messagePxy.key).removeClass("vis").addClass("n-vis");
+                            $applozic(".km-attachment-download-icon-"+messagePxy.key).removeClass("n-vis").addClass("vis");
+                            $applozic(".km-attachment-cancel-icon-"+messagePxy.key).removeClass("vis").addClass("n-vis");
+                            // kommunicateCommons.modifyClassList( {class : ["km-attachment-cancel-icon-"+messagePxy.key, "km-attachment-progress-bar-wrapper-"+messagePxy.key]}, "n-vis","vis"); 
+                            // kommunicateCommons.modifyClassList( {class : ["km-attachment-download-icon-"+messagePxy.key]}, "vis","n-vis");
                             var messageKey = data.messageKey;
                             if (currentTabId && (currentTabId.toString() === optns.tabId)) {
                                 var conversationId = data.conversationId;
