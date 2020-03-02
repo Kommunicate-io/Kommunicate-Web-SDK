@@ -149,13 +149,10 @@ Kommunicate.attachmentEventHandler= {
         
         if(stopSending) {
             KommunicateUI.updateAttachmentStopUploadStatus(msgKey, true);
-            // kommunicateCommons.modifyClassList( {class : ["km-attachment-cancel-icon-"+msgKey, "km-attachment-progress-bar-success-"+msgKey, "km-attachment-progress-bar-wrapper-"+msgKey]}, "n-vis","vis");
-            // kommunicateCommons.modifyClassList( {class : ["km-attachment-upload-icon-"+msgKey, "mck-timestamp-" + msgKey]}, "vis","n-vis");
+            kommunicateCommons.modifyClassList( {class : ["km-attachment-progress-bar-success-"+msgKey, "km-attachment-progress-bar-wrapper-"+msgKey]}, "n-vis","vis");
+            kommunicateCommons.modifyClassList( {class : ["mck-timestamp-" + msgKey]}, "vis","n-vis");
             $applozic(".km-attachment-cancel-icon-"+msgKey).removeClass("vis").addClass("n-vis");
             $applozic(".km-attachment-upload-icon-"+msgKey).removeClass("n-vis").addClass("vis");
-            $applozic(".km-attachment-progress-bar-success-"+msgKey).removeClass("vis").addClass("n-vis");	
-            $applozic(".mck-timestamp-" + msgKey).removeClass("n-vis").addClass("vis");	
-            $applozic(".km-attachment-progress-bar-wrapper-"+msgKey).removeClass("vis").addClass("n-vis");
             deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
         } else {
             var fileName = attachmentDiv[0].dataset.filename;
@@ -163,7 +160,8 @@ Kommunicate.attachmentEventHandler= {
             var fileType = attachmentDiv[0].dataset.filetype;
             var groupId = attachmentDiv[0].dataset.groupid;
             var thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
-            if (fileSize && fileMetaKey && fileName && fileType) {
+            var fileUrl = attachmentDiv[0].dataset.fileurl;
+            if (fileSize && fileMetaKey && fileName && fileType && fileUrl) {
                 KommunicateUI.updateAttachmentStopUploadStatus(msgKey, false);
                 messagePxy = {
                     contentType: 1,
@@ -173,7 +171,9 @@ Kommunicate.attachmentEventHandler= {
                         contentType: fileType,
                         size: fileSize,
                         key: fileMetaKey,
-                        name: fileName
+                        name: fileName,
+                        url: fileUrl,
+                        thumbnailUrl:fileUrl
                     },
                     message: "",
                     type: 5,
@@ -188,13 +188,10 @@ Kommunicate.attachmentEventHandler= {
                     optns: optns
                 };
                 $applozic.fn.applozic("submitMessage", params);
-                $applozic(".mck-timestamp-" + msgKey).removeClass("n-vis").addClass("vis");	  
-                deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";
                 $applozic(".km-attachment-cancel-icon-"+msgKey).removeClass("vis").addClass("n-vis");
                 $applozic(".km-attachment-upload-icon-"+msgKey).removeClass("vis").addClass("n-vis");
-                // kommunicateCommons.modifyClassList( {class : ["mck-timestamp-"+msgKey]}, "vis","n-vis");
-                // deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";
-                // kommunicateCommons.modifyClassList( {class : ["km-attachment-upload-icon-"+msgKey, "mck-timestamp-"+msgKey, "km-attachment-cancel-icon-"+msgKey]}, "n-vis","vis");
+                deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";
+                kommunicateCommons.modifyClassList( {class : ["mck-timestamp-"+msgKey]}, "n-vis","vis");
 
             } else if (thumbnailUrl && groupId && msgKey && file) {
                 messagePxy = {
@@ -219,8 +216,7 @@ Kommunicate.attachmentEventHandler= {
                 };
                 KommunicateUI.updateAttachmentStopUploadStatus(msgKey, false);
                 $applozic.fn.applozic("uploadAttachemnt", params);
-                $applozic(".mck-timestamp-" + msgKey).removeClass("n-vis").addClass("vis");
-                // kommunicateCommons.modifyClassList( {class : ["mck-timestamp-"+msgKey]}, "vis","n-vis");
+                kommunicateCommons.modifyClassList( {class : ["mck-timestamp-"+msgKey]}, "vis","n-vis");
                 deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";
                 delete KM_PENDING_ATTACHMENT_FILE[msgKey];
             }
