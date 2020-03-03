@@ -65,7 +65,7 @@ Kommunicate.client={
             KM_CONVERSATION_TITLE: conversationDetail.groupName,
             //ALERT: "false",
             HIDE: "true",
-            SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false",
+            SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
             GROUP_CREATION_URL: parent.location.href
         };
@@ -77,13 +77,13 @@ Kommunicate.client={
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
         conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE);
 
-        $applozic.fn.applozic("createGroup", {
+        var groupOptions = {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
             type: conversationDetail.type,
             admin: conversationDetail.agentId,
             users: conversationDetail.users,
-            clientGroupId:conversationDetail.clientGroupId,
+            clientGroupId: conversationDetail.clientGroupId,
             isMessage: conversationDetail.isMessage,
             isInternal: conversationDetail.isInternal,
             metadata: groupMetadata,
@@ -91,26 +91,38 @@ Kommunicate.client={
             callback: function (response) {
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
-                    if( typeof callback == 'function'){
+                    if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
-                       /* conversation table migrated to Applozic
-                        Kommunicate.createNewConversation({
-                            "groupId": response.data.value,
-                            "participantUserId": kommunicate._globals.userId,
-                            "defaultAgentId": conversationDetail.agentId,
-                            "applicationId": kommunicate._globals.appId
-                        }, function (err, result) {
-                            console.log(err, result);
-                            if (!err) {
-                                callback(response.data.value);
-                            }
-                        })*/
+                    /* conversation table migrated to Applozic
+                     Kommunicate.createNewConversation({
+                         "groupId": response.data.value,
+                         "participantUserId": kommunicate._globals.userId,
+                         "defaultAgentId": conversationDetail.agentId,
+                         "applicationId": kommunicate._globals.appId
+                     }, function (err, result) {
+                         console.log(err, result);
+                         if (!err) {
+                             callback(response.data.value);
+                         }
+                     })*/
                 }
             }
-        });
+        };
+        if (conversationDetail.agentId && groupMetadata.SKIP_ROUTING) {
+            groupOptions.admin = conversationDetail.agentId;
+            groupOptions.users.push({
+                userId: conversationDetail.agentId,
+                groupRole: 1
+            });
+            groupOptions.users.push({
+                userId: "bot",
+                groupRole: 2
+            });
+        }
+        $applozic.fn.applozic("createGroup", groupOptions);
      },
      /**get the third party settings access key
       * @param {Object} options

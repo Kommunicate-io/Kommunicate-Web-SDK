@@ -12,6 +12,7 @@ var CURRENT_GROUP_DATA={};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
+var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
 (function ($applozic, w, d) {
     "use strict";
@@ -68,7 +69,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         'messageType': 5,
         'type': 0
     };
-    $applozic.fn.applozic = function (appOptions, params,callback) {
+    $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
             // storing custum appOptions into session Storage.
@@ -227,6 +228,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     case 'toggleMediaOptions':
                         return oInstance.toggleMediaOptions();
                         break;
+                    case 'setSocketDisconnectProcedure':
+                        return oInstance.setSocketDisconnectProcedure(params, callback);
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -442,7 +445,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
-        var notificationtoneoption = {};
+        var notificationToneOption = {};
         var ringToneService;
         var lastFetchTime;
         var isUserDeleted = false;
@@ -463,15 +466,33 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
+        var WIDGET_POSITION = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('position') ? WIDGET_SETTINGS.position : KommunicateConstants.POSITION.RIGHT;
+        var SOCKET_DISCONNECT_PROCEDURE = {
+            SOCKET_DISCONNECT_TIMER_VALUE: 240000, // 4 minutes : 240000 milliSeconds
+            "start": function () {
+                this.SOCKET_DISCONNECT_TIMEOUT = setTimeout(function () {
+                    mckUserUtils.checkIfUserHasConversations();
+                }, this.SOCKET_DISCONNECT_TIMER_VALUE);
+            },
+            "stop": function () {
+                clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
+            }
+        };
+        
+        _this.setSocketDisconnectProcedure = function (enable, callback) {
+            enable ? SOCKET_DISCONNECT_PROCEDURE.start() : SOCKET_DISCONNECT_PROCEDURE.stop()
+            typeof callback == 'function' && callback(data);
+        };
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
             mckMessageService.toggleMediaOptions(mckTypingBox);
-        }
+        };
 
         _this.submitMessage = function (params) {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
         }
+        
         _this.mckLaunchSideboxChat = function() {
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET && ($applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis'));
@@ -573,12 +594,12 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             kommunicateCommons.init(appOptions);
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
-            notificationtoneoption.loop = false;
-            notificationtoneoption.volume = MCK_NOTIFICATION_TONE_VOLUME;
+            notificationToneOption.loop = false;
+            notificationToneOption.volume = MCK_NOTIFICATION_TONE_VOLUME;
             if(MCK_NOTIFICATION_TONE_LINK){
                 ringToneService = new RingToneService();
                 try {
-                    mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
+                    mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationToneOption);
                 } catch (e) {
                     console.log(e, "error while loading ringTone service")
                 }  
@@ -1241,7 +1262,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             if (typeof params === 'object') {
                 if (typeof params.callback === 'function') {
                     var users = params.users;
-                    if (typeof users === 'undefined' || users.length < 1) {
+                    if (typeof users === 'undefined') {
                         params.callback({
                             'status': 'error',
                             'errorMessage': 'Users list required'
@@ -1289,12 +1310,12 @@ var MCK_BOT_MESSAGE_QUEUE = [];
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    _this.getLatestConversationForMsgTriggetTimerout();
+                    _this.getLatestConversationForMsgTriggerTimeout();
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
             }
         }
 
-        _this.getLatestConversationForMsgTriggetTimerout = function () {
+        _this.getLatestConversationForMsgTriggerTimeout = function () {
             var params = {
                 'tabId': '',
                 'isGroup': false
@@ -1515,7 +1536,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         
                         if (KOMMUNICATE_VERSION === "v2"){
-                            kmAnonymousChatLauncher.style.right='10px';
+                            WIDGET_POSITION === KommunicateConstants.POSITION.LEFT ? kmAnonymousChatLauncher.style.left='10px' : kmAnonymousChatLauncher.style.right='10px';
                             kmAnonymousChatLauncher.style.bottom='10px';
                         }
 
@@ -1538,7 +1559,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                                 event.preventDefault();
                                 if (KOMMUNICATE_VERSION === "v2"){
                                   Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
-                                  kmAnonymousChatLauncher.style.right='10px';
+                                  WIDGET_POSITION === KommunicateConstants.POSITION.LEFT ? kmAnonymousChatLauncher.style.left='10px' : kmAnonymousChatLauncher.style.right='10px';
                                   kmAnonymousChatLauncher.style.bottom='10px';
                                   kmChatLoginModal.classList.add("km-iframe-sidebox-border-radius");
                                   var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
@@ -1710,7 +1731,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
                 MCK_CONNECTED_CLIENT_COUNT = data.connectedClientCount;
                 if (!IS_MCK_VISITOR && MCK_USER_ID !== 'guest' && MCK_USER_ID !== '0' && MCK_USER_ID !== 'C0') {
-                    (IS_REINITIALIZE) ? window.Applozic.ALSocket.reconnect(): window.Applozic.ALSocket.init(MCK_APP_ID, data, EVENTS);
+                    IS_REINITIALIZE ? window.Applozic.ALSocket.reconnect(): window.Applozic.ALSocket.init(MCK_APP_ID, data, EVENTS);
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT && SOCKET_DISCONNECT_PROCEDURE.start(); // Disconnect open sockets if user has no conversations.
                     // mckGroupService.loadGroups();
                 }
                 $applozic.ajaxPrefilter(function (options) {
@@ -1849,17 +1871,25 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 
             _this.configureIframe = function (){
                 // update sidebox css for kommunicate v2 version
-                document.getElementById("mck-sidebox-launcher").style.right='10px';
-                document.getElementById("mck-sidebox-launcher").style.bottom='10px';
+                var chatbox = document.getElementById("mck-sidebox-launcher");
+                var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+
+                if (WIDGET_POSITION === KommunicateConstants.POSITION.LEFT) {
+                    chatbox.style.left = '10px'
+                    kommunicateIframe.classList.add('align-left');
+                    kommunicateCommons.modifyClassList({ id: ['mck-sidebox'] }, 'align-left')
+                } else {
+                    chatbox.style.right = '10px'
+                }
+
+                chatbox.style.bottom='10px';
                 document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
 
                 var badgeCount = document.getElementById('applozic-badge-count');
                 badgeCount.classList.add("km-iframe-badge-count");
 
                 // handle click events for openning and closing of sidebox
-                var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 kommunicateIframe.style.display = "block";
-                var chatbox = document.getElementById("mck-sidebox-launcher");
                 var popUpcloseButton = document.getElementById("km-popup-close-button");
                 chatbox.addEventListener("click", function(){
                     kommunicateCommons.setWidgetStateOpen(true);
@@ -1896,6 +1926,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
                     }
                 });
+
             };
 
             _this.restrictScrollOnHandHeldDevices = function() {
@@ -1949,7 +1980,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var LOGGED_IN_USER = alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
                     feedbackObject.userInfo = {
                         "name":  LOGGED_IN_USER.userName,
-                        "userName": MCK_USER_ID,
+                        "userId": MCK_USER_ID,
                         "email": LOGGED_IN_USER.email
                     }            
                     _this.sendFeedback(feedbackObject);
@@ -1967,7 +1998,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
             _this.sendFeedback = function(feedbackData){
                 mckUtils.ajax({
                     type: 'POST',
-                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL,
+                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL+"?sendAsMessage=true",
                     global: false,
                     data: JSON.stringify(feedbackData),
                     contentType: 'application/json',
@@ -1976,16 +2007,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
                            document.getElementById("mck-feedback-comment").value = '';
-                           var feedback = JSON.stringify({ "rating": feedbackData.rating, comments: feedbackData.comments[0] });
-                           mckMessageService.sendMessage({
-                               "groupId": feedbackData.groupId,
-                               "contentType": 10,
-                               "message": MCK_LABELS["conversation.rated"],
-                               "metadata": {
-                                   "feedback": feedback,
-                                   "skipBot": true
-                               }
-                           });
                            kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
@@ -2424,33 +2445,33 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         .addClass("n-vis");
                 }
 
-                var options = {type:10,startIndex:0,limit:10};
+                var options = {
+                    type: 10,
+                    startIndex: 0,
+                    limit: 10
+                };
                 //TO DO: set group detail data in session and fetch from their instead of making call every time.
-                Kommunicate.client.getGroupDetailByType(options, function(err,result){
-                    if(err){
-                         console.log("error while fetching group detail by type",err)
-                         return;
-                    }else if (result.response.length ==0) {
+                Kommunicate.client.getGroupDetailByType(options, function (err, result) {
+                    if (err) {
+                        console.log("error while fetching group detail by type", err)
+                        return;
+                    } else if (result.response.length == 0) {
                         var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                        mckMessageService.createNewConversation( conversationDetail , function(groupId){
-                           /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
+                        mckMessageService.createNewConversation(conversationDetail, function (groupId) {
+                            /* Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });*/
                             callback();
-
                         });
-                    } else if(result.response.length ==1) {
+                    } else if (result.response.length == 1) {
                         var groupId = result.response[0].id;
-                        $applozic.fn.applozic("loadGroupTab", groupId,callback);
-                    }else {
-                        if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                        $applozic.fn.applozic("loadGroupTab", groupId, callback);
+                    } else {
+                        if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
                             ALStorage.clearMckMessageArray();
                         }
-                        $applozic.fn.applozic("loadTab",null,callback);
-
+                        $applozic.fn.applozic("loadTab", null, callback);
                     }
-                  
                 });
             };
-
             _this.timer = function () {
                 var totalSeconds = 0;
                 var that = this;
@@ -2894,7 +2915,6 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     // var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
-
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
@@ -3537,6 +3557,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var randomId = mckUtils.randomId();
                         messagePxy.key = randomId;
                         messagePxy.fileMeta = fileMeta;
+                        file && file.size && (messagePxy.fileMeta.size = file.size);
                         messagePxy.contentType = 1;
                         if (messagePxy.contentType !== 12 && tabId && tabId.toString() === contact.contactId) {
                           alMessageService.addMessageToTab(messagePxy, contact, function(message, contact){
@@ -3550,13 +3571,13 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                         if(!Kommunicate.internetStatus || stopUpload) {
                             KM_PENDING_ATTACHMENT_FILE[messagePxy.key] = file;
-                            KommunicateUI.displayUploadIconForAttachment(messagePxy.key, false);
+                            file.type.indexOf("image/") != -1 && KommunicateUI.displayUploadIconForAttachment(messagePxy.key, false);
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, true);
                             return
                         }
-                        if(FILE_META && (FILE_META[0].contentType.indexOf("image/") != -1 )) {
+                        if(FILE_META && (KommunicateUI.isAttachmentV2(FILE_META[0].contentType))) {
                             $applozic(".mck-timestamp-"+messagePxy.key).removeClass("vis").addClass("n-vis");
-                            KommunicateUI.displayProgressMeter(messagePxy.key);
+                            FILE_META[0].contentType.indexOf("image/") != -1 && KommunicateUI.displayProgressMeter(messagePxy.key);
                             KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
                             if(typeof callback =="function"){
                                 callback(messagePxy);
@@ -3682,13 +3703,16 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.indexOf("image/") != -1) {
+                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && (KommunicateUI.isAttachmentV2(messagePxy.fileMeta.contentType))) {
                             $applozic(".mck-timestamp-"+messagePxy.key).removeClass("n-vis").addClass("vis");
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
                         }
                         var currentTabId = $mck_msg_inner.data('mck-id');
                         if (typeof data === 'object') {
                             KommunicateUI.deleteProgressMeter(messagePxy.key, true);
+                            $applozic(".km-attachment-download-icon-"+messagePxy.key).removeClass("n-vis").addClass("vis");
+                            $applozic(".km-attachment-cancel-icon-"+messagePxy.key).removeClass("vis").addClass("n-vis");
+                            kommunicateCommons.modifyClassList( {class : ["km-attachment-progress-bar-wrapper-"+messagePxy.key]}, "n-vis","vis"); 
                             var messageKey = data.messageKey;
                             if (currentTabId && (currentTabId.toString() === optns.tabId)) {
                                 var conversationId = data.conversationId;
@@ -5275,6 +5299,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
+                msg.fileMeta && msg.fileMeta.size && (msg.fileMeta.previewSize = alFileService.getFilePreviewSize(msg.fileMeta.size));
                 var attachmentTemplate = attachment ? Kommunicate.messageTemplate.getAttachmentContanier(msg,mckMessageLayout.getFilePath(msg), alFileService.getFileAttachment(msg), alFileService.getFileurl(msg)):"";
                 if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
                     var progressMeterClass = attachment ? "n-vis" : "vis";
@@ -7258,6 +7283,26 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     }
                 }
             };
+            _this.checkIfUserHasConversations = function () {
+                /*
+                    For a fresh user, if there are no conversation then we will disconnect the socket after n minutes.
+                    To change the socket disconnect time interval refer to SOCKET_DISCONNECT_TIMER_VALUE
+                */
+                var options = {
+                    type: 10,
+                    startIndex: 0,
+                    limit: 10
+                };
+                Kommunicate.client.getGroupDetailByType(options, function (err, result) {
+                    if (err) {
+                        console.log("error while fetching group detail by type", err)
+                        return;
+                    } else if (result.response.length == 0) { // No conversations are present for the user.
+                        window.Applozic && window.Applozic.ALSocket.disconnect();
+                        IS_SOCKET_CONNECTED = false;
+                    }
+                });
+            };
         }
 
         function MckContactService() {
@@ -8570,7 +8615,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 $mck_file_input.on('change', function () {
                                         var file = $applozic(this)[0].files[0];
                                         var tabId = $mck_msg_inner.data('mck-id');
-                                        if(file.type.indexOf("image/") != -1 ){
+                                        if(file && file.type && KommunicateUI.isAttachmentV2(file.type)){
                                             Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
                                                 FILE_META = file_meta
                                                 mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {
@@ -8760,6 +8805,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var data = new Object();
                 var stopUpload = false
                 var uploadErrors = [];
+                var $attchement_progressbar = "";
                 if (typeof file === 'undefined') {
                     return;
                 }
@@ -8783,6 +8829,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
                     var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-"+messagePxy.key));
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
@@ -8802,6 +8849,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            $attchement_progressbar && $attchement_progressbar.css('width', progress + '%');
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
                         });
                         xhr.addEventListener('load', function (e) {
@@ -8809,6 +8857,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                             if (typeof responseJson.fileMeta === "object") {
                                 var file_meta = responseJson.fileMeta;
                                 if (messagePxy) {
+                                    file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
                                     messagePxy["fileMeta"] = file_meta
                                     var optns = {
                                         tabId: messagePxy.groupId
@@ -8873,7 +8922,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 var file = params.file;
                 var data = new FormData();
                 var uploadErrors = [];
-                var stopUpload = false
+                var stopUpload = false;
+                var $attchement_progressbar = "";
                 if (typeof file === 'undefined') {
                     return;
                 }
@@ -8897,6 +8947,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
                     var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-"+messagePxy.key));
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
@@ -8914,6 +8965,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         var xhr = new XMLHttpRequest();
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
+                            $attchement_progressbar && $attchement_progressbar.css('width', progress + '%');
                             $file_progressbar.css('width', progress + '%');
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key)
                         });
@@ -9139,7 +9191,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                 parent.document.title = CURRENT_PAGE_TITLE;
             };
 
-            _this.handleIframeNotification = function (){
+            _this.handleIframeNotification = function () {
+                WIDGET_POSITION === KommunicateConstants.POSITION.LEFT && kommunicateCommons.modifyClassList({class: ['mck-msg-preview-visual-indicator-container','mck-close-btn-container']},'align-left');
                 var kmIframe = parent.document.getElementById("kommunicate-widget-iframe");
                 var notificationMessageWidth = document.getElementById("mck-msg-preview-visual-indicator").offsetWidth;
                 var launcherIconWidth = document.getElementById("mck-sidebox-launcher").offsetWidth;
@@ -9684,14 +9737,16 @@ var MCK_BOT_MESSAGE_QUEUE = [];
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
-                            if(resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
-                                if(MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(resp.message, contact)) {
-                                    setTimeout(function() {
+                            if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                                if (MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(resp.message, contact)) {
+                                    setTimeout(function () {
                                         KommunicateUI.showClosedConversationBanner(true);
                                     }, MCK_BOT_MESSAGE_DELAY);
                                 } else {
                                     KommunicateUI.showClosedConversationBanner(true);
                                 }
+                            } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {
+                                KommunicateUI.showClosedConversationBanner(false);
                             }
                             if (message && message.metadata && message.metadata.KM_ASSIGN && !(contact && contact.metadata && contact.metadata.KM_ORIGINAL_TITLE)) {
                                 var getUsersDetailparams = {
