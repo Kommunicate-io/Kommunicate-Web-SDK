@@ -254,7 +254,7 @@ function injectJquery() {
 function addFullviewImageModal () {
   var modalHtml =
     '<span id="km-fullscreen-image-modal-close" class="km-fullscreen-image-modal-close">&times;</span>' +
-    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="Image full-view modal">' +
+    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="Image full view modal">' +
     '<div id="km-fullscreen-image-modal-caption"></div>';
 
   var addFullviewImageModalCss = 
