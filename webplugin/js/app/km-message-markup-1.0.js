@@ -15,7 +15,8 @@ Kommunicate.messageTemplate = {
     getAttachmentContanier: function (data, fileExpr, mediaUrlExpr, fileUrl) {
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
-        if (typeof data.fileMeta === 'object' && data.fileMeta.contentType) {
+        data.fileMeta =  data.fileMeta || {};
+        data.fileMeta.contentType = data.fileMeta.contentType || "";
             data.attachmentDownloadClass = "n-vis"
             data.attachmentClass = (data.fileMeta.contentType.indexOf("image/") != 1 || data.fileMeta.contentType.indexOf("audio/") != -1 || data.fileMeta.contentType.indexOf("video/") != 1) ? "" : "mck-msg-box";
 
@@ -51,7 +52,6 @@ Kommunicate.messageTemplate = {
                     data.downloadMediaUrlExpr = mediaUrlExpr;
                     return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
             }
-        }
     },
     getProgressMeterContanier:function(key) {
         var data = {key: key};
