@@ -106,12 +106,16 @@ KommunicateUI={
         thumbnailUrl && $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
-        if(file.type.indexOf("image/") != -1) {
+        if(KommunicateUI.isAttachmentV2(file.type)) {
             $file_box.removeClass('vis').addClass('n-vis');
             $mck_file_upload.attr("disabled", false);
         } else {
             $file_box.removeClass('n-vis').addClass('vis');
         }
+    },
+    isAttachmentV2: function (mediaType) {
+        var type = mediaType.substring(0, mediaType.indexOf('/'));
+        return KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES.indexOf(type) != -1;
     },
     updateAttachmentTemplate: function(file_meta,key){
         var attachment;
@@ -120,9 +124,10 @@ KommunicateUI={
         if (attachment) {
             file_meta.blobKey && attachment.setAttribute("data-filemetakey", file_meta.blobKey);
             file_meta.name && attachment.setAttribute("data-filename", file_meta.name);
-            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
+            attachment.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.url);
             file_meta.size && attachment.setAttribute("data-filesize", file_meta.size);
             attachment.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+            file_meta.url && $applozic(".km-attachment-preview-href-"+key).attr("href", file_meta.url);
         }
     },
     updateAttachmentStopUploadStatus: function(key, status) {
@@ -487,9 +492,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         enableAttachment == "false" && kommunicateCommons.modifyClassList( {id : ["mck-attachfile-box","mck-file-up"]}, "n-vis", "vis");
     }
     },
-    displayPopupChatTemplate: function(popupChatContent, widgetTheme, mckChatPopupNotificationTone) {
+    displayPopupChatTemplate: function(popupChatContent, chatWidget, mckChatPopupNotificationTone) {
 
-        var isPopupEnabled = kommunicateCommons.isObject(widgetTheme) && widgetTheme.popup;
+        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
 
@@ -515,6 +520,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL ? kommunicateIframe.classList.add('chat-popup-widget-horizontal') : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "km-animate", "");
             kommunicateCommons.modifyClassList( {id : ["chat-popup-widget-container"]}, "km-animate", "n-vis");
+            var WIDGET_POSITION = kommunicate && kommunicate._globals && kommunicate._globals.widgetSettings && kommunicate._globals.widgetSettings.hasOwnProperty('position') ? kommunicate._globals.widgetSettings.position : KommunicateConstants.POSITION.RIGHT;
+            WIDGET_POSITION === KommunicateConstants.POSITION.LEFT && kommunicateCommons.modifyClassList({class: ['chat-popup-widget-close-btn-container','chat-popup-widget-container--vertical','chat-popup-widget-text-wrapper','chat-popup-widget-container--horizontal']},'align-left');
+
         } else {
             kommunicateCommons.modifyClassList( {id : ["mck-sidebox-launcher","launcher-svg-container"]}, "", "km-no-box-shadow");
             kommunicateCommons.modifyClassList( {id : ["launcher-svg-container"]}, "", "km-animate");

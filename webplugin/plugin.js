@@ -29,6 +29,10 @@ var kmCustomIframe =
     '   height: 75px;' +
     '   width: 75px;' +
     '} \n ' +
+    '.kommunicate-custom-iframe.align-left { ' +
+    '   left: 20px;' +
+    '   right: 0px;' +
+    '} \n ' +
     '@media only screen and (max-width:600px) { .kommunicate-iframe-enable-media-query {' +
     '   right: 0px;' +
     '   bottom: 0px;' +
@@ -41,6 +45,7 @@ var kmCustomIframe =
     '} } \n' + 
     '.km-iframe-notification{ '+
     '    height:80px; '+ 
+    '    width:330px; '+ 
     '} \n '+
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
@@ -63,7 +68,7 @@ var kmCustomIframe =
         'width:100vw;'+
     '} \n' + 
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' + 
-    '   width: 441px;' + 
+    '   width: 445px;' + 
     '   height: 80px;' + 
     '} \n' + 
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
@@ -249,7 +254,7 @@ function injectJquery() {
 function addFullviewImageModal () {
   var modalHtml =
     '<span id="km-fullscreen-image-modal-close" class="km-fullscreen-image-modal-close">&times;</span>' +
-    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content">' +
+    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="Image full view modal">' +
     '<div id="km-fullscreen-image-modal-caption"></div>';
 
   var addFullviewImageModalCss = 

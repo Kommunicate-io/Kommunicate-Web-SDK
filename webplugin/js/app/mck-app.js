@@ -23,33 +23,44 @@ var applozicSideBox = new ApplozicSidebox();
 var scriptCounter = 0;
 applozicSideBox.load();
 function ApplozicSidebox() {
-    var mck_external_scripts = [
-        {
+    var mck_external_scripts = [{
             "name": "applozic-min-js",
             "url": "https://cdn.applozic.com/applozic/applozic.chat-5.9.1.min.js", // update the url with every new release of applozic-web-plugin
             "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-5.9.1.min.js"
-        }
-    ];
-    var mck_style_loader = [
-    {
-            "name": "mck-sidebox", 
-            "url": KOMMUNICATE_MIN_CSS
-    } ];
-    var mck_third_party_scripts = [
-    {
+        },
+        {
             "name": "maps",
-            "url": "https://maps.google.com/maps/api/js?libraries=places"
-    },
-    {
-            "name": "locationPicker", 
+            "url": "https://maps.google.com/maps/api/js?libraries=places",
+            "googleApiKey": (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey) ? applozic._globals.googleApiKey : "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI"
+        },
+    ];
+    var mck_style_loader = [{
+        "name": "mck-sidebox",
+        "url": KOMMUNICATE_MIN_CSS
+    }];
+    var mck_third_party_scripts = [{
+            "name": "locationPicker",
             "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
-    },
-    {
+        },
+        {
             "name": "emojiLibrary",
             "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
-    }];
+        }
+    ];
     this.load = function() {
         try {
+            if (applozic.PRODUCT_ID == 'kommunicate') {
+                if (typeof applozic._globals.locShare === 'undefined') {
+                    applozic._globals.locShare = false;
+                } else if (typeof applozic._globals.locShare === 'string') {
+                    throw new Error("locShare should be a boolean value");
+                }
+                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
+                    applozic._globals.excludeGoogleMap = !applozic._globals.locShare;
+                } else if (typeof applozic._globals.excludeGoogleMap === 'string') {
+                    throw new Error("excludeGoogleMap should be a boolean value");
+                }
+            };
             for (var index in mck_external_scripts) {
                 var externalFileDetails = mck_external_scripts[index];
                 loadExternalFiles(externalFileDetails);
@@ -63,13 +74,21 @@ function ApplozicSidebox() {
         }
     };
     function loadExternalFiles(externalFileDetails) {
-        try {   
+        try {
+            if (applozic._globals.excludeGoogleMap && externalFileDetails.name === "maps") {
+                ++scriptCounter;
+                return;
+            };
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
             script.async = false;
             script.type = 'text/javascript';
             externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
-            script.src = externalFileDetails.url;
+            if (externalFileDetails.name === "maps"){
+                script.src = externalFileDetails.url + "&key=" + externalFileDetails.googleApiKey;
+            } else {
+                script.src = externalFileDetails.url ;
+            }
             if (script.readyState) { // IE
                 script.onreadystatechange = function () {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
@@ -215,19 +234,6 @@ function ApplozicSidebox() {
     };
     function mckInitPluginScript() {
         try {
-            if (applozic.PRODUCT_ID == 'kommunicate') {
-                if (typeof applozic._globals.locShare === 'undefined') {
-                    applozic._globals.locShare = false;
-                } else if (typeof applozic._globals.locShare === 'string') {
-                    throw new Error("locShare should be a boolean value");
-                }
-                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
-                    applozic._globals.excludeGoogleMap = !applozic._globals.locShare;
-                } else if (typeof applozic._globals.excludeGoogleMap === 'string') {
-                    throw new Error("excludeGoogleMap should be a boolean value");
-                }
-                applozic._globals.googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey) ? applozic._globals.googleApiKey : "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-            }
             var options = applozic._globals;
             for (var index in mck_third_party_scripts) {
                 var data = mck_third_party_scripts[index];
@@ -235,23 +241,8 @@ function ApplozicSidebox() {
                     options.locShare && mckLoadScript(data.url);
                 } else if (data.name === "emojiLibrary") {
                     options.emojilibrary && mckLoadScript(data.url, null, true);
-                } else if (data.name === "maps") {
-                    try {
-                        if (typeof options !== 'undefined') {
-                            if (options.excludeGoogleMap) {
-                                continue;
-                            }
-                            if (options.googleApiKey) {
-                                var url = data.url + "&key=" + options.googleApiKey;
-                                mckLoadScript(url, null, true);
-                            }
-                        } else {
-                            mckLoadScript(data.url, null, true);
-                        }
-                    } catch (e) {
-                        mckLoadScript(data.url, null, true);
-                    }
-                } else {
+                }
+                else {
                     mckLoadScript(data.url);
                 }
             };
@@ -314,7 +305,7 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
-            var widgetSettings = data.chatWidget || data.widgetTheme;
+            var widgetSettings = data.chatWidget;
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
             options['appSettings'] = $applozic.extend(true, data, options.appSettings);
@@ -375,13 +366,13 @@ function ApplozicSidebox() {
     };
 
 
-    function preLoadLauncherIcon(widgetTheme) {
-        if(widgetTheme && widgetTheme.widgetImageLink) {
+    function preLoadLauncherIcon(chatWidget) {
+        if(chatWidget && chatWidget.widgetImageLink) {
             var img = new Image();
             img.onload = function () {
                 preLoadLauncherIconInterval();
             }
-            img.src = widgetTheme.widgetImageLink;
+            img.src = chatWidget.widgetImageLink;
         } else { // This condition is to check if there is no custom launcher icon image.
             preLoadLauncherIconInterval();
         }
@@ -466,6 +457,7 @@ function ApplozicSidebox() {
             sessionStorage.removeItem("kommunicate");
             KommunicateUtils.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
+            KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
         };
         // TODO: Handle case where internet disconnects and sessionEndTime is not updated.
         window.addEventListener('beforeunload', function (event) {
