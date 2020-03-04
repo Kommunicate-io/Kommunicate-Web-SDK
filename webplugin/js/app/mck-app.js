@@ -85,9 +85,9 @@ function ApplozicSidebox() {
             script.type = 'text/javascript';
             externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
             if (externalFileDetails.name === "maps"){
-                script.src = externalFileDetails.url + "&key=" + externalFileDetails.googleApiKey
+                script.src = externalFileDetails.url + "&key=" + externalFileDetails.googleApiKey;
             } else {
-                script.src = externalFileDetails.url 
+                script.src = externalFileDetails.url ;
             }
             if (script.readyState) { // IE
                 script.onreadystatechange = function () {
