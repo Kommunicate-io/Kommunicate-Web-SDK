@@ -466,7 +466,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
         var WIDGET_POSITION = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('position') ? WIDGET_SETTINGS.position : KommunicateConstants.POSITION.RIGHT;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
-            SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 240000 milliSeconds
+            SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
             DISCONNECTED: false,
             "start": function () {
                 this.SOCKET_DISCONNECT_TIMEOUT = setTimeout(function () {
