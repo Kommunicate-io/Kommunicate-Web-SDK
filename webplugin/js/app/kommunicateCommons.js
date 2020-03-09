@@ -106,10 +106,9 @@ function KommunicateCommons() {
         if (KommunicateCommons.IS_WIDGET_OPEN === isWidgetOpen) return; // return if same value is already assigned to IS_WIDGET_OPEN.
         KommunicateCommons.IS_WIDGET_OPEN = isWidgetOpen;
         if (IS_SOCKET_CONNECTED) {
-            window.$applozic.fn.applozic('setSocketDisconnectProcedure', false);
+            window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
-            IS_SOCKET_CONNECTED = true;
-            window.Applozic.ALSocket.checkConnected(true);
+            window.Applozic.SOCKET_DISCONNECT_PROCEDURE.disConnected && window.Applozic.ALSocket.checkConnected(true);
         };
     };
 
