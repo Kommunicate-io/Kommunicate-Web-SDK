@@ -9381,7 +9381,7 @@ var CURRENT_GROUP_DATA={};
                                 'messageKey': message.key
                             });
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
-                            if (kommunicateCommons.isObject(resp.message) && resp.message.metadata && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                            if (kommunicateCommons.isObject(resp.message) && resp.message.metadata && resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS||resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_RESOLVED_STATUS) {
                                 KommunicateUI.showClosedConversationBanner(true);
                             }
                             ALStorage.updateLatestMessage(message);
