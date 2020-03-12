@@ -6569,7 +6569,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_text_box.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
-                if (keyboard) {
+                if (keyboard && !kommunicateCommons.checkIfDeviceIsHandheld()) {
+                    console.log('cools124');
                     $mck_text_box.focus().select();
                 } else {
                     $mck_search.blur();
