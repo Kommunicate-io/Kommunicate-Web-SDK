@@ -1181,7 +1181,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     'type': params.messageType,
                     'contentType': params.type,
                     'message': message,
-                    'metadata': params.metadata
+                    'metadata': params.metadata,
                 };
                 mckMessageService.sendMessage(messagePxy);
                 return 'success';
@@ -6569,12 +6569,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_text_box.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
-                if (keyboard) {
+                var disableAutofocus = document.getElementById('mck-text-box').getAttribute('data-quick-reply') === 'true';
+                if (keyboard && !disableAutofocus) {
                     $mck_text_box.focus().select();
                 } else {
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
+                document.getElementById('mck-text-box').setAttribute('data-quick-reply', false);
                 document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
