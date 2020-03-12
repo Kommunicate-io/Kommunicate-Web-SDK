@@ -470,9 +470,7 @@ Kommunicate.richMsgEventHandler = {
     },
     processQuickReplies : function(e){
         var message = e.target.title;
-        var metadata = {
-            'keyboard': false
-        };
+        var metadata = {};
         try{
             metadata=  JSON.parse(e.target.dataset.metadata);
         }catch(e){
@@ -483,6 +481,7 @@ Kommunicate.richMsgEventHandler = {
             'message': message, //message to send 
             'metadata': metadata
         };
+        document.getElementById('mck-text-box').setAttribute('data-quick-reply',true);
         Kommunicate.sendMessage(messagePxy);
     },
     processClickOnListItem: function(e){

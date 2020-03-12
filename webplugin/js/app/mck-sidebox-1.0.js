@@ -3586,8 +3586,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_msg_sbmt.attr('disabled', false);
                 $applozic('.' + randomId + ' .mck-message-status').removeClass('mck-sent-icon').addClass('mck-pending-icon');
                 mckMessageLayout.addTooltip(randomId);
-                var keyboard = (kommunicateCommons.isObject(messagePxy.metadata) && messagePxy.metadata.hasOwnProperty('keyboard')) ? messagePxy.metadata.keyboard : true ;
-                mckMessageLayout.clearMessageField(keyboard);
+                mckMessageLayout.clearMessageField(true);
                 FILE_META = [];
                 delete TAB_MESSAGE_DRAFT[contact.contactId];
             };
@@ -6570,12 +6569,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_text_box.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
-                if (keyboard) {
+                var disableAutofocus = document.getElementById('mck-text-box').getAttribute('data-quick-reply') === 'true';
+                if (keyboard && !disableAutofocus) {
                     $mck_text_box.focus().select();
                 } else {
                     $mck_search.blur();
                     $mck_text_box.blur();
                 }
+                document.getElementById('mck-text-box').setAttribute('data-quick-reply', false);
                 document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
             };
             _this.addDraftMessage = function (tabId) {
