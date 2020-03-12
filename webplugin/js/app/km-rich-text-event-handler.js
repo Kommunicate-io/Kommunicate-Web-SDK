@@ -469,8 +469,10 @@ Kommunicate.richMsgEventHandler = {
         console.log("passenger detail submitted");
     },
     processQuickReplies : function(e){
-       var message = e.target.title;
-       var metadata = {};
+        var message = e.target.title;
+        var metadata = {
+            'keyboard': false
+        };
         try{
             metadata=  JSON.parse(e.target.dataset.metadata);
         }catch(e){
@@ -481,9 +483,7 @@ Kommunicate.richMsgEventHandler = {
             'message': message, //message to send 
             'metadata': metadata
         };
-
         Kommunicate.sendMessage(messagePxy);
-
     },
     processClickOnListItem: function(e){
         var target = e.currentTarget;
