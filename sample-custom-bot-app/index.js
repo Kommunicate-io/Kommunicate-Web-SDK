@@ -1,12 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const port = '3000';
+const port = process.argv[2];
 const app = express();
 
 app.use(bodyParser.json());
 app.listen(port, function(){
-    console.log("The server is listening to port: " +  port);
+    console.log("The server is running on port: " +  port);
 });
 
 app.post("/",(req,res) => {
