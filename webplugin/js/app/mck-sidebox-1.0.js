@@ -9734,7 +9734,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
-                            if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS) {
+                            if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_CLOSED_STATUS || resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_RESOLVED_STATUS) {
                                 if (MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(resp.message, contact)) {
                                     setTimeout(function () {
                                         KommunicateUI.showClosedConversationBanner(true);
