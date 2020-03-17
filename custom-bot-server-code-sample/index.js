@@ -10,12 +10,13 @@ app.listen(port, function(){
 });
 
 app.post("/",(req,res) => {
-    console.log(req.body); //request body contains the user message and other data from Kommunicate. More here : https://docs.kommunicate.io/docs/bot-custom-integration#integrating-with-custom-bot-platform
+    //You can get user’s query from the request object and send it to your bot for further processing. 
+    //When you get the response send it back to Kommunicate in response object. the request timeout is 30 sec.
+    console.log(req.body); 
 
-    //the response to be sent back to Kommunicate 
-    //you can create this response dynamically using data from your db / custom-bot / etc..
+    //you can create the response dynamically using data from your db / custom-bot / etc..
     //please note the format of the response. You can find more info about the format here: https://docs.kommunicate.io/docs/bot-custom-integration
-    let botResponse = [{
+    let response = [{
         "message": "A message can be simple as a plain text" 
     }, {
         "message": "A message can be a rich message containing metadata",
@@ -31,7 +32,7 @@ app.post("/",(req,res) => {
             }]
         }
     }];
-    res.status(200).send(botResponse);
+    res.status(200).send(response);
 })
 
 

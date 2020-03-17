@@ -5,7 +5,7 @@ This is a sample project to explain how to create a server for your custom bot i
 
 ### Prerequisites
 
-You just need to have ```npm``` installed :D
+You just need to have ```npm``` installed.
 
 
 
