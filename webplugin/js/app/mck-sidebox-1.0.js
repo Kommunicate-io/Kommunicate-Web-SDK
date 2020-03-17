@@ -7763,23 +7763,27 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 };
                 return conversationDetail;
             };
-            _this.checkBotDetail = function (userId) {	
-                window.Applozic.ALApiService.ajax({	
-                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + userId,	
-                    type: 'get',	
+            _this.checkBotDetail = function (userId) {
+                window.Applozic.ALApiService.ajax({
+                    url: MCK_BOT_API + "/application/" + MCK_APP_ID + "/bot/" + userId,
+                    type: 'get',
                     skipEncryption: true,
-                    global: false,	
-                    success: function (data) {	
-                                CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW) && !(data.data[0].autoHumanHandoff);	
-                                !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
-                                CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
+                    global: false,
+                    success: function (data) {
+                        /* 
+                            Auto human handoff check is removed from the below code if something breaks regarding the same, 
+                            please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
+                        */
+                        CURRENT_GROUP_DATA.CHAR_CHECK = data.data[0] && (data.data[0].aiPlatform == KommunicateConstants.BOT_PLATFORM.DIALOGFLOW);
+                        !CURRENT_GROUP_DATA.CHAR_CHECK && _this.removeWarningsFromTextBox();
+                        CURRENT_GROUP_DATA.CHAR_CHECK && _this.disableSendButton(true);
 
-                            },	
-                    error: function () {	
-                            CURRENT_GROUP_DATA.CHAR_CHECK = false;	
-                            _this.removeWarningsFromTextBox();
-                    }	
-            });	
+                    },
+                    error: function () {
+                        CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                        _this.removeWarningsFromTextBox();
+                    }
+                });
             }
             _this.removeWarningsFromTextBox = function () {
                 kommunicateCommons.modifyClassList( {id : ["mck-char-warning"]}, "n-vis", "");
