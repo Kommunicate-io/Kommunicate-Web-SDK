@@ -1,6 +1,6 @@
 # A sample server for custom bot integration
 
-This is a sample project to explain how to create a server for your custom bot integration.
+This is a sample project to demonstrate how to create a server for your custom bot integration.
 
 
 ### Prerequisites
