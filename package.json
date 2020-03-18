@@ -10,7 +10,7 @@
     "cors": "2.8.5",
     "express": "4.17.1",
     "form-data": "3.0.0",
-    "minimist": "1.2.0",
+    "minimist": "1.2.5",
     "node-fetch": "2.6.0",
     "node-minify": "3.6.0"
   },
