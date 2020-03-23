@@ -1722,6 +1722,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 MCK_USER_TIMEZONEOFFSET = data.timeZoneOffset;
                 MCK_FILE_URL = data.fileBaseUrl;
                 IS_MCK_USER_DEACTIVATED = data.deactivated;
+                // For trial plan connect to socket only when someone opens the chat or have some existing chat thread
+                kommunicateCommons.isTrialPlan(data.pricingPackage) && (CONNECT_SOCKET_ON_WIDGET_CLICK = true);
                 AUTH_CODE = btoa(data.userId + ':' + data.deviceKey);
                 window.Applozic.ALApiService.AUTH_TOKEN = data.authToken;
                 window.Applozic.ALApiService.setAjaxHeaders(AUTH_CODE,MCK_APP_ID,USER_DEVICE_KEY,MCK_ACCESS_TOKEN,MCK_APP_MODULE_NAME);
