@@ -24,6 +24,7 @@ KommunicateConstants = {
         ENTERPRISE_YEARLY:106,
         EARLY_BIRD_MONTHLY:107,
         EARLY_BIRD_YEARLY:108,
+        TRIAL: 111
    },
    BOT_PLATFORM : { 	
         DIALOGFLOW:"dialogflow",	
