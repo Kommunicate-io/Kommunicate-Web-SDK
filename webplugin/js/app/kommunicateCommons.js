@@ -6,11 +6,13 @@ function KommunicateCommons() {
     var USE_BRANDING;
     var WIDGET_SETTINGS;
     KommunicateCommons.IS_WIDGET_OPEN = false;
+    var CONNECT_SOCKET_ON_WIDGET_CLICK;
 
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
         USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
+        CONNECT_SOCKET_ON_WIDGET_CLICK = optns.connectSocketOnWidgetClick || false;
     };
 
     _this.isStartupPlan = function (data) {
@@ -108,7 +110,7 @@ function KommunicateCommons() {
         if (IS_SOCKET_CONNECTED) {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
-            window.Applozic.SOCKET_DISCONNECT_PROCEDURE.disConnected && window.Applozic.ALSocket.checkConnected(true);
+            !CONNECT_SOCKET_ON_WIDGET_CLICK ? (window.Applozic.SOCKET_DISCONNECT_PROCEDURE.disConnected && window.Applozic.ALSocket.checkConnected(true)) : $applozic.fn.applozic('initializeSocketConnection', false);
         };
     };
 
