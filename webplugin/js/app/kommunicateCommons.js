@@ -15,6 +15,11 @@ function KommunicateCommons() {
         CONNECT_SOCKET_ON_WIDGET_CLICK = optns.connectSocketOnWidgetClick || false;
     };
 
+    _this.isTrialPlan = function (pricingPackage) {
+        CONNECT_SOCKET_ON_WIDGET_CLICK = true; // remove this line if same thing is removed from mck-sidebox-1.0.js 
+        return pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL
+    };
+
     _this.isStartupPlan = function (data) {
         return (data && data.pricingPackage && data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP)
     };
