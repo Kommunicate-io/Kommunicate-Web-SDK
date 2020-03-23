@@ -320,7 +320,7 @@ function ApplozicSidebox() {
             var pseudoNameEnabled = (widgetSettings && (typeof widgetSettings.pseudonymsEnabled !== 'undefined')) ? widgetSettings.pseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata == 'object' ? options.metadata : {};
             options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
-            options.connectSocketOnWidgetClick = options.connectSocketOnWidgetClick || (widgetSettings && widgetSettings.connectSocketOnWidgetClick);
+            options.connectSocketOnWidgetClick = options.connectSocketOnWidgetClick != null ? options.connectSocketOnWidgetClick : (widgetSettings && widgetSettings.connectSocketOnWidgetClick);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
             if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
