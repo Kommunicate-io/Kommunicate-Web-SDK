@@ -472,7 +472,18 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             DISCONNECTED: false,
             "start": function () {
                 this.SOCKET_DISCONNECT_TIMEOUT = setTimeout(function () {
-                    mckUserUtils.checkIfUserHasConversations();
+                    /*
+                        For a fresh user, if there are no conversation then we will disconnect the socket after n minutes.
+                        To change the socket disconnect time interval refer to SOCKET_DISCONNECT_TIMER_VALUE
+                    */
+                    mckUserUtils.checkIfUserHasConversations(null, function (err, checkIfUserHasConversations) {
+                        err && console.log(err);
+                        if (!checkIfUserHasConversations) {
+                            window.Applozic.ALSocket.disconnect();
+                            window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED = true;
+                            IS_SOCKET_CONNECTED = false;
+                        }
+                    });
                 }, this.SOCKET_DISCONNECT_TIMER_VALUE);
             },
             "stop": function () {
@@ -1732,8 +1743,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 MCK_TOTAL_UNREAD_COUNT = data.totalUnreadCount;
                 mckUtils.badgeCountOnLaucher(MCK_ENABLE_BADGE_COUNT,MCK_TOTAL_UNREAD_COUNT);
                 MCK_CONNECTED_CLIENT_COUNT = data.connectedClientCount;
-                if (!IS_MCK_VISITOR && MCK_USER_ID !== 'guest' && MCK_USER_ID !== '0' && MCK_USER_ID !== 'C0' && !CONNECT_SOCKET_ON_WIDGET_CLICK) {
-                    $applozic.fn.applozic('initializeSocketConnection', IS_REINITIALIZE);
+                if (!IS_MCK_VISITOR && MCK_USER_ID !== 'guest' && MCK_USER_ID !== '0' && MCK_USER_ID !== 'C0') {
+                    if (CONNECT_SOCKET_ON_WIDGET_CLICK) {
+                        mckUserUtils.checkIfUserHasConversations(null, function (err, checkIfUserHasConversations) {
+                            err && console.log(err);
+                            checkIfUserHasConversations && $applozic.fn.applozic('initializeSocketConnection', IS_REINITIALIZE);
+                        });
+                    } else {
+                        $applozic.fn.applozic('initializeSocketConnection', IS_REINITIALIZE);
+                    }
                     // mckGroupService.loadGroups();
                 }
                 $applozic.ajaxPrefilter(function (options) {
@@ -7286,11 +7304,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 }
             };
-            _this.checkIfUserHasConversations = function () {
-                /*
-                    For a fresh user, if there are no conversation then we will disconnect the socket after n minutes.
-                    To change the socket disconnect time interval refer to SOCKET_DISCONNECT_TIMER_VALUE
-                */
+            _this.checkIfUserHasConversations = function (params, callback) {
                 var options = {
                     type: 10,
                     startIndex: 0,
@@ -7300,11 +7314,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     if (err) {
                         console.log("error while fetching group detail by type", err)
                         return;
-                    } else if (result.response.length == 0) { // No conversations are present for the user.
-                        window.Applozic.ALSocket.disconnect();
-                        window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED = true;
-                        IS_SOCKET_CONNECTED = false;
                     }
+                    typeof callback === 'function' && callback(err, result.response.length > 0);
                 });
             };
         }
