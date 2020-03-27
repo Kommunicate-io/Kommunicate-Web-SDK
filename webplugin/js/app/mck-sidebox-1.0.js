@@ -381,7 +381,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
-        var MCK_NOTIFICATION_TONE_VOLUME = (typeof WIDGET_SETTINGS.notificationVolume === "number") ? WIDGET_SETTINGS.notificationVolume : 1; // Volume range for howler library is from 0->1.
+        var MCK_NOTIFICATION_TONE_VOLUME = (WIDGET_SETTINGS && typeof WIDGET_SETTINGS.notificationVolume === "number") ? WIDGET_SETTINGS.notificationVolume : 1; // Volume range for howler library is from 0->1.
         var MCK_NOTIFICATION_TONE_LINK = (WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone) ? KommunicateConstants.NOTIFICATION_RINGTONES[WIDGET_SETTINGS.notificationTone] : KommunicateConstants.NOTIFICATION_RINGTONES['subtle'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
