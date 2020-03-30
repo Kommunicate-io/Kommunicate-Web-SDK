@@ -4834,7 +4834,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	left: 390px;
 }
 #mck-msg-preview-visual-indicator .mck-close-btn-container.align-left{
-	left: 198px;
+	left: auto;
+    right: -18%;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn-container, .chat-popup-widget-container .chat-popup-widget-close-btn-container {
 	position: absolute;
@@ -4848,7 +4849,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     padding: 14px;
 }
 .mck-msg-preview-visual-indicator-container.align-left{
-	right: -235px;
+	right: auto;
+    left: 70px;
 }
 
 .km-mail-fixed-view{
