@@ -44,7 +44,7 @@ Kommunicate.messageTemplate = {
                         data.cancelIconClass = data.sent || data.delivered ? "n-vis" : "vis";
                         data.progressBarClass = data.sent || data.delivered ? "n-vis" : "vis";
                     }
-                    data.fileMeta.url = (data.fileMeta && data.fileMeta.url) || "javascript:void(0)";
+                    data.fileMeta.url = (data.fileMeta && data.fileMeta.url) || data.fileUrl || "javascript:void(0)";
                     return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentApplicationTemplate(data), data);
                     break;
                 default:
