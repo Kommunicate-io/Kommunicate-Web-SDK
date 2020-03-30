@@ -1,0 +1,15 @@
+{
+  "name": "sample-custom-bot-app",
+  "version": "1.0.0",
+  "description": "A sample app to set up a custom bot server",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "author": "Hardik Parashar",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "express": "4.17.1"
+  }
+}
