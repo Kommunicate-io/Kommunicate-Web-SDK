@@ -1923,7 +1923,8 @@
 	white-space: nowrap;
     width: 187px;
     overflow: hidden;
-    text-overflow: ellipsis;
+	text-overflow: ellipsis;
+	color: #fff;
 }
 .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success {
 	background: #64D9A8;
@@ -2084,7 +2085,6 @@
 .mck-msg-left .mck-msg-box a {
 	color: #333;
 	text-decoration: underline;
-	color: #fff
 }
 
 .mck-msg-left .mck-msg-box a:hover {
