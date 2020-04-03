@@ -5466,12 +5466,12 @@ div#mck-rated:before{
 }
 
 .mck-send-feedback {
-	margin-top: 10px;
+	margin-top: 10px !important;
     padding: 10px;
     width: 100%;
 	border-radius: 4px;
-	color: #fff;
-    font-size: 15px;
+	color: #fff !important;
+    font-size: 15px !important;
 }
 
 #csat-1, #csat-2, #csat-3, #mck-sidebox-ft, #mck-rated, .mck-csat-text-1{
@@ -6066,4 +6066,8 @@ body.accesibility :focus {
 }
 #mck-conversation-filter span:last-child:hover{
 	text-decoration: underline;
+}
+#mck-submit-comment:disabled {
+	opacity:0.5;
+	cursor:	default;
 }

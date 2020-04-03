@@ -1993,6 +1993,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         rating:0
                     };
                     var comment = document.getElementById("mck-feedback-comment");
+                    sendFeedbackComment.setAttribute("disabled","true");
                     comment && comment.value.trim() && (feedbackObject.comments = [comment.value]);
                     feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
                     feedbackObject.groupId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
@@ -2027,7 +2028,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                        if(result && result.data){
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
-                           document.getElementById("mck-feedback-comment").value = '';
+                           document.getElementById("mck-feedback-comment").value = '';       
                            kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
@@ -4278,7 +4279,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-
+                        document.getElementById("mck-submit-comment").removeAttribute("disabled");
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                  mckGroupLayout.checkBotDetail(CURRENT_GROUP_DATA.conversationAssignee);
