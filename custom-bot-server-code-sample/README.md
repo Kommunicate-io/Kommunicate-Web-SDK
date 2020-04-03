@@ -3,9 +3,11 @@
 This is a sample project to demonstrate how to create a server for your custom bot integration.
 
 
-### Prerequisites
+## Prerequisites
 
-You just need to have ```npm``` installed.
+###Required Packages: 
+* Node Version: v10.16.0 or higher
+* Latest version of npm
 
 
 
@@ -41,7 +43,7 @@ Once the server is live you can just paste the url in custom bot integration to 
 
 After the bot is integrated you can go and test the bot by sending any message. You should be able to see something like this..
 
-![Bot test](./images/bottest.png)
+![Bot test](./images/working_bot.png)
 
 
 > Read more about custom bot Integration with Kommunicate [here.](https://docs.kommunicate.io/docs/bot-custom-integration)
