@@ -140,7 +140,7 @@ function ApplozicSidebox() {
                 mck_style_loader[index] && mckLoadStyle(mck_style_loader[index].url);
             }
             var url = MCK_SIDEBOX_HTML;
-            var xhr = new XMLHttpRequest();
+            var xhr = KommunicateUtils.createCORSRequest("GET", url);
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     var body = document.getElementsByTagName('body')[0];
@@ -150,7 +150,6 @@ function ApplozicSidebox() {
                     mckInitPluginScript();
                 }
             };
-            xhr.open("GET", url, true);
             xhr.send(null);
         } catch (e) {
             console.log("Plugin loading error. Refresh page.", e);
