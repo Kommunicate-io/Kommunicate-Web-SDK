@@ -78,9 +78,9 @@ Example:
                     closeButton.addEventListener('click', function () {
                         iframe.classList.remove("change-kommunicate-iframe-height");
                     });
-                Kommunicate.launchConversation();
-				KommunicateGlobal.document.getElementById('mck-sidebox-launcher').click()
-			  }
+                    Kommunicate.launchConversation();
+                    KommunicateGlobal.document.getElementById('mck-sidebox-launcher').click()
+                }
             };
             var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
             s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
