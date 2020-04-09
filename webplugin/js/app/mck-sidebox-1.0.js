@@ -4279,7 +4279,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-                        document.getElementById("mck-submit-comment").removeAttribute("disabled");
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                  mckGroupLayout.checkBotDetail(CURRENT_GROUP_DATA.conversationAssignee);
@@ -5024,6 +5023,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 } else {
                     mckMessageService.loadMessageList(params, callback);
                 }
+                document.getElementById("mck-submit-comment").removeAttribute("disabled");
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
