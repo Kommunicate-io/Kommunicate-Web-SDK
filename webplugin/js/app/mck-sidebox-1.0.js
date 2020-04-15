@@ -2315,6 +2315,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_sidebox = $applozic("#mck-sidebox");
             var $mck_file_box = $applozic("#mck-file-box");
             var $mck_text_box = $applozic("#mck-text-box");
+            var $mck_box_form = $applozic(".mck-box-form");
             var $mck_msg_form = $applozic("#mck-msg-form");
             var $mck_msg_sbmt = $applozic("#mck-msg-sbmt");
             var $mck_new_group = $applozic("#mck-new-group");
@@ -2766,8 +2767,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 });
                 $mck_text_box.keydown(function (e) {
-                    if ($mck_text_box.hasClass('mck-text-req')) {
-                        $mck_text_box.removeClass('mck-text-req');
+                    if ($mck_box_form.hasClass('mck-text-req')) {
+                        $mck_box_form.removeClass('mck-text-req');
                     }
                     if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
                         e.preventDefault();
@@ -3281,7 +3282,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         FILE_META = [];
                     }
                     if (message.length === 0 && FILE_META.length === 0) {
-                        $mck_text_box.addClass("mck-text-req");
+                        $mck_box_form.addClass("mck-text-req");
                         return false;
                     }
                     if (typeof (MCK_MSG_VALIDATION) === 'function' && !MCK_MSG_VALIDATION(message)) {
@@ -3349,7 +3350,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     if ($mck_btn_attach.hasClass('on') && !$applozic(e.target).hasClass('mck-icon-upload') && !$applozic(e.target).hasClass('mck-btn-attach')) {
                         mckMapLayout.fileMenuToggle();
                     }
-                    $mck_text_box.removeClass('mck-text-req');
+                    $mck_box_form.removeClass('mck-text-req');
                     if (d.activeElement && d.activeElement !== $mck_text_box) {
                         if (window.Applozic.ALSocket.mck_typing_status === 1) {
                             window.Applozic.ALSocket.sendTypingStatus(0, window.Applozic.ALSocket.mck_typing_status, MCK_USER_ID, $mck_msg_inner.data('mck-id'));
@@ -3486,7 +3487,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
                 messagePxy.metadata = metadata;
                 if ((typeof messagePxy.message === 'undefined' || messagePxy.message.length === 0) && FILE_META.length === 0) {
-                    $mck_text_box.addClass("mck-text-req");
+                    $mck_box_form.addClass("mck-text-req");
                     return;
                 }
 
@@ -3609,7 +3610,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         
                     });
                 }
-                $mck_text_box.removeClass('mck-text-req');
+                $mck_box_form.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $applozic('.' + randomId + ' .mck-message-status').removeClass('mck-sent-icon').addClass('mck-pending-icon');
                 mckMessageLayout.addTooltip(randomId);
@@ -4662,6 +4663,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_msg_sbmt = $applozic("#mck-msg-sbmt");
             var $mck_msg_form = $applozic("#mck-msg-form");
             var $mck_text_box = $applozic("#mck-text-box");
+            var $mck_box_form = $applozic(".mck-box-form");
             var $mck_msg_error = $applozic("#mck-msg-error");
             var $mck_show_more = $applozic("#mck-show-more");
             var $mck_tab_title = $applozic("#mck-tab-title");
@@ -4669,7 +4671,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_msg_cell = $applozic("#mck-message-cell");
             var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_no_messages = $applozic('#mck-no-messages');
-
             var $mck_product_box = $applozic("#mck-product-box");
             var $mck_product_icon = $applozic(".mck-product-icon");
             var $mck_product_title = $applozic(".mck-product-title");
@@ -6593,7 +6594,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
             _this.clearMessageField = function (keyboard) {
                 $mck_text_box.html('');
-                $mck_text_box.removeClass('mck-text-req');
+                $mck_box_form.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
                 var disableAutofocus = document.getElementById('mck-text-box').getAttribute('data-quick-reply') === 'true';
