@@ -121,7 +121,6 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
             path.resolve(__dirname, 'js/app/km-rich-text-event-handler.js'),
             path.resolve(__dirname, 'js/app/kommunicate-ui.js'),
-            path.resolve(__dirname, 'js/app/events/applozic-event-listener.js'),
             path.resolve(__dirname, 'js/app/events/applozic-event-handler.js'),
             path.resolve(__dirname, 'js/app/km-post-initialization.js'),
             path.resolve(__dirname, 'js/app/mck-ringtone-service.js'),

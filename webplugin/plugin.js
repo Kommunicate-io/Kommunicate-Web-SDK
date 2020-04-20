@@ -142,6 +142,7 @@ function createKommunicateIframe() {
   kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("id", "kommunicate-widget-iframe");
   kommunicateIframe.setAttribute("title", "Live chat");
+  kommunicateIframe.setAttribute("name", "Kommunicate widget iframe");
   kommunicateIframe.setAttribute("class", "kommunicate-custom-iframe");
   kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
   kommunicateIframe.setAttribute('data-url', window.location.href);
@@ -254,7 +255,7 @@ function injectJquery() {
 function addFullviewImageModal () {
   var modalHtml =
     '<span id="km-fullscreen-image-modal-close" class="km-fullscreen-image-modal-close">&times;</span>' +
-    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="Image full view modal">' +
+    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="View attachment in full screen">' +
     '<div id="km-fullscreen-image-modal-caption"></div>';
 
   var addFullviewImageModalCss = 
