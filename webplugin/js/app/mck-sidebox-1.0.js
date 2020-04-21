@@ -7516,7 +7516,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             _this.updateUser = function(options) {
                 window.Applozic.ALApiService.ajax({
                     type: "POST",
-                    url: MCK_BASE_URL + "/rest/ws/user/update",
+                    url: MCK_BASE_URL + "/rest/ws/user/update?elasticUpdate=true",
                     data: w.JSON.stringify(options.data),
                     contentType : 'application/json',
                     success: function(response) {
