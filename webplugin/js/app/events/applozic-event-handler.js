@@ -20,6 +20,19 @@ Kommunicate.KmEventHandler = {
             document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.add("n-vis");
             document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.remove("vis");
         } 
+    },
+    'onMessageReceived': function (message) {
+        //message received
+        var validMessageMetadata = message.metadata && (message.metadata.category != 'HIDDEN' && message.metadata.hide != "true");
+        if (!message.metadata || (validMessageMetadata)) {
+            // hiding away message when new message received from agents.
+            KommunicateUI.hideAwayMessage();
+        }
+    },
+    'onMessageSent': function(message){
+        if(!(message && message.metadata && message.metadata.feedback)){
+            KommunicateUI.showClosedConversationBanner(false);
+        }
     }
 
 } 

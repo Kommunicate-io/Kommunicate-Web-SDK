@@ -72,7 +72,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
     $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
-            // storing custum appOptions into session Storage.
+            // storing custom appOptions into session Storage.
             KommunicateUtils.storeDataIntoKmSession("appOptions",appOptions);
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
             // updating groupName to conversationTitle, supporting groupName for backward compatibility
@@ -490,8 +490,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
             }
         };
-        var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick || false;
-        
+        var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick;
+        var SUBSCRIBE_TO_EVENTS_BACKUP = {};
+
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
             mckMessageService.toggleMediaOptions(mckTypingBox);
@@ -533,6 +534,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'onConnect': function (resp) { 
                 IS_SOCKET_CONNECTED = true;
                 kommunicateCommons.modifyClassList( {id : ["km-local-file-system-warning"]}, "n-vis","vis");
+                if (typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' && Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0) {
+                    _this.subscribeToEvents(SUBSCRIBE_TO_EVENTS_BACKUP, function () {
+                        SUBSCRIBE_TO_EVENTS_BACKUP = {};
+                    });
+                }
             },
             'onMessageDelivered': function (resp) {
             },
@@ -1373,7 +1379,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         _this.getTotalUnreadCount = function () {
             return MCK_TOTAL_UNREAD_COUNT;
         };
-        _this.subscribeToEvents = function (events) {
+        /**
+         * Note: This function should not be called more than one time as it will override the previous values as we're assigning event functions to object keys.
+         * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
+         */
+        _this.subscribeToEvents = function (events, callback) {
+            if(!IS_SOCKET_CONNECTED) {
+                SUBSCRIBE_TO_EVENTS_BACKUP = events;
+                return;
+            }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
                     window.Applozic.ALSocket.events.onConnectFailed = events.onConnectFailed;
@@ -1429,6 +1443,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if (typeof events.onUserDeactivated === 'function') {
                     window.Applozic.ALSocket.events.onUserDeactivated = events.onUserDeactivated;
                 }
+                typeof callback =="function" && callback();
             };
         };
 
@@ -1723,7 +1738,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 MCK_FILE_URL = data.fileBaseUrl;
                 IS_MCK_USER_DEACTIVATED = data.deactivated;
                 // For trial plan connect to socket only when someone opens the chat or have some existing chat thread
-                kommunicateCommons.isTrialPlan(data.pricingPackage) && (CONNECT_SOCKET_ON_WIDGET_CLICK = true);
+                CONNECT_SOCKET_ON_WIDGET_CLICK == null && (CONNECT_SOCKET_ON_WIDGET_CLICK = kommunicateCommons.isTrialPlan(data.pricingPackage));
                 AUTH_CODE = btoa(data.userId + ':' + data.deviceKey);
                 window.Applozic.ALApiService.AUTH_TOKEN = data.authToken;
                 window.Applozic.ALApiService.setAjaxHeaders(AUTH_CODE,MCK_APP_ID,USER_DEVICE_KEY,MCK_ACCESS_TOKEN,MCK_APP_MODULE_NAME);
@@ -1809,8 +1824,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
 
                 Kommunicate.initilizeEventListners();
-                // hiding away message when new message received from agents.
-                $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
                 var activeConversationInfo = Kommunicate.getActiveConversation();
                 
                 // Calling "loadMessageList" with empty parameters to get the count of the total conversations to show the back button if
@@ -9334,7 +9347,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 // setTimeout(function () {
                 //     $mck_msg_preview.fadeOut(1000);
                 // }, 10000);
-                window.Applozic.ALSocket.events.onMessageNotification(message);
+                Kommunicate.KmEventHandler.notificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn", function(e) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     kommunicateIframe.classList.remove("km-iframe-dimension-no-popup");
@@ -9791,11 +9804,13 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         };
                         if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
                             var messageFeed = mckMessageLayout.getMessageFeed(message);
+                            Kommunicate.KmEventHandler.onMessageReceived(message);
                             // events.onMessageReceived({
                             //     'message': messageFeed
                             // });
                         } else if (messageType === "APPLOZIC_02") {
                             var messageFeed = mckMessageLayout.getMessageFeed(message);
+                            Kommunicate.KmEventHandler.onMessageSent(message);
                             // events.onMessageSent({
                             //     'message': messageFeed
                             // });
