@@ -534,7 +534,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'onConnect': function (resp) { 
                 IS_SOCKET_CONNECTED = true;
                 kommunicateCommons.modifyClassList( {id : ["km-local-file-system-warning"]}, "n-vis","vis");
-                if (Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length === 0 && SUBSCRIBE_TO_EVENTS_BACKUP.constructor === Object) {
+                if (typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' && Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0) {
                     _this.subscribeToEvents(SUBSCRIBE_TO_EVENTS_BACKUP, function () {
                         SUBSCRIBE_TO_EVENTS_BACKUP = {};
                     });
