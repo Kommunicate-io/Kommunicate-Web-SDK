@@ -11,9 +11,6 @@ KommunicateConstants = {
             ANONYMOUS: "1"
         }
     },
-    THIRD_PARTY_APPLICATION: {
-        HELPDOCS: "1"
-    },
     KOMMUNICATE_SESSION_KEY: "kommunicate",
     PRICING_PACKAGE : {
         STARTUP: 101,
@@ -29,7 +26,6 @@ KommunicateConstants = {
    BOT_PLATFORM : { 	
         DIALOGFLOW:"dialogflow",	
         APIAI:"api.ai",	
-        HELPDOCS:"helpdocs.io",	
         AMAZONLEX:"amazonlex",	
         RASA:"rasa",	
         CUSTOM:'custom'	

@@ -168,7 +168,7 @@ KommunicateUI={
         }
     },
     
-   faqEvents:function (data, helpdocsKey) {
+   faqEvents:function (data) {
     var mcktimer;
 
     $applozic(d).on("click", "#mck-msg-preview, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function () {
@@ -182,7 +182,7 @@ KommunicateUI={
         var articleId = $(this).attr('data-articleid');
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
-            data: { appId: data.appId, articleId: articleId, source: source, helpdocsAccessKey: helpdocsKey }, success: function (response) {
+            data: { appId: data.appId, articleId: articleId, source: source }, success: function (response) {
                 if ($applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
                     $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer ql-editor">' + response.data.body + '</div></div>');
                     $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");

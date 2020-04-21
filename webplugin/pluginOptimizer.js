@@ -1,4 +1,8 @@
-const compressor = require('node-minify');
+const minify = require('@node-minify/core');
+const terser = require('@node-minify/terser');
+const noCompress = require('@node-minify/no-compress');
+const gcc = require('@node-minify/google-closure-compiler');
+const cleanCSS = require('@node-minify/clean-css');
 const path = require('path');
 const fs = require('fs');
 const argv = require('minimist')(process.argv.slice(2));
@@ -24,10 +28,9 @@ let isAwsUploadEnabled = argv.upload;
 let BUILD_URL = isAwsUploadEnabled ? CDN_HOST_URL + "/" + version : MCK_STATIC_PATH + "/build";
 // Change "env" to "false" to un-compress all files.
 let env = config.getEnvId() !== "development";
-
-let jsCompressor = !env ? "no-compress" : "gcc";
-let terserCompressor = !env ? "no-compress" : "terser";
-let cssCompressor = !env ? "no-compress" : "clean-css";
+let jsCompressor = !env ? noCompress : gcc;
+let terserCompressor = !env ? noCompress : terser;
+let cssCompressor = !env ? noCompress : cleanCSS;
 
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
@@ -47,7 +50,7 @@ const removeExistingFile = function (dirPath) {
 };
 
 const compressAndOptimize = () => {
-    compressor.minify({
+    minify({
         compressor: jsCompressor,
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
@@ -73,7 +76,7 @@ const compressAndOptimize = () => {
 
 
     // minify applozic css files into a single file
-    compressor.minify({
+    minify({
         compressor: cssCompressor,
         input: [
             path.resolve(__dirname, 'lib/css/mck-combined.min.css'),
@@ -85,10 +88,8 @@ const compressAndOptimize = () => {
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.css`),
         options: {
-            advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
-            aggressiveMerging: true, // set to false to disable aggressive merging of properties.
-            compatibility: '', // To add vendor prefixes for IE8+
-            sourceMap: true
+            level: 2,
+            compatibility: 'ie9',
         },
         callback: function (err, min) {
             if (!err) {
@@ -99,13 +100,12 @@ const compressAndOptimize = () => {
         }
     });
 
-    compressor.minify({
+    minify({
         compressor: terserCompressor,
         input: [
             path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
-            path.resolve(__dirname, 'knowledgebase/helpdocs.js'),
             path.resolve(__dirname, 'knowledgebase/kb.js'),
             path.resolve(__dirname, 'js/app/labels/default-labels.js'),
             path.resolve(__dirname, 'js/app/kommunicate-client.js'),
@@ -151,7 +151,7 @@ const combineJsFiles = () => {
         path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
         path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`)
     ];
-    compressor.minify({
+    minify({
         compressor: terserCompressor,
         input: paths,
         options: {

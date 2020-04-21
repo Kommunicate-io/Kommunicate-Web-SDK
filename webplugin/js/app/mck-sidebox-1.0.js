@@ -1823,7 +1823,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
 
                 Kommunicate.initilizeEventListners();
-                var activeConversationInfo = Kommunicate.getActiveConversation();
+                var activeConversationInfo = KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo");
                 
                 // Calling "loadMessageList" with empty parameters to get the count of the total conversations to show the back button if
                 // Single Threaded Conversations settings (isSingleThreaded) is enabled.
@@ -1844,7 +1844,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
-                    KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
+                KommunicateUtils.triggerCustomEvent("kmInitilized", { detail: data, bubbles: true, cancelable: true }, KOMMUNICATE_VERSION);
                 
                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                     // callback when plugin initilized successfully.
@@ -1860,7 +1860,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
                 // calling Kommunicate for post initialization processing. error first style.
-                Kommunicate.postPluginInitialization(null,data);
+                Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     'userId': MCK_USER_ID,
                     'displayName': data.displayName,
