@@ -1623,6 +1623,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                             ALStorage.clearMckMessageArray();
                             ALStorage.clearMckContactNameArray();
                             if (result === "INVALID_PASSWORD") {
+                                KommunicateUtils.deleteUserCookiesOnLogout();
                                 Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
