@@ -5198,7 +5198,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var messageClass= "vis";
                 var progressMeterClass = "n-vis";
                 var attachmentBox = "n-vis";
-                if((msg && msg.metadata && msg.metadata.feedback) || msg.metadata.KM_ASSIGN_TO){ // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
+                if((msg && msg.metadata && msg.metadata.feedback)){
+                    return;
+                }
+                if (msg && !msg.message && msg.metadata.hasOwnProperty("KM_ASSIGN_TO")) { // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
                     return;
                 }
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
@@ -6999,8 +7002,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                             mckMessageLayout.addMessage(message, contact, true, true, validated);
                                         }
 
-                                        if (!message.metadata || (message.metadata.category !== 'HIDDEN' && message.metadata.hide !== "true" && contact.type !== 7) || message.metadata.KM_ASSIGN_TO) {
-
+                                        if (!message.metadata || (message.metadata.category !== 'HIDDEN' && message.metadata.hide !== "true" && contact.type !== 7) || (!message.message && message.metadata.hasOwnProperty("KM_ASSIGN_TO"))) {
                                             if(MCK_BOT_MESSAGE_DELAY !== 0 && _this.isMessageSentByBot(message, contact)) {
                                                 mckMessageLayout.addMessage(message, contact, true, true, validated, null, function() {
                                                     _this.processMessageInQueue(message);
