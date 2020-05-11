@@ -258,8 +258,11 @@ getCarouselTemplate: function() {
 return `<div class="mck-msg-box-rich-text-container km-card-message-container  km-div-slider">
             {{#payload}}
             <div class="km-carousel-card-template">
+            <div class="km-carousel-card-header-container">
+            {{#url}}<a href = {{url}} target="_blank"><span class="km-carousel-url-container"></span></a>{{/url}}
             <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
             <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
+            </div>
             <div class="km-carousel-card-footer">{{{footer}}}</div>
             </div>
             {{/payload}}
@@ -591,6 +594,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             cardHtml.info = Kommunicate.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
             cardList[i] = $applozic.extend([], cardHtml);
+            cardList[i].url = item.url;
         }
     }
     var cardCarousel = {payload:cardList};

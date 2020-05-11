@@ -1016,6 +1016,7 @@
     max-width: 240px;
     width:240px !important;
     margin:8px 4px 0 10px;
+    position: relative;
 }
 .tns-slider .km-carousel-card-template {
     margin:8px 4px 0 6px;
@@ -1066,6 +1067,14 @@
     padding-bottom: 6px;
     border: 1px solid #e7e4e4;
     border-top: 0;
+}
+.km-carousel-url-container {
+        position:absolute; 
+        width:100%;
+        height:100%;
+        top:0;
+        left: 0;
+        z-index: 1; 
 }
 .km-carousel-card-title-wrapper {
     display: flex;
