@@ -492,6 +492,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         };
         var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick;
         var SUBSCRIBE_TO_EVENTS_BACKUP = {};
+        var DEFAULT_ENCRYPTED_APP_VERSION = 112;
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -1527,7 +1528,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     userPxy.metadata = optns.metadata;
                 }
                 userPxy.enableEncryption = true;
-                userPxy.appVersionCode = 111;
+                userPxy.appVersionCode = DEFAULT_ENCRYPTED_APP_VERSION;
                 userPxy.deviceType= 0;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
                 userPxy.chatNotificationMailSent = true;
@@ -1743,10 +1744,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 window.Applozic.ALApiService.AUTH_TOKEN = data.authToken;
                 window.Applozic.ALApiService.setAjaxHeaders(AUTH_CODE,MCK_APP_ID,USER_DEVICE_KEY,MCK_ACCESS_TOKEN,MCK_APP_MODULE_NAME);
                 window.Applozic.ALApiService.setEncryptionKeys(data.encryptionKey, data.userEncryptionKey);
-                if (data.encryptionKey) {
-                    USER_ENCRYPTION_KEY = data.userEncryptionKey;
-                }
-                if (!EMOJI_LIBRARY || data.encryptionKey) { 
+                USER_ENCRYPTION_KEY = data.userEncryptionKey;
+                if (!EMOJI_LIBRARY) { 
                     // EMOJI_LIBRARY = false ->hide emoticon from chat widget
                     //Below code might be required once emoticons are added
                     /*document.getElementById('mck-textbox-container').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
