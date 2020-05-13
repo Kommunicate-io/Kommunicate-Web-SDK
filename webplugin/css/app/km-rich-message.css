@@ -1052,6 +1052,8 @@
     line-height: normal;
     letter-spacing: 0.6px;
     color: #141313;
+    word-break: break-word;
+    text-overflow: ellipsis;
 }
 .km-carousel-card-sub-title {
     font-size: 14px;
@@ -1060,6 +1062,11 @@
     color: #565454;
     margin-top: 4px;
     font-weight: 400;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    padding-right:20px;
 }
 .km-carousel-card-content-wrapper {
     padding-top: 6px;
@@ -1124,6 +1131,7 @@
   color: #797474;
   height: auto;
   white-space: pre-line;
+  text-overflow: ellipsis;
 }
 .km-carousel-card-description:before {
     content: '...';
