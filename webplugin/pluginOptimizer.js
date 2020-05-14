@@ -55,7 +55,6 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
-            path.resolve(__dirname, 'lib/js/aes.js'),
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
