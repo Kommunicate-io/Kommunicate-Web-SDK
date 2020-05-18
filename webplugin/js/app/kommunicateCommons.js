@@ -5,19 +5,22 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
-    var CONNECT_SOCKET_ON_WIDGET_CLICK;
-
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
         USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
-        CONNECT_SOCKET_ON_WIDGET_CLICK = optns.connectSocketOnWidgetClick || false;
+        KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = optns.connectSocketOnWidgetClick || false;
     };
 
     _this.isTrialPlan = function (pricingPackage) {
-        CONNECT_SOCKET_ON_WIDGET_CLICK = true; // remove this line if same thing is removed from mck-sidebox-1.0.js 
-        return pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL
+        var isTrialPlan = false;
+        if (pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL) {
+            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true; // remove this line if same thing is removed from mck-sidebox-1.0.js 
+            isTrialPlan = true;
+        }
+        return isTrialPlan;
     };
 
     _this.isStartupPlan = function (data) {
@@ -115,7 +118,7 @@ function KommunicateCommons() {
         if (IS_SOCKET_CONNECTED) {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
-            !CONNECT_SOCKET_ON_WIDGET_CLICK ? (window.Applozic.SOCKET_DISCONNECT_PROCEDURE.disConnected && window.Applozic.ALSocket.checkConnected(true)) : $applozic.fn.applozic('initializeSocketConnection', false);
+            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK ? $applozic.fn.applozic('initializeSocketConnection', false) : (window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED && window.Applozic.ALSocket.checkConnected(true));
         };
     };
 
