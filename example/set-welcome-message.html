@@ -16,11 +16,11 @@
             "onInit": function() {
                 var defaultSettings = {
 
-                    "WELCOME_MESSAGE": (pagelist[window.location.pathname])
+                    "WELCOME_MESSAGE": pagelist[window.location.pathname]
 			//page URL array
                 }
 
-                if pagelist[window.location.pathname] {
+                if (pagelist[window.location.pathname]) {
                     Kommunicate.updateSettings(defaultSettings);
                 }
             }
