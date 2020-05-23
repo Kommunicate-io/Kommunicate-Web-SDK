@@ -328,6 +328,10 @@ KommunicateUtils = {
         }
     },
     getDomainFromUrl: function (hostName) {
+        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
+        if(appOptions && appOptions.domainKey){
+           return appOptions.domainKey;
+        }
         hostName = hostName || parent.window.location.hostname;
         var domain = "";
         if (hostName != null) {
