@@ -324,29 +324,15 @@ KommunicateUtils = {
         }
     },
     getDomainFromUrl: function (hostName) {
-        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
-        if(appOptions && appOptions.domainKey){
-           return appOptions.domainKey;
+        var i = 0;
+        var domain = document.domain;
+        var parts = domain.split('.');
+        var value = 'km_' + (new Date()).getTime();
+        while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
+            domain = parts.slice(-1 - (++i)).join('.');
+            document.cookie = value + "=" + value + ";domain=" + domain + ";";
         }
-        hostName = hostName || parent.window.location.hostname;
-        var domain = "";
-        if (hostName != null) {
-            var parts = hostName.split('.').reverse();
-
-            if (parts != null && parts.length <= 1) {
-                // cases like  localhost
-                return domain;
-            } else if (parts != null && parts.length <= 3) {
-                // cases:  url with one or no sub domain 
-                domain = "." + parts[1] + '.' + parts[0];
-            } else if (parts != null && parts.length <= 4) {
-
-                if (!parseInt(parts[1]) && !parseInt(parts[0])) {
-                    // check if url is not IP address
-                    domain = "." + parts[2] + "." + parts[1] + "." + parts[0];
-                }
-            }
-        }
+        document.cookie = value + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";";
         return domain;
     },
     getSubDomain : function(){
