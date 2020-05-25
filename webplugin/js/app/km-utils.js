@@ -327,9 +327,8 @@ KommunicateUtils = {
             localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
         }
     },
-    getDomainFromUrl: function (hostName) {
+    findCookieDomain: function(domain) {
         var i = 0;
-        var domain = document.domain;
         var parts = domain.split('.');
         var value = 'km_' + (new Date()).getTime();
         while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
@@ -337,7 +336,10 @@ KommunicateUtils = {
             document.cookie = value + "=" + value + ";domain=" + domain + ";";
         }
         document.cookie = value + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";";
-        return domain;
+        return domain
+    },
+    getDomainFromUrl: function () {
+        return KommunicateUtils.findCookieDomain(document.domain);
     },
     getSubDomain : function(){
          var hostName = parent.window.location.hostname;
