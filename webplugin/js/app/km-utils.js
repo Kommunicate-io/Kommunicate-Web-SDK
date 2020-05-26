@@ -327,10 +327,14 @@ KommunicateUtils = {
         var i = 0;
         var parts = domain.split('.');
         var value = 'km_' + (new Date()).getTime();
+        //check value is added in cookie else continue the iteration
         while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
+            //join the parts of domain
             domain = parts.slice(-1 - (++i)).join('.');
+            //set value in cookie
             document.cookie = value + "=" + value + ";domain=" + domain + ";";
         }
+        //delete value from cookie
         document.cookie = value + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";";
         return domain
     },
