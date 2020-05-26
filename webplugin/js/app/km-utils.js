@@ -328,6 +328,7 @@ KommunicateUtils = {
         }
     },
     findCookieDomain: function(domain) {
+        //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
         var i = 0;
         var parts = domain.split('.');
         var value = 'km_' + (new Date()).getTime();
