@@ -327,27 +327,24 @@ KommunicateUtils = {
             localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
         }
     },
-    getDomainFromUrl: function (hostName) {
-        hostName = hostName || parent.window.location.hostname;
-        var domain = "";
-        if (hostName != null) {
-            var parts = hostName.split('.').reverse();
-
-            if (parts != null && parts.length <= 1) {
-                // cases like  localhost
-                return domain;
-            } else if (parts != null && parts.length <= 3) {
-                // cases:  url with one or no sub domain 
-                domain = "." + parts[1] + '.' + parts[0];
-            } else if (parts != null && parts.length <= 4) {
-
-                if (!parseInt(parts[1]) && !parseInt(parts[0])) {
-                    // check if url is not IP address
-                    domain = "." + parts[2] + "." + parts[1] + "." + parts[0];
-                }
-            }
+    findCookieDomain: function(domain) {
+        //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
+        var i = 0;
+        var parts = domain.split('.');
+        var value = 'km_' + (new Date()).getTime();
+        //check value is added in cookie else continue the iteration
+        while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
+            //join the parts of domain
+            domain = parts.slice(-1 - (++i)).join('.');
+            //set value in cookie
+            document.cookie = value + "=" + value + ";domain=" + domain + ";";
         }
-        return domain;
+        //delete value from cookie
+        document.cookie = value + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";";
+        return domain
+    },
+    getDomainFromUrl: function () {
+        return KommunicateUtils.findCookieDomain(document.domain);
     },
     getSubDomain : function(){
          var hostName = parent.window.location.hostname;
