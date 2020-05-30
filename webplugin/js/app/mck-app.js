@@ -25,7 +25,7 @@ applozicSideBox.load();
 function ApplozicSidebox() {
     var mck_external_scripts = [{
             "name": "applozic-min-js",
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-6.0.min.js", // update the url with every new release of applozic-web-plugin
+            "url": "https://cdn-test.applozic.com/applozic/applozic.chat-6.0.min.js", // update the url with every new release of applozic-web-plugin
             "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-6.0.min.js"
         },
         {
