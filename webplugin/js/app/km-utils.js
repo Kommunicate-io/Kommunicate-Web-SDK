@@ -207,9 +207,10 @@ KommunicateUtils = {
         setCookie: function (cookie) {
         var cookiePrefix =this.getCookiePrefix();
         var name = (cookie && cookie.skipPrefix )?cookie.name: cookiePrefix+cookie.name;
+        var sameSite = cookie.sameSite ? cookie.sameSite : (this.isHttpsEnabledConnection() ? "None" : "Lax"); 
         var value =cookie.value;
         var path = "/";
-        var secure = typeof cookie.secure == "undefined"?this.isHttpsEnabledConnection():cookie.secure;
+        var secure = typeof cookie.secure == "undefined"?(sameSite == "None"):cookie.secure;
         var cookieExpiry= new Date("2038-01-19 04:14:07").toUTCString();
         var domain = cookie.domain;
         if(cookie.path){
@@ -220,7 +221,7 @@ KommunicateUtils = {
             cookieExpiry = new Date(today.setDate(today.getDate()+cookie.expiresInDays)).toUTCString();
         }
 
-        document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"") +(domain?";domain="+domain:"");
+        document.cookie = name + "=" + value + ";" + "expires="+cookieExpiry+ ";path="+path+(secure?";secure":"") +(domain?";domain="+domain:"")+";SameSite="+sameSite;
     },
     getCookiePrefix : function(){
         var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
