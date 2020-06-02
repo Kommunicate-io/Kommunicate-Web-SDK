@@ -1,3 +1,5 @@
+# Kommunicate | [Demo](https://www.kommunicate.io/livechat-demo?appId=kommunicate-support) | [Docs](https://docs.kommunicate.io/docs/web-installation.html)
+
 <img src="https://kommunicate-prod.s3.amazonaws.com/logo/Header.jpg" />
 
 # [Kommunicate ](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web)Live Chat Plugin and Chatbot Integration For Web
@@ -25,7 +27,7 @@ You can connect your Dialogflow chatbot with Kommunicate in the following 4 simp
 - After getting redirected to your SERVICE ACCOUNT, create a key in JSON format for your project from the actions section and it will get automatically downloaded.
 
 ### Step 2: Create a free Kommunicate account
-Create a free account on [Kommunicate](https://dashboard.kommunicate.io/signup) and navigate to the [Bots section](https://dashboard.kommunicate.io/bots/bot-integrations).
+Create a free account on [Kommunicate](https://dashboard.kommunicate.io/signup) and navigate to the [Bots section](https://dashboard.kommunicate.io/bots/bot-integrations). 
 
 ### Step 3: Integrate your Dialogflow chatbot with Kommunicate
 - In the Bot integrations section, choose Dialogflow. A popup window will open.
