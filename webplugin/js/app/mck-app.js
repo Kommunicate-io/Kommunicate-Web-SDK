@@ -306,6 +306,14 @@ function ApplozicSidebox() {
         try {
             var options = applozic._globals;
             var widgetSettings = data.chatWidget;
+            var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
+            
+            // Remove scripts if disableChatWidget property is enabled
+            if ( disableChatWidget ) {
+                parent.window && parent.window.removeKommunicateScripts();
+                return false;
+            }
+
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
             options['appSettings'] = $applozic.extend(true, data, options.appSettings);
