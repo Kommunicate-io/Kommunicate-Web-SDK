@@ -309,7 +309,7 @@ function ApplozicSidebox() {
             var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
             
             // Remove scripts if disableChatWidget property is enabled
-            if ( disableChatWidget ) {
+            if (disableChatWidget) {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
