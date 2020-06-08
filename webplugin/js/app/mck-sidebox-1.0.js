@@ -2076,6 +2076,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                      preLeadCollection.required && kmChatInput.setAttribute("required", preLeadCollection.required);
                      kmChatInput.setAttribute("placeholder", preLeadCollection.placeholder||'');
                      kmChatInput.setAttribute("class",preLeadCollectionClass);
+                     kmChatInput.setAttribute("aria-label", preLeadCollection.field)
                      $applozic('.km-last-child').append(kmChatInputDiv);
                      $applozic(kmChatInputDiv).append(kmChatInput);
                 }
