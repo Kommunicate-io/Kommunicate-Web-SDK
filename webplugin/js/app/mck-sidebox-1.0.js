@@ -2087,9 +2087,16 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
-                document.getElementById('km-submit-chat-login').innerHTML= LEAD_COLLECTION_LABEL.submit;
-                document.getElementById('km-lead-collection-heading').innerHTML= LEAD_COLLECTION_LABEL.heading;   
-                document.getElementById('km-tab-title').innerHTML = LEAD_COLLECTION_LABEL.title;
+                var submitLogin = document.getElementById('km-submit-chat-login');
+                var leadCollectionHeading = document.getElementById('km-lead-collection-heading');
+                var tabTitle =  document.getElementById('km-tab-title');
+                submitLogin.innerHTML= LEAD_COLLECTION_LABEL.submit;
+                submitLogin.setAttribute("aria-label", LEAD_COLLECTION_LABEL.submit);
+                leadCollectionHeading.innerHTML= LEAD_COLLECTION_LABEL.heading;   
+                leadCollectionHeading.setAttribute("aria-label", LEAD_COLLECTION_LABEL.heading);
+                tabTitle.innerHTML = LEAD_COLLECTION_LABEL.title;
+                tabTitle.setAttribute("aria-label", LEAD_COLLECTION_LABEL.title);
+
             };
             _this.setEmojiHoverText = function () {
                 var ratingList = document.getElementsByClassName("mck-rating-box");
