@@ -676,6 +676,7 @@
     }  
     #mck-away-msg {
         white-space: pre-line;
+        word-break: break-word;
     }
     .mck-collect-email {
         font-size: 14px;
