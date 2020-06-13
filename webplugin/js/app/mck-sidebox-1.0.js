@@ -466,6 +466,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
+        var MCK_CUSTOM_BRANDING = WIDGET_SETTINGS && WIDGET_SETTINGS.customBranding;
         var WIDGET_POSITION = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('position') ? WIDGET_SETTINGS.position : KommunicateConstants.POSITION.RIGHT;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
             SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
@@ -1874,7 +1875,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     var utmSourceUrl = kommunicateIframe ? (kommunicateIframe.getAttribute('data-url') || parent.window.location.href) : w.location.href;
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
+                    if(MCK_CUSTOM_BRANDING){
+                        document.querySelector(".mck-running-on").innerHTML = MCK_CUSTOM_BRANDING;
+                    }
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
+                    
                 };
                 _this.setEmojiHoverText();
                 _this.configureRatingElements();
