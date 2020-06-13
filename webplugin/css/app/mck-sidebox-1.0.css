@@ -107,7 +107,7 @@
 .mck-sidebox-launcher:focus {
 	box-shadow: #5553B7 0px 0px 0px 5px;
 }
-.mck-powered-by{
+.mck-running-on > a{
 	text-decoration: none;
 	color: #aeaaaa !important;
 }
@@ -118,7 +118,7 @@
 	opacity:0.6;
 }
 
-.mck-powered-by:hover{
+.mck-running-on > a:hover{
 	text-decoration:underline;
 	color: #5553B7 !important
 }
