@@ -1,6 +1,6 @@
 var $original;
 var oModal = "";
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -23,38 +23,44 @@ var applozicSideBox = new ApplozicSidebox();
 var scriptCounter = 0;
 applozicSideBox.load();
 function ApplozicSidebox() {
-	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-    var mck_external_scripts = [
-        {
-            "name": "jquery",
-            "url": "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js",
-            "crossOrigin": "anonymous"
+    var mck_external_scripts = [{
+            "name": "applozic-min-js",
+            "url": "https://cdn.applozic.com/applozic/applozic.chat-6.1.min.js", // update the url with every new release of applozic-web-plugin
+            "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-6.1.min.js"
         },
         {
-            "name": "applozic-min-js",
-            "url": "https://cdn.applozic.com/applozic/applozic.chat-5.6.min.js", // update the url with every new release of applozic-web-plugin
-            "alternateUrl": MCK_STATICPATH + "/js/app/applozic.chat-5.6.min.js"
+            "name": "maps",
+            "url": "https://maps.google.com/maps/api/js?libraries=places",
+            "googleApiKey": (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey) ? applozic._globals.googleApiKey : "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI"
+        },
+    ];
+    var mck_style_loader = [{
+        "name": "mck-sidebox",
+        "url": KOMMUNICATE_MIN_CSS
+    }];
+    var mck_third_party_scripts = [{
+            "name": "locationPicker",
+            "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
+        },
+        {
+            "name": "emojiLibrary",
+            "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
         }
     ];
-    var mck_style_loader = [
-    {
-            "name": "mck-sidebox", 
-            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS
-    } ];
-    var mck_script_loader1 = [
-    {
-            "name": "km-utils", 
-            "url": KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS
-    },
-    {
-            "name": "maps",
-            "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
-    }];
-    var mck_script_loader2 = [ {
-            "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
-    } ];
     this.load = function() {
         try {
+            if (applozic.PRODUCT_ID == 'kommunicate') {
+                if (typeof applozic._globals.locShare === 'undefined') {
+                    applozic._globals.locShare = false;
+                } else if (typeof applozic._globals.locShare === 'string') {
+                    throw new Error("locShare should be a boolean value");
+                }
+                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
+                    applozic._globals.excludeGoogleMap = !applozic._globals.locShare;
+                } else if (typeof applozic._globals.excludeGoogleMap === 'string') {
+                    throw new Error("excludeGoogleMap should be a boolean value");
+                }
+            };
             for (var index in mck_external_scripts) {
                 var externalFileDetails = mck_external_scripts[index];
                 loadExternalFiles(externalFileDetails);
@@ -68,12 +74,21 @@ function ApplozicSidebox() {
         }
     };
     function loadExternalFiles(externalFileDetails) {
-        try {   
+        try {
+            if (applozic._globals.excludeGoogleMap && externalFileDetails.name === "maps") {
+                ++scriptCounter;
+                return;
+            };
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
+            script.async = false;
             script.type = 'text/javascript';
             externalFileDetails && externalFileDetails.crossOrigin && (script.crossOrigin = externalFileDetails.crossOrigin);
-            script.src = externalFileDetails.url;
+            if (externalFileDetails.name === "maps"){
+                script.src = externalFileDetails.url + "&key=" + externalFileDetails.googleApiKey;
+            } else {
+                script.src = externalFileDetails.url ;
+            }
             if (script.readyState) { // IE
                 script.onreadystatechange = function () {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
@@ -185,6 +200,7 @@ function ApplozicSidebox() {
         style.href = url;
         head.appendChild(style);
     };
+    // Below function adds the script to document
     function mckLoadScript(url, callback, removeCrossOrigin) {
         try {
             var body = document.getElementsByTagName('body')[0];
@@ -218,55 +234,19 @@ function ApplozicSidebox() {
     };
     function mckInitPluginScript() {
         try {
-            if(applozic.PRODUCT_ID =='kommunicate'){
-                if (typeof applozic._globals.locShare === 'undefined') {
-                    applozic._globals.locShare = false;
-                } else if (typeof applozic._globals.locShare === 'string') {
-                    throw new Error("locShare should be a boolean value");
+            var options = applozic._globals;
+            for (var index in mck_third_party_scripts) {
+                var data = mck_third_party_scripts[index];
+                if (data.name === "locationPicker") {
+                    options.locShare && mckLoadScript(data.url);
+                } else if (data.name === "emojiLibrary") {
+                    options.emojilibrary && mckLoadScript(data.url, null, true);
                 }
-                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
-                    applozic._globals.excludeGoogleMap = applozic._globals.locShare ? false : true;
-                } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
-                    throw new Error("excludeGoogleMap should be a boolean value");
-                }
-                    applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-       	    }
-            for (var index in mck_script_loader1) {
-                var data = mck_script_loader1[index];
-                if (data.name === "km-utils") {
-                    try {
-                       var options = applozic._globals;
-                        if (typeof options !== 'undefined' && options.locShare === true) {
-                            mckLoadScript(data.url, mckLoadScript2);
-                        } else {
-                            mckLoadScript(data.url, mckLoadAppScript);
-                        }
-                    } catch (e) {
-                        mckLoadScript(data.url, mckLoadAppScript);
-                    }
-                }
-                 else if (data.name === "maps") {
-                    try {
-                        var options = applozic._globals;
-                        if (typeof options !== 'undefined') {
-                            if (options.excludeGoogleMap) {
-                                return true;
-                            }
-                            if (options.googleApiKey) {
-                                var url = data.url + "&key=" + options.googleApiKey;
-                                mckLoadScript(url, null, true);
-                            }
-                        } else {
-                            mckLoadScript(data.url, null, true);
-                        }
-                    } catch (e) {
-                        mckLoadScript(data.url), null, true;
-                    }
-                }  
                 else {
-                    mckLoadScript(data.url);    
+                    mckLoadScript(data.url);
                 }
             };
+            mckLoadAppScript();
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             console.log(e);
@@ -276,82 +256,44 @@ function ApplozicSidebox() {
             return false;
         }
     };
-    function mckLoadScript2() {
-        try {
-            for (var index in mck_script_loader2) {
-                var data = mck_script_loader2[index];
-                if (data.name === "locationpicker") {
-                    mckLoadScript(data.url, mckLoadAppScript);
-                }
-            };
-        } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
-            if (typeof MCK_ONINIT === 'function') {
-                MCK_ONINIT("error");
-            }
-            return false;
-        }
-    };
     function mckLoadAppScript() {
+        // var cookiePrefix = KommunicateUtils.getCookiePrefix();
+        // var mapCookies = [{
+        //     oldName: 'kommunicate-id',
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "userName",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "km_id",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "km_user_name",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
+        //     skipPrefix: true
+        // }, {
+        //     oldName: "km_lead_collection",
+        //     newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+        //     skipPrefix: true
+        // },{
+        //     oldName: "_kom_km_id",
+        //     //skip newName to delete the cookie  
+        //     skipPrefix: true
+        // },{
+        //     oldName: "_kom_km_lead_collection",
+        //     skipPrefix: true
+        // },{
+        //     oldName: "_kom_km_user_name",
+        //     skipPrefix: true
+        // }];
         var userId = KommunicateUtils.getRandomId();
-        var cookiePrefix = KommunicateUtils.getCookiePrefix();
-        var mapCookies = [{
-            oldName: 'kommunicate-id',
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-            skipPrefix: true
-        }, {
-            oldName: "userName",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-            skipPrefix: true
-
-        }, {
-            oldName: "km_id",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
-            skipPrefix: true
-        }, {
-            oldName: "km_user_name",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-            skipPrefix: true
-        }, {
-            oldName: "km_lead_collection",
-            newName: cookiePrefix + KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
-            skipPrefix: true
-        },{
-            oldName: "_kom_km_id",
-            //skip newName to delete the cookie  
-            skipPrefix: true
-        },{
-            oldName: "_kom_km_lead_collection",
-            skipPrefix: true
-        },{
-            oldName: "_kom_km_user_name",
-            skipPrefix: true
-        }];
-        
         try {
-            var body = document.getElementsByTagName('body')[0];
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.crossOrigin = "anonymous";
-            script.src = KOMMUNICATE_PLUGIN_MIN_JS;
-            seekReplaceDestroyCookies(mapCookies);         // Will remove this in next release
-            if (script.readyState) { // IE
-                script.onreadystatechange = function() {
-                    if (script.readyState === "loaded" || script.readyState === "complete") {
-                        script.onreadystatechange = null;
-                        // mckInitSidebox();
-                        sentryConfig.enable && loadErrorTracking(userId);
-                        loadPseudoName(userId);
-                    }
-                };
-            } else { // Others
-                script.onload = function() {
-                    // mckInitSidebox();
-                    sentryConfig.enable && loadErrorTracking(userId);
-                    loadPseudoName(userId);
-                };
-            }
-            body.appendChild(script);
+            ((navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0)) && (sentryConfig.enabled = false);
+            sentryConfig.enabled && loadErrorTracking(userId);
+            getApplicationSettings(userId);
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
@@ -363,16 +305,22 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
-            var widgetSettings = data.chatWidget || data.widgetTheme;
+            var widgetSettings = data.chatWidget;
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null && (sessionTimeout = widgetSettings && widgetSettings.sessionTimeout);
-            options["agentId"]= data.agentId;
-            options["agentName"]=data.agentName;
+            options['appSettings'] = $applozic.extend(true, data, options.appSettings);
+
+            options["agentId"]= options.appSettings.agentId;
+            options["agentName"]=options.appSettings.agentName;
             options["widgetSettings"] = widgetSettings;
-            options["customerCreatedAt"]=data.customerCreatedAt;
-            options["collectFeedback"]=data.collectFeedback;
-            var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
-            options.metadata = typeof options.metadata=='object'?options.metadata: {};
+            options["customerCreatedAt"]=options.appSettings.customerCreatedAt;
+            options["collectFeedback"]=options.appSettings.collectFeedback;
+            options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
+            
+            var pseudoNameEnabled = (widgetSettings && (typeof widgetSettings.pseudonymsEnabled !== 'undefined')) ? widgetSettings.pseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            options.metadata = typeof options.metadata == 'object' ? options.metadata : {};
+            options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
+            options.connectSocketOnWidgetClick = options.connectSocketOnWidgetClick != null ? options.connectSocketOnWidgetClick : (widgetSettings && widgetSettings.connectSocketOnWidgetClick);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
             if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
@@ -407,6 +355,7 @@ function ApplozicSidebox() {
                 options.obsm = oModal;
                 $applozic.fn.applozic(options);
             }
+            preLoadLauncherIcon(widgetSettings);
         } catch (e) {
             console.log(e);
             console.log("Plugin loading error. Refresh page.", e);
@@ -416,23 +365,46 @@ function ApplozicSidebox() {
             return false;
         }
     };
-    
-    function seekReplaceDestroyCookies (mapCookies){
-       var  hostName = parent.window.location.hostname;
-        mapCookies && mapCookies.forEach(function(arrayItem){
-            if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
-                var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
-                if(arrayItem.newName){
-                    KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
-                }
-                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
-                // deleting for old version where domain is set as hostname
-                KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
-            }
-        })
-    };
 
-    function loadPseudoName(userId) {
+
+    function preLoadLauncherIcon(chatWidget) {
+        if(chatWidget && chatWidget.widgetImageLink) {
+            var img = new Image();
+            img.onload = function () {
+                preLoadLauncherIconInterval();
+            }
+            img.src = chatWidget.widgetImageLink;
+        } else { // This condition is to check if there is no custom launcher icon image.
+            preLoadLauncherIconInterval();
+        }
+    }
+
+    function preLoadLauncherIconInterval() {
+        var launcherInterval = setInterval(function() {
+            if(document.getElementById("mck-sidebox-launcher")){
+                document.getElementById("mck-sidebox-launcher").classList.remove("n-vis");
+                document.getElementById("mck-sidebox-launcher").classList.add("km-launcher-animation");
+                clearInterval(launcherInterval);
+            }
+        }, 100);
+    }
+    
+    // function seekReplaceDestroyCookies (mapCookies){
+    //    var  hostName = parent.window.location.hostname;
+    //     mapCookies && mapCookies.forEach(function(arrayItem){
+    //         if (KommunicateUtils.getCookie(arrayItem.oldName,arrayItem.skipPrefix)) {
+    //             var value = KommunicateUtils.getCookie(arrayItem.oldName, arrayItem.skipPrefix);
+    //             if(arrayItem.newName){
+    //                 KommunicateUtils.setCookie({"name":arrayItem.newName,"value": value, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl(),skipPrefix:arrayItem.skipPrefix});
+    //             }
+    //             KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: KommunicateUtils.getDomainFromUrl()});
+    //             // deleting for old version where domain is set as hostname
+    //             KommunicateUtils.deleteCookie({name: arrayItem.oldName, skipPrefix: arrayItem.skipPrefix, domain: hostName});
+    //         }
+    //     })
+    // };
+
+    function getApplicationSettings(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
@@ -441,13 +413,15 @@ function ApplozicSidebox() {
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var data = JSON.parse(this.responseText);
-                mckInitSidebox(data.response, userId);
+                mckInitSidebox(data.response, userId); // This function will initialize the Sidebox code.
             }
         };
         xhr.open("GET", url, true);
         xhr.send(data);
     };
     function loadErrorTracking(userId) {
+        var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        var url = kommunicateIframe ? kommunicateIframe.getAttribute('data-url') : parent.window.location.href;
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
         Sentry.init({
             dsn: sentryConfig.dsn,
@@ -456,6 +430,7 @@ function ApplozicSidebox() {
         Sentry.configureScope(function (scope) {
             scope.setTag("applicationId", applozic._globals.appId);
             scope.setTag("userId", userId);
+            scope.setTag("url", url);
             scope.setUser({
                 id: applozic._globals.appId
             });
@@ -481,11 +456,13 @@ function ApplozicSidebox() {
         if (widgetSettings && sessionTimeout != null && timeStampDifference > sessionTimeout) {
             KommunicateUtils.deleteUserCookiesOnLogout();
             sessionStorage.removeItem("kommunicate");
+            KommunicateUtils.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
+            KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
         };
+        // TODO: Handle case where internet disconnects and sessionEndTime is not updated.
         window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
-            event.preventDefault();
             var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
             details.sessionEndTime = new Date().getTime();
             KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);

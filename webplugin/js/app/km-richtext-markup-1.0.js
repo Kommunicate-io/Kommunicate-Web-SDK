@@ -143,12 +143,12 @@ getButtonTemplate:function(options,requestType, buttonClass){
 getQuickRepliesTemplate:function(){
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
-                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{title}}</button>
+                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}">{{title}}</button>
             {{/payload}}
             </div>`;
 },
 getGenericSuggestedReplyButton : function(){
-    return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}">{{name}}</button>`
+    return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}">{{name}}</button>`
 },
 getPassangerDetail : function(options){
     if(!options.sessionId){
@@ -191,7 +191,7 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{handlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} {{{target}}} class="km-undecorated-link km-custom-widget-text-color" >
+                     <li class ={{handlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-languageCode = "{{updateLanguage}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} {{{target}}} class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
@@ -215,7 +215,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                     {{#buttons}}
-                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                     {{/buttons}}  
              </div>
          </div>
@@ -235,7 +235,7 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button aria-label="{{name}}" class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
+                 <button aria-label="{{name}}" class="km-faq-dialog-button km-quick-replies km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>
@@ -285,8 +285,50 @@ getFormTemplate: function() {
                 <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post">
                     <div class="mck-form-template-wrapper">
                         {{#payload}}
-                            <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
-                            <input type="{{type}}" placeholder="{{placeholder}}" name={{label}} >
+                            {{#.}}
+                                {{#supported}}
+                                    {{#radio}}
+                                        <p class="mck-radio-group-title">{{title}}</p>
+                                        <div class="mck-form-radio-wrapper">
+                                            {{#options}}
+                                                <div>
+                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
+                                                </div>                                     
+                                            {{/options}}
+                                        </div>
+                                    {{/radio}}
+                                    {{#checkbox}}
+                                        <p class="mck-radio-group-title">{{title}}</p>
+                                        <div class="mck-form-radio-wrapper">
+                                            {{#options}}
+                                                <div>
+                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
+                                                </div>                                     
+                                            {{/options}}
+                                        </div>
+                                    {{/checkbox}}
+                                    {{#text}}
+                                        <div class="mck-form-text-wrapper">
+                                            <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                                            <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}">
+                                            {{#validation}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/validation}}
+                                        </div>
+                                    {{/text}}
+                                    {{#hidden}}
+                                            <input type="{{type}}" name="{{name}}" value="{{value}}" >
+                                    {{/hidden}}
+                                {{/supported}}
+                                {{^supported}}
+                                    <div class="mck-form-text-wrapper">
+                                        <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                                        <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" >
+                                    </div>
+                                {{/supported}}
+                            {{/.}}
                         {{/payload}}
                     </div>
                         {{#buttons}}
@@ -407,6 +449,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
                 item.href = "javascript:void(0)";
                 item.target = '';
                 item.handlerClass= "km-list-item-handler";
+                item.action && (item.updateLanguage = item.action.updateLanguage);
                 
                }
                if(item.action){
@@ -428,6 +471,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
             if(button.action && button.action.replyMetadata){
                 button.replyMetadata = typeof  button.action.replyMetadata =="object"? JSON.stringify(button.action.replyMetadata):button.action.replyMetadata;
               }
+              button.action && (button.updateLanguage = button.action.updateLanguage);
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
                 button.handlerClass= "km-list-button-item-handler";
@@ -487,6 +531,10 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
                 options.payload[index].className = "km-cta-button";
                 options.buttons.push(item);
                 options.payload.splice(index,1);
+            } else {
+                options.payload[index].supported = item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text';
+                options.payload[index][item.type] = true;
+                item.label && (options.payload[index].className = item.label.toLowerCase().replace(/ +/g, ""));
             }
         });
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
@@ -508,6 +556,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
                 buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
                 cardFooter = cardFooter.concat(Kommunicate.markup.quickRepliesContainerTemplate(buttons[i].action, KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL))
             } else if (buttons[i].action.type == "link" || buttons[i].action.type == "submit") {
+                buttons[i].action.type == "link" && (buttons[i].action.payload["openLinkInNewTab"] = typeof buttons[i].action.openLinkInNewTab == "undefined" ? true : buttons[i].action.openLinkInNewTab);
                 requestType = buttons[i].action.payload.requestType ? buttons[i].action.payload.requestType :"";
                 buttons[i].action.payload["type"] = buttons[i].action.type;
                 buttons[i].action.payload["buttonClass"] = "km-carousel-card-button";
@@ -567,17 +616,18 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     for (var i = 0; i < buttonPayloadList.length; i++) {
         var singlePayload = buttonPayloadList[i];
         typeof (singlePayload.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
-        if (singlePayload.action && (singlePayload.action.type == "link" || singlePayload.action.type == "submit")) {
-            singlePayload.type = buttonPayloadList[i].action.type;
-            singlePayload.url = buttonPayloadList[i].action.url;
+        !singlePayload.type && singlePayload.action && (singlePayload.type = singlePayload.action.type);
+        !singlePayload.replyMetadata && singlePayload.action && singlePayload.action.replyMetadata && kommunicateCommons.isObject(singlePayload.action.replyMetadata) && (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
+        if (singlePayload.type == "link" || singlePayload.type == "submit") {
+            singlePayload.url = buttonPayloadList[i].action.url || buttonPayloadList[i].action.formAction;
             singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
             buttonClass += buttonClass + " km-add-more-rooms";
             buttonContainerHtml += Kommunicate.markup.getButtonTemplate(singlePayload, singlePayload.action.requestType, buttonClass);
-            singlePayload.action.type == "submit" && (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
+            singlePayload.type == "submit" && (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
                 "payload": singlePayload.action
             }))
 
-        } else if (singlePayload.action && singlePayload.action.type == "quickReply") {
+        } else if (singlePayload.type == "quickReply" || singlePayload.type == "suggestedReply") {
             singlePayload.buttonClass = "km-quick-rpy-btn " + buttonClass;
             singlePayload.message = singlePayload.action.message || singlePayload.name;
             buttonContainerHtml += Mustache.to_html(Kommunicate.markup.getGenericSuggestedReplyButton(), singlePayload);
@@ -590,4 +640,5 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     return buttonContainerHtml + "</div>";
 
 }
+
         

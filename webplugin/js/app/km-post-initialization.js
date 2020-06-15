@@ -5,9 +5,6 @@
  */
 
 Kommunicate.postPluginInitialization = function (err, data) {
-    Kommunicate.initilizeEventListners();
-    // hiding away message when new message received from agents.
-        $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
     // get the third party settings
     // 1: for helpDocs
     KommunicateKB.init(Kommunicate.getBaseUrl());
@@ -35,9 +32,6 @@ Kommunicate.postPluginInitialization = function (err, data) {
     } else {
         Kommunicate.helpdocsInitialization(data, helpdocsAccessKey);
     }
-    var activeConversationInfo = Kommunicate.getActiveConversation();
-    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && Kommunicate.openConversation(activeConversationInfo.groupId);
-    MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE && !KommunicateUtils.isActiveConversationNeedsToBeOpened(activeConversationInfo, data) && KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
 
 }
 
@@ -52,6 +46,7 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
         success: function (response) {
             if (response.data && response.data.length > 0 && $applozic(".km-kb-container").hasClass("n-vis")) {
                 $applozic(".km-kb-container").removeClass('n-vis').addClass('vis');
+                KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
             }
             $applozic.each(response.data, function (i, faq) {
                 $applozic("#km-faq-list-container").append('<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"><div class="km-faqimage">' + faqSVGImage + '</div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');

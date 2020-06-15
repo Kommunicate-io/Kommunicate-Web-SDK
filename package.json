@@ -1,17 +1,24 @@
 {
   "name": "chat-widget",
-  "version": "2.0.0-ragnarok",
+  "version": "3.0.0-sasuke",
   "description": "",
   "main": "app.js",
   "author": "Abhinav <abhinav@applozic.com>",
   "license": "ISC",
   "dependencies": {
-    "babel-minify": "0.5.0",
-    "babel-preset-minify": "0.5.0",
-    "cors": "2.8.4",
-    "express": "4.16.4",
-    "express-validation": "1.0.2",
-    "node-minify": "3.6.0",
-    "compression": "1.7.4"
+    "compression": "1.7.4",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "form-data": "3.0.0",
+    "minimist": "1.2.5",
+    "node-fetch": "2.6.0",
+    "node-minify": "3.6.0"
+  },
+  "scripts": {
+    "dev": "node ./server/app.js",
+    "test": "NODE_ENV=test node ./server/app.js",
+    "staging": "NODE_ENV=staging node ./server/app.js",
+    "prod": "NODE_ENV=prod node ./server/app.js",
+    "prod_ca": "NODE_ENV=prod_ca node ./server/app.js"
   }
 }

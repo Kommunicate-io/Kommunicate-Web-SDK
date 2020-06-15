@@ -6,6 +6,16 @@ var MCK_PLUGIN_VERSION = ":MCK_PLUGIN_VERSION";
 var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = "kommunicate";
 
+var kmCustomElements = {
+  "iframe": {
+    id: "kommunicate-widget-iframe",
+    styleSheetId: "kommunicate-style-sheet"
+  },
+  "imageModal": {
+    id: "km-fullscreen-image-modal",
+    styleSheetId: "km-fullscreen-image-modal-style-sheet"
+  }
+};
 
 // iframe class
 var kmCustomIframe =   
@@ -19,6 +29,10 @@ var kmCustomIframe =
     '   height: 75px;' +
     '   width: 75px;' +
     '} \n ' +
+    '.kommunicate-custom-iframe.align-left { ' +
+    '   left: 20px;' +
+    '   right: 0px;' +
+    '} \n ' +
     '@media only screen and (max-width:600px) { .kommunicate-iframe-enable-media-query {' +
     '   right: 0px;' +
     '   bottom: 0px;' +
@@ -31,6 +45,7 @@ var kmCustomIframe =
     '} } \n' + 
     '.km-iframe-notification{ '+
     '    height:80px; '+ 
+    '    width:330px; '+ 
     '} \n '+
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
@@ -45,10 +60,60 @@ var kmCustomIframe =
     '    height: 75px; '+
     '    width:  75px; '+
     '    box-shadow: none!important; '+
-    '}\n';
+    '} \n' +
+    '.mck-restrict-scroll{ '+
+        'overflow:hidden!important;'+
+        'margin:0;'+
+        'height:100vh;'+
+        'width:100vw;'+
+    '} \n' + 
+    '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' + 
+    '   width: 445px;' + 
+    '   height: 80px;' + 
+    '} \n' + 
+    '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
+    '   width: 415px;' + 
+    '   height: 153px;' + 
+    '} \n' + 
+    '@media only screen and (max-device-width: 420px) { ' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' + 
+        'width: 100%;' + 
+        'height: 155px;' + 
+      '} \n' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' + 
+      '   width: 100%;' + 
+      '} \n' + 
+      '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' + 
+        'width: 100%;' + 
+      '} \n' + 
+    '} \n' +
+    '.kommunicate-hide-custom-iframe { ' +
+    '   display: none!important' +
+    '} \n';
 
-isV1Script() ? addKommunicatePluginToIframe() : appendIframe();
+isV1Script() ? injectJquery() : appendIframe();
 
+function removeKommunicateScripts() {
+
+  window.KommunicateGlobal = null;
+  window.Kommunicate = null;
+  // delete iframe, kommunicate style sheet, image view modal, origin file
+  removeElementFromHtmlById([
+    kmCustomElements.imageModal.styleSheetId,
+    kmCustomElements.imageModal.id,
+    kmCustomElements.iframe.id,
+    kmCustomElements.iframe.styleSheetId
+  ]);
+  var originFile = document.querySelector("script[src*='kommunicate.app']");
+  originFile && originFile.parentNode.removeChild(originFile);
+};
+
+function removeElementFromHtmlById(elementIdArray) {
+  for (var index in elementIdArray){
+    var element = document.getElementById(elementIdArray[index]);
+    element && element.parentNode.removeChild(element);
+  };
+};
 function appendIframe() {
   createKommunicateIframe();
   createCustomClasses(kmCustomIframe); // Add class to document
@@ -61,6 +126,7 @@ function isV1Script() {
 function createCustomClasses(classSettings) {
   // Create custom classes 
   var style = document.createElement('style');
+  style.id = "kommunicate-style-sheet";
   style.type = 'text/css';
   style.innerHTML = classSettings;
   document.getElementsByTagName('head')[0].appendChild(style);
@@ -68,15 +134,20 @@ function createCustomClasses(classSettings) {
 
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
+  if(document.getElementById(kmCustomElements.iframe.id)){
+    throw new Error(" Kommunicate script is already loaded, please check if you're loading it more than once.");
+  };
   var kommunicateIframe = document.createElement("iframe");
   kommunicateIframe.setAttribute("style", "overflow:hidden;"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("scrolling", "no"); // to fix scrollbars appearing before the chat widget loads on slow connections
   kommunicateIframe.setAttribute("id", "kommunicate-widget-iframe");
   kommunicateIframe.setAttribute("title", "Live chat");
+  kommunicateIframe.setAttribute("name", "Kommunicate widget iframe");
   kommunicateIframe.setAttribute("class", "kommunicate-custom-iframe");
   kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
   kommunicateIframe.setAttribute('data-url', window.location.href);
   document.body.appendChild(kommunicateIframe);
+  kommunicateIframe.innerHTML = '<a href="https://www.kommunicate.io/"> Kommunicate Live chat </a>';
   var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
   kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
@@ -84,11 +155,11 @@ function createKommunicateIframe() {
     // Do Firefox-related activities
     var testClick = window.document.getElementById("kommunicate-widget-iframe");
     testClick.onload = function () {
-      addKommunicatePluginToIframe();
+      injectJquery();
     };
   } else {
     window.setTimeout(function () {
-      addKommunicatePluginToIframe();
+      injectJquery();
     }, 500);
   }
 };
@@ -105,7 +176,6 @@ function addKommunicatePluginToIframe() {
     addableWindow = kommunicateIframe.contentWindow;
     addableDocument = iframeDocument;
   }
-
   addableWindow.applozic = (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate) || {};
   addableWindow.MCK_CONTEXTPATH = MCK_CONTEXTPATH;
   addableWindow.MCK_STATICPATH = MCK_STATICPATH;
@@ -124,14 +194,13 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = options.onInit;
   }
   addableWindow.addEventListener('error', function (e) {
-    var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
-    sentryConfig.enable && typeof Sentry != "undefined" && Sentry.withScope(function (scope) {
+    MCK_THIRD_PARTY_INTEGRATION.sentry.enabled && typeof KommunicateGlobal != "undefined" && KommunicateGlobal != null && KommunicateGlobal.Sentry != null && KommunicateGlobal.Sentry.withScope(function (scope) {
       scope.setTag("applicationId", options.appId);
       scope.setTag("userId", options.userId);
       scope.setUser({
         id: options.appId
       });
-      Sentry.captureException(e);
+      KommunicateGlobal.Sentry.captureException(e);
     });
     if (typeof (e.target.src) !== 'undefined' && e.target.src.indexOf('sidebox') !== -1 && typeof MCK_ONINIT === 'function') {
       console.log("Plugin loading error. Refresh page.");
@@ -139,10 +208,44 @@ function addKommunicatePluginToIframe() {
     }
   }, true);
   var imported = addableDocument.createElement('script');
-  imported.src = MCK_APP_JS;
-  imported.crossOrigin = "anonymous";
+  imported.async = false;
+  imported.type = 'text/javascript';
+  imported.src = KOMMUNICATE_MIN_JS;
   addableDocument.head.appendChild(imported);
   addFullviewImageModal();
+};
+
+function injectJquery() {
+  var addableWindow, addableDocument;
+  if (isV1Script()) {
+    addableWindow = window;
+    addableDocument = document;
+  } else {
+    var kommunicateIframe = window.document.getElementById("kommunicate-widget-iframe");
+    var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
+    addableWindow = kommunicateIframe.contentWindow;
+    addableDocument = iframeDocument;
+  }
+  var head = addableDocument.getElementsByTagName('head')[0];
+  var script = addableDocument.createElement('script');
+  script.async = false;
+  script.type = 'text/javascript';
+  script.src = "https://cdn.kommunicate.io/kommunicate/jquery-3.4.1.min.js";
+  if (script.readyState) { // IE
+    script.onreadystatechange = function () {
+      if (script.readyState === "loaded" || script.readyState === "complete") {
+        addKommunicatePluginToIframe();
+      };
+    }
+  } else { // Others
+    script.onload = function () {
+      addKommunicatePluginToIframe();
+    };
+  }
+  script.onerror = function (error) {
+    throw new Error("Error while loading Jquery file.");
+  }
+  head.appendChild(script);
 };
 
 /*
@@ -155,7 +258,7 @@ function addKommunicatePluginToIframe() {
 function addFullviewImageModal () {
   var modalHtml =
     '<span id="km-fullscreen-image-modal-close" class="km-fullscreen-image-modal-close">&times;</span>' +
-    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content">' +
+    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="View attachment in full screen">' +
     '<div id="km-fullscreen-image-modal-caption"></div>';
 
   var addFullviewImageModalCss = 
@@ -245,6 +348,7 @@ function addFullviewImageModal () {
 
       // Append CSS of image fullview viewer modal to body of html page
       var style = document.createElement('style');
+      style.id = 'km-fullscreen-image-modal-style-sheet';
       style.type = 'text/css';
       style.innerHTML = addFullviewImageModalCss;
       document.getElementsByTagName('head')[0].appendChild(style);

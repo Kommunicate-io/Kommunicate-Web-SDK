@@ -1,36 +1,49 @@
 const compressor = require('node-minify');
 const path = require('path');
 const fs = require('fs');
+const argv = require('minimist')(process.argv.slice(2));
 const version = require('child_process')
-  .execSync('git rev-parse --short HEAD', {cwd: __dirname})
-  .toString().trim();
-const buildDir = path.resolve(__dirname,'build');
+    .execSync('git rev-parse --short HEAD', {
+        cwd: __dirname
+    })
+    .toString().trim();
+const buildDir = path.resolve(__dirname, 'build');
 const config = require("../server/config/config-env");
+const pluginClient = require("../server/src/pluginClient");
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + "/plugin";
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
-const pluginVersions = ["v1","v2"];
+const CDN_HOST_URL = MCK_THIRD_PARTY_INTEGRATION.aws.cdnUrl;
+const pluginVersions = ["v1", "v2"];
 PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
 PLUGIN_SETTING.botPlatformApi = PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
 PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 let PLUGIN_FILE_DATA = new Object();
-
-// Change "env" to "false" to uncompress all files.
+let isAwsUploadEnabled = argv.upload;
+let BUILD_URL = isAwsUploadEnabled ? CDN_HOST_URL + "/" + version : MCK_STATIC_PATH + "/build";
+// Change "env" to "false" to un-compress all files.
 let env = config.getEnvId() !== "development";
 
-let jsCompressor = !env ?"no-compress" : "gcc"; 
-let uglifyCompressor = !env? "no-compress" : "uglify-es";
-let cssCompressor =  !env? "no-compress" : "clean-css";
+let jsCompressor = !env ? "no-compress" : "gcc";
+let terserCompressor = !env ? "no-compress" : "terser";
+let cssCompressor = !env ? "no-compress" : "clean-css";
 
 const removeExistingFile = function (dirPath) {
-    try { var files = fs.readdirSync(dirPath); }
-    catch (e) { return; }
-    files && files.map(file => {
-        if (fs.statSync(dirPath + '/' + file).isFile())
-            fs.unlinkSync(dirPath + '/' + file);
-    })
-    //fs.rmdirSync(dirPath);
+    if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath);
+    } else {
+        try {
+            var files = fs.readdirSync(dirPath);
+        } catch (e) {
+            return;
+        }
+        files && files.map(file => {
+            if (fs.statSync(dirPath + '/' + file).isFile()) {
+                fs.unlinkSync(dirPath + '/' + file)
+            };
+        })
+    }
 };
 
 const compressAndOptimize = () => {
@@ -39,24 +52,20 @@ const compressAndOptimize = () => {
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
-            path.resolve(__dirname, 'lib/js/mck-emojis.min.js'),
-            path.resolve(__dirname, 'lib/js/howler-2.0.2.min.js'),
+            path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
-            path.resolve(__dirname, 'lib/js/aes.js'),
-            path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
         ],
-        output: path.resolve(__dirname, `${buildDir}/kommunicatepluginrequirements.${version}.min.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
         options: {
             compilationLevel: 'WHITESPACE_ONLY',
         },
         callback: function (err, min) {
             if (!err) {
-                console.log( `kommunicatepluginrequirements.${version}.min.js combined successfully`);
-            }
-            else {
-                console.log(`err while minifying kommunicatepluginrequirements.${version}.min.js`, err);
+                console.log(`kommunicateThirdParty.min.js combined successfully`);
+            } else {
+                console.log(`err while minifying kommunicateThirdParty.min.js`, err);
             }
         }
     });
@@ -73,7 +82,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/css/tiny-slider-2.4.0.css'),
             path.resolve(__dirname, 'css/app/km-sidebox.css'),
         ],
-        output: path.resolve(__dirname, `${buildDir}/kommunicatepluginrequirements.${version}.min.css`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.css`),
         options: {
             advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
             aggressiveMerging: true, // set to false to disable aggressive merging of properties.
@@ -82,17 +91,17 @@ const compressAndOptimize = () => {
         },
         callback: function (err, min) {
             if (!err) {
-                console.log(`kommunicatepluginrequirements.${version}.min.css combined successfully`);
-            }
-            else {
-                console.log(`err while minifying kommunicatepluginrequirements.${version}.min.css`, err);
+                console.log(`kommunicate.${version}.min.css combined successfully`);
+            } else {
+                console.log(`err while minifying kommunicate.${version}.min.css`, err);
             }
         }
     });
 
     compressor.minify({
-         compressor: uglifyCompressor,
+        compressor: terserCompressor,
         input: [
+            path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
             path.resolve(__dirname, 'knowledgebase/helpdocs.js'),
@@ -111,53 +120,58 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
             path.resolve(__dirname, 'js/app/km-rich-text-event-handler.js'),
             path.resolve(__dirname, 'js/app/kommunicate-ui.js'),
-            path.resolve(__dirname, 'js/app/events/applozic-event-listener.js'),
             path.resolve(__dirname, 'js/app/events/applozic-event-handler.js'),
             path.resolve(__dirname, 'js/app/km-post-initialization.js'),
             path.resolve(__dirname, 'js/app/mck-ringtone-service.js'),
             path.resolve(__dirname, 'js/app/media/typing-area-dom-service.js'),
             path.resolve(__dirname, 'js/app/media/media-service.js'),
             path.resolve(__dirname, 'js/app/media/media-dom-event-listener.js')
-            
+
         ],
         options: {
             compress: {
                 drop_console: true
             }
         },
-        output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.${version}.min.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
         callback: function (err, min) {
             if (!err)
-                console.log(`kommunicate-plugin.${version}.min.js combined successfully`);
+                console.log(`kommunicate-plugin.min.js combined successfully`);
             else {
-                console.log(`err while minifying kommunicate-plugin.${version}.min.js`, err);
+                console.log(`err while minifying kommunicate-plugin.min.js`, err);
             }
         }
     });
 };
 
-const minifyMckAppJs = () => {
+const combineJsFiles = () => {
+    var paths = [
+        path.resolve(__dirname, `${buildDir}/mck-app.js`),
+        path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
+        path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`)
+    ];
     compressor.minify({
-        compressor: uglifyCompressor,
-        input: [
-            path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
-        ],
+        compressor: terserCompressor,
+        input: paths,
         options: {
             compress: {
                 drop_console: true,
                 keep_fnames: true
             },
-            mangle : {
+            mangle: {
                 keep_fnames: true
             }
         },
-        output: path.resolve(__dirname, `${buildDir}/mck-app.${version}.js`),
+        output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.js`),
         callback: function (err, min) {
             if (!err) {
-                console.log( `mck-app.${version}.js combined successfully`);
-            }
-            else {
-                console.log(`err while minifying mck-app.${version}.js`, err);
+                console.log(`kommunicate.${version}.js combined successfully`);
+                paths.forEach(async function (value) {
+                    await deleteFilesUsingPath(value);
+                })
+                isAwsUploadEnabled && uploadFilesToCdn(buildDir, version);
+            } else {
+                console.log(`err while minifying kommunicate.${version}.js`, err);
             }
         }
     });
@@ -165,21 +179,18 @@ const minifyMckAppJs = () => {
 
 const generateBuildFiles = () => {
     // Generate mck-sidebox.html file for build folder.
-    fs.readFile(path.join(__dirname, "template/mck-sidebox.html"), 'utf8', function (err, data) {
+    fs.copyFile(path.join(__dirname, "template/mck-sidebox.html"), `${buildDir}/mck-sidebox.${version}.html`, (err) => {
         if (err) {
             console.log("error while generating mck-sidebox.html", err);
-        }
-        fs.writeFile(`${buildDir}/mck-sidebox.${version}.html`, data, function (err) {
-            if (err){
-                console.log("mck-file generation error");}
-        })
+        };
+        console.log('mck-sidebox.html generated successfully');
     });
     // Generate plugin.js file for build folder.
     fs.readFile(path.join(__dirname, "plugin.js"), 'utf8', function (err, data) {
         if (err) {
             console.log("error while generating plugin.js", err);
         }
-        var mckApp = data.replace('MCK_APP_JS', `"${MCK_STATIC_PATH}/build/mck-app.${version}.js"`)
+        var mckApp = data.replace('KOMMUNICATE_MIN_JS', `"${BUILD_URL}/kommunicate.${version}.min.js"`)
         fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
             if (err) {
                 console.log("plugin.js generation error");
@@ -192,14 +203,13 @@ const generateBuildFiles = () => {
         if (err) {
             console.log("error while generating mck app", err);
         }
-        var mckApp = data.replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_CSS', `"${MCK_STATIC_PATH}/build/kommunicatepluginrequirements.${version}.min.css"`)
-            .replace('KOMMUNICATE_PLUGIN_REQUIREMENTS_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicatepluginrequirements.${version}.min.js"`)
-            .replace('KOMMUNICATE_PLUGIN_MIN_JS', `"${MCK_STATIC_PATH}/build/kommunicate-plugin.${version}.min.js"`)
-            .replace('MCK_SIDEBOX_HTML', `"${MCK_STATIC_PATH}/build/mck-sidebox.${version}.html"`);
-        fs.writeFile(`${buildDir}/mck-app.${version}.js`, mckApp, function (err) {
-            if (err){
-                console.log("mck-file generation error");}
-                minifyMckAppJs();
+        var mckApp = data.replace('KOMMUNICATE_MIN_CSS', `"${BUILD_URL}/kommunicate.${version}.min.css"`)
+            .replace('MCK_SIDEBOX_HTML', `"${BUILD_URL}/mck-sidebox.${version}.html"`);
+        fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
+            if (err) {
+                console.log("mck-file generation error");
+            }
+            combineJsFiles();
         })
     });
 };
@@ -225,6 +235,25 @@ const generateFilesByVersion = (location) => {
         }
 
     });
+};
+
+const deleteFilesUsingPath = (path) => {
+    // Assuming that 'path/file.txt' is a regular file.
+    try {
+        fs.unlinkSync(path);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const uploadFilesToCdn = async (buildDir, version) => {
+    try {
+        await pluginClient.upload(buildDir, version);
+        console.log("Uploaded all files to CDN");
+    } catch (error) {
+        console.log('The server has stopped due to some error, please check server logs for better understanding.', error);
+        process.kill(process.pid);
+    };
 };
 removeExistingFile(buildDir);
 compressAndOptimize();

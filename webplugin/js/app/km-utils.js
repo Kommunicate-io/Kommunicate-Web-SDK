@@ -24,16 +24,27 @@ KommunicateConstants = {
         ENTERPRISE_YEARLY:106,
         EARLY_BIRD_MONTHLY:107,
         EARLY_BIRD_YEARLY:108,
+        TRIAL: 111
    },
-    BOT_PLATFORM : { 
-        DIALOGFLOW:"dialogflow",
-        APIAI:"api.ai",
-        HELPDOCS:"helpdocs.io",
-        AMAZONLEX:"amazonlex",
-        RASA:"rasa",
-        CUSTOM:'custom'
-   },
+   BOT_PLATFORM : { 	
+        DIALOGFLOW:"dialogflow",	
+        APIAI:"api.ai",	
+        HELPDOCS:"helpdocs.io",	
+        AMAZONLEX:"amazonlex",	
+        RASA:"rasa",	
+        CUSTOM:'custom'	
+    },
    KM_NOTIFICATION_TONE_URL: "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3",
+    NOTIFICATION_RINGTONES: {
+    'default': "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3", // renamed to eventually
+    'choose_me': "https://cdn.kommunicate.io/kommunicate/choose_me.mp3", // renamed to subtle
+    'eventually': "https://cdn.kommunicate.io/kommunicate/eventually.mp3",
+    'subtle': "https://cdn.kommunicate.io/kommunicate/subtle.mp3",
+    'intuition': 'https://cdn.kommunicate.io/kommunicate/intuition.mp3',
+    'light': 'https://cdn.kommunicate.io/kommunicate/light.mp3',
+    'open_ended': 'https://cdn.kommunicate.io/kommunicate/open_ended.mp3'
+    },
+   KM_CHAT_POPUP_NOTIFICATION_URL: "https://cdn.kommunicate.io/kommunicate/chat-popup-notification-tone.mp3",
    CUSTOM_WIDGETS_SVG : {
     1: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 22 20\"><path fill=\"#FFF\" d=\"M21.25 18.48V7.31a7.3 7.3 0 0 0-7.3-7.3H7.31a7.3 7.3 0 1 0 0 14.6h7.2s.58.04.93.17c.34.12.71.42.71.42l4.44 3.66s.4.34.55.27c.15-.07.11-.65.11-.65zM7.51 8.8c0 .49-.42.88-.95.88-.52 0-.95-.4-.95-.88V5.67c0-.49.43-.88.95-.88.53 0 .95.4.95.88V8.8zm4.07 1.48c0 .49-.43.88-.95.88s-.95-.39-.95-.88v-6.1c0-.48.43-.88.95-.88s.95.4.95.88v6.1zm4.06-1.48c0 .49-.42.88-.95.88-.52 0-.94-.4-.94-.88V5.67c0-.49.42-.88.94-.88.53 0 .95.4.95.88V8.8z\"/></svg>",
     2: "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 22 18\"><path fill=\"#FFF\" d=\"M3.35 18a.48.48 0 0 1-.44-.3.47.47 0 0 1 .1-.5c.53-.53 1.49-1.82 2.12-3.21C1.95 12.61 0 10.19 0 7.58 0 3.4 4.93 0 11 0s11 3.4 11 7.58-4.93 7.58-11 7.58c-.4 0-.78-.02-1.16-.05A8.63 8.63 0 0 1 3.34 18z\"/></svg>",
@@ -46,7 +57,9 @@ KommunicateConstants = {
     10: '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"> <g fill="none" fill-rule="evenodd"><path fill="#FFCC4D" d="M34.932 17.466c0 9.646-7.82 17.466-17.466 17.466S0 27.112 0 17.466 7.82 0 17.466 0s17.466 7.82 17.466 17.466"/><path fill="#6F543A" d="M17.466 20.377c-3.516 0-5.848-.41-8.733-.97-.659-.128-1.94 0-1.94 1.94 0 3.881 4.458 8.733 10.673 8.733 6.214 0 10.674-4.852 10.674-8.733 0-1.94-1.282-2.069-1.941-1.94-2.885.56-5.218.97-8.733.97"/><path fill="#FFF" d="M8.733 21.347s2.91.97 8.733.97c5.822 0 8.733-.97 8.733-.97s-1.94 3.881-8.733 3.881c-6.792 0-8.733-3.88-8.733-3.88"/><path fill="#6F543A" d="M14.07 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396M26.737 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396"/></g></svg>'
     },
     DEFAULT_AVATAR_IMAGE : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
-    CONVERSATION_CLOSED_STATUS : 'Resolved',
+    CONVERSATION_CLOSED_STATUS : 'closed',
+    CONVERSATION_RESOLVED_STATUS : 'Resolved',
+    CONVERSATION_OPEN_STATUS : 'Open',
     MESSAGE_SOURCE: {
         DEVICE: 0,
         WEB: 1,
@@ -105,7 +118,8 @@ KommunicateConstants = {
         IMAGE:"9",
         CARD_CAROUSEL:"10",
         GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
-        FORM:"12"
+        FORM:"12",
+        GENERIC_BUTTONS_V2:"13"
     },
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
@@ -142,7 +156,21 @@ KommunicateConstants = {
         ONLINE: "online",
         OFFLINE: "offline"
     },
-    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform"
+    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform",
+    CHAT_POPUP_TEMPLATE: {
+        HORIZONTAL: 1,
+        VERTICAL: 2
+    },
+    GROUP_ROLE: {
+        USER: 0,
+        ADMIN: 1,
+        MODERATOR_OR_BOT: 2,
+        MEMBER: 3
+    },
+    POSITION: {
+        LEFT: 'left',
+        RIGHT: 'right'
+    }
 }
 
 /**
@@ -299,27 +327,24 @@ KommunicateUtils = {
             localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
         }
     },
-    getDomainFromUrl: function (hostName) {
-        hostName = hostName || parent.window.location.hostname;
-        var domain = "";
-        if (hostName != null) {
-            var parts = hostName.split('.').reverse();
-
-            if (parts != null && parts.length <= 1) {
-                // cases like  localhost
-                return domain;
-            } else if (parts != null && parts.length <= 3) {
-                // cases:  url with one or no sub domain 
-                domain = "." + parts[1] + '.' + parts[0];
-            } else if (parts != null && parts.length <= 4) {
-
-                if (!parseInt(parts[1]) && !parseInt(parts[0])) {
-                    // check if url is not IP address
-                    domain = "." + parts[2] + "." + parts[1] + "." + parts[0];
-                }
-            }
+    findCookieDomain: function(domain) {
+        //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
+        var i = 0;
+        var parts = domain.split('.');
+        var value = 'km_' + (new Date()).getTime();
+        //check value is added in cookie else continue the iteration
+        while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
+            //join the parts of domain
+            domain = parts.slice(-1 - (++i)).join('.');
+            //set value in cookie
+            document.cookie = value + "=" + value + ";domain=" + domain + ";";
         }
-        return domain;
+        //delete value from cookie
+        document.cookie = value + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";";
+        return domain
+    },
+    getDomainFromUrl: function () {
+        return KommunicateUtils.findCookieDomain(document.domain);
     },
     getSubDomain : function(){
          var hostName = parent.window.location.hostname;

@@ -3,61 +3,61 @@
 		<div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
 			<div id="mck-conversation-header" class="mck-conversation-header mck-truncate n-vis"></div>
 			<div class="mck-box-top mck-title">
-				<div class="blk-lg-10">
-					<div id="mck-tab-individual" class="mck-row">
-						<div class="mck-tab-link blk-lg-2 mck-back-btn-container">
-							<button id="mck-conversation-back-btn" aria-label="Back" role="button" tabindex="0" class="mck-conversation-tab-link">
-								<svg focusable="false" aria-hidden="true" class="mck-msg-list-icon" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30">
-									<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
-									<path d="M0-.5h24v24H0z" fill="none" />
-								</svg>
+				<div class="km-header-container">
+					<div class="km-conversation-header-title-container">
+						<div id="mck-tab-individual" class="mck-row n-vis">
+							<div class="mck-tab-link mck-back-btn-container">
+								<button id="mck-conversation-back-btn" aria-label="Back" role="button" tabindex="0" class="mck-conversation-tab-link">
+									<svg focusable="false" aria-hidden="true" class="mck-msg-list-icon" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30">
+										<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+										<path d="M0-.5h24v24H0z" fill="none" />
+									</svg>
 
+								</button>
+							</div>
+							<div class=" mck-name-status-container mck-box-title mck-truncate">
+								<div>
+									<div class="mck-agent-image-container">
+										<div class="mck-agent-image-svg-container n-vis"></div>
+										<img class="mck-agent-image n-vis" src="">
+										<span class="mck-agent-status-indicator km-custom-widget-border-color n-vis"></span>
+									</div>
+								</div>
+								<div>
+									<div id="mck-tab-title" class="mck-tab-title mck-truncate mck-display-name">Conversations</div>
+									<div id="mck-tab-status" class="mck-tab-status mck-truncate n-vis force-n-vis"></div>
+									<div id="mck-agent-status-text" class="mck-agent-status-text  n-vis"></div>
+									<div class="mck-typing-box mck-truncate n-vis">
+										<span id="mck-typing-label">typing...</span>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						<div id="mck-tab-conversation" class="mck-row">
+							<h4 id="mck-conversation-title" class="mck-box-title mck-truncate">Conversations</h4>
+						</div>
+					</div>
+
+					<div class="km-faq-and-close-btn-container mck-flexi">
+						<div class="km-kb-container n-vis">
+							<button id="km-faq" class="km-faq" type="button" aria-label="FAQ" tabindex="0" role="button">FAQ</button>
+						</div>
+						<div class="blk-lg-2 mck-close-btn">
+							<button type="button" class="mck-minimize-icon mck-box-close mck-close icon n-vis">
+								<span aria-hidden="true">&minus;</span>
+							</button>
+							<button type="button" id = "km-chat-widget-close-button" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
+								<svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">
+									<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+									<path d="M0 0h24v24H0z" fill="none" />
+								</svg>
 							</button>
 						</div>
-						<div class="blk-lg-7 mck-name-status-container mck-box-title mck-truncate">
-							<div>
-								<div class="mck-agent-image-container">
-									<div class="mck-agent-image-svg-container n-vis"></div>
-									<img class="mck-agent-image n-vis" src="">
-									<span class="mck-agent-status-indicator km-custom-widget-border-color n-vis"></span>
-								</div>
-							</div>
-							<div>
-								<div id="mck-tab-title" class="mck-tab-title mck-truncate mck-display-name">Conversations</div>
-								<div id="mck-tab-status" class="mck-tab-status mck-truncate n-vis force-n-vis"></div>
-								<div id="mck-agent-status-text" class="mck-agent-status-text  n-vis"></div>
-								<div class="mck-typing-box mck-truncate n-vis">
-									<span id="mck-typing-label">typing...</span>
-								</div>
-							</div>
-							
-						</div>
-						<div id="mck-btn-video-call" class="mck-videocall-btn  blk-lg-2 n-vis">
-							<svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
-								<path d="M0 0h24v24H0z" fill="none"/>
-								<path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-							</svg>
-						</div>
-					</div>
-					<div id="mck-tab-conversation" class="mck-row">
-						<h4 id="mck-conversation-title" class="mck-box-title mck-truncate">Conversations</h4>
 					</div>
 
 				</div>
-				<div class="km-kb-container n-vis">
-					<button id="km-faq" class="km-faq" type="button" aria-label="FAQ" tabindex="0" role="button">FAQ</button>
-				</div>
-				<div class="blk-lg-2 mck-close-btn">
-					<button type="button" class="mck-minimize-icon mck-box-close mck-close icon n-vis">
-						<span aria-hidden="true">&minus;</span>
-					</button>
-					<button type="button" id = "km-chat-widget-close-button" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
-						<svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">
-							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-							<path d="M0 0h24v24H0z" fill="none" />
-						</svg>
-					</button>
-				</div>
+				
 			</div>
 			<div id="km-local-file-system-warning" class="n-vis">
 				<span id="km-local-file-system-warning-description">
@@ -131,28 +131,6 @@
 				</div>
 			</div>
 			<div class="mck-box-body">
-				<div id="mck-video-call-indicator" class="applozic-launchar n-vis">
-					<div id="mck-call-indicator-header" class="mck-row">
-						<div id="mck-video-call-icon" class="blk-lg-3 videocall-image">
-							<span class="mck-contact-icon"></span>
-						</div>
-						<div class="blk-lg-9">
-							<div id="mck-video-call-controls">
-								<div id="mck-vid-btn" class="mck-row ">
-									<div id="mck-video-call-indicator-txt" class="mck-video-call-indicator-txt blk-lg-9"></div>
-								</div>
-								<div class="mck-row justify-content-md-center">
-									<div id="mck-call-btn-div" class="mck-centered blk-lg-6">
-										<button id="mck-vid-receive-btn" class="mck-btn">Accept</button>
-										<button id="mck-vid-reject-btn" class="mck-btn">Reject</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
-
 				<div id="mck-message-cell" class="mck-tab-cell mck-message-cell">
 					<div id="mck-price-widget" class="mck-row mck-price-widget mck-top-widget n-vis">
 						<div class="mck-widget-panel">
@@ -303,15 +281,9 @@
 				<div class="mck-csat-wrapper n-vis" id="csat-2">
 				
 					<div class="mck-feedback-text-wrapper ">
-						<textarea name="feedback" cols="34" maxlength="90" id="mck-feedback-comment" placeholder="Add a comment…" aria-label="Add a comment..." tabindex="0" rows="4"></textarea>
-						<div class="mck-send-feedback" id="mck-submit-comment" aria-disabled="false" aria-label="Send feedback" tabindex="0">
-							<span class="mck-icon-send">
-								<svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15">
-									<path class="km-custom-widget-fill" fill="#5553B7" fill-rule="evenodd"
-										d="M7.878 7.858l-6.032.584-1.588 5.076a.787.787 0 0 0 1.097.944l13.22-6.401a.752.752 0 0 0 0-1.353L1.364.302a.787.787 0 0 0-1.096.944l1.587 5.077 6.021.584a.475.475 0 0 1 0 .946l.002.005z">
-									</path>
-								</svg>
-							</span>
+						<textarea name="feedback" cols="34" maxlength="90" id="mck-feedback-comment" placeholder="Add a feedback (optional)" aria-label="Add a feedback (optional)" tabindex="0" rows="4"></textarea>
+						<div class="km-custom-widget-background-color mck-send-feedback" id="mck-submit-comment" aria-disabled="false" aria-label="Send feedback" tabindex="0">
+							Submit your rating
 						</div>
 					</div>
 				</div>
@@ -337,10 +309,10 @@
 					<span id="mck-other-queries">If you have any other queries, just</span> <a id="mck-restart-conversation" href="javaScript:void(0)">restart this conversation</a>
 				</div>
 				<div id = "mck-conversation-status-box" class= "n-vis mck-row"></div>
-			    <div id="mck-char-warning" class="km-custom-widget-background-color n-vis">
-					<div>
-						<p id="mck-char-warning-text"></p>
-				   </div>
+				<div id="mck-char-warning" class="km-custom-widget-background-color n-vis">	
+					<div>	
+						<p id="mck-char-warning-text"></p>	
+				   </div>	
 				</div>
 				<div class="mck-box-form mck-row n-vis">
 					<div class="blk-lg-12">
@@ -768,7 +740,7 @@
 		</div>
 	</div>
 </div>
-<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="true" style="visibility: hidden;">
+<div id="km-chat-login-modal" class="km-sidemodal km-modal" role="main" aria-live="polite"  style="visibility: hidden;">
 	<div class="km-modal-dialog km-modal-sm">
 		<div class="km-modal-content">
 				<div class="km-sidemodal--modal-header km-custom-widget-background-color">
@@ -786,7 +758,7 @@
 			</div>
 			<div class="km-modal-body">
 				<div class="km-section-title">
-					<p id="km-lead-collection-heading" class="km-modal-span"></p>
+					<p id="km-lead-collection-heading" class="km-modal-span" tabindex="0"></p>
 				</div>
 				<p id="km-error-chat-login" class="km-modal-error n-vis"></p>
 				<div class="km-modal-form">
@@ -796,7 +768,7 @@
 						</div>
 						<div class="km-form-group km-last mck-askuserdetail-inputdiv km-last-child km-text-center"></div>
 						<div class="km-form-group km-text-center">
-							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"></button>
+							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation km-custom-widget-background-color"  tabindex="0" role="button"></button>
 						</div>
 					</form> 
 				</div>
@@ -811,6 +783,6 @@
 		</div>
 	</div>
 </div>
-<div id="km-anonymous-chat-launcher" class="km-hide-logo n-vis">
+<div id="km-anonymous-chat-launcher" class="km-anonymous-chat-launcher km-hide-logo n-vis">
 </div>
 

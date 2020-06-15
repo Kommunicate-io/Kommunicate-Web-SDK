@@ -14,12 +14,25 @@ Kommunicate.KmEventHandler = {
         }
     },
     'notificationEvent': function (message) {
-        if (KommunicateUtils.getDataFromKmSession("appOptions").openConversationOnNewMessage) {
+        if (KommunicateUtils.getDataFromKmSession("appOptions") && KommunicateUtils.getDataFromKmSession("appOptions").openConversationOnNewMessage) {
             Kommunicate.KmEventHandler.openChatOnNotification(message);
         } else if(document.getElementById('launcher-agent-img-container').classList.contains('vis')) {
             document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.add("n-vis");
             document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.remove("vis");
         } 
+    },
+    'onMessageReceived': function (message) {
+        //message received
+        var validMessageMetadata = message.metadata && (message.metadata.category != 'HIDDEN' && message.metadata.hide != "true");
+        if (!message.metadata || (validMessageMetadata)) {
+            // hiding away message when new message received from agents.
+            KommunicateUI.hideAwayMessage();
+        }
+    },
+    'onMessageSent': function(message){
+        if(!(message && message.metadata && message.metadata.feedback)){
+            KommunicateUI.showClosedConversationBanner(false);
+        }
     }
 
 } 

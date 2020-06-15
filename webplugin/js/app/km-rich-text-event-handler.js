@@ -19,8 +19,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click', '.km-faq-dialog-button', Kommunicate.richMsgEventHandler.processClickOnDialogButton); 
     $applozic("#mck-message-cell").on('click', ".km-progress-meter-container",Kommunicate.attachmentEventHandler.manageUploadAttachment);
     $applozic("#mck-message-cell").on('click', ".km-link-button",Kommunicate.richMsgEventHandler.handleLinkButtonClick); 
-
-    
+    $applozic("#mck-message-cell").on('click', ".km-attachment-icon",Kommunicate.attachmentEventHandler.handleSendingAttachment);
 }
 
 
@@ -30,15 +29,17 @@ Kommunicate.attachEvents = function($applozic){
  * define your event listeners.
  */
 Kommunicate.attachmentEventHandler= {
-    manageUploadAttachment: function (e) {
+    manageUploadAttachment: function (e) { 
         var stopUploadIconHidden = $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon').hasClass('n-vis');
         var uploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
         var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
         var msgkey = attachmentDiv[0].dataset.msgkey;
-        var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');      
+        var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');  
+        var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
+        var file = KM_PENDING_ATTACHMENT_FILE[msgkey];   
+        KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true); 
         if(Kommunicate.internetStatus) {
-            if(!stopUploadIconHidden && uploadIconHidden) {
-                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
+            if((!stopUploadIconHidden && uploadIconHidden)) {
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
                 $applozic(".km-progress-stop-upload-icon-"+msgkey).removeClass("vis").addClass("n-vis");
                 $applozic(".km-progress-upload-icon-"+msgkey).removeClass("n-vis").addClass("vis");
@@ -47,15 +48,14 @@ Kommunicate.attachmentEventHandler= {
                 deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
           
             } else {
-                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
-                var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
                 var fileName = attachmentDiv[0].dataset.filename;
                 var fileSize = attachmentDiv[0].dataset.filesize;
                 var fileUrl = attachmentDiv[0].dataset.fileurl;
                 var fileType = attachmentDiv[0].dataset.filetype
                 var groupId = attachmentDiv[0].dataset.groupid;
                 var thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
-                if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) { 
+                if(fileSize && fileUrl && fileMetaKey  && fileName && fileType ) { 
+                    KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                     messagePxy = {
                         contentType: 1,
                         groupId:groupId,
@@ -86,7 +86,7 @@ Kommunicate.attachmentEventHandler= {
                     $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis");
                     deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";              
                 } 
-                else if (thumbnailUrl  && groupId  && msgkey ) {
+                else if (thumbnailUrl  && groupId  && msgkey && file) {
                     messagePxy = {
                         contentType: 1,
                         groupId:groupId,
@@ -100,7 +100,6 @@ Kommunicate.attachmentEventHandler= {
                         type:5,
                         metadata:{}
                     }
-                    var file = KM_PENDING_ATTACHMENT_FILE[msgkey];
                     params = {
                         params: {
                             file: file,
@@ -108,6 +107,7 @@ Kommunicate.attachmentEventHandler= {
                         },
                         messagePxy: messagePxy
                     };
+                    KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                     $applozic.fn.applozic("uploadAttachemnt", params);
                     $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis");
                     deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none"; 
@@ -137,6 +137,91 @@ Kommunicate.attachmentEventHandler= {
         progressValue.style.strokeDashoffset = dashoffset;
         // value == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(key);
         }      
+     },
+     handleSendingAttachment: function(e) {
+        var stopSending = !Kommunicate.internetStatus || $applozic(e.target).closest('.km-msg-box-attachment').find('.km-attachment-cancel-icon').hasClass('vis');
+        var upload= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-attachment-upload-icon').hasClass('vis');
+        var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
+        var msgKey = attachmentDiv[0].dataset.msgkey;
+        var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');
+        var file = KM_PENDING_ATTACHMENT_FILE[msgKey];
+        var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
+        
+        if(stopSending) {
+            KommunicateUI.updateAttachmentStopUploadStatus(msgKey, true);
+            kommunicateCommons.modifyClassList( {class : ["km-attachment-progress-bar-success-"+msgKey, "km-attachment-progress-bar-wrapper-"+msgKey]}, "n-vis","vis");
+            kommunicateCommons.modifyClassList( {class : ["mck-timestamp-" + msgKey]}, "vis","n-vis");
+            $applozic(".km-attachment-cancel-icon-"+msgKey).removeClass("vis").addClass("n-vis");
+            $applozic(".km-attachment-upload-icon-"+msgKey).removeClass("n-vis").addClass("vis");
+            deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
+        } else {
+            var fileName = attachmentDiv[0].dataset.filename;
+            var fileSize = attachmentDiv[0].dataset.filesize;
+            var fileType = attachmentDiv[0].dataset.filetype;
+            var groupId = attachmentDiv[0].dataset.groupid;
+            var thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
+            var fileUrl = attachmentDiv[0].dataset.fileurl;
+            if (fileSize && fileMetaKey && fileName && fileType && fileUrl) {
+                KommunicateUI.updateAttachmentStopUploadStatus(msgKey, false);
+                messagePxy = {
+                    contentType: 1,
+                    groupId: groupId,
+                    fileMeta: {
+                        blobKey: fileMetaKey,
+                        contentType: fileType,
+                        size: fileSize,
+                        key: fileMetaKey,
+                        name: fileName,
+                        url: fileUrl,
+                        thumbnailUrl:fileUrl
+                    },
+                    message: "",
+                    type: 5,
+                    metadata: {},
+                    key: msgKey
+                }
+                var optns = {
+                    tabId: groupId,
+                };
+                var params = {
+                    messagePxy: messagePxy,
+                    optns: optns
+                };
+                $applozic.fn.applozic("submitMessage", params);
+                $applozic(".km-attachment-cancel-icon-"+msgKey).removeClass("vis").addClass("n-vis");
+                $applozic(".km-attachment-upload-icon-"+msgKey).removeClass("vis").addClass("n-vis");
+                deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";
+                kommunicateCommons.modifyClassList( {class : ["mck-timestamp-"+msgKey]}, "n-vis","vis");
+
+            } else if (thumbnailUrl && groupId && msgKey && file) {
+                messagePxy = {
+                    contentType: 1,
+                    groupId: groupId,
+                    key: msgKey,
+                    fileMeta: {
+                        thumbnailUrl: thumbnailUrl,
+                        contentType: 1,
+                        isUploaded: false
+                    },
+                    message: "",
+                    type: 5,
+                    metadata: {}
+                }
+                params = {
+                    params: {
+                        file: file,
+                        name: file.name
+                    },
+                    messagePxy: messagePxy
+                };
+                KommunicateUI.updateAttachmentStopUploadStatus(msgKey, false);
+                $applozic.fn.applozic("uploadAttachemnt", params);
+                kommunicateCommons.modifyClassList( {class : ["mck-timestamp-"+msgKey]}, "vis","n-vis");
+                deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "none";
+                delete KM_PENDING_ATTACHMENT_FILE[msgKey];
+            }
+        }
+        
      }
 }
 
@@ -275,8 +360,9 @@ Kommunicate.richMsgEventHandler = {
 
 
     handleRichButtonClick: function (e) {
-        //console.log("event generated: ", e);
-
+        var validationResults = [];
+        var validString = "";
+        var inputElement = "";
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
         var buttonType = target.dataset.buttontype || target.type;
@@ -289,21 +375,46 @@ Kommunicate.richMsgEventHandler = {
         var replyText = target.title || target.innerHTML;
         var  inputs = form.getElementsByTagName('input');
         for(var i = 0; i<inputs.length;i++){
-            data[inputs[i].name] = inputs[i].value; 
+            if (inputs[i].type == 'radio') {
+                if(inputs[i].checked == true) {
+                    data[inputs[i].name] = inputs[i].value;
+                } 
+            } else if(inputs[i].type == 'checkbox'){
+                if(inputs[i].checked == true) {
+                    !data[inputs[i].name] && (data[inputs[i].name] = []);
+                    data[inputs[i].name].push(inputs[i].value);
+                }
+            } else {
+                data[inputs[i].name] = inputs[i].value;
+                try {
+                    if(inputs[i].dataset.regex) {
+                        validString = Kommunicate.richMsgEventHandler.isValidString(inputs[i].dataset.regex, inputs[i].value);
+                        validationResults.push(validString);
+                        inputElement = form.getElementsByClassName("mck-form-error-"+inputs[i].name.toLowerCase().replace(/ +/g, ""))[0];
+                        if(!validString) {
+                            inputElement.innerHTML = inputs[i].dataset.errorText || MCK_LABELS["rich.form"].errorText;
+                        } else {
+                            inputElement.innerHTML = "";
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+        }
+        if(isActionableForm && validationResults.indexOf(false) != -1 ) {
+            return;
         }
         if (requestType == "json") {  
-           KommunicateUtils.isURL(form.action) && window.Applozic.ALApiService.ajax({
-            url: form.action,
-            async: false,
-            type: "post",
-            data:JSON.stringify(data),
-            contentType:"application/json",
-            success: function (data) { 
-            },
-            error: function (xhr,desc, err) {
-               console.log("error while sending data ",err); 
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            // for success response : this.responseText   
             }
-        })    
+          };
+        xhr.open("POST", form.action);
+        xhr.send(JSON.stringify(data));
+        
         } else {
             !isActionableForm && form.submit(); // called for submit button
             isActionableForm && KommunicateUtils.isURL(form.action) && $applozic.post(form.action, data).done(function(data) {
@@ -358,19 +469,20 @@ Kommunicate.richMsgEventHandler = {
         console.log("passenger detail submitted");
     },
     processQuickReplies : function(e){
-       var message = e.target.title;
-       var metadata = {};
+        var message = e.target.title;
+        var metadata = {};
         try{
             metadata=  JSON.parse(e.target.dataset.metadata);
         }catch(e){
         }
+        var languageCode = e.target.dataset.languagecode;
+        languageCode && Kommunicate.updateUserLanguage(languageCode);
         var messagePxy = {
             'message': message, //message to send 
             'metadata': metadata
         };
-
+        document.getElementById('mck-text-box').setAttribute('data-quick-reply',true);
         Kommunicate.sendMessage(messagePxy);
-
     },
     processClickOnListItem: function(e){
         var target = e.currentTarget;
@@ -378,6 +490,7 @@ Kommunicate.richMsgEventHandler = {
         var type = target.dataset.type;
         var articleId = target.dataset.articleid;
         var source = target.dataset.source;
+        var languageCode = target.dataset.languagecode;
         var metadata = {};
         try{
             metadata=  JSON.parse(target.dataset.metadata);
@@ -386,6 +499,7 @@ Kommunicate.richMsgEventHandler = {
         metadata.KM_FAQ_ID =articleId;
         metadata.source= source;
         if(type && type =="quick_reply"){
+            languageCode && Kommunicate.updateUserLanguage(languageCode);
             var messagePxy = {
                 'message': reply, //message to send 
                 'metadata': metadata
@@ -402,6 +516,7 @@ Kommunicate.richMsgEventHandler = {
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
+        var languageCode = target.dataset.languagecode;
         var metadata = {};
         try{
             metadata=  JSON.parse(target.dataset.metadata);
@@ -410,6 +525,7 @@ Kommunicate.richMsgEventHandler = {
         }
         metadata.KM_BUTTON_CLICKED =true;
         if(type && type =="quick_reply"){
+            languageCode && Kommunicate.updateUserLanguage(languageCode);
             var messagePxy = {
                 'message': reply, //message to send 
                 'metadata': metadata
@@ -440,11 +556,14 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function(e) {
-        var url  = decodeURI(e.target.dataset.url);
-        window.open(url, e.target.dataset.target);
+        var url  = decodeURI(e.currentTarget.dataset.url);
+        window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function(e) {
         e.preventDefault();
+    },
+    isValidString: function (str, value) {
+        return new RegExp(str).test(value);
     }
 
 

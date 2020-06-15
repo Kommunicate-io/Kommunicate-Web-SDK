@@ -10,6 +10,7 @@ Kommunicate.defaultLabels = {
     'limit.remove': 'Remove',
     'limit.characters': 'characters',
     'limit.remaining': 'remaining',
+    'file.uploading.wait': 'Please wait file is uploading.',
     'empty.groups': 'No groups yet!',
     'empty.contacts': 'No contacts yet!',
     'empty.messages': 'No messages yet!',
@@ -90,6 +91,7 @@ Kommunicate.defaultLabels = {
     'talk.to.agent': 'Talk to an agent',
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
+    'conversation.rated':'rated the conversation',
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
         'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
@@ -105,23 +107,41 @@ Kommunicate.defaultLabels = {
         'HIDE': ''
     },
     'lead.collection': {
-                'email':'Email',
-                'name':'Name',
-                'phone':'Contact Number',
-                'heading':'Before starting, we just need a few details so that we may serve you better',
-                'submit':'Start Conversation',
+        'email':'Email',
+        'name':'Name',
+        'phone':'Contact Number',
+        'title':'Conversations',
+        'heading':'Before starting, we just need a few details so that we may serve you better',
+        'submit':'Start Conversation',
     },
     'csat.rating': {
         'CONVERSATION_RATED' : 'You rated the conversation',
         'RATE_CONVERSATION' : 'Rate your conversation',
-        'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a comment…',
+        'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a feedback (optional)',
         'OTHER_QUERIES' : 'Have other queries? ',
         'RESTART_CONVERSATION' : 'Restart this conversation',
+        'SUBMIT_RATING' : 'Submit your rating',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text' : {
         'poor': "Poor",
         'great': "Great",
         'average': "Average"
+    },
+    'rich.message':{
+        'notification.preview' : "Message"
+    },
+    'filter.conversation.list': {
+        'ALL_CONVERSATIONS': 'All conversations',
+        'ACTIVE_CONVERSATIONS': 'Active conversations',
+        'HIDE_RESOLVED': 'Hide resolved',
+        'SHOW_RESOLVED': 'Show resolved'
+    },
+    'rich.form': {
+        'errorText':'Please enter valid data'
+    },
+    'faq.query.message': {
+        'QUERY_REGARDING': 'Hi, I have a query regarding',
+        'HELP_YOU': 'Can you help me out?'
     }
 }

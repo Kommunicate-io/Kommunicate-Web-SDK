@@ -37,24 +37,22 @@ $applozic.extend(true,Kommunicate,{
         if (!params.agentId && !params.agentIds) {
             params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
-        var user = [{ "userId": "bot", "groupRole": 2 }];
+        var user = [];
         if (params.agentIds) {
             for (var i = 0; i < params.agentIds.length; i++) {
                 user.push({ "userId": params.agentIds[i], "groupRole": 1 });
             }
-        } else {
-            user.push({ "userId": params.agentId, "groupRole": 1 });
         }
         if (params.botIds) {
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({ "userId": params.botIds[i], "groupRole": 2 });
             }
         }
-        var groupName = params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
+        var groupName = params.defaultGroupName || params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
         var assignee = params.defaultAssignee || params.assignee || params.agentId;
 
         var groupMetadata = {};
-
+        params.defaultGroupName && (groupMetadata.KM_ORIGINAL_TITLE = true);
         ((typeof params.metadata == "object"  && typeof params.metadata['KM_CHAT_CONTEXT'] == "object")) && (groupMetadata.KM_CHAT_CONTEXT = params.metadata['KM_CHAT_CONTEXT']);
 
         params.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
@@ -70,9 +68,28 @@ $applozic.extend(true,Kommunicate,{
             "isInternal": params.isInternal,
             "skipRouting": params.skipRouting,
             "skipBotEvent": params.skipBotEvent,
+            "customWelcomeEvent": params.customWelcomeEvent,
             "metadata": groupMetadata
+        };
+        if (IS_SOCKET_CONNECTED) {
+            Kommunicate.client.createConversation(conversationDetail, callback);
+        } else {
+            var SET_INTERVAL_DURATION = 500;
+            var SET_TIMEOUT_DURATION = 3500;
+            var interval = setInterval(function(){
+                // socket connected check
+                if (IS_SOCKET_CONNECTED) {
+                    Kommunicate.client.createConversation(conversationDetail, callback);
+                    clearInterval(interval);
+                    timeout && clearTimeout(timeout)
+                };
+            },SET_INTERVAL_DURATION);
+            var timeout = setTimeout(function() {
+                conversationDetail.allowMessagesViaSocket = true;
+                Kommunicate.client.createConversation(conversationDetail, callback);
+                clearInterval(interval);
+            }, SET_TIMEOUT_DURATION);
         }
-        Kommunicate.client.createConversation(conversationDetail, callback);
     },
     updateConversationDetail: function(conversationDetail){
         var kommunicateSettings = KommunicateUtils.getDataFromKmSession("settings");
@@ -86,6 +103,7 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
         conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
+        conversationDetail.customWelcomeEvent = conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
 
         return conversationDetail;
     },
@@ -242,7 +260,9 @@ $applozic.extend(true,Kommunicate,{
         if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" && typeof window.$applozic.fn.applozic !== "undefined") {
             window.$applozic.fn.applozic('logout');
         };
+        KommunicateUtils.removeItemFromLocalStorage("mckActiveConversationInfo");
         KommunicateUtils.deleteUserCookiesOnLogout();
+        parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
         window.$applozic.fn.applozic("mckLaunchSideboxChat");
@@ -292,11 +312,12 @@ $applozic.extend(true,Kommunicate,{
     },
     isRichTextMessage: function (metadata) {
         // contentType should be 300 for rich text message in metadata
-        return metadata && metadata.contentType == 300;
+        // contentType 300 is removed from rich message payload since Jan-2020 and old payload this may getting used.
+        return metadata && (metadata.hasOwnProperty('templateId') || metadata.contentType == 300);
     },
     appendEmailToIframe:function (message){
         var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
-        if(richText && message.source === 7){
+        if(richText && message.source === 7 && message.message){
             var iframeID = "km-iframe-"+ message.groupId;
             var iframe = document.getElementById(iframeID);
             var doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -392,6 +413,7 @@ $applozic.extend(true,Kommunicate,{
                     return Kommunicate.markup.getCarouselMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
@@ -416,6 +438,7 @@ $applozic.extend(true,Kommunicate,{
        5. skipBotEvent [multiple values]
        6. KM_CHAT_CONTEXT
        7. WELCOME_MESSAGE
+       8. customWelcomeEvent [single value]
    */
     updateSettings:function(options){
         var type = typeof options;
@@ -453,14 +476,13 @@ $applozic.extend(true,Kommunicate,{
         !kommunicateCommons.checkIfDeviceIsHandheld() && kommunicateCommons.modifyClassList( {id : ["mck-sidebox"]}, "popup-enabled","");
         var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
-        var popUpcloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
+        var popUpCloseButton = kommunicateIframeDocument.getElementById("km-popup-close-button");
         kommunicateIframe.style.width = '';
         kommunicateIframe.classList.remove('km-iframe-notification');
         kommunicateIframe.classList.remove('km-iframe-closed');
-        isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpcloseButton.style.display = 'flex' ) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
+        isPopupEnabled ? ( kommunicateIframe.classList.add('km-iframe-dimension-with-popup') , popUpCloseButton && (popUpCloseButton.style.display = 'flex')) : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
-
     // add css to style component in window
     customizeWidgetCss : function (classSettings) {
             var style = document.createElement('style');
@@ -468,20 +490,25 @@ $applozic.extend(true,Kommunicate,{
             style.innerHTML = classSettings;
             document.getElementsByTagName('head')[0].appendChild(style);
     },
-
     // subscribe to custom events
     subscribeToEvents : function (events) {
         $applozic.fn.applozic('subscribeToEvents', events);
     },
     /**
-     * 
      * @param {String} timezone 
      */
-    updateUserTimezone: function(timezone){
-        if (KommunicateUtils.isValidTimeZone(timezone)){
+    updateUserTimezone: function (timezone) {
+        if (KommunicateUtils.isValidTimeZone(timezone)) {
             var chatContext = KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
             chatContext[KommunicateConstants.SETTINGS.KM_USER_TIMEZONE] = timezone;
             Kommunicate.updateChatContext(chatContext);
-        } 
+        };
+    },
+    /**
+     * @param {Boolean} display 
+     */
+    displayKommunicateWidget: function(display) {
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
+        display ? kommunicateIframe.classList.remove("kommunicate-hide-custom-iframe") : kommunicateIframe.classList.add("kommunicate-hide-custom-iframe");
     }
 });

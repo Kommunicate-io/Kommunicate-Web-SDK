@@ -5,12 +5,22 @@ function KommunicateCommons() {
     var CUSTOMER_CREATED_AT;
     var USE_BRANDING;
     var WIDGET_SETTINGS;
+    KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK;
     KommunicateCommons.IS_WIDGET_OPEN = false;
-
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
-        USE_BRANDING = typeof optns.useBranding  == 'boolean'? optns.useBranding : true;
+        USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
+        KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = optns.connectSocketOnWidgetClick || false;
+    };
+
+    _this.isTrialPlan = function (pricingPackage) {
+        var isTrialPlan = false;
+        if (pricingPackage === KommunicateConstants.PRICING_PACKAGE.TRIAL) {
+            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true; // remove this line if same thing is removed from mck-sidebox-1.0.js 
+            isTrialPlan = true;
+        }
+        return isTrialPlan;
     };
 
     _this.isStartupPlan = function (data) {
@@ -29,56 +39,54 @@ function KommunicateCommons() {
         return diffDays;
     };
 
-    _this.showPoweredBy = function(data){
+    _this.showPoweredBy = function (data) {
         var isKommunicateAccountExpired = _this.isKommunicatePlanExpired(data);
         // Preference given to use  paramater useBranding as some customers might be passing this parameter
-        if(!USE_BRANDING){
+        if (!USE_BRANDING) {
             return false;
         }
         // If account gets expired after startup plan, it will automatically add poweredBy until he purchases growth / enterprise plan
-        else if(isKommunicateAccountExpired){
+        else if (isKommunicateAccountExpired) {
             return true;
-        }
-        else if(kommunicateCommons.isObject(WIDGET_SETTINGS) && typeof WIDGET_SETTINGS.showPoweredBy !== "undefined"){
+        } else if (kommunicateCommons.isObject(WIDGET_SETTINGS) && typeof WIDGET_SETTINGS.showPoweredBy !== "undefined") {
             return WIDGET_SETTINGS.showPoweredBy;
-        }
-        else if (data  &&  data.pricingPackage  && (data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY || data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY)){
+        } else if (data && data.pricingPackage && (data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY || data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY)) {
             return false
-        }
-        else {
+        } else {
             return true;
-        } 
+        }
     };
 
-    _this.classListChanger = function(elem, add, remove){
-        add && elem.classList.add(add); 
-        remove && elem.classList.remove(remove); 
+    _this.classListChanger = function (elem, add, remove) {
+        add && elem.classList.add(add);
+        remove && elem.classList.remove(remove);
     }
     /* use this method instead of jquery method to manipulate classes. for eg to display [vis] or hide [n-vis] an element
        addClass and removeClass to be passed as strings in the case of no classes pass "" elem will always be passed as an object
        array of strings containing IDs or Classes on which the classes need to be manipulated infromt of respective object property*/
 
-    _this.modifyClassList = function(elem, addClass, removeClass){ 
-            var idList = elem.id,
-                classList = elem.class , list=[];
-            idList && idList.forEach(function(id){
-                document.getElementById(id)&&list.push(document.getElementById(id));
-            })
-            classList && classList.forEach(function(className){
-				var el = document.getElementsByClassName(className);
-                for(var i=0; i<=el.length-1; i++){
-					el && list.push(el[i]);
-					}
-            })
-            list.forEach(function(node){
-             _this.classListChanger(node,addClass,removeClass);
-            })
-        
+    _this.modifyClassList = function (elem, addClass, removeClass) {
+        var idList = elem.id,
+            classList = elem.class,
+            list = [];
+        idList && idList.forEach(function (id) {
+            document.getElementById(id) && list.push(document.getElementById(id));
+        })
+        classList && classList.forEach(function (className) {
+            var el = document.getElementsByClassName(className);
+            for (var i = 0; i <= el.length - 1; i++) {
+                el && list.push(el[i]);
+            }
+        })
+        list.forEach(function (node) {
+            _this.classListChanger(node, addClass, removeClass);
+        })
+
     };
 
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
      value passed is just a object or not. */
-    _this.isObject = function(object) {
+    _this.isObject = function (object) {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
     };
@@ -86,29 +94,35 @@ function KommunicateCommons() {
     _this.getTimeOrDate = function (createdAtTime) {
         var timeStamp = new Date(createdAtTime);
         var currentTime = new Date(),
-            secondsPast = Math.max(0,(currentTime.getTime() - timeStamp.getTime() ) / 1000);
-        if(secondsPast < 60){
-            return (parseInt(secondsPast)<=1) ? parseInt(secondsPast) + ' sec ago' : parseInt(secondsPast) + ' secs ago';
+            secondsPast = Math.max(0, (currentTime.getTime() - timeStamp.getTime()) / 1000);
+        if (secondsPast < 60) {
+            return (parseInt(secondsPast) <= 1) ? parseInt(secondsPast) + ' sec ago' : parseInt(secondsPast) + ' secs ago';
         }
-        if(secondsPast < 3600){
-            return (parseInt(secondsPast/60)<=1) ? parseInt(secondsPast/60)  + ' min ago' : parseInt(secondsPast/60) + ' mins ago';
+        if (secondsPast < 3600) {
+            return (parseInt(secondsPast / 60) <= 1) ? parseInt(secondsPast / 60) + ' min ago' : parseInt(secondsPast / 60) + ' mins ago';
         }
-        if(secondsPast <= 172800){
-            return (parseInt(secondsPast/3600)<=1) ? parseInt(secondsPast/3600) + ' hr ago' : parseInt(secondsPast/3600) + ' hrs ago';
+        if (secondsPast <= 172800) {
+            return (parseInt(secondsPast / 3600) <= 1) ? parseInt(secondsPast / 3600) + ' hr ago' : parseInt(secondsPast / 3600) + ' hrs ago';
         }
-        if(secondsPast > 172800){
-              day = timeStamp.getDate();
-              month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
-              year = timeStamp.getFullYear() == currentTime.getFullYear() ? "" :  " "+timeStamp.getFullYear();
-              return day + " " + month + year;
+        if (secondsPast > 172800) {
+            day = timeStamp.getDate();
+            month = timeStamp.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ", "");
+            year = timeStamp.getFullYear() == currentTime.getFullYear() ? "" : " " + timeStamp.getFullYear();
+            return day + " " + month + year;
         }
     };
 
-    _this.setWidgetStateOpen = function(isWidgetOpen){
+    _this.setWidgetStateOpen = function (isWidgetOpen) {
+        if (KommunicateCommons.IS_WIDGET_OPEN === isWidgetOpen) return; // return if same value is already assigned to IS_WIDGET_OPEN.
         KommunicateCommons.IS_WIDGET_OPEN = isWidgetOpen;
+        if (IS_SOCKET_CONNECTED) {
+            window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
+        } else {
+            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK ? $applozic.fn.applozic('initializeSocketConnection', false) : (window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED && window.Applozic.ALSocket.checkConnected(true));
+        };
     };
 
-    _this.isWidgetOpen = function(){
+    _this.isWidgetOpen = function () {
         return KommunicateCommons.IS_WIDGET_OPEN;
     };
 
@@ -127,19 +141,26 @@ function KommunicateCommons() {
         temporalDivElement.innerHTML = html;
         return temporalDivElement.textContent || temporalDivElement.innerText || "";
     };
+    _this.formatHtmlTag = function (html) {
+        return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
     _this.isConversationClosedByBot = function () {
-        var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
-            return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
-        });
-        return filtered[0] && filtered[0].role == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
-
+        if (CURRENT_GROUP_DATA.groupMembers && Array.isArray(CURRENT_GROUP_DATA.groupMembers)) {
+            var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
+                return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
+            });
+            return filtered[0] && filtered[0].role == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
+        } else {
+            return false
+        }
     };
 
     _this.getRatingSmilies = function (rating) {
         return KommunicateConstants.RATINGS_SVG[rating];
-    }
+    };
 
-    _this.getDefaultAvatarImageSvg = function() {
+    _this.getDefaultAvatarImageSvg = function () {
         return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
-    }
+    };
+
 };
