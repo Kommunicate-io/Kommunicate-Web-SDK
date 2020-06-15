@@ -382,7 +382,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_SELF_CHAT_DISABLE = (appOptions.disableSelfChat)?appOptions.disableSelfChat :false;
-        var MCK_NOTIFICATION_TONE_VOLUME = (typeof WIDGET_SETTINGS.notificationVolume === "number") ? WIDGET_SETTINGS.notificationVolume : 1; // Volume range for howler library is from 0->1.
+        var MCK_NOTIFICATION_TONE_VOLUME = (WIDGET_SETTINGS && typeof WIDGET_SETTINGS.notificationVolume === "number") ? WIDGET_SETTINGS.notificationVolume : 1; // Volume range for howler library is from 0->1.
         var MCK_NOTIFICATION_TONE_LINK = (WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone) ? KommunicateConstants.NOTIFICATION_RINGTONES[WIDGET_SETTINGS.notificationTone] : KommunicateConstants.NOTIFICATION_RINGTONES['subtle'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink ? appOptions.chatPopupSoundNotificationLink : KommunicateConstants.KM_CHAT_POPUP_NOTIFICATION_URL;
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
@@ -469,6 +469,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             10 : MCK_LABELS['emoji.hover.text'].great
         }; 
         var MCK_BOT_MESSAGE_DELAY = WIDGET_SETTINGS && WIDGET_SETTINGS.botMessageDelayInterval ? WIDGET_SETTINGS.botMessageDelayInterval : 0;
+        var MCK_CUSTOM_BRANDING = WIDGET_SETTINGS && WIDGET_SETTINGS.customBranding;
         var WIDGET_POSITION = WIDGET_SETTINGS && kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.hasOwnProperty('position') ? WIDGET_SETTINGS.position : KommunicateConstants.POSITION.RIGHT;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
             SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
@@ -495,7 +496,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         };
         var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick;
         var SUBSCRIBE_TO_EVENTS_BACKUP = {};
-        var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
+        var DEFAULT_ENCRYPTED_APP_VERSION = 112;
+        kommunicateCommons.checkIfDeviceIsHandheld() && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
 
         _this.toggleMediaOptions = function(){
             var mckTypingBox = document.getElementById("mck-text-box");
@@ -1632,6 +1634,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                             ALStorage.clearMckMessageArray();
                             ALStorage.clearMckContactNameArray();
                             if (result === "INVALID_PASSWORD") {
+                                KommunicateUtils.deleteUserCookiesOnLogout();
                                 Kommunicate.displayKommunicateWidget(false);
                                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                     MCK_ON_PLUGIN_INIT({
@@ -1830,7 +1833,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
 
                 Kommunicate.initilizeEventListners();
-                var activeConversationInfo = Kommunicate.getActiveConversation();
+                var activeConversationInfo = KommunicateUtils.getItemFromLocalStorage("mckActiveConversationInfo");
                 
                 // Calling "loadMessageList" with empty parameters to get the count of the total conversations to show the back button if
                 // Single Threaded Conversations settings (isSingleThreaded) is enabled.
@@ -1851,7 +1854,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
                 // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
-                    KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true}, KOMMUNICATE_VERSION);
+                KommunicateUtils.triggerCustomEvent("kmInitilized", { detail: data, bubbles: true, cancelable: true }, KOMMUNICATE_VERSION);
                 
                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                     // callback when plugin initilized successfully.
@@ -1867,7 +1870,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
                 // calling Kommunicate for post initialization processing. error first style.
-                Kommunicate.postPluginInitialization(null,data);
+                Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     'userId': MCK_USER_ID,
                     'displayName': data.displayName,
@@ -1880,7 +1883,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     var utmSourceUrl = kommunicateIframe ? (kommunicateIframe.getAttribute('data-url') || parent.window.location.href) : w.location.href;
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
+                    if(MCK_CUSTOM_BRANDING){
+                        document.querySelector(".mck-running-on").innerHTML = MCK_CUSTOM_BRANDING;
+                    }
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
+                    
                 };
                 _this.setEmojiHoverText();
                 _this.configureRatingElements();
@@ -2011,6 +2018,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         rating:0
                     };
                     var comment = document.getElementById("mck-feedback-comment");
+                    sendFeedbackComment.setAttribute("disabled","true");
                     comment && comment.value.trim() && (feedbackObject.comments = [comment.value]);
                     feedbackObject.rating = parseInt(document.querySelector('.mck-rating-box.selected').getAttribute("data-rating"));
                     feedbackObject.groupId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
@@ -2045,7 +2053,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                        if(result && result.data){
                            CURRENT_GROUP_DATA.currentGroupFeedback = result.data.data
                            KommunicateUI.showClosedConversationBanner(true);
-                           document.getElementById("mck-feedback-comment").value = '';
+                           document.getElementById("mck-feedback-comment").value = '';       
                            kommunicateCommons.modifyClassList( {class : ["mck-feedback-text-wrapper"]}, "n-vis","");
                        }
                     },
@@ -2342,6 +2350,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_sidebox = $applozic("#mck-sidebox");
             var $mck_file_box = $applozic("#mck-file-box");
             var $mck_text_box = $applozic("#mck-text-box");
+            var $mck_box_form = $applozic(".mck-box-form");
             var $mck_msg_form = $applozic("#mck-msg-form");
             var $mck_msg_sbmt = $applozic("#mck-msg-sbmt");
             var $mck_new_group = $applozic("#mck-new-group");
@@ -2795,8 +2804,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 });
                 $mck_text_box.keydown(function (e) {
-                    if ($mck_text_box.hasClass('mck-text-req')) {
-                        $mck_text_box.removeClass('mck-text-req');
+                    if ($mck_box_form.hasClass('mck-text-req')) {
+                        $mck_box_form.removeClass('mck-text-req');
                     }
                     if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
                         e.preventDefault();
@@ -3310,7 +3319,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         FILE_META = [];
                     }
                     if (message.length === 0 && FILE_META.length === 0) {
-                        $mck_text_box.addClass("mck-text-req");
+                        $mck_box_form.addClass("mck-text-req");
                         return false;
                     }
                     if (typeof (MCK_MSG_VALIDATION) === 'function' && !MCK_MSG_VALIDATION(message)) {
@@ -3378,7 +3387,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     if ($mck_btn_attach.hasClass('on') && !$applozic(e.target).hasClass('mck-icon-upload') && !$applozic(e.target).hasClass('mck-btn-attach')) {
                         mckMapLayout.fileMenuToggle();
                     }
-                    $mck_text_box.removeClass('mck-text-req');
+                    $mck_box_form.removeClass('mck-text-req');
                     if (d.activeElement && d.activeElement !== $mck_text_box) {
                         if (window.Applozic.ALSocket.mck_typing_status === 1) {
                             window.Applozic.ALSocket.sendTypingStatus(0, window.Applozic.ALSocket.mck_typing_status, MCK_USER_ID, $mck_msg_inner.data('mck-id'));
@@ -3517,7 +3526,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
                 messagePxy.metadata = metadata;
                 if ((typeof messagePxy.message === 'undefined' || messagePxy.message.length === 0) && FILE_META.length === 0) {
-                    $mck_text_box.addClass("mck-text-req");
+                    $mck_box_form.addClass("mck-text-req");
                     return;
                 }
 
@@ -3640,7 +3649,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         
                     });
                 }
-                $mck_text_box.removeClass('mck-text-req');
+                $mck_box_form.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $applozic('.' + randomId + ' .mck-message-status').removeClass('mck-sent-icon').addClass('mck-pending-icon');
                 mckMessageLayout.addTooltip(randomId);
@@ -4321,7 +4330,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         typeof callback =='function' && callback(data);
 
                         mckMessageLayout.messageClubbing(true);
-
                         for (var key in data.userDetails) {
                             if (data.userDetails[key].userId && data.userDetails[key].userId == CURRENT_GROUP_DATA.conversationAssignee && data.userDetails[key].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) {
                                  mckGroupLayout.checkBotDetail(CURRENT_GROUP_DATA.conversationAssignee);
@@ -4705,6 +4713,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_msg_sbmt = $applozic("#mck-msg-sbmt");
             var $mck_msg_form = $applozic("#mck-msg-form");
             var $mck_text_box = $applozic("#mck-text-box");
+            var $mck_box_form = $applozic(".mck-box-form");
             var $mck_msg_error = $applozic("#mck-msg-error");
             var $mck_show_more = $applozic("#mck-show-more");
             var $mck_tab_title = $applozic("#mck-tab-title");
@@ -4712,7 +4721,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_msg_cell = $applozic("#mck-message-cell");
             var $mck_typing_box = $applozic('.mck-typing-box');
             var $mck_no_messages = $applozic('#mck-no-messages');
-
             var $mck_product_box = $applozic("#mck-product-box");
             var $mck_product_icon = $applozic(".mck-product-icon");
             var $mck_product_title = $applozic(".mck-product-title");
@@ -5069,6 +5077,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 } else {
                     mckMessageService.loadMessageList(params, callback);
                 }
+                document.getElementById("mck-submit-comment").removeAttribute("disabled");
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
@@ -6646,7 +6655,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
             _this.clearMessageField = function (keyboard) {
                 $mck_text_box.html('');
-                $mck_text_box.removeClass('mck-text-req');
+                $mck_box_form.removeClass('mck-text-req');
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box.removeClass('vis').removeClass('mck-text-req').addClass('n-vis').attr('required', '').html('');
                 var disableAutofocus = document.getElementById('mck-text-box').getAttribute('data-quick-reply') === 'true';

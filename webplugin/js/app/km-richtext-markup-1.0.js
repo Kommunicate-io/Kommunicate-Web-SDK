@@ -258,8 +258,11 @@ getCarouselTemplate: function() {
 return `<div class="mck-msg-box-rich-text-container km-card-message-container  km-div-slider">
             {{#payload}}
             <div class="km-carousel-card-template">
+            <div class="km-carousel-card-header-container">
+            {{#url}}<a href = {{url}} target="_blank"><span class="km-carousel-url-container"></span></a>{{/url}}
             <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
             <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
+            </div>
             <div class="km-carousel-card-footer">{{{footer}}}</div>
             </div>
             {{/payload}}
@@ -520,14 +523,32 @@ Kommunicate.markup.getHtmlMessageMarkups = function (message) {
 }
 Kommunicate.markup.getActionableFormMarkup = function(options) {
     var action = {};
+    var data = {};
+    var isActionObject = false;
     if (options && options.payload) {
         var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = payload;
         options.buttons = [];
+        if(kommunicateCommons.isObject(options.payload[0].data)) {
+            options.payload = options.payload.map((item, index) => {
+                data = {};
+                data.type = item.type;
+                for (var key in item.data) {
+                        if (item.data.hasOwnProperty(key)) {
+                            data[key] = item.data[key];
+                        }
+                        
+                }
+                return data;
+            })
+        }
         options.payload.forEach(function (item,index) {
             if(item.type == "submit") {
-                options.actionUrl = item.formAction || "javascript:void(0);";
-                options.requestType = item.requestType;
+                isActionObject = kommunicateCommons.isObject(item.action);
+                options.actionUrl = item.formAction || (isActionObject && item.action.formAction) || "javascript:void(0);";
+                options.requestType = item.requestType || (isActionObject && item.action.requestType) ;
+                options.label = item.name || item.label;
+                options.message  = item.message || (isActionObject && item.action.message);
                 options.payload[index].className = "km-cta-button";
                 options.buttons.push(item);
                 options.payload.splice(index,1);
@@ -591,6 +612,7 @@ Kommunicate.markup.getCarouselMarkup = function(options) {
             cardHtml.info = Kommunicate.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
             cardList[i] = $applozic.extend([], cardHtml);
+            cardList[i].url = item.url;
         }
     }
     var cardCarousel = {payload:cardList};

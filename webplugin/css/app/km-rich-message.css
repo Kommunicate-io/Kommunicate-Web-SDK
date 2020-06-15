@@ -676,6 +676,7 @@
     }  
     #mck-away-msg {
         white-space: pre-line;
+        word-break: break-word;
     }
     .mck-collect-email {
         font-size: 14px;
@@ -1016,6 +1017,7 @@
     max-width: 240px;
     width:240px !important;
     margin:8px 4px 0 10px;
+    position: relative;
 }
 .tns-slider .km-carousel-card-template {
     margin:8px 4px 0 6px;
@@ -1051,6 +1053,8 @@
     line-height: normal;
     letter-spacing: 0.6px;
     color: #141313;
+    word-break: break-word;
+    text-overflow: ellipsis;
 }
 .km-carousel-card-sub-title {
     font-size: 14px;
@@ -1059,6 +1063,11 @@
     color: #565454;
     margin-top: 4px;
     font-weight: 400;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    padding-right:20px;
 }
 .km-carousel-card-content-wrapper {
     padding-top: 6px;
@@ -1066,6 +1075,14 @@
     padding-bottom: 6px;
     border: 1px solid #e7e4e4;
     border-top: 0;
+}
+.km-carousel-url-container {
+        position:absolute; 
+        width:100%;
+        height:100%;
+        top:0;
+        left: 0;
+        z-index: 1; 
 }
 .km-carousel-card-title-wrapper {
     display: flex;
@@ -1115,6 +1132,7 @@
   color: #797474;
   height: auto;
   white-space: pre-line;
+  text-overflow: ellipsis;
 }
 .km-carousel-card-description:before {
     content: '...';
