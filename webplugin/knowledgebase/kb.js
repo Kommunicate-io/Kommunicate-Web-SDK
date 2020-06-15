@@ -4,7 +4,7 @@
         var KommunicateKB = {};
         var KM_API_URL = "https://api.kommunicate.io";
         var KB_URL = "/kb/search?appId=:appId";
-        var SOURCES = {kommunicate : 'KOMMUNICATE', helpdocs: 'HELPDOCS'};
+        var SOURCES = {kommunicate : 'KOMMUNICATE'};
         var SEARCH_ELASTIC = '/kb/_search';
 
         //KommunicateKB.init("https://api.kommunicate.io");
@@ -12,110 +12,49 @@
             KM_API_URL = url;
         }
 
-        //KommunicateKB.getArticles({data: {appId: 'kommunicate-support', query: 'fcm', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
-        KommunicateKB.getArticles = function(options) {
-            try{
-            var articles = [];
-            KommunicateKB.getFaqs({data: options.data, success: function(response) {
-                for (var i = 0; i < response.data.length; i++){
-                    var article = response.data[i];
-                    articles.push({
-                        articleId: article.id,
-                        title: article.name,
-                        description: article.content, 
-                        status: article.status,
-                        body: article.content,
-                        source: SOURCES.kommunicate
-                    });
-                }
-
-                if (options.data.helpdocsAccessKey) {
-                    Helpdocs.getArticles({data: options.data, success:function(response) {
-                            var data = response.data;
-                            for (var i = 0; i < data.articles.length; i++){
-                                var article = data.articles[i];
-                                if(article.is_published === true){
-                                articles.push({
-                                    articleId: article.article_id,
-                                    title: article.title,
-                                    description: article.description, 
-                                    body: article.description,
-                                    url: article.url,
-                                    source: SOURCES.helpdocs
-                                });
-                            }
+        KommunicateKB.getArticles = function (options) {
+            try {
+                var articles = [];
+                KommunicateKB.getFaqs({
+                    data: options.data, success: function (response) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            var article = response.data[i];
+                            articles.push({
+                                articleId: article.id,
+                                title: article.name,
+                                description: article.content,
+                                status: article.status,
+                                body: article.content,
+                                source: SOURCES.kommunicate
+                            });
+                        }
+                        if (options.success) {
+                            var res = new Object();
+                            res.status = "success";
+                            res.data = articles;
+                            options.success(res);
+                        }
+                    }, error: function (err) {
+                        if (typeof options.error === 'function') {
+                            options.error(err);
                         }
 
-                            if (options.success) {
-                                var res = new Object();
-                                res.status = "success";
-                                res.data = articles;
-                                options.success(res);
-                            }
-                        }, error: function(error) {
-                            if(articles.length && options.success){
-                                var res = new Object();
-                                res.status = "success";
-                                res.data = articles;
-                                options.success(res);
-                            }else if(options.error){
-                            options.error(error);
-                            }
-                            
-                        }
-                    });
-                } else {
-                    if (options.success) {
-                        var res = new Object();
-                        res.status = "success";
-                        res.data = articles;
-                        options.success(res);
                     }
-                }
-
-            }, error: function(err) {
-                if(typeof options.error ==='function' ){
-                    options.error(err);
-                }
-                
-            }});
-        }catch(e){
-            options.error(e);
+                });
+            } catch (e) {
+                options.error(e);
             }
         }
 
-        //KommunicateKB.getArticle({data: {appId: 'kommunicate-support', articleId: 'tuqx5g5kq5', source: 'HELPDOCS', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getArticle = function (options) {
-            if (options.data.source == SOURCES.helpdocs) {
-                Helpdocs.getArticle({data: options.data, success: function(response) {
-                    var article = response.data.article;
-                    var article = {
-                        articleId: article.article_id,
-                        title: article.title,
-                        description: article.description, 
-                        body: article.body,
-                        url: article.url,
-                        source: SOURCES.helpdocs
-                    };
-
-                    if (options.success) {
-                        var res = new Object();
-                        res.status = "success";
-                        res.data = article;
-                        options.success(res);
-                    }
-                }, error: function(e) {
-                    options.error(e);
-                }
-                });
-            } else {
-                KommunicateKB.getFaq({data: options.data, success: function(response) {
+            KommunicateKB.getFaq({
+                data: options.data, success: function (response) {
                     var faq = response.data.data[0];
-                    
+
                     var article = {
                         articleId: faq.id,
                         title: faq.name,
-                        description: faq.content, 
+                        description: faq.content,
                         body: faq.content,
                         status: faq.status,
                         source: SOURCES.kommunicate
@@ -127,11 +66,10 @@
                         res.data = article;
                         options.success(res);
                     }
-                }, error: function(e) {
+                }, error: function (e) {
                     options.error(e);
                 }
             });
-            }
         }
 
         //KommunicateKB.getFaqs({data: {appId: 'kommunicate-support', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
