@@ -530,7 +530,7 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
         options.payload = payload;
         options.buttons = [];
         if(kommunicateCommons.isObject(options.payload[0].data)) {
-            options.payload = options.payload.map((item, index) => {
+            options.payload = options.payload.map (function(item) {
                 data = {};
                 data.type = item.type;
                 for (var key in item.data) {
