@@ -87,8 +87,12 @@ const compressAndOptimize = () => {
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.css`),
         options: {
-            level: 2,
-            compatibility: 'ie9',
+            level: {
+                2: {
+                    overrideProperties: false, // controls property overriding based on understandability; defaults to true
+                }
+              },
+            compatibility: '*', // (default) - Internet Explorer 10+ compatibility mode
         },
         callback: function (err, min) {
             if (!err) {
