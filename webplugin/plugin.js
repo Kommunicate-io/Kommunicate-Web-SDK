@@ -228,7 +228,7 @@ function injectJquery() {
   var script = addableDocument.createElement('script');
   script.async = false;
   script.type = 'text/javascript';
-  script.src = "https://cdn.kommunicate.io/kommunicate/jquery-3.4.1.min.js";
+  script.src = "https://cdn.kommunicate.io/kommunicate/jquery-3.5.1.min.js";
   if (script.readyState) { // IE
     script.onreadystatechange = function () {
       if (script.readyState === "loaded" || script.readyState === "complete") {
