@@ -496,7 +496,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         };
         var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick;
         var SUBSCRIBE_TO_EVENTS_BACKUP = {};
-        var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
+        var DEFAULT_ENCRYPTED_APP_VERSION = 112;
         kommunicateCommons.checkIfDeviceIsHandheld() && (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
 
         _this.toggleMediaOptions = function(){
