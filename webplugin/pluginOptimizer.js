@@ -56,7 +56,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
             path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
             path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
-            path.resolve(__dirname, 'lib/js/tiny-slider-2.4.0.js'),
+            path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
         ],
@@ -82,7 +82,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'css/app/mck-sidebox-1.0.css'),
             path.resolve(__dirname, 'css/app/km-rich-message.css'),
             path.resolve(__dirname, 'css/app/km-login-model.css'),
-            path.resolve(__dirname, 'lib/css/tiny-slider-2.4.0.css'),
+            path.resolve(__dirname, 'lib/css/tiny-slider-2.9.2.css'),
             path.resolve(__dirname, 'css/app/km-sidebox.css'),
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicate.${version}.min.css`),
