@@ -959,6 +959,15 @@
 	width: 20px;
 }
 
+.mck-box-top-flex {
+	display: flex;
+	align-items: center;
+}
+
+.mck-group-back-link {
+	height: 45px;
+}
+
 .mck-sidebox-search .mck-box-top, .mck-search-tab-box {
 	padding-right: 0;
 }
@@ -1315,6 +1324,10 @@
 }
 .mck-box .mck-contact-list li:last-child {
 	margin-bottom: 67px;
+}
+
+#mck-group-admin-menu li:last-child {
+	margin-bottom: 0px;
 }
 
 .mck-contact-list li .blk-lg-3, .mck-sidebox-launcher .blk-lg-3,
@@ -2902,6 +2915,8 @@ display: none;
 	padding: 6px 12px;
 	line-height: 20px;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+	margin-left:auto;
+	margin-right:auto;
 }
 
 .mck-msg-center .mck-context-menu, .mck-msg-center-muted {
@@ -5533,6 +5548,25 @@ div#mck-rated:before{
 		opacity: 1;
 	}
 }
+
+.mck-mic-btn {
+	display: inline-block;
+	float: left;
+	margin-top: 12px;
+}
+
+.mck-mike-btn {
+	background-image: url(../css/app/images/mck-mic-btn.png);
+	background-repeat: no-repeat;
+	float :left !important;
+	margin-top: 7px;
+	height:18px;
+	width:19px;
+	  overflow: hidden;
+	background-size: 20px;
+	cursor: pointer;
+}
+
 .mck-mic-animation-container {
 	width: 30px;
 	height:  30px;
