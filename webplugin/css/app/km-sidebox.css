@@ -30,6 +30,18 @@
 .km-typing-indicator:nth-child(3) {
     animation-delay: 0.4s;
 }
+.km-offline-msg{
+    color: rgb(255, 255, 255);
+    position: relative;
+    z-index: 999;
+    background: rgb(28, 171, 226);
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0px 30px;
+}
 
 @keyframes km-typing-anim {
     0% {

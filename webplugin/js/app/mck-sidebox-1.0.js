@@ -1794,9 +1794,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
+                    kommunicateCommons.modifyClassList({id:["internet-disconnect-msg"]}, "n-vis","vis");
                     window.Applozic.ALSocket.reconnect();
                 });
                 w.addEventListener('offline', function () {
+                    kommunicateCommons.modifyClassList({id:["internet-disconnect-msg"]}, "vis","n-vis");
                     console.log("offline");
                 });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
