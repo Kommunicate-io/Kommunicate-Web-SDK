@@ -1875,7 +1875,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if (showPoweredBy) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     var utmSourceUrl = kommunicateIframe ? (kommunicateIframe.getAttribute('data-url') || parent.window.location.href) : w.location.href;
-                    var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
+                    var poweredByUrl = "https://www.kommunicate.io/poweredby?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     if(MCK_CUSTOM_BRANDING){
                         document.querySelector(".mck-running-on").innerHTML = MCK_CUSTOM_BRANDING;
