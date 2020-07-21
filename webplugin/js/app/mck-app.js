@@ -433,7 +433,7 @@ function ApplozicSidebox() {
         userId = KommunicateUtils.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID) || userId;
         Sentry.init({
             dsn: sentryConfig.dsn,
-            release: KommunicateConstants.KM_SERVER_RELEASE_VERSION
+            release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION
         });
         Sentry.configureScope(function (scope) {
             scope.setTag("applicationId", applozic._globals.appId);
