@@ -92,6 +92,7 @@ Kommunicate.defaultLabels = {
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
     'conversation.rated':'rated the conversation',
+    'offline.msg': "Uh oh! No internet connection. Please check your network settings and try again.",
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
         'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',

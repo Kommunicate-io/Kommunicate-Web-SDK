@@ -1794,9 +1794,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
+                    kommunicateCommons.modifyClassList({id:["km-internet-disconnect-msg"]}, "n-vis","vis");
                     window.Applozic.ALSocket.reconnect();
                 });
                 w.addEventListener('offline', function () {
+                    kommunicateCommons.modifyClassList({id:["km-internet-disconnect-msg"]}, "vis","n-vis");
                     console.log("offline");
                 });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
@@ -2159,6 +2161,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
+                document.getElementById('km-internet-disconnect-msg').innerHTML=  MCK_LABELS['offline.msg'];
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
