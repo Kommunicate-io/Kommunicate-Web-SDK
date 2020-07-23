@@ -10,13 +10,13 @@
          data.volume = (notificationToneOption && notificationToneOption.volume != null) ? notificationToneOption.volume : MAX_VOLUME;
          return new Howl(data);
      };
-     _this.loadChatPopupTone = function (url,notificationToneOption) {
+     _this.loadChatPopupTone = function (url,greetingMsgVolumeOption) {
          var data = {
             src: [url],
-            loop: notificationToneOption.loop,
+            loop: greetingMsgVolumeOption.loop,
             html5: true
         };
-        data.volume = (notificationToneOption && notificationToneOption.volume != null) ? notificationToneOption.volume : 0.8;
+        data.volume = (greetingMsgVolumeOption && greetingMsgVolumeOption.volume != null) ? greetingMsgVolumeOption.volume : MAX_VOLUME;
         return new Howl(data);
      };
  }

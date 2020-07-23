@@ -622,12 +622,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }  
             }
             if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
-                var greetingMsgTone = "0.8";
                 ringToneService = new RingToneService();
-                notificationToneOption={};
-                    notificationToneOption.volume = WIDGET_SETTINGS.greetingMsgTone||greetingMsgTone;
+                var greetingMsgVolumeOption={};
+                greetingMsgVolumeOption.volume = WIDGET_SETTINGS.greetingMsgVolume;
                 try {
-                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK,notificationToneOption);
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK,greetingMsgVolumeOption);
                 } catch (e) {
                     console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
