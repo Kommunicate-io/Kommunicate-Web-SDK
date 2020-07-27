@@ -13,7 +13,6 @@
      _this.loadChatPopupTone = function (url,greetingMsgVolumeOption) {
          var data = {
             src: [url],
-            loop: greetingMsgVolumeOption.loop,
             html5: true
         };
         data.volume = (greetingMsgVolumeOption && greetingMsgVolumeOption.volume != null) ? greetingMsgVolumeOption.volume : MAX_VOLUME;
