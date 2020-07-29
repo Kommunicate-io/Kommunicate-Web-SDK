@@ -119,7 +119,7 @@ KommunicateUI={
     isAttachmentV2: function (mediaType) {
         if(!mediaType) {
             return true;
-        // attachment while has no file type/media type considering as v2 attachment. for example java file doesn't have media type.
+        // if attachment has no file type/media type considering as v2 attachment. for example java file doesn't have media type.
         }
         var type = mediaType.substring(0, mediaType.indexOf('/'));
         return KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES.indexOf(type) != -1;
