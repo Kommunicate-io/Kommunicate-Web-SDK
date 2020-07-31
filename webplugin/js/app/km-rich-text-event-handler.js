@@ -385,12 +385,12 @@ Kommunicate.richMsgEventHandler = {
             value = formElements[i].value;
             switch(type) {
                 case 'radio':
-                    if(formElements[i].checked == true) {
+                    if(formElements[i].checked) {
                         data[name] = value;
                     } 
                   break;
                 case 'checkbox':
-                    if(formElements[i].checked == true) {
+                    if(formElements[i].checked) {
                         !data[name] && (data[name] = []);
                         data[name].push(value);
                     }
