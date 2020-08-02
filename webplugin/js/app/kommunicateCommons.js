@@ -92,17 +92,18 @@ function KommunicateCommons() {
     };
 
     _this.getTimeOrDate = function (createdAtTime) {
+        var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);
         var currentTime = new Date(),
             secondsPast = Math.max(0, (currentTime.getTime() - timeStamp.getTime()) / 1000);
         if (secondsPast < 60) {
-            return (parseInt(secondsPast) <= 1) ? parseInt(secondsPast) + ' sec ago' : parseInt(secondsPast) + ' secs ago';
+            return parseInt(secondsPast) + ' ' + ((parseInt(secondsPast) <= 1) ? timeStampLabels['sec.ago'] : timeStampLabels['secs.ago']);
         }
         if (secondsPast < 3600) {
-            return (parseInt(secondsPast / 60) <= 1) ? parseInt(secondsPast / 60) + ' min ago' : parseInt(secondsPast / 60) + ' mins ago';
+            return parseInt(secondsPast / 60) + ' ' + ((parseInt(secondsPast / 60) <= 1) ? timeStampLabels['min.ago'] : timeStampLabels['mins.ago']);
         }
         if (secondsPast <= 172800) {
-            return (parseInt(secondsPast / 3600) <= 1) ? parseInt(secondsPast / 3600) + ' hr ago' : parseInt(secondsPast / 3600) + ' hrs ago';
+            return parseInt(secondsPast / 3600) + ' ' + ((parseInt(secondsPast / 3600) <= 1) ? timeStampLabels['hr.ago'] : timeStampLabels['hrs.ago']);
         }
         if (secondsPast > 172800) {
             day = timeStamp.getDate();

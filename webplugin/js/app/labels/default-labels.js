@@ -144,5 +144,13 @@ Kommunicate.defaultLabels = {
     'faq.query.message': {
         'QUERY_REGARDING': 'Hi, I have a query regarding',
         'HELP_YOU': 'Can you help me out?'
+    },
+    'time.stamp': {
+        'sec.ago': 'sec ago',
+        'secs.ago': 'secs ago',
+        'min.ago': 'min ago',
+        'mins.ago': 'mins ago',
+        'hr.ago': 'hr ago',
+        'hrs.ago': 'hrs ago'
     }
 }
