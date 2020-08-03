@@ -10,11 +10,12 @@
          data.volume = (notificationToneOption && notificationToneOption.volume != null) ? notificationToneOption.volume : MAX_VOLUME;
          return new Howl(data);
      };
-     _this.loadChatPopupTone = function (url) {
-         return new Howl({
-             src: [url],
-             html5: true,
-             volume: 0.8
-         });
+     _this.loadChatPopupTone = function (url,greetingMsgVolumeOption) {
+         var data = {
+            src: [url],
+            html5: true
+        };
+        data.volume = (greetingMsgVolumeOption && greetingMsgVolumeOption.volume != null) ? greetingMsgVolumeOption.volume : MAX_VOLUME;
+        return new Howl(data);
      };
  }

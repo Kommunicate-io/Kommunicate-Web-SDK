@@ -623,8 +623,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             }
             if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
                 ringToneService = new RingToneService();
+                var greetingMsgVolumeOption={};
+                greetingMsgVolumeOption.volume = WIDGET_SETTINGS.greetingMessageVolume;
                 try {
-                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK);
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK,greetingMsgVolumeOption);
                 } catch (e) {
                     console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
