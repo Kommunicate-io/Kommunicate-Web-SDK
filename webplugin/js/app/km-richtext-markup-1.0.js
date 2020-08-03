@@ -321,6 +321,27 @@ getFormTemplate: function() {
                                             {{/validation}}
                                         </div>
                                     {{/text}}
+                                    {{#dropdown}}
+                                        <div class="mck-form-dropdown-wrapper">
+                                            <label for="{{name}}" class="mck-form-label">{{title}}</label><br>
+                                            <select name="{{name}}" data-error-text = "{{errorText}}">
+                                                {{#options}}
+                                                    {{#selected}}{{#disabled}}
+                                                        <option value="{{value}}" selected disabled hidden>{{label}}</option>
+                                                    {{/disabled}}{{/selected}}
+                                                    {{#selected}}{{^disabled}}
+                                                        <option value="{{value}}" selected>{{label}}</option>
+                                                    {{/disabled}}{{/selected}}
+                                                    {{^selected}}
+                                                        <option value="{{value}}">{{label}}</option>
+                                                    {{/selected}}
+                                                {{/options}}    
+                                            </select>
+                                            {{#errorText}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/errorText}}
+                                        </div>
+                                    {{/dropdown}}
                                     {{#hidden}}
                                             <input type="{{type}}" name="{{name}}" value="{{value}}" >
                                     {{/hidden}}
@@ -553,9 +574,13 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
                 options.buttons.push(item);
                 options.payload.splice(index,1);
             } else {
-                options.payload[index].supported = item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text';
+                options.payload[index].supported = KommunicateConstants.FORM_SUPPORTED_FIELDS.indexOf(item.type) != -1; 
                 options.payload[index][item.type] = true;
-                item.label && (options.payload[index].className = item.label.toLowerCase().replace(/ +/g, ""));
+                try {
+                    options.payload[index].className = (item.label || item.name).toLowerCase().replace(/ +/g, "");
+                } catch (e) {
+                    console.log(e);
+                }
             }
         });
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);

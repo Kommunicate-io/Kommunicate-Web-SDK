@@ -373,36 +373,49 @@ Kommunicate.richMsgEventHandler = {
         var data = {};
         var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
         var replyText = target.title || target.innerHTML;
-        var  inputs = form.getElementsByTagName('input');
-        for(var i = 0; i<inputs.length;i++){
-            if (inputs[i].type == 'radio') {
-                if(inputs[i].checked == true) {
-                    data[inputs[i].name] = inputs[i].value;
-                } 
-            } else if(inputs[i].type == 'checkbox'){
-                if(inputs[i].checked == true) {
-                    !data[inputs[i].name] && (data[inputs[i].name] = []);
-                    data[inputs[i].name].push(inputs[i].value);
-                }
-            } else {
-                data[inputs[i].name] = inputs[i].value;
-                try {
-                    if(inputs[i].dataset.regex) {
-                        validString = Kommunicate.richMsgEventHandler.isValidString(inputs[i].dataset.regex, inputs[i].value);
-                        validationResults.push(validString);
-                        inputElement = form.getElementsByClassName("mck-form-error-"+inputs[i].name.toLowerCase().replace(/ +/g, ""))[0];
-                        if(!validString) {
-                            inputElement.innerHTML = inputs[i].dataset.errorText || MCK_LABELS["rich.form"].errorText;
-                        } else {
-                            inputElement.innerHTML = "";
-                        }
+        var formElements = [];
+        formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('input'));
+        formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('select'));
+        var name = "";
+        var type = "";
+        var value = "";
+        for(var i = 0; i<formElements.length;i++){
+            name = formElements[i].name;
+            type = formElements[i].type;
+            value = formElements[i].value;
+            switch(type) {
+                case 'radio':
+                    if(formElements[i].checked) {
+                        data[name] = value;
+                    } 
+                  break;
+                case 'checkbox':
+                    if(formElements[i].checked) {
+                        !data[name] && (data[name] = []);
+                        data[name].push(value);
                     }
-                } catch (e) {
-                    console.log(e);
-                }
+                  break;
+                case 'select-one': //dropdown
+                    data[name] = value;
+                    if(formElements[i].dataset.errorText){ 
+                        Kommunicate.richMsgEventHandler.handleFormErrorMessage(form, name, formElements[i].dataset.errorText, !value)
+                        validationResults.push(value ? "success": "failed");
+                    }
+                    break;  
+                default:
+                    data[name] = value;
+                    try {
+                        if(formElements[i].dataset.regex) {
+                            validString = Kommunicate.richMsgEventHandler.isValidString(formElements[i].dataset.regex, value);
+                            validationResults.push(validString ? "success": "failed");
+                            Kommunicate.richMsgEventHandler.handleFormErrorMessage(form, name, formElements[i].dataset.errorText || MCK_LABELS["rich.form"].errorText, !validString)
+                    }
+                    } catch (e) {
+                        console.log(e);
+                    }
             }
         }
-        if(isActionableForm && validationResults.indexOf(false) != -1 ) {
+        if(isActionableForm && validationResults.indexOf("failed") != -1 ) {
             return;
         }
         if (requestType == "json") {  
@@ -429,7 +442,10 @@ Kommunicate.richMsgEventHandler = {
         Object.keys(msgMetadata).length > 0 && (messagePxy["metadata"] = msgMetadata);
         (Object.keys(msgMetadata).length > 0 || Object.keys(messagePxy).length > 0 ) && Kommunicate.sendMessage(messagePxy);
     },
-   
+    handleFormErrorMessage: function (form, name, errorText, validationFailed) {
+        var element = form.getElementsByClassName(("mck-form-error-"+name).toLowerCase().replace(/ +/g, ""))[0];
+        element.innerHTML = validationFailed ? errorText : "";
+    }, 
     handlleSubmitPersonDetail: function (e) {
         var title = $applozic(e.target).closest('.km-guest-details-container').find(".km-title-select option:selected").text();
         var age = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.km-age-input");
