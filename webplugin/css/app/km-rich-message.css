@@ -1239,7 +1239,7 @@
     margin-right: 3px;
 }
 
-.mck-form-text-wrapper input, .mck-form-dropdown-wrapper select {
+.mck-form-text-wrapper input, .mck-form-dropdown-wrapper select, .mck-form-textarea-wrapper textarea {
     border: 1px solid #cad3e3;
     color: #000000;
     width: 93%;
@@ -1249,27 +1249,27 @@
     background-color: #ffffff;
     font-size: 16px;
 }
-.mck-form-text-wrapper label, .mck-form-dropdown-wrapper label{
+.mck-form-text-wrapper label, .mck-form-dropdown-wrapper label, .mck-form-textarea-wrapper label{
     margin-bottom: 2px;
     margin-left: 2px;
 }
-.mck-form-text-wrapper input::placeholder {
+.mck-form-text-wrapper input::placeholder,  .mck-form-textarea-wrapper textarea::placeholder{
     color: #929090;
     font-size: 12px;
 }
-.mck-form-text-wrapper input::-webkit-input-placeholder {
+.mck-form-text-wrapper input::-webkit-input-placeholder, .mck-form-textarea-wrapper textarea::-webkit-input-placeholder  {  /* Firefox 19+ */
     color: #929090;
     font-size: 12px;
 }
-.mck-form-text-wrapper input::-moz-placeholder {
+.mck-form-text-wrapper input::-moz-placeholder, .mck-form-textarea-wrapper textarea::-moz-placeholder { /* Microsoft Edge */
     color: #929090;
     font-size: 12px;
 }
-.mck-form-text-wrapper input:-ms-input-placeholder {
+.mck-form-text-wrapper input:-ms-input-placeholder, .mck-form-textarea-wrapper textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
     color: #929090;
     font-size: 12px;
 }
-.mck-form-text-wrapper input:-moz-placeholder {
+.mck-form-text-wrapper input:-moz-placeholder, .mck-form-textarea-wrapper textarea:-moz-placeholder { /* Firefox 18- */
     color: #929090;
     font-size: 12px;
 }

@@ -376,6 +376,7 @@ Kommunicate.richMsgEventHandler = {
         var formElements = [];
         formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('input'));
         formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('select'));
+        formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('textarea'));
         var name = "";
         var type = "";
         var value = "";
