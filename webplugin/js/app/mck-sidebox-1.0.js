@@ -8725,7 +8725,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_file_input.on('change', function () {
                     var file = $applozic(this)[0].files[0];
                     var tabId = $mck_msg_inner.data('mck-id');
-                    if (file && file.type && KommunicateUI.isAttachmentV2(file.type)) {
+                    if (file && KommunicateUI.isAttachmentV2(file.type)) {
                         var mck_message_inner = $applozic("#mck-message-cell .mck-message-inner");
                         var isOneToOne = !mck_message_inner.data('isgroup');
                         Kommunicate.attachmentService.getFileMeta(file, tabId, function (file_meta, messagePxy, file) {
