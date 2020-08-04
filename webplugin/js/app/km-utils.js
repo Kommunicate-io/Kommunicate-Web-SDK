@@ -3,7 +3,7 @@
 */
 
 KommunicateConstants = {
-    KM_SERVER_RELEASE_VERSION: "4.3",
+    KM_WIDGET_RELEASE_VERSION: "6.2",
     EVENT_IDS: {
         WELCOME_MESSAGE: "3",
         AWAY_MESSAGE: {
@@ -117,6 +117,7 @@ KommunicateConstants = {
         FORM:"12",
         GENERIC_BUTTONS_V2:"13"
     },
+    FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown", "textarea"],
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
         KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",

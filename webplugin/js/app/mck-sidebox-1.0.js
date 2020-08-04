@@ -627,8 +627,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             }
             if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
                 ringToneService = new RingToneService();
+                var greetingMsgVolumeOption={};
+                greetingMsgVolumeOption.volume = WIDGET_SETTINGS.greetingMessageVolume;
                 try {
-                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK);
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK,greetingMsgVolumeOption);
                 } catch (e) {
                     console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
@@ -1804,9 +1806,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
+                    kommunicateCommons.modifyClassList({id:["km-internet-disconnect-msg"]}, "n-vis","vis");
                     window.Applozic.ALSocket.reconnect();
                 });
                 w.addEventListener('offline', function () {
+                    kommunicateCommons.modifyClassList({id:["km-internet-disconnect-msg"]}, "vis","n-vis");
                     console.log("offline");
                 });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
@@ -1883,7 +1887,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if (showPoweredBy) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     var utmSourceUrl = kommunicateIframe ? (kommunicateIframe.getAttribute('data-url') || parent.window.location.href) : w.location.href;
-                    var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
+                    var poweredByUrl = "https://www.kommunicate.io/poweredby?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     if(MCK_CUSTOM_BRANDING){
                         document.querySelector(".mck-running-on").innerHTML = MCK_CUSTOM_BRANDING;
@@ -2169,6 +2173,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
+                document.getElementById('km-internet-disconnect-msg').innerHTML=  MCK_LABELS['offline.msg'];
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
@@ -8740,6 +8745,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         Kommunicate.attachmentService.uploadAttachment(params, null, MCK_CUSTOM_UPLOAD_SETTINGS)
                     }
                 });
+
                 $applozic(d).on("click", '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
                     var currFileMeta = $currFileBox.data('mckfile');

@@ -5493,7 +5493,7 @@ div#mck-rated:before{
 	cursor:	default;
 }
 
-#csat-1, #csat-2, #csat-3, #mck-sidebox-ft, #mck-rated, .mck-csat-text-1{
+#csat-1, #csat-2, #csat-3, #mck-rated, .mck-csat-text-1{
 	animation-name: kmFadeIn;
 	-webkit-animation-name: kmFadeIn;
 	-webkit-animation-duration: .3s;
