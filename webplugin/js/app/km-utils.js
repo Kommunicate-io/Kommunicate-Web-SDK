@@ -117,7 +117,7 @@ KommunicateConstants = {
         FORM:"12",
         GENERIC_BUTTONS_V2:"13"
     },
-    FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown"],
+    FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown", "textarea"],
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
         KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",

@@ -321,6 +321,15 @@ getFormTemplate: function() {
                                             {{/validation}}
                                         </div>
                                     {{/text}}
+                                    {{#textarea}}
+                                         <div class="mck-form-textarea-wrapper">
+                                            <label class="mck-form-label" for="{{name}}">{{title}}</label>
+                                            <textarea name="{{name}}" rows="{{rows}}" cols="{{cols}}" placeholder="{{placeholder}}" data-regex= "{{validation.regex}}" data-error-text="{{validation.errorText}}"></textarea>
+                                            {{#validation}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/validation}}
+                                        </div>
+                                    {{/textarea}}
                                     {{#dropdown}}
                                         <div class="mck-form-dropdown-wrapper">
                                             <label for="{{name}}" class="mck-form-label">{{title}}</label><br>
