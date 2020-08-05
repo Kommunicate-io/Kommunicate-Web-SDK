@@ -333,7 +333,7 @@ getFormTemplate: function() {
                                     {{#dropdown}}
                                         <div class="mck-form-dropdown-wrapper">
                                             <label for="{{name}}" class="mck-form-label">{{title}}</label><br>
-                                            <select name="{{name}}" data-error-text = "{{errorText}}">
+                                            <select name="{{name}}" data-error-text = "{{validation.errorText}}">
                                                 {{#options}}
                                                     {{#selected}}{{#disabled}}
                                                         <option value="{{value}}" selected disabled hidden>{{label}}</option>
@@ -346,9 +346,9 @@ getFormTemplate: function() {
                                                     {{/selected}}
                                                 {{/options}}    
                                             </select>
-                                            {{#errorText}}
+                                            {{#validation}}
                                                 <span class="mck-form-error-text mck-form-error-{{className}}"></span>
-                                            {{/errorText}}
+                                            {{/validation}}
                                         </div>
                                     {{/dropdown}}
                                     {{#hidden}}
