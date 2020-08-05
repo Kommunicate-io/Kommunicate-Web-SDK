@@ -327,6 +327,10 @@
 								<label class="sr-only placeholder-text control-label" for="mck-msg-to">To:</label>
 								<input class="mck-form-cntrl" id="mck-msg-to" name="mck-msg-to" placeholder="To" required>
 							</div>
+							<div id="mck-audio" class="mck-mic-timer n-vis">
+								<a href="#" target="_self" id="mck-stop-recording" class="mck-stop-btn n-vis "></a>
+								<label id="mck-minutes">00</label>:<label id="mck-seconds">00</label>
+							</div>
 							<div id="mck-reply-to-div" class="n-vis">
 								<button type="button" id="close" class="mck-box-close mck-close-panel move-right">
 									<span aria-hidden="true">&times;</span>
@@ -361,6 +365,12 @@
 											</button>
 										</div>										
 									</div>
+									<a href="#" target="_self" id="mck-mike-btn" type="button" class="mck-mic-btn mck-mike-btn vis"
+										title="Mic"></a>
+									<!-- <a href="#" target="_self" id="stop-recording" class="mck-stop-btn n-vis "></a>
+									<div id="audiodiv" class="mck-mic-timer n-vis">
+										<label id="mck-minutes">00</label>:<label id="mck-seconds">00</label>
+									</div> -->
 									<div id ="mck-mic-animation-container" class="mck-mic-animation-container n-vis" aria-disabled="false" title="Voice Input" aria-label="Voice Input" tabindex="0">
 										<div id ="mck-animation-outer" class="mck-animation-outer km-custom-widget-background-color n-vis"></div>
 											<svg focusable="false" aria-hidden="true" id = "mck-mic-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#787474" d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>

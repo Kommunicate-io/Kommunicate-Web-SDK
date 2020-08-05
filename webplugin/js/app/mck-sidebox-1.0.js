@@ -56,14 +56,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         agentName: "",
         msgTriggerTimeout: 0,
         labels: Kommunicate.defaultLabels,
-        useBranding :true,
+        useBranding : true,
         openGroupSettings: {
             'deleteChatAccess': 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
             'allowInfoAccessGroupMembers': true,
             'disableChatForNonGroupMember': false,
             'defaultChatDisabledMessage': 'Chat Disabled!'
         },
-        voiceInput:false
+        voiceInput: false
     };
     var message_default_options = {
         'messageType': 5,
@@ -3419,6 +3419,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             $applozic('.mck-sidebox').on("click", "#mck-mike-btn", function (event) {
                 event.preventDefault();
                 $applozic(this).removeClass('vis').addClass('n-vis');
+                $applozic("#mck-mike-btn").addClass('n-vis').removeClass('vis');
                 $applozic(".mck-stop-btn").addClass("vis").removeClass("n-vis");
                 Fr.voice.record(false, function () {
                     $applozic("#mck-audio").removeClass('n-vis').addClass('vis');
@@ -6792,7 +6793,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         }
                     } else if (message.fileMetaKey && typeof message.fileMeta === "object") {
                         emoji_template = alFileService.getFileIcon(message);
-                    }else if(message.metadata && message.metadata.messagePreview ){
+                    } else if(message.metadata && message.metadata.messagePreview ) {
                         emoji_template =message.metadata.messagePreview;
                     }
                     if(Kommunicate.isRichTextMessage(message.metadata)) {

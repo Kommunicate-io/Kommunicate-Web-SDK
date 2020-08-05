@@ -58,7 +58,12 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
-            path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')
+            path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
+            path.resolve(__dirname, 'lib/js/Media/recorder.js'),
+            path.resolve(__dirname, 'lib/js//Media/Fr.voice.js'),
+            path.resolve(__dirname, 'lib/js/Media/app.js'),
+            path.resolve(__dirname, 'lib/js/Media/libmp3lame.min.js'),
+            path.resolve(__dirname, 'lib/js/Media/mp3Worker.js'),
         ],
         output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
         options: {
