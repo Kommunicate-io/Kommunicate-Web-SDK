@@ -6756,11 +6756,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         }
                     } else if (message.fileMetaKey && typeof message.fileMeta === "object") {
                         emoji_template = alFileService.getFileIcon(message);
-                    }else if(message.metadata && message.metadata.messagePreview ){
-                        emoji_template =message.metadata.messagePreview;
+                    } else if (message.metadata && message.metadata.messagePreview) {
+                        emoji_template = message.metadata.messagePreview;
                     }
-                    if(Kommunicate.isRichTextMessage(message.metadata)) {
-                        emoji_template = '<span class="mck-icon--rich-message"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg></span><span>'+ (message.message || MCK_LABELS['rich.message']['notification.preview'])+'</span>';
+
+                    if (Kommunicate.isRichTextMessage(message.metadata) || message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                        var messageContent = message.message;
+                        message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && (messageContent = "");
+                        emoji_template = '<span class="mck-icon--rich-message">' + KommunicateConstants.RICH_MESSAGE_ICON + '</span><span>' + (messageContent || MCK_LABELS['rich.message']['notification.preview']) + '</span>';
                     }
                     if (contact.isGroup && contact.type !== KommunicateConstants.GROUP_TYPE.SELLER && contact.type !== KommunicateConstants.GROUP_TYPE.GROUP_OF_TWO) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
