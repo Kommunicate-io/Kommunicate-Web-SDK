@@ -1238,6 +1238,9 @@
     font-size: 11px;
     margin-right: 3px;
 }
+.mck-form-textarea-wrapper textarea {
+    resize: vertical
+}
 
 .mck-form-text-wrapper input, .mck-form-dropdown-wrapper select, .mck-form-textarea-wrapper textarea {
     border: 1px solid #cad3e3;
