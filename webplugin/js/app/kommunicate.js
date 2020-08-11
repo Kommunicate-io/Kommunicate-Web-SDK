@@ -418,6 +418,9 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:
+                    return Kommunicate.markup.getVideoMarkup(metadata);
+                    break;
                 default:
                     return "";
                     break;

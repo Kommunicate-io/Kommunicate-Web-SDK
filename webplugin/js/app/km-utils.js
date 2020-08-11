@@ -116,7 +116,8 @@ KommunicateConstants = {
         CARD_CAROUSEL:"10",
         GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
         FORM:"12",
-        GENERIC_BUTTONS_V2:"13"
+        GENERIC_BUTTONS_V2:"13",
+        VIDEO: "14",
     },
     FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown", "textarea"],
     COOKIES : {
