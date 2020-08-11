@@ -208,7 +208,6 @@ KommunicateUtils = {
     },
     /* Method to set cookies*/
         setCookie: function (cookie) {
-        console.log("setCookie", cookie);    
         var cookiePrefix =this.getCookiePrefix();
         var name = (cookie && cookie.skipPrefix )?cookie.name: cookiePrefix+cookie.name;
         var value =cookie.value;
@@ -328,11 +327,9 @@ KommunicateUtils = {
         }
     },
     findCookieDomain: function(domain) {
-        console.log("findCookieDomain");
         //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
         var i = 0;
         var parts = domain.split('.');
-        // var value = 'km_' + "jithin";
         var value = 'km_' + (new Date()).getTime();
         //check value is added in cookie else continue the iteration
         while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
