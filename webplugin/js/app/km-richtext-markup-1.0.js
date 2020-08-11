@@ -719,12 +719,12 @@ Kommunicate.markup.getVideoMarkup = function (options) {
     var video;
     if (options && options.payload) {
         var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
-        options.payload = payload;
         for (var i = 0; i < payload.length; i++) {
             video = payload[i];
             video.width = video.width || "100%";
             video.height = video.height || "250px";
-        }    
+        }
+        options.payload = payload;    
         return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
     }
 }
