@@ -716,11 +716,10 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
 
 }
 Kommunicate.markup.getVideoMarkup = function (options) {
-    var video;
     if (options && options.payload) {
         var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         for (var i = 0; i < payload.length; i++) {
-            video = payload[i];
+            var video = payload[i];
             video.width = video.width || "100%";
             video.height = video.height || "250px";
         }
