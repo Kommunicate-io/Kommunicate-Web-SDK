@@ -378,7 +378,7 @@ getVideoTemplate: function() {
         {{/source}}
         {{^source}}
         <video width="{{width}}" height="{{height}}" controls class= "mck-rich-video">
-             <source src="{{url}}" type= {{type}}>
+             <source src="{{url}}" type="{{type}}">
          </video>
         {{/source}}
         {{#caption}}
