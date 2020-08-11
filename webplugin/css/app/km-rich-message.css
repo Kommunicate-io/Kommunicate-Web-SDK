@@ -961,8 +961,8 @@
     height: auto;
     border-radius: 10px;
 }
-.km-template-img-caption {
-    margin-top: 5px;
+.km-template-img-caption, .km-template-video-caption{
+    padding-top: 5px;
     font-weight: 400;
     text-align: center;
     color: #6f6e6e;
@@ -1307,4 +1307,10 @@
     color: #B7394A;
     margin-left: 2px;
     font-size: 12px;
+}
+.mck-rich-video-container {
+    margin-top: 5px;
+}
+.mck-rich-video-container video {
+    object-fit: initial;
 }

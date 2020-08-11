@@ -369,6 +369,25 @@ getFormTemplate: function() {
                         {{/buttons}}   
                 </form>   
             </div>`
+},
+getVideoTemplate: function() {
+    return `<div class= "mck-rich-video-container">
+    {{#payload}}
+        {{#source}}
+            <iframe width="{{width}}" height="{{height}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
+        {{/source}}
+        {{^source}}
+        <video width="{{width}}" height="{{height}}" controls class= "mck-rich-video">
+             <source src="{{url}}" type= {{type}}>
+         </video>
+        {{/source}}
+        {{#caption}}
+        <div class="km-template-video-caption-wrapper" style="width:{{width}};">
+           <p class="km-template-video-caption">{{caption}}</p>
+        </div>
+        {{/caption}}
+    {{/payload}}
+    </div>`
 }
 
 };
@@ -695,6 +714,19 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     }
     return buttonContainerHtml + "</div>";
 
+}
+Kommunicate.markup.getVideoMarkup = function (options) {
+    var video;
+    if (options && options.payload) {
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        for (var i = 0; i < payload.length; i++) {
+            video = payload[i];
+            video.width = video.width || "100%";
+            video.height = video.height || "250px";
+        }    
+        return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
+    }
 }
 
         

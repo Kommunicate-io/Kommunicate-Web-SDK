@@ -116,7 +116,8 @@ KommunicateConstants = {
         CARD_CAROUSEL:"10",
         GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
         FORM:"12",
-        GENERIC_BUTTONS_V2:"13"
+        GENERIC_BUTTONS_V2:"13",
+        VIDEO: "14",
     },
     FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown", "textarea"],
     COOKIES : {
@@ -207,6 +208,7 @@ KommunicateUtils = {
     },
     /* Method to set cookies*/
         setCookie: function (cookie) {
+        console.log("setCookie", cookie);    
         var cookiePrefix =this.getCookiePrefix();
         var name = (cookie && cookie.skipPrefix )?cookie.name: cookiePrefix+cookie.name;
         var value =cookie.value;
@@ -326,9 +328,11 @@ KommunicateUtils = {
         }
     },
     findCookieDomain: function(domain) {
+        console.log("findCookieDomain");
         //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
         var i = 0;
         var parts = domain.split('.');
+        // var value = 'km_' + "jithin";
         var value = 'km_' + (new Date()).getTime();
         //check value is added in cookie else continue the iteration
         while (i < (parts.length - 1) && document.cookie.indexOf(value + '=' + value) == -1) {
