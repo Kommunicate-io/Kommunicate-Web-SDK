@@ -342,21 +342,17 @@ KommunicateUtils = {
         document.cookie = value + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";";
         return domain
     },
-    getDomainFromUrl: function () {
-        return KommunicateUtils.findCookieDomain(document.domain);
-    },
     getSubDomain : function(){
          var hostName = parent.window.location.hostname;
-         var domainLength= this.getDomainFromUrl(hostName).length;
+         var domainLength= MCK_COOKIE_DOMAIN.length;
          var subDomain =hostName.substr(0,hostName.length - domainLength);
          return subDomain;
     },
     deleteUserCookiesOnLogout : function(){
-        var cookieDomain  = KommunicateUtils.getDomainFromUrl();
-        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,domain: KommunicateUtils.getDomainFromUrl()});
-        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
-        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,  domain: KommunicateUtils.getDomainFromUrl()});
-        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.ACCESS_TOKEN, domain: KommunicateUtils.getDomainFromUrl()});
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,domain: MCK_COOKIE_DOMAIN});
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain:MCK_COOKIE_DOMAIN });
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,  domain: MCK_COOKIE_DOMAIN});
+        KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.ACCESS_TOKEN, domain: MCK_COOKIE_DOMAIN});
     },
     isValidTimeZone : function(tzId) {
         if (!Intl || !Intl.DateTimeFormat().resolvedOptions().timeZone) {

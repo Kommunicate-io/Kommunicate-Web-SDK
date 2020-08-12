@@ -303,7 +303,7 @@ $applozic.extend(true,Kommunicate,{
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId, callback: function (response) {
-                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": newUserId,expiresInDays:30,domain:KommunicateUtils.getDomainFromUrl()});
+                KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": newUserId,expiresInDays:30,domain: MCK_COOKIE_DOMAIN});
                 if (response == 'success') {
                     window.$applozic.fn.applozic('reInitialize', { userId: newUserId });
                 }
