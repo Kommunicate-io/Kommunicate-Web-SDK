@@ -3951,6 +3951,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
+                if ((_this.isFaqTabOpen())) {
+                    return;
+                }
                 if (message && message.code === "AGENTS_ONLINE" && !isAgentOffline) {
                     KommunicateUI.setAvailabilityStatus("online");
                 } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
@@ -4364,13 +4367,19 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
                 typeof callback == 'function' && callback(data);
             };
+            _this.isFaqTabOpen = function () {
+                return (document.querySelector("#km-faqdiv").classList.contains("vis") || document.querySelector("#km-faqanswer").classList.contains("vis") ||
+                document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
+            }
             _this.updateConversationHeader = function (params) {
+                if((_this.isFaqTabOpen())){
+                    return;
+                }
                 var imageUrl;
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
                 KommunicateUI.adjustConversationTitleHeadingWidth(POPUP_WIDGET);
-
                 if (params.imageUrl) {
                     imageUrl = params.imageUrl;
                     $applozic(".mck-agent-image-container img").removeClass("n-vis");
