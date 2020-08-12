@@ -3951,16 +3951,16 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
-                if((_this.isFaqTabOpen())){
+                if ((_this.isFaqTabOpen())) {
                     return;
                 }
-                    if (message && message.code === "AGENTS_ONLINE" && !isAgentOffline) {
-                        KommunicateUI.setAvailabilityStatus("online");
-                    } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
-                        KommunicateUI.setAvailabilityStatus("away");
-                    }
-                    KommunicateUI.populateAwayMessage(err, message);
-                    KommunicateUI.updateLeadCollectionStatus(err, message, data.message || []);
+                if (message && message.code === "AGENTS_ONLINE" && !isAgentOffline) {
+                    KommunicateUI.setAvailabilityStatus("online");
+                } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
+                    KommunicateUI.setAvailabilityStatus("away");
+                }
+                KommunicateUI.populateAwayMessage(err, message);
+                KommunicateUI.updateLeadCollectionStatus(err, message, data.message || []);
             };
 
             _this.loadMessageList = function (params, callback) {
