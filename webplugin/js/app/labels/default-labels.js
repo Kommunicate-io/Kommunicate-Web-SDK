@@ -92,6 +92,7 @@ Kommunicate.defaultLabels = {
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
     'conversation.rated':'rated the conversation',
+    'offline.msg': "Uh oh! No internet connection. Please check your network settings and try again.",
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
         'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
@@ -143,5 +144,13 @@ Kommunicate.defaultLabels = {
     'faq.query.message': {
         'QUERY_REGARDING': 'Hi, I have a query regarding',
         'HELP_YOU': 'Can you help me out?'
+    },
+    'time.stamp': {
+        'sec.ago': 'sec ago',
+        'secs.ago': 'secs ago',
+        'min.ago': 'min ago',
+        'mins.ago': 'mins ago',
+        'hr.ago': 'hr ago',
+        'hrs.ago': 'hrs ago'
     }
 }

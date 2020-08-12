@@ -3,7 +3,7 @@
 */
 
 KommunicateConstants = {
-    KM_SERVER_RELEASE_VERSION: "4.3",
+    KM_WIDGET_RELEASE_VERSION: "6.2",
     EVENT_IDS: {
         WELCOME_MESSAGE: "3",
         AWAY_MESSAGE: {
@@ -53,6 +53,7 @@ KommunicateConstants = {
     10: '<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35"> <g fill="none" fill-rule="evenodd"><path fill="#FFCC4D" d="M34.932 17.466c0 9.646-7.82 17.466-17.466 17.466S0 27.112 0 17.466 7.82 0 17.466 0s17.466 7.82 17.466 17.466"/><path fill="#6F543A" d="M17.466 20.377c-3.516 0-5.848-.41-8.733-.97-.659-.128-1.94 0-1.94 1.94 0 3.881 4.458 8.733 10.673 8.733 6.214 0 10.674-4.852 10.674-8.733 0-1.94-1.282-2.069-1.941-1.94-2.885.56-5.218.97-8.733.97"/><path fill="#FFF" d="M8.733 21.347s2.91.97 8.733.97c5.822 0 8.733-.97 8.733-.97s-1.94 3.881-8.733 3.881c-6.792 0-8.733-3.88-8.733-3.88"/><path fill="#6F543A" d="M14.07 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396M26.737 13.1c0 1.876-1.086 3.396-2.426 3.396s-2.426-1.52-2.426-3.397c0-1.875 1.086-3.396 2.426-3.396s2.426 1.52 2.426 3.396"/></g></svg>'
     },
     DEFAULT_AVATAR_IMAGE : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
+    RICH_MESSAGE_ICON: '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg>',
     CONVERSATION_CLOSED_STATUS : 'closed',
     CONVERSATION_RESOLVED_STATUS : 'Resolved',
     CONVERSATION_OPEN_STATUS : 'Open',
@@ -115,8 +116,10 @@ KommunicateConstants = {
         CARD_CAROUSEL:"10",
         GENERIC_BUTTONS:"11", // supports link button/submit buttons and suggested replies 
         FORM:"12",
-        GENERIC_BUTTONS_V2:"13"
+        GENERIC_BUTTONS_V2:"13",
+        VIDEO: "14",
     },
+    FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown", "textarea"],
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
         KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",
