@@ -954,8 +954,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic("reset", appOptions);
-                KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
-                KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: KommunicateUtils.getDomainFromUrl()});
+                KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: MCK_COOKIE_DOMAIN});
+                KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: MCK_COOKIE_DOMAIN});
                 $applozic("#mck-sidebox").hide();
                 $applozic("#mck-sidebox-launcher").hide();
                 parent.document.getElementById("kommunicate-widget-iframe") && (parent.document.getElementById("kommunicate-widget-iframe").style.display = "none");
@@ -2986,8 +2986,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                     if(email){
                         userId = email;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: MCK_COOKIE_DOMAIN});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: MCK_COOKIE_DOMAIN});
                     }
                     var metadata = mckMessageService.getUserMetadata();
                     $error_chat_login.removeClass('show').addClass('hide');
