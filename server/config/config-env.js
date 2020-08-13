@@ -12,7 +12,7 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
+          "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
           "enabled": false
       },
       "aws": {
@@ -34,7 +34,7 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
+          "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
           "enabled": true
       },
       "aws": {
@@ -56,7 +56,7 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://96d4622a4b27476f9544833f8bf6e4f7@sentry.io/1729405",
+          "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
           "enabled": true
       },
       "aws": {

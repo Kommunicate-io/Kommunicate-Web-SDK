@@ -623,8 +623,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             }
             if(kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.popup) {
                 ringToneService = new RingToneService();
+                var greetingMsgVolumeOption={};
+                greetingMsgVolumeOption.volume = WIDGET_SETTINGS.greetingMessageVolume;
                 try {
-                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK);
+                    mckChatPopupNotificationTone = ringToneService.loadChatPopupTone(MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK,greetingMsgVolumeOption);
                 } catch (e) {
                     console.log(e, "Error while loading ringTone service for chat popup widget.");
                 }  
@@ -952,8 +954,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic("reset", appOptions);
-                KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
-                KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: KommunicateUtils.getDomainFromUrl()});
+                KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: MCK_COOKIE_DOMAIN});
+                KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: MCK_COOKIE_DOMAIN});
                 $applozic("#mck-sidebox").hide();
                 $applozic("#mck-sidebox-launcher").hide();
                 parent.document.getElementById("kommunicate-widget-iframe") && (parent.document.getElementById("kommunicate-widget-iframe").style.display = "none");
@@ -1794,9 +1796,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
                     console.log("online")
+                    kommunicateCommons.modifyClassList({id:["km-internet-disconnect-msg"]}, "n-vis","vis");
                     window.Applozic.ALSocket.reconnect();
                 });
                 w.addEventListener('offline', function () {
+                    kommunicateCommons.modifyClassList({id:["km-internet-disconnect-msg"]}, "vis","n-vis");
                     console.log("offline");
                 });
                 if ($mckChatLauncherIcon.length > 0 && MCK_TOTAL_UNREAD_COUNT > 0) {
@@ -1873,7 +1877,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if (showPoweredBy) {
                     var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
                     var utmSourceUrl = kommunicateIframe ? (kommunicateIframe.getAttribute('data-url') || parent.window.location.href) : w.location.href;
-                    var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
+                    var poweredByUrl = "https://www.kommunicate.io/poweredby?utm_source=" + utmSourceUrl + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     if(MCK_CUSTOM_BRANDING){
                         document.querySelector(".mck-running-on").innerHTML = MCK_CUSTOM_BRANDING;
@@ -2159,6 +2163,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
+                document.getElementById('km-internet-disconnect-msg').innerHTML=  MCK_LABELS['offline.msg'];
                 document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
@@ -2981,8 +2986,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                     if(email){
                         userId = email;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: MCK_COOKIE_DOMAIN});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: MCK_COOKIE_DOMAIN});
                     }
                     var metadata = mckMessageService.getUserMetadata();
                     $error_chat_login.removeClass('show').addClass('hide');
@@ -3946,6 +3951,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
+                if ((_this.isFaqTabOpen())) {
+                    return;
+                }
                 if (message && message.code === "AGENTS_ONLINE" && !isAgentOffline) {
                     KommunicateUI.setAvailabilityStatus("online");
                 } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
@@ -4359,13 +4367,19 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
                 typeof callback == 'function' && callback(data);
             };
+            _this.isFaqTabOpen = function () {
+                return (document.querySelector("#km-faqdiv").classList.contains("vis") || document.querySelector("#km-faqanswer").classList.contains("vis") ||
+                document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
+            }
             _this.updateConversationHeader = function (params) {
+                if((_this.isFaqTabOpen())){
+                    return;
+                }
                 var imageUrl;
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
                 KommunicateUI.adjustConversationTitleHeadingWidth(POPUP_WIDGET);
-
                 if (params.imageUrl) {
                     imageUrl = params.imageUrl;
                     $applozic(".mck-agent-image-container img").removeClass("n-vis");
@@ -6751,11 +6765,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         }
                     } else if (message.fileMetaKey && typeof message.fileMeta === "object") {
                         emoji_template = alFileService.getFileIcon(message);
-                    }else if(message.metadata && message.metadata.messagePreview ){
-                        emoji_template =message.metadata.messagePreview;
+                    } else if (message.metadata && message.metadata.messagePreview) {
+                        emoji_template = message.metadata.messagePreview;
                     }
-                    if(Kommunicate.isRichTextMessage(message.metadata)) {
-                        emoji_template = '<span class="mck-icon--rich-message"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg></span><span>'+ (message.message || MCK_LABELS['rich.message']['notification.preview'])+'</span>';
+
+                    if (Kommunicate.isRichTextMessage(message.metadata) || message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                        var messageContent = message.message;
+                        message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && (messageContent = "");
+                        emoji_template = '<span class="mck-icon--rich-message">' + KommunicateConstants.RICH_MESSAGE_ICON + '</span><span>' + (messageContent || MCK_LABELS['rich.message']['notification.preview']) + '</span>';
                     }
                     if (contact.isGroup && contact.type !== KommunicateConstants.GROUP_TYPE.SELLER && contact.type !== KommunicateConstants.GROUP_TYPE.GROUP_OF_TWO) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
@@ -8666,7 +8683,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_file_input.on('change', function () {
                                         var file = $applozic(this)[0].files[0];
                                         var tabId = $mck_msg_inner.data('mck-id');
-                                        if(file && file.type && KommunicateUI.isAttachmentV2(file.type)){
+                                        if(file && KommunicateUI.isAttachmentV2(file.type)){
                                             Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
                                                 FILE_META = file_meta
                                                 mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {

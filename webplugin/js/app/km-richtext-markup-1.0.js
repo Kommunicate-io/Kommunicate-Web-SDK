@@ -321,6 +321,36 @@ getFormTemplate: function() {
                                             {{/validation}}
                                         </div>
                                     {{/text}}
+                                    {{#textarea}}
+                                         <div class="mck-form-textarea-wrapper">
+                                            <label class="mck-form-label" for="{{name}}">{{title}}</label>
+                                            <textarea name="{{name}}" rows="{{rows}}" cols="{{cols}}" placeholder="{{placeholder}}" data-regex= "{{validation.regex}}" data-error-text="{{validation.errorText}}"></textarea>
+                                            {{#validation}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/validation}}
+                                        </div>
+                                    {{/textarea}}
+                                    {{#dropdown}}
+                                        <div class="mck-form-dropdown-wrapper">
+                                            <label for="{{name}}" class="mck-form-label">{{title}}</label><br>
+                                            <select name="{{name}}" data-error-text = "{{validation.errorText}}">
+                                                {{#options}}
+                                                    {{#selected}}{{#disabled}}
+                                                        <option value="{{value}}" selected disabled hidden>{{label}}</option>
+                                                    {{/disabled}}{{/selected}}
+                                                    {{#selected}}{{^disabled}}
+                                                        <option value="{{value}}" selected>{{label}}</option>
+                                                    {{/disabled}}{{/selected}}
+                                                    {{^selected}}
+                                                        <option value="{{value}}">{{label}}</option>
+                                                    {{/selected}}
+                                                {{/options}}    
+                                            </select>
+                                            {{#validation}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/validation}}
+                                        </div>
+                                    {{/dropdown}}
                                     {{#hidden}}
                                             <input type="{{type}}" name="{{name}}" value="{{value}}" >
                                     {{/hidden}}
@@ -339,6 +369,25 @@ getFormTemplate: function() {
                         {{/buttons}}   
                 </form>   
             </div>`
+},
+getVideoTemplate: function() {
+    return `<div class= "mck-rich-video-container">
+    {{#payload}}
+        {{#source}}
+            <iframe width="{{width}}" height="{{height}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
+        {{/source}}
+        {{^source}}
+        <video width="{{width}}" height="{{height}}" controls class= "mck-rich-video">
+             <source src="{{url}}" type="{{type}}">
+         </video>
+        {{/source}}
+        {{#caption}}
+        <div class="km-template-video-caption-wrapper" style="width:{{width}};">
+           <p class="km-template-video-caption">{{caption}}</p>
+        </div>
+        {{/caption}}
+    {{/payload}}
+    </div>`
 }
 
 };
@@ -553,9 +602,13 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
                 options.buttons.push(item);
                 options.payload.splice(index,1);
             } else {
-                options.payload[index].supported = item.type == 'hidden' || item.type == 'radio' || item.type == 'checkbox' || item.type == 'text';
+                options.payload[index].supported = KommunicateConstants.FORM_SUPPORTED_FIELDS.indexOf(item.type) != -1; 
                 options.payload[index][item.type] = true;
-                item.label && (options.payload[index].className = item.label.toLowerCase().replace(/ +/g, ""));
+                try {
+                    options.payload[index].className = (item.label || item.name).toLowerCase().replace(/ +/g, "");
+                } catch (e) {
+                    console.log(e);
+                }
             }
         });
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
@@ -661,6 +714,18 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     }
     return buttonContainerHtml + "</div>";
 
+}
+Kommunicate.markup.getVideoMarkup = function (options) {
+    if (options && options.payload) {
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        for (var i = 0; i < payload.length; i++) {
+            var video = payload[i];
+            video.width = video.width || "100%";
+            video.height = video.height || "250px";
+        }
+        options.payload = payload;    
+        return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
+    }
 }
 
         
