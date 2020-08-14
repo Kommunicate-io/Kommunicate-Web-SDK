@@ -42,6 +42,7 @@ Kommunicate.client={
      */
      createConversation : function(conversationDetail,callback){
         var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+        var appOptions = KommunicateUtils.getDataFromKmSession('appOptions');
 
         var userLocale = kommunicate._globals.userLocale;
         var currentLanguage = {
@@ -69,7 +70,7 @@ Kommunicate.client={
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
             GROUP_CREATION_URL: parent.location.href
         };
-
+        appOptions.teamId && (groupMetadata.KM_TEAM_ID = appOptions.teamId);
         conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
         conversationDetail.skipBotEvent && (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
         conversationDetail.customWelcomeEvent && (groupMetadata.CUSTOM_WELCOME_EVENT = conversationDetail.customWelcomeEvent);
