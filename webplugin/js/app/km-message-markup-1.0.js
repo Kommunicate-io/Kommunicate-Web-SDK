@@ -27,7 +27,7 @@ Kommunicate.messageTemplate = {
                     break;
                 case (data.fileMeta.contentType.indexOf("application") != -1):
                 case (data.fileMeta.contentType.indexOf("text") != -1):
-                case (data.fileMeta.contentType == ""):
+                case (data.fileMeta.contentType == "" && data.contentType != KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION):
                         data.attachmentClass = "km-application-attachment-wrapper"
                     if (!Kommunicate.internetStatus) {
                         data.uploadIconClass = "vis";
