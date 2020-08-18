@@ -69,7 +69,7 @@ Kommunicate.client={
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
             GROUP_CREATION_URL: parent.location.href
         };
-
+        typeof conversationDetail.teamId != "undefined"  && (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
         conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
         conversationDetail.skipBotEvent && (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
         conversationDetail.customWelcomeEvent && (groupMetadata.CUSTOM_WELCOME_EVENT = conversationDetail.customWelcomeEvent);
