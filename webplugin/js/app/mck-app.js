@@ -478,6 +478,7 @@ function ApplozicSidebox() {
             // Cancel the event as stated by the standard.
             var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
             details.sessionEndTime = new Date().getTime();
+            console.log("beforeunload sessionEndTime", details.sessionEndTime)
             KommunicateUtils.setItemToLocalStorage(applozic._globals.appId, details);
         });
     };
