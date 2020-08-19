@@ -462,7 +462,7 @@ function ApplozicSidebox() {
         var widgetSettings, timeStampDifference;
         console.log("applozic._globals.appId",  applozic._globals.appId)
         applozic._globals.appId && (widgetSettings = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId));
-        var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
+        timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
         console.log("widgetSettings",widgetSettings)
         console.log("timeStampDifference",timeStampDifference)
         if (widgetSettings && sessionTimeout != null && timeStampDifference > sessionTimeout) {
