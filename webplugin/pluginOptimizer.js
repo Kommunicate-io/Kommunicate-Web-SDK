@@ -130,7 +130,7 @@ const compressAndOptimize = () => {
         ],
         options: {
             compress: {
-                drop_console: true
+                drop_console: false
             }
         },
         output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
