@@ -460,9 +460,13 @@ function ApplozicSidebox() {
     
     function logoutAfterSessionExpiry(sessionTimeout) {
         var widgetSettings, timeStampDifference;
+        console.log("applozic._globals.appId",  applozic._globals.appId)
         applozic._globals.appId && (widgetSettings = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId));
         var timeStampDifference = widgetSettings && (widgetSettings.sessionEndTime - widgetSettings.sessionStartTime);
+        console.log("widgetSettings",widgetSettings)
+        console.log("timeStampDifference",timeStampDifference)
         if (widgetSettings && sessionTimeout != null && timeStampDifference > sessionTimeout) {
+            console.log("delete session")
             KommunicateUtils.deleteUserCookiesOnLogout();
             sessionStorage.removeItem("kommunicate");
             KommunicateUtils.removeItemFromLocalStorage(applozic._globals.appId);

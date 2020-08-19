@@ -349,6 +349,7 @@ KommunicateUtils = {
          return subDomain;
     },
     deleteUserCookiesOnLogout : function(){
+        console.log("deleteUserCookiesOnLogout", MCK_COOKIE_DOMAIN)
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,domain: MCK_COOKIE_DOMAIN});
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain:MCK_COOKIE_DOMAIN });
         KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,  domain: MCK_COOKIE_DOMAIN});
