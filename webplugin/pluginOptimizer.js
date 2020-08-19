@@ -155,7 +155,7 @@ const combineJsFiles = () => {
         input: paths,
         options: {
             compress: {
-                drop_console: true,
+                drop_console: false,
                 keep_fnames: true
             },
             mangle: {
