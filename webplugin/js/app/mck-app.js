@@ -309,7 +309,15 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             var widgetSettings = data.chatWidget;
             var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
-            
+            var allowedDomains = widgetSettings.allowedDomains;
+            var host = parent.window.location.host;
+            console.log(host);
+            if (Array.isArray(allowedDomains) && allowedDomains.length){
+              if(!allowedDomains.includes(host)){
+                parent.window && parent.window.removeKommunicateScripts();
+                return false;
+              }
+            }
             // Remove scripts if disableChatWidget property is enabled
             if (disableChatWidget) {
                 parent.window && parent.window.removeKommunicateScripts();
