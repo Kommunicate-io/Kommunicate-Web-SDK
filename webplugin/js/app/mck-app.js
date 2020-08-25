@@ -311,10 +311,12 @@ function ApplozicSidebox() {
             var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
             
             var allowedDomains = widgetSettings.allowedDomains;
-            var host = parent.window.location.host;
+            var hostname = parent.window.location.hostname;
+
+            const isSubDomain = (domain) => hostname.endsWith(domain);
 
             // Remove scripts if chatwidget is restricted by domains
-            if (Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.includes(host)){
+            if (Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain)){
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
