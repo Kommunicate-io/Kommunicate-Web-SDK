@@ -313,7 +313,11 @@ function ApplozicSidebox() {
             var allowedDomains = widgetSettings.allowedDomains;
             var hostname = parent.window.location.hostname;
 
-            const isSubDomain = (domain) => hostname.endsWith(domain);
+            // check if the current hostname is equal to or a subdomain
+            // e.g. www.google.com is a subdomain of google.com
+            const isSubDomain = (domain) => {
+                return ((hostname == domain) || ((hostname.length > domain.length) && (hostname.substr(hostname.length-domain.length-1) == "." + domain)));
+            }
 
             // Remove scripts if chatwidget is restricted by domains
             if (Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain)){
