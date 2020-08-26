@@ -172,11 +172,14 @@ function addKommunicatePluginToIframe() {
     addableDocument = document;
   } else {
     var kommunicateIframe = window.document.getElementById("kommunicate-widget-iframe");
+    console.log("kommunicateIframe", kommunicateIframe);
     var iframeDocument = kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
     addableWindow = kommunicateIframe.contentWindow;
     addableDocument = iframeDocument;
   }
-  addableWindow.applozic = (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate) || {};
+  addableWindow.applozic = (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate || window.kommunicate) || {};
+  console.log("contentWindow.km", kommunicateIframe.contentWindow.kommunicate);
+  console.log("addableWindow.applozic", addableWindow.applozic);
   addableWindow.MCK_CONTEXTPATH = MCK_CONTEXTPATH;
   addableWindow.MCK_STATICPATH = MCK_STATICPATH;
   addableWindow.MCK_ONINIT = "";
