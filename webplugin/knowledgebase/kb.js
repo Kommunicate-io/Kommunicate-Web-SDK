@@ -105,7 +105,7 @@
         }
 
         KommunicateKB.searchFaqs = function (options) {
-            let data = {
+            var data = {
                 query: {
                   bool: {
                     must: {
