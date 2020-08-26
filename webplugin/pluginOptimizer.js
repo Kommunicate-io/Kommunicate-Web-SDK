@@ -27,7 +27,7 @@ let PLUGIN_FILE_DATA = new Object();
 let isAwsUploadEnabled = argv.upload;
 let BUILD_URL = isAwsUploadEnabled ? CDN_HOST_URL + "/" + version : MCK_STATIC_PATH + "/build";
 // Change "env" to "false" to un-compress all files.
-let env = false;
+let env = config.getEnvId() !== "development";
 // let env = config.getEnvId() !== "development";
 let jsCompressor = !env ? noCompress : gcc;
 let terserCompressor = !env ? noCompress : terser;
