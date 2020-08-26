@@ -474,7 +474,7 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
 Kommunicate.markup.getListContainerMarkup = function(metadata){
-    const buttonClass = {link:"km-link-button", submit:""}
+    var buttonClass = {link:"km-link-button", submit:""}
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
