@@ -320,13 +320,11 @@ function ApplozicSidebox() {
             }
 
             // Remove scripts if chatwidget is restricted by domains
-            if (Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain)){
-                parent.window && parent.window.removeKommunicateScripts();
-                return false;
-            }
+            var isCurrentDomainAllowed = Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain);
 
             // Remove scripts if disableChatWidget property is enabled
-            if (disableChatWidget) {
+            // or domain restrictions are enabled
+            if (disableChatWidget || isCurrentDomainAllowed) {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
