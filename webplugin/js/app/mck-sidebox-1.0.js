@@ -2159,7 +2159,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic('#mck-group-name-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
-                document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
+                console.log(document.getElementById("mck-text-box"))
+                // document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
                 document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
                 document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
                 document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
