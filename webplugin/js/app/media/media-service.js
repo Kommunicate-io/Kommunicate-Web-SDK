@@ -47,22 +47,28 @@ voiceOutputIncomingMessage: function(resp){
 
     if (appOptions.voiceOutput && "speechSynthesis" in window){
         console.log(appOptions.voiceOutput);
-        if (resp.message) {
-            var textToSpeak = "";
+        var textToSpeak = "";
+        if (resp.message) { 
             if(resp.message.hasOwnProperty("fileMeta")){
                 console.log("file");
                 textToSpeak += "you have an attachment ";
                 textToSpeak += resp.message.fileMeta.name;
             }
             else if (resp.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
-                textToSpeak += "a location has been shared with you ";
+                coord = JSON.parse(resp.message.message);
+                console.log(JSON.stringify(coord));
+                textToSpeak += "a location has been shared with you. Latitude is ";
+                textToSpeak += Math.round(coord.lat * 100) / 100;
+                textToSpeak += " longitude is "
+                textToSpeak += Math.round(coord.lon* 100) / 100;
+
+            }
+            else if (resp.message.message) {
                 textToSpeak += resp.message.message;
 
             }
-            else {
-                textToSpeak += resp.message.message;
-
-            }
+        }
+        if (textToSpeak) {
         var utterance = new SpeechSynthesisUtterance(textToSpeak);
         utterance.onerror = ev =>{
 console.log(ev.error);
