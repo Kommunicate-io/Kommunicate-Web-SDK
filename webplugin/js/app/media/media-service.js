@@ -41,5 +41,34 @@ Kommunicate.mediaService = {
 ;            }
         }
     },
+voiceOutputIncomingMessage: function(resp){
+    console.log(JSON.stringify(resp));
+    var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
 
+    if (appOptions.voiceOutput && "speechSynthesis" in window){
+        console.log(appOptions.voiceOutput);
+        if (resp.message) {
+            var textToSpeak = "";
+            if(resp.message.hasOwnProperty("fileMeta")){
+                console.log("file");
+                textToSpeak += "you have an attachment ";
+                textToSpeak += resp.message.fileMeta.name;
+            }
+            else if (resp.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
+                textToSpeak += "a location has been shared with you ";
+                textToSpeak += resp.message.message;
+
+            }
+            else {
+                textToSpeak += resp.message.message;
+
+            }
+        var utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.onerror = ev =>{
+console.log(ev.error);
+        };
+        speechSynthesis.speak(utterance);
+        }
+    }
+}
 }
