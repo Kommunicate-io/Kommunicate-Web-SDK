@@ -152,5 +152,14 @@ Kommunicate.defaultLabels = {
         'mins.ago': 'mins ago',
         'hr.ago': 'hr ago',
         'hrs.ago': 'hrs ago'
+    },
+    'voice.output': {
+        'location': {
+            'init': 'A location has been shared with you.',
+            'lat': 'Latitude is ',
+            'lon': 'and Longitude is '
+
+        },
+        'attachment': 'You have an attachment.'
     }
 }
