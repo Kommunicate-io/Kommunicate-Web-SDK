@@ -9841,7 +9841,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                             };
                         };
                         if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
-                        Kommunicate.mediaService.voiceOutputIncomingMessage(resp);
                             var messageFeed = mckMessageLayout.getMessageFeed(message);
                             Kommunicate.KmEventHandler.onMessageReceived(message);
                             // events.onMessageReceived({
