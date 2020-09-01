@@ -50,15 +50,14 @@ voiceOutputIncomingMessage: function(message){
         var textToSpeak = "";
         if (message) { 
             if(message.hasOwnProperty("fileMeta")){
-                textToSpeak += "You have an attachment.";
+                textToSpeak += MCK_LABELS['voice.output'].attachment;
                 textToSpeak += message.fileMeta.name;
             }
             else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
                 coord = JSON.parse(message.message);
-                textToSpeak += "A location has been shared with you. Latitude is ";
-                textToSpeak += Math.round(coord.lat * 100) / 100;
-                textToSpeak += " and Longitude is "
-                textToSpeak += Math.round(coord.lon* 100) / 100;
+                textToSpeak +=  MCK_LABELS['voice.output'].location.init;
+                textToSpeak += MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
+                textToSpeak += MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon* 100) / 100;
 
             }
             else if (message.message) {
