@@ -41,37 +41,36 @@ Kommunicate.mediaService = {
 ;            }
         }
     },
-voiceOutputIncomingMessage: function(resp){
-    console.log(JSON.stringify(resp));
+voiceOutputIncomingMessage: function(message){
+    // get appoptions
     var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
 
+    // if voiceoutput is enabled and browser supports it
     if (appOptions.voiceOutput && "speechSynthesis" in window){
-        console.log(appOptions.voiceOutput);
         var textToSpeak = "";
-        if (resp.message) { 
-            if(resp.message.hasOwnProperty("fileMeta")){
-                console.log("file");
-                textToSpeak += "you have an attachment ";
-                textToSpeak += resp.message.fileMeta.name;
+        if (message) { 
+            if(message.hasOwnProperty("fileMeta")){
+                textToSpeak += "You have an attachment.";
+                textToSpeak += message.fileMeta.name;
             }
-            else if (resp.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
-                coord = JSON.parse(resp.message.message);
-                console.log(JSON.stringify(coord));
-                textToSpeak += "a location has been shared with you. Latitude is ";
+            else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
+                coord = JSON.parse(message.message);
+                textToSpeak += "A location has been shared with you. Latitude is ";
                 textToSpeak += Math.round(coord.lat * 100) / 100;
-                textToSpeak += " longitude is "
+                textToSpeak += " and Longitude is "
                 textToSpeak += Math.round(coord.lon* 100) / 100;
 
             }
-            else if (resp.message.message) {
-                textToSpeak += resp.message.message;
+            else if (message.message) {
+                textToSpeak += message.message;
 
             }
         }
         if (textToSpeak) {
         var utterance = new SpeechSynthesisUtterance(textToSpeak);
+        
         utterance.onerror = ev =>{
-console.log(ev.error);
+            console.log("Error occured in speech synthesis " + ev.error);
         };
         speechSynthesis.speak(utterance);
         }
