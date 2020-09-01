@@ -6333,7 +6333,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 ) {
                     return;
                 }
-                // udate contact only if its a rich msg or normal text msg
+                // update contact only if its a rich msg or normal text msg
                 if (message && message.createdAtTime > currentMessageTime) {
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
