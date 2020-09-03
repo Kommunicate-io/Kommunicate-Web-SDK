@@ -63,7 +63,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'disableChatForNonGroupMember': false,
             'defaultChatDisabledMessage': 'Chat Disabled!'
         },
-        voiceInput: false
+        voiceInput:false,
+        voiceOutput:false
     };
     var message_default_options = {
         'messageType': 5,
@@ -528,6 +529,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             mckMessageService.openChat(params)
         };
 
+
         var EVENTS = {
             'onConnectFailed': function (resp) {
                 console.log('onConnectFailed' + resp)
@@ -563,6 +565,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'onConversationRead': function (resp) {
             },
             'onMessageReceived': function (resp) {
+                
             },
             'onMessageSentUpdate': function (resp) {
             },
@@ -958,8 +961,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic("reset", appOptions);
-                KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: KommunicateUtils.getDomainFromUrl()});
-                KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: KommunicateUtils.getDomainFromUrl()});
+                KommunicateUtils.deleteCookie({name :KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME, domain: MCK_COOKIE_DOMAIN});
+                KommunicateUtils.deleteCookie({name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID, domain: MCK_COOKIE_DOMAIN});
                 $applozic("#mck-sidebox").hide();
                 $applozic("#mck-sidebox-launcher").hide();
                 parent.document.getElementById("kommunicate-widget-iframe") && (parent.document.getElementById("kommunicate-widget-iframe").style.display = "none");
@@ -3000,8 +3003,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                     if(email){
                         userId = email;
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
-                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: KommunicateUtils.getDomainFromUrl()});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,"value": email, "expiresInDays":30, domain: MCK_COOKIE_DOMAIN});
+                        KommunicateUtils.setCookie({"name":KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,"value": true, "expiresInDays":30, domain: MCK_COOKIE_DOMAIN});
                     }
                     var metadata = mckMessageService.getUserMetadata();
                     $error_chat_login.removeClass('show').addClass('hide');
@@ -3979,6 +3982,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
             // populate away messsage for support group..
             _this.populateAwayStatusAndMessage = function (data, isAgentOffline, err, message) {
+                if ((_this.isFaqTabOpen())) {
+                    return;
+                }
                 if (message && message.code === "AGENTS_ONLINE" && !isAgentOffline) {
                     KommunicateUI.setAvailabilityStatus("online");
                 } else if (message && message.code === "SUCCESS" && !isAgentOffline) {
@@ -4392,13 +4398,19 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
                 typeof callback == 'function' && callback(data);
             };
+            _this.isFaqTabOpen = function () {
+                return (document.querySelector("#km-faqdiv").classList.contains("vis") || document.querySelector("#km-faqanswer").classList.contains("vis") ||
+                document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
+            }
             _this.updateConversationHeader = function (params) {
+                if((_this.isFaqTabOpen())){
+                    return;
+                }
                 var imageUrl;
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
                 KommunicateUI.adjustConversationTitleHeadingWidth(POPUP_WIDGET);
-
                 if (params.imageUrl) {
                     imageUrl = params.imageUrl;
                     $applozic(".mck-agent-image-container img").removeClass("n-vis");
@@ -9626,6 +9638,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.onMessage = function (resp) {
+
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                 var messageType = resp.type;
