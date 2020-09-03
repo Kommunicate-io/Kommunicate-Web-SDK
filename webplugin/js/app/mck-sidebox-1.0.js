@@ -63,7 +63,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'disableChatForNonGroupMember': false,
             'defaultChatDisabledMessage': 'Chat Disabled!'
         },
-        voiceInput:false
+        voiceInput:false,
+        voiceOutput:false
     };
     var message_default_options = {
         'messageType': 5,
@@ -525,6 +526,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             mckMessageService.openChat(params)
         };
 
+
         var EVENTS = {
             'onConnectFailed': function (resp) {
                 console.log('onConnectFailed' + resp)
@@ -560,6 +562,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'onConversationRead': function (resp) {
             },
             'onMessageReceived': function (resp) {
+                
             },
             'onMessageSentUpdate': function (resp) {
             },
@@ -9577,6 +9580,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.onMessage = function (resp) {
+
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                 var messageType = resp.type;

@@ -27,6 +27,9 @@ Kommunicate.KmEventHandler = {
         if (!message.metadata || (validMessageMetadata)) {
             // hiding away message when new message received from agents.
             KommunicateUI.hideAwayMessage();
+            // Send the message for voice output
+            Kommunicate.mediaService.voiceOutputIncomingMessage(message);
+
         }
     },
     'onMessageSent': function(message){
