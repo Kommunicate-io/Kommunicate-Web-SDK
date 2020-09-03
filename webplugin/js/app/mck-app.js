@@ -310,8 +310,21 @@ function ApplozicSidebox() {
             var widgetSettings = data.chatWidget;
             var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
             
+            var allowedDomains = widgetSettings.allowedDomains;
+            var hostname = parent.window.location.hostname.toLowerCase();
+
+            // check if the current hostname is equal to or a subdomain
+            // e.g. www.google.com is a subdomain of google.com
+            const isSubDomain = (domain) => {
+                return ((hostname == domain) || ((hostname.length > domain.length) && (hostname.substr(hostname.length-domain.length-1) == "." + domain)));
+            }
+
+            // Remove scripts if chatwidget is restricted by domains
+            var isCurrentDomainDisabled = Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain);
+
             // Remove scripts if disableChatWidget property is enabled
-            if (disableChatWidget) {
+            // or domain restrictions are enabled
+            if (disableChatWidget || isCurrentDomainDisabled) {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
