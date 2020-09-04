@@ -169,7 +169,8 @@ KommunicateConstants = {
     POSITION: {
         LEFT: 'left',
         RIGHT: 'right'
-    }
+    },
+    KOMMUNICATE_DOMAINS: ["kommunicate.io"]
 }
 
 /**

@@ -309,12 +309,6 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             var widgetSettings = data.chatWidget;
             var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
-            
-            // exclude kommunicate.io from restricted domains for
-            // the chatbot preview feature
-            var kommunicateDomains = [];
-            var kommunicateDomain = "kommunicate.io";
-            kommunicateDomains.push(kommunicateDomain);
 
             var allowedDomains = widgetSettings.allowedDomains;
             var hostname = parent.window.location.hostname.toLowerCase();
@@ -327,7 +321,9 @@ function ApplozicSidebox() {
 
             // Remove scripts if chatwidget is restricted by domains
             var isCurrentDomainDisabled = Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain);
-            var isCurrentDomainKommunicate = kommunicateDomains.some(isSubDomain);
+            // exclude kommunicate.io from restricted domains for
+            // the chatbot preview feature
+            var isCurrentDomainKommunicate = KommunicateConstants.KOMMUNICATE_DOMAINS.some(isSubDomain);
             // Remove scripts if disableChatWidget property is enabled
             // or domain restrictions are enabled
             if ((disableChatWidget || isCurrentDomainDisabled) && !isCurrentDomainKommunicate) {
