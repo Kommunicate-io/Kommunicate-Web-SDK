@@ -5379,6 +5379,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
                     botMessageDelayClass = 'n-vis';
                 }
+                if (!richText && messageClass == "n-vis"){
+                    // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
+                    return ;
+                }
                 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -6327,10 +6331,12 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
 
-                if (message.metadata && message.metadata.action) {
+                if (message.metadata && message.metadata.action ||
+                    !(Kommunicate.isRichTextMessage(message.metadata) || message.message)
+                ) {
                     return;
                 }
-
+                // update contact only if its a rich msg or normal text msg
                 if (message && message.createdAtTime > currentMessageTime) {
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
