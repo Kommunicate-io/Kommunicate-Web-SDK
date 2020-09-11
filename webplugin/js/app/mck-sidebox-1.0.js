@@ -7556,9 +7556,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.updateUser = function(options) {
+                var param = {
+                    elasticUpdate:true
+                }
+                options.data.email && (param["allowEmail"] = true);
+                var url = MCK_BASE_URL + "/rest/ws/user/update?"+ $applozic.param(param);
+                //.param() using to serialize the properties of an object as a query string
                 window.Applozic.ALApiService.ajax({
                     type: "POST",
-                    url: MCK_BASE_URL + "/rest/ws/user/update",
+                    url: url,
                     data: w.JSON.stringify(options.data),
                     contentType : 'application/json',
                     success: function(response) {
