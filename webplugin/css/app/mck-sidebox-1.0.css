@@ -5410,7 +5410,7 @@ div#mck-waiting-queue{
     font-size: 14px;
     line-height: 20px;
     text-align: center;
-	padding-top: 12px;
+    padding: 12px 5px 13px 5px;
 	border-top: 1px dashed #CAD3E3;
 }
 
