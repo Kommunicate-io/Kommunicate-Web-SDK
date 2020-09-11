@@ -161,5 +161,6 @@ Kommunicate.defaultLabels = {
 
         },
         'attachment': 'You have an attachment.'
-    }
+    },
+    'waiting.queue':'You are currently in the waiting queue, our agents will get back you shortly.'
 }

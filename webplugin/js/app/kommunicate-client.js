@@ -94,7 +94,7 @@ Kommunicate.client={
                     if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
-                    response && response.data.metadata.CONVERSATION_STATUS ==KommunicateConstants.CONVERSATION_STATE["WAITING"] ?KommunicateUI.handleWaitingQueueMessage(true):KommunicateUI.handleWaitingQueueMessage(false);
+                    response && response.data.metadata.CONVERSATION_STATUS ==Kommunicate.conversationHelper.status.WAITING ?KommunicateUI.handleWaitingQueueMessage(true):KommunicateUI.handleWaitingQueueMessage(false);
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
                     /* conversation table migrated to Applozic
