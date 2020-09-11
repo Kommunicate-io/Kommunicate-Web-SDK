@@ -57,6 +57,18 @@ KommunicateConstants = {
     CONVERSATION_CLOSED_STATUS : 'closed',
     CONVERSATION_RESOLVED_STATUS : 'Resolved',
     CONVERSATION_OPEN_STATUS : 'Open',
+    CONVERSATION_WAITING_STATUS:'WAITING',
+    CONVERSATION_STATE: {
+        INITIAL: -1,
+        OPEN: 0,
+        PROGRESS: 1,
+        CLOSED: 2,
+        SPAM: 3,
+        DUPLICATE: 4,
+        ARCHIVE: 5,
+        UNRESPONDED: 6,
+        WAITING:7
+    },
     MESSAGE_SOURCE: {
         DEVICE: 0,
         WEB: 1,

@@ -4018,6 +4018,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         //Display/hide lead(email) collection template
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
+                        CURRENT_GROUP_DATA.conversationStatus == KommunicateConstants.CONVERSATION_STATE["WAITING"] ?KommunicateUI.handleWaitingQueueMessage(true):KommunicateUI.handleWaitingQueueMessage(false);
                         CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
@@ -9806,6 +9807,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN);
                             }
                             KommunicateUI.handleConversationBanner();
+                            resp.message.metadata.KM_STATUS == KommunicateConstants.CONVERSATION_WAITING_STATUS ?KommunicateUI.handleWaitingQueueMessage(true):KommunicateUI.handleWaitingQueueMessage(false);
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
