@@ -5404,13 +5404,13 @@ div[name="message"]:last-child {
 	color: #676262;
 	font-size: 14px;
 }
-div#mck-waiting-queue{
+div#mck-waiting-queue {
 	color: #5C6677;
-    height: 40px;
-    font-size: 14px;
-    line-height: 20px;
-    text-align: center;
-    padding: 12px 5px 13px 5px;
+	height: 40px;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	padding: 12px 5px 13px 5px;
 	border-top: 1px dashed #CAD3E3;
 }
 
