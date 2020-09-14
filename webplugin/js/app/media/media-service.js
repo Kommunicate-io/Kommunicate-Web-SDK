@@ -49,6 +49,9 @@ Kommunicate.mediaService = {
         if (appOptions.voiceOutput && "speechSynthesis" in window){
             var textToSpeak = "";
             if (message) { 
+                if(message.metadata && (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
+                    return;
+                };
                 if(message.hasOwnProperty("fileMeta")){
                     textToSpeak += MCK_LABELS['voice.output'].attachment;
                     textToSpeak += message.fileMeta.name;
