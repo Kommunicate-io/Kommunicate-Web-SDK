@@ -589,8 +589,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             hasMultipleConversations ? backButton.classList.remove('force-n-vis') : backButton.classList.add('force-n-vis')
         }
     },
-    handleWaitingQueueMessage: function (show) {
-        if (show) {
+    handleWaitingQueueMessage: function (data) {
+        let waitingStatus = data && data.metadata.CONVERSATION_STATUS ==Kommunicate.conversationHelper.status.WAITING;
+        if (waitingStatus) {
             kommunicateCommons.modifyClassList({id:["mck-waiting-queue"]}, "vis","n-vis");
            
         } else {
