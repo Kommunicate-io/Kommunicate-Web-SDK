@@ -5217,6 +5217,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 });
             }
+
             _this.addMessage = function(msg, contact, append, scroll, appendContextMenu, enableAttachment, callback) {
                 var metadatarepiledto = '';
                 var replymessage = '';
@@ -5230,12 +5231,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var messageClass= "vis";
                 var progressMeterClass = "n-vis";
                 var attachmentBox = "n-vis";
-                if((msg && msg.metadata && msg.metadata.feedback)){
-                    return;
-                }
-                if (msg && !msg.message && msg.metadata.hasOwnProperty("KM_ASSIGN_TO")) { // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
-                    return;
-                }
+
+                if (!Kommunicate.visibleMessage(msg)) return;
+
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
                     metadatarepiledto = msg.metadata.AL_REPLY;
                     replyMsg = alMessageService.getReplyMessageByKey(metadatarepiledto);
@@ -5257,19 +5255,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 }
 
-
-                if (msg.type === 6 || msg.type === 7) {
-                    return;
-                }
-                if ((msg.metadata && msg.metadata.category === 'HIDDEN') || msg.contentType === 102) {
-                    return;
-                }
-                if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
-					return;
-				}
-                if (msg.contentType === 10 && (msg.metadata && msg.metadata.hide === 'true')) {
-                    return;
-                }
                 if ($applozic("#mck-message-cell ." + msg.key).length > 0) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
