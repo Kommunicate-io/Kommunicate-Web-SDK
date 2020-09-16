@@ -97,8 +97,14 @@ KommunicateConstants = {
         DEVELOPER: 11
     },
     MESSAGE_TYPE: {
+        INBOX: 0,
+        OUTBOX: 1,
+        DRAFT: 2,
+        OUTBOX_SENT_FROM_DEVICE: 3,
         RECEIVED: 4,
         SENT: 5,
+        CALL_INCOMING: 6,
+        CALL_OUTGOING: 7,
     },
     DEFAULT_PROFILE_IMAGE: {
         URL: "https://s3.amazonaws.com/kommunicate.io/default-avatar-image.png"
