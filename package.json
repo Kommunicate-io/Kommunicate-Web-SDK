@@ -18,7 +18,7 @@
     "express": "4.17.1",
     "form-data": "3.0.0",
     "minimist": "1.2.5",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "@node-minify/no-compress": "6.0.0",
     "@node-minify/core": "6.0.0",
     "@node-minify/terser": "6.0.0",
