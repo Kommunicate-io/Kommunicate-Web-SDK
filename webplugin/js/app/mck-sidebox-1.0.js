@@ -2177,9 +2177,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
                 document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
-                document.getElementById('mck-waiting-queue-1').innerHTML = MCK_LABELS['waiting.queue']['first.Part'];
-                document.getElementById('mck-waiting-queue-2').innerHTML = MCK_LABELS['waiting.queue']['waiting.queue.number'];
-                document.getElementById('mck-waiting-queue-3').innerHTML = MCK_LABELS['waiting.queue']['last.part'];
+                document.getElementById('mck-waiting-queue-1').innerHTML = MCK_LABELS['waiting.queue.message']['first.Part'];
+                document.getElementById('mck-waiting-queue-2').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
+                document.getElementById('mck-waiting-queue-3').innerHTML = MCK_LABELS['waiting.queue.message']['last.part'];
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();

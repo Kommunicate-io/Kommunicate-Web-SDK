@@ -592,12 +592,13 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         handleWaitingQueueMessage: function (data) {
             let groupId = data && data.clientGroupId;
             let waitingStatus = data && data.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING;
-            mckUtils.ajax({
+            window.Applozic.ALApiService.ajax({
                 type: 'GET',
                 url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
                 global: false,
                 contentType: 'application/json',
                 success: function (res) {
+                    if(res.status === "success"){
                     WAITING_QUEUE = res.response;
                     document.getElementById('mck-waiting-queue-2') && (document.getElementById('mck-waiting-queue-2').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
                     if (waitingStatus) {
@@ -609,10 +610,11 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
                             id: ["mck-waiting-queue"]
                         }, "n-vis", "vis");
                     }
+                }
 
                 },
                 error: function (err) {
-                    console.log('Error while fetching waiting list', err);
+                    throw new Error('Error while fetching waiting list', err);
                 }
             });
         },
