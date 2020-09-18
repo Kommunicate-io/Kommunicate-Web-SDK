@@ -57,6 +57,7 @@ KommunicateConstants = {
     CONVERSATION_CLOSED_STATUS : 'closed',
     CONVERSATION_RESOLVED_STATUS : 'Resolved',
     CONVERSATION_OPEN_STATUS : 'Open',
+    CONVERSATION_WAITING_STATUS:'Waiting',
     MESSAGE_SOURCE: {
         DEVICE: 0,
         WEB: 1,

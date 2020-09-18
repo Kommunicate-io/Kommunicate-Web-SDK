@@ -12,6 +12,7 @@ var CURRENT_GROUP_DATA={};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
+var WAITING_QUEUE = [];
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
 (function ($applozic, w, d) {
@@ -2176,6 +2177,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
                 document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
+                document.getElementById('wq-msg-first-Part').innerHTML = MCK_LABELS['waiting.queue.message']['first.Part'];
+                document.getElementById('waiting-queue-number').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
+                document.getElementById('wq-msg-last-part').innerHTML = MCK_LABELS['waiting.queue.message']['last.part'];
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -4018,6 +4022,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         //Display/hide lead(email) collection template
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
+                        data && KommunicateUI.handleWaitingQueueMessage(data.groupFeeds[0]);
                         CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
@@ -9803,6 +9808,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN);
                             }
                             KommunicateUI.handleConversationBanner();
+                            resp && resp.message && KommunicateUI.handleWaitingQueueMessage(resp.message);
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;

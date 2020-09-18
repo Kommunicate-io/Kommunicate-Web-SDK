@@ -588,7 +588,36 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             startConversationButton.classList.add('force-n-vis');
             hasMultipleConversations ? backButton.classList.remove('force-n-vis') : backButton.classList.add('force-n-vis')
         }
-    }
+    },
+        handleWaitingQueueMessage: function (data) {
+            let groupId = data && data.clientGroupId;
+            let waitingStatus = data && data.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING;
+            window.Applozic.ALApiService.ajax({
+                type: 'GET',
+                url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
+                global: false,
+                contentType: 'application/json',
+                success: function (res) {
+                    if(res.status === "success"){
+                    WAITING_QUEUE = res.response;
+                    document.getElementById('waiting-queue-number') && (document.getElementById('waiting-queue-number').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
+                    if (waitingStatus) {
+                        kommunicateCommons.modifyClassList({
+                            id: ["mck-waiting-queue"]
+                        }, "vis", "n-vis");
+                    } else {
+                        kommunicateCommons.modifyClassList({
+                            id: ["mck-waiting-queue"]
+                        }, "n-vis", "vis");
+                    }
+                }
+
+                },
+                error: function (err) {
+                    throw new Error('Error while fetching waiting list', err);
+                }
+            });
+        },
 
 
 }
