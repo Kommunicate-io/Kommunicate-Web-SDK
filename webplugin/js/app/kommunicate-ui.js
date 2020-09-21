@@ -500,12 +500,11 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
     }
     },
     displayPopupChatTemplate: function(popupChatContent, chatWidget, mckChatPopupNotificationTone) {
-
-        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
+        var disableGreetingMessage = kommunicateCommons.isObject(chatWidget) && chatWidget.hasOwnProperty('disableGreetingMessageInMobile') ? chatWidget.disableGreetingMessageInMobile : false;
+        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup && (kommunicateCommons );
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
-
-        if(isPopupEnabled && delay > -1) {
+        if(isPopupEnabled && delay > -1 && !(kommunicateCommons.checkIfDeviceIsHandheld() && disableGreetingMessage)) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
                 KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true, mckChatPopupNotificationTone);
             }, delay);
