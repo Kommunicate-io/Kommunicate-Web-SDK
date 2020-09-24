@@ -10,10 +10,11 @@ Kommunicate.mediaService = {
             alert("browser do not support speech recogization");
         } else {
             var recognition = new webkitSpeechRecognition();
+            var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end. 
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change. 
             finalTranscript = '';
-            recognition.lang = "en-us";
+            recognition.lang = appOptions.language || "en-us";
             recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
