@@ -4384,6 +4384,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     return;
                 }
                 var imageUrl;
+                params.name = params.name && kommunicateCommons.formatHtmlTag(params.name);
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
@@ -5779,58 +5780,60 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.getImageUrlForGroupType = function (contact, displayName) {
-                var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
+                var profileDisplayName = displayName ? kommunicateCommons.formatHtmlTag(displayName) + ' profile image' : 'Profile image';
                 return contact.imageUrl? '<img src="' + contact.imageUrl + '" alt="' + profileDisplayName + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
-      			_this.getContactImageLink = function(contact, displayName, message) {
-                        var imgsrctag = '';
-                        var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
-                        if(!contact.isGroup){
-                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId] && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
-                            contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
-                          }
+
+            _this.getContactImageLink = function (contact, displayName, message) {
+                var imgsrctag = '';
+                var profileDisplayName = displayName ? kommunicateCommons.formatHtmlTag(displayName) + ' profile image' : 'Profile image';
+                if (!contact.isGroup) {
+                    if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId] && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                        contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
+                    }
+                }
+                if (contact.members && contact.type == 10) {
+                    if (message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
+                        imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '" alt="' + profileDisplayName + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
+                    } else {
+                        imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
+                    }
+                }
+                else if (contact.isGroup && contact.type !== 7) {
+                    imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
+                }
+                else {
+                    if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
+                        mckGroupService.getContactFromGroupOfTwo(contact, function (user) {
+                            contact = mckMessageLayout.fetchContact(user);
+                        });
+                    }
+                    if (typeof (MCK_GETUSERIMAGE) === "function") {
+                        var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
+                        if (imgsrc && typeof imgsrc !== 'undefined') {
+                            imgsrctag = '<img src="' + imgsrc + '"/>';
                         }
-      				if(contact.members && contact.type==10){
-                        if(message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
-                            imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '" alt="' + profileDisplayName + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
+                    }
+                    if (!imgsrctag) {
+                        if (contact.photoSrc) {
+                            imgsrctag = '<img src="' + contact.photoSrc + '" alt="' + profileDisplayName + '"/>';
+                        } else if (contact.photoData) {
+                            imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '" alt="' + profileDisplayName + '"/>';
+                        } else if (contact.photoLink) {
+                            imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
+                        } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
+                            imgsrctag = '<img src="' + 'https://cdn.kommunicate.io/kommunicate/bot_default_image.png' + '" alt="' + profileDisplayName + '"/>';
                         } else {
-                            imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
+                            if (!displayName) {
+                                displayName = contact.displayName;
+                            }
+                            imgsrctag = _this.getContactImageByAlphabet(displayName);
                         }
-              }
-              else if (contact.isGroup && contact.type !== 7) {
-                  imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
-              }
-              else {
-                  if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
-                      mckGroupService.getContactFromGroupOfTwo(contact, function(user){
-                    contact = mckMessageLayout.fetchContact(user);
-                  });
-                  }
-                  if (typeof (MCK_GETUSERIMAGE) === "function") {
-                      var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
-                      if (imgsrc && typeof imgsrc !== 'undefined') {
-                          imgsrctag = '<img src="' + imgsrc + '"/>';
-                      }
-                  }
-                  if (!imgsrctag) {
-                      if (contact.photoSrc) {
-                          imgsrctag = '<img src="' + contact.photoSrc + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.photoData) {
-                          imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.photoLink) {
-                          imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                          imgsrctag = '<img src="' + 'https://cdn.kommunicate.io/kommunicate/bot_default_image.png' + '" alt="' + profileDisplayName + '"/>';
-                      } else {
-                          if (!displayName) {
-                              displayName = contact.displayName;
-                          }
-                          imgsrctag = _this.getContactImageByAlphabet(displayName);
-                      }
-                  }
-              }
-              return imgsrctag;
+                    }
+                }
+                return imgsrctag;
             };
+
             _this.getContactImageByAlphabet = function (name) {
                 if (typeof name === 'undefined' || name === '') {
                     return '<div class="mck-alpha-contact-image mck-alpha-user"><span class="mck-icon-user"></span></div>';
@@ -6712,14 +6715,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 }
             };
-            _this.getScriptMessagePreview = function(message,emoji_template){
-				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && !Kommunicate.isRichTextMessage(message.metadata)) {
-					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
-						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-					}
-				}
-				return emoji_template;
-			}
+            _this.getScriptMessagePreview = function (message, emoji_template) {
+                if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && !Kommunicate.isRichTextMessage(message.metadata)) {
+                    if ((typeof emoji_template === "string") && emoji_template.indexOf('emoji-inner') === -1) {
+                        emoji_template = kommunicateCommons.formatHtmlTag(emoji_template);
+                    }
+                }
+                return emoji_template;
+            }
             _this.getMessageTextForContactPreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
@@ -6922,7 +6925,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             _this.getTabDisplayName = function (tabId, isGroup, userName) {
                 var displayName = '';
                 if (isGroup) {
-                    return mckGroupService.getGroupDisplayName(tabId);
+                    displayName = mckGroupService.getGroupDisplayName(tabId);
                 } else {
                     if (typeof (MCK_GETUSERNAME) === 'function') {
                         displayName = MCK_GETUSERNAME(tabId);
@@ -6946,8 +6949,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     if (!displayName) {
                         displayName = tabId;
                     }
-                    return displayName;
                 }
+                return displayName && kommunicateCommons.formatHtmlTag(displayName);
             };
             _this.populateMessage = function (messageType, message, notifyUser) {
                 var callDuration = mckDateUtils.convertMilisIntoTime(message.metadata.CALL_DURATION);
@@ -8222,7 +8225,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (currTabId === groupId.toString() && isGroupTab) {
-                            $mck_tab_title.html(group.displayName);
+                            var groupName = group.displayName && kommunicateCommons.formatHtmlTag(group.displayName);
+                            $mck_tab_title.html(groupName);
                         } else {
                             if ($applozic("#li-group-" + group.htmlId).length > 0) {
                                 $applozic("#li-group-" + group.htmlId + " .mck-cont-name strong").html(group.displayName);
