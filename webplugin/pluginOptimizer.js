@@ -48,7 +48,7 @@ const removeExistingFile = function (dirPath) {
         })
     }
 };
-// Add already minified files in the below code.
+// Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
     minify({
         compressor: jsCompressor,
