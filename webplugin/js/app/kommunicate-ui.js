@@ -32,8 +32,9 @@ KommunicateUI={
     populateAwayMessage:function(err,message){  
         var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         var closedConversation = $applozic("#mck-conversation-status-box").hasClass('vis');
-        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!conversationWindowNotActive && !closedConversation){ 
-            awayMessage =message.data.messageList[0].message;
+        if (!err && message.code == "SUCCESS" && message.data.messageList.length > 0 && !conversationWindowNotActive && !closedConversation) { 
+            awayMessage = message.data.messageList[0].message;
+            awayMessage = kommunicateCommons.formatHtmlTag(awayMessage);
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg").linkify({
                 target: '_blank'

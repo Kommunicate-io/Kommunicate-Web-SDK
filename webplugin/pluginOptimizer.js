@@ -48,13 +48,12 @@ const removeExistingFile = function (dirPath) {
         })
     }
 };
-
+// Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
     minify({
         compressor: jsCompressor,
         input: [
             path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
-            path.resolve(__dirname, 'lib/js/mck-ui-plugins.min.js'),
             path.resolve(__dirname, 'lib/js/howler-2.1.2.min.js'),
             path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
@@ -102,6 +101,7 @@ const compressAndOptimize = () => {
     minify({
         compressor: terserCompressor,
         input: [
+            path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
             path.resolve(__dirname, 'js/app/km-utils.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
