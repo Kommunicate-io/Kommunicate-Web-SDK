@@ -190,8 +190,11 @@ KommunicateUI={
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
             data: { appId: data.appId, articleId: articleId, source: source }, success: function (response) {
-                if ($applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
-                    $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer ql-editor">' + response.data.body + '</div></div>');
+                let faqDetails = response && response.data;
+                if (faqDetails && $applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
+                    let faqTitle = faqDetails.title && kommunicateCommons.formatHtmlTag(faqDetails.title);
+                    // FAQ description is already coming in formatted way from the dashboard FAQ editor.
+                    $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' + faqTitle + '</div> <div class="km-faqanchor km-faqanswer ql-editor">' + faqDetails.body + '</div></div>');
                     $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
                     $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
                     $applozic('#km-faqanswer').removeClass("n-vis").addClass("vis");
@@ -203,7 +206,9 @@ KommunicateUI={
                     });
                 }
             }
-            , error: function () { }
+            , error: function (error) {
+                throw new Error('Error while fetching faq details', error);
+             }
         });
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
     });
@@ -346,6 +351,7 @@ searchFaqUI: function (response) {
     $applozic.each(response.data, function (i, faq) {
         var id = faq.id || faq.articleId;
         var title = faq.name || faq.title;
+        title = title && kommunicateCommons.formatHtmlTag(title);
         document.getElementById("km-faq-list-container").innerHTML += '<li class="km-faq-list"  data-articleId="' + id + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + title + '</div></a></li>';
     });
 },
