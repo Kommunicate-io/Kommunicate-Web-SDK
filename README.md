@@ -28,7 +28,7 @@ Kommunicate has a powerful human + chatbot hybrid platform, where you can integr
 
 ### Following is the UI to create the BOT
 
-![Kompose](https://user-images.githubusercontent.com/38066371/87527229-71d86080-c6a9-11ea-8a2c-467c99badac9.jpeg)
+![Kompose](https://user-images.githubusercontent.com/32258004/95324271-1808c080-08bd-11eb-9bed-768e87977648.png)
 
 
 
