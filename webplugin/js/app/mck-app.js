@@ -346,9 +346,11 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata == 'object' ? options.metadata : {};
             options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             options.connectSocketOnWidgetClick = options.connectSocketOnWidgetClick != null ? options.connectSocketOnWidgetClick : (widgetSettings && widgetSettings.connectSocketOnWidgetClick);
+            options.voiceInput = options.voiceInput != null ? options.voiceInput : (widgetSettings && widgetSettings.voiceInput);
+            options.voiceOutput = options.voiceOutput != null ? options.voiceOutput : (widgetSettings && widgetSettings.voiceOutput);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
-            if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
+            if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
                 var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
