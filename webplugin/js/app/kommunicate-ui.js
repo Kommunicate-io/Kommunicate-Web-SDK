@@ -32,8 +32,9 @@ KommunicateUI={
     populateAwayMessage:function(err,message){  
         var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         var closedConversation = $applozic("#mck-conversation-status-box").hasClass('vis');
-        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!conversationWindowNotActive && !closedConversation){ 
-            awayMessage =message.data.messageList[0].message;
+        if (!err && message.code == "SUCCESS" && message.data.messageList.length > 0 && !conversationWindowNotActive && !closedConversation) { 
+            awayMessage = message.data.messageList[0].message;
+            awayMessage = kommunicateCommons.formatHtmlTag(awayMessage);
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg").linkify({
                 target: '_blank'
@@ -190,8 +191,11 @@ KommunicateUI={
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
             data: { appId: data.appId, articleId: articleId, source: source }, success: function (response) {
-                if ($applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
-                    $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer ql-editor">' + response.data.body + '</div></div>');
+                let faqDetails = response && response.data;
+                if (faqDetails && $applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
+                    let faqTitle = faqDetails.title && kommunicateCommons.formatHtmlTag(faqDetails.title);
+                    // FAQ description is already coming in formatted way from the dashboard FAQ editor.
+                    $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' + faqTitle + '</div> <div class="km-faqanchor km-faqanswer ql-editor">' + faqDetails.body + '</div></div>');
                     $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
                     $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
                     $applozic('#km-faqanswer').removeClass("n-vis").addClass("vis");
@@ -203,7 +207,9 @@ KommunicateUI={
                     });
                 }
             }
-            , error: function () { }
+            , error: function (error) {
+                throw new Error('Error while fetching faq details', error);
+             }
         });
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
     });
@@ -346,6 +352,7 @@ searchFaqUI: function (response) {
     $applozic.each(response.data, function (i, faq) {
         var id = faq.id || faq.articleId;
         var title = faq.name || faq.title;
+        title = title && kommunicateCommons.formatHtmlTag(title);
         document.getElementById("km-faq-list-container").innerHTML += '<li class="km-faq-list"  data-articleId="' + id + '"><a class="km-faqdisplay"> <div class="km-faqimage">' + KommunicateUI.faqSVGImage + '</div><div class="km-faqanchor">' + title + '</div></a></li>';
     });
 },
@@ -500,11 +507,10 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
     }
     },
     displayPopupChatTemplate: function(popupChatContent, chatWidget, mckChatPopupNotificationTone) {
-
-        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
+        var enableGreetingMessage = kommunicateCommons.isObject(chatWidget) && chatWidget.hasOwnProperty('enableGreetingMessageInMobile') ? chatWidget.enableGreetingMessageInMobile : true;
+        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup && (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey = (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) || KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
-
         if(isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function() {
                 KommunicateUI.togglePopupChatTemplate(popupTemplateKey, true, mckChatPopupNotificationTone);
@@ -588,7 +594,36 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             startConversationButton.classList.add('force-n-vis');
             hasMultipleConversations ? backButton.classList.remove('force-n-vis') : backButton.classList.add('force-n-vis')
         }
-    }
+    },
+        handleWaitingQueueMessage: function (data) {
+            let groupId = data && data.clientGroupId;
+            let waitingStatus = data && data.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING;
+            window.Applozic.ALApiService.ajax({
+                type: 'GET',
+                url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
+                global: false,
+                contentType: 'application/json',
+                success: function (res) {
+                    if(res.status === "success"){
+                    WAITING_QUEUE = res.response;
+                    document.getElementById('waiting-queue-number') && (document.getElementById('waiting-queue-number').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
+                    if (waitingStatus) {
+                        kommunicateCommons.modifyClassList({
+                            id: ["mck-waiting-queue"]
+                        }, "vis", "n-vis");
+                    } else {
+                        kommunicateCommons.modifyClassList({
+                            id: ["mck-waiting-queue"]
+                        }, "n-vis", "vis");
+                    }
+                }
+
+                },
+                error: function (err) {
+                    throw new Error('Error while fetching waiting list', err);
+                }
+            });
+        },
 
 
 }

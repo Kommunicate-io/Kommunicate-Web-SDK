@@ -15,7 +15,8 @@ Kommunicate.conversationHelper = {
         "SPAM": 3,
         "DUPLICATE": 4,
         "ARCHIVE": 5,
-        "UNRESPONDED": 6
+        "UNRESPONDED": 6,
+        "WAITING":7
     },
 
     isConversationClosed : function(group){
