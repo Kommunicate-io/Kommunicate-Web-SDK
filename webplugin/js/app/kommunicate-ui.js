@@ -601,7 +601,6 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
                 success: function (res) {
                     if(res.status === "success"){
                     WAITING_QUEUE = res.response;
-                    console.log("#WAITING_QUEUE",WAITING_QUEUE);
                     if (waitingStatus && WAITING_QUEUE.length) {
                         document.getElementById('waiting-queue-number') && (document.getElementById('waiting-queue-number').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
                         kommunicateCommons.modifyClassList({
