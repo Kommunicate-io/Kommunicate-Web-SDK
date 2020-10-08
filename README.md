@@ -12,6 +12,9 @@ It lets you easily add real-time live chat and in-app messaging in your websites
 
 Kommunicate has a powerful human + chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
 
+![Chat-widget](https://user-images.githubusercontent.com/32258004/95323958-9dd83c00-08bc-11eb-8744-bbf33140e00d.png)
+
+
 
 ## Build a BOT on Kommunicate and integrate it in your Website 
 
@@ -25,7 +28,7 @@ Kommunicate has a powerful human + chatbot hybrid platform, where you can integr
 
 ### Following is the UI to create the BOT
 
-![Kompose](https://user-images.githubusercontent.com/38066371/87527229-71d86080-c6a9-11ea-8a2c-467c99badac9.jpeg)
+![Kompose](https://user-images.githubusercontent.com/32258004/95324271-1808c080-08bd-11eb-9bed-768e87977648.png)
 
 
 
