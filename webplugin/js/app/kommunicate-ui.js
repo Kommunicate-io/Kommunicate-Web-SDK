@@ -589,9 +589,10 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
             hasMultipleConversations ? backButton.classList.remove('force-n-vis') : backButton.classList.add('force-n-vis')
         }
     },
-        handleWaitingQueueMessage: function (data) {
-            let groupId = data && data.clientGroupId;
-            let waitingStatus = data && data.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING;
+        handleWaitingQueueMessage: function () {
+            let group = CURRENT_GROUP_DATA;
+            let groupId = CURRENT_GROUP_DATA.tabId;
+            let waitingStatus = group && group.conversationStatus == Kommunicate.conversationHelper.status.WAITING;
             window.Applozic.ALApiService.ajax({
                 type: 'GET',
                 url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
@@ -600,8 +601,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
                 success: function (res) {
                     if(res.status === "success"){
                     WAITING_QUEUE = res.response;
-                    document.getElementById('waiting-queue-number') && (document.getElementById('waiting-queue-number').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
-                    if (waitingStatus) {
+                    console.log("#WAITING_QUEUE",WAITING_QUEUE);
+                    if (waitingStatus && WAITING_QUEUE.length) {
+                        document.getElementById('waiting-queue-number') && (document.getElementById('waiting-queue-number').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
                         kommunicateCommons.modifyClassList({
                             id: ["mck-waiting-queue"]
                         }, "vis", "n-vis");
