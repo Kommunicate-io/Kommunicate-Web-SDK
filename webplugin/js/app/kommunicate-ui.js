@@ -591,7 +591,7 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
     },
         handleWaitingQueueMessage: function () {
             let group = CURRENT_GROUP_DATA;
-            let groupId = CURRENT_GROUP_DATA.tabId;
+            let groupId = group && group.tabId;
             let waitingStatus = group && group.conversationStatus == Kommunicate.conversationHelper.status.WAITING;
             window.Applozic.ALApiService.ajax({
                 type: 'GET',
@@ -601,8 +601,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
                 success: function (res) {
                     if(res.status === "success"){
                     WAITING_QUEUE = res.response;
-                    if (waitingStatus && WAITING_QUEUE.length) {
-                        document.getElementById('waiting-queue-number') && (document.getElementById('waiting-queue-number').innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1));
+                    let waitingQueueNumber= document.getElementById('waiting-queue-number');
+                    if (waitingQueueNumber && waitingStatus && WAITING_QUEUE.length) {
+                        waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
                         kommunicateCommons.modifyClassList({
                             id: ["mck-waiting-queue"]
                         }, "vis", "n-vis");
