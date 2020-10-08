@@ -94,6 +94,8 @@ Kommunicate.client={
                     if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
+                    CURRENT_GROUP_DATA.tabId = response.data.clientGroupId;
+                    CURRENT_GROUP_DATA.conversationStatus = response.data.metadata.CONVERSATION_STATUS;
                     KommunicateUI.handleWaitingQueueMessage();
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
