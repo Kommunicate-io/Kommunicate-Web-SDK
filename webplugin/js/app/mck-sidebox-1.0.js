@@ -4637,6 +4637,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                        (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
                                    });
                                }
+                               CURRENT_GROUP_DATA.tabId = groupPxy.clientGroupId;
+                               CURRENT_GROUP_DATA.conversationStatus = groupPxy.metadata.CONVERSATION_STATUS;
                                params.tabId = group.contactId;
                                params.isGroup = true;
                                !params.allowMessagesViaSocket && (params.viaCreateGroup = true);
