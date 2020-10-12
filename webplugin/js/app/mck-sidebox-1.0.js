@@ -4638,6 +4638,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                        (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
                                    });
                                }
+                               CURRENT_GROUP_DATA.tabId = groupPxy.clientGroupId;
+                               CURRENT_GROUP_DATA.conversationStatus = groupPxy.metadata.CONVERSATION_STATUS;
                                params.tabId = group.contactId;
                                params.isGroup = true;
                                !params.allowMessagesViaSocket && (params.viaCreateGroup = true);
@@ -9812,7 +9814,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN);
                             }
                             KommunicateUI.handleConversationBanner();
-                            resp && resp.message && KommunicateUI.handleWaitingQueueMessage(resp.message);
+                            resp && resp.message && KommunicateUI.handleWaitingQueueMessage();
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
