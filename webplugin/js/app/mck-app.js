@@ -316,7 +316,7 @@ function ApplozicSidebox() {
             // check if the current hostname is equal to or a subdomain
             // e.g. www.google.com is a subdomain of google.com
             var isSubDomain = function (domain) {
-                return ((hostname == domain) || ((hostname.length > domain.length) && (hostname.substr(hostname.length-domain.length-1) == "." + domain)));
+                return ((hostname == domain) || ((hostname.length > domain.length) && (hostname.substr(hostname.length - domain.length - 1) == "." + domain)));
             }
 
             // Remove scripts if chatwidget is restricted by domains
