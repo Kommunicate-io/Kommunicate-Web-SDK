@@ -68,8 +68,8 @@ Kommunicate.mediaService = {
             }
             if (textToSpeak) {
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.onerror = ev => {
-                    throw new Error("Error while converting the message to voice.");
+                utterance.onerror = function (error) {
+                    throw new Error("Error while converting the message to voice.", error);
                 };
                 speechSynthesis.speak(utterance);
             }
