@@ -42,7 +42,7 @@ Kommunicate.mediaService = {
 ;            }
         }
     },
-    voiceOutputIncomingMessage: function(message){
+    voiceOutputIncomingMessage: function (message) {
         // get appoptions
         var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
 
@@ -51,28 +51,28 @@ Kommunicate.mediaService = {
         if (!Kommunicate.visibleMessage(message)) return;
 
         // if voiceoutput is enabled and browser supports it
-        if (appOptions.voiceOutput && "speechSynthesis" in window){
+        if (appOptions.voiceOutput && "speechSynthesis" in window) {
             var textToSpeak = "";
-            if(message.hasOwnProperty("fileMeta")){
+            if (message.hasOwnProperty("fileMeta")) {
                 textToSpeak += MCK_LABELS['voice.output'].attachment;
                 textToSpeak += message.fileMeta.name;
             }
-            else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
+            else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
                 coord = JSON.parse(message.message);
-                textToSpeak +=  MCK_LABELS['voice.output'].location.init;
+                textToSpeak += MCK_LABELS['voice.output'].location.init;
                 textToSpeak += MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
-                textToSpeak += MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon* 100) / 100;
+                textToSpeak += MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
             }
             else if (message.message) {
                 textToSpeak += message.message;
             }
-        }
-        if (textToSpeak) {
-            var utterance = new SpeechSynthesisUtterance(textToSpeak);
-            utterance.onerror = ev => {
-                throw new Error("Error while converting the message to voice.");
-            };
-            speechSynthesis.speak(utterance);
+            if (textToSpeak) {
+                var utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.onerror = function (error) {
+                    throw new Error("Error while converting the message to voice.", error);
+                };
+                speechSynthesis.speak(utterance);
+            }
         }
     }
 }
