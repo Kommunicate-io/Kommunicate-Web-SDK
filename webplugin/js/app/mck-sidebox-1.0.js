@@ -5371,7 +5371,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
                     botMessageDelayClass = 'n-vis';
                 }
-                if (!richText && messageClass == "n-vis"){
+                if (!richText && !attachment && messageClass == "n-vis"){
                     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
                     return ;
                 }
