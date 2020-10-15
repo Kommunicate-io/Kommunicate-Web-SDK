@@ -513,5 +513,28 @@ $applozic.extend(true,Kommunicate,{
     displayKommunicateWidget: function(display) {
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         display ? kommunicateIframe.classList.remove("kommunicate-hide-custom-iframe") : kommunicateIframe.classList.add("kommunicate-hide-custom-iframe");
+    },
+    // check if the message needs to be processed by addMessage
+    visibleMessage: function(msg){
+        if(!msg) return false;
+        if(msg.metadata && msg.metadata.feedback){
+            return false;
+        }
+        if (!msg.message && msg.metadata.hasOwnProperty("KM_ASSIGN_TO")) { // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
+            return false;
+        }
+        if (msg.type === KommunicateConstants.MESSAGE_TYPE.CALL_INCOMING || msg.type === KommunicateConstants.MESSAGE_TYPE.CALL_OUTGOING) {
+            return false;
+        }
+        if ((msg.metadata && msg.metadata.category === 'HIDDEN') || msg.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL) {
+            return false;
+        }
+        if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
+            return false;
+        }
+        if (msg.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE && (msg.metadata && msg.metadata.hide === 'true')) {
+            return false;
+        }
+        return true;
     }
 });

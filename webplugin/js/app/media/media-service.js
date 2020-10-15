@@ -10,10 +10,11 @@ Kommunicate.mediaService = {
             alert("browser do not support speech recogization");
         } else {
             var recognition = new webkitSpeechRecognition();
+            var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end. 
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change. 
             finalTranscript = '';
-            recognition.lang = "en-us";
+            recognition.lang = appOptions.language || "en-us";
             recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
@@ -41,5 +42,37 @@ Kommunicate.mediaService = {
 ;            }
         }
     },
+    voiceOutputIncomingMessage: function (message) {
+        // get appoptions
+        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
 
+        // If the message isn't part of the UI, it's not included
+        // in voiceoutput either
+        if (!Kommunicate.visibleMessage(message)) return;
+
+        // if voiceoutput is enabled and browser supports it
+        if (appOptions.voiceOutput && "speechSynthesis" in window) {
+            var textToSpeak = "";
+            if (message.hasOwnProperty("fileMeta")) {
+                textToSpeak += MCK_LABELS['voice.output'].attachment;
+                textToSpeak += message.fileMeta.name;
+            }
+            else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
+                coord = JSON.parse(message.message);
+                textToSpeak += MCK_LABELS['voice.output'].location.init;
+                textToSpeak += MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
+                textToSpeak += MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
+            }
+            else if (message.message) {
+                textToSpeak += message.message;
+            }
+            if (textToSpeak) {
+                var utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.onerror = function (error) {
+                    throw new Error("Error while converting the message to voice.", error);
+                };
+                speechSynthesis.speak(utterance);
+            }
+        }
+    }
 }

@@ -309,9 +309,24 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             var widgetSettings = data.chatWidget;
             var disableChatWidget = options.disableChatWidget != null ? options.disableChatWidget : widgetSettings.disableChatWidget; // Give priority to appOptions over API data.
-            
+
+            var allowedDomains = widgetSettings.allowedDomains;
+            var hostname = parent.window.location.hostname.toLowerCase();
+
+            // check if the current hostname is equal to or a subdomain
+            // e.g. www.google.com is a subdomain of google.com
+            var isSubDomain = function (domain) {
+                return ((hostname == domain) || ((hostname.length > domain.length) && (hostname.substr(hostname.length - domain.length - 1) == "." + domain)));
+            }
+
+            // Remove scripts if chatwidget is restricted by domains
+            var isCurrentDomainDisabled = Array.isArray(allowedDomains) && allowedDomains.length && !allowedDomains.some(isSubDomain);
+            // exclude kommunicate.io from restricted domains for
+            // the chatbot preview feature
+            var isCurrentDomainKommunicate = KommunicateConstants.KOMMUNICATE_DOMAINS.some(isSubDomain);
             // Remove scripts if disableChatWidget property is enabled
-            if (disableChatWidget) {
+            // or domain restrictions are enabled
+            if ((disableChatWidget || isCurrentDomainDisabled) && !isCurrentDomainKommunicate) {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
@@ -331,9 +346,11 @@ function ApplozicSidebox() {
             options.metadata = typeof options.metadata == 'object' ? options.metadata : {};
             options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             options.connectSocketOnWidgetClick = options.connectSocketOnWidgetClick != null ? options.connectSocketOnWidgetClick : (widgetSettings && widgetSettings.connectSocketOnWidgetClick);
+            options.voiceInput = options.voiceInput != null ? options.voiceInput : (widgetSettings && widgetSettings.voiceInput);
+            options.voiceOutput = options.voiceOutput != null ? options.voiceOutput : (widgetSettings && widgetSettings.voiceOutput);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
-            if(sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)){
+            if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
                 var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
                 !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());

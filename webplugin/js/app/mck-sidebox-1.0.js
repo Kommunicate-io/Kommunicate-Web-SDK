@@ -12,6 +12,7 @@ var CURRENT_GROUP_DATA={};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
+var WAITING_QUEUE = [];
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
 (function ($applozic, w, d) {
@@ -63,7 +64,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'disableChatForNonGroupMember': false,
             'defaultChatDisabledMessage': 'Chat Disabled!'
         },
-        voiceInput:false
+        voiceInput:false,
+        voiceOutput:false
     };
     var message_default_options = {
         'messageType': 5,
@@ -525,6 +527,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             mckMessageService.openChat(params)
         };
 
+
         var EVENTS = {
             'onConnectFailed': function (resp) {
                 console.log('onConnectFailed' + resp)
@@ -560,6 +563,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'onConversationRead': function (resp) {
             },
             'onMessageReceived': function (resp) {
+                
             },
             'onMessageSentUpdate': function (resp) {
             },
@@ -2173,6 +2177,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
                 document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
+                document.getElementById('wq-msg-first-Part').innerHTML = MCK_LABELS['waiting.queue.message']['first.Part'];
+                document.getElementById('waiting-queue-number').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
+                document.getElementById('wq-msg-last-part').innerHTML = MCK_LABELS['waiting.queue.message']['last.part'];
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -4376,6 +4383,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     return;
                 }
                 var imageUrl;
+                params.name = params.name && kommunicateCommons.formatHtmlTag(params.name);
                 var profileImage = params.name ? params.name + " profile image" : "Profile image";
                 $mck_tab_title.html(params.name);
                 $mck_tab_title.attr('title', params.name);
@@ -4629,6 +4637,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                        (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
                                    });
                                }
+                               CURRENT_GROUP_DATA.tabId = groupPxy.clientGroupId;
+                               CURRENT_GROUP_DATA.conversationStatus = groupPxy.metadata.CONVERSATION_STATUS;
                                params.tabId = group.contactId;
                                params.isGroup = true;
                                !params.allowMessagesViaSocket && (params.viaCreateGroup = true);
@@ -5214,6 +5224,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 });
             }
+
             _this.addMessage = function(msg, contact, append, scroll, appendContextMenu, enableAttachment, callback) {
                 var metadatarepiledto = '';
                 var replymessage = '';
@@ -5227,12 +5238,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var messageClass= "vis";
                 var progressMeterClass = "n-vis";
                 var attachmentBox = "n-vis";
-                if((msg && msg.metadata && msg.metadata.feedback)){
-                    return;
-                }
-                if (msg && !msg.message && msg.metadata.hasOwnProperty("KM_ASSIGN_TO")) { // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
-                    return;
-                }
+
+                if (!Kommunicate.visibleMessage(msg)) return;
+
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
                     metadatarepiledto = msg.metadata.AL_REPLY;
                     replyMsg = alMessageService.getReplyMessageByKey(metadatarepiledto);
@@ -5254,19 +5262,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 }
 
-
-                if (msg.type === 6 || msg.type === 7) {
-                    return;
-                }
-                if ((msg.metadata && msg.metadata.category === 'HIDDEN') || msg.contentType === 102) {
-                    return;
-                }
-                if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
-					return;
-				}
-                if (msg.contentType === 10 && (msg.metadata && msg.metadata.hide === 'true')) {
-                    return;
-                }
                 if ($applozic("#mck-message-cell ." + msg.key).length > 0) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
@@ -5376,6 +5371,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
                     botMessageDelayClass = 'n-vis';
                 }
+                // if (!richText && !attachment && messageClass == "n-vis"){
+                //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
+                //     return ;
+                // }
                 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -5782,58 +5781,60 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.getImageUrlForGroupType = function (contact, displayName) {
-                var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
+                var profileDisplayName = displayName ? kommunicateCommons.formatHtmlTag(displayName) + ' profile image' : 'Profile image';
                 return contact.imageUrl? '<img src="' + contact.imageUrl + '" alt="' + profileDisplayName + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
-      			_this.getContactImageLink = function(contact, displayName, message) {
-                        var imgsrctag = '';
-                        var profileDisplayName = displayName ? displayName + ' profile image' : 'Profile image';
-                        if(!contact.isGroup){
-                          if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId] && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
-                            contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
-                          }
+
+            _this.getContactImageLink = function (contact, displayName, message) {
+                var imgsrctag = '';
+                var profileDisplayName = displayName ? kommunicateCommons.formatHtmlTag(displayName) + ' profile image' : 'Profile image';
+                if (!contact.isGroup) {
+                    if ((!contact.photoSrc && !contact.photoData && !contact.photoLink) && alUserService.MCK_USER_DETAIL_MAP[contact.contactId] && alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink) {
+                        contact.photoSrc = alUserService.MCK_USER_DETAIL_MAP[contact.contactId].imageLink;
+                    }
+                }
+                if (contact.members && contact.type == 10) {
+                    if (message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
+                        imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '" alt="' + profileDisplayName + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
+                    } else {
+                        imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
+                    }
+                }
+                else if (contact.isGroup && contact.type !== 7) {
+                    imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
+                }
+                else {
+                    if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
+                        mckGroupService.getContactFromGroupOfTwo(contact, function (user) {
+                            contact = mckMessageLayout.fetchContact(user);
+                        });
+                    }
+                    if (typeof (MCK_GETUSERIMAGE) === "function") {
+                        var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
+                        if (imgsrc && typeof imgsrc !== 'undefined') {
+                            imgsrctag = '<img src="' + imgsrc + '"/>';
                         }
-      				if(contact.members && contact.type==10){
-                        if(message && message.senderName && alUserService.MCK_USER_DETAIL_MAP[message.senderName]) {
-                            imgsrctag = alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink ? '<img src="' + alUserService.MCK_USER_DETAIL_MAP[message.senderName].imageLink + '" alt="' + profileDisplayName + '"/>' : _this.getImageUrlForGroupType(contact, displayName);
+                    }
+                    if (!imgsrctag) {
+                        if (contact.photoSrc) {
+                            imgsrctag = '<img src="' + contact.photoSrc + '" alt="' + profileDisplayName + '"/>';
+                        } else if (contact.photoData) {
+                            imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '" alt="' + profileDisplayName + '"/>';
+                        } else if (contact.photoLink) {
+                            imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
+                        } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
+                            imgsrctag = '<img src="' + 'https://cdn.kommunicate.io/kommunicate/bot_default_image.png' + '" alt="' + profileDisplayName + '"/>';
                         } else {
-                            imgsrctag = _this.getImageUrlForGroupType(contact, displayName);
+                            if (!displayName) {
+                                displayName = contact.displayName;
+                            }
+                            imgsrctag = _this.getContactImageByAlphabet(displayName);
                         }
-              }
-              else if (contact.isGroup && contact.type !== 7) {
-                  imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
-              }
-              else {
-                  if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
-                      mckGroupService.getContactFromGroupOfTwo(contact, function(user){
-                    contact = mckMessageLayout.fetchContact(user);
-                  });
-                  }
-                  if (typeof (MCK_GETUSERIMAGE) === "function") {
-                      var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
-                      if (imgsrc && typeof imgsrc !== 'undefined') {
-                          imgsrctag = '<img src="' + imgsrc + '"/>';
-                      }
-                  }
-                  if (!imgsrctag) {
-                      if (contact.photoSrc) {
-                          imgsrctag = '<img src="' + contact.photoSrc + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.photoData) {
-                          imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.photoLink) {
-                          imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '" alt="' + profileDisplayName + '"/>';
-                      } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                          imgsrctag = '<img src="' + 'https://cdn.kommunicate.io/kommunicate/bot_default_image.png' + '" alt="' + profileDisplayName + '"/>';
-                      } else {
-                          if (!displayName) {
-                              displayName = contact.displayName;
-                          }
-                          imgsrctag = _this.getContactImageByAlphabet(displayName);
-                      }
-                  }
-              }
-              return imgsrctag;
+                    }
+                }
+                return imgsrctag;
             };
+
             _this.getContactImageByAlphabet = function (name) {
                 if (typeof name === 'undefined' || name === '') {
                     return '<div class="mck-alpha-contact-image mck-alpha-user"><span class="mck-icon-user"></span></div>';
@@ -6324,10 +6325,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
 
-                if (message.metadata && message.metadata.action) {
+                if (message.metadata && message.metadata.action ) {
                     return;
                 }
-
+                // update contact only if its a rich msg or normal text msg
                 if (message && message.createdAtTime > currentMessageTime) {
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
@@ -6713,14 +6714,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     }
                 }
             };
-            _this.getScriptMessagePreview = function(message,emoji_template){
-				if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && !Kommunicate.isRichTextMessage(message.metadata)) {
-					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
-						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-					}
-				}
-				return emoji_template;
-			}
+            _this.getScriptMessagePreview = function (message, emoji_template) {
+                if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && !Kommunicate.isRichTextMessage(message.metadata)) {
+                    if ((typeof emoji_template === "string") && emoji_template.indexOf('emoji-inner') === -1) {
+                        emoji_template = kommunicateCommons.formatHtmlTag(emoji_template);
+                    }
+                }
+                return emoji_template;
+            }
             _this.getMessageTextForContactPreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
@@ -6923,7 +6924,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             _this.getTabDisplayName = function (tabId, isGroup, userName) {
                 var displayName = '';
                 if (isGroup) {
-                    return mckGroupService.getGroupDisplayName(tabId);
+                    displayName = mckGroupService.getGroupDisplayName(tabId);
                 } else {
                     if (typeof (MCK_GETUSERNAME) === 'function') {
                         displayName = MCK_GETUSERNAME(tabId);
@@ -6947,8 +6948,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     if (!displayName) {
                         displayName = tabId;
                     }
-                    return displayName;
                 }
+                return displayName && kommunicateCommons.formatHtmlTag(displayName);
             };
             _this.populateMessage = function (messageType, message, notifyUser) {
                 var callDuration = mckDateUtils.convertMilisIntoTime(message.metadata.CALL_DURATION);
@@ -7547,9 +7548,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.updateUser = function(options) {
+                var param = {
+                    elasticUpdate:true
+                }
+                options.data.email && (param["allowEmail"] = true);
+                var url = MCK_BASE_URL + "/rest/ws/user/update?"+ $applozic.param(param);
+                //.param() using to serialize the properties of an object as a query string
                 window.Applozic.ALApiService.ajax({
                     type: "POST",
-                    url: MCK_BASE_URL + "/rest/ws/user/update",
+                    url: url,
                     data: w.JSON.stringify(options.data),
                     contentType : 'application/json',
                     success: function(response) {
@@ -8217,7 +8224,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (currTabId === groupId.toString() && isGroupTab) {
-                            $mck_tab_title.html(group.displayName);
+                            var groupName = group.displayName && kommunicateCommons.formatHtmlTag(group.displayName);
+                            $mck_tab_title.html(groupName);
                         } else {
                             if ($applozic("#li-group-" + group.htmlId).length > 0) {
                                 $applozic("#li-group-" + group.htmlId + " .mck-cont-name strong").html(group.displayName);
@@ -9577,6 +9585,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.onMessage = function (resp) {
+
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == "object" && $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
                 var messageType = resp.type;
@@ -9802,6 +9811,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = Kommunicate.conversationHelper.status.OPEN);
                             }
                             KommunicateUI.handleConversationBanner();
+                            resp && resp.message && KommunicateUI.handleWaitingQueueMessage();
                         }
                         if (kommunicateCommons.isObject(resp.message) && resp.message.groupId && resp.message.groupId == tabId && resp.message.metadata) {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
