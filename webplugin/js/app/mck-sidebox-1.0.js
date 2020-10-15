@@ -4022,7 +4022,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         //Display/hide lead(email) collection template
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_STATUS;
-                        data && KommunicateUI.handleWaitingQueueMessage(data.groupFeeds[0]);
                         CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
@@ -5372,10 +5371,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
                     botMessageDelayClass = 'n-vis';
                 }
-                if (!richText && messageClass == "n-vis"){
-                    // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
-                    return ;
-                }
+                // if (!richText && !attachment && messageClass == "n-vis"){
+                //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
+                //     return ;
+                // }
                 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -6326,9 +6325,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
 
-                if (message.metadata && message.metadata.action ||
-                    !(Kommunicate.isRichTextMessage(message.metadata) || message.message)
-                ) {
+                if (message.metadata && message.metadata.action ) {
                     return;
                 }
                 // update contact only if its a rich msg or normal text msg
