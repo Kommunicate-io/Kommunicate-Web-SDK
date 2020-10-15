@@ -191,9 +191,9 @@ KommunicateUI={
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
             data: { appId: data.appId, articleId: articleId, source: source }, success: function (response) {
-                let faqDetails = response && response.data;
+                var faqDetails = response && response.data;
                 if (faqDetails && $applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
-                    let faqTitle = faqDetails.title && kommunicateCommons.formatHtmlTag(faqDetails.title);
+                    var faqTitle = faqDetails.title && kommunicateCommons.formatHtmlTag(faqDetails.title);
                     // FAQ description is already coming in formatted way from the dashboard FAQ editor.
                     $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' + faqTitle + '</div> <div class="km-faqanchor km-faqanswer ql-editor">' + faqDetails.body + '</div></div>');
                     $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
@@ -596,29 +596,29 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
         }
     },
         handleWaitingQueueMessage: function () {
-            let group = CURRENT_GROUP_DATA;
-            let groupId = group && group.tabId;
-            let waitingStatus = group && group.conversationStatus == Kommunicate.conversationHelper.status.WAITING;
+            var group = CURRENT_GROUP_DATA;
+            var groupId = group && group.tabId;
+            var waitingStatus = group && group.conversationStatus == Kommunicate.conversationHelper.status.WAITING;
             window.Applozic.ALApiService.ajax({
                 type: 'GET',
                 url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
                 global: false,
                 contentType: 'application/json',
                 success: function (res) {
-                    if(res.status === "success"){
-                    WAITING_QUEUE = res.response;
-                    let waitingQueueNumber= document.getElementById('waiting-queue-number');
-                    if (waitingQueueNumber && waitingStatus && WAITING_QUEUE.length) {
-                        waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
-                        kommunicateCommons.modifyClassList({
-                            id: ["mck-waiting-queue"]
-                        }, "vis", "n-vis");
-                    } else {
-                        kommunicateCommons.modifyClassList({
-                            id: ["mck-waiting-queue"]
-                        }, "n-vis", "vis");
+                    if (res.status === "success") {
+                        WAITING_QUEUE = res.response;
+                        var waitingQueueNumber = document.getElementById('waiting-queue-number');
+                        if (waitingQueueNumber && waitingStatus && WAITING_QUEUE.length) {
+                            waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
+                            kommunicateCommons.modifyClassList({
+                                id: ["mck-waiting-queue"]
+                            }, "vis", "n-vis");
+                        } else {
+                            kommunicateCommons.modifyClassList({
+                                id: ["mck-waiting-queue"]
+                            }, "n-vis", "vis");
+                        }
                     }
-                }
 
                 },
                 error: function (err) {
