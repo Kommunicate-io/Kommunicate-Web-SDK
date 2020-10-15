@@ -6325,8 +6325,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
 
-                if (!Kommunicate.isAttachment(message) && (message.metadata && message.metadata.action ||
-                    !(Kommunicate.isRichTextMessage(message.metadata) || message.message))
+                if (!Kommunicate.isAttachment(message) && (message.metadata && message.metadata.action 
+                    // ||
+                    // !(Kommunicate.isRichTextMessage(message.metadata) || message.message)
+                    )
                 ) {
                     return;
                 }
