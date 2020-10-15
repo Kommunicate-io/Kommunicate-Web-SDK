@@ -6325,11 +6325,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
 
-                if (!Kommunicate.isAttachment(message) && (message.metadata && message.metadata.action 
-                    // ||
-                    // !(Kommunicate.isRichTextMessage(message.metadata) || message.message)
-                    )
-                ) {
+                if (message.metadata && message.metadata.action ) {
                     return;
                 }
                 // update contact only if its a rich msg or normal text msg
