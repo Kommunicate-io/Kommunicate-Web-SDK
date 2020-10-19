@@ -2177,7 +2177,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
                 document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
-                document.getElementById('wq-msg-first-Part').innerHTML = MCK_LABELS['waiting.queue.message']['first.Part'];
+                document.getElementById('wq-msg-first-part').innerHTML = MCK_LABELS['waiting.queue.message']['first.part'];
                 document.getElementById('waiting-queue-number').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
                 document.getElementById('wq-msg-last-part').innerHTML = MCK_LABELS['waiting.queue.message']['last.part'];
             };
