@@ -395,5 +395,8 @@ KommunicateUtils = {
             '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
             '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
         return pattern.test(str);
+    },
+    removeHtmlTags: function (text) {
+        return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
 }
