@@ -8902,7 +8902,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
                     var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
-                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-"+messagePxy.key));
+                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-" + messagePxy.key));
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
@@ -8910,7 +8910,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     $file_progress.removeClass('n-vis').addClass('vis');
                     $file_remove.attr("disabled", true);
                     $mck_file_upload.attr("disabled", true);
-                    KommunicateUI.hideFileBox(file, $file_box, $mck_file_upload);              
+                    KommunicateUI.hideFileBox(file, $file_box, $mck_file_upload);
                     var currTab = $mck_msg_inner.data('mck-id');
                     var uniqueId = params.name + file.size;
                     TAB_FILE_DRAFT[uniqueId] = currTab;
@@ -8929,7 +8929,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         if (typeof responseJson.fileMeta === "object") {
                             var file_meta = responseJson.fileMeta;
                             if (messagePxy) {
-                                file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
+                                file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/" + file_meta.blobKey;
                                 messagePxy["fileMeta"] = file_meta
                                 var optns = {
                                     tabId: messagePxy.groupId
@@ -8937,11 +8937,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                 KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                 !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key)
+                                KommunicateUI.updateImageAttachmentPreview(file_meta, messagePxy.key)
                                 return
                             }
                             var fileExpr = alFileService.getFilePreviewPath(file_meta);
-                            file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
+                            file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/" + file_meta.blobKey;
                             var name = file_meta.name;
                             var size = file_meta.size;
                             var currTabId = $mck_msg_inner.data('mck-id');
@@ -8986,8 +8986,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         },
                         error: function () { }
                     });
-                    
-                    return false;
                 }
             };
             _this.uploadAttachment2AWS = function (params, messagePxy) {
@@ -9019,7 +9017,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
                     var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
-                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-"+messagePxy.key));
+                    messagePxy && ($attchement_progressbar = $applozic(".km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-" + messagePxy.key));
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
@@ -9052,9 +9050,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                 KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                 !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key)
+                                KommunicateUI.updateImageAttachmentPreview(file_meta, messagePxy.key)
                                 return
-                            }             
+                            }
                             var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
                             var name = file_meta.name;
                             var size = file_meta.size;
@@ -9090,7 +9088,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     xhr.open('post', url, true);
                     window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);
-                    return false;
                 }
             };
             _this.uplaodFileToAWS = function (file, medium) {
