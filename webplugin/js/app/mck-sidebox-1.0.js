@@ -2185,7 +2185,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 e.preventDefault();
                 var $this = $applozic(this);
                 var href = $this.data('url');
-                var title= KommunicateUtils.removeHtmlTags($this.data('name'));
+                var title= kommunicateCommons.formatHtmlTag($this.data('name'));
                 if(href === ""){
                     var key;
                     key = $this.data("blobkey");
@@ -5703,9 +5703,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
               if (typeof msg.fileMeta === "object") {
                   if (msg.fileMeta.contentType.indexOf("image") !== -1) {
                       if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + KommunicateUtils.removeHtmlTags(msg.fileMeta.name) + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + kommunicateCommons.formatHtmlTag(msg.fileMeta.name) + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
                       } else if (msg.contentType === 5) {
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + KommunicateUtils.removeHtmlTags(msg.fileMeta.name) + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + kommunicateCommons.formatHtmlTag(msg.fileMeta.name) + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
                       }
                       else {
                           if((msg.fileMeta).hasOwnProperty("url")){
@@ -5714,17 +5714,17 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 alFileService.generateCloudUrl(msg.fileMeta.thumbnailBlobKey, function(result) {
                                   thumbnailUrl= result;
                                 });
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="" data-blobKey="' + msg.fileMeta.blobKey + '" data-name="' + KommunicateUtils.removeHtmlTags(msg.fileMeta.name) + '"><img src="' + thumbnailUrl + '" area-hidden="true" ></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="" data-blobKey="' + msg.fileMeta.blobKey + '" data-name="' + kommunicateCommons.formatHtmlTag(msg.fileMeta.name) + '"><img src="' + thumbnailUrl + '" area-hidden="true" ></img></a>';
                             }
                             else {
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + KommunicateUtils.removeHtmlTags(msg.fileMeta.name) + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + kommunicateCommons.formatHtmlTag(msg.fileMeta.name) + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
                             }
                           }
                           else if((msg.fileMeta.thumbnailUrl === "thumbnail_"+msg.fileMeta.name )){
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + KommunicateUtils.removeHtmlTags(msg.fileMeta.name) + '"><img src="' + MCK_STORAGE_URL + "/files/thumbnail_" + msg.fileMeta.name + '" area-hidden="true" ></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + kommunicateCommons.formatHtmlTag(msg.fileMeta.name) + '"><img src="' + MCK_STORAGE_URL + "/files/thumbnail_" + msg.fileMeta.name + '" area-hidden="true" ></img></a>';
                           }
                           else {
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + KommunicateUtils.removeHtmlTags(msg.fileMeta.name) + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + kommunicateCommons.formatHtmlTag(msg.fileMeta.name) + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
                         }
                       }
                   } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
