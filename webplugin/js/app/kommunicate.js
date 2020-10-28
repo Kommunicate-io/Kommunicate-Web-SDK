@@ -34,7 +34,7 @@ $applozic.extend(true,Kommunicate,{
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
         params = Kommunicate.updateConversationDetail(params);
-        if (!params.agentId && !params.agentIds && !params.teamId) {
+        if (!params.agentId && !params.agentIds) {
             params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
         var user = [];
