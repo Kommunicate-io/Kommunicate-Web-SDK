@@ -445,7 +445,7 @@ Kommunicate.richMsgEventHandler = {
         replyText && (messagePxy.message = replyText); //message to send
         
         (isActionableForm && requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM) && (msgMetadata["KM_CHAT_CONTEXT"]= {"formData":data});
-        var formDataMessageTemplate = postBackToKommunicate ? Kommunicate.markup.getFormDataMessageTemplate(postBackData) : "";
+        var formDataMessageTemplate = postBackToKommunicate && Kommunicate.markup.getFormDataMessageTemplate(postBackData);
         formDataMessageTemplate && Kommunicate.sendMessage({message: formDataMessageTemplate, type: KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML});
         Object.keys(msgMetadata).length > 0 && (messagePxy["metadata"] = msgMetadata);
         (Object.keys(msgMetadata).length > 0 || Object.keys(messagePxy).length > 0 ) && Kommunicate.sendMessage(messagePxy);
