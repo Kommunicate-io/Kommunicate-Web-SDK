@@ -1313,4 +1313,5 @@
 }
 .mck-rich-video-container video {
     object-fit: initial;
+    min-width: 160px;
 }
