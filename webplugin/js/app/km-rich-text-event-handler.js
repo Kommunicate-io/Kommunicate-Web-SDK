@@ -365,12 +365,14 @@ Kommunicate.richMsgEventHandler = {
         var inputElement = "";
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
+        var postBackToKommunicate = JSON.parse(target.dataset.postBackToKommunicate.toLowerCase());
         var buttonType = target.dataset.buttontype || target.type;
         var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0] || target.parentElement;
         if(buttonType !="submit"){   
             return ;
         }
         var data = {};
+        var postBackData = {};
         var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
         var replyText = target.title || target.innerHTML;
         var formElements = [];
@@ -415,6 +417,9 @@ Kommunicate.richMsgEventHandler = {
                         console.log(e);
                     }
             }
+            if(KommunicateConstants.FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS.indexOf(type) == -1) {
+                postBackData[name] = data[name];
+            }
         }
         if(isActionableForm && validationResults.indexOf("failed") != -1 ) {
             return;
@@ -440,6 +445,8 @@ Kommunicate.richMsgEventHandler = {
         replyText && (messagePxy.message = replyText); //message to send
         
         (isActionableForm && requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM) && (msgMetadata["KM_CHAT_CONTEXT"]= {"formData":data});
+        var formDataMessageTemplate = postBackToKommunicate ? Kommunicate.markup.getFormDataMessageTemplate(postBackData) : "";
+        formDataMessageTemplate && Kommunicate.sendMessage({message: formDataMessageTemplate, type: KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML});
         Object.keys(msgMetadata).length > 0 && (messagePxy["metadata"] = msgMetadata);
         (Object.keys(msgMetadata).length > 0 || Object.keys(messagePxy).length > 0 ) && Kommunicate.sendMessage(messagePxy);
     },

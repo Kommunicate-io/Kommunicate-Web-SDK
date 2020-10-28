@@ -127,6 +127,7 @@ KommunicateConstants = {
         VIDEO: "14",
     },
     FORM_SUPPORTED_FIELDS: ["text", "hidden", "radio", "checkbox", "dropdown", "textarea"],
+    FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS:["password", "hidden"],
     COOKIES : {
         KOMMUNICATE_LOGGED_IN_ID: "km_id",
         KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",
