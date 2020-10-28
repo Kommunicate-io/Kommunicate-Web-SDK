@@ -7825,7 +7825,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var defaultSettings = KommunicateUtils.getDataFromKmSession("settings");
                 var conversationDetail = {
                     groupName: (defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
-                    agentId: (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    agentId: (defaultSettings && defaultSettings.agentId), // || DEFAULT_AGENT_ID,
                     botIds: (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
                 };
                 return conversationDetail;
