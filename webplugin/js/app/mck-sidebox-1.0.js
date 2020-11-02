@@ -65,7 +65,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             'defaultChatDisabledMessage': 'Chat Disabled!'
         },
         voiceInput:false,
-        voiceOutput:false
+        voiceOutput:false,
+        attachment:false
     };
     var message_default_options = {
         'messageType': 5,
