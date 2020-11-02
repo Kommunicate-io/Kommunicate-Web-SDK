@@ -348,6 +348,8 @@ function ApplozicSidebox() {
             options.connectSocketOnWidgetClick = options.connectSocketOnWidgetClick != null ? options.connectSocketOnWidgetClick : (widgetSettings && widgetSettings.connectSocketOnWidgetClick);
             options.voiceInput = options.voiceInput != null ? options.voiceInput : (widgetSettings && widgetSettings.voiceInput);
             options.voiceOutput = options.voiceOutput != null ? options.voiceOutput : (widgetSettings && widgetSettings.voiceOutput);
+            options.attachment = options.attachment != null ? options.attachment : (widgetSettings && widgetSettings.attachment);
+            
             KommunicateUtils.deleteDataFromKmSession("settings");
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
