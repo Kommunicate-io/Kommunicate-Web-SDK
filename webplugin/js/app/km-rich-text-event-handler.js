@@ -365,7 +365,6 @@ Kommunicate.richMsgEventHandler = {
         var inputElement = "";
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
-        var postBackToKommunicate = JSON.parse(target.dataset.postBackToKommunicate.toLowerCase());
         var buttonType = target.dataset.buttontype || target.type;
         var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0] || target.parentElement;
         if(buttonType !="submit"){   
@@ -374,6 +373,7 @@ Kommunicate.richMsgEventHandler = {
         var data = {};
         var postBackData = {};
         var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
+        var postBackToKommunicate = isActionableForm ? JSON.parse(target.dataset.postBackToKommunicate.toLowerCase()) : false ;
         var replyText = target.title || target.innerHTML;
         var formElements = [];
         formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('input'));
