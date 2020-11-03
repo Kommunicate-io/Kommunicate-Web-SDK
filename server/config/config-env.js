@@ -12,12 +12,12 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
-          "enabled": false
+        "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
+        "enabled": false
       },
       "aws": {
-         "cdnUrl": "https://cdn-test.kommunicate.io",
-         "bucket": "cdn-kommunicate"
+        "cdnUrl": "https://cdn-test.kommunicate.io",
+        "bucket": "cdn-kommunicate"
       }
     }
   },
@@ -34,12 +34,12 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
-          "enabled": true
+        "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
+        "enabled": true
       },
       "aws": {
-         "cdnUrl": "https://cdn-test.kommunicate.io",
-         "bucket": "cdn-kommunicate"
+        "cdnUrl": "https://cdn-test.kommunicate.io",
+        "bucket": "cdn-kommunicate"
       }
     }
   },
@@ -56,12 +56,12 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
-          "enabled": true
+        "dsn": "https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197",
+        "enabled": true
       },
       "aws": {
-         "cdnUrl": "https://cdn-test.kommunicate.io",
-         "bucket": "cdn-kommunicate"
+        "cdnUrl": "https://cdn-test.kommunicate.io",
+        "bucket": "cdn-kommunicate"
       }
     }
   },
@@ -78,12 +78,12 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enabled": false
+        "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+        "enabled": false
       },
       "aws": {
-         "cdnUrl": "https://cdn.kommunicate.io",
-         "bucket": "kommunicate-cdn"
+        "cdnUrl": "https://cdn.kommunicate.io",
+        "bucket": "kommunicate-cdn"
       }
     }
   },
@@ -99,16 +99,16 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enabled": false
+        "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+        "enabled": false
       },
       "aws": {
-         "cdnUrl": "https://cdn.kommunicate.io",
-         "bucket": "kommunicate-cdn"
+        "cdnUrl": "https://cdn.kommunicate.io",
+        "bucket": "kommunicate-cdn"
       }
     }
   },
-  
+
   "prod_in": {
     "port": "3030",
     "urls": {
@@ -122,16 +122,16 @@ const configEnv = {
     },
     "thirdPartyIntegration": {
       "sentry": {
-          "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-          "enabled": false
+        "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+        "enabled": false
       },
       "aws": {
-         "cdnUrl": "https://cdn.kommunicate.io",
-         "bucket": "kommunicate-cdn"
+        "cdnUrl": "https://cdn.kommunicate.io",
+        "bucket": "kommunicate-cdn"
       }
     }
   },
-    "prod_ire": {
+  "prod_ire": {
     "port": "3030",
     "urls": {
       "applozicBaseUrl": "https://chat-ire.kommunicate.io",
@@ -151,6 +151,28 @@ const configEnv = {
           "dsn": "https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823",
           "enable": true
         }
+      }
+    }
+  },
+  "prod_enterprise": {
+    "port": "3033",
+    "urls": {
+      "applozicBaseUrl": "https://chat.kommunicate.io",
+      "kommunicateBaseUrl": "https://api.kommunicate.io",
+      "botPlatformApi": "https://bots.kommunicate.io",
+      "hostUrl": "https://widget-enterprise.kommunicate.io",
+    },
+    "pluginProperties": {
+      "pseudoNameEnabled": true
+    },
+    "thirdPartyIntegration": {
+      "sentry": {
+        "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+        "enabled": false
+      },
+      "aws": {
+        "cdnUrl": "https://cdn.kommunicate.io",
+        "bucket": "kommunicate-cdn"
       }
     }
   },
