@@ -1313,5 +1313,8 @@
 }
 .mck-rich-video-container video {
     object-fit: initial;
+}
+.mck-rich-video-container video, .mck-rich-video-iframe, .km-template-video-caption-wrapper {
     min-width: 160px;
+    max-width: 100%;
 }
