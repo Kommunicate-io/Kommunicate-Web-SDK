@@ -158,7 +158,7 @@ const configEnv = {
     "port": "3033",
     "urls": {
       "applozicBaseUrl": "https://chat.kommunicate.io",
-      "kommunicateBaseUrl": "https://api.kommunicate.io",
+      "kommunicateBaseUrl": "https://api-enterprise.kommunicate.io",
       "botPlatformApi": "https://bots.kommunicate.io",
       "hostUrl": "https://widget-enterprise.kommunicate.io",
     },
