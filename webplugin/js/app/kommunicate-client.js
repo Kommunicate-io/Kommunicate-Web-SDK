@@ -94,7 +94,6 @@ Kommunicate.client={
                     if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
-                    KommunicateUI.handleWaitingQueueMessage();
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
                     /* conversation table migrated to Applozic
