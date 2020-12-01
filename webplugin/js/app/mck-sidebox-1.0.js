@@ -3970,7 +3970,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 KommunicateUI.updateLeadCollectionStatus(err, message, data.message || []);
             };
 
-            _this.loadMessageList = function (params, callback,isWaitingQueue) {
+            _this.loadMessageList = function (params, callback) {
                 var individual = false;
                 var isConvReq = false;
                 var reqData = '';
@@ -4025,7 +4025,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         CURRENT_GROUP_DATA.conversationAssignee = data && data.groupFeeds[0] && data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
                         CURRENT_GROUP_DATA.groupMembers = data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember = data.message[0] && data.message[0].contactIds;
-                        isWaitingQueue && KommunicateUI.handleWaitingQueueMessage();
+                        params.isWaitingQueue && KommunicateUI.handleWaitingQueueMessage();
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
@@ -5076,7 +5076,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     (conversationAssigneeDetails.roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT) ? mckGroupLayout.checkBotDetail(conversationAssignee) : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
                     
                 } else {
-                    mckMessageService.loadMessageList(params, callback,true);
+                    params.isWaitingQueue=true;
+                    mckMessageService.loadMessageList(params, callback);
                 }
                 document.getElementById("mck-submit-comment").removeAttribute("disabled");
             };
@@ -9794,7 +9795,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         var tabId = $mck_message_inner.data('mck-id');
                         if (resp.message.metadata.KM_STATUS) {
                             var groupId = 'li-group-' + resp.message.groupId;
-                            let conversationStatus = resp.message.metadata.KM_STATUS;
+                            var conversationStatus = resp.message.metadata.KM_STATUS;
                             MCK_GROUP_MAP && MCK_GROUP_MAP[resp.message.groupId] && (MCK_GROUP_MAP[resp.message.groupId].metadata.CONVERSATION_STATUS = (Kommunicate.conversationHelper.status[conversationStatus.toUpperCase()]));
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
                             CURRENT_GROUP_DATA.conversationStatus = Kommunicate.conversationHelper.status[conversationStatus.toUpperCase()];
