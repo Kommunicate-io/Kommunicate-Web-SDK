@@ -607,8 +607,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
                 success: function (res) {
                     if (res.status === "success") {
                         WAITING_QUEUE = res.response;
+                        var isGroupPresentInWaitingQueue = WAITING_QUEUE.indexOf(parseInt(groupId))>-1;
                         var waitingQueueNumber = document.getElementById('waiting-queue-number');
-                        if (waitingQueueNumber && waitingStatus && WAITING_QUEUE.length) {
+                        if (waitingQueueNumber && waitingStatus && isGroupPresentInWaitingQueue && WAITING_QUEUE.length) {
                             waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
                             kommunicateCommons.modifyClassList({
                                 id: ["mck-waiting-queue"]
