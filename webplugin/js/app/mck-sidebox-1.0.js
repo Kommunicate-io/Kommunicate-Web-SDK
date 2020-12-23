@@ -2977,6 +2977,12 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
+
+                $applozic("#mck-csat-trigger").click(function(e){
+                    e.preventDefault();
+                    KommunicateUI.triggerCSAT();
+                })
+                
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
                     var $error_chat_login = $applozic("#km-error-chat-login");
@@ -4791,7 +4797,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var $mck_offline_message_box = $applozic("#mck-offline-message-box");
             var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
 
-
+            
             var $mck_msg_new = $applozic("#mck-msg-new");
             var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
             var CLOUD_HOST_URL = "www.googleapis.com";
@@ -4833,12 +4839,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
+            var csatModule = '<div class="csatModule"> <div class="mck-rated"> <span class="mck-rated-text">You rated the conversation</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>'
             _this.latestMessageReceivedTime ="";
             _this.init = function() {
                 $applozic.template("convTemplate", convbox);
                 $applozic.template("messageTemplate", markup);
                 $applozic.template('contactTemplate', contactbox);
                 $applozic.template("searchContactbox", searchContactbox);
+                $applozic.template("csatModule", csatModule);
             };
 
             // _this.openConversation = function () {
@@ -5438,7 +5446,24 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-                       
+                
+                if (msg.contentType = KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
+                    if (msg.metadata && msg.metadata.feedback) {
+                        let userFeedback = JSON.parse(msg.metadata.feedback)
+                        let ratingSmileSVG = kommunicateCommons.getRatingSmilies(
+                            userFeedback.rating
+                        );
+                        let ratingComment = userFeedback.comments
+
+                        let ratingData = [{
+                            ratingSmileSVG: ratingSmileSVG,
+                            ratingComment: ratingComment,
+                        }]
+                        $applozic("." + replyId + " .km-conversation-container-right").remove();
+                        $applozic.tmpl("csatModule", ratingData).appendTo("." + replyId + " .blk-lg-12")
+                    }
+                }
+
                 if (!(msg.metadata.obsolete && msg.metadata.obsolete == "true") && msg.metadata.KM_AUTO_SUGGESTION) {
                     var autosuggetionMetadata = {}
                     try {

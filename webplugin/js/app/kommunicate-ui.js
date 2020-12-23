@@ -440,6 +440,15 @@ setAvailabilityStatus : function (status){
     $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").removeClass("n-vis").addClass("vis mck-status--" + status);
     $applozic("#mck-agent-status-text").text(MCK_LABELS[status]).addClass("vis").removeClass("n-vis");
 },
+triggerCSAT : function(){
+    var isCSATenabled = kommunicate._globals.collectFeedback;
+    if(isCSATenabled){
+        $applozic('#mck-submit-comment').attr("disabled",false);
+        kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis", "vis");
+        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-mid-conv-csat");
+        kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "vis", "n-vis");
+    }
+},
 showClosedConversationBanner  : function(isConversationClosed){
     var messageText = MCK_LABELS["closed.conversation.message"];
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
