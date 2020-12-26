@@ -4201,6 +4201,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
+                                                        $applozic("#km-widget-options").removeClass("n-vis");
                                                         mckMessageLayout.processMessageList(data, true, validated, append, params.allowReload);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
@@ -4292,6 +4293,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                     if (params.isLaunch) {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
+                                    $applozic("#km-widget-options").addClass("n-vis");
                                 }
                                 if (params.isGroup) {
                                     Kommunicate.conversation.processConversationOpenedFromList(data);
@@ -4348,6 +4350,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                         typeof callback =='function' && callback(null,err);
                     }
                 });
+
             };
 
             _this.getAndSetAwayMessage = function (data, tabId, roleType, isAgentOffline) {

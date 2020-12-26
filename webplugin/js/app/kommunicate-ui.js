@@ -238,6 +238,7 @@ KommunicateUI={
         $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
         $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis").addClass('vis-table');
         $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding");
+        $applozic("#km-widget-options").addClass("n-vis");
         KommunicateUI.checkSingleThreadedConversationSettings(true);
     });
 
@@ -277,6 +278,7 @@ KommunicateUI={
         KommunicateUI.awayMessageScroll = true;
         KommunicateUI.hideAwayMessage();
         KommunicateUI.hideLeadCollectionTemplate();
+        $applozic("#km-widget-options").addClass("n-vis");
         MCK_BOT_MESSAGE_QUEUE = [];
         if (MCK_EVENT_HISTORY.length >= 2) {
             if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
