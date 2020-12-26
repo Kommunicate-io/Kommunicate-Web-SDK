@@ -2957,7 +2957,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     var $this = $applozic(this);
                     var elem = this;
                     var userId =$this.data('mck-id')
-                    count > 1  && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "object" &&   MCK_EVENT_HISTORY.push(elem);
+                   count > 1  && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "object" &&   MCK_EVENT_HISTORY.push(elem);
                     if (userId) {
                         // for one to one chat
                         if ($this.parents(".mck-search-list").length) {
@@ -4119,7 +4119,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                                     $mck_tab_title.html(name);
                                                     $mck_tab_title.attr('title', name);
                                                     KommunicateUI.adjustConversationTitleHeadingWidth(POPUP_WIDGET);
-
+                                                    
                                                 }
                                             }
                                         });
@@ -5444,18 +5444,21 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 
                 if (msg.contentType = KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
-                        let userFeedback = JSON.parse(msg.metadata.feedback)
+                        let userFeedback = JSON.parse(msg.metadata.feedback);
                         let ratingSmileSVG = kommunicateCommons.getRatingSmilies(
                             userFeedback.rating
                         );
-                        let ratingComment = userFeedback.comments
+                        let ratingComment = "";
+                        if (userFeedback.comments) {
+                            ratingComment = '\"' + userFeedback.comments.trim() + '\"';
+                        };
 
                         let ratingData = [{
                             ratingSmileSVG: ratingSmileSVG,
                             ratingComment: ratingComment,
-                        }]
+                        }];
                         $applozic("." + replyId + " .km-conversation-container-right").remove();
-                        $applozic.tmpl("csatModule", ratingData).appendTo("." + replyId + " .blk-lg-12")
+                        $applozic.tmpl("csatModule", ratingData).appendTo("." + replyId + " .blk-lg-12");
                     }
                 }
 
@@ -7111,7 +7114,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 }
                             }
                         }
-                    } else if (messageType === "APPLOZIC_02" && !message.contentType == 102) {
+                    } else if (messageType === "APPLOZIC_02" && !message.contentType == 102 || messageType === "APPLOZIC_02" && message.metadata.feedback) {
                         if (((typeof message.oldKey === 'undefined' || $applozic("." + message.oldKey).length === 0) && $applozic("." + message.key).length === 0) || message.contentType === 10) {
                             if (mckContactListLength > 0) {
                                 mckMessageLayout.addContactsFromMessage(message, true);
