@@ -6139,7 +6139,8 @@ body.accesibility :focus {
 	cursor: pointer;
 }
 #km-widget-options .mck-dropdown-menu{
-	top: 45px;
+	top: 40px;
+    border-radius: 4px;
 }
 #km-widget-options .mck-dropdown-menu::before{
 	content: none;

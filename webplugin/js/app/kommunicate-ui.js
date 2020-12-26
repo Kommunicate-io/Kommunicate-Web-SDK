@@ -237,7 +237,7 @@ KommunicateUI={
         $applozic('.mck-agent-image-container').removeClass("vis").addClass("n-vis");
         $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
         $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis").addClass('vis-table');
-        $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding")
+        $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding");
         KommunicateUI.checkSingleThreadedConversationSettings(true);
     });
 
@@ -442,6 +442,7 @@ setAvailabilityStatus : function (status){
 },
 triggerCSAT : function(){
     var isCSATenabled = kommunicate._globals.collectFeedback;
+    kommunicate._globals.CSATtriggeredByCustomer = true; 
     if(isCSATenabled){
         $applozic('#mck-submit-comment').attr("disabled",false);
         kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis", "vis");
@@ -455,7 +456,7 @@ showClosedConversationBanner  : function(isConversationClosed){
     var isCSATenabled = kommunicate._globals.collectFeedback;
     var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
     isConversationClosed && kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
-    if(isCSATenabled && isConversationClosed && !kommunicateCommons.isConversationClosedByBot()){
+    if(isCSATenabled && isConversationClosed && !kommunicateCommons.isConversationClosedByBot() && !kommunicate._globals.CSATtriggeredByCustomer){
         mckUtils.ajax({
             type: 'GET',
             url: Kommunicate.getBaseUrl() + '/feedback' + '/'+ CURRENT_GROUP_DATA.tabId ,
@@ -476,7 +477,7 @@ showClosedConversationBanner  : function(isConversationClosed){
                 if (feedback && feedback.rating) {
                     if(feedback.comments.length > 0){ // if comments are there in feedback 
                         kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
-                        document.getElementById('csat-3').innerHTML = '\"' + feedback.comments[0] + '\"';
+                        document.getElementById('csat-3').innerHTML = '\"' + feedback.comments[feedback.comments.length-1] + '\"';
                     } else { // only rating via emoticons
                         kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
                     }
@@ -491,7 +492,14 @@ showClosedConversationBanner  : function(isConversationClosed){
             error : function(err){
                 console.log('Error fetching feedback', err);
             }
-        });  
+        });
+    }else if(isConversationClosed && kommunicate._globals.CSATtriggeredByCustomer){
+        kommunicate._globals.CSATtriggeredByCustomer = false;
+        kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
+        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-mid-conv-csat");
+        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
+        kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
+        kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
     }else if(isConversationClosed){
         conversationStatusDiv && (conversationStatusDiv.innerHTML= messageText);
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
