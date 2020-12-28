@@ -2009,6 +2009,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
                 restartConversation.addEventListener('click',function(){
                     KommunicateUI.showClosedConversationBanner(false);
+                    kommunicate._globals.isConvJustResolved = false;
                 })
 
                 sendFeedbackComment.addEventListener('click',function(){
