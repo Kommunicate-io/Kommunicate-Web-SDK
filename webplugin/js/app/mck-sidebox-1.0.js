@@ -4202,7 +4202,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        $applozic("#km-widget-options").removeClass("n-vis");
+                                                        kommunicate._globals.collectFeedback && $applozic("#km-widget-options").removeClass("n-vis");
                                                         mckMessageLayout.processMessageList(data, true, validated, append, params.allowReload);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
@@ -4294,7 +4294,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                     if (params.isLaunch) {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
-                                    $applozic("#km-widget-options").addClass("n-vis");
                                 }
                                 if (params.isGroup) {
                                     Kommunicate.conversation.processConversationOpenedFromList(data);
@@ -7122,7 +7121,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                 }
                             }
                         }
-                    } else if (messageType === "APPLOZIC_02" && !message.contentType == 102 || messageType === "APPLOZIC_02" && message.metadata.feedback) {
+                    } else if (
+                        messageType === "APPLOZIC_02" && !message.contentType == 102 || 
+                        messageType === "APPLOZIC_02" && message.metadata.feedback && !kommunicate._globals.isConvJustResolved) {
                         if (((typeof message.oldKey === 'undefined' || $applozic("." + message.oldKey).length === 0) && $applozic("." + message.key).length === 0) || message.contentType === 10) {
                             if (mckContactListLength > 0) {
                                 mckMessageLayout.addContactsFromMessage(message, true);
@@ -9850,6 +9851,13 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                         KommunicateUI.showClosedConversationBanner(true);
                                     }, MCK_BOT_MESSAGE_DELAY);
                                 } else {
+
+                                    if(kommunicate._globals.isConvJustResolved){
+                                        kommunicate._globals.isConvJustResolved = false;
+                                    }else{
+                                        kommunicate._globals.isConvJustResolved = true
+                                    }
+                                    console.log(kommunicate._globals.isConvJustResolved)
                                     KommunicateUI.showClosedConversationBanner(true);
                                 }
                             } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {
