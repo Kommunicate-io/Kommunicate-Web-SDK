@@ -490,13 +490,13 @@ showClosedConversationBanner  : function(isConversationClosed){
                 csat-3 : csat result screen where you show overall feedback.
                 */
                 if (feedback && feedback.rating) {
-                    if(feedback.comments.length > 0){ // if comments are there in feedback 
-                        kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
-                        document.getElementById('csat-3').innerHTML = '\"' + feedback.comments[feedback.comments.length-1] + '\"';
-                    } else { // only rating via emoticons
-                        kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
-                    }
-                    document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(feedback.rating);
+                    // if(feedback.comments.length > 0){ // if comments are there in feedback 
+                        // kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
+                        // document.getElementById('csat-3').innerHTML = '\"' + feedback.comments[feedback.comments.length-1] + '\"';
+                    // } else { // only rating via emoticons
+                        // kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
+                    // }
+                    // document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(feedback.rating);
                 } else { // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "", "n-vis");
                 }
@@ -509,12 +509,12 @@ showClosedConversationBanner  : function(isConversationClosed){
             }
         });
     }else if(isConversationClosed && kommunicate._globals.CSATtriggeredByCustomer){
-            kommunicate._globals.CSATtriggeredByCustomer = false;
-            kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
-            kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-mid-conv-csat");
-            kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
-            kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
-            kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
+        kommunicate._globals.CSATtriggeredByCustomer = false;
+        kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
+        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-mid-conv-csat");
+        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
+        kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
+        kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
     }else if(isConversationClosed && kommunicate._globals.isConvJustResolved){
         KommunicateUI.triggerCSAT();
     }else if(isConversationClosed){
@@ -526,6 +526,7 @@ showClosedConversationBanner  : function(isConversationClosed){
     }else {
         kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
+        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-mid-conv-csat");
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
         kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
         kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
