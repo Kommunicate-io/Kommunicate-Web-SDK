@@ -238,7 +238,7 @@ KommunicateUI={
         $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
         $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis").addClass('vis-table');
         $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding");
-        $applozic("#km-widget-options").addClass("n-vis");
+        kommunicateCommons.modifyClassList( {id : ["km-widget-options"]}, "n-vis");
         KommunicateUI.checkSingleThreadedConversationSettings(true);
     });
 
@@ -278,7 +278,7 @@ KommunicateUI={
         KommunicateUI.awayMessageScroll = true;
         KommunicateUI.hideAwayMessage();
         KommunicateUI.hideLeadCollectionTemplate();
-        $applozic("#km-widget-options").addClass("n-vis");
+        kommunicateCommons.modifyClassList( {id : ["km-widget-options"]}, "n-vis");
         MCK_BOT_MESSAGE_QUEUE = [];
         if (MCK_EVENT_HISTORY.length >= 2) {
             if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
@@ -444,21 +444,27 @@ setAvailabilityStatus : function (status){
 },
 triggerCSAT : function(){
     var isCSATenabled = kommunicate._globals.collectFeedback;
-    kommunicate._globals.CSATtriggeredByCustomer = true; 
+        kommunicate._globals.CSATtriggeredByCustomer = true;   
     if(isCSATenabled){
         $applozic('#mck-submit-comment').attr("disabled",false);
         kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis", "vis");
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-mid-conv-csat");
         kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "vis", "n-vis");
-    }
+   }
 },
 showClosedConversationBanner  : function(isConversationClosed){
     var messageText = MCK_LABELS["closed.conversation.message"];
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
     var isCSATenabled = kommunicate._globals.collectFeedback;
-    var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
+    var isCSATtriggeredByCustomer = kommunicate._globals.CSATtriggeredByCustomer;
+   var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
     isConversationClosed && kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
-    if(isCSATenabled && isConversationClosed && !kommunicateCommons.isConversationClosedByBot() && !kommunicate._globals.CSATtriggeredByCustomer){
+    if(
+        isCSATenabled && 
+        isConversationClosed && 
+        !kommunicateCommons.isConversationClosedByBot() && 
+        !isCSATtriggeredByCustomer
+        ){
         mckUtils.ajax({
             type: 'GET',
             url: Kommunicate.getBaseUrl() + '/feedback' + '/'+ CURRENT_GROUP_DATA.tabId ,
@@ -471,6 +477,7 @@ showClosedConversationBanner  : function(isConversationClosed){
                 kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]}, "","n-vis");
                 kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
                 kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3"]}, "n-vis");
+                kommunicateCommons.modifyClassList( {id : ["km-widget-options"]}, "n-vis");
                 /*
                 csat-1 : csat rating first screen where you can rate via emoticons.
                 csat-2 : csat rating second screen where you can add comments.
@@ -496,24 +503,25 @@ showClosedConversationBanner  : function(isConversationClosed){
             }
         });
     }else if(isConversationClosed && kommunicate._globals.CSATtriggeredByCustomer){
-        kommunicate._globals.CSATtriggeredByCustomer = false;
-        kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
-        kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-mid-conv-csat");
-        kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
-        kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
-        kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
+            kommunicate._globals.CSATtriggeredByCustomer = false;
+            kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
+            kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-mid-conv-csat");
+            kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
+            kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
+            kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
     }else if(isConversationClosed){
         conversationStatusDiv && (conversationStatusDiv.innerHTML= messageText);
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"]}, "vis", "n-vis");
         kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
-    } 
-    else {
+        kommunicateCommons.modifyClassList( {id : ["km-widget-options"]}, "n-vis");
+    }else {
         kommunicateCommons.modifyClassList( {id : ["csat-1","csat-2","csat-3","mck-rated"]}, "n-vis", "");
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]},"","mck-closed-conv-banner");
         kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
         kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
         kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
+        kommunicateCommons.modifyClassList( {id : ["km-widget-options"]}, "", "n-vis");
     } 
 },
 handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {

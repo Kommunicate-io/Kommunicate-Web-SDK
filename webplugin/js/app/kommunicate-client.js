@@ -96,7 +96,7 @@ Kommunicate.client={
                     KommunicateUI.handleWaitingQueueMessage();
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
-                    $applozic("#km-widget-options").removeClass("n-vis");
+                    kommunicate._globals.collectFeedback && $applozic("#km-widget-options").removeClass("n-vis");
                     /* conversation table migrated to Applozic
                      Kommunicate.createNewConversation({
                          "groupId": response.data.value,
