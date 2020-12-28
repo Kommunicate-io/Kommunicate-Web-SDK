@@ -444,26 +444,32 @@ setAvailabilityStatus : function (status){
 },
 triggerCSAT : function(){
     var isCSATenabled = kommunicate._globals.collectFeedback;
-        kommunicate._globals.CSATtriggeredByCustomer = true;   
+    if (!kommunicate._globals.isConvJustResolved){
+        kommunicate._globals.CSATtriggeredByCustomer = true; 
+    }
+    
     if(isCSATenabled){
         $applozic('#mck-submit-comment').attr("disabled",false);
         kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis", "vis");
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-mid-conv-csat");
         kommunicateCommons.modifyClassList( {id : ["csat-1"]}, "vis", "n-vis");
-   }
+        kommunicate._globals.isConvJustResolved = false
+    }
 },
 showClosedConversationBanner  : function(isConversationClosed){
     var messageText = MCK_LABELS["closed.conversation.message"];
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
     var isCSATenabled = kommunicate._globals.collectFeedback;
     var isCSATtriggeredByCustomer = kommunicate._globals.CSATtriggeredByCustomer;
-   var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
+    var isConvJustResolved = kommunicate._globals.isConvJustResolved
+    var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
     isConversationClosed && kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "n-vis");
     if(
         isCSATenabled && 
         isConversationClosed && 
         !kommunicateCommons.isConversationClosedByBot() && 
-        !isCSATtriggeredByCustomer
+        !isCSATtriggeredByCustomer &&
+        !isConvJustResolved
         ){
         mckUtils.ajax({
             type: 'GET',
@@ -509,6 +515,8 @@ showClosedConversationBanner  : function(isConversationClosed){
             kommunicateCommons.modifyClassList( {id : ["mck-conversation-status-box"] }, "n-vis", "vis");
             kommunicateCommons.modifyClassList( {class : ["mck-box-form"]}, "", "n-vis");
             kommunicateCommons.modifyClassList( {class : ["mck-csat-text-1"]} ,"n-vis");
+    }else if(isConversationClosed && kommunicate._globals.isConvJustResolved){
+        KommunicateUI.triggerCSAT();
     }else if(isConversationClosed){
         conversationStatusDiv && (conversationStatusDiv.innerHTML= messageText);
         kommunicateCommons.modifyClassList( {id : ["mck-sidebox-ft"]}, "mck-closed-conv-banner");
