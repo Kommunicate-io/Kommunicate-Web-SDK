@@ -2009,7 +2009,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
                 restartConversation.addEventListener('click',function(){
                     KommunicateUI.showClosedConversationBanner(false);
-                    kommunicate._globals.isConvJustResolved = false;
+                    KommunicateUI.isConvJustResolved = false;
                 })
 
                 sendFeedbackComment.addEventListener('click',function(){
@@ -7126,8 +7126,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                             }
                         }
                     } else if (
-                        messageType === "APPLOZIC_02" && !message.contentType == 102 ||
-                        messageType === "APPLOZIC_02" && message.metadata.feedback) {
+                        messageType === "APPLOZIC_02" && !(message.contentType == 102)) {
                         if (((typeof message.oldKey === 'undefined' || $applozic("." + message.oldKey).length === 0) && $applozic("." + message.key).length === 0) || message.contentType === 10) {
                             if (mckContactListLength > 0) {
                                 mckMessageLayout.addContactsFromMessage(message, true);
@@ -9855,7 +9854,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                         KommunicateUI.showClosedConversationBanner(true);
                                     }, MCK_BOT_MESSAGE_DELAY);
                                 } else {
-                                    kommunicate._globals.isConvJustResolved = !(!!kommunicate._globals.isConvJustResolved);
+                                    KommunicateUI.isConvJustResolved = !(!!KommunicateUI.isConvJustResolved);
                                     KommunicateUI.showClosedConversationBanner(true);
                                 }
                             } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {

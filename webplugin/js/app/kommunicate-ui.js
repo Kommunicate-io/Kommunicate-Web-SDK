@@ -11,6 +11,8 @@ KommunicateUI={
     leadCollectionEnabledOnWelcomeMessage:false,
     anonymousUser:false,
     showResolvedConversations: false,
+    CSATtriggeredByCustomer: false,
+    isConvJustResolved: false,
     faqSVGImage: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><circle class="km-custom-widget-fill" cx="12" cy="12" r="12" fill="#5553B7" fill-rule="nonzero" opacity=".654"/><g transform="translate(6.545 5.818)"><polygon fill="#FFF" points=".033 2.236 .033 12.057 10.732 12.057 10.732 .02 3.324 .02"/><rect class="km-custom-widget-fill" width="6.433" height="1" x="2.144" y="5.468" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><rect class="km-custom-widget-fill" width="4.289" height="1" x="2.144" y="8.095" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><polygon class="km-custom-widget-fill" fill="#5553B7" points="2.656 .563 3.384 2.487 1.162 3.439" opacity=".65" transform="rotate(26 2.273 2.001)"/></g></g></svg>',
     CONSTS:{
         
@@ -448,8 +450,8 @@ setAvailabilityStatus : function (status){
 },
 triggerCSAT: function () {
     var isCSATenabled = kommunicate._globals.collectFeedback;
-    if (!kommunicate._globals.isConvJustResolved) {
-        kommunicate._globals.CSATtriggeredByCustomer = true;
+    if (!KommunicateUI.isConvJustResolved) {
+        KommunicateUI.CSATtriggeredByCustomer = true;
     }
 
     if (isCSATenabled) {
@@ -463,15 +465,15 @@ triggerCSAT: function () {
         kommunicateCommons.modifyClassList({
             id: ["csat-1"]
         }, "vis", "n-vis");
-        kommunicate._globals.isConvJustResolved = false
+        KommunicateUI.isConvJustResolved = false
     }
 },
 showClosedConversationBanner: function (isConversationClosed) {
     var messageText = MCK_LABELS["closed.conversation.message"];
     var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
     var isCSATenabled = kommunicate._globals.collectFeedback;
-    var isCSATtriggeredByCustomer = kommunicate._globals.CSATtriggeredByCustomer;
-    var isConvJustResolved = kommunicate._globals.isConvJustResolved
+    var isCSATtriggeredByCustomer = KommunicateUI.CSATtriggeredByCustomer;
+    var isConvJustResolved = KommunicateUI.isConvJustResolved;
     var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
     isConversationClosed && kommunicateCommons.modifyClassList({
         class: ["mck-box-form"]
@@ -525,8 +527,8 @@ showClosedConversationBanner: function (isConversationClosed) {
                 console.log('Error fetching feedback', err);
             }
         });
-    } else if (isConversationClosed && kommunicate._globals.CSATtriggeredByCustomer) {
-        kommunicate._globals.CSATtriggeredByCustomer = false;
+    } else if (isConversationClosed && KommunicateUI.CSATtriggeredByCustomer) {
+        KommunicateUI.CSATtriggeredByCustomer = false;
         kommunicateCommons.modifyClassList({
             id: ["csat-1", "csat-2", "csat-3", "mck-rated"]
         }, "n-vis", "");
@@ -542,7 +544,7 @@ showClosedConversationBanner: function (isConversationClosed) {
         kommunicateCommons.modifyClassList({
             class: ["mck-csat-text-1"]
         }, "n-vis");
-    } else if (isConversationClosed && kommunicate._globals.isConvJustResolved) {
+    } else if (isConversationClosed && KommunicateUI.isConvJustResolved) {
         KommunicateUI.triggerCSAT();
     } else if (isConversationClosed) {
         conversationStatusDiv && (conversationStatusDiv.innerHTML = messageText);
