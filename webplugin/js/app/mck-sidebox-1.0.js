@@ -2957,8 +2957,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     count++;
                     var $this = $applozic(this);
                     var elem = this;
-                    var userId =$this.data('mck-id')
-                   count > 1  && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "object" &&   MCK_EVENT_HISTORY.push(elem);
+                    var userId = $this.data('mck-id')
+                    count > 1 && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== "object" && MCK_EVENT_HISTORY.push(elem);
                     if (userId) {
                         // for one to one chat
                         if ($this.parents(".mck-search-list").length) {
@@ -2979,11 +2979,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
 
-                $applozic("#mck-csat-trigger").click(function(e){
+                $applozic("#mck-csat-trigger").click(function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
                 })
-                
+
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
                     var $error_chat_login = $applozic("#km-error-chat-login");
@@ -4843,8 +4843,8 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             var csatModule = '<div class="csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">You rated the conversation</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>'
-            _this.latestMessageReceivedTime ="";
-            _this.init = function() {
+            _this.latestMessageReceivedTime = "";
+            _this.init = function () {
                 $applozic.template("convTemplate", convbox);
                 $applozic.template("messageTemplate", markup);
                 $applozic.template('contactTemplate', contactbox);
@@ -5449,7 +5449,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-                
                 if (msg.contentType = KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
                         let userFeedback = JSON.parse(msg.metadata.feedback);
@@ -7123,7 +7122,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                             }
                         }
                     } else if (
-                        messageType === "APPLOZIC_02" && !message.contentType == 102 || 
+                        messageType === "APPLOZIC_02" && !message.contentType == 102 ||
                         messageType === "APPLOZIC_02" && message.metadata.feedback && !kommunicate._globals.isConvJustResolved) {
                         if (((typeof message.oldKey === 'undefined' || $applozic("." + message.oldKey).length === 0) && $applozic("." + message.key).length === 0) || message.contentType === 10) {
                             if (mckContactListLength > 0) {
@@ -9852,10 +9851,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                         KommunicateUI.showClosedConversationBanner(true);
                                     }, MCK_BOT_MESSAGE_DELAY);
                                 } else {
-
-                                    if(kommunicate._globals.isConvJustResolved){
+                                    if (kommunicate._globals.isConvJustResolved) {
                                         kommunicate._globals.isConvJustResolved = false;
-                                    }else{
+                                    } else {
                                         kommunicate._globals.isConvJustResolved = true
                                     }
                                     console.log(kommunicate._globals.isConvJustResolved)
