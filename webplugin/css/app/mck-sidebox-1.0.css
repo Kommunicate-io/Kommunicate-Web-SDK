@@ -5082,7 +5082,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-closed-conv-banner{
 	background-color: #f6f5f5;
 }
-.mck-mid-conv-csat{
+.km-mid-conv-csat{
 	background-color: #f6f5f5;
 }
 #mck-conversation-status-box{
@@ -5416,12 +5416,12 @@ div#mck-waiting-queue {
 	padding: 12px 5px 13px 5px;
 	border-top: 1px dashed #CAD3E3;
 }
-.csat-skeleton {
+.km-csat-skeleton {
 	padding: 0 10px;
 	position: relative;
 }
 
-.csat-skeleton .mck-rated {
+.km-csat-skeleton .mck-rated {
 	text-align: center;
 	font-size: 13px;
 	font-weight: 300;
@@ -5432,14 +5432,14 @@ div#mck-waiting-queue {
 	padding: 3px 0px;
 }
 
-.csat-skeleton .mck-rated span svg {
+.km-csat-skeleton .mck-rated span svg {
 	height: 16px;
 	width: 16px;
 	margin: 0 5px -4px 3px;
 }
 
-.csat-skeleton .mck-rated:after,
-.csat-skeleton .mck-rated:before {
+.km-csat-skeleton .mck-rated:after,
+.km-csat-skeleton .mck-rated:before {
 	content: "";
 	position: absolute;
 	height: 8px;
@@ -5449,15 +5449,15 @@ div#mck-waiting-queue {
 	z-index: 0;
 }
 
-.csat-skeleton .mck-rated:after {
+.km-csat-skeleton .mck-rated:after {
 	left: 79%;
 }
 
-.csat-skeleton .mck-rated:before {
+.km-csat-skeleton .mck-rated:before {
 	right: 80%;
 }
 
-.csat-skeleton .mck-conversation-comment {
+.km-csat-skeleton .mck-conversation-comment {
 	background: white;
 	padding: 30px 10px 10px;
 	text-align: center;
@@ -6168,7 +6168,7 @@ body.accesibility :focus {
 	background: #F5F5F5;
 }
 
-.mck-three-dot-btn {
+.km-widget-options-button {
 	margin-right: 10px;
 	padding: 10px 0;
 	height: 100%;

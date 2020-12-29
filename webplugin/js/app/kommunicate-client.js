@@ -95,7 +95,6 @@ Kommunicate.client={
                     }
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
-                    kommunicate._globals.collectFeedback && $applozic("#km-widget-options").removeClass("n-vis");
                     /* conversation table migrated to Applozic
                      Kommunicate.createNewConversation({
                          "groupId": response.data.value,

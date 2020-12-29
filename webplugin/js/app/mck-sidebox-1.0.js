@@ -2583,7 +2583,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     $mck_sidebox_content.addClass("minimized");
                 }
             });
-
+            
             _this.init = function () {
                 var mck_text_box = document.getElementById("mck-text-box");
               
@@ -2979,10 +2979,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
 
-                $applozic("#mck-csat-trigger").click(function (e) {
+                document.querySelector("#km-csat-trigger").onclick = function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
-                })
+                };
 
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
@@ -4594,6 +4594,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
             _this.getGroup = function (params) {
                var usersArray = [];
+               kommunicate._globals.collectFeedback &&
+                   kommunicateCommons.modifyClassList({
+                       id: ["km-widget-options"]
+                   }, "", "n-vis");
                $applozic.each(params.users, function (i, user) {
                    if (typeof user.userId !== 'undefined') {
                        if (typeof user.groupRole === 'undefined' || GROUP_ROLE_MAP.indexOf(user.groupRole) !== -1) {
@@ -4842,7 +4846,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            var csatModule = '<div class="csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">You rated the conversation</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>'
+            var csatModule = '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">You rated the conversation</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>'
             _this.latestMessageReceivedTime = "";
             _this.init = function () {
                 $applozic.template("convTemplate", convbox);
@@ -9851,11 +9855,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                         KommunicateUI.showClosedConversationBanner(true);
                                     }, MCK_BOT_MESSAGE_DELAY);
                                 } else {
-                                    if (kommunicate._globals.isConvJustResolved) {
-                                        kommunicate._globals.isConvJustResolved = false;
-                                    } else {
-                                        kommunicate._globals.isConvJustResolved = true
-                                    }
+                                    kommunicate._globals.isConvJustResolved = !(!!kommunicate._globals.isConvJustResolved);
                                     KommunicateUI.showClosedConversationBanner(true);
                                 }
                             } else if (resp.message.metadata.KM_STATUS === KommunicateConstants.CONVERSATION_OPEN_STATUS) {

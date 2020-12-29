@@ -459,7 +459,7 @@ triggerCSAT: function () {
         }, "n-vis", "vis");
         kommunicateCommons.modifyClassList({
             id: ["mck-sidebox-ft"]
-        }, "mck-mid-conv-csat");
+        }, "km-mid-conv-csat");
         kommunicateCommons.modifyClassList({
             id: ["csat-1"]
         }, "vis", "n-vis");
@@ -511,15 +511,8 @@ showClosedConversationBanner: function (isConversationClosed) {
                 csat-2 : csat rating second screen where you can add comments.
                 csat-3 : csat result screen where you show overall feedback.
                 */
-                if (feedback && feedback.rating) {
-                    // if(feedback.comments.length > 0){ // if comments are there in feedback 
-                    // kommunicateCommons.modifyClassList( {id : ["csat-3","mck-rated"]}, "", "n-vis");
-                    // document.getElementById('csat-3').innerHTML = '\"' + feedback.comments[feedback.comments.length-1] + '\"';
-                    // } else { // only rating via emoticons
-                    // kommunicateCommons.modifyClassList( {id : ["csat-2","mck-rated"]}, "", "n-vis");
-                    // }
-                    // document.getElementById('mck-rating-container').innerHTML = kommunicateCommons.getRatingSmilies(feedback.rating);
-                } else { // no rating given after conversation is resolved
+                if (!feedback && !feedback.rating) {
+                    // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList({
                         id: ["csat-1"]
                     }, "", "n-vis");
@@ -539,7 +532,7 @@ showClosedConversationBanner: function (isConversationClosed) {
         }, "n-vis", "");
         kommunicateCommons.modifyClassList({
             id: ["mck-sidebox-ft"]
-        }, "", "mck-mid-conv-csat");
+        }, "", "km-mid-conv-csat");
         kommunicateCommons.modifyClassList({
             id: ["mck-conversation-status-box"]
         }, "n-vis", "vis");
@@ -574,7 +567,7 @@ showClosedConversationBanner: function (isConversationClosed) {
         }, "", "mck-closed-conv-banner");
         kommunicateCommons.modifyClassList({
             id: ["mck-sidebox-ft"]
-        }, "", "mck-mid-conv-csat");
+        }, "", "km-mid-conv-csat");
         kommunicateCommons.modifyClassList({
             id: ["mck-conversation-status-box"]
         }, "n-vis", "vis");
