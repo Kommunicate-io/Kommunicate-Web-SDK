@@ -48,7 +48,7 @@ Kommunicate.mediaService = {
 
         // If the message isn't part of the UI, it's not included
         // in voiceoutput either
-        if (!Kommunicate.visibleMessage(message)) return;
+        if (!appOptions || !Kommunicate.visibleMessage(message)) return;
 
         // if voiceoutput is enabled and browser supports it
         if (appOptions.voiceOutput && "speechSynthesis" in window) {
