@@ -5416,11 +5416,11 @@ div#mck-waiting-queue {
 	padding: 12px 5px 13px 5px;
 	border-top: 1px dashed #CAD3E3;
 }
-.csatModule{
+.csat-skeleton{
 	padding: 0 10px;
 	position: relative;
 }
-.csatModule .mck-rated {
+.csat-skeleton .mck-rated {
     text-align: center;
     font-size: 13px;
     font-weight: 300;
@@ -5430,12 +5430,12 @@ div#mck-waiting-queue {
 	overflow: hidden;
 	padding: 3px 0px;
 }
-.csatModule .mck-rated span svg{    
+.csat-skeleton .mck-rated span svg{    
 	height: 16px;
     width: 16px;
     margin: 0 5px -4px 3px;
 }
-.csatModule .mck-rated:after, .csatModule .mck-rated:before{
+.csat-skeleton .mck-rated:after, .csat-skeleton .mck-rated:before{
 	content: "";
     position: absolute;
     height: 8px;
@@ -5444,13 +5444,13 @@ div#mck-waiting-queue {
     width: 600px;
     z-index: 0;  
 }
-.csatModule .mck-rated:after{
+.csat-skeleton .mck-rated:after{
 	left: 79%;
 }
-.csatModule .mck-rated:before{
+.csat-skeleton .mck-rated:before{
 	right: 80%;
 }
-.csatModule .mck-conversation-comment{
+.csat-skeleton .mck-conversation-comment{
 	background: white;
     padding: 30px 10px 10px;
     text-align: center;
