@@ -39,48 +39,43 @@ Kommunicate.mediaService = {
                 // stop mic effect
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
-                ;
-            }
+;            }
         }
     },
     voiceOutputIncomingMessage: function (message) {
-        try {
-            // get appoptions
-            var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
+        // get appoptions
+        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
 
-            // If the message isn't part of the UI, it's not included
-            // in voiceoutput either
-            if (!Kommunicate.visibleMessage(message)) return;
+        // If the message isn't part of the UI, it's not included
+        // in voiceoutput either
+        if (!appOptions || !Kommunicate.visibleMessage(message)) return;
 
-            // if voiceoutput is enabled and browser supports it
-            if (appOptions.voiceOutput && "speechSynthesis" in window) {
-                var textToSpeak = "";
-                if (message.hasOwnProperty("fileMeta")) {
-                    textToSpeak += MCK_LABELS['voice.output'].attachment;
-                    textToSpeak += message.fileMeta.name;
-                }
-                else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
-                    coord = JSON.parse(message.message);
-                    textToSpeak += MCK_LABELS['voice.output'].location.init;
-                    textToSpeak += MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
-                    textToSpeak += MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
-                }
-                else if (message.message) {
-                    textToSpeak += message.message;
-                }
-                if (textToSpeak) {
-                    var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                    utterance.lang = appOptions.language || "en-US";
-                    utterance.onerror = function (event) {
-                        if (event.error !== "not-allowed") {
-                            throw new Error("Error while converting the message to voice.", event.error);
-                        }
-                    };
-                    speechSynthesis.speak(utterance);
-                }
+        // if voiceoutput is enabled and browser supports it
+        if (appOptions.voiceOutput && "speechSynthesis" in window) {
+            var textToSpeak = "";
+            if (message.hasOwnProperty("fileMeta")) {
+                textToSpeak += MCK_LABELS['voice.output'].attachment;
+                textToSpeak += message.fileMeta.name;
             }
-        } catch (e) {
-            console.log(e);
+            else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
+                coord = JSON.parse(message.message);
+                textToSpeak += MCK_LABELS['voice.output'].location.init;
+                textToSpeak += MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
+                textToSpeak += MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
+            }
+            else if (message.message) {
+                textToSpeak += message.message;
+            }
+            if (textToSpeak) {
+                var utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = appOptions.language || "en-US";
+                utterance.onerror = function (event) {
+                    if (event.error !== "not-allowed") {
+                    throw new Error("Error while converting the message to voice.", event.error);
+                    }
+                };
+                speechSynthesis.speak(utterance);
+            }
         }
     }
 }
