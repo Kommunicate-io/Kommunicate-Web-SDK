@@ -69,7 +69,8 @@ $applozic.extend(true,Kommunicate,{
             "skipRouting": params.skipRouting,
             "skipBotEvent": params.skipBotEvent,
             "customWelcomeEvent": params.customWelcomeEvent,
-            "metadata": groupMetadata
+            "metadata": groupMetadata,
+            "teamId": params.teamId 
         };
         if (IS_SOCKET_CONNECTED) {
             Kommunicate.client.createConversation(conversationDetail, callback);
@@ -104,7 +105,7 @@ $applozic.extend(true,Kommunicate,{
         conversationDetail.skipRouting = conversationDetail.skipRouting || kommunicateSettings.skipRouting;
         conversationDetail.skipBotEvent = conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
         conversationDetail.customWelcomeEvent = conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
-
+        conversationDetail.teamId = conversationDetail.teamId || kommunicateSettings.teamId;
         return conversationDetail;
     },
     openConversationList: function () {
