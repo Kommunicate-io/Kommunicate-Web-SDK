@@ -2979,7 +2979,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
 
-                document.querySelector("#km-csat-trigger").onclick = function (e) {
+                document.getElementById("km-csat-trigger").onclick = function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
                 };
@@ -4203,7 +4203,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        kommunicate._globals.collectFeedback &&
+                                                        CSAT_ENABLED &&
                                                             kommunicateCommons.modifyClassList({
                                                                 id: ["km-widget-options"]
                                                             }, "", "n-vis");

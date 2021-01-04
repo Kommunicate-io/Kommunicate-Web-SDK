@@ -455,7 +455,7 @@ triggerCSAT: function () {
     }
 
     if (isCSATenabled) {
-        $applozic('#mck-submit-comment').attr("disabled", false);
+        document.getElementById("mck-submit-comment").disabled = false;
         kommunicateCommons.modifyClassList({
             class: ["mck-box-form"]
         }, "n-vis", "vis");
