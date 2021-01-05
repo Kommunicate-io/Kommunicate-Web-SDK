@@ -507,17 +507,18 @@ showClosedConversationBanner: function (isConversationClosed) {
                 }, "n-vis");
                 kommunicateCommons.modifyClassList({
                     id: ["km-widget-options"]
-                }, "n-vis");
+                }, "n-vis");          
                 /*
                 csat-1 : csat rating first screen where you can rate via emoticons.
                 csat-2 : csat rating second screen where you can add comments.
                 csat-3 : csat result screen where you show overall feedback.
                 */
-                if (!feedback && !feedback.rating) {
+                if (!feedback) {
                     // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList({
                         id: ["csat-1"]
                     }, "", "n-vis");
+                    document.getElementById("mck-submit-comment").disabled = false;
                 }
                 $mck_msg_inner.animate({
                     scrollTop: $mck_msg_inner.prop("scrollHeight")
