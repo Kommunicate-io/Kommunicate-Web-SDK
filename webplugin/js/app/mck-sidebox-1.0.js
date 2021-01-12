@@ -5456,7 +5456,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-                if (msg.contentType = KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
+                if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
                         var userFeedback = JSON.parse(msg.metadata.feedback);
                         var ratingSmileSVG = kommunicateCommons.getRatingSmilies(
@@ -6757,7 +6757,12 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 }
             };
             _this.getScriptMessagePreview = function (message, emoji_template) {
-                if (message && message.message && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION && message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && !Kommunicate.isRichTextMessage(message.metadata)) {
+                if (
+                    message &&
+                    message.message &&
+                    message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION &&
+                    message.contentType !== KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                    !Kommunicate.isRichTextMessage(message.metadata)) {
                     if ((typeof emoji_template === "string") && emoji_template.indexOf('emoji-inner') === -1) {
                         emoji_template = kommunicateCommons.formatHtmlTag(emoji_template);
                     }
