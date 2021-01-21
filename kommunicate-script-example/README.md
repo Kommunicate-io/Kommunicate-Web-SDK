@@ -25,7 +25,7 @@ Example:
                         closeButton = KommunicateGlobal.document.getElementById('km-chat-widget-close-button');
 
                     [launcher, preChatPopup].forEach(function (element) {
-                        element.addEventListener('click', function () {
+                        element && element.addEventListener('click', function () {
                             iframe.classList.add("change-kommunicate-iframe-height");
                         });
                     });
@@ -70,7 +70,7 @@ Example:
                         closeButton = KommunicateGlobal.document.getElementById('km-chat-widget-close-button');
 
                     [launcher, preChatPopup].forEach(function (element) {
-                        element.addEventListener('click', function () {
+                        element && element.addEventListener('click', function () {
                             iframe.classList.add("change-kommunicate-iframe-height");
                         });
                     });
