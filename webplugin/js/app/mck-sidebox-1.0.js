@@ -2979,10 +2979,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
 
+                //---------Place all the dropdown option triggers here-----------------
+                // CSAT trigger
                 document.getElementById("km-csat-trigger").onclick = function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
                 };
+
+                //----------------------------------------------------------------
 
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
@@ -4203,10 +4207,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        CSAT_ENABLED &&
-                                                            kommunicateCommons.modifyClassList({
-                                                                id: ["km-widget-options"]
-                                                            }, "", "n-vis");
+
+                                                        mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
+                                                        
                                                         mckMessageLayout.processMessageList(data, true, validated, append, params.allowReload);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
@@ -4596,11 +4599,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.getGroup = function (params) {
-               var usersArray = [];
-               kommunicate._globals.collectFeedback &&
-                   kommunicateCommons.modifyClassList({
-                       id: ["km-widget-options"]
-                   }, "", "n-vis");
+               var usersArray = []; 
+               
+               mckMessageLayout.loadDropdownOptions();  // Loads the Options dropdown in the widget
+
                $applozic.each(params.users, function (i, user) {
                    if (typeof user.userId !== 'undefined') {
                        if (typeof user.groupRole === 'undefined' || GROUP_ROLE_MAP.indexOf(user.groupRole) !== -1) {
@@ -4857,6 +4859,20 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic.template('contactTemplate', contactbox);
                 $applozic.template("searchContactbox", searchContactbox);
                 $applozic.template("csatModule", csatModule);
+            };
+            _this.loadDropdownOptions = function(){
+                // Mid conversation CSAT
+                // update if dedicated parameter is introduced
+                let CSATTrigger = document.getElementById("km-csat-trigger")
+                !(kommunicate && kommunicate._globals && kommunicate._globals.collectFeedback) && 
+                    CSATTrigger && CSATTrigger.classList.add("n-vis");
+                
+                
+                let dropdownOptionsArray = Array.from(document.querySelectorAll("#km-widget-options ul.mck-dropdown-menu div.menu-item"));
+                dropdownOptionsArray.some(option => option && !option.classList.contains('n-vis')) && 
+                    kommunicateCommons.modifyClassList({
+                        id: ["km-widget-options"]
+                    }, "", "n-vis");
             };
 
             // _this.openConversation = function () {
@@ -8521,7 +8537,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_gm_search_box.mckModal('hide');
             };
         }
-
+        
         function MckMapLayout() {
             var _this = this;
             var GEOCODER = '';
