@@ -168,6 +168,6 @@ Kommunicate.defaultLabels = {
         'last.part': ' in the waiting queue, our agents will get back you shortly.'
     },
     'conversation.header.dropdown': {
-        'CSAT_RATING_TEXT': 'Rate this Conversation'
+        'CSAT_RATING_TEXT': 'Rate this conversation'
     }
 }
