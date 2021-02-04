@@ -122,6 +122,7 @@ Kommunicate.defaultLabels = {
         'OTHER_QUERIES' : 'Have other queries? ',
         'RESTART_CONVERSATION' : 'Restart this conversation',
         'SUBMIT_RATING' : 'Submit your rating',
+        'DROPDOWN_RATING_TEXT' : 'Rate this Conversation',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text' : {
