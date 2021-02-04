@@ -456,6 +456,7 @@ triggerCSAT: function () {
 
     if (isCSATenabled) {
         document.getElementById("mck-submit-comment").disabled = false;
+        kommunicateCommons.modifyClassList({class : ["mck-rating-box"]}, "","selected");
         kommunicateCommons.modifyClassList({
             class: ["mck-box-form"]
         }, "n-vis", "vis");
