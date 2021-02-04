@@ -1,7 +1,7 @@
-Kommunicate =  typeof Kommunicate =='undefined'?{}:Kommunicate;
+Kommunicate = typeof Kommunicate == 'undefined' ? {} : Kommunicate;
 
 Kommunicate.defaultLabels = {
-    'input.message':'Type your message...',
+    'input.message': 'Type your message...',
     'conversations.title': 'Conversations',
     'start.new': 'Start New Conversation',
     'search.contacts': 'Contacts',
@@ -64,34 +64,34 @@ Kommunicate.defaultLabels = {
     'file.attach.title': 'Attach File',
     'last.seen': 'Last seen',
     'last.seen.on': 'Last seen on',
-    'hour':' hour',
-    'min':' min',
-    'yesterday':'yesterday',
-    'hours':' hours',
-    'mins':' mins',
-    'time.format.AM':'AM',
-    'time.format.PM':'PM',
-    'time.format.am':'am',
-    'time.format.pm':'pm',
-    'user.delete':'This user has been deleted',
+    'hour': ' hour',
+    'min': ' min',
+    'yesterday': 'yesterday',
+    'hours': ' hours',
+    'mins': ' mins',
+    'time.format.AM': 'AM',
+    'time.format.PM': 'PM',
+    'time.format.am': 'am',
+    'time.format.pm': 'pm',
+    'user.delete': 'This user has been deleted',
     'ago': 'ago',
-    'admin':'Admin',
-    'user':'User',
-    'moderator':'Moderator',
-    'member':'Member',
-    'public':'Public',
-    'private':'Private',
-    'open':'Open',
-    'you':'You',
-    'away':'Away',
-    'closed.conversation.message':'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
-    'search.faq':'Search in FAQs...',
-    'looking.for.something.else':'Looking for something else?',
-    'no-faq-found':'We are here to help.',
+    'admin': 'Admin',
+    'user': 'User',
+    'moderator': 'Moderator',
+    'member': 'Member',
+    'public': 'Public',
+    'private': 'Private',
+    'open': 'Open',
+    'you': 'You',
+    'away': 'Away',
+    'closed.conversation.message': 'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
+    'search.faq': 'Search in FAQs...',
+    'looking.for.something.else': 'Looking for something else?',
+    'no-faq-found': 'We are here to help.',
     'talk.to.agent': 'Talk to an agent',
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
-    'conversation.rated':'rated the conversation',
+    'conversation.rated': 'rated the conversation',
     'offline.msg': "Uh oh! No internet connection. Please check your network settings and try again.",
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
@@ -108,29 +108,29 @@ Kommunicate.defaultLabels = {
         'HIDE': ''
     },
     'lead.collection': {
-        'email':'Email',
-        'name':'Name',
-        'phone':'Contact Number',
-        'title':'Conversations',
-        'heading':'Before starting, we just need a few details so that we may serve you better',
-        'submit':'Start Conversation',
+        'email': 'Email',
+        'name': 'Name',
+        'phone': 'Contact Number',
+        'title': 'Conversations',
+        'heading': 'Before starting, we just need a few details so that we may serve you better',
+        'submit': 'Start Conversation',
     },
     'csat.rating': {
-        'CONVERSATION_RATED' : 'You rated the conversation',
-        'RATE_CONVERSATION' : 'Rate your conversation',
-        'CONVERSATION_REVIEW_PLACEHOLDER' : 'Add a feedback (optional)',
-        'OTHER_QUERIES' : 'Have other queries? ',
-        'RESTART_CONVERSATION' : 'Restart this conversation',
-        'SUBMIT_RATING' : 'Submit your rating',
+        'CONVERSATION_RATED': 'You rated the conversation',
+        'RATE_CONVERSATION': 'Rate your conversation',
+        'CONVERSATION_REVIEW_PLACEHOLDER': 'Add a feedback (optional)',
+        'OTHER_QUERIES': 'Have other queries? ',
+        'RESTART_CONVERSATION': 'Restart this conversation',
+        'SUBMIT_RATING': 'Submit your rating',
     },
     'page.title.on.new.message': 'New message from ',
-    'emoji.hover.text' : {
+    'emoji.hover.text': {
         'poor': "Poor",
         'great': "Great",
         'average': "Average"
     },
-    'rich.message':{
-        'notification.preview' : "Message"
+    'rich.message': {
+        'notification.preview': "Message"
     },
     'filter.conversation.list': {
         'ALL_CONVERSATIONS': 'All conversations',
@@ -139,7 +139,7 @@ Kommunicate.defaultLabels = {
         'SHOW_RESOLVED': 'Show resolved'
     },
     'rich.form': {
-        'errorText':'Please enter valid data'
+        'errorText': 'Please enter valid data'
     },
     'faq.query.message': {
         'QUERY_REGARDING': 'Hi, I have a query regarding',
@@ -162,8 +162,12 @@ Kommunicate.defaultLabels = {
         },
         'attachment': 'You have an attachment.'
     },
-    'waiting.queue.message':{
-        'first.Part':'You are currently',
-        'waiting.queue.number':'5',
-        'last.part': ' in the waiting queue, our agents will get back you shortly.'},
+    'waiting.queue.message': {
+        'first.Part': 'You are currently',
+        'waiting.queue.number': '5',
+        'last.part': ' in the waiting queue, our agents will get back you shortly.'
+    },
+    'conversation.header.dropdown': {
+        'CSAT_RATING_TEXT': 'Rate this Conversation'
+    }
 }
