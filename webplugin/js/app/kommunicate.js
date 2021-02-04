@@ -34,8 +34,9 @@ $applozic.extend(true,Kommunicate,{
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
         params = Kommunicate.updateConversationDetail(params);
-        if (!params.agentId && !params.agentIds) {
-            params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
+        if (!params.agentId && !params.agentIds && !params.teamId) {
+            var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
+            params.agentId = appOptions.agentId;
         }
         var user = [];
         if (params.agentIds) {
@@ -518,9 +519,6 @@ $applozic.extend(true,Kommunicate,{
     // check if the message needs to be processed by addMessage
     visibleMessage: function(msg){
         if(!msg) return false;
-        if(msg.metadata && msg.metadata.feedback){
-            return false;
-        }
         if (!msg.message && msg.metadata.hasOwnProperty("KM_ASSIGN_TO")) { // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
             return false;
         }

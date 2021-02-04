@@ -10,7 +10,7 @@ Kommunicate.mediaService = {
             alert("browser do not support speech recogization");
         } else {
             var recognition = new webkitSpeechRecognition();
-            var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
+            var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end. 
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change. 
             finalTranscript = '';
@@ -34,21 +34,21 @@ Kommunicate.mediaService = {
             }
             recognition.onerror = function (err) {
                 console.log("error while speech recognition", err);
-            }
+            };
             recognition.onend = function () {
                 // stop mic effect
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
-;            }
+            };
         }
     },
     voiceOutputIncomingMessage: function (message) {
         // get appoptions
-        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions");
+        var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
 
         // If the message isn't part of the UI, it's not included
         // in voiceoutput either
-        if (!Kommunicate.visibleMessage(message)) return;
+        if (!appOptions || !Kommunicate.visibleMessage(message)) return;
 
         // if voiceoutput is enabled and browser supports it
         if (appOptions.voiceOutput && "speechSynthesis" in window) {
@@ -68,8 +68,11 @@ Kommunicate.mediaService = {
             }
             if (textToSpeak) {
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.onerror = function (error) {
-                    throw new Error("Error while converting the message to voice.", error);
+                utterance.lang = appOptions.language || "en-US";
+                utterance.onerror = function (event) {
+                    if (event.error !== "not-allowed") {
+                    throw new Error("Error while converting the message to voice.", event.error);
+                    }
                 };
                 speechSynthesis.speak(utterance);
             }

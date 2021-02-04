@@ -34,10 +34,10 @@ var kmCustomIframe =
     '   right: 0px;' +
     '} \n ' +
     '@media only screen and (max-width:600px) { .kommunicate-iframe-enable-media-query {' +
-    '   right: 0px;' +
+    '   right: 0px !important;' +
     '   bottom: 0px;' +
     '   top: 0;' +
-    '   left: 0;' +
+    '   left: 0px !important;' +
     '   border-radius: 0px;' +
     '   height: 100% !important;' +
     '   width: 100% !important;' +
