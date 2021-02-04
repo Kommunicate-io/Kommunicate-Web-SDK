@@ -4863,14 +4863,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             _this.loadDropdownOptions = function () {
                 // Mid conversation CSAT
                 // update if dedicated parameter is introduced
-                let CSATTrigger = document.getElementById("km-csat-trigger");
+                var CSATTrigger = document.getElementById("km-csat-trigger");
                 !(kommunicate &&
                     kommunicate._globals &&
                     kommunicate._globals.collectFeedback) &&
                     CSATTrigger && CSATTrigger.classList.add("n-vis");
 
                 // For toggling display of three dot button (Dropdown btn)
-                let dropdownOptionsArray = Array.from(document.querySelectorAll("#km-widget-options ul.mck-dropdown-menu div.menu-item"));
+                var dropdownOptionsArray = Array.from(document.querySelectorAll("#km-widget-options ul.mck-dropdown-menu div.menu-item"));
                 dropdownOptionsArray.some(option => option && !option.classList.contains('n-vis')) &&
                     kommunicateCommons.modifyClassList({
                         id: ["km-widget-options"]
