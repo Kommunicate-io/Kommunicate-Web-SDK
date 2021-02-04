@@ -4862,12 +4862,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
-                // Mid conversation CSAT
-                // update if dedicated parameter is introduced
-                CSAT_ENABLED && 
-                (enableDropdown = true) && 
-                kommunicateCommons.modifyClassList({id: ["km-csat-trigger"]}, "", "n-vis");
-
+                /*
+                    Mid conversation CSAT
+                    update if dedicated parameter is introduced
+                */
+                if (CSAT_ENABLED) {
+                    enableDropdown = true;
+                    kommunicateCommons.modifyClassList({ id: ["km-csat-trigger"] }, "", "n-vis");
+                }
                 // For toggling display of three dot button (Dropdown btn)
                 enableDropdown && kommunicateCommons.modifyClassList({id: ["km-widget-options"]}, "", "n-vis");
             };
