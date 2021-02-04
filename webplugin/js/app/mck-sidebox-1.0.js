@@ -2618,15 +2618,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                   });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                    if($applozic('#km-faq-search-input').val()=== "") {
+                    KommunicateUI.hideFaq();
+                    KommunicateUI.showChat();
+                    if ($applozic('#km-faq-search-input').val() === "") {
                         mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                         });
-                        KommunicateUI.showChat();
                     } else {
                         mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             KommunicateUI.sendFaqQueryAsMsg(conversationId);
-                            KommunicateUI.showChat();
                         });
                     }
                     $applozic('#mck-contact-list').removeClass("vis").addClass("n-vis");
@@ -4391,8 +4391,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 typeof callback == 'function' && callback(data);
             };
             _this.isFaqTabOpen = function () {
-                return (document.querySelector("#km-faqdiv").classList.contains("vis") || document.querySelector("#km-faqanswer").classList.contains("vis") ||
-                document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
+                return (
+                    document.querySelector("#km-faqdiv").classList.contains("vis") || 
+                    document.querySelector("#km-faqanswer").classList.contains("vis") ||
+                    document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
             }
             _this.updateConversationHeader = function (params) {
                 if((_this.isFaqTabOpen())){
