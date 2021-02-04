@@ -580,9 +580,6 @@ showClosedConversationBanner: function (isConversationClosed) {
         kommunicateCommons.modifyClassList({
             class: ["mck-csat-text-1"]
         }, "n-vis");
-        kommunicateCommons.modifyClassList({
-            id: ["km-widget-options"]
-        }, "", "n-vis");
     }
 },
 handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) {
