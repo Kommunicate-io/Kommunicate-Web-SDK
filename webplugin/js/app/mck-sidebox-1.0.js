@@ -4861,20 +4861,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic.template("csatModule", csatModule);
             };
             _this.loadDropdownOptions = function () {
+                var enableDropdown = false;
                 // Mid conversation CSAT
                 // update if dedicated parameter is introduced
-                var CSATTrigger = document.getElementById("km-csat-trigger");
-                !(kommunicate &&
-                    kommunicate._globals &&
-                    kommunicate._globals.collectFeedback) &&
-                    CSATTrigger && CSATTrigger.classList.add("n-vis");
+                CSAT_ENABLED && 
+                (enableDropdown = true) && 
+                kommunicateCommons.modifyClassList({id: ["km-csat-trigger"]}, "", "n-vis");
 
                 // For toggling display of three dot button (Dropdown btn)
-                var dropdownOptionsArray = Array.from(document.querySelectorAll("#km-widget-options ul.mck-dropdown-menu div.menu-item"));
-                dropdownOptionsArray.some(option => option && !option.classList.contains('n-vis')) &&
-                    kommunicateCommons.modifyClassList({
-                        id: ["km-widget-options"]
-                    }, "", "n-vis");
+                enableDropdown && kommunicateCommons.modifyClassList({id: ["km-widget-options"]}, "", "n-vis");
             };
 
             // _this.openConversation = function () {
