@@ -39,7 +39,7 @@ Kommunicate.typingAreaService ={
         kommunicateCommons.modifyClassList({id:["mck-mic-animation-container"]}, "n-vis","vis");
     },
     showMicButton: function(){
-        var appOption = KommunicateUtils.getDataFromKmSession("appOptions");
+        var appOption = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
         if(appOption && appOption.voiceInput){
             kommunicateCommons.modifyClassList({id:["mck-mic-animation-container"]}, "vis","n-vis");
         }

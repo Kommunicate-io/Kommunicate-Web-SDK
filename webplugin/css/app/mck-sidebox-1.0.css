@@ -5082,6 +5082,9 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-closed-conv-banner{
 	background-color: #f6f5f5;
 }
+.km-mid-conv-csat{
+	background-color: #f6f5f5;
+}
 #mck-conversation-status-box{
 	padding: 20px 0px 20px 0px;
     font-size: 14px;
@@ -5412,6 +5415,58 @@ div#mck-waiting-queue {
 	text-align: center;
 	padding: 12px 5px 13px 5px;
 	border-top: 1px dashed #CAD3E3;
+}
+.km-csat-skeleton {
+	padding: 0 10px;
+	position: relative;
+}
+
+.km-csat-skeleton .mck-rated {
+	text-align: center;
+	font-size: 13px;
+	font-weight: 300;
+	color: #000;
+	position: absolute;
+	width: 95%;
+	overflow: hidden;
+	padding: 3px 0px;
+}
+
+.km-csat-skeleton .mck-rated span svg {
+	height: 16px;
+	width: 16px;
+	margin: 0 5px -4px 3px;
+}
+
+.km-csat-skeleton .mck-rated:after,
+.km-csat-skeleton .mck-rated:before {
+	content: "";
+	position: absolute;
+	height: 8px;
+	border-top: 1px solid #e2e2e2;
+	top: 50%;
+	width: 600px;
+	z-index: 0;
+}
+
+.km-csat-skeleton .mck-rated:after {
+	left: 79%;
+}
+
+.km-csat-skeleton .mck-rated:before {
+	right: 80%;
+}
+
+.km-csat-skeleton .mck-conversation-comment {
+	background: white;
+	padding: 30px 10px 10px;
+	text-align: center;
+	margin: 0 -15px;
+	font-weight: 300;
+	font-style: italic;
+	letter-spacing: 0.3px;
+	color: #676262;
+	font-size: 14px;
 }
 
 div#mck-rated {
@@ -6078,4 +6133,47 @@ body.accesibility :focus {
 }
 #mck-conversation-filter span:last-child:hover{
 	text-decoration: underline;
+}
+
+#km-widget-options {
+	position: relative;
+	border-radius: 4px;
+}
+
+#km-widget-options.open {
+	background: #11101050;
+}
+
+#km-widget-options:hover {
+	cursor: pointer;
+}
+
+#km-widget-options .mck-dropdown-menu {
+	top: 40px;
+	border-radius: 4px;
+}
+
+#km-widget-options .mck-dropdown-menu::before {
+	content: none;
+}
+
+#km-widget-options .mck-dropdown-menu .menu-item {
+	padding: 5px 10px;
+	color: #333;
+	white-space: nowrap;
+	display: flex;
+}
+
+#km-widget-options .mck-dropdown-menu .menu-item:hover {
+	background: #F5F5F5;
+}
+
+.km-widget-options-button {
+	margin-right: 10px;
+	padding: 10px 0;
+	height: 100%;
+	max-height: 35px;
+	width: 100%;
+	border: 0;
+	text-align: center;
 }

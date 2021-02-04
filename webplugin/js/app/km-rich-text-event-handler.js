@@ -371,7 +371,9 @@ Kommunicate.richMsgEventHandler = {
             return ;
         }
         var data = {};
+        var postBackData = {};
         var isActionableForm = (form.className.indexOf("mck-actionable-form") != -1 );
+        var postBackToKommunicate = isActionableForm ? JSON.parse(target.dataset.postBackToKommunicate.toLowerCase()) : false ;
         var replyText = target.title || target.innerHTML;
         var formElements = [];
         formElements = Array.prototype.concat.apply(formElements, form.getElementsByTagName('input'));
@@ -415,6 +417,9 @@ Kommunicate.richMsgEventHandler = {
                         console.log(e);
                     }
             }
+            if(KommunicateConstants.FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS.indexOf(type) == -1) {
+                postBackData[name] = data[name];
+            }
         }
         if(isActionableForm && validationResults.indexOf("failed") != -1 ) {
             return;
@@ -440,6 +445,8 @@ Kommunicate.richMsgEventHandler = {
         replyText && (messagePxy.message = replyText); //message to send
         
         (isActionableForm && requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM) && (msgMetadata["KM_CHAT_CONTEXT"]= {"formData":data});
+        var formDataMessageTemplate = postBackToKommunicate && Kommunicate.markup.getFormDataMessageTemplate(postBackData);
+        formDataMessageTemplate && Kommunicate.sendMessage({message: formDataMessageTemplate, type: KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML});
         Object.keys(msgMetadata).length > 0 && (messagePxy["metadata"] = msgMetadata);
         (Object.keys(msgMetadata).length > 0 || Object.keys(messagePxy).length > 0 ) && Kommunicate.sendMessage(messagePxy);
     },

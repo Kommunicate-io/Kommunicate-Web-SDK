@@ -89,12 +89,10 @@ Kommunicate.client={
             metadata: groupMetadata,
             allowMessagesViaSocket: conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
-                console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
                     if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
-                    KommunicateUI.handleWaitingQueueMessage();
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
                     /* conversation table migrated to Applozic

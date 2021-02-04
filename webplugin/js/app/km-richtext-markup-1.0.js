@@ -365,7 +365,7 @@ getFormTemplate: function() {
                         {{/payload}}
                     </div>
                         {{#buttons}}
-                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" >{{label}}</button>      
+                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}">{{label}}</button>      
                         {{/buttons}}   
                 </form>   
             </div>`
@@ -388,6 +388,14 @@ getVideoTemplate: function() {
         {{/caption}}
     {{/payload}}
     </div>`
+},
+getFormDataMessageTemplate: function(data){
+    var element = "";
+    Object.keys(data).forEach(function(key) {
+        var value = data[key];
+        value && (element += '<span>'+key+ " : "+value+'</span><br>');
+    });
+    return element;
 }
 
 };
@@ -596,6 +604,7 @@ Kommunicate.markup.getActionableFormMarkup = function(options) {
                 isActionObject = kommunicateCommons.isObject(item.action);
                 options.actionUrl = item.formAction || (isActionObject && item.action.formAction) || "javascript:void(0);";
                 options.requestType = item.requestType || (isActionObject && item.action.requestType) ;
+                options.postBackToKommunicate = item.action.postBackToKommunicate || false;
                 options.label = item.name || item.label;
                 options.message  = item.message || (isActionObject && item.action.message);
                 options.payload[index].className = "km-cta-button";
