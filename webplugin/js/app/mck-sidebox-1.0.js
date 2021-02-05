@@ -4863,6 +4863,24 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic.template("searchContactbox", searchContactbox);
                 $applozic.template("csatModule", csatModule);
             };
+
+            var activeRichMsgCSS = `
+                .mck-msg-left .km-cta-multi-button-container .km-quick-replies {
+                    display:none;
+                } 
+                .mck-msg-left:last-child .km-cta-multi-button-container .km-quick-replies {
+                    display:block;
+                    visibility: visible;
+                }
+                .mck-msg-left .km-chat-faq-list.km-list-container li.km-list-item-handler[data-type="quick_reply"] {
+                    display: none;
+                }
+                .mck-msg-left:last-child .km-chat-faq-list.km-list-container li.km-list-item-handler[data-type="quick_reply"] {
+                    display: block;
+                }
+                `;
+            kommunicate._globals.activeRichMessages && Kommunicate.customizeWidgetCss(activeRichMsgCSS);
+
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 /*
