@@ -349,7 +349,7 @@ function ApplozicSidebox() {
             options.voiceInput = options.voiceInput != null ? options.voiceInput : (widgetSettings && widgetSettings.voiceInput);
             options.voiceOutput = options.voiceOutput != null ? options.voiceOutput : (widgetSettings && widgetSettings.voiceOutput);
             options.attachment = options.attachment != null ? options.attachment : (widgetSettings && widgetSettings.attachment);
-            options.activeRichMessages = options.activeRichMessages != null ? options.activeRichMessages : (widgetSettings && widgetSettings.activeRichMessages);
+            options.hidePostCTA = options.hidePostCTA != null ? options.hidePostCTA : (widgetSettings && widgetSettings.hidePostCTA);
 
             KommunicateUtils.deleteDataFromKmSession("settings");
 
