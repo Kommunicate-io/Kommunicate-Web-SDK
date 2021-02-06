@@ -507,6 +507,14 @@ Kommunicate.richMsgEventHandler = {
         };
         document.getElementById('mck-text-box').setAttribute('data-quick-reply',true);
         Kommunicate.sendMessage(messagePxy);
+
+        if(kommunicate._globals.hidePostCTA){
+            e.target.classList.add("n-vis");
+            var siblingsArray = Kommunicate.getAllSiblings(e.target);
+            var siblingContainsLink = siblingsArray.some(sibling => sibling.classList.contains("km-link-button"));      
+            !siblingContainsLink && Kommunicate.hideMessage(e.target);
+        }
+        
     },
     processClickOnListItem: function(e){
         var target = e.currentTarget;

@@ -336,6 +336,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var WIDGET_SETTINGS = appOptions.widgetSettings;
         var EMOJI_LIBRARY = appOptions.emojilibrary;
         var CSAT_ENABLED = appOptions.collectFeedback;
+        var HIDE_POST_CTA = appOptions.hidePostCTA;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
@@ -4869,7 +4870,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     display:none;
                 } 
                 .mck-msg-left:last-child .km-cta-multi-button-container .km-quick-replies {
-                    display:block;
+                    display:block!important;
                     visibility: visible;
                 }
                 .mck-msg-left .km-chat-faq-list.km-list-container li.km-list-item-handler[data-type="quick_reply"] {
@@ -4879,7 +4880,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     display: block;
                 }
                 `;
-            kommunicate._globals.activeRichMessages && Kommunicate.customizeWidgetCss(activeRichMsgCSS);
+            if(HIDE_POST_CTA){
+                Kommunicate.customizeWidgetCss(activeRichMsgCSS);
+            };
 
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
@@ -5453,6 +5456,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
+                
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 msg.fileMeta && msg.fileMeta.size && (msg.fileMeta.previewSize = alFileService.getFilePreviewSize(msg.fileMeta.size));
@@ -5470,6 +5474,12 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
+
+                if (HIDE_POST_CTA && richText && kmRichTextMarkup.includes("km-cta-multi-button-container") && !kmRichTextMarkup.includes("km-link-button") && !append) {
+                    // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                    botMessageDelayClass = 'n-vis';
+                };
+
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
                 //     return ;
@@ -5531,7 +5541,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     botMsgDelayExpr: botMessageDelayClass
                 }];
 
-                append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
+                append ? 
+                    $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : 
+                    $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
+
                 if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
                         var userFeedback = JSON.parse(msg.metadata.feedback);
