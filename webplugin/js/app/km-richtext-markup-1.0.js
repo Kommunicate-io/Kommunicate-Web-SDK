@@ -481,73 +481,72 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     }
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
-Kommunicate.markup.getListContainerMarkup = function(metadata){
-    const buttonClass = {link:"km-link-button", submit:""}
-    if(metadata && metadata.payload){
-       var json = JSON.parse(metadata.payload);
-        if(json.headerImgSrc){
-            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= "'+json.headerImgSrc+'"  alt = "image" /></div>';
-        }if(json.headerText){
-            json.headerText ='<p class="km-faq-list--header_text">'+json.headerText+"</p>"
+Kommunicate.markup.getListContainerMarkup = function (metadata) {
+    const buttonClass = { link: "km-link-button", submit: "" }
+    if (metadata && metadata.payload) {
+        var json = JSON.parse(metadata.payload);
+        if (json.headerImgSrc) {
+            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= "' + json.headerImgSrc + '"  alt = "image" /></div>';
+        } if (json.headerText) {
+            json.headerText = '<p class="km-faq-list--header_text">' + json.headerText + "</p>"
         }
-        if(json.elements&&json.elements.length){
-            json.elementClass ="vis";
-            json.elements =   json.elements.map(function(item){
-               // checking for image
-                if(item.imgSrc){
-                item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
-               }
-               item.description && (item.description = kommunicateCommons.removeHtmlTag(item.description));
-               if(item.action && item.action.replyMetadata){
-                 item.replyMetadata = typeof  item.action.replyMetadata =="object"? JSON.stringify(item.action.replyMetadata):item.action.replyMetadata;
-               }
-               //checking for type
-               if(item.action && item.action.type=="link"){
-                item.href = item.action.url;
-                item.action.openLinkInNewTab == false ? item.target = 'target="_parent"' : item.target = 'target="_blank"';
-               }else{
-                item.href = "javascript:void(0)";
-                item.target = '';
-                item.handlerClass= "km-list-item-handler";
-                item.action && (item.updateLanguage = item.action.updateLanguage);
-                
-               }
-               if(item.action){
-                item.dataType=item.action.type||"";
-                item.dataReply = item.action.text||item.title||"";
-               }
-               item.dataArticleId = item.articleId||"";
-               item.dataSource = item.source||"";
-               // TODO : add post url in data.
+        if (json.elements && json.elements.length) {
+            json.elementClass = "vis";
+            json.elements = json.elements.map(function (item) {
+                // checking for image
+                if (item.imgSrc) {
+                    item.imgSrc = '<img src ="' + item.imgSrc + '" />';
+                }
+                item.description && (item.description = kommunicateCommons.removeHtmlTag(item.description));
+                if (item.action && item.action.replyMetadata) {
+                    item.replyMetadata = typeof item.action.replyMetadata == "object" ? JSON.stringify(item.action.replyMetadata) : item.action.replyMetadata;
+                }
+                //checking for type
+                if (item.action && item.action.type == "link") {
+                    item.href = item.action.url;
+                    item.action.openLinkInNewTab == false ? item.target = 'target="_parent"' : item.target = 'target="_blank"';
+                } else {
+                    item.href = "javascript:void(0)";
+                    item.target = '';
+                    item.action && (item.updateLanguage = item.action.updateLanguage);
+                }
+                item.handlerClass = "km-list-item-handler";
+                if (item.action) {
+                    item.dataType = item.action.type || "";
+                    item.dataReply = item.action.text || item.title || "";
+                }
+                item.dataArticleId = item.articleId || "";
+                item.dataSource = item.source || "";
+                // TODO : add post url in data.
                 return item;
             })
-        }else{
-            json.elementClass ="n-vis"
+        } else {
+            json.elementClass = "n-vis"
         }
-        if(json.buttons&&json.buttons.length){
-        json.buttons=  json.buttons.map(function (button){
-            button.target = Kommunicate.markup.getLinkTarget(button.action);
-            button.buttonClass = buttonClass[button.action.type];
-            if(button.action && button.action.replyMetadata){
-                button.replyMetadata = typeof  button.action.replyMetadata =="object"? JSON.stringify(button.action.replyMetadata):button.action.replyMetadata;
-              }
-              button.action && (button.updateLanguage = button.action.updateLanguage);
-            if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
-                button.href = "javascript:void(0)";
-                button.handlerClass= "km-list-button-item-handler";
-               }else{
-                button.href = encodeURI(button.action.url);
-               }
-               
-               button.dataType=button.action? button.action.type:"";
-               button.dataReply = (button.action && button.action.text)? button.action.text: (button.name||"");
-               // TODO : add post url in data.
-                return button;
-        })
-    }
+        if (json.buttons && json.buttons.length) {
+            json.buttons = json.buttons.map(function (button) {
+                button.target = Kommunicate.markup.getLinkTarget(button.action);
+                button.buttonClass = buttonClass[button.action.type];
+                if (button.action && button.action.replyMetadata) {
+                    button.replyMetadata = typeof button.action.replyMetadata == "object" ? JSON.stringify(button.action.replyMetadata) : button.action.replyMetadata;
+                }
+                button.action && (button.updateLanguage = button.action.updateLanguage);
+                if (!button.action || button.action.type == "quick_reply" || button.action.type == "submit") {
+                    button.href = "javascript:void(0)";
+                    button.handlerClass = "km-list-button-item-handler";
+                } else {
+                    button.href = encodeURI(button.action.url);
+                }
 
-       return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
-    }else{
+                button.dataType = button.action ? button.action.type : "";
+                button.dataReply = (button.action && button.action.text) ? button.action.text : (button.name || "");
+                // TODO : add post url in data.
+                return button;
+            })
+        }
+
+        return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
+    } else {
         return "";
     }
 

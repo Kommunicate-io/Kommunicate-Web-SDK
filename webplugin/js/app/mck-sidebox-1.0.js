@@ -4879,6 +4879,12 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 .mck-msg-left:last-child .km-chat-faq-list.km-list-container li.km-list-item-handler[data-type="quick_reply"] {
                     display: block;
                 }
+                .mck-msg-left .km-faq-list--footer_button-container button.km-cta-button[data-type="quick_reply"]{
+                    display: none;
+                }
+                .mck-msg-left:last-child .km-faq-list--footer_button-container button.km-cta-button[data-type="quick_reply"]{
+                    display: block;
+                }
                 `;
             if(HIDE_POST_CTA){
                 Kommunicate.customizeWidgetCss(activeRichMsgCSS);
