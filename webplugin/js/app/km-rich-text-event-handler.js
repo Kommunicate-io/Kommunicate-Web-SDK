@@ -542,6 +542,13 @@ Kommunicate.richMsgEventHandler = {
             //TODO : support for post request with data.
         }
 
+        if(kommunicate._globals.hidePostCTA){
+            e.currentTarget.classList.add("n-vis");
+            var siblingsArray = Kommunicate.getAllSiblings(e.currentTarget);
+            var siblingContainsLink = siblingsArray.some(sibling => sibling.getAttribute("data-type") == "link");      
+            !siblingContainsLink && Kommunicate.hideMessage(e.target);
+        }
+
     },
     processClickOnButtonItem: function(e){
         e.preventDefault();
@@ -549,12 +556,7 @@ Kommunicate.richMsgEventHandler = {
         var reply = target.dataset.reply;
         var type = target.dataset.type;
         var languageCode = target.dataset.languagecode;
-        var metadata = {};
-        try{
-            metadata=  JSON.parse(target.dataset.metadata);
-        }catch(e){
-            console.log(e);
-        }
+        var metadata = (target.dataset && target.dataset.metadata) || {};
         metadata.KM_BUTTON_CLICKED =true;
         if(type && type =="quick_reply"){
             languageCode && Kommunicate.updateUserLanguage(languageCode);
