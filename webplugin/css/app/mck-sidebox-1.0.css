@@ -6180,3 +6180,12 @@ body.accesibility :focus {
 	border: 0;
 	text-align: center;
 }
+
+/* -----------------Support for hiding list and buttons post call to action------------- */
+.mck-msg-left [data-hidepostcta="true"] {
+	display:none;
+}
+.mck-msg-left:last-child [data-hidepostcta="true"] {
+	display:block!important;
+	visibility: visible;
+}

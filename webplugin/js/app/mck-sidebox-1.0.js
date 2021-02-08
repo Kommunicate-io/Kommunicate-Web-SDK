@@ -4866,18 +4866,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             
-            if (HIDE_POST_CTA) {
-                var requiredCSS = `
-                    .mck-msg-left [data-buttontype="quick_reply"] {
-                        display:none;
-                    }
-                    .mck-msg-left:last-child [data-buttontype="quick_reply"] {
-                        display:block!important;
-                        visibility: visible;
-                    }
-                `;
-                Kommunicate.customizeWidgetCss(requiredCSS);
-            };
 
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;

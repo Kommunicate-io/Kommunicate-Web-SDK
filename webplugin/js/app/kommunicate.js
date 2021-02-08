@@ -545,7 +545,7 @@ $applozic.extend(true,Kommunicate,{
     },
     getAllSiblings: function (element) {
         var siblings = []; 
-        if (!element.parentNode) {
+        if (!element || !element.parentNode) {
             return siblings;
         }
         var sibling  = element.parentNode.firstChild;
