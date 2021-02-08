@@ -5470,6 +5470,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     botMessageDelayClass = 'n-vis';
                 }
 
+                if (HIDE_POST_CTA && 
+                    richText && 
+                    kmRichTextMarkup.includes("km-cta-multi-button-container") && 
+                    !kmRichTextMarkup.includes("km-link-button") && 
+                    !append) {
+                    // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                        botMessageDelayClass = 'n-vis';
+                };
+
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
                 //     return ;
