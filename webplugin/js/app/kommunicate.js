@@ -536,12 +536,15 @@ $applozic.extend(true,Kommunicate,{
         }
         return true;
     },
-    hideMessage: function(element){
-            var parentEle =  element.parentElement;
-            while (!parentEle.classList.contains("mck-msg-left")){
-                parentEle = parentEle.parentElement;
-            }
-            parentEle.classList.add("n-vis");
+    hideMessage: function (element) {
+        if (!element) {
+            return;
+        }
+        var parentEle = element.parentElement;
+        while (!parentEle.classList.contains("mck-msg-left")) {
+            parentEle = parentEle.parentElement;
+        }
+        parentEle.classList.add("n-vis");
     },
     getAllSiblings: function (element) {
         var siblings = []; 
