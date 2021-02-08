@@ -509,9 +509,8 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
 
         if(kommunicate._globals.hidePostCTA){
-            e.target.classList.add("n-vis");
             var siblingsArray = Kommunicate.getAllSiblings(e.target);
-            var siblingContainsLink = siblingsArray.some(sibling => sibling.classList.contains("km-link-button"));      
+            var siblingContainsLink = siblingsArray.some(sibling => sibling.classList.contains("km-link-button"));     
             !siblingContainsLink && Kommunicate.hideMessage(e.target);
         }
         
@@ -540,13 +539,6 @@ Kommunicate.richMsgEventHandler = {
             Kommunicate.sendMessage(messagePxy);
         }else if(type && type =='submit'){
             //TODO : support for post request with data.
-        }
-
-        if(kommunicate._globals.hidePostCTA){
-            e.currentTarget.classList.add("n-vis");
-            var siblingsArray = Kommunicate.getAllSiblings(e.currentTarget);
-            var siblingContainsLink = siblingsArray.some(sibling => sibling.getAttribute("data-type") == "link");      
-            !siblingContainsLink && Kommunicate.hideMessage(e.target);
         }
 
     },

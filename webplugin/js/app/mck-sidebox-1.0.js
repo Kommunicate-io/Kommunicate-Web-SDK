@@ -4865,29 +4865,18 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic.template("csatModule", csatModule);
             };
 
-            var activeRichMsgCSS = `
-                .mck-msg-left .km-cta-multi-button-container .km-quick-replies {
-                    display:none;
-                } 
-                .mck-msg-left:last-child .km-cta-multi-button-container .km-quick-replies {
-                    display:block!important;
-                    visibility: visible;
-                }
-                .mck-msg-left .km-chat-faq-list.km-list-container li.km-list-item-handler[data-type="quick_reply"] {
-                    display: none;
-                }
-                .mck-msg-left:last-child .km-chat-faq-list.km-list-container li.km-list-item-handler[data-type="quick_reply"] {
-                    display: block;
-                }
-                .mck-msg-left .km-faq-list--footer_button-container button.km-cta-button[data-type="quick_reply"]{
-                    display: none;
-                }
-                .mck-msg-left:last-child .km-faq-list--footer_button-container button.km-cta-button[data-type="quick_reply"]{
-                    display: block;
-                }
+            
+            if (HIDE_POST_CTA) {
+                var requiredCSS = `
+                    .mck-msg-left [data-buttontype="quick_reply"] {
+                        display:none;
+                    }
+                    .mck-msg-left:last-child [data-buttontype="quick_reply"] {
+                        display:block!important;
+                        visibility: visible;
+                    }
                 `;
-            if(HIDE_POST_CTA){
-                Kommunicate.customizeWidgetCss(activeRichMsgCSS);
+                Kommunicate.customizeWidgetCss(requiredCSS);
             };
 
             _this.loadDropdownOptions = function () {
@@ -5441,10 +5430,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     botMessageDelayClass = 'n-vis';
                 }
 
-                if (HIDE_POST_CTA && richText && kmRichTextMarkup.includes("km-cta-multi-button-container") && !kmRichTextMarkup.includes("km-link-button") && !append) {
-                    // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
-                    botMessageDelayClass = 'n-vis';
-                };
+                // if (HIDE_POST_CTA && richText && kmRichTextMarkup.includes("km-cta-multi-button-container") && !kmRichTextMarkup.includes("km-link-button") && !append) {
+                //     // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                //     botMessageDelayClass = 'n-vis';
+                // };
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
