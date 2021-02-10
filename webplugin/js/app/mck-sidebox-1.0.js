@@ -14,7 +14,9 @@ var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
-var USER_OVERRIDE = KommunicateUtils.getItemFromLocalStorage("USER_OVERRIDE") || {};
+var userOverride = {
+    voiceOutput: true
+};
 
 (function ($applozic, w, d) {
     "use strict";
@@ -2992,8 +2994,8 @@ var USER_OVERRIDE = KommunicateUtils.getItemFromLocalStorage("USER_OVERRIDE") ||
                 // Voice Output Override trigger
                 document.getElementById("user-overide-voice-output").onclick = function(e){
                     e.preventDefault();
-                    USER_OVERRIDE.VOICE_OUTPUT_ENABLED = !USER_OVERRIDE.VOICE_OUTPUT_ENABLED;
-                    KommunicateUI.toggleVoiceOutputOverride(USER_OVERRIDE);
+                    userOverride.voiceOutput = !userOverride.voiceOutput;
+                    KommunicateUI.toggleVoiceOutputOverride(voiceOutput);
                 }
 
                 //----------------------------------------------------------------
@@ -4886,10 +4888,7 @@ var USER_OVERRIDE = KommunicateUtils.getItemFromLocalStorage("USER_OVERRIDE") ||
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED){
                     enableDropdown = true;
-                    if(!USER_OVERRIDE.hasOwnProperty(VOICE_OUTPUT_ENABLED)){
-                        USER_OVERRIDE.VOICE_OUTPUT_ENABLED = VOICE_OUTPUT_ENABLED
-                    } 
-                    KommunicateUI.toggleVoiceOutputOverride(USER_OVERRIDE)
+                    KommunicateUI.toggleVoiceOutputOverride(userOverride.voiceOutput)
                     kommunicateCommons.modifyClassList({ id: ["user-overide-voice-output"] }, "", "n-vis");
                 }
                 
@@ -9927,13 +9926,15 @@ var USER_OVERRIDE = KommunicateUtils.getItemFromLocalStorage("USER_OVERRIDE") ||
                             };
                         };
                         if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
-                            var messageFeed = mckMessageLayout.getMessageFeed(message);
-                            Kommunicate.KmEventHandler.onMessageReceived(message);
+                            // var messageFeed = mckMessageLayout.getMessageFeed(message);
+                            var messageCopy = JSON.parse(JSON.stringify(message));
+                            messageCopy.userOverride = userOverride
+                            Kommunicate.KmEventHandler.onMessageReceived(messageCopy);
                             // events.onMessageReceived({
                             //     'message': messageFeed
                             // });
                         } else if (messageType === "APPLOZIC_02") {
-                            var messageFeed = mckMessageLayout.getMessageFeed(message);
+                            // var messageFeed = mckMessageLayout.getMessageFeed(message);
                             Kommunicate.KmEventHandler.onMessageSent(message);
                             // events.onMessageSent({
                             //     'message': messageFeed

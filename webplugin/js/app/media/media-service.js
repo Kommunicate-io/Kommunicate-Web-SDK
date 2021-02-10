@@ -45,13 +45,12 @@ Kommunicate.mediaService = {
     voiceOutputIncomingMessage: function (message) {
         // get appoptions
         var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
-        var userOverrideVoiceOutput = KommunicateUtils.getItemFromLocalStorage("USER_OVERRIDE").VOICE_OUTPUT_ENABLED;
         // If the message isn't part of the UI, it's not included
         // in voiceoutput either
         if (!appOptions || !Kommunicate.visibleMessage(message)) return;
 
         // if voiceoutput is enabled and browser supports it
-        if (appOptions.voiceOutput && userOverrideVoiceOutput && "speechSynthesis" in window) {
+        if (appOptions.voiceOutput && "speechSynthesis" in window) {
             var textToSpeak = "";
             if (message.hasOwnProperty("fileMeta")) {
                 textToSpeak += MCK_LABELS['voice.output'].attachment;

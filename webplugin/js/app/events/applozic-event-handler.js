@@ -28,7 +28,7 @@ Kommunicate.KmEventHandler = {
             // hiding away message when new message received from agents.
             KommunicateUI.hideAwayMessage();
             // Send the message for voice output
-            Kommunicate.mediaService.voiceOutputIncomingMessage(message);
+            message.userOverride.voiceOutput && Kommunicate.mediaService.voiceOutputIncomingMessage(message);
 
         }
     },
