@@ -448,6 +448,18 @@ setAvailabilityStatus : function (status){
     $applozic(".mck-agent-image-container .mck-agent-status-indicator").removeClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away").removeClass("n-vis").addClass("vis mck-status--" + status);
     $applozic("#mck-agent-status-text").text(MCK_LABELS[status]).addClass("vis").removeClass("n-vis");
 },
+toggleVoiceOutputOverride: function (USER_OVERRIDE) {
+    if (USER_OVERRIDE.VOICE_OUTPUT_ENABLED){
+        kommunicateCommons.modifyClassList({id: ["user-overide-voice-output-svg-off"]}, "n-vis");
+        kommunicateCommons.modifyClassList({id: ["user-overide-voice-output-svg-on"]}, "", "n-vis");
+        document.getElementById('user-overide-voice-output-text').innerText = MCK_LABELS['conversation.header.dropdown'].USER_OVERIDE_VOICE_OUTPUT_OFF;
+    }else{
+        kommunicateCommons.modifyClassList({id: ["user-overide-voice-output-svg-on"]}, "n-vis");
+        kommunicateCommons.modifyClassList({id: ["user-overide-voice-output-svg-off"]}, "", "n-vis");
+        document.getElementById('user-overide-voice-output-text').innerText = MCK_LABELS['conversation.header.dropdown'].USER_OVERIDE_VOICE_OUTPUT_ON;
+    }
+    KommunicateUtils.setItemToLocalStorage("USER_OVERRIDE", USER_OVERRIDE);
+},
 triggerCSAT: function () {
     var isCSATenabled = kommunicate._globals.collectFeedback;
     if (!KommunicateUI.isConvJustResolved) {
