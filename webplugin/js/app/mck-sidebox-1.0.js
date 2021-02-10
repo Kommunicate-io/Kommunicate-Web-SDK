@@ -14,6 +14,7 @@ var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
+var USER_OVERRIDE = KommunicateUtils.getItemFromLocalStorage("USER_OVERRIDE") || {};
 
 (function ($applozic, w, d) {
     "use strict";
@@ -462,6 +463,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
+        var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1 : MCK_LABELS['emoji.hover.text'].poor,
             5 : MCK_LABELS['emoji.hover.text'].average,
@@ -2987,6 +2989,13 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     KommunicateUI.triggerCSAT();
                 };
 
+                // Voice Output Override trigger
+                document.getElementById("user-overide-voice-output").onclick = function(e){
+                    e.preventDefault();
+                    USER_OVERRIDE.VOICE_OUTPUT_ENABLED = !USER_OVERRIDE.VOICE_OUTPUT_ENABLED;
+                    KommunicateUI.toggleVoiceOutputOverride(USER_OVERRIDE);
+                }
+
                 //----------------------------------------------------------------
 
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -4873,6 +4882,17 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList({ id: ["km-csat-trigger"] }, "", "n-vis");
                 }
+
+                // For voice output user override
+                if (VOICE_OUTPUT_ENABLED){
+                    enableDropdown = true;
+                    if(!USER_OVERRIDE.hasOwnProperty(VOICE_OUTPUT_ENABLED)){
+                        USER_OVERRIDE.VOICE_OUTPUT_ENABLED = VOICE_OUTPUT_ENABLED
+                    } 
+                    KommunicateUI.toggleVoiceOutputOverride(USER_OVERRIDE)
+                    kommunicateCommons.modifyClassList({ id: ["user-overide-voice-output"] }, "", "n-vis");
+                }
+                
                 // For toggling display of three dot button (Dropdown btn)
                 enableDropdown && kommunicateCommons.modifyClassList({id: ["km-widget-options"]}, "", "n-vis");
             };

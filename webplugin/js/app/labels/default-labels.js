@@ -168,6 +168,8 @@ Kommunicate.defaultLabels = {
         'last.part': ' in the waiting queue, our agents will get back you shortly.'
     },
     'conversation.header.dropdown': {
-        'CSAT_RATING_TEXT': 'Rate this conversation'
+        'CSAT_RATING_TEXT': 'Rate this conversation',
+        'USER_OVERIDE_VOICE_OUTPUT_ON': 'Turn on text to speech',
+        'USER_OVERIDE_VOICE_OUTPUT_OFF': 'Turn off text to speech'
     }
 }
