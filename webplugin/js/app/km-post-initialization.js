@@ -13,16 +13,16 @@ Kommunicate.postPluginInitialization = function (err, data) {
 //faq plugin
 Kommunicate.getFaqList = function (data) {
     KommunicateKB.getArticles({
-        data: { appId: data.appId, query: "" },
+        data: { appId: data.appId, query: '' },
         success: function (response) {
             if (
                 response.data &&
                 response.data.length > 0 &&
-                $applozic(".km-kb-container").hasClass("n-vis")
+                $applozic('.km-kb-container').hasClass('n-vis')
             ) {
-                $applozic(".km-kb-container")
-                    .removeClass("n-vis")
-                    .addClass("vis");
+                $applozic('.km-kb-container')
+                    .removeClass('n-vis')
+                    .addClass('vis');
                 KommunicateUI.adjustConversationTitleHeadingWidth(
                     kommunicate._globals.popupWidget
                 );
@@ -32,7 +32,7 @@ Kommunicate.getFaqList = function (data) {
                     faq &&
                     faq.title &&
                     kommunicateCommons.formatHtmlTag(faq.title);
-                $applozic("#km-faq-list-container").append(
+                $applozic('#km-faq-list-container').append(
                     '<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' +
                         faq.source +
                         '" data-articleId="' +
@@ -41,7 +41,7 @@ Kommunicate.getFaqList = function (data) {
                         KommunicateUI.faqSVGImage +
                         '</div> <div class="km-faqanchor">' +
                         title +
-                        "</div></a></li>"
+                        '</div></a></li>'
                 );
             });
             KommunicateUI.faqEvents(data);

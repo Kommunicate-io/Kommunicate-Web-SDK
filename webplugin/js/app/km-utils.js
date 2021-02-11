@@ -3,15 +3,15 @@
 */
 
 KommunicateConstants = {
-    KM_WIDGET_RELEASE_VERSION: "6.2",
+    KM_WIDGET_RELEASE_VERSION: '6.2',
     EVENT_IDS: {
-        WELCOME_MESSAGE: "3",
+        WELCOME_MESSAGE: '3',
         AWAY_MESSAGE: {
-            KNOWN: "2",
-            ANONYMOUS: "1",
+            KNOWN: '2',
+            ANONYMOUS: '1',
         },
     },
-    KOMMUNICATE_SESSION_KEY: "kommunicate",
+    KOMMUNICATE_SESSION_KEY: 'kommunicate',
     PRICING_PACKAGE: {
         STARTUP: 101,
         PER_AGENT_MONTHLY: 102,
@@ -24,25 +24,25 @@ KommunicateConstants = {
         TRIAL: 111,
     },
     BOT_PLATFORM: {
-        DIALOGFLOW: "dialogflow",
-        APIAI: "api.ai",
-        AMAZONLEX: "amazonlex",
-        RASA: "rasa",
-        CUSTOM: "custom",
+        DIALOGFLOW: 'dialogflow',
+        APIAI: 'api.ai',
+        AMAZONLEX: 'amazonlex',
+        RASA: 'rasa',
+        CUSTOM: 'custom',
     },
     KM_NOTIFICATION_TONE_URL:
-        "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3",
+        'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3',
     NOTIFICATION_RINGTONES: {
-        default: "https://cdn.kommunicate.io/kommunicate/notification_tone.mp3", // renamed to eventually
-        choose_me: "https://cdn.kommunicate.io/kommunicate/choose_me.mp3", // renamed to subtle
-        eventually: "https://cdn.kommunicate.io/kommunicate/eventually.mp3",
-        subtle: "https://cdn.kommunicate.io/kommunicate/subtle.mp3",
-        intuition: "https://cdn.kommunicate.io/kommunicate/intuition.mp3",
-        light: "https://cdn.kommunicate.io/kommunicate/light.mp3",
-        open_ended: "https://cdn.kommunicate.io/kommunicate/open_ended.mp3",
+        default: 'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3', // renamed to eventually
+        choose_me: 'https://cdn.kommunicate.io/kommunicate/choose_me.mp3', // renamed to subtle
+        eventually: 'https://cdn.kommunicate.io/kommunicate/eventually.mp3',
+        subtle: 'https://cdn.kommunicate.io/kommunicate/subtle.mp3',
+        intuition: 'https://cdn.kommunicate.io/kommunicate/intuition.mp3',
+        light: 'https://cdn.kommunicate.io/kommunicate/light.mp3',
+        open_ended: 'https://cdn.kommunicate.io/kommunicate/open_ended.mp3',
     },
     KM_CHAT_POPUP_NOTIFICATION_URL:
-        "https://cdn.kommunicate.io/kommunicate/chat-popup-notification-tone.mp3",
+        'https://cdn.kommunicate.io/kommunicate/chat-popup-notification-tone.mp3',
     CUSTOM_WIDGETS_SVG: {
         1: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20"><path fill="#FFF" d="M21.25 18.48V7.31a7.3 7.3 0 0 0-7.3-7.3H7.31a7.3 7.3 0 1 0 0 14.6h7.2s.58.04.93.17c.34.12.71.42.71.42l4.44 3.66s.4.34.55.27c.15-.07.11-.65.11-.65zM7.51 8.8c0 .49-.42.88-.95.88-.52 0-.95-.4-.95-.88V5.67c0-.49.43-.88.95-.88.53 0 .95.4.95.88V8.8zm4.07 1.48c0 .49-.43.88-.95.88s-.95-.39-.95-.88v-6.1c0-.48.43-.88.95-.88s.95.4.95.88v6.1zm4.06-1.48c0 .49-.42.88-.95.88-.52 0-.94-.4-.94-.88V5.67c0-.49.42-.88.94-.88.53 0 .95.4.95.88V8.8z"/></svg>',
         2: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 18"><path fill="#FFF" d="M3.35 18a.48.48 0 0 1-.44-.3.47.47 0 0 1 .1-.5c.53-.53 1.49-1.82 2.12-3.21C1.95 12.61 0 10.19 0 7.58 0 3.4 4.93 0 11 0s11 3.4 11 7.58-4.93 7.58-11 7.58c-.4 0-.78-.02-1.16-.05A8.63 8.63 0 0 1 3.34 18z"/></svg>',
@@ -58,10 +58,10 @@ KommunicateConstants = {
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
     RICH_MESSAGE_ICON:
         '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg>',
-    CONVERSATION_CLOSED_STATUS: "closed",
-    CONVERSATION_RESOLVED_STATUS: "Resolved",
-    CONVERSATION_OPEN_STATUS: "Open",
-    CONVERSATION_WAITING_STATUS: "Waiting",
+    CONVERSATION_CLOSED_STATUS: 'closed',
+    CONVERSATION_RESOLVED_STATUS: 'Resolved',
+    CONVERSATION_OPEN_STATUS: 'Open',
+    CONVERSATION_WAITING_STATUS: 'Waiting',
     MESSAGE_SOURCE: {
         DEVICE: 0,
         WEB: 1,
@@ -112,38 +112,38 @@ KommunicateConstants = {
         CALL_OUTGOING: 7,
     },
     DEFAULT_PROFILE_IMAGE: {
-        URL: "https://s3.amazonaws.com/kommunicate.io/default-avatar-image.png",
+        URL: 'https://s3.amazonaws.com/kommunicate.io/default-avatar-image.png',
     },
     ACTIONABLE_MESSAGE_TEMPLATE: {
-        ROOM_COUNT: "1",
-        HOTEL_BOOKING_CARD: "2",
-        LINK_BUTTON: "3",
-        ROOM_DETAIL: "4",
-        PASSENGER_DETAIL: "5",
-        QUICK_REPLY: "6",
-        LIST: "7",
-        DIALOG_BOX: "8",
-        IMAGE: "9",
-        CARD_CAROUSEL: "10",
-        GENERIC_BUTTONS: "11", // supports link button/submit buttons and suggested replies
-        FORM: "12",
-        GENERIC_BUTTONS_V2: "13",
-        VIDEO: "14",
+        ROOM_COUNT: '1',
+        HOTEL_BOOKING_CARD: '2',
+        LINK_BUTTON: '3',
+        ROOM_DETAIL: '4',
+        PASSENGER_DETAIL: '5',
+        QUICK_REPLY: '6',
+        LIST: '7',
+        DIALOG_BOX: '8',
+        IMAGE: '9',
+        CARD_CAROUSEL: '10',
+        GENERIC_BUTTONS: '11', // supports link button/submit buttons and suggested replies
+        FORM: '12',
+        GENERIC_BUTTONS_V2: '13',
+        VIDEO: '14',
     },
     FORM_SUPPORTED_FIELDS: [
-        "text",
-        "hidden",
-        "radio",
-        "checkbox",
-        "dropdown",
-        "textarea",
+        'text',
+        'hidden',
+        'radio',
+        'checkbox',
+        'dropdown',
+        'textarea',
     ],
-    FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS: ["password", "hidden"],
+    FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS: ['password', 'hidden'],
     COOKIES: {
-        KOMMUNICATE_LOGGED_IN_ID: "km_id",
-        KOMMUNICATE_LOGGED_IN_USERNAME: "km_user_name",
-        IS_USER_ID_FOR_LEAD_COLLECTION: "km_lead_collection",
-        ACCESS_TOKEN: "km_ac_tn",
+        KOMMUNICATE_LOGGED_IN_ID: 'km_id',
+        KOMMUNICATE_LOGGED_IN_USERNAME: 'km_user_name',
+        IS_USER_ID_FOR_LEAD_COLLECTION: 'km_lead_collection',
+        ACCESS_TOKEN: 'km_ac_tn',
     },
     MESSAGE_CLUBBING: {
         TIME_FRAME: 300000, // 5 minutes timestamp value in milliseconds.
@@ -166,15 +166,15 @@ KommunicateConstants = {
     SETTINGS: {
         // chat context parameters are  dynamic and defined by customers while some of them are used to define system settings.
         // these parameters should not be overridden by customer defined parameters
-        KM_CHAT_CONTEXT: "KM_CHAT_CONTEXT",
-        KM_USER_LANGUAGE_CODE: "kmUserLanguageCode",
-        KM_USER_TIMEZONE: "kmUserTimezone",
+        KM_CHAT_CONTEXT: 'KM_CHAT_CONTEXT',
+        KM_USER_LANGUAGE_CODE: 'kmUserLanguageCode',
+        KM_USER_TIMEZONE: 'kmUserTimezone',
     },
     AVAILABILITY_STATUS: {
-        ONLINE: "online",
-        OFFLINE: "offline",
+        ONLINE: 'online',
+        OFFLINE: 'offline',
     },
-    POST_BACK_TO_BOT_PLATFORM: "postBackToBotPlatform",
+    POST_BACK_TO_BOT_PLATFORM: 'postBackToBotPlatform',
     CHAT_POPUP_TEMPLATE: {
         HORIZONTAL: 1,
         VERTICAL: 2,
@@ -186,10 +186,10 @@ KommunicateConstants = {
         MEMBER: 3,
     },
     POSITION: {
-        LEFT: "left",
-        RIGHT: "right",
+        LEFT: 'left',
+        RIGHT: 'right',
     },
-    KOMMUNICATE_DOMAINS: ["kommunicate.io"],
+    KOMMUNICATE_DOMAINS: ['kommunicate.io'],
 };
 
 /**
@@ -210,19 +210,19 @@ KommunicateUI = {};
 KommunicateUtils = {
     getCookie: function (cname, skipPrefix) {
         var cookiePrefix = this.getCookiePrefix();
-        var name = (skipPrefix ? cname : cookiePrefix + cname) + "=";
+        var name = (skipPrefix ? cname : cookiePrefix + cname) + '=';
         var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(";");
+        var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
-            while (c.charAt(0) == " ") {
+            while (c.charAt(0) == ' ') {
                 c = c.substring(1);
             }
             if (c.indexOf(name) == 0) {
                 return c.substring(name.length, c.length);
             }
         }
-        return "";
+        return '';
     },
     /* Method to set cookies*/
     setCookie: function (cookie) {
@@ -232,15 +232,15 @@ KommunicateUtils = {
                 ? cookie.name
                 : cookiePrefix + cookie.name;
         var value = cookie.value;
-        var path = "/";
+        var path = '/';
         var secure =
-            typeof cookie.secure == "undefined"
+            typeof cookie.secure == 'undefined'
                 ? this.isHttpsEnabledConnection()
                 : cookie.secure;
-        var cookieExpiry = new Date("2038-01-19 04:14:07").toUTCString();
+        var cookieExpiry = new Date('2038-01-19 04:14:07').toUTCString();
         var isChrome =
-            navigator.userAgent.indexOf("Chrome") != -1 &&
-            navigator.vendor.indexOf("Google") != -1;
+            navigator.userAgent.indexOf('Chrome') != -1 &&
+            navigator.vendor.indexOf('Google') != -1;
         var domain = cookie.domain;
         if (cookie.path) {
             path = cookie.path;
@@ -253,29 +253,29 @@ KommunicateUtils = {
         }
         document.cookie =
             name +
-            "=" +
+            '=' +
             value +
-            ";" +
-            "expires=" +
+            ';' +
+            'expires=' +
             cookieExpiry +
-            ";path=" +
+            ';path=' +
             path +
-            (secure ? ";secure" : "") +
-            (domain ? ";domain=" + domain : "") +
-            (isChrome ? ";samesite=lax" : "");
+            (secure ? ';secure' : '') +
+            (domain ? ';domain=' + domain : '') +
+            (isChrome ? ';samesite=lax' : '');
     },
     getCookiePrefix: function () {
         var appOptions =
-            KommunicateUtils.getDataFromKmSession("appOptions") ||
+            KommunicateUtils.getDataFromKmSession('appOptions') ||
             applozic._globals;
         var cookiePrefix = KommunicateUtils.getSubDomain();
         if (appOptions && appOptions.domainKey) {
             cookiePrefix = appOptions.domainKey;
         }
-        return cookiePrefix + "_";
+        return cookiePrefix + '_';
     },
     isHttpsEnabledConnection: function () {
-        return parent.window.location.protocol == "https:";
+        return parent.window.location.protocol == 'https:';
     },
     deleteCookie: function (cookie) {
         var cookiePrefix = this.getCookiePrefix();
@@ -283,24 +283,24 @@ KommunicateUtils = {
             cookie && cookie.skipPrefix
                 ? cookie.name
                 : cookiePrefix + cookie.name;
-        var value = "";
-        var path = cookie.path || "/";
+        var value = '';
+        var path = cookie.path || '/';
         var secure =
-            typeof cookie.secure == "undefined"
+            typeof cookie.secure == 'undefined'
                 ? this.isHttpsEnabledConnection()
                 : cookie.secure;
         var domain = cookie.domain;
         document.cookie =
             name +
-            "=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=" +
+            '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=' +
             path +
-            (secure ? ";secure" : "") +
-            (domain ? ";domain=" + domain : "");
+            (secure ? ';secure' : '') +
+            (domain ? ';domain=' + domain : '');
     },
     getRandomId: function () {
-        var text = "";
+        var text = '';
         var possible =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         for (var i = 0; i < 32; i++)
             text += possible.charAt(
                 Math.floor(Math.random() * possible.length)
@@ -312,19 +312,19 @@ KommunicateUtils = {
             var session = sessionStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );
-            return session ? JSON.parse(session)[key] : "";
+            return session ? JSON.parse(session)[key] : '';
         }
     },
     storeDataIntoKmSession: function (key, data) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var session =
-                typeof sessionStorage !== "undefined" &&
+                typeof sessionStorage !== 'undefined' &&
                 sessionStorage.getItem(
                     KommunicateConstants.KOMMUNICATE_SESSION_KEY
                 );
             session = session ? JSON.parse(session) : {};
             session[key] = data;
-            typeof sessionStorage !== "undefined" &&
+            typeof sessionStorage !== 'undefined' &&
                 sessionStorage.setItem(
                     KommunicateConstants.KOMMUNICATE_SESSION_KEY,
                     JSON.stringify(session)
@@ -334,13 +334,13 @@ KommunicateUtils = {
     deleteDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var session =
-                typeof sessionStorage !== "undefined" &&
+                typeof sessionStorage !== 'undefined' &&
                 sessionStorage.getItem(
                     KommunicateConstants.KOMMUNICATE_SESSION_KEY
                 );
             session = session ? JSON.parse(session) : {};
             delete session[key];
-            typeof sessionStorage !== "undefined" &&
+            typeof sessionStorage !== 'undefined' &&
                 sessionStorage.setItem(
                     KommunicateConstants.KOMMUNICATE_SESSION_KEY,
                     JSON.stringify(session)
@@ -348,26 +348,26 @@ KommunicateUtils = {
         }
     },
     triggerCustomEvent: function (eventName, options, kmPluginVersion) {
-        options = typeof options == "object" ? options : {};
+        options = typeof options == 'object' ? options : {};
         options.bubbles = options.bubbles || true;
         options.cancelable = options.cancelable || true;
 
         if (
-            navigator.userAgent.indexOf("MSIE") !== -1 ||
-            navigator.appVersion.indexOf("Trident/") > 0
+            navigator.userAgent.indexOf('MSIE') !== -1 ||
+            navigator.appVersion.indexOf('Trident/') > 0
         ) {
             /* Microsoft Internet Explorer detected in. */
             var evt =
-                kmPluginVersion === "v2"
-                    ? window.parent.document.createEvent("Event")
-                    : document.createEvent("Event");
+                kmPluginVersion === 'v2'
+                    ? window.parent.document.createEvent('Event')
+                    : document.createEvent('Event');
             evt.initEvent(eventName, options.bubbles, options.cancelable);
-            kmPluginVersion === "v2"
+            kmPluginVersion === 'v2'
                 ? window.parent.document.dispatchEvent(evt)
                 : window.dispatchEvent(evt);
         } else {
             var parentWindow =
-                kmPluginVersion === "v2" ? window.parent.document : window;
+                kmPluginVersion === 'v2' ? window.parent.document : window;
             //Custom event trigger
             parentWindow.dispatchEvent(
                 new CustomEvent(eventName, {
@@ -379,16 +379,16 @@ KommunicateUtils = {
         }
     },
     getSettings: function (key) {
-        var settings = KommunicateUtils.getDataFromKmSession("settings");
+        var settings = KommunicateUtils.getDataFromKmSession('settings');
         settings = settings ? settings : null;
-        return key && settings ? settings[key] : settings ? settings : "";
+        return key && settings ? settings[key] : settings ? settings : '';
     },
     getItemFromLocalStorage: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var session = localStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );
-            return session ? JSON.parse(session)[key] : "";
+            return session ? JSON.parse(session)[key] : '';
         }
     },
     removeItemFromLocalStorage: function (key) {
@@ -420,24 +420,24 @@ KommunicateUtils = {
     findCookieDomain: function (domain) {
         //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
         var i = 0;
-        var parts = domain.split(".");
-        var value = "km_" + new Date().getTime();
+        var parts = domain.split('.');
+        var value = 'km_' + new Date().getTime();
         //check value is added in cookie else continue the iteration
         while (
             i < parts.length - 1 &&
-            document.cookie.indexOf(value + "=" + value) == -1
+            document.cookie.indexOf(value + '=' + value) == -1
         ) {
             //join the parts of domain
-            domain = parts.slice(-1 - ++i).join(".");
+            domain = parts.slice(-1 - ++i).join('.');
             //set value in cookie
-            document.cookie = value + "=" + value + ";domain=" + domain + ";";
+            document.cookie = value + '=' + value + ';domain=' + domain + ';';
         }
         //delete value from cookie
         document.cookie =
             value +
-            "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" +
+            '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=' +
             domain +
-            ";";
+            ';';
         return domain;
     },
     getSubDomain: function () {
@@ -467,7 +467,7 @@ KommunicateUtils = {
     isValidTimeZone: function (tzId) {
         if (!Intl || !Intl.DateTimeFormat().resolvedOptions().timeZone) {
             console.log(
-                "not able to validate the timezone in this environment, skipping validation for timezone ",
+                'not able to validate the timezone in this environment, skipping validation for timezone ',
                 tzId
             );
             return true;
@@ -477,7 +477,7 @@ KommunicateUtils = {
             return true;
         } catch (ex) {
             console.log(
-                "ERROR: time zone is not registered into IANA timezone db. can not set the user timezone. more detail about timezone db https://www.iana.org/time-zones"
+                'ERROR: time zone is not registered into IANA timezone db. can not set the user timezone. more detail about timezone db https://www.iana.org/time-zones'
             );
             return false;
         }
@@ -491,27 +491,27 @@ KommunicateUtils = {
         );
         return (
             activeConversationInfo &&
-            typeof data != "undefined" &&
+            typeof data != 'undefined' &&
             data.appId == activeConversationInfo.appId &&
             userId == activeConversationInfo.userId
         );
     },
     isSessionStorageAvailable: function () {
         try {
-            return typeof w.sessionStorage !== "undefined";
+            return typeof w.sessionStorage !== 'undefined';
         } catch (e) {
             return false;
         }
     },
     isURL: function (str) {
         var pattern = new RegExp(
-            "^(https?:\\/\\/)?" + // protocol
-                "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-                "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-                "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-                "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-                "(\\#[-a-z\\d_]*)?$",
-            "i"
+            '^(https?:\\/\\/)?' + // protocol
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$',
+            'i'
         ); // fragment locator
         return pattern.test(str);
     },

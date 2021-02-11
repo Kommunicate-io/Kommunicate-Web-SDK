@@ -15,52 +15,52 @@ Kommunicate.messageTemplate = {
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
         data.fileMeta = data.fileMeta || {};
-        data.fileMeta.contentType = data.fileMeta.contentType || "";
-        data.attachmentDownloadClass = "n-vis";
+        data.fileMeta.contentType = data.fileMeta.contentType || '';
+        data.attachmentDownloadClass = 'n-vis';
         data.attachmentClass =
-            data.fileMeta.contentType.indexOf("image/") != 1 ||
-            data.fileMeta.contentType.indexOf("audio/") != -1 ||
-            data.fileMeta.contentType.indexOf("video/") != 1
-                ? ""
-                : "mck-msg-box";
+            data.fileMeta.contentType.indexOf('image/') != 1 ||
+            data.fileMeta.contentType.indexOf('audio/') != -1 ||
+            data.fileMeta.contentType.indexOf('video/') != 1
+                ? ''
+                : 'mck-msg-box';
 
         switch (true) {
-            case data.fileMeta.contentType.indexOf("image") != -1:
-                data.attachmentDownloadClass = "vis";
+            case data.fileMeta.contentType.indexOf('image') != -1:
+                data.attachmentDownloadClass = 'vis';
                 return Mustache.to_html(
                     Kommunicate.messageTemplate.getAttachmentTemplate(),
                     data
                 );
                 break;
-            case data.fileMeta.contentType.indexOf("application") != -1:
-            case data.fileMeta.contentType.indexOf("text") != -1:
-            case data.fileMeta.contentType == "" &&
+            case data.fileMeta.contentType.indexOf('application') != -1:
+            case data.fileMeta.contentType.indexOf('text') != -1:
+            case data.fileMeta.contentType == '' &&
                 data.contentType !=
                     KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION:
-                data.attachmentClass = "km-application-attachment-wrapper";
+                data.attachmentClass = 'km-application-attachment-wrapper';
                 if (!Kommunicate.internetStatus) {
-                    data.uploadIconClass = "vis";
-                    data.downloadIconClass = "n-vis";
-                    data.cancelIconClass = "n-vis";
+                    data.uploadIconClass = 'vis';
+                    data.downloadIconClass = 'n-vis';
+                    data.cancelIconClass = 'n-vis';
                 } else if (data.type == 4) {
-                    data.uploadIconClass = "n-vis";
-                    data.downloadIconClass = "vis";
-                    data.cancelIconClass = "n-vis";
-                    data.progressBarClass = "n-vis";
-                    data.attachmentClass = "";
+                    data.uploadIconClass = 'n-vis';
+                    data.downloadIconClass = 'vis';
+                    data.cancelIconClass = 'n-vis';
+                    data.progressBarClass = 'n-vis';
+                    data.attachmentClass = '';
                 } else {
-                    data.uploadIconClass = "n-vis";
+                    data.uploadIconClass = 'n-vis';
                     data.downloadIconClass =
-                        data.sent || data.delivered ? "vis" : "n-vis";
+                        data.sent || data.delivered ? 'vis' : 'n-vis';
                     data.cancelIconClass =
-                        data.sent || data.delivered ? "n-vis" : "vis";
+                        data.sent || data.delivered ? 'n-vis' : 'vis';
                     data.progressBarClass =
-                        data.sent || data.delivered ? "n-vis" : "vis";
+                        data.sent || data.delivered ? 'n-vis' : 'vis';
                 }
                 data.fileMeta.url =
                     (data.fileMeta && data.fileMeta.url) ||
                     data.fileUrl ||
-                    "javascript:void(0)";
+                    'javascript:void(0)';
                 return Mustache.to_html(
                     Kommunicate.messageTemplate.getAttachmentApplicationTemplate(
                         data
@@ -69,7 +69,7 @@ Kommunicate.messageTemplate = {
                 );
                 break;
             default:
-                data.attachmentDownloadClass = "vis";
+                data.attachmentDownloadClass = 'vis';
                 data.downloadMediaUrlExpr = mediaUrlExpr;
                 return Mustache.to_html(
                     Kommunicate.messageTemplate.getAttachmentTemplate(),
@@ -94,7 +94,7 @@ Kommunicate.popupChatTemplate = {
     ) {
         var isPopupEnabled =
             kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
-        var chatPopupTemplateMarkup = "";
+        var chatPopupTemplateMarkup = '';
         var popupMessageContent =
             popupWidgetContent &&
             popupWidgetContent.length &&
@@ -102,8 +102,8 @@ Kommunicate.popupChatTemplate = {
 
         if (isPopupEnabled) {
             var launcherClass = isAnonymousChat
-                ? "km-anonymous-chat-launcher"
-                : "applozic-launcher";
+                ? 'km-anonymous-chat-launcher'
+                : 'applozic-launcher';
             var index =
                 (popupWidgetContent &&
                     popupWidgetContent.length &&
@@ -111,8 +111,8 @@ Kommunicate.popupChatTemplate = {
                 KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
             var templateCss =
                 index === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL
-                    ? "chat-popup-widget-container--horizontal"
-                    : "chat-popup-widget-container--vertical";
+                    ? 'chat-popup-widget-container--horizontal'
+                    : 'chat-popup-widget-container--vertical';
             chatPopupTemplateMarkup =
                 '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' +
                 templateCss +
@@ -121,17 +121,17 @@ Kommunicate.popupChatTemplate = {
                 '"><p class="chat-popup-widget-text">' +
                 (popupMessageContent &&
                     kommunicateCommons.formatHtmlTag(popupMessageContent)) +
-                "</p></div>" +
+                '</p></div>' +
                 '<div class="chat-popup-widget-close-btn-container"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"></path></svg></span></div></div>' +
-                "</div>";
+                '</div>';
         }
 
         if (isAnonymousChat) {
             var anonymousLauncherContainer = document.getElementById(
-                "km-anonymous-chat-launcher"
+                'km-anonymous-chat-launcher'
             );
             anonymousLauncherContainer.insertAdjacentHTML(
-                "afterEnd",
+                'afterEnd',
                 chatPopupTemplateMarkup
             );
         } else {

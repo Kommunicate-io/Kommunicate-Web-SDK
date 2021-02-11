@@ -1,12 +1,12 @@
 var $original;
-var oModal = "";
+var oModal = '';
 var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 var MCK_COOKIE_DOMAIN;
-if (typeof jQuery !== "undefined") {
+if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
     jQuery = $original;
-    if (typeof $.fn.modal === "function") {
+    if (typeof $.fn.modal === 'function') {
         oModal = $.fn.modal.noConflict(true);
         $.fn.modal = oModal;
         jQuery.fn.modal = oModal;
@@ -14,7 +14,7 @@ if (typeof jQuery !== "undefined") {
 }
 
 (function (window) {
-    if (typeof Applozic !== "undefined") {
+    if (typeof Applozic !== 'undefined') {
         throw new Error(
             " Kommunicate script is already loaded, please check if you're loading it more than once."
         );
@@ -28,52 +28,52 @@ applozicSideBox.load();
 function ApplozicSidebox() {
     var mck_external_scripts = [
         {
-            name: "applozic-min-js",
-            url: "https://cdn.applozic.com/applozic/applozic.chat-6.1.min.js", // update the url with every new release of applozic-web-plugin
-            alternateUrl: MCK_STATICPATH + "/js/app/applozic.chat-6.1.min.js",
+            name: 'applozic-min-js',
+            url: 'https://cdn.applozic.com/applozic/applozic.chat-6.1.min.js', // update the url with every new release of applozic-web-plugin
+            alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.1.min.js',
         },
         {
-            name: "maps",
-            url: "https://maps.google.com/maps/api/js?libraries=places",
+            name: 'maps',
+            url: 'https://maps.google.com/maps/api/js?libraries=places',
             googleApiKey:
-                typeof applozic._globals !== "undefined" &&
+                typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
-                    : "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI",
+                    : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         },
     ];
     var mck_style_loader = [
         {
-            name: "mck-sidebox",
+            name: 'mck-sidebox',
             url: KOMMUNICATE_MIN_CSS,
         },
     ];
     var mck_third_party_scripts = [
         {
-            name: "locationPicker",
-            url: MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js",
+            name: 'locationPicker',
+            url: MCK_STATICPATH + '/lib/js/locationpicker.jquery.min.js',
         },
         {
-            name: "emojiLibrary",
-            url: MCK_STATICPATH + "/lib/js/mck-emojis.min.js",
+            name: 'emojiLibrary',
+            url: MCK_STATICPATH + '/lib/js/mck-emojis.min.js',
         },
     ];
     this.load = function () {
         try {
-            if (applozic.PRODUCT_ID == "kommunicate") {
-                if (typeof applozic._globals.locShare === "undefined") {
+            if (applozic.PRODUCT_ID == 'kommunicate') {
+                if (typeof applozic._globals.locShare === 'undefined') {
                     applozic._globals.locShare = false;
-                } else if (typeof applozic._globals.locShare === "string") {
-                    throw new Error("locShare should be a boolean value");
+                } else if (typeof applozic._globals.locShare === 'string') {
+                    throw new Error('locShare should be a boolean value');
                 }
-                if (typeof applozic._globals.excludeGoogleMap === "undefined") {
+                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
                     applozic._globals.excludeGoogleMap = !applozic._globals
                         .locShare;
                 } else if (
-                    typeof applozic._globals.excludeGoogleMap === "string"
+                    typeof applozic._globals.excludeGoogleMap === 'string'
                 ) {
                     throw new Error(
-                        "excludeGoogleMap should be a boolean value"
+                        'excludeGoogleMap should be a boolean value'
                     );
                 }
             }
@@ -82,9 +82,9 @@ function ApplozicSidebox() {
                 loadExternalFiles(externalFileDetails);
             }
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.", e);
-            if (typeof MCK_ONINIT === "function") {
-                MCK_ONINIT("error");
+            console.log('Plugin loading error. Refresh page.', e);
+            if (typeof MCK_ONINIT === 'function') {
+                MCK_ONINIT('error');
             }
             return false;
         }
@@ -93,22 +93,22 @@ function ApplozicSidebox() {
         try {
             if (
                 applozic._globals.excludeGoogleMap &&
-                externalFileDetails.name === "maps"
+                externalFileDetails.name === 'maps'
             ) {
                 ++scriptCounter;
                 return;
             }
-            var head = document.getElementsByTagName("head")[0];
-            var script = document.createElement("script");
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
             script.async = false;
-            script.type = "text/javascript";
+            script.type = 'text/javascript';
             externalFileDetails &&
                 externalFileDetails.crossOrigin &&
                 (script.crossOrigin = externalFileDetails.crossOrigin);
-            if (externalFileDetails.name === "maps") {
+            if (externalFileDetails.name === 'maps') {
                 script.src =
                     externalFileDetails.url +
-                    "&key=" +
+                    '&key=' +
                     externalFileDetails.googleApiKey;
             } else {
                 script.src = externalFileDetails.url;
@@ -117,8 +117,8 @@ function ApplozicSidebox() {
                 // IE
                 script.onreadystatechange = function () {
                     if (
-                        script.readyState === "loaded" ||
-                        script.readyState === "complete"
+                        script.readyState === 'loaded' ||
+                        script.readyState === 'complete'
                     ) {
                         script.onreadystatechange = null;
                         ++scriptCounter;
@@ -154,11 +154,11 @@ function ApplozicSidebox() {
         }
     }
     function mckinitPlugin() {
-        if (!$original && typeof jQuery !== "undefined") {
+        if (!$original && typeof jQuery !== 'undefined') {
             $original = jQuery.noConflict(true);
             $ = $original;
             jQuery = $original;
-            if (typeof $.fn.modal === "function") {
+            if (typeof $.fn.modal === 'function') {
                 oModal = $.fn.modal.noConflict(true);
                 $.fn.modal = oModal;
                 jQuery.fn.modal = oModal;
@@ -173,19 +173,19 @@ function ApplozicSidebox() {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    var body = document.getElementsByTagName("body")[0];
-                    body.insertAdjacentHTML("beforeend", this.responseText);
+                    var body = document.getElementsByTagName('body')[0];
+                    body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
                     body.appendChild(scriptContent);
                     mckInitPluginScript();
                 }
             };
-            xhr.open("GET", url, true);
+            xhr.open('GET', url, true);
             xhr.send(null);
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.", e);
-            if (typeof MCK_ONINIT === "function") {
-                MCK_ONINIT("error");
+            console.log('Plugin loading error. Refresh page.', e);
+            if (typeof MCK_ONINIT === 'function') {
+                MCK_ONINIT('error');
             }
             return false;
         }
@@ -193,27 +193,27 @@ function ApplozicSidebox() {
     function addScriptInsideHtml() {
         var scriptData = function detectBrowserAndMakeUiVisible() {
             function showAfterLoad() {
-                var mckSidebox = document.getElementById("mck-sidebox");
-                mckSidebox.style.visibility = "visible";
-                var mckLocBox = document.getElementById("mck-loc-box");
-                mckLocBox.style.visibility = "visible";
+                var mckSidebox = document.getElementById('mck-sidebox');
+                mckSidebox.style.visibility = 'visible';
+                var mckLocBox = document.getElementById('mck-loc-box');
+                mckLocBox.style.visibility = 'visible';
                 var mckGmSearchBox = document.getElementById(
-                    "mck-gm-search-box"
+                    'mck-gm-search-box'
                 );
-                mckGmSearchBox.style.visibility = "visible";
+                mckGmSearchBox.style.visibility = 'visible';
             }
             if (
-                navigator.userAgent.indexOf("MSIE") !== -1 ||
-                navigator.appVersion.indexOf("Trident/") > 0
+                navigator.userAgent.indexOf('MSIE') !== -1 ||
+                navigator.appVersion.indexOf('Trident/') > 0
             ) {
                 showAfterLoad();
             } else {
                 var isScriptV2 = !!parent.document.getElementById(
-                    "kommunicate-widget-iframe"
+                    'kommunicate-widget-iframe'
                 );
                 if (isScriptV2) {
                     window.parent.document.addEventListener(
-                        "kmInitilized",
+                        'kmInitilized',
                         function () {
                             showAfterLoad();
                         },
@@ -221,7 +221,7 @@ function ApplozicSidebox() {
                     );
                 } else {
                     window.addEventListener(
-                        "kmInitilized",
+                        'kmInitilized',
                         function () {
                             showAfterLoad();
                         },
@@ -231,35 +231,35 @@ function ApplozicSidebox() {
             }
         };
 
-        var script = String(scriptData) + "detectBrowserAndMakeUiVisible();";
-        var tag = document.createElement("script");
+        var script = String(scriptData) + 'detectBrowserAndMakeUiVisible();';
+        var tag = document.createElement('script');
         tag.innerHTML = script;
         return tag;
     }
     function mckLoadStyle(url) {
-        var head = document.getElementsByTagName("head")[0];
-        var style = document.createElement("link");
-        style.type = "text/css";
-        style.rel = "stylesheet";
+        var head = document.getElementsByTagName('head')[0];
+        var style = document.createElement('link');
+        style.type = 'text/css';
+        style.rel = 'stylesheet';
         style.href = url;
         head.appendChild(style);
     }
     // Below function adds the script to document
     function mckLoadScript(url, callback, removeCrossOrigin) {
         try {
-            var body = document.getElementsByTagName("body")[0];
-            var script = document.createElement("script");
-            script.type = "text/javascript";
+            var body = document.getElementsByTagName('body')[0];
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
             script.src = url;
-            script.crossOrigin = "anonymous";
-            removeCrossOrigin && script.removeAttribute("crossOrigin");
+            script.crossOrigin = 'anonymous';
+            removeCrossOrigin && script.removeAttribute('crossOrigin');
             if (callback) {
                 if (script.readyState) {
                     // IE
                     script.onreadystatechange = function () {
                         if (
-                            script.readyState === "loaded" ||
-                            script.readyState === "complete"
+                            script.readyState === 'loaded' ||
+                            script.readyState === 'complete'
                         ) {
                             script.onreadystatechange = null;
                             callback();
@@ -274,9 +274,9 @@ function ApplozicSidebox() {
             }
             body.appendChild(script);
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
-            if (typeof MCK_ONINIT === "function") {
-                MCK_ONINIT("error");
+            console.log('Plugin loading error. Refresh page.');
+            if (typeof MCK_ONINIT === 'function') {
+                MCK_ONINIT('error');
             }
             return false;
         }
@@ -289,9 +289,9 @@ function ApplozicSidebox() {
             );
             for (var index in mck_third_party_scripts) {
                 var data = mck_third_party_scripts[index];
-                if (data.name === "locationPicker") {
+                if (data.name === 'locationPicker') {
                     options.locShare && mckLoadScript(data.url);
-                } else if (data.name === "emojiLibrary") {
+                } else if (data.name === 'emojiLibrary') {
                     options.emojilibrary && mckLoadScript(data.url, null, true);
                 } else {
                     mckLoadScript(data.url);
@@ -299,10 +299,10 @@ function ApplozicSidebox() {
             }
             mckLoadAppScript();
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
+            console.log('Plugin loading error. Refresh page.');
             console.log(e);
-            if (typeof MCK_ONINIT === "function") {
-                MCK_ONINIT("error");
+            if (typeof MCK_ONINIT === 'function') {
+                MCK_ONINIT('error');
             }
             return false;
         }
@@ -342,15 +342,15 @@ function ApplozicSidebox() {
         // }];
         var userId = KommunicateUtils.getRandomId();
         try {
-            (navigator.userAgent.indexOf("MSIE") !== -1 ||
-                navigator.appVersion.indexOf("Trident/") > 0) &&
+            (navigator.userAgent.indexOf('MSIE') !== -1 ||
+                navigator.appVersion.indexOf('Trident/') > 0) &&
                 (sentryConfig.enabled = false);
             sentryConfig.enabled && loadErrorTracking(userId);
             getApplicationSettings(userId);
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
-            if (typeof MCK_ONINIT === "function") {
-                MCK_ONINIT("error");
+            console.log('Plugin loading error. Refresh page.');
+            if (typeof MCK_ONINIT === 'function') {
+                MCK_ONINIT('error');
             }
             return false;
         }
@@ -374,7 +374,7 @@ function ApplozicSidebox() {
                     hostname == domain ||
                     (hostname.length > domain.length &&
                         hostname.substr(hostname.length - domain.length - 1) ==
-                            "." + domain)
+                            '.' + domain)
                 );
             };
 
@@ -402,27 +402,27 @@ function ApplozicSidebox() {
             sessionTimeout == null &&
                 (sessionTimeout =
                     widgetSettings && widgetSettings.sessionTimeout);
-            options["appSettings"] = $applozic.extend(
+            options['appSettings'] = $applozic.extend(
                 true,
                 data,
                 options.appSettings
             );
 
-            options["agentId"] = options.appSettings.agentId;
-            options["agentName"] = options.appSettings.agentName;
-            options["widgetSettings"] = widgetSettings;
-            options["customerCreatedAt"] =
+            options['agentId'] = options.appSettings.agentId;
+            options['agentName'] = options.appSettings.agentName;
+            options['widgetSettings'] = widgetSettings;
+            options['customerCreatedAt'] =
                 options.appSettings.customerCreatedAt;
-            options["collectFeedback"] = options.appSettings.collectFeedback;
-            options["chatPopupMessage"] = options.appSettings.chatPopupMessage;
+            options['collectFeedback'] = options.appSettings.collectFeedback;
+            options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
 
             var pseudoNameEnabled =
                 widgetSettings &&
-                typeof widgetSettings.pseudonymsEnabled !== "undefined"
+                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata =
-                typeof options.metadata == "object" ? options.metadata : {};
+                typeof options.metadata == 'object' ? options.metadata : {};
             options.fileUpload =
                 options.fileUpload ||
                 (widgetSettings && widgetSettings.fileUpload);
@@ -448,7 +448,7 @@ function ApplozicSidebox() {
                     ? options.hidePostCTA
                     : widgetSettings && widgetSettings.hidePostCTA;
 
-            KommunicateUtils.deleteDataFromKmSession("settings");
+            KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
                 sessionTimeout != null &&
@@ -468,7 +468,7 @@ function ApplozicSidebox() {
                 );
             }
 
-            if (applozic.PRODUCT_ID == "kommunicate") {
+            if (applozic.PRODUCT_ID == 'kommunicate') {
                 var accessTokenFromCookie = KommunicateUtils.getCookie(
                     KommunicateConstants.COOKIES.ACCESS_TOKEN
                 );
@@ -479,20 +479,20 @@ function ApplozicSidebox() {
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
                 );
                 var isAnonymousUser = !options.userId;
-                options["userId"] = !isAnonymousUser
+                options['userId'] = !isAnonymousUser
                     ? options.userId
                     : userIdFromCookie || randomUserId;
                 var displayName = isAnonymousUser
                     ? pseudoNameEnabled
                         ? displayNameFromCookie || data.userName
-                        : ""
+                        : ''
                     : options.userName;
-                displayName && (options["userName"] = displayName);
+                displayName && (options['userName'] = displayName);
 
                 if (isAnonymousUser && pseudoNameEnabled) {
-                    options.metadata["KM_PSEUDO_USER"] = JSON.stringify({
-                        pseudoName: "true",
-                        hidden: "true",
+                    options.metadata['KM_PSEUDO_USER'] = JSON.stringify({
+                        pseudoName: 'true',
+                        hidden: 'true',
                     });
                 }
                 if (isAnonymousUser && accessTokenFromCookie) {
@@ -501,7 +501,7 @@ function ApplozicSidebox() {
                 //save user cookies
                 saveUserCookies(options);
             }
-            if (typeof options !== "undefined") {
+            if (typeof options !== 'undefined') {
                 options.ojq = $original;
                 options.obsm = oModal;
                 $applozic.fn.applozic(options);
@@ -509,9 +509,9 @@ function ApplozicSidebox() {
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
             console.log(e);
-            console.log("Plugin loading error. Refresh page.", e);
-            if (typeof MCK_ONINIT === "function") {
-                MCK_ONINIT("error");
+            console.log('Plugin loading error. Refresh page.', e);
+            if (typeof MCK_ONINIT === 'function') {
+                MCK_ONINIT('error');
             }
             return false;
         }
@@ -532,13 +532,13 @@ function ApplozicSidebox() {
 
     function preLoadLauncherIconInterval() {
         var launcherInterval = setInterval(function () {
-            if (document.getElementById("mck-sidebox-launcher")) {
+            if (document.getElementById('mck-sidebox-launcher')) {
                 document
-                    .getElementById("mck-sidebox-launcher")
-                    .classList.remove("n-vis");
+                    .getElementById('mck-sidebox-launcher')
+                    .classList.remove('n-vis');
                 document
-                    .getElementById("mck-sidebox-launcher")
-                    .classList.add("km-launcher-animation");
+                    .getElementById('mck-sidebox-launcher')
+                    .classList.add('km-launcher-animation');
                 clearInterval(launcherInterval);
             }
         }, 100);
@@ -565,7 +565,7 @@ function ApplozicSidebox() {
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            "/users/v2/chat/plugin/settings?appId=" +
+            '/users/v2/chat/plugin/settings?appId=' +
             applozic._globals.appId;
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -574,15 +574,15 @@ function ApplozicSidebox() {
                 mckInitSidebox(data.response, userId); // This function will initialize the Sidebox code.
             }
         };
-        xhr.open("GET", url, true);
+        xhr.open('GET', url, true);
         xhr.send(data);
     }
     function loadErrorTracking(userId) {
         var kommunicateIframe = parent.document.getElementById(
-            "kommunicate-widget-iframe"
+            'kommunicate-widget-iframe'
         );
         var url = kommunicateIframe
-            ? kommunicateIframe.getAttribute("data-url")
+            ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
             KommunicateUtils.getCookie(
@@ -593,9 +593,9 @@ function ApplozicSidebox() {
             release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
         });
         Sentry.configureScope(function (scope) {
-            scope.setTag("applicationId", applozic._globals.appId);
-            scope.setTag("userId", userId);
-            scope.setTag("url", url);
+            scope.setTag('applicationId', applozic._globals.appId);
+            scope.setTag('userId', userId);
+            scope.setTag('url', url);
             scope.setUser({
                 id: applozic._globals.appId,
             });
@@ -610,7 +610,7 @@ function ApplozicSidebox() {
         });
         KommunicateUtils.setCookie({
             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
-            value: kommunicateSettings.userName || "",
+            value: kommunicateSettings.userName || '',
             expiresInDays: 30,
             domain: MCK_COOKIE_DOMAIN,
         });
@@ -632,7 +632,7 @@ function ApplozicSidebox() {
             var encodedToken = window.btoa(kommunicateSettings.accessToken);
             KommunicateUtils.setCookie({
                 name: KommunicateConstants.COOKIES.ACCESS_TOKEN,
-                value: encodedToken || "",
+                value: encodedToken || '',
                 expiresInDays: 30,
                 domain: MCK_COOKIE_DOMAIN,
             });
@@ -654,17 +654,17 @@ function ApplozicSidebox() {
             timeStampDifference > sessionTimeout
         ) {
             KommunicateUtils.deleteUserCookiesOnLogout();
-            sessionStorage.removeItem("kommunicate");
+            sessionStorage.removeItem('kommunicate');
             KommunicateUtils.removeItemFromLocalStorage(
                 applozic._globals.appId
             );
             ALStorage.clearSessionStorageElements();
             KommunicateUtils.removeItemFromLocalStorage(
-                "mckActiveConversationInfo"
+                'mckActiveConversationInfo'
             );
         }
         // TODO: Handle case where internet disconnects and sessionEndTime is not updated.
-        window.addEventListener("beforeunload", function (event) {
+        window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
             var details =
                 KommunicateUtils.getItemFromLocalStorage(

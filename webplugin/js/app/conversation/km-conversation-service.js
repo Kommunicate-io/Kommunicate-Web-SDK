@@ -1,4 +1,4 @@
-Kommunicate = typeof Kommunicate == "undefined" ? {} : Kommunicate;
+Kommunicate = typeof Kommunicate == 'undefined' ? {} : Kommunicate;
 
 /**
  * Kommunciate.conversation contains all methods to add functionality into conversations.
@@ -15,7 +15,7 @@ Kommunicate.conversation = {
     processConversationOpenedFromList: function (data, error) {
         if (error) {
             console.log(
-                "Error received. can not post process the conversation ",
+                'Error received. can not post process the conversation ',
                 error
             );
             return;

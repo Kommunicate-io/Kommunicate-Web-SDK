@@ -1,4 +1,4 @@
-Kommunicate = typeof Kommunicate == "undefined" ? {} : Kommunicate;
+Kommunicate = typeof Kommunicate == 'undefined' ? {} : Kommunicate;
 /**
  * Kommunciate.conversationHelper is a supporting file to conversation service.
  * It is being loaded before conversation service.
@@ -19,10 +19,10 @@ Kommunicate.conversationHelper = {
     },
 
     isConversationClosed: function (group) {
-        if (typeof group !== "undefined") {
+        if (typeof group !== 'undefined') {
             return (
                 group.metadata &&
-                group.metadata["CONVERSATION_STATUS"] ==
+                group.metadata['CONVERSATION_STATUS'] ==
                     Kommunicate.conversationHelper.status.CLOSED
             );
         }

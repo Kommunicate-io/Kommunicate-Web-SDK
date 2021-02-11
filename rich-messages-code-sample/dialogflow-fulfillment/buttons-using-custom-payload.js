@@ -1,10 +1,10 @@
-"use strict";
+'use strict';
 
-const functions = require("firebase-functions");
-const { WebhookClient } = require("dialogflow-fulfillment");
-const { Payload } = require("dialogflow-fulfillment");
+const functions = require('firebase-functions');
+const { WebhookClient } = require('dialogflow-fulfillment');
+const { Payload } = require('dialogflow-fulfillment');
 
-process.env.DEBUG = "dialogflow:debug"; // enables lib debugging statements
+process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 
 exports.dialogflowfullfilment = functions.https.onRequest(
     (request, response) => {
@@ -16,20 +16,20 @@ exports.dialogflowfullfilment = functions.https.onRequest(
          */
         function generateSuggestedReplies(agent) {
             agent.add(
-                new Payload("PLATFORM_UNSPECIFIED", [
+                new Payload('PLATFORM_UNSPECIFIED', [
                     {
-                        message: "Do you want more updates?",
-                        platform: "kommunicate",
+                        message: 'Do you want more updates?',
+                        platform: 'kommunicate',
                         metadata: {
-                            contentType: "300",
-                            templateId: "6",
+                            contentType: '300',
+                            templateId: '6',
                             payload: [
                                 {
-                                    title: "Yes",
-                                    message: "Cool! send me more.",
+                                    title: 'Yes',
+                                    message: 'Cool! send me more.',
                                 },
                                 {
-                                    title: "No ",
+                                    title: 'No ',
                                     message: "Don't send it to me again",
                                 },
                             ],
@@ -45,23 +45,23 @@ exports.dialogflowfullfilment = functions.https.onRequest(
          */
         function generateLinkButtons(agent) {
             agent.add(
-                new Payload("PLATFORM_UNSPECIFIED", [
+                new Payload('PLATFORM_UNSPECIFIED', [
                     {
-                        message: "click the pay button",
-                        platform: "kommunicate",
+                        message: 'click the pay button',
+                        platform: 'kommunicate',
                         metadata: {
-                            contentType: "300",
-                            templateId: "3",
+                            contentType: '300',
+                            templateId: '3',
                             payload: [
                                 {
-                                    type: "link",
-                                    url: "https://www.google.com",
-                                    name: "Go To Google",
+                                    type: 'link',
+                                    url: 'https://www.google.com',
+                                    name: 'Go To Google',
                                 },
                                 {
-                                    type: "link",
-                                    url: "https://www.facebook.com",
-                                    name: "Go To Facebook",
+                                    type: 'link',
+                                    url: 'https://www.facebook.com',
+                                    name: 'Go To Facebook',
                                     openLinkInNewTab: false,
                                 },
                             ],
@@ -77,26 +77,26 @@ exports.dialogflowfullfilment = functions.https.onRequest(
          */
         function generateSubmitButtons(agent) {
             agent.add(
-                new Payload("PLATFORM_UNSPECIFIED", [
+                new Payload('PLATFORM_UNSPECIFIED', [
                     {
-                        message: "click the pay button",
-                        platform: "kommunicate",
+                        message: 'click the pay button',
+                        platform: 'kommunicate',
                         metadata: {
-                            contentType: "300",
-                            templateId: "3",
+                            contentType: '300',
+                            templateId: '3',
                             payload: [
                                 {
-                                    name: "Pay",
+                                    name: 'Pay',
                                     replyText:
-                                        "optional, will be used as acknowledgement message to user in case of requestType JSON. Default value is same as name parameter",
+                                        'optional, will be used as acknowledgement message to user in case of requestType JSON. Default value is same as name parameter',
                                 },
                             ],
                             formData: {
-                                amount: "1000",
-                                description: "movie ticket",
+                                amount: '1000',
+                                description: 'movie ticket',
                             },
-                            formAction: "https://example.com/book",
-                            requestType: "json",
+                            formAction: 'https://example.com/book',
+                            requestType: 'json',
                         },
                     },
                 ])
@@ -105,9 +105,9 @@ exports.dialogflowfullfilment = functions.https.onRequest(
 
         let intentMap = new Map();
         // intent map
-        intentMap.set("generateSuggestedReplies", generateSuggestedReplies);
-        intentMap.set("generateLinkButtons", generateLinkButtons);
-        intentMap.set("generateSubmitButtons", generateSubmitButtons);
+        intentMap.set('generateSuggestedReplies', generateSuggestedReplies);
+        intentMap.set('generateLinkButtons', generateLinkButtons);
+        intentMap.set('generateSubmitButtons', generateSubmitButtons);
 
         agent.handleRequest(intentMap);
     }

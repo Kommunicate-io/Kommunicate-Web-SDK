@@ -4,20 +4,20 @@ Kommunicate.attachmentService = {
             groupId: tabId,
             contentType: 1,
             type: 5,
-            message: "",
+            message: '',
         };
 
         var reader = new FileReader();
         reader.onload = function (theFile) {
             return function (e) {
-                var span = document.createElement("span");
+                var span = document.createElement('span');
                 span.innerHTML = [
                     '<img class="thumb" src="',
                     e.target.result,
                     '" title="',
                     escape(theFile.name),
                     '"/>',
-                ].join("");
+                ].join('');
             };
         };
         reader.onloadend = function () {
@@ -30,7 +30,7 @@ Kommunicate.attachmentService = {
                 stopUpload: false,
                 name: file.name,
             });
-            if (typeof callback == "function") {
+            if (typeof callback == 'function') {
                 callback(FILE_META, messagePxy, file);
                 return;
             }
@@ -43,6 +43,6 @@ Kommunicate.attachmentService = {
         MCK_CUSTOM_UPLOAD_SETTINGS
     ) {
         data = { params: params, messagePxy: messagePxy };
-        $applozic.fn.applozic("uploadAttachemnt", data);
+        $applozic.fn.applozic('uploadAttachemnt', data);
     },
 };

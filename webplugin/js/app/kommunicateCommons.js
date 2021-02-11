@@ -10,7 +10,7 @@ function KommunicateCommons() {
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
         USE_BRANDING =
-            typeof optns.useBranding == "boolean" ? optns.useBranding : true;
+            typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK =
             optns.connectSocketOnWidgetClick || false;
@@ -56,7 +56,7 @@ function KommunicateCommons() {
             return true;
         } else if (
             kommunicateCommons.isObject(WIDGET_SETTINGS) &&
-            typeof WIDGET_SETTINGS.showPoweredBy !== "undefined"
+            typeof WIDGET_SETTINGS.showPoweredBy !== 'undefined'
         ) {
             return WIDGET_SETTINGS.showPoweredBy;
         } else if (
@@ -106,11 +106,11 @@ function KommunicateCommons() {
      value passed is just a object or not. */
     _this.isObject = function (object) {
         if (!object) return false;
-        return typeof object == "object" && object.constructor == Object;
+        return typeof object == 'object' && object.constructor == Object;
     };
 
     _this.getTimeOrDate = function (createdAtTime) {
-        var timeStampLabels = MCK_LABELS["time.stamp"];
+        var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);
         var currentTime = new Date(),
             secondsPast = Math.max(
@@ -120,28 +120,28 @@ function KommunicateCommons() {
         if (secondsPast < 60) {
             return (
                 parseInt(secondsPast) +
-                " " +
+                ' ' +
                 (parseInt(secondsPast) <= 1
-                    ? timeStampLabels["sec.ago"]
-                    : timeStampLabels["secs.ago"])
+                    ? timeStampLabels['sec.ago']
+                    : timeStampLabels['secs.ago'])
             );
         }
         if (secondsPast < 3600) {
             return (
                 parseInt(secondsPast / 60) +
-                " " +
+                ' ' +
                 (parseInt(secondsPast / 60) <= 1
-                    ? timeStampLabels["min.ago"]
-                    : timeStampLabels["mins.ago"])
+                    ? timeStampLabels['min.ago']
+                    : timeStampLabels['mins.ago'])
             );
         }
         if (secondsPast <= 172800) {
             return (
                 parseInt(secondsPast / 3600) +
-                " " +
+                ' ' +
                 (parseInt(secondsPast / 3600) <= 1
-                    ? timeStampLabels["hr.ago"]
-                    : timeStampLabels["hrs.ago"])
+                    ? timeStampLabels['hr.ago']
+                    : timeStampLabels['hrs.ago'])
             );
         }
         if (secondsPast > 172800) {
@@ -149,12 +149,12 @@ function KommunicateCommons() {
             month = timeStamp
                 .toDateString()
                 .match(/ [a-zA-Z]*/)[0]
-                .replace(" ", "");
+                .replace(' ', '');
             year =
                 timeStamp.getFullYear() == currentTime.getFullYear()
-                    ? ""
-                    : " " + timeStamp.getFullYear();
-            return day + " " + month + year;
+                    ? ''
+                    : ' ' + timeStamp.getFullYear();
+            return day + ' ' + month + year;
         }
     };
 
@@ -165,7 +165,7 @@ function KommunicateCommons() {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
             KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK
-                ? $applozic.fn.applozic("initializeSocketConnection", false)
+                ? $applozic.fn.applozic('initializeSocketConnection', false)
                 : window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED &&
                   window.Applozic.ALSocket.checkConnected(true);
         }
@@ -193,14 +193,14 @@ function KommunicateCommons() {
     };
 
     _this.removeHtmlTag = function (html) {
-        var temporalDivElement = document.createElement("div");
+        var temporalDivElement = document.createElement('div');
         temporalDivElement.innerHTML = html;
         return (
-            temporalDivElement.textContent || temporalDivElement.innerText || ""
+            temporalDivElement.textContent || temporalDivElement.innerText || ''
         );
     };
     _this.formatHtmlTag = function (html) {
-        return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
     _this.isConversationClosedByBot = function () {
         if (

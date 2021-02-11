@@ -3,84 +3,84 @@
  */
 
 Kommunicate.attachEvents = function ($applozic) {
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-increment-guest-count",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-increment-guest-count',
         Kommunicate.richMsgEventHandler.incrementGuestCount
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-decrement-guest-count",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-decrement-guest-count',
         Kommunicate.richMsgEventHandler.decrementGuestCount
     ); //
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-btn-add-more-rooms",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-btn-add-more-rooms',
         Kommunicate.richMsgEventHandler.addMoreRoom
     ); //
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-done-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-done-button',
         Kommunicate.richMsgEventHandler.processSelectedRoom
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-card-message-footer-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-card-message-footer-button',
         Kommunicate.richMsgEventHandler.processHotelBookClick
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".mck-form-submit-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.mck-form-submit-button',
         Kommunicate.richMsgEventHandler.handleFormSubmit
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-cta-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-cta-button',
         Kommunicate.richMsgEventHandler.handleRichButtonClick
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-submit-person-detail",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-submit-person-detail',
         Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-block-room-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-block-room-button',
         Kommunicate.richMsgEventHandler.processBookRoomClick
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-quick-replies",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-quick-replies',
         Kommunicate.richMsgEventHandler.processQuickReplies
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-list-item-handler",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-list-item-handler',
         Kommunicate.richMsgEventHandler.processClickOnListItem
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-list-button-item-handler",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-list-button-item-handler',
         Kommunicate.richMsgEventHandler.processClickOnButtonItem
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-faq-dialog-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-faq-dialog-button',
         Kommunicate.richMsgEventHandler.processClickOnDialogButton
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-progress-meter-container",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-progress-meter-container',
         Kommunicate.attachmentEventHandler.manageUploadAttachment
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-link-button",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-link-button',
         Kommunicate.richMsgEventHandler.handleLinkButtonClick
     );
-    $applozic("#mck-message-cell").on(
-        "click",
-        ".km-attachment-icon",
+    $applozic('#mck-message-cell').on(
+        'click',
+        '.km-attachment-icon',
         Kommunicate.attachmentEventHandler.handleSendingAttachment
     );
 };
@@ -91,39 +91,39 @@ Kommunicate.attachEvents = function ($applozic) {
 Kommunicate.attachmentEventHandler = {
     manageUploadAttachment: function (e) {
         var stopUploadIconHidden = $applozic(e.target)
-            .closest(".km-msg-box-attachment")
-            .find(".km-progress-stop-upload-icon")
-            .hasClass("n-vis");
+            .closest('.km-msg-box-attachment')
+            .find('.km-progress-stop-upload-icon')
+            .hasClass('n-vis');
         var uploadIconHidden = $applozic(e.target)
-            .closest(".km-msg-box-attachment")
-            .find(".km-progress-upload-icon")
-            .hasClass("n-vis");
+            .closest('.km-msg-box-attachment')
+            .find('.km-progress-upload-icon')
+            .hasClass('n-vis');
         var attachmentDiv = $applozic(e.target)
-            .closest(".km-msg-box-attachment")
+            .closest('.km-msg-box-attachment')
             .children();
         var msgkey = attachmentDiv[0].dataset.msgkey;
         var deliveryStatusDiv = $applozic(e.target)
-            .closest(".mck-clear")
-            .find(".mck-msg-right-muted");
+            .closest('.mck-clear')
+            .find('.mck-msg-right-muted');
         var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
         var file = KM_PENDING_ATTACHMENT_FILE[msgkey];
         KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
         if (Kommunicate.internetStatus) {
             if (!stopUploadIconHidden && uploadIconHidden) {
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                $applozic(".km-progress-stop-upload-icon-" + msgkey)
-                    .removeClass("vis")
-                    .addClass("n-vis");
-                $applozic(".km-progress-upload-icon-" + msgkey)
-                    .removeClass("n-vis")
-                    .addClass("vis");
+                $applozic('.km-progress-stop-upload-icon-' + msgkey)
+                    .removeClass('vis')
+                    .addClass('n-vis');
+                $applozic('.km-progress-upload-icon-' + msgkey)
+                    .removeClass('n-vis')
+                    .addClass('vis');
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                $applozic(".mck-timestamp-" + msgkey)
-                    .removeClass("n-vis")
-                    .addClass("vis");
+                $applozic('.mck-timestamp-' + msgkey)
+                    .removeClass('n-vis')
+                    .addClass('vis');
                 deliveryStatusDiv[0].querySelector(
-                    ".mck-sending-failed"
-                ).style.display = "block";
+                    '.mck-sending-failed'
+                ).style.display = 'block';
             } else {
                 var fileName = attachmentDiv[0].dataset.filename;
                 var fileSize = attachmentDiv[0].dataset.filesize;
@@ -154,7 +154,7 @@ Kommunicate.attachmentEventHandler = {
                             thumbnailUrl: fileUrl,
                             name: fileName,
                         },
-                        message: "",
+                        message: '',
                         type: 5,
                         metadata: {},
                         key: msgkey,
@@ -166,20 +166,20 @@ Kommunicate.attachmentEventHandler = {
                         messagePxy: messagePxy,
                         optns: optns,
                     };
-                    $applozic.fn.applozic("submitMessage", params);
+                    $applozic.fn.applozic('submitMessage', params);
                     $applozic(e.target)
-                        .closest(".km-msg-box-progressMeter")
+                        .closest('.km-msg-box-progressMeter')
                         .children()
-                        .removeClass("km-progress-meter-back-drop");
+                        .removeClass('km-progress-meter-back-drop');
                     $applozic(e.target)
-                        .closest(".km-msg-box-progressMeter")
-                        .addClass("n-vis");
-                    $applozic(".mck-timestamp-" + msgkey)
-                        .removeClass("n-vis")
-                        .addClass("vis");
+                        .closest('.km-msg-box-progressMeter')
+                        .addClass('n-vis');
+                    $applozic('.mck-timestamp-' + msgkey)
+                        .removeClass('n-vis')
+                        .addClass('vis');
                     deliveryStatusDiv[0].querySelector(
-                        ".mck-sending-failed"
-                    ).style.display = "none";
+                        '.mck-sending-failed'
+                    ).style.display = 'none';
                 } else if (thumbnailUrl && groupId && msgkey && file) {
                     messagePxy = {
                         contentType: 1,
@@ -190,7 +190,7 @@ Kommunicate.attachmentEventHandler = {
                             contentType: 1,
                             isUploaded: false,
                         },
-                        message: "",
+                        message: '',
                         type: 5,
                         metadata: {},
                     };
@@ -205,18 +205,18 @@ Kommunicate.attachmentEventHandler = {
                         msgkey,
                         false
                     );
-                    $applozic.fn.applozic("uploadAttachemnt", params);
-                    $applozic(".mck-timestamp-" + msgkey)
-                        .removeClass("n-vis")
-                        .addClass("vis");
+                    $applozic.fn.applozic('uploadAttachemnt', params);
+                    $applozic('.mck-timestamp-' + msgkey)
+                        .removeClass('n-vis')
+                        .addClass('vis');
                     deliveryStatusDiv[0].querySelector(
-                        ".mck-sending-failed"
-                    ).style.display = "none";
+                        '.mck-sending-failed'
+                    ).style.display = 'none';
                     delete KM_PENDING_ATTACHMENT_FILE[msgkey];
                     $applozic(e.target)
-                        .closest(".km-msg-box-progressMeter")
+                        .closest('.km-msg-box-progressMeter')
                         .children()
-                        .removeClass("km-progress-meter-back-drop");
+                        .removeClass('km-progress-meter-back-drop');
                 }
             }
         } else {
@@ -225,8 +225,8 @@ Kommunicate.attachmentEventHandler = {
         }
     },
     progressMeter: function (value, key) {
-        var control = document.getElementById("km-progress-meter-input");
-        var selector = ".progress-meter-" + key + " .km-progress-value";
+        var control = document.getElementById('km-progress-meter-input');
+        var selector = '.progress-meter-' + key + ' .km-progress-value';
         var stopUpload = KommunicateUI.getAttachmentStopUploadStatus(key);
         if (stopUpload) {
             value = 100;
@@ -244,20 +244,20 @@ Kommunicate.attachmentEventHandler = {
         var stopSending =
             !Kommunicate.internetStatus ||
             $applozic(e.target)
-                .closest(".km-msg-box-attachment")
-                .find(".km-attachment-cancel-icon")
-                .hasClass("vis");
+                .closest('.km-msg-box-attachment')
+                .find('.km-attachment-cancel-icon')
+                .hasClass('vis');
         var upload = $applozic(e.target)
-            .closest(".km-msg-box-attachment")
-            .find(".km-attachment-upload-icon")
-            .hasClass("vis");
+            .closest('.km-msg-box-attachment')
+            .find('.km-attachment-upload-icon')
+            .hasClass('vis');
         var attachmentDiv = $applozic(e.target)
-            .closest(".km-msg-box-attachment")
+            .closest('.km-msg-box-attachment')
             .children();
         var msgKey = attachmentDiv[0].dataset.msgkey;
         var deliveryStatusDiv = $applozic(e.target)
-            .closest(".mck-clear")
-            .find(".mck-msg-right-muted");
+            .closest('.mck-clear')
+            .find('.mck-msg-right-muted');
         var file = KM_PENDING_ATTACHMENT_FILE[msgKey];
         var fileMetaKey = attachmentDiv[0].dataset.filemetakey;
 
@@ -266,27 +266,27 @@ Kommunicate.attachmentEventHandler = {
             kommunicateCommons.modifyClassList(
                 {
                     class: [
-                        "km-attachment-progress-bar-success-" + msgKey,
-                        "km-attachment-progress-bar-wrapper-" + msgKey,
+                        'km-attachment-progress-bar-success-' + msgKey,
+                        'km-attachment-progress-bar-wrapper-' + msgKey,
                     ],
                 },
-                "n-vis",
-                "vis"
+                'n-vis',
+                'vis'
             );
             kommunicateCommons.modifyClassList(
-                { class: ["mck-timestamp-" + msgKey] },
-                "vis",
-                "n-vis"
+                { class: ['mck-timestamp-' + msgKey] },
+                'vis',
+                'n-vis'
             );
-            $applozic(".km-attachment-cancel-icon-" + msgKey)
-                .removeClass("vis")
-                .addClass("n-vis");
-            $applozic(".km-attachment-upload-icon-" + msgKey)
-                .removeClass("n-vis")
-                .addClass("vis");
+            $applozic('.km-attachment-cancel-icon-' + msgKey)
+                .removeClass('vis')
+                .addClass('n-vis');
+            $applozic('.km-attachment-upload-icon-' + msgKey)
+                .removeClass('n-vis')
+                .addClass('vis');
             deliveryStatusDiv[0].querySelector(
-                ".mck-sending-failed"
-            ).style.display = "block";
+                '.mck-sending-failed'
+            ).style.display = 'block';
         } else {
             var fileName = attachmentDiv[0].dataset.filename;
             var fileSize = attachmentDiv[0].dataset.filesize;
@@ -308,7 +308,7 @@ Kommunicate.attachmentEventHandler = {
                         url: fileUrl,
                         thumbnailUrl: fileUrl,
                     },
-                    message: "",
+                    message: '',
                     type: 5,
                     metadata: {},
                     key: msgKey,
@@ -320,20 +320,20 @@ Kommunicate.attachmentEventHandler = {
                     messagePxy: messagePxy,
                     optns: optns,
                 };
-                $applozic.fn.applozic("submitMessage", params);
-                $applozic(".km-attachment-cancel-icon-" + msgKey)
-                    .removeClass("vis")
-                    .addClass("n-vis");
-                $applozic(".km-attachment-upload-icon-" + msgKey)
-                    .removeClass("vis")
-                    .addClass("n-vis");
+                $applozic.fn.applozic('submitMessage', params);
+                $applozic('.km-attachment-cancel-icon-' + msgKey)
+                    .removeClass('vis')
+                    .addClass('n-vis');
+                $applozic('.km-attachment-upload-icon-' + msgKey)
+                    .removeClass('vis')
+                    .addClass('n-vis');
                 deliveryStatusDiv[0].querySelector(
-                    ".mck-sending-failed"
-                ).style.display = "none";
+                    '.mck-sending-failed'
+                ).style.display = 'none';
                 kommunicateCommons.modifyClassList(
-                    { class: ["mck-timestamp-" + msgKey] },
-                    "n-vis",
-                    "vis"
+                    { class: ['mck-timestamp-' + msgKey] },
+                    'n-vis',
+                    'vis'
                 );
             } else if (thumbnailUrl && groupId && msgKey && file) {
                 messagePxy = {
@@ -345,7 +345,7 @@ Kommunicate.attachmentEventHandler = {
                         contentType: 1,
                         isUploaded: false,
                     },
-                    message: "",
+                    message: '',
                     type: 5,
                     metadata: {},
                 };
@@ -357,15 +357,15 @@ Kommunicate.attachmentEventHandler = {
                     messagePxy: messagePxy,
                 };
                 KommunicateUI.updateAttachmentStopUploadStatus(msgKey, false);
-                $applozic.fn.applozic("uploadAttachemnt", params);
+                $applozic.fn.applozic('uploadAttachemnt', params);
                 kommunicateCommons.modifyClassList(
-                    { class: ["mck-timestamp-" + msgKey] },
-                    "vis",
-                    "n-vis"
+                    { class: ['mck-timestamp-' + msgKey] },
+                    'vis',
+                    'n-vis'
                 );
                 deliveryStatusDiv[0].querySelector(
-                    ".mck-sending-failed"
-                ).style.display = "none";
+                    '.mck-sending-failed'
+                ).style.display = 'none';
                 delete KM_PENDING_ATTACHMENT_FILE[msgKey];
             }
         }
@@ -383,7 +383,7 @@ Kommunicate.richMsgEventHandler = {
                 container: $cardMessageContainer[0],
                 edgePadding: 60,
                 items: 1,
-                slideBy: "page",
+                slideBy: 'page',
                 loop: false,
                 controlsText: [
                     Kommunicate.richMsgEventHandler.svg.arrow,
@@ -392,7 +392,7 @@ Kommunicate.richMsgEventHandler = {
                 mouseDrag: true,
                 arrowKeys: true,
                 onInit: function () {
-                    console.log("tiny-slider initilized");
+                    console.log('tiny-slider initilized');
                 },
             });
         }
@@ -400,13 +400,13 @@ Kommunicate.richMsgEventHandler = {
     decrementGuestCount: function (e) {
         var target = e.target || e.srcElement;
         var type = target.dataset.type;
-        if (type == "guest") {
+        if (type == 'guest') {
             target.parentElement
-                .getElementsByClassName("km-room-number-field")[0]
+                .getElementsByClassName('km-room-number-field')[0]
                 .stepDown();
-        } else if (type == "children") {
+        } else if (type == 'children') {
             target.parentElement
-                .getElementsByClassName("km-person-number-field")[0]
+                .getElementsByClassName('km-person-number-field')[0]
                 .stepDown();
         }
     },
@@ -414,51 +414,51 @@ Kommunicate.richMsgEventHandler = {
     incrementGuestCount: function (e) {
         var target = e.target || e.srcElement;
         var type = target.dataset.type;
-        if (type == "guest") {
+        if (type == 'guest') {
             target.parentElement
-                .getElementsByClassName("km-room-number-field")[0]
+                .getElementsByClassName('km-room-number-field')[0]
                 .stepUp();
-        } else if (type == "children") {
+        } else if (type == 'children') {
             target.parentElement
-                .getElementsByClassName("km-person-number-field")[0]
+                .getElementsByClassName('km-person-number-field')[0]
                 .stepUp();
         }
     },
 
     decrementPersonCount: function () {
-        document.getElementById("km-person-number-field").stepDown();
+        document.getElementById('km-person-number-field').stepDown();
     },
     incrementPersonCount: function () {
-        document.getElementById("km-person-number-field").stepUp();
+        document.getElementById('km-person-number-field').stepUp();
     },
     addMoreRoom: function (e) {
         var container = e.target.parentElement.parentElement.parentElement;
         var roomCount = Number(e.target.dataset.roomcount) + 1;
-        e.target.setAttribute("data-roomcount", roomCount);
-        var roomInfoElem = document.createElement("div");
+        e.target.setAttribute('data-roomcount', roomCount);
+        var roomInfoElem = document.createElement('div');
         roomInfoElem.innerHTML = Kommunicate.markup.getSingleRoomPaxInfo(
             roomCount
         );
         container
-            .getElementsByClassName("km-room-person-selector-container")[0]
+            .getElementsByClassName('km-room-person-selector-container')[0]
             .appendChild(roomInfoElem);
     },
     processSelectedRoom: function (e) {
         //TODO : handle multiple room select
         var roomGuestJson = [];
         var roomGuest = $(e.target)
-            .closest(".mck-msg-box-rich-text-container")
+            .closest('.mck-msg-box-rich-text-container')
             .find(
-                ".km-room-person-selector-container input.km-room-number-field"
+                '.km-room-person-selector-container input.km-room-number-field'
             );
         var NoOfChild = $(e.target)
-            .closest(".mck-msg-box-rich-text-container")
+            .closest('.mck-msg-box-rich-text-container')
             .find(
-                ".km-room-person-selector-container input.km-person-number-field"
+                '.km-room-person-selector-container input.km-person-number-field'
             );
         // TODO: process number of child if required
 
-        var message = "";
+        var message = '';
         for (var i = 0; i < roomGuest.length; i++) {
             var noOfChild = NoOfChild[i].value;
             var arr = Array(noOfChild * 1).fill(10);
@@ -468,7 +468,7 @@ Kommunicate.richMsgEventHandler = {
                 ChildAge: arr,
             });
             message +=
-                "Room " + (i + 1) + " Guest " + roomGuest[i].value + "\n";
+                'Room ' + (i + 1) + ' Guest ' + roomGuest[i].value + '\n';
         }
         //send message to group
         //[{"NoOfAdults":1,"NoOfChild":2,"ChildAge":[8,9]}]
@@ -477,7 +477,7 @@ Kommunicate.richMsgEventHandler = {
             metadata: {
                 isRoomGuestJSON: true,
                 roomGuestJson: JSON.stringify(roomGuestJson),
-                guestTypeId: "ADULTS",
+                guestTypeId: 'ADULTS',
             },
         };
 
@@ -490,7 +490,7 @@ Kommunicate.richMsgEventHandler = {
         var hotelName = target.dataset.name;
 
         var messagePxy = {
-            message: "Get room detail of " + hotelName.replace("_", " "), //message to send
+            message: 'Get room detail of ' + hotelName.replace('_', ' '), //message to send
             metadata: {
                 hotelSelected: true,
                 sessionId: sessionId,
@@ -508,12 +508,12 @@ Kommunicate.richMsgEventHandler = {
         var RoomIndex = target.dataset.roomindex;
         var NoOfRooms = target.dataset.noofrooms;
         var HotelName =
-            target.dataset.hotelname == "undefined"
-                ? ""
+            target.dataset.hotelname == 'undefined'
+                ? ''
                 : target.dataset.hotelname;
         var HotelResultIndex = target.dataset.hotelresultindex;
         var messagePxy = {
-            message: "Book " + HotelName.replace("_", " "),
+            message: 'Book ' + HotelName.replace('_', ' '),
             metadata: {
                 sessionId: sessionId,
                 RoomIndex: RoomIndex,
@@ -523,36 +523,36 @@ Kommunicate.richMsgEventHandler = {
                 HotelResultIndex: HotelResultIndex,
             },
         };
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
+        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        var $mck_msg_to = $applozic('#mck-msg-to');
 
-        if ($mck_msg_inner.data("isgroup") === true) {
+        if ($mck_msg_inner.data('isgroup') === true) {
             messagePxy.groupId = $mck_msg_to.val();
         } else {
             messagePxy.to = $mck_msg_to.val();
         }
         //console.log('messagePxy........# ', messagePxy)
-        $applozic.fn.applozic("sendGroupMessage", messagePxy);
+        $applozic.fn.applozic('sendGroupMessage', messagePxy);
     },
 
     handleRichButtonClick: function (e) {
         var validationResults = [];
-        var validString = "";
-        var inputElement = "";
+        var validString = '';
+        var inputElement = '';
         var target = e.target || e.srcElement;
         var requestType = target.dataset.requesttype;
         var buttonType = target.dataset.buttontype || target.type;
         var form =
             target.parentElement.getElementsByClassName(
-                "km-btn-hidden-form"
+                'km-btn-hidden-form'
             )[0] || target.parentElement;
-        if (buttonType != "submit") {
+        if (buttonType != 'submit') {
             return;
         }
         var data = {};
         var postBackData = {};
         var isActionableForm =
-            form.className.indexOf("mck-actionable-form") != -1;
+            form.className.indexOf('mck-actionable-form') != -1;
         var postBackToKommunicate = isActionableForm
             ? JSON.parse(target.dataset.postBackToKommunicate.toLowerCase())
             : false;
@@ -560,36 +560,36 @@ Kommunicate.richMsgEventHandler = {
         var formElements = [];
         formElements = Array.prototype.concat.apply(
             formElements,
-            form.getElementsByTagName("input")
+            form.getElementsByTagName('input')
         );
         formElements = Array.prototype.concat.apply(
             formElements,
-            form.getElementsByTagName("select")
+            form.getElementsByTagName('select')
         );
         formElements = Array.prototype.concat.apply(
             formElements,
-            form.getElementsByTagName("textarea")
+            form.getElementsByTagName('textarea')
         );
-        var name = "";
-        var type = "";
-        var value = "";
+        var name = '';
+        var type = '';
+        var value = '';
         for (var i = 0; i < formElements.length; i++) {
             name = formElements[i].name;
             type = formElements[i].type;
             value = formElements[i].value;
             switch (type) {
-                case "radio":
+                case 'radio':
                     if (formElements[i].checked) {
                         data[name] = value;
                     }
                     break;
-                case "checkbox":
+                case 'checkbox':
                     if (formElements[i].checked) {
                         !data[name] && (data[name] = []);
                         data[name].push(value);
                     }
                     break;
-                case "select-one": //dropdown
+                case 'select-one': //dropdown
                     data[name] = value;
                     if (formElements[i].dataset.errorText) {
                         Kommunicate.richMsgEventHandler.handleFormErrorMessage(
@@ -598,7 +598,7 @@ Kommunicate.richMsgEventHandler = {
                             formElements[i].dataset.errorText,
                             !value
                         );
-                        validationResults.push(value ? "success" : "failed");
+                        validationResults.push(value ? 'success' : 'failed');
                     }
                     break;
                 default:
@@ -610,13 +610,13 @@ Kommunicate.richMsgEventHandler = {
                                 value
                             );
                             validationResults.push(
-                                validString ? "success" : "failed"
+                                validString ? 'success' : 'failed'
                             );
                             Kommunicate.richMsgEventHandler.handleFormErrorMessage(
                                 form,
                                 name,
                                 formElements[i].dataset.errorText ||
-                                    MCK_LABELS["rich.form"].errorText,
+                                    MCK_LABELS['rich.form'].errorText,
                                 !validString
                             );
                         }
@@ -632,17 +632,17 @@ Kommunicate.richMsgEventHandler = {
                 postBackData[name] = data[name];
             }
         }
-        if (isActionableForm && validationResults.indexOf("failed") != -1) {
+        if (isActionableForm && validationResults.indexOf('failed') != -1) {
             return;
         }
-        if (requestType == "json") {
+        if (requestType == 'json') {
             var xhr = new XMLHttpRequest();
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     // for success response : this.responseText
                 }
             };
-            xhr.open("POST", form.action);
+            xhr.open('POST', form.action);
             xhr.send(JSON.stringify(data));
         } else {
             !isActionableForm && form.submit(); // called for submit button
@@ -658,7 +658,7 @@ Kommunicate.richMsgEventHandler = {
 
         isActionableForm &&
             requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM &&
-            (msgMetadata["KM_CHAT_CONTEXT"] = { formData: data });
+            (msgMetadata['KM_CHAT_CONTEXT'] = { formData: data });
         var formDataMessageTemplate =
             postBackToKommunicate &&
             Kommunicate.markup.getFormDataMessageTemplate(postBackData);
@@ -668,56 +668,56 @@ Kommunicate.richMsgEventHandler = {
                 type: KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML,
             });
         Object.keys(msgMetadata).length > 0 &&
-            (messagePxy["metadata"] = msgMetadata);
+            (messagePxy['metadata'] = msgMetadata);
         (Object.keys(msgMetadata).length > 0 ||
             Object.keys(messagePxy).length > 0) &&
             Kommunicate.sendMessage(messagePxy);
     },
     handleFormErrorMessage: function (form, name, errorText, validationFailed) {
         var element = form.getElementsByClassName(
-            ("mck-form-error-" + name).toLowerCase().replace(/ +/g, "")
+            ('mck-form-error-' + name).toLowerCase().replace(/ +/g, '')
         )[0];
-        element.innerHTML = validationFailed ? errorText : "";
+        element.innerHTML = validationFailed ? errorText : '';
     },
     handlleSubmitPersonDetail: function (e) {
         var title = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-title-select option:selected")
+            .closest('.km-guest-details-container')
+            .find('.km-title-select option:selected')
             .text();
         var age = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-guest-detail-form input.km-age-input");
+            .closest('.km-guest-details-container')
+            .find('.km-guest-detail-form input.km-age-input');
         var fname = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-guest-detail-form input.first-name-input");
+            .closest('.km-guest-details-container')
+            .find('.km-guest-detail-form input.first-name-input');
         var mname = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-guest-detail-form input.middle-name-input");
+            .closest('.km-guest-details-container')
+            .find('.km-guest-detail-form input.middle-name-input');
         var lname = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-guest-detail-form input.last-name-input");
+            .closest('.km-guest-details-container')
+            .find('.km-guest-detail-form input.last-name-input');
         var email = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-guest-detail-form input.e-mail-input");
+            .closest('.km-guest-details-container')
+            .find('.km-guest-detail-form input.e-mail-input');
         var phone = $applozic(e.target)
-            .closest(".km-guest-details-container")
-            .find(".km-guest-detail-form input.number-input");
+            .closest('.km-guest-details-container')
+            .find('.km-guest-detail-form input.number-input');
 
         if (
-            fname[0].value == "" ||
-            lname[0].value == "" ||
-            email[0].value == "" ||
-            phone[0].value == ""
+            fname[0].value == '' ||
+            lname[0].value == '' ||
+            email[0].value == '' ||
+            phone[0].value == ''
         ) {
             $applozic(e.target)
-                .closest(".km-guest-details-container")
-                .find(".km-mandatory-field-error")
-                .removeClass("n-vis")
-                .addClass("vis");
+                .closest('.km-guest-details-container')
+                .find('.km-mandatory-field-error')
+                .removeClass('n-vis')
+                .addClass('vis');
             return;
         }
         var personDetail = {
-            Title: title === "title" ? "" : title,
+            Title: title === 'title' ? '' : title,
             Age: age[0].value,
             FirstName: fname[0].value,
             MiddleName: mname[0].value,
@@ -730,13 +730,13 @@ Kommunicate.richMsgEventHandler = {
         var messagePxy = {
             message:
                 personDetail.Title +
-                " " +
+                ' ' +
                 personDetail.FirstName +
-                " " +
+                ' ' +
                 personDetail.LastName +
-                "\n" +
+                '\n' +
                 personDetail.EmailId +
-                "\n" +
+                '\n' +
                 personDetail.PhoneNo,
             metadata: {
                 sessionId: sessionId,
@@ -746,7 +746,7 @@ Kommunicate.richMsgEventHandler = {
             },
         };
         Kommunicate.sendMessage(messagePxy);
-        console.log("passenger detail submitted");
+        console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
         var message = e.target.title;
@@ -761,14 +761,14 @@ Kommunicate.richMsgEventHandler = {
             metadata: metadata,
         };
         document
-            .getElementById("mck-text-box")
-            .setAttribute("data-quick-reply", true);
+            .getElementById('mck-text-box')
+            .setAttribute('data-quick-reply', true);
         Kommunicate.sendMessage(messagePxy);
 
         if (kommunicate._globals.hidePostCTA) {
             var siblingsArray = Kommunicate.getAllSiblings(e.target);
             var siblingContainsLink = siblingsArray.some((sibling) =>
-                sibling.classList.contains("km-link-button")
+                sibling.classList.contains('km-link-button')
             );
             !siblingContainsLink && Kommunicate.hideMessage(e.target);
         }
@@ -786,7 +786,7 @@ Kommunicate.richMsgEventHandler = {
         } catch (e) {}
         metadata.KM_FAQ_ID = articleId;
         metadata.source = source;
-        if (type && type == "quick_reply") {
+        if (type && type == 'quick_reply') {
             languageCode && Kommunicate.updateUserLanguage(languageCode);
             var messagePxy = {
                 message: reply, //message to send
@@ -794,7 +794,7 @@ Kommunicate.richMsgEventHandler = {
             };
 
             Kommunicate.sendMessage(messagePxy);
-        } else if (type && type == "submit") {
+        } else if (type && type == 'submit') {
             //TODO : support for post request with data.
         }
     },
@@ -806,7 +806,7 @@ Kommunicate.richMsgEventHandler = {
         var languageCode = target.dataset.languagecode;
         var metadata = (target.dataset && target.dataset.metadata) || {};
         metadata.KM_BUTTON_CLICKED = true;
-        if (type && type == "quick_reply") {
+        if (type && type == 'quick_reply') {
             languageCode && Kommunicate.updateUserLanguage(languageCode);
             var messagePxy = {
                 message: reply, //message to send
@@ -814,7 +814,7 @@ Kommunicate.richMsgEventHandler = {
             };
 
             Kommunicate.sendMessage(messagePxy);
-        } else if (type && type == "submit") {
+        } else if (type && type == 'submit') {
             //TODO : support for post request with data.
         }
     },
@@ -828,7 +828,7 @@ Kommunicate.richMsgEventHandler = {
 
         // default value for  metadata.skipBot is true for backward compatibility
         metadata.skipBot =
-            typeof metadata.skipBot != "undefined" ? metadata.skipBot : true;
+            typeof metadata.skipBot != 'undefined' ? metadata.skipBot : true;
         var messagePxy = {
             message: reply, //message to send
             metadata: metadata,

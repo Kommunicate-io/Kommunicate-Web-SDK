@@ -16,17 +16,17 @@ Kommunicate.client = {
      */
     getGroupDetailByType: function (options, callback) {
         var formData =
-            "type=" +
+            'type=' +
             options.type +
-            "&startIndex=" +
+            '&startIndex=' +
             options.startIndex +
-            "&limit=" +
+            '&limit=' +
             options.limit;
         window.Applozic.ALApiService.ajax({
-            url: MCK_BASE_URL + "/rest/ws/group/bytype",
-            type: "get",
+            url: MCK_BASE_URL + '/rest/ws/group/bytype',
+            type: 'get',
             data: formData,
-            contentType: "application/json",
+            contentType: 'application/json',
             success: function (result) {
                 callback(null, result);
             },
@@ -49,46 +49,46 @@ Kommunicate.client = {
      */
     createConversation: function (conversationDetail, callback) {
         var chatContext = $applozic.extend(
-            Kommunicate.getSettings("KM_CHAT_CONTEXT"),
+            Kommunicate.getSettings('KM_CHAT_CONTEXT'),
             conversationDetail.metadata
-                ? conversationDetail.metadata["KM_CHAT_CONTEXT"]
+                ? conversationDetail.metadata['KM_CHAT_CONTEXT']
                 : {}
         );
 
         var userLocale = kommunicate._globals.userLocale;
         var currentLanguage = {
             kmUserLocale: userLocale
-                ? userLocale.split("-")[0]
+                ? userLocale.split('-')[0]
                 : (
                       window.navigator.language || window.navigator.userLanguage
-                  ).split("-")[0],
+                  ).split('-')[0],
         };
         chatContext = $applozic.extend(chatContext, currentLanguage);
 
         var groupMetadata = {
-            CREATE_GROUP_MESSAGE: "",
-            REMOVE_MEMBER_MESSAGE: "",
-            ADD_MEMBER_MESSAGE: "",
-            JOIN_MEMBER_MESSAGE: "",
-            GROUP_NAME_CHANGE_MESSAGE: "",
-            GROUP_ICON_CHANGE_MESSAGE: "",
-            GROUP_LEFT_MESSAGE: "",
+            CREATE_GROUP_MESSAGE: '',
+            REMOVE_MEMBER_MESSAGE: '',
+            ADD_MEMBER_MESSAGE: '',
+            JOIN_MEMBER_MESSAGE: '',
+            GROUP_NAME_CHANGE_MESSAGE: '',
+            GROUP_ICON_CHANGE_MESSAGE: '',
+            GROUP_LEFT_MESSAGE: '',
             CONVERSATION_STATUS: -1,
-            DELETED_GROUP_MESSAGE: "",
-            GROUP_USER_ROLE_UPDATED_MESSAGE: "",
-            GROUP_META_DATA_UPDATED_MESSAGE: "",
+            DELETED_GROUP_MESSAGE: '',
+            GROUP_USER_ROLE_UPDATED_MESSAGE: '',
+            GROUP_META_DATA_UPDATED_MESSAGE: '',
             CONVERSATION_ASSIGNEE:
                 conversationDetail.assignee || conversationDetail.agentId,
             KM_CONVERSATION_TITLE: conversationDetail.groupName,
             //ALERT: "false",
-            HIDE: "true",
+            HIDE: 'true',
             SKIP_ROUTING: conversationDetail.skipRouting
                 ? conversationDetail.skipRouting
                 : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
             GROUP_CREATION_URL: parent.location.href,
         };
-        typeof conversationDetail.teamId != "undefined" &&
+        typeof conversationDetail.teamId != 'undefined' &&
             (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
         conversationDetail.metadata.KM_ORIGINAL_TITLE &&
             (groupMetadata.KM_ORIGINAL_TITLE = true);
@@ -118,10 +118,10 @@ Kommunicate.client = {
                 conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
                 if (
-                    response.status === "success" &&
+                    response.status === 'success' &&
                     response.data.clientGroupId
                 ) {
-                    if (typeof callback == "function") {
+                    if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
                     KommunicateUI.hideFaq();
@@ -148,11 +148,11 @@ Kommunicate.client = {
                 groupRole: 1,
             });
             groupOptions.users.push({
-                userId: "bot",
+                userId: 'bot',
                 groupRole: 2,
             });
         }
-        $applozic.fn.applozic("createGroup", groupOptions);
+        $applozic.fn.applozic('createGroup', groupOptions);
     },
     /**get the third party settings access key
      * @param {Object} options
@@ -164,12 +164,12 @@ Kommunicate.client = {
         $applozic.ajax({
             url:
                 Kommunicate.getBaseUrl() +
-                "/integration/settings/" +
+                '/integration/settings/' +
                 options.appId +
-                "?type=" +
+                '?type=' +
                 options.type,
-            type: "get",
-            contentType: "application/json",
+            type: 'get',
+            contentType: 'application/json',
             success: function (result) {
                 callback(null, result);
             },

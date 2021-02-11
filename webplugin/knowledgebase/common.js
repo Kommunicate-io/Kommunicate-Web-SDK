@@ -1,5 +1,5 @@
 (function (window) {
-    "use strict";
+    'use strict';
     function define_KMCommonUtils() {
         var KMCommonUtils = {};
 
@@ -18,27 +18,27 @@
             var responsedata;
             var asyn = true;
             var cttype;
-            if (typeof reqOptions.async !== "undefined" || options.async) {
+            if (typeof reqOptions.async !== 'undefined' || options.async) {
                 asyn = reqOptions.async;
             }
 
             var typ = reqOptions.type.toUpperCase();
 
-            if (typ === "GET" && typeof reqOptions.data !== "undefined") {
-                reqOptions.url = reqOptions.url + "?" + reqOptions.data;
+            if (typ === 'GET' && typeof reqOptions.data !== 'undefined') {
+                reqOptions.url = reqOptions.url + '?' + reqOptions.data;
             }
 
             request.open(typ, reqOptions.url, asyn);
-            if (typ === "POST" || typ === "GET") {
-                if (typeof reqOptions.contentType === "undefined") {
-                    cttype = "application/x-www-form-urlencoded; charset=UTF-8";
+            if (typ === 'POST' || typ === 'GET') {
+                if (typeof reqOptions.contentType === 'undefined') {
+                    cttype = 'application/x-www-form-urlencoded; charset=UTF-8';
                 } else {
                     cttype = reqOptions.contentType;
                 }
-                request.setRequestHeader("Content-Type", cttype);
+                request.setRequestHeader('Content-Type', cttype);
             }
 
-            if (typeof reqOptions.data === "undefined") {
+            if (typeof reqOptions.data === 'undefined') {
                 request.send();
             } else {
                 request.send(reqOptions.data);
@@ -49,22 +49,22 @@
                     if (request.status === 200) {
                         //success
                         var contType = request.getResponseHeader(
-                            "Content-Type"
+                            'Content-Type'
                         );
                         if (
-                            typeof contType === "undefined" ||
-                            contType === "null" ||
+                            typeof contType === 'undefined' ||
+                            contType === 'null' ||
                             contType === null
                         ) {
-                            contType = "";
+                            contType = '';
                         }
 
-                        if (contType.toLowerCase().indexOf("text/html") != -1) {
+                        if (contType.toLowerCase().indexOf('text/html') != -1) {
                             responsedata = request.responseXML;
                         } else if (
                             contType
                                 .toLowerCase()
-                                .indexOf("application/json") != -1
+                                .indexOf('application/json') != -1
                         ) {
                             responsedata = JSON.parse(request.responseText);
                         } else {
@@ -82,9 +82,9 @@
         return KMCommonUtils;
     }
     //define globally if it doesn't already exist
-    if (typeof KMCommonUtils === "undefined") {
+    if (typeof KMCommonUtils === 'undefined') {
         window.KMCommonUtils = define_KMCommonUtils();
     } else {
-        console.log("KMCommonUtils already defined.");
+        console.log('KMCommonUtils already defined.');
     }
 })(window);
