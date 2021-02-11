@@ -4317,7 +4317,7 @@ var userOverride = {
                 ).onclick = function (e) {
                     e.preventDefault();
                     userOverride.voiceOutput = !userOverride.voiceOutput;
-                    KommunicateUI.toggleVoiceOutputOverride(voiceOutput);
+                    KommunicateUI.toggleVoiceOutputOverride(userOverride.voiceOutput);
                 };
 
                 //----------------------------------------------------------------
