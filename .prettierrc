@@ -6,5 +6,4 @@
     "singleQuote": false,
     "insertPragma": false,
     "requirePragma": false,
-    "proseWrap": "never"
 }
