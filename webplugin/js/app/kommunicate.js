@@ -535,5 +535,29 @@ $applozic.extend(true,Kommunicate,{
             return false;
         }
         return true;
-    }
+    },
+    hideMessage: function (element) {
+        if (!element) {
+            return;
+        }
+        var parentEle = element.parentElement;
+        while (!parentEle.classList.contains("mck-msg-left")) {
+            parentEle = parentEle.parentElement;
+        }
+        parentEle.classList.add("n-vis");
+    },
+    getAllSiblings: function (element) {
+        var siblings = []; 
+        if (!element || !element.parentNode) {
+            return siblings;
+        }
+        var sibling  = element.parentNode.firstChild;
+        while (sibling) {
+            if (sibling.nodeType === 1 && sibling !== element) {
+                siblings.push(sibling);
+            }
+            sibling = sibling.nextSibling;
+        }
+        return siblings;
+    },
 });
