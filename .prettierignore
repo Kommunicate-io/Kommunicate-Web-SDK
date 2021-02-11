@@ -1,0 +1,3 @@
+webplugin/lib/js/*
+webplugin/build/*
+*.min.js
