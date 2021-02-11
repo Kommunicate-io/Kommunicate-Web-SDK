@@ -45,7 +45,6 @@ Kommunicate.mediaService = {
     voiceOutputIncomingMessage: function (message) {
         // get appoptions
         var appOptions = KommunicateUtils.getDataFromKmSession("appOptions") || applozic._globals;
-
         // If the message isn't part of the UI, it's not included
         // in voiceoutput either
         if (!appOptions || !Kommunicate.visibleMessage(message)) return;

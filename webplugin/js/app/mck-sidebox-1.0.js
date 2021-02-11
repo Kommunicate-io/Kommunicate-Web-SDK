@@ -14,6 +14,9 @@ var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
+var userOverride = {
+    voiceOutput: true
+};
 
 (function ($applozic, w, d) {
     "use strict";
@@ -463,6 +466,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
+        var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1 : MCK_LABELS['emoji.hover.text'].poor,
             5 : MCK_LABELS['emoji.hover.text'].average,
@@ -2988,6 +2992,13 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     KommunicateUI.triggerCSAT();
                 };
 
+                // Voice Output Override trigger
+                document.getElementById("user-overide-voice-output").onclick = function(e){
+                    e.preventDefault();
+                    userOverride.voiceOutput = !userOverride.voiceOutput;
+                    KommunicateUI.toggleVoiceOutputOverride(voiceOutput);
+                }
+
                 //----------------------------------------------------------------
 
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -4877,6 +4888,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList({ id: ["km-csat-trigger"] }, "", "n-vis");
                 }
+
+                // For voice output user override
+                if (VOICE_OUTPUT_ENABLED){
+                    enableDropdown = true;
+                    KommunicateUI.toggleVoiceOutputOverride(userOverride.voiceOutput)
+                    kommunicateCommons.modifyClassList({ id: ["user-overide-voice-output"] }, "", "n-vis");
+                }
+                
                 // For toggling display of three dot button (Dropdown btn)
                 enableDropdown && kommunicateCommons.modifyClassList({id: ["km-widget-options"]}, "", "n-vis");
             };
@@ -9925,17 +9944,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                             };
                         };
                         if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
-                            var messageFeed = mckMessageLayout.getMessageFeed(message);
-                            Kommunicate.KmEventHandler.onMessageReceived(message);
-                            // events.onMessageReceived({
-                            //     'message': messageFeed
-                            // });
+                            var messageCopy = JSON.parse(JSON.stringify(message));
+                            messageCopy.userOverride = userOverride
+                            Kommunicate.KmEventHandler.onMessageReceived(messageCopy);
                         } else if (messageType === "APPLOZIC_02") {
-                            var messageFeed = mckMessageLayout.getMessageFeed(message);
                             Kommunicate.KmEventHandler.onMessageSent(message);
-                            // events.onMessageSent({
-                            //     'message': messageFeed
-                            // });
                         }
                         if (message.conversationId) {
                             var conversationPxy = MCK_CONVERSATION_MAP[message.conversationId];
