@@ -9926,19 +9926,11 @@ var userOverride = {
                             };
                         };
                         if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
-                            // var messageFeed = mckMessageLayout.getMessageFeed(message);
                             var messageCopy = JSON.parse(JSON.stringify(message));
                             messageCopy.userOverride = userOverride
                             Kommunicate.KmEventHandler.onMessageReceived(messageCopy);
-                            // events.onMessageReceived({
-                            //     'message': messageFeed
-                            // });
                         } else if (messageType === "APPLOZIC_02") {
-                            // var messageFeed = mckMessageLayout.getMessageFeed(message);
                             Kommunicate.KmEventHandler.onMessageSent(message);
-                            // events.onMessageSent({
-                            //     'message': messageFeed
-                            // });
                         }
                         if (message.conversationId) {
                             var conversationPxy = MCK_CONVERSATION_MAP[message.conversationId];
