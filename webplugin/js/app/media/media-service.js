@@ -69,6 +69,14 @@ Kommunicate.mediaService = {
             if (textToSpeak) {
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = appOptions.language || "en-US";
+                utterance.rate = appOptions.voiceRate || 1;
+                if (appOptions.voiceName) {
+                    speechSynthesis.getVoices().forEach(voice => {
+                        if(voice.name == appOptions.voiceName) {
+                            utterance.voice = voice;
+                        }
+                    })
+                }
                 utterance.onerror = function (event) {
                     if (event.error !== "not-allowed") {
                     throw new Error("Error while converting the message to voice.", event.error);
