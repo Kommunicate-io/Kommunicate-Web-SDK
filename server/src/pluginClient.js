@@ -1,12 +1,12 @@
 const config = require("../config/config-env");
-const FormData = require('form-data');
-const fs = require('fs');
-const fetch = require('node-fetch');
-const path = require('path');
-const argv = require('minimist')(process.argv.slice(2));
+const FormData = require("form-data");
+const fs = require("fs");
+const fetch = require("node-fetch");
+const path = require("path");
+const argv = require("minimist")(process.argv.slice(2));
 const KOMMUNICATE_BASE_URL = config.urls.kommunicateBaseUrl;
 const AWS = config.thirdPartyIntegration.aws;
-const FILE_UPLOAD_PATH =  argv && argv.path;
+const FILE_UPLOAD_PATH = argv && argv.path;
 /*
     We're using node-fetch to upload files for web-plugin server.
     What is node-fetch ?
@@ -26,9 +26,14 @@ const FILE_UPLOAD_PATH =  argv && argv.path;
 */
 exports.upload = async (buildDir, version) => {
     try {
-        let buildFolder = fs.readdirSync(path.resolve(__dirname, '../../webplugin/build'));
+        let buildFolder = fs.readdirSync(
+            path.resolve(__dirname, "../../webplugin/build")
+        );
         for (let file of buildFolder) {
-            var filePath = path.resolve(__dirname, (buildDir + '/' + file).toString())
+            var filePath = path.resolve(
+                __dirname,
+                (buildDir + "/" + file).toString()
+            );
             console.log(filePath);
             await uploadFileToS3(filePath, version);
         }
@@ -41,24 +46,27 @@ const uploadFileToS3 = async (filePath, folderName) => {
     try {
         let uploadUrl = KOMMUNICATE_BASE_URL + FILE_UPLOAD_PATH;
         let fileStream = fs.createReadStream(filePath);
-        fileStream.on('error', function (err) {
-            console.log('Error while reading file data', err);
+        fileStream.on("error", function (err) {
+            console.log("Error while reading file data", err);
         });
         let form = new FormData();
-        form.append('key', folderName);
-        form.append('bucket', AWS.bucket);
-        form.append('cacheControl', 'max-age=2628000');
-        form.append('file', fileStream);
+        form.append("key", folderName);
+        form.append("bucket", AWS.bucket);
+        form.append("cacheControl", "max-age=2628000");
+        form.append("file", fileStream);
 
         await fetch(uploadUrl, {
-            method: 'POST',
+            method: "POST",
             headers: form.getHeaders(),
-            body: form
-        }).then(res => res.json()).then(json => {
-            console.log(json);
-        }).catch(error => {
-            throw error;
-        });
+            body: form,
+        })
+            .then((res) => res.json())
+            .then((json) => {
+                console.log(json);
+            })
+            .catch((error) => {
+                throw error;
+            });
     } catch (error) {
         throw error;
     }

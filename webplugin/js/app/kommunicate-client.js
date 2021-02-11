@@ -1,34 +1,41 @@
 /**
- * all network call. 
+ * all network call.
  * methods take parameters, make network call, and execute call back on success/error.
  * all methods are attached to Kommunicate.client
  */
 
-Kommunicate.client={
-     /**
-    * Get the group detail by type. 
-    * @param {object} options
-    * @param {number} options.type type of groups to be fetched.
-    * @param {number} options.startIndex start Index of the result
-    * @param {number} options.limit number of records starting from start index. 
-    * @param {function} callback callback in error first style
-    * 
-    */
-     getGroupDetailByType: function(options,callback){
-        var formData = "type=" + options.type + "&startIndex=" +options.startIndex + "&limit=" + options.limit;
+Kommunicate.client = {
+    /**
+     * Get the group detail by type.
+     * @param {object} options
+     * @param {number} options.type type of groups to be fetched.
+     * @param {number} options.startIndex start Index of the result
+     * @param {number} options.limit number of records starting from start index.
+     * @param {function} callback callback in error first style
+     *
+     */
+    getGroupDetailByType: function (options, callback) {
+        var formData =
+            "type=" +
+            options.type +
+            "&startIndex=" +
+            options.startIndex +
+            "&limit=" +
+            options.limit;
         window.Applozic.ALApiService.ajax({
             url: MCK_BASE_URL + "/rest/ws/group/bytype",
             type: "get",
             data: formData,
             contentType: "application/json",
             success: function (result) {
-                callback(null,result);
-            },error:function(err){
+                callback(null, result);
+            },
+            error: function (err) {
                 callback(err);
-            }
+            },
         });
-     },
-   
+    },
+
     /**
      * create a group in applozic and Kommunicate db
      * @param {Object} conversationDetail
@@ -40,12 +47,21 @@ Kommunicate.client={
      * @param {Boolean} conversationDetail.isMessage
      * @param {Boolean} conversationDetail.isInternal
      */
-     createConversation : function(conversationDetail,callback){
-        var chatContext =  $applozic.extend(Kommunicate.getSettings("KM_CHAT_CONTEXT"),conversationDetail.metadata ?conversationDetail.metadata["KM_CHAT_CONTEXT"]:{});
+    createConversation: function (conversationDetail, callback) {
+        var chatContext = $applozic.extend(
+            Kommunicate.getSettings("KM_CHAT_CONTEXT"),
+            conversationDetail.metadata
+                ? conversationDetail.metadata["KM_CHAT_CONTEXT"]
+                : {}
+        );
 
         var userLocale = kommunicate._globals.userLocale;
         var currentLanguage = {
-            'kmUserLocale': userLocale ? userLocale.split("-")[0] : (window.navigator.language || window.navigator.userLanguage).split('-')[0]
+            kmUserLocale: userLocale
+                ? userLocale.split("-")[0]
+                : (
+                      window.navigator.language || window.navigator.userLanguage
+                  ).split("-")[0],
         };
         chatContext = $applozic.extend(chatContext, currentLanguage);
 
@@ -61,21 +77,32 @@ Kommunicate.client={
             DELETED_GROUP_MESSAGE: "",
             GROUP_USER_ROLE_UPDATED_MESSAGE: "",
             GROUP_META_DATA_UPDATED_MESSAGE: "",
-            CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
+            CONVERSATION_ASSIGNEE:
+                conversationDetail.assignee || conversationDetail.agentId,
             KM_CONVERSATION_TITLE: conversationDetail.groupName,
             //ALERT: "false",
             HIDE: "true",
-            SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : false,
+            SKIP_ROUTING: conversationDetail.skipRouting
+                ? conversationDetail.skipRouting
+                : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
-            GROUP_CREATION_URL: parent.location.href
+            GROUP_CREATION_URL: parent.location.href,
         };
-        typeof conversationDetail.teamId != "undefined"  && (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
-        conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
-        conversationDetail.skipBotEvent && (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
-        conversationDetail.customWelcomeEvent && (groupMetadata.CUSTOM_WELCOME_EVENT = conversationDetail.customWelcomeEvent);
+        typeof conversationDetail.teamId != "undefined" &&
+            (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
+        conversationDetail.metadata.KM_ORIGINAL_TITLE &&
+            (groupMetadata.KM_ORIGINAL_TITLE = true);
+        conversationDetail.skipBotEvent &&
+            (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
+        conversationDetail.customWelcomeEvent &&
+            (groupMetadata.CUSTOM_WELCOME_EVENT =
+                conversationDetail.customWelcomeEvent);
 
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
-        conversationDetail.metadata && conversationDetail.metadata.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE);
+        conversationDetail.metadata &&
+            conversationDetail.metadata.WELCOME_MESSAGE &&
+            (groupMetadata.WELCOME_MESSAGE =
+                conversationDetail.metadata.WELCOME_MESSAGE);
 
         var groupOptions = {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
@@ -87,10 +114,14 @@ Kommunicate.client={
             isMessage: conversationDetail.isMessage,
             isInternal: conversationDetail.isInternal,
             metadata: groupMetadata,
-            allowMessagesViaSocket: conversationDetail.allowMessagesViaSocket || false,
+            allowMessagesViaSocket:
+                conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
-                if (response.status === 'success' && response.data.clientGroupId) {
-                    if (typeof callback == 'function') {
+                if (
+                    response.status === "success" &&
+                    response.data.clientGroupId
+                ) {
+                    if (typeof callback == "function") {
                         callback(response.data.value);
                     }
                     KommunicateUI.hideFaq();
@@ -108,39 +139,43 @@ Kommunicate.client={
                          }
                      })*/
                 }
-            }
+            },
         };
         if (conversationDetail.agentId && groupMetadata.SKIP_ROUTING) {
             groupOptions.admin = conversationDetail.agentId;
             groupOptions.users.push({
                 userId: conversationDetail.agentId,
-                groupRole: 1
+                groupRole: 1,
             });
             groupOptions.users.push({
                 userId: "bot",
-                groupRole: 2
+                groupRole: 2,
             });
         }
         $applozic.fn.applozic("createGroup", groupOptions);
-     },
-     /**get the third party settings access key
-      * @param {Object} options
-      * @param {String} options.appId
-      * @param {Number} options.type
-      * @param {function} callback
-      */
-     getThirdPartySettings:function(options,callback){
+    },
+    /**get the third party settings access key
+     * @param {Object} options
+     * @param {String} options.appId
+     * @param {Number} options.type
+     * @param {function} callback
+     */
+    getThirdPartySettings: function (options, callback) {
         $applozic.ajax({
-            url:  Kommunicate.getBaseUrl()+ "/integration/settings/"+options.appId+"?type="+options.type,
+            url:
+                Kommunicate.getBaseUrl() +
+                "/integration/settings/" +
+                options.appId +
+                "?type=" +
+                options.type,
             type: "get",
             contentType: "application/json",
             success: function (result) {
-                callback(null,result);
-            },error:function(err){
+                callback(null, result);
+            },
+            error: function (err) {
                 callback(err);
-            }
-        });  
-
-     }
- }
-
+            },
+        });
+    },
+};

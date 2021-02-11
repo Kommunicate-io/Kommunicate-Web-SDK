@@ -1,22 +1,23 @@
 (function (window) {
-    'use strict';
+    "use strict";
     function define_KommunicateKB() {
         var KommunicateKB = {};
         var KM_API_URL = "https://api.kommunicate.io";
         var KB_URL = "/kb/search?appId=:appId";
-        var SOURCES = {kommunicate : 'KOMMUNICATE'};
-        var SEARCH_ELASTIC = '/kb/_search';
+        var SOURCES = { kommunicate: "KOMMUNICATE" };
+        var SEARCH_ELASTIC = "/kb/_search";
 
         //KommunicateKB.init("https://api.kommunicate.io");
         KommunicateKB.init = function (url) {
             KM_API_URL = url;
-        }
+        };
 
         KommunicateKB.getArticles = function (options) {
             try {
                 var articles = [];
                 KommunicateKB.getFaqs({
-                    data: options.data, success: function (response) {
+                    data: options.data,
+                    success: function (response) {
                         for (var i = 0; i < response.data.length; i++) {
                             var article = response.data[i];
                             articles.push({
@@ -25,7 +26,7 @@
                                 description: article.content,
                                 status: article.status,
                                 body: article.content,
-                                source: SOURCES.kommunicate
+                                source: SOURCES.kommunicate,
                             });
                         }
                         if (options.success) {
@@ -34,21 +35,22 @@
                             res.data = articles;
                             options.success(res);
                         }
-                    }, error: function (err) {
-                        if (typeof options.error === 'function') {
+                    },
+                    error: function (err) {
+                        if (typeof options.error === "function") {
                             options.error(err);
                         }
-
-                    }
+                    },
                 });
             } catch (e) {
                 options.error(e);
             }
-        }
+        };
 
         KommunicateKB.getArticle = function (options) {
             KommunicateKB.getFaq({
-                data: options.data, success: function (response) {
+                data: options.data,
+                success: function (response) {
                     var faq = response.data.data[0];
 
                     var article = {
@@ -57,7 +59,7 @@
                         description: faq.content,
                         body: faq.content,
                         status: faq.status,
-                        source: SOURCES.kommunicate
+                        source: SOURCES.kommunicate,
                     };
 
                     if (options.success) {
@@ -66,11 +68,12 @@
                         res.data = article;
                         options.success(res);
                     }
-                }, error: function (e) {
+                },
+                error: function (e) {
                     options.error(e);
-                }
+                },
             });
-        }
+        };
 
         //KommunicateKB.getFaqs({data: {appId: 'kommunicate-support', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getFaqs = function (options) {
@@ -85,8 +88,9 @@
             var response = new Object();
             KMCommonUtils.ajax({
                 url: url,
-                async: (typeof options.async !== 'undefined') ? options.async : true,
-                type: 'get',
+                async:
+                    typeof options.async !== "undefined" ? options.async : true,
+                type: "get",
                 success: function (data) {
                     response.status = "success";
                     response.data = data.data;
@@ -100,59 +104,60 @@
                     if (options.error) {
                         options.error(response);
                     }
-                }
+                },
             });
-        }
+        };
 
         KommunicateKB.searchFaqs = function (options) {
             var data = {
                 query: {
-                  bool: {
-                    must: {
-                      multi_match: {
-                        query: options.data.query,
-                        type: "phrase_prefix",
-                        fields: ["content", "name"]
-                      }
+                    bool: {
+                        must: {
+                            multi_match: {
+                                query: options.data.query,
+                                type: "phrase_prefix",
+                                fields: ["content", "name"],
+                            },
+                        },
+                        filter: {
+                            bool: {
+                                must: [
+                                    {
+                                        term: {
+                                            "applicationId.keyword":
+                                                options.data.appId,
+                                        },
+                                    },
+                                    {
+                                        term: {
+                                            "type.keyword": "faq",
+                                        },
+                                    },
+                                    {
+                                        term: {
+                                            deleted: false,
+                                        },
+                                    },
+                                    {
+                                        term: {
+                                            "status.keyword": "published",
+                                        },
+                                    },
+                                ],
+                            },
+                        },
                     },
-                    filter: {
-                      bool: {
-                        must: [
-                          {
-                            term: {
-                              "applicationId.keyword": options.data.appId
-                            }
-                          },
-                          {
-                            term: {
-                              "type.keyword": "faq"
-                            }
-                          },
-                          {
-                            term: {
-                              deleted: false
-                            }
-                          },
-                          {
-                            term: {
-                              "status.keyword": "published"
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-              var url = KM_API_URL + SEARCH_ELASTIC;
-   
-   
+                },
+            };
+            var url = KM_API_URL + SEARCH_ELASTIC;
+
             var response = new Object();
             KMCommonUtils.ajax({
                 url: url,
-                async: (typeof options.async !== 'undefined') ? options.async : true,
-                type: 'post',
-                contentType: 'application/json',
+                async:
+                    typeof options.async !== "undefined" ? options.async : true,
+                type: "post",
+                contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function (data) {
                     response.status = "success";
@@ -167,9 +172,9 @@
                     if (options.error) {
                         options.error(response);
                     }
-                }
+                },
             });
-        }      
+        };
 
         //KommunicateKB.getFaq({data: {appId: 'kommunicate-support', articleId: 1}, success: function(response) {console.log(response);}, error: function() {}});
         //Note: server side not supported yet
@@ -177,14 +182,15 @@
             var response = new Object();
 
             var url = KM_API_URL + KB_URL.replace(":appId", options.data.appId);
-            if(options.data && options.data.articleId){
+            if (options.data && options.data.articleId) {
                 url += "&articleId=" + options.data.articleId;
             }
 
             KMCommonUtils.ajax({
                 url: url,
-                async: (typeof options.async !== 'undefined') ? options.async : true,
-                type: 'get',
+                async:
+                    typeof options.async !== "undefined" ? options.async : true,
+                type: "get",
                 success: function (data) {
                     response.status = "success";
                     response.data = data;
@@ -198,17 +204,16 @@
                     if (options.error) {
                         options.error(response);
                     }
-                }
+                },
             });
-        }
+        };
 
         return KommunicateKB;
     }
     //define globally if it doesn't already exist
-    if (typeof (KommunicateKB) === 'undefined') {
+    if (typeof KommunicateKB === "undefined") {
         window.KommunicateKB = define_KommunicateKB();
-    }
-    else {
+    } else {
         console.log("KommunicateKB already defined.");
     }
 })(window);
