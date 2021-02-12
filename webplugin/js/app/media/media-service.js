@@ -70,7 +70,7 @@ Kommunicate.mediaService = {
                 utterance.lang = appOptions.language || "en-US";
                 utterance.rate = appOptions.voiceRate || 1;
                 if (appOptions.voiceName) {
-                    speechSynthesis.getVoices().forEach(voice => {
+                    AVAILABLE_VOICES_FOR_TTS.forEach(voice => {
                         if(voice.name == appOptions.voiceName) {
                             utterance.voice = voice;
                         }
