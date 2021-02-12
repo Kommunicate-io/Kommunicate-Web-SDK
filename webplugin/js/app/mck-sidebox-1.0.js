@@ -13,6 +13,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
+var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
 (function ($applozic, w, d) {
@@ -654,6 +655,17 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             document.addEventListener('mousedown', function(e) {
                 document.body.classList.remove("accesibility");
             });
+
+            // the browser call getVoices is async
+            // so we are updating the array whenever they're available
+            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
+                AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = function () {
+                        AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
+                    };
+                  }
+            }
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
