@@ -5,4 +5,4 @@ Kommunicate.initilizeEventListners = function () {
     w.addEventListener('offline', function () {
         Kommunicate.internetStatus = false;
     });
-}
+};

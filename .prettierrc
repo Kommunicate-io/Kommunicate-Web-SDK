@@ -3,8 +3,7 @@
     "tabWidth": 4,
     "semi": true,
     "quoteProps": "consistent",
-    "singleQuote": false,
+    "singleQuote": true,
     "insertPragma": false,
     "requirePragma": false,
-    "proseWrap": "never"
 }
