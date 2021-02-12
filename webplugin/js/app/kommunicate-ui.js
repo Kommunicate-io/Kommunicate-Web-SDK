@@ -694,9 +694,9 @@ handleAttachmentIconVisibility : function(enableAttachment, msg, groupReloaded) 
                     if (res.status === "success") {
                         WAITING_QUEUE = res.response;
                         var isGroupPresentInWaitingQueue = WAITING_QUEUE.indexOf(parseInt(groupId))>-1;
-                        var waitingQueueNumber = document.getElementById('waiting-queue-number');
-                        if (waitingQueueNumber && waitingStatus && isGroupPresentInWaitingQueue && WAITING_QUEUE.length) {
-                            waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
+                        // var waitingQueueNumber = document.getElementById('waiting-queue-number');
+                        if (waitingStatus && isGroupPresentInWaitingQueue && WAITING_QUEUE.length) {
+                            // waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
                             kommunicateCommons.modifyClassList({
                                 id: ["mck-waiting-queue"]
                             }, "vis", "n-vis");
