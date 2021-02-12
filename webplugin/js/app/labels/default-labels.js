@@ -165,7 +165,7 @@ Kommunicate.defaultLabels = {
     'waiting.queue.message': {
         'first.Part': 'You are currently',
         'waiting.queue.number': '5',
-        'last.part': ' in the waiting queue, our agents will get back you shortly.'
+        'last.part': ' in the waiting queue, our agents will get back to you shortly.'
     },
     'conversation.header.dropdown': {
         'CSAT_RATING_TEXT': 'Rate this conversation'
