@@ -70,10 +70,15 @@ Kommunicate.mediaService = {
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = appOptions.language || "en-US";
                 utterance.rate = appOptions.voiceRate || 1;
+                var skipForEach = false;
                 if (appOptions.voiceName) {
                     AVAILABLE_VOICES_FOR_TTS.forEach(voice => {
+                        if (skipForEach) {
+                            return;
+                        }
                         if(voice.name == appOptions.voiceName) {
                             utterance.voice = voice;
+                            skipForEach = true;
                         }
                     })
                 }
