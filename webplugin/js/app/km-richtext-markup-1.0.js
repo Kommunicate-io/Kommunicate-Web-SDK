@@ -248,11 +248,11 @@ Kommunicate.markup = {
         }
     },
     getQuickRepliesTemplate: function () {
-        return `<div class="km-cta-multi-button-container">
+        return `
             {{#payload}}
                  <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}">{{title}}</button>
             {{/payload}}
-            </div>`;
+            `;
     },
     getGenericSuggestedReplyButton: function () {
         return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{name}}</button>`;
@@ -374,7 +374,7 @@ Kommunicate.markup = {
             <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
             <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
             </div>
-            <div class="km-carousel-card-footer">{{{footer}}}</div>
+            <div class="km-carousel-card-footer"><div class="km-cta-multi-button-container">{{{footer}}}</div></div>
             </div>
             {{/payload}}
         </div>`;
