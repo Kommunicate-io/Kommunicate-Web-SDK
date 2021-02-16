@@ -134,27 +134,64 @@ getRoomDetailTemplate: function (options, sessionId) {
 getButtonTemplate:function(options,requestType, buttonClass){
     var linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
 
-    if(options.type=="link"){
-        return'<button aria-label="' + (options.replyText || options.name) + '" title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-buttontype="button" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
-    }else{
-        return'<button aria-label="' + (options.replyText || (options.action && options.action.message)||options.name) + '" title= "'+ (options.replyText || (options.action && options.action.message)||options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
-    }
-},
-getQuickRepliesTemplate:function(){
-    return`
+        if (options.type == 'link') {
+            return (
+                '<button aria-label="' +
+                (options.replyText || options.name) +
+                '" title= "' +
+                (options.replyText || options.name) +
+                '" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link ' +
+                buttonClass +
+                '  " data-url="' +
+                encodeURI(options.url) +
+                '  " data-metadata="' +
+                options.replyMetadata +
+                '" data-buttontype="button" data-target="' +
+                Kommunicate.markup.getLinkTarget(options) +
+                '" ">' +
+                options.name +
+                '' +
+                linkSvg +
+                '</button>'
+            );
+        } else {
+            return (
+                '<button aria-label="' +
+                (options.replyText ||
+                    (options.action && options.action.message) ||
+                    options.name) +
+                '" title= "' +
+                (options.replyText ||
+                    (options.action && options.action.message) ||
+                    options.name) +
+                '" data-metadata="' +
+                options.replyMetadata +
+                '" data-buttontype="submit" data-requesttype= "' +
+                requestType +
+                '" class="km-cta-button km-custom-widget-text-color  ' +
+                buttonClass +
+                ' ">' +
+                options.name +
+                '</button>'
+            );
+        }
+    },
+    getQuickRepliesTemplate: function () {
+        return `
             {{#payload}}
                  <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}">{{title}}</button>
             {{/payload}}
             `;
-},
-getGenericSuggestedReplyButton : function(){
-    return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{name}}</button>`
-},
-getPassangerDetail : function(options){
-    if(!options.sessionId){
-       console.log("sessionId not present in message..") 
-    }
-    return `  <div class="km-guest-details-container km-rich-text-default-container">
+    },
+    getGenericSuggestedReplyButton: function () {
+        return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{name}}</button>`;
+    },
+    getPassangerDetail: function (options) {
+        if (!options.sessionId) {
+            console.log('sessionId not present in message..');
+        }
+        return (
+            `  <div class="km-guest-details-container km-rich-text-default-container">
                 <div class="km-guest-detail-form">
                     <div class= "km-select-title">    
                         <select name="title" class="km-title-select">
