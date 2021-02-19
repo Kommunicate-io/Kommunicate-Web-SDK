@@ -4961,7 +4961,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $mck_typing_label.html(MCK_LABELS['typing']);
                 $mck_msg_inner.data('isgroup', params.isGroup);
                 $mck_msg_inner.data('datetime', '');
-                document.getElementById('mck-char-warning') && document.getElementById('mck-char-warning').classList.add('n-vis');
+                document.getElementById('mck-char-warning') &&
+                    document
+                        .getElementById('mck-char-warning')
+                        .classList.add('n-vis');
+                kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
