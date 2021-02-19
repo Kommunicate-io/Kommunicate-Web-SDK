@@ -5131,11 +5131,20 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var $scrollToDiv = $mck_msg_inner.children("div[name='message']:first");
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isGroup = $mck_msg_inner.data('isgroup');
-                var enableAttachment = "";
-                append  = typeof append !=="undefined" ? append: false;
-                var contact = (isGroup) ? mckGroupUtils.getGroup(tabId) : mckMessageLayout.fetchContact(tabId);
-                scroll && $mck_msg_inner.data('last-message-received-time', data.message[0].createdAtTime)
-                allowReload  && (scroll = false);
+                var enableAttachment = '';
+                append = typeof append !== 'undefined' ? append : false;
+                var contact = isGroup
+                    ? mckGroupUtils.getGroup(tabId)
+                    : mckMessageLayout.fetchContact(tabId);
+                scroll &&
+                    $mck_msg_inner.data(
+                        'last-message-received-time',
+                        data.message[0].createdAtTime
+                    );
+                if (allowReload){
+                    scroll = false;
+                    data && data.message && (data.message = data.message.reverse());
+                }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
                     messageArray.push(data.message);
@@ -5145,9 +5154,23 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
-                        if (!(typeof message.to === 'undefined')) { 
-                            !enableAttachment && (enableAttachment = (typeof message.metadata === "object" &&  message.metadata.KM_ENABLE_ATTACHMENT) ? message.metadata.KM_ENABLE_ATTACHMENT :"");
-                            _this.addMessage(message, contact, append, false, isValidated, enableAttachment);
+                        if (!(typeof message.to === 'undefined')) {
+                            !enableAttachment &&
+                                (enableAttachment =
+                                    typeof message.metadata === 'object' &&
+                                    message.metadata.KM_ENABLE_ATTACHMENT
+                                        ? message.metadata.KM_ENABLE_ATTACHMENT
+                                        : '');
+                            _this.addMessage(
+                                message,
+                                contact,
+                                append,
+                                false,
+                                isValidated,
+                                enableAttachment,
+                                null,
+                                allowReload
+                            );
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
                             allowReload && !scroll && message.contentType != 10 && (scroll = true)
@@ -5252,7 +5275,16 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 });
             }
 
-            _this.addMessage = function(msg, contact, append, scroll, appendContextMenu, enableAttachment, callback) {
+            _this.addMessage = function (
+                msg,
+                contact,
+                append,
+                scroll,
+                appendContextMenu,
+                enableAttachment,
+                callback,
+                allowReload
+            ) {
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -5395,7 +5427,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     var progressMeter = attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey ? Kommunicate.messageTemplate.getProgressMeterContanier(msg.key) : "";
                 }
                 var botMessageDelayClass = 'vis';
-                if(append && MCK_BOT_MESSAGE_DELAY !== 0 && mckMessageLayout.isMessageSentByBot(msg, contact)) {
+                if (
+                    append &&
+                    MCK_BOT_MESSAGE_DELAY !== 0 &&
+                    (!allowReload && mckMessageLayout.isMessageSentByBot(msg, contact))
+                ) {
                     botMessageDelayClass = 'n-vis';
                 }
                 // if (!richText && !attachment && messageClass == "n-vis"){
