@@ -7866,7 +7866,10 @@ var userOverride = {
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
-                allowReload && (scroll = false);
+                if (allowReload){
+                    scroll = false;
+                    data && data.message && (data.message = data.message.reverse());
+                }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
                     messageArray.push(data.message);
@@ -7895,7 +7898,9 @@ var userOverride = {
                                 append,
                                 false,
                                 isValidated,
-                                enableAttachment
+                                enableAttachment,
+                                null,
+                                allowReload
                             );
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
@@ -8061,7 +8066,8 @@ var userOverride = {
                 scroll,
                 appendContextMenu,
                 enableAttachment,
-                callback
+                callback,
+                allowReload
             ) {
                 var metadatarepiledto = '';
                 var replymessage = '';
@@ -8319,7 +8325,7 @@ var userOverride = {
                 if (
                     append &&
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
-                    mckMessageLayout.isMessageSentByBot(msg, contact)
+                    (!allowReload && mckMessageLayout.isMessageSentByBot(msg, contact))
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
