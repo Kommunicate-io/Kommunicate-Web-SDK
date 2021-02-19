@@ -7607,6 +7607,7 @@ var userOverride = {
                     document
                         .getElementById('mck-char-warning')
                         .classList.add('n-vis');
+                kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
