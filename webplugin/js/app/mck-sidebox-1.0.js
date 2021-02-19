@@ -453,7 +453,16 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var isUserDeleted = false;
         var mckVideoCallringTone = null;
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
-        var KM_PRELEAD_COLLECTION =mckMessageService.checkArray(appOptions.preLeadCollection) ? appOptions.preLeadCollection:[];
+        if(appOptions.preLeadCollection){
+            var KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.preLeadCollection);
+        }
+        else if(appOptions.appSettings.leadCollection && appOptions.appSettings.collectLead){
+            var KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.appSettings.leadCollection);
+        }
+        else{
+            appOptions.preLeadCollection=[];
+            var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection;
+        }
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -2074,7 +2083,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     obj['placeholder'] =LEAD_COLLECTION_LABEL[KM_ASK_USER_DETAILS[i]]||"";
                     obj['required'] =true;
                     KM_PRELEAD_COLLECTION.push(obj);
-                    }
+                    }   
                 }
             };
             _this.addLeadCollectionInputDiv = function() {
@@ -2105,7 +2114,11 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var tabTitle =  document.getElementById('km-tab-title');
                 submitLogin.innerHTML= LEAD_COLLECTION_LABEL.submit;
                 submitLogin.setAttribute("aria-label", LEAD_COLLECTION_LABEL.submit);
-                leadCollectionHeading.innerHTML= LEAD_COLLECTION_LABEL.heading;   
+                if(appOptions.preLeadCollection){
+                    leadCollectionHeading.innerHTML= LEAD_COLLECTION_LABEL.heading;
+                }else{
+                    leadCollectionHeading.innerHTML= appOptions.appSettings.chatWidget.preChatGreetingMsg;   
+                }
                 leadCollectionHeading.setAttribute("aria-label", LEAD_COLLECTION_LABEL.heading);
                 tabTitle.innerHTML = LEAD_COLLECTION_LABEL.title;
                 tabTitle.setAttribute("aria-label", LEAD_COLLECTION_LABEL.title);

@@ -351,6 +351,7 @@ function ApplozicSidebox() {
             options.attachment = options.attachment != null ? options.attachment : (widgetSettings && widgetSettings.attachment);
             KommunicateUtils.deleteDataFromKmSession("settings");
 
+
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
                 var details = KommunicateUtils.getItemFromLocalStorage(applozic._globals.appId) || {};
