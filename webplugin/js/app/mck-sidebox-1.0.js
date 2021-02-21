@@ -453,15 +453,16 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var isUserDeleted = false;
         var mckVideoCallringTone = null;
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
+        var KM_PRELEAD_COLLECTION;
         if(appOptions.preLeadCollection){
-            var KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.preLeadCollection);
+            KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.preLeadCollection);
         }
         else if(appOptions.appSettings.leadCollection && appOptions.appSettings.collectLead){
-            var KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.appSettings.leadCollection);
+            KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.appSettings.leadCollection);
         }
         else{
             appOptions.preLeadCollection=[];
-            var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection;
+            KM_PRELEAD_COLLECTION = appOptions.preLeadCollection;
         }
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
