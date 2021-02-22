@@ -461,7 +461,7 @@ $applozic.extend(true, Kommunicate, {
                     return sliderClass;
                     break;
                 case '6':
-                    return 'km-border-less-container';
+                    return 'km-border-less-container km-cta-multi-button-container';
                     break;
 
                 default:

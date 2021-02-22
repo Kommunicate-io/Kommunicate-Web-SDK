@@ -250,7 +250,7 @@ Kommunicate.markup = {
     getQuickRepliesTemplate: function () {
         return `
             {{#payload}}
-                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}">{{title}}</button>
+                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{title}}</button>
             {{/payload}}
             `;
     },
@@ -577,6 +577,7 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (
 ) {
     var payload = JSON.parse(options.payload);
     var buttonClass;
+    var hidePostCTA = kommunicate._globals.hidePostCTA;
     switch (template) {
         case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
             buttonClass = 'km-quick-rpy-btn km-custom-widget-border-color ';
@@ -600,6 +601,7 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (
                 ? JSON.stringify(payload[i].replyMetadata)
                 : payload[i].replyMetadata;
         payload[i].buttonClass = buttonClass;
+        payload[i].hidePostCTA = hidePostCTA;
     }
     return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {
         payload: payload,
