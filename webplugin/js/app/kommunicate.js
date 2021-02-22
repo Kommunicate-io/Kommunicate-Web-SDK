@@ -349,8 +349,8 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return sliderClass;
                     break;
-                case "6":
-                    return "km-border-less-container";
+                case '6':
+                    return 'km-border-less-container km-cta-multi-button-container';
                     break;
 
                 default:
