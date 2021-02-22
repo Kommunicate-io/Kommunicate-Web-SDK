@@ -579,8 +579,8 @@ var userOverride = {
                 appOptions.preLeadCollection
             );
         } else if (
-            appOptions.appSettings.leadCollection &&
-            appOptions.appSettings.collectLead
+            appOptions.appSettings.collectLead &&
+            appOptions.appSettings.leadCollection
         ) {
             KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
                 appOptions.appSettings.leadCollection
@@ -2971,10 +2971,12 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                if(appOptions.preLeadCollection){
-                    leadCollectionHeading.innerHTML= LEAD_COLLECTION_LABEL.heading;
-                }else{
-                    leadCollectionHeading.innerHTML= appOptions.appSettings.chatWidget.preChatGreetingMsg;   
+                if (appOptions.preLeadCollection) {
+                    leadCollectionHeading.innerHTML =
+                        LEAD_COLLECTION_LABEL.heading;
+                } else {
+                    leadCollectionHeading.innerHTML =
+                        appOptions.appSettings.chatWidget.preChatGreetingMsg;
                 }
                 leadCollectionHeading.setAttribute(
                     'aria-label',
