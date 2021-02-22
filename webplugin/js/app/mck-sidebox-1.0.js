@@ -573,11 +573,21 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
-        var KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
-            appOptions.preLeadCollection
-        )
-            ? appOptions.preLeadCollection
-            : [];
+        var KM_PRELEAD_COLLECTION;
+        if (appOptions.preLeadCollection) {
+            KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
+                appOptions.preLeadCollection
+            );
+        } else if (
+            appOptions.appSettings.leadCollection &&
+            appOptions.appSettings.collectLead
+        ) {
+            KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
+                appOptions.appSettings.leadCollection
+            );
+        } else {
+            KM_PRELEAD_COLLECTION = [];
+        }
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -827,13 +837,13 @@ var userOverride = {
 
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
-            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
+            if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
-                  }
+                }
             }
         };
         _this.reInit = function (optns) {
@@ -2961,7 +2971,11 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML = LEAD_COLLECTION_LABEL.heading;
+                if(appOptions.preLeadCollection){
+                    leadCollectionHeading.innerHTML= LEAD_COLLECTION_LABEL.heading;
+                }else{
+                    leadCollectionHeading.innerHTML= appOptions.appSettings.chatWidget.preChatGreetingMsg;   
+                }
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
@@ -4329,7 +4343,9 @@ var userOverride = {
                 ).onclick = function (e) {
                     e.preventDefault();
                     userOverride.voiceOutput = !userOverride.voiceOutput;
-                    KommunicateUI.toggleVoiceOutputOverride(userOverride.voiceOutput);
+                    KommunicateUI.toggleVoiceOutputOverride(
+                        userOverride.voiceOutput
+                    );
                 };
 
                 //----------------------------------------------------------------
