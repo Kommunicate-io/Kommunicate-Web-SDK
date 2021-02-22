@@ -461,8 +461,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             KM_PRELEAD_COLLECTION = mckMessageService.checkArray(appOptions.appSettings.leadCollection);
         }
         else{
-            appOptions.preLeadCollection=[];
-            KM_PRELEAD_COLLECTION = appOptions.preLeadCollection;
+            KM_PRELEAD_COLLECTION = []
         }
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
