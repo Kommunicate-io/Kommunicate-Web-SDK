@@ -8329,11 +8329,16 @@ var userOverride = {
                     kmRichTextMarkup.includes(
                         'km-cta-multi-button-container'
                     ) &&
-                    !kmRichTextMarkup.includes('km-link-button') &&
-                    !append
+                    !kmRichTextMarkup.includes('km-link-button')
                 ) {
-                    // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
-                    botMessageDelayClass = 'n-vis';
+                    if(!append){
+                        // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                        botMessageDelayClass = 'n-vis';
+                    }else{
+                        // this class is added to the message template if the message contains CTA buttons having only quick replies.
+                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
+                    }
+                    
                 }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
