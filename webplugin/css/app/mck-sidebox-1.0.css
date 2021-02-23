@@ -6189,3 +6189,6 @@ body.accesibility :focus {
 	display: block;
 	visibility: visible;
 }
+.mck-msg-left.contains-quick-replies-only:not(:last-child) {
+	display: none;
+}
