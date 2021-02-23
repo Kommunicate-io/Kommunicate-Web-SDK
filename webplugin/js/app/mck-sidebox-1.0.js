@@ -2179,8 +2179,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
                 document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
                 document.getElementById('wq-msg-first-Part').innerHTML = MCK_LABELS['waiting.queue.message']['first.Part'];
-                document.getElementById('waiting-queue-number').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
+                // document.getElementById('waiting-queue-number').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
                 document.getElementById('wq-msg-last-part').innerHTML = MCK_LABELS['waiting.queue.message']['last.part'];
+                document.getElementById('km-csat-trigger-text').innerText = MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -2618,15 +2619,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                   });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
-                    if($applozic('#km-faq-search-input').val()=== "") {
+                    KommunicateUI.hideFaq();
+                    KommunicateUI.showChat();
+                    if ($applozic('#km-faq-search-input').val() === "") {
                         mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                         });
-                        KommunicateUI.showChat();
                     } else {
                         mckMessageService.createNewConversation(conversationDetail, function (conversationId) {
                             KommunicateUI.sendFaqQueryAsMsg(conversationId);
-                            KommunicateUI.showChat();
                         });
                     }
                     $applozic('#mck-contact-list').removeClass("vis").addClass("n-vis");
@@ -2979,10 +2980,14 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                 });
 
+                //---------Place all the dropdown option triggers here-----------------
+                // CSAT trigger
                 document.getElementById("km-csat-trigger").onclick = function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
                 };
+
+                //----------------------------------------------------------------
 
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $applozic("#km-submit-chat-login");
@@ -4203,10 +4208,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                                                     $mck_loading.removeClass('vis').addClass('n-vis');
                                                     if (isMessages) {
                                                         // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                        CSAT_ENABLED &&
-                                                            kommunicateCommons.modifyClassList({
-                                                                id: ["km-widget-options"]
-                                                            }, "", "n-vis");
+
+                                                        mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
+                                                        
                                                         mckMessageLayout.processMessageList(data, true, validated, append, params.allowReload);
                                                         if (group.type !== 6) {
                                                             $mck_tab_message_option.removeClass('n-vis').addClass('vis');
@@ -4388,8 +4392,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 typeof callback == 'function' && callback(data);
             };
             _this.isFaqTabOpen = function () {
-                return (document.querySelector("#km-faqdiv").classList.contains("vis") || document.querySelector("#km-faqanswer").classList.contains("vis") ||
-                document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
+                return (
+                    document.querySelector("#km-faqdiv").classList.contains("vis") || 
+                    document.querySelector("#km-faqanswer").classList.contains("vis") ||
+                    document.querySelector("#km-contact-search-input-box").classList.contains("vis"));
             }
             _this.updateConversationHeader = function (params) {
                 if((_this.isFaqTabOpen())){
@@ -4596,11 +4602,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             };
 
             _this.getGroup = function (params) {
-               var usersArray = [];
-               kommunicate._globals.collectFeedback &&
-                   kommunicateCommons.modifyClassList({
-                       id: ["km-widget-options"]
-                   }, "", "n-vis");
+               var usersArray = []; 
+               
+               mckMessageLayout.loadDropdownOptions();  // Loads the Options dropdown in the widget
+
                $applozic.each(params.users, function (i, user) {
                    if (typeof user.userId !== 'undefined') {
                        if (typeof user.groupRole === 'undefined' || GROUP_ROLE_MAP.indexOf(user.groupRole) !== -1) {
@@ -4849,7 +4854,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div></div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong class="mck-truncate">${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            var csatModule = '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">You rated the conversation</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>'
+            var csatModule = '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">' + MCK_LABELS['csat.rating'].CONVERSATION_RATED + '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>'
             _this.latestMessageReceivedTime = "";
             _this.init = function () {
                 $applozic.template("convTemplate", convbox);
@@ -4857,6 +4862,19 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic.template('contactTemplate', contactbox);
                 $applozic.template("searchContactbox", searchContactbox);
                 $applozic.template("csatModule", csatModule);
+            };
+            _this.loadDropdownOptions = function () {
+                var enableDropdown = false;
+                /*
+                    Mid conversation CSAT
+                    update if dedicated parameter is introduced
+                */
+                if (CSAT_ENABLED) {
+                    enableDropdown = true;
+                    kommunicateCommons.modifyClassList({ id: ["km-csat-trigger"] }, "", "n-vis");
+                }
+                // For toggling display of three dot button (Dropdown btn)
+                enableDropdown && kommunicateCommons.modifyClassList({id: ["km-widget-options"]}, "", "n-vis");
             };
 
             // _this.openConversation = function () {
@@ -7880,7 +7898,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var defaultSettings = KommunicateUtils.getDataFromKmSession("settings");
                 var conversationDetail = {
                     groupName: (defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
-                    agentId: (defaultSettings && defaultSettings.agentId), // || DEFAULT_AGENT_ID,
+                    agentId: (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
                     botIds: (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
                 };
                 return conversationDetail;
