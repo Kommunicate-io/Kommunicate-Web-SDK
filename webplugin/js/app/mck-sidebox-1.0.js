@@ -2975,8 +2975,10 @@ var userOverride = {
                     leadCollectionHeading.innerHTML =
                         LEAD_COLLECTION_LABEL.heading;
                 } else {
-                    leadCollectionHeading.innerHTML =
-                        appOptions.appSettings.chatWidget.preChatGreetingMsg;
+                    leadCollectionHeading.innerHTML = appOptions.appSettings
+                        .chatWidget.preChatGreetingMsg
+                        ? appOptions.appSettings.chatWidget.preChatGreetingMsg
+                        : " ";
                 }
                 leadCollectionHeading.setAttribute(
                     'aria-label',
