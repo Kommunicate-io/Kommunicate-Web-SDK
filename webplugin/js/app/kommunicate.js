@@ -116,6 +116,25 @@ $applozic.extend(true, Kommunicate, {
             }, SET_TIMEOUT_DURATION);
         }
     },
+    groupSpecificData : function(userSpecificMetadata){
+        if(typeof userSpecificMetadata == "object"){
+            let groupId = userSpecificMetadata.groupId;
+            let metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
+            Applozic.ALApiService.groupUpdate({
+                data:
+                    {
+                      groupId: groupId,
+                      metadata: {
+                          "metadataToShow": metadataToShow 
+                      }
+                    },
+                success: function (response) { console.log(response); },
+                error: function (error) { console.log(error) }
+            });
+        }else{
+            throw new Error("groupSpecificData expected an object but got ", typeof userSpecificMetadata);
+        }
+    },
     updateConversationDetail: function (conversationDetail) {
         var kommunicateSettings = KommunicateUtils.getDataFromKmSession(
             'settings'
