@@ -2930,14 +2930,27 @@ var userOverride = {
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-                    kmChatInput.setAttribute(
-                        'type',
-                        preLeadCollection.type || 'text'
-                    );
-                    kmChatInput.setAttribute(
-                        'name',
-                        'km-' + preLeadCollection.field.toLowerCase()
-                    );
+                    if (preLeadCollection.type == 'number') {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type
+                        );
+                        kmChatInput.setAttribute('pattern', '/^-?d+.?d*$/');
+                        kmChatInput.setAttribute(
+                            'onKeyPress',
+                            'if(this.value.length==10) return false;'
+                        );
+                        kmChatInput.setAttribute('name', 'km-phone');
+                    } else {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type || 'text'
+                        );
+                        kmChatInput.setAttribute(
+                            'name',
+                            'km-' + preLeadCollection.field.toLowerCase()
+                        );
+                    }
                     preLeadCollection.required &&
                         kmChatInput.setAttribute(
                             'required',
@@ -2978,7 +2991,7 @@ var userOverride = {
                     leadCollectionHeading.innerHTML = appOptions.appSettings
                         .chatWidget.preChatGreetingMsg
                         ? appOptions.appSettings.chatWidget.preChatGreetingMsg
-                        : " ";
+                        : '';
                 }
                 leadCollectionHeading.setAttribute(
                     'aria-label',
