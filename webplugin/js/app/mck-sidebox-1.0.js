@@ -2927,20 +2927,16 @@ var userOverride = {
                         preLeadCollection.element || 'input'
                     );
                     if (
-                        (preLeadCollection.type == 'number' &&
-                            preLeadCollection.field.toLowerCase() ==
-                                'mobile') ||
-                        'phone'
+                        preLeadCollection.hasOwnProperty('type') &&
+                        preLeadCollection.type.toLowerCase() === 'number' &&
+                        ['mobile', 'phone'].indexOf(
+                            preLeadCollection.field.toLowerCase()
+                        ) > -1
                     ) {
                         kmChatInput.setAttribute('id', 'km-phone');
                         kmChatInput.setAttribute(
                             'type',
                             preLeadCollection.type
-                        );
-                        kmChatInput.setAttribute('pattern', '/^-?d+.?d*$/');
-                        kmChatInput.setAttribute(
-                            'onKeyPress',
-                            'if(this.value.length==10) return false;'
                         );
                         kmChatInput.setAttribute('name', 'km-phone');
                     } else {
@@ -2969,6 +2965,14 @@ var userOverride = {
                     );
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
+                }
+                let phoneField = document.getElementById('km-phone');
+                if (phoneField !== null) {
+                    phoneField.addEventListener('keydown', function (e) {
+                        e.target.value = e.target.value.match(
+                            /^([0-9]{0,15})/
+                        )[0];
+                    });
                 }
             };
 
