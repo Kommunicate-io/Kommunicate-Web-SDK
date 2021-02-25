@@ -116,23 +116,30 @@ $applozic.extend(true, Kommunicate, {
             }, SET_TIMEOUT_DURATION);
         }
     },
-    groupSpecificData : function(userSpecificMetadata){
-        if(typeof userSpecificMetadata == "object"){
-            let groupId = userSpecificMetadata.groupId;
-            let metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
-            Applozic.ALApiService.groupUpdate({
-                data:
-                    {
-                      groupId: groupId,
-                      metadata: {
-                          "metadataToShow": metadataToShow 
-                      }
+    groupSpecificData: function (userSpecificMetadata) {
+        let type = typeof userSpecificMetadata;
+        let groupId = userSpecificMetadata.groupId;
+        let metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
+        if (type == 'object' && groupId && metadataToShow) {
+            const groupDataResponse = Applozic.ALApiService.groupUpdate({
+                data: {
+                    groupId: groupId,
+                    metadata: {
+                        metadataToShow: metadataToShow,
                     },
-                success: function (response) { console.log(response); },
-                error: function (error) { console.log(error) }
+                },
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
             });
-        }else{
-            throw new Error("groupSpecificData expected an object but got ", typeof userSpecificMetadata);
+            return groupDataResponse;
+        } else {
+            throw new TypeError(
+                'groupSpecificData expects an object with metadata but got ' + type
+            );
         }
     },
     updateConversationDetail: function (conversationDetail) {
