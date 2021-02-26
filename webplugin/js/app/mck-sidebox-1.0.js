@@ -573,21 +573,16 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
-        var KM_PRELEAD_COLLECTION;
-        if (appOptions.preLeadCollection) {
-            KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
-                appOptions.preLeadCollection
-            );
-        } else if (
-            appOptions.appSettings.collectLead &&
-            appOptions.appSettings.leadCollection
-        ) {
-            KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
-                appOptions.appSettings.leadCollection
-            );
-        } else {
-            KM_PRELEAD_COLLECTION = [];
-        }
+        var KM_PRELEAD_COLLECTION = [];
+        KM_PRELEAD_COLLECTION =
+            appOptions.appSettings.collectLead && appOptions.preLeadCollection
+                ? mckMessageService.checkArray(appOptions.preLeadCollection)
+                : appOptions.appSettings.collectLead &&
+                  appOptions.appSettings.leadCollection
+                ? mckMessageService.checkArray(
+                      appOptions.appSettings.leadCollection
+                  )
+                : KM_PRELEAD_COLLECTION;
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -2930,14 +2925,29 @@ var userOverride = {
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-                    kmChatInput.setAttribute(
-                        'type',
-                        preLeadCollection.type || 'text'
-                    );
-                    kmChatInput.setAttribute(
-                        'name',
-                        'km-' + preLeadCollection.field.toLowerCase()
-                    );
+                    if (
+                        preLeadCollection.hasOwnProperty('type') &&
+                        preLeadCollection.type.toLowerCase() === 'number' &&
+                        ['mobile', 'phone'].indexOf(
+                            preLeadCollection.field.toLowerCase()
+                        ) > -1
+                    ) {
+                        kmChatInput.setAttribute('id', 'km-phone');
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type
+                        );
+                        kmChatInput.setAttribute('name', 'km-phone');
+                    } else {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type || 'text'
+                        );
+                        kmChatInput.setAttribute(
+                            'name',
+                            'km-' + preLeadCollection.field.toLowerCase()
+                        );
+                    }
                     preLeadCollection.required &&
                         kmChatInput.setAttribute(
                             'required',
@@ -2955,6 +2965,14 @@ var userOverride = {
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
+                let phoneField = document.getElementById('km-phone');
+                if (phoneField !== null) {
+                    phoneField.addEventListener('keydown', function (e) {
+                        e.target.value = e.target.value.match(
+                            /^([0-9]{0,15})/
+                        )[0];
+                    });
+                }
             };
 
             _this.setLeadCollectionLabels = function () {
@@ -2971,15 +2989,11 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                if (appOptions.preLeadCollection) {
-                    leadCollectionHeading.innerHTML =
-                        LEAD_COLLECTION_LABEL.heading;
-                } else {
-                    leadCollectionHeading.innerHTML = appOptions.appSettings
-                        .chatWidget.preChatGreetingMsg
-                        ? appOptions.appSettings.chatWidget.preChatGreetingMsg
-                        : " ";
-                }
+                leadCollectionHeading.innerHTML = appOptions.preLeadCollection
+                    ? LEAD_COLLECTION_LABEL.heading
+                    : appOptions.appSettings.chatWidget.preChatGreetingMsg
+                    ? appOptions.appSettings.chatWidget.preChatGreetingMsg
+                    : '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
