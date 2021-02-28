@@ -767,9 +767,9 @@ Kommunicate.richMsgEventHandler = {
 
         if (kommunicate._globals.hidePostCTA) {
             var siblingsArray = Kommunicate.getAllSiblings(e.target);
-            var siblingContainsLink = siblingsArray.some((sibling) =>
-                sibling.classList.contains('km-link-button')
-            );
+            var siblingContainsLink = siblingsArray.some(function (sibling) {
+                return sibling.classList.contains('km-link-button');
+            });
             !siblingContainsLink && Kommunicate.hideMessage(e.target);
         }
     },

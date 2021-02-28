@@ -404,11 +404,14 @@
     }
     .km-cta-button.km-link-button {
         text-align: left;
-        font-size: 14px;
+        font-size: 13px;
     }
     .km-cta-button.km-link-button span {
         vertical-align: sub;
         margin-left: 5px;
+    }
+    .km-cta-button.km-link-button span svg {
+        margin-bottom: 0.1rem;
     }
     .km-cta-button.km-carousel-card-button, .km-cta-button.km-faq-list-link-button {
         border: 1px solid #e7e4e4;
@@ -529,7 +532,9 @@
         overflow:hidden;
         overflow: hidden;
     }
-    
+    .km-border-less-container button{
+        display: inline-block!important;
+    }
     .km-slick-container .tns-controls button{
         position: absolute;
         padding: 0;
