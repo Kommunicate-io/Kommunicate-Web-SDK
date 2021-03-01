@@ -2991,9 +2991,7 @@ var userOverride = {
                 );
                 leadCollectionHeading.innerHTML = appOptions.preLeadCollection
                     ? LEAD_COLLECTION_LABEL.heading
-                    : appOptions.appSettings.chatWidget.preChatGreetingMsg
-                    ? appOptions.appSettings.chatWidget.preChatGreetingMsg
-                    : '';
+                    : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
