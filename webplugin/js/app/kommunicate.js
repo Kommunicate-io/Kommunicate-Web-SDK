@@ -349,8 +349,8 @@ $applozic.extend(true,Kommunicate,{
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return sliderClass;
                     break;
-                case "6":
-                    return "km-border-less-container";
+                case '6':
+                    return 'km-border-less-container km-cta-multi-button-container';
                     break;
 
                 default:
@@ -535,5 +535,29 @@ $applozic.extend(true,Kommunicate,{
             return false;
         }
         return true;
-    }
+    },
+    hideMessage: function (element) {
+        if (!element) {
+            return;
+        }
+        var parentEle = element.parentElement;
+        while (!parentEle.classList.contains("mck-msg-left")) {
+            parentEle = parentEle.parentElement;
+        }
+        parentEle.classList.add("n-vis");
+    },
+    getAllSiblings: function (element) {
+        var siblings = []; 
+        if (!element || !element.parentNode) {
+            return siblings;
+        }
+        var sibling  = element.parentNode.firstChild;
+        while (sibling) {
+            if (sibling.nodeType === 1 && sibling !== element) {
+                siblings.push(sibling);
+            }
+            sibling = sibling.nextSibling;
+        }
+        return siblings;
+    },
 });
