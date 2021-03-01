@@ -1139,6 +1139,11 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
+            if(kommunicateIframe.classList.contains("chat-popup-widget-vertical")){
+                var heightOfPopup = document.getElementById("chat-popup-widget-container").offsetHeight + 15;
+                var css = `iframe#kommunicate-widget-iframe.chat-popup-widget-vertical { height: ${heightOfPopup}px!important;}`
+                parent.document.querySelector("style#kommunicate-style-sheet").innerText += css;
+            };
             var WIDGET_POSITION =
                 kommunicate &&
                 kommunicate._globals &&
