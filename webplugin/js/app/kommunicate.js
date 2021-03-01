@@ -118,27 +118,35 @@ $applozic.extend(true, Kommunicate, {
     },
     groupSpecificData: function (userSpecificMetadata) {
         let type = typeof userSpecificMetadata;
+        let metaType = typeof userSpecificMetadata.metadata;
         let groupId = userSpecificMetadata.groupId;
         let metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
         if (type == 'object' && groupId && metadataToShow) {
-            const groupDataResponse = Applozic.ALApiService.groupUpdate({
-                data: {
-                    groupId: groupId,
-                    metadata: {
-                        metadataToShow: metadataToShow,
+            if (typeof metadataToShow == 'object') {
+                const groupDataResponse = Applozic.ALApiService.groupUpdate({
+                    data: {
+                        groupId: groupId,
+                        metadata: {
+                            metadataToShow: metadataToShow,
+                        },
                     },
-                },
-                success: function (response) {
-                    console.log(response);
-                },
-                error: function (error) {
-                    console.log(error);
-                },
-            });
-            return groupDataResponse;
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                });
+                return groupDataResponse;
+            } else {
+                throw new TypeError(
+                    'Metadata got a ' + metaType + 'type but expected an object'
+                );
+            }
         } else {
             throw new TypeError(
-                'groupSpecificData expects an object with metadata but got ' + type
+                'groupSpecificData expects an object with metadata but got ' +
+                    type
             );
         }
     },
