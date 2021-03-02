@@ -116,18 +116,24 @@ $applozic.extend(true, Kommunicate, {
             }, SET_TIMEOUT_DURATION);
         }
     },
-    groupSpecificData: function (userSpecificMetadata) {
-        let [type, metaType, groupId,metadataToShow] = [
-            typeof userSpecificMetadata,
-            typeof userSpecificMetadata.metadata,
-            userSpecificMetadata.groupId,
-            JSON.stringify(userSpecificMetadata.metadata)
-        ];
-        if (type == 'object' && groupId && metadataToShow) {
-            if (metaType == 'object') {
+    updateConversationMetadata: function (userSpecificMetadata) {
+        var groupMetadata = kommunicateCommons.isObject(userSpecificMetadata)
+            ? userSpecificMetadata
+            : false;
+        if (
+            userSpecificMetadata != null &&
+            userSpecificMetadata !== 'undefined'
+        ) {
+            var metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
+            if (
+                groupMetadata &&
+                kommunicateCommons.isObject(userSpecificMetadata.metadata) &&
+                userSpecificMetadata.groupId &&
+                userSpecificMetadata.metadata
+            ) {
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
-                        groupId: groupId,
+                        groupId: userSpecificMetadata.groupId,
                         metadata: {
                             metadataToShow: metadataToShow,
                         },
@@ -142,13 +148,12 @@ $applozic.extend(true, Kommunicate, {
                 return groupDataResponse;
             } else {
                 throw new TypeError(
-                    'metadata got a type ' + metaType + ' but expected an object'
+                    'updateConversationMetadata expects an object as an argument'
                 );
             }
         } else {
-            throw new TypeError(
-                'groupSpecificData expects an object with metadata but got ' +
-                    type
+            throw new Error(
+                'updateConversationMetadata expect an object but got null'
             );
         }
     },
