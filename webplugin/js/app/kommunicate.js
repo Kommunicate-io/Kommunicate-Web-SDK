@@ -117,12 +117,14 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     groupSpecificData: function (userSpecificMetadata) {
-        let type = typeof userSpecificMetadata;
-        let metaType = typeof userSpecificMetadata.metadata;
-        let groupId = userSpecificMetadata.groupId;
-        let metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
+        let [type, metaType, groupId,metadataToShow] = [
+            typeof userSpecificMetadata,
+            typeof userSpecificMetadata.metadata,
+            userSpecificMetadata.groupId,
+            JSON.stringify(userSpecificMetadata.metadata)
+        ];
         if (type == 'object' && groupId && metadataToShow) {
-            if (typeof metadataToShow == 'object') {
+            if (metaType == 'object') {
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
                         groupId: groupId,
@@ -140,7 +142,7 @@ $applozic.extend(true, Kommunicate, {
                 return groupDataResponse;
             } else {
                 throw new TypeError(
-                    'Metadata got a ' + metaType + 'type but expected an object'
+                    'metadata got a type ' + metaType + ' but expected an object'
                 );
             }
         } else {
