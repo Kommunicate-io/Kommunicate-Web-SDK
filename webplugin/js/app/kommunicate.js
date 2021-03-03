@@ -121,11 +121,12 @@ $applozic.extend(true, Kommunicate, {
             conversationMetadata != null &&
             conversationMetadata !== 'undefined'
         ) {
+            conversationMetadata = JSON.parse(JSON.stringify(conversationMetadata));
             var groupMetadata = 
                 kommunicateCommons.isObject(conversationMetadata) &&
                 kommunicateCommons.isObject(conversationMetadata.metadata)
                     ? conversationMetadata
-                    : false;
+                    : null;
               var metadataToShow = JSON.stringify(conversationMetadata.metadata);
             if (
                 groupMetadata &&
