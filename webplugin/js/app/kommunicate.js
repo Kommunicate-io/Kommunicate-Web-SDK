@@ -116,17 +116,17 @@ $applozic.extend(true, Kommunicate, {
             }, SET_TIMEOUT_DURATION);
         }
     },
-    updateConversationMetadata: function (userSpecificMetadata) {
+    updateConversationMetadata: function (conversationMetadata) {
         if (
-            userSpecificMetadata != null &&
-            userSpecificMetadata !== 'undefined'
+            conversationMetadata != null &&
+            conversationMetadata !== 'undefined'
         ) {
             var groupMetadata = 
-                kommunicateCommons.isObject(userSpecificMetadata) &&
-                kommunicateCommons.isObject(userSpecificMetadata.metadata)
-                    ? userSpecificMetadata
+                kommunicateCommons.isObject(conversationMetadata) &&
+                kommunicateCommons.isObject(conversationMetadata.metadata)
+                    ? conversationMetadata
                     : false;
-              var metadataToShow = JSON.stringify(userSpecificMetadata.metadata);
+              var metadataToShow = JSON.stringify(conversationMetadata.metadata);
             if (
                 groupMetadata &&
                 groupMetadata.groupId &&
