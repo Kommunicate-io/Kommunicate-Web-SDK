@@ -80,7 +80,6 @@ Kommunicate.mediaService = {
                 message.contentType ==
                     KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
             ) {
-                console.log('msgdata', message);
                 textToSpeak += message.message;
             }
             if (textToSpeak) {
