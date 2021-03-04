@@ -2925,29 +2925,14 @@ var userOverride = {
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-                    if (
-                        preLeadCollection.hasOwnProperty('type') &&
-                        preLeadCollection.type.toLowerCase() === 'number' &&
-                        ['mobile', 'phone'].indexOf(
-                            preLeadCollection.field.toLowerCase()
-                        ) > -1
-                    ) {
-                        kmChatInput.setAttribute('id', 'km-phone');
-                        kmChatInput.setAttribute(
-                            'type',
-                            preLeadCollection.type
-                        );
-                        kmChatInput.setAttribute('name', 'km-phone');
-                    } else {
-                        kmChatInput.setAttribute(
-                            'type',
-                            preLeadCollection.type || 'text'
-                        );
-                        kmChatInput.setAttribute(
-                            'name',
-                            'km-' + preLeadCollection.field.toLowerCase()
-                        );
-                    }
+                    kmChatInput.setAttribute(
+                        'type',
+                        preLeadCollection.type || 'text'
+                    );
+                    kmChatInput.setAttribute(
+                        'name',
+                        'km-' + preLeadCollection.field.toLowerCase()
+                    );
                     preLeadCollection.required &&
                         kmChatInput.setAttribute(
                             'required',
@@ -2965,7 +2950,7 @@ var userOverride = {
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
-                let phoneField = document.getElementById('km-phone');
+                var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
                     phoneField.addEventListener('keydown', function (e) {
                         e.target.value = e.target.value.match(
@@ -2991,7 +2976,8 @@ var userOverride = {
                 );
                 leadCollectionHeading.innerHTML = appOptions.preLeadCollection
                     ? LEAD_COLLECTION_LABEL.heading
-                    : appOptions.appSettings.chatWidget.preChatGreetingMsg || '';
+                    : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
+                      '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
