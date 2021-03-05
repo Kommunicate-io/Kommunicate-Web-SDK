@@ -573,8 +573,7 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
-        var KM_PRELEAD_COLLECTION = [];
-        KM_PRELEAD_COLLECTION =
+        var KM_PRELEAD_COLLECTION =
             appOptions.appSettings.collectLead && appOptions.preLeadCollection
                 ? mckMessageService.checkArray(appOptions.preLeadCollection)
                 : appOptions.appSettings.collectLead &&
