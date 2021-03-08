@@ -573,15 +573,14 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
-        var KM_PRELEAD_COLLECTION =
-            appOptions.appSettings.collectLead && appOptions.preLeadCollection
-                ? mckMessageService.checkArray(appOptions.preLeadCollection)
-                : appOptions.appSettings.collectLead &&
+        var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection
+            ? mckMessageService.checkArray(appOptions.preLeadCollection)
+            : appOptions.appSettings.collectLead &&
+              appOptions.appSettings.leadCollection
+            ? mckMessageService.checkArray(
                   appOptions.appSettings.leadCollection
-                ? mckMessageService.checkArray(
-                      appOptions.appSettings.leadCollection
-                  )
-                : [];
+              )
+            : [];
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -2951,14 +2950,15 @@ var userOverride = {
                 }
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
-                    phoneField.addEventListener('keydown', function (e) {
-                        e.target.value = e.target.value.match(
-                            /^([0-9]{0,15})/
-                        )[0];
-                    });
+                    phoneField.addEventListener(
+                        'keydown',
+                        _this.phoneNumberValidation
+                    );
                 }
             };
-
+            _this.phoneNumberValidation = function (e) {
+                e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 var submitLogin = document.getElementById(
@@ -4359,6 +4359,15 @@ var userOverride = {
                     var userName = $applozic('#km-name').val();
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
+                    // Remove listener from phone number
+                    if (contactNumber !== null) {
+                        document
+                            .getElementById('km-phone')
+                            .removeEventListener(
+                                'keydown',
+                                _this.phoneNumberValidation
+                            );
+                    }
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
