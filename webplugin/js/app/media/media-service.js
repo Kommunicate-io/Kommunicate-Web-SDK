@@ -75,7 +75,11 @@ Kommunicate.mediaService = {
                 textToSpeak +=
                     MCK_LABELS['voice.output'].location.lon +
                     Math.round(coord.lon * 100) / 100;
-            } else if (message.message) {
+            } else if (
+                message.message &&
+                message.contentType ==
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
+            ) {
                 textToSpeak += message.message;
             }
             if (textToSpeak) {
@@ -84,15 +88,15 @@ Kommunicate.mediaService = {
                 utterance.rate = appOptions.voiceRate || 1;
                 var skipForEach = false;
                 if (appOptions.voiceName) {
-                    AVAILABLE_VOICES_FOR_TTS.forEach(voice => {
+                    AVAILABLE_VOICES_FOR_TTS.forEach((voice) => {
                         if (skipForEach) {
                             return;
                         }
-                        if(voice.name == appOptions.voiceName) {
+                        if (voice.name == appOptions.voiceName) {
                             utterance.voice = voice;
                             skipForEach = true;
                         }
-                    })
+                    });
                 }
                 utterance.onerror = function (event) {
                     if (event.error !== 'not-allowed') {
