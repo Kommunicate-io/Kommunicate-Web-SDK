@@ -4359,20 +4359,18 @@ var userOverride = {
                     var userName = $applozic('#km-name').val();
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
-                    // Remove listener from phone number
-                    if (contactNumber !== null) {
+                    if (password) {
+                        MCK_ACCESS_TOKEN = password;
+                    }
+                    if (contactNumber) {
+                        userId = contactNumber;
+                        // Remove listener from phone number
                         document
                             .getElementById('km-phone')
                             .removeEventListener(
                                 'keydown',
                                 _this.phoneNumberValidation
                             );
-                    }
-                    if (password) {
-                        MCK_ACCESS_TOKEN = password;
-                    }
-                    if (contactNumber) {
-                        userId = contactNumber;
                     }
                     if (email) {
                         userId = email;
