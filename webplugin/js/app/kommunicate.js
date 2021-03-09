@@ -121,7 +121,7 @@ $applozic.extend(true, Kommunicate, {
             conversationMetadata != null &&
             typeof conversationMetadata !== 'undefined'
         ) {
-            var _metadata = conversationMetadata;
+            var _metadata = Object.assign({},conversationMetadata);
             var metadataToShow = JSON.stringify(_metadata.metadata);
             if (
                 kommunicateCommons.isObject(_metadata) &&
