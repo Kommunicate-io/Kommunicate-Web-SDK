@@ -46,3 +46,17 @@ const generatePluginFile = async (req, res) => {
         .replace(':PRODUCT_ID', 'kommunicate');
     return plugin;
 };
+
+exports.getPluginHTML = async (req, res) => {
+    const APP_ID = req.query.appId;
+    const HOST_URL = config.urls.hostUrl;
+    if (!APP_ID) {
+        res.send('Error while getting application id...');
+        return console.log('Unable to get application id');
+    }
+    res.render('plugin',{
+        APP_ID,
+        HOST_URL
+    });
+    console.log('plugin HTML sent successfully');
+};
