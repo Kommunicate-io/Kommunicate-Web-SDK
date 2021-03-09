@@ -49,14 +49,17 @@ const generatePluginFile = async (req, res) => {
 
 exports.getPluginHTML = async (req, res) => {
     const APP_ID = req.query.appId;
-    const HOST_URL = config.urls.hostUrl;
+    const MCK_CONTEXTPATH = config.urls.hostUrl;
     if (!APP_ID) {
         res.send('Error while getting application id...');
         return console.log('Unable to get application id');
     }
+    const OVERRIDES = {};
+    OVERRIDES.referer = req.header('Referer');
     res.render('plugin',{
         APP_ID,
-        HOST_URL
+        MCK_CONTEXTPATH,
+        OVERRIDES
     });
     console.log('plugin HTML sent successfully');
 };

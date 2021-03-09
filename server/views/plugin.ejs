@@ -24,7 +24,7 @@
                 preChatPopup = KommunicateGlobal.document.querySelector('#chat-popup-widget-container .chat-popup-widget-text-wrapper'),
                 closeButton = KommunicateGlobal.document.getElementById('km-chat-widget-close-button');
             [launcher, preChatPopup].forEach(function (element) {
-                element.addEventListener('click', function () {
+                element && element.addEventListener('click', function () {
                     iframe.classList.add("change-kommunicate-iframe-height");
                 });
             });
@@ -34,9 +34,10 @@
         }
     };
     var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-    s.src = "<%=HOST_URL%>/v2/kommunicate.app";
+    s.src = "<%=MCK_CONTEXTPATH%>/v2/kommunicate.app";
     var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
     window.kommunicate = m; m._globals = kommunicateSettings;
+    window.kommunicate.IFRAME_OVERRIDES = {}; window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL = "<%= OVERRIDES.referer%>";
 })(document, window.kommunicate || {});
     </script>
 </body>
