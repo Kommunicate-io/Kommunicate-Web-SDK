@@ -67,7 +67,7 @@ Kommunicate.client={
             HIDE: "true",
             SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
-            GROUP_CREATION_URL: parent.location.href
+            GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
         };
         typeof conversationDetail.teamId != "undefined"  && (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
         conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
