@@ -341,7 +341,7 @@ function ApplozicSidebox() {
             options["customerCreatedAt"]=options.appSettings.customerCreatedAt;
             options["collectFeedback"]=options.appSettings.collectFeedback;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
-            
+        
             var pseudoNameEnabled = (widgetSettings && (typeof widgetSettings.pseudonymsEnabled !== 'undefined')) ? widgetSettings.pseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata == 'object' ? options.metadata : {};
             options.fileUpload = options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
@@ -349,6 +349,8 @@ function ApplozicSidebox() {
             options.voiceInput = options.voiceInput != null ? options.voiceInput : (widgetSettings && widgetSettings.voiceInput);
             options.voiceOutput = options.voiceOutput != null ? options.voiceOutput : (widgetSettings && widgetSettings.voiceOutput);
             options.attachment = options.attachment != null ? options.attachment : (widgetSettings && widgetSettings.attachment);
+            options.hidePostCTA = options.hidePostCTA != null ? options.hidePostCTA : (widgetSettings && widgetSettings.hidePostCTA);
+
             KommunicateUtils.deleteDataFromKmSession("settings");
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {

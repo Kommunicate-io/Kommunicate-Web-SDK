@@ -507,6 +507,15 @@ Kommunicate.richMsgEventHandler = {
         };
         document.getElementById('mck-text-box').setAttribute('data-quick-reply',true);
         Kommunicate.sendMessage(messagePxy);
+
+        if(kommunicate._globals.hidePostCTA){
+            var siblingsArray = Kommunicate.getAllSiblings(e.target);
+            var siblingContainsLink = siblingsArray.some(function (sibling) {
+                return sibling.classList.contains('km-link-button');
+            });
+            !siblingContainsLink && Kommunicate.hideMessage(e.target);
+        }
+        
     },
     processClickOnListItem: function(e){
         var target = e.currentTarget;
@@ -541,12 +550,7 @@ Kommunicate.richMsgEventHandler = {
         var reply = target.dataset.reply;
         var type = target.dataset.type;
         var languageCode = target.dataset.languagecode;
-        var metadata = {};
-        try{
-            metadata=  JSON.parse(target.dataset.metadata);
-        }catch(e){
-            console.log(e);
-        }
+        var metadata = (target.dataset && target.dataset.metadata) || {};
         metadata.KM_BUTTON_CLICKED =true;
         if(type && type =="quick_reply"){
             languageCode && Kommunicate.updateUserLanguage(languageCode);
