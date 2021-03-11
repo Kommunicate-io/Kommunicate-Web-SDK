@@ -121,26 +121,28 @@ $applozic.extend(true, Kommunicate, {
             conversationMetadata != null &&
             typeof conversationMetadata !== 'undefined'
         ) {
-            var _metadata = Object.assign({}, conversationMetadata);
+            var metadataToSend = Object.assign({}, conversationMetadata);
             if (
-                kommunicateCommons.isObject(_metadata) &&
-                kommunicateCommons.isObject(_metadata.metadata) &&
-                _metadata.groupId &&
-                _metadata.metadata
+                kommunicateCommons.isObject(metadataToSend) &&
+                kommunicateCommons.isObject(metadataToSend.metadata) &&
+                metadataToSend.groupId &&
+                metadataToSend.metadata
             ) {
-                var metadataToShow = JSON.stringify(_metadata.metadata);
+                var metadataToShow = JSON.stringify(metadataToSend.metadata);
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
-                        groupId: _metadata.groupId,
+                        groupId: metadataToSend.groupId,
                         metadata: {
                             metadataToShow: metadataToShow,
                         },
                     },
                     success: function (response) {
-                        console.log(response);
+                        // console.log(response);
+                        return response;
                     },
                     error: function (error) {
-                        console.log(error);
+                        // console.log(error);
+                        return error;
                     },
                 });
                 return groupDataResponse;
