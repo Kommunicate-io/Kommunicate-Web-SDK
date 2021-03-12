@@ -119,10 +119,14 @@ $applozic.extend(true, Kommunicate, {
     updateConversationMetadata: function (conversationMetadata) {
         if (
             conversationMetadata != null &&
-            typeof conversationMetadata !== 'undefined'
+            typeof conversationMetadata !== 'undefined' &&
+            conversationMetadata
         ) {
             var metadataToSend = Object.assign({}, conversationMetadata);
-            var metadataToShow = Object.assign({}, conversationMetadata.metadata);
+            var metadataToShow = Object.assign(
+                {},
+                conversationMetadata.metadata
+            );
             if (
                 kommunicateCommons.isObject(metadataToSend) &&
                 kommunicateCommons.isObject(metadataToShow) &&
@@ -133,7 +137,9 @@ $applozic.extend(true, Kommunicate, {
                     data: {
                         groupId: metadataToSend.groupId,
                         metadata: {
-                            conversationMetadata: JSON.stringify(metadataToShow),
+                            conversationMetadata: JSON.stringify(
+                                metadataToShow
+                            ),
                         },
                     },
                     success: function (response) {
