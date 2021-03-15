@@ -362,6 +362,7 @@
     border-radius: 15px;
     min-width: 35px;
     font-size: 14px;
+    letter-spacing: normal;
 }
 
 .km-cta-multi-button-container .km-cta-button-many,
