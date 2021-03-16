@@ -2940,12 +2940,10 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                        var dropDownOptions = preLeadCollection.options;
-                        var setDropDown = _this.createSelectFieldDropdown(
-                            dropDownOptions,
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
                             kmChatInput
                         );
-                        kmChatInput = setDropDown;
                     } else {
                         kmChatInput.setAttribute(
                             'type',
@@ -2982,7 +2980,7 @@ var userOverride = {
                 var dropDownOption = document.createElement('option');
                 dropDownOption.setAttribute('value', '');
                 dropDownOption.innerHTML =
-                    'Please select ' +
+                    MCK_LABELS['select.option']+' '+
                     selectElement
                         .getAttribute('name')
                         .toLowerCase()
