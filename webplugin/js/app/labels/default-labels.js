@@ -119,7 +119,7 @@ Kommunicate.defaultLabels = {
         heading:
             'Before starting, we just need a few details so that we may serve you better',
         submit: 'Start Conversation',
-        selectOption: 'Please select',
+        option: 'Please select',
     },
     'csat.rating': {
         CONVERSATION_RATED: 'You rated the conversation',
