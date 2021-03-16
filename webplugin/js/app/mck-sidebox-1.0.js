@@ -2980,7 +2980,7 @@ var userOverride = {
                 var dropDownOption = document.createElement('option');
                 dropDownOption.setAttribute('value', '');
                 dropDownOption.innerHTML =
-                    MCK_LABELS['select.option']+' '+
+                    MCK_LABELS['lead.collection'].selectOption+' '+
                     selectElement
                         .getAttribute('name')
                         .toLowerCase()
