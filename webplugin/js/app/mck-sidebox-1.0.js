@@ -2989,16 +2989,18 @@ var userOverride = {
                         .split('-')[1];
                 selectElement.append(dropDownOption);
                 options.forEach((element) => {
-                    if(kommunicateCommons.isObject(element)){
+                    if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
                         dropDownOption.value = element.value;
                         dropDownOption.innerHTML =
-                        element.value.charAt(0).toUpperCase() +
-                        element.value.slice(1);
+                            element.value.charAt(0).toUpperCase() +
+                            element.value.slice(1);
                         selectElement.append(dropDownOption);
-                    }
-                    else{
-                        throw new TypeError("expected object in option array but got "+ typeof element);
+                    } else {
+                        throw new TypeError(
+                            'expected object in option array but got ' +
+                                typeof element
+                        );
                     }
                 });
                 return selectElement;
