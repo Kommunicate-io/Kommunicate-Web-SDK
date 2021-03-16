@@ -11259,9 +11259,11 @@ var userOverride = {
                                                     'true' &&
                                                 contact.type !== 7) ||
                                             (!message.message &&
-                                                message.metadata.hasOwnProperty(
+                                                (message.metadata.hasOwnProperty(
                                                     'KM_ASSIGN_TO'
-                                                ))
+                                                ) || message.metadata.hasOwnProperty(
+                                                    'KM_ASSIGN_TEAM'
+                                                )))
                                         ) {
                                             if (
                                                 MCK_BOT_MESSAGE_DELAY !== 0 &&
