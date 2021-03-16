@@ -2919,14 +2919,12 @@ var userOverride = {
                     var kmChatInput = document.createElement(
                         preLeadCollection.element || 'input'
                     );
+
                     kmChatInput.setAttribute(
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-                    kmChatInput.setAttribute(
-                        'type',
-                        preLeadCollection.type || 'text'
-                    );
+
                     kmChatInput.setAttribute(
                         'name',
                         'km-' + preLeadCollection.field.toLowerCase()
@@ -2936,15 +2934,32 @@ var userOverride = {
                             'required',
                             preLeadCollection.required
                         );
-                    kmChatInput.setAttribute(
-                        'placeholder',
-                        preLeadCollection.placeholder || ''
-                    );
                     kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    kmChatInput.setAttribute(
-                        'aria-label',
-                        preLeadCollection.field
-                    );
+                    if (
+                        preLeadCollection.element == 'select' &&
+                        preLeadCollection.options &&
+                        mckMessageService.checkArray(preLeadCollection.options)
+                    ) {
+                        var dropDownOptions = preLeadCollection.options;
+                        var setDropDown = _this.createSelectFieldDropdown(
+                            dropDownOptions,
+                            kmChatInput
+                        );
+                        kmChatInput = setDropDown;
+                    } else {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type || 'text'
+                        );
+                        kmChatInput.setAttribute(
+                            'placeholder',
+                            preLeadCollection.placeholder || ''
+                        );
+                        kmChatInput.setAttribute(
+                            'aria-label',
+                            preLeadCollection.field
+                        );
+                    }
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
@@ -2958,6 +2973,35 @@ var userOverride = {
             };
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
+
+            _this.createSelectFieldDropdown = function (
+                options,
+                selectElement
+            ) {
+                var dropDownOption = document.createElement('option');
+                dropDownOption.setAttribute('value', '');
+                dropDownOption.innerHTML =
+                    'Please select ' +
+                    selectElement
+                        .getAttribute('name')
+                        .toLowerCase()
+                        .split('-')[1];
+                selectElement.append(dropDownOption);
+                options.forEach((element) => {
+                    if(kommunicateCommons.isObject(element)){
+                        dropDownOption = document.createElement('option');
+                        dropDownOption.value = element.value;
+                        dropDownOption.innerHTML =
+                        element.value.charAt(0).toUpperCase() +
+                        element.value.slice(1);
+                        selectElement.append(dropDownOption);
+                    }
+                    else{
+                        throw new TypeError("expected object in option array but got "+ typeof element);
+                    }
+                });
+                return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
@@ -7570,7 +7614,11 @@ var userOverride = {
                     document
                         .getElementById('mck-char-warning')
                         .classList.add('n-vis');
-                kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-rating-box'] },
+                    '',
+                    'selected'
+                );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -7829,9 +7877,11 @@ var userOverride = {
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
-                if (allowReload){
+                if (allowReload) {
                     scroll = false;
-                    data && data.message && (data.message = data.message.reverse());
+                    data &&
+                        data.message &&
+                        (data.message = data.message.reverse());
                 }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
@@ -8278,7 +8328,8 @@ var userOverride = {
                 if (
                     append &&
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
-                    (!allowReload && mckMessageLayout.isMessageSentByBot(msg, contact))
+                    !allowReload &&
+                    mckMessageLayout.isMessageSentByBot(msg, contact)
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
