@@ -6183,9 +6183,12 @@ body.accesibility :focus {
 
 /* -----------------Support for hiding list and buttons post call to action------------- */
 .mck-msg-left [data-hidepostcta="true"] {
-	display:none;
+	display: none;
 }
 .mck-msg-left:last-child [data-hidepostcta="true"] {
-	display:block!important;
+	display: block;
 	visibility: visible;
+}
+.mck-msg-left.contains-quick-replies-only:not(:last-child) {
+	display: none;
 }

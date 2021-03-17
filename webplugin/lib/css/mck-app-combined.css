@@ -109,7 +109,7 @@
 	cursor: pointer;
 	text-decoration: none;
 	background: transparent
-		url(https://apps.applozic.com/resources/lib/images/blank.gif);
+		url(https://cdn.kommunicate.io/kommunicate/emojify/images/blank.gif);
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	z-index: 8040
 }
@@ -362,7 +362,7 @@ img.emoji {
 	vertical-align: middle;
 	border: 0 none;
 	background-image:
-		url(https://www.applozic.com/resources/lib/emojify/images/sheet_emoji_64.png)
+		url(https://cdn.kommunicate.io/kommunicate/emojify/images/sheet_emoji_64.png)
 }
 
 .emoji-menu img {

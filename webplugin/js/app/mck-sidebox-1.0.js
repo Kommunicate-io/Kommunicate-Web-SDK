@@ -573,10 +573,13 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
-        var KM_PRELEAD_COLLECTION = mckMessageService.checkArray(
-            appOptions.preLeadCollection
-        )
-            ? appOptions.preLeadCollection
+        var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection
+            ? mckMessageService.checkArray(appOptions.preLeadCollection)
+            : appOptions.appSettings.collectLead &&
+              appOptions.appSettings.leadCollection
+            ? mckMessageService.checkArray(
+                  appOptions.appSettings.leadCollection
+              )
             : [];
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
@@ -827,13 +830,13 @@ var userOverride = {
 
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
-            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
+            if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
-                  }
+                }
             }
         };
         _this.reInit = function (optns) {
@@ -2945,8 +2948,17 @@ var userOverride = {
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
+                var phoneField = document.getElementById('km-phone');
+                if (phoneField !== null) {
+                    phoneField.addEventListener(
+                        'keydown',
+                        _this.phoneNumberValidation
+                    );
+                }
             };
-
+            _this.phoneNumberValidation = function (e) {
+                e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 var submitLogin = document.getElementById(
@@ -2961,7 +2973,10 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML = LEAD_COLLECTION_LABEL.heading;
+                leadCollectionHeading.innerHTML = appOptions.preLeadCollection
+                    ? LEAD_COLLECTION_LABEL.heading
+                    : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
+                      '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
@@ -4329,7 +4344,9 @@ var userOverride = {
                 ).onclick = function (e) {
                     e.preventDefault();
                     userOverride.voiceOutput = !userOverride.voiceOutput;
-                    KommunicateUI.toggleVoiceOutputOverride(userOverride.voiceOutput);
+                    KommunicateUI.toggleVoiceOutputOverride(
+                        userOverride.voiceOutput
+                    );
                 };
 
                 //----------------------------------------------------------------
@@ -4347,6 +4364,13 @@ var userOverride = {
                     }
                     if (contactNumber) {
                         userId = contactNumber;
+                        // Remove listener from phone number
+                        document
+                            .getElementById('km-phone')
+                            .removeEventListener(
+                                'keydown',
+                                _this.phoneNumberValidation
+                            );
                     }
                     if (email) {
                         userId = email;
@@ -7607,6 +7631,7 @@ var userOverride = {
                     document
                         .getElementById('mck-char-warning')
                         .classList.add('n-vis');
+                kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -7865,7 +7890,10 @@ var userOverride = {
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
-                allowReload && (scroll = false);
+                if (allowReload){
+                    scroll = false;
+                    data && data.message && (data.message = data.message.reverse());
+                }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
                     messageArray.push(data.message);
@@ -7894,7 +7922,9 @@ var userOverride = {
                                 append,
                                 false,
                                 isValidated,
-                                enableAttachment
+                                enableAttachment,
+                                null,
+                                allowReload
                             );
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
@@ -8060,7 +8090,8 @@ var userOverride = {
                 scroll,
                 appendContextMenu,
                 enableAttachment,
-                callback
+                callback,
+                allowReload
             ) {
                 var metadatarepiledto = '';
                 var replymessage = '';
@@ -8318,7 +8349,7 @@ var userOverride = {
                 if (
                     append &&
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
-                    mckMessageLayout.isMessageSentByBot(msg, contact)
+                    (!allowReload && mckMessageLayout.isMessageSentByBot(msg, contact))
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
@@ -8326,14 +8357,16 @@ var userOverride = {
                 if (
                     HIDE_POST_CTA &&
                     richText &&
-                    kmRichTextMarkup.includes(
-                        'km-cta-multi-button-container'
-                    ) &&
-                    !kmRichTextMarkup.includes('km-link-button') &&
-                    !append
+                    kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 &&
+                    kmRichTextMarkup.indexOf('km-link-button') == -1
                 ) {
-                    // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
-                    botMessageDelayClass = 'n-vis';
+                    if(!append){
+                        // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                        botMessageDelayClass = 'n-vis';
+                    }else{
+                        // this class is added to the message template if the message contains CTA buttons having only quick replies.
+                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
+                    }
                 }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
@@ -11226,9 +11259,11 @@ var userOverride = {
                                                     'true' &&
                                                 contact.type !== 7) ||
                                             (!message.message &&
-                                                message.metadata.hasOwnProperty(
+                                                (message.metadata.hasOwnProperty(
                                                     'KM_ASSIGN_TO'
-                                                ))
+                                                ) || message.metadata.hasOwnProperty(
+                                                    'KM_ASSIGN_TEAM'
+                                                )))
                                         ) {
                                             if (
                                                 MCK_BOT_MESSAGE_DELAY !== 0 &&
