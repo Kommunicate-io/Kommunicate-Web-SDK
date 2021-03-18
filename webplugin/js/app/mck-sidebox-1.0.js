@@ -2986,7 +2986,7 @@ var userOverride = {
                         .toLowerCase()
                         .split('-')[1];
                 selectElement.append(dropDownOption);
-                options.forEach((element) => {
+                options.forEach(function (element) {
                     if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
                         dropDownOption.value = element.value;
