@@ -5457,11 +5457,13 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
-
                 if (
                     HIDE_POST_CTA &&
                     richText &&
-                    kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 &&
+                    (
+                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
+                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
+                    ) &&
                     kmRichTextMarkup.indexOf('km-link-button') == -1
                 ) {
                     if(!append){
