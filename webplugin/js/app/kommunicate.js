@@ -691,8 +691,8 @@ $applozic.extend(true, Kommunicate, {
     // check if the message needs to be processed by addMessage
     visibleMessage: function (msg) {
         if (!msg) return false;
-        if (!msg.message && msg.metadata.hasOwnProperty('KM_ASSIGN_TO')) {
-            // KM_ASSIGN_TO parameter comes when we change assignee by bot message.
+        if (!msg.message && (msg.metadata.hasOwnProperty('KM_ASSIGN_TO') || msg.metadata.hasOwnProperty('KM_ASSIGN_TEAM'))) {
+            // KM_ASSIGN_TO and KM_ASSIGN_TEAM parameter comes when we change assignee by bot message.
             return false;
         }
         if (
