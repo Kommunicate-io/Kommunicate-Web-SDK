@@ -119,13 +119,13 @@ $applozic.extend(true, Kommunicate, {
 
     updateConversationMetadata: function (conversationMetadata) {
         if (conversationMetadata) {
-            var metadataToSend = conversationMetadata.metadata;
             if (
                 conversationMetadata.groupId &&
-                metadataToSend &&
+                conversationMetadata.metadata &&
                 kommunicateCommons.isObject(conversationMetadata) &&
-                kommunicateCommons.isObject(metadataToSend)
-            ) {
+                kommunicateCommons.isObject(conversationMetadata.metadata)
+                ) {
+                var metadataToSend = conversationMetadata.metadata;
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
                         groupId: conversationMetadata.groupId,
