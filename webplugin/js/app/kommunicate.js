@@ -116,23 +116,19 @@ $applozic.extend(true, Kommunicate, {
             }, SET_TIMEOUT_DURATION);
         }
     },
+
     updateConversationMetadata: function (conversationMetadata) {
         if (conversationMetadata) {
-            var conversationInfo = JSON.parse(
-                JSON.stringify(conversationMetadata)
-            );
-            var metadataToSend = JSON.parse(
-                JSON.stringify(conversationMetadata.metadata)
-            );
+            var metadataToSend = conversationMetadata.metadata;
             if (
-                kommunicateCommons.isObject(conversationInfo) &&
-                kommunicateCommons.isObject(metadataToSend) &&
-                conversationInfo.groupId &&
-                metadataToSend
+                conversationMetadata.groupId &&
+                metadataToSend &&
+                kommunicateCommons.isObject(conversationMetadata) &&
+                kommunicateCommons.isObject(metadataToSend)
             ) {
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
-                        groupId: conversationInfo.groupId,
+                        groupId: conversationMetadata.groupId,
                         metadata: {
                             conversationMetadata: JSON.stringify(
                                 metadataToSend
