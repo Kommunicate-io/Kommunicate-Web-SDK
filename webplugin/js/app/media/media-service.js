@@ -88,7 +88,7 @@ Kommunicate.mediaService = {
                 utterance.rate = appOptions.voiceRate || 1;
                 var skipForEach = false;
                 if (appOptions.voiceName) {
-                    AVAILABLE_VOICES_FOR_TTS.forEach((voice) => {
+                    AVAILABLE_VOICES_FOR_TTS.forEach(function (voice) {
                         if (skipForEach) {
                             return;
                         }
