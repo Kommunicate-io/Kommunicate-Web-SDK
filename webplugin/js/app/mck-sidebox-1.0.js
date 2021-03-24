@@ -464,6 +464,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
+        var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1 : MCK_LABELS['emoji.hover.text'].poor,
             5 : MCK_LABELS['emoji.hover.text'].average,
