@@ -25,12 +25,37 @@ const generatePluginFile = async (req, res) => {
   PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
   PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 
-  console.log("setting context and static path", MCK_CONTEXTPATH);
-  var data = await util.promisify(fs.readFile)(path.join(__dirname, "/build/plugin.js"), 'utf8');
-  var plugin =
-    data.replace(":MCK_CONTEXTPATH", MCK_CONTEXTPATH)
-    .replace(":MCK_THIRD_PARTY_INTEGRATION", JSON.stringify(MCK_THIRD_PARTY_INTEGRATION))
-    .replace(":MCK_PLUGIN_VERSION", MCK_PLUGIN_VERSION).replace(":PLUGIN_SETTINGS", JSON.stringify(PLUGIN_SETTING))
-    .replace(":MCK_STATICPATH", MCK_STATICPATH).replace(":PRODUCT_ID", "kommunicate");
-  return plugin;
-}
+    console.log('setting context and static path', MCK_CONTEXTPATH);
+    var data = await util.promisify(fs.readFile)(
+        path.join(__dirname, '/build/plugin.js'),
+        'utf8'
+    );
+    var plugin = data
+        .replace(':MCK_CONTEXTPATH', MCK_CONTEXTPATH)
+        .replace(
+            ':MCK_THIRD_PARTY_INTEGRATION',
+            JSON.stringify(MCK_THIRD_PARTY_INTEGRATION)
+        )
+        .replace(':MCK_PLUGIN_VERSION', MCK_PLUGIN_VERSION)
+        .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
+        .replace(':MCK_STATICPATH', MCK_STATICPATH)
+        .replace(':PRODUCT_ID', 'kommunicate');
+    return plugin;
+};
+
+exports.getPluginHTML = async (req, res) => {
+    const APP_ID = req.query.appId;
+    const MCK_CONTEXTPATH = config.urls.hostUrl;
+    if (!APP_ID) {
+        res.send('Error while getting application id...');
+        return console.log('Unable to get application id');
+    }
+    const OVERRIDES = {};
+    OVERRIDES.referer = req.header('Referer');
+    res.render('plugin',{
+        APP_ID,
+        MCK_CONTEXTPATH,
+        OVERRIDES
+    });
+    console.log('plugin HTML sent successfully');
+};

@@ -13,6 +13,7 @@ var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
+var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 
 (function ($applozic, w, d) {
@@ -336,6 +337,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var WIDGET_SETTINGS = appOptions.widgetSettings;
         var EMOJI_LIBRARY = appOptions.emojilibrary;
         var CSAT_ENABLED = appOptions.collectFeedback;
+        var HIDE_POST_CTA = appOptions.hidePostCTA;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
@@ -462,6 +464,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
         var POPUP_WIDGET = appOptions.popupWidget;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
+        var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1 : MCK_LABELS['emoji.hover.text'].poor,
             5 : MCK_LABELS['emoji.hover.text'].average,
@@ -653,6 +656,17 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
             document.addEventListener('mousedown', function(e) {
                 document.body.classList.remove("accesibility");
             });
+
+            // the browser call getVoices is async
+            // so we are updating the array whenever they're available
+            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
+                AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
+                if (speechSynthesis.onvoiceschanged !== undefined) {
+                    speechSynthesis.onvoiceschanged = function () {
+                        AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
+                    };
+                  }
+            }
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
@@ -4863,6 +4877,9 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 $applozic.template("searchContactbox", searchContactbox);
                 $applozic.template("csatModule", csatModule);
             };
+
+            
+
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 /*
@@ -5435,6 +5452,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
+                
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 msg.fileMeta && msg.fileMeta.size && (msg.fileMeta.previewSize = alFileService.getFilePreviewSize(msg.fileMeta.size));
@@ -5452,6 +5470,24 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
+                if (
+                    HIDE_POST_CTA &&
+                    richText &&
+                    (
+                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
+                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
+                    ) &&
+                    kmRichTextMarkup.indexOf('km-link-button') == -1
+                ) {
+                    if(!append){
+                        // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                        botMessageDelayClass = 'n-vis';
+                    }else{
+                        // this class is added to the message template if the message contains CTA buttons having only quick replies.
+                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
+                    }
+                }
+
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
                 //     return ;
@@ -5513,7 +5549,10 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
                     botMsgDelayExpr: botMessageDelayClass
                 }];
 
-                append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
+                append ? 
+                    $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : 
+                    $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
+
                 if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
                         var userFeedback = JSON.parse(msg.metadata.feedback);

@@ -134,27 +134,64 @@ getRoomDetailTemplate: function (options, sessionId) {
 getButtonTemplate:function(options,requestType, buttonClass){
     var linkSvg = '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
 
-    if(options.type=="link"){
-        return'<button aria-label="' + (options.replyText || options.name) + '" title= "'+ (options.replyText || options.name) +'" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link '+buttonClass+'  " data-url="'+encodeURI(options.url)+'  " data-metadata="'+options.replyMetadata+'" data-buttontype="button" data-target="'+Kommunicate.markup.getLinkTarget(options)+'" ">'+options.name+'' + linkSvg + '</button>';  
-    }else{
-        return'<button aria-label="' + (options.replyText || (options.action && options.action.message)||options.name) + '" title= "'+ (options.replyText || (options.action && options.action.message)||options.name) +'" data-metadata="'+options.replyMetadata+'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-custom-widget-text-color  '+buttonClass+' ">'+options.name+'</button>';
-    }
-},
-getQuickRepliesTemplate:function(){
-    return`<div class="km-cta-multi-button-container">
+        if (options.type == 'link') {
+            return (
+                '<button aria-label="' +
+                (options.replyText || options.name) +
+                '" title= "' +
+                (options.replyText || options.name) +
+                '" class= "km-cta-button km-link-button km-custom-widget-text-color km-undecorated-link ' +
+                buttonClass +
+                '  " data-url="' +
+                encodeURI(options.url) +
+                '  " data-metadata="' +
+                options.replyMetadata +
+                '" data-buttontype="button" data-target="' +
+                Kommunicate.markup.getLinkTarget(options) +
+                '" ">' +
+                options.name +
+                '' +
+                linkSvg +
+                '</button>'
+            );
+        } else {
+            return (
+                '<button aria-label="' +
+                (options.replyText ||
+                    (options.action && options.action.message) ||
+                    options.name) +
+                '" title= "' +
+                (options.replyText ||
+                    (options.action && options.action.message) ||
+                    options.name) +
+                '" data-metadata="' +
+                options.replyMetadata +
+                '" data-buttontype="submit" data-requesttype= "' +
+                requestType +
+                '" class="km-cta-button km-custom-widget-text-color  ' +
+                buttonClass +
+                ' ">' +
+                options.name +
+                '</button>'
+            );
+        }
+    },
+    getQuickRepliesTemplate: function () {
+        return `
             {{#payload}}
-                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}">{{title}}</button>
+                 <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{title}}</button>
             {{/payload}}
-            </div>`;
-},
-getGenericSuggestedReplyButton : function(){
-    return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}">{{name}}</button>`
-},
-getPassangerDetail : function(options){
-    if(!options.sessionId){
-       console.log("sessionId not present in message..") 
-    }
-    return `  <div class="km-guest-details-container km-rich-text-default-container">
+            `;
+    },
+    getGenericSuggestedReplyButton: function () {
+        return `<button aria-label="{{name}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{action.updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{name}}</button>`;
+    },
+    getPassangerDetail: function (options) {
+        if (!options.sessionId) {
+            console.log('sessionId not present in message..');
+        }
+        return (
+            `  <div class="km-guest-details-container km-rich-text-default-container">
                 <div class="km-guest-detail-form">
                     <div class= "km-select-title">    
                         <select name="title" class="km-title-select">
@@ -177,7 +214,7 @@ getPassangerDetail : function(options){
                 </div>
             </div>
             `
-},
+        )},
 getListMarkup:function(){
     return `<div class="km-message km-received km-chat-faq-list km-list-container" style="">
      <div class="km-faq-list--container"  >
@@ -191,7 +228,7 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{handlerClass}} data-type="{{dataType}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-languageCode = "{{updateLanguage}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} {{{target}}} class="km-undecorated-link km-custom-widget-text-color" >
+                     <li class ={{handlerClass}} data-type="{{dataType}}" data-hidePostCTA="{{hidePostCTA}}" data-metadata = "{{replyMetadata}}" data-reply = "{{dataReply}}" data-languageCode = "{{updateLanguage}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} {{{target}}} class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
@@ -215,7 +252,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                     {{#buttons}}
-                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-hidePostCTA="{{hidePostCTA}}" data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                     {{/buttons}}  
              </div>
          </div>
@@ -263,7 +300,7 @@ return `<div class="mck-msg-box-rich-text-container km-card-message-container  k
             <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
             <div class="km-carousel-card-content-wrapper {{carouselInfoWrapperClass}}">{{{info}}}</div>
             </div>
-            <div class="km-carousel-card-footer">{{{footer}}}</div>
+            <div class="km-carousel-card-footer"><div class="km-cta-multi-button-container">{{{footer}}}</div></div>
             </div>
             {{/payload}}
         </div>`
@@ -436,6 +473,7 @@ Kommunicate.markup.getFormMarkup = function(options) {
 Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
     var payload = JSON.parse(options.payload);
     var buttonClass;
+    var hidePostCTA = kommunicate._globals.hidePostCTA;
     switch (template) {
         case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
             buttonClass = "km-quick-rpy-btn km-custom-widget-border-color "
@@ -449,6 +487,7 @@ Kommunicate.markup.quickRepliesContainerTemplate= function(options, template){
     for(var i = 0;i<payload.length;i++){
         payload[i].replyMetadata = typeof  payload[i].replyMetadata =="object"? JSON.stringify(payload[i].replyMetadata):payload[i].replyMetadata;
         payload[i].buttonClass = buttonClass;
+        payload[i].hidePostCTA = hidePostCTA;
     }
      return Mustache.to_html(Kommunicate.markup.getQuickRepliesTemplate(), {"payload":payload});
 }
@@ -481,73 +520,82 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     }
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
-Kommunicate.markup.getListContainerMarkup = function(metadata){
-    const buttonClass = {link:"km-link-button", submit:""}
-    if(metadata && metadata.payload){
-       var json = JSON.parse(metadata.payload);
-        if(json.headerImgSrc){
-            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= "'+json.headerImgSrc+'"  alt = "image" /></div>';
-        }if(json.headerText){
-            json.headerText ='<p class="km-faq-list--header_text">'+json.headerText+"</p>"
+Kommunicate.markup.getListContainerMarkup = function (metadata) {
+    const buttonClass = { link: "km-link-button", submit: "" }
+    if (metadata && metadata.payload) {
+        var json = JSON.parse(metadata.payload);
+        if (json.headerImgSrc) {
+            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= "' + json.headerImgSrc + '"  alt = "image" /></div>';
+        } if (json.headerText) {
+            json.headerText = '<p class="km-faq-list--header_text">' + json.headerText + "</p>"
         }
-        if(json.elements&&json.elements.length){
-            json.elementClass ="vis";
-            json.elements =   json.elements.map(function(item){
-               // checking for image
-                if(item.imgSrc){
-                item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
-               }
-               item.description && (item.description = kommunicateCommons.removeHtmlTag(item.description));
-               if(item.action && item.action.replyMetadata){
-                 item.replyMetadata = typeof  item.action.replyMetadata =="object"? JSON.stringify(item.action.replyMetadata):item.action.replyMetadata;
-               }
-               //checking for type
-               if(item.action && item.action.type=="link"){
-                item.href = item.action.url;
-                item.action.openLinkInNewTab == false ? item.target = 'target="_parent"' : item.target = 'target="_blank"';
-               }else{
-                item.href = "javascript:void(0)";
-                item.target = '';
-                item.handlerClass= "km-list-item-handler";
-                item.action && (item.updateLanguage = item.action.updateLanguage);
-                
-               }
-               if(item.action){
-                item.dataType=item.action.type||"";
-                item.dataReply = item.action.text||item.title||"";
-               }
-               item.dataArticleId = item.articleId||"";
-               item.dataSource = item.source||"";
-               // TODO : add post url in data.
+        if (json.elements && json.elements.length) {
+            json.elementClass = "vis";
+            json.elements = json.elements.map(function (item) {
+                // checking for image
+                if (item.imgSrc) {
+                    item.imgSrc = '<img src ="' + item.imgSrc + '" />';
+                }
+                item.description && (item.description = kommunicateCommons.removeHtmlTag(item.description));
+                if (item.action && item.action.replyMetadata) {
+                    item.replyMetadata = typeof item.action.replyMetadata == "object" ? JSON.stringify(item.action.replyMetadata) : item.action.replyMetadata;
+                }
+                //checking for type
+                if (item.action && item.action.type == "link") {
+                    item.href = item.action.url;
+                    item.action.openLinkInNewTab == false ? item.target = 'target="_parent"' : item.target = 'target="_blank"';
+                    item.hidePostCTA = false;
+                } else {
+                    item.href = "javascript:void(0)";
+                    item.target = '';
+                    item.action && (item.updateLanguage = item.action.updateLanguage);
+                    item.hidePostCTA = kommunicate._globals.hidePostCTA;
+                }
+                item.handlerClass = "km-list-item-handler";
+                if (item.action) {
+                    item.dataType = item.action.type || "";
+                    item.dataReply = item.action.text || item.title || "";
+                }
+                item.dataArticleId = item.articleId || "";
+                item.dataSource = item.source || "";
+                // TODO : add post url in data.
                 return item;
             })
-        }else{
-            json.elementClass ="n-vis"
+        } else {
+            json.elementClass = "n-vis"
         }
-        if(json.buttons&&json.buttons.length){
-        json.buttons=  json.buttons.map(function (button){
-            button.target = Kommunicate.markup.getLinkTarget(button.action);
-            button.buttonClass = buttonClass[button.action.type];
-            if(button.action && button.action.replyMetadata){
-                button.replyMetadata = typeof  button.action.replyMetadata =="object"? JSON.stringify(button.action.replyMetadata):button.action.replyMetadata;
-              }
-              button.action && (button.updateLanguage = button.action.updateLanguage);
-            if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
-                button.href = "javascript:void(0)";
-                button.handlerClass= "km-list-button-item-handler";
-               }else{
-                button.href = encodeURI(button.action.url);
-               }
-               
-               button.dataType=button.action? button.action.type:"";
-               button.dataReply = (button.action && button.action.text)? button.action.text: (button.name||"");
-               // TODO : add post url in data.
-                return button;
-        })
-    }
+        if (json.buttons && json.buttons.length) {
+            json.buttons = json.buttons.map(function (button) {
+                button.target = Kommunicate.markup.getLinkTarget(button.action);
+                button.buttonClass = buttonClass[button.action.type];
+                if (button.action && button.action.replyMetadata) {
+                    button.replyMetadata = typeof button.action.replyMetadata == "object" ? JSON.stringify(button.action.replyMetadata) : button.action.replyMetadata;
+                }
+                button.action && (button.updateLanguage = button.action.updateLanguage);
+                if (!button.action || button.action.type == "quick_reply" || button.action.type == "submit") {
+                    button.href = "javascript:void(0)";
+                    button.handlerClass = "km-list-button-item-handler";
+                } else {
+                    button.href = encodeURI(button.action.url);
+                }
 
-       return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
-    }else{
+                if(button.action.type == "quick_reply"){
+                    button.hidePostCTA = kommunicate._globals.hidePostCTA;
+                }else{
+                    button.hidePostCTA = false;
+                }
+
+                button.dataType = button.action ? button.action.type : "";
+
+                button.dataReply = (button.action && button.action.text) ? button.action.text : (button.name || "");
+                // TODO : add post url in data.
+                return button;
+            })
+        }
+        
+
+        return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
+    } else {
         return "";
     }
 
@@ -702,6 +750,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
         typeof (singlePayload.replyMetadata == "object") && (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
         !singlePayload.type && singlePayload.action && (singlePayload.type = singlePayload.action.type);
         !singlePayload.replyMetadata && singlePayload.action && singlePayload.action.replyMetadata && kommunicateCommons.isObject(singlePayload.action.replyMetadata) && (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
+        singlePayload.hidePostCTA = false;
         if (singlePayload.type == "link" || singlePayload.type == "submit") {
             singlePayload.url = buttonPayloadList[i].action.url || buttonPayloadList[i].action.formAction;
             singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
@@ -714,6 +763,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
         } else if (singlePayload.type == "quickReply" || singlePayload.type == "suggestedReply") {
             singlePayload.buttonClass = "km-quick-rpy-btn " + buttonClass;
             singlePayload.message = singlePayload.action.message || singlePayload.name;
+            singlePayload.type == "quickReply" && (singlePayload.hidePostCTA = kommunicate._globals.hidePostCTA);
             buttonContainerHtml += Mustache.to_html(Kommunicate.markup.getGenericSuggestedReplyButton(), singlePayload);
         } else if (singlePayload.action && singlePayload.action.type == "submit") {
 
