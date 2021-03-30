@@ -1331,8 +1331,7 @@ KommunicateUI = {
                             }, "n-vis", "vis");
                         }
                     }
-                }
-            },
+                },
             error: function (err) {
                 throw new Error('Error while fetching waiting list', err);
             },

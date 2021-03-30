@@ -15,6 +15,9 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
+var userOverride = {
+    voiceOutput: true,
+};
 
 (function ($applozic, w, d) {
     'use strict';
