@@ -6,7 +6,8 @@ Kommunicate.defaultLabels = {
     'start.new': 'Start New Conversation',
     'search.contacts': 'Contacts',
     'search.groups': 'Groups',
-    'char.limit.warn': 'Keep your message within 256 characters to help the bot understand easily',
+    'char.limit.warn':
+        'Keep your message within 256 characters to help the bot understand easily',
     'limit.remove': 'Remove',
     'limit.characters': 'characters',
     'limit.remaining': 'remaining',
@@ -38,7 +39,8 @@ Kommunicate.defaultLabels = {
     'unblock.user.alert': 'Are you sure you want to unblock this user?',
     'exit.group.alert': 'Are you sure you want to exit this group?',
     'remove.member.alert': 'Are you sure you want to remove this member?',
-    'clear.messages.alert': 'Are you sure you want to delete all the conversation?',
+    'clear.messages.alert':
+        'Are you sure you want to delete all the conversation?',
     'typing': 'typing...',
     'is.typing': 'is typing...',
     'online': 'Online',
@@ -84,7 +86,8 @@ Kommunicate.defaultLabels = {
     'open': 'Open',
     'you': 'You',
     'away': 'Away',
-    'closed.conversation.message': 'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
+    'closed.conversation.message':
+        'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
     'search.faq': 'Search in FAQs...',
     'looking.for.something.else': 'Looking for something else?',
     'no-faq-found': 'We are here to help.',
@@ -92,58 +95,60 @@ Kommunicate.defaultLabels = {
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
     'conversation.rated': 'rated the conversation',
-    'offline.msg': "Uh oh! No internet connection. Please check your network settings and try again.",
+    'offline.msg':
+        'Uh oh! No internet connection. Please check your network settings and try again.',
     'group.metadata': {
-        'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
-        'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
-        'ADD_MEMBER_MESSAGE': ':adminName added :userName',
-        'JOIN_MEMBER_MESSAGE': ':userName joined',
-        'GROUP_NAME_CHANGE_MESSAGE': 'Group name changed to :groupName',
-        'GROUP_ICON_CHANGE_MESSAGE': 'Group icon changed',
-        'GROUP_LEFT_MESSAGE': ':userName left',
-        'DELETED_GROUP_MESSAGE': ':adminName deleted group',
-        'GROUP_USER_ROLE_UPDATED_MESSAGE': ':userName is :role now',
-        'GROUP_META_DATA_UPDATED_MESSAGE': '',
-        'ALERT': '',
-        'HIDE': ''
+        CREATE_GROUP_MESSAGE: ':adminName created group :groupName',
+        REMOVE_MEMBER_MESSAGE: ':adminName removed :userName',
+        ADD_MEMBER_MESSAGE: ':adminName added :userName',
+        JOIN_MEMBER_MESSAGE: ':userName joined',
+        GROUP_NAME_CHANGE_MESSAGE: 'Group name changed to :groupName',
+        GROUP_ICON_CHANGE_MESSAGE: 'Group icon changed',
+        GROUP_LEFT_MESSAGE: ':userName left',
+        DELETED_GROUP_MESSAGE: ':adminName deleted group',
+        GROUP_USER_ROLE_UPDATED_MESSAGE: ':userName is :role now',
+        GROUP_META_DATA_UPDATED_MESSAGE: '',
+        ALERT: '',
+        HIDE: '',
     },
     'lead.collection': {
-        'email': 'Email',
-        'name': 'Name',
-        'phone': 'Contact Number',
-        'title': 'Conversations',
-        'heading': 'Before starting, we just need a few details so that we may serve you better',
-        'submit': 'Start Conversation',
+        email: 'Email',
+        name: 'Name',
+        phone: 'Contact Number',
+        title: 'Conversations',
+        heading:
+            'Before starting, we just need a few details so that we may serve you better',
+        submit: 'Start Conversation',
     },
     'csat.rating': {
-        'CONVERSATION_RATED': 'You rated the conversation',
-        'RATE_CONVERSATION': 'Rate your conversation',
-        'CONVERSATION_REVIEW_PLACEHOLDER': 'Add a feedback (optional)',
-        'OTHER_QUERIES': 'Have other queries? ',
-        'RESTART_CONVERSATION': 'Restart this conversation',
-        'SUBMIT_RATING': 'Submit your rating',
+        CONVERSATION_RATED: 'You rated the conversation',
+        RATE_CONVERSATION: 'Rate your conversation',
+        CONVERSATION_REVIEW_PLACEHOLDER: 'Add a feedback (optional)',
+        OTHER_QUERIES: 'Have other queries? ',
+        RESTART_CONVERSATION: 'Restart this conversation',
+        SUBMIT_RATING: 'Submit your rating',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {
-        'poor': "Poor",
-        'great': "Great",
-        'average': "Average"
+        poor: 'Poor',
+        great: 'Great',
+        average: 'Average',
     },
     'rich.message': {
-        'notification.preview': "Message"
+        'notification.preview': 'Message',
     },
     'filter.conversation.list': {
-        'ALL_CONVERSATIONS': 'All conversations',
-        'ACTIVE_CONVERSATIONS': 'Active conversations',
-        'HIDE_RESOLVED': 'Hide resolved',
-        'SHOW_RESOLVED': 'Show resolved'
+        ALL_CONVERSATIONS: 'All conversations',
+        ACTIVE_CONVERSATIONS: 'Active conversations',
+        HIDE_RESOLVED: 'Hide resolved',
+        SHOW_RESOLVED: 'Show resolved',
     },
     'rich.form': {
-        'errorText': 'Please enter valid data'
+        errorText: 'Please enter valid data',
     },
     'faq.query.message': {
-        'QUERY_REGARDING': 'Hi, I have a query regarding',
-        'HELP_YOU': 'Can you help me out?'
+        QUERY_REGARDING: 'Hi, I have a query regarding',
+        HELP_YOU: 'Can you help me out?',
     },
     'time.stamp': {
         'sec.ago': 'sec ago',
@@ -151,16 +156,15 @@ Kommunicate.defaultLabels = {
         'min.ago': 'min ago',
         'mins.ago': 'mins ago',
         'hr.ago': 'hr ago',
-        'hrs.ago': 'hrs ago'
+        'hrs.ago': 'hrs ago',
     },
     'voice.output': {
-        'location': {
-            'init': 'A location has been shared with you.',
-            'lat': 'Latitude is ',
-            'lon': 'and Longitude is '
-
+        location: {
+            init: 'A location has been shared with you.',
+            lat: 'Latitude is ',
+            lon: 'and Longitude is ',
         },
-        'attachment': 'You have an attachment.'
+        attachment: 'You have an attachment.',
     },
     'waiting.queue.message': {
         'first.Part': 'You are currently',
@@ -168,6 +172,8 @@ Kommunicate.defaultLabels = {
         'last.part': ' in the waiting queue, our agents will get back to you shortly.'
     },
     'conversation.header.dropdown': {
-        'CSAT_RATING_TEXT': 'Rate this conversation'
-    }
-}
+        CSAT_RATING_TEXT: 'Rate this conversation',
+        USER_OVERIDE_VOICE_OUTPUT_ON: 'Turn on text to speech',
+        USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
+    },
+};

@@ -1,7 +1,7 @@
 {
   "name": "sample-custom-bot-app",
-  "engines" : { 
-     "node" : ">=10.16.0" 
+  "engines": {
+    "node": ">=10.16.0"
   },
   "version": "1.0.0",
   "description": "A sample app to set up a custom bot server",
