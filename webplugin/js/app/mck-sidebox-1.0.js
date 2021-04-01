@@ -8362,7 +8362,7 @@ var userOverride = {
                     ) &&
                     (   
                         kmRichTextMarkup.indexOf('<button') != -1 || 
-                        kmRichTextMarkup.indexOf('<li class="km-list-item-handler"') != -1 
+                        kmRichTextMarkup.indexOf('km-list-item-handler') != -1 
                     ) 
                     &&
                     kmRichTextMarkup.indexOf('km-link-button') == -1
