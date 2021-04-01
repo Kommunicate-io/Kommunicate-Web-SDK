@@ -2940,15 +2940,10 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                        var dropDownOption = document.createElement('option');
-                        dropDownOption.setAttribute('value', '');
-                        dropDownOption.innerHTML =
-                            MCK_LABELS['lead.collection'].option;
-                            kmChatInput.append(dropDownOption);
-                        // kmChatInput = _this.createSelectFieldDropdown(
-                        //     preLeadCollection.options,
-                        //     kmChatInput
-                        // );
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
+                            kmChatInput
+                        );
                     } else {
                         kmChatInput.setAttribute(
                             'type',
@@ -2966,6 +2961,9 @@ var userOverride = {
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
+                window.top.document.querySelector(
+                    '#komm-pre'
+                ).innerHTML = $applozic('.km-last-child').html();
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
                     phoneField.addEventListener(
@@ -2992,21 +2990,21 @@ var userOverride = {
                         .toLowerCase()
                         .split('-')[1];
                 selectElement.append(dropDownOption);
-                // options.forEach(function (element) {
-                //     if (kommunicateCommons.isObject(element)) {
-                //         dropDownOption = document.createElement('option');
-                //         dropDownOption.value = element.value;
-                //         dropDownOption.innerHTML =
-                //             element.value.charAt(0).toUpperCase() +
-                //             element.value.slice(1);
-                //         selectElement.append(dropDownOption);
-                //     } else {
-                //         throw new TypeError(
-                //             'expected object in option array but got ' +
-                //                 typeof element
-                //         );
-                //     }
-                // });
+                options.forEach(function (element) {
+                    if (kommunicateCommons.isObject(element)) {
+                        dropDownOption = document.createElement('option');
+                        dropDownOption.value = element.value;
+                        dropDownOption.innerHTML =
+                            element.value.charAt(0).toUpperCase() +
+                            element.value.slice(1);
+                        selectElement.append(dropDownOption);
+                    } else {
+                        throw new TypeError(
+                            'expected object in option array but got ' +
+                                typeof element
+                        );
+                    }
+                });
                 return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
