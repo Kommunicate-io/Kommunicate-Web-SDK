@@ -2986,21 +2986,21 @@ var userOverride = {
                         .toLowerCase()
                         .split('-')[1];
                 selectElement.append(dropDownOption);
-                options.forEach(function (element) {
-                    if (kommunicateCommons.isObject(element)) {
-                        dropDownOption = document.createElement('option');
-                        dropDownOption.value = element.value;
-                        dropDownOption.innerHTML =
-                            element.value.charAt(0).toUpperCase() +
-                            element.value.slice(1);
-                        selectElement.append(dropDownOption);
-                    } else {
-                        throw new TypeError(
-                            'expected object in option array but got ' +
-                                typeof element
-                        );
-                    }
-                });
+                // options.forEach(function (element) {
+                //     if (kommunicateCommons.isObject(element)) {
+                //         dropDownOption = document.createElement('option');
+                //         dropDownOption.value = element.value;
+                //         dropDownOption.innerHTML =
+                //             element.value.charAt(0).toUpperCase() +
+                //             element.value.slice(1);
+                //         selectElement.append(dropDownOption);
+                //     } else {
+                //         throw new TypeError(
+                //             'expected object in option array but got ' +
+                //                 typeof element
+                //         );
+                //     }
+                // });
                 return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
