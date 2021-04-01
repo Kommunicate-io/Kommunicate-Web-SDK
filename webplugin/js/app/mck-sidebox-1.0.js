@@ -2941,13 +2941,35 @@ var userOverride = {
                         preLeadCollection.placeholder || ''
                     );
                     kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    kmChatInput.setAttribute(
-                        'aria-label',
-                        preLeadCollection.field
-                    );
+                    if (
+                        preLeadCollection.element == 'select' &&
+                        preLeadCollection.options &&
+                        mckMessageService.checkArray(preLeadCollection.options)
+                    ) {
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
+                            kmChatInput
+                        );
+                    } else {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type || 'text'
+                        );
+                        kmChatInput.setAttribute(
+                            'placeholder',
+                            preLeadCollection.placeholder || ''
+                        );
+                        kmChatInput.setAttribute(
+                            'aria-label',
+                            preLeadCollection.field
+                        );
+                    }
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
+                window.top.document.querySelector(
+                    '#komm-pre'
+                ).innerHTML = $applozic('.km-last-child').html();
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
                     phoneField.addEventListener(
@@ -2958,6 +2980,38 @@ var userOverride = {
             };
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
+
+            _this.createSelectFieldDropdown = function (
+                options,
+                selectElement
+            ) {
+                var dropDownOption = document.createElement('option');
+                dropDownOption.setAttribute('value', '');
+                dropDownOption.innerHTML =
+                    MCK_LABELS['lead.collection'].option +
+                    ' ' +
+                    selectElement
+                        .getAttribute('name')
+                        .toLowerCase()
+                        .split('-')[1];
+                selectElement.append(dropDownOption);
+                options.forEach(function (element) {
+                    if (kommunicateCommons.isObject(element)) {
+                        dropDownOption = document.createElement('option');
+                        dropDownOption.value = element.value;
+                        dropDownOption.innerHTML =
+                            element.value.charAt(0).toUpperCase() +
+                            element.value.slice(1);
+                        selectElement.append(dropDownOption);
+                    } else {
+                        throw new TypeError(
+                            'expected object in option array but got ' +
+                                typeof element
+                        );
+                    }
+                });
+                return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
