@@ -2940,10 +2940,15 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                        kmChatInput = _this.createSelectFieldDropdown(
-                            preLeadCollection.options,
-                            kmChatInput
-                        );
+                        var dropDownOption = document.createElement('option');
+                        dropDownOption.setAttribute('value', '');
+                        dropDownOption.innerHTML =
+                            MCK_LABELS['lead.collection'].option;
+                            kmChatInput.append(dropDownOption);
+                        // kmChatInput = _this.createSelectFieldDropdown(
+                        //     preLeadCollection.options,
+                        //     kmChatInput
+                        // );
                     } else {
                         kmChatInput.setAttribute(
                             'type',
@@ -2980,7 +2985,8 @@ var userOverride = {
                 var dropDownOption = document.createElement('option');
                 dropDownOption.setAttribute('value', '');
                 dropDownOption.innerHTML =
-                    MCK_LABELS['lead.collection'].option+' '+
+                    MCK_LABELS['lead.collection'].option +
+                    ' ' +
                     selectElement
                         .getAttribute('name')
                         .toLowerCase()
@@ -8407,10 +8413,12 @@ var userOverride = {
                 if (
                     HIDE_POST_CTA &&
                     richText &&
-                    (
-                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
-                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
-                    ) &&
+                    (kmRichTextMarkup.indexOf(
+                        'km-cta-multi-button-container'
+                    ) != -1 ||
+                        kmRichTextMarkup.indexOf(
+                            'km-faq-list--footer_button-container'
+                        ) != -1) &&
                     kmRichTextMarkup.indexOf('km-link-button') == -1
                 ) {
                     if (!append) {
@@ -11316,9 +11324,10 @@ var userOverride = {
                                             (!message.message &&
                                                 (message.metadata.hasOwnProperty(
                                                     'KM_ASSIGN_TO'
-                                                ) || message.metadata.hasOwnProperty(
-                                                    'KM_ASSIGN_TEAM'
-                                                )))
+                                                ) ||
+                                                    message.metadata.hasOwnProperty(
+                                                        'KM_ASSIGN_TEAM'
+                                                    )))
                                         ) {
                                             if (
                                                 MCK_BOT_MESSAGE_DELAY !== 0 &&
