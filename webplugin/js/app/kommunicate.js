@@ -116,6 +116,44 @@ $applozic.extend(true, Kommunicate, {
             }, SET_TIMEOUT_DURATION);
         }
     },
+
+    updateConversationMetadata: function (conversationMetadata) {
+        if (conversationMetadata) {
+            if (
+                kommunicateCommons.isObject(conversationMetadata) &&
+                kommunicateCommons.isObject(conversationMetadata.metadata) &&
+                conversationMetadata.groupId &&
+                conversationMetadata.metadata
+            ) {
+                var metadataToSend = conversationMetadata.metadata;
+                const groupDataResponse = Applozic.ALApiService.groupUpdate({
+                    data: {
+                        groupId: conversationMetadata.groupId,
+                        metadata: {
+                            conversationMetadata: JSON.stringify(
+                                metadataToSend
+                            ),
+                        },
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                });
+                return groupDataResponse;
+            } else {
+                throw new TypeError(
+                    'updateConversationMetadata expects an object as an argument'
+                );
+            }
+        } else {
+            throw new Error(
+                'updateConversationMetadata expect an object but got null'
+            );
+        }
+    },
     updateConversationDetail: function (conversationDetail) {
         var kommunicateSettings = KommunicateUtils.getDataFromKmSession(
             'settings'
@@ -691,7 +729,11 @@ $applozic.extend(true, Kommunicate, {
     // check if the message needs to be processed by addMessage
     visibleMessage: function (msg) {
         if (!msg) return false;
-        if (!msg.message && (msg.metadata.hasOwnProperty('KM_ASSIGN_TO') || msg.metadata.hasOwnProperty('KM_ASSIGN_TEAM'))) {
+        if (
+            !msg.message &&
+            (msg.metadata.hasOwnProperty('KM_ASSIGN_TO') ||
+                msg.metadata.hasOwnProperty('KM_ASSIGN_TEAM'))
+        ) {
             // KM_ASSIGN_TO and KM_ASSIGN_TEAM parameter comes when we change assignee by bot message.
             return false;
         }

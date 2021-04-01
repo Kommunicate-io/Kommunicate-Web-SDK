@@ -185,6 +185,29 @@ const configEnv = {
             },
         },
     },
+    prod_beta: {
+        port: '3034',
+        urls: {
+            applozicBaseUrl: 'https://chat.kommunicate.io',
+            kommunicateBaseUrl: 'https://api.kommunicate.io',
+            botPlatformApi: 'https://bots.kommunicate.io',
+            hostUrl: 'https://widget-beta.kommunicate.io',
+        },
+        pluginProperties: {
+            pseudoNameEnabled: true,
+        },
+        thirdPartyIntegration: {
+            sentry: {
+                dsn:
+                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                enabled: false,
+            },
+            aws: {
+                cdnUrl: 'https://cdn.kommunicate.io',
+                bucket: 'kommunicate-cdn',
+            },
+        },
+    },
     commonResources: {
         // add common resources for all environments below
     },
