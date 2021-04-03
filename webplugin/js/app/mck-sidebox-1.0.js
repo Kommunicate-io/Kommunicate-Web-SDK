@@ -5851,7 +5851,7 @@ var userOverride = {
                 err,
                 message
             ) {
-                if (_this.isFaqTabOpen()) {
+                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
                     return;
                 }
                 if (
@@ -6728,8 +6728,13 @@ var userOverride = {
                         .classList.contains('vis')
                 );
             };
+            _this.isConversationInWaitingQueue = function (){
+                return(
+                    document.querySelector('#mck-waiting-queue').classList.contains('vis')
+                )
+            };
             _this.updateConversationHeader = function (params) {
-                if (_this.isFaqTabOpen()) {
+                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
                     return;
                 }
                 var imageUrl;
