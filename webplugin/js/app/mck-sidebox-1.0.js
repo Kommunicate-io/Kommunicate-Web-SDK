@@ -10079,7 +10079,7 @@ var userOverride = {
                     isGroupTab
                 );
                 var imgsrctag = '';
-                var isConversationInWaitingQueue = false
+                var isConversationInWaitingQueue = false;
                 if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING ){
                     // if conversation is in waiting queue
                     displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
