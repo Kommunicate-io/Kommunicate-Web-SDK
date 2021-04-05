@@ -2940,20 +2940,10 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                //         var dropDownOption = document.createElement('option');
-                // dropDownOption.setAttribute('value', '');
-                // dropDownOption.textContent =
-                //     MCK_LABELS['lead.collection'].option +
-                //     ' ' +
-                //     kmChatInput
-                //         .getAttribute('name')
-                //         .toLowerCase()
-                //         .split('-')[1];
-                        kmChatInput.append('<option value="volvo">Volvo</option>');
-                        // kmChatInput = _this.createSelectFieldDropdown(
-                        //     preLeadCollection.options,
-                        //     kmChatInput
-                        // );
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
+                            kmChatInput
+                        );
                     } else {
                         kmChatInput.setAttribute(
                             'type',
@@ -2968,8 +2958,8 @@ var userOverride = {
                             preLeadCollection.field
                         );
                     }
-                    $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
+                    $applozic('.km-last-child').append(kmChatInputDiv);
                 }
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
@@ -2997,22 +2987,22 @@ var userOverride = {
                         .toLowerCase()
                         .split('-')[1];
                 selectElement.appendChild(dropDownOption);
-                // options.forEach(function (element) {
-                //     if (kommunicateCommons.isObject(element)) {
-                //         dropDownOption = document.createElement('option');
-                //         dropDownOption.setAttribute('value',element.value);
-                //         dropDownOption.textContent =
-                //             element.value.charAt(0).toUpperCase() +
-                //             element.value.slice(1);
-                //         selectElement.appendChild(dropDownOption);
-                //     } else {
-                //         throw new TypeError(
-                //             'expected object in option array but got ' +
-                //                 typeof element
-                //         );
-                //     }
-                // });
-                return selectElement ? selectElement : null;
+                options.forEach(function (element) {
+                    if (kommunicateCommons.isObject(element)) {
+                        dropDownOption = document.createElement('option');
+                        dropDownOption.setAttribute('value',element.value);
+                        dropDownOption.textContent =
+                            element.value.charAt(0).toUpperCase() +
+                            element.value.slice(1);
+                        selectElement.appendChild(dropDownOption);
+                    } else {
+                        throw new TypeError(
+                            'expected object in option array but got ' +
+                                typeof element
+                        );
+                    }
+                });
+                return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
