@@ -2940,16 +2940,16 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                        var dropDownOption = document.createElement('option');
-                dropDownOption.setAttribute('value', '');
-                dropDownOption.textContent =
-                    MCK_LABELS['lead.collection'].option +
-                    ' ' +
-                    kmChatInput
-                        .getAttribute('name')
-                        .toLowerCase()
-                        .split('-')[1];
-                        kmChatInput.appendChild(dropDownOption);
+                //         var dropDownOption = document.createElement('option');
+                // dropDownOption.setAttribute('value', '');
+                // dropDownOption.textContent =
+                //     MCK_LABELS['lead.collection'].option +
+                //     ' ' +
+                //     kmChatInput
+                //         .getAttribute('name')
+                //         .toLowerCase()
+                //         .split('-')[1];
+                        kmChatInput.append('<option value="volvo">Volvo</option>');
                         // kmChatInput = _this.createSelectFieldDropdown(
                         //     preLeadCollection.options,
                         //     kmChatInput
