@@ -5041,6 +5041,7 @@ var userOverride = {
             _this.openChat = function (ele, callback) {
                 var $this = $applozic(ele);
                 var tabId = $this.data('mck-id');
+                var isConversationInWaitingQueue = $this.parent().data('is-queued');
                 tabId =
                     typeof tabId !== 'undefined' && tabId !== ''
                         ? tabId.toString()
@@ -5091,6 +5092,7 @@ var userOverride = {
                             userName: userName,
                             conversationId: conversationId,
                             topicId: topicId,
+                            isConversationInWaitingQueue: isConversationInWaitingQueue,
                         },
                         callback
                     );
@@ -6591,7 +6593,7 @@ var userOverride = {
                                         data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
                                             data.groupFeeds[0].imageUrl);
-                                    mckMessageService.processOnlineStatusChange(
+                                    !params.isConversationInWaitingQueue && mckMessageService.processOnlineStatusChange(
                                         params.tabId,
                                         conversationAssigneeDetails,
                                         updateConversationHeaderParams
@@ -7424,7 +7426,7 @@ var userOverride = {
                 '</div>' +
                 '</div>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' +
+                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' +
@@ -10166,7 +10168,18 @@ var userOverride = {
                     contact.contactId,
                     isGroupTab
                 );
-                var imgsrctag = _this.getContactImageLink(contact, displayName);
+                var imgsrctag = '';
+                var isConversationInWaitingQueue = false
+                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == 7 ){
+                    // if conversation is in waiting queue
+                    displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
+                    imgsrctag = '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
+                    isConversationInWaitingQueue = true;
+                }
+                else{ 
+                    imgsrctag = _this.getContactImageLink(contact, displayName);
+                }
+                
                 var prepend = false;
                 var ucTabId = isGroupTab
                     ? 'group_' + contact.contactId
@@ -10267,6 +10280,7 @@ var userOverride = {
                               )
                             : '',
                         conversationStatusClass: statusClass,
+                        isConversationInWaitingQueue: isConversationInWaitingQueue,
                     },
                 ];
                 var latestCreatedAtTime = $applozic(

@@ -167,7 +167,8 @@ Kommunicate.defaultLabels = {
         attachment: 'You have an attachment.',
     },
     'waiting.queue.message': {
-        'header.text': 'Waiting queue..',
+        'contact.name': 'Waiting Queue...',
+        'header.text': 'Waiting queue...',
         'first.Part': 'You are currently',
         'waiting.queue.number': '5',
         'last.part':
