@@ -2961,9 +2961,6 @@ var userOverride = {
                     $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
                 }
-                window.top.document.querySelector(
-                    '#komm-pre'
-                ).innerHTML = $applozic('.km-last-child').html();
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
                     phoneField.addEventListener(
@@ -2982,7 +2979,7 @@ var userOverride = {
             ) {
                 var dropDownOption = document.createElement('option');
                 dropDownOption.setAttribute('value', '');
-                dropDownOption.innerHTML =
+                dropDownOption.textContent =
                     MCK_LABELS['lead.collection'].option +
                     ' ' +
                     selectElement
@@ -2994,7 +2991,7 @@ var userOverride = {
                     if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
                         dropDownOption.value = element.value;
-                        dropDownOption.innerHTML =
+                        dropDownOption.textContent =
                             element.value.charAt(0).toUpperCase() +
                             element.value.slice(1);
                         selectElement.append(dropDownOption);
