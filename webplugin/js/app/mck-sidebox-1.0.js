@@ -2940,10 +2940,20 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                        kmChatInput = _this.createSelectFieldDropdown(
-                            preLeadCollection.options,
-                            kmChatInput
-                        );
+                        var dropDownOption = document.createElement('option');
+                dropDownOption.setAttribute('value', '');
+                dropDownOption.textContent =
+                    MCK_LABELS['lead.collection'].option +
+                    ' ' +
+                    kmChatInput
+                        .getAttribute('name')
+                        .toLowerCase()
+                        .split('-')[1];
+                        kmChatInput.appendChild(dropDownOption);
+                        // kmChatInput = _this.createSelectFieldDropdown(
+                        //     preLeadCollection.options,
+                        //     kmChatInput
+                        // );
                     } else {
                         kmChatInput.setAttribute(
                             'type',
