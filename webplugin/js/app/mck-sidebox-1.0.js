@@ -2946,20 +2946,10 @@ var userOverride = {
                         preLeadCollection.options &&
                         mckMessageService.checkArray(preLeadCollection.options)
                     ) {
-                        var dropDownOption = document.createElement('option');
-                dropDownOption.setAttribute('value', '');
-                dropDownOption.textContent =
-                    MCK_LABELS['lead.collection'].option +
-                    ' ' +
-                    kmChatInput
-                        .getAttribute('name')
-                        .toLowerCase()
-                        .split('-')[1];
-                        kmChatInput.appendChild(dropDownOption);
-                        // kmChatInput = _this.createSelectFieldDropdown(
-                        //     preLeadCollection.options,
-                        //     kmChatInput
-                        // );
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
+                            kmChatInput
+                        );
                     } else {
                         kmChatInput.setAttribute(
                             'type',
@@ -2974,8 +2964,8 @@ var userOverride = {
                             preLeadCollection.field
                         );
                     }
-                    $applozic('.km-last-child').append(kmChatInputDiv);
                     $applozic(kmChatInputDiv).append(kmChatInput);
+                    $applozic('.km-last-child').append(kmChatInputDiv);
                 }
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
@@ -3002,15 +2992,15 @@ var userOverride = {
                         .getAttribute('name')
                         .toLowerCase()
                         .split('-')[1];
-                selectElement.append(dropDownOption);
+                selectElement.appendChild(dropDownOption);
                 options.forEach(function (element) {
                     if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
-                        dropDownOption.value = element.value;
+                        dropDownOption.setAttribute('value',element.value);
                         dropDownOption.textContent =
                             element.value.charAt(0).toUpperCase() +
                             element.value.slice(1);
-                        selectElement.append(dropDownOption);
+                        selectElement.appendChild(dropDownOption);
                     } else {
                         throw new TypeError(
                             'expected object in option array but got ' +
