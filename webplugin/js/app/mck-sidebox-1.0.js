@@ -2986,23 +2986,23 @@ var userOverride = {
                         .getAttribute('name')
                         .toLowerCase()
                         .split('-')[1];
-                selectElement.append(dropDownOption);
-                options.forEach(function (element) {
-                    if (kommunicateCommons.isObject(element)) {
-                        dropDownOption = document.createElement('option');
-                        dropDownOption.value = element.value;
-                        dropDownOption.textContent =
-                            element.value.charAt(0).toUpperCase() +
-                            element.value.slice(1);
-                        selectElement.append(dropDownOption);
-                    } else {
-                        throw new TypeError(
-                            'expected object in option array but got ' +
-                                typeof element
-                        );
-                    }
-                });
-                return selectElement;
+                selectElement.appendChild(dropDownOption);
+                // options.forEach(function (element) {
+                //     if (kommunicateCommons.isObject(element)) {
+                //         dropDownOption = document.createElement('option');
+                //         dropDownOption.setAttribute('value',element.value);
+                //         dropDownOption.textContent =
+                //             element.value.charAt(0).toUpperCase() +
+                //             element.value.slice(1);
+                //         selectElement.appendChild(dropDownOption);
+                //     } else {
+                //         throw new TypeError(
+                //             'expected object in option array but got ' +
+                //                 typeof element
+                //         );
+                //     }
+                // });
+                return selectElement ? selectElement : null;
             };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
