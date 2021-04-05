@@ -10080,7 +10080,7 @@ var userOverride = {
                 );
                 var imgsrctag = '';
                 var isConversationInWaitingQueue = false
-                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == 7 ){
+                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING ){
                     // if conversation is in waiting queue
                     displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
                     imgsrctag = '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
