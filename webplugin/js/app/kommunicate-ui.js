@@ -1326,6 +1326,7 @@ KommunicateUI = {
                     var waitingQueueNumber = document.getElementById(
                         'waiting-queue-number'
                     );
+                    var headerTabTitle = document.getElementById('mck-tab-title');
                     if (
                         waitingQueueNumber &&
                         waitingStatus &&
@@ -1344,6 +1345,15 @@ KommunicateUI = {
                             'vis',
                             'n-vis'
                         );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                            },
+                            'n-vis',
+                            'vis'
+                        );
+                        headerTabTitle.innerHTML = MCK_LABELS['waiting.queue.message']['header.text'];
+                    
                     } else {
                         kommunicateCommons.modifyClassList(
                             {
@@ -1352,6 +1362,14 @@ KommunicateUI = {
                             'n-vis',
                             'vis'
                         );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                            },
+                            'vis',
+                            'n-vis'
+                        );
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
                     }
                 }
             },
