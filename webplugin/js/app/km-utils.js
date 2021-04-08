@@ -274,6 +274,21 @@ KommunicateUtils = {
         }
         return cookiePrefix + '_';
     },
+    sendEventToGoogleAnalytics: function(
+        eventCateogry,
+        eventAction,
+        eventLabel,
+        eventValue
+    ) {
+        var trackingID =  applozic._globals.gaTrackingID;
+        if (trackingID) {
+            window.top.ga('create', trackingID.toString(), 'auto');
+            window.top.ga('send', 'event', {
+                eventCategory: eventCateogry,
+                eventAction: eventAction,
+            });
+        }
+    },
     isHttpsEnabledConnection: function () {
         return parent.window.location.protocol == 'https:';
     },

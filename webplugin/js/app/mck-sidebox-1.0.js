@@ -636,22 +636,6 @@ var userOverride = {
                 clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
             },
         };
-        function sendEventToGoogleAnalytics(
-            eventCateogry,
-            eventAction,
-            eventLable,
-            eventvalue
-        ) {
-            var trackingID = appOptions.gaTrackingID;
-            console.log(trackingID);
-            if (trackingID) {
-                window.top.ga('create', trackingID.toString(), 'auto');
-                window.top.ga('send', 'event', {
-                    eventCategory: eventCateogry,
-                    eventAction: eventAction,
-                });
-            }
-        };
         var CONNECT_SOCKET_ON_WIDGET_CLICK =
             appOptions.connectSocketOnWidgetClick;
         var SUBSCRIBE_TO_EVENTS_BACKUP = {};
@@ -693,7 +677,7 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
-            sendEventToGoogleAnalytics('Widget', 'Chat widget open');
+                KommunicateUtils.sendEventToGoogleAnalytics('Widget', 'Chat widget open');
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -5044,7 +5028,7 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                sendEventToGoogleAnalytics("Widget","Chat widget closed")
+                KommunicateUtils.sendEventToGoogleAnalytics("Widget","Chat widget closed")
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
@@ -5444,7 +5428,7 @@ var userOverride = {
                 mckMessageLayout.clearMessageField(true);
                 FILE_META = [];
                 delete TAB_MESSAGE_DRAFT[contact.contactId];
-                sendEventToGoogleAnalytics('Messages', 'Messages sent');
+                KommunicateUtils.sendEventToGoogleAnalytics('Messages', 'Messages sent');
             };
             _this.sendForwardMessage = function (forwardMessageKey) {
                 var forwardMessage = ALStorage.getMessageByKey(
