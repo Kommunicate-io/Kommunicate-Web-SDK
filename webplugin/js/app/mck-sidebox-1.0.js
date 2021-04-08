@@ -636,13 +636,28 @@ var userOverride = {
                 clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
             },
         };
+        function sendEventToGoogleAnalytics(
+            eventCateogry,
+            eventAction,
+            eventLable,
+            eventvalue
+        ) {
+            var trackingID = appOptions.gaTrackingID;
+            console.log(trackingID);
+            if (trackingID) {
+                window.top.ga('create', trackingID.toString(), 'auto');
+                window.top.ga('send', 'event', {
+                    eventCategory: eventCateogry,
+                    eventAction: eventAction,
+                });
+            }
+        };
         var CONNECT_SOCKET_ON_WIDGET_CLICK =
             appOptions.connectSocketOnWidgetClick;
         var SUBSCRIBE_TO_EVENTS_BACKUP = {};
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
             (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
-
         _this.toggleMediaOptions = function () {
             var mckTypingBox = document.getElementById('mck-text-box');
             mckMessageService.toggleMediaOptions(mckTypingBox);
@@ -678,6 +693,7 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
+            sendEventToGoogleAnalytics('Widget', 'Chat widget open');
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -2990,7 +3006,7 @@ var userOverride = {
                 options.forEach(function (element) {
                     if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
-                        dropDownOption.setAttribute('value',element.value);
+                        dropDownOption.setAttribute('value', element.value);
                         dropDownOption.textContent =
                             element.value.charAt(0).toUpperCase() +
                             element.value.slice(1);
@@ -5028,6 +5044,7 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
+                sendEventToGoogleAnalytics("Widget","Chat widget closed")
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
@@ -5086,7 +5103,6 @@ var userOverride = {
             _this.openChat = function (ele, callback) {
                 var $this = $applozic(ele);
                 var tabId = $this.data('mck-id');
-                var isConversationInWaitingQueue = $this.parent().data('is-queued');
                 tabId =
                     typeof tabId !== 'undefined' && tabId !== ''
                         ? tabId.toString()
@@ -5137,13 +5153,13 @@ var userOverride = {
                             userName: userName,
                             conversationId: conversationId,
                             topicId: topicId,
-                            isConversationInWaitingQueue: isConversationInWaitingQueue,
                         },
                         callback
                     );
                 }
                 $mck_search.val('');
             };
+
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
@@ -5428,6 +5444,7 @@ var userOverride = {
                 mckMessageLayout.clearMessageField(true);
                 FILE_META = [];
                 delete TAB_MESSAGE_DRAFT[contact.contactId];
+                sendEventToGoogleAnalytics('Messages', 'Messages sent');
             };
             _this.sendForwardMessage = function (forwardMessageKey) {
                 var forwardMessage = ALStorage.getMessageByKey(
@@ -5898,7 +5915,7 @@ var userOverride = {
                 err,
                 message
             ) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (_this.isFaqTabOpen()) {
                     return;
                 }
                 if (
@@ -6638,7 +6655,7 @@ var userOverride = {
                                         data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
                                             data.groupFeeds[0].imageUrl);
-                                    !params.isConversationInWaitingQueue && mckMessageService.processOnlineStatusChange(
+                                    mckMessageService.processOnlineStatusChange(
                                         params.tabId,
                                         conversationAssigneeDetails,
                                         updateConversationHeaderParams
@@ -6775,13 +6792,8 @@ var userOverride = {
                         .classList.contains('vis')
                 );
             };
-            _this.isConversationInWaitingQueue = function (){
-                return(
-                    document.querySelector('#mck-waiting-queue').classList.contains('vis')
-                )
-            };
             _this.updateConversationHeader = function (params) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (_this.isFaqTabOpen()) {
                     return;
                 }
                 var imageUrl;
@@ -7471,7 +7483,7 @@ var userOverride = {
                 '</div>' +
                 '</div>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
+                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' +
@@ -10224,18 +10236,7 @@ var userOverride = {
                     contact.contactId,
                     isGroupTab
                 );
-                var imgsrctag = '';
-                var isConversationInWaitingQueue = false;
-                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING ){
-                    // if conversation is in waiting queue
-                    displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
-                    imgsrctag = '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
-                    isConversationInWaitingQueue = true;
-                }
-                else{ 
-                    imgsrctag = _this.getContactImageLink(contact, displayName);
-                }
-                
+                var imgsrctag = _this.getContactImageLink(contact, displayName);
                 var prepend = false;
                 var ucTabId = isGroupTab
                     ? 'group_' + contact.contactId
@@ -10336,7 +10337,6 @@ var userOverride = {
                               )
                             : '',
                         conversationStatusClass: statusClass,
-                        isConversationInWaitingQueue: isConversationInWaitingQueue,
                     },
                 ];
                 var latestCreatedAtTime = $applozic(
