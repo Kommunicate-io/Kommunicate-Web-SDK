@@ -283,9 +283,12 @@ KommunicateUtils = {
         var trackingID =  applozic._globals.gaTrackingID;
         if (trackingID) {
             window.top.ga('create', trackingID.toString(), 'auto');
-            window.top.ga('send', 'event', {
+            window.top.ga('send',{
+                hitType: 'event',
                 eventCategory: eventCateogry,
                 eventAction: eventAction,
+                eventLabel:eventLabel,
+                eventValue:eventValue,
             });
         }
     },

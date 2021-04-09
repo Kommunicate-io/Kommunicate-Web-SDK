@@ -677,7 +677,7 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
-                KommunicateUtils.sendEventToGoogleAnalytics('Widget', 'Chat widget open');
+                KommunicateUtils.sendEventToGoogleAnalytics('Kommunicate', 'Open','Chat Widget');
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -1866,6 +1866,7 @@ var userOverride = {
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
+                    KommunicateUtils.sendEventToGoogleAnalytics("Message",'message sent');
                     window.Applozic.ALSocket.events.onMessageSent =
                         events.onMessageSent;
                 }
@@ -13712,7 +13713,7 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    KommunicateUtils.sendEventToGoogleAnalytics('Widget','Attachment icon is clicked')
+                    KommunicateUtils.sendEventToGoogleAnalytics('Kommunicate','Click','Attachment')
                     $mck_file_input.trigger('click');
                 });
 

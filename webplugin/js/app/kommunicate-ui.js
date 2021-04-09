@@ -351,7 +351,11 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
-            KommunicateUtils.sendEventToGoogleAnalytics("Widget","FAQ button is clicked");
+            KommunicateUtils.sendEventToGoogleAnalytics(
+                'Kommunicate',
+                'Click',
+                'FAQ Menu'
+            );
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 KommunicateUtils.removeItemFromLocalStorage(
                     'mckActiveConversationInfo'
@@ -1140,11 +1144,22 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
-            if(kommunicateIframe.classList.contains("chat-popup-widget-vertical")){
-                var heightOfPopup = document.getElementById("chat-popup-widget-container").offsetHeight + 15;
-                var css = 'iframe#kommunicate-widget-iframe.chat-popup-widget-vertical { height:'+ heightOfPopup +'px!important;}';
-                parent.document.querySelector("style#kommunicate-style-sheet").innerText += css;
-            };
+            if (
+                kommunicateIframe.classList.contains(
+                    'chat-popup-widget-vertical'
+                )
+            ) {
+                var heightOfPopup =
+                    document.getElementById('chat-popup-widget-container')
+                        .offsetHeight + 15;
+                var css =
+                    'iframe#kommunicate-widget-iframe.chat-popup-widget-vertical { height:' +
+                    heightOfPopup +
+                    'px!important;}';
+                parent.document.querySelector(
+                    'style#kommunicate-style-sheet'
+                ).innerText += css;
+            }
             var WIDGET_POSITION =
                 kommunicate &&
                 kommunicate._globals &&
@@ -1327,7 +1342,9 @@ KommunicateUI = {
                     var waitingQueueNumber = document.getElementById(
                         'waiting-queue-number'
                     );
-                    var headerTabTitle = document.getElementById('mck-tab-title');
+                    var headerTabTitle = document.getElementById(
+                        'mck-tab-title'
+                    );
                     if (
                         waitingQueueNumber &&
                         waitingStatus &&
@@ -1348,13 +1365,16 @@ KommunicateUI = {
                         );
                         kommunicateCommons.modifyClassList(
                             {
-                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                                class: [
+                                    'mck-agent-image-container',
+                                    'mck-agent-status-text',
+                                ],
                             },
                             'n-vis',
                             'vis'
                         );
-                        headerTabTitle.innerHTML = MCK_LABELS['waiting.queue.message']['header.text'];
-                    
+                        headerTabTitle.innerHTML =
+                            MCK_LABELS['waiting.queue.message']['header.text'];
                     } else {
                         kommunicateCommons.modifyClassList(
                             {
@@ -1365,12 +1385,17 @@ KommunicateUI = {
                         );
                         kommunicateCommons.modifyClassList(
                             {
-                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                                class: [
+                                    'mck-agent-image-container',
+                                    'mck-agent-status-text',
+                                ],
                             },
                             'vis',
                             'n-vis'
                         );
-                        headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
+                            'title'
+                        );
                     }
                 }
             },

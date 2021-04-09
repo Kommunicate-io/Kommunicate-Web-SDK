@@ -58,6 +58,7 @@ Kommunicate.KmEventHandler = {
         }
     },
     onMessageSent: function (message) {
+        KommunicateUtils.sendEventToGoogleAnalytics("Message",'message sent');
         if (!(message && message.metadata && message.metadata.feedback)) {
             KommunicateUI.showClosedConversationBanner(false);
         }
