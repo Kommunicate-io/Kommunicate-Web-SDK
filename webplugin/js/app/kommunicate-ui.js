@@ -351,6 +351,7 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
+            KommunicateUtils.sendEventToGoogleAnalytics("Widget","FAQ button is clicked");
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 KommunicateUtils.removeItemFromLocalStorage(
                     'mckActiveConversationInfo'

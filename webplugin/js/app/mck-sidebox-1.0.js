@@ -13712,6 +13712,7 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
+                    KommunicateUtils.sendEventToGoogleAnalytics('Widget','Attachment icon is clicked')
                     $mck_file_input.trigger('click');
                 });
 
