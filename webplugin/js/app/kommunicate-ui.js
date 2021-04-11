@@ -1378,4 +1378,38 @@ KommunicateUI = {
             },
         });
     },
+    getUrlFromBlobKey: function(blobKey, callback) {
+        var params= '?key='+blobKey;
+        window.Applozic.ALApiService.ajax({
+            type: 'GET',
+            global: false,
+            url: MCK_BASE_URL + '/rest/ws/file/url' + params,
+            success: function (res) {
+                callback(null, res);
+            },
+            error: function (err) {
+                callback(err);
+            },
+        })
+    },
+    isInView: function (element, targetElement) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (targetElement.innerHeight || targetElement.clientHeight) &&
+            rect.right <= (targetElement.innerWidth || targetElement.clientWidth)
+        );
+    },
+    processLazyImage: function(img){
+        img.classList.remove('lazy_image');
+        var thumbnailBlobKey = img.getAttribute('data-thumbnailBlobKey');
+        KommunicateUI.getUrlFromBlobKey(thumbnailBlobKey, function(err, thumbnailUrl){
+            if (err) throw err;
+            thumbnailUrl && (img.src = thumbnailUrl);
+            setTimeout(function(){
+                img.classList.add('lazy_image');
+            },15*60*1000);
+        });
+    }
 };
