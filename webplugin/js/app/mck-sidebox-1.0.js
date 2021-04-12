@@ -3175,15 +3175,7 @@ var userOverride = {
                     $this.data('name')
                 );
                 var blobKey = $this.find('img').attr('data-blobKey');
-                var modal = parent.document.getElementById(
-                    'km-fullscreen-image-modal'
-                );
-                var modalImg = parent.document.getElementById(
-                    'km-fullscreen-image-modal-content'
-                );
-                var captionText = parent.document.getElementById(
-                    'km-fullscreen-image-modal-caption'
-                );
+                
                 if(blobKey && href == ''){
                     KommunicateUI.getUrlFromBlobKey(blobKey, function(err, url){
                         if(err) throw err;
@@ -3195,9 +3187,24 @@ var userOverride = {
                             $this.data('url', '');
                         }, 15*60*1000)    
                     })
+                }else if(href === ''){
+                    var key;
+                    key = $this.data('blobkey');
+                    alFileService.generateCloudUrl(key, function (result) {
+                        href = result;
+                    });
                 }else{
                     modalImg.src = href;
                 }
+                var modal = parent.document.getElementById(
+                    'km-fullscreen-image-modal'
+                );
+                var modalImg = parent.document.getElementById(
+                    'km-fullscreen-image-modal-content'
+                );
+                var captionText = parent.document.getElementById(
+                    'km-fullscreen-image-modal-caption'
+                );
                 modal.style.display = 'block';
                 captionText.innerHTML = title ? title : '';       
             });
