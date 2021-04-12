@@ -351,6 +351,7 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
+            KM_WidgetEvents.onFaqClick('FAQ Clicked');
             KommunicateUtils.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Click',

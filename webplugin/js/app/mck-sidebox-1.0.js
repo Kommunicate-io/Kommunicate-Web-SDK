@@ -652,6 +652,7 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
+            _this.subscribeToEvents(SUBSCRIBE_TO_EVENTS_BACKUP);
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
                 $applozic('#mck-sidebox-launcher')
@@ -677,7 +678,11 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
-                KommunicateUtils.sendEventToGoogleAnalytics('Kommunicate', 'Open','Chat Widget');
+            KommunicateUtils.sendEventToGoogleAnalytics(
+                'Kommunicate',
+                'Open',
+                'Chat Widget'
+            );
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -1866,7 +1871,6 @@ var userOverride = {
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
-                    KommunicateUtils.sendEventToGoogleAnalytics("Message",'message sent');
                     window.Applozic.ALSocket.events.onMessageSent =
                         events.onMessageSent;
                 }
@@ -1889,6 +1893,10 @@ var userOverride = {
                 if (typeof events.onUserDeactivated === 'function') {
                     window.Applozic.ALSocket.events.onUserDeactivated =
                         events.onUserDeactivated;
+                }
+                if (typeof events.onChatWidgetOpen === 'function') {
+                    window.KM_WidgetEvents.onChatWidgetOpen =
+                        events.onChatWidgetOpen;
                 }
                 typeof callback == 'function' && callback();
             }
@@ -2697,6 +2705,7 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
+                    KM_WidgetEvents.onChatWidgetClose('Chat Widget is closed');
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
@@ -3624,6 +3633,7 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
+               window.KM_WidgetEvents.onChatWidgetOpen(params);
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -5029,7 +5039,10 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                KommunicateUtils.sendEventToGoogleAnalytics("Widget","Chat widget closed")
+                KommunicateUtils.sendEventToGoogleAnalytics(
+                    'Widget',
+                    'Chat widget closed'
+                );
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
@@ -5429,7 +5442,10 @@ var userOverride = {
                 mckMessageLayout.clearMessageField(true);
                 FILE_META = [];
                 delete TAB_MESSAGE_DRAFT[contact.contactId];
-                KommunicateUtils.sendEventToGoogleAnalytics('Messages', 'Messages sent');
+                KommunicateUtils.sendEventToGoogleAnalytics(
+                    'Messages',
+                    'Messages sent'
+                );
             };
             _this.sendForwardMessage = function (forwardMessageKey) {
                 var forwardMessage = ALStorage.getMessageByKey(
@@ -13713,7 +13729,11 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    KommunicateUtils.sendEventToGoogleAnalytics('Kommunicate','Click','Attachment')
+                    KommunicateUtils.sendEventToGoogleAnalytics(
+                        'Kommunicate',
+                        'Click',
+                        'Attachment'
+                    );
                     $mck_file_input.trigger('click');
                 });
 

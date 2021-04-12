@@ -201,6 +201,11 @@ Kommunicate = {
     internetStatus: true,
 };
 
+KM_WidgetEvents={
+    onChatWidgetOpen:function(){},
+    onChatWidgetClose:function(){},
+    onFaqClick:function(){},
+}
 /**
  * stores all UI manipulation
  */
@@ -281,7 +286,7 @@ KommunicateUtils = {
         eventValue
     ) {
         var trackingID =  applozic._globals.gaTrackingID;
-        if (trackingID) {
+        if (trackingID && typeof window.top.ga !== "undefined" ) {
             window.top.ga('create', trackingID.toString(), 'auto');
             window.top.ga('send',{
                 hitType: 'event',
