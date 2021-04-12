@@ -1394,11 +1394,12 @@ KommunicateUI = {
     },
     isInView: function (element, targetElement) {
         const rect = element.getBoundingClientRect();
+        const targetRect = targetElement.getBoundingClientRect();
         return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (targetElement.innerHeight || targetElement.clientHeight) &&
-            rect.right <= (targetElement.innerWidth || targetElement.clientWidth)
+            rect.top >= targetRect.top &&
+            rect.left >= targetRect.left &&
+            rect.bottom <= targetRect.bottom &&
+            rect.right <= targetRect.right
         );
     },
     processLazyImage: function(img){
