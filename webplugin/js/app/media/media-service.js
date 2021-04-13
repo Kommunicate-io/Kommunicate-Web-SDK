@@ -6,7 +6,18 @@ Kommunicate.mediaService = {
         });
     },
     processMicClickedEvent: function () {
-        KommunicateUtils.sendEventToGoogleAnalytics('Voice', 'Voice icon clicked');
+        KM_WidgetEvents.onVoiceIconClick(
+            JSON.stringify({
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Click',
+                eventLabel: 'Attachment',
+            })
+        );
+        KommunicateUtils.sendEventToGoogleAnalytics(
+            'Kommunicate',
+            'Click',
+            'VoiceInput'
+        );
         if (!('webkitSpeechRecognition' in window)) {
             alert('browser do not support speech recogization');
         } else {

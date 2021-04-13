@@ -35,7 +35,18 @@ $applozic.extend(true, Kommunicate, {
         });
     },
     startConversation: function (params, callback) {
-        KommunicateUtils.sendEventToGoogleAnalytics("Kommunicate",'Start New','Conversation');
+        window.KM_WidgetEvents.onStartNewConversation(
+            JSON.stringify({
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Start New',
+                eventLabel: 'Conversation',
+            })
+        );
+        KommunicateUtils.sendEventToGoogleAnalytics(
+            'Kommunicate',
+            'Start New',
+            'Conversation'
+        );
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
         params = Kommunicate.updateConversationDetail(params);
@@ -337,11 +348,6 @@ $applozic.extend(true, Kommunicate, {
      * creating conversation entry in kommuncate db.
      */
     createNewConversation: function (options, callback) {
-        KommunicateUtils.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Start New',
-            'Conversation'
-        );
         if (typeof callback !== 'function') {
             throw new Error(
                 'invalid callback! expected: Kommunicate.startNewConversation(options, callback) '

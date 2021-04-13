@@ -351,7 +351,13 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
-            KM_WidgetEvents.onFaqClick('FAQ Clicked');
+            KM_WidgetEvents.onFaqClick(
+                JSON.stringify({
+                    eventCateogry: 'Kommunicate',
+                    eventAction: 'Click',
+                    eventLabel: 'FAQ Menu',
+                })
+            );
             KommunicateUtils.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Click',
@@ -784,6 +790,18 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
+        KM_WidgetEvents.onRateConversationClick(
+            JSON.stringify({
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Started',
+                eventLabel: 'CSAT',
+            })
+        );
+        KommunicateUtils.sendEventToGoogleAnalytics(
+            'Kommunicate',
+            'Started',
+            'CSAT'
+        );
         var isCSATenabled = kommunicate._globals.collectFeedback;
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;

@@ -749,6 +749,7 @@ Kommunicate.richMsgEventHandler = {
         console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
+        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
         KommunicateUtils.sendEventToGoogleAnalytics('Rich messages', 'Quick replies button clicked');
         var message = e.target.title;
         var metadata = {};
@@ -775,6 +776,7 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnListItem: function (e) {
+        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
         KommunicateUtils.sendEventToGoogleAnalytics('Rich messages', 'List Item button clicked');
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -801,6 +803,7 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnButtonItem: function (e) {
+        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
         KommunicateUtils.sendEventToGoogleAnalytics('Rich messages', 'Rich messages button clicked');
         e.preventDefault();
         var target = e.currentTarget;
@@ -822,6 +825,7 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnDialogButton: function (e) {
+        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
         KommunicateUtils.sendEventToGoogleAnalytics('Rich messages', 'Dialog button clicked');
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -841,6 +845,7 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
+        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
         KommunicateUtils.sendEventToGoogleAnalytics('Rich messages', 'Link button clicked');
         var url = decodeURI(e.currentTarget.dataset.url);
         window.open(url, e.currentTarget.dataset.target);

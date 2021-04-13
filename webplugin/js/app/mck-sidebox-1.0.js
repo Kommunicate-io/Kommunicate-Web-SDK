@@ -652,7 +652,11 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
-            _this.subscribeToEvents(SUBSCRIBE_TO_EVENTS_BACKUP);
+            KommunicateUtils.sendEventToGoogleAnalytics(
+                'Kommunicate',
+                'Open',
+                'Chat Widget'
+            );
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
                 $applozic('#mck-sidebox-launcher')
@@ -678,11 +682,6 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
-            KommunicateUtils.sendEventToGoogleAnalytics(
-                'Kommunicate',
-                'Open',
-                'Chat Widget'
-            );
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -1898,6 +1897,13 @@ var userOverride = {
                     window.KM_WidgetEvents.onChatWidgetOpen =
                         events.onChatWidgetOpen;
                 }
+                if (typeof events.onChatWidgetClose === 'function') {
+                    window.KM_WidgetEvents.onChatWidgetClose =
+                        events.onChatWidgetClose;
+                }
+                if (typeof events.onFaqClick === 'function') {
+                    window.KM_WidgetEvents.onFaqClick = events.onFaqClick;
+                }
                 typeof callback == 'function' && callback();
             }
         };
@@ -2705,7 +2711,18 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
-                    KM_WidgetEvents.onChatWidgetClose('Chat Widget is closed');
+                    window.KM_WidgetEvents.onChatWidgetClose(
+                        JSON.stringify({
+                            eventCateogry: 'Kommunicate',
+                            eventAction: 'Close',
+                            eventLabel: 'Chat Widget',
+                        })
+                    );
+                    KommunicateUtils.sendEventToGoogleAnalytics(
+                        'Kommunicate',
+                        'Close',
+                        'Chat Widget'
+                    );
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
@@ -2797,11 +2814,35 @@ var userOverride = {
                 };
 
                 restartConversation.addEventListener('click', function () {
+                    KM_WidgetEvents.onRestartConversationClick(
+                        JSON.stringify({
+                            eventCateogry: 'Kommunicate',
+                            eventAction: 'Restart',
+                            eventLabel: 'Conversation',
+                        })
+                    );
+                    KommunicateUtils.sendEventToGoogleAnalytics(
+                        'Kommunicate',
+                        'Restart',
+                        'Conversation'
+                    );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
+                    KM_WidgetEvents.onSubmitRatingClick(
+                        JSON.stringify({
+                            eventCateogry: 'Kommunicate',
+                            eventAction: 'Rating submitted',
+                            eventLabel: 'CSAT',
+                        })
+                    );
+                    KommunicateUtils.sendEventToGoogleAnalytics(
+                        'Kommunicate',
+                        'Rating submitted',
+                        'CSAT'
+                    );
                     feedbackObject = {
                         groupId: 0,
                         comments: [],
@@ -2857,6 +2898,33 @@ var userOverride = {
                             'n-vis'
                         );
                         e.currentTarget.classList.add('selected');
+                        if (e.currentTarget.classList[1] == 'selected') {
+                            var ratingValue = parseInt(
+                                e.currentTarget.dataset.rating
+                            );
+                            var ratingType =
+                                ratingValue == 1
+                                    ? 'Rate-Poor'
+                                    : ratingValue == 5
+                                    ? 'Rate-Medium'
+                                    : ratingValue == 10
+                                    ? 'Rate-High'
+                                    : '';
+                            KM_WidgetEvents.onRateConversationEmoticonsClick(
+                                JSON.stringify({
+                                    eventCateogry: 'Kommunicate',
+                                    eventAction: ratingType,
+                                    eventLabel: 'CSAT',
+                                    eventValue: ratingValue,
+                                })
+                            );
+                            KommunicateUtils.sendEventToGoogleAnalytics(
+                                'Kommunicate',
+                                ratingType,
+                                'CSAT',
+                                ratingValue
+                            );
+                        }
                     });
                 }
             };
@@ -3633,7 +3701,7 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
-               window.KM_WidgetEvents.onChatWidgetOpen(params);
+                window.KM_WidgetEvents.onChatWidgetOpen('Chat widget open');
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -5039,6 +5107,12 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
+                KM_WidgetEvents.onChatWidgetClose(
+                    JSON.stringify({
+                        eventCateogry: 'Widget',
+                        eventAction: 'Chat widget closed',
+                    })
+                );
                 KommunicateUtils.sendEventToGoogleAnalytics(
                     'Widget',
                     'Chat widget closed'
@@ -5161,6 +5235,10 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
+                KommunicateUtils.sendEventToGoogleAnalytics(
+                    'Messages',
+                    'Messages sent'
+                );
                 if (
                     Kommunicate.internetStatus &&
                     $applozic(
@@ -5442,10 +5520,6 @@ var userOverride = {
                 mckMessageLayout.clearMessageField(true);
                 FILE_META = [];
                 delete TAB_MESSAGE_DRAFT[contact.contactId];
-                KommunicateUtils.sendEventToGoogleAnalytics(
-                    'Messages',
-                    'Messages sent'
-                );
             };
             _this.sendForwardMessage = function (forwardMessageKey) {
                 var forwardMessage = ALStorage.getMessageByKey(
@@ -13729,6 +13803,13 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
+                    KM_WidgetEvents.onAttachmentClick(
+                        JSON.stringify({
+                            eventCateogry: 'Kommunicate',
+                            eventAction: 'Click',
+                            eventLabel: 'Attachment',
+                        })
+                    );
                     KommunicateUtils.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Click',

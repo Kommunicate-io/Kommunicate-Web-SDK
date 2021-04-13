@@ -202,9 +202,21 @@ Kommunicate = {
 };
 
 KM_WidgetEvents={
-    onChatWidgetOpen:function(){},
-    onChatWidgetClose:function(){},
-    onFaqClick:function(){},
+    onChatWidgetOpen:function(resp){},
+    onChatWidgetClose:function(resp){},
+    onFaqClick:function(resp){},
+    onStartNewConversation:function(resp){},
+    onAttachmentClick:function(resp){},
+    onVoiceIconClick:function(resp){},
+    onShowResolvedClick:function(resp){},
+    onLocationIconClick:function(resp){},
+    onRateConversationClick:function(resp){},
+    onRateConversationEmoticonsClick:function(resp){},
+    onSubmitRatingClick:function(resp){},
+    onRestartConversationClick:function(resp){},
+    onGreetingMessageNotificationClick:function(resp){},
+    onNotificationClick:function(resp){},
+    onRichButtonClick:function(resp){},
 }
 /**
  * stores all UI manipulation
