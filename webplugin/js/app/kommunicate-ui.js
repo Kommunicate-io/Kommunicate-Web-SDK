@@ -358,7 +358,7 @@ KommunicateUI = {
                     eventLabel: 'FAQ Menu',
                 })
             );
-            KommunicateUtils.sendEventToGoogleAnalytics(
+            KM_WidgetEvents.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Click',
                 'FAQ Menu'
@@ -797,7 +797,7 @@ KommunicateUI = {
                 eventLabel: 'CSAT',
             })
         );
-        KommunicateUtils.sendEventToGoogleAnalytics(
+        KM_WidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Started',
             'CSAT'

@@ -13,7 +13,7 @@ Kommunicate.mediaService = {
                 eventLabel: 'Attachment',
             })
         );
-        KommunicateUtils.sendEventToGoogleAnalytics(
+        window.KM_WidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Click',
             'VoiceInput'

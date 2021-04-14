@@ -652,7 +652,7 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
-            KommunicateUtils.sendEventToGoogleAnalytics(
+            window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Open',
                 'Chat Widget'
@@ -2718,7 +2718,7 @@ var userOverride = {
                             eventLabel: 'Chat Widget',
                         })
                     );
-                    KommunicateUtils.sendEventToGoogleAnalytics(
+                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Close',
                         'Chat Widget'
@@ -2821,7 +2821,7 @@ var userOverride = {
                             eventLabel: 'Conversation',
                         })
                     );
-                    KommunicateUtils.sendEventToGoogleAnalytics(
+                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Restart',
                         'Conversation'
@@ -2838,7 +2838,7 @@ var userOverride = {
                             eventLabel: 'CSAT',
                         })
                     );
-                    KommunicateUtils.sendEventToGoogleAnalytics(
+                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Rating submitted',
                         'CSAT'
@@ -2918,7 +2918,7 @@ var userOverride = {
                                     eventValue: ratingValue,
                                 })
                             );
-                            KommunicateUtils.sendEventToGoogleAnalytics(
+                            window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                                 'Kommunicate',
                                 ratingType,
                                 'CSAT',
@@ -5113,7 +5113,7 @@ var userOverride = {
                         eventAction: 'Chat widget closed',
                     })
                 );
-                KommunicateUtils.sendEventToGoogleAnalytics(
+                window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                     'Widget',
                     'Chat widget closed'
                 );
@@ -5235,7 +5235,7 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
-                KommunicateUtils.sendEventToGoogleAnalytics(
+                window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                     'Messages',
                     'Messages sent'
                 );
@@ -13810,7 +13810,7 @@ var userOverride = {
                             eventLabel: 'Attachment',
                         })
                     );
-                    KommunicateUtils.sendEventToGoogleAnalytics(
+                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Click',
                         'Attachment'

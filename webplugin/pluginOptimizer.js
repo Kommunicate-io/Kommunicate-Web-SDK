@@ -125,6 +125,7 @@ const compressAndOptimize = () => {
         input: [
             path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
             path.resolve(__dirname, 'js/app/km-utils.js'),
+            path.resolve(__dirname, 'js/app/km-widget-custom-events.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
             path.resolve(__dirname, 'knowledgebase/kb.js'),
