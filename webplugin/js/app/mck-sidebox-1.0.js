@@ -4529,7 +4529,7 @@ var userOverride = {
                         }
                     }else{
                         var lazy_images = document.querySelectorAll('img.lazy_image');
-                        lazy_images.forEach(img => {
+                        lazy_images.forEach(function (img){
                             if(KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))){
                                 KommunicateUI.processLazyImage(img)
                             }
