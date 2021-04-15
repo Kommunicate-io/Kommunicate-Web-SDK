@@ -652,7 +652,7 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
-            window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+            window.Analytics.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Open',
                 'Chat Widget'
@@ -2163,6 +2163,14 @@ var userOverride = {
                                 'click',
                                 function (event) {
                                     event.preventDefault();
+                                    window.KM_WidgetEvents.onGreetingMessageNotificationClick(
+                                        JSON.stringify({
+                                            eventCateogry: 'Kommunicate',
+                                            eventAction: 'Click',
+                                            eventLabel: 'Greeting',
+                                        })
+                                    );
+                                    window.Analytics.sendEventToGoogleAnalytics('Kommunicate','Click','Greeting');
                                     if (KOMMUNICATE_VERSION === 'v2') {
                                         Kommunicate.setDefaultIframeConfigForOpenChat(
                                             POPUP_WIDGET
@@ -2718,7 +2726,7 @@ var userOverride = {
                             eventLabel: 'Chat Widget',
                         })
                     );
-                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                    window.Analytics.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Close',
                         'Chat Widget'
@@ -2814,14 +2822,14 @@ var userOverride = {
                 };
 
                 restartConversation.addEventListener('click', function () {
-                    KM_WidgetEvents.onRestartConversationClick(
+                    window.KM_WidgetEvents.onRestartConversationClick(
                         JSON.stringify({
                             eventCateogry: 'Kommunicate',
                             eventAction: 'Restart',
                             eventLabel: 'Conversation',
                         })
                     );
-                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                    window.Analytics.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Restart',
                         'Conversation'
@@ -2831,14 +2839,14 @@ var userOverride = {
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
-                    KM_WidgetEvents.onSubmitRatingClick(
+                    window.KM_WidgetEvents.onSubmitRatingClick(
                         JSON.stringify({
                             eventCateogry: 'Kommunicate',
                             eventAction: 'Rating submitted',
                             eventLabel: 'CSAT',
                         })
                     );
-                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                    window.Analytics.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Rating submitted',
                         'CSAT'
@@ -2910,7 +2918,7 @@ var userOverride = {
                                     : ratingValue == 10
                                     ? 'Rate-High'
                                     : '';
-                            KM_WidgetEvents.onRateConversationEmoticonsClick(
+                            window.KM_WidgetEvents.onRateConversationEmoticonsClick(
                                 JSON.stringify({
                                     eventCateogry: 'Kommunicate',
                                     eventAction: ratingType,
@@ -2918,7 +2926,7 @@ var userOverride = {
                                     eventValue: ratingValue,
                                 })
                             );
-                            window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                            window.Analytics.sendEventToGoogleAnalytics(
                                 'Kommunicate',
                                 ratingType,
                                 'CSAT',
@@ -3701,7 +3709,11 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
-                window.KM_WidgetEvents.onChatWidgetOpen('Chat widget open');
+                window.KM_WidgetEvents.onChatWidgetOpen( JSON.stringify({
+                    eventCateogry: 'Widget',
+                    eventAction: 'Open',
+                    eventLabel: 'Chat Widget Open',
+                }));
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -5107,13 +5119,13 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                KM_WidgetEvents.onChatWidgetClose(
+                window.KM_WidgetEvents.onChatWidgetClose(
                     JSON.stringify({
                         eventCateogry: 'Widget',
                         eventAction: 'Chat widget closed',
                     })
                 );
-                window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                window.Analytics.sendEventToGoogleAnalytics(
                     'Widget',
                     'Chat widget closed'
                 );
@@ -5235,7 +5247,7 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
-                window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                window.Analytics.sendEventToGoogleAnalytics(
                     'Messages',
                     'Messages sent'
                 );
@@ -13803,14 +13815,14 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    KM_WidgetEvents.onAttachmentClick(
+                    window.KM_WidgetEvents.onAttachmentClick(
                         JSON.stringify({
                             eventCateogry: 'Kommunicate',
                             eventAction: 'Click',
                             eventLabel: 'Attachment',
                         })
                     );
-                    window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+                    window.Analytics.sendEventToGoogleAnalytics(
                         'Kommunicate',
                         'Click',
                         'Attachment'

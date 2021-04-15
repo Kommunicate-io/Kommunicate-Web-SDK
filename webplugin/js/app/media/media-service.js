@@ -6,14 +6,14 @@ Kommunicate.mediaService = {
         });
     },
     processMicClickedEvent: function () {
-        KM_WidgetEvents.onVoiceIconClick(
+        window.KM_WidgetEvents.onVoiceIconClick(
             JSON.stringify({
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Click',
                 eventLabel: 'Attachment',
             })
         );
-        window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.Analytics.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Click',
             'VoiceInput'

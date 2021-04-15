@@ -351,14 +351,14 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
-            KM_WidgetEvents.onFaqClick(
+          window.KM_WidgetEvents.onFaqClick(
                 JSON.stringify({
                     eventCateogry: 'Kommunicate',
                     eventAction: 'Click',
                     eventLabel: 'FAQ Menu',
                 })
             );
-            KM_WidgetEvents.sendEventToGoogleAnalytics(
+            window.Analytics.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Click',
                 'FAQ Menu'
@@ -790,14 +790,14 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
-        KM_WidgetEvents.onRateConversationClick(
+        window.KM_WidgetEvents.onRateConversationClick(
             JSON.stringify({
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Started',
                 eventLabel: 'CSAT',
             })
         );
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.Analytics.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Started',
             'CSAT'

@@ -42,7 +42,7 @@ $applozic.extend(true, Kommunicate, {
                 eventLabel: 'Conversation',
             })
         );
-        window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.Analytics.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Start New',
             'Conversation'

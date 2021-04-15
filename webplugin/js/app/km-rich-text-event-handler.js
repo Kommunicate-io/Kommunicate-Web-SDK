@@ -749,8 +749,8 @@ Kommunicate.richMsgEventHandler = {
         console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
-        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
+        window.Analytics.sendEventToGoogleAnalytics(
             'Rich messages',
             'Quick replies button clicked'
         );
@@ -779,8 +779,8 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnListItem: function (e) {
-        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+       window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
+        window.Analytics.sendEventToGoogleAnalytics(
             'Rich messages',
             'List Item button clicked'
         );
@@ -809,8 +809,8 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnButtonItem: function (e) {
-        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
+        window.Analytics.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Rich message Click'
         );
@@ -834,8 +834,8 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnDialogButton: function (e) {
-        KM_WidgetEvents.onRichButtonClick('Rich button clicked');
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
+        window.Analytics.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Rich message Click'
         );
@@ -857,13 +857,13 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
-        KM_WidgetEvents.onRichButtonClick(
+        window.KM_WidgetEvents.onRichMessageButtonClick(
             JSON.stringify({
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
             })
         );
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.Analytics.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Rich message Click'
         );
@@ -871,7 +871,7 @@ Kommunicate.richMsgEventHandler = {
         window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function (e) {
-        KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.Analytics.sendEventToGoogleAnalytics(
             'Rich messages',
             'Form submit'
         );
