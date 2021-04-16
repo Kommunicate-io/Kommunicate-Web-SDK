@@ -1,6 +1,6 @@
-const app = require("./../app");
-const express = require("express");
-const webpluginController= require("../../webplugin/controller");
+const app = require('./../app');
+const express = require('express');
+const webpluginController = require('../../webplugin/controller');
 
 //router declaration
 const home = express.Router();
@@ -9,15 +9,15 @@ const home = express.Router();
 exports.home = home;
 
 home.get('/', function (req, res) {
-    console.log("req received at home routes");
+    console.log('req received at home routes');
     res.status(200).json({
-        "message": "Welcome to kommunicate"
+        message: 'Welcome to kommunicate',
     });
 });
 
-home.get("/kommunicate.app", function (req, res) {
+home.get('/kommunicate.app', function (req, res) {
     // below is the code to handle the "forward".
-    req.url = "/v1/kommunicate.app";
+    req.url = '/v1/kommunicate.app';
     home.handle(req, res);
 });
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);

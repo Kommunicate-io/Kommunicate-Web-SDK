@@ -24,8 +24,8 @@
 
             var typ = reqOptions.type.toUpperCase();
 
-            if (typ === 'GET' && typeof reqOptions.data !== "undefined") {
-                reqOptions.url = reqOptions.url + "?" + reqOptions.data;
+            if (typ === 'GET' && typeof reqOptions.data !== 'undefined') {
+                reqOptions.url = reqOptions.url + '?' + reqOptions.data;
             }
 
             request.open(typ, reqOptions.url, asyn);
@@ -48,14 +48,24 @@
                 if (request.readyState === XMLHttpRequest.DONE) {
                     if (request.status === 200) {
                         //success
-                        var contType = request.getResponseHeader("Content-Type");
-                        if (typeof contType === "undefined" || contType === "null" || contType === null) {
-                            contType = "";
+                        var contType = request.getResponseHeader(
+                            'Content-Type'
+                        );
+                        if (
+                            typeof contType === 'undefined' ||
+                            contType === 'null' ||
+                            contType === null
+                        ) {
+                            contType = '';
                         }
 
-                        if (contType.toLowerCase().indexOf("text/html") != -1) {
+                        if (contType.toLowerCase().indexOf('text/html') != -1) {
                             responsedata = request.responseXML;
-                        } else if (contType.toLowerCase().indexOf("application/json") != -1) {
+                        } else if (
+                            contType
+                                .toLowerCase()
+                                .indexOf('application/json') != -1
+                        ) {
                             responsedata = JSON.parse(request.responseText);
                         } else {
                             responsedata = request.responseText;
@@ -67,15 +77,14 @@
                     }
                 }
             };
-        }
+        };
 
         return KMCommonUtils;
     }
     //define globally if it doesn't already exist
-    if (typeof (KMCommonUtils) === 'undefined') {
+    if (typeof KMCommonUtils === 'undefined') {
         window.KMCommonUtils = define_KMCommonUtils();
-    }
-    else {
-        console.log("KMCommonUtils already defined.");
+    } else {
+        console.log('KMCommonUtils already defined.');
     }
 })(window);

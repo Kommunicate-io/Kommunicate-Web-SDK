@@ -1,29 +1,33 @@
-const path = require("path");
+const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const config = require("./../server/config/config-env");
-const {pluginVersionData} = require("./pluginOptimizer.js");
+const config = require('./../server/config/config-env');
+const { pluginVersionData } = require('./pluginOptimizer.js');
 
 exports.getPlugin = async (req, res) => {
-  const MCK_PLUGIN_VERSION = req.params.version;
-  if (!MCK_PLUGIN_VERSION) {
-    res.send("err while getting plugin...");
-    return console.log("unable to get plugin version");
-  }
-  var data = Object.keys(pluginVersionData).length ? pluginVersionData[MCK_PLUGIN_VERSION] : await generatePluginFile(req, res);
-  res.setHeader('Content-Type', 'application/javascript');
-  res.send(data);
-  console.log("plugin code sent successfully");
+    const MCK_PLUGIN_VERSION = req.params.version;
+    if (!MCK_PLUGIN_VERSION) {
+        res.send('err while getting plugin...');
+        return console.log('unable to get plugin version');
+    }
+    var data = Object.keys(pluginVersionData).length
+        ? pluginVersionData[MCK_PLUGIN_VERSION]
+        : await generatePluginFile(req, res);
+    res.setHeader('Content-Type', 'application/javascript');
+    res.send(data);
+    console.log('plugin code sent successfully');
 };
 
 const generatePluginFile = async (req, res) => {
-  const MCK_CONTEXTPATH = config.urls.hostUrl;
-  const MCK_STATICPATH = MCK_CONTEXTPATH + "/plugin";
-  const PLUGIN_SETTING = config.pluginProperties;
-  const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
-  const MCK_PLUGIN_VERSION = req.params.version;
-  PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
-  PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
+    const MCK_CONTEXTPATH = config.urls.hostUrl;
+    const MCK_STATICPATH = MCK_CONTEXTPATH + '/plugin';
+    const PLUGIN_SETTING = config.pluginProperties;
+    const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
+    const MCK_PLUGIN_VERSION = req.params.version;
+    PLUGIN_SETTING.kommunicateApiUrl =
+        PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
+    PLUGIN_SETTING.applozicBaseUrl =
+        PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 
     console.log('setting context and static path', MCK_CONTEXTPATH);
     var data = await util.promisify(fs.readFile)(

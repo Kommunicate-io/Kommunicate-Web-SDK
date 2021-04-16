@@ -3,9 +3,14 @@
   "version": "3.0.0-sasuke",
   "description": "",
   "main": "app.js",
-  "author": "Abhinav <abhinav@applozic.com>",
+  "author": "Abhinav <abhinav@kommunicate.io>",
   "license": "ISC",
   "scripts": {
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable",
+    "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.js'",
+    "prettify-commit": "pretty-quick --staged --pattern '**/*.js'",
     "dev": "nodemon ./server/app.js ",
     "test": "NODE_ENV=test node ./server/app.js",
     "staging": "NODE_ENV=staging node ./server/app.js",
@@ -27,7 +32,11 @@
     "node-fetch": "2.6.1"
   },
   "devDependencies": {
-    "nodemon": "2.0.4"
+    "husky": "5.0.9",
+    "nodemon": "2.0.7",
+    "pinst": "2.1.4",
+    "prettier": "2.2.1",
+    "pretty-quick": "3.1.0"
   },
   "nodemonConfig": {
     "verbose": true,
