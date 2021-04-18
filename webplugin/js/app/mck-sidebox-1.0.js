@@ -3175,27 +3175,6 @@ var userOverride = {
                     $this.data('name')
                 );
                 var blobKey = $this.find('img').attr('data-blobKey');
-                
-                if(blobKey && href == ''){
-                    KommunicateUI.getUrlFromBlobKey(blobKey, function(err, url){
-                        if(err) throw err;
-                        if(url){
-                            modalImg.src = url;
-                            $this.data('url', url)
-                        }
-                        setTimeout(function(){
-                            $this.data('url', '');
-                        }, 15*60*1000)    
-                    })
-                }else if(href === ''){
-                    var key;
-                    key = $this.data('blobkey');
-                    alFileService.generateCloudUrl(key, function (result) {
-                        href = result;
-                    });
-                }else{
-                    modalImg.src = href;
-                }
                 var modal = parent.document.getElementById(
                     'km-fullscreen-image-modal'
                 );
@@ -3205,6 +3184,19 @@ var userOverride = {
                 var captionText = parent.document.getElementById(
                     'km-fullscreen-image-modal-caption'
                 );
+                if(blobKey && href == ''){
+                    modalImg.src = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
+                    KommunicateUI.processLazyImage(modalImg, blobKey);
+                }else if(href === ''){
+                    var key;
+                    key = $this.data('blobkey');
+                    alFileService.generateCloudUrl(key, function (result) {
+                        href = result;
+                    });
+                }else{
+                    modalImg.src = href;
+                }
+                
                 modal.style.display = 'block';
                 captionText.innerHTML = title ? title : '';       
             });
@@ -4528,10 +4520,10 @@ var userOverride = {
                             });
                         }
                     }else{
-                        var lazy_images = document.querySelectorAll('img.lazy_image');
-                        lazy_images.forEach(function (img){
+                        var lazyImages = document.querySelectorAll('img.lazy-image');
+                        lazyImages.forEach(function (img){
                             if(KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))){
-                                KommunicateUI.processLazyImage(img)
+                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
                             }
                         })
                     }
@@ -7945,7 +7937,7 @@ var userOverride = {
                                         : '');
                             if(message && message.fileMeta && message.fileMeta.contentType.includes('image')){
                                 message.fileMeta.url = '';
-                                message.fileMeta.thumbnailUrl = 'https://via.placeholder.com/350x265'
+                                message.fileMeta.thumbnailUrl = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
                             }
 
                             _this.addMessage(
@@ -7981,9 +7973,10 @@ var userOverride = {
                         },
                         'slow',
                         function (){
-                            var lazyImages = document.querySelectorAll('img.lazy_image')
+                            var lazyImages = document.querySelectorAll('img.lazy-image')
                             lazyImages.forEach(function(img){
-                                KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) && KommunicateUI.processLazyImage(img)
+                                KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) && 
+                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
                             })
                         }
                     );
@@ -9037,7 +9030,7 @@ var userOverride = {
                                         kommunicateCommons.formatHtmlTag(
                                             msg.fileMeta.name
                                         ) +
-                                        '"><img class="lazy_image" src="' +
+                                        '"><img class="lazy-image" src="' +
                                         msg.fileMeta.thumbnailUrl +
                                         '" area-hidden="true" data-blobKey="'+ msg.fileMeta.blobKey +
                                         '" data-thumbnailBlobKey="'+msg.fileMeta.thumbnailBlobKey +'" ></img></a>'

@@ -1402,15 +1402,16 @@ KommunicateUI = {
             rect.right <= targetRect.right
         );
     },
-    processLazyImage: function(img){
-        img.classList.remove('lazy_image');
-        var thumbnailBlobKey = img.getAttribute('data-thumbnailBlobKey');
-        KommunicateUI.getUrlFromBlobKey(thumbnailBlobKey, function(err, thumbnailUrl){
-            if (err) throw err;
-            thumbnailUrl && (img.src = thumbnailUrl);
-            setTimeout(function(){
-                img.classList.add('lazy_image');
-            },15*60*1000);
+    processLazyImage: function (imageElement, thumbnailBlobKey) {
+        imageElement.classList.remove('lazy-image');
+        KommunicateUI.getUrlFromBlobKey(thumbnailBlobKey, function (err, thumbnailUrl) {
+            if (err) {
+                throw err
+            };
+            thumbnailUrl && (imageElement.src = thumbnailUrl);
+            setTimeout(function () {
+                imageElement.classList.add('lazy-image');
+            }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
         });
     }
 };
