@@ -58,7 +58,7 @@ Kommunicate.KmEventHandler = {
         }
     },
     onMessageSent: function (message) {
-        window.KM_WidgetEvents.sendEventToGoogleAnalytics(
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Sent',
             'Message'

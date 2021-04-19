@@ -749,10 +749,15 @@ Kommunicate.richMsgEventHandler = {
         console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
-        window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
-        window.Analytics.sendEventToGoogleAnalytics(
-            'Rich messages',
-            'Quick replies button clicked'
+        window.kmWidgetEvents.onRichMessageButtonClick({
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Rich message Click',
+            eventLabel: e.innerHTML,
+        });
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
+            'Kommunicate',
+            'Rich message Click',
+            e.innerHTML
         );
         var message = e.target.title;
         var metadata = {};
@@ -779,10 +784,16 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnListItem: function (e) {
-       window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
-        window.Analytics.sendEventToGoogleAnalytics(
-            'Rich messages',
-            'List Item button clicked'
+        window.kmWidgetEvents.onRichMessageButtonClick({
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Rich message Click',
+                eventLabel: e.innerHTML,
+            }
+        );
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
+            'Kommunicate',
+            'Rich message Click',
+            e.innerHTML
         );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -809,10 +820,17 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnButtonItem: function (e) {
-        window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
-        window.Analytics.sendEventToGoogleAnalytics(
+        window.kmWidgetEvents.onRichMessageButtonClick(
+            {
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Rich message Click',
+                eventLabel: e.innerHTML,
+            }
+        );
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
-            'Rich message Click'
+            'Rich message Click',
+            e.innerHTML
         );
         e.preventDefault();
         var target = e.currentTarget;
@@ -834,10 +852,16 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnDialogButton: function (e) {
-        window.KM_WidgetEvents.onRichMessageButtonClick('Rich button clicked');
-        window.Analytics.sendEventToGoogleAnalytics(
+        window.kmWidgetEvents.onRichMessageButtonClick({
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Rich message Click',
+                eventLabel: e.innerHTML,
+            }
+        );
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
-            'Rich message Click'
+            'Rich message Click',
+            e.innerHTML
         );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -857,23 +881,33 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
-        window.KM_WidgetEvents.onRichMessageButtonClick(
-            JSON.stringify({
+        window.kmWidgetEvents.onRichMessageButtonClick(
+            {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
-            })
+                eventLabel: e.innerHTML,
+            }
         );
-        window.Analytics.sendEventToGoogleAnalytics(
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
-            'Rich message Click'
+            'Rich message Click',
+            e.innerHTML
         );
         var url = decodeURI(e.currentTarget.dataset.url);
         window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function (e) {
-        window.Analytics.sendEventToGoogleAnalytics(
-            'Rich messages',
-            'Form submit'
+        window.kmWidgetEvents.onRichMessageButtonClick(
+            {
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Rich message Click',
+                eventLabel: e.innerHTML,
+            }
+        );
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
+            'Kommunicate',
+            'Rich message Click',
+            e.innerHTML
         );
         e.preventDefault();
     },

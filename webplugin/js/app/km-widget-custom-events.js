@@ -3,7 +3,7 @@
  // resp - JSON object containing eventAction and other property exposed to user.
  // defination of function can be overwrite by user through subscribeToEvents function.
  */
-KM_WidgetEvents = {
+kmWidgetEvents = {
     onChatWidgetOpen: function (resp) {},
     onChatWidgetClose: function (resp) {},
     onFaqClick: function (resp) {},
@@ -19,14 +19,12 @@ KM_WidgetEvents = {
     onGreetingMessageNotificationClick: function (resp) {},
     onNotificationClick: function (resp) {},
     onRichMessageButtonClick: function (resp) {},
-};
-Analytics = {
     sendEventToGoogleAnalytics: function (
         eventCateogry,
         eventAction,
         eventLabel,
         eventValue
-    ) {
+        ) {
         var trackingID = applozic._globals.gaTrackingID;
         if (trackingID && typeof window.top.ga !== 'undefined') {
             window.top.ga('create', trackingID.toString(), 'auto');

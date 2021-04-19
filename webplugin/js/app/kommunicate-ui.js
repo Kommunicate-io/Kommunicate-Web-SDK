@@ -351,14 +351,12 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
-          window.KM_WidgetEvents.onFaqClick(
-                JSON.stringify({
-                    eventCateogry: 'Kommunicate',
-                    eventAction: 'Click',
-                    eventLabel: 'FAQ Menu',
-                })
-            );
-            window.Analytics.sendEventToGoogleAnalytics(
+            window.kmWidgetEvents.onFaqClick({
+                eventCateogry: 'Kommunicate',
+                eventAction: 'Click',
+                eventLabel: 'FAQ Menu',
+            });
+            window.kmWidgetEvents.sendEventToGoogleAnalytics(
                 'Kommunicate',
                 'Click',
                 'FAQ Menu'
@@ -790,17 +788,15 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
-        window.KM_WidgetEvents.onRateConversationClick(
-            JSON.stringify({
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Started',
-                eventLabel: 'CSAT',
-            })
-        );
-        window.Analytics.sendEventToGoogleAnalytics(
+        window.kmWidgetEvents.onRateConversationClick({
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Started',
+            eventLabel: 'CSAT Start',
+        });
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Started',
-            'CSAT'
+            'CSAT Start'
         );
         var isCSATenabled = kommunicate._globals.collectFeedback;
         if (!KommunicateUI.isConvJustResolved) {
@@ -1306,6 +1302,22 @@ KommunicateUI = {
                     MCK_LABELS[
                         'filter.conversation.list'
                     ].ACTIVE_CONVERSATIONS);
+            if (
+                bannerHeading &&
+                bannerHeading.innerHTML ==
+                    MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS
+            ) {
+                window.kmWidgetEvents.onShowResolvedClick({
+                    eventCateogry: 'Kommunicate',
+                    eventAction: 'Click',
+                    eventLabel: 'Show Resolve',
+                });
+                window.kmWidgetEvents.sendEventToGoogleAnalytics(
+                    'Kommunicate',
+                    'Click',
+                    'Show Resolve'
+                );
+            }
             bannerAction &&
                 (bannerAction.innerHTML =
                     MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED);

@@ -35,17 +35,17 @@ $applozic.extend(true, Kommunicate, {
         });
     },
     startConversation: function (params, callback) {
-        window.KM_WidgetEvents.onStartNewConversation(
-            JSON.stringify({
+        window.kmWidgetEvents.onStartNewConversation(
+            {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Start New',
-                eventLabel: 'Conversation',
-            })
+                eventLabel: 'Conversation Start',
+            }
         );
-        window.Analytics.sendEventToGoogleAnalytics(
+        window.kmWidgetEvents.sendEventToGoogleAnalytics(
             'Kommunicate',
             'Start New',
-            'Conversation'
+            'Conversation Start'
         );
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
