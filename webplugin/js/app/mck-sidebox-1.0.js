@@ -652,16 +652,6 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
-            // window.kmWidgetEvents.onChatWidgetOpen({
-            //     eventCateogry: 'Kommunicate',
-            //     eventAction: 'Open',
-            //     eventLabel: 'Chat Widget Open',
-            // });
-            // window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            //     'Kommunicate',
-            //     'Open',
-            //     'Chat Widget'
-            // );
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
                 $applozic('#mck-sidebox-launcher')
