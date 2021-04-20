@@ -10,7 +10,7 @@ kmWidgetEvents = {
     onStartNewConversation: function (resp) {},
     onAttachmentClick: function (resp) {},
     onVoiceIconClick: function (resp) {},
-    onShowResolvedClick: function (resp) {},
+    onVoiceIconClick: function (resp) {},
     onLocationIconClick: function (resp) {},
     onRateConversationClick: function (resp) {},
     onRateConversationEmoticonsClick: function (resp) {},
@@ -24,7 +24,7 @@ kmWidgetEvents = {
         eventAction,
         eventLabel,
         eventValue
-        ) {
+    ) {
         var trackingID = applozic._globals.gaTrackingID;
         if (trackingID && typeof window.top.ga !== 'undefined') {
             window.top.ga('create', trackingID.toString(), 'auto');
@@ -36,5 +36,37 @@ kmWidgetEvents = {
                 eventValue: eventValue,
             });
         }
+    },
+    EventTracking: function (eventObject) {
+        if (kommunicateCommons.isObject(eventObject)) {
+            applozic._globals.gaTrackingID &&
+                kmWidgetEvents.sendEventToGoogleAnalytics(
+                    eventObject.eventCateogry,
+                    eventObject.eventAction,
+                    eventObject.eventLabel,
+                    eventObject.eventValue
+                );
+            if (eventObject.eventLabel == 'FAQ Menu') {
+                window.kmWidgetEvents.onFaqClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Chat Widget Open') {
+                window.kmWidgetEvents.onChatWidgetOpen(eventObject);
+            }
+            if (eventObject.eventLabel == 'Chat Widget Close') {
+                window.kmWidgetEvents.onChatWidgetClose(eventObject);
+            }
+            if (eventObject.eventLabel == 'Conversation Start') {
+                window.kmWidgetEvents.onStartNewConversation(eventObject);
+            }
+            if (eventObject.eventLabel == 'Attachment') {
+                window.kmWidgetEvents.onAttachmentClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Attachment') {
+                window.kmWidgetEvents.onVoiceIconClick(eventObject);
+            }
+        } else
+            throw new TypeError(
+                'EventTracking expect an object but got ' + typeof eventObject
+            );
     },
 };

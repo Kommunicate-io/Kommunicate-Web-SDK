@@ -2750,17 +2750,12 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
-                    window.kmWidgetEvents.onChatWidgetClose(
+                    window.kmWidgetEvents.EventTracking(
                         {
                             eventCateogry: 'Kommunicate',
                             eventAction: 'Close',
-                            eventLabel: 'Chat Widget',
+                            eventLabel: 'Chat Widget Close',
                         }
-                    );
-                    window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                        'Kommunicate',
-                        'Close',
-                        'Chat Widget'
                     );
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
@@ -3740,12 +3735,11 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
-                window.kmWidgetEvents.onChatWidgetOpen({
+                window.kmWidgetEvents.EventTracking({
                     eventCateogry: 'Kommunicate',
                     eventAction: 'Open',
                     eventLabel: 'Chat Widget Open',
                 });
-                window.kmWidgetEvents.sendEventToGoogleAnalytics('Kommunicate','Open','Chat Widget Open');
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -5151,16 +5145,11 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                window.kmWidgetEvents.onChatWidgetClose(
+                window.kmWidgetEvents.EventTracking(
                     {
                         eventCateogry: 'Kommunicate',
                         eventAction: 'Chat widget closed',
                         eventLable :'Chat Widget Close'                    }
-                );
-                window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                    'Kommunicate',
-                    'Close',
-                    'Chat Widget Close'
                 );
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
@@ -13849,17 +13838,12 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    window.kmWidgetEvents.onAttachmentClick(
+                    window.kmWidgetEvents.EventTracking(
                         {
                             eventCateogry: 'Kommunicate',
                             eventAction: 'Click',
                             eventLabel: 'Attachment',
                         });
-                    window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                        'Kommunicate',
-                        'Click',
-                        'Attachment'
-                    );
                     $mck_file_input.trigger('click');
                 });
 
