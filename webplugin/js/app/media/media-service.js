@@ -6,7 +6,7 @@ Kommunicate.mediaService = {
         });
     },
     processMicClickedEvent: function () {
-        window.kmWidgetEvents.EventTracking(
+        window.kmWidgetEvents.eventTracking(
             {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Click',

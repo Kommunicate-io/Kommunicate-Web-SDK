@@ -35,7 +35,7 @@ $applozic.extend(true, Kommunicate, {
         });
     },
     startConversation: function (params, callback) {
-        window.kmWidgetEvents.EventTracking(
+        window.kmWidgetEvents.eventTracking(
             {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Start New',

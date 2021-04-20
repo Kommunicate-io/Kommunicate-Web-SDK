@@ -1900,40 +1900,58 @@ var userOverride = {
                     window.kmWidgetEvents.onFaqClick = events.onFaqClick;
                 }
                 if (typeof events.onStartNewConversation === 'function') {
-                    window.kmWidgetEvents.onStartNewConversation = events.onStartNewConversation;
+                    window.kmWidgetEvents.onStartNewConversation =
+                        events.onStartNewConversation;
                 }
                 if (typeof events.onAttachmentClick === 'function') {
-                    window.kmWidgetEvents.onAttachmentClick = events.onAttachmentClick;
+                    window.kmWidgetEvents.onAttachmentClick =
+                        events.onAttachmentClick;
                 }
                 if (typeof events.onVoiceIconClick === 'function') {
-                    window.kmWidgetEvents.onVoiceIconClick = events.onVoiceIconClick;
+                    window.kmWidgetEvents.onVoiceIconClick =
+                        events.onVoiceIconClick;
                 }
                 if (typeof events.onShowResolvedClick === 'function') {
-                    window.kmWidgetEvents.onShowResolvedClick = events.onShowResolvedClick;
+                    window.kmWidgetEvents.onShowResolvedClick =
+                        events.onShowResolvedClick;
                 }
                 if (typeof events.onLocationIconClick === 'function') {
-                    window.kmWidgetEvents.onLocationIconClick = events.onLocationIconClick;
+                    window.kmWidgetEvents.onLocationIconClick =
+                        events.onLocationIconClick;
                 }
                 if (typeof events.onRateConversationClick === 'function') {
-                    window.kmWidgetEvents.onRateConversationClick = events.onRateConversationClick;
+                    window.kmWidgetEvents.onRateConversationClick =
+                        events.onRateConversationClick;
                 }
-                if (typeof events.onRateConversationEmoticonsClick === 'function') {
-                    window.kmWidgetEvents.onRateConversationEmoticonsClick = events.onRateConversationEmoticonsClick;
+                if (
+                    typeof events.onRateConversationEmoticonsClick ===
+                    'function'
+                ) {
+                    window.kmWidgetEvents.onRateConversationEmoticonsClick =
+                        events.onRateConversationEmoticonsClick;
                 }
                 if (typeof events.onSubmitRatingClick === 'function') {
-                    window.kmWidgetEvents.onSubmitRatingClick = events.onSubmitRatingClick;
+                    window.kmWidgetEvents.onSubmitRatingClick =
+                        events.onSubmitRatingClick;
                 }
                 if (typeof events.onRestartConversationClick === 'function') {
-                    window.kmWidgetEvents.onRestartConversationClick = events.onRestartConversationClick;
+                    window.kmWidgetEvents.onRestartConversationClick =
+                        events.onRestartConversationClick;
                 }
-                if (typeof events.onGreetingMessageNotificationClick === 'function') {
-                    window.kmWidgetEvents.onGreetingMessageNotificationClick = events.onGreetingMessageNotificationClick;
+                if (
+                    typeof events.onGreetingMessageNotificationClick ===
+                    'function'
+                ) {
+                    window.kmWidgetEvents.onGreetingMessageNotificationClick =
+                        events.onGreetingMessageNotificationClick;
                 }
                 if (typeof events.onNotificationClick === 'function') {
-                    window.kmWidgetEvents.onNotificationClick = events.onNotificationClick;
+                    window.kmWidgetEvents.onNotificationClick =
+                        events.onNotificationClick;
                 }
                 if (typeof events.onRichMessageButtonClick === 'function') {
-                    window.kmWidgetEvents.onRichMessageButtonClick = events.onRichMessageButtonClick;
+                    window.kmWidgetEvents.onRichMessageButtonClick =
+                        events.onRichMessageButtonClick;
                 }
                 typeof callback == 'function' && callback();
             }
@@ -2194,14 +2212,13 @@ var userOverride = {
                                 'click',
                                 function (event) {
                                     event.preventDefault();
-                                    window.kmWidgetEvents.onGreetingMessageNotificationClick(
+                                    window.kmWidgetEvents.eventTracking(
                                         {
                                             eventCateogry: 'Kommunicate',
                                             eventAction: 'Click',
                                             eventLabel: 'Greeting',
                                         }
                                     );
-                                    window.kmWidgetEvents.sendEventToGoogleAnalytics('Kommunicate','Click','Greeting');
                                     if (KOMMUNICATE_VERSION === 'v2') {
                                         Kommunicate.setDefaultIframeConfigForOpenChat(
                                             POPUP_WIDGET
@@ -2750,13 +2767,11 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
-                    window.kmWidgetEvents.EventTracking(
-                        {
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Close',
-                            eventLabel: 'Chat Widget Close',
-                        }
-                    );
+                    window.kmWidgetEvents.eventTracking({
+                        eventCateogry: 'Kommunicate',
+                        eventAction: 'Close',
+                        eventLabel: 'Chat Widget Close',
+                    });
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
@@ -2848,35 +2863,21 @@ var userOverride = {
                 };
 
                 restartConversation.addEventListener('click', function () {
-                    window.kmWidgetEvents.onRestartConversationClick(
-                        {
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Restart',
-                            eventLabel: 'Conversation Restart',
-                        }
-                    );
-                    window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                        'Kommunicate',
-                        'Restart',
-                        'Conversation Restart'
-                    );
+                    window.kmWidgetEvents.eventTracking({
+                        eventCateogry: 'Kommunicate',
+                        eventAction: 'Restart',
+                        eventLabel: 'Conversation Restart',
+                    });
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
-                    window.kmWidgetEvents.onSubmitRatingClick(
-                        {
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Submit',
-                            eventLabel: 'CSAT Submit',
-                        }
-                    );
-                    window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                        'Kommunicate',
-                        'Submit',
-                        'CSAT Submit'
-                    );
+                    window.kmWidgetEvents.eventTracking({
+                        eventCateogry: 'Kommunicate',
+                        eventAction: 'Submit',
+                        eventLabel: 'CSAT Submit',
+                    });
                     feedbackObject = {
                         groupId: 0,
                         comments: [],
@@ -2944,20 +2945,12 @@ var userOverride = {
                                     : ratingValue == 10
                                     ? 'CSAT Rate Great'
                                     : '';
-                            window.kmWidgetEvents.onRateConversationEmoticonsClick(
-                                {
-                                    eventCateogry: 'Kommunicate',
-                                    eventAction: ratingType,
-                                    eventLabel: 'CSAT Start',
-                                    eventValue: ratingValue,
-                                }
-                            );
-                            window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                                'Kommunicate',
-                                ratingType,
-                                'CSAT Start',
-                                ratingValue
-                            );
+                            window.kmWidgetEvents.eventTracking({
+                                eventCateogry: 'Kommunicate',
+                                eventAction: 'Rate',
+                                eventLabel: ratingType,
+                                eventValue: ratingValue,
+                            });
                         }
                     });
                 }
@@ -3735,7 +3728,7 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
-                window.kmWidgetEvents.EventTracking({
+                window.kmWidgetEvents.eventTracking({
                     eventCateogry: 'Kommunicate',
                     eventAction: 'Open',
                     eventLabel: 'Chat Widget Open',
@@ -5145,12 +5138,11 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                window.kmWidgetEvents.EventTracking(
-                    {
-                        eventCateogry: 'Kommunicate',
-                        eventAction: 'Chat widget closed',
-                        eventLable :'Chat Widget Close'                    }
-                );
+                window.kmWidgetEvents.eventTracking({
+                    eventCateogry: 'Kommunicate',
+                    eventAction: 'Chat widget closed',
+                    eventLable: 'Chat Widget Close',
+                });
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
@@ -13838,12 +13830,11 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    window.kmWidgetEvents.EventTracking(
-                        {
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Click',
-                            eventLabel: 'Attachment',
-                        });
+                    window.kmWidgetEvents.eventTracking({
+                        eventCateogry: 'Kommunicate',
+                        eventAction: 'Click',
+                        eventLabel: 'Attachment',
+                    });
                     $mck_file_input.trigger('click');
                 });
 
@@ -15001,16 +14992,11 @@ var userOverride = {
                     'click',
                     ' #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text',
                     function () {
-                        window.kmWidgetEvents.onNotificationClick({
+                        window.kmWidgetEvents.eventTracking({
                             eventCateogry: 'Kommunicate',
                             eventAction: 'Click',
                             eventLabel: 'Notification',
-                        })
-                        window.kmWidgetEvents.sendEventToGoogleAnalytics({
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Click',
-                            eventLabel: 'Notification',
-                        })
+                        });
                         _this.hideMessagePreview();
                         KommunicateUI.hideFaq();
                     }

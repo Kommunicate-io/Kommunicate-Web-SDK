@@ -37,7 +37,7 @@ kmWidgetEvents = {
             });
         }
     },
-    EventTracking: function (eventObject) {
+    eventTracking: function (eventObject) {
         if (kommunicateCommons.isObject(eventObject)) {
             applozic._globals.gaTrackingID &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
@@ -61,12 +61,33 @@ kmWidgetEvents = {
             if (eventObject.eventLabel == 'Attachment') {
                 window.kmWidgetEvents.onAttachmentClick(eventObject);
             }
-            if (eventObject.eventLabel == 'Attachment') {
+            if (eventObject.eventLabel == 'VoiceInput') {
                 window.kmWidgetEvents.onVoiceIconClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Location') {
+                window.kmWidgetEvents.onLocationIconClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'CSAT Start') {
+                window.kmWidgetEvents.onRateConversationClick(eventObject);
+            }
+            if (eventObject.eventAction == 'Rate') {
+                window.kmWidgetEvents.onRateConversationEmoticonsClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'CSAT Submit') {
+                window.kmWidgetEvents.onSubmitRatingClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Conversation Restart') {
+                window.kmWidgetEvents.onRestartConversationClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Greeting') {
+                window.kmWidgetEvents.onGreetingMessageNotificationClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Notification') {
+                window.kmWidgetEvents.onNotificationClick(eventObject);
             }
         } else
             throw new TypeError(
-                'EventTracking expect an object but got ' + typeof eventObject
+                'eventTracking expect an object but got ' + typeof eventObject
             );
     },
 };
