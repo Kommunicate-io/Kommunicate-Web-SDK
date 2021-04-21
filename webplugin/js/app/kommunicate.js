@@ -193,7 +193,12 @@ $applozic.extend(true, Kommunicate, {
     },
     openConversation: function (groupId, groupDetail) {
         kommunicateCommons.setWidgetStateOpen(true);
-        groupDetail && groupDetail.clientGroupId && window.$applozic.fn.applozic('loadGroupTabByClientGroupId', groupDetail);
+        groupDetail &&
+            groupDetail.clientGroupId &&
+            window.$applozic.fn.applozic(
+                'loadGroupTabByClientGroupId',
+                groupDetail
+            );
         groupId && window.$applozic.fn.applozic('loadGroupTab', groupId);
         KommunicateUI.hideFaq();
     },
@@ -772,17 +777,17 @@ $applozic.extend(true, Kommunicate, {
             return;
         }
         var parentEle = element.parentElement;
-        while (!parentEle.classList.contains("mck-msg-left")) {
+        while (!parentEle.classList.contains('mck-msg-left')) {
             parentEle = parentEle.parentElement;
         }
-        parentEle.classList.add("n-vis");
+        parentEle.classList.add('n-vis');
     },
     getAllSiblings: function (element) {
-        var siblings = []; 
+        var siblings = [];
         if (!element || !element.parentNode) {
             return siblings;
         }
-        var sibling  = element.parentNode.firstChild;
+        var sibling = element.parentNode.firstChild;
         while (sibling) {
             if (sibling.nodeType === 1 && sibling !== element) {
                 siblings.push(sibling);
