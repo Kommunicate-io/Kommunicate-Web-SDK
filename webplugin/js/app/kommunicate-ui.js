@@ -1278,6 +1278,17 @@ KommunicateUI = {
             bannerHeading &&
                 (bannerHeading.innerHTML =
                     MCK_LABELS['filter.conversation.list'].ALL_CONVERSATIONS);
+            if (
+                bannerAction &&
+                bannerAction.innerHTML ==
+                    MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
+            ) {
+                window.kmWidgetEvents.eventTracking({
+                    eventCateogry: 'Kommunicate',
+                    eventAction: 'Click',
+                    eventLabel: 'Show Resolve',
+                });
+            }
             bannerAction &&
                 (bannerAction.innerHTML =
                     MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED);
@@ -1292,22 +1303,6 @@ KommunicateUI = {
                     MCK_LABELS[
                         'filter.conversation.list'
                     ].ACTIVE_CONVERSATIONS);
-            if (
-                bannerHeading &&
-                bannerHeading.innerHTML ==
-                    MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS
-            ) {
-                window.kmWidgetEvents.onShowResolvedClick({
-                    eventCateogry: 'Kommunicate',
-                    eventAction: 'Click',
-                    eventLabel: 'Show Resolve',
-                });
-                window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                    'Kommunicate',
-                    'Click',
-                    'Show Resolve'
-                );
-            }
             bannerAction &&
                 (bannerAction.innerHTML =
                     MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED);

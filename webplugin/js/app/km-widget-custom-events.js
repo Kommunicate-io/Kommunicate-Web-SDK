@@ -19,6 +19,7 @@ kmWidgetEvents = {
     onGreetingMessageNotificationClick: function (resp) {},
     onNotificationClick: function (resp) {},
     onRichMessageButtonClick: function (resp) {},
+    onShowResolvedClick:function(resp){},
     sendEventToGoogleAnalytics: function (
         eventCateogry,
         eventAction,
@@ -84,6 +85,12 @@ kmWidgetEvents = {
             }
             if (eventObject.eventLabel == 'Notification') {
                 window.kmWidgetEvents.onNotificationClick(eventObject);
+            }
+            if (eventObject.eventAction == 'Rich message Click') {
+                window.kmWidgetEvents.onRichMessageButtonClick(eventObject);
+            }
+            if (eventObject.eventLabel == 'Show Resolve') {
+                window.kmWidgetEvents.onShowResolvedClick(eventObject);
             }
         } else
             throw new TypeError(

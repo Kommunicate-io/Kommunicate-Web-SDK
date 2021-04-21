@@ -669,6 +669,13 @@ var userOverride = {
                 },
                 function (data) {
                     console.log('conversation created successfully');
+                    window.kmWidgetEvents.eventTracking(
+                        {
+                            eventCateogry: 'Kommunicate',
+                            eventAction: 'Start New',
+                            eventLabel: 'Conversation Start',
+                        }
+                    );
                     KommunicateUI.activateTypingField();
                 }
             );
@@ -2767,11 +2774,6 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
-                    window.kmWidgetEvents.eventTracking({
-                        eventCateogry: 'Kommunicate',
-                        eventAction: 'Close',
-                        eventLabel: 'Chat Widget Close',
-                    });
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
@@ -13606,6 +13608,11 @@ var userOverride = {
                     });
                     $mck_btn_loc.on('click', function (e) {
                         e.preventDefault();
+                        window.kmWidgetEvents.eventTracking({
+                                eventCateogry: 'Kommunicate',
+                                eventAction: 'Click',
+                                eventLabel: 'Location',
+                        });
                         if (IS_LOC_SHARE_INIT) {
                             $mck_loc_box.mckModal();
                         } else {

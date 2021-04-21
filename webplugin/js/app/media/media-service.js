@@ -10,7 +10,7 @@ Kommunicate.mediaService = {
             {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Click',
-                eventLabel: 'Attachment',
+                eventLabel: 'VoiceInput',
             }
         );
         if (!('webkitSpeechRecognition' in window)) {

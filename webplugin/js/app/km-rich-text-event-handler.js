@@ -749,16 +749,11 @@ Kommunicate.richMsgEventHandler = {
         console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
-        window.kmWidgetEvents.onRichMessageButtonClick({
+        window.kmWidgetEvents.eventTracking({
             eventCateogry: 'Kommunicate',
             eventAction: 'Rich message Click',
-            eventLabel: e.innerHTML,
+            eventLabel: e.target.innerHTML,
         });
-        window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Rich message Click',
-            e.innerHTML
-        );
         var message = e.target.title;
         var metadata = {};
         try {
@@ -784,16 +779,11 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnListItem: function (e) {
-        window.kmWidgetEvents.onRichMessageButtonClick({
+        window.kmWidgetEvents.eventTracking({
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
-                eventLabel: e.innerHTML,
+                eventLabel: e.target.innerHTML,
             }
-        );
-        window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Rich message Click',
-            e.innerHTML
         );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -820,17 +810,12 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnButtonItem: function (e) {
-        window.kmWidgetEvents.onRichMessageButtonClick(
+        window.kmWidgetEvents.eventTracking(
             {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
-                eventLabel: e.innerHTML,
+                eventLabel: e.target.innerHTML,
             }
-        );
-        window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Rich message Click',
-            e.innerHTML
         );
         e.preventDefault();
         var target = e.currentTarget;
@@ -852,16 +837,11 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnDialogButton: function (e) {
-        window.kmWidgetEvents.onRichMessageButtonClick({
+        window.kmWidgetEvents.eventTracking({
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
-                eventLabel: e.innerHTML,
+                eventLabel: e.target.innerHTML,
             }
-        );
-        window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Rich message Click',
-            e.innerHTML
         );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -881,35 +861,25 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
-        window.kmWidgetEvents.onRichMessageButtonClick(
+        window.kmWidgetEvents.eventTracking(
             {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
-                eventLabel: e.innerHTML,
+                eventLabel: e.target.innerHTML,
             }
-        );
-        window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Rich message Click',
-            e.innerHTML
         );
         var url = decodeURI(e.currentTarget.dataset.url);
         window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function (e) {
-        window.kmWidgetEvents.onRichMessageButtonClick(
+        e.preventDefault();
+        window.kmWidgetEvents.eventTracking(
             {
                 eventCateogry: 'Kommunicate',
                 eventAction: 'Rich message Click',
-                eventLabel: e.innerHTML,
+                eventLabel: e.target.innerHTML,
             }
         );
-        window.kmWidgetEvents.sendEventToGoogleAnalytics(
-            'Kommunicate',
-            'Rich message Click',
-            e.innerHTML
-        );
-        e.preventDefault();
     },
     isValidString: function (str, value) {
         return new RegExp(str).test(value);
