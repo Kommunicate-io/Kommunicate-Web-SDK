@@ -81,12 +81,8 @@ var userOverride = {
     };
     $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
-        if (
-            Object.keys(kommunicate).length !== Object.keys(Kommunicate).length
-        ) {
-            $applozic.extend(Kommunicate, kommunicate);
-            $applozic.extend(kommunicate, Kommunicate);
-        }
+        // every time this line will overwrite the kommunicate object properties
+        $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
             KommunicateUtils.storeDataIntoKmSession('appOptions', appOptions);
