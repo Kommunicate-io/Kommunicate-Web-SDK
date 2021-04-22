@@ -191,9 +191,16 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
-    openConversation: function (groupId) {
+    openConversation: function (groupId, groupDetail) {
         kommunicateCommons.setWidgetStateOpen(true);
-        window.$applozic.fn.applozic('loadGroupTab', groupId);
+        if (groupId) {
+            window.$applozic.fn.applozic('loadGroupTab', groupId);
+        } else if (groupDetail && groupDetail.clientGroupId) {
+            window.$applozic.fn.applozic(
+                'loadGroupTabByClientGroupId',
+                groupDetail
+            );
+        } 
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
@@ -771,17 +778,17 @@ $applozic.extend(true, Kommunicate, {
             return;
         }
         var parentEle = element.parentElement;
-        while (!parentEle.classList.contains("mck-msg-left")) {
+        while (!parentEle.classList.contains('mck-msg-left')) {
             parentEle = parentEle.parentElement;
         }
-        parentEle.classList.add("n-vis");
+        parentEle.classList.add('n-vis');
     },
     getAllSiblings: function (element) {
-        var siblings = []; 
+        var siblings = [];
         if (!element || !element.parentNode) {
             return siblings;
         }
-        var sibling  = element.parentNode.firstChild;
+        var sibling = element.parentNode.firstChild;
         while (sibling) {
             if (sibling.nodeType === 1 && sibling !== element) {
                 siblings.push(sibling);
