@@ -1,8 +1,84 @@
 /**
- // Kommunicate custome events available for user for the specific event in chat widget.
+ // Kommunicate custom events available for user for the specific event in chat widget.
  // resp - JSON object containing eventAction and other property exposed to user.
  // defination of function can be overwrite by user through subscribeToEvents function.
  */
+eventMapping = {
+    chatWidgetOpenEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Open',
+        eventLabel: 'Chat Widget Open',
+    },
+    chatWidgetCloseEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Chat widget closed',
+        eventLable: 'Chat Widget Close',
+    },
+    richMessageButtonEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Rich message click',
+    },
+    faqEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'FAQ Menu',
+    },
+    csatEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Started',
+        eventLabel: 'CSAT Start',
+    },
+    csatSubmitEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Submit',
+        eventLabel: 'CSAT Submit',
+    },
+    showResolvedEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'Show Resolve',
+    },
+    startConversationEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Start New',
+        eventLabel: 'Conversation Start',
+    },
+    greetingMessageEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'Greeting',
+    },
+    conversationRestartEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Restart',
+        eventLabel: 'Conversation Restart',
+    },
+    ratingEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Rate',
+    },
+    locationEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'Location',
+    },
+    attachmentEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'Attachment',
+    },
+    notificationEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'Notification',
+    },
+    voiceInputEvent: {
+        eventCateogry: 'Kommunicate',
+        eventAction: 'Click',
+        eventLabel: 'VoiceInput',
+    },
+};
+
 kmWidgetEvents = {
     onChatWidgetOpen: function (resp) {},
     onChatWidgetClose: function (resp) {},
@@ -18,7 +94,7 @@ kmWidgetEvents = {
     onGreetingMessageNotificationClick: function (resp) {},
     onNotificationClick: function (resp) {},
     onRichMessageButtonClick: function (resp) {},
-    onShowResolvedClick:function(resp){},
+    onShowResolvedClick: function (resp) {},
     sendEventToGoogleAnalytics: function (
         eventCateogry,
         eventAction,
@@ -71,7 +147,9 @@ kmWidgetEvents = {
                 window.kmWidgetEvents.onRateConversationClick(eventObject);
             }
             if (eventObject.eventAction == 'Rate') {
-                window.kmWidgetEvents.onRateConversationEmoticonsClick(eventObject);
+                window.kmWidgetEvents.onRateConversationEmoticonsClick(
+                    eventObject
+                );
             }
             if (eventObject.eventLabel == 'CSAT Submit') {
                 window.kmWidgetEvents.onSubmitRatingClick(eventObject);
@@ -80,7 +158,9 @@ kmWidgetEvents = {
                 window.kmWidgetEvents.onRestartConversationClick(eventObject);
             }
             if (eventObject.eventLabel == 'Greeting') {
-                window.kmWidgetEvents.onGreetingMessageNotificationClick(eventObject);
+                window.kmWidgetEvents.onGreetingMessageNotificationClick(
+                    eventObject
+                );
             }
             if (eventObject.eventLabel == 'Notification') {
                 window.kmWidgetEvents.onNotificationClick(eventObject);

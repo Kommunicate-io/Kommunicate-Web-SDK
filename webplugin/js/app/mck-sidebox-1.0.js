@@ -671,11 +671,7 @@ var userOverride = {
                 function (data) {
                     console.log('conversation created successfully');
                     window.kmWidgetEvents.eventTracking(
-                        {
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Start New',
-                            eventLabel: 'Conversation Start',
-                        }
+                        eventMapping.startConversationEvent
                     );
                     KommunicateUI.activateTypingField();
                 }
@@ -2221,11 +2217,7 @@ var userOverride = {
                                 function (event) {
                                     event.preventDefault();
                                     window.kmWidgetEvents.eventTracking(
-                                        {
-                                            eventCateogry: 'Kommunicate',
-                                            eventAction: 'Click',
-                                            eventLabel: 'Greeting',
-                                        }
+                                        eventMapping.greetingMessageEvent
                                     );
                                     if (KOMMUNICATE_VERSION === 'v2') {
                                         Kommunicate.setDefaultIframeConfigForOpenChat(
@@ -2866,21 +2858,13 @@ var userOverride = {
                 };
 
                 restartConversation.addEventListener('click', function () {
-                    window.kmWidgetEvents.eventTracking({
-                        eventCateogry: 'Kommunicate',
-                        eventAction: 'Restart',
-                        eventLabel: 'Conversation Restart',
-                    });
+                    window.kmWidgetEvents.eventTracking(eventMapping.conversationRestartEvent);
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
-                    window.kmWidgetEvents.eventTracking({
-                        eventCateogry: 'Kommunicate',
-                        eventAction: 'Submit',
-                        eventLabel: 'CSAT Submit',
-                    });
+                    window.kmWidgetEvents.eventTracking(eventMapping.csatSubmitEvent);
                     feedbackObject = {
                         groupId: 0,
                         comments: [],
@@ -2948,12 +2932,9 @@ var userOverride = {
                                     : ratingValue == 10
                                     ? 'CSAT Rate Great'
                                     : '';
-                            window.kmWidgetEvents.eventTracking({
-                                eventCateogry: 'Kommunicate',
-                                eventAction: 'Rate',
-                                eventLabel: ratingType,
-                                eventValue: ratingValue,
-                            });
+                            eventMapping.ratingEvent.eventLabel= ratingType;
+                            eventMapping.ratingEvent.eventValue= ratingValue;
+                            window.kmWidgetEvents.eventTracking(eventMapping.ratingEvent);
                         }
                     });
                 }
@@ -3098,7 +3079,7 @@ var userOverride = {
                 options.forEach(function (element) {
                     if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
-                        dropDownOption.setAttribute('value',element.value);
+                        dropDownOption.setAttribute('value', element.value);
                         dropDownOption.textContent =
                             element.value.charAt(0).toUpperCase() +
                             element.value.slice(1);
@@ -3731,11 +3712,7 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
-                window.kmWidgetEvents.eventTracking({
-                    eventCateogry: 'Kommunicate',
-                    eventAction: 'Open',
-                    eventLabel: 'Chat Widget Open',
-                });
+                window.kmWidgetEvents.eventTracking(eventMapping.chatWidgetOpenEvent);
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -5141,11 +5118,7 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                window.kmWidgetEvents.eventTracking({
-                    eventCateogry: 'Kommunicate',
-                    eventAction: 'Chat widget closed',
-                    eventLable: 'Chat Widget Close',
-                });
+                window.kmWidgetEvents.eventTracking(eventMapping.chatWidgetCloseEvent);
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
@@ -5204,7 +5177,9 @@ var userOverride = {
             _this.openChat = function (ele, callback) {
                 var $this = $applozic(ele);
                 var tabId = $this.data('mck-id');
-                var isConversationInWaitingQueue = $this.parent().data('is-queued');
+                var isConversationInWaitingQueue = $this
+                    .parent()
+                    .data('is-queued');
                 tabId =
                     typeof tabId !== 'undefined' && tabId !== ''
                         ? tabId.toString()
@@ -6021,7 +5996,10 @@ var userOverride = {
                 err,
                 message
             ) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (
+                    _this.isFaqTabOpen() ||
+                    _this.isConversationInWaitingQueue()
+                ) {
                     return;
                 }
                 if (
@@ -6761,11 +6739,12 @@ var userOverride = {
                                         data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
                                             data.groupFeeds[0].imageUrl);
-                                    !params.isConversationInWaitingQueue && mckMessageService.processOnlineStatusChange(
-                                        params.tabId,
-                                        conversationAssigneeDetails,
-                                        updateConversationHeaderParams
-                                    );
+                                    !params.isConversationInWaitingQueue &&
+                                        mckMessageService.processOnlineStatusChange(
+                                            params.tabId,
+                                            conversationAssigneeDetails,
+                                            updateConversationHeaderParams
+                                        );
                                 }
                             }
                         }
@@ -6898,13 +6877,16 @@ var userOverride = {
                         .classList.contains('vis')
                 );
             };
-            _this.isConversationInWaitingQueue = function (){
-                return(
-                    document.querySelector('#mck-waiting-queue').classList.contains('vis')
-                )
+            _this.isConversationInWaitingQueue = function () {
+                return document
+                    .querySelector('#mck-waiting-queue')
+                    .classList.contains('vis');
             };
             _this.updateConversationHeader = function (params) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (
+                    _this.isFaqTabOpen() ||
+                    _this.isConversationInWaitingQueue()
+                ) {
                     return;
                 }
                 var imageUrl;
@@ -10349,16 +10331,22 @@ var userOverride = {
                 );
                 var imgsrctag = '';
                 var isConversationInWaitingQueue = false;
-                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING ){
+                if (
+                    contact &&
+                    contact.metadata &&
+                    contact.metadata.CONVERSATION_STATUS ==
+                        Kommunicate.conversationHelper.status.WAITING
+                ) {
                     // if conversation is in waiting queue
-                    displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
-                    imgsrctag = '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
+                    displayName =
+                        MCK_LABELS['waiting.queue.message']['contact.name'];
+                    imgsrctag =
+                        '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
                     isConversationInWaitingQueue = true;
-                }
-                else{ 
+                } else {
                     imgsrctag = _this.getContactImageLink(contact, displayName);
                 }
-                
+
                 var prepend = false;
                 var ucTabId = isGroupTab
                     ? 'group_' + contact.contactId
@@ -13627,11 +13615,7 @@ var userOverride = {
                     });
                     $mck_btn_loc.on('click', function (e) {
                         e.preventDefault();
-                        window.kmWidgetEvents.eventTracking({
-                                eventCateogry: 'Kommunicate',
-                                eventAction: 'Click',
-                                eventLabel: 'Location',
-                        });
+                        window.kmWidgetEvents.eventTracking(eventMapping.locationEvent);
                         if (IS_LOC_SHARE_INIT) {
                             $mck_loc_box.mckModal();
                         } else {
@@ -13856,11 +13840,7 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    window.kmWidgetEvents.eventTracking({
-                        eventCateogry: 'Kommunicate',
-                        eventAction: 'Click',
-                        eventLabel: 'Attachment',
-                    });
+                    window.kmWidgetEvents.eventTracking(eventMapping.attachmentEvent);
                     $mck_file_input.trigger('click');
                 });
 
@@ -15018,11 +14998,7 @@ var userOverride = {
                     'click',
                     ' #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text',
                     function () {
-                        window.kmWidgetEvents.eventTracking({
-                            eventCateogry: 'Kommunicate',
-                            eventAction: 'Click',
-                            eventLabel: 'Notification',
-                        });
+                        window.kmWidgetEvents.eventTracking(eventMapping.notificationEvent);
                         _this.hideMessagePreview();
                         KommunicateUI.hideFaq();
                     }

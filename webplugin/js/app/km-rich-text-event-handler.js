@@ -749,11 +749,10 @@ Kommunicate.richMsgEventHandler = {
         console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
-        window.kmWidgetEvents.eventTracking({
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Rich message Click',
-            eventLabel: e.target.innerHTML,
-        });
+        eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
+        window.kmWidgetEvents.eventTracking(
+            eventMapping.richMessageButtonEvent
+        );
         var message = e.target.title;
         var metadata = {};
         try {
@@ -779,11 +778,9 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnListItem: function (e) {
-        window.kmWidgetEvents.eventTracking({
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Rich message Click',
-                eventLabel: e.target.innerHTML,
-            }
+        eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
+        window.kmWidgetEvents.eventTracking(
+            eventMapping.richMessageButtonEvent
         );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -810,14 +807,11 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnButtonItem: function (e) {
-        window.kmWidgetEvents.eventTracking(
-            {
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Rich message Click',
-                eventLabel: e.target.innerHTML,
-            }
-        );
         e.preventDefault();
+        eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
+        window.kmWidgetEvents.eventTracking(
+            eventMapping.richMessageButtonEvent
+        );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
@@ -837,11 +831,9 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnDialogButton: function (e) {
-        window.kmWidgetEvents.eventTracking({
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Rich message Click',
-                eventLabel: e.target.innerHTML,
-            }
+        eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
+        window.kmWidgetEvents.eventTracking(
+            eventMapping.richMessageButtonEvent
         );
         var target = e.currentTarget;
         var reply = target.dataset.reply;
@@ -861,24 +853,18 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
+        eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
         window.kmWidgetEvents.eventTracking(
-            {
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Rich message Click',
-                eventLabel: e.target.innerHTML,
-            }
+            eventMapping.richMessageButtonEvent
         );
         var url = decodeURI(e.currentTarget.dataset.url);
         window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function (e) {
         e.preventDefault();
+        eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
         window.kmWidgetEvents.eventTracking(
-            {
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Rich message Click',
-                eventLabel: e.target.innerHTML,
-            }
+            eventMapping.richMessageButtonEvent
         );
     },
     isValidString: function (str, value) {

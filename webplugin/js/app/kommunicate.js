@@ -36,11 +36,7 @@ $applozic.extend(true, Kommunicate, {
     },
     startConversation: function (params, callback) {
         window.kmWidgetEvents.eventTracking(
-            {
-                eventCateogry: 'Kommunicate',
-                eventAction: 'Start New',
-                eventLabel: 'Conversation Start',
-            }
+            eventMapping.startConversationEvent
         );
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
