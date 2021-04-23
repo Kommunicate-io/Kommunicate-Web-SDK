@@ -1280,7 +1280,7 @@ KommunicateUI = {
                     MCK_LABELS['filter.conversation.list'].ALL_CONVERSATIONS);
             if (
                 bannerAction &&
-                bannerAction.innerHTML ==
+                bannerAction.innerText ==
                     MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
             ) {
                 window.kmWidgetEvents.eventTracking({

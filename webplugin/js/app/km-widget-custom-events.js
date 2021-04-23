@@ -10,7 +10,6 @@ kmWidgetEvents = {
     onStartNewConversation: function (resp) {},
     onAttachmentClick: function (resp) {},
     onVoiceIconClick: function (resp) {},
-    onVoiceIconClick: function (resp) {},
     onLocationIconClick: function (resp) {},
     onRateConversationClick: function (resp) {},
     onRateConversationEmoticonsClick: function (resp) {},
