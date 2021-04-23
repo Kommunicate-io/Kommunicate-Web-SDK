@@ -1378,4 +1378,40 @@ KommunicateUI = {
             },
         });
     },
+    getUrlFromBlobKey: function(blobKey, callback) {
+        var params= '?key='+blobKey;
+        window.Applozic.ALApiService.ajax({
+            type: 'GET',
+            global: false,
+            url: MCK_BASE_URL + '/rest/ws/file/url' + params,
+            success: function (res) {
+                callback(null, res);
+            },
+            error: function (err) {
+                callback(err);
+            },
+        })
+    },
+    isInView: function (element, targetElement) {
+        const rect = element.getBoundingClientRect();
+        const targetRect = targetElement.getBoundingClientRect();
+        return (
+            rect.top >= targetRect.top &&
+            rect.left >= targetRect.left &&
+            rect.bottom <= targetRect.bottom &&
+            rect.right <= targetRect.right
+        );
+    },
+    processLazyImage: function (imageElement, thumbnailBlobKey) {
+        imageElement.classList.remove('lazy-image');
+        KommunicateUI.getUrlFromBlobKey(thumbnailBlobKey, function (err, thumbnailUrl) {
+            if (err) {
+                throw err
+            };
+            thumbnailUrl && (imageElement.src = thumbnailUrl);
+            setTimeout(function () {
+                imageElement.classList.add('lazy-image');
+            }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        });
+    }
 };
