@@ -670,8 +670,8 @@ var userOverride = {
                 },
                 function (data) {
                     console.log('conversation created successfully');
-                    window.kmWidgetEvents.eventTracking(
-                        eventMapping.startConversationEvent
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.startConversationEvent.eventObject
                     );
                     KommunicateUI.activateTypingField();
                 }

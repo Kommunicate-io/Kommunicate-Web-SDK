@@ -3,79 +3,154 @@
  // resp - JSON object containing eventAction and other property exposed to user.
  // defination of function can be overwrite by user through subscribeToEvents function.
  */
-eventMapping = {
+var eventMapping = {
     chatWidgetOpenEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Open',
-        eventLabel: 'Chat Widget Open',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Open',
+            eventLabel: 'Chat Widget Open',
+        },
+        eventFunction: kmWidgetEvents.onChatWidgetOpen(
+            eventMapping.chatWidgetOpenEvent.eventObject
+        ),
     },
     chatWidgetCloseEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Chat widget closed',
-        eventLable: 'Chat Widget Close',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Chat widget closed',
+            eventLable: 'Chat Widget Close',
+        },
+        eventFunction: kmWidgetEvents.onChatWidgetClose(
+            eventMapping.chatWidgetCloseEvent.eventObject
+        ),
     },
     richMessageButtonEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Rich message click',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Rich Message Click',
+        },
+        eventFunction: kmWidgetEvents.onRateConversationClick(
+            eventMapping.richMessageButtonEvent.eventObject
+        ),
     },
     faqEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'FAQ Menu',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'FAQ Menu',
+        },
+        eventFunction: kmWidgetEvents.onFaqClick(
+            eventMapping.faqEvent.eventObject
+        ),
     },
     csatEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Started',
-        eventLabel: 'CSAT Start',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Started',
+            eventLabel: 'CSAT Start',
+        },
+        eventFunction: kmWidgetEvents.onRateConversationClick(
+            eventMapping.csatEvent.eventObject
+        ),
     },
     csatSubmitEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Submit',
-        eventLabel: 'CSAT Submit',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Submit',
+            eventLabel: 'CSAT Submit',
+        },
+        eventFunction: kmWidgetEvents.onSubmitRatingClick(
+            eventMapping.csatSubmitEvent.eventObject
+        ),
     },
     showResolvedEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'Show Resolve',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Show Resolve',
+        },
+        eventFunction: kmWidgetEvents.onShowResolvedClick(
+            eventMapping.showResolvedEvent.eventObject
+        ),
     },
     startConversationEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Start New',
-        eventLabel: 'Conversation Start',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Start New',
+            eventLabel: 'Conversation Start',
+        },
+        eventFunction: kmWidgetEvents.onStartNewConversation(
+            eventMapping.startConversationEvent.eventObject
+        ),
     },
     greetingMessageEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'Greeting',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Greeting',
+        },
+        eventFunction: kmWidgetEvents.onGreetingMessageNotificationClick(
+            eventMapping.greetingMessageEvent.eventObject
+        ),
     },
     conversationRestartEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Restart',
-        eventLabel: 'Conversation Restart',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Restart',
+            eventLabel: 'Conversation Restart',
+        },
+        eventFunction: kmWidgetEvents.onRestartConversationClick(
+            eventMapping.conversationRestartEvent.eventObject
+        ),
     },
     ratingEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Rate',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Rate',
+        },
+        eventFunction: kmWidgetEvents.onRateConversationEmoticonsClick(
+            eventMapping.ratingEvent.eventObject
+        ),
     },
     locationEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'Location',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Location',
+        },
+        eventFunction: kmWidgetEvents.onLocationIconClick(
+            eventMapping.locationEvent.eventObject
+        ),
     },
     attachmentEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'Attachment',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Attachment',
+        },
+        eventFunction: kmWidgetEvents.onAttachmentClick(
+            eventMapping.attachmentEvent.eventObject
+        ),
     },
     notificationEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'Notification',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Notification',
+        },
+        eventFunction: kmWidgetEvents.onNotificationClick(
+            eventMapping.notificationEvent.eventObject
+        ),
     },
     voiceInputEvent: {
-        eventCateogry: 'Kommunicate',
-        eventAction: 'Click',
-        eventLabel: 'VoiceInput',
+        eventObject: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'VoiceInput',
+        },
+        eventFunction: kmWidgetEvents.onVoiceIconClick(
+            eventMapping.voiceInputEvent.eventObject
+        ),
     },
 };
 
@@ -122,55 +197,6 @@ kmWidgetEvents = {
                     eventObject.eventLabel,
                     eventObject.eventValue
                 );
-            if (eventObject.eventLabel == 'FAQ Menu') {
-                window.kmWidgetEvents.onFaqClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'Chat Widget Open') {
-                window.kmWidgetEvents.onChatWidgetOpen(eventObject);
-            }
-            if (eventObject.eventLabel == 'Chat Widget Close') {
-                window.kmWidgetEvents.onChatWidgetClose(eventObject);
-            }
-            if (eventObject.eventLabel == 'Conversation Start') {
-                window.kmWidgetEvents.onStartNewConversation(eventObject);
-            }
-            if (eventObject.eventLabel == 'Attachment') {
-                window.kmWidgetEvents.onAttachmentClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'VoiceInput') {
-                window.kmWidgetEvents.onVoiceIconClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'Location') {
-                window.kmWidgetEvents.onLocationIconClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'CSAT Start') {
-                window.kmWidgetEvents.onRateConversationClick(eventObject);
-            }
-            if (eventObject.eventAction == 'Rate') {
-                window.kmWidgetEvents.onRateConversationEmoticonsClick(
-                    eventObject
-                );
-            }
-            if (eventObject.eventLabel == 'CSAT Submit') {
-                window.kmWidgetEvents.onSubmitRatingClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'Conversation Restart') {
-                window.kmWidgetEvents.onRestartConversationClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'Greeting') {
-                window.kmWidgetEvents.onGreetingMessageNotificationClick(
-                    eventObject
-                );
-            }
-            if (eventObject.eventLabel == 'Notification') {
-                window.kmWidgetEvents.onNotificationClick(eventObject);
-            }
-            if (eventObject.eventAction == 'Rich message Click') {
-                window.kmWidgetEvents.onRichMessageButtonClick(eventObject);
-            }
-            if (eventObject.eventLabel == 'Show Resolve') {
-                window.kmWidgetEvents.onShowResolvedClick(eventObject);
-            }
         } else
             throw new TypeError(
                 'eventTracking expect an object but got ' + typeof eventObject

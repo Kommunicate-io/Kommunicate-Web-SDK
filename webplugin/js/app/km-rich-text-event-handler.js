@@ -750,9 +750,10 @@ Kommunicate.richMsgEventHandler = {
     },
     processQuickReplies: function (e) {
         eventMapping.onRichMessageButtonClick.eventLabel = e.target.innerText;
-        window.kmWidgetEvents.eventTracking(
+        kmWidgetEvents.eventTracking(
             eventMapping.richMessageButtonEvent
         );
+        eventMapping.richMessageButtonEvent.eventFunction;
         var message = e.target.title;
         var metadata = {};
         try {
