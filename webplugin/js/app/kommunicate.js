@@ -35,8 +35,8 @@ $applozic.extend(true, Kommunicate, {
         });
     },
     startConversation: function (params, callback) {
-        window.kmWidgetEvents.eventTracking(
-            eventMapping.startConversationEvent.eventObject
+        kmWidgetEvents.eventTracking(
+            eventMapping.startConversationEvent
         );
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};

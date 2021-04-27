@@ -6,7 +6,7 @@ Kommunicate.mediaService = {
         });
     },
     processMicClickedEvent: function () {
-        window.kmWidgetEvents.eventTracking(eventMapping.voiceInputEvent);
+        kmWidgetEvents.eventTracking(eventMapping.voiceInputEvent);
         if (!('webkitSpeechRecognition' in window)) {
             alert('browser do not support speech recogization');
         } else {
