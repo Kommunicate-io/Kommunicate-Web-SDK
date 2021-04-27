@@ -4389,7 +4389,6 @@ var userOverride = {
                     '.' + MCK_LAUNCHER + ', .mck-contact-list .' + MCK_LAUNCHER,
                     function (e) {
                         e.preventDefault();
-                        console.log(SUBSCRIBE_TO_EVENTS_BACKUP);
                         WIDGET_SETTINGS.popup &&
                             kmWidgetEvents.eventTracking(
                                 eventMapping.greetingMessageEvent
