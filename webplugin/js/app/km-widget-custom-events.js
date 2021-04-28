@@ -4,21 +4,6 @@
  // defination of function can be overwrite by user through subscribeToEvents function.
  */
 var kmWidgetEvents = {
-    onChatWidgetOpen: function (resp) {},
-    onChatWidgetClose: function (resp) {},
-    onFaqClick: function (resp) {},
-    onStartNewConversation: function (resp) {},
-    onAttachmentClick: function (resp) {},
-    onVoiceIconClick: function (resp) {},
-    onLocationIconClick: function (resp) {},
-    onRateConversationClick: function (resp) {},
-    onRateConversationEmoticonsClick: function (resp) {},
-    onSubmitRatingClick: function (resp) {},
-    onRestartConversationClick: function (resp) {},
-    onGreetingMessageNotificationClick: function (resp) {},
-    onNotificationClick: function (resp) {},
-    onRichMessageButtonClick: function (resp) {},
-    onShowResolvedClick: function (resp) {},
     sendEventToGoogleAnalytics: function (
         eventCateogry,
         eventAction,
@@ -37,9 +22,11 @@ var kmWidgetEvents = {
             });
         }
     },
-    eventTracking: function (eventObject) {
+    eventTracking: function (eventObject, newLabel, newValue) {
         // Any other analytics tool related code can be add here no need to paste it in every function
         if (kommunicateCommons.isObject(eventObject)) {
+            newLabel && eventObject.eventLabel ? newLabel : '';
+            newValue && eventObject.eventValue ? newLabel : '';
             applozic._globals.gaTrackingID &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
                     eventObject.eventCateogry,
@@ -47,7 +34,7 @@ var kmWidgetEvents = {
                     eventObject.eventLabel,
                     eventObject.eventValue
                 );
-            eventObject.eventFunction(eventObject.data)
+            eventObject !== null && eventObject.eventFunction(eventObject.data);
         } else
             throw new TypeError(
                 'eventTracking expect an object but got ' + typeof eventObject
@@ -56,123 +43,122 @@ var kmWidgetEvents = {
 };
 
 var eventMapping = {
-    chatWidgetOpenEvent: {
+    onChatWidgetOpen: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Open',
             eventLabel: 'Chat Widget Open',
         },
-        eventFunction: kmWidgetEvents.onChatWidgetOpen,
+        eventFunction: null,
     },
-    chatWidgetCloseEvent: {
+    onChatWidgetClose: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Chat widget closed',
             eventLable: 'Chat Widget Close',
         },
-        eventFunction: kmWidgetEvents.onChatWidgetClose,
+        eventFunction: null,
     },
-    richMessageButtonEvent: {
+    onRichMessageButtonClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Rich Message Click',
-            eventLable: function(buttonText){return buttonText}
         },
-        eventFunction: kmWidgetEvents.onRateConversationClick,
+        eventFunction: null,
     },
-    faqEvent: {
+    onFaqClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'FAQ Menu',
         },
-        eventFunction: kmWidgetEvents.onFaqClick,
+        eventFunction: null,
     },
-    csatEvent: {
+    onRateConversationClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Started',
             eventLabel: 'CSAT Start',
         },
-        eventFunction: kmWidgetEvents.onRateConversationClick,
+        eventFunction: null,
     },
-    csatSubmitEvent: {
+    onSubmitRatingClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Submit',
             eventLabel: 'CSAT Submit',
         },
-        eventFunction: kmWidgetEvents.onSubmitRatingClick,
+        eventFunction: null,
     },
-    showResolvedEvent: {
+    onShowResolvedClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'Show Resolve',
         },
-        eventFunction: kmWidgetEvents.onShowResolvedClick,
+        eventFunction: null,
     },
-    startConversationEvent: {
+    onStartNewConversation: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Start New',
             eventLabel: 'Conversation Start',
         },
-        eventFunction: kmWidgetEvents.onStartNewConversation,
+        eventFunction: null,
     },
-    greetingMessageEvent: {
+    onGreetingMessageNotificationClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'Greeting',
         },
-        eventFunction: kmWidgetEvents.onGreetingMessageNotificationClick,
+        eventFunction: null,
     },
-    conversationRestartEvent: {
+    onRestartConversationClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Restart',
             eventLabel: 'Conversation Restart',
         },
-        eventFunction: kmWidgetEvents.onRestartConversationClick,
+        eventFunction: null,
     },
-    ratingEvent: {
+    onRateConversationEmoticonsClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Rate',
         },
-        eventFunction: kmWidgetEvents.onRateConversationEmoticonsClick,
+        eventFunction: null,
     },
-    locationEvent: {
+    onLocationIconClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'Location',
         },
-        eventFunction: kmWidgetEvents.onLocationIconClick,
+        eventFunction: null,
     },
-    attachmentEvent: {
+    onAttachmentClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'Attachment',
         },
-        eventFunction: kmWidgetEvents.onAttachmentClick,
+        eventFunction: null,
     },
-    notificationEvent: {
+    onNotificationClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'Notification',
         },
-        eventFunction: kmWidgetEvents.onNotificationClick,
+        eventFunction: null,
     },
-    voiceInputEvent: {
+    onVoiceIconClick: {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'VoiceInput',
         },
-        eventFunction: kmWidgetEvents.onVoiceIconClick,
+        eventFunction: null,
     },
 };

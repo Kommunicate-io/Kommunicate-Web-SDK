@@ -108,7 +108,25 @@ function KommunicateCommons() {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
     };
-
+    
+    /* This function return a new mereged object which is made of both incomming object. 
+        default- old object containing old properties.
+        options - new object containing new properties. */
+    _this.extend = function ( defaults, options ) {
+        var extended = {};
+        var prop;
+        for (prop in defaults) {
+            if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
+                extended[prop] = defaults[prop];
+            }
+        }
+        for (prop in options) {
+            if (Object.prototype.hasOwnProperty.call(options, prop)) {
+                extended[prop] = options[prop];
+            }
+        }
+        return extended;
+    };
     _this.getTimeOrDate = function (createdAtTime) {
         var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);

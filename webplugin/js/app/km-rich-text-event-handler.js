@@ -749,8 +749,7 @@ Kommunicate.richMsgEventHandler = {
         console.log('passenger detail submitted');
     },
     processQuickReplies: function (e) {
-        eventMapping.richMessageButtonEvent.data.eventLabel(e.target.innerText);
-        kmWidgetEvents.eventTracking(eventMapping.richMessageButtonEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
         var message = e.target.title;
         var metadata = {};
         try {
@@ -776,8 +775,7 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnListItem: function (e) {
-        eventMapping.richMessageButtonEvent.data.eventLabel(e.target.innerText);
-        kmWidgetEvents.eventTracking(eventMapping.richMessageButtonEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
@@ -804,8 +802,7 @@ Kommunicate.richMsgEventHandler = {
     },
     processClickOnButtonItem: function (e) {
         e.preventDefault();
-        eventMapping.richMessageButtonEvent.data.eventLabel(e.target.innerText);
-        kmWidgetEvents.eventTracking(eventMapping.richMessageButtonEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var type = target.dataset.type;
@@ -825,8 +822,7 @@ Kommunicate.richMsgEventHandler = {
         }
     },
     processClickOnDialogButton: function (e) {
-        eventMapping.richMessageButtonEvent.data.eventLabel(e.target.innerText);
-        kmWidgetEvents.eventTracking(eventMapping.richMessageButtonEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
         var target = e.currentTarget;
         var reply = target.dataset.reply;
         var metadata = {};
@@ -845,15 +841,13 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
-        eventMapping.richMessageButtonEvent.data.eventLabel(e.target.innerText);
-        kmWidgetEvents.eventTracking(eventMapping.richMessageButtonEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
         var url = decodeURI(e.currentTarget.dataset.url);
         window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function (e) {
         e.preventDefault();
-        eventMapping.richMessageButtonEvent.data.eventLabel(e.target.innerText);
-        kmWidgetEvents.eventTracking(eventMapping.richMessageButtonEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
     },
     isValidString: function (str, value) {
         return new RegExp(str).test(value);

@@ -125,7 +125,6 @@ const compressAndOptimize = () => {
         input: [
             path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
             path.resolve(__dirname, 'js/app/km-utils.js'),
-            path.resolve(__dirname, 'js/app/km-widget-custom-events.js'),
             path.resolve(__dirname, 'js/app/applozic.jquery.js'),
             path.resolve(__dirname, 'knowledgebase/common.js'),
             path.resolve(__dirname, 'knowledgebase/kb.js'),
@@ -143,6 +142,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/km-richtext-markup-1.0.js'),
             path.resolve(__dirname, 'js/app/km-message-markup-1.0.js'),
             path.resolve(__dirname, 'js/app/km-event-listner.js'),
+            path.resolve(__dirname, 'js/app/km-widget-custom-events.js'),
             path.resolve(__dirname, 'js/app/km-attachment-service.js'),
             path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),
             path.resolve(__dirname, 'js/app/kommunicate.custom.theme.js'),

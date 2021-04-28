@@ -671,7 +671,7 @@ var userOverride = {
                 function (data) {
                     console.log('conversation created successfully');
                     kmWidgetEvents.eventTracking(
-                        eventMapping.startConversationEvent
+                        eventMapping.onStartNewConversation
                     );
                     KommunicateUI.activateTypingField();
                 }
@@ -1892,32 +1892,15 @@ var userOverride = {
                     window.Applozic.ALSocket.events.onUserDeactivated =
                         events.onUserDeactivated;
                 }
-                Object.keys(events) &&
-                    Object.keys(events).map(function (subscribedFunction) {
-                        if (
-                            events[subscribedFunction].__proto__.constructor
-                                .name == 'Function'
-                        ) {
-                            var subscribedEventName =
-                                events[subscribedFunction].name;
-
-                            Object.keys(eventMapping) &&
-                                Object.keys(eventMapping).map(function (key) {
-                                    {
-                                        var existingEventName =
-                                            eventMapping[key].eventFunction
-                                                .name;
-                                        if (
-                                            subscribedEventName ==
-                                            existingEventName
-                                        ) {
-                                            eventMapping[key].eventFunction =
-                                                events[subscribedFunction];
-                                        }
-                                    }
-                                });
+                for (var key in events) {
+                    if (events[key].__proto__.constructor.name == 'Function') {
+                        var subscribedEventName = events[key].name;
+                        if (eventMapping.hasOwnProperty(subscribedEventName)) {
+                            eventMapping[subscribedEventName].eventFunction =
+                                events[subscribedEventName];
                         }
-                    });
+                    }
+                }
                 typeof callback == 'function' && callback();
             }
         };
@@ -2818,14 +2801,14 @@ var userOverride = {
 
                 restartConversation.addEventListener('click', function () {
                     kmWidgetEvents.eventTracking(
-                        eventMapping.conversationRestartEvent
+                        eventMapping.onRestartConversationClick
                     );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
-                    kmWidgetEvents.eventTracking(eventMapping.csatSubmitEvent);
+                    kmWidgetEvents.eventTracking(eventMapping.onSubmitRatingClick);
                     feedbackObject = {
                         groupId: 0,
                         comments: [],
@@ -2893,10 +2876,8 @@ var userOverride = {
                                     : ratingValue == 10
                                     ? 'CSAT Rate Great'
                                     : '';
-                            eventMapping.ratingEvent.eventLabel = ratingType;
-                            eventMapping.ratingEvent.eventValue = ratingValue;
                             kmWidgetEvents.eventTracking(
-                                eventMapping.ratingEvent
+                                eventMapping.onRateConversationEmoticonsClick,ratingType,ratingValue
                             );
                         }
                     });
@@ -3675,7 +3656,7 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
-                kmWidgetEvents.eventTracking(eventMapping.chatWidgetOpenEvent);
+                kmWidgetEvents.eventTracking(eventMapping.onChatWidgetOpen);
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -4391,7 +4372,7 @@ var userOverride = {
                         e.preventDefault();
                         WIDGET_SETTINGS.popup &&
                             kmWidgetEvents.eventTracking(
-                                eventMapping.greetingMessageEvent
+                                eventMapping.onGreetingMessageNotificationClick
                             );
                         $applozic(
                             '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
@@ -5085,7 +5066,7 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                kmWidgetEvents.eventTracking(eventMapping.chatWidgetCloseEvent);
+                kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
@@ -13583,7 +13564,7 @@ var userOverride = {
                     $mck_btn_loc.on('click', function (e) {
                         e.preventDefault();
                         kmWidgetEvents.eventTracking(
-                            eventMapping.locationEvent
+                            eventMapping.onLocationIconClick
                         );
                         if (IS_LOC_SHARE_INIT) {
                             $mck_loc_box.mckModal();
@@ -13809,7 +13790,7 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    kmWidgetEvents.eventTracking(eventMapping.attachmentEvent);
+                    kmWidgetEvents.eventTracking(eventMapping.onAttachmentClick);
                     $mck_file_input.trigger('click');
                 });
 
@@ -14968,7 +14949,7 @@ var userOverride = {
                     ' #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text',
                     function () {
                         kmWidgetEvents.eventTracking(
-                            eventMapping.notificationEvent
+                            eventMapping.onNotificationClick
                         );
                         _this.hideMessagePreview();
                         KommunicateUI.hideFaq();

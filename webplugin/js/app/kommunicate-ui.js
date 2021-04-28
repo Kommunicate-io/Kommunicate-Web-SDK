@@ -351,7 +351,7 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
-            kmWidgetEvents.eventTracking(eventMapping.faqEvent);
+            kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 KommunicateUtils.removeItemFromLocalStorage(
                     'mckActiveConversationInfo'
@@ -779,7 +779,7 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
-        kmWidgetEvents.eventTracking(eventMapping.csatEvent);
+        kmWidgetEvents.eventTracking(eventMapping.onRateConversationClick);
         var isCSATenabled = kommunicate._globals.collectFeedback;
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
@@ -1276,7 +1276,7 @@ KommunicateUI = {
                     MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
             ) {
                 kmWidgetEvents.eventTracking(
-                    eventMapping.showResolvedEvent
+                    eventMapping.onShowResolvedClick
                 );
             }
             bannerAction &&
