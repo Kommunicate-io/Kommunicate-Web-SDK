@@ -22,11 +22,11 @@ var kmWidgetEvents = {
             });
         }
     },
-    eventTracking: function (eventObject, newLabel, newValue) {
+    eventTracking: function (eventObject, customLabel, customValue) {
         // Any other analytics tool related code can be add here no need to paste it in every function
         if (kommunicateCommons.isObject(eventObject)) {
-            newLabel && eventObject.eventLabel ? newLabel : '';
-            newValue && eventObject.eventValue ? newLabel : '';
+            customLabel && eventObject.eventLabel ? customLabel : '';
+            customValue && eventObject.eventValue ? customValue : '';
             applozic._globals.gaTrackingID &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
                     eventObject.eventCateogry,
