@@ -161,4 +161,12 @@ var eventMapping = {
         },
         eventFunction: null,
     },
+    onMessageSent: {
+        data: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Sent',
+            eventLabel: 'Sent',
+        },
+        eventFunction: null,
+    },
 };

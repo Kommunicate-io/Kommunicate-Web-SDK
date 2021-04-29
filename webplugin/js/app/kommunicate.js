@@ -35,11 +35,11 @@ $applozic.extend(true, Kommunicate, {
         });
     },
     startConversation: function (params, callback) {
-        kmWidgetEvents.eventTracking(
-            eventMapping.onStartNewConversation
-        );
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
+        params && kmWidgetEvents.eventTracking(
+            eventMapping.onStartNewConversation
+        );
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =

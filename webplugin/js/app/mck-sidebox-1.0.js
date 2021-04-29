@@ -2808,7 +2808,9 @@ var userOverride = {
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
-                    kmWidgetEvents.eventTracking(eventMapping.onSubmitRatingClick);
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onSubmitRatingClick
+                    );
                     feedbackObject = {
                         groupId: 0,
                         comments: [],
@@ -2877,7 +2879,9 @@ var userOverride = {
                                     ? 'CSAT Rate Great'
                                     : '';
                             kmWidgetEvents.eventTracking(
-                                eventMapping.onRateConversationEmoticonsClick,ratingType,ratingValue
+                                eventMapping.onRateConversationEmoticonsClick,
+                                ratingType,
+                                ratingValue
                             );
                         }
                     });
@@ -4371,6 +4375,8 @@ var userOverride = {
                     function (e) {
                         e.preventDefault();
                         WIDGET_SETTINGS.popup &&
+                            eventMapping.onGreetingMessageNotificationClick
+                                .eventFunction !== null &&
                             kmWidgetEvents.eventTracking(
                                 eventMapping.onGreetingMessageNotificationClick
                             );
@@ -5188,11 +5194,7 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
-                window.kmWidgetEvents.sendEventToGoogleAnalytics(
-                    'Kommunicate',
-                    'Sent',
-                    'Message'
-                );
+                kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
                     Kommunicate.internetStatus &&
                     $applozic(
@@ -13790,7 +13792,9 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
-                    kmWidgetEvents.eventTracking(eventMapping.onAttachmentClick);
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onAttachmentClick
+                    );
                     $mck_file_input.trigger('click');
                 });
 
