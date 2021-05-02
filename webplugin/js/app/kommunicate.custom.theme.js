@@ -33,6 +33,7 @@ function KmCustomTheme() {
                 WIDGET_SETTINGS && WIDGET_SETTINGS.secondaryColor
                     ? WIDGET_SETTINGS.secondaryColor
                     : DEFAULT_SECONDARY_BACKGROUND_COLOR;
+        var squareIcon = kommunicate._globals.iconShape == 'square' ? '.km-chat-icon-sidebox { border-radius: 10% !important; box-shadow: 0 3px 4px 1px rgb(107 104 104 / 50%) !important; }':'';  
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
             var kmCustomWidgetCustomCSS =
@@ -53,8 +54,7 @@ function KmCustomTheme() {
                 ' !important;} ' +
                 '.km-custom-widget-stroke { stroke: ' +
                 primaryColor +
-                ' !important;} ';
-
+                ' !important;} '+ squareIcon;
             // Pass all classes you want to create in a single array.
             _this.createCustomClasses(kmCustomWidgetCustomCSS);
         } else {
@@ -66,7 +66,7 @@ function KmCustomTheme() {
             _this.createCustomClasses(kmChatWidgetBackgroundColor);
         }
         return (
-            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color">' +
+            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color" '+squareIcon+'>' +
             _this.returnCustomWidget() +
             '</div>'
         );
