@@ -58,7 +58,6 @@ Kommunicate.KmEventHandler = {
         }
     },
     onMessageSent: function (message) {
-        kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
         if (!(message && message.metadata && message.metadata.feedback)) {
             KommunicateUI.showClosedConversationBanner(false);
         }

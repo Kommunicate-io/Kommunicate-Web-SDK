@@ -25,8 +25,12 @@ var kmWidgetEvents = {
     eventTracking: function (eventObject, customLabel, customValue) {
         // Any other analytics tool related code can be add here no need to paste it in every function
         if (kommunicateCommons.isObject(eventObject)) {
-            customLabel && eventObject.eventLabel ? customLabel : '';
-            customValue && eventObject.eventValue ? customValue : '';
+            if (customLabel) {
+                eventObject.data.eventLabel = customLabel;
+            }
+            if (customValue) {
+                eventObject.data.eventValue = customValue;
+            }
             applozic._globals.gaTrackingID &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
                     eventObject.eventCateogry,
@@ -34,7 +38,8 @@ var kmWidgetEvents = {
                     eventObject.eventLabel,
                     eventObject.eventValue
                 );
-            eventObject !== null && eventObject.eventFunction(eventObject.data);
+            eventObject.eventFunction !== null &&
+                eventObject.eventFunction(eventObject.data);
         } else
             throw new TypeError(
                 'eventTracking expect an object but got ' + typeof eventObject

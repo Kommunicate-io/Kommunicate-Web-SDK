@@ -1096,6 +1096,12 @@ KommunicateUI = {
             }, delay);
         }
     },
+    captureGreetingMessageClick: function (e) {
+        e.preventDefault();
+        kmWidgetEvents.eventTracking(
+            eventMapping.onGreetingMessageNotificationClick
+        );
+    },
     togglePopupChatTemplate: function (
         popupTemplateKey,
         showTemplate,
@@ -1141,6 +1147,12 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
+            document
+                .getElementById('chat-popup-widget-container')
+                .firstChild.addEventListener(
+                    'click',
+                    this.captureGreetingMessageClick
+                );
             if (
                 kommunicateIframe.classList.contains(
                     'chat-popup-widget-vertical'
@@ -1275,9 +1287,7 @@ KommunicateUI = {
                 bannerAction.innerText ==
                     MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
             ) {
-                kmWidgetEvents.eventTracking(
-                    eventMapping.onShowResolvedClick
-                );
+                kmWidgetEvents.eventTracking(eventMapping.onShowResolvedClick);
             }
             bannerAction &&
                 (bannerAction.innerHTML =

@@ -681,6 +681,12 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
+            document
+            .getElementById('chat-popup-widget-container')
+            .firstChild.removeEventListener(
+                'click',
+                KommunicateUI.captureGreetingMessageClick
+            );
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -2709,6 +2715,9 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onChatWidgetClose
+                    );
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
@@ -4374,12 +4383,6 @@ var userOverride = {
                     '.' + MCK_LAUNCHER + ', .mck-contact-list .' + MCK_LAUNCHER,
                     function (e) {
                         e.preventDefault();
-                        WIDGET_SETTINGS.popup &&
-                            eventMapping.onGreetingMessageNotificationClick
-                                .eventFunction !== null &&
-                            kmWidgetEvents.eventTracking(
-                                eventMapping.onGreetingMessageNotificationClick
-                            );
                         $applozic(
                             '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
                         )
@@ -5072,7 +5075,6 @@ var userOverride = {
                 }
             );
             _this.closeSideBox = function () {
-                kmWidgetEvents.eventTracking(eventMapping.onChatWidgetClose);
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     KommunicateUtils.removeItemFromLocalStorage(
