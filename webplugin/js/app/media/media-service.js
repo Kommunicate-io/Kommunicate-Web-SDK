@@ -105,7 +105,7 @@ Kommunicate.mediaService = {
                                     updateVoiceName(voice);
                                 }
                             });
-                        } else if (voice.name === appOptions.voiceName.trim()) {
+                        } else if (voice.name === appOptions.voiceName.trim() && !skipForEach) {
                             updateVoiceName(voice);
                         }
                     });
