@@ -33,10 +33,10 @@ var kmWidgetEvents = {
             }
             applozic._globals.gaTrackingID &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
-                    eventObject.eventCateogry,
-                    eventObject.eventAction,
-                    eventObject.eventLabel,
-                    eventObject.eventValue
+                    eventObject.data.eventCateogry,
+                    eventObject.data.eventAction,
+                    eventObject.data.eventLabel,
+                    eventObject.data.eventValue
                 );
             if (eventObject.eventFunction !== null) {
                 // checks if there is any errors in user provided function
