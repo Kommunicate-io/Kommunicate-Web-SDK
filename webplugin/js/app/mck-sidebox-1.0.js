@@ -81,6 +81,8 @@ var userOverride = {
     };
     $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
+        // every time this line will overwrite the kommunicate object properties
+        $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
             KommunicateUtils.storeDataIntoKmSession('appOptions', appOptions);
@@ -2990,7 +2992,7 @@ var userOverride = {
                 options.forEach(function (element) {
                     if (kommunicateCommons.isObject(element)) {
                         dropDownOption = document.createElement('option');
-                        dropDownOption.setAttribute('value',element.value);
+                        dropDownOption.setAttribute('value', element.value);
                         dropDownOption.textContent =
                             element.value.charAt(0).toUpperCase() +
                             element.value.slice(1);
@@ -5098,7 +5100,9 @@ var userOverride = {
             _this.openChat = function (ele, callback) {
                 var $this = $applozic(ele);
                 var tabId = $this.data('mck-id');
-                var isConversationInWaitingQueue = $this.parent().data('is-queued');
+                var isConversationInWaitingQueue = $this
+                    .parent()
+                    .data('is-queued');
                 tabId =
                     typeof tabId !== 'undefined' && tabId !== ''
                         ? tabId.toString()
@@ -5910,7 +5914,10 @@ var userOverride = {
                 err,
                 message
             ) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (
+                    _this.isFaqTabOpen() ||
+                    _this.isConversationInWaitingQueue()
+                ) {
                     return;
                 }
                 if (
@@ -6650,11 +6657,12 @@ var userOverride = {
                                         data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
                                             data.groupFeeds[0].imageUrl);
-                                    !params.isConversationInWaitingQueue && mckMessageService.processOnlineStatusChange(
-                                        params.tabId,
-                                        conversationAssigneeDetails,
-                                        updateConversationHeaderParams
-                                    );
+                                    !params.isConversationInWaitingQueue &&
+                                        mckMessageService.processOnlineStatusChange(
+                                            params.tabId,
+                                            conversationAssigneeDetails,
+                                            updateConversationHeaderParams
+                                        );
                                 }
                             }
                         }
@@ -6787,13 +6795,16 @@ var userOverride = {
                         .classList.contains('vis')
                 );
             };
-            _this.isConversationInWaitingQueue = function (){
-                return(
-                    document.querySelector('#mck-waiting-queue').classList.contains('vis')
-                )
+            _this.isConversationInWaitingQueue = function () {
+                return document
+                    .querySelector('#mck-waiting-queue')
+                    .classList.contains('vis');
             };
             _this.updateConversationHeader = function (params) {
-                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
+                if (
+                    _this.isFaqTabOpen() ||
+                    _this.isConversationInWaitingQueue()
+                ) {
                     return;
                 }
                 var imageUrl;
@@ -10251,16 +10262,22 @@ var userOverride = {
                 );
                 var imgsrctag = '';
                 var isConversationInWaitingQueue = false;
-                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING ){
+                if (
+                    contact &&
+                    contact.metadata &&
+                    contact.metadata.CONVERSATION_STATUS ==
+                        Kommunicate.conversationHelper.status.WAITING
+                ) {
                     // if conversation is in waiting queue
-                    displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
-                    imgsrctag = '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
+                    displayName =
+                        MCK_LABELS['waiting.queue.message']['contact.name'];
+                    imgsrctag =
+                        '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
                     isConversationInWaitingQueue = true;
-                }
-                else{ 
+                } else {
                     imgsrctag = _this.getContactImageLink(contact, displayName);
                 }
-                
+
                 var prepend = false;
                 var ucTabId = isGroupTab
                     ? 'group_' + contact.contactId

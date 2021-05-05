@@ -201,8 +201,9 @@ KommunicateConstants = {
 Kommunicate = {
     settings: {},
     internetStatus: true,
+    _globals:kommunicate._globals,
+    PRODUCT_ID:kommunicate.PRODUCT_ID,
 };
-
 /**
  * stores all UI manipulation
  */
