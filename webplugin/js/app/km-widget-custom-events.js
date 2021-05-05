@@ -38,15 +38,34 @@ var kmWidgetEvents = {
                     eventObject.eventLabel,
                     eventObject.eventValue
                 );
-            eventObject.eventFunction !== null &&
-                eventObject.eventFunction(eventObject.data);
-        } else
+            if (eventObject.eventFunction !== null) {
+                // checks if there is any errors in user provided function
+                try {
+                    eventObject.eventFunction(eventObject.data);
+                } catch (error) {
+                    console.log(error.stack);
+                }
+            }
+        } else {
             throw new TypeError(
                 'eventTracking expect an object but got ' + typeof eventObject
             );
+        }
     },
 };
 
+/* Description for the events in eventMappping object.
+    eventName: {
+        data:{
+            eventCateogry: carteogry of event,
+            eventAction: action happening on the,
+            eventLabel: unique label for every event (for some events ie. onRichButtonClick it get created dynamically while calling the respective fucntion),
+            eventValue: getting created dynamically while calling the respective fucntion,
+        },
+        eventFunction: default is null but overwrite the function here which is sent by user in subscribeToEvents(),
+    }
+    data property 
+*/
 var eventMapping = {
     onChatWidgetOpen: {
         data: {
