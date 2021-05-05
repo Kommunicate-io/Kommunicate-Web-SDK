@@ -60,7 +60,7 @@ var eventMapping = {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Chat widget closed',
-            eventLable: 'Chat Widget Close',
+            eventLabel: 'Chat Widget Close',
         },
         eventFunction: null,
     },
