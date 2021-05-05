@@ -43,11 +43,11 @@ var kmWidgetEvents = {
                 try {
                     eventObject.eventFunction(eventObject.data);
                 } catch (error) {
-                    console.log(error.stack);
+                    console.error(error);
                 }
             }
         } else {
-            throw new TypeError(
+            console.error(
                 'eventTracking expect an object but got ' + typeof eventObject
             );
         }
