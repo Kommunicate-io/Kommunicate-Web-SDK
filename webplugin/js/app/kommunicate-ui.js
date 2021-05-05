@@ -778,7 +778,14 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
-        var isCSATenabled = kommunicate._globals.collectFeedback;
+        var isConvRated = document.getElementsByClassName('mck-rated').length < 1;
+        var isCSATenabled =
+            'oneTimeRating' in kommunicate._globals
+                ? kommunicate._globals.oneTimeRating &&
+                  kommunicate._globals.collectFeedback &&
+                  isConvRated
+                : kommunicate._globals.collectFeedback;
+
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
@@ -811,6 +818,39 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.isConvJustResolved = false;
+        } else if (!isConvRated && kommunicate._globals.oneTimeRating) {
+            var messageText = MCK_LABELS['closed.conversation.message'];
+            var conversationStatusDiv = document.getElementById(
+                'mck-conversation-status-box'
+            );
+            conversationStatusDiv &&
+                (conversationStatusDiv.innerHTML = messageText);
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                },
+                'mck-closed-conv-banner'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-conversation-status-box'],
+                },
+                'vis',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-box-form'],
+                },
+                '',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['km-widget-options'],
+                },
+                'n-vis'
+            );
         }
     },
     showClosedConversationBanner: function (isConversationClosed) {
@@ -818,9 +858,14 @@ KommunicateUI = {
         var conversationStatusDiv = document.getElementById(
             'mck-conversation-status-box'
         );
-        var isCSATenabled = kommunicate._globals.collectFeedback;
         var isCSATtriggeredByUser = KommunicateUI.isCSATtriggeredByUser;
         var isConvJustResolved = KommunicateUI.isConvJustResolved;
+        var isCSATenabled =
+            'oneTimeRating' in kommunicate._globals
+                ? kommunicate._globals.oneTimeRating &&
+                  kommunicate._globals.collectFeedback &&
+                  (document.getElementsByClassName('mck-rated').length < 1)
+                : kommunicate._globals.collectFeedback;
         var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
         isConversationClosed &&
             kommunicateCommons.modifyClassList(
