@@ -2924,10 +2924,6 @@ var userOverride = {
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
                     kmChatInput.setAttribute(
-                        'type',
-                        preLeadCollection.type || 'text'
-                    );
-                    kmChatInput.setAttribute(
                         'name',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
@@ -2936,17 +2932,32 @@ var userOverride = {
                             'required',
                             preLeadCollection.required
                         );
-                    kmChatInput.setAttribute(
-                        'placeholder',
-                        preLeadCollection.placeholder || ''
-                    );
                     kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    kmChatInput.setAttribute(
-                        'aria-label',
-                        preLeadCollection.field
-                    );
-                    $applozic('.km-last-child').append(kmChatInputDiv);
+                    if (
+                        preLeadCollection.element == 'select' &&
+                        preLeadCollection.options &&
+                        mckMessageService.checkArray(preLeadCollection.options)
+                    ) {
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
+                            kmChatInput
+                        );
+                    } else {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type || 'text'
+                        );
+                        kmChatInput.setAttribute(
+                            'placeholder',
+                            preLeadCollection.placeholder || ''
+                        );
+                        kmChatInput.setAttribute(
+                            'aria-label',
+                            preLeadCollection.field
+                        );
+                    }
                     $applozic(kmChatInputDiv).append(kmChatInput);
+                    $applozic('.km-last-child').append(kmChatInputDiv);
                 }
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
@@ -2958,6 +2969,38 @@ var userOverride = {
             };
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
+
+            _this.createSelectFieldDropdown = function (
+                options,
+                selectElement
+            ) {
+                var dropDownOption = document.createElement('option');
+                dropDownOption.setAttribute('value', '');
+                dropDownOption.textContent =
+                    MCK_LABELS['lead.collection'].option +
+                    ' ' +
+                    selectElement
+                        .getAttribute('name')
+                        .toLowerCase()
+                        .split('-')[1];
+                selectElement.appendChild(dropDownOption);
+                options.forEach(function (element) {
+                    if (kommunicateCommons.isObject(element)) {
+                        dropDownOption = document.createElement('option');
+                        dropDownOption.setAttribute('value',element.value);
+                        dropDownOption.textContent =
+                            element.value.charAt(0).toUpperCase() +
+                            element.value.slice(1);
+                        selectElement.appendChild(dropDownOption);
+                    } else {
+                        console.error(
+                            'Expected object inside options array but got ' +
+                                typeof element
+                        );
+                    }
+                });
+                return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
@@ -7412,7 +7455,7 @@ var userOverride = {
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;
+                    enableDropdown = true;  
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
@@ -7570,7 +7613,11 @@ var userOverride = {
                     document
                         .getElementById('mck-char-warning')
                         .classList.add('n-vis');
-                kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-rating-box'] },
+                    '',
+                    'selected'
+                );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -7829,9 +7876,11 @@ var userOverride = {
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
-                if (allowReload){
+                if (allowReload) {
                     scroll = false;
-                    data && data.message && (data.message = data.message.reverse());
+                    data &&
+                        data.message &&
+                        (data.message = data.message.reverse());
                 }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
@@ -8278,7 +8327,8 @@ var userOverride = {
                 if (
                     append &&
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
-                    (!allowReload && mckMessageLayout.isMessageSentByBot(msg, contact))
+                    !allowReload &&
+                    mckMessageLayout.isMessageSentByBot(msg, contact)
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
@@ -11179,9 +11229,10 @@ var userOverride = {
                                             (!message.message &&
                                                 (message.metadata.hasOwnProperty(
                                                     'KM_ASSIGN_TO'
-                                                ) || message.metadata.hasOwnProperty(
-                                                    'KM_ASSIGN_TEAM'
-                                                )))
+                                                ) ||
+                                                    message.metadata.hasOwnProperty(
+                                                        'KM_ASSIGN_TEAM'
+                                                    )))
                                         ) {
                                             if (
                                                 MCK_BOT_MESSAGE_DELAY !== 0 &&
