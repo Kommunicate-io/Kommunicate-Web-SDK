@@ -2919,12 +2919,10 @@ var userOverride = {
                     var kmChatInput = document.createElement(
                         preLeadCollection.element || 'input'
                     );
-
                     kmChatInput.setAttribute(
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-
                     kmChatInput.setAttribute(
                         'name',
                         'km-' + preLeadCollection.field.toLowerCase()
