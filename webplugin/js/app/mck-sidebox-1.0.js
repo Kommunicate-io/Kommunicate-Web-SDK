@@ -2994,8 +2994,8 @@ var userOverride = {
                             element.value.slice(1);
                         selectElement.appendChild(dropDownOption);
                     } else {
-                        throw new TypeError(
-                            'expected object in option array but got ' +
+                        console.error(
+                            'Expected object inside options array but got ' +
                                 typeof element
                         );
                     }
@@ -7455,7 +7455,7 @@ var userOverride = {
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;
+                    enableDropdown = true;  
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
