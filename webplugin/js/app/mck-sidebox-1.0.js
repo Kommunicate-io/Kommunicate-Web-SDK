@@ -4568,7 +4568,7 @@ var userOverride = {
                         }
                     }else{
                         var lazyImages = document.querySelectorAll('img.lazy-image');
-                        lazyImages.forEach(function (img){
+                        lazyImages.map(function (img){
                             if(KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))){
                                 KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
                             }
@@ -8036,7 +8036,7 @@ var userOverride = {
                         'slow',
                         function (){
                             var lazyImages = document.querySelectorAll('img.lazy-image')
-                            lazyImages.forEach(function(img){
+                            lazyImages.map(function(img){
                                 KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) && 
                                 KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
                             })
