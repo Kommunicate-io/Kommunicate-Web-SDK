@@ -2110,11 +2110,18 @@ var userOverride = {
                         );
 
                         if (KOMMUNICATE_VERSION === 'v2') {
-                            WIDGET_POSITION ===
-                            KommunicateConstants.POSITION.LEFT
-                                ? (kmAnonymousChatLauncher.style.left = '10px')
-                                : (kmAnonymousChatLauncher.style.right =
-                                      '10px');
+                            if (
+                                WIDGET_POSITION ===
+                                KommunicateConstants.POSITION.LEFT
+                            ) {
+                                kmAnonymousChatLauncher.style.left = '10px';
+                                var kommunicateIframe = parent.document.getElementById(
+                                    'kommunicate-widget-iframe'
+                                );
+                                kommunicateIframe.classList.add('align-left');
+                            } else {
+                                kmAnonymousChatLauncher.style.right = '10px';
+                            }
                             kmAnonymousChatLauncher.style.bottom = '10px';
                         }
 
