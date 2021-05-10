@@ -124,6 +124,17 @@ Kommunicate.client = {
                     if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
+                    var groupId = response.data.value;
+                    if (groupId && conversationDetail.conversationMetadata) {
+                        var conversationMetadata = {
+                            groupId: groupId,
+                            metadata: conversationDetail.conversationMetadata,
+                        };
+                        conversationMetadata &&
+                            Kommunicate.updateConversationMetadata(
+                                conversationMetadata
+                            );
+                    }
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
                     /* conversation table migrated to Applozic

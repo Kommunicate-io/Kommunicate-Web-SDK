@@ -88,6 +88,7 @@ $applozic.extend(true, Kommunicate, {
             skipBotEvent: params.skipBotEvent,
             customWelcomeEvent: params.customWelcomeEvent,
             metadata: groupMetadata,
+            conversationMetadata: params.metadata,
             teamId: params.teamId,
         };
         if (IS_SOCKET_CONNECTED) {
