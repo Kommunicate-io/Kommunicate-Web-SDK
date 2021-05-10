@@ -1306,30 +1306,71 @@ KommunicateUI = {
                 : backButton.classList.add('force-n-vis');
         }
     },
-        handleWaitingQueueMessage: function () {
-            var group = CURRENT_GROUP_DATA;
-            var groupId = group && group.tabId;
-            var waitingStatus = group && group.conversationStatus == Kommunicate.conversationHelper.status.WAITING;
-            window.Applozic.ALApiService.ajax({
-                type: 'GET',
-                url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
-                global: false,
-                contentType: 'application/json',
-                success: function (res) {
-                    if (res.status === "success") {
-                        WAITING_QUEUE = res.response;
-                        var isGroupPresentInWaitingQueue = WAITING_QUEUE.indexOf(parseInt(groupId))>-1;
-                        // var waitingQueueNumber = document.getElementById('waiting-queue-number');
-                        if (waitingStatus && isGroupPresentInWaitingQueue && WAITING_QUEUE.length) {
-                            // waitingQueueNumber.innerHTML = "#" + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
-                            kommunicateCommons.modifyClassList({
-                                id: ["mck-waiting-queue"]
-                            }, "vis", "n-vis");
-                        } else {
-                            kommunicateCommons.modifyClassList({
-                                id: ["mck-waiting-queue"]
-                            }, "n-vis", "vis");
-                        }
+
+    handleWaitingQueueMessage: function () {
+        var group = CURRENT_GROUP_DATA;
+        var groupId = group && group.tabId;
+        var waitingStatus =
+            group &&
+            group.conversationStatus ==
+                Kommunicate.conversationHelper.status.WAITING;
+        window.Applozic.ALApiService.ajax({
+            type: 'GET',
+            url: MCK_BASE_URL + '/rest/ws/group/waiting/list',
+            global: false,
+            contentType: 'application/json',
+            success: function (res) {
+                if (res.status === 'success') {
+                    WAITING_QUEUE = res.response;
+                    var isGroupPresentInWaitingQueue =
+                        WAITING_QUEUE.indexOf(parseInt(groupId)) > -1;
+                    var waitingQueueNumber = document.getElementById(
+                        'waiting-queue-number'
+                    );
+                    var headerTabTitle = document.getElementById('mck-tab-title');
+                    if (
+                        waitingQueueNumber &&
+                        waitingStatus &&
+                        isGroupPresentInWaitingQueue &&
+                        WAITING_QUEUE.length
+                    ) {
+                        waitingQueueNumber.innerHTML =
+                            '#' +
+                            parseInt(
+                                WAITING_QUEUE.indexOf(parseInt(groupId)) + 1
+                            );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: ['mck-waiting-queue'],
+                            },
+                            'vis',
+                            'n-vis'
+                        );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                            },
+                            'n-vis',
+                            'vis'
+                        );
+                        headerTabTitle.innerHTML = MCK_LABELS['waiting.queue.message']['header.text'];
+                    
+                    } else {
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: ['mck-waiting-queue'],
+                            },
+                            'n-vis',
+                            'vis'
+                        );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                            },
+                            'vis',
+                            'n-vis'
+                        );
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
                     }
                 },
             error: function (err) {
