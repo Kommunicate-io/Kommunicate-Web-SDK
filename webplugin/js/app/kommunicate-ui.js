@@ -1372,7 +1372,8 @@ KommunicateUI = {
                         );
                         headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
                     }
-                },
+                }
+            },
             error: function (err) {
                 throw new Error('Error while fetching waiting list', err);
             },
