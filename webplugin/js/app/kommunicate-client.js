@@ -138,17 +138,6 @@ Kommunicate.client = {
                              callback(response.data.value);
                          }
                      })*/
-                } else if (
-                    response.status === 'error' &&
-                    conversationDetail.clientGroupId &&
-                    response.errorMessage === 'group already exists'
-                ) {
-                    Kommunicate.openConversation(null, {
-                        clientGroupId: conversationDetail.clientGroupId,
-                    });
-                    if (typeof callback == 'function') {
-                        callback(response);
-                    }
                 }
             },
         };

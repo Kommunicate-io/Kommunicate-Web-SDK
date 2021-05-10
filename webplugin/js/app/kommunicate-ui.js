@@ -1306,7 +1306,6 @@ KommunicateUI = {
                 : backButton.classList.add('force-n-vis');
         }
     },
-
     handleWaitingQueueMessage: function () {
         var group = CURRENT_GROUP_DATA;
         var groupId = group && group.tabId;

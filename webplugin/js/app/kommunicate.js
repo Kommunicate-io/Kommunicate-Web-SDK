@@ -191,16 +191,9 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
-    openConversation: function (groupId, groupDetail) {
+    openConversation: function (groupId) {
         kommunicateCommons.setWidgetStateOpen(true);
-        if (groupId) {
-            window.$applozic.fn.applozic('loadGroupTab', groupId);
-        } else if (groupDetail && groupDetail.clientGroupId) {
-            window.$applozic.fn.applozic(
-                'loadGroupTabByClientGroupId',
-                groupDetail
-            );
-        } 
+        window.$applozic.fn.applozic('loadGroupTab', groupId);
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
