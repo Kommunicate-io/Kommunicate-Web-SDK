@@ -1306,7 +1306,6 @@ KommunicateUI = {
                 : backButton.classList.add('force-n-vis');
         }
     },
-
     handleWaitingQueueMessage: function () {
         var group = CURRENT_GROUP_DATA;
         var groupId = group && group.tabId;
@@ -1372,7 +1371,8 @@ KommunicateUI = {
                         );
                         headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
                     }
-                },
+                }
+            },
             error: function (err) {
                 throw new Error('Error while fetching waiting list', err);
             },
