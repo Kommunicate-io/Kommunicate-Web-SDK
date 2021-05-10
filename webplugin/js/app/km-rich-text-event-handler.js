@@ -765,13 +765,14 @@ Kommunicate.richMsgEventHandler = {
             .setAttribute('data-quick-reply', true);
         Kommunicate.sendMessage(messagePxy);
 
-        if (kommunicate._globals.hidePostCTA) {
+        if(kommunicate._globals.hidePostCTA){
             var siblingsArray = Kommunicate.getAllSiblings(e.target);
             var siblingContainsLink = siblingsArray.some(function (sibling) {
                 return sibling.classList.contains('km-link-button');
             });
             !siblingContainsLink && Kommunicate.hideMessage(e.target);
         }
+        
     },
     processClickOnListItem: function (e) {
         var target = e.currentTarget;

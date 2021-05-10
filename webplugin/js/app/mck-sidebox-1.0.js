@@ -14,7 +14,7 @@ var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
-var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 var userOverride = {
     voiceOutput: true,
 };
@@ -830,13 +830,13 @@ var userOverride = {
 
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
-            if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
+            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
-                }
+                  }
             }
         };
         _this.reInit = function (optns) {
@@ -2924,10 +2924,6 @@ var userOverride = {
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
                     kmChatInput.setAttribute(
-                        'type',
-                        preLeadCollection.type || 'text'
-                    );
-                    kmChatInput.setAttribute(
                         'name',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
@@ -2936,17 +2932,32 @@ var userOverride = {
                             'required',
                             preLeadCollection.required
                         );
-                    kmChatInput.setAttribute(
-                        'placeholder',
-                        preLeadCollection.placeholder || ''
-                    );
                     kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    kmChatInput.setAttribute(
-                        'aria-label',
-                        preLeadCollection.field
-                    );
-                    $applozic('.km-last-child').append(kmChatInputDiv);
+                    if (
+                        preLeadCollection.element == 'select' &&
+                        preLeadCollection.options &&
+                        mckMessageService.checkArray(preLeadCollection.options)
+                    ) {
+                        kmChatInput = _this.createSelectFieldDropdown(
+                            preLeadCollection.options,
+                            kmChatInput
+                        );
+                    } else {
+                        kmChatInput.setAttribute(
+                            'type',
+                            preLeadCollection.type || 'text'
+                        );
+                        kmChatInput.setAttribute(
+                            'placeholder',
+                            preLeadCollection.placeholder || ''
+                        );
+                        kmChatInput.setAttribute(
+                            'aria-label',
+                            preLeadCollection.field
+                        );
+                    }
                     $applozic(kmChatInputDiv).append(kmChatInput);
+                    $applozic('.km-last-child').append(kmChatInputDiv);
                 }
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
@@ -2958,6 +2969,38 @@ var userOverride = {
             };
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
+            };
+
+            _this.createSelectFieldDropdown = function (
+                options,
+                selectElement
+            ) {
+                var dropDownOption = document.createElement('option');
+                dropDownOption.setAttribute('value', '');
+                dropDownOption.textContent =
+                    MCK_LABELS['lead.collection'].option +
+                    ' ' +
+                    selectElement
+                        .getAttribute('name')
+                        .toLowerCase()
+                        .split('-')[1];
+                selectElement.appendChild(dropDownOption);
+                options.forEach(function (element) {
+                    if (kommunicateCommons.isObject(element)) {
+                        dropDownOption = document.createElement('option');
+                        dropDownOption.setAttribute('value',element.value);
+                        dropDownOption.textContent =
+                            element.value.charAt(0).toUpperCase() +
+                            element.value.slice(1);
+                        selectElement.appendChild(dropDownOption);
+                    } else {
+                        console.error(
+                            'Expected object inside options array but got ' +
+                                typeof element
+                        );
+                    }
+                });
+                return selectElement;
             };
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
@@ -3070,102 +3113,39 @@ var userOverride = {
                     .html(MCK_LABELS['exit.group'])
                     .attr('title', MCK_LABELS['exit.group']);
                 $applozic('#mck-typing-label').html(MCK_LABELS['typing']);
-                $applozic('#mck-btn-clear-messages')
-                    .html(MCK_LABELS['clear.messages'])
-                    .attr('title', MCK_LABELS['clear.messages']);
-                $applozic('#mck-block-button')
-                    .html(MCK_LABELS['block.user'])
-                    .attr('title', MCK_LABELS['block.user']);
-                $applozic('#mck-loc-box .mck-box-title, #mck-share-loc-label')
-                    .html(MCK_LABELS['location.share.title'])
-                    .attr('title', MCK_LABELS['location.share.title']);
-                $applozic('#mck-btn-loc').attr(
-                    'title',
-                    MCK_LABELS['location.share.title']
-                );
-                $applozic('#mck-file-up-label').html(
-                    MCK_LABELS['file.attachment']
-                );
-                $applozic('#mck-file-up').attr(
-                    'title',
-                    MCK_LABELS['file.attachment']
-                );
-                $applozic('.mck-file-attach-label').attr(
-                    'title',
-                    MCK_LABELS['file.attach.title']
-                );
-                $applozic('#mck-my-loc')
-                    .html(MCK_LABELS['my.location'])
-                    .attr('title', MCK_LABELS['my.location']);
-                $applozic('#mck-btn-close-loc-box')
-                    .html(MCK_LABELS['close'])
-                    .attr('title', MCK_LABELS['close']);
-                $applozic('#mck-loc-submit')
-                    .html(MCK_LABELS['send'])
-                    .attr('title', MCK_LABELS['send']);
-                $applozic('#mck-msg-sbmt').attr(
-                    'title',
-                    MCK_LABELS['send.message']
-                );
-                $applozic('#mck-btn-smiley').attr(
-                    'title',
-                    MCK_LABELS['smiley']
-                );
-                $applozic('#mck-group-name-save').attr(
-                    'title',
-                    MCK_LABELS['save']
-                );
-                $applozic('#mck-btn-group-icon-save').attr(
-                    'title',
-                    MCK_LABELS['save']
-                );
-                $applozic('#mck-group-name-edit').attr(
-                    'title',
-                    MCK_LABELS['edit']
-                );
-                document.getElementById('mck-text-box').dataset.text =
-                    MCK_LABELS['input.message'];
-                document.getElementById('mck-char-warning-text').innerHTML =
-                    MCK_LABELS['char.limit.warn'];
-                document
-                    .getElementById('km-faq-search-input')
-                    .setAttribute('placeholder', MCK_LABELS['search.faq']);
-                document.getElementById('mck-no-faq-found').innerHTML =
-                    MCK_LABELS['looking.for.something.else'];
-                document.getElementById(
-                    'km-internet-disconnect-msg'
-                ).innerHTML = MCK_LABELS['offline.msg'];
-                document.getElementById('talk-to-human-link').innerHTML =
-                    MCK_LABELS['talk.to.agent'];
-                document.getElementById('mck-collect-email').innerHTML =
-                    MCK_LABELS['how.to.reachout'];
-                document.getElementById('mck-email-error-alert').innerHTML =
-                    MCK_LABELS['email.error.alert'];
-                document.getElementById('mck-rated-text').innerHTML =
-                    MCK_LABELS['csat.rating'].CONVERSATION_RATED;
-                document.getElementById('mck-rate-conversation').innerHTML =
-                    MCK_LABELS['csat.rating'].RATE_CONVERSATION;
-                document.getElementById('mck-other-queries').innerHTML =
-                    MCK_LABELS['csat.rating'].OTHER_QUERIES;
-                document.getElementById('mck-restart-conversation').innerHTML =
-                    MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
-                document
-                    .getElementById('mck-feedback-comment')
-                    .setAttribute(
-                        'placeholder',
-                        MCK_LABELS['csat.rating']
-                            .CONVERSATION_REVIEW_PLACEHOLDER
-                    );
-                document.getElementById('mck-submit-comment').innerHTML =
-                    MCK_LABELS['csat.rating'].SUBMIT_RATING;
-                document.getElementById('wq-msg-first-Part').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['first.Part'];
-                document.getElementById('waiting-queue-number').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
-                document.getElementById('wq-msg-last-part').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['last.part'];
-                document.getElementById('km-csat-trigger-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
+                $applozic('#mck-btn-clear-messages').html(MCK_LABELS['clear.messages']).attr('title', MCK_LABELS['clear.messages']);
+                $applozic('#mck-block-button').html(MCK_LABELS['block.user']).attr('title', MCK_LABELS['block.user']);
+                $applozic('#mck-loc-box .mck-box-title, #mck-share-loc-label').html(MCK_LABELS['location.share.title']).attr('title', MCK_LABELS['location.share.title']);
+                $applozic('#mck-btn-loc').attr('title', MCK_LABELS['location.share.title']);
+                $applozic('#mck-file-up-label').html(MCK_LABELS['file.attachment']);
+                $applozic('#mck-file-up').attr('title', MCK_LABELS['file.attachment']);
+                $applozic('.mck-file-attach-label').attr('title', MCK_LABELS['file.attach.title']);
+                $applozic('#mck-my-loc').html(MCK_LABELS['my.location']).attr('title', MCK_LABELS['my.location']);
+                $applozic('#mck-btn-close-loc-box').html(MCK_LABELS['close']).attr('title', MCK_LABELS['close']);
+                $applozic('#mck-loc-submit').html(MCK_LABELS['send']).attr('title', MCK_LABELS['send']);
+                $applozic('#mck-msg-sbmt').attr('title', MCK_LABELS['send.message'])
+                $applozic('#mck-btn-smiley').attr('title', MCK_LABELS['smiley']);
+                $applozic('#mck-group-name-save').attr('title', MCK_LABELS['save']);
+                $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
+                $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
+                document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
+                document.getElementById("mck-char-warning-text").innerHTML = MCK_LABELS['char.limit.warn'];
+                document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
+                document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
+                document.getElementById('km-internet-disconnect-msg').innerHTML=  MCK_LABELS['offline.msg'];
+                document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
+                document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
+                document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
+                document.getElementById('mck-rated-text').innerHTML= MCK_LABELS['csat.rating'].CONVERSATION_RATED;
+                document.getElementById('mck-rate-conversation').innerHTML= MCK_LABELS['csat.rating'].RATE_CONVERSATION;
+                document.getElementById('mck-other-queries').innerHTML= MCK_LABELS['csat.rating'].OTHER_QUERIES;
+                document.getElementById('mck-restart-conversation').innerHTML= MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
+                document.getElementById('mck-feedback-comment').setAttribute('placeholder',MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER)
+                document.getElementById('mck-submit-comment').innerHTML = MCK_LABELS['csat.rating'].SUBMIT_RATING;
+                document.getElementById('wq-msg-first-Part').innerHTML = MCK_LABELS['waiting.queue.message']['first.Part'];
+                // document.getElementById('waiting-queue-number').innerHTML = MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
+                document.getElementById('wq-msg-last-part').innerHTML = MCK_LABELS['waiting.queue.message']['last.part'];
+                document.getElementById('km-csat-trigger-text').innerText = MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -7463,6 +7443,8 @@ var userOverride = {
                 $applozic.template('csatModule', csatModule);
             };
 
+            
+
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 /*
@@ -7480,7 +7462,7 @@ var userOverride = {
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;
+                    enableDropdown = true;  
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
@@ -7638,7 +7620,11 @@ var userOverride = {
                     document
                         .getElementById('mck-char-warning')
                         .classList.add('n-vis');
-                kommunicateCommons.modifyClassList( {class : ["mck-rating-box"]}, "","selected");
+                kommunicateCommons.modifyClassList(
+                    { class: ['mck-rating-box'] },
+                    '',
+                    'selected'
+                );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -7897,9 +7883,11 @@ var userOverride = {
                         'last-message-received-time',
                         data.message[0].createdAtTime
                     );
-                if (allowReload){
+                if (allowReload) {
                     scroll = false;
-                    data && data.message && (data.message = data.message.reverse());
+                    data &&
+                        data.message &&
+                        (data.message = data.message.reverse());
                 }
                 if (typeof data.message.length === 'undefined') {
                     var messageArray = [];
@@ -8309,22 +8297,12 @@ var userOverride = {
                 ) {
                     olStatus = 'vis';
                 }
-                KommunicateUI.handleAttachmentIconVisibility(
-                    enableAttachment,
-                    msg,
-                    !append
-                );
-                var richText =
-                    Kommunicate.isRichTextMessage(msg.metadata) ||
-                    msg.contentType == 3;
-                var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
-                var kmRichTextMarkup = richText
-                    ? Kommunicate.getRichTextMessageTemplate(msg)
-                    : '';
-
-                var containerType = Kommunicate.getContainerTypeForRichMessage(
-                    msg
-                );
+                KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
+                var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+                var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
+                var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
+                
+                var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 msg.fileMeta &&
                     msg.fileMeta.size &&
@@ -8356,7 +8334,8 @@ var userOverride = {
                 if (
                     append &&
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
-                    (!allowReload && mckMessageLayout.isMessageSentByBot(msg, contact))
+                    !allowReload &&
+                    mckMessageLayout.isMessageSentByBot(msg, contact)
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
@@ -8367,102 +8346,88 @@ var userOverride = {
                         kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
                         kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
                     ) &&
-                    kmRichTextMarkup.indexOf('<button') != -1 &&
+                    (   
+                        kmRichTextMarkup.indexOf('<button') != -1 || 
+                        kmRichTextMarkup.indexOf('km-list-item-handler') != -1 
+                    ) 
+                    &&
                     kmRichTextMarkup.indexOf('km-link-button') == -1
                 ) {
-                    if(!append){
-                        // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
-                        botMessageDelayClass = 'n-vis';
-                    }else{
+                    // if(!append){
+                    //     // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
+                    //     botMessageDelayClass = 'n-vis';
+                    // }else{
                         // this class is added to the message template if the message contains CTA buttons having only quick replies.
                         botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
-                    }
+                    // }
                 }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
                 //     return ;
                 // }
+                
+                var msgList = [{
+                    msgReply: replyMsg ? replyMsg.message + "\n" : '',
+                    msgReplyTo: replyMsg ? replyTo + "\n" : '',
+                    msgReplyDivExpr: replyMsg ? 'vis' : 'n-vis',
+                    msgReplyToVisibleExpr: msgReplyToVisible,
+                    msgPreview: msgpreview ? _this.getImageForReplyMessage(replyMsg) : "",
+                    msgpreviewvisExpr: msgpreviewVis,
+                    textreplyVisExpr: textreply,
+                    msgKeyExpr: msg.key,
+                    msgDeliveredExpr: msg.delivered,
+                    msgSentExpr: msg.sent,
+                    msgCreatedAtTime: msg.createdAtTime,
+                    msgTypeExpr: msg.type,
+                    msgDeleteExpr: MCK_LABELS['delete'],
+                    msgReplyExpr: MCK_LABELS['reply'],
+                    msgForwardExpr: MCK_LABELS['forward'],
+                    msgForwardVisibleExpr: (window.applozic.PRODUCT_ID == 'kommunicate') ? 'n-vis' : 'vis',
+                    msgSourceExpr: msg.source,
+                    statusIconExpr: statusIcon,
+                    contactExpr: contactExpr,
+                    toExpr: msg.to || MCK_USER_ID,
+                    msgAvatorClassExpr: msgAvatorClassExpr,
+                    showNameExpr: showNameExpr,
+                    msgNameExpr: displayName,
+                    msgImgExpr: imgsrctag,
+                    nameTextExpr: nameTextExpr,
+                    msgFloatExpr: floatWhere,
+                    msgStatusAriaTag: messageStatusAriaTag,
+                    timeStampExpr:timeStamp,
+                    replyIdExpr: replyId,
+                    createdAtTimeExpr: mckDateUtils.getDate(msg.createdAtTime),
+                    msgFeatExpr: msgFeatExpr,
+                    replyMessageParametersExpr: replyMessageParameters,
+                    downloadMediaUrlExpr: alFileService.getFileAttachment(msg),
+                    msgClassExpr: messageClass,
+                    msgBoxColor : msgBoxColorStyle,
+                    progressMeterClassExpr:progressMeterClass,
+                    attachmentBoxExpr: attachmentBox,
+                    msgExpr: frwdMsgExpr,
+                    selfDestructTimeExpr: msg.timeToLive,
+                    fileMetaKeyExpr: msg.fileMetaKey,
+                    downloadIconVisibleExpr: downloadIconVisible,
+                    fileExpr: mckMessageLayout.getFilePath(msg),
+                    fileUrlExpr: alFileService.getFileurl(msg),
+                    fileNameExpr: fileName,
+                    fileSizeExpr: fileSize,
+                    contOlExpr: olStatus,
+                    kmRichTextMarkupVisibility:kmRichTextMarkupVisibility,
+                    kmRichTextMarkup: kmRichTextMarkup,
+                    containerType: containerType,
+                    emailMsgIndicatorExpr: emailMsgIndicator,
+                    attachmentTemplate:attachmentTemplate,
+                    progressMeter:progressMeter,
+                    botMsgDelayExpr: botMessageDelayClass
+                }];
 
-                var msgList = [
-                    {
-                        msgReply: replyMsg ? replyMsg.message + '\n' : '',
-                        msgReplyTo: replyMsg ? replyTo + '\n' : '',
-                        msgReplyDivExpr: replyMsg ? 'vis' : 'n-vis',
-                        msgReplyToVisibleExpr: msgReplyToVisible,
-                        msgPreview: msgpreview
-                            ? _this.getImageForReplyMessage(replyMsg)
-                            : '',
-                        msgpreviewvisExpr: msgpreviewVis,
-                        textreplyVisExpr: textreply,
-                        msgKeyExpr: msg.key,
-                        msgDeliveredExpr: msg.delivered,
-                        msgSentExpr: msg.sent,
-                        msgCreatedAtTime: msg.createdAtTime,
-                        msgTypeExpr: msg.type,
-                        msgDeleteExpr: MCK_LABELS['delete'],
-                        msgReplyExpr: MCK_LABELS['reply'],
-                        msgForwardExpr: MCK_LABELS['forward'],
-                        msgForwardVisibleExpr:
-                            window.applozic.PRODUCT_ID == 'kommunicate'
-                                ? 'n-vis'
-                                : 'vis',
-                        msgSourceExpr: msg.source,
-                        statusIconExpr: statusIcon,
-                        contactExpr: contactExpr,
-                        toExpr: msg.to || MCK_USER_ID,
-                        msgAvatorClassExpr: msgAvatorClassExpr,
-                        showNameExpr: showNameExpr,
-                        msgNameExpr: displayName,
-                        msgImgExpr: imgsrctag,
-                        nameTextExpr: nameTextExpr,
-                        msgFloatExpr: floatWhere,
-                        msgStatusAriaTag: messageStatusAriaTag,
-                        timeStampExpr: timeStamp,
-                        replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
-                        msgFeatExpr: msgFeatExpr,
-                        replyMessageParametersExpr: replyMessageParameters,
-                        downloadMediaUrlExpr: alFileService.getFileAttachment(
-                            msg
-                        ),
-                        msgClassExpr: messageClass,
-                        msgBoxColor: msgBoxColorStyle,
-                        progressMeterClassExpr: progressMeterClass,
-                        attachmentBoxExpr: attachmentBox,
-                        msgExpr: frwdMsgExpr,
-                        selfDestructTimeExpr: msg.timeToLive,
-                        fileMetaKeyExpr: msg.fileMetaKey,
-                        downloadIconVisibleExpr: downloadIconVisible,
-                        fileExpr: mckMessageLayout.getFilePath(msg),
-                        fileUrlExpr: alFileService.getFileurl(msg),
-                        fileNameExpr: fileName,
-                        fileSizeExpr: fileSize,
-                        contOlExpr: olStatus,
-                        kmRichTextMarkupVisibility: kmRichTextMarkupVisibility,
-                        kmRichTextMarkup: kmRichTextMarkup,
-                        containerType: containerType,
-                        emailMsgIndicatorExpr: emailMsgIndicator,
-                        attachmentTemplate: attachmentTemplate,
-                        progressMeter: progressMeter,
-                        botMsgDelayExpr: botMessageDelayClass,
-                    },
-                ];
+                append ? 
+                    $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : 
+                    $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
-                append
-                    ? $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .appendTo('#mck-message-cell .mck-message-inner')
-                    : $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .prependTo('#mck-message-cell .mck-message-inner');
-
-                if (
-                    msg.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE
-                ) {
+                if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE) {
                     if (msg.metadata && msg.metadata.feedback) {
                         var userFeedback = JSON.parse(msg.metadata.feedback);
                         var ratingSmileSVG = kommunicateCommons.getRatingSmilies(
@@ -11283,9 +11248,10 @@ var userOverride = {
                                             (!message.message &&
                                                 (message.metadata.hasOwnProperty(
                                                     'KM_ASSIGN_TO'
-                                                ) || message.metadata.hasOwnProperty(
-                                                    'KM_ASSIGN_TEAM'
-                                                )))
+                                                ) ||
+                                                    message.metadata.hasOwnProperty(
+                                                        'KM_ASSIGN_TEAM'
+                                                    )))
                                         ) {
                                             if (
                                                 MCK_BOT_MESSAGE_DELAY !== 0 &&
@@ -12509,13 +12475,9 @@ var userOverride = {
                     'settings'
                 );
                 var conversationDetail = {
-                    groupName:
-                        (defaultSettings && defaultSettings.groupName) ||
-                        DEFAULT_GROUP_NAME,
-                    agentId: defaultSettings && defaultSettings.agentId, // || DEFAULT_AGENT_ID,
-                    botIds:
-                        (defaultSettings && defaultSettings.botIds) ||
-                        DEFAULT_BOT_IDS,
+                    groupName: (defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
+                    agentId: (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    botIds: (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
                 };
                 return conversationDetail;
             };

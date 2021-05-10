@@ -119,6 +119,7 @@ Kommunicate.defaultLabels = {
         heading:
             'Before starting, we just need a few details so that we may serve you better',
         submit: 'Start Conversation',
+        option: 'Please select',
     },
     'csat.rating': {
         CONVERSATION_RATED: 'You rated the conversation',
@@ -171,8 +172,7 @@ Kommunicate.defaultLabels = {
         'header.text': 'In queue...',
         'first.Part': 'You are currently',
         'waiting.queue.number': '5',
-        'last.part':
-            ' in the waiting queue, our agents will get back you shortly.',
+        'last.part': ' in the waiting queue, our agents will get back to you shortly.'
     },
     'conversation.header.dropdown': {
         CSAT_RATING_TEXT: 'Rate this conversation',
