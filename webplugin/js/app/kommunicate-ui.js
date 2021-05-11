@@ -1361,8 +1361,6 @@ KommunicateUI = {
                         );
                         if (messageBody) {
                             KommunicateUI.updateScroll(messageBody);
-                            messageBody.scrollTop =
-                            messageBody.scrollHeight;
                         }
                     } else {
                         kommunicateCommons.modifyClassList(
