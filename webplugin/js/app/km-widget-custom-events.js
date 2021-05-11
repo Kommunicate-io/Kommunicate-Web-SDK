@@ -78,7 +78,7 @@ var eventMapping = {
     onChatWidgetClose: {
         data: {
             eventCateogry: 'Kommunicate',
-            eventAction: 'close',
+            eventAction: 'Close',
             eventLabel: 'Chat Widget Close',
         },
         eventFunction: null,

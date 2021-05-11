@@ -683,9 +683,10 @@ var userOverride = {
                 : '';
             var greetingMessageContainer = document.getElementById(
                 'chat-popup-widget-container'
-            ).firstChild;
+            );
             greetingMessageContainer &&
-                greetingMessageContainer.removeEventListener(
+                greetingMessageContainer.firstChild &&
+                greetingMessageContainer.firstChild.removeEventListener(
                     'click',
                     KommunicateUI.captureGreetingMessageClick
                 );

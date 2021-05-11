@@ -1149,9 +1149,10 @@ KommunicateUI = {
             );
             var greetingMessageContainer = document.getElementById(
                 'chat-popup-widget-container'
-            ).firstChild;
+            );
             greetingMessageContainer &&
-                greetingMessageContainer.addEventListener(
+                greetingMessageContainer.firstChild &&
+                greetingMessageContainer.firstChild.addEventListener(
                     'click',
                     this.captureGreetingMessageClick
                 );
