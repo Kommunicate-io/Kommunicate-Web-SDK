@@ -681,12 +681,14 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
-            document
-            .getElementById('chat-popup-widget-container')
-            .firstChild.removeEventListener(
-                'click',
-                KommunicateUI.captureGreetingMessageClick
-            );
+            var greetingMessageContainer = document.getElementById(
+                'chat-popup-widget-container'
+            ).firstChild;
+            greetingMessageContainer &&
+                greetingMessageContainer.removeEventListener(
+                    'click',
+                    KommunicateUI.captureGreetingMessageClick
+                );
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);

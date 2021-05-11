@@ -1147,9 +1147,11 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
-            document
-                .getElementById('chat-popup-widget-container')
-                .firstChild.addEventListener(
+            var greetingMessageContainer = document.getElementById(
+                'chat-popup-widget-container'
+            ).firstChild;
+            greetingMessageContainer &&
+                greetingMessageContainer.addEventListener(
                     'click',
                     this.captureGreetingMessageClick
                 );
