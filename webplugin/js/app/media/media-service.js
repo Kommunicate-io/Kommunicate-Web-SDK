@@ -83,6 +83,10 @@ Kommunicate.mediaService = {
                 textToSpeak += message.message;
             }
             if (textToSpeak) {
+                function updateVoiceName(voice) {
+                    utterance.voice = voice;
+                    skipForEach = true;
+                }
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = appOptions.language || 'en-US';
                 utterance.rate = appOptions.voiceRate || 1;
@@ -92,9 +96,17 @@ Kommunicate.mediaService = {
                         if (skipForEach) {
                             return;
                         }
-                        if (voice.name == appOptions.voiceName) {
-                            utterance.voice = voice;
-                            skipForEach = true;
+                        if (Array.isArray(appOptions.voiceName)) {
+                            appOptions.voiceName.forEach(function (voiceName) {
+                                if (
+                                    voice.name === voiceName.trim() &&
+                                    !skipForEach
+                                ) {
+                                    updateVoiceName(voice);
+                                }
+                            });
+                        } else if (voice.name === appOptions.voiceName.trim() && !skipForEach) {
+                            updateVoiceName(voice);
                         }
                     });
                 }
@@ -106,6 +118,7 @@ Kommunicate.mediaService = {
                         );
                     }
                 };
+                speechSynthesis.cancel();
                 speechSynthesis.speak(utterance);
             }
         }
