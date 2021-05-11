@@ -78,7 +78,7 @@ var eventMapping = {
     onChatWidgetClose: {
         data: {
             eventCateogry: 'Kommunicate',
-            eventAction: 'Chat widget closed',
+            eventAction: 'close',
             eventLabel: 'Chat Widget Close',
         },
         eventFunction: null,
@@ -189,7 +189,7 @@ var eventMapping = {
         data: {
             eventCateogry: 'Kommunicate',
             eventAction: 'Sent',
-            eventLabel: 'Sent',
+            eventLabel: 'Message',
         },
         eventFunction: null,
     },
