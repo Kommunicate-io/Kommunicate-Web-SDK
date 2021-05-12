@@ -81,6 +81,8 @@ var userOverride = {
     };
     $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
+        // every time this line will overwrite the kommunicate object properties
+        $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
             KommunicateUtils.storeDataIntoKmSession('appOptions', appOptions);
@@ -2129,11 +2131,18 @@ var userOverride = {
                         );
 
                         if (KOMMUNICATE_VERSION === 'v2') {
-                            WIDGET_POSITION ===
-                            KommunicateConstants.POSITION.LEFT
-                                ? (kmAnonymousChatLauncher.style.left = '10px')
-                                : (kmAnonymousChatLauncher.style.right =
-                                      '10px');
+                            if (
+                                WIDGET_POSITION ===
+                                KommunicateConstants.POSITION.LEFT
+                            ) {
+                                kmAnonymousChatLauncher.style.left = '10px';
+                                var kommunicateIframe = parent.document.getElementById(
+                                    'kommunicate-widget-iframe'
+                                );
+                                kommunicateIframe.classList.add('align-left');
+                            } else {
+                                kmAnonymousChatLauncher.style.right = '10px';
+                            }
                             kmAnonymousChatLauncher.style.bottom = '10px';
                         }
 
@@ -3268,14 +3277,7 @@ var userOverride = {
                 var title = kommunicateCommons.formatHtmlTag(
                     $this.data('name')
                 );
-                if (href === '') {
-                    var key;
-                    key = $this.data('blobkey');
-                    alFileService.generateCloudUrl(key, function (result) {
-                        href = result;
-                    });
-                }
-                // Get the modal
+                var blobKey = $this.find('img').attr('data-blobKey');
                 var modal = parent.document.getElementById(
                     'km-fullscreen-image-modal'
                 );
@@ -3285,9 +3287,21 @@ var userOverride = {
                 var captionText = parent.document.getElementById(
                     'km-fullscreen-image-modal-caption'
                 );
+                if(blobKey && href == ''){
+                    modalImg.src = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
+                    KommunicateUI.processLazyImage(modalImg, blobKey);
+                }else if(href === ''){
+                    var key;
+                    key = $this.data('blobkey');
+                    alFileService.generateCloudUrl(key, function (result) {
+                        href = result;
+                    });
+                }else{
+                    modalImg.src = href;
+                }
+                
                 modal.style.display = 'block';
-                modalImg.src = href;
-                captionText.innerHTML = title ? title : '';
+                captionText.innerHTML = title ? title : '';       
             });
 
             parent.document.getElementById(
@@ -4609,6 +4623,14 @@ var userOverride = {
                                 startTime: startTime,
                             });
                         }
+                    }else{
+                        var lazyImages = document.querySelectorAll('img.lazy-image');
+                        // Array.prototype.slice.call(lazyImages) convertes nodeList to Array for traversal
+                        lazyImages && lazyImages.length > 0 && Array.prototype.slice.call(lazyImages).map(function (img){
+                            if(KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))){
+                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
+                            }
+                        })
                     }
                 });
                 $mck_price_text_box.on('click', function (e) {
@@ -8034,6 +8056,11 @@ var userOverride = {
                                     message.metadata.KM_ENABLE_ATTACHMENT
                                         ? message.metadata.KM_ENABLE_ATTACHMENT
                                         : '');
+                            if(message && message.fileMeta && message.fileMeta.contentType.includes('image')){
+                                message.fileMeta.url = '';
+                                message.fileMeta.thumbnailUrl = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
+                            }
+
                             _this.addMessage(
                                 message,
                                 contact,
@@ -8065,7 +8092,15 @@ var userOverride = {
                         {
                             scrollTop: $mck_msg_inner.prop('scrollHeight'),
                         },
-                        'slow'
+                        'slow',
+                        function (){
+                            var lazyImages = document.querySelectorAll('img.lazy-image')
+                            // Array.prototype.slice.call(lazyImages) convertes nodeList to Array for traversal
+                            lazyImages && lazyImages.length > 0 && Array.prototype.slice.call(lazyImages).map(function(img){
+                                KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) && 
+                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
+                            })
+                        }
                     );
                 }
             };
@@ -9122,9 +9157,10 @@ var userOverride = {
                                         kommunicateCommons.formatHtmlTag(
                                             msg.fileMeta.name
                                         ) +
-                                        '"><img src="' +
+                                        '"><img class="lazy-image" src="' +
                                         msg.fileMeta.thumbnailUrl +
-                                        '" area-hidden="true" ></img></a>'
+                                        '" area-hidden="true" data-blobKey="'+ msg.fileMeta.blobKey +
+                                        '" data-thumbnailBlobKey="'+msg.fileMeta.thumbnailBlobKey +'" ></img></a>'
                                     );
                                 }
                             } else if (
@@ -13779,7 +13815,7 @@ var userOverride = {
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file';
             var FILE_UPLOAD_URL = '/rest/ws/aws/file/url';
-            var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
+            var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image?aclsPrivate=true';
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
             var FILE_DELETE_URL = '/rest/ws/aws/file/delete';
             var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
