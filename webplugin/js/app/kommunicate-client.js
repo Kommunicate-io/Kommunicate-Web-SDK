@@ -125,10 +125,10 @@ Kommunicate.client = {
                         callback(response.data.value);
                     }
                     var groupId = response.data.value;
-                    if (groupId && conversationDetail.conversationMetadata) {
+                    if (groupId && conversationDetail.groupMetadata) {
                         var conversationMetadata = {
                             groupId: groupId,
-                            metadata: conversationDetail.conversationMetadata,
+                            metadata: conversationDetail.groupMetadata,
                         };
                         conversationMetadata &&
                             Kommunicate.updateConversationMetadata(

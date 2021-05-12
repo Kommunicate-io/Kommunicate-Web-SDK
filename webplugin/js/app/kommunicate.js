@@ -88,7 +88,7 @@ $applozic.extend(true, Kommunicate, {
             skipBotEvent: params.skipBotEvent,
             customWelcomeEvent: params.customWelcomeEvent,
             metadata: groupMetadata,
-            conversationMetadata: params.metadata,
+            groupMetadata: params.conversationMetadata,
             teamId: params.teamId,
         };
         if (IS_SOCKET_CONNECTED) {
@@ -120,13 +120,15 @@ $applozic.extend(true, Kommunicate, {
 
     updateConversationMetadata: function (conversationMetadata) {
         if (conversationMetadata) {
+            var metadataToSend = {};
+            conversationMetadata.metadata &&
+                (metadataToSend.metadata = conversationMetadata.metadata);
             if (
                 kommunicateCommons.isObject(conversationMetadata) &&
-                kommunicateCommons.isObject(conversationMetadata.metadata) &&
                 conversationMetadata.groupId &&
-                conversationMetadata.metadata
+                metadataToSend &&
+                kommunicateCommons.isObject(metadataToSend)
             ) {
-                var metadataToSend = conversationMetadata.metadata;
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
                         groupId: conversationMetadata.groupId,
@@ -145,12 +147,12 @@ $applozic.extend(true, Kommunicate, {
                 });
                 return groupDataResponse;
             } else {
-                throw new TypeError(
+                console.error(
                     'updateConversationMetadata expects an object as an argument'
                 );
             }
         } else {
-            throw new Error(
+            console.error(
                 'updateConversationMetadata expect an object but got null'
             );
         }
