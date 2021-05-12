@@ -7541,18 +7541,20 @@ var userOverride = {
 
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
+                var isConvRated = appOptions.oneTimeRating &&
+                    (!KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] == 2);
                 /*
                     Mid conversation CSAT
                     update if dedicated parameter is introduced
                 */
-                if (CSAT_ENABLED) {
-                    enableDropdown = true;
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-csat-trigger'] },
-                        '',
-                        'n-vis'
-                    );
-                }
+                   if (CSAT_ENABLED && !isConvRated) {
+                       enableDropdown = true;
+                       kommunicateCommons.modifyClassList(
+                           { id: ['km-csat-trigger'] },
+                           '',
+                           'n-vis'
+                       );
+                   }
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
