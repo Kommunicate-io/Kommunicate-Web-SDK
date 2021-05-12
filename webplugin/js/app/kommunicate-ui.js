@@ -813,8 +813,7 @@ KommunicateUI = {
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
-
+        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         if (isCSATenabled) {
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
@@ -879,12 +878,7 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
-            $mck_msg_inner.animate(
-                {
-                    scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                },
-                0
-            );
+            KommunicateUI.updateScroll(messageBody);
         }
     },
     showClosedConversationBanner: function (isConversationClosed) {
@@ -916,7 +910,7 @@ KommunicateUI = {
             ? kommunicate._globals.collectFeedback &&
               KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] != 2
             : kommunicate._globals.collectFeedback;
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         isConversationClosed &&
             kommunicateCommons.modifyClassList(
                 {
@@ -990,9 +984,7 @@ KommunicateUI = {
                         'mck-submit-comment'
                     ).disabled = false;
                 }
-                $mck_msg_inner.animate({
-                        scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                    },0);
+                KommunicateUI.updateScroll(messageBody)
             }
         } else if (
             isConversationClosed &&
@@ -1064,9 +1056,7 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
-            $mck_msg_inner.animate({
-                    scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                },0);
+            KommunicateUI.updateScroll(messageBody)
         } else {
             kommunicateCommons.modifyClassList(
                 {
