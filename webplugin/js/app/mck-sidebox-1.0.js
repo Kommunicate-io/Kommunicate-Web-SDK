@@ -7956,8 +7956,8 @@ var userOverride = {
             _this.isFileEncryptedImage = function (fileMeta){
                 return (
                     fileMeta && 
-                    fileMeta.contentType && fileMeta.contentType.includes('image') &&
-                    fileMeta.name && fileMeta.name.includes('AWS-ENCRYPTED')
+                    fileMeta.contentType && fileMeta.contentType.indexOf('image') !== -1 &&
+                    fileMeta.name && fileMeta.name.indexOf('AWS-ENCRYPTED') !== -1
                     );
             };
             _this.processMessageList = function (
@@ -14281,31 +14281,8 @@ var userOverride = {
                     });
                 }
             };
-            _this.createFile = function (blob, fileName){
-                try{
-                    // for other browsers
-                    return new File(blob, fileName, {
-                        type: blob[0].type,
-                        lastModified: blob[0].lastModified
-                    });
-                } catch(error){
-                    // for IE
-                    var newBlob = new Blob(blob,{
-                                type: blob[0].type
-                    });
-                    newBlob.lastModifiedDate = blob[0].lastModifiedDate;
-                    newBlob.lastModified = blob[0].lastModified;
-                    newBlob.name = fileName;
-                    return newBlob 
-                };
-            };
             _this.uploadAttachment2AWS = function (params, messagePxy) {
                 var file = params.file;
-                if(file.type.includes('image')){
-                    var newFileName = 'AWS-ENCRYPTED-'+file.name;
-                    var newFile = _this.createFile([file], newFileName);
-                    file = newFile;
-                };
                 var data = new FormData();
                 var uploadErrors = [];
                 var stopUpload = false;
@@ -14381,7 +14358,15 @@ var userOverride = {
                     var uniqueId = params.name + file.size;
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
-                    data.append('file', file);
+                    
+                    if(file.type.indexOf('image') !== -1){
+                        // for encrypted images
+                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
+                        data.append('file', file, newFileName);
+                    }else{
+                        data.append('file', file);
+                    }
+                
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
                         'progress',
@@ -14476,7 +14461,7 @@ var userOverride = {
                         }
                     });
                     var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
-                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.includes('image')) {
+                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
                         ATTACHMENT_UPLOAD_URL = ATTACHMENT_UPLOAD_URL + '?aclsPrivate=true';
                     };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
