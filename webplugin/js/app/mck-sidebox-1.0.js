@@ -13779,6 +13779,7 @@ var userOverride = {
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
             var FILE_DELETE_URL = '/rest/ws/aws/file/delete';
             var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
+            var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
             var mck_filebox_tmpl =
                 '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' +
                 '<div class="mck-file-expr">' +
@@ -14460,11 +14461,12 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
-                    var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
+                    var queryParams;
                     if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
-                        ATTACHMENT_UPLOAD_URL = ATTACHMENT_UPLOAD_URL + '?aclsPrivate=true';
+                        queryParams = '?aclsPrivate=true';
                     };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
+                    queryParams && (url = url + queryParams);
                     xhr.open('post', url, true);
                     window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);
