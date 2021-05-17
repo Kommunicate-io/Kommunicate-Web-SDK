@@ -108,7 +108,7 @@ function KommunicateCommons() {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
     };
-
+    
     _this.getTimeOrDate = function (createdAtTime) {
         var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);
