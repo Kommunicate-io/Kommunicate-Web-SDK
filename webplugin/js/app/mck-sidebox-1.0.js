@@ -7541,8 +7541,10 @@ var userOverride = {
 
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
-                var isConvRated = appOptions.oneTimeRating &&
-                    (!KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] == 2);
+                var isConvRated =
+                    appOptions.oneTimeRating &&
+                    !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
+                        KommunicateConstants.FEEDBACK_API_STATUS.RATED;
                 /*
                     Mid conversation CSAT
                     update if dedicated parameter is introduced

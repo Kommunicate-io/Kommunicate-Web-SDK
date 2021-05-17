@@ -16,7 +16,7 @@ KommunicateUI = {
     convRatedTabIds: {
         // using for optimize the feedback get api call
         // [tabId]: 1 => init the feedback api
-        // [tabId]: 2 => conversations rated 
+        // [tabId]: 2 => conversations rated
     },
     faqSVGImage:
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><circle class="km-custom-widget-fill" cx="12" cy="12" r="12" fill="#5553B7" fill-rule="nonzero" opacity=".654"/><g transform="translate(6.545 5.818)"><polygon fill="#FFF" points=".033 2.236 .033 12.057 10.732 12.057 10.732 .02 3.324 .02"/><rect class="km-custom-widget-fill" width="6.433" height="1" x="2.144" y="5.468" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><rect class="km-custom-widget-fill" width="4.289" height="1" x="2.144" y="8.095" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><polygon class="km-custom-widget-fill" fill="#5553B7" points="2.656 .563 3.384 2.487 1.162 3.439" opacity=".65" transform="rotate(26 2.273 2.001)"/></g></g></svg>',
@@ -786,12 +786,15 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
-        var isConvRated = document.getElementsByClassName('mck-rated').length > 0;
+        var isConvRated =
+            document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
             if (isConvRated && CURRENT_GROUP_DATA.tabId) {
-                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] = 2;
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] =
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED;
             } else if (
-                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] > 2 ||
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] >
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED ||
                 !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId]
             ) {
                 kommunicateCommons.getFeedback(
@@ -799,7 +802,9 @@ KommunicateUI = {
                     function (params) {
                         KommunicateUI.convRatedTabIds[
                             CURRENT_GROUP_DATA.tabId
-                        ] = params.data ? 2 : 1;
+                        ] = params.data
+                            ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                            : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
                     }
                 );
             }
@@ -807,7 +812,8 @@ KommunicateUI = {
 
         var isCSATenabled = kommunicate._globals.oneTimeRating
             ? kommunicate._globals.collectFeedback &&
-              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] != 2
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
             : kommunicate._globals.collectFeedback;
 
         if (!KommunicateUI.isConvJustResolved) {
@@ -843,7 +849,8 @@ KommunicateUI = {
             );
             KommunicateUI.isConvJustResolved = false;
         } else if (
-            KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==2 &&
+            KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
+                KommunicateConstants.FEEDBACK_API_STATUS.RATED &&
             kommunicate._globals.oneTimeRating
         ) {
             var messageText = MCK_LABELS['closed.conversation.message'];
@@ -882,12 +889,15 @@ KommunicateUI = {
         }
     },
     showClosedConversationBanner: function (isConversationClosed) {
-        var isConvRated = document.getElementsByClassName('mck-rated').length > 0;
+        var isConvRated =
+            document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
             if (isConvRated && CURRENT_GROUP_DATA.tabId) {
-                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] = 2;
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] =
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED;
             } else if (
-                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] > 2 ||
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] >
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED ||
                 !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId]
             ) {
                 kommunicateCommons.getFeedback(
@@ -895,7 +905,9 @@ KommunicateUI = {
                     function (params) {
                         KommunicateUI.convRatedTabIds[
                             CURRENT_GROUP_DATA.tabId
-                        ] = params.data ? 2 : 1;
+                        ] = params.data
+                            ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                            : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
                     }
                 );
             }
@@ -908,7 +920,8 @@ KommunicateUI = {
         var isConvJustResolved = KommunicateUI.isConvJustResolved;
         var isCSATenabled = kommunicate._globals.oneTimeRating
             ? kommunicate._globals.collectFeedback &&
-              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] != 2
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
             : kommunicate._globals.collectFeedback;
         var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         isConversationClosed &&
@@ -933,7 +946,9 @@ KommunicateUI = {
                 var feedback = data.data;
                 KommunicateUI.convRatedTabIds[
                     CURRENT_GROUP_DATA.tabId
-                ] = feedback ? 2 : 1;
+                ] = feedback
+                    ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                    : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
                 CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
                 kommunicateCommons.modifyClassList(
                     {
@@ -1056,7 +1071,7 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
-            KommunicateUI.updateScroll(messageBody)
+            KommunicateUI.updateScroll(messageBody);
         } else {
             kommunicateCommons.modifyClassList(
                 {
