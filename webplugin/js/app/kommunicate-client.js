@@ -87,6 +87,7 @@ Kommunicate.client = {
                 : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
             GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
+            conversationMetadata:JSON.stringify(conversationDetail.metadata),
         };
         typeof conversationDetail.teamId != 'undefined' &&
             (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
@@ -123,17 +124,6 @@ Kommunicate.client = {
                 ) {
                     if (typeof callback == 'function') {
                         callback(response.data.value);
-                    }
-                    var groupId = response.data.value;
-                    if (groupId && conversationDetail.groupMetadata) {
-                        var conversationMetadata = {
-                            groupId: groupId,
-                            metadata: conversationDetail.groupMetadata,
-                        };
-                        conversationMetadata &&
-                            Kommunicate.updateConversationMetadata(
-                                conversationMetadata
-                            );
                     }
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);

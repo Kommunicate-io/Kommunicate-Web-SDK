@@ -74,6 +74,9 @@ $applozic.extend(true, Kommunicate, {
 
         params.WELCOME_MESSAGE &&
             (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
+        params.conversationMetadata &&
+            kommunicateCommons.isObject(params.conversationMetadata) &&
+            (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
             groupName: groupName,
@@ -88,7 +91,6 @@ $applozic.extend(true, Kommunicate, {
             skipBotEvent: params.skipBotEvent,
             customWelcomeEvent: params.customWelcomeEvent,
             metadata: groupMetadata,
-            groupMetadata: params.conversationMetadata,
             teamId: params.teamId,
         };
         if (IS_SOCKET_CONNECTED) {
@@ -120,15 +122,13 @@ $applozic.extend(true, Kommunicate, {
 
     updateConversationMetadata: function (conversationMetadata) {
         if (conversationMetadata) {
-            var metadataToSend = {};
-            conversationMetadata.metadata &&
-                (metadataToSend.metadata = conversationMetadata.metadata);
             if (
                 kommunicateCommons.isObject(conversationMetadata) &&
+                kommunicateCommons.isObject(conversationMetadata.metadata) &&
                 conversationMetadata.groupId &&
-                metadataToSend &&
-                kommunicateCommons.isObject(metadataToSend)
+                conversationMetadata.metadata
             ) {
+                var metadataToSend = conversationMetadata.metadata;
                 const groupDataResponse = Applozic.ALApiService.groupUpdate({
                     data: {
                         groupId: conversationMetadata.groupId,
@@ -147,12 +147,12 @@ $applozic.extend(true, Kommunicate, {
                 });
                 return groupDataResponse;
             } else {
-                console.error(
+                throw new TypeError(
                     'updateConversationMetadata expects an object as an argument'
                 );
             }
         } else {
-            console.error(
+            throw new Error(
                 'updateConversationMetadata expect an object but got null'
             );
         }
