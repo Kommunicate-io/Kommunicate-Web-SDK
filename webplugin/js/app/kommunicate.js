@@ -37,6 +37,7 @@ $applozic.extend(true, Kommunicate, {
     startConversation: function (params, callback) {
         kommunicateCommons.setWidgetStateOpen(true);
         params = typeof params == 'object' ? params : {};
+        kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =

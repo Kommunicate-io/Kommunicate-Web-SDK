@@ -359,6 +359,7 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ List will open.
         $applozic(d).on('click', '#km-faq', function () {
+            kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 KommunicateUtils.removeItemFromLocalStorage(
                     'mckActiveConversationInfo'
@@ -816,6 +817,8 @@ KommunicateUI = {
                   KommunicateConstants.FEEDBACK_API_STATUS.RATED
             : kommunicate._globals.collectFeedback;
 
+        kmWidgetEvents.eventTracking(eventMapping.onRateConversationClick);
+        // var isCSATenabled = kommunicate._globals.collectFeedback;
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
@@ -1188,6 +1191,12 @@ KommunicateUI = {
             }, delay);
         }
     },
+    captureGreetingMessageClick: function (e) {
+        e.preventDefault();
+        kmWidgetEvents.eventTracking(
+            eventMapping.onGreetingMessageNotificationClick
+        );
+    },
     togglePopupChatTemplate: function (
         popupTemplateKey,
         showTemplate,
@@ -1233,11 +1242,31 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
-            if(kommunicateIframe.classList.contains("chat-popup-widget-vertical")){
-                var heightOfPopup = document.getElementById("chat-popup-widget-container").offsetHeight + 15;
-                var css = 'iframe#kommunicate-widget-iframe.chat-popup-widget-vertical { height:'+ heightOfPopup +'px!important;}';
-                parent.document.querySelector("style#kommunicate-style-sheet").innerText += css;
-            };
+            var greetingMessageContainer = document.getElementById(
+                'chat-popup-widget-container'
+            );
+            greetingMessageContainer &&
+                greetingMessageContainer.firstChild &&
+                greetingMessageContainer.firstChild.addEventListener(
+                    'click',
+                    this.captureGreetingMessageClick
+                );
+            if (
+                kommunicateIframe.classList.contains(
+                    'chat-popup-widget-vertical'
+                )
+            ) {
+                var heightOfPopup =
+                    document.getElementById('chat-popup-widget-container')
+                        .offsetHeight + 15;
+                var css =
+                    'iframe#kommunicate-widget-iframe.chat-popup-widget-vertical { height:' +
+                    heightOfPopup +
+                    'px!important;}';
+                parent.document.querySelector(
+                    'style#kommunicate-style-sheet'
+                ).innerText += css;
+            }
             var WIDGET_POSITION =
                 kommunicate &&
                 kommunicate._globals &&
@@ -1351,6 +1380,13 @@ KommunicateUI = {
             bannerHeading &&
                 (bannerHeading.innerHTML =
                     MCK_LABELS['filter.conversation.list'].ALL_CONVERSATIONS);
+            if (
+                bannerAction &&
+                bannerAction.innerText ==
+                    MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
+            ) {
+                kmWidgetEvents.eventTracking(eventMapping.onShowResolvedClick);
+            }
             bannerAction &&
                 (bannerAction.innerHTML =
                     MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED);
@@ -1420,7 +1456,9 @@ KommunicateUI = {
                     var waitingQueueNumber = document.getElementById(
                         'waiting-queue-number'
                     );
-                    var headerTabTitle = document.getElementById('mck-tab-title');
+                    var headerTabTitle = document.getElementById(
+                        'mck-tab-title'
+                    );
                     if (
                         waitingQueueNumber &&
                         waitingStatus &&
@@ -1441,7 +1479,10 @@ KommunicateUI = {
                         );
                         kommunicateCommons.modifyClassList(
                             {
-                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                                class: [
+                                    'mck-agent-image-container',
+                                    'mck-agent-status-text',
+                                ],
                             },
                             'n-vis',
                             'vis'
@@ -1463,12 +1504,17 @@ KommunicateUI = {
                         );
                         kommunicateCommons.modifyClassList(
                             {
-                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
+                                class: [
+                                    'mck-agent-image-container',
+                                    'mck-agent-status-text',
+                                ],
                             },
                             'vis',
                             'n-vis'
                         );
-                        headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
+                            'title'
+                        );
                     }
                 }
             },

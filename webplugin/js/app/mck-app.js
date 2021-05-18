@@ -12,7 +12,6 @@ if (typeof jQuery !== 'undefined') {
         jQuery.fn.modal = oModal;
     }
 }
-
 (function (window) {
     if (typeof Applozic !== 'undefined') {
         throw new Error(

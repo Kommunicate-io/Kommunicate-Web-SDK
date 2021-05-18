@@ -672,6 +672,9 @@ var userOverride = {
                 },
                 function (data) {
                     console.log('conversation created successfully');
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onStartNewConversation
+                    );
                     KommunicateUI.activateTypingField();
                 }
             );
@@ -680,6 +683,15 @@ var userOverride = {
                       .removeClass('vis')
                       .addClass('n-vis')
                 : '';
+            var greetingMessageContainer = document.getElementById(
+                'chat-popup-widget-container'
+            );
+            greetingMessageContainer &&
+                greetingMessageContainer.firstChild &&
+                greetingMessageContainer.firstChild.removeEventListener(
+                    'click',
+                    KommunicateUI.captureGreetingMessageClick
+                );
         };
         _this.openChat = function (params) {
             mckMessageService.openChat(params);
@@ -1891,6 +1903,15 @@ var userOverride = {
                     window.Applozic.ALSocket.events.onUserDeactivated =
                         events.onUserDeactivated;
                 }
+                for (var key in events) {
+                    if (events[key].__proto__.constructor.name == 'Function') {
+                        var subscribedEventName = events[key].name;
+                        if (eventMapping.hasOwnProperty(subscribedEventName)) {
+                            eventMapping[subscribedEventName].eventFunction =
+                                events[subscribedEventName];
+                        }
+                    }
+                }
                 typeof callback == 'function' && callback();
             }
         };
@@ -2157,6 +2178,7 @@ var userOverride = {
                                 'click',
                                 function (event) {
                                     event.preventDefault();
+
                                     if (KOMMUNICATE_VERSION === 'v2') {
                                         Kommunicate.setDefaultIframeConfigForOpenChat(
                                             POPUP_WIDGET
@@ -2705,6 +2727,9 @@ var userOverride = {
                     'km-chat-widget-close-button'
                 );
                 function closeChatBox() {
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onChatWidgetClose
+                    );
                     kommunicateCommons.setWidgetStateOpen(false);
                     mckMessageService.closeSideBox();
                     popUpcloseButton.style.display = 'none';
@@ -2796,11 +2821,17 @@ var userOverride = {
                 };
 
                 restartConversation.addEventListener('click', function () {
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onRestartConversationClick
+                    );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                 });
 
                 sendFeedbackComment.addEventListener('click', function () {
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onSubmitRatingClick
+                    );
                     feedbackObject = {
                         groupId: 0,
                         comments: [],
@@ -2856,6 +2887,24 @@ var userOverride = {
                             'n-vis'
                         );
                         e.currentTarget.classList.add('selected');
+                        if (e.currentTarget.classList[1] == 'selected') {
+                            var ratingValue = parseInt(
+                                e.currentTarget.dataset.rating
+                            );
+                            var ratingType =
+                                ratingValue == 1
+                                    ? 'CSAT Rate Poor'
+                                    : ratingValue == 5
+                                    ? 'CSAT Rate Average'
+                                    : ratingValue == 10
+                                    ? 'CSAT Rate Great'
+                                    : '';
+                            kmWidgetEvents.eventTracking(
+                                eventMapping.onRateConversationEmoticonsClick,
+                                ratingType,
+                                ratingValue
+                            );
+                        }
                     });
                 }
             };
@@ -3637,6 +3686,7 @@ var userOverride = {
                 Kommunicate.startConversation(params, callback);
             };
             _this.openChatbox = function (params, callback) {
+                kmWidgetEvents.eventTracking(eventMapping.onChatWidgetOpen);
                 kommunicateCommons.setWidgetStateOpen(true);
                 if ($mck_sidebox.css('display') === 'none') {
                     $applozic('.mckModal').mckModal('hide');
@@ -5171,6 +5221,7 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
+                kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
                     Kommunicate.internetStatus &&
                     $applozic(
@@ -13559,6 +13610,9 @@ var userOverride = {
                     });
                     $mck_btn_loc.on('click', function (e) {
                         e.preventDefault();
+                        kmWidgetEvents.eventTracking(
+                            eventMapping.onLocationIconClick
+                        );
                         if (IS_LOC_SHARE_INIT) {
                             $mck_loc_box.mckModal();
                         } else {
@@ -13783,6 +13837,9 @@ var userOverride = {
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onAttachmentClick
+                    );
                     $mck_file_input.trigger('click');
                 });
 
@@ -14940,6 +14997,9 @@ var userOverride = {
                     'click',
                     ' #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text',
                     function () {
+                        kmWidgetEvents.eventTracking(
+                            eventMapping.onNotificationClick
+                        );
                         _this.hideMessagePreview();
                         KommunicateUI.hideFaq();
                     }
