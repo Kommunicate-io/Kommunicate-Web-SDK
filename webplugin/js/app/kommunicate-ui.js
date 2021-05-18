@@ -818,7 +818,6 @@ KommunicateUI = {
             : kommunicate._globals.collectFeedback;
 
         kmWidgetEvents.eventTracking(eventMapping.onRateConversationClick);
-        // var isCSATenabled = kommunicate._globals.collectFeedback;
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
