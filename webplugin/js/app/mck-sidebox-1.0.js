@@ -8004,6 +8004,13 @@ var userOverride = {
                     ? '<img src="' + topicLink + '">'
                     : '<span class="mck-icon-no-image"></span>';
             };
+            _this.isFileEncryptedImage = function (fileMeta){
+                return (
+                    fileMeta && 
+                    fileMeta.contentType && fileMeta.contentType.indexOf('image') !== -1 &&
+                    fileMeta.name && fileMeta.name.indexOf('AWS-ENCRYPTED') !== -1
+                    );
+            };
             _this.processMessageList = function (
                 data,
                 scroll,
@@ -8056,10 +8063,10 @@ var userOverride = {
                                     message.metadata.KM_ENABLE_ATTACHMENT
                                         ? message.metadata.KM_ENABLE_ATTACHMENT
                                         : '');
-                            if(message && message.fileMeta && message.fileMeta.contentType.includes('image')){
+                            if(message && message.fileMeta && mckMessageLayout.isFileEncryptedImage(message.fileMeta)){
                                 message.fileMeta.url = '';
                                 message.fileMeta.thumbnailUrl = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
-                            }
+                            };
 
                             _this.addMessage(
                                 message,
@@ -9148,6 +9155,12 @@ var userOverride = {
                                         '" area-hidden="true" ></img></a>'
                                     );
                                 } else {
+                                    var fileName = msg.fileMeta.name;
+                                    var addLazyImageClass = false;
+                                    if(mckMessageLayout.isFileEncryptedImage(msg.fileMeta)){
+                                        fileName = fileName.replace('AWS-ENCRYPTED-', '');
+                                        addLazyImageClass = true;
+                                    };
                                     return (
                                         '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
                                         msg.fileMeta.contentType +
@@ -9155,9 +9168,11 @@ var userOverride = {
                                         alFileService.getFileurl(msg) +
                                         '" data-name="' +
                                         kommunicateCommons.formatHtmlTag(
-                                            msg.fileMeta.name
+                                            fileName
                                         ) +
-                                        '"><img class="lazy-image" src="' +
+                                        '"><img'+
+                                        (addLazyImageClass ? ' class="lazy-image"' : '') +
+                                        ' src="' +
                                         msg.fileMeta.thumbnailUrl +
                                         '" area-hidden="true" data-blobKey="'+ msg.fileMeta.blobKey +
                                         '" data-thumbnailBlobKey="'+msg.fileMeta.thumbnailBlobKey +'" ></img></a>'
@@ -13815,10 +13830,10 @@ var userOverride = {
             var $mck_gc_overlay_label = $applozic('#mck-gc-overlay-label');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file';
             var FILE_UPLOAD_URL = '/rest/ws/aws/file/url';
-            var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image?aclsPrivate=true';
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
             var FILE_DELETE_URL = '/rest/ws/aws/file/delete';
             var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
+            var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
             var mck_filebox_tmpl =
                 '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' +
                 '<div class="mck-file-expr">' +
@@ -14401,7 +14416,15 @@ var userOverride = {
                     var uniqueId = params.name + file.size;
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
-                    data.append('file', file);
+                    
+                    if(file.type.indexOf('image') !== -1){
+                        // for encrypted images
+                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
+                        data.append('file', file, newFileName);
+                    }else{
+                        data.append('file', file);
+                    }
+                
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
                         'progress',
@@ -14495,7 +14518,12 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
+                    var queryParams;
+                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
+                        queryParams = '?aclsPrivate=true';
+                    };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
+                    queryParams && (url = url + queryParams);
                     xhr.open('post', url, true);
                     window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);
