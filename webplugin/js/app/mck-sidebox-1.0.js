@@ -8514,28 +8514,25 @@ var userOverride = {
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
-                if (
+                 if (
                     HIDE_POST_CTA &&
                     richText &&
-                    (kmRichTextMarkup.indexOf(
-                        'km-cta-multi-button-container'
-                    ) != -1 ||
-                        kmRichTextMarkup.indexOf(
-                            'km-faq-list--footer_button-container'
-                        ) != -1) &&
-                    kmRichTextMarkup.indexOf('<button') != -1 &&
+                    (
+                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
+                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
+                    ) &&
+                    (   
+                        kmRichTextMarkup.indexOf('<button') != -1 || 
+                        kmRichTextMarkup.indexOf('km-list-item-handler') != -1 
+                    ) 
+                    &&
                     kmRichTextMarkup.indexOf('km-link-button') == -1
                 ) {
-                    if (!append) {
-                        // if type of message is richmessage having CTA buttons and it does not include links then it should not be visible
-                        botMessageDelayClass = 'n-vis';
-                    } else {
                         // this class is added to the message template if the message contains CTA buttons having only quick replies.
-                        botMessageDelayClass =
-                            botMessageDelayClass +
-                            ' contains-quick-replies-only';
-                    }
+                       botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
+                 
                 }
+                
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
