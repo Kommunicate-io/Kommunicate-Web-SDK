@@ -5114,6 +5114,14 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	overflow: hidden;
 	display: flex !important;
 }
+.km-square-chat-icon {
+	border-radius: 10%!important;
+	box-shadow: 0 3px 4px 1px rgb(107 104 104 / 50%);
+}
+
+.chat-popup-widget-container--horizontal {
+	border-radius: 12px !important;
+}
 .km-chat-icon-sidebox img {
 	margin-top: 0px;
 	width: auto;
