@@ -13,6 +13,11 @@ KommunicateUI = {
     showResolvedConversations: false,
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
+    convRatedTabIds: {
+        // using for optimize the feedback get api call
+        // [tabId]: 1 => init the feedback api
+        // [tabId]: 2 => conversations rated
+    },
     faqSVGImage:
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" fill-rule="evenodd"><circle class="km-custom-widget-fill" cx="12" cy="12" r="12" fill="#5553B7" fill-rule="nonzero" opacity=".654"/><g transform="translate(6.545 5.818)"><polygon fill="#FFF" points=".033 2.236 .033 12.057 10.732 12.057 10.732 .02 3.324 .02"/><rect class="km-custom-widget-fill" width="6.433" height="1" x="2.144" y="5.468" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><rect class="km-custom-widget-fill" width="4.289" height="1" x="2.144" y="8.095" fill="#5553B7" fill-rule="nonzero" opacity=".65" rx=".5"/><polygon class="km-custom-widget-fill" fill="#5553B7" points="2.656 .563 3.384 2.487 1.162 3.439" opacity=".65" transform="rotate(26 2.273 2.001)"/></g></g></svg>',
     CONSTS: {},
@@ -782,12 +787,41 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function () {
+        var isConvRated =
+            document.getElementsByClassName('mck-rated').length > 0;
+        if (kommunicate._globals.oneTimeRating) {
+            if (isConvRated && CURRENT_GROUP_DATA.tabId) {
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] =
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED;
+            } else if (
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] >
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED ||
+                !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId]
+            ) {
+                kommunicateCommons.getFeedback(
+                    CURRENT_GROUP_DATA.tabId,
+                    function (params) {
+                        KommunicateUI.convRatedTabIds[
+                            CURRENT_GROUP_DATA.tabId
+                        ] = params.data
+                            ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                            : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
+                    }
+                );
+            }
+        }
+
+        var isCSATenabled = kommunicate._globals.oneTimeRating
+            ? kommunicate._globals.collectFeedback &&
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
+            : kommunicate._globals.collectFeedback;
+
         kmWidgetEvents.eventTracking(eventMapping.onRateConversationClick);
-        var isCSATenabled = kommunicate._globals.collectFeedback;
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
-
+        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         if (isCSATenabled) {
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
@@ -816,17 +850,82 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.isConvJustResolved = false;
+        } else if (
+            KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
+                KommunicateConstants.FEEDBACK_API_STATUS.RATED &&
+            kommunicate._globals.oneTimeRating
+        ) {
+            var messageText = MCK_LABELS['closed.conversation.message'];
+            var conversationStatusDiv = document.getElementById(
+                'mck-conversation-status-box'
+            );
+            conversationStatusDiv &&
+                (conversationStatusDiv.innerHTML = messageText);
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                },
+                'mck-closed-conv-banner'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-conversation-status-box'],
+                },
+                'vis',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-box-form'],
+                },
+                '',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['km-widget-options'],
+                },
+                'n-vis'
+            );
+            KommunicateUI.updateScroll(messageBody);
         }
     },
     showClosedConversationBanner: function (isConversationClosed) {
+        var isConvRated =
+            document.getElementsByClassName('mck-rated').length > 0;
+        if (kommunicate._globals.oneTimeRating) {
+            if (isConvRated && CURRENT_GROUP_DATA.tabId) {
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] =
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED;
+            } else if (
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] >
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED ||
+                !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId]
+            ) {
+                kommunicateCommons.getFeedback(
+                    CURRENT_GROUP_DATA.tabId,
+                    function (params) {
+                        KommunicateUI.convRatedTabIds[
+                            CURRENT_GROUP_DATA.tabId
+                        ] = params.data
+                            ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                            : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
+                    }
+                );
+            }
+        }
         var messageText = MCK_LABELS['closed.conversation.message'];
         var conversationStatusDiv = document.getElementById(
             'mck-conversation-status-box'
         );
-        var isCSATenabled = kommunicate._globals.collectFeedback;
         var isCSATtriggeredByUser = KommunicateUI.isCSATtriggeredByUser;
         var isConvJustResolved = KommunicateUI.isConvJustResolved;
-        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        var isCSATenabled = kommunicate._globals.oneTimeRating
+            ? kommunicate._globals.collectFeedback &&
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
+            : kommunicate._globals.collectFeedback;
+        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         isConversationClosed &&
             kommunicateCommons.modifyClassList(
                 {
@@ -841,78 +940,69 @@ KommunicateUI = {
             !isCSATtriggeredByUser &&
             !isConvJustResolved
         ) {
-            mckUtils.ajax({
-                type: 'GET',
-                url:
-                    Kommunicate.getBaseUrl() +
-                    '/feedback' +
-                    '/' +
-                    CURRENT_GROUP_DATA.tabId,
-                global: false,
-                contentType: 'application/json',
-                success: function (data) {
-                    var feedback = data.data;
-                    CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
-                    kommunicateCommons.modifyClassList(
-                        {
-                            class: ['mck-box-form'],
-                        },
-                        'n-vis'
-                    );
-                    kommunicateCommons.modifyClassList(
-                        {
-                            class: ['mck-csat-text-1'],
-                        },
-                        '',
-                        'n-vis'
-                    );
-                    kommunicateCommons.modifyClassList(
-                        {
-                            id: ['mck-sidebox-ft'],
-                        },
-                        'mck-closed-conv-banner'
-                    );
-                    kommunicateCommons.modifyClassList(
-                        {
-                            id: ['csat-1', 'csat-2', 'csat-3'],
-                        },
-                        'n-vis'
-                    );
-                    kommunicateCommons.modifyClassList(
-                        {
-                            id: ['km-widget-options'],
-                        },
-                        'n-vis'
-                    );
-                    /*
+            kommunicateCommons.getFeedback(
+                CURRENT_GROUP_DATA.tabId,
+                feedbackResponseCallback
+            );
+            function feedbackResponseCallback(data) {
+                var feedback = data.data;
+                KommunicateUI.convRatedTabIds[
+                    CURRENT_GROUP_DATA.tabId
+                ] = feedback
+                    ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                    : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
+                CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-box-form'],
+                    },
+                    'n-vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-csat-text-1'],
+                    },
+                    '',
+                    'n-vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-sidebox-ft'],
+                    },
+                    'mck-closed-conv-banner'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['csat-1', 'csat-2', 'csat-3'],
+                    },
+                    'n-vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['km-widget-options'],
+                    },
+                    'n-vis'
+                );
+                /*
                 csat-1 : csat rating first screen where you can rate via emoticons.
                 csat-2 : csat rating second screen where you can add comments.
                 csat-3 : csat result screen where you show overall feedback.
                 */
-                    if (!feedback) {
-                        // no rating given after conversation is resolved
-                        kommunicateCommons.modifyClassList(
-                            {
-                                id: ['csat-1'],
-                            },
-                            '',
-                            'n-vis'
-                        );
-                        document.getElementById(
-                            'mck-submit-comment'
-                        ).disabled = false;
-                    }
-                    $mck_msg_inner.animate(
+                if (!feedback) {
+                    // no rating given after conversation is resolved
+                    kommunicateCommons.modifyClassList(
                         {
-                            scrollTop: $mck_msg_inner.prop('scrollHeight'),
+                            id: ['csat-1'],
                         },
-                        0
+                        '',
+                        'n-vis'
                     );
-                },
-                error: function (err) {
-                    console.log('Error fetching feedback', err);
-                },
-            });
+                    document.getElementById(
+                        'mck-submit-comment'
+                    ).disabled = false;
+                }
+                KommunicateUI.updateScroll(messageBody)
+            }
         } else if (
             isConversationClosed &&
             KommunicateUI.isCSATtriggeredByUser
@@ -983,6 +1073,7 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
+            KommunicateUI.updateScroll(messageBody);
         } else {
             kommunicateCommons.modifyClassList(
                 {
