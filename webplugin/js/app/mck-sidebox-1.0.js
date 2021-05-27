@@ -18,6 +18,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
+var DEFAULT_BOT = {};
 
 (function ($applozic, w, d) {
     'use strict';
@@ -676,7 +677,7 @@ var userOverride = {
                         eventMapping.onStartNewConversation
                     );
                     KommunicateUI.activateTypingField();
-                    MckMessageLayout.loadDropdownOptions();
+                    mckMessageLayout.loadDropdownOptions();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -3563,6 +3564,7 @@ var userOverride = {
             var CONVERSATION_READ_UPDATE_URL =
                 '/rest/ws/message/read/conversation';
             var FEEDBACK_UPDATE_URL = '/feedback/v2';
+            var CHANGE_BOT = '/rest/ws/group/assignee/change';
             var offlineblk =
                 '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
@@ -3583,37 +3585,59 @@ var userOverride = {
                         $applozic('.mck-dropup-menu').hide();
                 }
             };
+            _this.triggerWelcomeEvent = function(){
+                window.Applozic.ALApiService.sendMessage({
+                    data: {
+                        message: {
+                            type: 5,
+                            contentType: 10,
+                            message: 'Event: WELCOME',
+                            groupId: CURRENT_GROUP_DATA.tabId,
+                            metadata: {
+                                category: 'HIDDEN',
+                                KM_TRIGGER_EVENT: 'WELCOME',
+                            },
+                            source: 1,
+                        },
+                    },
+                    success: function (response) {
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    },
+                });
+            },
+            _this.changeConversationAssignee = function(){
+                window.Applozic.ALApiService.ajax({
+                    type: 'PATCH',
+                    url: MCK_BASE_URL + CHANGE_BOT+'?groupId=' +
+                    encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
+                    '&assignee=' +
+                    encodeURIComponent(DEFAULT_BOT.userId),
+                    global: false,
+                    contentType: 'text/plain',
+                    success: function (data) {
+                        if(data.status=="success"){
+                            _this.triggerWelcomeEvent();
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    },
+                });
+
+            };
             _this.restartConversation = function (event) {
                 kmWidgetEvents.eventTracking(
                     eventMapping.onRestartConversationClick
                 );
-                console.log(event.target.id);
                 if (
                     event.target.id == 'km-restart-conversation' ||
                     ('km-restart-conversation-text' &&
                         appOptions.restartConversationByUser)
                 ) {
-                    window.Applozic.ALApiService.sendMessage({
-                        data: {
-                            message: {
-                                type: 5,
-                                contentType: 10,
-                                message: 'Event: WELCOME',
-                                groupId: CURRENT_GROUP_DATA.tabId,
-                                metadata: {
-                                    category: 'HIDDEN',
-                                    KM_TRIGGER_EVENT: 'WELCOME',
-                                },
-                                source: 1,
-                            },
-                        },
-                        success: function (response) {
-                            console.log(response);
-                        },
-                        error: function (error) {
-                            console.error(error);
-                        },
-                    });
+                    _this.changeConversationAssignee();
                 } else {
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
@@ -7620,7 +7644,6 @@ var userOverride = {
                 $applozic.template('searchContactbox', searchContactbox);
                 $applozic.template('csatModule', csatModule);
             };
-
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 var isConvRated =
@@ -7640,6 +7663,9 @@ var userOverride = {
                        );
                    }
                    if (appOptions.restartConversationByUser) {
+                    var restartConversationBtn = document.getElementById(
+                        'km-restart-conversation'
+                    );
                        var isIterable  = true;
                        var assinedBot;
                        CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.map(
@@ -7652,6 +7678,7 @@ var userOverride = {
                                ) {
                                     isIterable = false;
                                     assinedBot = member.userId;
+                                    DEFAULT_BOT = member;
                                }
                            }
                        );
@@ -7664,15 +7691,30 @@ var userOverride = {
                                '',
                                'n-vis'
                            );
-                           var restartConversationBtn = document.getElementById(
-                               'km-restart-conversation'
-                           );
-                           restartConversationBtn &&
-                               restartConversationBtn.addEventListener(
-                                   'click',
-                                   mckMessageService.restartConversation
+                           
+                       } else {
+                           var isConversationRated =
+                               document.getElementsByClassName('mck-rated')
+                                   .length > 0;
+                           if (isConversationRated) {
+                               kommunicateCommons.modifyClassList(
+                                   { id: ['km-restart-conversation'] },
+                                   'n-vis',
+                                   ''
                                );
+                           } else {
+                               kommunicateCommons.modifyClassList(
+                                   { id: ['km-restart-conversation'] },
+                                   '',
+                                   'n-vis'
+                               );
+                           }
                        }
+                    restartConversationBtn &&
+                            restartConversationBtn.addEventListener(
+                                'click',
+                                mckMessageService.restartConversation
+                            );
                    }
 
                 // For voice output user override
@@ -8180,6 +8222,7 @@ var userOverride = {
                         }
                     );
                 }
+                mckMessageLayout.loadDropdownOptions();
             };
             _this.closeConversation = function (data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {
