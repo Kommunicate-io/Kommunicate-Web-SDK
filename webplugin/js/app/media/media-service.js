@@ -88,11 +88,11 @@ Kommunicate.mediaService = {
                     skipForEach = true;
                 }
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = appOptions.language || 'en-US';
+                utterance.lang = appOptions.language || "en-US";
                 utterance.rate = appOptions.voiceRate || 1;
                 var skipForEach = false;
                 if (appOptions.voiceName) {
-                    AVAILABLE_VOICES_FOR_TTS.forEach(function (voice) {
+                    AVAILABLE_VOICES_FOR_TTS.forEach( function (voice) {
                         if (skipForEach) {
                             return;
                         }
@@ -108,7 +108,7 @@ Kommunicate.mediaService = {
                         } else if (voice.name === appOptions.voiceName.trim() && !skipForEach) {
                             updateVoiceName(voice);
                         }
-                    });
+                    })
                 }
                 utterance.onerror = function (event) {
                     if (event.error !== 'not-allowed') {
