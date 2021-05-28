@@ -4,9 +4,10 @@
 
 
 ### Make widget fullscreen
-To make the Kommunnicate widget Full screen copy and paste the following code inside the `onInit: function() { ... }` of the `kommunicateSettings` variable.
+To make the Kommunicate widget Full screen, replace the default script code with the following code as the changes are made inside the `onInit: function() { ... }` of the `kommunicateSettings` variable.
 Example:
 ```javascript
+<script type="text/javascript">
         (function (d, m) {
             var kommunicateSettings = {
                 "appId": "<APP_ID>",
@@ -40,18 +41,19 @@ Example:
             var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
             window.kommunicate = m; m._globals = kommunicateSettings;
         })(document, window.kommunicate || {});
-
+</script>
 ```
 > **Note:** Replace the `<APP_ID>` with the `appId` copied from the <a href="https://dashboard.kommunicate.io/settings/install" target="_blank">Install Section</a> from the Kommunicate Dashboard.
 
 
 ### Make chat widget fullscreen on pageload
-To make the Kommunnicate chat widget Full screen on page-load copy & paste the following code inside the `onInit: function() { ... }` of the `kommunicateSettings` variable.
+To make the Kommunicate chat widget Full screen on page-load, replace the default script code with the following code as the changes are made the inside the `onInit: function() { ... }` of the `kommunicateSettings` variable.
 
 > **Note:** Replace the `<APP_ID>` with the `appId` copied from the <a href="https://dashboard.kommunicate.io/settings/install" target="_blank">Install Section</a> from the Kommunicate Dashboard.
 
 Example:
 ```javascript
+<script type="text/javascript">
 	(function (d, m) {
             var kommunicateSettings = {
                 "appId": "<APP_ID>",
@@ -87,6 +89,7 @@ Example:
             var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
             window.kommunicate = m; m._globals = kommunicateSettings;
         })(document, window.kommunicate || {});
+</script>
 	
 ```
 
