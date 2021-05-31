@@ -3608,6 +3608,22 @@ var DEFAULT_BOT = {};
                     },
                 });
             },
+            _this.addSingleBotToConversation=function(){
+                var isAllBotRemoved = false;
+                var currentGroupMembers = CURRENT_GROUP_DATA.groupMembers;
+                appOptions.restartConversationByUser&&currentGroupMembers&&currentGroupMembers.forEach(function(member,index,array){
+                    if(member.roleType==1){
+                        array[index] = "";
+                        isAllBotRemoved = true; 
+                    }
+                });
+                if (isAllBotRemoved) {
+                    currentGroupMembers = currentGroupMembers
+                        .filter(Boolean);
+                    currentGroupMembers.push(DEFAULT_BOT);
+                        CURRENT_GROUP_DATA.groupMembers =  currentGroupMembers;
+                }
+            },
             _this.changeConversationAssignee = function(){
                 window.Applozic.ALApiService.ajax({
                     type: 'PATCH',
@@ -3619,6 +3635,7 @@ var DEFAULT_BOT = {};
                     contentType: 'text/plain',
                     success: function (data) {
                         if(data.status=="success"){
+                            appOptions.restartConversationByUser && _this.addSingleBotToConversation();
                             _this.triggerWelcomeEvent();
                         }
                     },
@@ -8222,7 +8239,6 @@ var DEFAULT_BOT = {};
                         }
                     );
                 }
-                mckMessageLayout.loadDropdownOptions();
             };
             _this.closeConversation = function (data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {

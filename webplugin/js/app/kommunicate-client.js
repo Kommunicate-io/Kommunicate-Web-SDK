@@ -153,7 +153,6 @@ Kommunicate.client = {
             });
         }
         $applozic.fn.applozic('createGroup', groupOptions);
-        mckMessageLayout.loadDropdownOptions();
     },
     /**get the third party settings access key
      * @param {Object} options
