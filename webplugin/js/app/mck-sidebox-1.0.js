@@ -5021,6 +5021,7 @@ var userOverride = {
             _this.openChat = function (ele, callback) {
                 var $this = $applozic(ele);
                 var tabId = $this.data('mck-id');
+                var isConversationInWaitingQueue = $this.parent().data('is-queued');
                 tabId =
                     typeof tabId !== 'undefined' && tabId !== ''
                         ? tabId.toString()
@@ -5071,6 +5072,7 @@ var userOverride = {
                             userName: userName,
                             conversationId: conversationId,
                             topicId: topicId,
+                            isConversationInWaitingQueue: isConversationInWaitingQueue,
                         },
                         callback
                     );
@@ -5831,7 +5833,7 @@ var userOverride = {
                 err,
                 message
             ) {
-                if (_this.isFaqTabOpen()) {
+                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
                     return;
                 }
                 if (
@@ -6571,7 +6573,7 @@ var userOverride = {
                                         data.groupFeeds[0] &&
                                         (updateConversationHeaderParams.imageUrl =
                                             data.groupFeeds[0].imageUrl);
-                                    mckMessageService.processOnlineStatusChange(
+                                    !params.isConversationInWaitingQueue && mckMessageService.processOnlineStatusChange(
                                         params.tabId,
                                         conversationAssigneeDetails,
                                         updateConversationHeaderParams
@@ -6708,8 +6710,13 @@ var userOverride = {
                         .classList.contains('vis')
                 );
             };
+            _this.isConversationInWaitingQueue = function (){
+                return(
+                    document.querySelector('#mck-waiting-queue').classList.contains('vis')
+                )
+            };
             _this.updateConversationHeader = function (params) {
-                if (_this.isFaqTabOpen()) {
+                if (_this.isFaqTabOpen() || _this.isConversationInWaitingQueue()) {
                     return;
                 }
                 var imageUrl;
@@ -7399,7 +7406,7 @@ var userOverride = {
                 '</div>' +
                 '</div>';
             var contactbox =
-                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" role="button" tabindex="0">' +
+                '<li id="li-${contHtmlExpr}" class="${contIdExpr} ${conversationStatusClass}" data-msg-time="${msgCreatedAtTimeExpr}" data-is-queued="${isConversationInWaitingQueue}" role="button" tabindex="0">' +
                 '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' +
                 '<div class="mck-row" title="${contNameExpr}">' +
                 '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' +
@@ -8332,7 +8339,7 @@ var userOverride = {
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
-                if (
+                 if (
                     HIDE_POST_CTA &&
                     richText &&
                     (
@@ -8354,6 +8361,7 @@ var userOverride = {
                         botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
                     // }
                 }
+                
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
@@ -10126,7 +10134,18 @@ var userOverride = {
                     contact.contactId,
                     isGroupTab
                 );
-                var imgsrctag = _this.getContactImageLink(contact, displayName);
+                var imgsrctag = '';
+                var isConversationInWaitingQueue = false;
+                if (contact && contact.metadata && contact.metadata.CONVERSATION_STATUS == Kommunicate.conversationHelper.status.WAITING ){
+                    // if conversation is in waiting queue
+                    displayName = MCK_LABELS['waiting.queue.message']['contact.name'];
+                    imgsrctag = '<div class="mck-videocall-image alpha_W"><span class="mck-contact-icon">...</span></div>';
+                    isConversationInWaitingQueue = true;
+                }
+                else{ 
+                    imgsrctag = _this.getContactImageLink(contact, displayName);
+                }
+                
                 var prepend = false;
                 var ucTabId = isGroupTab
                     ? 'group_' + contact.contactId
@@ -10227,6 +10246,7 @@ var userOverride = {
                               )
                             : '',
                         conversationStatusClass: statusClass,
+                        isConversationInWaitingQueue: isConversationInWaitingQueue,
                     },
                 ];
                 var latestCreatedAtTime = $applozic(
