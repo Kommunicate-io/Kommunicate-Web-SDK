@@ -12694,20 +12694,16 @@ var userOverride = {
                 return conversationDetail;
             };
             _this.checkBotDetail = function (userId) {
-                var authKey = JSON.parse(
-                    decodeURIComponent(
-                        escape(
-                            window.atob(sessionStorage.getItem('chatheaders'))
-                        )
-                    )
-                ).authToken;
                 mckUtils.ajax({
                     url:
                         Kommunicate.getBaseUrl() +
                         '/rest/ws/botdetails/' +
                         userId,
                     type: 'get',
-                    headers:{'x-authorization':authKey},
+                    headers: {
+                        'x-authorization':
+                            window.Applozic.ALApiService.AUTH_TOKEN,
+                    },
                     skipEncryption: true,
                     global: false,
                     success: function (data) {
