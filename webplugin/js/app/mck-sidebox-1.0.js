@@ -18,7 +18,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
-var DEFAULT_BOT = {};
 
 (function ($applozic, w, d) {
     'use strict';
@@ -3608,42 +3607,72 @@ var DEFAULT_BOT = {};
                     },
                 });
             },
-            _this.addSingleBotToConversation=function(){
-                var isAllBotRemoved = false;
-                var currentGroupMembers = CURRENT_GROUP_DATA.groupMembers;
-                appOptions.restartConversationByUser&&currentGroupMembers&&currentGroupMembers.forEach(function(member,index,array){
-                    if(member.roleType==1){
-                        array[index] = "";
-                        isAllBotRemoved = true; 
-                    }
-                });
-                if (isAllBotRemoved) {
-                    currentGroupMembers = currentGroupMembers
-                        .filter(Boolean);
-                    currentGroupMembers.push(DEFAULT_BOT);
-                        CURRENT_GROUP_DATA.groupMembers =  currentGroupMembers;
-                }
-            },
-            _this.changeConversationAssignee = function(){
+            _this.changeConversationAssignee = function () {
                 window.Applozic.ALApiService.ajax({
                     type: 'PATCH',
-                    url: MCK_BASE_URL + CHANGE_BOT+'?groupId=' +
-                    encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
-                    '&assignee=' +
-                    encodeURIComponent(DEFAULT_BOT.userId),
+                    url:
+                        MCK_BASE_URL +
+                        CHANGE_BOT +
+                        '?groupId=' +
+                        encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
+                        '&assignee=' +
+                        encodeURIComponent(
+                            CURRENT_GROUP_DATA.initialBot['userId']
+                        ),
                     global: false,
                     contentType: 'text/plain',
                     success: function (data) {
-                        if(data.status=="success"){
-                            appOptions.restartConversationByUser && _this.addSingleBotToConversation();
+                        if (
+                            data.status == 'success' &&
+                            appOptions.restartConversationByUser &&
+                            CURRENT_GROUP_DATA.conversationAssignee !=
+                                CURRENT_GROUP_DATA.initialBot.userId
+                        ) {
+                            var currentGroupMembers =
+                                CURRENT_GROUP_DATA.groupMembers;
+                            appOptions.restartConversationByUser &&
+                                currentGroupMembers &&
+                                currentGroupMembers.map(function (member) {
+                                    if (
+                                        member.roleType == 1 &&
+                                        member.userId !=
+                                            CURRENT_GROUP_DATA.initialBot.userId
+                                    ) {
+                                        mckGroupService.removeGroupMemberFromChat(
+                                            {
+                                                groupId:
+                                                    CURRENT_GROUP_DATA.tabId,
+                                                userId: member.userId,
+                                                // callback: function (data) {
+                                                //     try {
+                                                //         if (
+                                                //             data.status ==
+                                                //             'success'
+                                                //         ) {
+                                                //             CURRENT_GROUP_DATA.conversationAssignee =
+                                                //                 CURRENT_GROUP_DATA.initialBot[
+                                                //                     'userId'
+                                                //                 ];
+                                                //             _this.restartConversation();
+                                                //         }
+                                                //     } catch (err) {
+                                                //         console.log(err);
+                                                //     }
+                                                // },
+                                            }
+                                        );
+                                    }
+                                });
                             _this.triggerWelcomeEvent();
+                        } else {
+                            appOptions.restartConversationByUser &&
+                                _this.triggerWelcomeEvent();
                         }
                     },
                     error: function (data) {
-                        console.log(data)
+                        console.log(data);
                     },
                 });
-
             };
             _this.restartConversation = function (event) {
                 kmWidgetEvents.eventTracking(
@@ -7695,7 +7724,7 @@ var DEFAULT_BOT = {};
                                ) {
                                     isIterable = false;
                                     assinedBot = member.userId;
-                                    DEFAULT_BOT = member;
+                                    CURRENT_GROUP_DATA.initialBot = member;
                                }
                            }
                        );
