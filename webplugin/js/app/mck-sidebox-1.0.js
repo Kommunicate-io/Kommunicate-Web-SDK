@@ -3617,7 +3617,7 @@ var userOverride = {
                         encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
                         '&assignee=' +
                         encodeURIComponent(
-                            CURRENT_GROUP_DATA.initialBot['userId']
+                            CURRENT_GROUP_DATA.initialBot.userId
                         ),
                     global: false,
                     contentType: 'text/plain',
@@ -3628,42 +3628,20 @@ var userOverride = {
                             CURRENT_GROUP_DATA.conversationAssignee !=
                                 CURRENT_GROUP_DATA.initialBot.userId
                         ) {
-                            var currentGroupMembers =
-                                CURRENT_GROUP_DATA.groupMembers;
-                            appOptions.restartConversationByUser &&
-                                currentGroupMembers &&
-                                currentGroupMembers.map(function (member) {
-                                    if (
-                                        member.roleType == 1 &&
-                                        member.userId !=
-                                            CURRENT_GROUP_DATA.initialBot.userId
-                                    ) {
-                                        mckGroupService.removeGroupMemberFromChat(
-                                            {
-                                                groupId:
-                                                    CURRENT_GROUP_DATA.tabId,
-                                                userId: member.userId,
-                                                // callback: function (data) {
-                                                //     try {
-                                                //         if (
-                                                //             data.status ==
-                                                //             'success'
-                                                //         ) {
-                                                //             CURRENT_GROUP_DATA.conversationAssignee =
-                                                //                 CURRENT_GROUP_DATA.initialBot[
-                                                //                     'userId'
-                                                //                 ];
-                                                //             _this.restartConversation();
-                                                //         }
-                                                //     } catch (err) {
-                                                //         console.log(err);
-                                                //     }
-                                                // },
-                                            }
+                            mckGroupService.removeGroupMemberFromChat({
+                                groupId: CURRENT_GROUP_DATA.tabId,
+                                userId: CURRENT_GROUP_DATA.conversationAssignee,
+                                callback: function (data) {
+                                    if (data.status == 'success') {
+                                        _this.triggerWelcomeEvent();
+                                    } else {
+                                        console.error(
+                                            'Error while removing the conversation assignee.'
                                         );
                                     }
-                                });
-                            _this.triggerWelcomeEvent();
+                                },
+                            });
+                           
                         } else {
                             appOptions.restartConversationByUser &&
                                 _this.triggerWelcomeEvent();
@@ -7416,6 +7394,7 @@ var userOverride = {
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
+                                CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
@@ -7700,68 +7679,56 @@ var userOverride = {
                     Mid conversation CSAT
                     update if dedicated parameter is introduced
                 */
-                   if (CSAT_ENABLED && !isConvRated) {
-                       enableDropdown = true;
-                       kommunicateCommons.modifyClassList(
-                           { id: ['km-csat-trigger'] },
-                           '',
-                           'n-vis'
-                       );
-                   }
-                   if (appOptions.restartConversationByUser) {
+                if (CSAT_ENABLED && !isConvRated) {
+                    enableDropdown = true;
+                    kommunicateCommons.modifyClassList(
+                        { id: ['km-csat-trigger'] },
+                        '',
+                        'n-vis'
+                    );
+                }
+                if (appOptions.restartConversationByUser) {
                     var restartConversationBtn = document.getElementById(
                         'km-restart-conversation'
                     );
-                       var isIterable  = true;
-                       var assinedBot;
-                       CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.map(
-                           function (member) {
-                               if (
-                                   isIterable &&
-                                   member.roleType == 1 &&
-                                   member.userId ==
-                                       CURRENT_GROUP_DATA.conversationAssignee
-                               ) {
-                                    isIterable = false;
-                                    assinedBot = member.userId;
-                                    CURRENT_GROUP_DATA.initialBot = member;
-                               }
-                           }
-                       );
-                       if (
-                           CURRENT_GROUP_DATA.conversationAssignee &&
-                           CURRENT_GROUP_DATA.conversationAssignee == assinedBot
-                       ) {
-                           kommunicateCommons.modifyClassList(
-                               { id: ['km-restart-conversation'] },
-                               '',
-                               'n-vis'
-                           );
-                           
-                       } else {
-                           var isConversationRated =
-                               document.getElementsByClassName('mck-rated')
-                                   .length > 0;
-                           if (isConversationRated) {
-                               kommunicateCommons.modifyClassList(
-                                   { id: ['km-restart-conversation'] },
-                                   'n-vis',
-                                   ''
-                               );
-                           } else {
-                               kommunicateCommons.modifyClassList(
-                                   { id: ['km-restart-conversation'] },
-                                   '',
-                                   'n-vis'
-                               );
-                           }
-                       }
-                    restartConversationBtn &&
+                    var isIterable = true;
+                    CURRENT_GROUP_DATA.groupMembers &&
+                        CURRENT_GROUP_DATA.groupMembers.map(function (member) {
+                            if (
+                                isIterable && (member.role == 2 ||
+                                member.roleType == 1) &&
+                                    member.userId ==
+                                        CURRENT_GROUP_DATA.conversationAssignee
+                            ) {
+                                isIterable = false;
+                                CURRENT_GROUP_DATA.initialBot = member;
+                            }
+                        });
+                    if (
+                        CURRENT_GROUP_DATA &&
+                        CURRENT_GROUP_DATA.initialBot &&
+                        CURRENT_GROUP_DATA.conversationAssignee &&
+                        CURRENT_GROUP_DATA.conversationAssignee ==
+                            CURRENT_GROUP_DATA.initialBot.userId
+                    ) {
+                        kommunicateCommons.modifyClassList(
+                            {id:['km-restart-conversation']},
+                            '',
+                            'n-vis'
+                        );
+                        restartConversationBtn &&
                             restartConversationBtn.addEventListener(
                                 'click',
                                 mckMessageService.restartConversation
                             );
-                   }
+                    }else{
+                        kommunicateCommons.modifyClassList(
+                            {id:['km-restart-conversation']},
+                            'n-vis',
+                            ''
+                        );
+                    }
+                }
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
