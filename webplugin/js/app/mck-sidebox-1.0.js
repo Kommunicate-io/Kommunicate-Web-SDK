@@ -8344,7 +8344,8 @@ var userOverride = {
                     richText &&
                     (
                         kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
-                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
+                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 ||
+                        containerType.indexOf('km-cta-multi-button-container') != -1
                     ) &&
                     (   
                         kmRichTextMarkup.indexOf('<button') != -1 || 
