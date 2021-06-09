@@ -1955,7 +1955,7 @@ var userOverride = {
             var $mck_tab_individual = $applozic('#mck-tab-individual');
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = '/v2/tab/initialize.page';
-            var FEEDBACK_UPDATE_URL = '/feedback/v2';
+            var FEEDBACK_UPDATE_URL = '/rest/ws/feedback/v2/v2';
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var CHAT_CLOSE_BUTTON = `<div id="km-popup-close-button" aria-label="Close" role="button" class="km-custom-widget-background-color">
@@ -2910,6 +2910,10 @@ var userOverride = {
             };
             _this.sendFeedback = function (feedbackData) {
                 mckUtils.ajax({
+                    headers: {
+                        'x-authorization':
+                            window.Applozic.ALApiService.AUTH_TOKEN,
+                    },
                     type: 'POST',
                     url:
                         Kommunicate.getBaseUrl() +
@@ -3566,7 +3570,6 @@ var userOverride = {
                 '/rest/ws/message/delete/conversation';
             var CONVERSATION_READ_UPDATE_URL =
                 '/rest/ws/message/read/conversation';
-            var FEEDBACK_UPDATE_URL = '/feedback/v2';
             var offlineblk =
                 '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
