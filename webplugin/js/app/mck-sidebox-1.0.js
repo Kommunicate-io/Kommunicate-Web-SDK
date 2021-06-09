@@ -12336,7 +12336,6 @@ var userOverride = {
                 2: MCK_LABELS['moderator'],
                 3: MCK_LABELS['member'],
             };
-            var MCK_BOT_API = KM_PLUGIN_SETTINGS.botPlatformApi;
             var select = document.getElementById('mck-group-create-type');
             select.options[select.options.length] = new Option(
                 MCK_LABELS['public'],
@@ -12695,14 +12694,16 @@ var userOverride = {
                 return conversationDetail;
             };
             _this.checkBotDetail = function (userId) {
-                window.Applozic.ALApiService.ajax({
+                mckUtils.ajax({
                     url:
-                        MCK_BOT_API +
-                        '/application/' +
-                        MCK_APP_ID +
-                        '/bot/' +
+                        Kommunicate.getBaseUrl() +
+                        '/rest/ws/botdetails/' +
                         userId,
                     type: 'get',
+                    headers: {
+                        'x-authorization':
+                            window.Applozic.ALApiService.AUTH_TOKEN,
+                    },
                     skipEncryption: true,
                     global: false,
                     success: function (data) {
