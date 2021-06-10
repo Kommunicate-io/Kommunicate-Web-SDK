@@ -239,3 +239,13 @@ input[type=number]::-webkit-outer-spin-button {
 	overflow-y: scroll;
 	height: 123px;
 }
+.km-error-msg{
+	color: red;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.km-login-error{
+	border-color: red!important;
+}

@@ -120,7 +120,8 @@ Kommunicate.defaultLabels = {
             'Before starting, we just need a few details so that we may serve you better',
         submit: 'Start Conversation',
         option: 'Please select',
-        password:'Password'
+        password:'Password',
+        errorText:'Please enter your account password',
     },
     'csat.rating': {
         CONVERSATION_RATED: 'You rated the conversation',

@@ -2256,12 +2256,11 @@ var userOverride = {
                                 id: 'km-password',
                                 type: 'password',
                                 name: 'km-password',
-                                class: 'km-form-control km-input-width',
+                                class: 'km-form-control km-input-width km-login-error',
                                 placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
                                 required: 'true',
                             });
-                            // KommunicateUtils.deleteUserCookiesOnLogout();
-                            // Kommunicate.displayKommunicateWidget(false);
+                            return false;
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
@@ -2974,18 +2973,21 @@ var userOverride = {
             };
             _this.addPasswordField = function(data){
                 var emailField = document.getElementById('km-email');
-                if(emailField){
+                var isPassField = document.getElementById('km-password');
+                var submitBtn = document.getElementById('km-submit-chat-login');
+                if(emailField && isPassField == null){
                     var  passwordField = document.createElement('input');
                     var errorMsg = document.createElement('p');
-                    errorMsg.innerText="wrong password"
+                    errorMsg.innerText = MCK_LABELS['lead.collection'].errorText;
+                    errorMsg.classList.add('km-error-msg');
                     for(var key in data){
                         passwordField.setAttribute(key,data[key]);
                     }
-                    passwordField.style.cssText="border-color: red;";
-                    errorMsg.style.cssText="border-color: red;";
                     emailField.insertAdjacentElement('afterend',passwordField);
                     passwordField.insertAdjacentElement('afterend',errorMsg);
                 }
+                submitBtn.removeAttribute('disabled');
+                submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
             },
             _this.addLeadCollectionInputDiv = function () {
                 KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
