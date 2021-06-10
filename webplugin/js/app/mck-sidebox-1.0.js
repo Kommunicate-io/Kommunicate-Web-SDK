@@ -2248,8 +2248,20 @@ var userOverride = {
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
-                            KommunicateUtils.deleteUserCookiesOnLogout();
-                            Kommunicate.displayKommunicateWidget(false);
+                            var kmChatLoginModal = document.getElementById(
+                                'km-chat-login-modal'
+                            );
+                            kmChatLoginModal.style.visibility='visible';
+                            kmChatLoginModal.style.display='block';
+                            mckInit.addPasswordField({
+                                id: 'km-password',
+                                type: 'password',
+                                name: 'km-password',
+                                class: 'km-form-control km-input-width km-login-error',
+                                placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
+                                required: 'true',
+                            });
+                            return false;
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
@@ -2960,6 +2972,24 @@ var userOverride = {
                     }
                 }
             };
+            _this.addPasswordField = function(data){
+                var emailField = document.getElementById('km-email');
+                var isPassField = document.getElementById('km-password');
+                var submitBtn = document.getElementById('km-submit-chat-login');
+                if(emailField && isPassField == null){
+                    var  passwordField = document.createElement('input');
+                    var errorMsg = document.createElement('p');
+                    errorMsg.innerText = MCK_LABELS['lead.collection'].errorText;
+                    errorMsg.classList.add('km-error-msg');
+                    for(var key in data){
+                        passwordField.setAttribute(key,data[key]);
+                    }
+                    emailField.insertAdjacentElement('afterend',passwordField);
+                    passwordField.insertAdjacentElement('afterend',errorMsg);
+                }
+                submitBtn.removeAttribute('disabled');
+                submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
+            },
             _this.addLeadCollectionInputDiv = function () {
                 KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
                 for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
@@ -4527,6 +4557,7 @@ var userOverride = {
                     }
                     $submit_chat_login.attr('disabled', true);
                     $submit_chat_login.html('Initiating chat...');
+                    $mck_loading.addClass('vis');
                     mckInit.initialize(options);
 
                     return false;
