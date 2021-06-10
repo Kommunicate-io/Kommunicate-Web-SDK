@@ -3600,7 +3600,6 @@ var userOverride = {
                         },
                     },
                     success: function (response) {
-                        console.log(response);
                     },
                     error: function (error) {
                         console.error(error);
@@ -3648,7 +3647,7 @@ var userOverride = {
                         }
                     },
                     error: function (data) {
-                        console.log(data);
+                        console.error(data);
                     },
                 });
             };
@@ -3657,12 +3656,17 @@ var userOverride = {
                     eventMapping.onRestartConversationClick
                 );
                 if (
-                    event.target.id == 'km-restart-conversation' ||
-                    ('km-restart-conversation-text' &&
-                        appOptions.restartConversationByUser)
+                    event.target.id == ('km-restart-conversation' || 'km-restart-conversation-text') 
+                    && appOptions.restartConversationByUser
                 ) {
                     _this.changeConversationAssignee();
                 } else {
+                    appOptions.restartConversationByUser &&
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-widget-options'] },
+                            '',
+                            'n-vis'
+                        );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                 }
