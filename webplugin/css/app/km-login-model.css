@@ -240,12 +240,12 @@ input[type=number]::-webkit-outer-spin-button {
 	height: 123px;
 }
 .km-error-msg{
-	color: red;
+	color: 	#ff0000;
     font-size: 14px;
     text-align: center;
     margin: 0;
     padding: 0;
 }
 .km-login-error{
-	border-color: red!important;
+	border-color: #ff0000!important;
 }
