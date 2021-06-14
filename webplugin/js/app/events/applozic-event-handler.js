@@ -58,7 +58,13 @@ Kommunicate.KmEventHandler = {
         }
     },
     onMessageSent: function (message) {
-        if (!(message && message.metadata && message.metadata.feedback)) {
+        if (!(
+                message && 
+                message.metadata && 
+                message.metadata.feedback || 
+                message.metadata.KM_STATUS == KommunicateConstants.CONVERSATION_CLOSED_STATUS ||
+                message.metadata.KM_STATUS == KommunicateConstants.CONVERSATION_RESOLVED_STATUS
+                )) {
             KommunicateUI.showClosedConversationBanner(false);
         }
     },
