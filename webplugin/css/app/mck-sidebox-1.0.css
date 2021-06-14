@@ -5358,10 +5358,27 @@ div[name="message"]:last-child {
 
 .mck-ratings-smilies{
 	display: flex;
+    align-items: end;
+}
+
+.mck-smilies-inner{
+	display: flex;
     align-items: center;
-    justify-content: space-around;
-    max-width: 250px;
     margin: 25px auto;
+    gap: 60px;
+	padding-left: 30px;
+}
+.mck-csat-close{
+	max-width: 0;
+}
+.mck-csat-close-button{
+	float: right;
+    font-weight: 700;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    height: 38px;
 }
 
 .mck-csat-wrapper{
@@ -5711,7 +5728,7 @@ body.accesibility :focus {
 }
 
 .chat-popup-widget-container--horizontal {
-	border-radius: 40px;
+	border-radius: 40px !important;
 	bottom: 5px;
 	right: 5px;
 }
