@@ -14455,13 +14455,13 @@ var userOverride = {
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
                     
-                    if(file.type.indexOf('image') !== -1){
-                        // for encrypted images
-                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
-                        data.append('file', file, newFileName);
-                    }else{
+                    // if(file.type.indexOf('image') !== -1){
+                    //     // for encrypted images
+                    //     var newFileName = 'AWS-ENCRYPTED-'+file.name;
+                    //     data.append('file', file, newFileName);
+                    // }else{
                         data.append('file', file);
-                    }
+                    // }
                 
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
