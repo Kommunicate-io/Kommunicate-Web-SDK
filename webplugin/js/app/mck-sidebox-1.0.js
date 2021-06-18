@@ -1956,10 +1956,11 @@ var userOverride = {
             var $mck_tab_individual = $applozic('#mck-tab-individual');
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = '/v2/tab/initialize.page';
-            var FEEDBACK_UPDATE_URL = '/feedback/v2';
+            var FEEDBACK_UPDATE_URL = '/rest/ws/feedback/v2/v2';
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
-                var CHAT_CLOSE_BUTTON = `<div id="km-popup-close-button" aria-label="Close" role="button" class="km-custom-widget-background-color">
+                var squareIcon = kommunicate._globals.iconShape == 'square' ? 'km-square-chat-icon' : null;
+                var CHAT_CLOSE_BUTTON = `<div id="km-popup-close-button" aria-label="Close" role="button" class="km-custom-widget-background-color ${squareIcon}">
                     <svg width="64" xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 64 64">
                         <path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z" stroke-width="6" stroke="#fff"/>
                     </svg>
@@ -2248,8 +2249,20 @@ var userOverride = {
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
-                            KommunicateUtils.deleteUserCookiesOnLogout();
-                            Kommunicate.displayKommunicateWidget(false);
+                            var kmChatLoginModal = document.getElementById(
+                                'km-chat-login-modal'
+                            );
+                            kmChatLoginModal.style.visibility='visible';
+                            kmChatLoginModal.style.display='block';
+                            mckInit.addPasswordField({
+                                id: 'km-password',
+                                type: 'password',
+                                name: 'km-password',
+                                class: 'km-form-control km-input-width km-login-error',
+                                placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
+                                required: 'true',
+                            });
+                            return false;
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
@@ -2904,6 +2917,10 @@ var userOverride = {
             };
             _this.sendFeedback = function (feedbackData) {
                 mckUtils.ajax({
+                    headers: {
+                        'x-authorization':
+                            window.Applozic.ALApiService.AUTH_TOKEN,
+                    },
                     type: 'POST',
                     url:
                         Kommunicate.getBaseUrl() +
@@ -2953,6 +2970,24 @@ var userOverride = {
                     }
                 }
             };
+            _this.addPasswordField = function(data){
+                var emailField = document.getElementById('km-email');
+                var isPassField = document.getElementById('km-password');
+                var submitBtn = document.getElementById('km-submit-chat-login');
+                if(emailField && isPassField == null){
+                    var  passwordField = document.createElement('input');
+                    var errorMsg = document.createElement('p');
+                    errorMsg.innerText = MCK_LABELS['lead.collection'].errorText;
+                    errorMsg.classList.add('km-error-msg');
+                    for(var key in data){
+                        passwordField.setAttribute(key,data[key]);
+                    }
+                    emailField.insertAdjacentElement('afterend',passwordField);
+                    passwordField.insertAdjacentElement('afterend',errorMsg);
+                }
+                submitBtn.removeAttribute('disabled');
+                submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
+            },
             _this.addLeadCollectionInputDiv = function () {
                 KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
                 for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
@@ -4616,6 +4651,7 @@ var userOverride = {
                     }
                     $submit_chat_login.attr('disabled', true);
                     $submit_chat_login.html('Initiating chat...');
+                    $mck_loading.addClass('vis');
                     mckInit.initialize(options);
 
                     return false;
@@ -8655,7 +8691,8 @@ var userOverride = {
                     richText &&
                     (
                         kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
-                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 
+                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 ||
+                        (containerType && containerType.indexOf('km-cta-multi-button-container') != -1)
                     ) &&
                     (   
                         kmRichTextMarkup.indexOf('<button') != -1 || 
@@ -12468,7 +12505,6 @@ var userOverride = {
                 2: MCK_LABELS['moderator'],
                 3: MCK_LABELS['member'],
             };
-            var MCK_BOT_API = KM_PLUGIN_SETTINGS.botPlatformApi;
             var select = document.getElementById('mck-group-create-type');
             select.options[select.options.length] = new Option(
                 MCK_LABELS['public'],
@@ -12827,14 +12863,16 @@ var userOverride = {
                 return conversationDetail;
             };
             _this.checkBotDetail = function (userId) {
-                window.Applozic.ALApiService.ajax({
+                mckUtils.ajax({
                     url:
-                        MCK_BOT_API +
-                        '/application/' +
-                        MCK_APP_ID +
-                        '/bot/' +
+                        Kommunicate.getBaseUrl() +
+                        '/rest/ws/botdetails/' +
                         userId,
                     type: 'get',
+                    headers: {
+                        'x-authorization':
+                            window.Applozic.ALApiService.AUTH_TOKEN,
+                    },
                     skipEncryption: true,
                     global: false,
                     success: function (data) {
@@ -14550,13 +14588,13 @@ var userOverride = {
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
                     
-                    if(file.type.indexOf('image') !== -1){
-                        // for encrypted images
-                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
-                        data.append('file', file, newFileName);
-                    }else{
+                    // if(file.type.indexOf('image') !== -1){
+                    //     // for encrypted images
+                    //     var newFileName = 'AWS-ENCRYPTED-'+file.name;
+                    //     data.append('file', file, newFileName);
+                    // }else{
                         data.append('file', file);
-                    }
+                    // }
                 
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
@@ -14651,12 +14689,12 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
-                    var queryParams;
-                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
-                        queryParams = '?aclsPrivate=true';
-                    };  
+                    // var queryParams;
+                    // if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
+                    //     queryParams = '?aclsPrivate=true';
+                    // };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
-                    queryParams && (url = url + queryParams);
+                    // queryParams && (url = url + queryParams);
                     xhr.open('post', url, true);
                     window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);

@@ -75,6 +75,9 @@ $applozic.extend(true, Kommunicate, {
 
         params.WELCOME_MESSAGE &&
             (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
+        params.conversationMetadata &&
+        typeof params.conversationMetadata == 'object' &&
+            (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
             groupName: groupName,
