@@ -249,11 +249,9 @@ Kommunicate.markup = {
     },
     getQuickRepliesTemplate: function () {
         return `
-        <div class='km-cta-multi-button-container' >
             {{#payload}}
                  <button aria-label="{{title}}" title='{{message}}' class="km-quick-replies km-custom-widget-text-color {{buttonClass}} " data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-hidePostCTA="{{hidePostCTA}}">{{title}}</button>
             {{/payload}}
-        <div>
             `;
     },
     getGenericSuggestedReplyButton: function () {
