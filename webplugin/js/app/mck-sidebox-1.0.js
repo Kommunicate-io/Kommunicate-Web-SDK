@@ -3585,22 +3585,29 @@ var userOverride = {
                 }
             };
             _this.triggerWelcomeEvent = function(){
+                var defaultSettings = KommunicateUtils.getDataFromKmSession(
+                    'settings'
+                );
                 window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
                             contentType: 10,
-                            message: 'Event: WELCOME',
+                            message:
+                                'Event:' +
+                                    defaultSettings.customeWelcomeEvent ||
+                                'WELCOME',
                             groupId: CURRENT_GROUP_DATA.tabId,
                             metadata: {
                                 category: 'HIDDEN',
-                                KM_TRIGGER_EVENT: 'WELCOME',
+                                KM_TRIGGER_EVENT:
+                                    defaultSettings.customeWelcomeEvent ||
+                                    'WELCOME',
                             },
                             source: 1,
                         },
                     },
-                    success: function (response) {
-                    },
+                    success: function (response) {},
                     error: function (error) {
                         console.error(error);
                     },
@@ -3656,7 +3663,7 @@ var userOverride = {
                     eventMapping.onRestartConversationClick
                 );
                 if (
-                    event.target.id == ('km-restart-conversation' || 'km-restart-conversation-text') 
+                    event.target.id == ('km-restart-conversation') || ('km-restart-conversation-text') 
                     && appOptions.restartConversationByUser
                 ) {
                     _this.changeConversationAssignee();
