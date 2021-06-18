@@ -4480,6 +4480,10 @@ var userOverride = {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
                 };
+                document.getElementById('km-csat-close-button').onclick = function(e){
+                    e.preventDefault();
+                    KommunicateUI.showClosedConversationBanner(false);
+                }
 
                 // Voice Output Override trigger
                 document.getElementById(
