@@ -48,6 +48,22 @@ KommunicateUI = {
             KommunicateUI.displayLeadCollectionTemplate(data);
         }
     },
+    loadIntentDropdown:function(){
+        var intentOptions = document.getElementById('mck-intent-options');
+        var replyOption = _globals.replyMenu;
+        if(replyOption && intentOptions){
+            for(var i=0;i<=replyOption.length;i++){
+                var listElement = document.createElement('li');
+                listElement.innerText = replyOption[i];
+                listElement.addEventListener('click',function(e){
+                    e.preventDefault();
+                    
+                })
+                intentOptions.appendChild(listElement);
+            }
+
+        }
+    },
     populateAwayMessage: function (err, message) {
         var conversationWindowNotActive = $applozic(
             '#mck-tab-individual'
