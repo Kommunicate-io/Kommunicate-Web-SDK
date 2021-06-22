@@ -5818,12 +5818,32 @@ var userOverride = {
                         }
                         // Lead Collection (Email)
                         var sendMsgCount = $applozic('[data-msgtype=5]').length;
+                        var roleType = null;
+                        if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
+                            for (
+                                var i = 0;
+                                i <= CURRENT_GROUP_DATA.groupMembers.length;
+                                i++
+                            ) {
+                                if (
+                                    CURRENT_GROUP_DATA.groupMembers[i].userId ==
+                                    CURRENT_GROUP_DATA.conversationAssignee
+                                ) {
+                                    roleType =
+                                        CURRENT_GROUP_DATA.groupMembers[i]
+                                            .roleType;
+                                    break;
+                                }
+                            }
+                        }
                         if (
                             sendMsgCount == 1 &&
                             ((KommunicateUI.leadCollectionEnabledOnAwayMessage &&
+                                roleType !== 1 &&
                                 KommunicateUI.awayMessageInfo.isEnabled &&
                                 KommunicateUI.awayMessageInfo.eventId == 1) ||
                                 (KommunicateUI.welcomeMessageEnabled &&
+                                    roleType !== 1 &&
                                     KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
                                     KommunicateUI.anonymousUser))
                         ) {
