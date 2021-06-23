@@ -7750,7 +7750,7 @@ var userOverride = {
                                 isIterable && (member.role == 2 ||
                                 member.roleType == 1) &&
                                     member.userId ==
-                                        CURRENT_GROUP_DATA.conversationAssignee
+                                        CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
                             ) {
                                 isIterable = false;
                                 CURRENT_GROUP_DATA.initialBot = member;
