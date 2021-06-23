@@ -3619,6 +3619,9 @@ var userOverride = {
                         $applozic('.mck-dropup-menu').hide();
                 }
             };
+            /*  To trigger welcome event of a bot.
+                defaultSettings: if there is any custome event is configured by the user
+            */
             _this.triggerWelcomeEvent = function(){
                 var defaultSettings = KommunicateUtils.getDataFromKmSession(
                     'settings'
@@ -3648,6 +3651,7 @@ var userOverride = {
                     },
                 });
             },
+            // change the conversation assignee
             _this.changeConversationAssignee = function () {
                 window.Applozic.ALApiService.ajax({
                     type: 'PATCH',
@@ -3669,6 +3673,7 @@ var userOverride = {
                             CURRENT_GROUP_DATA.conversationAssignee !=
                                 CURRENT_GROUP_DATA.initialBot.userId
                         ) {
+                            // removing other conversation asignee if it is not default one
                             mckGroupService.removeGroupMemberFromChat({
                                 groupId: CURRENT_GROUP_DATA.tabId,
                                 userId: CURRENT_GROUP_DATA.conversationAssignee,
