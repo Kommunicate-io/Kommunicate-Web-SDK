@@ -4479,6 +4479,11 @@ var userOverride = {
                 ) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
+                    kommunicateCommons.modifyClassList(
+                        { id: ['mck-csat-close'] },
+                        'vis',
+                        'n-vis'
+                    );
                 };
                 document.getElementById('km-csat-close-button').onclick = function(e){
                     e.preventDefault();
