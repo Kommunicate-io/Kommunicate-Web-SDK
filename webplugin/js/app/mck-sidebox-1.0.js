@@ -679,6 +679,7 @@ var userOverride = {
                         eventMapping.onStartNewConversation
                     );
                     KommunicateUI.activateTypingField();
+                    mckMessageLayout.loadDropdownOptions();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -2839,14 +2840,7 @@ var userOverride = {
                     rating: 0,
                 };
 
-                restartConversation.addEventListener('click', function () {
-                    kmWidgetEvents.eventTracking(
-                        eventMapping.onRestartConversationClick
-                    );
-                    KommunicateUI.showClosedConversationBanner(false);
-                    KommunicateUI.isConvJustResolved = false;
-                });
-
+                restartConversation.addEventListener('click', mckMessageService.restartConversation);
                 sendFeedbackComment.addEventListener('click', function () {
                     kmWidgetEvents.eventTracking(
                         eventMapping.onSubmitRatingClick
@@ -3309,6 +3303,8 @@ var userOverride = {
                     MCK_LABELS['waiting.queue.message']['last.part'];
                 document.getElementById('km-csat-trigger-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
+                document.getElementById('km-restart-conversation-text').innerText =
+                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3606,6 +3602,8 @@ var userOverride = {
                 '/rest/ws/message/delete/conversation';
             var CONVERSATION_READ_UPDATE_URL =
                 '/rest/ws/message/read/conversation';
+            var FEEDBACK_UPDATE_URL = '/feedback/v2';
+            var CHANGE_BOT = '/rest/ws/group/assignee/change';
             var offlineblk =
                 '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
@@ -3630,23 +3628,24 @@ var userOverride = {
                 defaultSettings: if there is any custome event is configured by the user
             */
             _this.triggerWelcomeEvent = function(){
-                var customEvent = KommunicateUtils.getDataFromKmSession(
+                var defaultSettings = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 );
-                var eventToTrigger = customEvent
-                    ? customEvent.customWelcomeEvent
-                    : 'WELCOME';
                 window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
                             contentType: 10,
                             message:
-                                'Event:'+eventToTrigger,
+                                'Event:' +
+                                    defaultSettings.customeWelcomeEvent ||
+                                'WELCOME',
                             groupId: CURRENT_GROUP_DATA.tabId,
                             metadata: {
                                 category: 'HIDDEN',
-                                KM_TRIGGER_EVENT: eventToTrigger,
+                                KM_TRIGGER_EVENT:
+                                    defaultSettings.customeWelcomeEvent ||
+                                    'WELCOME',
                             },
                             source: 1,
                         },
@@ -3709,9 +3708,8 @@ var userOverride = {
                     eventMapping.onRestartConversationClick
                 );
                 if (
-                    event.target.id == 'km-restart-conversation' ||
-                    event.target.id == 'km-restart-conversation-text' &&
-                        appOptions.restartConversationByUser
+                    event.target.id == ('km-restart-conversation') || ('km-restart-conversation-text') 
+                    && appOptions.restartConversationByUser
                 ) {
                     _this.changeConversationAssignee();
                 } else {
@@ -3723,7 +3721,6 @@ var userOverride = {
                         );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
-                    mckMessageLayout.loadDropdownOptions();
                 }
             };
             _this.showSendButton = function () {
@@ -7500,6 +7497,7 @@ var userOverride = {
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
+                                CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
@@ -7775,7 +7773,6 @@ var userOverride = {
                 $applozic.template('searchContactbox', searchContactbox);
                 $applozic.template('csatModule', csatModule);
             };
-
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 var isConvRated =
@@ -7795,23 +7792,12 @@ var userOverride = {
                     );
                 }
                 if (appOptions.restartConversationByUser) {
-                    enableDropdown = true;
-                    var isIterable = true;
                     var restartConversationBtn = document.getElementById(
                         'km-restart-conversation'
                     );
-                    if (
-                        restartConversationBtn &&
-                        restartConversationBtn.classList.contains('n-vis')
-                    ) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            '',
-                            'n-vis'
-                        );
-                    }
+                    var isIterable = true;
                     CURRENT_GROUP_DATA.groupMembers &&
-                        CURRENT_GROUP_DATA.groupMembers.forEach(function (member) {
+                        CURRENT_GROUP_DATA.groupMembers.map(function (member) {
                             if (
                                 isIterable && (member.role == 2 ||
                                 member.roleType == 1) &&
@@ -7830,7 +7816,7 @@ var userOverride = {
                             CURRENT_GROUP_DATA.initialBot.userId
                     ) {
                         kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
+                            {id:['km-restart-conversation']},
                             '',
                             'n-vis'
                         );
@@ -7839,9 +7825,9 @@ var userOverride = {
                                 'click',
                                 mckMessageService.restartConversation
                             );
-                    } else {
+                    }else{
                         kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
+                            {id:['km-restart-conversation']},
                             'n-vis',
                             ''
                         );
