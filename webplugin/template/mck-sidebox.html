@@ -425,6 +425,15 @@
 										<div id ="mck-animation-outer" class="mck-animation-outer km-custom-widget-background-color n-vis"></div>
 											<svg focusable="false" aria-hidden="true" id = "mck-mic-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#787474" d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
 									</div>
+									<div id="mck-quick-replies-box" class="mck-intent-box n-vis">
+										<div class="mck-bot-icon">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M19.463 11.2112H18.7112V8.83055C18.6933 8.54415 18.4606 8.31146 18.1742 8.29356H13.037V5H11.963V8.29356H6.82578C6.53938 8.31146 6.30668 8.54415 6.28878 8.83055V11.2112H5.53699C5.2327 11.2112 5 11.4439 5 11.7482V15.2924C5 15.5967 5.2327 15.8294 5.53699 15.8294H6.28878V19.1408C6.30668 19.4272 6.53938 19.6599 6.82578 19.6778H18.1742C18.4606 19.6599 18.6933 19.4272 18.7112 19.1408V15.8294H19.463C19.7673 15.8294 20 15.5967 20 15.2924V11.7482C20 11.4439 19.7673 11.2112 19.463 11.2112ZM8.50835 12.4821C8.50835 11.6229 9.20644 10.9248 10.0656 10.9248C10.9248 10.9248 11.6229 11.6229 11.6229 12.4821C11.6229 13.3413 10.9248 14.0394 10.0656 14.0394C9.20644 14.0394 8.50835 13.3413 8.50835 12.4821ZM14.8628 17.1539H10.1372V16.08H14.8628V17.1539V17.1539ZM16.4916 12.4821C16.4916 13.3413 15.7936 14.0394 14.9344 14.0394C14.0573 14.0394 13.3592 13.3413 13.3413 12.4821C13.3413 11.605 14.0394 10.9069 14.8986 10.889C15.7578 10.8711 16.4737 11.5871 16.4916 12.4463C16.4916 12.4642 16.4916 12.4642 16.4916 12.4821Z" fill="#BCC7DB"/>
+											</svg>
+											<ul id="mck-intent-options" class="mck-intent-menu mck-intent-menu-animate n-vis">
+											</ul>
+										</div>
+									</div>
 									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right n-vis">
 										<div class="mck-blk-12">
 											<button type="button" id="mck-btn-smiley" class="mck-btn mck-btn-smiley mck-btn-text-panel" title="Emoji Picker" aria-disabled="false" aria-label="Emoji picker" tabindex="0">
@@ -453,15 +462,7 @@
 
 									<textarea id="mck-autosuggest-search-input" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead km-auto-expand" autocomplete="off" rows='1' data-autoresize form="mck-msg-form" method="post" type="text" aria-label="Select option" tabindex="0"></textarea>
 									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
-									<div id="mck-custom-intent-box" class="mck-intent-box">
-										<button class="mck-bot-icon">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M19.463 11.2112H18.7112V8.83055C18.6933 8.54415 18.4606 8.31146 18.1742 8.29356H13.037V5H11.963V8.29356H6.82578C6.53938 8.31146 6.30668 8.54415 6.28878 8.83055V11.2112H5.53699C5.2327 11.2112 5 11.4439 5 11.7482V15.2924C5 15.5967 5.2327 15.8294 5.53699 15.8294H6.28878V19.1408C6.30668 19.4272 6.53938 19.6599 6.82578 19.6778H18.1742C18.4606 19.6599 18.6933 19.4272 18.7112 19.1408V15.8294H19.463C19.7673 15.8294 20 15.5967 20 15.2924V11.7482C20 11.4439 19.7673 11.2112 19.463 11.2112ZM8.50835 12.4821C8.50835 11.6229 9.20644 10.9248 10.0656 10.9248C10.9248 10.9248 11.6229 11.6229 11.6229 12.4821C11.6229 13.3413 10.9248 14.0394 10.0656 14.0394C9.20644 14.0394 8.50835 13.3413 8.50835 12.4821ZM14.8628 17.1539H10.1372V16.08H14.8628V17.1539V17.1539ZM16.4916 12.4821C16.4916 13.3413 15.7936 14.0394 14.9344 14.0394C14.0573 14.0394 13.3592 13.3413 13.3413 12.4821C13.3413 11.605 14.0394 10.9069 14.8986 10.889C15.7578 10.8711 16.4737 11.5871 16.4916 12.4463C16.4916 12.4642 16.4916 12.4642 16.4916 12.4821Z" fill="#BCC7DB"/>
-											</svg>	
-										</button>
-										<ul id="mck-intent-options" class="mck-intent-menu">
-										</ul>
-									</div>
+									
 									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required notranslate" data-text="Type your message..." aria-label="Type your message..." tabindex="0"></div>
 									
 									<input id="mck-file-input" class="mck-file-input n-vis" type="file" name="files[]">

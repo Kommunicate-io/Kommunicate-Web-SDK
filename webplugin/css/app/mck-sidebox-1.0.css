@@ -1756,6 +1756,7 @@
 	width: auto;
 	border: none;
 	padding-right: 0;
+	cursor: pointer;
 }
 
 .mck-bot-icon svg:hover path {
@@ -1784,7 +1785,7 @@
 }
 
 ul.mck-intent-menu>li {
-	padding: 5px 8px;
+	padding: 5px 10px;
 }
 
 ul.mck-intent-menu>li:hover {

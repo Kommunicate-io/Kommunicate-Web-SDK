@@ -575,6 +575,7 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
+        var QUICK_REPLIES = appOptions.quickReplies? mckMessageService.checkArray(appOptions.quickReplies):[];
         var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection
             ? mckMessageService.checkArray(appOptions.preLeadCollection)
             : appOptions.appSettings.collectLead &&
@@ -7628,7 +7629,6 @@ var userOverride = {
                 $applozic.template('searchContactbox', searchContactbox);
                 $applozic.template('csatModule', csatModule);
             };
-
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 var isConvRated =
@@ -7789,6 +7789,8 @@ var userOverride = {
                 $applozic('#mck-sidebox-ft')
                     .removeClass('vis')
                     .addClass('n-vis');
+                // render quick replies
+                QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
                 $mck_sidebox_search.removeClass('vis').addClass('n-vis');
                 $mck_group_info_tab.removeClass('vis').addClass('n-vis');
                 $mck_group_create_tab.removeClass('vis').addClass('n-vis');
