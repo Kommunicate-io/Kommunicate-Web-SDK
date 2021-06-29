@@ -8258,7 +8258,7 @@ var userOverride = {
                 var messageClass = 'vis';
                 var progressMeterClass = 'n-vis';
                 var attachmentBox = 'n-vis';
-                var kmAttchMsg= ''
+                var kmAttchMsg = '';
                 if (!Kommunicate.visibleMessage(msg)) return;
 
                 if (
@@ -8324,9 +8324,10 @@ var userOverride = {
                     msg.contentType ==
                         KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
                 ) {
+                    messageClass = msg.message ? 'vis km-attach-msg-right' : 'n-vis';
                     progressMeterClass = 'n-vis';
-                    attachmentBox = 'vis';
                     kmAttchMsg = 'km-attach-msg';
+                    attachmentBox = 'km-attach-msg-right';
                 } else {
                     messageClass =
                         (msg.contentType ==
@@ -8357,27 +8358,15 @@ var userOverride = {
                 ) {
                     floatWhere = 'mck-msg-center';
                 }
-                if (floatWhere === 'mck-msg-right') {
-                    msgBoxColorStyle = 'km-custom-widget-background-color';
-                    if (kmAttchMsg === 'km-attach-msg') {
-                        messageClass = 'vis message-class-right';
-                        attachmentBox = 'message-class-right';
-                        if (!msg.message) {
-                            messageClass = 'n-vis';
-                        }
-                    }
-                } else {
-                    msgBoxColorStyle =
-                        'km-custom-widget-background-color-secondary';
-                    if (kmAttchMsg === 'km-attach-msg') {
-                        messageClass = 'vis message-class-left';
-                        attachmentBox = 'message-class-left';
-                        if (!msg.message) {
-                            messageClass = 'n-vis';
-                        }
-                    }
-                }
+                msgBoxColorStyle =
+                    floatWhere === 'mck-msg-right'
+                        ? 'km-custom-widget-background-color'
+                        : 'km-custom-widget-background-color-secondary';
 
+                if ( floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg') {
+                    messageClass = 'vis km-attach-msg-left';
+                    attachmentBox = 'km-attach-msg-left';
+                }
                 statusIcon = _this.getStatusIconName(msg);
                 var replyId = msg.key;
                 var replyMessageParameters =

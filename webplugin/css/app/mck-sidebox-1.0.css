@@ -3051,10 +3051,10 @@ display: none;
 .mck-group-inner .mck-msg-left .mck-msg-box:after {
 	border-right-color: #e6e5ec;
 }
-.message-class-left {
+.km-attach-msg-left {
 	align-self: flex-start !important;
 }
-.message-class-right {
+.km-attach-msg-right {
 	align-self: flex-end !important;
 }
 .km-attach-msg {
