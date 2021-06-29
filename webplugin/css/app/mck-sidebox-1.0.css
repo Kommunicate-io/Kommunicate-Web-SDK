@@ -3051,6 +3051,17 @@ display: none;
 .mck-group-inner .mck-msg-left .mck-msg-box:after {
 	border-right-color: #e6e5ec;
 }
+.message-class-left {
+	align-self: flex-start !important;
+}
+.message-class-right {
+	align-self: flex-end !important;
+}
+.km-attach-msg {
+	display: flex;
+	flex-direction: column;
+	align-self: flex-start;
+}
 
 .mck-audio-player {
 	width: 180px;
