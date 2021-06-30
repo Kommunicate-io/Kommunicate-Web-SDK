@@ -229,4 +229,21 @@ function KommunicateCommons() {
     _this.getDefaultAvatarImageSvg = function () {
         return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
     };
+
+     _this.getFeedback = function (tabId, onSuccessCallback) {
+         mckUtils.ajax({
+             headers: {
+                 'x-authorization':
+                     window.Applozic.ALApiService.AUTH_TOKEN,
+             },
+             type: 'GET',
+             url: Kommunicate.getBaseUrl() + '/rest/ws/feedback/v2/' + tabId,
+             global: false,
+             contentType: 'application/json',
+             success: onSuccessCallback,
+             error: function (err) {
+                 console.log('Error fetching feedback', err);
+             },
+         });
+     };
 }
