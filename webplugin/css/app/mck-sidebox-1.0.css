@@ -1470,7 +1470,6 @@
 	left: 5px;
 	position: absolute;
 	display: inline-block !important;
-	content: '';
 }
 #mck-upload-menu-list.mck-dropup-menu:before, #mck-upload-menu-list.mck-dropup-menu:after {
 	right: 5px;
@@ -1757,6 +1756,13 @@
 	border: none;
 	padding-right: 0;
 	cursor: pointer;
+	/* Remove text selection for diffrent browser */
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none;
+    user-select: none;
 }
 
 .mck-bot-icon svg:hover path {
@@ -1767,16 +1773,15 @@
 .mck-intent-menu{
 	position: absolute;
 	left: -4px;
-	bottom: 23px;
+	right: auto;
+	bottom: 28px;
 	z-index: 1000;
-	display: block;
+	display: none;
 	float: left;
-	min-width: 100px;
+	min-width: 130px;
 	max-width: 300px;
-	padding: 5px 0;
-	margin: 2px 0 0;
-	border-radius: 5px;
-	font-size: 16px;
+	border-radius: 4px;
+	font-size: 14px;
 	text-align: start;	
 	list-style: none;
 	background-color: #fff;
@@ -1786,6 +1791,7 @@
 
 ul.mck-intent-menu>li {
 	padding: 5px 10px;
+	color: #000000;
 }
 
 ul.mck-intent-menu>li:hover {

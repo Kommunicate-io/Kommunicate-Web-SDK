@@ -803,38 +803,26 @@ KommunicateUI = {
         }
     },
     loadQuickReplies: function (quickReplies) {
-        var botIcon = document.querySelector('.mck-bot-icon');
+        var intentList = document.getElementById('mck-intent-options');
         if (
             quickReplies.length > 0 &&
-            botIcon &&
-            botIcon.lastElementChild.childElementCount < 1
+            intentList &&
+            intentList.childElementCount < 1
         ) {
             kommunicateCommons.modifyClassList(
                 { id: ['mck-quick-replies-box'] },
                 'vis',
                 'n-vis'
             );
-            botIcon.onclick = function () {
-                if (botIcon.lastElementChild.classList.contains('vis')) {
-                    kommunicateCommons.modifyClassList(
-                        { id: ['mck-intent-options'] },
-                        'n-vis',
-                        'vis'
-                    );
-                } else {
-                    kommunicateCommons.modifyClassList(
-                        { id: ['mck-intent-options'] },
-                        'vis',
-                        'n-vis'
-                    );
-                }
-            };
             for (var i = 0; i <= quickReplies.length - 1; i++) {
                 var li = document.createElement('li');
                 li.innerText = quickReplies[i];
-                botIcon.lastElementChild.appendChild(li);
-                li.onclick = function () {
-                    document.getElementById('mck-text-box').innerText = this.innerText;
+                intentList.appendChild(li);
+                li.onclick = function (e) {
+                    e.preventDefault();
+                    document.getElementById(
+                        'mck-text-box'
+                    ).innerText = this.innerText;
                     document.getElementById('mck-msg-sbmt').click();
                 };
             }
