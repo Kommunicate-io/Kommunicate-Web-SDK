@@ -124,8 +124,10 @@ $applozic.extend(true, Kommunicate, {
     updateConversationMetadata: function (conversationMetadata) {
         if (conversationMetadata) {
             if (
-                kommunicateCommons.isObject(conversationMetadata) &&
-                kommunicateCommons.isObject(conversationMetadata.metadata) &&
+                Object.prototype.toString.call(conversationMetadata) ==
+                    '[object Object]' &&
+                Object.prototype.toString.call(conversationMetadata.metadata) ==
+                    '[object Object]' &&
                 conversationMetadata.groupId &&
                 conversationMetadata.metadata
             ) {
