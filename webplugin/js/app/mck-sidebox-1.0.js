@@ -3632,14 +3632,12 @@ var userOverride = {
                             type: 5,
                             contentType: 10,
                             message:
-                                'Event:' +
-                                    defaultSettings.customeWelcomeEvent ||
-                                'WELCOME',
+                                `Event: ${defaultSettings ? defaultSettings.customeWelcomeEvent:'WELCOME'}` ,
                             groupId: CURRENT_GROUP_DATA.tabId,
                             metadata: {
                                 category: 'HIDDEN',
                                 KM_TRIGGER_EVENT:
-                                    defaultSettings.customeWelcomeEvent ||
+                                defaultSettings ? defaultSettings.customeWelcomeEvent :
                                     'WELCOME',
                             },
                             source: 1,
@@ -5927,6 +5925,7 @@ var userOverride = {
                                 i++
                             ) {
                                 if (
+                                    CURRENT_GROUP_DATA.groupMembers[i] &&
                                     CURRENT_GROUP_DATA.groupMembers[i].userId ==
                                     CURRENT_GROUP_DATA.conversationAssignee
                                 ) {
