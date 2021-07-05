@@ -1890,6 +1890,7 @@
 	width: 100%;
 	height: auto;
 	border-radius: 5px;
+	margin-bottom: 4px;
 }
 
 .km-msg-box-attachment > .km-application-attachment-wrapper{
