@@ -3623,24 +3623,23 @@ var userOverride = {
                 defaultSettings: if there is any custome event is configured by the user
             */
             _this.triggerWelcomeEvent = function(){
-                var defaultSettings = KommunicateUtils.getDataFromKmSession(
+                var customEvent = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 );
+                var eventToTrigger = customEvent
+                    ? customEvent.customeWelcomeEvent
+                    : 'WELCOME';
                 window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
                             contentType: 10,
                             message:
-                                'Event:' +
-                                    defaultSettings.customeWelcomeEvent ||
-                                'WELCOME',
+                                'Event:'+eventToTrigger,
                             groupId: CURRENT_GROUP_DATA.tabId,
                             metadata: {
                                 category: 'HIDDEN',
-                                KM_TRIGGER_EVENT:
-                                    defaultSettings.customeWelcomeEvent ||
-                                    'WELCOME',
+                                KM_TRIGGER_EVENT: eventToTrigger,
                             },
                             source: 1,
                         },
@@ -5931,6 +5930,7 @@ var userOverride = {
                                 i++
                             ) {
                                 if (
+                                    CURRENT_GROUP_DATA.groupMembers[i] &&
                                     CURRENT_GROUP_DATA.groupMembers[i].userId ==
                                     CURRENT_GROUP_DATA.conversationAssignee
                                 ) {
