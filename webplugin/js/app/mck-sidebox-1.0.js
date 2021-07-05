@@ -3626,18 +3626,18 @@ var userOverride = {
                 var customEvent = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 ).customeWelcomeEvent;
-                var eventToTrigegr = customEvent?customEvent:'WELCOME';
+                var eventToTrigger = customEvent?customEvent:'WELCOME';
                 window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
                             contentType: 10,
                             message:
-                                'Event:'+eventToTrigegr,
+                                'Event:'+eventToTrigger,
                             groupId: CURRENT_GROUP_DATA.tabId,
                             metadata: {
                                 category: 'HIDDEN',
-                                KM_TRIGGER_EVENT: eventToTrigegr,
+                                KM_TRIGGER_EVENT: eventToTrigger,
                             },
                             source: 1,
                         },
