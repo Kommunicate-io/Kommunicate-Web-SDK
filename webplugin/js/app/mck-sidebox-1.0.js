@@ -5557,6 +5557,7 @@ var userOverride = {
                     _this.submitMessage(messagePxy, optns);
                     _this.submitMessage(locationMessage, optns);
                 } else if (FILE_META.length > 0) {
+                    var msgPxy = messagePxy.message;
                     $applozic.each(FILE_META, function (i, fileMeta) {
                         var isTopPanelAdded = $mck_tab_message_option.hasClass(
                             'n-vis'
@@ -5565,6 +5566,9 @@ var userOverride = {
                         var randomId = mckUtils.randomId();
                         messagePxy.key = randomId;
                         messagePxy.fileMeta = fileMeta;
+                        i != FILE_META.length - 1
+                            ? (messagePxy.message = '')
+                            : (messagePxy.message = msgPxy);
                         file &&
                             file.size &&
                             (messagePxy.fileMeta.size = file.size);
