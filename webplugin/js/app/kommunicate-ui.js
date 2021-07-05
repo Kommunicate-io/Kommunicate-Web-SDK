@@ -50,7 +50,7 @@ KommunicateUI = {
     },
     loadIntentDropdown:function(){
         var intentOptions = document.getElementById('mck-intent-options');
-        var replyOption = _globals.replyMenu;
+        var replyOption = kommunicate._globals.replyMenu;
         if(replyOption && intentOptions){
             for(var i=0;i<=replyOption.length;i++){
                 var listElement = document.createElement('li');
