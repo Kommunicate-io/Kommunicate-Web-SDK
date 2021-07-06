@@ -676,7 +676,6 @@ var userOverride = {
                         eventMapping.onStartNewConversation
                     );
                     KommunicateUI.activateTypingField();
-                    mckMessageLayout.loadDropdownOptions();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -2834,7 +2833,14 @@ var userOverride = {
                     rating: 0,
                 };
 
-                restartConversation.addEventListener('click', mckMessageService.restartConversation);
+                restartConversation.addEventListener('click', function () {
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onRestartConversationClick
+                    );
+                    KommunicateUI.showClosedConversationBanner(false);
+                    KommunicateUI.isConvJustResolved = false;
+                });
+
                 sendFeedbackComment.addEventListener('click', function () {
                     kmWidgetEvents.eventTracking(
                         eventMapping.onSubmitRatingClick
@@ -3297,8 +3303,6 @@ var userOverride = {
                     MCK_LABELS['waiting.queue.message']['last.part'];
                 document.getElementById('km-csat-trigger-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
-                document.getElementById('km-restart-conversation-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3596,8 +3600,6 @@ var userOverride = {
                 '/rest/ws/message/delete/conversation';
             var CONVERSATION_READ_UPDATE_URL =
                 '/rest/ws/message/read/conversation';
-            var FEEDBACK_UPDATE_URL = '/feedback/v2';
-            var CHANGE_BOT = '/rest/ws/group/assignee/change';
             var offlineblk =
                 '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
             var refreshIntervalId;
@@ -3618,104 +3620,7 @@ var userOverride = {
                         $applozic('.mck-dropup-menu').hide();
                 }
             };
-            /*  To trigger welcome event of a bot.
-                defaultSettings: if there is any custome event is configured by the user
-            */
-            _this.triggerWelcomeEvent = function(){
-                var customEvent = KommunicateUtils.getDataFromKmSession(
-                    'settings'
-                );
-                var eventToTrigger = customEvent
-                    ? customEvent.customeWelcomeEvent
-                    : 'WELCOME';
-                window.Applozic.ALApiService.sendMessage({
-                    data: {
-                        message: {
-                            type: 5,
-                            contentType: 10,
-                            message:
-                                'Event:'+eventToTrigger,
-                            groupId: CURRENT_GROUP_DATA.tabId,
-                            metadata: {
-                                category: 'HIDDEN',
-                                KM_TRIGGER_EVENT: eventToTrigger,
-                            },
-                            source: 1,
-                        },
-                    },
-                    success: function (response) {},
-                    error: function (error) {
-                        console.error(error);
-                    },
-                });
-            },
-            // change the conversation assignee
-            _this.changeConversationAssignee = function () {
-                window.Applozic.ALApiService.ajax({
-                    type: 'PATCH',
-                    url:
-                        MCK_BASE_URL +
-                        CHANGE_BOT +
-                        '?groupId=' +
-                        encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
-                        '&assignee=' +
-                        encodeURIComponent(
-                            CURRENT_GROUP_DATA.initialBot.userId
-                        ),
-                    global: false,
-                    contentType: 'text/plain',
-                    success: function (data) {
-                        if (
-                            data.status == 'success' &&
-                            appOptions.restartConversationByUser &&
-                            CURRENT_GROUP_DATA.conversationAssignee !=
-                                CURRENT_GROUP_DATA.initialBot.userId
-                        ) {
-                            // removing other conversation asignee if it is not default one
-                            mckGroupService.removeGroupMemberFromChat({
-                                groupId: CURRENT_GROUP_DATA.tabId,
-                                userId: CURRENT_GROUP_DATA.conversationAssignee,
-                                callback: function (data) {
-                                    if (data.status == 'success') {
-                                        _this.triggerWelcomeEvent();
-                                    } else {
-                                        console.error(
-                                            'Error while removing the conversation assignee.'
-                                        );
-                                    }
-                                },
-                            });
-                           
-                        } else {
-                            appOptions.restartConversationByUser &&
-                                _this.triggerWelcomeEvent();
-                        }
-                    },
-                    error: function (data) {
-                        console.error(data);
-                    },
-                });
-            };
-            _this.restartConversation = function (event) {
-                kmWidgetEvents.eventTracking(
-                    eventMapping.onRestartConversationClick
-                );
-                if (
-                    event.target.id == ('km-restart-conversation') || ('km-restart-conversation-text') 
-                    && appOptions.restartConversationByUser
-                ) {
-                    _this.changeConversationAssignee();
-                } else {
-                    appOptions.restartConversationByUser &&
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-widget-options'] },
-                            '',
-                            'n-vis'
-                        );
-                    KommunicateUI.showClosedConversationBanner(false);
-                    KommunicateUI.isConvJustResolved = false;
-                }
-            };
+
             _this.showSendButton = function () {
                 kommunicateCommons.modifyClassList(
                     { id: ['send-button-wrapper'] },
@@ -5929,7 +5834,6 @@ var userOverride = {
                                 i++
                             ) {
                                 if (
-                                    CURRENT_GROUP_DATA.groupMembers[i] &&
                                     CURRENT_GROUP_DATA.groupMembers[i].userId ==
                                     CURRENT_GROUP_DATA.conversationAssignee
                                 ) {
@@ -7478,7 +7382,6 @@ var userOverride = {
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
-                                CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
@@ -7753,6 +7656,7 @@ var userOverride = {
                 $applozic.template('searchContactbox', searchContactbox);
                 $applozic.template('csatModule', csatModule);
             };
+
             _this.loadDropdownOptions = function () {
                 var enableDropdown = false;
                 var isConvRated =
@@ -7763,56 +7667,14 @@ var userOverride = {
                     Mid conversation CSAT
                     update if dedicated parameter is introduced
                 */
-                if (CSAT_ENABLED && !isConvRated) {
-                    enableDropdown = true;
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-csat-trigger'] },
-                        '',
-                        'n-vis'
-                    );
-                }
-                if (appOptions.restartConversationByUser) {
-                    var restartConversationBtn = document.getElementById(
-                        'km-restart-conversation'
-                    );
-                    var isIterable = true;
-                    CURRENT_GROUP_DATA.groupMembers &&
-                        CURRENT_GROUP_DATA.groupMembers.map(function (member) {
-                            if (
-                                isIterable && (member.role == 2 ||
-                                member.roleType == 1) &&
-                                    member.userId ==
-                                        CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
-                            ) {
-                                isIterable = false;
-                                CURRENT_GROUP_DATA.initialBot = member;
-                            }
-                        });
-                    if (
-                        CURRENT_GROUP_DATA &&
-                        CURRENT_GROUP_DATA.initialBot &&
-                        CURRENT_GROUP_DATA.conversationAssignee &&
-                        CURRENT_GROUP_DATA.conversationAssignee ==
-                            CURRENT_GROUP_DATA.initialBot.userId
-                    ) {
-                        kommunicateCommons.modifyClassList(
-                            {id:['km-restart-conversation']},
-                            '',
-                            'n-vis'
-                        );
-                        restartConversationBtn &&
-                            restartConversationBtn.addEventListener(
-                                'click',
-                                mckMessageService.restartConversation
-                            );
-                    }else{
-                        kommunicateCommons.modifyClassList(
-                            {id:['km-restart-conversation']},
-                            'n-vis',
-                            ''
-                        );
-                    }
-                }
+                   if (CSAT_ENABLED && !isConvRated) {
+                       enableDropdown = true;
+                       kommunicateCommons.modifyClassList(
+                           { id: ['km-csat-trigger'] },
+                           '',
+                           'n-vis'
+                       );
+                   }
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
