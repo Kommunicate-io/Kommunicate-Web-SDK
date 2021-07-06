@@ -7773,10 +7773,21 @@ var userOverride = {
                     );
                 }
                 if (appOptions.restartConversationByUser) {
+                    enableDropdown = true;
+                    var isIterable = true;
                     var restartConversationBtn = document.getElementById(
                         'km-restart-conversation'
                     );
-                    var isIterable = true;
+                    if (
+                        restartConversationBtn &&
+                        restartConversationBtn.classList.contains('n-vis')
+                    ) {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-restart-conversation'] },
+                            '',
+                            'n-vis'
+                        );
+                    }
                     CURRENT_GROUP_DATA.groupMembers &&
                         CURRENT_GROUP_DATA.groupMembers.map(function (member) {
                             if (
