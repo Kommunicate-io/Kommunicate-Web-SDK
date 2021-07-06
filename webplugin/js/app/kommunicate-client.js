@@ -87,6 +87,7 @@ Kommunicate.client = {
                 : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
             GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
+            conversationMetadata:JSON.stringify(conversationDetail.metadata),
         };
         typeof conversationDetail.teamId != 'undefined' &&
             (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);

@@ -108,7 +108,7 @@ function KommunicateCommons() {
         if (!object) return false;
         return typeof object == 'object' && object.constructor == Object;
     };
-
+    
     _this.getTimeOrDate = function (createdAtTime) {
         var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);
@@ -229,4 +229,17 @@ function KommunicateCommons() {
     _this.getDefaultAvatarImageSvg = function () {
         return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
     };
+
+     _this.getFeedback = function (tabId, onSuccessCallback) {
+         mckUtils.ajax({
+             type: 'GET',
+             url: Kommunicate.getBaseUrl() + '/feedback' + '/' + tabId,
+             global: false,
+             contentType: 'application/json',
+             success: onSuccessCallback,
+             error: function (err) {
+                 console.log('Error fetching feedback', err);
+             },
+         });
+     };
 }
