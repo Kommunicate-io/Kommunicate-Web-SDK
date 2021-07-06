@@ -120,6 +120,8 @@ Kommunicate.defaultLabels = {
             'Before starting, we just need a few details so that we may serve you better',
         submit: 'Start Conversation',
         option: 'Please select',
+        password:'Password',
+        errorText:'Please enter your account password',
     },
     'csat.rating': {
         CONVERSATION_RATED: 'You rated the conversation',
@@ -178,5 +180,6 @@ Kommunicate.defaultLabels = {
         CSAT_RATING_TEXT: 'Rate this conversation',
         USER_OVERIDE_VOICE_OUTPUT_ON: 'Turn on text to speech',
         USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
+        RESTART_CONVERSATION: 'Restart conversation',
     },
 };
