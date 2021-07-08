@@ -1470,7 +1470,6 @@
 	left: 5px;
 	position: absolute;
 	display: inline-block !important;
-	content: '';
 }
 #mck-upload-menu-list.mck-dropup-menu:before, #mck-upload-menu-list.mck-dropup-menu:after {
 	right: 5px;
@@ -1741,6 +1740,74 @@
 .mck-text-box-panel {
 	width: 25px !important;
 }
+.mck-intent-box{
+	width: 30px;
+	height: 30px;
+	display: inline-table;
+	justify-content: center;
+	float: left;
+	padding-left: 5px;
+}
+
+.mck-bot-icon{
+	background: none;
+	width: auto;
+	border: none;
+	padding-right: 0;
+	cursor: pointer;
+}
+.stop-selection{
+	/* Remove text selection for diffrent browser */
+	-webkit-touch-callout: none; 
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.mck-bot-icon svg:hover path {
+	fill: #5553b7;
+	transition: all ease 0.3s;
+}
+
+.mck-intent-menu{
+	position: absolute;
+	left: -4px;
+	right: auto;
+	bottom: 28px;
+	z-index: 1000;
+	display: none;
+	float: left;
+	min-width: 130px;
+	max-width: 220px;
+	max-height: 150px;
+	overflow: hidden auto;
+	scrollbar-width: thin;
+	border-radius: 4px;
+	font-size: 14px;
+	text-align: start;	
+	list-style: none;
+	background-color: #fff;
+	box-shadow: 0 0px 8px 0 rgb(0 0 0 / 20%), 0 6px 30px 0 rgb(0 0 0 / 10%);
+	transition: opacity 0.5s ease-in-out;
+}
+
+ul#mck-intent-options::-webkit-scrollbar-track {
+    background: #fff;
+}
+
+ul.mck-intent-menu>li {
+	padding: 6px 10px;
+	color: #000000;
+	hyphens: auto;
+}
+
+ul.mck-intent-menu>li:hover {
+	background-color: #F5F5F5;
+	cursor: pointer;
+}
+
 #mck-btn-attach-box.mck-text-box-panel {
 	width: auto !important;
 }

@@ -48,6 +48,22 @@ KommunicateUI = {
             KommunicateUI.displayLeadCollectionTemplate(data);
         }
     },
+    loadIntentDropdown:function(){
+        var intentOptions = document.getElementById('mck-intent-options');
+        var replyOption = kommunicate._globals.replyMenu;
+        if(replyOption && intentOptions){
+            for(var i=0;i<=replyOption.length;i++){
+                var listElement = document.createElement('li');
+                listElement.innerText = replyOption[i];
+                listElement.addEventListener('click',function(e){
+                    e.preventDefault();
+                    
+                })
+                intentOptions.appendChild(listElement);
+            }
+
+        }
+    },
     populateAwayMessage: function (err, message) {
         var conversationWindowNotActive = $applozic(
             '#mck-tab-individual'
@@ -784,6 +800,32 @@ KommunicateUI = {
                 MCK_LABELS[
                     'conversation.header.dropdown'
                 ].USER_OVERIDE_VOICE_OUTPUT_ON;
+        }
+    },
+    loadQuickReplies: function (quickReplies) {
+        var intentList = document.getElementById('mck-intent-options');
+        if (
+            quickReplies.length > 0 &&
+            intentList &&
+            intentList.childElementCount < 1
+        ) {
+            kommunicateCommons.modifyClassList(
+                { id: ['mck-quick-replies-box'] },
+                'vis',
+                'n-vis'
+            );
+            for (var i = 0; i <= quickReplies.length - 1; i++) {
+                var li = document.createElement('li');
+                li.innerText = quickReplies[i];
+                intentList.appendChild(li);
+                li.onclick = function (e) {
+                    e.preventDefault();
+                    document.getElementById(
+                        'mck-text-box'
+                    ).innerText = this.innerText;
+                    document.getElementById('mck-msg-sbmt').click();
+                };
+            }
         }
     },
     triggerCSAT: function () {
