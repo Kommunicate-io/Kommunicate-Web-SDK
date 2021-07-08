@@ -1750,6 +1750,9 @@
 	float: left;
 	padding-left: 5px;
 }
+.mck-intent-box.open svg path{
+	fill: #5553b7;
+}
 
 .mck-bot-icon{
 	background: none;
@@ -1803,6 +1806,7 @@ ul.mck-intent-menu>li {
 	padding: 6px 10px;
 	color: #000000;
 	hyphens: auto;
+	word-break: break-all;
 }
 
 ul.mck-intent-menu>li:hover {
