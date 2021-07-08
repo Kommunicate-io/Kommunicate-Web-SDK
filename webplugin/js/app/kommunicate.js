@@ -750,7 +750,7 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            (msg.metadata && msg.metadata.category === 'HIDDEN') ||
+            (msg.metadata && msg.metadata.category === 'HIDDEN' ||  msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT')) ||
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
         ) {
