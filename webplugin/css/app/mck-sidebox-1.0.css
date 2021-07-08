@@ -1562,10 +1562,12 @@
 }
 
 .mck-box-body .mck-tab-cell {
-	position: absolute;
+	position: relative;
 	width: 100%;
 	height: 100%;
-	overflow: hidden auto;
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-width: thin;
 	-webkit-overflow-scrolling: touch;
 }
 #mck-message-cell .li {
@@ -4289,6 +4291,7 @@ display: none;
 }
 
 .km-faqanswer {
+	position: absolute;
 	width: 100%;
 	height: auto;
 	font-size: 14px;
@@ -4309,17 +4312,7 @@ display: none;
     left: 0;
     overflow: auto;
 }
-.km-faqanswerscroll{
-	overflow: hidden auto;
-	scrollbar-width: thin;
-	height: 100%;
-	width: 100%;
-}
 
-/* #km-faqanswer{
-	overflow-y: scroll;
-	overflow-x: hidden;
-} */
 .km-visibility-hidden {
 	visibility: hidden !important;
 }

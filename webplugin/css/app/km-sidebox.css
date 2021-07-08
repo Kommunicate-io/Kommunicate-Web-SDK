@@ -75,6 +75,7 @@
     cursor: text;
     line-height: 1.42;
     height: auto;
+    width: auto;
     outline: none;
     tab-size: 4;
     -moz-tab-size: 4;
