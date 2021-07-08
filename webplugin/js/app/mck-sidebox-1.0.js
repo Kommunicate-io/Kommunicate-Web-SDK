@@ -3632,7 +3632,7 @@ var userOverride = {
                     'settings'
                 );
                 var eventToTrigger = customEvent
-                    ? customEvent.customeWelcomeEvent
+                    ? customEvent.customWelcomeEvent
                     : 'WELCOME';
                 window.Applozic.ALApiService.sendMessage({
                     data: {
@@ -3707,8 +3707,9 @@ var userOverride = {
                     eventMapping.onRestartConversationClick
                 );
                 if (
-                    event.target.id == ('km-restart-conversation') || ('km-restart-conversation-text') 
-                    && appOptions.restartConversationByUser
+                    event.target.id == 'km-restart-conversation' ||
+                    event.target.id == 'km-restart-conversation-text' &&
+                        appOptions.restartConversationByUser
                 ) {
                     _this.changeConversationAssignee();
                 } else {
@@ -3720,6 +3721,7 @@ var userOverride = {
                         );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
+                    mckMessageLayout.loadDropdownOptions();
                 }
             };
             _this.showSendButton = function () {
@@ -7825,12 +7827,6 @@ var userOverride = {
                                 'click',
                                 mckMessageService.restartConversation
                             );
-                    }else{
-                        kommunicateCommons.modifyClassList(
-                            {id:['km-restart-conversation']},
-                            'n-vis',
-                            ''
-                        );
                     }
                 }
 
