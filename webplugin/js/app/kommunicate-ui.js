@@ -319,7 +319,7 @@ KommunicateUI = {
                             kommunicateCommons.formatHtmlTag(faqDetails.title);
                         // FAQ description is already coming in formatted way from the dashboard FAQ editor.
                         $applozic('#km-faqanswer').append(
-                            '<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' +
+                            '<div class="km-faqanswer-list ql-snow"><div class="km-faqquestion">' +
                                 faqTitle +
                                 '</div> <div class="km-faqanchor km-faqanswer ql-editor">' +
                                 faqDetails.body +
