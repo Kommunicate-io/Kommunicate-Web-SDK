@@ -3624,7 +3624,7 @@ var userOverride = {
                     'settings'
                 );
                 var eventToTrigger = customEvent
-                    ? customEvent.customeWelcomeEvent
+                    ? customEvent.customWelcomeEvent
                     : 'WELCOME';
                 window.Applozic.ALApiService.sendMessage({
                     data: {
