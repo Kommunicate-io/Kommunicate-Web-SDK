@@ -7510,6 +7510,7 @@ var userOverride = {
                                     response.status = 'success';
                                     response.data = group;
                                     params.callback(response);
+                                    mckMessageLayout.loadDropdownOptions(); 
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -7788,7 +7789,7 @@ var userOverride = {
                         );
                     }
                     CURRENT_GROUP_DATA.groupMembers &&
-                        CURRENT_GROUP_DATA.groupMembers.map(function (member) {
+                        CURRENT_GROUP_DATA.groupMembers.forEach(function (member) {
                             if (
                                 isIterable && (member.role == 2 ||
                                 member.roleType == 1) &&

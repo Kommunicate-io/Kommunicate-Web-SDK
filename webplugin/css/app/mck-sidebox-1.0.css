@@ -5430,7 +5430,7 @@ div[name="message"]:last-child {
 
 .mck-ratings-smilies{
 	display: flex;
-    align-items: end;
+    align-items: flex-start;
 }
 
 .mck-smilies-inner{
