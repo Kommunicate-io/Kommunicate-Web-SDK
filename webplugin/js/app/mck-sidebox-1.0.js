@@ -11899,11 +11899,13 @@ var userOverride = {
                     );
                     $applozic('.km-typing-wrapper').remove();
                     if (message) {
-                        var msgBody = document.querySelectorAll(
-                            '.mck-message-inner.mck-group-inner'
-                        )[0];
                         message.classList.remove('n-vis');
-                        KommunicateUI.updateScroll(msgBody);
+                        $mck_msg_inner.animate(
+                            {
+                                scrollTop: $mck_msg_inner.prop('scrollHeight'),
+                            },
+                            0
+                        );
                     }
                     MCK_BOT_MESSAGE_QUEUE.shift();
                     MCK_BOT_MESSAGE_QUEUE.length != 0 &&
