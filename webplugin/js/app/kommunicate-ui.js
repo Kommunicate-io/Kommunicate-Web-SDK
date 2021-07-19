@@ -930,6 +930,14 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.updateScroll(messageBody);
+        } else {
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-csat-text-1'],
+                },
+                'vis',
+                'n-vis'
+            );
         }
     },
     showClosedConversationBanner: function (isConversationClosed) {
@@ -1043,7 +1051,7 @@ KommunicateUI = {
                         'mck-submit-comment'
                     ).disabled = false;
                 }
-                KommunicateUI.updateScroll(messageBody)
+                KommunicateUI.updateScroll(messageBody);
             }
         } else if (
             isConversationClosed &&
