@@ -2,7 +2,7 @@ const configEnv = {
     development: {
         port: '3030',
         urls: {
-            applozicBaseUrl: 'https://apps-test.applozic.com',
+            applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'http://localhost:3030',
@@ -25,7 +25,7 @@ const configEnv = {
     test: {
         port: '3030',
         urls: {
-            applozicBaseUrl: 'https://apps-test.applozic.com',
+            applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-test.kommunicate.io',
@@ -48,7 +48,7 @@ const configEnv = {
     staging: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://apps-test.applozic.com',
+            applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-staging.kommunicate.io',
