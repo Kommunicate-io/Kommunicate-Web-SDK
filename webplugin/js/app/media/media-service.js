@@ -119,7 +119,6 @@ Kommunicate.mediaService = {
                         );
                     }
                 };
-                speechSynthesis.cancel();
                 speechSynthesis.speak(utterance);
             }
         }
