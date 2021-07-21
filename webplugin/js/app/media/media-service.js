@@ -61,6 +61,7 @@ Kommunicate.mediaService = {
         // if voiceoutput is enabled and browser supports it
         if (appOptions.voiceOutput && 'speechSynthesis' in window) {
             var textToSpeak = '';
+            var isChrome = !!window.chrome || navigator.userAgent.indexOf('Chrome')>-1;
             if (message.hasOwnProperty('fileMeta')) {
                 textToSpeak += MCK_LABELS['voice.output'].attachment;
                 textToSpeak += message.fileMeta.name;
@@ -119,6 +120,7 @@ Kommunicate.mediaService = {
                         );
                     }
                 };
+                isChrome && speechSynthesis.cancel();
                 speechSynthesis.speak(utterance);
             }
         }
