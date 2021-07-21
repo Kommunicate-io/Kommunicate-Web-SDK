@@ -15919,6 +15919,14 @@ var userOverride = {
                             '#mck-sidebox-content'
                         );
                         var tabId = $mck_message_inner.data('mck-id');
+                        if (resp.message.metadata.actionRequest == 'askCSAT') {
+                            KommunicateUI.triggerCSAT();
+                            kommunicateCommons.modifyClassList(
+                                { id: ['mck-csat-close'] },
+                                'n-vis',
+                                'vis'
+                            );
+                        }
                         if (resp.message.metadata.KM_STATUS) {
                             var groupId = 'li-group-' + resp.message.groupId;
                             var conversationStatus =
