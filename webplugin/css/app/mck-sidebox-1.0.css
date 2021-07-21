@@ -1818,6 +1818,12 @@ ul.mck-intent-menu>li:hover {
 #mck-btn-attach-box.mck-text-box-panel {
 	width: auto !important;
 }
+#mck-attachImg-box{
+	width: auto !important;
+	float: right !important;
+	display: block;
+	margin-top: 3px;
+}
 
 .mck-text-box-panel .mck-blk-12 {
 	height: 30px;

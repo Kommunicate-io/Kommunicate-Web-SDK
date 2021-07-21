@@ -446,7 +446,10 @@ function ApplozicSidebox() {
                 options.hidePostCTA != null
                     ? options.hidePostCTA
                     : widgetSettings && widgetSettings.hidePostCTA;
-
+            options.capturePhoto =
+                options.capturePhoto != null
+                    ? options.capturePhoto
+                    : widgetSettings && widgetSettings.capturePhoto;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
