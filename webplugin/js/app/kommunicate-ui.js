@@ -940,6 +940,14 @@ KommunicateUI = {
             );
         }
     },
+    askCSAT: function () {
+        KommunicateUI.triggerCSAT();
+        kommunicateCommons.modifyClassList(
+            { id: ['mck-csat-close'] },
+            'n-vis',
+            'vis'
+        );
+    },
     showClosedConversationBanner: function (isConversationClosed) {
         var isConvRated =
             document.getElementsByClassName('mck-rated').length > 0;
@@ -1093,12 +1101,7 @@ KommunicateUI = {
                 'n-vis'
             );
         } else if (isConversationClosed && KommunicateUI.isConvJustResolved) {
-            KommunicateUI.triggerCSAT();
-            kommunicateCommons.modifyClassList(
-                { id: ['mck-csat-close'] },
-                'n-vis',
-                'vis'
-            );
+            KommunicateUI.askCSAT();
         } else if (isConversationClosed) {
             conversationStatusDiv &&
                 (conversationStatusDiv.innerHTML = messageText);
