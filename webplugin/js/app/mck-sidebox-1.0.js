@@ -827,7 +827,7 @@ var userOverride = {
                 );
             !IS_CAPTURE_PHOTO &&
                 kommunicateCommons.modifyClassList(
-                    { id: ['mck-attachImg-box', 'mck-imgFile-up'] },
+                    { id: ['mck-attach-img-box', 'mck-img-file-up'] },
                     'n-vis',
                     ''
             );
@@ -3737,7 +3737,7 @@ var userOverride = {
                             'mck-file-up',
                             'mck-btn-loc',
                             'mck-btn-smiley-box',
-                            'mck-imgFile-up'
+                            'mck-img-file-up'
                         ],
                     },
                     'n-vis',
@@ -3752,7 +3752,7 @@ var userOverride = {
                       );
                 
                 !IS_CAPTURE_PHOTO && kommunicateCommons.modifyClassList(
-                    { id: ['mck-imgFile-up']},
+                    { id: ['mck-img-file-up']},
                     'n-vis',
                     ''
                     );
@@ -3783,7 +3783,7 @@ var userOverride = {
                       );
                 IS_CAPTURE_PHOTO &&
                     kommunicateCommons.modifyClassList(
-                        { id: ['mck-imgFile-up'] },
+                        { id: ['mck-img-file-up'] },
                         '',
                         'n-vis'
                         );
@@ -14054,7 +14054,7 @@ var userOverride = {
             );
             var $mck_overlay_box = $applozic('.mck-overlay-box');
             var $mck_file_upload = $applozic('.mck-file-upload');
-            var $mck_img_upload = $applozic('#mck-imgFile-up')
+            var $mck_img_upload = $applozic('#mck-img-file-up')
             var $mck_group_icon_upload = $applozic('#mck-group-icon-upload');
             var $mck_group_icon_change = $applozic('#mck-group-icon-change');
             var $mck_group_info_icon_box = $applozic(
