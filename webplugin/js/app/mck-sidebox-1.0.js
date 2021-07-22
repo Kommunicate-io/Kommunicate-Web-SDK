@@ -14048,7 +14048,7 @@ var userOverride = {
             var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_file_input = $applozic('#mck-file-input');
-            var $mck_imgFile_input = $applozic('#mck-image-input');
+            var $mck_img_file_input = $applozic('#mck-image-input');
             var $mck_autosuggest_search_input = $applozic(
                 '#mck-autosuggest-search-input'
             );
@@ -14109,10 +14109,10 @@ var userOverride = {
                 });
                 $mck_img_upload.on('click', function (e) {
                     e.preventDefault();
-                    // kmWidgetEvents.eventTracking(
-                    //     eventMapping.onAttachmentClick
-                    // );
-                    $mck_imgFile_input.trigger('click');
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onCameraButtonClick
+                    );
+                    $mck_img_file_input.trigger('click');
                 });
                 $mck_group_icon_upload.on('change', function () {
                     var file = $applozic(this)[0].files[0];
@@ -14163,7 +14163,7 @@ var userOverride = {
                     }
                 }
                 $mck_file_input.on('change', uploadFileFunction );
-                $mck_imgFile_input.on('change', uploadFileFunction );
+                $mck_img_file_input.on('change', uploadFileFunction );
                 
                 $applozic(d).on('click', '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
