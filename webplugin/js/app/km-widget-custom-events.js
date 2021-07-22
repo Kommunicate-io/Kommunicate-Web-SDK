@@ -176,6 +176,14 @@ var eventMapping = {
         },
         eventFunction: null,
     },
+    onCameraButtonClick: {
+        data: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Camera Button Click',
+        },
+        eventFunction: null,
+    },
     onNotificationClick: {
         data: {
             eventCateogry: 'Kommunicate',
