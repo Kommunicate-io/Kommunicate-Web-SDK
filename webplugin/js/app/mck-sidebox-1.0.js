@@ -7830,7 +7830,7 @@ var userOverride = {
                             CURRENT_GROUP_DATA.initialBot.userId
                     ) {
                         kommunicateCommons.modifyClassList(
-                            {id:['km-restart-conversation']},
+                            { id: ['km-restart-conversation'] },
                             '',
                             'n-vis'
                         );
@@ -7839,6 +7839,12 @@ var userOverride = {
                                 'click',
                                 mckMessageService.restartConversation
                             );
+                    } else {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-restart-conversation'] },
+                            'n-vis',
+                            ''
+                        );
                     }
                 }
 
