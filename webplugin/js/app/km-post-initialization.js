@@ -7,13 +7,17 @@
 Kommunicate.postPluginInitialization = function (err, data) {
     // get the third party settings
     KommunicateKB.init(Kommunicate.getBaseUrl());
-    Kommunicate.getFaqList(data);
+    var categoryName;
+    if (kommunicate && kommunicate._globals && kommunicate._globals.getFaqByCategory) {
+        categoryName = kommunicate._globals.getFaqByCategory;
+    }
+    Kommunicate.getFaqList(data, categoryName);
 };
 
 //faq plugin
-Kommunicate.getFaqList = function (data) {
+Kommunicate.getFaqList = function (data, categoryName) {
     KommunicateKB.getArticles({
-        data: { appId: data.appId, query: '' },
+        data: { appId: data.appId, query: '', categoryName: categoryName },
         success: function (response) {
             if (
                 response.data &&
@@ -34,18 +38,18 @@ Kommunicate.getFaqList = function (data) {
                     kommunicateCommons.formatHtmlTag(faq.title);
                 $applozic('#km-faq-list-container').append(
                     '<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' +
-                        faq.source +
-                        '" data-articleId="' +
-                        faq.articleId +
-                        '"><a class="km-faqdisplay"><div class="km-faqimage">' +
-                        KommunicateUI.faqSVGImage +
-                        '</div> <div class="km-faqanchor">' +
-                        title +
-                        '</div></a></li>'
+                    faq.source +
+                    '" data-articleId="' +
+                    faq.articleId +
+                    '"><a class="km-faqdisplay"><div class="km-faqimage">' +
+                    KommunicateUI.faqSVGImage +
+                    '</div> <div class="km-faqanchor">' +
+                    title +
+                    '</div></a></li>'
                 );
             });
             KommunicateUI.faqEvents(data);
         },
-        error: function () {},
+        error: function () { },
     });
 };
