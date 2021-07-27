@@ -944,8 +944,8 @@ KommunicateUI = {
         KommunicateUI.triggerCSAT();
         kommunicateCommons.modifyClassList(
             { id: ['mck-csat-close'] },
-            'n-vis',
-            'vis'
+            'vis',
+            'n-vis'
         );
     },
     showClosedConversationBanner: function (isConversationClosed) {
