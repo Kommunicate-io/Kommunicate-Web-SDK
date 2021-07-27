@@ -10,6 +10,9 @@ $applozic.extend(true, Kommunicate, {
     getBaseUrl: function () {
         return KM_PLUGIN_SETTINGS.kommunicateApiUrl;
     },
+    getHostUrl:function(){
+        return MCK_CONTEXTPATH;
+    },
     setDefaultAgent: function (agentName) {
         //kommunicate.defaultAgent  = agentName;
         throw new Error('not implemented');

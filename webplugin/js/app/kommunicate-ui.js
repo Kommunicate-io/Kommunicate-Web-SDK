@@ -48,20 +48,18 @@ KommunicateUI = {
             KommunicateUI.displayLeadCollectionTemplate(data);
         }
     },
-    loadIntentDropdown:function(){
+    loadIntentDropdown: function () {
         var intentOptions = document.getElementById('mck-intent-options');
         var replyOption = kommunicate._globals.replyMenu;
-        if(replyOption && intentOptions){
-            for(var i=0;i<=replyOption.length;i++){
+        if (replyOption && intentOptions) {
+            for (var i = 0; i <= replyOption.length; i++) {
                 var listElement = document.createElement('li');
                 listElement.innerText = replyOption[i];
-                listElement.addEventListener('click',function(e){
+                listElement.addEventListener('click', function (e) {
                     e.preventDefault();
-                    
-                })
+                });
                 intentOptions.appendChild(listElement);
             }
-
         }
     },
     populateAwayMessage: function (err, message) {
@@ -95,6 +93,22 @@ KommunicateUI = {
             KommunicateUI.updateScroll(messageBody);
             KommunicateUI.awayMessageScroll = false;
         }
+    },
+    getLinkPreviewData: function () {
+        var linkToExtract = 'https://www.youtube.com/watch?v=QTAYRmMsVCI';
+        mckUtils.ajax({
+            url:
+                kommunicate.getHostUrl() +
+                '/extractlink?linkToExtract=' +
+                linkToExtract,
+            type: 'get',
+            success: function (result) {
+                
+            },
+            error: function (err) {
+                console.log(err);
+            },
+        });
     },
     showAwayMessage: function () {
         var conversationWindowNotActive = $applozic(
@@ -863,7 +877,9 @@ KommunicateUI = {
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
-        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
+        var messageBody = document.querySelector(
+            '.mck-message-inner.mck-group-inner'
+        );
         if (isCSATenabled) {
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
@@ -983,7 +999,9 @@ KommunicateUI = {
               KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
                   KommunicateConstants.FEEDBACK_API_STATUS.RATED
             : kommunicate._globals.collectFeedback;
-        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
+        var messageBody = document.querySelector(
+            '.mck-message-inner.mck-group-inner'
+        );
         isConversationClosed &&
             kommunicateCommons.modifyClassList(
                 {
@@ -1544,7 +1562,8 @@ KommunicateUI = {
                             'n-vis',
                             'vis'
                         );
-                        headerTabTitle.innerHTML = MCK_LABELS['waiting.queue.message']['header.text'];
+                        headerTabTitle.innerHTML =
+                            MCK_LABELS['waiting.queue.message']['header.text'];
                         var messageBody = document.querySelector(
                             '.mck-message-inner.mck-group-inner'
                         );
@@ -1580,8 +1599,8 @@ KommunicateUI = {
             },
         });
     },
-    getUrlFromBlobKey: function(blobKey, callback) {
-        var params= '?key='+blobKey;
+    getUrlFromBlobKey: function (blobKey, callback) {
+        var params = '?key=' + blobKey;
         window.Applozic.ALApiService.ajax({
             type: 'GET',
             global: false,
@@ -1592,7 +1611,7 @@ KommunicateUI = {
             error: function (err) {
                 callback(err);
             },
-        })
+        });
     },
     isInView: function (element, targetElement) {
         const rect = element.getBoundingClientRect();
@@ -1606,14 +1625,17 @@ KommunicateUI = {
     },
     processLazyImage: function (imageElement, thumbnailBlobKey) {
         imageElement.classList.remove('lazy-image');
-        KommunicateUI.getUrlFromBlobKey(thumbnailBlobKey, function (err, thumbnailUrl) {
-            if (err) {
-                throw err
-            };
-            thumbnailUrl && (imageElement.src = thumbnailUrl);
-            setTimeout(function () {
-                imageElement.classList.add('lazy-image');
-            }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
-        });
-    }
+        KommunicateUI.getUrlFromBlobKey(
+            thumbnailBlobKey,
+            function (err, thumbnailUrl) {
+                if (err) {
+                    throw err;
+                }
+                thumbnailUrl && (imageElement.src = thumbnailUrl);
+                setTimeout(function () {
+                    imageElement.classList.add('lazy-image');
+                }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+            }
+        );
+    },
 };
