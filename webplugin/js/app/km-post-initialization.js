@@ -8,8 +8,8 @@ Kommunicate.postPluginInitialization = function (err, data) {
     // get the third party settings
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var categoryName;
-    if (kommunicate && kommunicate._globals && kommunicate._globals.getFaqByCategory) {
-        categoryName = kommunicate._globals.getFaqByCategory;
+    if (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory) {
+        categoryName = kommunicate._globals.faqCategory;
     }
     Kommunicate.getFaqList(data, categoryName);
 };

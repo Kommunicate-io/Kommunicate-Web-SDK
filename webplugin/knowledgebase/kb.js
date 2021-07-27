@@ -3,8 +3,8 @@
     function define_KommunicateKB() {
         var KommunicateKB = {};
         var KM_API_URL = 'https://api.kommunicate.io';
-        var KB_URL = '/kb/search?appId=:appId';
-        var KB_V2_URL = '/kb?categoryName=:categoryName&applicationId=:appId&status=published&type=faq'
+        var KB_SEARCH_URL = '/kb/search?appId=:appId';
+        var KB_URL = '/kb?categoryName=:categoryName&applicationId=:appId&status=published&type=faq'
         var SOURCES = { kommunicate: 'KOMMUNICATE' };
         var SEARCH_ELASTIC = '/kb/_search';
 
@@ -78,11 +78,11 @@
 
         //KommunicateKB.getFaqs({data: {appId: 'kommunicate-support', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getFaqs = function (options) {
-            var url = KM_API_URL + KB_URL.replace(':appId', options.data.appId);
+            var url = KM_API_URL + KB_SEARCH_URL.replace(':appId', options.data.appId);
             if (options.data.query) {
                 url = url + '&query=' + options.data.query;
             }else if (options.data.categoryName){
-                url = KM_API_URL + KB_V2_URL.replace(':appId', options.data.appId).replace(':categoryName', options.data.categoryName);
+                url = KM_API_URL + KB_URL.replace(':appId', options.data.appId).replace(':categoryName', options.data.categoryName);
             }
 
             //Todo: if query is present then call machine learning server to get answer ids.
@@ -184,7 +184,7 @@
         KommunicateKB.getFaq = function (options) {
             var response = new Object();
 
-            var url = KM_API_URL + KB_URL.replace(':appId', options.data.appId);
+            var url = KM_API_URL + KB_SEARCH_URL.replace(':appId', options.data.appId);
             if (options.data && options.data.articleId) {
                 url += '&articleId=' + options.data.articleId;
             }
