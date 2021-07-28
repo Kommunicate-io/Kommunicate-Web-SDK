@@ -94,19 +94,18 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = false;
         }
     },
-    getLinkPreviewData: function () {
-        var linkToExtract = 'https://www.youtube.com/watch?v=QTAYRmMsVCI';
-        mckUtils.ajax({
-            url:
-                kommunicate.getHostUrl() +
-                '/extractlink?linkToExtract=' +
-                linkToExtract,
-            type: 'get',
+    getLinkDataToPreview: function (url,callback) {
+        window.Applozic.ALApiService.ajax({
+            url: kommunicate.getHostUrl() + '/extractlink?linkToExtract=' + url,
+            type: 'GET',
             success: function (result) {
-                
+                if (result) {
+                    var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(result);
+                    callback(previewTemplate);
+                }
             },
             error: function (err) {
-                console.log(err);
+                console.error(err);
             },
         });
     },

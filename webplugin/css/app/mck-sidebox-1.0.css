@@ -2948,7 +2948,7 @@ display: none;
 	max-width: -moz-calc(85% - 58px); /* Firefox 4+ */
 	max-width: calc(85% - 58px); /* IE9+ and future browsers */
 	display: inline-block;
-	padding: 10px 14px 10px;
+	padding: 10px 10px 10px;
 	position: relative;
 	color: rgba(255, 255, 255, 0.87);
 	background-color: #5553B7;

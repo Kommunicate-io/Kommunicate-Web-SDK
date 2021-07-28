@@ -30,12 +30,10 @@ home.get('/extractlink',function(req, res){
     }
     getLinkPreview(urlToExtract).then(
         (response) => {
-            console.log(response);
-            res.status(200).json({data: response});
+            res.status(200).send({data: response});
         }
     ).catch(err => {
-        console.log(typeof err)
-        res.status(400).json({error: 'invalid URL'});
+        res.send(400).send({error: 'invalid URL'});
     });
 
 });
