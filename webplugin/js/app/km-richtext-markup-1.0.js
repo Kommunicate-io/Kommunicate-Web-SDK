@@ -206,11 +206,11 @@ Kommunicate.markup = {
             '<div class="link-preview-wrapper"><img class="link-preview-image" src="' +
             (data.images[0] || data.favicons[0]) +
             '" alt="' +
-            data.title +
-            '" width="100" height="100"><div class="link-preview-content"><h5 class="link-preview-title"> ' +
+            (data.siteName||data.title) +
+            '" width="120" height="85"><div class="link-preview-content"><h5 class="link-preview-title"> ' +
             (data.siteName||data.title) +
             '</h5><p class="link-preview-div-description">' +
-            data.description +
+            (data.description||data.title) +
             '</p></div></div>Here is the link:'
         );
     },
