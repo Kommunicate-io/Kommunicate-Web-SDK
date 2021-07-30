@@ -207,7 +207,7 @@ Kommunicate.markup = {
             (data.images[0] || data.favicons[0]) +
             '" alt="' +
             (data.siteName||data.title) +
-            '" width="120" height="85"><div class="link-preview-content"><h5 class="link-preview-title"> ' +
+            '" width="80" height="80"><div class="link-preview-content"><h5 class="link-preview-title"> ' +
             (data.siteName||data.title) +
             '</h5><p class="link-preview-div-description">' +
             (data.description||data.title) +
