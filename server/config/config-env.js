@@ -18,7 +18,7 @@ const configEnv = {
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
-                bucket: 'km-test-cdn',
+                bucket: 'cdn-kommunicate',
             },
         },
     },
@@ -41,7 +41,7 @@ const configEnv = {
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
-                bucket: 'km-test-cdn',
+                bucket: 'cdn-kommunicate',
             },
         },
     },
@@ -64,7 +64,7 @@ const configEnv = {
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
-                bucket: 'km-test-cdn',
+                bucket: 'cdn-kommunicate',
             },
         },
     },
