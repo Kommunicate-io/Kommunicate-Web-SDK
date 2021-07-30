@@ -1373,6 +1373,7 @@
 
 .link-preview-wrapper {
     width: auto;
+    max-height: 80px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
