@@ -1233,6 +1233,10 @@
     border: 1px solid;
     background-color: white;
 }
+.km-cta-multi-button-container button.km-cta-button {
+    font-size: 14px;
+}
+
 .km-carousel-card-footer
     .km-cta-multi-button-container
     button.km-quick-replies {
@@ -1357,6 +1361,9 @@
     color: #b7394a;
     margin-left: 2px;
     font-size: 12px;
+}
+.mck-form-submit-button  {
+    font-size: 14px!important;
 }
 .mck-rich-video-container {
     margin-top: 5px;
