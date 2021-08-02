@@ -48,6 +48,22 @@ KommunicateUI = {
             KommunicateUI.displayLeadCollectionTemplate(data);
         }
     },
+    loadIntentDropdown:function(){
+        var intentOptions = document.getElementById('mck-intent-options');
+        var replyOption = kommunicate._globals.replyMenu;
+        if(replyOption && intentOptions){
+            for(var i=0;i<=replyOption.length;i++){
+                var listElement = document.createElement('li');
+                listElement.innerText = replyOption[i];
+                listElement.addEventListener('click',function(e){
+                    e.preventDefault();
+                    
+                })
+                intentOptions.appendChild(listElement);
+            }
+
+        }
+    },
     populateAwayMessage: function (err, message) {
         var conversationWindowNotActive = $applozic(
             '#mck-tab-individual'
@@ -319,7 +335,7 @@ KommunicateUI = {
                             kommunicateCommons.formatHtmlTag(faqDetails.title);
                         // FAQ description is already coming in formatted way from the dashboard FAQ editor.
                         $applozic('#km-faqanswer').append(
-                            '<div class="km-faqanswer-list km-faqanswerscroll ql-snow"><div class="km-faqquestion">' +
+                            '<div class="km-faqanswer-list ql-snow"><div class="km-faqquestion">' +
                                 faqTitle +
                                 '</div> <div class="km-faqanchor km-faqanswer ql-editor">' +
                                 faqDetails.body +
@@ -786,6 +802,32 @@ KommunicateUI = {
                 ].USER_OVERIDE_VOICE_OUTPUT_ON;
         }
     },
+    loadQuickReplies: function (quickReplies) {
+        var intentList = document.getElementById('mck-intent-options');
+        if (
+            quickReplies.length > 0 &&
+            intentList &&
+            intentList.childElementCount < 1
+        ) {
+            kommunicateCommons.modifyClassList(
+                { id: ['mck-quick-replies-box'] },
+                'vis',
+                'n-vis'
+            );
+            for (var i = 0; i <= quickReplies.length - 1; i++) {
+                var li = document.createElement('li');
+                li.innerText = quickReplies[i];
+                intentList.appendChild(li);
+                li.onclick = function (e) {
+                    e.preventDefault();
+                    document.getElementById(
+                        'mck-text-box'
+                    ).innerText = this.innerText;
+                    document.getElementById('mck-msg-sbmt').click();
+                };
+            }
+        }
+    },
     triggerCSAT: function () {
         var isConvRated =
             document.getElementsByClassName('mck-rated').length > 0;
@@ -888,7 +930,23 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.updateScroll(messageBody);
+        } else {
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-csat-text-1'],
+                },
+                'vis',
+                'n-vis'
+            );
         }
+    },
+    askCSAT: function () {
+        KommunicateUI.triggerCSAT();
+        kommunicateCommons.modifyClassList(
+            { id: ['mck-csat-close'] },
+            'vis',
+            'n-vis'
+        );
     },
     showClosedConversationBanner: function (isConversationClosed) {
         var isConvRated =
@@ -1001,7 +1059,7 @@ KommunicateUI = {
                         'mck-submit-comment'
                     ).disabled = false;
                 }
-                KommunicateUI.updateScroll(messageBody)
+                KommunicateUI.updateScroll(messageBody);
             }
         } else if (
             isConversationClosed &&
@@ -1043,12 +1101,7 @@ KommunicateUI = {
                 'n-vis'
             );
         } else if (isConversationClosed && KommunicateUI.isConvJustResolved) {
-            KommunicateUI.triggerCSAT();
-            kommunicateCommons.modifyClassList(
-                { id: ['mck-csat-close'] },
-                'n-vis',
-                'vis'
-            );
+            KommunicateUI.askCSAT();
         } else if (isConversationClosed) {
             conversationStatusDiv &&
                 (conversationStatusDiv.innerHTML = messageText);

@@ -10,7 +10,10 @@ var kmWidgetEvents = {
         eventLabel,
         eventValue
     ) {
-        var trackingID = applozic._globals.gaTrackingID;
+        var trackingID =
+                applozic._globals.gaTrackingID ||
+                (applozic._globals.appSettings.chatWidget.isGAEnabled &&
+                    applozic._globals.appSettings.chatWidget.gaTrackingId);
         if (trackingID && typeof window.top.ga !== 'undefined') {
             window.top.ga('create', trackingID.toString(), 'auto');
             window.top.ga('send', {
@@ -31,7 +34,11 @@ var kmWidgetEvents = {
             if (customValue) {
                 eventObject.data.eventValue = customValue;
             }
-            applozic._globals.gaTrackingID &&
+            var trackingID =
+                applozic._globals.gaTrackingID ||
+                (applozic._globals.appSettings.chatWidget.isGAEnabled &&
+                    applozic._globals.appSettings.chatWidget.gaTrackingId);
+            trackingID &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
                     eventObject.data.eventCateogry,
                     eventObject.data.eventAction,
@@ -166,6 +173,14 @@ var eventMapping = {
             eventCateogry: 'Kommunicate',
             eventAction: 'Click',
             eventLabel: 'Attachment',
+        },
+        eventFunction: null,
+    },
+    onCameraButtonClick: {
+        data: {
+            eventCateogry: 'Kommunicate',
+            eventAction: 'Click',
+            eventLabel: 'Camera Button Click',
         },
         eventFunction: null,
     },
