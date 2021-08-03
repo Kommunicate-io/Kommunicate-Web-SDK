@@ -9180,32 +9180,30 @@ var userOverride = {
                             $textMessage.prepend(template);
                         }
                     );
-                } 
-                // else {
-                    if (
-                        emoji_template.indexOf('emoji-inner') === -1 &&
-                        msg.contentType === 0
-                    ) {
-                        var nodes = emoji_template.split('<br/>');
-                        for (var i = 0; i < nodes.length; i++) {
-                            if (nodes[i] === '') {
-                                var x = d.createElement('BR');
-                            } else {
-                                var x = d.createElement('div');
-                                x.appendChild(d.createTextNode(nodes[i]));
-                                x = $applozic(x).linkify({
-                                    target: '_blank',
-                                });
-                            }
-                            $textMessage.append(x);
+                }
+                if (
+                    emoji_template.indexOf('emoji-inner') === -1 &&
+                    msg.contentType === 0
+                ) {
+                    var nodes = emoji_template.split('<br/>');
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nodes[i] === '') {
+                            var x = d.createElement('BR');
+                        } else {
+                            var x = d.createElement('div');
+                            x.appendChild(d.createTextNode(nodes[i]));
+                            x = $applozic(x).linkify({
+                                target: '_blank',
+                            });
                         }
-                    } else {
-                        $textMessage.html(emoji_template);
-                        $textMessage.linkify({
-                            target: '_blank',
-                        });
+                        $textMessage.append(x);
                     }
-                // }
+                } else {
+                    $textMessage.html(emoji_template);
+                    $textMessage.linkify({
+                        target: '_blank',
+                    });
+                }
                 if (richText) {
                     Kommunicate.richMsgEventHandler.initializeSlick(
                         $applozic(

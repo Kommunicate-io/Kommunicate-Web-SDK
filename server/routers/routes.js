@@ -25,7 +25,7 @@ home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 home.get('/chat', webpluginController.getPluginHTML)
 home.get('/extractlink',function(req, res){
     var urlToExtract = req.query.linkToExtract; 
-    if(!req.query.url){
+    if(!urlToExtract){
         res.status(400);
     }
     getLinkPreview(urlToExtract).then(

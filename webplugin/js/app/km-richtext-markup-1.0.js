@@ -202,17 +202,19 @@ Kommunicate.markup = {
     },
     getLinkPreviewTemplate: function (extractedData) {
         var data = extractedData.data;
-        return (
-            '<div class="link-preview-wrapper"><div><img class="link-preview-image" src="' +
-            (data.images[0] || data.favicons[0]) +
-            '" alt="' +
-            (data.siteName || data.title) +
-            '" width="80" height="80"></div><div class="link-preview-content"><h5 class="link-preview-title"> ' +
-            (data.siteName || data.title) +
-            '</h5><p class="link-preview-div-description">' +
-            (data.description || data.title) +
-            '</p></div></div>Here is the link:'
-        );
+        if (data) {
+            return (
+                '<div class="link-preview-wrapper"><div><img class="link-preview-image" src="' +
+                (data.images[0] || data.favicons[0]) +
+                '" alt="' +
+                (data.siteName || data.title) +
+                '" width="80" height="80"></div><div class="link-preview-content"><h5 class="link-preview-title"> ' +
+                (data.siteName || data.title) +
+                '</h5><p class="link-preview-div-description">' +
+                (data.description || data.title) +
+                '</p></div></div>Here is the link:'
+            );
+        }
     },
     getButtonTemplate: function (options, requestType, buttonClass) {
         var linkSvg =
