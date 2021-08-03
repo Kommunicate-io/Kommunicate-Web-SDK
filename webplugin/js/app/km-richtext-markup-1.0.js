@@ -202,17 +202,17 @@ Kommunicate.markup = {
     },
     getLinkPreviewTemplate: function (extractedData) {
         var data = extractedData.data;
-        if (data) {
+        if (data && data.title) {
             return (
-                '<div class="link-preview-wrapper"><div><img class="link-preview-image" src="' +
+                '<div class="link-preview-wrapper"><div class="link-preview-image-div"><img class="link-preview-image" src="' +
                 (data.images[0] || data.favicons[0]) +
                 '" alt="' +
                 (data.siteName || data.title) +
-                '" width="80" height="80"></div><div class="link-preview-content"><h5 class="link-preview-title"> ' +
+                '"></div><div class="link-preview-content"><h5 class="link-preview-title link-preview-title-width"> ' +
                 (data.siteName || data.title) +
                 '</h5><p class="link-preview-div-description">' +
                 (data.description || data.title) +
-                '</p></div></div>Here is the link:'
+                '</p></div></div>'+MCK_LABELS["url.notation"]+':'
             );
         }
     },

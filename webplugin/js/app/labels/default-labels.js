@@ -120,8 +120,8 @@ Kommunicate.defaultLabels = {
             'Before starting, we just need a few details so that we may serve you better',
         submit: 'Start Conversation',
         option: 'Please select',
-        password:'Password',
-        errorText:'Please enter your account password',
+        password: 'Password',
+        errorText: 'Please enter your account password',
     },
     'csat.rating': {
         CONVERSATION_RATED: 'You rated the conversation',
@@ -132,6 +132,7 @@ Kommunicate.defaultLabels = {
         SUBMIT_RATING: 'Submit your rating',
     },
     'page.title.on.new.message': 'New message from ',
+    'url.notation': 'Here is the link',
     'emoji.hover.text': {
         poor: 'Poor',
         great: 'Great',
