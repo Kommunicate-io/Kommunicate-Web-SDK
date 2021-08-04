@@ -153,7 +153,8 @@
 	height: calc(100% - 61px);
 	border-radius: 0px 0px 6px 6px;
 	background-color: #fff;
-	overflow-y: scroll;
+	overflow-y: auto;
+	scrollbar-width: thin;
 }
 .km-sidemodal--modal-header {
 	padding: 0 10px;
