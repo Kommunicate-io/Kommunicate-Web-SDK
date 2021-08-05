@@ -156,6 +156,22 @@
 	overflow-y: auto;
 	scrollbar-width: thin;
 }
+
+.km-modal-body::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+    background: #fff;
+}
+
+.km-modal-body::-webkit-scrollbar-thumb {
+    background: lightgrey;
+    -webkit-border-radius: 1ex;
+}
+
+.km-modal-body::-webkit-scrollbar-corner {
+    background: lightgrey;
+}
+
 .km-sidemodal--modal-header {
 	padding: 0 10px;
 	 min-height: 60px;
