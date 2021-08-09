@@ -594,7 +594,7 @@ function ApplozicSidebox() {
             if (this.readyState == 4 && this.status == 200) {
                 var responseData = JSON.parse(this.responseText);
                 // if only the url of the shop was provided then set the appId
-                if (!data.appId && data.shopUrl) {
+                if (!data.appId && data.shopUrl && responseData.response) {
                     applozic._globals.appId = responseData.response.applicationId;
                 }
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
