@@ -341,10 +341,6 @@ function ApplozicSidebox() {
         // }];
         var userId = KommunicateUtils.getRandomId();
         try {
-            (navigator.userAgent.indexOf('MSIE') !== -1 ||
-                navigator.appVersion.indexOf('Trident/') > 0) &&
-                (sentryConfig.enabled = false);
-            sentryConfig.enabled && loadErrorTracking(userId);
             getApplicationSettings(userId);
         } catch (e) {
             console.log('Plugin loading error. Refresh page.');
@@ -396,6 +392,11 @@ function ApplozicSidebox() {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
+
+            (navigator.userAgent.indexOf('MSIE') !== -1 ||
+            navigator.appVersion.indexOf('Trident/') > 0) &&
+            (sentryConfig.enabled = false);
+        sentryConfig.enabled && loadErrorTracking(randomUserId);
 
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null &&
@@ -564,16 +565,28 @@ function ApplozicSidebox() {
     function getApplicationSettings(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
+        data.shopUrl = applozic._globals.shopUrl;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            '/users/v2/chat/plugin/settings?appId=' +
+            '/users/v2/chat/plugin/settings'
+        if (data.appId) {
+            url = url + '?appId=' +
             applozic._globals.appId;
+        }
+        else if (data.shopUrl) {
+            url = url + '?shopUrl=' +
+            data.shopUrl;
+        }
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                var data = JSON.parse(this.responseText);
-                mckInitSidebox(data.response, userId); // This function will initialize the Sidebox code.
+                var responseData = JSON.parse(this.responseText);
+                // if only the url of the shop was provided then set the appId
+                if (!data.appId && data.shopUrl) {
+                    applozic._globals.appId = responseData.response.applicationId;
+                }
+                mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
         };
         xhr.open('GET', url, true);
