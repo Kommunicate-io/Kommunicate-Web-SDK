@@ -36,7 +36,7 @@ function ApplozicSidebox() {
             url: 'https://maps.google.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
-                applozic._globals.googleApiKey
+                    applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         },
@@ -369,7 +369,7 @@ function ApplozicSidebox() {
                     hostname == domain ||
                     (hostname.length > domain.length &&
                         hostname.substr(hostname.length - domain.length - 1) ==
-                            '.' + domain)
+                        '.' + domain)
                 );
             };
 
@@ -394,9 +394,9 @@ function ApplozicSidebox() {
             }
 
             (navigator.userAgent.indexOf('MSIE') !== -1 ||
-            navigator.appVersion.indexOf('Trident/') > 0) &&
-            (sentryConfig.enabled = false);
-        sentryConfig.enabled && loadErrorTracking(randomUserId);
+                navigator.appVersion.indexOf('Trident/') > 0) &&
+                (sentryConfig.enabled = false);
+            sentryConfig.enabled && loadErrorTracking(randomUserId);
 
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null &&
@@ -429,7 +429,7 @@ function ApplozicSidebox() {
 
             var pseudoNameEnabled =
                 widgetSettings &&
-                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
+                    typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata =
@@ -441,7 +441,7 @@ function ApplozicSidebox() {
                 options.connectSocketOnWidgetClick != null
                     ? options.connectSocketOnWidgetClick
                     : widgetSettings &&
-                      widgetSettings.connectSocketOnWidgetClick;
+                    widgetSettings.connectSocketOnWidgetClick;
             options.voiceInput =
                 options.voiceInput != null
                     ? options.voiceInput
@@ -583,11 +583,11 @@ function ApplozicSidebox() {
             '/users/v2/chat/plugin/settings'
         if (data.appId) {
             url = url + '?appId=' +
-            applozic._globals.appId;
+                applozic._globals.appId;
         }
         else if (data.shopUrl) {
             url = url + '?shopUrl=' +
-            data.shopUrl;
+                data.shopUrl;
         }
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
