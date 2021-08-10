@@ -576,25 +576,27 @@ function ApplozicSidebox() {
     function getApplicationSettings(userId) {
         var data = {};
         data.appId = applozic._globals.appId;
-        data.shopUrl = applozic._globals.shopUrl;
+        data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl;
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
             '/users/v2/chat/plugin/settings'
+        var queryParams = [];
         if (data.appId) {
-            url = url + '?appId=' +
-                applozic._globals.appId;
+            queryParams.push("appId=" + data.appId);
         }
-        else if (data.shopUrl) {
-            url = url + '?shopUrl=' +
-                data.shopUrl;
+        if (data.widgetPlatformUrl) {
+            queryParams.push("widgetPlatformUrl=" + data.widgetPlatformUrl);
+        }
+        if (queryParams.length) {
+            url = url + "?" + queryParams.join("&")
         }
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var responseData = JSON.parse(this.responseText);
                 // if only the url of the shop was provided then set the appId
-                if (!data.appId && data.shopUrl && responseData.response) {
+                if (!data.appId && data.widgetPlatformUrl && responseData.response) {
                     applozic._globals.appId = responseData.response.applicationId;
                 }
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
@@ -614,18 +616,22 @@ function ApplozicSidebox() {
             KommunicateUtils.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
-        Sentry.init({
-            dsn: sentryConfig.dsn,
-            release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
-        });
-        Sentry.configureScope(function (scope) {
-            scope.setTag('applicationId', applozic._globals.appId);
-            scope.setTag('userId', userId);
-            scope.setTag('url', url);
-            scope.setUser({
-                id: applozic._globals.appId,
+        try {
+            Sentry.init({
+                dsn: sentryConfig.dsn,
+                release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
             });
-        });
+            Sentry.configureScope(function (scope) {
+                scope.setTag('applicationId', applozic._globals.appId);
+                scope.setTag('userId', userId);
+                scope.setTag('url', url);
+                scope.setUser({
+                    id: applozic._globals.appId,
+                });
+            });
+        } catch (error) {
+            console.log("Error in initializing sentry", error);
+        }
     }
     function saveUserCookies(kommunicateSettings) {
         KommunicateUtils.setCookie({
