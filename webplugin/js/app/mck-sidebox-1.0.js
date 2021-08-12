@@ -7088,6 +7088,11 @@ var userOverride = {
                     src: imageUrl,
                     alt: profileImage,
                 });
+                if (MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId] && params.name) {
+                    MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].displayName =
+                        params.name;
+                    MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].imageUrl = imageUrl;
+                }
                 KommunicateUI.setAvailabilityStatus(params.availabilityStatus);
             };
             _this.updateAssigneeDetails = function (data, tabId) {
