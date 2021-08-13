@@ -7,12 +7,40 @@
         var KB_URL = '/kb?categoryName=:categoryName&applicationId=:appId&status=published&type=faq'
         var SOURCES = { kommunicate: 'KOMMUNICATE' };
         var SEARCH_ELASTIC = '/kb/_search';
-
+        
         //KommunicateKB.init("https://api.kommunicate.io");
         KommunicateKB.init = function (url) {
             KM_API_URL = url;
         };
-
+        KommunicateKB.getCategories = function(options){
+            var appId = options.data.appId;
+            var API_BASE_URL = options.data.baseUrl
+            var url = API_BASE_URL + "/kb/category?applicationId=" + appId + "&status=published"
+            var response = new Object();
+            try{
+                KMCommonUtils.ajax({
+                    url: url,
+                    type: 'get',
+                    success: function (data) {
+                        response.status = 'success';
+                        response.data = data.data;
+                        if (options.success) {
+                            options.success(response);
+                        }
+                        return;
+                    },
+                    error: function (xhr, desc, err) {
+                        response.status = 'error';
+                        if (options.error) {
+                            options.error(response);
+                        }
+                    },
+                })
+            }catch(error){
+                options.error(error);
+            }
+        };
+        
         KommunicateKB.getArticles = function (options) {
             try {
                 var articles = [];
