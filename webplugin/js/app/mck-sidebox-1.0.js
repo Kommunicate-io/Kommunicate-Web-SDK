@@ -14692,13 +14692,13 @@ var userOverride = {
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
                     
-                    // if(file.type.indexOf('image') !== -1){
-                    //     // for encrypted images
-                    //     var newFileName = 'AWS-ENCRYPTED-'+file.name;
-                    //     data.append('file', file, newFileName);
-                    // }else{
+                    if(file.type.indexOf('image') !== -1){
+                        // for encrypted images
+                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
+                        data.append('file', file, newFileName);
+                    }else{
                         data.append('file', file);
-                    // }
+                    }
                 
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
@@ -14793,12 +14793,12 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
-                    // var queryParams;
-                    // if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
-                    //     queryParams = '?aclsPrivate=true';
-                    // };  
+                    var queryParams;
+                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
+                        queryParams = '?aclsPrivate=true';
+                    };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
-                    // queryParams && (url = url + queryParams);
+                    queryParams && (url = url + queryParams);
                     xhr.open('post', url, true);
                     window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);
