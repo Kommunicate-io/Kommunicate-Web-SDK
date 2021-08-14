@@ -397,9 +397,6 @@ KommunicateUI = {
 
         // on click of back button previous window should open
         $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
-            e.stopImmediatePropagation()
-            console.log(2)
-            console.log(e)
             $applozic('.km-contact-input-container')
                 .removeClass('vis')
                 .addClass('n-vis');
