@@ -4299,7 +4299,7 @@ display: none;
 	flex:1;
 }
 
-.km-faqdiv{
+#km-faqdiv{
 	overflow-y: auto;
 	overflow-x: hidden;
     height: calc(100% - 18px);
