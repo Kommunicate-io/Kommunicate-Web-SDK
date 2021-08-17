@@ -96,7 +96,7 @@ KommunicateUI = {
     },
     getLinkDataToPreview: function (url,callback) {
         window.Applozic.ALApiService.ajax({
-            url: kommunicate.getHostUrl() + '/extractlink?linkToExtract=' + url,
+            url: kommunicate.getBaseUrl() + '/extractlink?linkToExtract=' + url,
             type: 'GET',
             success: function (result) {
                 if (result) {

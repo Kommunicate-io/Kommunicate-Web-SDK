@@ -1,7 +1,6 @@
 const app = require('./../app');
 const express = require('express');
 const webpluginController = require('../../webplugin/controller');
-const {getLinkPreview} = require("link-preview-js");
 //router declaration
 const home = express.Router();
 
@@ -23,17 +22,3 @@ home.get('/kommunicate.app', function (req, res) {
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 
 home.get('/chat', webpluginController.getPluginHTML)
-home.get('/extractlink',function(req, res){
-    var urlToExtract = req.query.linkToExtract; 
-    if(!urlToExtract){
-        res.status(400);
-    }
-    getLinkPreview(urlToExtract).then(
-        (response) => {
-            res.status(200).send({data: response});
-        }
-    ).catch(err => {
-        res.send(400).send({error: 'invalid URL'});
-    });
-
-});
