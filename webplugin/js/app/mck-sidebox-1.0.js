@@ -4710,9 +4710,12 @@ var userOverride = {
                 });
                 $applozic(d).on(
                     'click',
-                    '.mck-conversation-tab-link',
+                    '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        // To prevent conversation assignee details from being shown when in FAQ 
+                        var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
+                        if(typeof lastEvent == 'string' && lastEvent.includes('faq') && lastEvent != 'km-faq-category-list') return;
                         var $this = $applozic(this);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroup = $mck_msg_inner.data('isgroup');
