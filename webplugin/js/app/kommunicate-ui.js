@@ -1610,6 +1610,9 @@ KommunicateUI = {
                             'vis',
                             'n-vis'
                         );
+                        headerTabTitle = document.getElementById(
+                            'mck-tab-title'
+                        );
                         headerTabTitle.innerHTML = headerTabTitle.getAttribute(
                             'title'
                         );
