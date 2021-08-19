@@ -36,7 +36,7 @@ function ApplozicSidebox() {
             url: 'https://maps.google.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
-                applozic._globals.googleApiKey
+                    applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         },
@@ -341,10 +341,6 @@ function ApplozicSidebox() {
         // }];
         var userId = KommunicateUtils.getRandomId();
         try {
-            (navigator.userAgent.indexOf('MSIE') !== -1 ||
-                navigator.appVersion.indexOf('Trident/') > 0) &&
-                (sentryConfig.enabled = false);
-            sentryConfig.enabled && loadErrorTracking(userId);
             getApplicationSettings(userId);
         } catch (e) {
             console.log('Plugin loading error. Refresh page.');
@@ -373,7 +369,7 @@ function ApplozicSidebox() {
                     hostname == domain ||
                     (hostname.length > domain.length &&
                         hostname.substr(hostname.length - domain.length - 1) ==
-                            '.' + domain)
+                        '.' + domain)
                 );
             };
 
@@ -396,6 +392,11 @@ function ApplozicSidebox() {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
+
+            (navigator.userAgent.indexOf('MSIE') !== -1 ||
+                navigator.appVersion.indexOf('Trident/') > 0) &&
+                (sentryConfig.enabled = false);
+            sentryConfig.enabled && loadErrorTracking(randomUserId);
 
             var sessionTimeout = options.sessionTimeout;
             sessionTimeout == null &&
@@ -428,7 +429,7 @@ function ApplozicSidebox() {
 
             var pseudoNameEnabled =
                 widgetSettings &&
-                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
+                    typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata =
@@ -440,7 +441,7 @@ function ApplozicSidebox() {
                 options.connectSocketOnWidgetClick != null
                     ? options.connectSocketOnWidgetClick
                     : widgetSettings &&
-                      widgetSettings.connectSocketOnWidgetClick;
+                    widgetSettings.connectSocketOnWidgetClick;
             options.voiceInput =
                 options.voiceInput != null
                     ? options.voiceInput
@@ -574,17 +575,21 @@ function ApplozicSidebox() {
 
     function getApplicationSettings(userId) {
         var data = {};
-        data.appId = applozic._globals.appId;
+        applozic._globals.appId && (data.appId = applozic._globals.appId);
+        applozic._globals.widgetPlatformUrl && (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            '/users/v2/chat/plugin/settings?appId=' +
-            applozic._globals.appId;
+            '/users/v2/chat/plugin/settings' + KommunicateUtils.formatParams(data);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                var data = JSON.parse(this.responseText);
-                mckInitSidebox(data.response, userId); // This function will initialize the Sidebox code.
+                var responseData = JSON.parse(this.responseText);
+                // if only the url of the shop was provided then set the appId
+                if (!data.appId && data.widgetPlatformUrl && responseData.response) {
+                    applozic._globals.appId = responseData.response.applicationId;
+                }
+                mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
         };
         xhr.open('GET', url, true);
@@ -601,18 +606,22 @@ function ApplozicSidebox() {
             KommunicateUtils.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
-        Sentry.init({
-            dsn: sentryConfig.dsn,
-            release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
-        });
-        Sentry.configureScope(function (scope) {
-            scope.setTag('applicationId', applozic._globals.appId);
-            scope.setTag('userId', userId);
-            scope.setTag('url', url);
-            scope.setUser({
-                id: applozic._globals.appId,
+        try {
+            Sentry.init({
+                dsn: sentryConfig.dsn,
+                release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
             });
-        });
+            Sentry.configureScope(function (scope) {
+                scope.setTag('applicationId', applozic._globals.appId);
+                scope.setTag('userId', userId);
+                scope.setTag('url', url);
+                scope.setUser({
+                    id: applozic._globals.appId,
+                });
+            });
+        } catch (error) {
+            console.log("Error in initializing sentry", error);
+        }
     }
     function saveUserCookies(kommunicateSettings) {
         KommunicateUtils.setCookie({
