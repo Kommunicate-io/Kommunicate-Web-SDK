@@ -4223,10 +4223,13 @@ display: none;
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 48px;
+    padding: 8px;
+    justify-content: center;
+    
 }
 
 .km-faq-category-card{
-    width: 150px;
+    width: 25%;
     padding: 10px;
     text-align: center;
     background: #FFFFFF;
@@ -4236,8 +4239,34 @@ display: none;
     height: 150px;
     transition: all ease 0.3s;
     cursor: pointer;
-    margin-top: 16px;
-    margin-left: 16px;
+    margin: 8px;
+}
+
+@media only screen and (max-width: 384px) {
+    .km-faq-category-card{
+        width: 100%;
+    }
+}
+@media only screen and (min-width: 385px) {
+    .km-faq-category-card{
+        width: 40%;    
+    }
+    #km-faq-category-list-container{
+        justify-content: flex-start;
+    }
+}
+@media only screen and (min-width: 768px) {
+    .km-faq-category-card{
+        width: 28%;    
+    }
+    #km-faq-category-list-container{
+        justify-content: center;
+    }
+}
+@media only screen and (min-width: 1024px) {
+    .km-faq-category-card{
+        width: 150px;    
+    }
 }
 .km-faq-category-card:hover{
     background: #F8F8F8;
