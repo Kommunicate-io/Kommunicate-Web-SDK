@@ -94,13 +94,22 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = false;
         }
     },
-    getLinkDataToPreview: function (url,callback) {
-        window.Applozic.ALApiService.ajax({
-            url: kommunicate.getBaseUrl() + '/extractlink?linkToExtract=' + url,
+    getLinkDataToPreview: function (url, callback) {
+        mckUtils.ajax({
+            headers: {
+                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+            },
+            url:
+                kommunicate.getBaseUrl() +
+                '/rest/ws/extractlink?linkToExtract=' +
+                url,
             type: 'GET',
+            global: false,
             success: function (result) {
                 if (result) {
-                    var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(result);
+                    var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
+                        result
+                    );
                     callback(previewTemplate);
                 }
             },
