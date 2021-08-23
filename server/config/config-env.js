@@ -83,7 +83,7 @@ const configEnv = {
       },
       "aws": {
         "cdnUrl": "https://cdn.kommunicate.io",
-        "bucket": "kommunicate-cdn"
+        "bucket": "km-prod-cdn"
       }
     }
   },
@@ -104,7 +104,7 @@ const configEnv = {
       },
       "aws": {
         "cdnUrl": "https://cdn.kommunicate.io",
-        "bucket": "kommunicate-cdn"
+        "bucket": "km-prod-cdn"
       }
     }
   },
@@ -127,7 +127,7 @@ const configEnv = {
       },
       "aws": {
         "cdnUrl": "https://cdn.kommunicate.io",
-        "bucket": "kommunicate-cdn"
+        "bucket": "km-prod-cdn"
       }
     }
   },
@@ -172,7 +172,7 @@ const configEnv = {
       },
       "aws": {
         "cdnUrl": "https://cdn.kommunicate.io",
-        "bucket": "kommunicate-cdn"
+        "bucket": "km-prod-cdn"
       }
     }
   },
