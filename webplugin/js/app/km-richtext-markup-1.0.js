@@ -200,7 +200,22 @@ Kommunicate.markup = {
             </div>`
         );
     },
-
+    getLinkPreviewTemplate: function (extractedData) {
+        var data = extractedData.data;
+        if (data && data.title) {
+            return (
+                '<div class="link-preview-wrapper"><div class="link-preview-image-div"><img class="link-preview-image" src="' +
+                (data.images[0] || data.favicons[0]) +
+                '" alt="' +
+                (data.siteName || data.title) +
+                '"></div><div class="link-preview-content"><h5 class="link-preview-title link-preview-title-width"> ' +
+                (data.siteName || data.title) +
+                '</h5><p class="link-preview-div-description">' +
+                (data.description || data.title) +
+                '</p></div></div>'+MCK_LABELS["url.notation"]+':'
+            );
+        }
+    },
     getButtonTemplate: function (options, requestType, buttonClass) {
         var linkSvg =
             '<span><svg width="12" height="12" viewBox="0 0 12 12"><path class="km-custom-widget-stroke" fill="none" stroke="#5553B7" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6a.71.71 0 0 1 .711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" /></svg></span>';
@@ -485,15 +500,15 @@ Kommunicate.markup = {
         return `<div class= "mck-rich-video-container">
     {{#payload}}
         {{#source}}
-            <iframe width="{{width}}" height="{{height}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
+            <iframe width="{{width||100%}}" height="{{height||250px}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
         {{/source}}
         {{^source}}
-        <video width="{{width}}" height="{{height}}" controls class= "mck-rich-video">
-             <source src="{{url}}" type="{{type}}">
+        <video width="{{width||100%}}" height="{{height||250px}}" controls class= "mck-rich-video">
+             <source src="{{url}}" type="{{type||''}}">
          </video>
         {{/source}}
         {{#caption}}
-        <div class="km-template-video-caption-wrapper" style="width:{{width}};">
+        <div class="km-template-video-caption-wrapper" style="width:{{width||100%}};">
            <p class="km-template-video-caption">{{caption}}</p>
         </div>
         {{/caption}}

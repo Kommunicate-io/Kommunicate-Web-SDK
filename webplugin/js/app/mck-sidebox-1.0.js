@@ -9179,6 +9179,17 @@ var userOverride = {
                     '.' + replyId + ' .mck-msg-content'
                 );
                 if (
+                    msg.contentType === 0 &&
+                    kommunicateCommons.isUrlValid(msg.message)
+                ) {
+                    KommunicateUI.getLinkDataToPreview(
+                        msg.message,
+                        function (template) {
+                            $textMessage.prepend(template);
+                        }
+                    );
+                }
+                if (
                     emoji_template.indexOf('emoji-inner') === -1 &&
                     msg.contentType === 0
                 ) {
@@ -9201,7 +9212,6 @@ var userOverride = {
                         target: '_blank',
                     });
                 }
-
                 if (richText) {
                     Kommunicate.richMsgEventHandler.initializeSlick(
                         $applozic(
