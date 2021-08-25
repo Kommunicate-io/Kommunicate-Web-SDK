@@ -1391,7 +1391,6 @@
 .link-preview-image{
     border-radius: 3px 0 0 3px;
     object-fit: cover;
-    object-position: left;
     width: inherit;
     height: inherit;
 }
