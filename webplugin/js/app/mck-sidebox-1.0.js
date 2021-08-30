@@ -9180,7 +9180,7 @@ var userOverride = {
                 );
                 var isIE =
                 window.navigator.userAgent.indexOf('MSIE') > -1 ||
-                window.navigator.userAgent.indexOf('rv:') > -1;
+                !!window.navigator.userAgent.match(/Trident.*rv\:11\./);
                 if (
                     !isIE &&
                     msg.contentType === 0 &&
