@@ -10,8 +10,10 @@ Kommunicate.postPluginInitialization = function (err, data) {
     var categoryName;
     if (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory) {
         categoryName = kommunicate._globals.faqCategory;
+        Kommunicate.getFaqList(data, categoryName);
+    }else{
+        Kommunicate.getFaqCategories(data)
     }
-    Kommunicate.getFaqList(data, categoryName);
 };
 
 //faq plugin
@@ -48,8 +50,45 @@ Kommunicate.getFaqList = function (data, categoryName) {
                     '</div></a></li>'
                 );
             });
+
+            kommunicate && kommunicate._globals && kommunicate._globals.faqCategory && KommunicateUI.initFaq()
             KommunicateUI.faqEvents(data);
         },
         error: function () { },
     });
 };
+Kommunicate.getFaqCategories = function(data){
+    KommunicateKB.getCategories({
+        data: {appId: data.appId, baseUrl: Kommunicate.getBaseUrl()},
+        success: function (response) {
+            if (
+                response.data &&
+                response.data.length > 0 &&
+                $applozic('.km-kb-container').hasClass('n-vis')
+            ) {
+                $applozic('.km-kb-container')
+                    .removeClass('n-vis')
+                    .addClass('vis');
+                KommunicateUI.adjustConversationTitleHeadingWidth(
+                    kommunicate._globals.popupWidget
+                );
+            }
+            $applozic.each(response.data, function (i, category) {
+                var categoryName = category && category.name;
+                var categoryDescription = category && category.description;
+                $applozic('#km-faq-category-list-container').append(
+                    '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="'+ categoryName.replace(/ /g, "-")
+                    +'">'+
+                    '<div class="km-faq-category-card-title km-custom-widget-text-color">' +
+                    categoryName + 
+                    '</div>' + 
+                    '<div class="km-faq-category-card-body">' +
+                    categoryDescription + 
+                    '</div> </div>'
+                );
+            });
+            KommunicateUI.initFaq()
+        },
+        error: function () { },
+    })
+}

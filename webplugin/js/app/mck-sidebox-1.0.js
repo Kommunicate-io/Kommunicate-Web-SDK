@@ -4709,9 +4709,12 @@ var userOverride = {
                 });
                 $applozic(d).on(
                     'click',
-                    '.mck-conversation-tab-link',
+                    '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        // To prevent conversation assignee details from being shown when in FAQ 
+                        var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
+                        if(typeof lastEvent == 'string' && lastEvent.indexOf('faq') != -1 && lastEvent != 'km-faq-category-list') return;
                         var $this = $applozic(this);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroup = $mck_msg_inner.data('isgroup');
@@ -7087,6 +7090,11 @@ var userOverride = {
                     src: imageUrl,
                     alt: profileImage,
                 });
+                if (MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId] && params.name) {
+                    MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].displayName =
+                        params.name;
+                    MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].imageUrl = imageUrl;
+                }
                 KommunicateUI.setAvailabilityStatus(params.availabilityStatus);
             };
             _this.updateAssigneeDetails = function (data, tabId) {
@@ -9148,6 +9156,21 @@ var userOverride = {
                 var $textMessage = $applozic(
                     '.' + replyId + ' .mck-msg-content'
                 );
+                var isIE =
+                window.navigator.userAgent.indexOf('MSIE') > -1 ||
+                !!window.navigator.userAgent.match(/Trident.*rv\:11\./);
+                if (
+                    !isIE &&
+                    msg.contentType === 0 &&
+                    kommunicateCommons.isUrlValid(msg.message)
+                ) {
+                    KommunicateUI.getLinkDataToPreview(
+                        msg.message,
+                        function (template) {
+                            $textMessage.prepend(template);
+                        }
+                    );
+                }
                 if (
                     emoji_template.indexOf('emoji-inner') === -1 &&
                     msg.contentType === 0
@@ -9171,7 +9194,6 @@ var userOverride = {
                         target: '_blank',
                     });
                 }
-
                 if (richText) {
                     Kommunicate.richMsgEventHandler.initializeSlick(
                         $applozic(
@@ -14661,13 +14683,13 @@ var userOverride = {
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
                     
-                    // if(file.type.indexOf('image') !== -1){
-                    //     // for encrypted images
-                    //     var newFileName = 'AWS-ENCRYPTED-'+file.name;
-                    //     data.append('file', file, newFileName);
-                    // }else{
+                    if(file.type.indexOf('image') !== -1){
+                        // for encrypted images
+                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
+                        data.append('file', file, newFileName);
+                    }else{
                         data.append('file', file);
-                    // }
+                    }
                 
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
@@ -14762,12 +14784,12 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
-                    // var queryParams;
-                    // if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
-                    //     queryParams = '?aclsPrivate=true';
-                    // };  
+                    var queryParams;
+                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
+                        queryParams = '?aclsPrivate=true';
+                    };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
-                    // queryParams && (url = url + queryParams);
+                    queryParams && (url = url + queryParams);
                     xhr.open('post', url, true);
                     window.Applozic.ALApiService.addRequestHeaders(xhr);
                     xhr.send(data);

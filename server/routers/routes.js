@@ -1,7 +1,6 @@
 const app = require('./../app');
 const express = require('express');
 const webpluginController = require('../../webplugin/controller');
-
 //router declaration
 const home = express.Router();
 
