@@ -4240,6 +4240,7 @@ display: none;
     transition: all ease 0.3s;
     cursor: pointer;
     margin: 8px;
+    overflow: hidden;
 }
 
 @media only screen and (max-width: 384px) {
