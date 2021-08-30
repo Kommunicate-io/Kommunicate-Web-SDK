@@ -53,7 +53,7 @@
 									</path>
 								</svg>
 							</div>
-							<ul class="mck-dropdown-menu menu-right" aria-labelledby="options">
+							<ul class="mck-dropdown-menu menu-right stop-selection" aria-labelledby="options">
 								<li>
 									<div class="menu-item n-vis" id="km-csat-trigger">
 										<svg height="16px" viewBox="0 -10 511.98685 511" width="16px" xmlns="http://www.w3.org/2000/svg">
@@ -63,6 +63,15 @@
 										</svg>
 										&nbsp
 										<span id="km-csat-trigger-text"></span>
+									</div>
+								</li>
+								<li>
+									<div class="menu-item n-vis" id="km-restart-conversation">
+										<svg width="17" height="18" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<path d="M8.83994 2.00001C5.44661 1.90667 2.66661 4.63334 2.66661 8.00001H1.47327C1.17327 8.00001 1.02661 8.36001 1.23994 8.56667L3.09994 10.4333C3.23327 10.5667 3.43994 10.5667 3.57327 10.4333L5.43327 8.56667C5.63994 8.36001 5.49327 8.00001 5.19327 8.00001H3.99994C3.99994 5.40001 6.11994 3.30001 8.73327 3.33334C11.2133 3.36667 13.2999 5.45334 13.3333 7.93334C13.3666 10.54 11.2666 12.6667 8.66661 12.6667C7.59327 12.6667 6.59994 12.3 5.81327 11.68C5.54661 11.4733 5.17327 11.4933 4.93327 11.7333C4.65327 12.0133 4.67327 12.4867 4.98661 12.7267C5.99994 13.5267 7.27327 14 8.66661 14C12.0333 14 14.7599 11.22 14.6666 7.82667C14.5799 4.70001 11.9666 2.08667 8.83994 2.00001Z" fill="#919EAD"/>
+										</svg>
+										&nbsp
+										<span id="km-restart-conversation-text"></span>
 									</div>
 								</li>
 								<li>
@@ -419,11 +428,29 @@
 													<path fill="#787474" fill-rule="nonzero" d="M2.79801641 16.79165738l.01279906.00769045c2.7142501 1.62062499 4.9765631.04219128 6.1885999-1.97497667.3270023-.54422324 1.55448623-2.58074521 2.79039798-4.63129344 1.25308361-2.079127 2.51480582-4.17263105 2.8555035-4.73964722.7850585-1.30655673.928768-3.12041452-1.02247594-4.29284017C12.4491118.45868356 11.49591165.61137697 10.9027726.8630112c-.85581269.36273948-1.35565745 1.08421422-1.53088846 1.37743617l-5.658368 9.39208556c-.70517184 1.17797162-.5235628 2.28122412.47371238 2.8804475.61996573.372513 1.2844719.37303855 1.87102157.00170976.42648918-.27015628.72709626-.67870968.90411746-.97371957l5.59414907-9.35431076c.14474987-.24209567.0661251-.55564877-.17547919-.70081928l-.00087665-.00052674c-.24244632-.14496057-.55649081-.06591517-.70134602.17635583l-5.59383301 9.35378475c-.09800968.16351264-.30334324.46394185-.57398283.63516794-.2604276.16495342-.50615497.16048317-.7970269-.01429032-.4921504-.2957138-.53361547-.79263778-.12370218-1.47723092l5.65857872-9.39243626c.12462827-.2086077.47507585-.71678977 1.0529514-.9620843.54569911-.23145859 1.1496441-.15277963 1.7951741.23318488 1.53886856.92464552 1.08150083 2.20688915.6716944 2.88892158-.34059233.56684084-1.60217382 2.65971354-2.85476605 4.7384199-1.23640317 2.05096895-2.46402775 4.08812214-2.79103011 4.63234546-.59595756.99183994-2.25554543 3.13550123-4.7874873 1.62370223l-.0112211-.00674232c-1.13350634-.68107932-1.6541578-1.56042484-1.5915647-2.68804318.03917501-.7073837.31716069-1.51157536.80397927-2.32535185l4.75213674-7.90491222c.14548655-.24213028.06728318-.5563847-.17467177-.70176591-.24213028-.14548655-.5563847-.06728319-.7017659.17467177l-4.75276886 7.9059642c-.57201106.95635488-.8995258 1.92240601-.94810117 2.79476154-.05812167 1.04630744.2573944 2.52281778 2.0866089 3.62192074z"/>
 												</svg>
 											</button>
-										</div>										
+										</div>
+									</div>
+									<div id="mck-attach-img-box" class="mck-blk-12">
+										<button id="mck-img-file-up" type="button" class="mck-img-file-up mck-file-attach-label mck-btn mck-btn-text-panel" title="Upload Attachment" aria-disabled="false" aria-label="Upload Image" tabindex="0">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M11.8889 15.5556C13.3616 15.5556 14.5556 14.3616 14.5556 12.8889C14.5556 11.4161 13.3616 10.2222 11.8889 10.2222C10.4161 10.2222 9.22222 11.4161 9.22222 12.8889C9.22222 14.3616 10.4161 15.5556 11.8889 15.5556Z" fill="#787474"/>
+												<path d="M19 5.77778H16.1822L15.08 4.57778C14.7511 4.21333 14.2711 4 13.7733 4H10.0044C9.50667 4 9.02667 4.21333 8.68889 4.57778L7.59556 5.77778H4.77778C3.8 5.77778 3 6.57778 3 7.55556V18.2222C3 19.2 3.8 20 4.77778 20H19C19.9778 20 20.7778 19.2 20.7778 18.2222V7.55556C20.7778 6.57778 19.9778 5.77778 19 5.77778ZM11.8889 17.3333C9.43556 17.3333 7.44444 15.3422 7.44444 12.8889C7.44444 10.4356 9.43556 8.44444 11.8889 8.44444C14.3422 8.44444 16.3333 10.4356 16.3333 12.8889C16.3333 15.3422 14.3422 17.3333 11.8889 17.3333Z" fill="#787474"/>
+												</svg>												
+										</button>
 									</div>
 									<div id ="mck-mic-animation-container" class="mck-mic-animation-container n-vis" aria-disabled="false" title="Voice Input" aria-label="Voice Input" tabindex="0">
 										<div id ="mck-animation-outer" class="mck-animation-outer km-custom-widget-background-color n-vis"></div>
 											<svg focusable="false" aria-hidden="true" id = "mck-mic-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#787474" d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+									</div>
+									<div id="mck-quick-replies-box" class="mck-intent-box n-vis" >
+										<div class="mck-dropdown-toggle mck-bot-icon" id="intent-option" data-toggle="mckdropdown"
+											aria-expanded="false">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M19.463 11.2112H18.7112V8.83055C18.6933 8.54415 18.4606 8.31146 18.1742 8.29356H13.037V5H11.963V8.29356H6.82578C6.53938 8.31146 6.30668 8.54415 6.28878 8.83055V11.2112H5.53699C5.2327 11.2112 5 11.4439 5 11.7482V15.2924C5 15.5967 5.2327 15.8294 5.53699 15.8294H6.28878V19.1408C6.30668 19.4272 6.53938 19.6599 6.82578 19.6778H18.1742C18.4606 19.6599 18.6933 19.4272 18.7112 19.1408V15.8294H19.463C19.7673 15.8294 20 15.5967 20 15.2924V11.7482C20 11.4439 19.7673 11.2112 19.463 11.2112ZM8.50835 12.4821C8.50835 11.6229 9.20644 10.9248 10.0656 10.9248C10.9248 10.9248 11.6229 11.6229 11.6229 12.4821C11.6229 13.3413 10.9248 14.0394 10.0656 14.0394C9.20644 14.0394 8.50835 13.3413 8.50835 12.4821ZM14.8628 17.1539H10.1372V16.08H14.8628V17.1539V17.1539ZM16.4916 12.4821C16.4916 13.3413 15.7936 14.0394 14.9344 14.0394C14.0573 14.0394 13.3592 13.3413 13.3413 12.4821C13.3413 11.605 14.0394 10.9069 14.8986 10.889C15.7578 10.8711 16.4737 11.5871 16.4916 12.4463C16.4916 12.4642 16.4916 12.4642 16.4916 12.4821Z" fill="#BCC7DB"/>
+											</svg>
+										</div>
+										<ul class="mck-dropdown-menu mck-intent-menu stop-selection" id="mck-intent-options" aria-labelledby="intent-option">
+										</ul>
 									</div>
 									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right n-vis">
 										<div class="mck-blk-12">
@@ -453,9 +480,11 @@
 
 									<textarea id="mck-autosuggest-search-input" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead km-auto-expand" autocomplete="off" rows='1' data-autoresize form="mck-msg-form" method="post" type="text" aria-label="Select option" tabindex="0"></textarea>
 									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
+									
 									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required notranslate" data-text="Type your message..." aria-label="Type your message..." tabindex="0"></div>
 									
 									<input id="mck-file-input" class="mck-file-input n-vis" type="file" name="files[]">
+									<input id="mck-image-input" class="mck-image-input n-vis" type="file" name="files[]" accept="image/*" capture="user">
 									<div id="mck-file-box" class="n-vis"></div>
 								</div>
 							</div>
