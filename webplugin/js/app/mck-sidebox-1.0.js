@@ -9178,7 +9178,11 @@ var userOverride = {
                 var $textMessage = $applozic(
                     '.' + replyId + ' .mck-msg-content'
                 );
+                var isIE =
+                window.navigator.userAgent.indexOf('MSIE') > -1 ||
+                window.navigator.userAgent.indexOf('rv:') > -1;
                 if (
+                    !isIE &&
                     msg.contentType === 0 &&
                     kommunicateCommons.isUrlValid(msg.message)
                 ) {
