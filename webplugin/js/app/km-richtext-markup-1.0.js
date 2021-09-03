@@ -211,8 +211,7 @@ Kommunicate.markup = {
                 '"></div><div class="link-preview-content"><h5 class="link-preview-title link-preview-title-width"> ' +
                 (data.siteName || data.title) +
                 '</h5><p class="link-preview-div-description">' +
-                (data.description || data.title) +
-                '</p></div></div>'+MCK_LABELS["url.notation"]+':'
+                (data.description || data.title)
             );
         }
     },

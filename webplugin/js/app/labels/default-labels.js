@@ -132,7 +132,6 @@ Kommunicate.defaultLabels = {
         SUBMIT_RATING: 'Submit your rating',
     },
     'page.title.on.new.message': 'New message from ',
-    'url.notation': 'Here is the link',
     'emoji.hover.text': {
         poor: 'Poor',
         great: 'Great',
