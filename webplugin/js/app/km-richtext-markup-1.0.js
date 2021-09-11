@@ -490,7 +490,7 @@ Kommunicate.markup = {
                         {{/payload}}
                     </div>
                         {{#buttons}}
-                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}">{{label}}</button>      
+                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}" data-post-back-as-message="{{postFormDataAsMessage}}">{{label}}</button>      
                         {{/buttons}}   
                 </form>   
             </div>`;
@@ -852,6 +852,9 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                     (isActionObject && item.action.requestType);
                 options.postBackToKommunicate =
                     (isActionObject && item.action.postBackToKommunicate) ||
+                    false;
+                options.postFormDataAsMessage =
+                    (isActionObject && item.action.postFormDataAsMessage) ||
                     false;
                 options.label = item.name || item.label;
                 options.message =
