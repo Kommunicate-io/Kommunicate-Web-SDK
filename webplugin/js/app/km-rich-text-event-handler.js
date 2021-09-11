@@ -658,8 +658,13 @@ Kommunicate.richMsgEventHandler = {
         var messagePxy = {};
         var msgMetadata = {};
         replyText && (messagePxy.message = replyText); //message to send
-        var postFormDataAsMessage = 
-        data && JSON.stringify(data).replaceAll("{", "").replaceAll('\"', '').replaceAll("}", "").replaceAll(",","\n");
+        var postFormDataAsMessage =
+            data &&
+            JSON.stringify(data)
+                .replaceAll('{', '')
+                .replaceAll('"', '')
+                .replaceAll('}', '')
+                .replaceAll(',', '\n');
         
         isActionableForm &&
             requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM &&
