@@ -657,7 +657,6 @@ KommunicateUI = {
                     {
                         id: [
                                 'km-faq-category-list-container', 
-                                // 'km-faq-list-container', 
                             ],
                     },
                     "n-vis", "vis"
