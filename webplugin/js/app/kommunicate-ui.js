@@ -319,9 +319,6 @@ KommunicateUI = {
             return false;
         }
     },
-    showCategoryList: function(){
-
-    },
 
     initFaq : function() {
         var data = {}
@@ -762,7 +759,7 @@ KommunicateUI = {
     },
     searchFaqs: function (data) {
         var searchFilter = {
-            appId: data.appId,
+            appId: data && data.appId,
             query: document.getElementById('km-faq-search-input').value,
         }
         if(kommunicate && kommunicate._globals && kommunicate._globals.faqCategory){
