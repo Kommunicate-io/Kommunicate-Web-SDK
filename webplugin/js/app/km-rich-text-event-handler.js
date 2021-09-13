@@ -556,7 +556,7 @@ Kommunicate.richMsgEventHandler = {
         var postBackToKommunicate = isActionableForm
             ? JSON.parse(target.dataset.postBackToKommunicate.toLowerCase())
             : false;
-        var ispostBackAsMessage = isActionableForm
+        var postBackAsMessage = isActionableForm
             ? JSON.parse(target.dataset.postBackAsMessage.toLowerCase())
             : false;
         var replyText = target.title || target.innerHTML;
@@ -657,14 +657,15 @@ Kommunicate.richMsgEventHandler = {
         }
         var messagePxy = {};
         var msgMetadata = {};
-        var postFormDataAsMessage =
-            ispostBackAsMessage &&
-            data &&
-            JSON.stringify(data)
-                .replaceAll('{', '')
-                .replaceAll('"', '')
-                .replaceAll('}', '')
-                .replaceAll(',', '\n');
+        var postFormDataAsMessage='';
+        if (postBackAsMessage && Object.keys(data).length) {
+            for (var i = 0; i < Object.keys(data).length; i++) {
+                var key = Object.keys(data)[i];
+                postFormDataAsMessage = postFormDataAsMessage.concat(
+                    key + ':' + data[key] + '\n'
+                );
+            }
+        }
         messagePxy.message = replyText
             && postFormDataAsMessage
                 ? replyText.concat('\n' + postFormDataAsMessage)
