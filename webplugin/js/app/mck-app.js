@@ -628,6 +628,7 @@ function ApplozicSidebox() {
         if (
             !(
                 kommunicateSettings.preLeadCollection ||
+                kommunicateSettings.appSettings.collectLead ||
                 kommunicateSettings.askUserDetails
             )
         ) {
