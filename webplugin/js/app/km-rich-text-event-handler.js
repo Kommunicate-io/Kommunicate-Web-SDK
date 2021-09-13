@@ -556,7 +556,7 @@ Kommunicate.richMsgEventHandler = {
         var postBackToKommunicate = isActionableForm
             ? JSON.parse(target.dataset.postBackToKommunicate.toLowerCase())
             : false;
-        var postFormDataAsMessage = isActionableForm
+        var ispostBackAsMessage = isActionableForm
             ? JSON.parse(target.dataset.postBackAsMessage.toLowerCase())
             : false;
         var replyText = target.title || target.innerHTML;
@@ -657,14 +657,18 @@ Kommunicate.richMsgEventHandler = {
         }
         var messagePxy = {};
         var msgMetadata = {};
-        replyText && (messagePxy.message = replyText); //message to send
         var postFormDataAsMessage =
+            ispostBackAsMessage &&
             data &&
             JSON.stringify(data)
                 .replaceAll('{', '')
                 .replaceAll('"', '')
                 .replaceAll('}', '')
                 .replaceAll(',', '\n');
+        messagePxy.message = replyText
+            && postFormDataAsMessage
+                ? replyText.concat('\n' + postFormDataAsMessage)
+                : replyText; //message to send
         
         isActionableForm &&
             requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM &&
@@ -682,11 +686,6 @@ Kommunicate.richMsgEventHandler = {
         (Object.keys(msgMetadata).length > 0 ||
             Object.keys(messagePxy).length > 0) &&
         Kommunicate.sendMessage(messagePxy);
-        postFormDataAsMessage && 
-        Kommunicate.sendMessage({
-            message: postFormDataAsMessage,
-            type: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
-        });
     },
     handleFormErrorMessage: function (form, name, errorText, validationFailed) {
         var element = form.getElementsByClassName(
