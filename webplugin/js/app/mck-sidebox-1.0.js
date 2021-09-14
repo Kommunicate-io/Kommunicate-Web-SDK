@@ -18,6 +18,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
+var onConnectEventFailureCount = 0;
 
 (function ($applozic, w, d) {
     'use strict';
@@ -705,13 +706,19 @@ var userOverride = {
             onConnectFailed: function (resp) {
                 console.log('onConnectFailed' + resp);
                 console.log('onconnect failed');
+                onConnectEventFailureCount += 1
                 IS_SOCKET_CONNECTED = false;
-                if (navigator.onLine) {
+                if (navigator.onLine && onConnectEventFailureCount < 3) {
                     window.Applozic.ALSocket.reconnect();
+                }
+                if(onConnectEventFailureCount >= 3){
+                    alert('Your session has expired. Logging Out. Please reload the page')
+                    kommunicate.logout()
                 }
             },
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
+                onConnectEventFailureCount = 0;
                 kommunicateCommons.modifyClassList(
                     { id: ['km-local-file-system-warning'] },
                     'n-vis',
@@ -3860,7 +3867,7 @@ var userOverride = {
                 Kommunicate.client.getGroupDetailByType(
                     options,
                     function (err, result) {
-                        if (err) {
+                        if (err || !result) {
                             console.log(
                                 'error while fetching group detail by type',
                                 err
