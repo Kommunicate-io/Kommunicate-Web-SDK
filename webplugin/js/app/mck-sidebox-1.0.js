@@ -4715,7 +4715,14 @@ var userOverride = {
                         e.preventDefault();
                         // To prevent conversation assignee details from being shown when in FAQ 
                         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
-                        if(typeof lastEvent == 'string' && lastEvent.indexOf('faq') != -1 && lastEvent != 'km-faq-category-list') return;
+                        var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
+                        if(typeof lastEvent == 'string' && 
+                            lastEvent.indexOf('faq') != -1 && 
+                            (isFaqCategoryPresent ? 
+                                lastEvent != 'km-faq-list' : 
+                                lastEvent != 'km-faq-category-list')
+
+                        ) return;
                         var $this = $applozic(this);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroup = $mck_msg_inner.data('isgroup');
@@ -7029,13 +7036,13 @@ var userOverride = {
                 }
                 typeof callback == 'function' && callback(data);
             };
-            _this.isFaqTabOpen = function () {
+            _this.isFaqTabOpen = function () {    
                 return (
                     document
                         .querySelector('#km-faqdiv')
                         .classList.contains('vis') ||
                     document
-                        .querySelector('#km-faqanswer')
+                        .querySelector('#km-faq-category-list-container')
                         .classList.contains('vis') ||
                     document
                         .querySelector('#km-contact-search-input-box')
