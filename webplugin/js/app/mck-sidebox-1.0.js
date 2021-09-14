@@ -9178,16 +9178,17 @@ var userOverride = {
                 var $textMessage = $applozic(
                     '.' + replyId + ' .mck-msg-content'
                 );
+                var url = kommunicateCommons.isMessageContainsUrl(msg.message);
                 var isIE =
                 window.navigator.userAgent.indexOf('MSIE') > -1 ||
                 !!window.navigator.userAgent.match(/Trident.*rv\:11\./);
                 if (
                     !isIE &&
                     msg.contentType === 0 &&
-                    kommunicateCommons.isUrlValid(msg.message)
+                    urlRE
                 ) {
                     KommunicateUI.getLinkDataToPreview(
-                        msg.message,
+                        url,
                         function (template) {
                             $textMessage.prepend(template);
                         }
