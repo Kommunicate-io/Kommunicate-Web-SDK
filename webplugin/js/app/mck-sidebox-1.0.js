@@ -9192,7 +9192,7 @@ var userOverride = {
                 if (
                     !isIE &&
                     msg.contentType === 0 &&
-                    urlRE
+                    url
                 ) {
                     KommunicateUI.getLinkDataToPreview(
                         url,
