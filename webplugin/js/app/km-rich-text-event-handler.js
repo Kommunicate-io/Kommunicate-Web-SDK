@@ -556,6 +556,9 @@ Kommunicate.richMsgEventHandler = {
         var postBackToKommunicate = isActionableForm
             ? JSON.parse(target.dataset.postBackToKommunicate.toLowerCase())
             : false;
+        var postBackAsMessage = isActionableForm
+            ? JSON.parse(target.dataset.postBackAsMessage.toLowerCase())
+            : false;
         var replyText = target.title || target.innerHTML;
         var formElements = [];
         formElements = Array.prototype.concat.apply(
@@ -654,8 +657,20 @@ Kommunicate.richMsgEventHandler = {
         }
         var messagePxy = {};
         var msgMetadata = {};
-        replyText && (messagePxy.message = replyText); //message to send
-
+        var postFormDataAsMessage='';
+        if (postBackAsMessage && Object.keys(data).length) {
+            for (var i = 0; i < Object.keys(data).length; i++) {
+                var key = Object.keys(data)[i];
+                postFormDataAsMessage = postFormDataAsMessage.concat(
+                    key + ':' + data[key] + '\n'
+                );
+            }
+        }
+        messagePxy.message = replyText
+            && postFormDataAsMessage
+                ? replyText.concat('\n' + postFormDataAsMessage)
+                : replyText; //message to send
+        
         isActionableForm &&
             requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM &&
             (msgMetadata['KM_CHAT_CONTEXT'] = { formData: data });
@@ -671,7 +686,7 @@ Kommunicate.richMsgEventHandler = {
             (messagePxy['metadata'] = msgMetadata);
         (Object.keys(msgMetadata).length > 0 ||
             Object.keys(messagePxy).length > 0) &&
-            Kommunicate.sendMessage(messagePxy);
+        Kommunicate.sendMessage(messagePxy);
     },
     handleFormErrorMessage: function (form, name, errorText, validationFailed) {
         var element = form.getElementsByClassName(
