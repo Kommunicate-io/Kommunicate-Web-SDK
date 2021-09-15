@@ -200,7 +200,7 @@ Kommunicate.markup = {
             </div>`
         );
     },
-    getLinkPreviewTemplate: function (extractedData) {
+    getLinkPreviewTemplate: function (extractedData,messageToDisplay) {
         var data = extractedData.data;
         if (data && data.title) {
             return (
@@ -211,7 +211,8 @@ Kommunicate.markup = {
                 '"></div><div class="link-preview-content"><h5 class="link-preview-title link-preview-title-width"> ' +
                 (data.siteName || data.title) +
                 '</h5><p class="link-preview-div-description">' +
-                (data.description || data.title)
+                (data.description || data.title)+
+                '</p></div></div>'
             );
         }
     },

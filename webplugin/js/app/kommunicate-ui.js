@@ -326,7 +326,10 @@ KommunicateUI = {
 
         // On Click of FAQ button the FAQ category List will open.
         $applozic(d).on('click', '#km-faq', function () {
-            var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
+            var isFaqCategoryPresent =
+                kommunicate &&
+                kommunicate._globals &&
+                kommunicate._globals.faqCategory;
             kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                 KommunicateUtils.removeItemFromLocalStorage(
@@ -358,30 +361,31 @@ KommunicateUI = {
             kommunicateCommons.modifyClassList(
                 {
                     id: [
-                            'km-faq', 
-                            'mck-no-conversations', 
-                            'mck-away-msg-box', 
-                            'mck-sidebox-ft', 
-                            'mck-contacts-content', 
-                            'km-widget-options'
-                        ],
-                    class: ['mck-conversation', 'mck-agent-image-container', 'mck-agent-status-text']
+                        'km-faq',
+                        'mck-no-conversations',
+                        'mck-away-msg-box',
+                        'mck-sidebox-ft',
+                        'mck-contacts-content',
+                        'km-widget-options',
+                    ],
+                    class: [
+                        'mck-conversation',
+                        'mck-agent-image-container',
+                        'mck-agent-status-text',
+                    ],
                 },
                 "n-vis",
                 "vis"
             );
 
-            isFaqCategoryPresent ?
-                $applozic('#km-faq-category-list-container')
-                    .addClass('n-vis') :
-                (
-                    $applozic('#km-faq-list-container')
-                        .addClass('n-vis') &&
-                    $applozic('#km-faq-category-list-container')
-                        .removeClass('n-vis')
-                )
-            
-            $applozic('#mck-tab-title').html('FAQ')
+            isFaqCategoryPresent
+                ? $applozic('#km-faq-category-list-container').addClass('n-vis')
+                : $applozic('#km-faq-list-container').addClass('n-vis') &&
+                  $applozic('#km-faq-category-list-container').removeClass(
+                      'n-vis'
+                  );
+
+            $applozic('#mck-tab-title').html('FAQ');
             $applozic('#mck-msg-new').attr('disabled', false);
             $applozic(
                 '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
@@ -390,8 +394,7 @@ KommunicateUI = {
                 .addClass('vis-table');
             $applozic(
                 '#mck-tab-individual .mck-name-status-container.mck-box-title'
-            )
-                .removeClass('padding');
+            ).removeClass('padding');
             KommunicateUI.checkSingleThreadedConversationSettings(true);
         });
 
@@ -411,7 +414,7 @@ KommunicateUI = {
                 'n-vis'
             );
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
-            MCK_EVENT_HISTORY.push('km-faq-list');
+                MCK_EVENT_HISTORY.push('km-faq-list');
             var categoryName = this.getAttribute('data-category-name');
             document.querySelector('#km-faq-list-container').innerHTML = ''
             Kommunicate.getFaqList(data, categoryName)
@@ -438,57 +441,64 @@ KommunicateUI = {
             );
             MCK_BOT_MESSAGE_QUEUE = [];
             if (MCK_EVENT_HISTORY.length >= 2) {
-                if(
+                if (
                     MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] ==
                     'km-faq-category-list'
-                ){
+                ) {
                     KommunicateUI.showHeader();
-                    
+
                     // remove n-vis
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['km-faqdiv', 'km-faq-category-list-container', 'km-contact-search-input-box'],
-                            class: ['km-contact-input-container']
+                            id: [
+                                'km-faqdiv',
+                                'km-faq-category-list-container',
+                                'km-contact-search-input-box',
+                            ],
+                            class: ['km-contact-input-container'],
                         },
-                        "vis", "n-vis"
+                        'vis',
+                        'n-vis'
                     );
 
                     // add n-vis
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['km-faq-list-container'],
-                            class: ['km-no-results-found-container']
+                            class: ['km-no-results-found-container'],
                         },
-                        "n-vis", "vis"
-                    ); 
+                        'n-vis',
+                        'vis'
+                    );
 
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     return;
-                }else 
-                if (
+                } else if (
                     MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] ==
                     'km-faq-list'
                 ) {
                     KommunicateUI.showHeader();
-                    
+
                     // remove n-vis
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['km-faqdiv','km-contact-search-input-box'],
-                            class: ['km-contact-input-container']
+                            id: ['km-faqdiv', 'km-contact-search-input-box'],
+                            class: ['km-contact-input-container'],
                         },
-                        "vis", "n-vis"
+                        'vis',
+                        'n-vis'
                     );
 
                     // add n-vis
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['km-faqanswer'],
-                            class: ['km-no-results-found-container']
+                            class: ['km-no-results-found-container'],
                         },
-                        "n-vis", "vis"
-                    ); 
+                        'n-vis',
+                        'vis'
+                    );
 
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
@@ -500,20 +510,29 @@ KommunicateUI = {
                     // remove n-vis
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['mck-tab-conversation','km-faq'],
-                            class: ['mck-conversation', 'mck-agent-image-container', 'mck-agent-status-text']
+                            id: ['mck-tab-conversation', 'km-faq'],
+                            class: [
+                                'mck-conversation',
+                                'mck-agent-image-container',
+                                'mck-agent-status-text',
+                            ],
                         },
-                        "vis", "n-vis"
+                        'vis',
+                        'n-vis'
                     );
 
                     // add n-vis
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['faq-common'],
-                            class: ['km-no-results-found-container','km-talk-to-human-div']
+                            class: [
+                                'km-no-results-found-container',
+                                'km-talk-to-human-div',
+                            ],
                         },
-                        "n-vis", "vis"
-                    );   
+                        'n-vis',
+                        'vis'
+                    );
                     var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                     $applozic.fn.applozic('openChat', elem);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
@@ -531,25 +550,33 @@ KommunicateUI = {
                 kommunicateCommons.modifyClassList(
                     {
                         id: ['km-faq', 'mck-rate-conversation'],
-                        class: ['mck-conversation']
+                        class: ['mck-conversation'],
                     },
-                    "vis", "n-vis"
+                    'vis',
+                    'n-vis'
                 );
 
                 // add n-vis
                 kommunicateCommons.modifyClassList(
                     {
                         id: ['faq-common'],
-                        class: ['km-no-results-found-container', 'km-talk-to-human-div','mck-agent-status-text','mck-agent-image-container', 'mck-agent-status-indicator']
+                        class: [
+                            'km-no-results-found-container',
+                            'km-talk-to-human-div',
+                            'mck-agent-status-text',
+                            'mck-agent-image-container',
+                            'mck-agent-status-indicator',
+                        ],
                     },
-                    "n-vis", "vis"
+                    'n-vis',
+                    'vis'
                 );
 
                 kommunicateCommons.modifyClassList(
                     { class: ['mck-rating-box'] },
                     '',
                     'selected'
-                );    
+                );
                 document.getElementById('mck-tab-title').textContent = '';
                 MCK_EVENT_HISTORY.length = 0;
                 KommunicateUI.handleConversationBanner();
