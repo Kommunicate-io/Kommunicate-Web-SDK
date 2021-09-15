@@ -521,7 +521,6 @@ $applozic.extend(true, Kommunicate, {
             return 'km-fixed-container';
         }
     },
-    processPaymentRequest: function (options) {},
     sendMessage: function (messagePxy) {
         var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
         var $mck_msg_to = $applozic('#mck-msg-to');
