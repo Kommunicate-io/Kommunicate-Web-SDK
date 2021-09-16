@@ -28,15 +28,14 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.applozic.com/applozic/applozic.chat-6.1.min.js', // update the url with every new release of applozic-web-plugin
-            alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.1.min.js',
+            url: MCK_STATICPATH + '/js/app/applozic.chat-6.1.min.js',
         },
         {
             name: 'maps',
             url: 'https://maps.google.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
-                    applozic._globals.googleApiKey
+                applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         },
