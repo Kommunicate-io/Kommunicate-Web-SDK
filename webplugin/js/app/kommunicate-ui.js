@@ -996,7 +996,7 @@ KommunicateUI = {
         var messageBody = document.querySelector(
             '.mck-message-inner.mck-group-inner'
         );
-        if (isCSATenabled) {
+        if (isCSATenabled || kommunicate._globals.isCsatAvailable) {
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
                 { class: ['mck-rating-box'] },
