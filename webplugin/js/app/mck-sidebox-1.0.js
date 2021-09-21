@@ -1898,8 +1898,14 @@ var userOverride = {
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
-                    window.Applozic.ALSocket.events.onMessageSent =
-                        events.onMessageSent;
+                    if (window.Applozic.ALSocket.events.onMessageSent) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
+                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
+                            console.log("onMessageSent callback ", data);
+                            oldCallback(data);
+                            events.onMessageSent(data);
+                        }
+                    }
                 }
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
@@ -2623,6 +2629,7 @@ var userOverride = {
                 if (kommunicate._globals.zendeskApiKey) {
                     loadZopimSDK();
                     var events = {
+                        'onMessageSent': handleUserMessage,
                         'onMessageReceived': handleBotMessage,
                     };
                     Kommunicate.subscribeToEvents(events);
@@ -2642,6 +2649,17 @@ var userOverride = {
                 var h = document.getElementsByTagName("head")[0];
                 h.appendChild(s);
             }
+            
+            function handleUserMessage(event) {
+                if (!event.message) return;
+                if (!ZENDESK_SDK_INITIALIZED) return;
+                console.log("handleUserMessage: ", event);
+                zChat.sendChatMsg(event.message.message, function (err, data) {
+                    console.log("zChat.sendChatMsg ", err, data)
+                });
+                // TODO look for attachment
+            }
+            
             function handleBotMessage(event) {
                 console.log("handleBotMessage: ", event);
                 if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
