@@ -15994,7 +15994,18 @@ var userOverride = {
                             resp.message.metadata.actionRequest &&
                             resp.message.metadata.actionRequest == 'askCSAT'
                         ) {
-                            KommunicateUI.askCSAT();
+                            KommunicateUtils.getAppSettings(
+                                MCK_APP_ID,
+                                function (appSettings) {
+                                    if (
+                                        kommunicateCommons.isCsatAvailable(
+                                            appSettings
+                                        )
+                                    ) {
+                                        KommunicateUI.askCSAT();
+                                    }
+                                }
+                            );
                         }
                         if (resp.message.metadata.KM_STATUS) {
                             var groupId = 'li-group-' + resp.message.groupId;
