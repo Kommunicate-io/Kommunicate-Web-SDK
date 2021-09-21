@@ -371,6 +371,7 @@ var userOverride = {
         var EMOJI_LIBRARY = appOptions.emojilibrary;
         var CSAT_ENABLED = appOptions.collectFeedback;
         var HIDE_POST_CTA = appOptions.hidePostCTA;
+        var ZENDESK_SDK_INITIALIZED = false;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
@@ -1883,8 +1884,14 @@ var userOverride = {
                         events.onConversationRead;
                 }
                 if (typeof events.onMessageReceived === 'function') {
-                    window.Applozic.ALSocket.events.onMessageReceived =
-                        events.onMessageReceived;
+                    if (window.Applozic.ALSocket.events.onMessageReceived) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageReceived;
+                        window.Applozic.ALSocket.events.onMessageReceived = function (data) {
+                            console.log("onMessageReceived callback ", data);
+                            oldCallback(data);
+                            events.onMessageReceived(data);
+                        }
+                    }
                 }
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
@@ -2615,6 +2622,10 @@ var userOverride = {
                 // Loading zopim sdk for zendesk chat integration
                 if (kommunicate._globals.zendeskApiKey) {
                     loadZopimSDK();
+                    var events = {
+                        'onMessageReceived': handleBotMessage,
+                    };
+                    Kommunicate.subscribeToEvents(events);
                 }
 
                 var kmChatLoginModal = document.getElementById(
@@ -2631,6 +2642,21 @@ var userOverride = {
                 var h = document.getElementsByTagName("head")[0];
                 h.appendChild(s);
             }
+            function handleBotMessage(event) {
+                console.log("handleBotMessage: ", event);
+                if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
+                    if (!ZENDESK_SDK_INITIALIZED) {
+                        zChat.init({
+                            account_key: kommunicate._globals.zendeskApiKey,
+                        });
+                        ZENDESK_SDK_INITIALIZED = true;
+                    }
+                    zChat.sendChatMsg(`This chat is initiated from kommunicate widget, look for more here: ${KM_PLUGIN_SETTINGS.dashboardUrl}/conversations/${CURRENT_GROUP_DATA.tabId}`, function (err, data) {
+                        console.log("zChat.sendChatMsg ", err, data)
+                    });
+                }
+            }
+
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
