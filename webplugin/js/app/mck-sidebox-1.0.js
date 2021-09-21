@@ -2611,6 +2611,11 @@ var userOverride = {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
+                
+                // Loading zopim sdk for zendesk chat integration
+                if (kommunicate._globals.zendeskApiKey) {
+                    loadZopimSDK();
+                }
 
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
@@ -2618,6 +2623,14 @@ var userOverride = {
                 kmChatLoginModal.style.visibility = 'hidden';
             };
 
+            function loadZopimSDK() {
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.async = true;
+                s.src = "https://dev.zopim.com/web-sdk/latest/web-sdk.js";
+                var h = document.getElementsByTagName("head")[0];
+                h.appendChild(s);
+            }
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
