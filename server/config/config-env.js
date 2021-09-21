@@ -5,7 +5,7 @@ const configEnv = {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'http://192.168.0.106:3030',
+            hostUrl: 'http://localhost:3030',
         },
         pluginProperties: {
             pseudoNameEnabled: true,

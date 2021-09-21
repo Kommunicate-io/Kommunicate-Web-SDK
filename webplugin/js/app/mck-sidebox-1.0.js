@@ -3746,7 +3746,8 @@ var userOverride = {
                             'mck-file-up',
                             'mck-btn-loc',
                             'mck-btn-smiley-box',
-                            'mck-img-file-up'
+                            'mck-img-file-up',
+                            'mck-vid-file-up',
                         ],
                     },
                     'n-vis',
@@ -3766,7 +3767,7 @@ var userOverride = {
                     ''
                     );
                 !IS_CAPTURE_VIDEO && kommunicateCommons.modifyClassList(
-                    { id: ['mck-attach-vid-box']},
+                    { id: ['mck-vid-file-up']},
                     'n-vis',
                     ''
                     );
@@ -3803,7 +3804,7 @@ var userOverride = {
                         );
                 IS_CAPTURE_VIDEO &&
                     kommunicateCommons.modifyClassList(
-                        { id: ['mck-attach-vid-box'] },
+                        { id: ['mck-vid-file-up'] },
                         '',
                         'n-vis'
                         );
