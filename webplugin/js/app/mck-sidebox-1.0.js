@@ -2654,6 +2654,9 @@ var userOverride = {
                     zChat.sendChatMsg(`This chat is initiated from kommunicate widget, look for more here: ${KM_PLUGIN_SETTINGS.dashboardUrl}/conversations/${CURRENT_GROUP_DATA.tabId}`, function (err, data) {
                         console.log("zChat.sendChatMsg ", err, data)
                     });
+                    zChat.on("chat", function (e) {
+                        console.log('[ZendeskChat] zChat.on("chat") ', e);
+                    });
                 }
             }
 
