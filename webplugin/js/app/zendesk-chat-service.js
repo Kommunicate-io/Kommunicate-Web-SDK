@@ -23,8 +23,9 @@ function ZendeskChatService() {
     };
 
     _this.handleUserMessage = function (event) {
-        if (!event.message) return;
-        if (!ZENDESK_SDK_INITIALIZED) return;
+        if (!event.message || !ZENDESK_SDK_INITIALIZED) {
+            return;
+        }
         console.log("handleUserMessage: ", event);
         zChat.sendChatMsg(event.message.message, function (err, data) {
             console.log("zChat.sendChatMsg ", err, data)
