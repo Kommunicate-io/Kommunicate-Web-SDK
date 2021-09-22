@@ -3,7 +3,7 @@ function ZendeskChatService() {
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_API_KEY = "";
     
-    _this.inIt = function (zendeskApiKey) {
+    _this.init = function (zendeskApiKey) {
         ZENDESK_API_KEY = zendeskApiKey;
         _this.loadZopimSDK();
         var events = {
