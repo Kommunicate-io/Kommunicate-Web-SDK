@@ -146,6 +146,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/km-event-listner.js'),
             path.resolve(__dirname, 'js/app/km-widget-custom-events.js'),
             path.resolve(__dirname, 'js/app/km-attachment-service.js'),
+            path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
             path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),
             path.resolve(__dirname, 'js/app/kommunicate.custom.theme.js'),
             path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
