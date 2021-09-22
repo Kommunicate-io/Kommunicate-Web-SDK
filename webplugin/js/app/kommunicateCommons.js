@@ -126,13 +126,6 @@ function KommunicateCommons() {
                 : false
             : false;
     };
-    _this.isCsatAvailable = function (appSettings) {
-        if (appSettings && appSettings.code == 'SUCCESS' && appSettings.response.isCsatAvailable) {
-            return appSettings.response.isCsatAvailable;
-        } else {
-            return false;
-        }
-    };
     _this.getTimeOrDate = function (createdAtTime) {
         var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);

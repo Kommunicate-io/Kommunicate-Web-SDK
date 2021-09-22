@@ -424,23 +424,6 @@ KommunicateUtils = {
             );
         }
     },
-    getAppSettings: function (appId,callback) {
-        var url =
-            KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            '/users/v2/chat/plugin/settings?appId=' +
-            appId;
-        window.Applozic.ALApiService.ajax({
-            type: 'GET',
-            url: url,
-            global: false,
-            contentType: 'text/plain',
-            success: function (resp) {
-                if (resp && resp.code == 'SUCCESS') {
-                    callback(resp);
-                }
-            },
-        });
-    },
     findCookieDomain: function (domain) {
         //reference : http://rossscrivener.co.uk/blog/javascript-get-domain-exclude-subdomain
         var i = 0;
