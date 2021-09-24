@@ -451,6 +451,10 @@ function ApplozicSidebox() {
                 options.capturePhoto != null
                     ? options.capturePhoto
                     : widgetSettings && widgetSettings.capturePhoto;
+            options.captureVideo =
+                options.captureVideo != null
+                    ? options.captureVideo
+                    : widgetSettings && widgetSettings.captureVideo;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
