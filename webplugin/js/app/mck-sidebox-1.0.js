@@ -14249,7 +14249,17 @@ var userOverride = {
                 }
                 $mck_file_input.on('change', uploadFileFunction );
                 $mck_img_file_input.on('change', uploadFileFunction );
-                $mck_vid_file_input.on('change', uploadFileFunction );
+                $mck_vid_file_input.on('change', function () {
+                    var file = $applozic(this)[0].files[0];
+                    var params = {};
+                    params.file = file;
+                    params.name = file.name;
+                    Kommunicate.attachmentService.uploadAttachment(
+                        params,
+                        null,
+                        MCK_CUSTOM_UPLOAD_SETTINGS
+                    );
+                });
                 
                 $applozic(d).on('click', '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
