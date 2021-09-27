@@ -51,9 +51,15 @@ Kommunicate.mediaService = {
     },
     voiceOutputIncomingMessage: function (message) {
         // get appoptions
+        var timeOut;
         var appOptions =
             KommunicateUtils.getDataFromKmSession('appOptions') ||
             applozic._globals;
+            function longTextSupport() {
+                window.speechSynthesis.pause();
+                window.speechSynthesis.resume();
+                timeOut = setTimeout(longTextSupport, 10000);
+            }
         // If the message isn't part of the UI, it's not included
         // in voiceoutput either
         if (!appOptions || !Kommunicate.visibleMessage(message)) return;
@@ -120,8 +126,14 @@ Kommunicate.mediaService = {
                         );
                     }
                 };
-                isChrome && speechSynthesis.cancel();
+                if (isChrome) {
+                    timeOut = setTimeout(longTextSupport, 10000);
+                    utterance.onend = function () {
+                        clearTimeout(timeOut);
+                    };
+                }
                 speechSynthesis.speak(utterance);
+            
             }
         }
     },

@@ -28,6 +28,7 @@ var kmCustomIframe =
     '   right: 20px;' +
     '   height: 75px;' +
     '   width: 75px;' +
+    '   transition: unset;'+
     '} \n ' +
     '.kommunicate-custom-iframe.align-left { ' +
     '   left: 20px;' +
@@ -328,16 +329,16 @@ function addFullviewImageModal() {
         '}  \n ' +
         /* Add Animation */
         '.km-fullscreen-image-modal-content, #caption {' +
-        ' -webkit-animation-name: zoom;' +
+        ' -webkit-animation-name: km-zoom;' +
         ' -webkit-animation-duration: 0.6s;' +
-        ' animation-name: zoom;' +
+        ' animation-name: km-zoom;' +
         ' animation-duration: 0.6s;' +
         '}  \n ' +
-        '@-webkit-keyframes zoom {' +
+        '@-webkit-keyframes km-zoom {' +
         ' from {-webkit-transform:scale(0)}' +
         ' to {-webkit-transform:scale(1)}' +
         '}  \n ' +
-        '@keyframes zoom {' +
+        '@keyframes km-zoom {' +
         ' from {transform:scale(0)}' +
         ' to {transform:scale(1)}' +
         '}  \n ' +
