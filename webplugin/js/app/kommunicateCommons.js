@@ -118,7 +118,7 @@ function KommunicateCommons() {
         var urlReg = new RegExp(
             '([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+'
         );
-        var extractedUrl = message.match(urlReg);
+        var extractedUrl = message ? message.match(urlReg) : '';
         return message && extractedUrl
             ? this.isUrlValid(extractedUrl[0])
                 ? extractedUrl[0]
