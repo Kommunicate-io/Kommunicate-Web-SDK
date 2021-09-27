@@ -1447,7 +1447,7 @@
     color: #333333;
 }
 .mck-form-template-container button {
-    width: 23%;
+    min-width: 23%;
     border-radius: 19px;
     padding: 5px;
     margin-top: 12px;

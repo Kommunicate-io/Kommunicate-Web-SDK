@@ -75,6 +75,7 @@ var userOverride = {
         voiceInput: false,
         voiceOutput: false,
         capturePhoto: false,
+        captureVideo: false,
     };
     var message_default_options = {
         messageType: 5,
@@ -388,6 +389,7 @@ var userOverride = {
         var MCK_USER_NAME = appOptions.userName;
         var IS_MCK_LOCSHARE = appOptions.locShare;
         var IS_CAPTURE_PHOTO = appOptions.capturePhoto;
+        var IS_CAPTURE_VIDEO = appOptions.captureVideo;
         var IS_CALL_ENABLED = appOptions.video;
         var MCK_FILE_URL = appOptions.fileBaseUrl;
         var MCK_ON_PLUGIN_INIT = appOptions.onInit;
@@ -831,6 +833,12 @@ var userOverride = {
                     'n-vis',
                     ''
             );
+            !IS_CAPTURE_VIDEO &&
+                kommunicateCommons.modifyClassList(
+                    { id: ['mck-attach-vid-box', 'mck-vid-file-up'] },
+                    'n-vis',
+                    ''
+            );
             VOICE_INPUT_ENABLED &&
                 Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
 
@@ -1153,6 +1161,7 @@ var userOverride = {
             MCK_FILE_URL = optns.fileBaseUrl;
             IS_MCK_LOCSHARE = optns.locShare;
             IS_CAPTURE_PHOTO = optns.capturePhoto;
+            IS_CAPTURE_VIDEO = optns.captureVideo;
             IS_CALL_ENABLED = appOptions.video;
             MCK_ON_PLUGIN_INIT = optns.onInit;
             MCK_ON_TOPIC_DETAILS = optns.onTopicDetails;
@@ -3736,7 +3745,8 @@ var userOverride = {
                             'mck-file-up',
                             'mck-btn-loc',
                             'mck-btn-smiley-box',
-                            'mck-img-file-up'
+                            'mck-img-file-up',
+                            'mck-vid-file-up',
                         ],
                     },
                     'n-vis',
@@ -3752,6 +3762,11 @@ var userOverride = {
                 
                 !IS_CAPTURE_PHOTO && kommunicateCommons.modifyClassList(
                     { id: ['mck-img-file-up']},
+                    'n-vis',
+                    ''
+                    );
+                !IS_CAPTURE_VIDEO && kommunicateCommons.modifyClassList(
+                    { id: ['mck-vid-file-up']},
                     'n-vis',
                     ''
                     );
@@ -3783,6 +3798,12 @@ var userOverride = {
                 IS_CAPTURE_PHOTO &&
                     kommunicateCommons.modifyClassList(
                         { id: ['mck-img-file-up'] },
+                        '',
+                        'n-vis'
+                        );
+                IS_CAPTURE_VIDEO &&
+                    kommunicateCommons.modifyClassList(
+                        { id: ['mck-vid-file-up'] },
                         '',
                         'n-vis'
                         );
@@ -4714,7 +4735,14 @@ var userOverride = {
                         e.preventDefault();
                         // To prevent conversation assignee details from being shown when in FAQ 
                         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
-                        if(typeof lastEvent == 'string' && lastEvent.indexOf('faq') != -1 && lastEvent != 'km-faq-category-list') return;
+                        var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
+                        if(typeof lastEvent == 'string' && 
+                            lastEvent.indexOf('faq') != -1 && 
+                            (isFaqCategoryPresent ? 
+                                lastEvent != 'km-faq-list' : 
+                                lastEvent != 'km-faq-category-list')
+
+                        ) return;
                         var $this = $applozic(this);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroup = $mck_msg_inner.data('isgroup');
@@ -7028,13 +7056,13 @@ var userOverride = {
                 }
                 typeof callback == 'function' && callback(data);
             };
-            _this.isFaqTabOpen = function () {
+            _this.isFaqTabOpen = function () {    
                 return (
                     document
                         .querySelector('#km-faqdiv')
                         .classList.contains('vis') ||
                     document
-                        .querySelector('#km-faqanswer')
+                        .querySelector('#km-faq-category-list-container')
                         .classList.contains('vis') ||
                     document
                         .querySelector('#km-contact-search-input-box')
@@ -9156,16 +9184,17 @@ var userOverride = {
                 var $textMessage = $applozic(
                     '.' + replyId + ' .mck-msg-content'
                 );
+                var url = kommunicateCommons.isMessageContainsUrl(msg.message);
                 var isIE =
                 window.navigator.userAgent.indexOf('MSIE') > -1 ||
                 !!window.navigator.userAgent.match(/Trident.*rv\:11\./);
                 if (
                     !isIE &&
                     msg.contentType === 0 &&
-                    kommunicateCommons.isUrlValid(msg.message)
+                    url
                 ) {
                     KommunicateUI.getLinkDataToPreview(
-                        msg.message,
+                        url,
                         function (template) {
                             $textMessage.prepend(template);
                         }
@@ -14051,12 +14080,14 @@ var userOverride = {
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_file_input = $applozic('#mck-file-input');
             var $mck_img_file_input = $applozic('#mck-image-input');
+            var $mck_vid_file_input = $applozic('#mck-video-input');
             var $mck_autosuggest_search_input = $applozic(
                 '#mck-autosuggest-search-input'
             );
             var $mck_overlay_box = $applozic('.mck-overlay-box');
             var $mck_file_upload = $applozic('.mck-file-upload');
-            var $mck_img_upload = $applozic('#mck-img-file-up')
+            var $mck_img_upload = $applozic('#mck-img-file-up');
+            var $mck_vid_upload = $applozic('#mck-vid-file-up');
             var $mck_group_icon_upload = $applozic('#mck-group-icon-upload');
             var $mck_group_icon_change = $applozic('#mck-group-icon-change');
             var $mck_group_info_icon_box = $applozic(
@@ -14116,6 +14147,13 @@ var userOverride = {
                     );
                     $mck_img_file_input.trigger('click');
                 });
+                $mck_vid_upload.on('click', function (e) {
+                    e.preventDefault();
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onCameraButtonClick
+                    );
+                    $mck_vid_file_input.trigger('click');
+                });
                 $mck_group_icon_upload.on('change', function () {
                     var file = $applozic(this)[0].files[0];
                     _this.uplaodFileToAWS(file, UPLOAD_VIA[0]);
@@ -14166,6 +14204,7 @@ var userOverride = {
                 }
                 $mck_file_input.on('change', uploadFileFunction );
                 $mck_img_file_input.on('change', uploadFileFunction );
+                $mck_vid_file_input.on('change', uploadFileFunction );
                 
                 $applozic(d).on('click', '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
