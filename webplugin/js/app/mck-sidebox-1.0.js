@@ -568,6 +568,7 @@ var userOverride = {
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
+        var zendeskChatService = new ZendeskChatService();
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -1892,16 +1893,28 @@ var userOverride = {
                         events.onConversationRead;
                 }
                 if (typeof events.onMessageReceived === 'function') {
-                    window.Applozic.ALSocket.events.onMessageReceived =
-                        events.onMessageReceived;
+                    if (window.Applozic.ALSocket.events.onMessageReceived) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageReceived;
+                        window.Applozic.ALSocket.events.onMessageReceived = function (data) {
+                            console.log("onMessageReceived callback ", data);
+                            oldCallback(data);
+                            events.onMessageReceived(data);
+                        }
+                    }
                 }
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
-                    window.Applozic.ALSocket.events.onMessageSent =
-                        events.onMessageSent;
+                    if (window.Applozic.ALSocket.events.onMessageSent) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
+                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
+                            console.log("onMessageSent callback ", data);
+                            oldCallback(data);
+                            events.onMessageSent(data);
+                        }
+                    }
                 }
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
@@ -2620,12 +2633,18 @@ var userOverride = {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
+                
+                // Loading zopim sdk for zendesk chat integration
+                if (kommunicate._globals.zendeskApiKey) {
+                    zendeskChatService.init(kommunicate._globals.zendeskApiKey);
+                }
 
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
                 kmChatLoginModal.style.visibility = 'hidden';
             };
+            
 
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
