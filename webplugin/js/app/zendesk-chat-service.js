@@ -26,15 +26,15 @@ function ZendeskChatService() {
         if (!event.message || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
-        console.log("handleUserMessage: ", event);
+        window.console.log("handleUserMessage: ", event);
         zChat.sendChatMsg(event.message.message, function (err, data) {
-            console.log("zChat.sendChatMsg ", err, data)
+            window.console.log("zChat.sendChatMsg ", err, data)
         });
         // TODO look for attachment
     };
 
     _this.handleBotMessage = function (event) {
-        console.log("handleBotMessage: ", event);
+        window.console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
             if (!ZENDESK_SDK_INITIALIZED && ZENDESK_API_KEY) {
                 zChat.init({
@@ -43,10 +43,10 @@ function ZendeskChatService() {
                 ZENDESK_SDK_INITIALIZED = true;
             }
             zChat.sendChatMsg(`This chat is initiated from kommunicate widget, look for more here: ${KM_PLUGIN_SETTINGS.dashboardUrl}/conversations/${CURRENT_GROUP_DATA.tabId}`, function (err, data) {
-                console.log("zChat.sendChatMsg ", err, data)
+                window.console.log("zChat.sendChatMsg ", err, data)
             });
             zChat.on("chat", function (e) {
-                console.log('[ZendeskChat] zChat.on("chat") ', e);
+                window.console.log('[ZendeskChat] zChat.on("chat") ', e);
             });
         }
     };
