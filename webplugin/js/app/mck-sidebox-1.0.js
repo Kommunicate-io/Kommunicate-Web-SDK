@@ -2247,9 +2247,8 @@ var userOverride = {
                 }
             };
             _this.initialize = function (userPxy) {
-                userPxy.tokenValidUpto = 2 
                 window.Applozic.ALApiService.login({
-                    data: { alUser: userPxy, baseUrl: MCK_BASE_URL},
+                    data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
                     success: function (result) {
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             //$applozic("#km-chat-login-modal").removeClass('vis').addClass('n-vis');
