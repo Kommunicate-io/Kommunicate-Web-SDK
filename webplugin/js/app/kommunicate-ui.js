@@ -1024,6 +1024,7 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.isConvJustResolved = false;
+            KommunicateUI.updateScroll(messageBody);
         } else if (
             KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
                 KommunicateConstants.FEEDBACK_API_STATUS.RATED &&
