@@ -18,7 +18,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
-var onConnectEventFailureCount = 0;
 
 (function ($applozic, w, d) {
     'use strict';
@@ -706,19 +705,17 @@ var onConnectEventFailureCount = 0;
             onConnectFailed: function (resp) {
                 console.log('onConnectFailed' + resp);
                 console.log('onconnect failed');
-                onConnectEventFailureCount += 1
-                IS_SOCKET_CONNECTED = false;
-                if (navigator.onLine && onConnectEventFailureCount < 3) {
-                    window.Applozic.ALSocket.reconnect();
+                if(resp.body && resp.body.indexOf('Access refused for user') !== -1){
+                    window.sessionStorage.removeItem('chatheaders')
+                    kommunicate.reloadWidget()
                 }
-                if(onConnectEventFailureCount >= 3){
-                    alert('Your session has expired. Logging Out. Please reload the page')
-                    kommunicate.logout()
+                IS_SOCKET_CONNECTED = false;
+                if (navigator.onLine) {
+                    window.Applozic.ALSocket.reconnect();
                 }
             },
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
-                onConnectEventFailureCount = 0;
                 kommunicateCommons.modifyClassList(
                     { id: ['km-local-file-system-warning'] },
                     'n-vis',
@@ -1289,6 +1286,7 @@ var onConnectEventFailureCount = 0;
             }
             IS_LOGGED_IN = false;
         };
+        
         _this.getUserStatus = function (params) {
             if (typeof params.callback === 'function') {
                 if (typeof params.userIds !== 'undefined') {
@@ -2249,8 +2247,9 @@ var onConnectEventFailureCount = 0;
                 }
             };
             _this.initialize = function (userPxy) {
+                userPxy.tokenValidUpto = 2 
                 window.Applozic.ALApiService.login({
-                    data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
+                    data: { alUser: userPxy, baseUrl: MCK_BASE_URL},
                     success: function (result) {
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             //$applozic("#km-chat-login-modal").removeClass('vis').addClass('n-vis');

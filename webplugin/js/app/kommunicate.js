@@ -208,6 +208,12 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
+    reloadWidget: function () {
+        var s = parent.window.document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = parent.window.document.querySelector("script[src*='kommunicate.app']").src
+        var h = parent.window.document.getElementsByTagName("head")[0]; h.appendChild(s);
+        kommunicate.logout()
+    },
     /**
      * load conversation will open or create a conversation between existing users.
      * it generate clientGroupId from the given conversationDetail, if any group exists with that Id opens that otherwise it will call creatge group API.
