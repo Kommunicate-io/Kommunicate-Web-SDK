@@ -16052,9 +16052,10 @@ var userOverride = {
                         if (
                             resp.message.metadata &&
                             resp.message.metadata.actionRequest &&
-                            resp.message.metadata.actionRequest == 'askCSAT'
+                            resp.message.metadata.actionRequest == 'askCSAT' &&
+                            kommunicate._globals.isCsatAvailable
                         ) {
-                            KommunicateUI.askCSAT();
+                            KommunicateUI.askCSAT(kommunicate._globals.isCsatAvailable);
                         }
                         if (resp.message.metadata.KM_STATUS) {
                             var groupId = 'li-group-' + resp.message.groupId;

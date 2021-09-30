@@ -414,6 +414,7 @@ function ApplozicSidebox() {
             options['customerCreatedAt'] =
                 options.appSettings.customerCreatedAt;
             options['collectFeedback'] = options.appSettings.collectFeedback;
+            options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
 
             var pseudoNameEnabled =
