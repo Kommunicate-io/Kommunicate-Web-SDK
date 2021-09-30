@@ -706,8 +706,8 @@ var userOverride = {
                 console.log('onConnectFailed' + resp);
                 console.log('onconnect failed');
                 if(resp.body && resp.body.indexOf('Access refused for user') !== -1){
-                    window.sessionStorage.removeItem('chatheaders')
-                    kommunicate.reloadWidget()
+                    window.sessionStorage.removeItem('chatheaders');
+                    kommunicate.reloadWidget();
                 }
                 IS_SOCKET_CONNECTED = false;
                 if (navigator.onLine) {

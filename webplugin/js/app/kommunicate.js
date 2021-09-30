@@ -210,9 +210,9 @@ $applozic.extend(true, Kommunicate, {
     },
     reloadWidget: function () {
         var s = parent.window.document.createElement("script"); s.type = "text/javascript"; s.async = true;
-        s.src = parent.window.document.querySelector("script[src*='kommunicate.app']").src
+        s.src = parent.window.document.querySelector("script[src*='kommunicate.app']").src;
         var h = parent.window.document.getElementsByTagName("head")[0]; h.appendChild(s);
-        kommunicate.logout()
+        kommunicate.logout();
     },
     /**
      * load conversation will open or create a conversation between existing users.
