@@ -448,10 +448,18 @@ function ApplozicSidebox() {
                 options.hidePostCTA != null
                     ? options.hidePostCTA
                     : widgetSettings && widgetSettings.hidePostCTA;
+            options.zendeskApiKey =
+                options.zendeskApiKey != null
+                    ? options.zendeskApiKey
+                    : widgetSettings && widgetSettings.zendeskApiKey;
             options.capturePhoto =
                 options.capturePhoto != null
                     ? options.capturePhoto
                     : widgetSettings && widgetSettings.capturePhoto;
+            options.captureVideo =
+                options.captureVideo != null
+                    ? options.captureVideo
+                    : widgetSettings && widgetSettings.captureVideo;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (

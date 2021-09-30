@@ -75,6 +75,7 @@ var userOverride = {
         voiceInput: false,
         voiceOutput: false,
         capturePhoto: false,
+        captureVideo: false,
     };
     var message_default_options = {
         messageType: 5,
@@ -388,6 +389,7 @@ var userOverride = {
         var MCK_USER_NAME = appOptions.userName;
         var IS_MCK_LOCSHARE = appOptions.locShare;
         var IS_CAPTURE_PHOTO = appOptions.capturePhoto;
+        var IS_CAPTURE_VIDEO = appOptions.captureVideo;
         var IS_CALL_ENABLED = appOptions.video;
         var MCK_FILE_URL = appOptions.fileBaseUrl;
         var MCK_ON_PLUGIN_INIT = appOptions.onInit;
@@ -566,6 +568,7 @@ var userOverride = {
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
+        var zendeskChatService = new ZendeskChatService();
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -828,6 +831,12 @@ var userOverride = {
             !IS_CAPTURE_PHOTO &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-attach-img-box', 'mck-img-file-up'] },
+                    'n-vis',
+                    ''
+            );
+            !IS_CAPTURE_VIDEO &&
+                kommunicateCommons.modifyClassList(
+                    { id: ['mck-attach-vid-box', 'mck-vid-file-up'] },
                     'n-vis',
                     ''
             );
@@ -1153,6 +1162,7 @@ var userOverride = {
             MCK_FILE_URL = optns.fileBaseUrl;
             IS_MCK_LOCSHARE = optns.locShare;
             IS_CAPTURE_PHOTO = optns.capturePhoto;
+            IS_CAPTURE_VIDEO = optns.captureVideo;
             IS_CALL_ENABLED = appOptions.video;
             MCK_ON_PLUGIN_INIT = optns.onInit;
             MCK_ON_TOPIC_DETAILS = optns.onTopicDetails;
@@ -1883,16 +1893,28 @@ var userOverride = {
                         events.onConversationRead;
                 }
                 if (typeof events.onMessageReceived === 'function') {
-                    window.Applozic.ALSocket.events.onMessageReceived =
-                        events.onMessageReceived;
+                    if (window.Applozic.ALSocket.events.onMessageReceived) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageReceived;
+                        window.Applozic.ALSocket.events.onMessageReceived = function (data) {
+                            console.log("onMessageReceived callback ", data);
+                            oldCallback(data);
+                            events.onMessageReceived(data);
+                        }
+                    }
                 }
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
-                    window.Applozic.ALSocket.events.onMessageSent =
-                        events.onMessageSent;
+                    if (window.Applozic.ALSocket.events.onMessageSent) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
+                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
+                            console.log("onMessageSent callback ", data);
+                            oldCallback(data);
+                            events.onMessageSent(data);
+                        }
+                    }
                 }
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
@@ -2611,12 +2633,18 @@ var userOverride = {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
+                
+                // Loading zopim sdk for zendesk chat integration
+                if (kommunicate._globals.zendeskApiKey) {
+                    zendeskChatService.init(kommunicate._globals.zendeskApiKey);
+                }
 
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
                 kmChatLoginModal.style.visibility = 'hidden';
             };
+            
 
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
@@ -3737,7 +3765,8 @@ var userOverride = {
                             'mck-file-up',
                             'mck-btn-loc',
                             'mck-btn-smiley-box',
-                            'mck-img-file-up'
+                            'mck-img-file-up',
+                            'mck-vid-file-up',
                         ],
                     },
                     'n-vis',
@@ -3753,6 +3782,11 @@ var userOverride = {
                 
                 !IS_CAPTURE_PHOTO && kommunicateCommons.modifyClassList(
                     { id: ['mck-img-file-up']},
+                    'n-vis',
+                    ''
+                    );
+                !IS_CAPTURE_VIDEO && kommunicateCommons.modifyClassList(
+                    { id: ['mck-vid-file-up']},
                     'n-vis',
                     ''
                     );
@@ -3784,6 +3818,12 @@ var userOverride = {
                 IS_CAPTURE_PHOTO &&
                     kommunicateCommons.modifyClassList(
                         { id: ['mck-img-file-up'] },
+                        '',
+                        'n-vis'
+                        );
+                IS_CAPTURE_VIDEO &&
+                    kommunicateCommons.modifyClassList(
+                        { id: ['mck-vid-file-up'] },
                         '',
                         'n-vis'
                         );
@@ -14085,12 +14125,14 @@ var userOverride = {
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_file_input = $applozic('#mck-file-input');
             var $mck_img_file_input = $applozic('#mck-image-input');
+            var $mck_vid_file_input = $applozic('#mck-video-input');
             var $mck_autosuggest_search_input = $applozic(
                 '#mck-autosuggest-search-input'
             );
             var $mck_overlay_box = $applozic('.mck-overlay-box');
             var $mck_file_upload = $applozic('.mck-file-upload');
-            var $mck_img_upload = $applozic('#mck-img-file-up')
+            var $mck_img_upload = $applozic('#mck-img-file-up');
+            var $mck_vid_upload = $applozic('#mck-vid-file-up');
             var $mck_group_icon_upload = $applozic('#mck-group-icon-upload');
             var $mck_group_icon_change = $applozic('#mck-group-icon-change');
             var $mck_group_info_icon_box = $applozic(
@@ -14150,6 +14192,13 @@ var userOverride = {
                     );
                     $mck_img_file_input.trigger('click');
                 });
+                $mck_vid_upload.on('click', function (e) {
+                    e.preventDefault();
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onCameraButtonClick
+                    );
+                    $mck_vid_file_input.trigger('click');
+                });
                 $mck_group_icon_upload.on('change', function () {
                     var file = $applozic(this)[0].files[0];
                     _this.uplaodFileToAWS(file, UPLOAD_VIA[0]);
@@ -14200,6 +14249,17 @@ var userOverride = {
                 }
                 $mck_file_input.on('change', uploadFileFunction );
                 $mck_img_file_input.on('change', uploadFileFunction );
+                $mck_vid_file_input.on('change', function () {
+                    var file = $applozic(this)[0].files[0];
+                    var params = {};
+                    params.file = file;
+                    params.name = file.name;
+                    Kommunicate.attachmentService.uploadAttachment(
+                        params,
+                        null,
+                        MCK_CUSTOM_UPLOAD_SETTINGS
+                    );
+                });
                 
                 $applozic(d).on('click', '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');

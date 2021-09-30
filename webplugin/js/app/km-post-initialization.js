@@ -76,8 +76,9 @@ Kommunicate.getFaqCategories = function(data){
                 );
             }
             $applozic.each(response.data, function (i, category) {
-                var categoryName = category && category.name;
-                var categoryDescription = category && category.description;
+                if(!category || !category.articleCount || !category.name || !category.description){ return };
+                var categoryName = category.name;
+                var categoryDescription = category.description;
                 $applozic('#km-faq-category-list-container').append(
                     '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="'+ categoryName.replace(/ /g, "-")
                     +'">'+
