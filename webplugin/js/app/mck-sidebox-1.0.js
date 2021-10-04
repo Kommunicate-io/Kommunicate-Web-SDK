@@ -705,9 +705,9 @@ var userOverride = {
             onConnectFailed: function (resp) {
                 console.log('onConnectFailed' + resp);
                 console.log('onconnect failed');
-                if(resp.body && resp.body.indexOf('Access refused for user') !== -1){
-                    window.sessionStorage.removeItem('chatheaders');
+                if(resp.body && resp.body.indexOf('Access refused for user') !== -1){ 
                     kommunicate.reloadWidget();
+                    return;
                 }
                 IS_SOCKET_CONNECTED = false;
                 if (navigator.onLine) {
@@ -1236,7 +1236,7 @@ var userOverride = {
             MESSAGE_BUBBLE_AVATOR_ENABLED =
                 typeof optns.messageBubbleAvator === 'boolean'
                     ? optns.messageBubbleAvator
-                    : false;
+                    : true;
             IS_RESET_USER_STATUS =
                 typeof appOptions.resetUserStatus === 'boolean'
                     ? appOptions.resetUserStatus
@@ -2321,7 +2321,7 @@ var userOverride = {
                             if (MCK_ACCESS_TOKEN) {
                                 result.accessToken = MCK_ACCESS_TOKEN;
                             }
-
+                            window.Applozic.ALSocket.AUTH_TOKEN = result.authToken
                             _this.onInitApp(result);
                             // mckUtils.manageIdleTime();
                         } else {
@@ -3381,6 +3381,7 @@ var userOverride = {
                 $applozic('#mck-sidebox-launcher').remove();
                 $applozic('body').append(_this.getLauncherHtml());
                 mckNotificationService.init();
+                document.querySelector('#mck-sidebox-launcher').classList.remove('n-vis');
             };
             _this.tabFocused = function () {
                 var hidden = 'hidden';

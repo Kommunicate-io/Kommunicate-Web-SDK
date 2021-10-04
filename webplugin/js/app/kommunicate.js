@@ -209,10 +209,11 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.hideFaq();
     },
     reloadWidget: function () {
-        var s = parent.window.document.createElement("script"); s.type = "text/javascript"; s.async = true;
-        s.src = parent.window.document.querySelector("script[src*='kommunicate.app']").src;
-        var h = parent.window.document.getElementsByTagName("head")[0]; h.appendChild(s);
-        kommunicate.logout();
+        ALStorage.clearAppHeaders();
+        window.$applozic.fn.applozic('reInitialize', {
+            userId: kommunicate._globals.userId,
+            appId: kommunicate._globals.appId
+        });
     },
     /**
      * load conversation will open or create a conversation between existing users.
