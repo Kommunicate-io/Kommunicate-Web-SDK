@@ -2321,7 +2321,7 @@ var userOverride = {
                             if (MCK_ACCESS_TOKEN) {
                                 result.accessToken = MCK_ACCESS_TOKEN;
                             }
-                            window.Applozic.ALSocket.AUTH_TOKEN = result.authToken
+                            window.Applozic.ALSocket.AUTH_TOKEN = result.authToken;
                             _this.onInitApp(result);
                             // mckUtils.manageIdleTime();
                         } else {
