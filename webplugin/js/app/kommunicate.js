@@ -212,7 +212,8 @@ $applozic.extend(true, Kommunicate, {
         ALStorage.clearAppHeaders();
         window.$applozic.fn.applozic('reInitialize', {
             userId: kommunicate._globals.userId,
-            appId: kommunicate._globals.appId
+            appId: kommunicate._globals.appId,
+            password: kommunicate._globals.password || '',
         });
     },
     /**
