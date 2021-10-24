@@ -29,6 +29,7 @@ var kmCustomIframe =
     '   height: 75px;' +
     '   width: 75px;' +
     '   transition: unset;'+
+    '   color-scheme: light;'+
     '} \n ' +
     '.kommunicate-custom-iframe.align-left { ' +
     '   left: 20px;' +
