@@ -6,6 +6,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'http://localhost:3030',
+            dashboardUrl: 'https://dashboard-test.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -29,6 +30,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-test.kommunicate.io',
+            dashboardUrl: 'https://dashboard-test.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -52,6 +54,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-staging.kommunicate.io',
+            dashboardUrl: 'https://dashboard-staging.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -75,6 +78,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget.kommunicate.io',
+            dashboardUrl: 'https://dashboard.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -97,6 +101,7 @@ const configEnv = {
             applozicBaseUrl: 'https://chat-ca.kommunicate.io',
             kommunicateBaseUrl: 'https://api-ca.kommunicate.io',
             hostUrl: 'https://widget-ca.kommunicate.io',
+            dashboardUrl: 'https://dashboard-ca.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -121,6 +126,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-in.kommunicate.io',
             botPlatformApi: 'https://bots-in.kommunicate.io',
             hostUrl: 'https://widget-in.kommunicate.io',
+            dashboardUrl: 'https://dashboard-in.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -143,6 +149,7 @@ const configEnv = {
             applozicBaseUrl: 'https://chat-ire.kommunicate.io',
             kommunicateBaseUrl: 'https://api-ire.kommunicate.io',
             hostUrl: 'https://widget-ire.kommunicate.io',
+            dashboardUrl: 'https://dashboard-ire.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -169,6 +176,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-enterprise.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-enterprise.kommunicate.io',
+            dashboardUrl: 'https://dashboard-enterprise.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -192,6 +200,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-beta.kommunicate.io',
+            dashboardUrl: 'https://dashboard-beta.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,

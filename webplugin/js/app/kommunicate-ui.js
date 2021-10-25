@@ -958,7 +958,7 @@ KommunicateUI = {
             }
         }
     },
-    triggerCSAT: function () {
+    triggerCSAT: function (triggeredByBot) {
         var isConvRated =
             document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
@@ -996,7 +996,7 @@ KommunicateUI = {
         var messageBody = document.querySelector(
             '.mck-message-inner.mck-group-inner'
         );
-        if (isCSATenabled) {
+        if (isCSATenabled || triggeredByBot) {
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
                 { class: ['mck-rating-box'] },
@@ -1024,6 +1024,7 @@ KommunicateUI = {
                 'n-vis'
             );
             KommunicateUI.isConvJustResolved = false;
+            KommunicateUI.updateScroll(messageBody);
         } else if (
             KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
                 KommunicateConstants.FEEDBACK_API_STATUS.RATED &&
@@ -1072,8 +1073,8 @@ KommunicateUI = {
             );
         }
     },
-    askCSAT: function () {
-        KommunicateUI.triggerCSAT();
+    askCSAT: function (triggeredByBot) {
+        KommunicateUI.triggerCSAT(triggeredByBot);
         kommunicateCommons.modifyClassList(
             { id: ['mck-csat-close'] },
             'vis',
@@ -1235,7 +1236,7 @@ KommunicateUI = {
                 'n-vis'
             );
         } else if (isConversationClosed && KommunicateUI.isConvJustResolved) {
-            KommunicateUI.askCSAT();
+            KommunicateUI.askCSAT(false);
         } else if (isConversationClosed) {
             conversationStatusDiv &&
                 (conversationStatusDiv.innerHTML = messageText);

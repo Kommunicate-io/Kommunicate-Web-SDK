@@ -568,6 +568,7 @@ var userOverride = {
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
+        var zendeskChatService = new ZendeskChatService();
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -707,6 +708,10 @@ var userOverride = {
             onConnectFailed: function (resp) {
                 console.log('onConnectFailed' + resp);
                 console.log('onconnect failed');
+                if(resp.body && resp.body.indexOf('Access refused for user') !== -1){ 
+                    kommunicate.reloadWidget();
+                    return;
+                }
                 IS_SOCKET_CONNECTED = false;
                 if (navigator.onLine) {
                     window.Applozic.ALSocket.reconnect();
@@ -1241,7 +1246,7 @@ var userOverride = {
             MESSAGE_BUBBLE_AVATOR_ENABLED =
                 typeof optns.messageBubbleAvator === 'boolean'
                     ? optns.messageBubbleAvator
-                    : false;
+                    : true;
             IS_RESET_USER_STATUS =
                 typeof appOptions.resetUserStatus === 'boolean'
                     ? appOptions.resetUserStatus
@@ -1291,6 +1296,7 @@ var userOverride = {
             }
             IS_LOGGED_IN = false;
         };
+        
         _this.getUserStatus = function (params) {
             if (typeof params.callback === 'function') {
                 if (typeof params.userIds !== 'undefined') {
@@ -1892,16 +1898,28 @@ var userOverride = {
                         events.onConversationRead;
                 }
                 if (typeof events.onMessageReceived === 'function') {
-                    window.Applozic.ALSocket.events.onMessageReceived =
-                        events.onMessageReceived;
+                    if (window.Applozic.ALSocket.events.onMessageReceived) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageReceived;
+                        window.Applozic.ALSocket.events.onMessageReceived = function (data) {
+                            console.log("onMessageReceived callback ", data);
+                            oldCallback(data);
+                            events.onMessageReceived(data);
+                        }
+                    }
                 }
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
-                    window.Applozic.ALSocket.events.onMessageSent =
-                        events.onMessageSent;
+                    if (window.Applozic.ALSocket.events.onMessageSent) {
+                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
+                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
+                            console.log("onMessageSent callback ", data);
+                            oldCallback(data);
+                            events.onMessageSent(data);
+                        }
+                    }
                 }
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
@@ -2325,7 +2343,7 @@ var userOverride = {
                             if (MCK_ACCESS_TOKEN) {
                                 result.accessToken = MCK_ACCESS_TOKEN;
                             }
-
+                            window.Applozic.ALSocket.AUTH_TOKEN = result.authToken;
                             _this.onInitApp(result);
                             // mckUtils.manageIdleTime();
                         } else {
@@ -2620,12 +2638,18 @@ var userOverride = {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
+                
+                // Loading zopim sdk for zendesk chat integration
+                if (kommunicate._globals.zendeskApiKey) {
+                    zendeskChatService.init(kommunicate._globals.zendeskApiKey);
+                }
 
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
                 kmChatLoginModal.style.visibility = 'hidden';
             };
+            
 
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
@@ -3384,6 +3408,7 @@ var userOverride = {
                 $applozic('#mck-sidebox-launcher').remove();
                 $applozic('body').append(_this.getLauncherHtml());
                 mckNotificationService.init();
+                document.querySelector('#mck-sidebox-launcher').classList.remove('n-vis');
             };
             _this.tabFocused = function () {
                 var hidden = 'hidden';
@@ -3880,7 +3905,7 @@ var userOverride = {
                 Kommunicate.client.getGroupDetailByType(
                     options,
                     function (err, result) {
-                        if (err) {
+                        if (err || !result) {
                             console.log(
                                 'error while fetching group detail by type',
                                 err
@@ -16007,9 +16032,10 @@ var userOverride = {
                         if (
                             resp.message.metadata &&
                             resp.message.metadata.actionRequest &&
-                            resp.message.metadata.actionRequest == 'askCSAT'
+                            resp.message.metadata.actionRequest == 'askCSAT' &&
+                            kommunicate._globals.isCsatAvailable
                         ) {
-                            KommunicateUI.askCSAT();
+                            KommunicateUI.askCSAT(kommunicate._globals.isCsatAvailable);
                         }
                         if (resp.message.metadata.KM_STATUS) {
                             var groupId = 'li-group-' + resp.message.groupId;

@@ -28,8 +28,8 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.1.min.js',
-            alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.1.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.1.1.min.js',
+            alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.1.1.min.js',
         },
         {
             name: 'maps',
@@ -414,6 +414,7 @@ function ApplozicSidebox() {
             options['customerCreatedAt'] =
                 options.appSettings.customerCreatedAt;
             options['collectFeedback'] = options.appSettings.collectFeedback;
+            options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
         
             var pseudoNameEnabled = (widgetSettings && (typeof widgetSettings.pseudonymsEnabled !== 'undefined')) ? widgetSettings.pseudonymsEnabled : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
@@ -458,6 +459,10 @@ function ApplozicSidebox() {
                 options.hidePostCTA != null
                     ? options.hidePostCTA
                     : widgetSettings && widgetSettings.hidePostCTA;
+            options.zendeskApiKey =
+                options.zendeskApiKey != null
+                    ? options.zendeskApiKey
+                    : widgetSettings && widgetSettings.zendeskApiKey;
             options.capturePhoto =
                 options.capturePhoto != null
                     ? options.capturePhoto

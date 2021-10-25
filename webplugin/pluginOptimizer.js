@@ -27,6 +27,8 @@ PLUGIN_SETTING.botPlatformApi =
     PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi;
 PLUGIN_SETTING.applozicBaseUrl =
     PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
+PLUGIN_SETTING.dashboardUrl =
+    PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
 let PLUGIN_FILE_DATA = new Object();
 let isAwsUploadEnabled = argv.upload;
 let BUILD_URL = isAwsUploadEnabled
@@ -144,6 +146,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'js/app/km-event-listner.js'),
             path.resolve(__dirname, 'js/app/km-widget-custom-events.js'),
             path.resolve(__dirname, 'js/app/km-attachment-service.js'),
+            path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
             path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),
             path.resolve(__dirname, 'js/app/kommunicate.custom.theme.js'),
             path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
