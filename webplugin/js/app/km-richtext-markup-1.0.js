@@ -200,7 +200,7 @@ Kommunicate.markup = {
             </div>`
         );
     },
-    getLinkPreviewTemplate: function (extractedData) {
+    getLinkPreviewTemplate: function (extractedData,messageToDisplay) {
         var data = extractedData.data;
         if (data && data.title) {
             return (
@@ -211,7 +211,8 @@ Kommunicate.markup = {
                 '"></div><div class="link-preview-content"><h5 class="link-preview-title link-preview-title-width"> ' +
                 (data.siteName || data.title) +
                 '</h5><p class="link-preview-div-description">' +
-                (data.description || data.title)
+                (data.description || data.title)+
+                '</p></div></div>'
             );
         }
     },
@@ -489,7 +490,7 @@ getListMarkup:function(){
                         {{/payload}}
                     </div>
                         {{#buttons}}
-                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}">{{label}}</button>      
+                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}" data-post-back-as-message="{{postFormDataAsMessage}}">{{label}}</button>      
                         {{/buttons}}   
                 </form>   
             </div>`;
@@ -812,9 +813,19 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
         options.payload.forEach(function (item, index) {
             if (item.type == 'submit') {
                 isActionObject = kommunicateCommons.isObject(item.action);
-                options.actionUrl = item.formAction || (isActionObject && item.action.formAction) || "javascript:void(0);";
-                options.requestType = item.requestType || (isActionObject && item.action.requestType) ;
-                options.postBackToKommunicate = (isActionObject && item.action.postBackToKommunicate) || false;
+                options.actionUrl =
+                    item.formAction ||
+                    (isActionObject && item.action.formAction) ||
+                    'javascript:void(0);';
+                options.requestType =
+                    item.requestType ||
+                    (isActionObject && item.action.requestType);
+                options.postBackToKommunicate =
+                    (isActionObject && item.action.postBackToKommunicate) ||
+                    false;
+                options.postFormDataAsMessage =
+                    (isActionObject && item.action.postFormDataAsMessage) ||
+                    false;
                 options.label = item.name || item.label;
                 options.message =
                     item.message || (isActionObject && item.action.message);

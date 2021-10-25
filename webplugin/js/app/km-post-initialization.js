@@ -33,26 +33,28 @@ Kommunicate.getFaqList = function (data, categoryName) {
                     kommunicate._globals.popupWidget
                 );
             }
-            $applozic.each(response.data, function (i, faq) {
-                var title =
-                    faq &&
-                    faq.title &&
-                    kommunicateCommons.formatHtmlTag(faq.title);
-                $applozic('#km-faq-list-container').append(
-                    '<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' +
-                    faq.source +
-                    '" data-articleId="' +
-                    faq.articleId +
-                    '"><a class="km-faqdisplay"><div class="km-faqimage">' +
-                    KommunicateUI.faqSVGImage +
-                    '</div> <div class="km-faqanchor">' +
-                    title +
-                    '</div></a></li>'
-                );
-            });
+            response.data.length ?
+                $applozic.each(response.data, function (i, faq) {
+                    var title =
+                        faq &&
+                        faq.title &&
+                        kommunicateCommons.formatHtmlTag(faq.title);
+                    $applozic('#km-faq-list-container').append(
+                        '<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' +
+                        faq.source +
+                        '" data-articleId="' +
+                        faq.articleId +
+                        '"><a class="km-faqdisplay"><div class="km-faqimage">' +
+                        KommunicateUI.faqSVGImage +
+                        '</div> <div class="km-faqanchor">' +
+                        title +
+                        '</div></a></li>'
+                    );
+                }): KommunicateUI.faqEmptyState()
+            
+            
 
             kommunicate && kommunicate._globals && kommunicate._globals.faqCategory && KommunicateUI.initFaq()
-            KommunicateUI.faqEvents(data);
         },
         error: function () { },
     });
@@ -74,8 +76,9 @@ Kommunicate.getFaqCategories = function(data){
                 );
             }
             $applozic.each(response.data, function (i, category) {
-                var categoryName = category && category.name;
-                var categoryDescription = category && category.description;
+                if(!category || !category.articleCount || !category.name || !category.description){ return };
+                var categoryName = category.name;
+                var categoryDescription = category.description;
                 $applozic('#km-faq-category-list-container').append(
                     '<div class="km-faq-category-card km-custom-widget-border-color" data-category-name="'+ categoryName.replace(/ /g, "-")
                     +'">'+

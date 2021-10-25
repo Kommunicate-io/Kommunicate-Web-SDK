@@ -28,7 +28,7 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.applozic.com/applozic/applozic.chat-6.1.min.js', // update the url with every new release of applozic-web-plugin
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.1.min.js',
             alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.1.min.js',
         },
         {
@@ -36,7 +36,7 @@ function ApplozicSidebox() {
             url: 'https://maps.google.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
-                    applozic._globals.googleApiKey
+                applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         },
@@ -462,6 +462,10 @@ function ApplozicSidebox() {
                 options.capturePhoto != null
                     ? options.capturePhoto
                     : widgetSettings && widgetSettings.capturePhoto;
+            options.captureVideo =
+                options.captureVideo != null
+                    ? options.captureVideo
+                    : widgetSettings && widgetSettings.captureVideo;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
@@ -639,6 +643,7 @@ function ApplozicSidebox() {
         if (
             !(
                 kommunicateSettings.preLeadCollection ||
+                kommunicateSettings.appSettings.collectLead ||
                 kommunicateSettings.askUserDetails
             )
         ) {

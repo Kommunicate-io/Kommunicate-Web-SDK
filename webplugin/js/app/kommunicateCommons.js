@@ -24,7 +24,7 @@ function KommunicateCommons() {
         }
         return isTrialPlan;
     };
-
+    
     _this.isStartupPlan = function (data) {
         return (
             data &&
@@ -113,6 +113,17 @@ function KommunicateCommons() {
         return /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(
             url
         );
+    };
+    _this.isMessageContainsUrl = function (message) {
+        var urlReg = new RegExp(
+            '([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?([^ ])+'
+        );
+        var extractedUrl = message ? message.match(urlReg) : '';
+        return message && extractedUrl
+            ? this.isUrlValid(extractedUrl[0])
+                ? extractedUrl[0]
+                : false
+            : false;
     };
     _this.getTimeOrDate = function (createdAtTime) {
         var timeStampLabels = MCK_LABELS['time.stamp'];
@@ -249,5 +260,20 @@ function KommunicateCommons() {
                 console.log('Error fetching feedback', err);
             },
         });
+    };
+
+    _this.debounce = function (func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
     };
 }
