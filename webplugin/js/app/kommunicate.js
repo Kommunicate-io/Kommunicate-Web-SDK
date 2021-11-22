@@ -215,6 +215,14 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
+    reloadWidget: function () {
+        ALStorage.clearAppHeaders();
+        window.$applozic.fn.applozic('reInitialize', {
+            userId: kommunicate._globals.userId,
+            appId: kommunicate._globals.appId,
+            password: kommunicate._globals.password || '',
+        });
+    },
     /**
      * load conversation will open or create a conversation between existing users.
      * it generate clientGroupId from the given conversationDetail, if any group exists with that Id opens that otherwise it will call creatge group API.
