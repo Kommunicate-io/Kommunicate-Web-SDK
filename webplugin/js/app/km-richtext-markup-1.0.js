@@ -409,7 +409,7 @@ getListMarkup:function(){
             <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`;
     },
     getFormTemplate: function () {
-        return `<div class="mck-msg-box-rich-text-container mck-form-template-container">
+        return `<div class="mck-msg-box-rich-text-container mck-form-template-container" data-hidePostFormSubmit="{{hidePostFormSubmit}}">
                 <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post">
                     <div class="mck-form-template-wrapper">
                         {{#payload}}
@@ -490,7 +490,7 @@ getListMarkup:function(){
                         {{/payload}}
                     </div>
                         {{#buttons}}
-                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}" data-post-back-as-message="{{postFormDataAsMessage}}">{{label}}</button>      
+                            <button type="{{type}}" class="km-cta-button km-custom-widget-text-color km-custom-widget-border-color mck-form-submit-button" data-requesttype="{{requestType}}" title="{{message}}" data-post-back-to-kommunicate="{{postBackToKommunicate}}" data-post-back-as-message="{{postFormDataAsMessage}}" data-hidePostFormSubmit="{{hidePostFormSubmit}}">{{label}}</button>      
                         {{/buttons}}   
                 </form>   
             </div>`;
@@ -832,6 +832,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 options.payload[index].className = 'km-cta-button';
                 options.buttons.push(item);
                 options.payload.splice(index, 1);
+                options.hidePostFormSubmit = Kommunicate._globals.hidePostFormSubmit;
             } else {
                 options.payload[index].supported =
                     KommunicateConstants.FORM_SUPPORTED_FIELDS.indexOf(
