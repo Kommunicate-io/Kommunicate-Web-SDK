@@ -18,7 +18,7 @@ function ZendeskChatService() {
         var s = document.createElement("script");
         s.type = "text/javascript";
         s.async = true;
-        s.src = "https://km-prod-cdn.s3.us-east-1.amazonaws.com/kommunicate/zendesk-web-sdk-1.11.2.js";
+        s.src = "https://cdn.kommunicate.io/kommunicate/zendesk-web-sdk-1.11.2.js";
         var h = document.getElementsByTagName("head")[0];
         h.appendChild(s);
     };
