@@ -382,7 +382,7 @@ getListMarkup:function(){
     getCarouselTemplate: function () {
         return `<div class="mck-msg-box-rich-text-container km-card-message-container  km-div-slider">
             {{#payload}}
-            <div class="km-carousel-card-template">
+            <div class="km-carousel-card-template {{containerClass}}">
             <div class="km-carousel-card-header-container">
             {{#url}}<a href = {{url}} target="_blank"><span class="km-carousel-url-container"></span></a>{{/url}}
             <div class="km-carousel-card-header {{carouselHeaderClass}}">{{{header}}}</div>
@@ -959,6 +959,7 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
                 : 'n-vis';
             cardHtml['carouselHeaderClass'] = carouselHeaderClass;
             cardHtml['carouselInfoWrapperClass'] = carouselInfoWrapperClass;
+            cardHtml['containerClass'] = cards.length > 1 ? "": "km-single-card";
             item.header &&
                 (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
             cardHtml.info = Kommunicate.markup.cardInfo(item);
