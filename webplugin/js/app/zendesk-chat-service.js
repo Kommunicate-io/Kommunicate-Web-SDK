@@ -1,4 +1,5 @@
 function ZendeskChatService() {
+    // This integration is supported by zopim, for any apis please refer their docs.
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
