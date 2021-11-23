@@ -208,12 +208,4 @@ var eventMapping = {
         },
         eventFunction: null,
     },
-    onMessageReceived: {
-        data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Received',
-            eventLabel: 'Message',
-        },
-        eventFunction: null,
-    },
 };
