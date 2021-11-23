@@ -1,10 +1,10 @@
 function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
-    var ZENDESK_API_KEY = "";
+    var ZENDESK_CHAT_SDK_KEY = "";
 
-    _this.init = function (zendeskApiKey) {
-        ZENDESK_API_KEY = zendeskApiKey;
+    _this.init = function (zendeskChatSdkKey) {
+        ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -36,9 +36,9 @@ function ZendeskChatService() {
     _this.handleBotMessage = function (event) {
         window.console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
-            if (!ZENDESK_SDK_INITIALIZED && ZENDESK_API_KEY) {
+            if (!ZENDESK_SDK_INITIALIZED && ZENDESK_CHAT_SDK_KEY) {
                 zChat.init({
-                    account_key: ZENDESK_API_KEY,
+                    account_key: ZENDESK_CHAT_SDK_KEY,
                 });
                 zChat.on("chat", function (eventDetails) {
                     window.console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
