@@ -2,8 +2,7 @@ function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_API_KEY = "";
-    var AGENT_ID_USERNAME_MAP = {};
-    
+
     _this.init = function (zendeskApiKey) {
         ZENDESK_API_KEY = zendeskApiKey;
         _this.loadZopimSDK();
@@ -51,9 +50,9 @@ function ZendeskChatService() {
             }
             zChat.sendChatMsg(
                 'This chat is initiated from kommunicate widget, look for more here: ' +
-                    KM_PLUGIN_SETTINGS.dashboardUrl +
-                    '/conversations/' +
-                    CURRENT_GROUP_DATA.tabId,
+                KM_PLUGIN_SETTINGS.dashboardUrl +
+                '/conversations/' +
+                CURRENT_GROUP_DATA.tabId,
                 function (err, data) {
                     window.console.log('zChat.sendChatMsg ', err, data);
                 }
@@ -62,38 +61,27 @@ function ZendeskChatService() {
     };
 
     _this.handleZendeskAgentMessageEvent = function (event) {
-        _this.getUserDetailsByZendeskId(event, function (agentId){
-            console.log("getUserDetailsByZendeskId ", agentId, event);
-            var messagePxy = {
-                message: event.msg,
-                fromUserName: agentId,
-                groupId: CURRENT_GROUP_DATA.tabId
-            };
-            Kommunicate.sendMessage(messagePxy);
+        console.log("getUserDetailsByZendeskId ", event);
+        var messagePxy = {
+            message: event.msg,
+            fromUserName: event.nick.split(":")[1],
+            groupId: CURRENT_GROUP_DATA.tabId
+        };
+        return mckUtils.ajax({
+            url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/message/send",
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(messagePxy),
+            headers: {
+                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+            },
+            success: function (result) {
+                console.log("result zendesk chat get user details ", result);
+                typeof callback == 'function' && callback(agentUserName);
+            },
+            error: function (err) {
+                console.log('err while getting user details in zendesk service');
+            },
         });
-    };
-
-    _this.getUserDetailsByZendeskId = function (eventDetails, callback) {
-        var agentId = eventDetails.nick.split(":")[1];
-        if (AGENT_ID_USERNAME_MAP[agentId]) {
-            callback(AGENT_ID_USERNAME_MAP[agentId]);
-        } else {
-            mckUtils.ajax({
-                url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/users/" + agentId,
-                type: 'get',
-                headers: {
-                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
-                },
-                success: function (result) {
-                    console.log("result zendesk chat get user details ", result);
-                    var agentUserName = result.data.userName;
-                    AGENT_ID_USERNAME_MAP[agentId] = agentUserName;
-                    typeof callback == 'function' && callback(agentUserName);
-                },
-                error: function (err) {
-                    console.log('err while getting user details in zendesk service');
-                },
-            });
-        }
     };
 };
