@@ -731,7 +731,15 @@ KommunicateUI = {
             MCK_LABELS['no-faq-found'];
         document.querySelector('.km-no-results-found p').innerHTML =
             MCK_LABELS['faq-empty-state'];
-    }, 
+    },
+    flushFaqsEvents: function() {
+        var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1];
+        var backBtn = $applozic('#mck-conversation-back-btn')[0];
+        if(lastEvent && typeof lastEvent == "string" && lastEvent.includes('faq')){
+            backBtn && backBtn.click();
+            KommunicateUI.flushFaqsEvents();
+        }
+    },
     searchFaqUI: function (response) {
         if (
             response.data &&

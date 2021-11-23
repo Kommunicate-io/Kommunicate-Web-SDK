@@ -2801,6 +2801,7 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
+                    KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
                 popUpcloseButton.addEventListener('click', function (e) {
