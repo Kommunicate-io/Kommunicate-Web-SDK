@@ -61,7 +61,7 @@ function ZendeskChatService() {
     };
 
     _this.handleZendeskAgentMessageEvent = function (event) {
-        console.log("getUserDetailsByZendeskId ", event);
+        console.log("handleZendeskAgentMessageEvent ", event);
         var messagePxy = {
             message: event.msg,
             fromUserName: event.nick.split(":")[1],
