@@ -85,6 +85,9 @@
     margin: 1px 0px 0px 0px;
     color: #7766b5;
 }
+.mck-msg-box-rich-text-container .km-carousel-card-template.km-single-card {
+    margin-left: 0px!important;
+}
 .km-guest-text-lable .km-children-text-lable {
     width: 30 px;
 }
