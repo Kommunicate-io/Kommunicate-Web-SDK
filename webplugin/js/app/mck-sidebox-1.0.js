@@ -9527,12 +9527,14 @@ var userOverride = {
                                         '" area-hidden="true" ></img></a>'
                                     );
                                 } else {
+                                    var url = addfileEncClass ? "" :  alFileService.getFileurl(msg);
+                                    var thumbnailUrl = addfileEncClass ? KommunicateConstants.IMAGE_PLACEHOLDER_URL : msg.fileMeta.thumbnailUrl;
                                     
                                     return (
                                         '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
                                         msg.fileMeta.contentType +
                                         '" data-url="' +
-                                        alFileService.getFileurl(msg) +
+                                        url +
                                         '" data-name="' +
                                         kommunicateCommons.formatHtmlTag(
                                             fileName
@@ -9540,7 +9542,7 @@ var userOverride = {
                                         '"><img'+
                                         (addfileEncClass ? ' class="file-enc"' : '') +
                                         ' src="' +
-                                        msg.fileMeta.thumbnailUrl +
+                                        thumbnailUrl +
                                         '" area-hidden="true" data-blobKey="'+ msg.fileMeta.blobKey +
                                         '" data-thumbnailBlobKey="'+msg.fileMeta.thumbnailBlobKey +'" ></img></a>'
                                     );
