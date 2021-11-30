@@ -18,10 +18,11 @@ function RingToneService() {
             src: [url],
             html5: true,
         };
-        data.volume =
-            greetingMsgVolumeOption && greetingMsgVolumeOption.volume != null
-                ? greetingMsgVolumeOption.volume
-                : MAX_VOLUME;
+        // data.volume =
+        //     greetingMsgVolumeOption && greetingMsgVolumeOption.volume != null
+        //         ? greetingMsgVolumeOption.volume
+        //         : MAX_VOLUME;
+        data.mute = greetingMsgVolumeOption && greetingMsgVolumeOption.volume == 0;
         return new Howl(data);
     };
 }
