@@ -2640,8 +2640,8 @@ var userOverride = {
                 }
                 
                 // Loading zopim sdk for zendesk chat integration
-                if (kommunicate._globals.zendeskApiKey) {
-                    zendeskChatService.init(kommunicate._globals.zendeskApiKey);
+                if (kommunicate._globals.zendeskChatSdkKey) {
+                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey);
                 }
 
                 var kmChatLoginModal = document.getElementById(
