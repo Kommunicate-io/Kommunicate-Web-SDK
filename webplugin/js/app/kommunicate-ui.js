@@ -1408,7 +1408,6 @@ KommunicateUI = {
         var playPopupTone = KommunicateUtils.getDataFromKmSession(
             'playPopupNotificationTone'
         );
-
         if (showTemplate && !kommunicateCommons.isWidgetOpen()) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone &&
