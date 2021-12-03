@@ -16057,30 +16057,13 @@ var userOverride = {
                     // events.onUserDeactivated();
                 } else if (messageType === "APPLOZIC_25") {
                     var userId = resp.message.split(",")[0];
-                    var status = resp.message.split(",")[1];
+                    var status = parseInt(resp.message.split(",")[1]);
                     var lastSeenAtTime = resp.message.split(",")[2];
                     if(CURRENT_GROUP_DATA.conversationAssignee != userId){
                         return;
                     }
-                    var statusToSet = "";
-                    var isAgentOffline;
-                    switch(parseInt(status)){
-                        case KommunicateConstants.APPLOZIC_USER_STATUS.AWAY:
-                            statusToSet = "away";
-                            break;
-                        case KommunicateConstants.APPLOZIC_USER_STATUS.ONLINE:
-                            statusToSet = "online";
-                            break;
-                        case KommunicateConstants.APPLOZIC_USER_STATUS.NOT_AWAY:
-                            statusToSet = "online";
-                            break;
-                        case KommunicateConstants.APPLOZIC_USER_STATUS.OFFLINE:
-                            statusToSet = "offline";
-                            isAgentOffline = true;
-                            break;
-                        default:
-                            break;
-                    };
+                    var statusToSet = KommunicateConstants.APPLOZIC_USER_STATUS[status];
+                    var isAgentOffline = statusToSet == KommunicateConstants.APPLOZIC_USER_STATUS[0];
                     var tabId = $mck_message_inner.data('mck-id');
                     var conversationAssigneeDetails = alUserService.MCK_USER_DETAIL_MAP[userId];
                     KommunicateUI.setAvailabilityStatus(statusToSet);

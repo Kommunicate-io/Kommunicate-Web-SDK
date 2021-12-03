@@ -197,15 +197,22 @@ KommunicateConstants = {
         RATED: 2,
     },
     APPLOZIC_USER_STATUS: {
-        OFFLINE: 0,
-        ONLINE: 1,
-        AWAY: 2,
-        NOT_AWAY: 3,
-        BUSY: 4,
-        INVISIBLE: 5,
-        NOT_AVAILABLE: 6,
-        ONLINE_WITHOUT_NOTIFICATIONS: 7,
+        0 : 'offline', 
+        1 : 'online', 
+        2 : 'away',
+        3 : 'online', // NOT_AWAY
     },
+    // Left here for future reference.
+    //  APPLOZIC_USER_STATUS: {
+    //     OFFLINE: 0,
+    //     ONLINE: 1,
+    //     AWAY: 2,
+    //     NOT_AWAY: 3,
+    //     BUSY: 4,
+    //     INVISIBLE: 5,
+    //     NOT_AVAILABLE: 6,
+    //     ONLINE_WITHOUT_NOTIFICATIONS: 7,
+    // },
 };
 
 /**
