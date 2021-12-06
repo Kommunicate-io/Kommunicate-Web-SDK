@@ -1731,6 +1731,7 @@ KommunicateUI = {
             error: function (err) {
                 callback(err);
             },
+            skipEncryption: true
         });
     },
     isInView: function (element, targetElement) {
