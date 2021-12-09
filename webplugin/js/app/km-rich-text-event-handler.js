@@ -658,11 +658,14 @@ Kommunicate.richMsgEventHandler = {
         var messagePxy = {};
         var msgMetadata = {};
         var postFormDataAsMessage='';
+        if(Kommunicate._globals.hidePostFormSubmit){
+            postBackAsMessage = true;
+        }
         if (postBackAsMessage && Object.keys(data).length) {
             for (var i = 0; i < Object.keys(data).length; i++) {
                 var key = Object.keys(data)[i];
                 postFormDataAsMessage = postFormDataAsMessage.concat(
-                    key + ':' + data[key] + '\n'
+                    key + ' : ' + data[key] + '\n'
                 );
             }
         }
