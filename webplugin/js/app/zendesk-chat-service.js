@@ -28,10 +28,41 @@ function ZendeskChatService() {
             return;
         }
         window.console.log("handleUserMessage: ", event);
-        zChat.sendChatMsg(event.message.message, function (err, data) {
-            window.console.log("zChat.sendChatMsg ", err, data)
-        });
-        // TODO look for attachment
+        if(event.message.contentType == 0){  // if customer sends normal message
+            zChat.sendChatMsg(event.message.message, function (err, data) {
+                window.console.log("zChat.sendChatMsg ", err, data);
+            });
+            // TODO look for attachment
+
+
+        }else if(event.message.contentType == 1){ //if customer sends file
+            window.console.log("handleUserMessage : for contentType 1");
+            let {name,contentType,createdAtTime} = event.message.file;
+            // let file=new File([""], event.message.file.name, {type: event.message.file.contentType, lastModified: event.message.file.createdAtTime});
+            // let formData=new FormData();
+            // formData.append('file',event.message.file);
+            // formData.append('filename',name); 
+            const parts = [
+                new Blob(['you construct a file...'], {
+                  type: 'text/plain'
+                }),
+                ' Same way as you do with blob',
+                new Uint16Array([33])
+              ];
+              
+              const file = new File(parts, name, {
+                lastModified: new Date(),
+                type: 'text/plain'
+              });
+            zChat.sendFile("5", function(err, data) {
+                if(err){
+                    console.error("Error while sending file attachment : ",err);
+                }else{
+                    console.log("File attachment sent successfully : ",data);
+                }
+            });
+        }
+        
     };
 
     _this.handleBotMessage = function (event) {
@@ -45,6 +76,10 @@ function ZendeskChatService() {
                     window.console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                     if (eventDetails.type == "chat.msg") {
                         _this.handleZendeskAgentMessageEvent(eventDetails);
+                    }
+                    else if(eventDetails.type == "chat.file"){
+                        window.console.log("Inside chat.file event condition, triggering handleZendeskSendFileEvent()");
+                        _this.handleZendeskAgentSendFileEvent(eventDetails);
                     }
                 });
                 ZENDESK_SDK_INITIALIZED = true;
@@ -85,4 +120,41 @@ function ZendeskChatService() {
             },
         });
     };
+
+    _this.handleZendeskAgentSendFileEvent= function (event) {
+        window.console.log("handleZendeskSendFileEvent", event);
+
+        fetch(event.attachment.url)
+        .then(response=>{
+            window.console.log("response : ",response);
+            response.blob()
+        })
+        .then(blob=>{
+            window.console.log("blob : ",blob)
+        })
+        let filePxy = {
+            file: event.attachment.name, // need to verify this prop
+            fromUserName: event.nick.split(":")[1],
+            groupId: CURRENT_GROUP_DATA.tabId
+        };
+        let formData=new FormData();
+
+        // return mckUtils.ajax({
+        //     url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/message/send", //The url will be different
+        //     type: 'post',
+        //     contentType: false,
+        //     processData:false,
+        //     data: JSON.stringify(filePxy),
+        //     headers: {
+        //         'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+        //     },
+        //     success: function (result) {
+        //         window.console.log("result : zendesk file sending ", result);
+        //         typeof callback == 'function' && callback(agentUserName);
+        //     },
+        //     error: function (err) {
+        //         window.console.log('err while getting user details in zendesk service');
+        //     },
+        // });
+    }
 };
