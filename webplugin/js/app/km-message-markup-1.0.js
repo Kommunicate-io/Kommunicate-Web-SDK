@@ -77,7 +77,7 @@ Kommunicate.messageTemplate = {
             default:
                 data.attachmentDownloadClass = 'vis';
                 data.downloadMediaUrlExpr = mediaUrlExpr;
-                if( data.downloadMediaUrlExpr.indexOf('AWS-ENCRYPTED') !== -1){
+                if( data.downloadMediaUrlExpr && data.downloadMediaUrlExpr.indexOf('AWS-ENCRYPTED') !== -1){
                     data.downloadMediaUrlExpr = data.downloadMediaUrlExpr.replace("AWS-ENCRYPTED-", "");
                     data.downloadMediaUrlExpr = data.downloadMediaUrlExpr.replace('<a href=""', '<a href="javascript:void(0)"');
                 }
