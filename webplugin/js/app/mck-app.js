@@ -471,6 +471,10 @@ function ApplozicSidebox() {
                 options.captureVideo != null
                     ? options.captureVideo
                     : widgetSettings && widgetSettings.captureVideo;
+            options.hidePostFormSubmit =
+                options.hidePostFormSubmit != null
+                    ? options.hidePostFormSubmit
+                    : widgetSettings && widgetSettings.hidePostFormSubmit;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (

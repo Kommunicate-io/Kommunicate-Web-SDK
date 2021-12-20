@@ -2801,6 +2801,7 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
+                    KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
                 popUpcloseButton.addEventListener('click', function (e) {
@@ -4130,7 +4131,7 @@ var userOverride = {
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var str = mckUtils.textVal(textBox);
+                        var str = kommunicateCommons.formatHtmlTag(mckUtils.textVal(textBox))
                         var trimmedStr = str.trim();
                         var textLength = trimmedStr.length;
                         if (textLength > warningLength) {

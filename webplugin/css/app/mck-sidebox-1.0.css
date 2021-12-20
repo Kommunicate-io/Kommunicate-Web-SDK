@@ -6364,3 +6364,12 @@ body.accesibility :focus {
 .mck-msg-left.contains-quick-replies-only:not(:last-child) {
 	display: none;
 }
+
+/* -----------------Support for hiding form post form submission------------- */
+.mck-msg-left [data-hidepostformsubmit="true"] {
+	display: none;
+}
+.mck-msg-left:last-child [data-hidepostformsubmit="true"] {
+	display: block;
+	visibility: visible;
+}
