@@ -618,6 +618,7 @@ var userOverride = {
             WIDGET_SETTINGS.hasOwnProperty('position')
                 ? WIDGET_SETTINGS.position
                 : KommunicateConstants.POSITION.RIGHT;
+        var SOCKET_RECONNECT_FAIL_COUNT = 0;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
             SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
             DISCONNECTED: false,
@@ -716,6 +717,12 @@ var userOverride = {
                 if (navigator.onLine) {
                     window.Applozic.ALSocket.reconnect();
                 }
+                SOCKET_RECONNECT_FAIL_COUNT++;
+                SOCKET_RECONNECT_FAIL_COUNT > 2 && kommunicateCommons.modifyClassList(
+                    { id: ['km-socket-disconnect-msg'] },
+                    '',
+                    'n-vis'
+                );
             },
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
@@ -724,6 +731,12 @@ var userOverride = {
                     'n-vis',
                     'vis'
                 );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-socket-disconnect-msg'] },
+                    'n-vis',
+                    ''
+                );
+                SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
                     typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' &&
                     Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0
@@ -3307,6 +3320,9 @@ var userOverride = {
                 document.getElementById(
                     'km-internet-disconnect-msg'
                 ).innerHTML = MCK_LABELS['offline.msg'];
+                document.getElementById(
+                    'km-socket-disconnect-msg'
+                ).innerHTML = MCK_LABELS['socket-disconnect.msg'];
                 document.getElementById('talk-to-human-link').innerHTML =
                     MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML =
