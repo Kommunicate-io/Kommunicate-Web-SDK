@@ -108,45 +108,32 @@ function ZendeskChatService() {
         });
     };
 
-    _this.handleZendeskAgentFileSendEvent= function (event) {
+    _this.handleZendeskAgentFileSendEvent= async function (event) {
         window.console.log("handleZendeskAgentFileSendEvent ",event);
 
-        let {url, mime_type, name, size}=event.attachment; 
-        // fetch(url)
-        // .then(response => response.blob())
-        // .then(blob=>{
-        //     window.console.log("Blob is : ",blob);
-        //     let file=new File([blob],name,{
-        //         type:mime_type,
-        //     });
-        //     window.console.log("File is : ",file);
-
-        //     var fileMessagePxy = {
-        //         message: file,
-        //         fromUserName: event.nick.split(":")[1],
-        //         groupId: CURRENT_GROUP_DATA.tabId
-        //     };
-        // })
+        // let {url, mime_type, name, size}=event.attachment; 
         var messagePxy = {
-            fileUrl: url,
+            fileAttachment: event.attachment,
             fromUserName: event.nick.split(":")[1],
-            groupId: CURRENT_GROUP_DATA.tabId
+            groupId: CURRENT_GROUP_DATA.tabId,
+            auth:window.Applozic.ALApiService.AUTH_TOKEN
         };
         return mckUtils.ajax({
-            url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(messagePxy),
-            headers: {
-                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
-            },
-            success: function (result) {
-                console.log("result zendesk chat get user details ", result);
-                typeof callback == 'function' && callback(agentUserName);
-            },
-            error: function (err) {
-                console.log('err while getting user details in zendesk service');
-            },
+                url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(messagePxy),
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
+                success: function (result) {
+                    console.log("Sent File message data to the server ", result);
+                    typeof callback == 'function' && callback(agentUserName);
+                },
+                error: function (err) {
+                    console.log('err while sending File message data to the server');
+                },
         });
+       
     }
 };
