@@ -28,10 +28,30 @@ function ZendeskChatService() {
             return;
         }
         window.console.log("handleUserMessage: ", event);
-        zChat.sendChatMsg(event.message.message, function (err, data) {
-            window.console.log("zChat.sendChatMsg ", err, data)
-        });
-        // TODO look for attachment
+        if(event.message.contentType==0){ //if user sends normal message
+            zChat.sendChatMsg(event.message.message, function (err, data) {
+                window.console.log("zChat.sendChatMsg ", err, data)
+            });
+            // TODO look for attachment
+
+        }else{ //if user sends file attachments
+            let {name, thumbnailBlobKey, url, createdAtTime, contentType} = event.message.file;
+
+            let fileInputElement=document.getElementById("mck-file-input");
+
+            let file=fileInputElement.files[0];
+
+            window.console.log("File is : ",file);
+
+            zChat.sendFile(file,(err,data)=>{
+                if(err){
+                    window.console.log("Error while sending file : ",err);
+                }else{
+                    window.console.log("File has been sent successfully : ",data);
+                }
+            });
+        }
+        
     };
 
     _this.handleBotMessage = function (event) {
@@ -43,8 +63,10 @@ function ZendeskChatService() {
                 });
                 zChat.on("chat", function (eventDetails) {
                     window.console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
-                    if (eventDetails.type == "chat.msg") {
+                    if (eventDetails.type == "chat.msg") { //If agent sends normal message
                         _this.handleZendeskAgentMessageEvent(eventDetails);
+                    }else if(eventDetails.type == "chat.file"){ //If agent sends file attachments
+                        _this.handleZendeskAgentFileSendEvent(eventDetails);
                     }
                 });
                 ZENDESK_SDK_INITIALIZED = true;
@@ -85,4 +107,33 @@ function ZendeskChatService() {
             },
         });
     };
+
+    _this.handleZendeskAgentFileSendEvent= async function (event) {
+        window.console.log("handleZendeskAgentFileSendEvent ",event);
+
+        // let {url, mime_type, name, size}=event.attachment; 
+        var messagePxy = {
+            fileAttachment: event.attachment,
+            fromUserName: event.nick.split(":")[1],
+            groupId: CURRENT_GROUP_DATA.tabId,
+            auth:window.Applozic.ALApiService.AUTH_TOKEN
+        };
+        return mckUtils.ajax({
+                url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(messagePxy),
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
+                success: function (result) {
+                    console.log("Sent File message data to the server ", result);
+                    typeof callback == 'function' && callback(agentUserName);
+                },
+                error: function (err) {
+                    console.log('err while sending File message data to the server');
+                },
+        });
+       
+    }
 };
