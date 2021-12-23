@@ -3,7 +3,7 @@ const configEnv = {
         port: '3030',
         urls: {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-test.kommunicate.io',
+            kommunicateBaseUrl: 'http://localhost:3999',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'http://localhost:3030',
             dashboardUrl: 'https://dashboard-test.kommunicate.io',
@@ -27,7 +27,7 @@ const configEnv = {
         port: '3030',
         urls: {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-test.kommunicate.io',
+            kommunicateBaseUrl: 'http://localhost:3999',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-test.kommunicate.io',
             dashboardUrl: 'https://dashboard-test.kommunicate.io',
