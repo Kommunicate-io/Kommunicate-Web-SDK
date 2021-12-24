@@ -32,7 +32,6 @@ function ZendeskChatService() {
             zChat.sendChatMsg(event.message.message, function (err, data) {
                 window.console.log("zChat.sendChatMsg ", err, data)
             });
-            // TODO look for attachment
 
         }else{ //if user sends file attachments
             let {name, thumbnailBlobKey, url, createdAtTime, contentType} = event.message.file;
