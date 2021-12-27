@@ -98,6 +98,7 @@ Kommunicate.defaultLabels = {
     'conversation.rated': 'rated the conversation',
     'offline.msg':
         'Uh oh! No internet connection. Please check your network settings and try again.',
+    'socket-disconnect.msg': 'Error while syncing messages. Check your firewall settings or try again after some time.',
     'group.metadata': {
         CREATE_GROUP_MESSAGE: ':adminName created group :groupName',
         REMOVE_MEMBER_MESSAGE: ':adminName removed :userName',
