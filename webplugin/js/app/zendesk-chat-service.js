@@ -28,7 +28,7 @@ function ZendeskChatService() {
             return;
         }
         window.console.log("handleUserMessage: ", event);
-        if(event.message.contentType==0){ //if user sends normal message
+        if(event.message.contentType==KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT){ //if user sends normal message
             zChat.sendChatMsg(event.message.message, function (err, data) {
                 window.console.log("zChat.sendChatMsg ", err, data)
             });
@@ -108,7 +108,7 @@ function ZendeskChatService() {
     };
 
     _this.handleZendeskAgentFileSendEvent= async function (event) {
-        window.console.log("handleZendeskAgentFileSendEvent ",event);
+        // window.console.log("handleZendeskAgentFileSendEvent ",event);
 
         // let {url, mime_type, name, size}=event.attachment; 
         var messagePxy = {
@@ -117,6 +117,8 @@ function ZendeskChatService() {
             groupId: CURRENT_GROUP_DATA.tabId,
             auth:window.Applozic.ALApiService.AUTH_TOKEN
         };
+
+        window.console.log("window object : ",window.Applozic);
         return mckUtils.ajax({
                 url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
                 type: 'post',
