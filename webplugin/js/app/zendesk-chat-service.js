@@ -28,19 +28,16 @@ function ZendeskChatService() {
             return;
         }
         window.console.log("handleUserMessage: ", event);
-        if(event.message.contentType==KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT){ //if user sends normal message
+        if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT){
             zChat.sendChatMsg(event.message.message, function (err, data) {
                 window.console.log("zChat.sendChatMsg ", err, data)
             });
 
-        }else{ //if user sends file attachments
-            let {name, thumbnailBlobKey, url, createdAtTime, contentType} = event.message.file;
+        }else if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT){
 
             let fileInputElement=document.getElementById("mck-file-input");
 
             let file=fileInputElement.files[0];
-
-            window.console.log("File is : ",file);
 
             zChat.sendFile(file,(err,data)=>{
                 if(err){
@@ -107,10 +104,9 @@ function ZendeskChatService() {
         });
     };
 
-    _this.handleZendeskAgentFileSendEvent= async function (event) {
-        // window.console.log("handleZendeskAgentFileSendEvent ",event);
+    _this.handleZendeskAgentFileSendEvent= function (event) {
+        window.console.log("handleZendeskAgentFileSendEvent ",event);
 
-        // let {url, mime_type, name, size}=event.attachment; 
         var messagePxy = {
             fileAttachment: event.attachment,
             fromUserName: event.nick.split(":")[1],
@@ -118,7 +114,6 @@ function ZendeskChatService() {
             auth:window.Applozic.ALApiService.AUTH_TOKEN
         };
 
-        window.console.log("window object : ",window.Applozic);
         return mckUtils.ajax({
                 url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
                 type: 'post',
