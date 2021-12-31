@@ -598,6 +598,8 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT = appOptions.timeFormat;
+
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -650,6 +652,7 @@ var userOverride = {
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
             (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
+           
 
         _this.toggleMediaOptions = function () {
             var mckTypingBox = document.getElementById('mck-text-box');
@@ -2720,7 +2723,9 @@ var userOverride = {
                         ''
                     );
             };
+           
 
+              
             _this.configureIframe = function () {
                 // update sidebox css for kommunicate v2 version
                 var chatbox = document.getElementById('mck-sidebox-launcher');
@@ -2801,7 +2806,6 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
-                    KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
                 popUpcloseButton.addEventListener('click', function (e) {
@@ -4131,7 +4135,7 @@ var userOverride = {
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
-                        var str = kommunicateCommons.formatHtmlTag(mckUtils.textVal(textBox))
+                        var str = mckUtils.textVal(textBox);
                         var trimmedStr = str.trim();
                         var textLength = trimmedStr.length;
                         if (textLength > warningLength) {
@@ -8875,9 +8879,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),                        
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9558,6 +9560,31 @@ var userOverride = {
                 return '';
             };
 
+          _this.getMessageCreatedAtTime=function(createdAtTime){
+                 if(TIME_FORMAT){
+                    var msgtime = new Date(createdAtTime);
+                   
+                    var time = msgtime.toLocaleString('en-US',{
+                        // weekday: 'short', // long, short, narrow
+                        day: 'numeric', // numeric, 2-digit
+                        // year: 'numeric', // numeric, 2-digit
+                         month: 'short', // numeric, 2-digit, long, short, narrow
+                        // hour: 'numeric', // numeric, 2-digit
+                        // minute: 'numeric', // numeric, 2-digit
+                        // second: 'numeric', // numeric, 2-digit
+                     }) + "," + msgtime.getHours() + ":" + msgtime.getMinutes() + ":" + msgtime.getSeconds(); 
+              
+                   return time;
+                }else{
+                    return mckDateUtils.getDate(
+                        createdAtTime
+                    );
+                }
+            };
+             
+
+             
+            
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
                     if (message.fileMeta.contentType.indexOf('image') !== -1) {
