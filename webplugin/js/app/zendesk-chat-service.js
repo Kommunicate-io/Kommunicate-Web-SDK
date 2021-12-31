@@ -35,9 +35,9 @@ function ZendeskChatService() {
             });
         }else if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT){
 
-            let fileInputElement=document.getElementById("mck-file-input");
+            var fileInputElement=document.getElementById("mck-file-input");
 
-            let file=fileInputElement.files[0];
+            var file=fileInputElement.files[0];
 
             zChat.sendFile(file,(err,data)=>{
                 if(err){
