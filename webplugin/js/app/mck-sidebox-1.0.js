@@ -7866,6 +7866,10 @@ var userOverride = {
                 $applozic.template('csatModule', csatModule);
             };
             _this.loadDropdownOptions = function () {
+                if(document.querySelector('#mck-contact-list')){
+                    // if contact list is visible then dropdown options should not be loaded.
+                    return;
+                }
                 var enableDropdown = false;
                 var isConvRated =
                     appOptions.oneTimeRating &&
@@ -8103,6 +8107,11 @@ var userOverride = {
                     { class: ['mck-rating-box'] },
                     '',
                     'selected'
+                );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-faq'] },
+                    'n-vis',
+                    ''
                 );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
