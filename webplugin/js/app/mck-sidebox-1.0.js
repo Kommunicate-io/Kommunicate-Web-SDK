@@ -7063,7 +7063,7 @@ var userOverride = {
                 isAgentOffline
             ) {
                 var userSession = KommunicateUtils.isSessionStorageAvailable()
-                    ? JSON.parse(sessionStorage.kommunicate)
+                    ? (sessionStorage.kommunicate ? JSON.parse(sessionStorage.kommunicate) : {})
                     : {};
                 var languageCode =
                     userSession &&
