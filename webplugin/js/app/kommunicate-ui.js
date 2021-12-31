@@ -534,6 +534,7 @@ KommunicateUI = {
                         'vis'
                     );
                     var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
+                    document.getElementById('mck-tab-title').textContent = '';
                     $applozic.fn.applozic('openChat', elem);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     KommunicateUI.activateTypingField();
