@@ -28,11 +28,11 @@ function ZendeskChatService() {
             return;
         }
         window.console.log("handleUserMessage: ", event);
+
         if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT){
             zChat.sendChatMsg(event.message.message, function (err, data) {
                 window.console.log("zChat.sendChatMsg ", err, data)
             });
-
         }else if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT){
 
             let fileInputElement=document.getElementById("mck-file-input");
@@ -80,12 +80,15 @@ function ZendeskChatService() {
     };
 
     _this.handleZendeskAgentMessageEvent = function (event) {
-        console.log("handleZendeskAgentMessageEvent ", event);
+
+        window.console.log("handleZendeskAgentMessageEvent ", event);
+
         var messagePxy = {
             message: event.msg,
             fromUserName: event.nick.split(":")[1],
             groupId: CURRENT_GROUP_DATA.tabId
         };
+
         return mckUtils.ajax({
             url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/message/send",
             type: 'post',
@@ -95,16 +98,17 @@ function ZendeskChatService() {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
             success: function (result) {
-                console.log("result zendesk chat get user details ", result);
+                window.console.log("result zendesk chat get user details ", result);
                 typeof callback == 'function' && callback(agentUserName);
             },
             error: function (err) {
-                console.log('err while getting user details in zendesk service');
+                window.console.log('err while getting user details in zendesk service');
             },
         });
     };
 
     _this.handleZendeskAgentFileSendEvent= function (event) {
+
         window.console.log("handleZendeskAgentFileSendEvent ",event);
 
         var messagePxy = {
@@ -123,11 +127,11 @@ function ZendeskChatService() {
                     'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
                 },
                 success: function (result) {
-                    console.log("Sent File message data to the server ", result);
+                    window.console.log("Sent File message data to the server ", result);
                     typeof callback == 'function' && callback(agentUserName);
                 },
                 error: function (err) {
-                    console.log('err while sending File message data to the server');
+                    window.console.log('err while sending File message data to the server');
                 },
         });
        
