@@ -9632,7 +9632,7 @@ var userOverride = {
                 }
                 return '';
             };
-            
+
             _this.getMessageCreatedAtTime=function(createdAtTime){
                 if(TIME_FORMAT){
                    var msgtime = new Date(createdAtTime);
@@ -9645,7 +9645,8 @@ var userOverride = {
                        // hour: 'numeric', // numeric, 2-digit
                        // minute: 'numeric', // numeric, 2-digit
                        // second: 'numeric', // numeric, 2-digit
-                    }) + "," + msgtime.getHours() + ":" + msgtime.getMinutes() + ":" + msgtime.getSeconds(); 
+                    }) + "," + msgtime.getHours() + ":" + msgtime.getMinutes();
+                    // + ":" + msgtime.getSeconds(); 
              
                   return time;
                }else{
