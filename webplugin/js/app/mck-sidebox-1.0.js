@@ -598,6 +598,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT = appOptions.timeFormat;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -8946,9 +8947,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9633,7 +9632,29 @@ var userOverride = {
                 }
                 return '';
             };
-
+            
+            _this.getMessageCreatedAtTime=function(createdAtTime){
+                if(TIME_FORMAT){
+                   var msgtime = new Date(createdAtTime);
+                  
+                   var time = msgtime.toLocaleString('en-US',{
+                       // weekday: 'short', // long, short, narrow
+                       day: 'numeric', // numeric, 2-digit
+                       // year: 'numeric', // numeric, 2-digit
+                        month: 'short', // numeric, 2-digit, long, short, narrow
+                       // hour: 'numeric', // numeric, 2-digit
+                       // minute: 'numeric', // numeric, 2-digit
+                       // second: 'numeric', // numeric, 2-digit
+                    }) + "," + msgtime.getHours() + ":" + msgtime.getMinutes() + ":" + msgtime.getSeconds(); 
+             
+                  return time;
+               }else{
+                   return mckDateUtils.getDate(
+                       createdAtTime
+                   );
+               }
+           };
+            
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
                     if (message.fileMeta.contentType.indexOf('image') !== -1) {
