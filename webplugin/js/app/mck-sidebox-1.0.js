@@ -9614,7 +9614,7 @@ var userOverride = {
                 }
                 return '';
             };
-
+         //made new function
           _this.getMessageCreatedAtTime=function(createdAtTime){
                  if(TIME_FORMAT){
                     var msgtime = new Date(createdAtTime);
