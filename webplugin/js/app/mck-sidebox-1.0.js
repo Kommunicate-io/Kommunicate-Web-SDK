@@ -8256,7 +8256,7 @@ var userOverride = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    // $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box
                         .removeClass('n-vis')
@@ -8315,6 +8315,7 @@ var userOverride = {
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                 } else {
                     params.isWaitingQueue = true;
                     mckMessageService.loadMessageList(params, callback);

@@ -828,8 +828,8 @@ KommunicateUI = {
             .addClass('n-vis');
         $applozic('#km-faqdiv').removeClass('vis').addClass('n-vis');
         $applozic('#mck-msg-new').attr('disabled', false);
-        for(let i=MCK_EVENT_HISTORY.length - 1; i>=0; i--){
-            if(MCK_EVENT_HISTORY[i].includes('faq')){
+        for(var i=MCK_EVENT_HISTORY.length - 1; i>=0; i--){
+            if(typeof MCK_EVENT_HISTORY[i] == "string" && MCK_EVENT_HISTORY[i].includes('faq')){
                 MCK_EVENT_HISTORY.splice(i, 1);
             };
         }
