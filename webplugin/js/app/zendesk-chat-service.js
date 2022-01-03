@@ -29,20 +29,20 @@ function ZendeskChatService() {
         }
         window.console.log("handleUserMessage: ", event);
 
-        if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT){
+        if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
             zChat.sendChatMsg(event.message.message, function (err, data) {
                 window.console.log("zChat.sendChatMsg ", err, data)
             });
-        }else if(event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT){
+        } else if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
 
-            var fileInputElement=document.getElementById("mck-file-input");
+            var fileInputElement = document.getElementById("mck-file-input");
 
-            var file=fileInputElement.files[0];
+            var file = fileInputElement.files[0];
 
-            zChat.sendFile(file,(err,data)=>{
-                if(err){
+            zChat.sendFile(file, function (err, data) {
+                if (err) {
                     window.console.log("Error while sending file : ",err);
-                }else{
+                } else {
                     window.console.log("File has been sent successfully : ",data);
                 }
             });
@@ -61,7 +61,7 @@ function ZendeskChatService() {
                     window.console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                     if (eventDetails.type == "chat.msg") { //If agent sends normal message
                         _this.handleZendeskAgentMessageEvent(eventDetails);
-                    }else if(eventDetails.type == "chat.file"){ //If agent sends file attachments
+                    } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
                         _this.handleZendeskAgentFileSendEvent(eventDetails);
                     }
                 });
@@ -115,7 +115,7 @@ function ZendeskChatService() {
             fileAttachment: event.attachment,
             fromUserName: event.nick.split(":")[1],
             groupId: CURRENT_GROUP_DATA.tabId,
-            auth:window.Applozic.ALApiService.AUTH_TOKEN
+            auth: window.Applozic.ALApiService.AUTH_TOKEN
         };
 
         return mckUtils.ajax({
