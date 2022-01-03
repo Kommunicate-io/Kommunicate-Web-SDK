@@ -534,6 +534,7 @@ KommunicateUI = {
                         'vis'
                     );
                     var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
+                    document.getElementById('mck-tab-title').textContent = '';
                     $applozic.fn.applozic('openChat', elem);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     KommunicateUI.activateTypingField();
@@ -559,7 +560,7 @@ KommunicateUI = {
                 // add n-vis
                 kommunicateCommons.modifyClassList(
                     {
-                        id: ['faq-common'],
+                        id: ['faq-common','km-faqdiv','km-faq-category-list-container','km-contact-search-input-box'],
                         class: [
                             'km-no-results-found-container',
                             'km-talk-to-human-div',
@@ -827,6 +828,11 @@ KommunicateUI = {
             .addClass('n-vis');
         $applozic('#km-faqdiv').removeClass('vis').addClass('n-vis');
         $applozic('#mck-msg-new').attr('disabled', false);
+        for(var i=MCK_EVENT_HISTORY.length - 1; i>=0; i--){
+            if(typeof MCK_EVENT_HISTORY[i] == "string" && MCK_EVENT_HISTORY[i].includes('faq')){
+                MCK_EVENT_HISTORY.splice(i, 1);
+            };
+        }
     },
     hideMessagePreview: function () {
         $applozic('#mck-msg-preview-visual-indicator')
@@ -1702,21 +1708,25 @@ KommunicateUI = {
                             'n-vis',
                             'vis'
                         );
+
+                        
+                        headerTabTitle = document.getElementById(
+                            'mck-tab-title'
+                        );
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
+                            'title'
+                        );
+
                         kommunicateCommons.modifyClassList(
                             {
                                 class: [
                                     'mck-agent-image-container',
                                     'mck-agent-status-text',
                                 ],
+                                id: ['km-faq']
                             },
                             'vis',
                             'n-vis'
-                        );
-                        headerTabTitle = document.getElementById(
-                            'mck-tab-title'
-                        );
-                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
-                            'title'
                         );
                     }
                 }
