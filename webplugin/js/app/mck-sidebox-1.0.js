@@ -7062,8 +7062,8 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.isSessionStorageAvailable()
-                    ? (sessionStorage.kommunicate ? JSON.parse(sessionStorage.kommunicate) : {})
+                var userSession = KommunicateUtils.isSessionStorageAvailable() && sessionStorage.kommunicate
+                    ? JSON.parse(sessionStorage.kommunicate)
                     : {};
                 var languageCode =
                     userSession &&
