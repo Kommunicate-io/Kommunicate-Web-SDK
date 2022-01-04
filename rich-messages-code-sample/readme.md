@@ -20,3 +20,8 @@ Here are the code samples  to for different message. These samples are tested in
 if you are working with Google assistant and using `action-on-google` library, You don't need to configure the rich messages  separately for Kommunicate. Kommunicate supports the rich messages from `action-on-google library`as well. 
 Make sure you have not set any default response(both text and custom payload). If it is set Kommunicate gives priority to the default responses and the response from `action on google` library will be ignored.
 [Here](https://github.com/actions-on-google/dialogflow-conversation-components-nodejs/blob/master/functions/index.js) is the code sample for setting rich messages response using `action-on-google` library.   
+
+## Rich message with Amazon lex Lambda functions
+
+Same codes for custom payload:
+- [Form](amazon-lex-lambda/form-using-custom-payload.js)
