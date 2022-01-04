@@ -23,5 +23,5 @@ Make sure you have not set any default response(both text and custom payload). I
 
 ## Rich message with Amazon lex Lambda functions
 
-Same codes for custom payload:
+Sample codes for custom payload:
 - [Form](amazon-lex-lambda/form-using-custom-payload.js)
