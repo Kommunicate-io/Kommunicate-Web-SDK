@@ -2801,6 +2801,11 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
+                    kommunicateCommons.modifyClassList(
+                        { id: ['km-widget-options'] },
+                        'n-vis',
+                        ''
+                    );
                     KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
