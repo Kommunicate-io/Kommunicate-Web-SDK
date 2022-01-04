@@ -5,7 +5,7 @@ Kommunicate.mediaService = {
             return m.toUpperCase();
         });
     },
-    processMicClickedEvent: function () {
+    processVoiceInputClickedEvent: function () {
         kmWidgetEvents.eventTracking(eventMapping.onVoiceIconClick);
         if (!('webkitSpeechRecognition' in window)) {
             alert('browser do not support speech recogization');

@@ -26,31 +26,6 @@
 	color: #333;
 }
 
-.mck-mike-btn {
-        background-image: url(../images/mck-mike.png);
-        background-repeat: no-repeat;
-        float :left !important;
-        margin-top: 7px;
-        height:18px;
-        width:19px;
-	overflow: hidden;
-        background-size: 20px;
-        cursor: pointer;
-}
-
-.mck-stop-btn {
-        background-image: url(../css/app/images/mck-stop.png);
-        background-repeat: no-repeat;
-        float :left !important;
-       /* margin-top: 4px;*/
-        height:27px;
-        width:25px;
-	overflow: hidden;
-        /*opacity: 0.4;*/
-        background-size: 25px;
-        cursor: pointer;
-}
-
 .mck-msg-reply {
 	background-color: #0073b7;
 
@@ -6372,4 +6347,76 @@ body.accesibility :focus {
 .mck-msg-left:last-child [data-hidepostformsubmit="true"] {
 	display: block;
 	visibility: visible;
+}
+
+/* ----------------- VoiceNote feature ------------- */
+#km-voice-note-mike-btn-container{
+    width: auto;
+    height: 30px;
+    float: right;
+    cursor: pointer;
+    display: block;
+}
+#km-voice-recorder{
+    display: flex;
+    padding: 3px 3px 3px 8px;
+}
+#km-voice-recorder > div{
+    padding: 3px;
+    width: 20px;
+}
+#km-voice-recorder div.recorder-control{
+    cursor: pointer;
+}
+#km-voice-recorder > #recorder-body{
+    width: 100%;
+    border-left: 1px solid #D9DEEB;
+    border-right: 1px solid #D9DEEB;
+    flex-grow: 1;
+}
+
+#km-voice-recorder > #recorder-right-btn{
+    margin-left: auto;
+}
+#km-voice-recorder > #recorder-body > div.recorder-control{
+    float: left;
+}
+#km-voice-recorder > #recorder-body > #km-audio-player{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#km-voice-recorder > div{
+    width: 35px;
+}
+.km-audio-player-timer{
+    font-size: 14px;
+    color: #919EAD;
+}
+/* #wave-front-progressBar{
+    margin: 0 5px;
+} */
+#progressbar {
+    border: 1px solid #919EAD;
+    border-radius: 13px;
+    margin: 0 5px;
+    padding: 3px;
+    flex-grow: 1;
+  }
+  
+  #progressbar>div#wave-front-progressBar {
+    width: 0px; /* Adjust with JavaScript */
+    height: 14px;
+    border-radius: 10px;
+  }
+
+#mck-mic-options-dropup.mck-dropup-menu .menu-item{
+    padding: 5px 10px;
+    color: #333;
+    white-space: nowrap;
+    display: flex;
+}
+#mck-mic-options-dropup.mck-dropup-menu .menu-item:hover {
+    background: #F5F5F5;
+    cursor: pointer;
 }
