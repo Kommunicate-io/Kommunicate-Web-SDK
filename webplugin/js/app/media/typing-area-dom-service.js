@@ -35,7 +35,7 @@ Kommunicate.typingAreaService = {
     showMicIfRequiredWebAPISupported: function () {
         if (appOption && appOption.voiceNote && !appOption.voiceInput) {
             if (!window.hasOwnProperty('MediaRecorder')) {
-                console.log('browser do not media recording');
+                console.log('browser does not support media recording');
                 this.hideMicButton();
             } else {
                 document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('voiceNote');
@@ -52,7 +52,7 @@ Kommunicate.typingAreaService = {
             }
         } else if (appOption && appOption.voiceInput && appOption.voiceNote) {
             if (!window.hasOwnProperty('webkitSpeechRecognition') || !window.hasOwnProperty('MediaRecorder')) {
-                console.log('browser do not support speech recognition');
+                console.log('browser do not support speech recognition or media recording');
                 this.hideMicButton();
             } else {
                 document.querySelector('#mck-mic-animation-container').classList.add('mck-dropdown');
@@ -61,7 +61,6 @@ Kommunicate.typingAreaService = {
                 document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('availableOptions');
                 KommunicateUI.initRecorder();
                 this.showMicButton();
-                console.log("both voice note and voice input is enabled");
             }
         }
     },
@@ -95,15 +94,6 @@ Kommunicate.typingAreaService = {
             'n-vis'
         );
     },
-    // showVoiceNoteIcon:function(){
-    //     if (appOption && appOption.voiceNote) {
-    //         kommunicateCommons.modifyClassList(
-    //             { id: ['km-voice-note-mike-btn-container'] },
-    //             'vis',
-    //             'n-vis'
-    //         );
-    //     }
-    // },
     showRecorder: function(){
         document.querySelector('#mck-textbox-container').classList.add('n-vis');
         document.querySelector('#km-voice-recorder').classList.remove('n-vis');

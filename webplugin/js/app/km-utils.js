@@ -548,44 +548,5 @@ KommunicateUtils = {
                 })
                 .join('&')
         );
-    },
-    IntervalTimer: function (callback, interval) {
-        var timerId, startTime, remaining = 0;
-        var state = 0; //  0 = idle, 1 = running, 2 = paused, 3= resumed
-
-        this.pause = function () {
-            if (state != 1) return;
-            remaining = interval - (new Date() - startTime);
-            window.clearInterval(timerId);
-            state = 2;
-        };
-        this.isRunning = function(){
-            return state == 1;
-        }
-        this.isPaused = function () {
-            return state == 2;
-        };
-        this.stopTimer = function(){
-            window.clearInterval(timerId);
-            state = 0;
-            startTime = 0;
-            remaining = 0;
-        
-        };
-        this.resume = function () {
-            if (state != 2) return;
-
-            state = 3;
-            window.setTimeout(this.timeoutCallback, remaining);
-        };
-
-        this.timeoutCallback = function () {
-            if (state != 3) return;
-            callback();
-            startTime = new Date();
-        };
-        startTime = new Date();
-        timerId = window.setInterval(callback, interval);
-        state = 1;
     }
 };
