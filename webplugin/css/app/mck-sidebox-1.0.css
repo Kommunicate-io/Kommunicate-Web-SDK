@@ -3119,7 +3119,7 @@ display: none;
 }
 
 .mck-audio-player {
-	width: 180px;
+	width: 220px;
     /* height: 40px; */
     margin-bottom: 8px;
     overflow: hidden;
@@ -6368,6 +6368,9 @@ body.accesibility :focus {
 #km-voice-recorder div.recorder-control{
     cursor: pointer;
 }
+#km-voice-recorder div.recorder-control.delete-btn:hover svg path{
+    fill: #ED495C;
+}
 #km-voice-recorder > #recorder-body{
     width: 100%;
     border-left: 1px solid #D9DEEB;
@@ -6381,6 +6384,9 @@ body.accesibility :focus {
 #km-voice-recorder > #recorder-body > div.recorder-control{
     float: left;
 }
+#km-voice-recorder div.recorder-control.disabled svg path{
+    fill: #BCC7DB!important;
+}
 #km-voice-recorder > #recorder-body > #km-audio-player{
     display: flex;
     align-items: center;
@@ -6393,20 +6399,17 @@ body.accesibility :focus {
     font-size: 14px;
     color: #919EAD;
 }
-/* #wave-front-progressBar{
-    margin: 0 5px;
-} */
+
 #progressbar {
     border: 1px solid #919EAD;
     border-radius: 13px;
     margin: 0 5px;
-    padding: 3px;
     flex-grow: 1;
   }
   
   #progressbar>div#wave-front-progressBar {
     width: 0px; /* Adjust with JavaScript */
-    height: 14px;
+    height: 5px;
     border-radius: 10px;
   }
 

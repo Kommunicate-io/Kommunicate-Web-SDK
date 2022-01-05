@@ -1807,7 +1807,6 @@ KommunicateUI = {
         const LIVE_OUTPUT = false; // a feature to live output the recording voice to the speaker
         const MAX_RECORD_TIME = 2 * 60 * 1000; // in milliseconds
 
-        var INTERVAL;
         var START_TIME;
         var REMAINING_TIME;
 
@@ -1820,6 +1819,7 @@ KommunicateUI = {
         var audioBlob;
         var wavAudioDuration;
         var playPauseInterval;
+        var recorderInterval;
         var recorderAudio = document.querySelector('#recorder-audio');
         var params = {};
         recorderAudio.onloadedmetadata = function () {
@@ -1887,12 +1887,15 @@ KommunicateUI = {
             Fr.voice.record(LIVE_OUTPUT, function () {
                 console.log('Recording started');
                 initTimer();
+            }, null,function(err){
+                console.log('error', err);
+                resetRecorder(null, true);
             });
         };
         function initTimer() {
             var startTime = new Date().getTime();
             var endTime = startTime + MAX_RECORD_TIME;
-            INTERVAL = setInterval(function () {
+            recorderInterval = setInterval(function () {
                 var now = new Date().getTime();
                 var timeElapsed = now - startTime;
                 var timeRemaining = endTime - now;
@@ -1936,18 +1939,17 @@ KommunicateUI = {
                 'n-vis',
                 ''
             );
-            clearInterval(INTERVAL);
+            clearInterval(recorderInterval);
+            $("#wave-front-progressBar").width('0%');
             timeRemainingTimer.text("00:00");
             Fr.voice.pause();
             Fr.voice.export(function (blob) {
+                blob.name = 'voiceRecord-' + new Date().getTime() + '.wav';
                 params.file = blob;
-                params.name = 'blob';
                 params.callback = function(){
-                    // document.querySelector("#send-btn").classList.remove('disabled');
-                    console.log("done")
+                    document.querySelector("#send-btn").classList.remove('disabled');
                 }
                 audioBlob = blob;
-                console.log(audioBlob)
                 $applozic.fn.applozic('audioAttach', params);
                 var bloburl = URL.createObjectURL(audioBlob);
                 $("#recorder-audio").attr("src", bloburl);
@@ -1955,12 +1957,12 @@ KommunicateUI = {
             Fr.voice.stop();
             
         };
-        function resetRecorder() {
+        function resetRecorder(e, permissionDenied) {
             Kommunicate.typingAreaService.hideRecorder();
-            Fr.voice.stop();
-            clearInterval(INTERVAL);
+            !permissionDenied && Fr.voice.stop();
+            clearInterval(recorderInterval);
             clearInterval(playPauseInterval);
-            INTERVAL = null;
+            recorderInterval = null;
             audioBlob = null;
             wavAudioDuration = null;
             recorderAudio.setAttribute('src', '');
@@ -1971,6 +1973,12 @@ KommunicateUI = {
             timeElapsedTimer.text("00:00");
             timeRemainingTimer.text("02:00");
             document.querySelector("#send-btn").classList.add('disabled');
+
+            // remove un-necessary eventListeners
+            $applozic('#mck-conversation-back-btn').off('click', resetRecorder);
+            $applozic('#km-faq').off('click', resetRecorder);
+            $applozic('#km-popup-close-button').off('click', resetRecorder);
+            $applozic('#km-chat-widget-close-button').off('click', resetRecorder);
         };
         function onPlayBtnClick(e) {
             playBtn.addClass("n-vis");
@@ -1986,19 +1994,28 @@ KommunicateUI = {
             playBtn.removeClass("n-vis");
         };
 
-        document.querySelector('.mck-mic-animation-container .voiceNote').onclick = startRecording;
+        document.querySelector('.mck-mic-animation-container .voiceNote').onclick = function () {
+            startRecording();
+
+            // on click of back button, close btn, and faq btn recording should end
+            $applozic('#mck-conversation-back-btn').on('click', resetRecorder);
+            $applozic('#km-faq').on('click', resetRecorder);
+            $applozic('#km-popup-close-button').on('click', resetRecorder);
+            $applozic('#km-chat-widget-close-button').on('click', resetRecorder);
+    
+        };
         document.getElementById("mck-stop-recording").onclick = stopRecording;
         document.getElementById("play-btn").onclick = onPlayBtnClick;
         document.getElementById("pause-btn").onclick = onPauseBtnClick;
         document.getElementById("delete-recording").onclick = function(e){
-            resetRecorder();
+            resetRecorder(e);
             document.querySelector('.mck-remove-file') && document.querySelector('.mck-remove-file').click();
         }
         document.querySelector("#send-btn").onclick = function(e){
-            // if(!document.querySelector("#send-btn").classList.contains('disabled')){
-            //     return;
-            // }
-            resetRecorder();
+            if(document.querySelector("#send-btn").classList.contains('disabled')){
+                return;
+            }
+            resetRecorder(e);
             document.querySelector('#mck-msg-sbmt') && document.querySelector('#mck-msg-sbmt').click();
         }
     },

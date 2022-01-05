@@ -2815,6 +2815,7 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
+                    
                     KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
@@ -9590,7 +9591,7 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('audio') !== -1
                     ) {
                         return (
-                            '<a href="#" target="_self" ><audio controls class="mck-audio-player'+
+                            '<div><audio controls class="mck-audio-player'+
                             (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
@@ -9598,7 +9599,7 @@ var userOverride = {
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="audio/mpeg"></audio>' +
-                            '<p class="mck-file-tag"></p></a>'
+                            '<a href="#" target="_self" ><p class="mck-file-tag"></p></a></div>'
                         );
                     } else {
                         return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
