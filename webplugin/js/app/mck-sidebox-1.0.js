@@ -9605,7 +9605,7 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('audio') !== -1
                     ) {
                         return (
-                            '<div><audio controls class="mck-audio-player'+
+                            '<a href="#" target="_self" ><audio controls class="mck-audio-player'+
                             (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
@@ -9613,7 +9613,7 @@ var userOverride = {
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="audio/mpeg"></audio>' +
-                            '<a href="#" target="_self" ><p class="mck-file-tag"></p></a></div>'
+                            '<p class="mck-file-tag"></p></a>'
                         );
                     } else {
                         return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';

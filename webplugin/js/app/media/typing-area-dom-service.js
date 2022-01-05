@@ -39,7 +39,7 @@ Kommunicate.typingAreaService = {
                 this.hideMicButton();
             } else {
                 document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('voiceNote');
-                KommunicateUI.initRecorder();
+                Kommunicate.mediaService.initRecorder();
                 this.showMicButton();
             }
         } else if (appOption && appOption.voiceInput && !appOption.voiceNote) {
@@ -59,7 +59,7 @@ Kommunicate.typingAreaService = {
                 document.querySelector('#mck-mic-btn-container').classList.add('mck-dropdown-toggle');
                 document.querySelector('#mck-mic-options-dropup').classList.remove('n-vis');
                 document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('availableOptions');
-                KommunicateUI.initRecorder();
+                Kommunicate.mediaService.initRecorder();
                 this.showMicButton();
             }
         }
