@@ -144,10 +144,9 @@ Kommunicate.mediaService = {
             EXPIRED: 0,
             RUNNING: 1,
             PAUSED: 2,
-        }
+        };
         var START_TIME;
         var REMAINING_TIME;
-
         var pauseBtn = $applozic("#pause-btn");
         var playBtn = $applozic("#play-btn");
         var timeElapsedTimer = $applozic("#time-elapsed");
@@ -157,77 +156,80 @@ Kommunicate.mediaService = {
         var wavAudioDuration;
         var playPauseInterval;
         var recorderInterval;
-        var recorderAudio = document.querySelector('#recorder-audio');
+        var recorderAudio = document.querySelector("#recorder-audio");
         var params = {};
         recorderAudio.onloadedmetadata = function () {
             wavAudioDuration = recorderAudio.duration;
             REMAINING_TIME = wavAudioDuration;
         };
-
         function playPauseTimer() {
             START_TIME = new Date().getTime();
             if (wavAudioDuration) {
                 playPauseInterval = setInterval(function () {
-                    if(playPausetimerState == TIMER_STATE.RUNNING){
-                        var timeElapsed = (new Date().getTime() - START_TIME) /1000;
-                        var percent = Math.floor(timeElapsed) / Math.floor(wavAudioDuration) * 100;
+                    if (playPausetimerState == TIMER_STATE.RUNNING) {
+                        var timeElapsed =
+                            (new Date().getTime() - START_TIME) / 1000;
+                        var percent =
+                            (Math.floor(timeElapsed) /
+                                Math.floor(wavAudioDuration)) *
+                            100;
                         REMAINING_TIME = Math.floor(wavAudioDuration - timeElapsed);
-                        var secondsElapsed = Math.floor((timeElapsed ) % 60);
-                        var minutesElapsed = Math.floor((timeElapsed / (60)) % 60);
-                        timeRemainingTimer.text(("0" + minutesElapsed).slice(-2) + ":" + ("0" + secondsElapsed).slice(-2));
-                        $applozic("#wave-front-progressBar").width(percent+'%');
-                        if(REMAINING_TIME <=0){
+                        var secondsElapsed = Math.floor(timeElapsed % 60);
+                        var minutesElapsed = Math.floor((timeElapsed / 60) % 60);
+                        timeRemainingTimer.text(
+                            ("0" + minutesElapsed).slice(-2) +
+                                ":" +
+                                ("0" + secondsElapsed).slice(-2)
+                        );
+                        $applozic("#wave-front-progressBar").width(percent + "%");
+                        if (REMAINING_TIME <= 0) {
                             clearTimeout(playPauseInterval);
                             playPausetimerState = TIMER_STATE.EXPIRED;
                             pauseBtn.addClass("n-vis");
-                            playBtn.removeClass("n-vis");            
-                        };
-                    }else if(playPausetimerState == TIMER_STATE.PAUSED){
+                            playBtn.removeClass("n-vis");
+                        }
+                    } else if (playPausetimerState == TIMER_STATE.PAUSED) {
                         START_TIME += 1000;
-                    };
+                    }
                 }, 1000);
-                timeRemainingTimer.removeClass('n-vis');
-            };
-        };
+                timeRemainingTimer.removeClass("n-vis");
+            }
+        }
         function startRecording() {
             Kommunicate.typingAreaService.showRecorder();
             // show
             kommunicateCommons.modifyClassList(
                 {
-                    id: [
-                        'delete-recording',
-                        'mck-stop-recording',
-                        'audiodiv'
-                    ],
+                    id: ["delete-recording", "mck-stop-recording", "audiodiv"],
                 },
-                '',
-                'n-vis'
+                "",
+                "n-vis"
             );
-
+    
             // hide
             kommunicateCommons.modifyClassList(
                 {
-                    id: [
-                        'play-btn',
-                        'pause-btn',
-                        'send-btn',
-                    ],
+                    id: ["play-btn", "pause-btn", "send-btn"],
                 },
-                'n-vis',
-                ''
+                "n-vis",
+                ""
             );
             timeElapsedTimer.removeClass("n-vis");
             timeRemainingTimer.removeClass("n-vis");
-
-
-            Fr.voice.record(LIVE_OUTPUT, function () {
-                console.log('Recording started');
-                initTimer();
-            }, null,function(err){
-                console.log('error', err);
-                resetRecorder(null, true);
-            });
-        };
+    
+            Fr.voice.record(
+                LIVE_OUTPUT,
+                function () {
+                    console.log("Recording started");
+                    initTimer();
+                },
+                null,
+                function (err) {
+                    console.log("error", err);
+                    resetRecorder(null, true);
+                }
+            );
+        }
         function initTimer() {
             var startTime = new Date().getTime();
             var endTime = startTime + MAX_RECORD_TIME;
@@ -235,64 +237,71 @@ Kommunicate.mediaService = {
                 var now = new Date().getTime();
                 var timeElapsed = now - startTime;
                 var timeRemaining = endTime - now;
-                var percent = timeElapsed / MAX_RECORD_TIME * 100;
+                var percent = (timeElapsed / MAX_RECORD_TIME) * 100;
                 var secondsElapsed = Math.floor((timeElapsed / 1000) % 60);
                 var secondsRemaining = Math.floor((timeRemaining / 1000) % 60);
                 var minutesElapsed = Math.floor((timeElapsed / (1000 * 60)) % 60);
-                var minutesRemaining = Math.floor((timeRemaining / (1000 * 60)) % 60);
-                timeElapsedTimer.text(("0" + minutesElapsed).slice(-2) + ":" + ("0" + secondsElapsed).slice(-2));
-                timeRemainingTimer.text(("0" + minutesRemaining).slice(-2) + ":" + ("0" + secondsRemaining).slice(-2));
-                $applozic("#wave-front-progressBar").width(percent+'%');
+                var minutesRemaining = Math.floor(
+                    (timeRemaining / (1000 * 60)) % 60
+                );
+                timeElapsedTimer.text(
+                    ("0" + minutesElapsed).slice(-2) +
+                        ":" +
+                        ("0" + secondsElapsed).slice(-2)
+                );
+                timeRemainingTimer.text(
+                    ("0" + minutesRemaining).slice(-2) +
+                        ":" +
+                        ("0" + secondsRemaining).slice(-2)
+                );
+                $applozic("#wave-front-progressBar").width(percent + "%");
                 if (timeRemaining <= 0) {
                     stopRecording();
-                };
+                }
             }, 1000);
-        };
+        }
         function stopRecording(e) {
             // show
             kommunicateCommons.modifyClassList(
                 {
                     id: [
-                        'delete-recording',
-                        'play-btn',
-                        'send-btn',
-                        'time-remaining'
+                        "delete-recording",
+                        "play-btn",
+                        "send-btn",
+                        "time-remaining",
                     ],
                 },
-                '',
-                'n-vis'
+                "",
+                "n-vis"
             );
-            
+    
             // hide
             kommunicateCommons.modifyClassList(
                 {
-                    id: [
-                        'pause-btn',
-                        'mck-stop-recording',
-                        'time-elapsed'
-                    ],
+                    id: ["pause-btn", "mck-stop-recording", "time-elapsed"],
                 },
-                'n-vis',
-                ''
+                "n-vis",
+                ""
             );
             clearInterval(recorderInterval);
-            $applozic("#wave-front-progressBar").width('0%');
+            $applozic("#wave-front-progressBar").width("0%");
             timeRemainingTimer.text("00:00");
             Fr.voice.pause();
             Fr.voice.export(function (blob) {
-                blob.name = 'voiceRecord-' + new Date().getTime() + '.wav';
+                blob.name = "voiceRecord-" + new Date().getTime() + ".wav";
                 params.file = blob;
-                params.callback = function(){
-                    document.querySelector("#send-btn").classList.remove('disabled');
+                params.callback = function () {
+                    document
+                        .querySelector("#send-btn")
+                        .classList.remove("disabled");
                 };
                 audioBlob = blob;
-                $applozic.fn.applozic('audioAttach', params);
+                $applozic.fn.applozic("audioAttach", params);
                 var bloburl = URL.createObjectURL(audioBlob);
                 $applozic("#recorder-audio").attr("src", bloburl);
-            }, 'blob');
+            }, "blob");
             Fr.voice.stop();
-            
-        };
+        }
         function resetRecorder(e, permissionDenied) {
             Kommunicate.typingAreaService.hideRecorder();
             !permissionDenied && Fr.voice.stop();
@@ -301,58 +310,65 @@ Kommunicate.mediaService = {
             recorderInterval = null;
             audioBlob = null;
             wavAudioDuration = null;
-            recorderAudio.setAttribute('src', '');
+            recorderAudio.setAttribute("src", "");
             playPausetimerState = TIMER_STATE.EXPIRED;
             params = {};
-            $applozic("#wave-front-progressBar").width('0%');
+            $applozic("#wave-front-progressBar").width("0%");
             timeElapsedTimer.text("00:00");
             timeRemainingTimer.text("02:00");
-            document.querySelector("#send-btn").classList.add('disabled');
-
+            document.querySelector("#send-btn").classList.add("disabled");
+    
             // remove un-necessary eventListeners
-            $applozic('#mck-conversation-back-btn').off('click', resetRecorder);
-            $applozic('#km-faq').off('click', resetRecorder);
-            $applozic('#km-popup-close-button').off('click', resetRecorder);
-            $applozic('#km-chat-widget-close-button').off('click', resetRecorder);
-        };
+            $applozic("#mck-conversation-back-btn").off("click", resetRecorder);
+            $applozic("#km-faq").off("click", resetRecorder);
+            $applozic("#km-popup-close-button").off("click", resetRecorder);
+            $applozic("#km-chat-widget-close-button").off("click", resetRecorder);
+        }
         function onPlayBtnClick(e) {
             var prevStateOfTimer = playPausetimerState;
             playPausetimerState = TIMER_STATE.RUNNING;
             playBtn.addClass("n-vis");
             pauseBtn.removeClass("n-vis");
             audioBlob && $applozic("#recorder-audio")[0].play();
-            prevStateOfTimer == TIMER_STATE.EXPIRED && playPauseTimer(); 
-        };
-        function onPauseBtnClick (e) {
+            prevStateOfTimer == TIMER_STATE.EXPIRED && playPauseTimer();
+        }
+        function onPauseBtnClick(e) {
             $applozic("#recorder-audio")[0].pause();
             playPausetimerState = TIMER_STATE.PAUSED;
             pauseBtn.addClass("n-vis");
             playBtn.removeClass("n-vis");
-        };
-
-        document.querySelector('.mck-mic-animation-container .voiceNote').onclick = function () {
-            startRecording();
-
-            // on click of back button, close btn, and faq btn recording should end
-            $applozic('#mck-conversation-back-btn').on('click', resetRecorder);
-            $applozic('#km-faq').on('click', resetRecorder);
-            $applozic('#km-popup-close-button').on('click', resetRecorder);
-            $applozic('#km-chat-widget-close-button').on('click', resetRecorder);
+        }
     
-        };
+        document.querySelector(".mck-mic-animation-container .voiceNote").onclick =
+            function () {
+                startRecording();
+    
+                // on click of back button, close btn, and faq btn recording should end
+                $applozic("#mck-conversation-back-btn").on("click", resetRecorder);
+                $applozic("#km-faq").on("click", resetRecorder);
+                $applozic("#km-popup-close-button").on("click", resetRecorder);
+                $applozic("#km-chat-widget-close-button").on(
+                    "click",
+                    resetRecorder
+                );
+            };
         document.getElementById("mck-stop-recording").onclick = stopRecording;
         document.getElementById("play-btn").onclick = onPlayBtnClick;
         document.getElementById("pause-btn").onclick = onPauseBtnClick;
-        document.getElementById("delete-recording").onclick = function(e){
+        document.getElementById("delete-recording").onclick = function (e) {
             resetRecorder(e);
-            document.querySelector('.mck-remove-file') && document.querySelector('.mck-remove-file').click();
-        }
-        document.querySelector("#send-btn").onclick = function(e){
-            if(document.querySelector("#send-btn").classList.contains('disabled')){
+            document.querySelector(".mck-remove-file") &&
+                document.querySelector(".mck-remove-file").click();
+        };
+        document.querySelector("#send-btn").onclick = function (e) {
+            if (
+                document.querySelector("#send-btn").classList.contains("disabled")
+            ) {
                 return;
             }
             resetRecorder(e);
-            document.querySelector('#mck-msg-sbmt') && document.querySelector('#mck-msg-sbmt').click();
-        }
+            document.querySelector("#mck-msg-sbmt") &&
+                document.querySelector("#mck-msg-sbmt").click();
+        };
     },
 };
