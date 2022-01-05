@@ -137,3 +137,17 @@ function ZendeskChatService() {
        
     }
 };
+
+
+var onTabClickedHandlerForZendeskConversations = function (event) {
+    console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
+    if (kommunicate._globals.zendeskChatSdkKey) {
+        let currentGroupData = MCK_GROUP_MAP[event.tabId];
+        let assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(member => {
+            return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
+        })
+        if (assigneeInfo && assigneeInfo.role != 2) {
+            Kommunicate.startConversation();
+        }
+    }
+};
