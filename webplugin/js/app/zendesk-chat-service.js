@@ -146,7 +146,7 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
-        if (assigneeInfo && assigneeInfo.role != 2) {
+        if (assigneeInfo && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
             Kommunicate.startConversation();
         }
     }
