@@ -2815,7 +2815,11 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
-                    
+                    kommunicateCommons.modifyClassList(
+                        { id: ['km-widget-options'] },
+                        'n-vis',
+                        ''
+                    );
                     KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
@@ -7036,7 +7040,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.isSessionStorageAvailable()
+                var userSession = KommunicateUtils.isSessionStorageAvailable() && sessionStorage.kommunicate
                     ? JSON.parse(sessionStorage.kommunicate)
                     : {};
                 var languageCode =
@@ -7856,6 +7860,10 @@ var userOverride = {
                 $applozic.template('csatModule', csatModule);
             };
             _this.loadDropdownOptions = function () {
+                if(document.querySelector('#mck-contact-list')){
+                    // if contact list is visible then dropdown options should not be loaded.
+                    return;
+                }
                 var enableDropdown = false;
                 var isConvRated =
                     appOptions.oneTimeRating &&
@@ -8094,6 +8102,11 @@ var userOverride = {
                     '',
                     'selected'
                 );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-faq'] },
+                    'n-vis',
+                    ''
+                );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -8237,7 +8250,7 @@ var userOverride = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    // $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box
                         .removeClass('n-vis')
@@ -8296,6 +8309,7 @@ var userOverride = {
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                 } else {
                     params.isWaitingQueue = true;
                     mckMessageService.loadMessageList(params, callback);
