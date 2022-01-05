@@ -140,7 +140,11 @@ Kommunicate.mediaService = {
     initRecorder: function(){
         const LIVE_OUTPUT = false; // a feature to live output the recording voice to the speaker
         const MAX_RECORD_TIME = 2 * 60 * 1000; // in milliseconds
-
+        const TIMER_STATE = {
+            EXPIRED: 0,
+            RUNNING: 1,
+            PAUSED: 2,
+        }
         var START_TIME;
         var REMAINING_TIME;
 
@@ -148,8 +152,7 @@ Kommunicate.mediaService = {
         var playBtn = $applozic("#play-btn");
         var timeElapsedTimer = $applozic("#time-elapsed");
         var timeRemainingTimer = $applozic("#time-remaining");
-        var isTimerPaused = false;
-        var hasTimerExpired = true;
+        var playPausetimerState = TIMER_STATE.EXPIRED;
         var audioBlob;
         var wavAudioDuration;
         var playPauseInterval;
@@ -165,8 +168,7 @@ Kommunicate.mediaService = {
             START_TIME = new Date().getTime();
             if (wavAudioDuration) {
                 playPauseInterval = setInterval(function () {
-                    hasTimerExpired = false;
-                    if(!isTimerPaused){
+                    if(playPausetimerState == TIMER_STATE.RUNNING){
                         var timeElapsed = (new Date().getTime() - START_TIME) /1000;
                         var percent = Math.floor(timeElapsed) / Math.floor(wavAudioDuration) * 100;
                         REMAINING_TIME = Math.floor(wavAudioDuration - timeElapsed);
@@ -176,11 +178,11 @@ Kommunicate.mediaService = {
                         $applozic("#wave-front-progressBar").width(percent+'%');
                         if(REMAINING_TIME <=0){
                             clearTimeout(playPauseInterval);
+                            playPausetimerState = TIMER_STATE.EXPIRED;
                             pauseBtn.addClass("n-vis");
-                            playBtn.removeClass("n-vis");
-                            hasTimerExpired = true;
+                            playBtn.removeClass("n-vis");            
                         };
-                    }else{
+                    }else if(playPausetimerState == TIMER_STATE.PAUSED){
                         START_TIME += 1000;
                     };
                 }, 1000);
@@ -300,8 +302,7 @@ Kommunicate.mediaService = {
             audioBlob = null;
             wavAudioDuration = null;
             recorderAudio.setAttribute('src', '');
-            isTimerPaused = false;
-            hasTimerExpired = true;
+            playPausetimerState = TIMER_STATE.EXPIRED;
             params = {};
             $applozic("#wave-front-progressBar").width('0%');
             timeElapsedTimer.text("00:00");
@@ -315,15 +316,16 @@ Kommunicate.mediaService = {
             $applozic('#km-chat-widget-close-button').off('click', resetRecorder);
         };
         function onPlayBtnClick(e) {
+            var prevStateOfTimer = playPausetimerState;
+            playPausetimerState = TIMER_STATE.RUNNING;
             playBtn.addClass("n-vis");
             pauseBtn.removeClass("n-vis");
             audioBlob && $applozic("#recorder-audio")[0].play();
-            hasTimerExpired && playPauseTimer();
-            isTimerPaused = false;
+            prevStateOfTimer == TIMER_STATE.EXPIRED && playPauseTimer(); 
         };
         function onPauseBtnClick (e) {
             $applozic("#recorder-audio")[0].pause();
-            isTimerPaused = true;
+            playPausetimerState = TIMER_STATE.PAUSED;
             pauseBtn.addClass("n-vis");
             playBtn.removeClass("n-vis");
         };
