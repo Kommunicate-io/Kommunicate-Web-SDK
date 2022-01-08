@@ -14369,6 +14369,7 @@ var userOverride = {
 
             // }
             _this.audioRecoder = function (params) {
+                // Todo: all the files to be uploaded to aws S3 Server
                 if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
                     _this.uploadAttachment2AWS(params);
                 } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
@@ -14529,6 +14530,9 @@ var userOverride = {
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
+                            if (params.callback) {
+                                params.callback();
+                            }
                             return false;
                         } else {
                             $file_remove.attr('disabled', false);
@@ -14723,6 +14727,9 @@ var userOverride = {
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
+                            if (params.callback) {
+                                params.callback();
+                            }
                             return false;
                         } else {
                             $file_remove.attr('disabled', false);
