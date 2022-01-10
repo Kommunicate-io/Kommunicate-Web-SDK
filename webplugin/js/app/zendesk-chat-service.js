@@ -12,6 +12,9 @@ function ZendeskChatService() {
             'onMessageReceived': _this.handleBotMessage,
         };
         Kommunicate.subscribeToEvents(events);
+        // Hide back button
+        document.getElementById('mck-contacts-content').classList.add('force-n-vis');
+        document.querySelector('.mck-back-btn-container').classList.add('force-n-vis');
     };
 
     _this.loadZopimSDK = function () {
