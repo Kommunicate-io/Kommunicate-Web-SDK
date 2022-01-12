@@ -12,6 +12,9 @@ function ZendeskChatService() {
             'onMessageReceived': _this.handleBotMessage,
         };
         Kommunicate.subscribeToEvents(events);
+        // Hide back button
+        document.getElementById('mck-contacts-content').classList.add('force-n-vis');
+        document.querySelector('.mck-back-btn-container').classList.add('force-n-vis');
     };
 
     _this.loadZopimSDK = function () {
@@ -135,5 +138,19 @@ function ZendeskChatService() {
                 },
         });
        
+    }
+};
+
+
+var onTabClickedHandlerForZendeskConversations = function (event) {
+    console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
+    if (kommunicate._globals.zendeskChatSdkKey) {
+        var currentGroupData = MCK_GROUP_MAP[event.tabId];
+        var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
+            return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
+        })
+        if (assigneeInfo && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
+            Kommunicate.startConversation();
+        }
     }
 };

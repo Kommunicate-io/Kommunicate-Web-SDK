@@ -400,7 +400,12 @@ var userOverride = {
         var MCK_ACCESS_TOKEN = appOptions.password || appOptions.accessToken;
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
-        var MCK_ON_TAB_CLICKED = appOptions.onTabClicked;
+        var MCK_ON_TAB_CLICKED = function (event) {
+            if (kommunicate._globals.zendeskChatSdkKey) {
+                onTabClickedHandlerForZendeskConversations(event);
+            }
+            typeof appOptions.onTabClicked == "function" && appOptions.onTabClicked(event);
+        };
         var MCK_CONTACT_NUMBER = appOptions.contactNumber;
         var MCK_FILEMAXSIZE = appOptions.maxAttachmentSize;
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
