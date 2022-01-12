@@ -20,7 +20,7 @@ function startApp() {
 
 app.post('/', function (req, res) {
     const response = [{
-        "message": "This message can be generated from" 
+        "message": "This message can be generated from webhook" 
     }];
     return res.status(200).send(response);
 });
