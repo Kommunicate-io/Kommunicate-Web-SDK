@@ -3673,6 +3673,11 @@ var userOverride = {
             var $secondsLabel = $applozic('#mck-seconds');
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
+            var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
+            _this.resetMessageSentToHumanAgent = function(){
+                // used in loadTab()
+                messageSentToHumanAgent = 0;
+            }
 
             _this.hideAutoSuggestionBoxEnableTxtBox = function () {
                 if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
@@ -5266,16 +5271,23 @@ var userOverride = {
                     $mck_msg_error.html('');
                     $mck_response_text.html('');
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
-                    var sendMsgCount = $applozic('[data-msgtype=5]').length;
-                    //Lead Collection -Email Validation
+                    // Lead Collection - Email Validation
                     if (
-                        sendMsgCount == 1 &&
-                        ((KommunicateUI.leadCollectionEnabledOnAwayMessage &&
-                            KommunicateUI.awayMessageInfo.isEnabled &&
-                            KommunicateUI.awayMessageInfo.eventId == 1) ||
-                            (KommunicateUI.welcomeMessageEnabled &&
+                        messageSentToHumanAgent == 1 &&
+                        (
+                            (
+                                KommunicateUI.leadCollectionEnabledOnAwayMessage &&
+                                !KommunicateUtils.isCurrentAssigneeBot() &&
+                                KommunicateUI.awayMessageInfo.isEnabled &&
+                                KommunicateUI.awayMessageInfo.eventId == 1
+                            ) ||
+                            (
+                                KommunicateUI.welcomeMessageEnabled &&
+                                !KommunicateUtils.isCurrentAssigneeBot() &&
                                 KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
-                                KommunicateUI.anonymousUser))
+                                KommunicateUI.anonymousUser
+                            )
+                        )
                     ) {
                         var isValid = KommunicateUI.validateEmail(
                             messagePxy.message
@@ -5287,6 +5299,7 @@ var userOverride = {
                     _this.hideSendButton();
                     Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                     _this.sendMessage(messagePxy);
+                    !KommunicateUtils.isCurrentAssigneeBot() && messageSentToHumanAgent++;
                     return false;
                 });
                 $mck_form_field.on('click', function () {
@@ -6019,41 +6032,28 @@ var userOverride = {
                                     .addClass('n-vis');
                             }
                         }
-                        // Lead Collection (Email)
-                        var sendMsgCount = $applozic('[data-msgtype=5]').length;
-                        var roleType = null;
-                        if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
-                            for (
-                                var i = 0;
-                                i <= CURRENT_GROUP_DATA.groupMembers.length;
-                                i++
-                            ) {
-                                if (
-                                    CURRENT_GROUP_DATA.groupMembers[i] &&
-                                    CURRENT_GROUP_DATA.groupMembers[i].userId ==
-                                    CURRENT_GROUP_DATA.conversationAssignee
-                                ) {
-                                    roleType =
-                                        CURRENT_GROUP_DATA.groupMembers[i]
-                                            .roleType;
-                                    break;
-                                }
-                            }
-                        }
+                        // Away message Lead Collection (Email)
+                        // var sendMsgCount = $applozic('[data-msgtype=5]').length;
                         if (
-                            sendMsgCount == 1 &&
-                            ((KommunicateUI.leadCollectionEnabledOnAwayMessage &&
-                                roleType !== 1 &&
-                                KommunicateUI.awayMessageInfo.isEnabled &&
-                                KommunicateUI.awayMessageInfo.eventId == 1) ||
-                                (KommunicateUI.welcomeMessageEnabled &&
-                                    roleType !== 1 &&
+                            messageSentToHumanAgent == 1 &&
+                            (
+                                (
+                                    KommunicateUI.leadCollectionEnabledOnAwayMessage && 
+                                    !KommunicateUtils.isCurrentAssigneeBot() &&
+                                    KommunicateUI.awayMessageInfo.isEnabled &&
+                                    KommunicateUI.awayMessageInfo.eventId == 1
+                                ) ||
+                                (
+                                    KommunicateUI.welcomeMessageEnabled &&
+                                    !KommunicateUtils.isCurrentAssigneeBot() &&
                                     KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
-                                    KommunicateUI.anonymousUser))
+                                    KommunicateUI.anonymousUser
+                                )
+                            )
                         ) {
                             KommunicateUI.displayLeadCollectionTemplate(null);
                         }
-                        sendMsgCount > 1 &&
+                        messageSentToHumanAgent > 1 &&
                             $applozic('#mck-email-collection-box')
                                 .removeClass('vis')
                                 .addClass('n-vis');
@@ -8005,6 +8005,7 @@ var userOverride = {
             };
 
             _this.loadTab = function (params, callback) {
+                mckMessageService.resetMessageSentToHumanAgent();
                 var userId = KommunicateUtils.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
