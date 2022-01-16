@@ -598,6 +598,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT_24HOURS = appOptions.timeFormat24Hours;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -8875,9 +8876,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9557,6 +9556,30 @@ var userOverride = {
                 }
                 return '';
             };
+
+            _this.getMessageCreatedAtTime=function(createdAtTime){
+                if(TIME_FORMAT_24HOURS){
+                   var msgtime = new Date(createdAtTime);
+                   function addZero(i) {
+                    if (i < 10) {i = "0" + i}
+                    return i;
+                  }
+                  
+                   
+                  let h = addZero(msgtime.getHours());
+                  let m = addZero(msgtime.getMinutes());
+                   
+                  
+                   var time =  h + ":" + m;
+                   
+              
+                  return time;
+               }else{
+                   return mckDateUtils.getDate(
+                       createdAtTime
+                   );
+               }
+              };
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
