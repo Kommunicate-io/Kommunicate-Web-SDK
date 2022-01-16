@@ -534,6 +534,7 @@ KommunicateUI = {
                         'vis'
                     );
                     var elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
+                    document.getElementById('mck-tab-title').textContent = '';
                     $applozic.fn.applozic('openChat', elem);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     KommunicateUI.activateTypingField();
@@ -559,7 +560,7 @@ KommunicateUI = {
                 // add n-vis
                 kommunicateCommons.modifyClassList(
                     {
-                        id: ['faq-common'],
+                        id: ['faq-common','km-faqdiv','km-faq-category-list-container','km-contact-search-input-box'],
                         class: [
                             'km-no-results-found-container',
                             'km-talk-to-human-div',
@@ -600,8 +601,8 @@ KommunicateUI = {
             $applozic('#km-faqanswer').empty();
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-answer-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-answer-list');
-            var articleId = $(this).attr('data-articleid');
-            var source = $(this).attr('data-source');
+            var articleId = $applozic(this).attr('data-articleid');
+            var source = $applozic(this).attr('data-source');
             KommunicateKB.getArticle({
                 data: {
                     appId: data.appId,
@@ -827,6 +828,7 @@ KommunicateUI = {
             .addClass('n-vis');
         $applozic('#km-faqdiv').removeClass('vis').addClass('n-vis');
         $applozic('#mck-msg-new').attr('disabled', false);
+        KommunicateUI.flushFaqsEvents();
     },
     hideMessagePreview: function () {
         $applozic('#mck-msg-preview-visual-indicator')
@@ -1703,21 +1705,25 @@ KommunicateUI = {
                             'n-vis',
                             'vis'
                         );
+
+                        
+                        headerTabTitle = document.getElementById(
+                            'mck-tab-title'
+                        );
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
+                            'title'
+                        );
+
                         kommunicateCommons.modifyClassList(
                             {
                                 class: [
                                     'mck-agent-image-container',
                                     'mck-agent-status-text',
                                 ],
+                                id: ['km-faq']
                             },
                             'vis',
                             'n-vis'
-                        );
-                        headerTabTitle = document.getElementById(
-                            'mck-tab-title'
-                        );
-                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
-                            'title'
                         );
                     }
                 }
@@ -1739,6 +1745,7 @@ KommunicateUI = {
             error: function (err) {
                 callback(err);
             },
+            skipEncryption: true
         });
     },
     isInView: function (element, targetElement) {
@@ -1752,7 +1759,7 @@ KommunicateUI = {
         );
     },
     processLazyImage: function (imageElement, thumbnailBlobKey) {
-        imageElement.classList.remove('lazy-image');
+        imageElement.classList.remove('file-enc');
         KommunicateUI.getUrlFromBlobKey(
             thumbnailBlobKey,
             function (err, thumbnailUrl) {
@@ -1761,7 +1768,44 @@ KommunicateUI = {
                 }
                 thumbnailUrl && (imageElement.src = thumbnailUrl);
                 setTimeout(function () {
-                    imageElement.classList.add('lazy-image');
+                    imageElement.classList.add('file-enc');
+                }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+            }
+        );
+    },
+    processEncMedia: function (mediaElement, blobKey) {
+        mediaElement.classList.remove('file-enc');
+        KommunicateUI.getUrlFromBlobKey(
+            blobKey,
+            function (err, url) {
+                if (err) {
+                    throw err;
+                }else if(url){
+                    var sourceElement = mediaElement.querySelectorAll('source');
+                    sourceElement[0].src = url;
+                    sourceElement[1].src = url;
+                    mediaElement.load();
+                    var attachmentWrapper = $applozic(mediaElement).closest('div.mck-file-text.mck-attachment')[0];
+                    attachmentWrapper && (attachmentWrapper.querySelector("a.file-preview-link").href = url);
+                }
+                setTimeout(function () {
+                    mediaElement.classList.add('file-enc');
+                }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+            }
+        );
+    },
+    processEncFile: function (anchorTag, blobKey) {
+        anchorTag.classList.remove('file-enc');
+        KommunicateUI.getUrlFromBlobKey(
+            blobKey,
+            function (err, url) {
+                if (err) {
+                    throw err;
+                }else if(url){
+                    anchorTag.href = url;
+                }
+                setTimeout(function () {
+                    anchorTag.classList.add('file-enc');
                 }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
             }
         );

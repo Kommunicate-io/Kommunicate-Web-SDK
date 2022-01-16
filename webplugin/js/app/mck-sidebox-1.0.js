@@ -400,7 +400,12 @@ var userOverride = {
         var MCK_ACCESS_TOKEN = appOptions.password || appOptions.accessToken;
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
-        var MCK_ON_TAB_CLICKED = appOptions.onTabClicked;
+        var MCK_ON_TAB_CLICKED = function (event) {
+            if (kommunicate._globals.zendeskChatSdkKey) {
+                onTabClickedHandlerForZendeskConversations(event);
+            }
+            typeof appOptions.onTabClicked == "function" && appOptions.onTabClicked(event);
+        };
         var MCK_CONTACT_NUMBER = appOptions.contactNumber;
         var MCK_FILEMAXSIZE = appOptions.maxAttachmentSize;
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
@@ -602,6 +607,7 @@ var userOverride = {
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
+        var VOICE_NOTE_ENABLED = appOptions.voiceNote;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1: MCK_LABELS['emoji.hover.text'].poor,
             5: MCK_LABELS['emoji.hover.text'].average,
@@ -619,6 +625,7 @@ var userOverride = {
             WIDGET_SETTINGS.hasOwnProperty('position')
                 ? WIDGET_SETTINGS.position
                 : KommunicateConstants.POSITION.RIGHT;
+        var SOCKET_RECONNECT_FAIL_COUNT = 0;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
             SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
             DISCONNECTED: false,
@@ -717,6 +724,12 @@ var userOverride = {
                 if (navigator.onLine) {
                     window.Applozic.ALSocket.reconnect();
                 }
+                SOCKET_RECONNECT_FAIL_COUNT++;
+                SOCKET_RECONNECT_FAIL_COUNT > 2 && kommunicateCommons.modifyClassList(
+                    { id: ['km-socket-disconnect-msg'] },
+                    '',
+                    'n-vis'
+                );
             },
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
@@ -725,6 +738,12 @@ var userOverride = {
                     'n-vis',
                     'vis'
                 );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-socket-disconnect-msg'] },
+                    'n-vis',
+                    ''
+                );
+                SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
                     typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' &&
                     Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0
@@ -845,8 +864,8 @@ var userOverride = {
                     'n-vis',
                     ''
             );
-            VOICE_INPUT_ENABLED &&
-                Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+            (VOICE_INPUT_ENABLED || VOICE_NOTE_ENABLED) &&
+                Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
 
             if (
                 KOMMUNICATE_VERSION === 'v2' &&
@@ -2641,8 +2660,8 @@ var userOverride = {
                 }
                 
                 // Loading zopim sdk for zendesk chat integration
-                if (kommunicate._globals.zendeskApiKey) {
-                    zendeskChatService.init(kommunicate._globals.zendeskApiKey);
+                if (kommunicate._globals.zendeskChatSdkKey) {
+                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey);
                 }
 
                 var kmChatLoginModal = document.getElementById(
@@ -3307,6 +3326,9 @@ var userOverride = {
                 document.getElementById(
                     'km-internet-disconnect-msg'
                 ).innerHTML = MCK_LABELS['offline.msg'];
+                document.getElementById(
+                    'km-socket-disconnect-msg'
+                ).innerHTML = MCK_LABELS['socket-disconnect.msg'];
                 document.getElementById('talk-to-human-link').innerHTML =
                     MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML =
@@ -3339,7 +3361,11 @@ var userOverride = {
                 document.getElementById('km-csat-trigger-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
                 document.getElementById('km-restart-conversation-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].RESET_CONVERSATION;
+                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
+                document.getElementById('km-voice-note-trigger-text').innerText =
+                    MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
+                document.getElementById('km-voice-input-trigger-text').innerText =
+                    MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3851,7 +3877,7 @@ var userOverride = {
                 }
                 if (text == '' || !text.replace(/\s/g, '').length) {
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                 } else {
                     _this.showSendButton();
                     Kommunicate.typingAreaService.hideMicButton();
@@ -4841,13 +4867,40 @@ var userOverride = {
                             });
                         }
                     }else{
-                        var lazyImages = document.querySelectorAll('img.lazy-image');
+                        var encryptedElements = document.querySelectorAll('.file-enc');
                         // Array.prototype.slice.call(lazyImages) convertes nodeList to Array for traversal
-                        lazyImages && lazyImages.length > 0 && Array.prototype.slice.call(lazyImages).map(function (img){
-                            if(KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))){
-                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
+                        if(encryptedElements && encryptedElements.length){
+                            for(var i = 0; i < encryptedElements.length; i++){
+                                switch (encryptedElements[i].tagName) {
+                                    case 'IMG':
+                                        var img = encryptedElements[i];
+                                        if (KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))) {
+                                            KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
+                                        }
+                                        break;
+                                    case 'AUDIO':
+                                        var video = encryptedElements[i];
+                                        if (KommunicateUI.isInView(video, document.querySelector('#mck-message-cell .mck-message-inner'))) {
+                                            KommunicateUI.processEncMedia(video, video.getAttribute('data-blobkey'))
+                                        }
+                                        break;
+                                    case 'VIDEO':
+                                        var video = encryptedElements[i];
+                                        if (KommunicateUI.isInView(video, document.querySelector('#mck-message-cell .mck-message-inner'))) {
+                                            KommunicateUI.processEncMedia(video, video.getAttribute('data-blobkey'))
+                                        }
+                                        break;
+                                    case 'A':
+                                        var anchorTag = encryptedElements[i];
+                                        if (KommunicateUI.isInView(anchorTag, document.querySelector('#mck-message-cell .mck-message-inner'))) {
+                                            KommunicateUI.processEncFile(anchorTag, anchorTag.getAttribute('data-blobkey'))
+                                        }
+                                        break;
+                                    default:
+                                        console.log(encryptedElements[i]);
+                                }
                             }
-                        })
+                        }
                     }
                 });
                 $mck_price_text_box.on('click', function (e) {
@@ -5232,7 +5285,7 @@ var userOverride = {
                         }
                     }
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                     _this.sendMessage(messagePxy);
                     return false;
                 });
@@ -5283,39 +5336,7 @@ var userOverride = {
                     $applozic(this).addClass('active');
                 });
             };
-            $applozic('.mck-sidebox').on('click', '#mck-mike-btn', function () {
-                $applozic(this).removeClass('vis').addClass('n-vis');
-                $applozic('.mck-stop-btn').addClass('vis').removeClass('n-vis');
-                Fr.voice.record(false, function () {
-                    $applozic('#mck-audio')
-                        .removeClass('n-vis')
-                        .addClass('vis');
-                    mckMessageService.timer();
-                });
-            });
-            $applozic('.mck-sidebox').on(
-                'click',
-                '#mck-stop-recording',
-                function () {
-                    $applozic('#mck-mike-btn')
-                        .addClass('vis')
-                        .removeClass('n-vis');
-                    $applozic('.mck-stop-btn')
-                        .addClass('n-vis')
-                        .removeClass('vis');
-                    $applozic('#mck-audio')
-                        .removeClass('vis')
-                        .addClass('n-vis');
-                    mckMessageService.stoptimer();
-                    Fr.voice.export(function (blob) {
-                        var params = {};
-                        params.file = blob;
-                        params.name = 'blob';
-                        $applozic.fn.applozic('audioAttach', params);
-                    }, 'blob');
-                    Fr.voice.stop();
-                }
-            );
+            
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
@@ -7019,7 +7040,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.isSessionStorageAvailable()
+                var userSession = KommunicateUtils.isSessionStorageAvailable() && sessionStorage.kommunicate
                     ? JSON.parse(sessionStorage.kommunicate)
                     : {};
                 var languageCode =
@@ -7839,6 +7860,10 @@ var userOverride = {
                 $applozic.template('csatModule', csatModule);
             };
             _this.loadDropdownOptions = function () {
+                if(document.querySelector('#mck-contact-list')){
+                    // if contact list is visible then dropdown options should not be loaded.
+                    return;
+                }
                 var enableDropdown = false;
                 var isConvRated =
                     appOptions.oneTimeRating &&
@@ -8066,6 +8091,11 @@ var userOverride = {
                     '',
                     'selected'
                 );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-faq'] },
+                    'n-vis',
+                    ''
+                );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -8209,7 +8239,7 @@ var userOverride = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    // $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box
                         .removeClass('n-vis')
@@ -8268,6 +8298,7 @@ var userOverride = {
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                 } else {
                     params.isWaitingQueue = true;
                     mckMessageService.loadMessageList(params, callback);
@@ -8299,6 +8330,12 @@ var userOverride = {
                 return topicLink
                     ? '<img src="' + topicLink + '">'
                     : '<span class="mck-icon-no-image"></span>';
+            };
+            _this.isFileEncrypted = function (fileMeta){
+                return (
+                    fileMeta &&
+                    fileMeta.name && fileMeta.name.indexOf('AWS-ENCRYPTED') !== -1
+                    );
             };
             _this.isFileEncryptedImage = function (fileMeta){
                 return (
@@ -8359,9 +8396,9 @@ var userOverride = {
                                     message.metadata.KM_ENABLE_ATTACHMENT
                                         ? message.metadata.KM_ENABLE_ATTACHMENT
                                         : '');
-                            if(message && message.fileMeta && mckMessageLayout.isFileEncryptedImage(message.fileMeta)){
+                            if(message && message.fileMeta && mckMessageLayout.isFileEncrypted(message.fileMeta)){
                                 message.fileMeta.url = '';
-                                message.fileMeta.thumbnailUrl = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
+                                message.fileMeta.hasOwnProperty("thumbnailUrl") && (message.fileMeta.thumbnailUrl = KommunicateConstants.IMAGE_PLACEHOLDER_URL);
                             };
 
                             _this.addMessage(
@@ -8397,7 +8434,7 @@ var userOverride = {
                         },
                         'slow',
                         function (){
-                            var lazyImages = document.querySelectorAll('img.lazy-image')
+                            var lazyImages = document.querySelectorAll('img.file-enc')
                             // Array.prototype.slice.call(lazyImages) convertes nodeList to Array for traversal
                             lazyImages && lazyImages.length > 0 && Array.prototype.slice.call(lazyImages).map(function(img){
                                 KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) && 
@@ -9408,6 +9445,12 @@ var userOverride = {
                     }
                 }
                 if (typeof msg.fileMeta === 'object') {
+                    var fileName = msg.fileMeta.name;
+                    var addfileEncClass = false;
+                    if (mckMessageLayout.isFileEncrypted(msg.fileMeta)) {
+                        fileName = fileName.replace('AWS-ENCRYPTED-', '');
+                        addfileEncClass = true;
+                    };
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
                             return (
@@ -9466,25 +9509,22 @@ var userOverride = {
                                         '" area-hidden="true" ></img></a>'
                                     );
                                 } else {
-                                    var fileName = msg.fileMeta.name;
-                                    var addLazyImageClass = false;
-                                    if(mckMessageLayout.isFileEncryptedImage(msg.fileMeta)){
-                                        fileName = fileName.replace('AWS-ENCRYPTED-', '');
-                                        addLazyImageClass = true;
-                                    };
+                                    var url = addfileEncClass ? "" :  alFileService.getFileurl(msg);
+                                    var thumbnailUrl = addfileEncClass ? KommunicateConstants.IMAGE_PLACEHOLDER_URL : msg.fileMeta.thumbnailUrl;
+                                    
                                     return (
                                         '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
                                         msg.fileMeta.contentType +
                                         '" data-url="' +
-                                        alFileService.getFileurl(msg) +
+                                        url +
                                         '" data-name="' +
                                         kommunicateCommons.formatHtmlTag(
                                             fileName
                                         ) +
                                         '"><img'+
-                                        (addLazyImageClass ? ' class="lazy-image"' : '') +
+                                        (addfileEncClass ? ' class="file-enc"' : '') +
                                         ' src="' +
-                                        msg.fileMeta.thumbnailUrl +
+                                        thumbnailUrl +
                                         '" area-hidden="true" data-blobKey="'+ msg.fileMeta.blobKey +
                                         '" data-thumbnailBlobKey="'+msg.fileMeta.thumbnailBlobKey +'" ></img></a>'
                                     );
@@ -9528,7 +9568,8 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('video') !== -1
                     ) {
                         return (
-                            '<video controls class="mck-video-player">' +
+                            '<video controls class="mck-video-player'+
+                            (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="video/mp4">' +
@@ -9541,7 +9582,8 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('audio') !== -1
                     ) {
                         return (
-                            '<a href="#" target="_self" ><audio controls class="mck-audio-player">' +
+                            '<a href="#" target="_self" ><audio controls class="mck-audio-player'+
+                            (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="audio/ogg">' +
@@ -14780,15 +14822,8 @@ var userOverride = {
                     var uniqueId = params.name + file.size;
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
-                    
-                    if(file.type.indexOf('image') !== -1){
-                        // for encrypted images
-                        var newFileName = 'AWS-ENCRYPTED-'+file.name;
-                        data.append('file', file, newFileName);
-                    }else{
-                        data.append('file', file);
-                    }
-                
+                    var newFileName = 'AWS-ENCRYPTED-' + file.name;
+                    data.append('file', file, newFileName);
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
                         'progress',
@@ -14873,6 +14908,9 @@ var userOverride = {
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
+                            if (params.callback) {
+                                params.callback();
+                            }
                             return false;
                         } else {
                             $file_remove.attr('disabled', false);
@@ -14883,7 +14921,7 @@ var userOverride = {
                         }
                     });
                     var queryParams;
-                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server' && file.type.indexOf('image') !== -1) {
+                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
                         queryParams = '?aclsPrivate=true';
                     };  
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
@@ -16021,6 +16059,25 @@ var userOverride = {
                 } else if (messageType === 'APPLOZIC_19') {
                     IS_MCK_USER_DEACTIVATED = true;
                     // events.onUserDeactivated();
+                } else if (messageType === "APPLOZIC_25") {
+                    var userId = resp.message.split(",")[0];
+                    var status = parseInt(resp.message.split(",")[1]);
+                    var lastSeenAtTime = resp.message.split(",")[2];
+                    if(CURRENT_GROUP_DATA.conversationAssignee != userId){
+                        return;
+                    }
+                    var statusToSet = KommunicateConstants.APPLOZIC_USER_STATUS[status];
+                    var isAgentOffline = statusToSet == KommunicateConstants.APPLOZIC_USER_STATUS[0];
+                    var tabId = $mck_message_inner.data('mck-id');
+                    var conversationAssigneeDetails = alUserService.MCK_USER_DETAIL_MAP[userId];
+                    KommunicateUI.setAvailabilityStatus(statusToSet);
+                    mckMessageService.getAndSetAwayMessage(
+                        {},
+                        tabId,
+                        conversationAssigneeDetails &&
+                        conversationAssigneeDetails.roleType,
+                        isAgentOffline
+                    ); 
                 } else {
                     var message = resp.message;
                     // var userIdArray =

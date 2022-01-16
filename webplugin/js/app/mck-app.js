@@ -461,10 +461,10 @@ function ApplozicSidebox() {
                 options.hidePostCTA != null
                     ? options.hidePostCTA
                     : widgetSettings && widgetSettings.hidePostCTA;
-            options.zendeskApiKey =
-                options.zendeskApiKey != null
-                    ? options.zendeskApiKey
-                    : widgetSettings && widgetSettings.zendeskApiKey;
+            options.zendeskChatSdkKey =
+                options.zendeskChatSdkKey != null
+                    ? options.zendeskChatSdkKey
+                    : widgetSettings && widgetSettings.zendeskChatSdkKey;
             options.capturePhoto =
                 options.capturePhoto != null
                     ? options.capturePhoto
@@ -477,6 +477,10 @@ function ApplozicSidebox() {
                 options.hidePostFormSubmit != null
                     ? options.hidePostFormSubmit
                     : widgetSettings && widgetSettings.hidePostFormSubmit;
+            options.voiceNote =
+                options.voiceNote != null
+                    ? options.voiceNote
+                    : widgetSettings && widgetSettings.voiceNote;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
