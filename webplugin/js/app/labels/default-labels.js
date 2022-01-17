@@ -98,6 +98,7 @@ Kommunicate.defaultLabels = {
     'conversation.rated': 'rated the conversation',
     'offline.msg':
         'Uh oh! No internet connection. Please check your network settings and try again.',
+    'socket-disconnect.msg': 'Error while syncing messages. Check your firewall settings or try again after some time.',
     'group.metadata': {
         CREATE_GROUP_MESSAGE: ':adminName created group :groupName',
         REMOVE_MEMBER_MESSAGE: ':adminName removed :userName',
@@ -183,4 +184,8 @@ Kommunicate.defaultLabels = {
         USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
         RESET_CONVERSATION: 'Reset conversation',
     },
+    'micOptions.dropup': {
+        VOICE_NOTE_TRIGGER: 'Send voice message',
+        VOICE_INPUT_TRIGGER: 'Speech to text',
+    }
 };

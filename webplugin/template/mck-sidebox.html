@@ -107,6 +107,7 @@
 				</div>
 			</div>
 			<div id="km-internet-disconnect-msg" class="km-offline-msg n-vis">  </div>
+            <div id="km-socket-disconnect-msg" class="km-offline-msg n-vis"> </div>
 			<div id="km-local-file-system-warning" class="n-vis">
 				<span id="km-local-file-system-warning-description">
 					Conversation will not be updated in real-time as you are running the installation script from your local file system.
@@ -448,8 +449,44 @@
 									</div>
 									<div id ="mck-mic-animation-container" class="mck-mic-animation-container n-vis" aria-disabled="false" title="Voice Input" aria-label="Voice Input" tabindex="0">
 										<div id ="mck-animation-outer" class="mck-animation-outer km-custom-widget-background-color n-vis"></div>
+                                        <div id="mck-mic-btn-container" data-toggle="mckdropdown" aria-haspopup="true" aria-expanded="false" >
 											<svg focusable="false" aria-hidden="true" id = "mck-mic-btn" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#787474" d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-									</div>
+                                        </div>
+                                        <ul id="mck-mic-options-dropup" class="n-vis mck-dropup-menu menu-right stop-selection" aria-labelledby="mic-options">
+                                            <li>
+                                                <div class="menu-item voiceNote">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M8.85 16.5C7.125 16.5 5.55 15.15 5.55 13.35H4.5C4.5 15.45 6.225 17.25 8.25 17.55V19.575H9.525V17.55C11.55 17.25 13.275 15.45 13.275 13.35H12.225C12.15 15.225 10.575 16.5 8.85 16.5Z"
+                                                            fill="#919EAD" />
+                                                        <path
+                                                            d="M8.85 15.225C9.9 15.225 10.725 14.4 10.725 13.35V9.59998C10.725 8.54998 9.9 7.72498 8.85 7.72498C7.8 7.72498 6.975 8.54998 6.975 9.59998V13.35C6.975 14.325 7.8 15.225 8.85 15.225Z"
+                                                            fill="#919EAD" />
+                                                        <path
+                                                            d="M13 5.48601V10.514C13 10.8974 13.4288 11.1304 13.759 10.9217L17.7708 8.40767C18.0764 8.2184 18.0764 7.7816 17.7708 7.58747L13.759 5.07833C13.4288 4.86964 13 5.1026 13 5.48601Z"
+                                                            fill="#919EAD" />
+                                                    </svg>
+                                                    &nbsp;
+                                                    <span id="km-voice-note-trigger-text">Send voice message</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="menu-item voiceInput">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M14.15 0.75H9.35C8.225 0.75 7.325 1.65 7.325 2.775V5.775C7.325 6.9 8.225 7.8 9.35 7.8H14.15C15.275 7.8 16.175 6.9 16.175 5.775V2.775C16.25 1.65 15.275 0.75 14.15 0.75ZM15.125 5.775C15.125 6.3 14.675 6.75 14.15 6.75H9.35C8.825 6.75 8.375 6.3 8.375 5.775V2.775C8.375 2.25 8.825 1.8 9.35 1.8H14.15C14.675 1.8 15.125 2.25 15.125 2.775V5.775Z" fill="#919EAD"/>
+                                                        <path d="M10.025 3.675C9.65 3.675 9.425 3.975 9.425 4.275C9.425 4.575 9.725 4.875 10.025 4.875C10.4 4.875 10.625 4.575 10.625 4.275C10.625 3.975 10.325 3.675 10.025 3.675Z" fill="#919EAD"/>
+                                                        <path d="M11.75 3.675C11.375 3.675 11.15 3.975 11.15 4.275C11.15 4.575 11.45 4.875 11.75 4.875C12.125 4.875 12.35 4.575 12.35 4.275C12.35 3.975 12.125 3.675 11.75 3.675Z" fill="#919EAD"/>
+                                                        <path d="M13.55 3.675C13.175 3.675 12.95 3.975 12.95 4.275C12.95 4.575 13.25 4.875 13.55 4.875C13.925 4.875 14.15 4.575 14.15 4.275C14.15 3.975 13.85 3.675 13.55 3.675Z" fill="#919EAD"/>
+                                                        <path d="M4.85 13.5C3.125 13.5 1.55 12.15 1.55 10.35H0.5C0.5 12.45 2.225 14.25 4.25 14.55V16.575H5.525V14.55C7.55 14.25 9.275 12.45 9.275 10.35H8.225C8.15 12.225 6.575 13.5 4.85 13.5Z" fill="#919EAD"/>
+                                                        <path d="M4.85 12.225C5.9 12.225 6.725 11.4 6.725 10.35V6.6C6.725 5.55 5.9 4.725 4.85 4.725C3.8 4.725 2.975 5.55 2.975 6.6V10.35C2.975 11.325 3.8 12.225 4.85 12.225Z" fill="#919EAD"/>
+                                                        </svg>
+                                                        
+                                                    &nbsp;
+                                                    <span id="km-voice-input-trigger-text">Speech to text</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
 									<div id="mck-quick-replies-box" class="mck-intent-box n-vis" >
 										<div class="mck-dropdown-toggle mck-bot-icon" id="intent-option" data-toggle="mckdropdown"
 											aria-expanded="false">
@@ -496,6 +533,57 @@
 									<input id="mck-video-input" class="n-vis" type="file" name="files[]" accept="video/*" capture>
 									<div id="mck-file-box" class="n-vis"></div>
 								</div>
+                                <div id="km-voice-recorder" class="n-vis">
+                                    <div id="recorder-left-btns">
+                                        <div id="delete-recording" class='recorder-control delete-btn'>
+                                            <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M1.99998 19.1667C1.99998 20.45 3.04998 21.5 4.33331 21.5H13.6666C14.95 21.5 16 20.45 16 19.1667V7.5C16 6.21667 14.95 5.16667 13.6666 5.16667H4.33331C3.04998 5.16667 1.99998 6.21667 1.99998 7.5V19.1667ZM16 1.66667H13.0833L12.255 0.838333C12.045 0.628333 11.7416 0.5 11.4383 0.5H6.56165C6.25831 0.5 5.95498 0.628333 5.74498 0.838333L4.91665 1.66667H1.99998C1.35831 1.66667 0.833313 2.19167 0.833313 2.83333C0.833313 3.475 1.35831 4 1.99998 4H16C16.6416 4 17.1666 3.475 17.1666 2.83333C17.1666 2.19167 16.6416 1.66667 16 1.66667Z"
+                                                    fill="#919EAD" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div id="recorder-body">
+                                        <div id="pause-btn" class='recorder-control'>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 0C5.38306 0 0 5.38306 0 12C0 18.6169 5.38306 24 12 24C18.6169 24 24 18.6169 24 12C24 5.38306 18.6169 0 12 0ZM10.0466 16.186C10.0466 16.8025 9.54668 17.3022 8.93038 17.3022C8.31389 17.3022 7.8142 16.8023 7.8142 16.186L7.81401 7.81395C7.81401 7.19746 8.31389 6.69777 8.93019 6.69777C9.54668 6.69777 10.0464 7.19766 10.0464 7.81395L10.0466 16.186ZM16.1861 16.186C16.1861 16.8025 15.6862 17.3022 15.0699 17.3022C14.4534 17.3022 13.9537 16.8023 13.9537 16.186L13.9535 7.81395C13.9535 7.19746 14.4534 6.69777 15.0697 6.69777C15.6862 6.69777 16.1859 7.19766 16.1859 7.81395L16.1861 16.186Z" fill="#919EAD"/>
+                                                </svg>
+                                                
+                                        </div>
+                                        <div id="play-btn" class='recorder-control n-vis'>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 0C5.38105 0 0 5.38105 0 12C0 18.6189 5.38105 24 12 24C18.6189 24 24 18.6189 24 12C24 5.38105 18.6189 0 12 0ZM15.8653 12.6063L10.2063 16.3704C9.72627 16.6989 9.06952 16.3452 9.06952 15.7641V8.23565C9.06952 7.65465 9.72632 7.30096 10.2063 7.62929L15.8653 11.3935C16.2947 11.6715 16.2947 12.3284 15.8653 12.6063Z" fill="#919EAD"/>
+                                                </svg>   
+                                        </div>
+                                        <div id="km-audio-player">
+                                            <div id="time-elapsed" class='km-audio-player-timer'>00:00</div>
+                                            <!-- <progress id="wave-front-progressBar" value="32" max="100"> 32% </progress> -->
+                                            <div id="progressbar">
+                                                <div id="wave-front-progressBar" class="km-custom-widget-background-color"></div>
+                                              </div>
+                                            <div id="time-remaining" class='km-audio-player-timer'>00:00</div>
+                                        </div>
+                                        <div id="audiodiv" class="mck-mic-timer n-vis">
+                                            <audio controls id="recorder-audio" preload="metadata" class="n-vis"></audio>
+                                        </div>
+                                    </div>
+                                    <div id="recorder-right-btn">
+                                        <div id='send-btn' class='n-vis recorder-control disabled' >
+                                            <span class="mck-icon-send">
+                                                <svg focusable="false" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  width="15" height="15" viewBox="0 0 15 15">
+                                                    <path class="km-custom-widget-fill" fill="#5553B7" fill-rule="evenodd" d="M7.878 7.858l-6.032.584-1.588 5.076a.787.787 0 0 0 1.097.944l13.22-6.401a.752.752 0 0 0 0-1.353L1.364.302a.787.787 0 0 0-1.096.944l1.587 5.077 6.021.584a.475.475 0 0 1 0 .946l.002.005z"/>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div id="mck-stop-recording" class='recorder-control'>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="12" fill="#ED495C"/>
+                                                <circle cx="12" cy="12" r="11" fill="white"/>
+                                                <rect x="7" y="7" width="10" height="10" fill="#ED495C"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
 							</div>
 						</form>
 					</div>
