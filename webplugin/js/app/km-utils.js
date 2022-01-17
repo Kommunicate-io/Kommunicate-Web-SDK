@@ -548,5 +548,5 @@ KommunicateUtils = {
                 })
                 .join('&')
         );
-    }
+    },
 };

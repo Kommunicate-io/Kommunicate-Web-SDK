@@ -1,5 +1,7 @@
 .mck-box{position:fixed;top:0;right:0;bottom:0;left:0;z-index:22436000;display:none;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0;font-size:12px;line-height:18px;vertical-align:middle;text-align:left;box-shadow:0 5px 20px 0 rgba(0,0,0,0.5);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;line-height:20px;color:#333}
 .mck-videocall-btn{background-image:url(images/mck-videocall-icon.png);background-repeat:no-repeat;float:right !important;margin-top:14px;position:absolute;overflow:hidden;opacity:.4;background-size:20px;cursor:pointer}
+.mck-mike-btn{background-image:url(images/mck-mike.png);background-repeat:no-repeat;float:left !important;margin-top:7px;height:18px;width:19px;overflow:hidden;background-size:20px;cursor:pointer}
+.mck-stop-btn{background-image:url(images/mck-stop.png);background-repeat:no-repeat;float:left !important;height:27px;width:25px;overflow:hidden;background-size:25px;cursor:pointer}
 .mck-loading-btn{background-image:url(images/ring.gif);background-repeat:no-repeat;float:left !important;margin-top:7px;height:18px;width:19px;overflow:hidden;opacity:.4;background-size:20px;cursor:pointer}
 .mck-msg-reply{background-color:#0073b7}.mck-msgto{color:chartreuse;padding:3px;text-align:left}.mck-msglist-msgto{color:chartreuse;padding:3px;text-align:left}
 #mck-reply-msg{padding-left:3px}.mck-verticalline{border-left:thick solid white;border-left-width:medium}
