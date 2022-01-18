@@ -67,7 +67,7 @@ function ZendeskChatService() {
                 }
             });
             zChat.on("chat", function (eventDetails) {
-                window.console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
+                console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
                     _this.handleZendeskAgentMessageEvent(eventDetails);
                 } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
@@ -81,11 +81,11 @@ function ZendeskChatService() {
         if (!event.message || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
-        window.console.log("handleUserMessage: ", event);
+        console.log("handleUserMessage: ", event);
 
         if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
             zChat.sendChatMsg(event.message.message, function (err, data) {
-                window.console.log("zChat.sendChatMsg ", err, data)
+                console.log("zChat.sendChatMsg ", err, data)
             });
         } else if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
 
@@ -95,9 +95,9 @@ function ZendeskChatService() {
 
             zChat.sendFile(file, function (err, data) {
                 if (err) {
-                    window.console.log("Error while sending file : ", err);
+                    console.log("Error while sending file : ", err);
                 } else {
-                    window.console.log("File has been sent successfully : ", data);
+                    console.log("File has been sent successfully : ", data);
                 }
             });
         }
@@ -105,7 +105,7 @@ function ZendeskChatService() {
     };
 
     _this.handleBotMessage = function (event) {
-        window.console.log("handleBotMessage: ", event);
+        console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
             zChat.sendChatMsg(
                 'This chat is initiated from kommunicate widget, look for more here: ' +
@@ -113,7 +113,7 @@ function ZendeskChatService() {
                 '/conversations/' +
                 CURRENT_GROUP_DATA.tabId,
                 function (err, data) {
-                    window.console.log('zChat.sendChatMsg ', err, data);
+                    console.log('zChat.sendChatMsg ', err, data);
                 }
             );
         }
@@ -121,7 +121,7 @@ function ZendeskChatService() {
 
     _this.handleZendeskAgentMessageEvent = function (event) {
 
-        window.console.log("handleZendeskAgentMessageEvent ", event);
+        console.log("handleZendeskAgentMessageEvent ", event);
 
         var messagePxy = {
             message: event.msg,
@@ -138,18 +138,18 @@ function ZendeskChatService() {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
             success: function (result) {
-                window.console.log("result zendesk chat get user details ", result);
+                console.log("result zendesk chat get user details ", result);
                 typeof callback == 'function' && callback(agentUserName);
             },
             error: function (err) {
-                window.console.log('err while getting user details in zendesk service');
+                console.log('err while getting user details in zendesk service');
             },
         });
     };
 
     _this.handleZendeskAgentFileSendEvent = function (event) {
 
-        window.console.log("handleZendeskAgentFileSendEvent ", event);
+        console.log("handleZendeskAgentFileSendEvent ", event);
 
         var messagePxy = {
             fileAttachment: event.attachment,
@@ -167,11 +167,11 @@ function ZendeskChatService() {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
             success: function (result) {
-                window.console.log("Sent File message data to the server ", result);
+                console.log("Sent File message data to the server ", result);
                 typeof callback == 'function' && callback(agentUserName);
             },
             error: function (err) {
-                window.console.log('err while sending File message data to the server');
+                console.log('err while sending File message data to the server');
             },
         });
 
