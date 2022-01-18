@@ -548,5 +548,36 @@ KommunicateUtils = {
                 })
                 .join('&')
         );
+    },
+    /**
+     * When a new group is created, initially CURRENT_GROUP_DATA.groupMembers array has role of a member.
+     * @param {object} assigneeDetails 
+     * @returns boolean
+     */
+    isCurrentAssigneeBot: function (){
+        if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
+            var currentConversationAssignee = {};
+            for (
+                var i = 0;
+                i <= CURRENT_GROUP_DATA.groupMembers.length;
+                i++
+            ) {
+                if (
+                    CURRENT_GROUP_DATA.groupMembers[i] &&
+                    CURRENT_GROUP_DATA.groupMembers[i].userId ==
+                    CURRENT_GROUP_DATA.conversationAssignee
+                ) {
+                    currentConversationAssignee = CURRENT_GROUP_DATA.groupMembers[i]
+                    break;
+                }
+            }
+
+            if(currentConversationAssignee.hasOwnProperty('role')){
+                return currentConversationAssignee.role === KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT;
+            }else if(currentConversationAssignee.hasOwnProperty('roleType')){
+                return currentConversationAssignee.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
+            }
+        }
+        return false;
     }
 };
