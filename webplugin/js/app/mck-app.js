@@ -468,6 +468,10 @@ function ApplozicSidebox() {
                 options.voiceNote != null
                     ? options.voiceNote
                     : widgetSettings && widgetSettings.voiceNote;
+            options.timeFormat24Hours =
+                options.timeFormat24Hours != null
+                    ? options.timeFormat24Hours
+                    : widgetSettings;          
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
