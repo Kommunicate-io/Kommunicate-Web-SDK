@@ -2314,7 +2314,7 @@ var userOverride = {
                                 placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
                                 required: 'true',
                             });
-                            return false;
+                           
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
