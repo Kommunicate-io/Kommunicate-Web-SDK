@@ -471,7 +471,7 @@ function ApplozicSidebox() {
             options.timeFormat24Hours =
                 options.timeFormat24Hours != null
                     ? options.timeFormat24Hours
-                    : widgetSettings;          
+                    : widgetSettings && widgetSettings.timeFormat24Hours;          
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (

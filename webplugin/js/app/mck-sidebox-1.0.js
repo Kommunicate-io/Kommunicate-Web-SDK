@@ -9628,18 +9628,17 @@ var userOverride = {
             };
 
             
-                _this.getMessageCreatedAtTime=function(createdAtTime){
-                    if(TIME_FORMAT_24HOURS){
+             _this.getMessageCreatedAtTime=function(createdAtTime){
+                 if(TIME_FORMAT_24HOURS){
                     var msgtime = new Date(createdAtTime);
                     function addZero(i) {
                         if (i < 10) {i = "0" + i}
                         return i;
-                    }
-                        
-                    let h = addZero(msgtime.getHours());
-                    let m = addZero(msgtime.getMinutes());
+                    }                       
+                    var hours = addZero(msgtime.getHours());
+                    var minute = addZero(msgtime.getMinutes());
                     
-                    var time =  h + ":" + m;
+                    var time =  hours + ":" + minute;
                     
                     return time;
                 }else{
