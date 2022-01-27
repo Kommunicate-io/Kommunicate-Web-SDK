@@ -464,6 +464,10 @@ function ApplozicSidebox() {
                 options.hidePostFormSubmit != null
                     ? options.hidePostFormSubmit
                     : widgetSettings && widgetSettings.hidePostFormSubmit;
+            options.disableFormPostSubmit =
+                options.disableFormPostSubmit != null
+                    ? options.disableFormPostSubmit
+                    : widgetSettings && widgetSettings.disableFormPostSubmit;
             options.voiceNote =
                 options.voiceNote != null
                     ? options.voiceNote
