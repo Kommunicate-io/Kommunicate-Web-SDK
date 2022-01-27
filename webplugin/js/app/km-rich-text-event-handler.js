@@ -659,7 +659,7 @@ Kommunicate.richMsgEventHandler = {
         var msgMetadata = {};
         var postFormDataAsMessage='';
         var postBackToBotPlatform = false;
-        var formMsgKey = form.getAttribute('data-msg-key')
+        var formMsgKey = form.getAttribute('data-msg-key');
         if(Kommunicate._globals.hidePostFormSubmit){
             postBackAsMessage = true;
         }
