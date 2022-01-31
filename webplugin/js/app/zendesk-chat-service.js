@@ -31,16 +31,15 @@ function ZendeskChatService() {
 
     _this.initializeSDK = function () {
         if (!ZENDESK_SDK_INITIALIZED && ZENDESK_CHAT_SDK_KEY) {
-            zChat.init({
+            var zendeskInitOptions = {
                 account_key: ZENDESK_CHAT_SDK_KEY,
-                authentication: {
+            }
+            var name = kommunicate._globals.name || kommunicate._globals.userName;
+            var email = kommunicate._globals.email;
+            var externalId = kommunicate._globals.userId;
+            if (name && email && externalId) {
+                zendeskInitOptions.authentication = {
                     jwt_fn: function (callback) {
-                        var name = kommunicate._globals.name || kommunicate._globals.userName;
-                        var email = kommunicate._globals.email;
-                        var externalId = kommunicate._globals.userId;
-                        if (!name || !email || !externalId) {
-                            return;
-                        }
                         var userPxy = {
                             name,
                             email,
@@ -65,7 +64,8 @@ function ZendeskChatService() {
                         });
                     }
                 }
-            });
+            }
+            zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
