@@ -658,8 +658,13 @@ Kommunicate.richMsgEventHandler = {
         var messagePxy = {};
         var msgMetadata = {};
         var postFormDataAsMessage='';
+        var postBackToBotPlatform = false;
+        var formMsgKey = form.getAttribute('data-msg-key');
         if(Kommunicate._globals.hidePostFormSubmit){
             postBackAsMessage = true;
+        }
+        if(Kommunicate._globals.disableFormPostSubmit){
+            postBackToBotPlatform = true;
         }
         if (postBackAsMessage && Object.keys(data).length) {
             for (var i = 0; i < Object.keys(data).length; i++) {
@@ -675,8 +680,8 @@ Kommunicate.richMsgEventHandler = {
                 : replyText; //message to send
         
         isActionableForm &&
-            requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM &&
-            (msgMetadata['KM_CHAT_CONTEXT'] = { formData: data });
+            (requestType == KommunicateConstants.POST_BACK_TO_BOT_PLATFORM || postBackToBotPlatform) &&
+            (msgMetadata['KM_CHAT_CONTEXT'] = { formData: data, formMsgKey: formMsgKey });
         var formDataMessageTemplate =
             postBackToKommunicate &&
             Kommunicate.markup.getFormDataMessageTemplate(postBackData);

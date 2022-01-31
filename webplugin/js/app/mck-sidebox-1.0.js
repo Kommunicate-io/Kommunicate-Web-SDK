@@ -7856,6 +7856,8 @@ var userOverride = {
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
                 '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+            var SUBMITTED_FORMS = {};
+
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
                 $applozic.template('convTemplate', convbox);
@@ -8592,6 +8594,40 @@ var userOverride = {
                     },
                 });
             };
+            _this.populateDataInForm = function(associatedFormKey, submittedFormDetails){
+                if(submittedFormDetails && associatedFormKey){
+                    var form = document.querySelector('[data-msgcontent="'+associatedFormKey+'"] form');
+                    var elements = form.elements;
+                    for (var i = 0, len = elements.length; i < len; ++i) {
+                        switch(elements[i].type){
+                            case 'text':
+                                elements[i].value = submittedFormDetails[elements[i].name];
+                                break;
+                            case 'password':
+                                elements[i].value = submittedFormDetails[elements[i].name];
+                                break;
+                            case 'radio':
+                                if(elements[i].value == submittedFormDetails[elements[i].name]){
+                                    elements[i].checked = true
+                                };
+                                break;
+                            case 'checkbox':
+                                var selectedCheckBoxes = submittedFormDetails[elements[i].name];
+                                if(selectedCheckBoxes.indexOf(elements[i].value) != -1){
+                                    elements[i].checked = true
+                                };
+                                break;
+                            case 'submit':
+                                elements[i].classList.add("n-vis");
+                                break;
+                            default:
+                                elements[i].value = submittedFormDetails[elements[i].name]          
+                        }
+                        elements[i].readOnly = true;
+                        elements[i].disabled = true
+                    }
+                }
+            };
 
             _this.addMessage = function (
                 msg,
@@ -8979,6 +9015,20 @@ var userOverride = {
                           .tmpl('messageTemplate', msgList)
                           .prependTo('#mck-message-cell .mck-message-inner');
 
+                if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
+                    var chatContext, submittedFormDetails, associatedFormKey;
+                    if (msg.metadata["KM_CHAT_CONTEXT"]) {
+                        chatContext = typeof msg.metadata["KM_CHAT_CONTEXT"] == 'string' ? JSON.parse(msg.metadata["KM_CHAT_CONTEXT"]) : msg.metadata["KM_CHAT_CONTEXT"];
+                        submittedFormDetails = chatContext.formData;
+                        associatedFormKey = chatContext.formMsgKey;
+                        SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
+                        append && mckMessageLayout.populateDataInForm(associatedFormKey, submittedFormDetails);
+                    }else if (msg.metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM ){
+                        associatedFormKey = msg.key;
+                        submittedFormDetails = SUBMITTED_FORMS[associatedFormKey];
+                        mckMessageLayout.populateDataInForm(associatedFormKey, submittedFormDetails);
+                    };
+                }
                 if (
                     msg.contentType ==
                     KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE
