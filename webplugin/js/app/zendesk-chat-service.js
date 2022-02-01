@@ -24,17 +24,67 @@ function ZendeskChatService() {
         s.src = "https://cdn.kommunicate.io/kommunicate/zendesk-web-sdk-1.11.2.js";
         var h = document.getElementsByTagName("head")[0];
         h.appendChild(s);
+        s.onload = function () {
+            _this.initializeSDK();
+        };
     };
 
+    _this.initializeSDK = function () {
+        if (!ZENDESK_SDK_INITIALIZED && ZENDESK_CHAT_SDK_KEY) {
+            var zendeskInitOptions = {
+                account_key: ZENDESK_CHAT_SDK_KEY,
+            }
+            var name = kommunicate._globals.name || kommunicate._globals.userName;
+            var email = kommunicate._globals.email;
+            var externalId = kommunicate._globals.userId;
+            if (name && email && externalId) {
+                zendeskInitOptions.authentication = {
+                    jwt_fn: function (callback) {
+                        var userPxy = {
+                            name,
+                            email,
+                            externalId
+                        }
+                        mckUtils.ajax({
+                            url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/jwt",
+                            type: 'post',
+                            contentType: 'application/json',
+                            data: JSON.stringify(userPxy),
+                            headers: {
+                                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                            },
+                            success: function (result) {
+                                console.log("result: ", result);
+                                callback(result.data.jwt);
+                            },
+                            error: function (err) {
+                                console.log('err while getting user details in zendesk service');
+                                return;
+                            },
+                        });
+                    }
+                }
+            }
+            zChat.init(zendeskInitOptions);
+            zChat.on("chat", function (eventDetails) {
+                console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
+                if (eventDetails.type == "chat.msg") { //If agent sends normal message
+                    _this.handleZendeskAgentMessageEvent(eventDetails);
+                } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
+                    _this.handleZendeskAgentFileSendEvent(eventDetails);
+                }
+            });
+        }
+    };
     _this.handleUserMessage = function (event) {
         if (!event.message || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
-        window.console.log("handleUserMessage: ", event);
+        console.log("handleUserMessage: ", event);
 
         if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
             zChat.sendChatMsg(event.message.message, function (err, data) {
-                window.console.log("zChat.sendChatMsg ", err, data)
+                console.log("zChat.sendChatMsg ", err, data)
             });
         } else if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
 
@@ -44,39 +94,26 @@ function ZendeskChatService() {
 
             zChat.sendFile(file, function (err, data) {
                 if (err) {
-                    window.console.log("Error while sending file : ",err);
+                    console.log("Error while sending file : ", err);
                 } else {
-                    window.console.log("File has been sent successfully : ",data);
+                    console.log("File has been sent successfully : ", data);
                 }
             });
         }
-        
+
     };
 
     _this.handleBotMessage = function (event) {
-        window.console.log("handleBotMessage: ", event);
+        console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
-            if (!ZENDESK_SDK_INITIALIZED && ZENDESK_CHAT_SDK_KEY) {
-                zChat.init({
-                    account_key: ZENDESK_CHAT_SDK_KEY,
-                });
-                zChat.on("chat", function (eventDetails) {
-                    window.console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
-                    if (eventDetails.type == "chat.msg") { //If agent sends normal message
-                        _this.handleZendeskAgentMessageEvent(eventDetails);
-                    } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
-                        _this.handleZendeskAgentFileSendEvent(eventDetails);
-                    }
-                });
-                ZENDESK_SDK_INITIALIZED = true;
-            }
+            ZENDESK_SDK_INITIALIZED = true;
             zChat.sendChatMsg(
                 'This chat is initiated from kommunicate widget, look for more here: ' +
                 KM_PLUGIN_SETTINGS.dashboardUrl +
                 '/conversations/' +
                 CURRENT_GROUP_DATA.tabId,
                 function (err, data) {
-                    window.console.log('zChat.sendChatMsg ', err, data);
+                    console.log('zChat.sendChatMsg ', err, data);
                 }
             );
         }
@@ -84,7 +121,7 @@ function ZendeskChatService() {
 
     _this.handleZendeskAgentMessageEvent = function (event) {
 
-        window.console.log("handleZendeskAgentMessageEvent ", event);
+        console.log("handleZendeskAgentMessageEvent ", event);
 
         var messagePxy = {
             message: event.msg,
@@ -101,18 +138,18 @@ function ZendeskChatService() {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
             success: function (result) {
-                window.console.log("result zendesk chat get user details ", result);
+                console.log("result zendesk chat get user details ", result);
                 typeof callback == 'function' && callback(agentUserName);
             },
             error: function (err) {
-                window.console.log('err while getting user details in zendesk service');
+                console.log('err while getting user details in zendesk service');
             },
         });
     };
 
-    _this.handleZendeskAgentFileSendEvent= function (event) {
+    _this.handleZendeskAgentFileSendEvent = function (event) {
 
-        window.console.log("handleZendeskAgentFileSendEvent ",event);
+        console.log("handleZendeskAgentFileSendEvent ", event);
 
         var messagePxy = {
             fileAttachment: event.attachment,
@@ -122,22 +159,22 @@ function ZendeskChatService() {
         };
 
         return mckUtils.ajax({
-                url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify(messagePxy),
-                headers: {
-                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
-                },
-                success: function (result) {
-                    window.console.log("Sent File message data to the server ", result);
-                    typeof callback == 'function' && callback(agentUserName);
-                },
-                error: function (err) {
-                    window.console.log('err while sending File message data to the server');
-                },
+            url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/file/send",
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(messagePxy),
+            headers: {
+                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+            },
+            success: function (result) {
+                console.log("Sent File message data to the server ", result);
+                typeof callback == 'function' && callback(agentUserName);
+            },
+            error: function (err) {
+                console.log('err while sending File message data to the server');
+            },
         });
-       
+
     }
 };
 
