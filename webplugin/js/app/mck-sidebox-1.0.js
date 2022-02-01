@@ -8613,7 +8613,7 @@ var userOverride = {
                                 break;
                             case 'checkbox':
                                 var selectedCheckBoxes = submittedFormDetails[elements[i].name];
-                                if(selectedCheckBoxes.indexOf(elements[i].value) != -1){
+                                if(selectedCheckBoxes && selectedCheckBoxes.indexOf(elements[i].value) != -1){
                                     elements[i].checked = true
                                 };
                                 break;
