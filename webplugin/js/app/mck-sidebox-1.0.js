@@ -9628,25 +9628,26 @@ var userOverride = {
             };
 
             
-             _this.getMessageCreatedAtTime=function(createdAtTime){
-                 if(TIME_FORMAT_24HOURS){
+            _this.getMessageCreatedAtTime = function (createdAtTime) {
+                if (TIME_FORMAT_24HOURS) {
                     var msgtime = new Date(createdAtTime);
                     function addZero(i) {
-                        if (i < 10) 
-                        return "0" + i;
-                    }                       
+                        if (i < 10) {
+                            return "0" + i;
+                        } else {
+                            return i;
+                        }
+                    }
                     var hours = addZero(msgtime.getHours());
                     var minute = addZero(msgtime.getMinutes());
-                    
-                    var time =  hours + ":" + minute;
-                    
+                    var time = hours + ":" + minute;
                     return time;
-                }else{
+                } else {
                     return mckDateUtils.getDate(
                         createdAtTime
                     );
                 }
-                };
+            };
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
