@@ -1,3 +1,5 @@
+var newConversationCreated = false;
+
 function ZendeskChatService() {
     // This integration is supported by zopim, for any apis please refer their docs.
     var _this = this;
@@ -186,7 +188,8 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
-        if (assigneeInfo && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
+        if (!newConversationCreated && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
+            newConversationCreated = true;
             Kommunicate.startConversation();
         }
     }
