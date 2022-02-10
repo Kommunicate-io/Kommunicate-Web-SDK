@@ -105,7 +105,7 @@ function ZendeskChatService() {
 
     };
 
-    _this.handleBotMessage = function (event) {
+    _this.handleBotMessage = async function (event) {
         console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
             ZENDESK_SDK_INITIALIZED = true;
@@ -118,6 +118,45 @@ function ZendeskChatService() {
                     console.log('zChat.sendChatMsg ', err, data);
                 }
             );
+
+            //Sending chat transcript
+            var activeConversationInfo = JSON.parse(localStorage.getItem('kommunicate')).mckActiveConversationInfo;
+
+            mckUtils.ajax({
+                url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + activeConversationInfo.groupId,
+                type: 'get',
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
+                success: function (result) {
+                    var messageListDetails = result.message;
+
+                    var userId = activeConversationInfo.userId;
+
+                    var transcriptString = "Transcript:\n";
+
+                    for (var i = messageListDetails.length-2; i >= 0 ; i--) {
+                        var currentMessageDetail = messageListDetails[i];
+                        
+                        var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
+                        var message = currentMessageDetail.message;
+
+                        transcriptString += username + ":" + message +"\n";
+                    }
+
+                    console.log(transcriptString);
+
+                    zChat.sendChatMsg(
+                        transcriptString,
+                        function (err, data) {
+                            console.log('Sending transcript to zendesk',err, data);
+                        }
+                    );
+                },
+                error: function (err) {
+                    console.log('err while fetching chatDetails for this groupId ',err);
+                },
+            })
         }
     };
 
