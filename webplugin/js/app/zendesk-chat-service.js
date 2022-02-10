@@ -105,7 +105,7 @@ function ZendeskChatService() {
 
     };
 
-    _this.handleBotMessage = async function (event) {
+    _this.handleBotMessage = function (event) {
         console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
             ZENDESK_SDK_INITIALIZED = true;
