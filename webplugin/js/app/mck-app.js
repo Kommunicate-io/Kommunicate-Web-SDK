@@ -475,6 +475,13 @@ function ApplozicSidebox() {
                 options.hidePostFormSubmit != null
                     ? options.hidePostFormSubmit
                     : widgetSettings && widgetSettings.hidePostFormSubmit;
+            options.disableFormPostSubmit =
+                options.disableFormPostSubmit || 
+                    (widgetSettings && widgetSettings.disableFormPostSubmit);
+            options.voiceNote =
+                options.voiceNote != null
+                    ? options.voiceNote
+                    : widgetSettings && widgetSettings.voiceNote;
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (

@@ -606,6 +606,7 @@ $applozic.extend(true, Kommunicate, {
                     .GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
+                    metadata['msgKey'] = message.key; 
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:

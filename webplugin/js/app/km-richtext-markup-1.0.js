@@ -410,7 +410,7 @@ getListMarkup:function(){
     },
     getFormTemplate: function () {
         return `<div class="mck-msg-box-rich-text-container mck-form-template-container" data-hidePostFormSubmit="{{hidePostFormSubmit}}">
-                <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post">
+                <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" data-msg-key={{msgKey}} >
                     <div class="mck-form-template-wrapper">
                         {{#payload}}
                             {{#.}}
