@@ -119,44 +119,41 @@ function ZendeskChatService() {
                 }
             );
 
-            //Sending chat transcript
-            mckUtils.ajax({
-                url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + CURRENT_GROUP_DATA.tabId,
-                type: 'get',
-                headers: {
-                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
-                },
-                success: function (result) {
-                    var messageListDetails = result.message;
+            //Sending chat transcript        
+            kommunicate.client.getChatListByGroupId({ 
+                groupId: CURRENT_GROUP_DATA.tabId 
+            }, function(err, result) {
+                if (err || !result) {
+                    console.log('An error occurred while fetching chatList ',err);
+                    return;
+                }
 
-                    var userId = kommunicate._globals.userId;
+                var messageListDetails = result.message;
 
-                    var transcriptString = "Transcript:\n";
+                var userId = kommunicate._globals.userId;
 
-                    for (var i = messageListDetails.length-2; i >= 0 ; i--) {
-                        var currentMessageDetail = messageListDetails[i];
-                        
-                        var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
-                        var message = currentMessageDetail.message || 
-                                      currentMessageDetail.fileMeta?.url || 
-                                      "TemplateId: " + currentMessageDetail.metadata?.templateId;
+                var transcriptString = "Transcript:\n";
 
-                        transcriptString += username + ": " + message +"\n";
+                for (var i = messageListDetails.length-2; i >= 0 ; i--) {
+                    var currentMessageDetail = messageListDetails[i];
+                    
+                    var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
+                    var message = currentMessageDetail.message || 
+                                    currentMessageDetail.fileMeta?.url || 
+                                    "TemplateId: " + currentMessageDetail.metadata?.templateId;
+
+                    transcriptString += username + ": " + message +"\n";
+                }
+
+                console.log(transcriptString);
+
+                zChat.sendChatMsg(
+                    transcriptString,
+                    function (err, data) {
+                        console.log('sending transcript to zendesk',err, data);
                     }
-
-                    console.log(transcriptString);
-
-                    zChat.sendChatMsg(
-                        transcriptString,
-                        function (err, data) {
-                            console.log('sending transcript to zendesk',err, data);
-                        }
-                    );
-                },
-                error: function (err) {
-                    console.log('err while fetching chatDetails for this groupId ',err);
-                },
-            })
+                );
+            });
         }
     };
 

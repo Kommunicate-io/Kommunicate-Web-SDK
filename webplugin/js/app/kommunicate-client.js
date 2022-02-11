@@ -179,4 +179,26 @@ Kommunicate.client = {
             },
         });
     },
+
+    /**get the entire chatListDetails by groupId 
+     * @param {Object} options 
+     * @param {Number} options.groupId
+     * @param {function} callback 
+     */
+    getChatListByGroupId: function (options, callback) {
+        var { groupId } = options;
+        $applozic.ajax({
+            url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + groupId,
+            type: 'get',
+            headers: {
+                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+            },
+            success: function (result) {
+                callback(null, result)
+            },
+            error: function (err) {
+                callback(err);
+            },
+        });
+    }
 };
