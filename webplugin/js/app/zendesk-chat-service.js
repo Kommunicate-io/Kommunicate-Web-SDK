@@ -120,10 +120,8 @@ function ZendeskChatService() {
             );
 
             //Sending chat transcript
-            var activeConversationInfo = JSON.parse(localStorage.getItem('kommunicate')).mckActiveConversationInfo;
-
             mckUtils.ajax({
-                url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + activeConversationInfo.groupId,
+                url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + CURRENT_GROUP_DATA.tabId,
                 type: 'get',
                 headers: {
                     'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
@@ -131,7 +129,7 @@ function ZendeskChatService() {
                 success: function (result) {
                     var messageListDetails = result.message;
 
-                    var userId = activeConversationInfo.userId;
+                    var userId = kommunicate._globals.userId;
 
                     var transcriptString = "Transcript:\n";
 
@@ -139,9 +137,11 @@ function ZendeskChatService() {
                         var currentMessageDetail = messageListDetails[i];
                         
                         var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
-                        var message = currentMessageDetail.message;
+                        var message = currentMessageDetail.message || 
+                                      currentMessageDetail.fileMeta?.url || 
+                                      "TemplateId: " + currentMessageDetail.metadata?.templateId;
 
-                        transcriptString += username + ":" + message +"\n";
+                        transcriptString += username + ": " + message +"\n";
                     }
 
                     console.log(transcriptString);
@@ -149,7 +149,7 @@ function ZendeskChatService() {
                     zChat.sendChatMsg(
                         transcriptString,
                         function (err, data) {
-                            console.log('Sending transcript to zendesk',err, data);
+                            console.log('sending transcript to zendesk',err, data);
                         }
                     );
                 },
