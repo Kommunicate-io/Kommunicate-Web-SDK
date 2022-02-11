@@ -400,7 +400,12 @@ var userOverride = {
         var MCK_ACCESS_TOKEN = appOptions.password || appOptions.accessToken;
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
-        var MCK_ON_TAB_CLICKED = appOptions.onTabClicked;
+        var MCK_ON_TAB_CLICKED = function (event) {
+            if (kommunicate._globals.zendeskChatSdkKey) {
+                onTabClickedHandlerForZendeskConversations(event);
+            }
+            typeof appOptions.onTabClicked == "function" && appOptions.onTabClicked(event);
+        };
         var MCK_CONTACT_NUMBER = appOptions.contactNumber;
         var MCK_FILEMAXSIZE = appOptions.maxAttachmentSize;
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
@@ -618,6 +623,7 @@ var userOverride = {
             WIDGET_SETTINGS.hasOwnProperty('position')
                 ? WIDGET_SETTINGS.position
                 : KommunicateConstants.POSITION.RIGHT;
+        var SOCKET_RECONNECT_FAIL_COUNT = 0;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
             SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
             DISCONNECTED: false,
@@ -716,6 +722,12 @@ var userOverride = {
                 if (navigator.onLine) {
                     window.Applozic.ALSocket.reconnect();
                 }
+                SOCKET_RECONNECT_FAIL_COUNT++;
+                SOCKET_RECONNECT_FAIL_COUNT > 2 && kommunicateCommons.modifyClassList(
+                    { id: ['km-socket-disconnect-msg'] },
+                    '',
+                    'n-vis'
+                );
             },
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
@@ -724,6 +736,12 @@ var userOverride = {
                     'n-vis',
                     'vis'
                 );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-socket-disconnect-msg'] },
+                    'n-vis',
+                    ''
+                );
+                SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
                     typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' &&
                     Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0
@@ -2801,6 +2819,11 @@ var userOverride = {
                         '',
                         'n-vis'
                     );
+                    kommunicateCommons.modifyClassList(
+                        { id: ['km-widget-options'] },
+                        'n-vis',
+                        ''
+                    );
                     KommunicateUI.flushFaqsEvents();
                 }
                 closeButton.addEventListener('click', closeChatBox);
@@ -3306,6 +3329,9 @@ var userOverride = {
                 document.getElementById(
                     'km-internet-disconnect-msg'
                 ).innerHTML = MCK_LABELS['offline.msg'];
+                document.getElementById(
+                    'km-socket-disconnect-msg'
+                ).innerHTML = MCK_LABELS['socket-disconnect.msg'];
                 document.getElementById('talk-to-human-link').innerHTML =
                     MCK_LABELS['talk.to.agent'];
                 document.getElementById('mck-collect-email').innerHTML =
@@ -7045,7 +7071,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.isSessionStorageAvailable()
+                var userSession = KommunicateUtils.isSessionStorageAvailable() && sessionStorage.kommunicate
                     ? JSON.parse(sessionStorage.kommunicate)
                     : {};
                 var languageCode =
@@ -7865,6 +7891,10 @@ var userOverride = {
                 $applozic.template('csatModule', csatModule);
             };
             _this.loadDropdownOptions = function () {
+                if(document.querySelector('#mck-contact-list')){
+                    // if contact list is visible then dropdown options should not be loaded.
+                    return;
+                }
                 var enableDropdown = false;
                 var isConvRated =
                     appOptions.oneTimeRating &&
@@ -8092,6 +8122,11 @@ var userOverride = {
                     '',
                     'selected'
                 );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-faq'] },
+                    'n-vis',
+                    ''
+                );
                 if (params.tabId) {
                     $mck_msg_to.val(params.tabId);
                     $mck_msg_inner.data('mck-id', params.tabId);
@@ -8235,7 +8270,7 @@ var userOverride = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    // $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box
                         .removeClass('n-vis')
@@ -8294,6 +8329,7 @@ var userOverride = {
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                 } else {
                     params.isWaitingQueue = true;
                     mckMessageService.loadMessageList(params, callback);
