@@ -606,6 +606,7 @@ var userOverride = {
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
+        var VOICE_NOTE_ENABLED = appOptions.voiceNote;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1: MCK_LABELS['emoji.hover.text'].poor,
             5: MCK_LABELS['emoji.hover.text'].average,
@@ -862,8 +863,8 @@ var userOverride = {
                     'n-vis',
                     ''
             );
-            VOICE_INPUT_ENABLED &&
-                Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+            (VOICE_INPUT_ENABLED || VOICE_NOTE_ENABLED) &&
+                Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
 
             if (
                 KOMMUNICATE_VERSION === 'v2' &&
@@ -3365,6 +3366,10 @@ var userOverride = {
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
                 document.getElementById('km-restart-conversation-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].RESET_CONVERSATION;
+                document.getElementById('km-voice-note-trigger-text').innerText =
+                    MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
+                document.getElementById('km-voice-input-trigger-text').innerText =
+                    MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3881,7 +3886,7 @@ var userOverride = {
                 }
                 if (text == '' || !text.replace(/\s/g, '').length) {
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                 } else {
                     _this.showSendButton();
                     Kommunicate.typingAreaService.hideMicButton();
@@ -5296,7 +5301,7 @@ var userOverride = {
                         }
                     }
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                     _this.sendMessage(messagePxy);
                     !KommunicateUtils.isCurrentAssigneeBot() && messageSentToHumanAgent++;
                     return false;
@@ -5348,39 +5353,7 @@ var userOverride = {
                     $applozic(this).addClass('active');
                 });
             };
-            $applozic('.mck-sidebox').on('click', '#mck-mike-btn', function () {
-                $applozic(this).removeClass('vis').addClass('n-vis');
-                $applozic('.mck-stop-btn').addClass('vis').removeClass('n-vis');
-                Fr.voice.record(false, function () {
-                    $applozic('#mck-audio')
-                        .removeClass('n-vis')
-                        .addClass('vis');
-                    mckMessageService.timer();
-                });
-            });
-            $applozic('.mck-sidebox').on(
-                'click',
-                '#mck-stop-recording',
-                function () {
-                    $applozic('#mck-mike-btn')
-                        .addClass('vis')
-                        .removeClass('n-vis');
-                    $applozic('.mck-stop-btn')
-                        .addClass('n-vis')
-                        .removeClass('vis');
-                    $applozic('#mck-audio')
-                        .removeClass('vis')
-                        .addClass('n-vis');
-                    mckMessageService.stoptimer();
-                    Fr.voice.export(function (blob) {
-                        var params = {};
-                        params.file = blob;
-                        params.name = 'blob';
-                        $applozic.fn.applozic('audioAttach', params);
-                    }, 'blob');
-                    Fr.voice.stop();
-                }
-            );
+            
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
@@ -14968,6 +14941,9 @@ var userOverride = {
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
+                            if (params.callback) {
+                                params.callback();
+                            }
                             return false;
                         } else {
                             $file_remove.attr('disabled', false);
