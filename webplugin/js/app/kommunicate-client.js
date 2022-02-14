@@ -186,9 +186,8 @@ Kommunicate.client = {
      * @param {function} callback 
      */
     getChatListByGroupId: function (options, callback) {
-        var { groupId } = options;
         $applozic.ajax({
-            url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + groupId,
+            url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + options.groupId,
             type: 'get',
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
