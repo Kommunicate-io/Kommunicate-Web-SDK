@@ -89,8 +89,8 @@ var Recorder = exports.Recorder = (function () {
 				recBuffers = [],
 				sampleRate = undefined,
 				numChannels = undefined;
-
-			self.onmessage = function (e) {
+            var _self = this.self;
+			_self.onmessage = function (e) {
 				switch (e.data.command) {
 					case 'init':
 						init(e.data.config);
@@ -137,7 +137,7 @@ var Recorder = exports.Recorder = (function () {
 				var dataview = encodeWAV(interleaved);
 				var audioBlob = new Blob([dataview], { type: type });
 
-				self.postMessage({ command: 'exportWAV', data: audioBlob });
+				_self.postMessage({ command: 'exportWAV', data: audioBlob });
 			}
 
 			function getBuffer() {
@@ -145,7 +145,7 @@ var Recorder = exports.Recorder = (function () {
 				for (var channel = 0; channel < numChannels; channel++) {
 					buffers.push(mergeBuffers(recBuffers[channel], recLength));
 				}
-				self.postMessage({ command: 'getBuffer', data: buffers });
+				_self.postMessage({ command: 'getBuffer', data: buffers });
 			}
 
 			function clear() {
