@@ -601,8 +601,8 @@ KommunicateUI = {
             $applozic('#km-faqanswer').empty();
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-answer-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-answer-list');
-            var articleId = $(this).attr('data-articleid');
-            var source = $(this).attr('data-source');
+            var articleId = $applozic(this).attr('data-articleid');
+            var source = $applozic(this).attr('data-source');
             KommunicateKB.getArticle({
                 data: {
                     appId: data.appId,
