@@ -139,8 +139,8 @@ function ZendeskChatService() {
                     
                     var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
                     var message = currentMessageDetail.message || 
-                                    currentMessageDetail.fileMeta?.url || 
-                                    "TemplateId: " + currentMessageDetail.metadata?.templateId;
+                                    currentMessageDetail.fileMeta.url || 
+                                    "TemplateId: " + currentMessageDetail.metadata.templateId;
 
                     transcriptString += username + ": " + message +"\n";
                 }
