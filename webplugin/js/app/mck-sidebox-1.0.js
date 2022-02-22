@@ -9630,10 +9630,11 @@ var userOverride = {
             
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24HOURS) {
-                    let month = ["Jan","Feb","March","April","May","June","July","Aug","Sep","Oct","Nov","Dec"];
+                    
+                    var month = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
                     var msgtime = new Date(createdAtTime);
-                    let messageDay = msgtime.getDate(createdAtTime);
-                    let monthName = month[msgtime.getMonth(createdAtTime)];
+                    var messageDay = msgtime.getDate(createdAtTime);
+                    var monthName = month[msgtime.getMonth(createdAtTime)];                    
                     function addZero(i) {
                         if (i < 10) {
                             return "0" + i;
@@ -9643,12 +9644,10 @@ var userOverride = {
                     }
                     var hours = addZero(msgtime.getHours());
                     var minute = addZero(msgtime.getMinutes());
-                    if(msgtime.getHours()<24){
-                        var time =   hours + ":" + minute;
-                    }else{
-                        var time = monthName + " " + messageDay + ", " + hours + ":" + minute;
+                    var time = monthName + " " + messageDay + ", " + hours + ":" + minute;
+                    if (msgtime.getHours() < 24) {
+                         time = hours + ":" + minute;
                     }
-                    
                     return time;
                 } else {
                     return mckDateUtils.getDate(
