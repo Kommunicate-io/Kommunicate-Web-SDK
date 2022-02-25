@@ -15096,23 +15096,18 @@ var userOverride = {
             _this.handleEncryptedElements = function(encryptedElements){
                 for(var i = 0; i < encryptedElements.length; i++){
                     var isElementInView = KommunicateUI.isInView(encryptedElements[i], document.querySelector('#mck-message-cell .mck-message-inner'))
+                    if (!isElementInView) { return };
                     switch (encryptedElements[i].tagName) {
                         case 'IMG':
-                            if (isElementInView) {
-                                KommunicateUI.processLazyImage(encryptedElements[i], encryptedElements[i].getAttribute('data-thumbnailBlobKey'))
-                            }
+                            KommunicateUI.processLazyImage(encryptedElements[i], encryptedElements[i].getAttribute('data-thumbnailBlobKey'))
                             break;
                         case 'AUDIO':
                         case 'VIDEO':
                             // audio or video
-                            if (isElementInView) {
-                                KommunicateUI.processEncMedia(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
-                            }
+                            KommunicateUI.processEncMedia(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
                             break;
                         case 'A':
-                            if (isElementInView) {
-                                KommunicateUI.processEncFile(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
-                            }
+                            KommunicateUI.processEncFile(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
                             break;
                         default:
                             console.log(encryptedElements[i]);
