@@ -4839,13 +4839,13 @@ var userOverride = {
                         _this.sendPriceMessage();
                     }
                 });
-                const MSG_LIST_MUTATION_OBSERVER = new MutationObserver(function(mutationsList, observer){
+                var MSG_LIST_MUTATION_OBSERVER = new MutationObserver(function(mutationsList, observer){
                     // callback to be executed when a childList mutation happens.
                     var encryptedElements = document.querySelectorAll('.file-enc');
                     if(!encryptedElements.length){
                         return;
                     };
-                    for(const mutation of mutationsList) {
+                    for(var mutation of mutationsList) {
                         if (mutation.type === 'childList') {
                             mckFileService.handleEncryptedElements(encryptedElements);
                         }
@@ -15095,29 +15095,23 @@ var userOverride = {
             };
             _this.handleEncryptedElements = function(encryptedElements){
                 for(var i = 0; i < encryptedElements.length; i++){
+                    var isElementInView = KommunicateUI.isInView(encryptedElements[i], document.querySelector('#mck-message-cell .mck-message-inner'))
                     switch (encryptedElements[i].tagName) {
                         case 'IMG':
-                            var img = encryptedElements[i];
-                            if (KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
+                            if (isElementInView) {
+                                KommunicateUI.processLazyImage(encryptedElements[i], encryptedElements[i].getAttribute('data-thumbnailBlobKey'))
                             }
                             break;
                         case 'AUDIO':
-                            var video = encryptedElements[i];
-                            if (KommunicateUI.isInView(video, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                KommunicateUI.processEncMedia(video, video.getAttribute('data-blobkey'))
-                            }
-                            break;
                         case 'VIDEO':
-                            var video = encryptedElements[i];
-                            if (KommunicateUI.isInView(video, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                KommunicateUI.processEncMedia(video, video.getAttribute('data-blobkey'))
+                            // audio or video
+                            if (isElementInView) {
+                                KommunicateUI.processEncMedia(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
                             }
                             break;
                         case 'A':
-                            var anchorTag = encryptedElements[i];
-                            if (KommunicateUI.isInView(anchorTag, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                KommunicateUI.processEncFile(anchorTag, anchorTag.getAttribute('data-blobkey'))
+                            if (isElementInView) {
+                                KommunicateUI.processEncFile(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
                             }
                             break;
                         default:
