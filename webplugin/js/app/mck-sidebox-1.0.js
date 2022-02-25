@@ -9633,8 +9633,8 @@ var userOverride = {
                     
                     var month = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
                     var msgtime = new Date(createdAtTime);
-                    var messageDay = msgtime.getDate(createdAtTime);
-                    var monthName = month[msgtime.getMonth(createdAtTime)];                    
+                    var messageDay = msgtime.getDate();
+                    var monthName = month[msgtime.getMonth()];                    
                     function addZero(i) {
                         if (i < 10) {
                             return "0" + i;
