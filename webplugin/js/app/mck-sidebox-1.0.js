@@ -9631,10 +9631,12 @@ var userOverride = {
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24HOURS) {
                     
-                    var month = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                     
+                     
                     var msgtime = new Date(createdAtTime);
+                    
                     var messageDay = msgtime.getDate();
-                    var monthName = month[msgtime.getMonth()];                    
+                    var monthName = msgtime.toLocaleString('default', { month: 'short' });                    
                     function addZero(i) {
                         if (i < 10) {
                             return "0" + i;
@@ -9646,7 +9648,7 @@ var userOverride = {
                     var minute = addZero(msgtime.getMinutes());
                     var time = monthName + " " + messageDay + ", " + hours + ":" + minute;
                     if (msgtime.getHours() < 24) {
-                         time = hours + ":" + minute;
+                         time = hours + ":" + minute + "," + monthName + messageDay;
                     }
                     return time;
                 } else {
