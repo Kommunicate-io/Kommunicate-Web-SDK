@@ -14405,196 +14405,14 @@ var userOverride = {
 
             // }
             _this.audioRecoder = function (params) {
-                // Todo: all the files to be uploaded to aws S3 Server
-                if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                    _this.uploadAttachment2AWS(params);
-                } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
-                    _this.customFileUpload(params);
-                } else {
-                    _this.uploadFile(params);
-                }
-            };
-            _this.customFileUpload = function (params, messagePxy) {
-                var file = params.file;
-                var stopUpload = false;
-                var data = new FormData();
-
-                var uploadErrors = [];
-                if (typeof file === 'undefined') {
-                    return;
-                }
-                if ($applozic('.mck-file-box').length > 4) {
-                    uploadErrors.push(
-                        "Can't upload more than 5 files at a time"
-                    );
-                }
-                if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
-                    uploadErrors.push(
-                        'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
-                    );
-                }
-                if (uploadErrors.length > 0) {
-                    alert(uploadErrors.toString());
-                } else {
-                    var randomId = mckUtils.randomId();
-                    var fileboxList = [
-                        {
-                            fileIdExpr: randomId,
-                            fileName: params.name,
-                            fileNameExpr:
-                                '<a href="#" target="_self" >' +
-                                params.name +
-                                '</a>',
-                            fileSizeExpr: alFileService.getFilePreviewSize(
-                                file.size
-                            ),
-                        },
-                    ];
-                    $applozic
-                        .tmpl('fileboxTemplate', fileboxList)
-                        .appendTo('#mck-file-box');
-                    var $fileContainer = $applozic('.mck-file-box.' + randomId);
-                    var $file_name = $applozic(
-                        '.mck-file-box.' + randomId + ' .mck-file-lb'
-                    );
-                    var $file_progressbar = $applozic(
-                        '.mck-file-box.' + randomId + ' .km-progress .km-bar'
-                    );
-                    var $file_progress = $applozic(
-                        '.mck-file-box.' + randomId + ' .km-progress'
-                    );
-                    var $file_remove = $applozic(
-                        '.mck-file-box.' + randomId + ' .mck-remove-file'
-                    );
-                    $file_progressbar.css('width', '0%');
-                    messagePxy &&
-                        Kommunicate.attachmentEventHandler.progressMeter(
-                            0,
-                            messagePxy.key
-                        );
-                    $file_progress.removeClass('n-vis').addClass('vis');
-                    $file_remove.attr('disabled', true);
-                    $mck_file_upload.attr('disabled', true);
-                    KommunicateUI.hideFileBox(
-                        file,
-                        $file_box,
-                        $mck_file_upload
-                    );
-                    var currTab = $mck_msg_inner.data('mck-id');
-                    var uniqueId = params.name + file.size;
-                    TAB_FILE_DRAFT[uniqueId] = currTab;
-                    $mck_msg_sbmt.attr('disabled', true);
-                    data.append('files[]', file);
-                    var xhr = new XMLHttpRequest();
-                    (xhr.upload || xhr).addEventListener(
-                        'progress',
-                        function (e) {
-                            var progress = parseInt(
-                                (e.loaded / e.total) * 100,
-                                10
-                            );
-                            $file_progressbar.css('width', progress + '%');
-                            messagePxy &&
-                                Kommunicate.attachmentEventHandler.progressMeter(
-                                    progress,
-                                    messagePxy.key
-                                );
-                        }
-                    );
-                    xhr.addEventListener('load', function (e) {
-                        var responseJson = $applozic.parseJSON(
-                            this.responseText
-                        );
-                        if (typeof responseJson === 'object') {
-                            var file_meta = responseJson.fileMeta;
-                            if (messagePxy) {
-                                messagePxy['fileMeta'] = file_meta;
-                                var optns = {
-                                    tabId: messagePxy.groupId,
-                                };
-                                stopUpload = KommunicateUI.getAttachmentStopUploadStatus(
-                                    messagePxy.key
-                                );
-                                KommunicateUI.updateAttachmentTemplate(
-                                    file_meta,
-                                    messagePxy.key
-                                );
-                                !stopUpload &&
-                                    mckMessageService.submitMessage(
-                                        messagePxy,
-                                        optns
-                                    );
-                                KommunicateUI.updateImageAttachmentPreview(
-                                    file_meta,
-                                    messagePxy.key
-                                );
-                                return;
-                            }
-                            var fileExpr =
-                                typeof file_meta === 'object'
-                                    ? '<a href="' +
-                                      file_meta.url +
-                                      '" target="_blank">' +
-                                      file_meta.name +
-                                      '</a>'
-                                    : '';
-                            var name = file_meta.name;
-                            var size = file_meta.size;
-                            var currTabId = $mck_msg_inner.data('mck-id');
-                            var uniqueId = name + size;
-                            var fileTabId = TAB_FILE_DRAFT[uniqueId];
-                            if (currTab !== currTabId) {
-                                mckMessageLayout.updateDraftMessage(
-                                    fileTabId,
-                                    file_meta
-                                );
-                                delete TAB_FILE_DRAFT[uniqueId];
-                                return;
-                            }
-                            $file_remove.attr('disabled', false);
-                            $mck_file_upload.attr('disabled', false);
-                            $mck_msg_sbmt.attr('disabled', false);
-                            delete TAB_FILE_DRAFT[uniqueId];
-                            $file_name.html(fileExpr);
-                            $file_progress.removeClass('vis').addClass('n-vis');
-                            $applozic('.mck-file-box .progress')
-                                .removeClass('vis')
-                                .addClass('n-vis');
-                            $mck_text_box.removeAttr('required');
-                            FILE_META.push(file_meta);
-                            $fileContainer.data('mckfile', file_meta);
-                            $mck_file_upload.children('input').val('');
-                            if (params.callback) {
-                                params.callback();
-                            }
-                            return false;
-                        } else {
-                            $file_remove.attr('disabled', false);
-                            $mck_msg_sbmt.attr('disabled', false);
-                            // FILE_META
-                            // = '';
-                            $file_remove.trigger('click');
-                        }
-                    });
-                    var url = MCK_CUSTOM_URL + CUSTOM_FILE_UPLOAD_URL;
-
-                    xhr.open('post', url, true);
-                    window.Applozic.ALApiService.addRequestHeaders(xhr);
-                    xhr.send(data);
-                    return false;
-                }
+                // upload all attachements to aws irrescpective of MCK_CUSTOM_UPLOAD_SETTINGS
+                _this.uploadAttachment2AWS(params);
             };
             _this.uploadAttachemnt = function (params, messagePxy) {
-                if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                    _this.uploadAttachment2AWS(params, messagePxy);
-                } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
-                    _this.customFileUpload(params, messagePxy);
-                } else {
-                    _this.uploadFile(params, messagePxy);
-                }
+                // upload all attachements to aws irrespective of MCK_CUSTOM_UPLOAD_SETTINGS
+                _this.uploadAttachment2AWS(params, messagePxy);
             };
+
             _this.uploadFile = function (params, messagePxy) {
                 var file = params.file;
                 var data = new Object();
@@ -14791,6 +14609,7 @@ var userOverride = {
                     });
                 }
             };
+
             _this.uploadAttachment2AWS = function (params, messagePxy) {
                 var file = params.file;
                 var data = new FormData();
