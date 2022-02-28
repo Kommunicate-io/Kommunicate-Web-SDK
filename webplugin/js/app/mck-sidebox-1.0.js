@@ -14399,14 +14399,8 @@ var userOverride = {
 
             // }
             _this.audioRecoder = function (params) {
-                // Todo: all the files to be uploaded to aws S3 Server
-                if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                    _this.uploadAttachment2AWS(params);
-                } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
-                    _this.customFileUpload(params);
-                } else {
-                    _this.uploadFile(params);
-                }
+                // upload all attachements to aws irrescpective of MCK_CUSTOM_UPLOAD_SETTINGS
+                _this.uploadAttachment2AWS(params);
             };
             _this.customFileUpload = function (params, messagePxy) {
                 var file = params.file;
@@ -14581,14 +14575,10 @@ var userOverride = {
                 }
             };
             _this.uploadAttachemnt = function (params, messagePxy) {
-                if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                    _this.uploadAttachment2AWS(params, messagePxy);
-                } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
-                    _this.customFileUpload(params, messagePxy);
-                } else {
-                    _this.uploadFile(params, messagePxy);
-                }
+                // upload all attachements to aws irrespective of MCK_CUSTOM_UPLOAD_SETTINGS
+                _this.uploadAttachment2AWS(params, messagePxy);
             };
+
             _this.uploadFile = function (params, messagePxy) {
                 var file = params.file;
                 var data = new Object();
