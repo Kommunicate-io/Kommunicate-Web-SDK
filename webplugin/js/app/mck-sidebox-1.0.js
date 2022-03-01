@@ -4845,8 +4845,8 @@ var userOverride = {
                     if(!encryptedElements.length){
                         return;
                     };
-                    for(var mutation of mutationsList) {
-                        if (mutation.type === 'childList') {
+                    for(var index = 0 ; index < mutationsList.length; index++) {
+                        if (mutationsList[index].type === 'childList') {
                             mckFileService.handleEncryptedElements(encryptedElements);
                         }
                     }
