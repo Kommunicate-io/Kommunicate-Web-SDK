@@ -4891,6 +4891,11 @@ var userOverride = {
                                 startTime: startTime,
                             });
                         }
+                    } else {
+                        var encryptedElements = document.querySelectorAll('.file-enc');
+                        if(encryptedElements && encryptedElements.length){
+                            mckFileService.handleEncryptedElements(encryptedElements);
+                        }
                     }
                 });
                 $mck_price_text_box.on('click', function (e) {
