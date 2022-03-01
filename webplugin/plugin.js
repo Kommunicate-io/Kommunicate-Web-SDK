@@ -236,6 +236,7 @@ function addKommunicatePluginToIframe() {
     imported.async = false;
     imported.type = 'text/javascript';
     imported.src = KOMMUNICATE_MIN_JS;
+    imported.nonce = 'noncevalue';
     addableDocument.head.appendChild(imported);
     addFullviewImageModal();
 }

@@ -233,6 +233,7 @@ function ApplozicSidebox() {
         var script = String(scriptData) + 'detectBrowserAndMakeUiVisible();';
         var tag = document.createElement('script');
         tag.innerHTML = script;
+        tag.nonce = 'noncevalue';
         return tag;
     }
     function mckLoadStyle(url) {
