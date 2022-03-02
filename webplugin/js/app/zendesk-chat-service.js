@@ -140,7 +140,9 @@ function ZendeskChatService() {
                     var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
                     var message = _this.getMessageForTranscript(currentMessageDetail);
 
-                    transcriptString += username + ": " + message +"\n";
+                    if (message) {
+                        transcriptString += username + ": " + message + "\n";
+                    }
                 }
 
                 console.log(transcriptString);
