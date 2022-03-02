@@ -156,7 +156,6 @@ function ZendeskChatService() {
     };
 
     _this.getMessageForTranscript = function(message) {
-        console.log("message: ", message);
         if (message.message) {
             return message.message;
         }
