@@ -147,11 +147,11 @@ function ZendeskChatService() {
                         username = currentGroupData.displayName;
                     }
 
-                    var message = currentMessageDetail.message ||
-                                    "TemplateId: " + currentMessageDetail.metadata.templateId ||
-                                    currentMessageDetail.fileMeta.url;
+                    var message = _this.getMessageForTranscript(currentMessageDetail);
 
-                    transcriptString += username + ": " + message +"\n";
+                    if (message) {
+                        transcriptString += username + ": " + message + "\n";
+                    }
                 }
 
                 console.log(transcriptString);
@@ -163,6 +163,18 @@ function ZendeskChatService() {
                     }
                 );
             });
+        }
+    };
+
+    _this.getMessageForTranscript = function(message) {
+        if (message.message) {
+            return message.message;
+        }
+        if (message.fileMeta && message.fileMeta.blobKey) {
+            return KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/attachment/" + message.fileMeta.blobKey;
+        }
+        if (message.metadata && message.metadata.templateId) {
+            return "TemplateId: " + message.metadata.templateId;
         }
     };
 
