@@ -132,12 +132,21 @@ function ZendeskChatService() {
 
                 var userId = kommunicate._globals.userId;
 
+                var currentGroupData = MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId];
+
                 var transcriptString = "Transcript:\n";
 
                 for (var i = messageListDetails.length-2; i >= 0 ; i--) {
                     var currentMessageDetail = messageListDetails[i];
                     
-                    var username = currentMessageDetail.to === userId ? 'User' : currentMessageDetail.to;
+                    var username = "";
+
+                    if (currentMessageDetail.to === userId) {
+                        username = "User";
+                    } else {
+                        username = currentGroupData.displayName;
+                    }
+
                     var message = _this.getMessageForTranscript(currentMessageDetail);
 
                     if (message) {
