@@ -1395,6 +1395,14 @@
     background-color: #ffffff;
     font-size: 16px;
 }
+.mck-form-text-wrapper input:disabled,
+.mck-form-dropdown-wrapper select:disabled,
+.mck-form-textarea-wrapper textarea:disabled,
+.mck-form-template-container button:disabled {
+    cursor: not-allowed;
+    background: #dddddd;
+    color: #5C6677;
+}
 .mck-form-text-wrapper label,
 .mck-form-dropdown-wrapper label,
 .mck-form-textarea-wrapper label {

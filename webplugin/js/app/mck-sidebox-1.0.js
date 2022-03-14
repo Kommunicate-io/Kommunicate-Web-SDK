@@ -606,6 +606,7 @@ var userOverride = {
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
+        var VOICE_NOTE_ENABLED = appOptions.voiceNote;
         var RATING_EMOJI_HOVER_TEXT_MAP = {
             1: MCK_LABELS['emoji.hover.text'].poor,
             5: MCK_LABELS['emoji.hover.text'].average,
@@ -862,8 +863,8 @@ var userOverride = {
                     'n-vis',
                     ''
             );
-            VOICE_INPUT_ENABLED &&
-                Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+            (VOICE_INPUT_ENABLED || VOICE_NOTE_ENABLED) &&
+                Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
 
             if (
                 KOMMUNICATE_VERSION === 'v2' &&
@@ -2313,7 +2314,7 @@ var userOverride = {
                                 placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
                                 required: 'true',
                             });
-                            return false;
+                           
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
@@ -3365,6 +3366,10 @@ var userOverride = {
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
                 document.getElementById('km-restart-conversation-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].RESET_CONVERSATION;
+                document.getElementById('km-voice-note-trigger-text').innerText =
+                    MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
+                document.getElementById('km-voice-input-trigger-text').innerText =
+                    MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3672,6 +3677,11 @@ var userOverride = {
             var $secondsLabel = $applozic('#mck-seconds');
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
+            var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
+            _this.resetMessageSentToHumanAgent = function(){
+                // used in loadTab()
+                messageSentToHumanAgent = 0;
+            }
 
             _this.hideAutoSuggestionBoxEnableTxtBox = function () {
                 if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
@@ -3876,7 +3886,7 @@ var userOverride = {
                 }
                 if (text == '' || !text.replace(/\s/g, '').length) {
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                 } else {
                     _this.showSendButton();
                     Kommunicate.typingAreaService.hideMicButton();
@@ -5265,16 +5275,23 @@ var userOverride = {
                     $mck_msg_error.html('');
                     $mck_response_text.html('');
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
-                    var sendMsgCount = $applozic('[data-msgtype=5]').length;
-                    //Lead Collection -Email Validation
+                    // Lead Collection - Email Validation
                     if (
-                        sendMsgCount == 1 &&
-                        ((KommunicateUI.leadCollectionEnabledOnAwayMessage &&
-                            KommunicateUI.awayMessageInfo.isEnabled &&
-                            KommunicateUI.awayMessageInfo.eventId == 1) ||
-                            (KommunicateUI.welcomeMessageEnabled &&
+                        messageSentToHumanAgent == 1 &&
+                        (
+                            (
+                                KommunicateUI.leadCollectionEnabledOnAwayMessage &&
+                                !KommunicateUtils.isCurrentAssigneeBot() &&
+                                KommunicateUI.awayMessageInfo.isEnabled &&
+                                KommunicateUI.awayMessageInfo.eventId == 1
+                            ) ||
+                            (
+                                KommunicateUI.welcomeMessageEnabled &&
+                                !KommunicateUtils.isCurrentAssigneeBot() &&
                                 KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
-                                KommunicateUI.anonymousUser))
+                                KommunicateUI.anonymousUser
+                            )
+                        )
                     ) {
                         var isValid = KommunicateUI.validateEmail(
                             messagePxy.message
@@ -5284,8 +5301,9 @@ var userOverride = {
                         }
                     }
                     _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfSpeechRecognitionSupported();
+                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
                     _this.sendMessage(messagePxy);
+                    !KommunicateUtils.isCurrentAssigneeBot() && messageSentToHumanAgent++;
                     return false;
                 });
                 $mck_form_field.on('click', function () {
@@ -5335,39 +5353,7 @@ var userOverride = {
                     $applozic(this).addClass('active');
                 });
             };
-            $applozic('.mck-sidebox').on('click', '#mck-mike-btn', function () {
-                $applozic(this).removeClass('vis').addClass('n-vis');
-                $applozic('.mck-stop-btn').addClass('vis').removeClass('n-vis');
-                Fr.voice.record(false, function () {
-                    $applozic('#mck-audio')
-                        .removeClass('n-vis')
-                        .addClass('vis');
-                    mckMessageService.timer();
-                });
-            });
-            $applozic('.mck-sidebox').on(
-                'click',
-                '#mck-stop-recording',
-                function () {
-                    $applozic('#mck-mike-btn')
-                        .addClass('vis')
-                        .removeClass('n-vis');
-                    $applozic('.mck-stop-btn')
-                        .addClass('n-vis')
-                        .removeClass('vis');
-                    $applozic('#mck-audio')
-                        .removeClass('vis')
-                        .addClass('n-vis');
-                    mckMessageService.stoptimer();
-                    Fr.voice.export(function (blob) {
-                        var params = {};
-                        params.file = blob;
-                        params.name = 'blob';
-                        $applozic.fn.applozic('audioAttach', params);
-                    }, 'blob');
-                    Fr.voice.stop();
-                }
-            );
+            
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
@@ -6050,41 +6036,28 @@ var userOverride = {
                                     .addClass('n-vis');
                             }
                         }
-                        // Lead Collection (Email)
-                        var sendMsgCount = $applozic('[data-msgtype=5]').length;
-                        var roleType = null;
-                        if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
-                            for (
-                                var i = 0;
-                                i <= CURRENT_GROUP_DATA.groupMembers.length;
-                                i++
-                            ) {
-                                if (
-                                    CURRENT_GROUP_DATA.groupMembers[i] &&
-                                    CURRENT_GROUP_DATA.groupMembers[i].userId ==
-                                    CURRENT_GROUP_DATA.conversationAssignee
-                                ) {
-                                    roleType =
-                                        CURRENT_GROUP_DATA.groupMembers[i]
-                                            .roleType;
-                                    break;
-                                }
-                            }
-                        }
+                        // Away message Lead Collection (Email)
+                        // var sendMsgCount = $applozic('[data-msgtype=5]').length;
                         if (
-                            sendMsgCount == 1 &&
-                            ((KommunicateUI.leadCollectionEnabledOnAwayMessage &&
-                                roleType !== 1 &&
-                                KommunicateUI.awayMessageInfo.isEnabled &&
-                                KommunicateUI.awayMessageInfo.eventId == 1) ||
-                                (KommunicateUI.welcomeMessageEnabled &&
-                                    roleType !== 1 &&
+                            messageSentToHumanAgent == 1 &&
+                            (
+                                (
+                                    KommunicateUI.leadCollectionEnabledOnAwayMessage && 
+                                    !KommunicateUtils.isCurrentAssigneeBot() &&
+                                    KommunicateUI.awayMessageInfo.isEnabled &&
+                                    KommunicateUI.awayMessageInfo.eventId == 1
+                                ) ||
+                                (
+                                    KommunicateUI.welcomeMessageEnabled &&
+                                    !KommunicateUtils.isCurrentAssigneeBot() &&
                                     KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
-                                    KommunicateUI.anonymousUser))
+                                    KommunicateUI.anonymousUser
+                                )
+                            )
                         ) {
                             KommunicateUI.displayLeadCollectionTemplate(null);
                         }
-                        sendMsgCount > 1 &&
+                        messageSentToHumanAgent > 1 &&
                             $applozic('#mck-email-collection-box')
                                 .removeClass('vis')
                                 .addClass('n-vis');
@@ -7882,6 +7855,8 @@ var userOverride = {
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
                 '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+            var SUBMITTED_FORMS = {};
+
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
                 $applozic.template('convTemplate', convbox);
@@ -8025,6 +8000,7 @@ var userOverride = {
             };
 
             _this.loadTab = function (params, callback) {
+                mckMessageService.resetMessageSentToHumanAgent();
                 var userId = KommunicateUtils.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
@@ -8606,6 +8582,40 @@ var userOverride = {
                     },
                 });
             };
+            _this.populateDataInForm = function(associatedFormKey, submittedFormDetails){
+                if(submittedFormDetails && associatedFormKey){
+                    var form = document.querySelector('[data-msgcontent="'+associatedFormKey+'"] form');
+                    var elements = form.elements;
+                    for (var i = 0, len = elements.length; i < len; ++i) {
+                        switch(elements[i].type){
+                            case 'text':
+                                elements[i].value = submittedFormDetails[elements[i].name];
+                                break;
+                            case 'password':
+                                elements[i].value = submittedFormDetails[elements[i].name];
+                                break;
+                            case 'radio':
+                                if(elements[i].value == submittedFormDetails[elements[i].name]){
+                                    elements[i].checked = true
+                                };
+                                break;
+                            case 'checkbox':
+                                var selectedCheckBoxes = submittedFormDetails[elements[i].name];
+                                if(selectedCheckBoxes && selectedCheckBoxes.indexOf(elements[i].value) != -1){
+                                    elements[i].checked = true
+                                };
+                                break;
+                            case 'submit':
+                                elements[i].classList.add("n-vis");
+                                break;
+                            default:
+                                elements[i].value = submittedFormDetails[elements[i].name]          
+                        }
+                        elements[i].readOnly = true;
+                        elements[i].disabled = true
+                    }
+                }
+            };
 
             _this.addMessage = function (
                 msg,
@@ -8983,6 +8993,20 @@ var userOverride = {
                           .tmpl('messageTemplate', msgList)
                           .prependTo('#mck-message-cell .mck-message-inner');
 
+                if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
+                    var chatContext, submittedFormDetails, associatedFormKey;
+                    if (msg.metadata["KM_CHAT_CONTEXT"]) {
+                        chatContext = typeof msg.metadata["KM_CHAT_CONTEXT"] == 'string' ? JSON.parse(msg.metadata["KM_CHAT_CONTEXT"]) : msg.metadata["KM_CHAT_CONTEXT"];
+                        submittedFormDetails = chatContext.formData;
+                        associatedFormKey = chatContext.formMsgKey;
+                        SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
+                        append && mckMessageLayout.populateDataInForm(associatedFormKey, submittedFormDetails);
+                    }else if (msg.metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM ){
+                        associatedFormKey = msg.key;
+                        submittedFormDetails = SUBMITTED_FORMS[associatedFormKey];
+                        mckMessageLayout.populateDataInForm(associatedFormKey, submittedFormDetails);
+                    };
+                }
                 if (
                     msg.contentType ==
                     KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE
@@ -14375,192 +14399,14 @@ var userOverride = {
 
             // }
             _this.audioRecoder = function (params) {
-                if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                    _this.uploadAttachment2AWS(params);
-                } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
-                    _this.customFileUpload(params);
-                } else {
-                    _this.uploadFile(params);
-                }
-            };
-            _this.customFileUpload = function (params, messagePxy) {
-                var file = params.file;
-                var stopUpload = false;
-                var data = new FormData();
-
-                var uploadErrors = [];
-                if (typeof file === 'undefined') {
-                    return;
-                }
-                if ($applozic('.mck-file-box').length > 4) {
-                    uploadErrors.push(
-                        "Can't upload more than 5 files at a time"
-                    );
-                }
-                if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
-                    uploadErrors.push(
-                        'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
-                    );
-                }
-                if (uploadErrors.length > 0) {
-                    alert(uploadErrors.toString());
-                } else {
-                    var randomId = mckUtils.randomId();
-                    var fileboxList = [
-                        {
-                            fileIdExpr: randomId,
-                            fileName: params.name,
-                            fileNameExpr:
-                                '<a href="#" target="_self" >' +
-                                params.name +
-                                '</a>',
-                            fileSizeExpr: alFileService.getFilePreviewSize(
-                                file.size
-                            ),
-                        },
-                    ];
-                    $applozic
-                        .tmpl('fileboxTemplate', fileboxList)
-                        .appendTo('#mck-file-box');
-                    var $fileContainer = $applozic('.mck-file-box.' + randomId);
-                    var $file_name = $applozic(
-                        '.mck-file-box.' + randomId + ' .mck-file-lb'
-                    );
-                    var $file_progressbar = $applozic(
-                        '.mck-file-box.' + randomId + ' .km-progress .km-bar'
-                    );
-                    var $file_progress = $applozic(
-                        '.mck-file-box.' + randomId + ' .km-progress'
-                    );
-                    var $file_remove = $applozic(
-                        '.mck-file-box.' + randomId + ' .mck-remove-file'
-                    );
-                    $file_progressbar.css('width', '0%');
-                    messagePxy &&
-                        Kommunicate.attachmentEventHandler.progressMeter(
-                            0,
-                            messagePxy.key
-                        );
-                    $file_progress.removeClass('n-vis').addClass('vis');
-                    $file_remove.attr('disabled', true);
-                    $mck_file_upload.attr('disabled', true);
-                    KommunicateUI.hideFileBox(
-                        file,
-                        $file_box,
-                        $mck_file_upload
-                    );
-                    var currTab = $mck_msg_inner.data('mck-id');
-                    var uniqueId = params.name + file.size;
-                    TAB_FILE_DRAFT[uniqueId] = currTab;
-                    $mck_msg_sbmt.attr('disabled', true);
-                    data.append('files[]', file);
-                    var xhr = new XMLHttpRequest();
-                    (xhr.upload || xhr).addEventListener(
-                        'progress',
-                        function (e) {
-                            var progress = parseInt(
-                                (e.loaded / e.total) * 100,
-                                10
-                            );
-                            $file_progressbar.css('width', progress + '%');
-                            messagePxy &&
-                                Kommunicate.attachmentEventHandler.progressMeter(
-                                    progress,
-                                    messagePxy.key
-                                );
-                        }
-                    );
-                    xhr.addEventListener('load', function (e) {
-                        var responseJson = $applozic.parseJSON(
-                            this.responseText
-                        );
-                        if (typeof responseJson === 'object') {
-                            var file_meta = responseJson.fileMeta;
-                            if (messagePxy) {
-                                messagePxy['fileMeta'] = file_meta;
-                                var optns = {
-                                    tabId: messagePxy.groupId,
-                                };
-                                stopUpload = KommunicateUI.getAttachmentStopUploadStatus(
-                                    messagePxy.key
-                                );
-                                KommunicateUI.updateAttachmentTemplate(
-                                    file_meta,
-                                    messagePxy.key
-                                );
-                                !stopUpload &&
-                                    mckMessageService.submitMessage(
-                                        messagePxy,
-                                        optns
-                                    );
-                                KommunicateUI.updateImageAttachmentPreview(
-                                    file_meta,
-                                    messagePxy.key
-                                );
-                                return;
-                            }
-                            var fileExpr =
-                                typeof file_meta === 'object'
-                                    ? '<a href="' +
-                                      file_meta.url +
-                                      '" target="_blank">' +
-                                      file_meta.name +
-                                      '</a>'
-                                    : '';
-                            var name = file_meta.name;
-                            var size = file_meta.size;
-                            var currTabId = $mck_msg_inner.data('mck-id');
-                            var uniqueId = name + size;
-                            var fileTabId = TAB_FILE_DRAFT[uniqueId];
-                            if (currTab !== currTabId) {
-                                mckMessageLayout.updateDraftMessage(
-                                    fileTabId,
-                                    file_meta
-                                );
-                                delete TAB_FILE_DRAFT[uniqueId];
-                                return;
-                            }
-                            $file_remove.attr('disabled', false);
-                            $mck_file_upload.attr('disabled', false);
-                            $mck_msg_sbmt.attr('disabled', false);
-                            delete TAB_FILE_DRAFT[uniqueId];
-                            $file_name.html(fileExpr);
-                            $file_progress.removeClass('vis').addClass('n-vis');
-                            $applozic('.mck-file-box .progress')
-                                .removeClass('vis')
-                                .addClass('n-vis');
-                            $mck_text_box.removeAttr('required');
-                            FILE_META.push(file_meta);
-                            $fileContainer.data('mckfile', file_meta);
-                            $mck_file_upload.children('input').val('');
-                            return false;
-                        } else {
-                            $file_remove.attr('disabled', false);
-                            $mck_msg_sbmt.attr('disabled', false);
-                            // FILE_META
-                            // = '';
-                            $file_remove.trigger('click');
-                        }
-                    });
-                    var url = MCK_CUSTOM_URL + CUSTOM_FILE_UPLOAD_URL;
-
-                    xhr.open('post', url, true);
-                    window.Applozic.ALApiService.addRequestHeaders(xhr);
-                    xhr.send(data);
-                    return false;
-                }
+                // upload all attachements to aws irrescpective of MCK_CUSTOM_UPLOAD_SETTINGS
+                _this.uploadAttachment2AWS(params);
             };
             _this.uploadAttachemnt = function (params, messagePxy) {
-                if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                    _this.uploadAttachment2AWS(params, messagePxy);
-                } else if (MCK_CUSTOM_UPLOAD_SETTINGS === 'googleCloud') {
-                    _this.customFileUpload(params, messagePxy);
-                } else {
-                    _this.uploadFile(params, messagePxy);
-                }
+                // upload all attachements to aws irrespective of MCK_CUSTOM_UPLOAD_SETTINGS
+                _this.uploadAttachment2AWS(params, messagePxy);
             };
+
             _this.uploadFile = function (params, messagePxy) {
                 var file = params.file;
                 var data = new Object();
@@ -14729,6 +14575,9 @@ var userOverride = {
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
+                            if (params.callback) {
+                                params.callback();
+                            }
                             return false;
                         } else {
                             $file_remove.attr('disabled', false);
@@ -14754,6 +14603,7 @@ var userOverride = {
                     });
                 }
             };
+
             _this.uploadAttachment2AWS = function (params, messagePxy) {
                 var file = params.file;
                 var data = new FormData();
@@ -14917,6 +14767,9 @@ var userOverride = {
                             FILE_META.push(file_meta);
                             $fileContainer.data('mckfile', file_meta);
                             $mck_file_upload.children('input').val('');
+                            if (params.callback) {
+                                params.callback();
+                            }
                             return false;
                         } else {
                             $file_remove.attr('disabled', false);
@@ -14926,10 +14779,7 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
-                    var queryParams;
-                    if (MCK_CUSTOM_UPLOAD_SETTINGS === 'awsS3Server') {
-                        queryParams = '?aclsPrivate=true';
-                    };  
+                    var queryParams = '?aclsPrivate=true';
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
                     queryParams && (url = url + queryParams);
                     xhr.open('post', url, true);
