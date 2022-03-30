@@ -9646,7 +9646,7 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('audio') !== -1
                     ) {
                         return (
-                            '<a href="#" target="_self" ><audio controls class="mck-audio-player'+
+                            '<a href="javascript:void(0)" target="_self" ><audio controls class="mck-audio-player'+
                             (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
