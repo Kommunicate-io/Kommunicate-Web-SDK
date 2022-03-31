@@ -3108,6 +3108,10 @@ var userOverride = {
                             'aria-label',
                             preLeadCollection.field
                         );
+                        kmChatInput.setAttribute(
+                            'pattern',
+                            /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+                        );
                     }
                     $applozic(kmChatInputDiv).append(kmChatInput);
                     $applozic('.km-last-child').append(kmChatInputDiv);
@@ -4724,7 +4728,9 @@ var userOverride = {
                             );
                     }
                     if (email) {
-                        if (!KommunicateUI.validateEmail(email))  return false;
+                        if (!KommunicateUI.validateEmail(email)){
+                            return false;
+                        }  
                         userId = email;
                         KommunicateUtils.setCookie({
                             name:
