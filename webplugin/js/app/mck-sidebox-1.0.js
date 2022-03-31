@@ -4723,14 +4723,8 @@ var userOverride = {
                                 _this.phoneNumberValidation
                             );
                     }
-                    function ValidateEmail(email) {
-                        var regexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        if(regexp.test(String(email).toLowerCase())) return true;
-                        alert("You have entered an invalid email address!");
-                        return false;
-                    }
                     if (email) {
-                        if(!ValidateEmail(email)) return false;
+                        if (!KommunicateUI.validateEmail(email))  return false;
                         userId = email;
                         KommunicateUtils.setCookie({
                             name:
