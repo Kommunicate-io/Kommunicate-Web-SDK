@@ -3118,7 +3118,7 @@ var userOverride = {
                         );
                         kmChatInput.setAttribute(
                             'oninvalid',
-                            "setCustomValidity('Please enter a valid email address')"
+                            `setCustomValidity("${MCK_LABELS['lead.collection'].errorEmail}")`
                         );
                         kmChatInput.setAttribute(
                             'oninput',
