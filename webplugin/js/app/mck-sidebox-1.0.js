@@ -3109,7 +3109,19 @@ var userOverride = {
                         );
                         kmChatInput.setAttribute(
                             'pattern',
-                            /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/
+                            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+                        );
+                        kmChatInput.setAttribute(
+                            'title',
+                            ''
+                        );
+                        kmChatInput.setAttribute(
+                            'oninvalid',
+                            "setCustomValidity('Please enter a valid email address')"
+                        );
+                        kmChatInput.setAttribute(
+                            'oninput',
+                            "setCustomValidity('')"
                         );
                     }
                     $applozic(kmChatInputDiv).append(kmChatInput);
