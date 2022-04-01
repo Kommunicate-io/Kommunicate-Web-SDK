@@ -4739,10 +4739,7 @@ var userOverride = {
                                 _this.phoneNumberValidation
                             );
                     }
-                    if (email) {
-                        if (!KommunicateUI.validateEmail(email)){
-                            return false;
-                        }  
+                    if (email) { 
                         userId = email;
                         KommunicateUtils.setCookie({
                             name:
