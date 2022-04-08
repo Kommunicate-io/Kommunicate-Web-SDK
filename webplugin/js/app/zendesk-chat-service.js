@@ -130,6 +130,7 @@ function ZendeskChatService() {
 
                 var messageListDetails = result.message;
                 var userDetails = result.userDetails;
+                console.log("userDetails are ",userDetails);
 
                 var userId = kommunicate._globals.userId;
 
@@ -146,8 +147,7 @@ function ZendeskChatService() {
                         username = "User";
                     } else {
                         //Get bot name
-                        var botId = currentMessageDetail.to;
-                        username = _this.getBotNameById(botId, userDetails);
+                        username = _this.getBotNameById(currentMessageDetail.to, userDetails);
                     }
 
                     var message = _this.getMessageForTranscript(currentMessageDetail);
