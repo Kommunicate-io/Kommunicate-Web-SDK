@@ -3107,6 +3107,24 @@ var userOverride = {
                             'aria-label',
                             preLeadCollection.field
                         );
+                        if (preLeadCollection.type == "email"){
+                            kmChatInput.setAttribute(
+                                'pattern',
+                                "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+                            );
+                            kmChatInput.setAttribute(
+                                'title',
+                                ''
+                            );
+                            kmChatInput.setAttribute(
+                                'oninvalid',
+                                'setCustomValidity(' + MCK_LABELS['lead.collection'].errorEmail + ')'
+                            );
+                            kmChatInput.setAttribute(
+                                'oninput',
+                                "setCustomValidity('')"
+                            );
+                        } 
                     }
                     $applozic(kmChatInputDiv).append(kmChatInput);
                     $applozic('.km-last-child').append(kmChatInputDiv);
@@ -4722,7 +4740,7 @@ var userOverride = {
                                 _this.phoneNumberValidation
                             );
                     }
-                    if (email) {
+                    if (email) { 
                         userId = email;
                         KommunicateUtils.setCookie({
                             name:
@@ -9624,7 +9642,7 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('audio') !== -1
                     ) {
                         return (
-                            '<a href="#" target="_self" ><audio controls class="mck-audio-player'+
+                            '<a href="javascript:void(0)" target="_self" ><audio controls class="mck-audio-player'+
                             (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
