@@ -63,20 +63,18 @@ Kommunicate.getFaqCategories = function(data){
     KommunicateKB.getCategories({
         data: {appId: data.appId, baseUrl: Kommunicate.getBaseUrl()},
         success: function (response) {
-            if (
-                response.data &&
-                response.data.length > 0 &&
-                $applozic('.km-kb-container').hasClass('n-vis')
-            ) {
-                $applozic('.km-kb-container')
-                    .removeClass('n-vis')
-                    .addClass('vis');
-                KommunicateUI.adjustConversationTitleHeadingWidth(
-                    kommunicate._globals.popupWidget
-                );
-            }
+            var initializeFAQ = false;
+            if (response.data && response.data.length == 1) {
+                // if only 1 category is present then no need to show the category.
+                kommunicate &&
+                    kommunicate._globals &&
+                    (kommunicate._globals.faqCategory = response.data[0].name);
+                Kommunicate.getFaqList(data, response.data[0].name);
+                return;
+            };
             $applozic.each(response.data, function (i, category) {
                 if(!category || !category.articleCount || !category.name || !category.description){ return };
+                initializeFAQ = true;
                 var categoryName = category.name;
                 var categoryDescription = category.description;
                 $applozic('#km-faq-category-list-container').append(
@@ -90,7 +88,19 @@ Kommunicate.getFaqCategories = function(data){
                     '</div> </div>'
                 );
             });
-            KommunicateUI.initFaq()
+
+            if (
+                $applozic('.km-kb-container').hasClass('n-vis') &&
+                initializeFAQ
+            ) {
+                $applozic('.km-kb-container')
+                    .removeClass('n-vis')
+                    .addClass('vis');
+                KommunicateUI.adjustConversationTitleHeadingWidth(
+                    kommunicate._globals.popupWidget
+                );
+            };
+            initializeFAQ && KommunicateUI.initFaq();
         },
         error: function () { },
     })

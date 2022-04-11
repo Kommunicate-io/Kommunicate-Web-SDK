@@ -4838,6 +4838,21 @@ var userOverride = {
                         _this.sendPriceMessage();
                     }
                 });
+                var MSG_LIST_MUTATION_OBSERVER = new MutationObserver(function(mutationsList, observer){
+                    // callback to be executed when a childList mutation happens.
+                    var encryptedElements = document.querySelectorAll('.file-enc');
+                    if(!encryptedElements.length){
+                        return;
+                    };
+                    for(var index = 0 ; index < mutationsList.length; index++) {
+                        if (mutationsList[index].type === 'childList') {
+                            mckFileService.handleEncryptedElements(encryptedElements);
+                        }
+                    }
+                });
+
+                MSG_LIST_MUTATION_OBSERVER.observe($mck_msg_inner[0], { childList: true });
+
                 $mck_msg_inner.bind('scroll', function () {
                     if ($mck_msg_inner.find('.mck-contact-list').length > 0) {
                         if (
@@ -4875,40 +4890,10 @@ var userOverride = {
                                 startTime: startTime,
                             });
                         }
-                    }else{
+                    } else {
                         var encryptedElements = document.querySelectorAll('.file-enc');
-                        // Array.prototype.slice.call(lazyImages) convertes nodeList to Array for traversal
                         if(encryptedElements && encryptedElements.length){
-                            for(var i = 0; i < encryptedElements.length; i++){
-                                switch (encryptedElements[i].tagName) {
-                                    case 'IMG':
-                                        var img = encryptedElements[i];
-                                        if (KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                            KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
-                                        }
-                                        break;
-                                    case 'AUDIO':
-                                        var video = encryptedElements[i];
-                                        if (KommunicateUI.isInView(video, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                            KommunicateUI.processEncMedia(video, video.getAttribute('data-blobkey'))
-                                        }
-                                        break;
-                                    case 'VIDEO':
-                                        var video = encryptedElements[i];
-                                        if (KommunicateUI.isInView(video, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                            KommunicateUI.processEncMedia(video, video.getAttribute('data-blobkey'))
-                                        }
-                                        break;
-                                    case 'A':
-                                        var anchorTag = encryptedElements[i];
-                                        if (KommunicateUI.isInView(anchorTag, document.querySelector('#mck-message-cell .mck-message-inner'))) {
-                                            KommunicateUI.processEncFile(anchorTag, anchorTag.getAttribute('data-blobkey'))
-                                        }
-                                        break;
-                                    default:
-                                        console.log(encryptedElements[i]);
-                                }
-                            }
+                            mckFileService.handleEncryptedElements(encryptedElements);
                         }
                     }
                 });
@@ -14901,6 +14886,27 @@ var userOverride = {
                     $mck_msg_sbmt.attr('disabled', true);
                     $file_remove.attr('disabled', true);
                     $file_progress.removeClass('n-vis').addClass('vis');
+                }
+            };
+            _this.handleEncryptedElements = function(encryptedElements){
+                for(var i = 0; i < encryptedElements.length; i++){
+                    var isElementInView = KommunicateUI.isInView(encryptedElements[i], document.querySelector('#mck-message-cell .mck-message-inner'))
+                    if (!isElementInView) { return };
+                    switch (encryptedElements[i].tagName) {
+                        case 'IMG':
+                            KommunicateUI.processLazyImage(encryptedElements[i], encryptedElements[i].getAttribute('data-thumbnailBlobKey'))
+                            break;
+                        case 'AUDIO':
+                        case 'VIDEO':
+                            // audio or video
+                            KommunicateUI.processEncMedia(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
+                            break;
+                        case 'A':
+                            KommunicateUI.processEncFile(encryptedElements[i], encryptedElements[i].getAttribute('data-blobkey'))
+                            break;
+                        default:
+                            console.log(encryptedElements[i]);
+                    }
                 }
             };
         }

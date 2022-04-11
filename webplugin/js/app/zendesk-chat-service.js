@@ -118,6 +118,63 @@ function ZendeskChatService() {
                     console.log('zChat.sendChatMsg ', err, data);
                 }
             );
+
+            //Sending chat transcript        
+            kommunicate.client.getChatListByGroupId({ 
+                groupId: CURRENT_GROUP_DATA.tabId 
+            }, function(err, result) {
+                if (err || !result) {
+                    console.log('An error occurred while fetching chatList ',err);
+                    return;
+                }
+
+                var messageListDetails = result.message;
+
+                var userId = kommunicate._globals.userId;
+
+                var currentGroupData = MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId];
+
+                var transcriptString = "Transcript:\n";
+
+                for (var i = messageListDetails.length-2; i >= 0 ; i--) {
+                    var currentMessageDetail = messageListDetails[i];
+                    
+                    var username = "";
+
+                    if (currentMessageDetail.to === userId) {
+                        username = "User";
+                    } else {
+                        username = currentGroupData.displayName;
+                    }
+
+                    var message = _this.getMessageForTranscript(currentMessageDetail);
+
+                    if (message) {
+                        transcriptString += username + ": " + message + "\n";
+                    }
+                }
+
+                console.log(transcriptString);
+
+                zChat.sendChatMsg(
+                    transcriptString,
+                    function (err, data) {
+                        console.log('sending transcript to zendesk',err, data);
+                    }
+                );
+            });
+        }
+    };
+
+    _this.getMessageForTranscript = function(message) {
+        if (message.message) {
+            return message.message;
+        }
+        if (message.fileMeta && message.fileMeta.blobKey) {
+            return KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/attachment/" + message.fileMeta.blobKey;
+        }
+        if (message.metadata && message.metadata.templateId) {
+            return "TemplateId: " + message.metadata.templateId;
         }
     };
 
