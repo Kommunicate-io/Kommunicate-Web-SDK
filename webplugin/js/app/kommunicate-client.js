@@ -199,5 +199,21 @@ Kommunicate.client = {
                 callback(err);
             },
         });
+    },
+
+    resolveConversation: function (options, callback) {
+        $applozic.ajax({
+            url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/group/status/change?groupId=" + options.groupId + "&status=2",
+            type: 'patch',
+            headers: {
+                'Application-Key': kommunicate._globals.appId
+            },
+            success: function (result) {
+                callback(null, result)
+            },
+            error: function (err) {
+                callback(err);
+            },
+        });
     }
 };

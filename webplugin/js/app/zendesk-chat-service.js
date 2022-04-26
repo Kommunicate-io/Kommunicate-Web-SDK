@@ -74,6 +74,23 @@ function ZendeskChatService() {
                     _this.handleZendeskAgentMessageEvent(eventDetails);
                 } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
                     _this.handleZendeskAgentFileSendEvent(eventDetails);
+                } else if (eventDetails.type == "chat.memberleave") {
+                    //Resolve conversation on widget
+                    KommunicateConstants.CONVERSATION_RESOLVED_STATUS = true;
+                    KommunicateUI.showClosedConversationBanner(
+                        true
+                    );
+                    //Call API to resolve the chat on Dashboard
+                    kommunicate.client.resolveConversation({ 
+                        groupId: CURRENT_GROUP_DATA.tabId 
+                    }, function(err, result) {
+                        if (err || !result) {
+                            console.log('An error occurred while resolving conversation ',err);
+                            return;
+                        }
+                        console.log(result)
+                    });
+
                 }
             });
         }
