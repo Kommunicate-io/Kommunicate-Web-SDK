@@ -80,6 +80,8 @@ function ZendeskChatService() {
                     KommunicateUI.showClosedConversationBanner(
                         true
                     );
+                    KommunicateUI.isConvJustResolved = true;
+                    
                     //Call API to resolve the chat on Dashboard
                     kommunicate.client.resolveConversation({ 
                         groupId: CURRENT_GROUP_DATA.tabId 
