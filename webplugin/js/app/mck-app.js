@@ -176,7 +176,7 @@ function ApplozicSidebox() {
                     body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
                     var kmScript  = window.parent && window.parent.document.getElementById('km-widget-script');
-                    if(kmScript.nonce){
+                    if(kmScript && kmScript.nonce){
                         scriptContent.nonce = kmScript.nonce;
                     }
                     body.appendChild(scriptContent);
