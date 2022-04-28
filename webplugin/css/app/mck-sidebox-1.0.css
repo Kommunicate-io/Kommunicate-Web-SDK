@@ -5631,20 +5631,20 @@ div#separator {
 	text-align: center;
   }
   
-  div#separator::before,
-  div#separator::after {
+div#separator::before,
+div#separator::after {
 	content: '';
 	flex: 1;
 	border-bottom: 1px solid #000;
-  }
-  
-  div#separator:not(:empty)::before {
+}
+
+div#separator:not(:empty)::before {
 	margin-right: .25em;
-  }
-  
-  div#separator:not(:empty)::after {
+}
+
+div#separator:not(:empty)::after {
 	margin-left: .25em;
-  }
+}
 
 span#mck-resolved-text {
 	background: white;
