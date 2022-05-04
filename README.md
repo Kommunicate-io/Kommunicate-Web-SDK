@@ -1,4 +1,4 @@
-<img src="https://kommunicate-prod.s3.amazonaws.com/logo/Header.jpg" />
+<img src="https://s3.amazonaws.com/kommunicate.io/Header.jpg" />
 
 # [Kommunicate ](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web)Live Chat Plugin and Chatbot Integration For Web
 
