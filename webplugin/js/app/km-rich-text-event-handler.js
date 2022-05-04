@@ -647,7 +647,17 @@ Kommunicate.richMsgEventHandler = {
             };
             xhr.open('POST', form.action);
             xhr.send(JSON.stringify(data));
-        } else {
+        }else if(requestType == 'application/json'){
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', form.action);
+            xhr.setRequestHeader('Content-type','application/json');
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    // for success response : this.responseText
+                }
+            };
+            xhr.send(data);
+        }else {
             !isActionableForm && form.submit(); // called for submit button
             isActionableForm &&
                 KommunicateUtils.isURL(form.action) &&
