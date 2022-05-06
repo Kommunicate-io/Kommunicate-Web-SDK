@@ -17,7 +17,7 @@ var CURRENT_GROUP_DATA={};
         $applozic.extend(true, w.applozic, { applozic: { PRODUCT_ID: "applozic-chat" } });
     }
     var default_options = {
-        baseUrl: KM_PLUGIN_SETTINGS.applozicBaseUrl ||'https://chat.kommunicate.io',
+        baseUrl: 'https://chat.kommunicate.io',
         fileBaseUrl: 'https://applozic.appspot.com',
         customFileUrl:'https://googleupload.applozic.com', // google cloud file upload url
         genereateCloudFileUrl: "https://googleupload.applozic.com/files/url?key={key}", // generate viewable link for a file incase of file upload on google cloud
