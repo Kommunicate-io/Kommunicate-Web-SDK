@@ -175,6 +175,10 @@ function ApplozicSidebox() {
                     var body = document.getElementsByTagName('body')[0];
                     body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
+                    var kmScript  = window.parent && window.parent.document.getElementById('km-widget-script');
+                    if(kmScript && kmScript.nonce){
+                        scriptContent.nonce = kmScript.nonce;
+                    }
                     body.appendChild(scriptContent);
                     mckInitPluginScript();
                 }

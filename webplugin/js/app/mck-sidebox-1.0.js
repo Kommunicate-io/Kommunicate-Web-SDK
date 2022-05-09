@@ -3357,6 +3357,8 @@ var userOverride = {
                     MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML =
                     MCK_LABELS['email.error.alert'];
+                document.getElementById('mck-resolved-text').innerHTML =
+                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-rated-text').innerHTML =
                     MCK_LABELS['csat.rating'].CONVERSATION_RATED;
                 document.getElementById('mck-rate-conversation').innerHTML =
@@ -7855,9 +7857,10 @@ var userOverride = {
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             var csatModule =
-                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">' +
+                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text">' + 
+                MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
-                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
             var SUBMITTED_FORMS = {};
 
             _this.latestMessageReceivedTime = '';
