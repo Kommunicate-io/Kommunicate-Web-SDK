@@ -129,6 +129,8 @@ function ZendeskChatService() {
                 }
 
                 var messageListDetails = result.message;
+                var userDetails = result.userDetails;
+                console.log("userDetails are ",userDetails);
 
                 var userId = kommunicate._globals.userId;
 
@@ -144,12 +146,13 @@ function ZendeskChatService() {
                     if (currentMessageDetail.to === userId) {
                         username = "User";
                     } else {
-                        username = currentGroupData.displayName;
+                        //Get bot name
+                        username = _this.getBotNameById(currentMessageDetail.to, userDetails);
                     }
 
                     var message = _this.getMessageForTranscript(currentMessageDetail);
 
-                    if (message) {
+                    if (username && message) {
                         transcriptString += username + ": " + message + "\n";
                     }
                 }
@@ -164,6 +167,16 @@ function ZendeskChatService() {
                 );
             });
         }
+    };
+
+    _this.getBotNameById = function(botId, userDetails) {
+        for (var i = 0; i<userDetails.length; i++) {
+            var currentUserDetail = userDetails[i];
+            if (currentUserDetail.userId == botId) {
+                return currentUserDetail.userName;
+            }
+        }
+        return "";
     };
 
     _this.getMessageForTranscript = function(message) {
