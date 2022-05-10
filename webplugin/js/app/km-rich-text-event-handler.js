@@ -651,7 +651,7 @@ Kommunicate.richMsgEventHandler = {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', form.action);
             xhr.setRequestHeader('Content-type','application/json');
-            xhr.send(data);
+            xhr.send(JSON.stringify(data));
         }else {
             !isActionableForm && form.submit(); // called for submit button
             isActionableForm &&
