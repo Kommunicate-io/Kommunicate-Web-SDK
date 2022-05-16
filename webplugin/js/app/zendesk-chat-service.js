@@ -187,13 +187,7 @@ function ZendeskChatService() {
             message: event.msg,
             fromUserName: event.nick.split(":")[1],
             groupId: CURRENT_GROUP_DATA.tabId
-            //defaultMessageMetaData: {source : "zopim"}
         };
-
-        // var zopimIdentifier = {
-        //     defaultMessageMetaData: {source : "zopim"}
-        // };
-
         return mckUtils.ajax({
             url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/message/send",
             type: 'post',
