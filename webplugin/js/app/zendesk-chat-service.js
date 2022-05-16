@@ -242,8 +242,7 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
     if (kommunicate._globals.zendeskChatSdkKey) {
         var currentGroupData = MCK_GROUP_MAP[event.tabId];
-        var conversationInfo = 
-        {
+        var conversationInfo = {
           groupId: event.tabId,
           metadata: {
             "source" : "zopim"
