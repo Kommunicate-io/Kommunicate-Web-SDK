@@ -8,6 +8,7 @@ function ZendeskChatService() {
 
     _this.init = function (zendeskChatSdkKey) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
+        
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -186,7 +187,12 @@ function ZendeskChatService() {
             message: event.msg,
             fromUserName: event.nick.split(":")[1],
             groupId: CURRENT_GROUP_DATA.tabId
+            //defaultMessageMetaData: {source : "zopim"}
         };
+
+        // var zopimIdentifier = {
+        //     defaultMessageMetaData: {source : "zopim"}
+        // };
 
         return mckUtils.ajax({
             url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/message/send",
@@ -242,6 +248,14 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
     if (kommunicate._globals.zendeskChatSdkKey) {
         var currentGroupData = MCK_GROUP_MAP[event.tabId];
+        var conversationInfo = 
+        {
+          groupId: event.tabId,
+          metadata: {
+            "source" : "zopim"
+          }
+        }
+        Kommunicate.updateConversationMetadata(conversationInfo);
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
