@@ -257,6 +257,7 @@ function ZendeskChatService() {
             true
         );
         KommunicateUI.isConvJustResolved = true;
+        KommunicateUI.isConversationResolvedFromZendesk= true;
         
         //Call API to resolve the conversation on Dashboard
         kommunicate.client.resolveConversation({ 

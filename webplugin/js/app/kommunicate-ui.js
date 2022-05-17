@@ -13,6 +13,7 @@ KommunicateUI = {
     showResolvedConversations: false,
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
+    isConversationResolvedFromZendesk: false,
     convRatedTabIds: {
         // using for optimize the feedback get api call
         // [tabId]: 1 => init the feedback api
