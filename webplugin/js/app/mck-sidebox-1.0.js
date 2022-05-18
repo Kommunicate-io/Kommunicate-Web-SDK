@@ -3813,6 +3813,7 @@ var userOverride = {
                         );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
+                    KommunicateUI.isConversationResolvedFromZendesk = false;
                     mckMessageLayout.loadDropdownOptions();
                 }
             };
@@ -7858,10 +7859,10 @@ var userOverride = {
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             var csatModule =
-            '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${isConversationResolvedFromZendesk ? "" : "n-vis"}>' + 
-            MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
-            MCK_LABELS['csat.rating'].CONVERSATION_RATED +
-            '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
+                MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
+                MCK_LABELS['csat.rating'].CONVERSATION_RATED +
+                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
             var SUBMITTED_FORMS = {};
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
@@ -9049,11 +9050,16 @@ var userOverride = {
                                 '"' + userFeedback.comments.trim() + '"';
                         }
 
+                        var resolutionStatusClass = "";
+                        if (KommunicateUI.isConversationResolvedFromZendesk == false) {
+                            resolutionStatusClass = "n-vis"
+                        }
+
                         var ratingData = [
                             {
                                 ratingSmileSVG: ratingSmileSVG,
                                 ratingComment: ratingComment,
-                                isConversationResolvedFromZendesk: KommunicateUI.isConversationResolvedFromZendesk
+                                resolutionStatusClass: resolutionStatusClass
                             },
                         ];
                         $applozic(

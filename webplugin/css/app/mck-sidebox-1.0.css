@@ -5594,17 +5594,6 @@ div#mck-waiting-queue {
 	margin: 0 5px -4px 3px;
 }
 
-/* .km-csat-skeleton .mck-rated:after,
-.km-csat-skeleton .mck-rated:before {
-	content: "";
-	position: absolute;
-	height: 8px;
-	border-top: 1px solid #e2e2e2;
-	top: 50%;
-	width: 600px;
-	z-index: 0;
-} */
-
 .km-csat-skeleton .mck-rated:after {
 	left: 79%;
 }
