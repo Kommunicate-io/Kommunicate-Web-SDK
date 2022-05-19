@@ -9051,7 +9051,7 @@ var userOverride = {
                         }
 
                         var resolutionStatusClass = "";
-                        if (KommunicateUI.isConversationResolvedFromZendesk == false) {
+                        if (!KommunicateUI.isConversationResolvedFromZendesk) {
                             resolutionStatusClass = "n-vis"
                         }
 
