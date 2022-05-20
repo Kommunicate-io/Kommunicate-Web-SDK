@@ -9052,14 +9052,14 @@ var userOverride = {
 
                         var resolutionStatusClass = "";
                         if (!KommunicateUI.isConversationResolvedFromZendesk) {
-                            resolutionStatusClass = "n-vis"
+                            resolutionStatusClass = "n-vis";
                         }
 
                         var ratingData = [
                             {
                                 ratingSmileSVG: ratingSmileSVG,
                                 ratingComment: ratingComment,
-                                resolutionStatusClass: resolutionStatusClass
+                                resolutionStatusClass: resolutionStatusClass,
                             },
                         ];
                         $applozic(
