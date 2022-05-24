@@ -255,6 +255,13 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
     if (kommunicate._globals.zendeskChatSdkKey) {
         var currentGroupData = MCK_GROUP_MAP[event.tabId];
+        var conversationInfo = {
+            groupId: event.tabId,
+            metadata: {
+                "source" : "zopim"
+            }
+        }
+        Kommunicate.updateConversationMetadata(conversationInfo);
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
