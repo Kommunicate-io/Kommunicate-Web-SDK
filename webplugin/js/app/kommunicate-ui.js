@@ -1164,6 +1164,20 @@ KommunicateUI = {
                     'n-vis'
                 );
             }
+            var isCSATenabled = kommunicate._globals.oneTimeRating
+            ? kommunicate._globals.collectFeedback &&
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
+            : kommunicate._globals.collectFeedback;
+            if (!isCSATenabled) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-conversation-status-box'],
+                    },
+                    'n-vis',
+                    'vis'
+                );   
+            }
             return;
         }
         if (
