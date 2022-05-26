@@ -13,6 +13,7 @@ KommunicateUI = {
     showResolvedConversations: false,
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
+    isConversationResolvedFromZendesk: false,
     convRatedTabIds: {
         // using for optimize the feedback get api call
         // [tabId]: 1 => init the feedback api
@@ -1136,6 +1137,49 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
+        if (KommunicateUI.isConversationResolvedFromZendesk) {
+            KommunicateUI.triggerCSAT();
+            if (document.getElementById('mck-csat-close').className == "n-vis") {
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-csat-close'],
+                    },
+                    'vis',
+                    'n-vis'
+                );
+            }
+            document.getElementById('mck-submit-comment').onclick = function (
+                e
+            ) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-ratings-smilies'],
+                    },
+                    'n-vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['csat-1'],
+                    },
+                    'n-vis'
+                );
+            }
+            var isCSATenabled = kommunicate._globals.oneTimeRating
+            ? kommunicate._globals.collectFeedback &&
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
+            : kommunicate._globals.collectFeedback;
+            if (!isCSATenabled) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-conversation-status-box'],
+                    },
+                    'n-vis',
+                    'vis'
+                );   
+            }
+            return;
+        }
         if (
             isCSATenabled &&
             isConversationClosed &&
