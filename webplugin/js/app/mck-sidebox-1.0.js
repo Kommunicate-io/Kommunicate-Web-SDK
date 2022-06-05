@@ -8414,6 +8414,7 @@ var userOverride = {
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
+                        if (message && message.metadata && message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]) return true;
                         if (!(typeof message.to === 'undefined')) {
                             !enableAttachment &&
                                 (enableAttachment =
@@ -15993,6 +15994,14 @@ var userOverride = {
                         conversationAssigneeDetails.roleType,
                         isAgentOffline
                     ); 
+                } else if (messageType === 'APPLOZIC_33') {
+                    if(resp.message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]){
+                        var key = resp.message.key;
+                        var groupId = resp.message.groupId;
+                        var isGroup = true;
+                        mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        // events.onMessageDeleted(eventResponse);
+                    }
                 } else {
                     var message = resp.message;
                     // var userIdArray =
