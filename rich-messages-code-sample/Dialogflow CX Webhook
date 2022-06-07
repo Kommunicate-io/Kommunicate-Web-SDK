@@ -1,14 +1,70 @@
-Dialogflow CX Webhook
+Dialogflow CX Webhook for 
 
-Using webhooks in Dialogflow CX is easy. 
 
-1. Enable the webhook for your intent. If you have created a webhook already, you can select the webhook you want to use or create a new one.
+Suggestion Replies using Webhook
 
-2. You can also create the webhooks under Manage Section.
+```json
+{
+	"fulfillmentResponse": {
+		"messages": [{
+			"payload": {
+				"message": "Showing the text for the example buttons",
+				"platform": "kommunicate",
+				"metadata": {
+					"contentType": "300",
+					"templateId": "6",
+					"payload": [{
+							"title": "Button 1",
+							"message": "Message for Example 1."
+						},
+						{
+							"title": "Button 2",
+							"message": "Message for Example 2"
+						},
+						{
+							"title": "Button 3",
+							"message": "Message for long button"
+						}
+					]
+				}
+			}
+		}]
+	}
+}
+```
 
-Once you have enabled the webhook and set it up your response. It will be rendered on Kommunicate UI:
+Link Buttons using Webhook:
 
-Here is an example of a webhook response for buttons and links buttons:
+```json
+{
+	"fulfillmentResponse": {
+		"messages": [{
+			"payload": {
+				"message": "Showing the text for the Links",
+				"platform": "kommunicate",
+				"metadata": {
+					"contentType": "300",
+					"templateId": "3",
+					"payload": [{
+							"type": "link",
+							"url": "https://www.google.com",
+							"name": "Go To Google"
+						},
+						{
+							"type": "link",
+							"url": "https://www.facebook.com",
+							"name": "Go To Facebook",
+							"openLinkInNewTab": false
+						}
+					]
+				}
+			}
+		}]
+	}
+}
+```
+
+Buttons and Link Buttons in single payload
 
 ```json
 {
@@ -59,6 +115,44 @@ Here is an example of a webhook response for buttons and links buttons:
 				}
 			}
 		]
+	}
+}
+```
+
+Card
+
+```json
+{
+	"fulfillmentResponse": {
+		"messages": [{
+			"payload": {
+				"message": "Showing the text for the example buttons",
+				"platform": "kommunicate",
+				"metadata": {
+					"contentType": "300",
+					"templateId": "10",
+					"payload": [{
+						"title": "Card Title",
+						"subtitle": "Card Subtitle ",
+						"header": {
+							"overlayText": "Overlay Text",
+							"imgSrc": "Header image for the card"
+						},
+						"description": "Description",
+						"titleExt": "Title extension",
+						"buttons": [{
+							"name": "Link Button",
+							"action": {
+								"type": "link",
+								"payload": {
+									"url": "https://www.facebook.com"
+								}
+							}
+						}]
+					}]
+				}
+			}
+		}]
 	}
 }
 ```
