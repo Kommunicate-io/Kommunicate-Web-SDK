@@ -3357,6 +3357,8 @@ var userOverride = {
                     MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML =
                     MCK_LABELS['email.error.alert'];
+                document.getElementById('mck-resolved-text').innerHTML =
+                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-rated-text').innerHTML =
                     MCK_LABELS['csat.rating'].CONVERSATION_RATED;
                 document.getElementById('mck-rate-conversation').innerHTML =
