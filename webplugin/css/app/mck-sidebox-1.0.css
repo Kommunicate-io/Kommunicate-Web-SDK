@@ -5626,11 +5626,11 @@ div#separator::after {
 }
 
 div#separator:not(:empty)::before {
-	margin-right: .25em;
+	margin-right: 1em;
 }
 
 div#separator:not(:empty)::after {
-	margin-left: .25em;
+	margin-left: 1em;
 }
 
 span#mck-resolved-text {
