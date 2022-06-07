@@ -5622,7 +5622,7 @@ div#separator::before,
 div#separator::after {
 	content: '';
 	flex: 1;
-	border-bottom: 1px solid #000;
+	border-bottom: 1px solid #e2e2e2;
 }
 
 div#separator:not(:empty)::before {
