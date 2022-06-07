@@ -5571,6 +5571,7 @@ div#mck-waiting-queue {
 .km-csat-skeleton {
 	padding: 0 10px;
 	position: relative;
+	margin-top: 3px;
 }
 
 .km-csat-skeleton .mck-rated {
