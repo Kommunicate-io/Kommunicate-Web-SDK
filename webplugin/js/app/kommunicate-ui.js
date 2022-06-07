@@ -1148,6 +1148,16 @@ KommunicateUI = {
                     'n-vis'
                 );
             }
+
+            document.getElementById('mck-csat-close').onclick = function (e) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-ratings-smilies'],
+                    },
+                    'n-vis'
+                );
+            }
+
             document.getElementById('mck-submit-comment').onclick = function (
                 e
             ) {
