@@ -1178,6 +1178,45 @@ KommunicateUI = {
                     'vis'
                 );   
             }
+            var restartConversation = document.getElementById(
+                'mck-restart-conversation'
+            );
+            restartConversation.addEventListener('click', function () {
+                Kommunicate.startConversation(); 
+            })
+            document.getElementById('mck-submit-comment').disabled = false;
+            kommunicateCommons.modifyClassList(
+                { class: ['mck-rating-box'] },
+                '',
+                'selected'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-box-form'],
+                },
+                'n-vis',
+                'vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-csat-text-1'],
+                },
+                '',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                },
+                'km-mid-conv-csat'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['csat-1'],
+                },
+                'vis',
+                'n-vis'
+            );
             return;
         }
         if (
