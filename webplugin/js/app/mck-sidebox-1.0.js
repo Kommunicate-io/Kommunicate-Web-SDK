@@ -2289,7 +2289,6 @@ var userOverride = {
                 }
             };
             _this.initialize = function (userPxy) {
-                window.console.log("checker!");
                 window.Applozic.ALApiService.login({
                     data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
                     success: function (result) {
@@ -2365,7 +2364,6 @@ var userOverride = {
                                 result.accessToken = MCK_ACCESS_TOKEN;
                             }
                             window.Applozic.ALSocket.AUTH_TOKEN = result.authToken;
-                            window.console.log("code reached!",result);
                             preChatData = result;
                             _this.onInitApp(result);
                             // mckUtils.manageIdleTime();
@@ -2666,7 +2664,6 @@ var userOverride = {
                 if (kommunicate._globals.zendeskChatSdkKey) {
                     zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, preChatData);
                 }
-
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
