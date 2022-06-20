@@ -4,7 +4,6 @@ var MCK_EVENT_HISTORY = [];
 var KM_PROGRESS_METER_RADIUS = 54;
 var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * KM_PROGRESS_METER_RADIUS;
 var count = 0;
-var preChatData = {};
 var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
@@ -2364,7 +2363,6 @@ var userOverride = {
                                 result.accessToken = MCK_ACCESS_TOKEN;
                             }
                             window.Applozic.ALSocket.AUTH_TOKEN = result.authToken;
-                            preChatData = result;
                             _this.onInitApp(result);
                             // mckUtils.manageIdleTime();
                         } else {
@@ -2662,7 +2660,7 @@ var userOverride = {
                 
                 // Loading zopim sdk for zendesk chat integration
                 if (kommunicate._globals.zendeskChatSdkKey) {
-                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, preChatData);
+                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, data);
                 }
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'

@@ -5,7 +5,7 @@ function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
-    var preChatLeadData = "";
+    var preChatLeadData = {};
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
