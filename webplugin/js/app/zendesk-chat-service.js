@@ -6,9 +6,9 @@ function ZendeskChatService() {
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
 
-    _this.init = function (zendeskChatSdkKey) {
+    _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
-        _this.loadZopimSDK();
+        _this.loadZopimSDK(preChatData);
         var events = {
             'onMessageSent': _this.handleUserMessage,
             'onMessageReceived': _this.handleBotMessage,
@@ -19,7 +19,7 @@ function ZendeskChatService() {
         document.querySelector('.mck-back-btn-container').classList.add('force-n-vis');
     };
 
-    _this.loadZopimSDK = function () {
+    _this.loadZopimSDK = function (preChatData) {
         var s = document.createElement("script");
         s.type = "text/javascript";
         s.async = true;
@@ -27,18 +27,19 @@ function ZendeskChatService() {
         var h = document.getElementsByTagName("head")[0];
         h.appendChild(s);
         s.onload = function () {
-            _this.initializeSDK();
+            _this.initializeSDK(preChatData);
         };
     };
 
-    _this.initializeSDK = function () {
+    _this.initializeSDK = function (preChatData) {
         if (!ZENDESK_SDK_INITIALIZED && ZENDESK_CHAT_SDK_KEY) {
             var zendeskInitOptions = {
                 account_key: ZENDESK_CHAT_SDK_KEY,
             }
-            var name = kommunicate._globals.name || kommunicate._globals.userName;
-            var email = kommunicate._globals.email;
-            var externalId = kommunicate._globals.userId;
+            //var initializeCallData;
+            var name = preChatData.displayName;
+            var email = preChatData.email;
+            var externalId = preChatData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
                     jwt_fn: function (callback) {
@@ -67,7 +68,7 @@ function ZendeskChatService() {
                     }
                 }
             }
-            zChat.init(zendeskInitOptions);
+            zChat.init(zendeskInitOptions, preChatData);
             zChat.on("chat", function (eventDetails) {
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
