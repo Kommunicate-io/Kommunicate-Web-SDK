@@ -5,6 +5,7 @@ function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
+    var AGENT_INFO_MAP = {};
 
     _this.init = function (zendeskChatSdkKey) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
@@ -196,11 +197,20 @@ function ZendeskChatService() {
     _this.handleZendeskAgentMessageEvent = function (event) {
 
         console.log("handleZendeskAgentMessageEvent ", event);
+        
+        if (!AGENT_INFO_MAP[event.nick]) {
+            AGENT_INFO_MAP[event.nick] = {
+                display_name: event.display_name,
+                nick: event.nick
+            }
+        }
+        console.log("AGENT_INFO_MAP", AGENT_INFO_MAP);
 
         var messagePxy = {
             message: event.msg,
-            fromUserName: event.nick.split(":")[1],
-            groupId: CURRENT_GROUP_DATA.tabId
+            fromUserName: event.nick,
+            groupId: CURRENT_GROUP_DATA.tabId,
+            agentInfo: AGENT_INFO_MAP[event.nick]
         };
 
         return mckUtils.ajax({
