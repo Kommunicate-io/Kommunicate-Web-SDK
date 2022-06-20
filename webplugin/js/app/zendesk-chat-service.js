@@ -38,7 +38,6 @@ function ZendeskChatService() {
             var zendeskInitOptions = {
                 account_key: ZENDESK_CHAT_SDK_KEY,
             }
-            //var initializeCallData;
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
             var externalId = preChatLeadData.userId;
