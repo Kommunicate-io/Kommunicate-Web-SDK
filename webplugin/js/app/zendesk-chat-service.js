@@ -200,8 +200,8 @@ function ZendeskChatService() {
         
         if (!AGENT_INFO_MAP[event.nick]) {
             AGENT_INFO_MAP[event.nick] = {
-                display_name: event.display_name,
-                nick: event.nick
+                displayName: event.display_name,
+                agentId: event.nick
             }
         }
         console.log("AGENT_INFO_MAP", AGENT_INFO_MAP);
