@@ -234,12 +234,21 @@ function ZendeskChatService() {
     _this.handleZendeskAgentFileSendEvent = function (event) {
 
         console.log("handleZendeskAgentFileSendEvent ", event);
+        var agentId = event.nick.replace(":", "-")
+        if (!AGENT_INFO_MAP[agentId]) {
+            AGENT_INFO_MAP[agentId] = {
+                displayName: event.display_name,
+                agentId: agentId
+            }
+        }
 
+        console.log("AGENT_INFO_MAP file", AGENT_INFO_MAP);
+        
         var messagePxy = {
             fileAttachment: event.attachment,
-            fromUserName: event.nick.split(":")[1],
+            fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
-            auth: window.Applozic.ALApiService.AUTH_TOKEN
+            agentInfo: AGENT_INFO_MAP[agentId]
         };
 
         return mckUtils.ajax({
