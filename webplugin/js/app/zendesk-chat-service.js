@@ -248,6 +248,7 @@ function ZendeskChatService() {
             fileAttachment: event.attachment,
             fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
+            auth: window.Applozic.ALApiService.AUTH_TOKEN,
             agentInfo: AGENT_INFO_MAP[agentId]
         };
 
