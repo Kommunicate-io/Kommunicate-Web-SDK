@@ -197,20 +197,20 @@ function ZendeskChatService() {
     _this.handleZendeskAgentMessageEvent = function (event) {
 
         console.log("handleZendeskAgentMessageEvent ", event);
-        
-        if (!AGENT_INFO_MAP[event.nick]) {
-            AGENT_INFO_MAP[event.nick] = {
+        var agentId = event.nick.replace(":", "-")
+        if (!AGENT_INFO_MAP[agentId]) {
+            AGENT_INFO_MAP[agentId] = {
                 displayName: event.display_name,
-                agentId: event.nick
+                agentId: agentId
             }
         }
         console.log("AGENT_INFO_MAP", AGENT_INFO_MAP);
 
         var messagePxy = {
             message: event.msg,
-            fromUserName: event.nick,
+            fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
-            agentInfo: AGENT_INFO_MAP[event.nick]
+            agentInfo: AGENT_INFO_MAP[agentId]
         };
 
         return mckUtils.ajax({
