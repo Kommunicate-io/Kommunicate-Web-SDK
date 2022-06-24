@@ -2420,7 +2420,6 @@ var userOverride = {
             };
 
             _this.onInitApp = function (data) {
-                console.log("in oninit", data);
                 INIT_APP_DATA = data;
                 var $mck_sidebox = $applozic('#mck-sidebox');
                 _this.appendLauncher();
