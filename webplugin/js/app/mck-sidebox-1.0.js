@@ -1868,10 +1868,6 @@ var userOverride = {
          * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
          */
         _this.subscribeToEvents = function (events, callback) {
-            if (!IS_SOCKET_CONNECTED) {
-                SUBSCRIBE_TO_EVENTS_BACKUP = events;
-                return;
-            }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
                     window.Applozic.ALSocket.events.onConnectFailed =
@@ -2424,6 +2420,7 @@ var userOverride = {
             };
 
             _this.onInitApp = function (data) {
+                console.log("in oninit", data);
                 INIT_APP_DATA = data;
                 var $mck_sidebox = $applozic('#mck-sidebox');
                 _this.appendLauncher();
