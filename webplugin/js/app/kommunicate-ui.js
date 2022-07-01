@@ -386,7 +386,7 @@ KommunicateUI = {
                       'n-vis'
                   );
 
-            $applozic('#mck-tab-title').html('FAQ');
+            $applozic('#mck-tab-title').html(MCK_LABELS['faq']);
             $applozic('#mck-msg-new').attr('disabled', false);
             $applozic(
                 '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
@@ -1702,6 +1702,9 @@ KommunicateUI = {
                 : 'mck-title-width-with-faq-close-btn';
         }
         mckTabTitle.classList.add(titleClassName);
+    },
+    setFAQButtonText: function(){
+        document.querySelector("#km-faq").textContent = MCK_LABELS['faq'];
     },
     checkSingleThreadedConversationSettings: function (
         hasMultipleConversations
