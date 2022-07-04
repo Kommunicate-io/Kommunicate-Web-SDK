@@ -99,6 +99,7 @@ Kommunicate.getFaqCategories = function(data){
                 KommunicateUI.adjustConversationTitleHeadingWidth(
                     kommunicate._globals.popupWidget
                 );
+                KommunicateUI.setFAQButtonText();
             };
             initializeFAQ && KommunicateUI.initFaq();
         },
