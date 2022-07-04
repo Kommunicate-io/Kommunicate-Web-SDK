@@ -1868,6 +1868,9 @@ var userOverride = {
          * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
          */
         _this.subscribeToEvents = function (events, callback) {
+            if (!IS_SOCKET_CONNECTED) {
+                SUBSCRIBE_TO_EVENTS_BACKUP = events;
+            }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
                     window.Applozic.ALSocket.events.onConnectFailed =
@@ -1984,18 +1987,18 @@ var userOverride = {
             );
         };
 
-        _this.initializeSocketConnection = function (isReInit) {
-            isReInit
+        _this.initializeSocketConnection = function (isReInit) {  
+                isReInit
                 ? window.Applozic.ALSocket.reconnect()
                 : window.Applozic.ALSocket.init(
-                      MCK_APP_ID,
-                      INIT_APP_DATA,
-                      EVENTS
-                  );
-            // Disconnect open sockets if user has no conversations.
-            !CONNECT_SOCKET_ON_WIDGET_CLICK &&
-                !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
-                window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();
+                    MCK_APP_ID,
+                    INIT_APP_DATA,
+                    EVENTS
+                );
+                // Disconnect open sockets if user has no conversations.
+                !CONNECT_SOCKET_ON_WIDGET_CLICK &&
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
+                    window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
         function MckInit() {
             var _this = this;
@@ -2495,7 +2498,7 @@ var userOverride = {
                                 checkIfUserHasConversations &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
-                                        IS_REINITIALIZE
+                                        IS_REINITIALIZE,
                                     );
                             }
                         );
