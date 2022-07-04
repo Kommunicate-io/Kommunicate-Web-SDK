@@ -1931,12 +1931,8 @@ var userOverride = {
                 }
                 if (typeof events.onMessageSent === 'function') {
                     if (window.Applozic.ALSocket.events.onMessageSent) {
-                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
-                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
-                            console.log("onMessageSent callback ", data);
-                            oldCallback(data);
-                            events.onMessageSent(data);
-                        }
+                        window.Applozic.ALSocket.events.onMessageSent =
+                            events.onMessageSent;
                     }
                 }
                 if (typeof events.onUserBlocked === 'function') {
