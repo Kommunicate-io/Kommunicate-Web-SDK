@@ -74,6 +74,8 @@ function ZendeskChatService() {
                     _this.handleZendeskAgentMessageEvent(eventDetails);
                 } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
                     _this.handleZendeskAgentFileSendEvent(eventDetails);
+                } else if (eventDetails.type == "chat.memberleave") { //If agent leaves conversation
+                    _this.handleZendeskAgentLeaveEvent(eventDetails);
                 }
             });
         }
@@ -247,7 +249,28 @@ function ZendeskChatService() {
             },
         });
 
-    }
+    };
+
+    _this.handleZendeskAgentLeaveEvent = function (event) {
+        //Resolve conversation on widget
+        KommunicateUI.showClosedConversationBanner(
+            true
+        );
+        KommunicateUI.isConvJustResolved = true;
+        KommunicateUI.isConversationResolvedFromZendesk = true;
+        
+        //Call API to resolve the conversation on Dashboard
+        kommunicate.client.resolveConversation({ 
+            groupId: CURRENT_GROUP_DATA.tabId 
+        }, function(err, result) {
+            if (err || !result) {
+                console.log("An error occurred while resolving conversation ",err);
+                return;
+            }
+            console.log("Resolved conversation on Kommunicate Dashboard", result);
+        });
+
+    }; 
 };
 
 
@@ -255,6 +278,13 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
     if (kommunicate._globals.zendeskChatSdkKey) {
         var currentGroupData = MCK_GROUP_MAP[event.tabId];
+        var conversationInfo = {
+            groupId: event.tabId,
+            metadata: {
+                "source" : "zopim"
+            }
+        }
+        Kommunicate.updateConversationMetadata(conversationInfo);
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
