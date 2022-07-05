@@ -77,6 +77,8 @@ function ZendeskChatService() {
                     _this.handleZendeskAgentMessageEvent(eventDetails);
                 } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
                     _this.handleZendeskAgentFileSendEvent(eventDetails);
+                } else if (eventDetails.type == "chat.memberleave") { //If agent leaves conversation
+                    _this.handleZendeskAgentLeaveEvent(eventDetails);
                 }
             });
         }

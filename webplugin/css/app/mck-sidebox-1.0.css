@@ -5543,9 +5543,14 @@ div[name="message"]:last-child {
 .mck-rating-box:hover div, .mck-rating-box.selected div {
 	visibility: visible;
 }
+
+span#mck-rated-text {
+	list-style: 27px;
+}
+
 .mck-conversation-comment{
 	background: white;
-    padding: 19px 10px;
+    padding: 50px 10px 10px;
     text-align: center;
     margin: 0 -15px;
     font-weight: 300;
@@ -5566,6 +5571,7 @@ div#mck-waiting-queue {
 .km-csat-skeleton {
 	padding: 0 10px;
 	position: relative;
+	margin-top: 3px;
 }
 
 .km-csat-skeleton .mck-rated {

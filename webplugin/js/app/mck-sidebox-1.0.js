@@ -3357,6 +3357,8 @@ var userOverride = {
                     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
                 document.getElementById('mck-other-queries').innerHTML =
                     MCK_LABELS['csat.rating'].OTHER_QUERIES;
+                document.getElementById('mck-resolved-text').innerHTML =
+                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-restart-conversation').innerHTML =
                     MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document
