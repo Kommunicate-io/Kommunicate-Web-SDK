@@ -1870,7 +1870,6 @@ var userOverride = {
         _this.subscribeToEvents = function (events, callback) {
             if (!IS_SOCKET_CONNECTED) {
                 SUBSCRIBE_TO_EVENTS_BACKUP = events;
-                return;
             }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
@@ -1932,12 +1931,8 @@ var userOverride = {
                 }
                 if (typeof events.onMessageSent === 'function') {
                     if (window.Applozic.ALSocket.events.onMessageSent) {
-                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
-                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
-                            console.log("onMessageSent callback ", data);
-                            oldCallback(data);
-                            events.onMessageSent(data);
-                        }
+                        window.Applozic.ALSocket.events.onMessageSent =
+                            events.onMessageSent;
                     }
                 }
                 if (typeof events.onUserBlocked === 'function') {
