@@ -13,6 +13,7 @@ KommunicateUI = {
     showResolvedConversations: false,
     isCSATtriggeredByUser: false,
     isConvJustResolved: false,
+    isConversationResolvedFromZendesk: false,
     convRatedTabIds: {
         // using for optimize the feedback get api call
         // [tabId]: 1 => init the feedback api
@@ -385,7 +386,7 @@ KommunicateUI = {
                       'n-vis'
                   );
 
-            $applozic('#mck-tab-title').html('FAQ');
+            $applozic('#mck-tab-title').html(MCK_LABELS['faq']);
             $applozic('#mck-msg-new').attr('disabled', false);
             $applozic(
                 '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
@@ -1136,6 +1137,88 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
+        if (KommunicateUI.isConversationResolvedFromZendesk) {
+            KommunicateUI.triggerCSAT();
+            if (document.getElementById('mck-csat-close').className == "n-vis") {
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-csat-close'],
+                    },
+                    'vis',
+                    'n-vis'
+                );
+            }
+            document.getElementById('mck-submit-comment').onclick = function (
+                e
+            ) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-ratings-smilies'],
+                    },
+                    'n-vis'
+                );
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['csat-1'],
+                    },
+                    'n-vis'
+                );
+            }
+            var isCSATenabled = kommunicate._globals.oneTimeRating
+            ? kommunicate._globals.collectFeedback &&
+              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
+            : kommunicate._globals.collectFeedback;
+            if (!isCSATenabled) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['mck-conversation-status-box'],
+                    },
+                    'n-vis',
+                    'vis'
+                );   
+            }
+            var restartConversation = document.getElementById(
+                'mck-restart-conversation'
+            );
+            restartConversation.addEventListener('click', function () {
+                Kommunicate.startConversation(); 
+            })
+            document.getElementById('mck-submit-comment').disabled = false;
+            kommunicateCommons.modifyClassList(
+                { class: ['mck-rating-box'] },
+                '',
+                'selected'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-box-form'],
+                },
+                'n-vis',
+                'vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-csat-text-1'],
+                },
+                '',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                },
+                'km-mid-conv-csat'
+            );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['csat-1'],
+                },
+                'vis',
+                'n-vis'
+            );
+            return;
+        }
         if (
             isCSATenabled &&
             isConversationClosed &&
@@ -1619,6 +1702,9 @@ KommunicateUI = {
                 : 'mck-title-width-with-faq-close-btn';
         }
         mckTabTitle.classList.add(titleClassName);
+    },
+    setFAQButtonText: function(){
+        document.querySelector("#km-faq").textContent = MCK_LABELS['faq'];
     },
     checkSingleThreadedConversationSettings: function (
         hasMultipleConversations

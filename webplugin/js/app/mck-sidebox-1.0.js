@@ -2660,9 +2660,8 @@ var userOverride = {
                 
                 // Loading zopim sdk for zendesk chat integration
                 if (kommunicate._globals.zendeskChatSdkKey) {
-                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey);
+                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, data);
                 }
-
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
@@ -3810,6 +3809,7 @@ var userOverride = {
                         );
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
+                    KommunicateUI.isConversationResolvedFromZendesk = false;
                     mckMessageLayout.loadDropdownOptions();
                 }
             };
@@ -4176,6 +4176,11 @@ var userOverride = {
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
                 };
                 $mck_text_box.on('input paste', function (event) {
+                    var fileFromClipboard = event.originalEvent.clipboardData && event.originalEvent.clipboardData.files && event.originalEvent.clipboardData.files[0];
+                    if(fileFromClipboard){
+                        mckFileService.uploadFileFunction(null, fileFromClipboard);
+                        return;
+                    }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
                         var warningLength = 199;
                         var maxLength = 256;
@@ -4188,6 +4193,7 @@ var userOverride = {
                         var str = kommunicateCommons.formatHtmlTag(mckUtils.textVal(textBox))
                         var trimmedStr = str.trim();
                         var textLength = trimmedStr.length;
+                       
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
@@ -7855,17 +7861,17 @@ var userOverride = {
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             var csatModule =
-                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span class="mck-rated-text">' +
+                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
+                MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
                 '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
             var SUBMITTED_FORMS = {};
-
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
                 $applozic.template('convTemplate', convbox);
                 $applozic.template('messageTemplate', markup);
                 $applozic.template('contactTemplate', contactbox);
-                $applozic.template('searchContactbox', searchContactbox);
+                $applozic.template('searchContactbox', searchContactbox);               
                 $applozic.template('csatModule', csatModule);
             };
             _this.loadDropdownOptions = function () {
@@ -8399,6 +8405,7 @@ var userOverride = {
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
+                        if (message && message.metadata && message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]) return true;
                         if (!(typeof message.to === 'undefined')) {
                             !enableAttachment &&
                                 (enableAttachment =
@@ -9025,10 +9032,16 @@ var userOverride = {
                                 '"' + userFeedback.comments.trim() + '"';
                         }
 
+                        var resolutionStatusClass = "";
+                        if (!KommunicateUI.isConversationResolvedFromZendesk) {
+                            resolutionStatusClass = "n-vis";
+                        }
+
                         var ratingData = [
                             {
                                 ratingSmileSVG: ratingSmileSVG,
                                 ratingComment: ratingComment,
+                                resolutionStatusClass: resolutionStatusClass,
                             },
                         ];
                         $applozic(
@@ -14256,6 +14269,45 @@ var userOverride = {
                 '<span class="move-right">' +
                 '<button type="button" class="mck-attach-icon mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' +
                 '</span></div></div>';
+
+            _this.uploadFileFunction = function (event, fileToUpload) {
+                var file = fileToUpload || $applozic(this)[0].files[0];
+                var tabId = $mck_msg_inner.data('mck-id');
+                if (file && KommunicateUI.isAttachmentV2(file.type)) {
+                    Kommunicate.attachmentService.getFileMeta(
+                        file,
+                        tabId,
+                        function (file_meta, messagePxy, file) {
+                            FILE_META = file_meta;
+                            mckMessageService.sendMessage(
+                                messagePxy,
+                                file,
+                                function (msgProxy) {
+                                    messagePxy['key'] = msgProxy.key;
+                                    var params = {};
+                                    params.file = file;
+                                    params.name = file.name;
+                                    Kommunicate.attachmentService.uploadAttachment(
+                                        params,
+                                        messagePxy,
+                                        MCK_CUSTOM_UPLOAD_SETTINGS
+                                    );
+                                }
+                            );
+                        }
+                    );
+                } else {
+                    var params = {};
+                    params.file = file;
+                    params.name = file.name;
+                    Kommunicate.attachmentService.uploadAttachment(
+                        params,
+                        null,
+                        MCK_CUSTOM_UPLOAD_SETTINGS
+                    );
+                }
+            };
+
             _this.init = function () {
                 $applozic.template('fileboxTemplate', mck_filebox_tmpl);
                 //ataching events for rich msh templates
@@ -14292,45 +14344,9 @@ var userOverride = {
                     return false;
                 });
                 
-                function uploadFileFunction () {
-                    var file = $applozic(this)[0].files[0];
-                    var tabId = $mck_msg_inner.data('mck-id');
-                    if (file && KommunicateUI.isAttachmentV2(file.type)) {
-                        Kommunicate.attachmentService.getFileMeta(
-                            file,
-                            tabId,
-                            function (file_meta, messagePxy, file) {
-                                FILE_META = file_meta;
-                                mckMessageService.sendMessage(
-                                    messagePxy,
-                                    file,
-                                    function (msgProxy) {
-                                        messagePxy['key'] = msgProxy.key;
-                                        var params = {};
-                                        params.file = file;
-                                        params.name = file.name;
-                                        Kommunicate.attachmentService.uploadAttachment(
-                                            params,
-                                            messagePxy,
-                                            MCK_CUSTOM_UPLOAD_SETTINGS
-                                        );
-                                    }
-                                );
-                            }
-                        );
-                    } else {
-                        var params = {};
-                        params.file = file;
-                        params.name = file.name;
-                        Kommunicate.attachmentService.uploadAttachment(
-                            params,
-                            null,
-                            MCK_CUSTOM_UPLOAD_SETTINGS
-                        );
-                    }
-                }
-                $mck_file_input.on('change', uploadFileFunction );
-                $mck_img_file_input.on('change', uploadFileFunction );
+                
+                $mck_file_input.on('change', _this.uploadFileFunction );
+                $mck_img_file_input.on('change', _this.uploadFileFunction );
                 $mck_vid_file_input.on('change', function () {
                     var file = $applozic(this)[0].files[0];
                     var params = {};
@@ -15958,6 +15974,14 @@ var userOverride = {
                         conversationAssigneeDetails.roleType,
                         isAgentOffline
                     ); 
+                } else if (messageType === 'APPLOZIC_33') {
+                    if(resp.message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]){
+                        var key = resp.message.key;
+                        var groupId = resp.message.groupId;
+                        var isGroup = true;
+                        mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        // events.onMessageDeleted(eventResponse);
+                    }
                 } else {
                     var message = resp.message;
                     // var userIdArray =

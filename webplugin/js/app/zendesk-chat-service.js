@@ -5,9 +5,12 @@ function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
+    var AGENT_INFO_MAP = {};
+    var preChatLeadData = {};
 
-    _this.init = function (zendeskChatSdkKey) {
+    _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
+        preChatLeadData = preChatData;
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -36,9 +39,9 @@ function ZendeskChatService() {
             var zendeskInitOptions = {
                 account_key: ZENDESK_CHAT_SDK_KEY,
             }
-            var name = kommunicate._globals.name || kommunicate._globals.userName;
-            var email = kommunicate._globals.email;
-            var externalId = kommunicate._globals.userId;
+            var name = preChatLeadData.displayName;
+            var email = preChatLeadData.email;
+            var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
                     jwt_fn: function (callback) {
@@ -194,11 +197,20 @@ function ZendeskChatService() {
     _this.handleZendeskAgentMessageEvent = function (event) {
 
         console.log("handleZendeskAgentMessageEvent ", event);
+        var agentId = event.nick.replace(":", "-")
+        if (!AGENT_INFO_MAP[agentId]) {
+            AGENT_INFO_MAP[agentId] = {
+                displayName: event.display_name,
+                agentId: agentId
+            }
+        }
+        console.log("AGENT_INFO_MAP", AGENT_INFO_MAP);
 
         var messagePxy = {
             message: event.msg,
-            fromUserName: event.nick.split(":")[1],
-            groupId: CURRENT_GROUP_DATA.tabId
+            fromUserName: agentId,
+            groupId: CURRENT_GROUP_DATA.tabId,
+            agentInfo: AGENT_INFO_MAP[agentId]
         };
 
         return mckUtils.ajax({
@@ -222,12 +234,22 @@ function ZendeskChatService() {
     _this.handleZendeskAgentFileSendEvent = function (event) {
 
         console.log("handleZendeskAgentFileSendEvent ", event);
+        var agentId = event.nick.replace(":", "-")
+        if (!AGENT_INFO_MAP[agentId]) {
+            AGENT_INFO_MAP[agentId] = {
+                displayName: event.display_name,
+                agentId: agentId
+            }
+        }
 
+        console.log("AGENT_INFO_MAP file", AGENT_INFO_MAP);
+        
         var messagePxy = {
             fileAttachment: event.attachment,
-            fromUserName: event.nick.split(":")[1],
+            fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
-            auth: window.Applozic.ALApiService.AUTH_TOKEN
+            auth: window.Applozic.ALApiService.AUTH_TOKEN,
+            agentInfo: AGENT_INFO_MAP[agentId]
         };
 
         return mckUtils.ajax({
@@ -247,7 +269,28 @@ function ZendeskChatService() {
             },
         });
 
-    }
+    };
+
+    _this.handleZendeskAgentLeaveEvent = function (event) {
+        //Resolve conversation on widget
+        KommunicateUI.showClosedConversationBanner(
+            true
+        );
+        KommunicateUI.isConvJustResolved = true;
+        KommunicateUI.isConversationResolvedFromZendesk = true;
+        
+        //Call API to resolve the conversation on Dashboard
+        kommunicate.client.resolveConversation({ 
+            groupId: CURRENT_GROUP_DATA.tabId 
+        }, function(err, result) {
+            if (err || !result) {
+                console.log("An error occurred while resolving conversation ",err);
+                return;
+            }
+            console.log("Resolved conversation on Kommunicate Dashboard", result);
+        });
+
+    }; 
 };
 
 
@@ -255,6 +298,13 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
     if (kommunicate._globals.zendeskChatSdkKey) {
         var currentGroupData = MCK_GROUP_MAP[event.tabId];
+        var conversationInfo = {
+            groupId: event.tabId,
+            metadata: {
+                "source" : "zopim"
+            }
+        }
+        Kommunicate.updateConversationMetadata(conversationInfo);
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
