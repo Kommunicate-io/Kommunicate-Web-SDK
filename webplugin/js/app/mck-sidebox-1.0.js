@@ -1870,7 +1870,6 @@ var userOverride = {
         _this.subscribeToEvents = function (events, callback) {
             if (!IS_SOCKET_CONNECTED) {
                 SUBSCRIBE_TO_EVENTS_BACKUP = events;
-                return;
             }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
@@ -1932,12 +1931,8 @@ var userOverride = {
                 }
                 if (typeof events.onMessageSent === 'function') {
                     if (window.Applozic.ALSocket.events.onMessageSent) {
-                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
-                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
-                            console.log("onMessageSent callback ", data);
-                            oldCallback(data);
-                            events.onMessageSent(data);
-                        }
+                        window.Applozic.ALSocket.events.onMessageSent =
+                            events.onMessageSent;
                     }
                 }
                 if (typeof events.onUserBlocked === 'function') {
@@ -1988,18 +1983,18 @@ var userOverride = {
             );
         };
 
-        _this.initializeSocketConnection = function (isReInit) {
-            isReInit
+        _this.initializeSocketConnection = function (isReInit) {  
+                isReInit
                 ? window.Applozic.ALSocket.reconnect()
                 : window.Applozic.ALSocket.init(
-                      MCK_APP_ID,
-                      INIT_APP_DATA,
-                      EVENTS
-                  );
-            // Disconnect open sockets if user has no conversations.
-            !CONNECT_SOCKET_ON_WIDGET_CLICK &&
-                !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
-                window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();
+                    MCK_APP_ID,
+                    INIT_APP_DATA,
+                    EVENTS
+                );
+                // Disconnect open sockets if user has no conversations.
+                !CONNECT_SOCKET_ON_WIDGET_CLICK &&
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
+                    window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
         function MckInit() {
             var _this = this;
@@ -2499,7 +2494,7 @@ var userOverride = {
                                 checkIfUserHasConversations &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
-                                        IS_REINITIALIZE
+                                        IS_REINITIALIZE,
                                     );
                             }
                         );
