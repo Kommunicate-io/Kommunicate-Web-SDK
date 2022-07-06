@@ -92,6 +92,7 @@ Kommunicate.defaultLabels = {
     'looking.for.something.else': 'Looking for something else?',
     'no-faq-found': 'We are here to help.',
     'faq-empty-state': 'NO ARTICLES TO SHOW',
+    'faq': 'FAQ',
     'talk.to.agent': 'Talk to an agent',
     'how.to.reachout': 'How may we reach you?',
     'email.error.alert': 'It seems you have entered an invalid email',
@@ -133,7 +134,7 @@ Kommunicate.defaultLabels = {
         OTHER_QUERIES: 'Have other queries? ',
         RESTART_CONVERSATION: 'Restart this conversation',
         SUBMIT_RATING: 'Submit your rating',
-        CONVERSATION_RESOLVED: 'This conversation was resolved',
+        CONVERSATION_RESOLVED: "This conversation was resolved"
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {

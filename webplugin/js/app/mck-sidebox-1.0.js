@@ -2660,9 +2660,8 @@ var userOverride = {
                 
                 // Loading zopim sdk for zendesk chat integration
                 if (kommunicate._globals.zendeskChatSdkKey) {
-                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey);
+                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, data);
                 }
-
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
@@ -3365,6 +3364,8 @@ var userOverride = {
                     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
                 document.getElementById('mck-other-queries').innerHTML =
                     MCK_LABELS['csat.rating'].OTHER_QUERIES;
+                document.getElementById('mck-resolved-text').innerHTML =
+                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-restart-conversation').innerHTML =
                     MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document
@@ -7863,7 +7864,7 @@ var userOverride = {
                 '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' +
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            var csatModule = 
+            var csatModule =
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
@@ -8408,6 +8409,7 @@ var userOverride = {
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
+                        if (message && message.metadata && message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]) return true;
                         if (!(typeof message.to === 'undefined')) {
                             !enableAttachment &&
                                 (enableAttachment =
@@ -15976,6 +15978,14 @@ var userOverride = {
                         conversationAssigneeDetails.roleType,
                         isAgentOffline
                     ); 
+                } else if (messageType === 'APPLOZIC_33') {
+                    if(resp.message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]){
+                        var key = resp.message.key;
+                        var groupId = resp.message.groupId;
+                        var isGroup = true;
+                        mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        // events.onMessageDeleted(eventResponse);
+                    }
                 } else {
                     var message = resp.message;
                     // var userIdArray =
