@@ -647,11 +647,6 @@ Kommunicate.richMsgEventHandler = {
             };
             xhr.open('POST', form.action);
             xhr.send(JSON.stringify(data));
-        } else if(requestType == 'application/json') {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', form.action);
-            xhr.setRequestHeader('Content-type','application/json');
-            xhr.send(JSON.stringify(data));
         } else {
             !isActionableForm && form.submit(); // called for submit button
             isActionableForm &&
