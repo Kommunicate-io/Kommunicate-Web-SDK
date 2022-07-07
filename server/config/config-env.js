@@ -47,14 +47,14 @@ const configEnv = {
             },
         },
     },
-    staging: {
+    release: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
+            applozicBaseUrl: 'https://chat-release.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-release.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'https://widget-staging.kommunicate.io',
-            dashboardUrl: 'https://dashboard-staging.kommunicate.io',
+            hostUrl: 'https://widget-release.kommunicate.io',
+            dashboardUrl: 'https://dashboard-master.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
