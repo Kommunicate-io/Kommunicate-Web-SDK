@@ -5,12 +5,9 @@ function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
-    var AGENT_INFO_MAP = {};
-    var preChatLeadData = {};
 
-    _this.init = function (zendeskChatSdkKey, preChatData) {
+    _this.init = function (zendeskChatSdkKey) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
-        preChatLeadData = preChatData;
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -39,9 +36,9 @@ function ZendeskChatService() {
             var zendeskInitOptions = {
                 account_key: ZENDESK_CHAT_SDK_KEY,
             }
-            var name = preChatLeadData.displayName;
-            var email = preChatLeadData.email;
-            var externalId = preChatLeadData.userId;
+            var name = kommunicate._globals.name || kommunicate._globals.userName;
+            var email = kommunicate._globals.email;
+            var externalId = kommunicate._globals.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
                     jwt_fn: function (callback) {
@@ -199,20 +196,11 @@ function ZendeskChatService() {
     _this.handleZendeskAgentMessageEvent = function (event) {
 
         console.log("handleZendeskAgentMessageEvent ", event);
-        var agentId = event.nick.replace(":", "-")
-        if (!AGENT_INFO_MAP[agentId]) {
-            AGENT_INFO_MAP[agentId] = {
-                displayName: event.display_name,
-                agentId: agentId
-            }
-        }
-        console.log("AGENT_INFO_MAP", AGENT_INFO_MAP);
 
         var messagePxy = {
             message: event.msg,
-            fromUserName: agentId,
-            groupId: CURRENT_GROUP_DATA.tabId,
-            agentInfo: AGENT_INFO_MAP[agentId]
+            fromUserName: event.nick.split(":")[1],
+            groupId: CURRENT_GROUP_DATA.tabId
         };
 
         return mckUtils.ajax({
@@ -236,22 +224,12 @@ function ZendeskChatService() {
     _this.handleZendeskAgentFileSendEvent = function (event) {
 
         console.log("handleZendeskAgentFileSendEvent ", event);
-        var agentId = event.nick.replace(":", "-")
-        if (!AGENT_INFO_MAP[agentId]) {
-            AGENT_INFO_MAP[agentId] = {
-                displayName: event.display_name,
-                agentId: agentId
-            }
-        }
 
-        console.log("AGENT_INFO_MAP file", AGENT_INFO_MAP);
-        
         var messagePxy = {
             fileAttachment: event.attachment,
-            fromUserName: agentId,
+            fromUserName: event.nick.split(":")[1],
             groupId: CURRENT_GROUP_DATA.tabId,
-            auth: window.Applozic.ALApiService.AUTH_TOKEN,
-            agentInfo: AGENT_INFO_MAP[agentId]
+            auth: window.Applozic.ALApiService.AUTH_TOKEN
         };
 
         return mckUtils.ajax({
