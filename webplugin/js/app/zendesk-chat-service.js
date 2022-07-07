@@ -5,6 +5,7 @@ function ZendeskChatService() {
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
+    var AGENT_INFO_MAP = {};
 
     _this.init = function (zendeskChatSdkKey) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
@@ -196,11 +197,20 @@ function ZendeskChatService() {
     _this.handleZendeskAgentMessageEvent = function (event) {
 
         console.log("handleZendeskAgentMessageEvent ", event);
+        var agentId = event.nick.replace(":", "-")
+        if (!AGENT_INFO_MAP[agentId]) {
+            AGENT_INFO_MAP[agentId] = {
+                displayName: event.display_name,
+                agentId: agentId
+            }
+        }
+        console.log("AGENT_INFO_MAP", AGENT_INFO_MAP);
 
         var messagePxy = {
             message: event.msg,
-            fromUserName: event.nick.split(":")[1],
-            groupId: CURRENT_GROUP_DATA.tabId
+            fromUserName: agentId,
+            groupId: CURRENT_GROUP_DATA.tabId,
+            agentInfo: AGENT_INFO_MAP[agentId]
         };
 
         return mckUtils.ajax({
@@ -224,12 +234,22 @@ function ZendeskChatService() {
     _this.handleZendeskAgentFileSendEvent = function (event) {
 
         console.log("handleZendeskAgentFileSendEvent ", event);
+        var agentId = event.nick.replace(":", "-")
+        if (!AGENT_INFO_MAP[agentId]) {
+            AGENT_INFO_MAP[agentId] = {
+                displayName: event.display_name,
+                agentId: agentId
+            }
+        }
 
+        console.log("AGENT_INFO_MAP file", AGENT_INFO_MAP);
+        
         var messagePxy = {
             fileAttachment: event.attachment,
-            fromUserName: event.nick.split(":")[1],
+            fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
-            auth: window.Applozic.ALApiService.AUTH_TOKEN
+            auth: window.Applozic.ALApiService.AUTH_TOKEN,
+            agentInfo: AGENT_INFO_MAP[agentId]
         };
 
         return mckUtils.ajax({
