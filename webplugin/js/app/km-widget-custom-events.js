@@ -1,7 +1,7 @@
 /**
  // Kommunicate custom events available for user for the specific event in chat widget.
  // resp - JSON object containing eventAction and other property exposed to user.
- // defination of function can be overwrite by user through subscribeToEvents function.
+ // definition of function can be overwrite by user through subscribeToEvents function.
  */
 var kmWidgetEvents = {
     sendEventToGoogleAnalytics: function (
@@ -61,7 +61,7 @@ var kmWidgetEvents = {
     },
 };
 
-/* Description for the events in eventMappping object.
+/* Description for the events in eventMapping object.
     eventName: {
         data:{
             eventCateogry: carteogry of event,

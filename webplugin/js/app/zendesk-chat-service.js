@@ -6,9 +6,11 @@ function ZendeskChatService() {
     var ZENDESK_SDK_INITIALIZED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
     var AGENT_INFO_MAP = {};
+    var preChatLeadData = {};
 
-    _this.init = function (zendeskChatSdkKey) {
+    _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
+        preChatLeadData = preChatData;
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -37,9 +39,9 @@ function ZendeskChatService() {
             var zendeskInitOptions = {
                 account_key: ZENDESK_CHAT_SDK_KEY,
             }
-            var name = kommunicate._globals.name || kommunicate._globals.userName;
-            var email = kommunicate._globals.email;
-            var externalId = kommunicate._globals.userId;
+            var name = preChatLeadData.displayName;
+            var email = preChatLeadData.email;
+            var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
                     jwt_fn: function (callback) {

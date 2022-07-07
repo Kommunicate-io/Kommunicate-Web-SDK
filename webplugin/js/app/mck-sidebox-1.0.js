@@ -1983,18 +1983,18 @@ var userOverride = {
             );
         };
 
-        _this.initializeSocketConnection = function (isReInit) {
-            isReInit
+        _this.initializeSocketConnection = function (isReInit) {  
+                isReInit
                 ? window.Applozic.ALSocket.reconnect()
                 : window.Applozic.ALSocket.init(
-                      MCK_APP_ID,
-                      INIT_APP_DATA,
-                      EVENTS
-                  );
-            // Disconnect open sockets if user has no conversations.
-            !CONNECT_SOCKET_ON_WIDGET_CLICK &&
-                !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
-                window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();
+                    MCK_APP_ID,
+                    INIT_APP_DATA,
+                    EVENTS
+                );
+                // Disconnect open sockets if user has no conversations.
+                !CONNECT_SOCKET_ON_WIDGET_CLICK &&
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
+                    window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
         function MckInit() {
             var _this = this;
@@ -2494,7 +2494,7 @@ var userOverride = {
                                 checkIfUserHasConversations &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
-                                        IS_REINITIALIZE
+                                        IS_REINITIALIZE,
                                     );
                             }
                         );
@@ -2655,9 +2655,8 @@ var userOverride = {
                 
                 // Loading zopim sdk for zendesk chat integration
                 if (kommunicate._globals.zendeskChatSdkKey) {
-                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey);
+                    zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, data);
                 }
-
                 var kmChatLoginModal = document.getElementById(
                     'km-chat-login-modal'
                 );
@@ -8403,6 +8402,7 @@ var userOverride = {
                 } else {
                     ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
+                        if (message && message.metadata && message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]) return true;
                         if (!(typeof message.to === 'undefined')) {
                             !enableAttachment &&
                                 (enableAttachment =
@@ -15971,6 +15971,14 @@ var userOverride = {
                         conversationAssigneeDetails.roleType,
                         isAgentOffline
                     ); 
+                } else if (messageType === 'APPLOZIC_33') {
+                    if(resp.message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]){
+                        var key = resp.message.key;
+                        var groupId = resp.message.groupId;
+                        var isGroup = true;
+                        mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        // events.onMessageDeleted(eventResponse);
+                    }
                 } else {
                     var message = resp.message;
                     // var userIdArray =
