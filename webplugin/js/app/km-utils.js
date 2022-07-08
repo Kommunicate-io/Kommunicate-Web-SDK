@@ -257,7 +257,11 @@ KommunicateUtils = {
                 : cookiePrefix + cookie.name;
         var value = cookie.value;
         var path = '/';
-        var secure =true;
+        var secure =
+            typeof cookie.secure == 'undefined'
+                ? this.isHttpsEnabledConnection()
+                : cookie.secure;
+                
         var cookieExpiry = new Date('2038-01-19 04:14:07').toUTCString();
         var isChrome =
             navigator.userAgent.indexOf('Chrome') != -1 &&
@@ -283,7 +287,7 @@ KommunicateUtils = {
             path +
             (secure ? ';secure' : '') +
             (domain ? ';domain=' + domain : '') +
-            (';SameSite=Strict');
+            (';samesite=Strict');
     },
     getCookiePrefix: function () {
         var appOptions =
