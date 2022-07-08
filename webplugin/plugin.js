@@ -150,8 +150,6 @@ function createKommunicateIframe() {
     kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
     kommunicateIframe.setAttribute('data-url', window.location.href);
     document.body.appendChild(kommunicateIframe);
-    kommunicateIframe.innerHTML =
-        '<a href="https://www.kommunicate.io/"> Kommunicate Live chat </a>';
     var iframeDocument =
         kommunicateIframe.contentDocument ||
         kommunicateIframe.contentWindow.document;
