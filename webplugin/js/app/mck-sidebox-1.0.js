@@ -1867,9 +1867,10 @@ var userOverride = {
          * Note: This function should not be called more than one time as it will override the previous values as we're assigning event functions to object keys.
          * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
          */
-        _this.subscribeToEvents = function (events, callback) {
+        _this.subscribeToEvents = function (events, callback) {           
             if (!IS_SOCKET_CONNECTED) {
                 SUBSCRIBE_TO_EVENTS_BACKUP = events;
+                return;
             }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
@@ -1914,26 +1915,19 @@ var userOverride = {
                 if (typeof events.onConversationRead === 'function') {
                     window.Applozic.ALSocket.events.onConversationRead =
                         events.onConversationRead;
-                }
+                } 
                 if (typeof events.onMessageReceived === 'function') {
-                    if (window.Applozic.ALSocket.events.onMessageReceived) {
-                        var oldCallback = window.Applozic.ALSocket.events.onMessageReceived;
-                        window.Applozic.ALSocket.events.onMessageReceived = function (data) {
-                            console.log("onMessageReceived callback ", data);
-                            oldCallback(data);
-                            events.onMessageReceived(data);
-                        }
-                    }
+                    window.Applozic.ALSocket.events.onMessageReceived =
+                        events.onMessageReceived;
                 }
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
-                    if (window.Applozic.ALSocket.events.onMessageSent) {
-                        window.Applozic.ALSocket.events.onMessageSent =
-                            events.onMessageSent;
-                    }
+                    window.Applozic.ALSocket.events.onMessageSent =
+                        events.onMessageSent;
+                    
                 }
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
@@ -16188,8 +16182,15 @@ var userOverride = {
                             Kommunicate.KmEventHandler.onMessageReceived(
                                 messageCopy
                             );
+                            if (kommunicate._globals.zendeskChatSdkKey) {
+                                zendeskChatService.handleBotMessage(message);
+                            }
                         } else if (messageType === 'APPLOZIC_02') {
                             Kommunicate.KmEventHandler.onMessageSent(message);
+                            if (kommunicate._globals.zendeskChatSdkKey) {
+                                zendeskChatService.handleUserMessage(message);
+                            }
+
                         }
                         if (message.conversationId) {
                             var conversationPxy =

@@ -12,11 +12,7 @@ function ZendeskChatService() {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
         preChatLeadData = preChatData;
         _this.loadZopimSDK();
-        var events = {
-            'onMessageSent': _this.handleUserMessage,
-            'onMessageReceived': _this.handleBotMessage,
-        };
-        Kommunicate.subscribeToEvents(events);
+        
         // Hide back button
         document.getElementById('mck-contacts-content').classList.add('force-n-vis');
         document.querySelector('.mck-back-btn-container').classList.add('force-n-vis');
@@ -84,16 +80,16 @@ function ZendeskChatService() {
         }
     };
     _this.handleUserMessage = function (event) {
-        if (!event.message || !ZENDESK_SDK_INITIALIZED) {
+        if (!ZENDESK_SDK_INITIALIZED) {
             return;
         }
         console.log("handleUserMessage: ", event);
 
-        if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
-            zChat.sendChatMsg(event.message.message, function (err, data) {
+        if (event.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
+            zChat.sendChatMsg(event.message, function (err, data) {
                 console.log("zChat.sendChatMsg ", err, data)
             });
-        } else if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
+        } else if (event.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
 
             var fileInputElement = document.getElementById("mck-file-input");
 
@@ -111,8 +107,8 @@ function ZendeskChatService() {
     };
 
     _this.handleBotMessage = function (event) {
-        console.log("handleBotMessage: ", event);
-        if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
+        console.log("3. handleBotMessage: ", event);
+        if (event.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
             ZENDESK_SDK_INITIALIZED = true;
             zChat.sendChatMsg(
                 'This chat is initiated from kommunicate widget, look for more here: ' +
@@ -294,7 +290,6 @@ function ZendeskChatService() {
 
     }; 
 };
-
 
 var onTabClickedHandlerForZendeskConversations = function (event) {
     console.log("onTabClicked from zendesk: ", event, MCK_GROUP_MAP[event.tabId]);
