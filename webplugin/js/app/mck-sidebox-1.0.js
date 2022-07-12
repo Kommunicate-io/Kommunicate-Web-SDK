@@ -1939,13 +1939,7 @@ var userOverride = {
                             events.onMessageReceived(data);
                         }
                     }
-                } else if (Array.isArray(events.onMessageReceived)) {
-                    window.Applozic.ALSocket.events.onMessageReceived = function (responseObject) {
-                        events.onMessageReceived.forEach(eventCall => {
-                            eventCall(responseObject);
-                        })
-                    }
-                }
+                } 
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
@@ -1955,13 +1949,7 @@ var userOverride = {
                         window.Applozic.ALSocket.events.onMessageSent =
                             events.onMessageSent;
                     }
-                } else if (Array.isArray(events.onMessageSent)) {
-                    window.Applozic.ALSocket.events.onMessageSent = function (responseObject) {
-                        events.onMessageSent.forEach(eventCall => {
-                            eventCall(responseObject);
-                        })
-                    }
-                }
+                } 
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
                         events.onUserBlocked;
@@ -1991,6 +1979,19 @@ var userOverride = {
                         }
                     }
                 }
+                Object.keys(events).forEach(event => {
+                    if (Array.isArray(events[event])) {
+                        function executeableFunction (responseObject) {
+                            events[event].forEach(eventCall => {
+                                eventCall(responseObject);
+                            })
+                        }
+                        window.Applozic.ALSocket.events[event] = executeableFunction;
+                        if (eventMapping.hasOwnProperty(event)) {
+                            eventMapping[event].eventFunction = executeableFunction;
+                        }
+                    }
+                });
                 typeof callback == 'function' && callback();
             }
         };
