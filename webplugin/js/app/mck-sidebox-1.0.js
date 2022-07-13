@@ -653,7 +653,7 @@ var userOverride = {
         };
         var CONNECT_SOCKET_ON_WIDGET_CLICK =
             appOptions.connectSocketOnWidgetClick;
-        var SUBSCRIBE_TO_EVENTS_BACKUP = {};
+        var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
             (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
@@ -744,14 +744,15 @@ var userOverride = {
                 );
                 SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
-                    typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' &&
-                    Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0
+                    Array.isArray(SUBSCRIBE_TO_EVENTS_BACKUP) &&
+                    SUBSCRIBE_TO_EVENTS_BACKUP.length
                 ) {
                     _this.subscribeToEvents(
                         SUBSCRIBE_TO_EVENTS_BACKUP,
                         function () {
-                            SUBSCRIBE_TO_EVENTS_BACKUP = {};
-                        }
+                            SUBSCRIBE_TO_EVENTS_BACKUP = [];
+                        },
+                        true
                     );
                 }
             },
@@ -1867,9 +1868,23 @@ var userOverride = {
          * Note: This function should not be called more than one time as it will override the previous values as we're assigning event functions to object keys.
          * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
          */
-        _this.subscribeToEvents = function (events, callback) {
+        _this.subscribeToEvents = function (events, callback, isEventArray) {
             if (!IS_SOCKET_CONNECTED) {
-                SUBSCRIBE_TO_EVENTS_BACKUP = events;
+                SUBSCRIBE_TO_EVENTS_BACKUP.push(events);
+                return;
+            }
+            if(isEventArray){
+                let eventObject = {};
+                events.forEach(eventSet => {
+                    Object.keys(eventSet).forEach(eventName => {
+                        if(eventObject.hasOwnProperty(eventName)){
+                            eventObject[eventName].push(eventSet[eventName]);
+                        }else{
+                            eventObject[eventName] = [eventSet[eventName]];
+                        }
+                    })
+                })
+                events = eventObject;
             }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
@@ -1924,7 +1939,7 @@ var userOverride = {
                             events.onMessageReceived(data);
                         }
                     }
-                }
+                } 
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
@@ -1934,7 +1949,7 @@ var userOverride = {
                         window.Applozic.ALSocket.events.onMessageSent =
                             events.onMessageSent;
                     }
-                }
+                } 
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
                         events.onUserBlocked;
@@ -1964,6 +1979,19 @@ var userOverride = {
                         }
                     }
                 }
+                Object.keys(events).forEach(event => {
+                    if (Array.isArray(events[event])) {
+                        function executeableFunction (responseObject) {
+                            events[event].forEach(eventCall => {
+                                eventCall(responseObject);
+                            })
+                        }
+                        window.Applozic.ALSocket.events[event] = executeableFunction;
+                        if (eventMapping.hasOwnProperty(event)) {
+                            eventMapping[event].eventFunction = executeableFunction;
+                        }
+                    }
+                });
                 typeof callback == 'function' && callback();
             }
         };
