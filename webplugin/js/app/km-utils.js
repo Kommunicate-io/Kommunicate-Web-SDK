@@ -261,6 +261,7 @@ KommunicateUtils = {
             typeof cookie.secure == 'undefined'
                 ? this.isHttpsEnabledConnection()
                 : cookie.secure;
+
         var cookieExpiry = new Date('2038-01-19 04:14:07').toUTCString();
         var isChrome =
             navigator.userAgent.indexOf('Chrome') != -1 &&
@@ -286,7 +287,7 @@ KommunicateUtils = {
             path +
             (secure ? ';secure' : '') +
             (domain ? ';domain=' + domain : '') +
-            (isChrome ? ';samesite=lax' : '');
+            (';samesite=strict');
     },
     getCookiePrefix: function () {
         var appOptions =
