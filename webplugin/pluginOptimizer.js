@@ -324,11 +324,11 @@ const generateBuildFiles = () => {
             var mckApp = data
                 .replace(
                     'KOMMUNICATE_MIN_CSS',
-                    `"${BUILD_URL}/kommunicate.${version}.min.css"`
+                    `"${MCK_CONTEXT_PATH}/kommunicate.${version}.min.css"`
                 )
                 .replace(
                     'MCK_SIDEBOX_HTML',
-                    `"${BUILD_URL}/mck-sidebox.${version}.html"`
+                    `"${MCK_CONTEXT_PATH}/mck-sidebox.${version}.html"`
                 );
             fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
                 if (err) {
