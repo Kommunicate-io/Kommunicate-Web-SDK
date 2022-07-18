@@ -1,13 +1,15 @@
 customHeaders:
-  - pattern: '**/*'
+  - pattern: '*'
     headers:
-    - key: 'Cache-Control'
-    # 15 day
-      value: 'public, must-revalidate, max-age=1296000'
-    - key: 'X-Frame-Options'
-      value: 'DENY'
-  # dont cache index.html
-  - pattern: '**/*.html'
+      - key: Access-Control-Allow-Origin
+        value: '*'
+      - key: 'Cache-Control'
+        # 15 day
+        value: 'public, must-revalidate, max-age=1296000'
+    
+  - pattern: '*.html'
     headers:
-    - key: 'Cache-Control'
-      value: 'no-cache, no-store, must-revalidate'
+      - key: Cache-Control
+        value: 'no-cache, no-store, must-revalidate'
+      - key: Access-Control-Allow-Origin
+        value: '*'
