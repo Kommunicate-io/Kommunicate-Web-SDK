@@ -40,6 +40,15 @@ let jsCompressor = !env ? noCompress : gcc;
 let terserCompressor = !env ? noCompress : terser;
 let cssCompressor = !env ? noCompress : cleanCSS;
 
+/**
+ * 
+ * @param {string} dirPath optional
+ * @returns null
+ * 
+ * Removes existing files and subdirectories from build folder if it exists. 
+ * If build folder doesn't exists then it create a build folder.
+ * 
+ */
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
@@ -53,10 +62,17 @@ const removeExistingFile = function (dirPath) {
             files.map((file) => {
                 if (fs.statSync(dirPath + '/' + file).isFile()) {
                     fs.unlinkSync(dirPath + '/' + file);
+                }else{
+                    fs.rmdir(dirPath + '/' + file, {}, function(err){
+                        if(err){
+                            console.log('error removing subdirrectories from existing build folder')
+                        }
+                    });
                 }
             });
     }
 };
+
 // Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
     minify({
@@ -224,6 +240,18 @@ const combineJsFiles = () => {
 };
 
 const generateBuildFiles = () => {
+    // Generate index.html for home route
+    fs.copyFile(
+        path.join(__dirname, 'template/index.html'),
+        `${buildDir}/index.html`,
+        (err) => {
+            if (err) {
+                console.log('error while generating index.html', err);
+            }
+            console.log('index.html generated successfully');
+        }
+    );
+
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
@@ -235,6 +263,7 @@ const generateBuildFiles = () => {
             console.log('mck-sidebox.html generated successfully');
         }
     );
+
     // Generate plugin.js file for build folder.
     fs.readFile(
         path.join(__dirname, 'plugin.js'),
@@ -246,13 +275,42 @@ const generateBuildFiles = () => {
             var mckApp = data.replace(
                 'KOMMUNICATE_MIN_JS',
                 `"${BUILD_URL}/kommunicate.${version}.min.js"`
-            );
-            fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
-                if (err) {
-                    console.log('plugin.js generation error');
+            )
+                .replace(':MCK_CONTEXTPATH', MCK_CONTEXT_PATH)
+                .replace(
+                    ':MCK_THIRD_PARTY_INTEGRATION',
+                    JSON.stringify(MCK_THIRD_PARTY_INTEGRATION)
+                )
+                .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
+                .replace(':PRODUCT_ID', 'kommunicate')
+                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING));
+
+
+            for (var i = 0; i < pluginVersions.length; i++) {
+                var data = mckApp.replace(
+                    ':MCK_PLUGIN_VERSION',
+                    pluginVersions[i]
+                );
+
+                if(!fs.existsSync(`${buildDir}/${pluginVersions[i]}`)){
+                    fs.mkdirSync(`${buildDir}/${pluginVersions[i]}`)    ;
                 }
-                generateFilesByVersion('build/plugin.js');
-            });
+
+                fs.writeFileSync(`${buildDir}/${pluginVersions[i]}/kommunicate.app`, data, function(err){
+                    if (err) {
+                        console.log(`unable to generate ${buildDir}/${pluginVersions[i]}/kommunicate.app`);
+                    }
+                    console.log(`${buildDir}/${pluginVersions[i]}/kommunicate.app generated successfully`);
+                })
+            }
+            
+            
+            // fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
+            //     if (err) {
+            //         console.log('plugin.js generation error');
+            //     }
+            //     generateFilesByVersion('build/plugin.js');
+            // });
         }
     );
     // Generate mck-app.js file for build folder.
@@ -311,6 +369,29 @@ const generateFilesByVersion = (location) => {
         }
     });
 };
+/**
+ * 
+ * @param {string} location required; location of source file ie plugin.js
+ * @param {string} version required
+ * 
+ * 
+ */
+const generateKMAppByVersion = (location, version) => {
+    fs.readFile(path.join(__dirname, location), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating plugin.js', err);
+        }
+        try {
+            for (var i = 0; i < pluginVersions.length; i++) {
+                let data = PLUGIN_FILE_DATA[pluginVersions[i]];
+                console.log(data);
+            }
+            console.log('plugin files generated for all versions successfully');
+        } catch (error) {
+            console.log(error);
+        }
+    });
+};
 
 const deleteFilesUsingPath = (path) => {
     // Assuming that 'path/file.txt' is a regular file.
@@ -333,6 +414,7 @@ const uploadFilesToCdn = async (buildDir, version) => {
         process.kill(process.pid);
     }
 };
+
 removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();
