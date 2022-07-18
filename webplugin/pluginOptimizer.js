@@ -274,7 +274,7 @@ const generateBuildFiles = () => {
             }
             var mckApp = data.replace(
                 'KOMMUNICATE_MIN_JS',
-                `"${BUILD_URL}/kommunicate.${version}.min.js"`
+                `"${MCK_CONTEXT_PATH}/kommunicate.${version}.min.js"`
             )
                 .replace(':MCK_CONTEXTPATH', MCK_CONTEXT_PATH)
                 .replace(
