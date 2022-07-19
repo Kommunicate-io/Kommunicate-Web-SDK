@@ -3,10 +3,3 @@ customHeaders:
     headers:
       - key: Access-Control-Allow-Origin
         value: '*'
-      - key: 'Cache-Control'
-        # 15 day
-        value: 'public, must-revalidate, max-age=1296000'
-  - pattern: '*.html'
-    headers:
-      - key: Cache-Control
-        value: 'no-cache, no-store, must-revalidate'
