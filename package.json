@@ -15,7 +15,11 @@
     "test": "NODE_ENV=test node ./server/app.js",
     "staging": "NODE_ENV=staging node ./server/app.js",
     "prod": "NODE_ENV=prod node ./server/app.js",
-    "prod_ca": "NODE_ENV=prod_ca node ./server/app.js"
+    "prod_ca": "NODE_ENV=prod_ca node ./server/app.js",
+    "build-test": "NODE_ENV=test node ./server/build.js",
+    "build-prod": "NODE_ENV=prod node ./server/build.js",
+    "build-staging": "NODE_ENV=staging node ./server/build.js",
+    "serve-build": "serve -C -l 3030 webplugin/build"
   },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",
@@ -36,7 +40,8 @@
     "nodemon": "2.0.7",
     "pinst": "2.1.4",
     "prettier": "2.2.1",
-    "pretty-quick": "3.1.0"
+    "pretty-quick": "3.1.0",
+    "serve": "14.0.1"
   },
   "nodemonConfig": {
     "verbose": true,

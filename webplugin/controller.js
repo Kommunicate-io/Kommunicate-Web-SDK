@@ -13,6 +13,7 @@ exports.getPlugin = async (req, res) => {
     var data = Object.keys(pluginVersionData).length
         ? pluginVersionData[MCK_PLUGIN_VERSION]
         : await generatePluginFile(req, res);
+        
     res.setHeader('Content-Type', 'application/javascript');
     res.send(data);
     console.log('plugin code sent successfully');

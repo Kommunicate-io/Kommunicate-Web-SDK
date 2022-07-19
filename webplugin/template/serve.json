@@ -1,0 +1,7 @@
+{
+    "rewrites": [
+      { "source": "/chat", "destination": "/chat.html" },
+      { "source": "/v2/kommunicate.app", "destination": "/kommunicate.app.js" }
+    ]
+  }
+  

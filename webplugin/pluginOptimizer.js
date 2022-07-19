@@ -40,6 +40,15 @@ let jsCompressor = !env ? noCompress : gcc;
 let terserCompressor = !env ? noCompress : terser;
 let cssCompressor = !env ? noCompress : cleanCSS;
 
+/**
+ * 
+ * @param {string} dirPath optional
+ * @returns null
+ * 
+ * Removes existing files and subdirectories from build folder if it exists. 
+ * If build folder doesn't exists then it create a build folder.
+ * 
+ */
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
@@ -57,6 +66,7 @@ const removeExistingFile = function (dirPath) {
             });
     }
 };
+
 // Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
     minify({
@@ -223,7 +233,33 @@ const combineJsFiles = () => {
     });
 };
 
+const copyFileToBuild = (src, dest) => {
+    fs.copyFile(
+        path.join(__dirname, src),
+        dest,
+        (err) => {
+            if (err) {
+                console.log(`error while generating ${dest}`, err);
+            }
+            console.log(`${dest} generated successfully`);
+        }
+    );
+}
 const generateBuildFiles = () => {
+
+    if (env) {
+        // Generate index.html for home route
+        copyFileToBuild('template/index.html', `${buildDir}/index.html`);
+    
+        // Generate chat.html for /chat route
+        // rewrite added in serve.json for local testing and on amplify
+        copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
+
+        // config file for serve
+        copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
+    }
+    
+
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
@@ -235,6 +271,7 @@ const generateBuildFiles = () => {
             console.log('mck-sidebox.html generated successfully');
         }
     );
+
     // Generate plugin.js file for build folder.
     fs.readFile(
         path.join(__dirname, 'plugin.js'),
@@ -245,8 +282,10 @@ const generateBuildFiles = () => {
             }
             var mckApp = data.replace(
                 'KOMMUNICATE_MIN_JS',
-                `"${BUILD_URL}/kommunicate.${version}.min.js"`
-            );
+                // dest is diff for dev and build
+                `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/kommunicate.${version}.min.js"`
+            )
+                
             fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
                 if (err) {
                     console.log('plugin.js generation error');
@@ -266,11 +305,11 @@ const generateBuildFiles = () => {
             var mckApp = data
                 .replace(
                     'KOMMUNICATE_MIN_CSS',
-                    `"${BUILD_URL}/kommunicate.${version}.min.css"`
+                    `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/kommunicate.${version}.min.css"`
                 )
                 .replace(
                     'MCK_SIDEBOX_HTML',
-                    `"${BUILD_URL}/mck-sidebox.${version}.html"`
+                    `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/mck-sidebox.${version}.html"`
                 );
             fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
                 if (err) {
@@ -303,6 +342,14 @@ const generateFilesByVersion = (location) => {
                     ':MCK_PLUGIN_VERSION',
                     pluginVersions[i]
                 );
+                if(env && pluginVersions[i] == 'v2'){
+                    fs.writeFile(`${buildDir}/kommunicate.app.js`, data, function (err) {
+                        if (err) {
+                            console.log('kommunicate.app generation error');
+                        }
+                        console.log('kommunicate.app generated');
+                    });
+                }
                 PLUGIN_FILE_DATA[pluginVersions[i]] = data;
             }
             console.log('plugin files generated for all versions successfully');
@@ -333,6 +380,7 @@ const uploadFilesToCdn = async (buildDir, version) => {
         process.kill(process.pid);
     }
 };
+
 removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();
