@@ -63,7 +63,7 @@ const removeExistingFile = function (dirPath) {
                 if (fs.statSync(dirPath + '/' + file).isFile()) {
                     fs.unlinkSync(dirPath + '/' + file);
                 }else{
-                    fs.rmdir(dirPath + '/' + file, {}, function(err){
+                    fs.rmdirSync(dirPath + '/' + file, { recursive: true }, function(err){
                         if(err){
                             console.log('error removing subdirrectories from existing build folder')
                         }
@@ -252,6 +252,18 @@ const generateBuildFiles = () => {
         }
     );
 
+    // Generate chat.html for home route
+    fs.copyFile(
+        path.join(__dirname, 'template/chat.html'),
+        `${buildDir}/chat.html`,
+        (err) => {
+            if (err) {
+                console.log('error while generating chat.html', err);
+            }
+            console.log('chat.html generated successfully');
+        }
+    );
+
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
@@ -309,7 +321,7 @@ const generateBuildFiles = () => {
             //     if (err) {
             //         console.log('plugin.js generation error');
             //     }
-            //     generateFilesByVersion('build/plugin.js');
+            //     generateFilesByVersion(' plugin.js');
             // });
         }
     );
