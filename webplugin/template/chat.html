@@ -11,7 +11,7 @@
     <script type="text/javascript">
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
-        let referer = params.get('referer') || 'iframe';
+        let referer = window.document.referrer;
         
         if(!appId){
             document.getElementById('error-msg').innerText = "no app id"
