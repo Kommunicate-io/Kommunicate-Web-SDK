@@ -62,12 +62,6 @@ const removeExistingFile = function (dirPath) {
             files.map((file) => {
                 if (fs.statSync(dirPath + '/' + file).isFile()) {
                     fs.unlinkSync(dirPath + '/' + file);
-                }else{
-                    fs.rmdirSync(dirPath + '/' + file, { recursive: true }, function(err){
-                        if(err){
-                            console.log('error removing subdirrectories from existing build folder')
-                        }
-                    });
                 }
             });
     }
@@ -239,30 +233,32 @@ const combineJsFiles = () => {
     });
 };
 
+const copyFileToBuild = (src, dest) => {
+    fs.copyFile(
+        path.join(__dirname, src),
+        dest,
+        (err) => {
+            if (err) {
+                console.log(`error while generating ${dest}`, err);
+            }
+            console.log(`${dest} generated successfully`);
+        }
+    );
+}
 const generateBuildFiles = () => {
-    // Generate index.html for home route
-    fs.copyFile(
-        path.join(__dirname, 'template/index.html'),
-        `${buildDir}/index.html`,
-        (err) => {
-            if (err) {
-                console.log('error while generating index.html', err);
-            }
-            console.log('index.html generated successfully');
-        }
-    );
 
-    // Generate chat.html for home route
-    fs.copyFile(
-        path.join(__dirname, 'template/chat.html'),
-        `${buildDir}/chat.html`,
-        (err) => {
-            if (err) {
-                console.log('error while generating chat.html', err);
-            }
-            console.log('chat.html generated successfully');
-        }
-    );
+    if (env) {
+        // Generate index.html for home route
+        copyFileToBuild('template/index.html', `${buildDir}/index.html`);
+    
+        // Generate chat.html for /chat route
+        // rewrite added in serve.json for local testing and on amplify
+        copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
+
+        // config file for serve
+        copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
+    }
+    
 
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
@@ -286,43 +282,16 @@ const generateBuildFiles = () => {
             }
             var mckApp = data.replace(
                 'KOMMUNICATE_MIN_JS',
-                `"${MCK_CONTEXT_PATH}/kommunicate.${version}.min.js"`
+                // dest is diff for dev and build
+                `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/kommunicate.${version}.min.js"`
             )
-                .replace(':MCK_CONTEXTPATH', MCK_CONTEXT_PATH)
-                .replace(
-                    ':MCK_THIRD_PARTY_INTEGRATION',
-                    JSON.stringify(MCK_THIRD_PARTY_INTEGRATION)
-                )
-                .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
-                .replace(':PRODUCT_ID', 'kommunicate')
-                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING));
-
-
-            for (var i = 0; i < pluginVersions.length; i++) {
-                var data = mckApp.replace(
-                    ':MCK_PLUGIN_VERSION',
-                    pluginVersions[i]
-                );
-
-                if(!fs.existsSync(`${buildDir}/${pluginVersions[i]}`)){
-                    fs.mkdirSync(`${buildDir}/${pluginVersions[i]}`)    ;
+                
+            fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
+                if (err) {
+                    console.log('plugin.js generation error');
                 }
-
-                fs.writeFileSync(`${buildDir}/${pluginVersions[i]}/kommunicate.app`, data, function(err){
-                    if (err) {
-                        console.log(`unable to generate ${buildDir}/${pluginVersions[i]}/kommunicate.app`);
-                    }
-                    console.log(`${buildDir}/${pluginVersions[i]}/kommunicate.app generated successfully`);
-                })
-            }
-            
-            
-            // fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
-            //     if (err) {
-            //         console.log('plugin.js generation error');
-            //     }
-            //     generateFilesByVersion(' plugin.js');
-            // });
+                generateFilesByVersion('build/plugin.js');
+            });
         }
     );
     // Generate mck-app.js file for build folder.
@@ -336,11 +305,11 @@ const generateBuildFiles = () => {
             var mckApp = data
                 .replace(
                     'KOMMUNICATE_MIN_CSS',
-                    `"${MCK_CONTEXT_PATH}/kommunicate.${version}.min.css"`
+                    `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/kommunicate.${version}.min.css"`
                 )
                 .replace(
                     'MCK_SIDEBOX_HTML',
-                    `"${MCK_CONTEXT_PATH}/mck-sidebox.${version}.html"`
+                    `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/mck-sidebox.${version}.html"`
                 );
             fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
                 if (err) {
@@ -373,30 +342,15 @@ const generateFilesByVersion = (location) => {
                     ':MCK_PLUGIN_VERSION',
                     pluginVersions[i]
                 );
+                if(env && pluginVersions[i] == 'v2'){
+                    fs.writeFile(`${buildDir}/kommunicate.app.js`, data, function (err) {
+                        if (err) {
+                            console.log('kommunicate.app generation error');
+                        }
+                        console.log('kommunicate.app generated');
+                    });
+                }
                 PLUGIN_FILE_DATA[pluginVersions[i]] = data;
-            }
-            console.log('plugin files generated for all versions successfully');
-        } catch (error) {
-            console.log(error);
-        }
-    });
-};
-/**
- * 
- * @param {string} location required; location of source file ie plugin.js
- * @param {string} version required
- * 
- * 
- */
-const generateKMAppByVersion = (location, version) => {
-    fs.readFile(path.join(__dirname, location), 'utf8', function (err, data) {
-        if (err) {
-            console.log('error while generating plugin.js', err);
-        }
-        try {
-            for (var i = 0; i < pluginVersions.length; i++) {
-                let data = PLUGIN_FILE_DATA[pluginVersions[i]];
-                console.log(data);
             }
             console.log('plugin files generated for all versions successfully');
         } catch (error) {
