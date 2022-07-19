@@ -39,6 +39,7 @@ let env = config.getEnvId() !== 'development';
 let jsCompressor = !env ? noCompress : gcc;
 let terserCompressor = !env ? noCompress : terser;
 let cssCompressor = !env ? noCompress : cleanCSS;
+let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH;
 
 /**
  * 
@@ -283,7 +284,7 @@ const generateBuildFiles = () => {
             var mckApp = data.replace(
                 'KOMMUNICATE_MIN_JS',
                 // dest is diff for dev and build
-                `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/kommunicate.${version}.min.js"`
+                `"${pathToResource}/kommunicate.${version}.min.js"`
             )
                 
             fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
@@ -305,11 +306,11 @@ const generateBuildFiles = () => {
             var mckApp = data
                 .replace(
                     'KOMMUNICATE_MIN_CSS',
-                    `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/kommunicate.${version}.min.css"`
+                    `"${pathToResource}/kommunicate.${version}.min.css"`
                 )
                 .replace(
                     'MCK_SIDEBOX_HTML',
-                    `"${!env ? BUILD_URL : MCK_CONTEXT_PATH}/mck-sidebox.${version}.html"`
+                    `"${pathToResource}/mck-sidebox.${version}.html"`
                 );
             fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
                 if (err) {
