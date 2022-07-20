@@ -41,10 +41,11 @@ function ZendeskChatService() {
             }
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
+            var phoneNumber = preChatLeadData.contactNumber;
             var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
-                    jwt_fn: function (callback) {
+                     jwt_fn: function (callback) {
                         var userPxy = {
                             name,
                             email,
@@ -72,6 +73,11 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
+                zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
+                    if (!err) {
+                        console.log(zChat.getVisitorInfo());
+                    }
+                });
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
                     _this.handleZendeskAgentMessageEvent(eventDetails);
@@ -107,7 +113,6 @@ function ZendeskChatService() {
                 }
             });
         }
-
     };
 
     _this.handleBotMessage = function (event) {
