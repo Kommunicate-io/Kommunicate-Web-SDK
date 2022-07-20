@@ -1,12 +1,12 @@
 customHeaders:
   - pattern: '**'
     headers:
-      - key: 'Access-Control-Allow-Origin'
+      - key: Access-Control-Allow-Origin
         value: '*'
-      - key: 'Cache-Control'
+      - key: Cache-Control
         # 15 day
         value: 'public, max-age=1296000'
   - pattern: '*.app.js'
     headers:
-      - key: 'Cache-Control'
-        value: 'no-cache, no-store, must-revalidate'
+      - key: Cache-Control
+        value: 'must-revalidate, max-age=1296000'
