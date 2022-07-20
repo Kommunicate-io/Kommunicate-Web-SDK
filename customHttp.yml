@@ -9,3 +9,5 @@ customHeaders:
     headers:
       - key: 'Content-Type'
         value: 'text/javascript'
+      - key: 'Cache-Control'
+        value: 'no-cache, no-store, must-revalidate'
