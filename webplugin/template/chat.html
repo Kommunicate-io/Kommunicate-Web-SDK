@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kommunicate plugin</title>
 </head>
+
 <body>
-    <div id = "error-msg"></div>
+    <div id="error-msg"></div>
     <script type="text/javascript">
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
         let referer = window.document.referrer;
-        
-        if(!appId){
+
+        if (!appId) {
             document.getElementById('error-msg').innerText = "no app id"
         } else {
             (function (d, m) {
@@ -48,7 +50,8 @@
                 window.kommunicate.IFRAME_OVERRIDES = {}; window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL = referer;
             })(document, window.kommunicate || {});
         }
-    
+
     </script>
 </body>
+
 </html>

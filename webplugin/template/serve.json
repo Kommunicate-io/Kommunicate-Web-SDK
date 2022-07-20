@@ -1,7 +1,23 @@
 {
-    "rewrites": [
-      { "source": "/chat", "destination": "/chat.html" },
-      { "source": "/v2/kommunicate.app", "destination": "/kommunicate.app.js" }
+    "rewrites": [{ "source": "/chat", "destination": "/chat.html" }],
+    "headers": [
+        {
+            "source": "**",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        },
+        {
+            "source": "**/*.app",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/javascript"
+                }
+            ]
+        }
     ]
-  }
-  
+}

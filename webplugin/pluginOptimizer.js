@@ -255,15 +255,14 @@ const generateBuildFiles = () => {
     if (env) {
         // Generate index.html for home route
         copyFileToBuild('template/index.html', `${buildDir}/index.html`);
-    
-        // Generate chat.html for /chat route
-        // rewrite added in serve.json for local testing and on amplify
-        copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
     }
     
+    // Generate chat.html for /chat route
+    // rewrite added in serve.json for local testing and on amplify
+    copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
