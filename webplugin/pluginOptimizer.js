@@ -223,7 +223,11 @@ const combineJsFiles = () => {
                 paths.forEach(async function (value) {
                     await deleteFilesUsingPath(value);
                 });
-                isAwsUploadEnabled && uploadFilesToCdn(buildDir, version);
+                if(isAwsUploadEnabled) {
+                    uploadFilesToCdn(buildDir, version)
+                } else {
+                    console.log('Files not uploaded to CDN')
+                };
             } else {
                 console.log(
                     `err while minifying kommunicate.${version}.js`,
@@ -344,7 +348,10 @@ const generateFilesByVersion = (location) => {
                     pluginVersions[i]
                 );
                 if(env && pluginVersions[i] == 'v2'){
-                    fs.writeFile(`${buildDir}/kommunicate.app.js`, data, function (err) {
+                    if (!fs.existsSync(`${buildDir}/v2`)) {
+                        fs.mkdirSync(`${buildDir}/v2`);
+                    };
+                    fs.writeFile(`${buildDir}/v2/kommunicate.app`, data, function (err) {
                         if (err) {
                             console.log('kommunicate.app generation error');
                         }
