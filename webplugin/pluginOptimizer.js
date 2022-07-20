@@ -347,7 +347,10 @@ const generateFilesByVersion = (location) => {
                     pluginVersions[i]
                 );
                 if(env && pluginVersions[i] == 'v2'){
-                    fs.writeFile(`${buildDir}/kommunicate.app.js`, data, function (err) {
+                    if (!fs.existsSync(`${buildDir}/v2`)) {
+                        fs.mkdirSync(`${buildDir}/v2`);
+                    };
+                    fs.writeFile(`${buildDir}/v2/kommunicate.app`, data, function (err) {
                         if (err) {
                             console.log('kommunicate.app generation error');
                         }
