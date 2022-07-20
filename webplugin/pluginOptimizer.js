@@ -222,7 +222,11 @@ const combineJsFiles = () => {
                 paths.forEach(async function (value) {
                     await deleteFilesUsingPath(value);
                 });
-                isAwsUploadEnabled && uploadFilesToCdn(buildDir, version);
+                if(isAwsUploadEnabled) {
+                    uploadFilesToCdn(buildDir, version)
+                } else {
+                    console.log('Files not uploaded to CDN')
+                };
             } else {
                 console.log(
                     `err while minifying kommunicate.${version}.js`,
