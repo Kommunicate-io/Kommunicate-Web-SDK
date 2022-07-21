@@ -73,6 +73,13 @@ const removeExistingFile = function (dirPath) {
 
 // Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
+    if (env) {
+        // create resources folder
+        // resources folder will contain the files generated with version
+        if (!fs.existsSync(`${buildDir}/resources`)){
+            fs.mkdirSync(`${buildDir}/resources`);
+        }
+    }
     minify({
         compressor: jsCompressor,
         input: [
@@ -256,12 +263,6 @@ const copyFileToBuild = (src, dest) => {
 const generateBuildFiles = () => {
 
     if (env) {
-        // create resources folder
-        // resources folder will contain the files generated with version
-        if (!fs.existsSync(`${buildDir}/resources`)){
-            fs.mkdirSync(`${buildDir}/resources`);
-        }
-
         // Generate index.html for home route
         copyFileToBuild('template/index.html', `${buildDir}/index.html`);
 
