@@ -87,7 +87,7 @@ function ZendeskChatService() {
         }
     };
     _this.updateNumberInZopim = function() {
-        if(zChat.getVisitorInfo().phone != phoneNumber){
+        if(zChat.getVisitorInfo().phone != phoneNumber && phoneNumber){
             zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
                 if (!err) {
                     console.log(zChat.getVisitorInfo());
