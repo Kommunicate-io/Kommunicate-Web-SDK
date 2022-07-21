@@ -87,10 +87,10 @@ function ZendeskChatService() {
         }
     };
     _this.updateNumberInZopim = function() {
-        if(zChat.getVisitorInfo().phone != phoneNumber && phoneNumber){
+        if(phoneNumber && zChat.getVisitorInfo().phone != phoneNumber){
             zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
                 if (!err) {
-                    console.log(zChat.getVisitorInfo());
+                     console.log(zChat.getVisitorInfo());
                 }
             });
         }
