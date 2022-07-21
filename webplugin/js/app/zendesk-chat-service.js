@@ -7,10 +7,12 @@ function ZendeskChatService() {
     var ZENDESK_CHAT_SDK_KEY = "";
     var AGENT_INFO_MAP = {};
     var preChatLeadData = {};
+    var phoneNumber = "";
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
         preChatLeadData = preChatData;
+        phoneNumber = preChatLeadData.contactNumber;
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -41,7 +43,6 @@ function ZendeskChatService() {
             }
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
-            var phoneNumber = preChatLeadData.contactNumber;
             var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
@@ -73,13 +74,7 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
-                if(zChat.getVisitorInfo().phone != phoneNumber){
-                    zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
-                        if (!err) {
-                            console.log(zChat.getVisitorInfo());
-                        }
-                    });
-                }
+                _this.updateNumberInZopim();
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
                     _this.handleZendeskAgentMessageEvent(eventDetails);
@@ -87,6 +82,15 @@ function ZendeskChatService() {
                     _this.handleZendeskAgentFileSendEvent(eventDetails);
                 } else if (eventDetails.type == "chat.memberleave") { //If agent leaves conversation
                     _this.handleZendeskAgentLeaveEvent(eventDetails);
+                }
+            });
+        }
+    };
+    _this.updateNumberInZopim = function() {
+        if(zChat.getVisitorInfo().phone != phoneNumber){
+            zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
+                if (!err) {
+                    console.log(zChat.getVisitorInfo());
                 }
             });
         }
