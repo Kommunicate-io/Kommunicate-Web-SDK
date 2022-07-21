@@ -13,6 +13,8 @@ frontend:
             commands:
                 # Kommunicate Test
                 - if [ "${BUILD_ENV}" = "test" ]; then npm run build-test; fi
+                # Kommunicate Release
+                - if [ "${BUILD_ENV}" = "release" ]; then npm run build-release; fi
                 # Kommunicate Staging
                 - if [ "${BUILD_ENV}" = "staging" ]; then npm run build-staging; fi
                 # Kommunicate Prod
