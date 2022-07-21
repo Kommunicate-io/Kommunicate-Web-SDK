@@ -7,6 +7,7 @@ function ZendeskChatService() {
     var ZENDESK_CHAT_SDK_KEY = "";
     var AGENT_INFO_MAP = {};
     var preChatLeadData = {};
+    var numberUpdatedInZopim = false;
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
@@ -42,7 +43,6 @@ function ZendeskChatService() {
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
             var phoneNumber = preChatLeadData.contactNumber;
-            var numberUpdatedInZopim = false;
             var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
@@ -74,7 +74,7 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
-                if(numberUpdatedInZopim == false){
+                if(!numberUpdatedInZopim){
                     zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
                         if (!err) {
                             console.log(zChat.getVisitorInfo());
