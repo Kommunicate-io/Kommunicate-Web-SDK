@@ -7,7 +7,6 @@ function ZendeskChatService() {
     var ZENDESK_CHAT_SDK_KEY = "";
     var AGENT_INFO_MAP = {};
     var preChatLeadData = {};
-    var numberUpdatedInZopim = false;
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
@@ -74,13 +73,12 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
-                if(!numberUpdatedInZopim){
+                if(zChat.getVisitorInfo().phone != phoneNumber){
                     zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
                         if (!err) {
                             console.log(zChat.getVisitorInfo());
                         }
                     });
-                    numberUpdatedInZopim = true;
                 }
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
