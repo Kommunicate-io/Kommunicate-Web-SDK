@@ -39,7 +39,8 @@ let env = config.getEnvId() !== 'development';
 let jsCompressor = !env ? noCompress : gcc;
 let terserCompressor = !env ? noCompress : terser;
 let cssCompressor = !env ? noCompress : cleanCSS;
-let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH;
+let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH+"/resources";
+let resourceLocation = env ? path.resolve(__dirname, 'build/resources') : buildDir;
 
 /**
  * 
@@ -67,6 +68,8 @@ const removeExistingFile = function (dirPath) {
             });
     }
 };
+
+
 
 // Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
@@ -114,7 +117,7 @@ const compressAndOptimize = () => {
         ],
         output: path.resolve(
             __dirname,
-            `${buildDir}/kommunicate.${version}.min.css`
+            `${resourceLocation}/kommunicate.${version}.min.css`
         ),
         options: {
             level: 1, // (default)
@@ -215,7 +218,7 @@ const combineJsFiles = () => {
         },
         output: path.resolve(
             __dirname,
-            `${buildDir}/kommunicate.${version}.min.js`
+            `${resourceLocation}/kommunicate.${version}.min.js`
         ),
         callback: function (err, min) {
             if (!err) {
@@ -253,6 +256,12 @@ const copyFileToBuild = (src, dest) => {
 const generateBuildFiles = () => {
 
     if (env) {
+        // create resources folder
+        // resources folder will contain the files generated with version
+        if (!fs.existsSync(`${buildDir}/resources`)){
+            fs.mkdirSync(`${buildDir}/resources`);
+        }
+
         // Generate index.html for home route
         copyFileToBuild('template/index.html', `${buildDir}/index.html`);
 
@@ -267,7 +276,7 @@ const generateBuildFiles = () => {
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
-        `${buildDir}/mck-sidebox.${version}.html`,
+        `${resourceLocation}/mck-sidebox.${version}.html`,
         (err) => {
             if (err) {
                 console.log('error while generating mck-sidebox.html', err);
