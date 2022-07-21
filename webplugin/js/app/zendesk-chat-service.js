@@ -42,7 +42,7 @@ function ZendeskChatService() {
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
             var phoneNumber = preChatLeadData.contactNumber;
-            var updatedNumber = false;
+            var numberUpdatedInZopim = false;
             var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
@@ -74,13 +74,13 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
-                if(updatedNumber == false){
+                if(numberUpdatedInZopim == false){
                     zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
                         if (!err) {
                             console.log(zChat.getVisitorInfo());
                         }
                     });
-                    updatedNumber = true;
+                    numberUpdatedInZopim = true;
                 }
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
