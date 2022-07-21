@@ -41,6 +41,7 @@ function ZendeskChatService() {
             }
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
+            var check = 1;
             var phoneNumber = preChatLeadData.contactNumber;
             var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
@@ -73,11 +74,14 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
-                zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
-                    if (!err) {
-                        console.log(zChat.getVisitorInfo());
-                    }
-                });
+                if(check == 1){
+                    zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
+                        if (!err) {
+                            console.log(zChat.getVisitorInfo());
+                        }
+                    });
+                    check++;
+                }
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
                     _this.handleZendeskAgentMessageEvent(eventDetails);
