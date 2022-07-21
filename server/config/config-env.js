@@ -51,7 +51,9 @@ const configEnv = {
         port: '3031',
         urls: {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
+            // temporary change for testing
+            // kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-staging.kommunicate.io',
             dashboardUrl: 'https://dashboard-staging.kommunicate.io',

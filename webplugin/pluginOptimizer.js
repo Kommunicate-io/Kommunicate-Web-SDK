@@ -39,7 +39,18 @@ let env = config.getEnvId() !== 'development';
 let jsCompressor = !env ? noCompress : gcc;
 let terserCompressor = !env ? noCompress : terser;
 let cssCompressor = !env ? noCompress : cleanCSS;
+let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH+"/resources";
+let resourceLocation = env ? path.resolve(__dirname, 'build/resources') : buildDir;
 
+/**
+ * 
+ * @param {string} dirPath optional
+ * @returns null
+ * 
+ * Removes existing files and subdirectories from build folder if it exists. 
+ * If build folder doesn't exists then it create a build folder.
+ * 
+ */
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
@@ -57,8 +68,18 @@ const removeExistingFile = function (dirPath) {
             });
     }
 };
+
+
+
 // Add already minified files only in the below compressor code.
 const compressAndOptimize = () => {
+    if (env) {
+        // create resources folder
+        // resources folder will contain the files generated with version
+        if (!fs.existsSync(`${buildDir}/resources`)){
+            fs.mkdirSync(`${buildDir}/resources`);
+        }
+    }
     minify({
         compressor: jsCompressor,
         input: [
@@ -103,7 +124,7 @@ const compressAndOptimize = () => {
         ],
         output: path.resolve(
             __dirname,
-            `${buildDir}/kommunicate.${version}.min.css`
+            `${resourceLocation}/kommunicate.${version}.min.css`
         ),
         options: {
             level: 1, // (default)
@@ -204,7 +225,7 @@ const combineJsFiles = () => {
         },
         output: path.resolve(
             __dirname,
-            `${buildDir}/kommunicate.${version}.min.js`
+            `${resourceLocation}/kommunicate.${version}.min.js`
         ),
         callback: function (err, min) {
             if (!err) {
@@ -212,7 +233,11 @@ const combineJsFiles = () => {
                 paths.forEach(async function (value) {
                     await deleteFilesUsingPath(value);
                 });
-                isAwsUploadEnabled && uploadFilesToCdn(buildDir, version);
+                if(isAwsUploadEnabled) {
+                    uploadFilesToCdn(buildDir, version)
+                } else {
+                    console.log('Files not uploaded to CDN')
+                };
             } else {
                 console.log(
                     `err while minifying kommunicate.${version}.js`,
@@ -223,11 +248,36 @@ const combineJsFiles = () => {
     });
 };
 
+const copyFileToBuild = (src, dest) => {
+    fs.copyFile(
+        path.join(__dirname, src),
+        dest,
+        (err) => {
+            if (err) {
+                console.log(`error while generating ${dest}`, err);
+            }
+            console.log(`${dest} generated successfully`);
+        }
+    );
+}
 const generateBuildFiles = () => {
+
+    if (env) {
+        // Generate index.html for home route
+        copyFileToBuild('template/index.html', `${buildDir}/index.html`);
+
+        // config file for serve
+        copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
+    }
+    
+    // Generate chat.html for /chat route
+    // rewrite added in serve.json for local testing and on amplify
+    copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
+
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
-        `${buildDir}/mck-sidebox.${version}.html`,
+        `${resourceLocation}/mck-sidebox.${version}.html`,
         (err) => {
             if (err) {
                 console.log('error while generating mck-sidebox.html', err);
@@ -235,6 +285,7 @@ const generateBuildFiles = () => {
             console.log('mck-sidebox.html generated successfully');
         }
     );
+
     // Generate plugin.js file for build folder.
     fs.readFile(
         path.join(__dirname, 'plugin.js'),
@@ -245,8 +296,10 @@ const generateBuildFiles = () => {
             }
             var mckApp = data.replace(
                 'KOMMUNICATE_MIN_JS',
-                `"${BUILD_URL}/kommunicate.${version}.min.js"`
-            );
+                // dest is diff for dev and build
+                `"${pathToResource}/kommunicate.${version}.min.js"`
+            )
+                
             fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
                 if (err) {
                     console.log('plugin.js generation error');
@@ -266,11 +319,11 @@ const generateBuildFiles = () => {
             var mckApp = data
                 .replace(
                     'KOMMUNICATE_MIN_CSS',
-                    `"${BUILD_URL}/kommunicate.${version}.min.css"`
+                    `"${pathToResource}/kommunicate.${version}.min.css"`
                 )
                 .replace(
                     'MCK_SIDEBOX_HTML',
-                    `"${BUILD_URL}/mck-sidebox.${version}.html"`
+                    `"${pathToResource}/mck-sidebox.${version}.html"`
                 );
             fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
                 if (err) {
@@ -303,6 +356,17 @@ const generateFilesByVersion = (location) => {
                     ':MCK_PLUGIN_VERSION',
                     pluginVersions[i]
                 );
+                if(env && pluginVersions[i] == 'v2'){
+                    if (!fs.existsSync(`${buildDir}/v2`)) {
+                        fs.mkdirSync(`${buildDir}/v2`);
+                    };
+                    fs.writeFile(`${buildDir}/v2/kommunicate.app`, data, function (err) {
+                        if (err) {
+                            console.log('kommunicate.app generation error');
+                        }
+                        console.log('kommunicate.app generated');
+                    });
+                }
                 PLUGIN_FILE_DATA[pluginVersions[i]] = data;
             }
             console.log('plugin files generated for all versions successfully');
@@ -333,6 +397,7 @@ const uploadFilesToCdn = async (buildDir, version) => {
         process.kill(process.pid);
     }
 };
+
 removeExistingFile(buildDir);
 compressAndOptimize();
 generateBuildFiles();

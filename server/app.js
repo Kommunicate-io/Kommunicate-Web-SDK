@@ -18,9 +18,6 @@ app.use(compression());
 // Define the port to run on
 app.set('port', port); //
 
-//setting up view engine
-app.set('view engine','ejs');
-app.set('views', path.join(__dirname, '/views'))
 app.use('/', routes.home);
 
 const fileMaxAge = process.env.NODE_ENV && 2538000000; // 30 days cache period which is converted in milliseconds

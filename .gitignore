@@ -2,7 +2,7 @@ node_modules
 package-lock.json
 .DS_Store/*
 .DS_Store
-webplugin/build/*.*
+webplugin/build/*
 webplugin/css/app/bin/
 webplugin/build/test.txt
 yarn.lock

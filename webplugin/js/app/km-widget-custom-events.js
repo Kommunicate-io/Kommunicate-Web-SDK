@@ -14,16 +14,21 @@ var kmWidgetEvents = {
                 applozic._globals.gaTrackingID ||
                 (applozic._globals.appSettings.chatWidget.isGAEnabled &&
                     applozic._globals.appSettings.chatWidget.gaTrackingId);
-        if (trackingID && typeof window.top.ga !== 'undefined') {
-            window.top.ga('create', trackingID.toString(), 'auto');
-            window.top.ga('send', {
-                hitType: 'event',
-                eventCategory: eventCateogry,
-                eventAction: eventAction,
-                eventLabel: eventLabel,
-                eventValue: eventValue,
-            });
+        try{
+            if (trackingID && typeof window.top.ga !== 'undefined') {
+                window.top.ga('create', trackingID.toString(), 'auto');
+                window.top.ga('send', {
+                    hitType: 'event',
+                    eventCategory: eventCateogry,
+                    eventAction: eventAction,
+                    eventLabel: eventLabel,
+                    eventValue: eventValue,
+                });
+            }
+        } catch(error){
+            console.log('Cannot reach to top window. Error => ', error);
         }
+        
     },
     eventTracking: function (eventObject, customLabel, customValue) {
         // Any other analytics tool related code can be add here no need to paste it in every function
