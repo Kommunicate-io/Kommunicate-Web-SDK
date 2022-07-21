@@ -41,8 +41,8 @@ function ZendeskChatService() {
             }
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
-            var check = 1;
             var phoneNumber = preChatLeadData.contactNumber;
+            var updatedNumber = false;
             var externalId = preChatLeadData.userId;
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
@@ -74,13 +74,13 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
-                if(check == 1){
+                if(updatedNumber == false){
                     zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
                         if (!err) {
                             console.log(zChat.getVisitorInfo());
                         }
                     });
-                    check++;
+                    updatedNumber = true;
                 }
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
