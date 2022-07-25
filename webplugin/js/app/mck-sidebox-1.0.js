@@ -428,14 +428,14 @@ var userOverride = {
         //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_VOLUME =
             WIDGET_SETTINGS &&
-            typeof WIDGET_SETTINGS.notificationVolume === 'number'
+                typeof WIDGET_SETTINGS.notificationVolume === 'number'
                 ? WIDGET_SETTINGS.notificationVolume
                 : 1; // Volume range for howler library is from 0->1.
         var MCK_NOTIFICATION_TONE_LINK =
             WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone
                 ? KommunicateConstants.NOTIFICATION_RINGTONES[
-                      WIDGET_SETTINGS.notificationTone
-                  ]
+                WIDGET_SETTINGS.notificationTone
+                ]
                 : KommunicateConstants.NOTIFICATION_RINGTONES['subtle'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink
             ? appOptions.chatPopupSoundNotificationLink
@@ -585,15 +585,15 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
-        var QUICK_REPLIES = appOptions.quickReplies? mckMessageService.checkArray(appOptions.quickReplies):[];
+        var QUICK_REPLIES = appOptions.quickReplies ? mckMessageService.checkArray(appOptions.quickReplies) : [];
         var KM_PRELEAD_COLLECTION = appOptions.preLeadCollection
             ? mckMessageService.checkArray(appOptions.preLeadCollection)
             : appOptions.appSettings.collectLead &&
-              appOptions.appSettings.leadCollection
-            ? mckMessageService.checkArray(
-                  appOptions.appSettings.leadCollection
-              )
-            : [];
+                appOptions.appSettings.leadCollection
+                ? mckMessageService.checkArray(
+                    appOptions.appSettings.leadCollection
+                )
+                : [];
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -603,6 +603,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT_24_HOURS = appOptions.timeformat24hours;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -620,8 +621,8 @@ var userOverride = {
             WIDGET_SETTINGS && WIDGET_SETTINGS.customBranding;
         var WIDGET_POSITION =
             WIDGET_SETTINGS &&
-            kommunicateCommons.isObject(WIDGET_SETTINGS) &&
-            WIDGET_SETTINGS.hasOwnProperty('position')
+                kommunicateCommons.isObject(WIDGET_SETTINGS) &&
+                WIDGET_SETTINGS.hasOwnProperty('position')
                 ? WIDGET_SETTINGS.position
                 : KommunicateConstants.POSITION.RIGHT;
         var SOCKET_RECONNECT_FAIL_COUNT = 0;
@@ -694,8 +695,8 @@ var userOverride = {
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
                 ? $applozic('#mck-msg-preview-visual-indicator')
-                      .removeClass('vis')
-                      .addClass('n-vis')
+                    .removeClass('vis')
+                    .addClass('n-vis')
                 : '';
             var greetingMessageContainer = document.getElementById(
                 'chat-popup-widget-container'
@@ -715,7 +716,7 @@ var userOverride = {
             onConnectFailed: function (resp) {
                 console.log('onConnectFailed' + resp);
                 console.log('onconnect failed');
-                if(resp.body && resp.body.indexOf('Access refused for user') !== -1){ 
+                if (resp.body && resp.body.indexOf('Access refused for user') !== -1) {
                     kommunicate.reloadWidget();
                     return;
                 }
@@ -756,22 +757,22 @@ var userOverride = {
                     );
                 }
             },
-            onMessageDelivered: function (resp) {},
-            onMessageRead: function (resp) {},
-            onMessageDeleted: function (resp) {},
-            onConversationDeleted: function (resp) {},
-            onUserConnect: function (resp) {},
-            onUserDisconnect: function (resp) {},
-            onConversationReadFromOtherSource: function (resp) {},
-            onConversationRead: function (resp) {},
-            onMessageReceived: function (resp) {},
-            onMessageSentUpdate: function (resp) {},
-            onMessageSent: function (resp) {},
-            onUserBlocked: function (resp) {},
-            onUserUnblocked: function (resp) {},
-            onUserActivated: function (resp) {},
-            onUserDeactivated: function (resp) {},
-            onMessageNotification: function (resp) {},
+            onMessageDelivered: function (resp) { },
+            onMessageRead: function (resp) { },
+            onMessageDeleted: function (resp) { },
+            onConversationDeleted: function (resp) { },
+            onUserConnect: function (resp) { },
+            onUserDisconnect: function (resp) { },
+            onConversationReadFromOtherSource: function (resp) { },
+            onConversationRead: function (resp) { },
+            onMessageReceived: function (resp) { },
+            onMessageSentUpdate: function (resp) { },
+            onMessageSent: function (resp) { },
+            onUserBlocked: function (resp) { },
+            onUserUnblocked: function (resp) { },
+            onUserActivated: function (resp) { },
+            onUserDeactivated: function (resp) { },
+            onMessageNotification: function (resp) { },
             connectToSocket: function (resp) {
                 mckInitializeChannel.connectToSocket(resp);
             },
@@ -857,13 +858,13 @@ var userOverride = {
                     { id: ['mck-attach-img-box', 'mck-img-file-up'] },
                     'n-vis',
                     ''
-            );
+                );
             !IS_CAPTURE_VIDEO &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-attach-vid-box', 'mck-vid-file-up'] },
                     'n-vis',
                     ''
-            );
+                );
             (VOICE_INPUT_ENABLED || VOICE_NOTE_ENABLED) &&
                 Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
 
@@ -1082,7 +1083,7 @@ var userOverride = {
                 if (optns.topicStatus) {
                     params.topicStatus =
                         CONVERSATION_STATUS_MAP.indexOf(optns.topicStatus) ===
-                        -1
+                            -1
                             ? CONVERSATION_STATUS_MAP[0]
                             : optns.topicStatus.toString();
                 } else {
@@ -1316,7 +1317,7 @@ var userOverride = {
             }
             IS_LOGGED_IN = false;
         };
-        
+
         _this.getUserStatus = function (params) {
             if (typeof params.callback === 'function') {
                 if (typeof params.userIds !== 'undefined') {
@@ -1330,12 +1331,12 @@ var userOverride = {
                             contact =
                                 typeof contact === 'undefined'
                                     ? mckMessageLayout.createContactWithDetail(
-                                          user
-                                      )
+                                        user
+                                    )
                                     : mckMessageLayout.updateContactDetail(
-                                          contact,
-                                          user
-                                      );
+                                        contact,
+                                        user
+                                    );
                             MCK_GROUP_MEMBER_SEARCH_ARRAY.push(
                                 contact.contactId
                             );
@@ -1873,13 +1874,13 @@ var userOverride = {
                 SUBSCRIBE_TO_EVENTS_BACKUP.push(events);
                 return;
             }
-            if(isEventArray){
+            if (isEventArray) {
                 let eventObject = {};
                 events.forEach(eventSet => {
                     Object.keys(eventSet).forEach(eventName => {
-                        if(eventObject.hasOwnProperty(eventName)){
+                        if (eventObject.hasOwnProperty(eventName)) {
                             eventObject[eventName].push(eventSet[eventName]);
-                        }else{
+                        } else {
                             eventObject[eventName] = [eventSet[eventName]];
                         }
                     })
@@ -1939,7 +1940,7 @@ var userOverride = {
                             events.onMessageReceived(data);
                         }
                     }
-                } 
+                }
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
@@ -1949,7 +1950,7 @@ var userOverride = {
                         window.Applozic.ALSocket.events.onMessageSent =
                             events.onMessageSent;
                     }
-                } 
+                }
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
                         events.onUserBlocked;
@@ -1981,7 +1982,7 @@ var userOverride = {
                 }
                 Object.keys(events).forEach(event => {
                     if (Array.isArray(events[event])) {
-                        function executeableFunction (responseObject) {
+                        function executeableFunction(responseObject) {
                             events[event].forEach(eventCall => {
                                 eventCall(responseObject);
                             })
@@ -2011,18 +2012,18 @@ var userOverride = {
             );
         };
 
-        _this.initializeSocketConnection = function (isReInit) {  
-                isReInit
+        _this.initializeSocketConnection = function (isReInit) {
+            isReInit
                 ? window.Applozic.ALSocket.reconnect()
                 : window.Applozic.ALSocket.init(
                     MCK_APP_ID,
                     INIT_APP_DATA,
                     EVENTS
                 );
-                // Disconnect open sockets if user has no conversations.
-                !CONNECT_SOCKET_ON_WIDGET_CLICK &&
-                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
-                    window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
+            // Disconnect open sockets if user has no conversations.
+            !CONNECT_SOCKET_ON_WIDGET_CLICK &&
+                !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
+                window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();
         };
         function MckInit() {
             var _this = this;
@@ -2040,7 +2041,7 @@ var userOverride = {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var squareIcon = kommunicate._globals.iconShape == "square" ? "km-square-chat-icon" : "";
                 var CHAT_CLOSE_BUTTON =
-                    '<div id="km-popup-close-button" aria-label="Close" role="button" class="km-custom-widget-background-color '+squareIcon +'">'+
+                    '<div id="km-popup-close-button" aria-label="Close" role="button" class="km-custom-widget-background-color ' + squareIcon + '">' +
                     '<svg width="64" xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 64 64"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z" stroke-width="6" stroke="#fff"/></svg></div>';
                 var customLauncherHtml =
                     '<div id="launcher-svg-container" class="vis" style ="white-space: nowrap;">' +
@@ -2261,11 +2262,11 @@ var userOverride = {
                                             POPUP_WIDGET
                                         );
                                         WIDGET_POSITION ===
-                                        KommunicateConstants.POSITION.LEFT
+                                            KommunicateConstants.POSITION.LEFT
                                             ? (kmAnonymousChatLauncher.style.left =
-                                                  '10px')
+                                                '10px')
                                             : (kmAnonymousChatLauncher.style.right =
-                                                  '10px');
+                                                '10px');
                                         kmAnonymousChatLauncher.style.bottom =
                                             '10px';
                                         kmChatLoginModal.classList.add(
@@ -2283,9 +2284,9 @@ var userOverride = {
                                         (kmAnonymousChatLauncher.classList.remove(
                                             'vis'
                                         ),
-                                        kmAnonymousChatLauncher.classList.add(
-                                            'n-vis'
-                                        ));
+                                            kmAnonymousChatLauncher.classList.add(
+                                                'n-vis'
+                                            ));
                                     mckInit.clearMsgTriggerAndChatPopuTimeouts();
                                 }
                             );
@@ -2327,8 +2328,8 @@ var userOverride = {
                             var kmChatLoginModal = document.getElementById(
                                 'km-chat-login-modal'
                             );
-                            kmChatLoginModal.style.visibility='visible';
-                            kmChatLoginModal.style.display='block';
+                            kmChatLoginModal.style.visibility = 'visible';
+                            kmChatLoginModal.style.display = 'block';
                             mckInit.addPasswordField({
                                 id: 'km-password',
                                 type: 'password',
@@ -2337,7 +2338,7 @@ var userOverride = {
                                 placeholder: MCK_LABELS['lead.collection'].password.toLowerCase(),
                                 required: 'true',
                             });
-                           
+
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                                 MCK_ON_PLUGIN_INIT({
                                     status: 'error',
@@ -2642,8 +2643,8 @@ var userOverride = {
                         function (data) {
                             KommunicateUI.checkSingleThreadedConversationSettings(
                                 data &&
-                                    data.groupFeeds &&
-                                    data.groupFeeds.length > 1
+                                data.groupFeeds &&
+                                data.groupFeeds.length > 1
                             );
                         }
                     );
@@ -2680,7 +2681,7 @@ var userOverride = {
                     // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
-                
+
                 // Loading zopim sdk for zendesk chat integration
                 if (kommunicate._globals.zendeskChatSdkKey) {
                     zendeskChatService.init(kommunicate._globals.zendeskChatSdkKey, data);
@@ -2690,7 +2691,7 @@ var userOverride = {
                 );
                 kmChatLoginModal.style.visibility = 'hidden';
             };
-            
+
 
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
@@ -2710,7 +2711,7 @@ var userOverride = {
                     );
                     var utmSourceUrl = kommunicateIframe
                         ? kommunicateIframe.getAttribute('data-url') ||
-                          parent.window.location.href
+                        parent.window.location.href
                         : w.location.href;
                     var poweredByUrl =
                         'https://www.kommunicate.io/poweredby?utm_source=' +
@@ -2809,12 +2810,12 @@ var userOverride = {
                     kommunicateIframe.style.width = '';
                     POPUP_WIDGET
                         ? (kommunicateIframe.classList.add(
-                              'km-iframe-dimension-with-popup'
-                          ),
-                          (popUpcloseButton.style.display = 'flex'))
+                            'km-iframe-dimension-with-popup'
+                        ),
+                            (popUpcloseButton.style.display = 'flex'))
                         : kommunicateIframe.classList.add(
-                              'km-iframe-dimension-no-popup'
-                          );
+                            'km-iframe-dimension-no-popup'
+                        );
                     POPUP_WIDGET && _this.configurePopupWidget();
                 });
                 var closeButton = document.getElementById(
@@ -2891,14 +2892,14 @@ var userOverride = {
                     kommunicateCommons.checkIfDeviceIsHandheld() &&
                         (parentBody &&
                             parentBody.classList.add('mck-restrict-scroll'),
-                        parentHtmlTag &&
+                            parentHtmlTag &&
                             parentHtmlTag.classList.add('mck-restrict-scroll'));
                 });
                 sideboxCloseButton.addEventListener('click', function () {
                     kommunicateCommons.checkIfDeviceIsHandheld() &&
                         (parentBody &&
                             parentBody.classList.remove('mck-restrict-scroll'),
-                        parentHtmlTag &&
+                            parentHtmlTag &&
                             parentHtmlTag.classList.remove(
                                 'mck-restrict-scroll'
                             ));
@@ -2988,10 +2989,10 @@ var userOverride = {
                                 ratingValue == 1
                                     ? 'CSAT Rate Poor'
                                     : ratingValue == 5
-                                    ? 'CSAT Rate Average'
-                                    : ratingValue == 10
-                                    ? 'CSAT Rate Great'
-                                    : '';
+                                        ? 'CSAT Rate Average'
+                                        : ratingValue == 10
+                                            ? 'CSAT Rate Great'
+                                            : '';
                             kmWidgetEvents.eventTracking(
                                 eventMapping.onRateConversationEmoticonsClick,
                                 ratingType,
@@ -3056,110 +3057,110 @@ var userOverride = {
                     }
                 }
             };
-            _this.addPasswordField = function(data){
+            _this.addPasswordField = function (data) {
                 var emailField = document.getElementById('km-email');
                 var isPassField = document.getElementById('km-password');
                 var submitBtn = document.getElementById('km-submit-chat-login');
-                if(emailField && isPassField == null){
-                    var  passwordField = document.createElement('input');
+                if (emailField && isPassField == null) {
+                    var passwordField = document.createElement('input');
                     var errorMsg = document.createElement('p');
                     errorMsg.innerText = MCK_LABELS['lead.collection'].errorText;
                     errorMsg.classList.add('km-error-msg');
-                    for(var key in data){
-                        passwordField.setAttribute(key,data[key]);
+                    for (var key in data) {
+                        passwordField.setAttribute(key, data[key]);
                     }
-                    emailField.insertAdjacentElement('afterend',passwordField);
-                    passwordField.insertAdjacentElement('afterend',errorMsg);
+                    emailField.insertAdjacentElement('afterend', passwordField);
+                    passwordField.insertAdjacentElement('afterend', errorMsg);
                 }
                 submitBtn.removeAttribute('disabled');
                 submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
             },
-            _this.addLeadCollectionInputDiv = function () {
-                KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
-                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
-                    //Create dynamic input field
-                    var preLeadCollection = KM_PRELEAD_COLLECTION[i];
-                    var kmChatInputDiv = document.createElement('div');
-                    var preLeadCollectionClass =
-                        'km-form-control ' +
-                        (preLeadCollection.element === 'textarea'
-                            ? 'mck-preleadcollection-textarea'
-                            : 'km-input-width');
-                    kmChatInputDiv.setAttribute(
-                        'class',
-                        'km-form-group km-form-group-container'
-                    );
-                    var kmChatInput = document.createElement(
-                        preLeadCollection.element || 'input'
-                    );
+                _this.addLeadCollectionInputDiv = function () {
+                    KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
+                    for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
+                        //Create dynamic input field
+                        var preLeadCollection = KM_PRELEAD_COLLECTION[i];
+                        var kmChatInputDiv = document.createElement('div');
+                        var preLeadCollectionClass =
+                            'km-form-control ' +
+                            (preLeadCollection.element === 'textarea'
+                                ? 'mck-preleadcollection-textarea'
+                                : 'km-input-width');
+                        kmChatInputDiv.setAttribute(
+                            'class',
+                            'km-form-group km-form-group-container'
+                        );
+                        var kmChatInput = document.createElement(
+                            preLeadCollection.element || 'input'
+                        );
 
-                    kmChatInput.setAttribute(
-                        'id',
-                        'km-' + preLeadCollection.field.toLowerCase()
-                    );
+                        kmChatInput.setAttribute(
+                            'id',
+                            'km-' + preLeadCollection.field.toLowerCase()
+                        );
 
-                    kmChatInput.setAttribute(
-                        'name',
-                        'km-' + preLeadCollection.field.toLowerCase()
-                    );
-                    preLeadCollection.required &&
                         kmChatInput.setAttribute(
-                            'required',
-                            preLeadCollection.required
+                            'name',
+                            'km-' + preLeadCollection.field.toLowerCase()
                         );
-                    kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    if (
-                        preLeadCollection.element == 'select' &&
-                        preLeadCollection.options &&
-                        mckMessageService.checkArray(preLeadCollection.options)
-                    ) {
-                        kmChatInput = _this.createSelectFieldDropdown(
-                            preLeadCollection.options,
-                            kmChatInput
-                        );
-                    } else {
-                        kmChatInput.setAttribute(
-                            'type',
-                            preLeadCollection.type || 'text'
-                        );
-                        kmChatInput.setAttribute(
-                            'placeholder',
-                            preLeadCollection.placeholder || ''
-                        );
-                        kmChatInput.setAttribute(
-                            'aria-label',
-                            preLeadCollection.field
-                        );
-                        if (preLeadCollection.type == "email"){
+                        preLeadCollection.required &&
                             kmChatInput.setAttribute(
-                                'pattern',
-                                "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+                                'required',
+                                preLeadCollection.required
+                            );
+                        kmChatInput.setAttribute('class', preLeadCollectionClass);
+                        if (
+                            preLeadCollection.element == 'select' &&
+                            preLeadCollection.options &&
+                            mckMessageService.checkArray(preLeadCollection.options)
+                        ) {
+                            kmChatInput = _this.createSelectFieldDropdown(
+                                preLeadCollection.options,
+                                kmChatInput
+                            );
+                        } else {
+                            kmChatInput.setAttribute(
+                                'type',
+                                preLeadCollection.type || 'text'
                             );
                             kmChatInput.setAttribute(
-                                'title',
-                                ''
+                                'placeholder',
+                                preLeadCollection.placeholder || ''
                             );
                             kmChatInput.setAttribute(
-                                'oninvalid',
-                                'setCustomValidity(' + MCK_LABELS['lead.collection'].errorEmail + ')'
+                                'aria-label',
+                                preLeadCollection.field
                             );
-                            kmChatInput.setAttribute(
-                                'oninput',
-                                "setCustomValidity('')"
-                            );
-                        } 
+                            if (preLeadCollection.type == "email") {
+                                kmChatInput.setAttribute(
+                                    'pattern',
+                                    "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+                                );
+                                kmChatInput.setAttribute(
+                                    'title',
+                                    ''
+                                );
+                                kmChatInput.setAttribute(
+                                    'oninvalid',
+                                    'setCustomValidity(' + MCK_LABELS['lead.collection'].errorEmail + ')'
+                                );
+                                kmChatInput.setAttribute(
+                                    'oninput',
+                                    "setCustomValidity('')"
+                                );
+                            }
+                        }
+                        $applozic(kmChatInputDiv).append(kmChatInput);
+                        $applozic('.km-last-child').append(kmChatInputDiv);
                     }
-                    $applozic(kmChatInputDiv).append(kmChatInput);
-                    $applozic('.km-last-child').append(kmChatInputDiv);
-                }
-                var phoneField = document.getElementById('km-phone');
-                if (phoneField !== null) {
-                    phoneField.addEventListener(
-                        'keydown',
-                        _this.phoneNumberValidation
-                    );
-                }
-            };
+                    var phoneField = document.getElementById('km-phone');
+                    if (phoneField !== null) {
+                        phoneField.addEventListener(
+                            'keydown',
+                            _this.phoneNumberValidation
+                        );
+                    }
+                };
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
             };
@@ -3189,7 +3190,7 @@ var userOverride = {
                     } else {
                         throw new TypeError(
                             'expected object in option array but got ' +
-                                typeof element
+                            typeof element
                         );
                     }
                 });
@@ -3212,7 +3213,7 @@ var userOverride = {
                 leadCollectionHeading.innerHTML = appOptions.preLeadCollection
                     ? LEAD_COLLECTION_LABEL.heading
                     : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
-                      '';
+                    '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
@@ -3234,7 +3235,7 @@ var userOverride = {
                         var dateSpan = document.createElement('div');
                         dateSpan.innerHTML =
                             RATING_EMOJI_HOVER_TEXT_MAP[
-                                ratingElement.dataset.rating
+                            ratingElement.dataset.rating
                             ];
                         ratingElement.appendChild(dateSpan);
                     }
@@ -3431,21 +3432,21 @@ var userOverride = {
                 var captionText = parent.document.getElementById(
                     'km-fullscreen-image-modal-caption'
                 );
-                if(blobKey && href == ''){
+                if (blobKey && href == '') {
                     modalImg.src = KommunicateConstants.IMAGE_PLACEHOLDER_URL;
                     KommunicateUI.processLazyImage(modalImg, blobKey);
-                }else if(href === ''){
+                } else if (href === '') {
                     var key;
                     key = $this.data('blobkey');
                     alFileService.generateCloudUrl(key, function (result) {
                         href = result;
                     });
-                }else{
+                } else {
                     modalImg.src = href;
                 }
-                
+
                 modal.style.display = 'block';
-                captionText.innerHTML = title ? title : '';       
+                captionText.innerHTML = title ? title : '';
             });
 
             parent.document.getElementById(
@@ -3721,7 +3722,7 @@ var userOverride = {
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
-            _this.resetMessageSentToHumanAgent = function(){
+            _this.resetMessageSentToHumanAgent = function () {
                 // used in loadTab()
                 messageSentToHumanAgent = 0;
             }
@@ -3741,7 +3742,7 @@ var userOverride = {
             /*  To trigger welcome event of a bot.
                 defaultSettings: if there is any custome event is configured by the user
             */
-            _this.triggerWelcomeEvent = function(){
+            _this.triggerWelcomeEvent = function () {
                 var customEvent = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 );
@@ -3754,7 +3755,7 @@ var userOverride = {
                             type: 5,
                             contentType: 10,
                             message:
-                                'Event:'+eventToTrigger,
+                                'Event:' + eventToTrigger,
                             groupId: CURRENT_GROUP_DATA.tabId,
                             metadata: {
                                 category: 'HIDDEN',
@@ -3763,59 +3764,59 @@ var userOverride = {
                             source: 1,
                         },
                     },
-                    success: function (response) {},
+                    success: function (response) { },
                     error: function (error) {
                         console.error(error);
                     },
                 });
             },
-            // change the conversation assignee
-            _this.changeConversationAssignee = function () {
-                window.Applozic.ALApiService.ajax({
-                    type: 'PATCH',
-                    url:
-                        MCK_BASE_URL +
-                        CHANGE_BOT +
-                        '?groupId=' +
-                        encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
-                        '&assignee=' +
-                        encodeURIComponent(
-                            CURRENT_GROUP_DATA.initialBot.userId
-                        ),
-                    global: false,
-                    contentType: 'text/plain',
-                    success: function (data) {
-                        if (
-                            data.status == 'success' &&
-                            appOptions.restartConversationByUser &&
-                            CURRENT_GROUP_DATA.conversationAssignee !=
+                // change the conversation assignee
+                _this.changeConversationAssignee = function () {
+                    window.Applozic.ALApiService.ajax({
+                        type: 'PATCH',
+                        url:
+                            MCK_BASE_URL +
+                            CHANGE_BOT +
+                            '?groupId=' +
+                            encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
+                            '&assignee=' +
+                            encodeURIComponent(
                                 CURRENT_GROUP_DATA.initialBot.userId
-                        ) {
-                            // removing other conversation asignee if it is not default one
-                            mckGroupService.removeGroupMemberFromChat({
-                                groupId: CURRENT_GROUP_DATA.tabId,
-                                userId: CURRENT_GROUP_DATA.conversationAssignee,
-                                callback: function (data) {
-                                    if (data.status == 'success') {
-                                        _this.triggerWelcomeEvent();
-                                    } else {
-                                        console.error(
-                                            'Error while removing the conversation assignee.'
-                                        );
-                                    }
-                                },
-                            });
-                           
-                        } else {
-                            appOptions.restartConversationByUser &&
-                                _this.triggerWelcomeEvent();
-                        }
-                    },
-                    error: function (data) {
-                        console.error(data);
-                    },
-                });
-            };
+                            ),
+                        global: false,
+                        contentType: 'text/plain',
+                        success: function (data) {
+                            if (
+                                data.status == 'success' &&
+                                appOptions.restartConversationByUser &&
+                                CURRENT_GROUP_DATA.conversationAssignee !=
+                                CURRENT_GROUP_DATA.initialBot.userId
+                            ) {
+                                // removing other conversation asignee if it is not default one
+                                mckGroupService.removeGroupMemberFromChat({
+                                    groupId: CURRENT_GROUP_DATA.tabId,
+                                    userId: CURRENT_GROUP_DATA.conversationAssignee,
+                                    callback: function (data) {
+                                        if (data.status == 'success') {
+                                            _this.triggerWelcomeEvent();
+                                        } else {
+                                            console.error(
+                                                'Error while removing the conversation assignee.'
+                                            );
+                                        }
+                                    },
+                                });
+
+                            } else {
+                                appOptions.restartConversationByUser &&
+                                    _this.triggerWelcomeEvent();
+                            }
+                        },
+                        error: function (data) {
+                            console.error(data);
+                        },
+                    });
+                };
             _this.restartConversation = function (event) {
                 kmWidgetEvents.eventTracking(
                     eventMapping.onRestartConversationClick
@@ -3823,7 +3824,7 @@ var userOverride = {
                 if (
                     event.target.id == 'km-restart-conversation' ||
                     event.target.id == 'km-restart-conversation-text' &&
-                        appOptions.restartConversationByUser
+                    appOptions.restartConversationByUser
                 ) {
                     _this.changeConversationAssignee();
                 } else {
@@ -3861,21 +3862,21 @@ var userOverride = {
                 IS_MCK_LOCSHARE
                     ? ''
                     : kommunicateCommons.modifyClassList(
-                          { id: ['mck-file-up2'] },
-                          'n-vis',
-                          'vis'
-                      );
-                
+                        { id: ['mck-file-up2'] },
+                        'n-vis',
+                        'vis'
+                    );
+
                 !IS_CAPTURE_PHOTO && kommunicateCommons.modifyClassList(
-                    { id: ['mck-img-file-up']},
+                    { id: ['mck-img-file-up'] },
                     'n-vis',
                     ''
-                    );
+                );
                 !IS_CAPTURE_VIDEO && kommunicateCommons.modifyClassList(
-                    { id: ['mck-vid-file-up']},
+                    { id: ['mck-vid-file-up'] },
                     'n-vis',
                     ''
-                    );
+                );
             };
 
             _this.hideSendButton = function () {
@@ -3892,34 +3893,34 @@ var userOverride = {
                     );
                 !IS_MCK_LOCSHARE
                     ? kommunicateCommons.modifyClassList(
-                          { id: ['mck-file-up2'] },
-                          'vis',
-                          'n-vis'
-                      )
+                        { id: ['mck-file-up2'] },
+                        'vis',
+                        'n-vis'
+                    )
                     : kommunicateCommons.modifyClassList(
-                          { id: ['mck-btn-loc'] },
-                          'vis',
-                          'n-vis'
-                      );
+                        { id: ['mck-btn-loc'] },
+                        'vis',
+                        'n-vis'
+                    );
                 IS_CAPTURE_PHOTO &&
                     kommunicateCommons.modifyClassList(
                         { id: ['mck-img-file-up'] },
                         '',
                         'n-vis'
-                        );
+                    );
                 IS_CAPTURE_VIDEO &&
                     kommunicateCommons.modifyClassList(
                         { id: ['mck-vid-file-up'] },
                         '',
                         'n-vis'
-                        );
+                    );
                 !EMOJI_LIBRARY
                     ? ''
                     : kommunicateCommons.modifyClassList(
-                          { id: ['mck-btn-smiley-box'] },
-                          'vis',
-                          'n-vis'
-                      );
+                        { id: ['mck-btn-smiley-box'] },
+                        'vis',
+                        'n-vis'
+                    );
             };
             _this.toggleMediaOptions = function (el) {
                 var text = '';
@@ -4203,7 +4204,7 @@ var userOverride = {
                 };
                 $mck_text_box.on('input paste', function (event) {
                     var fileFromClipboard = event.originalEvent.clipboardData && event.originalEvent.clipboardData.files && event.originalEvent.clipboardData.files[0];
-                    if(fileFromClipboard){
+                    if (fileFromClipboard) {
                         mckFileService.uploadFileFunction(null, fileFromClipboard);
                         return;
                     }
@@ -4219,7 +4220,7 @@ var userOverride = {
                         var str = kommunicateCommons.formatHtmlTag(mckUtils.textVal(textBox))
                         var trimmedStr = str.trim();
                         var textLength = trimmedStr.length;
-                       
+
                         if (textLength > warningLength) {
                             var caretObject = _this.cursorPosition(textBox);
                             var nodeOffset = caretObject.position;
@@ -4257,7 +4258,7 @@ var userOverride = {
                                     if (
                                         caretPosition <= maxLength + 1 &&
                                         selection.focusNode !=
-                                            warningSpan.firstChild
+                                        warningSpan.firstChild
                                     ) {
                                         warningSpan.innerHTML = spanContent;
                                         normalSpan.innerHTML = preSpanContent;
@@ -4265,10 +4266,10 @@ var userOverride = {
                                         if (caretPosition >= maxLength + 1) {
                                             targetNode =
                                                 warningSpan.childNodes[
-                                                    caretNode -
-                                                        (normalSpan.childNodes
-                                                            .length -
-                                                            1)
+                                                caretNode -
+                                                (normalSpan.childNodes
+                                                    .length -
+                                                    1)
                                                 ];
                                             if (caretPosition > maxLength) {
                                                 nodeOffset =
@@ -4277,7 +4278,7 @@ var userOverride = {
                                         } else {
                                             targetNode =
                                                 normalSpan.childNodes[
-                                                    caretNode
+                                                caretNode
                                                 ];
                                         }
                                         selection.collapse(
@@ -4326,11 +4327,11 @@ var userOverride = {
                                                 } else {
                                                     targetNode =
                                                         warningSpan.childNodes[
-                                                            caretNode -
-                                                                (normalSpan
-                                                                    .childNodes
-                                                                    .length -
-                                                                    1)
+                                                        caretNode -
+                                                        (normalSpan
+                                                            .childNodes
+                                                            .length -
+                                                            1)
                                                         ];
                                                     if (
                                                         nodeOffset >
@@ -4345,7 +4346,7 @@ var userOverride = {
                                             } else {
                                                 targetNode =
                                                     normalSpan.childNodes[
-                                                        caretNode
+                                                    caretNode
                                                     ];
                                             }
                                         }
@@ -4483,7 +4484,7 @@ var userOverride = {
                             );
                         }
                         $mck_msg_sbmt.is(':disabled') &&
-                        $mck_file_box.hasClass('vis')
+                            $mck_file_box.hasClass('vis')
                             ? alert(MCK_LABELS['file.uploading.wait'])
                             : $mck_msg_form.submit();
                         mckMessageLayout.messageClubbing(false);
@@ -4658,9 +4659,9 @@ var userOverride = {
                             if (
                                 conversationDetail.topicDetail &&
                                 typeof conversationDetail.topicDetail ===
-                                    'object' &&
+                                'object' &&
                                 conversationDetail.topicDetail.title !==
-                                    'undefined'
+                                'undefined'
                             ) {
                                 MCK_TOPIC_DETAIL_MAP[topicId] =
                                     conversationDetail.topicDetail;
@@ -4696,7 +4697,7 @@ var userOverride = {
                         var userId = $this.data('mck-id');
                         count > 1 &&
                             typeof MCK_EVENT_HISTORY[
-                                MCK_EVENT_HISTORY.length - 1
+                            MCK_EVENT_HISTORY.length - 1
                             ] !== 'object' &&
                             MCK_EVENT_HISTORY.push(elem);
                         if (userId) {
@@ -4733,7 +4734,7 @@ var userOverride = {
                         'n-vis'
                     );
                 };
-                document.getElementById('km-csat-close-button').onclick = function(e){
+                document.getElementById('km-csat-close-button').onclick = function (e) {
                     e.preventDefault();
                     KommunicateUI.showClosedConversationBanner(false);
                 }
@@ -4772,7 +4773,7 @@ var userOverride = {
                                 _this.phoneNumberValidation
                             );
                     }
-                    if (email) { 
+                    if (email) {
                         userId = email;
                         KommunicateUtils.setCookie({
                             name:
@@ -4848,10 +4849,10 @@ var userOverride = {
                         // To prevent conversation assignee details from being shown when in FAQ 
                         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
                         var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
-                        if(typeof lastEvent == 'string' && 
-                            lastEvent.indexOf('faq') != -1 && 
-                            (isFaqCategoryPresent ? 
-                                lastEvent != 'km-faq-list' : 
+                        if (typeof lastEvent == 'string' &&
+                            lastEvent.indexOf('faq') != -1 &&
+                            (isFaqCategoryPresent ?
+                                lastEvent != 'km-faq-list' :
                                 lastEvent != 'km-faq-category-list')
 
                         ) return;
@@ -4888,13 +4889,13 @@ var userOverride = {
                         _this.sendPriceMessage();
                     }
                 });
-                var MSG_LIST_MUTATION_OBSERVER = new MutationObserver(function(mutationsList, observer){
+                var MSG_LIST_MUTATION_OBSERVER = new MutationObserver(function (mutationsList, observer) {
                     // callback to be executed when a childList mutation happens.
                     var encryptedElements = document.querySelectorAll('.file-enc');
-                    if(!encryptedElements.length){
+                    if (!encryptedElements.length) {
                         return;
                     };
-                    for(var index = 0 ; index < mutationsList.length; index++) {
+                    for (var index = 0; index < mutationsList.length; index++) {
                         if (mutationsList[index].type === 'childList') {
                             mckFileService.handleEncryptedElements(encryptedElements);
                         }
@@ -4907,7 +4908,7 @@ var userOverride = {
                     if ($mck_msg_inner.find('.mck-contact-list').length > 0) {
                         if (
                             $mck_msg_inner.scrollTop() +
-                                $mck_msg_inner.innerHeight() >=
+                            $mck_msg_inner.innerHeight() >=
                             $mck_msg_inner[0].scrollHeight
                         ) {
                             var startTime = $mck_msg_inner.data('datetime');
@@ -4942,7 +4943,7 @@ var userOverride = {
                         }
                     } else {
                         var encryptedElements = document.querySelectorAll('.file-enc');
-                        if(encryptedElements && encryptedElements.length){
+                        if (encryptedElements && encryptedElements.length) {
                             mckFileService.handleEncryptedElements(encryptedElements);
                         }
                     }
@@ -5286,7 +5287,7 @@ var userOverride = {
                     }
                     if (
                         $mck_autosuggest_search_input.data('prev-msgkey') !=
-                            '' &&
+                        '' &&
                         typeof $mck_autosuggest_search_input.data(
                             'prev-msgkey'
                         ) != 'undefined'
@@ -5388,7 +5389,7 @@ var userOverride = {
                     $applozic(this).addClass('active');
                 });
             };
-            
+
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
@@ -5469,7 +5470,7 @@ var userOverride = {
                 var conversationId = $this.data('mck-conversationid');
                 conversationId =
                     typeof conversationId !== 'undefined' &&
-                    conversationId !== ''
+                        conversationId !== ''
                         ? conversationId.toString()
                         : '';
                 KommunicateUI.checkSingleThreadedConversationSettings(
@@ -5892,8 +5893,8 @@ var userOverride = {
             _this.getChatContext = function (msgProxy) {
                 var existingContextFromMetadata =
                     msgProxy &&
-                    msgProxy.metadata &&
-                    typeof msgProxy.metadata['KM_CHAT_CONTEXT'] == 'object'
+                        msgProxy.metadata &&
+                        typeof msgProxy.metadata['KM_CHAT_CONTEXT'] == 'object'
                         ? msgProxy.metadata['KM_CHAT_CONTEXT']
                         : {};
                 // chat context in setting can be updated by user using Kommunicate.updateSetting()
@@ -5934,7 +5935,7 @@ var userOverride = {
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic(
                     "#mck-message-cell .mck-message-inner div[name='message']." +
-                        randomId
+                    randomId
                 );
 
                 $applozic.extend(metadata, {
@@ -5986,7 +5987,7 @@ var userOverride = {
                                 {
                                     class: [
                                         'km-attachment-progress-bar-wrapper-' +
-                                            messagePxy.key,
+                                        messagePxy.key,
                                     ],
                                 },
                                 'n-vis',
@@ -6077,7 +6078,7 @@ var userOverride = {
                             messageSentToHumanAgent == 1 &&
                             (
                                 (
-                                    KommunicateUI.leadCollectionEnabledOnAwayMessage && 
+                                    KommunicateUI.leadCollectionEnabledOnAwayMessage &&
                                     !KommunicateUtils.isCurrentAssigneeBot() &&
                                     KommunicateUI.awayMessageInfo.isEnabled &&
                                     KommunicateUI.awayMessageInfo.eventId == 1
@@ -6152,7 +6153,7 @@ var userOverride = {
                     success: function (data) {
                         console.log('metadata updated: ', data);
                     },
-                    error: function () {},
+                    error: function () { },
                 });
             };
 
@@ -6263,7 +6264,7 @@ var userOverride = {
                                 CONTACT_SYNCING = false;
                             }
                         },
-                        error: function () {},
+                        error: function () { },
                     });
                 }
             };
@@ -6635,11 +6636,11 @@ var userOverride = {
                                     if (params.conversationId) {
                                         var conversationPxy =
                                             MCK_CONVERSATION_MAP[
-                                                params.conversationId
+                                            params.conversationId
                                             ];
                                         if (
                                             typeof conversationPxy ===
-                                                'object' &&
+                                            'object' &&
                                             conversationPxy.closed
                                         ) {
                                             mckMessageLayout.closeConversation();
@@ -6732,9 +6733,9 @@ var userOverride = {
                                                         if (
                                                             window.applozic
                                                                 .PRODUCT_ID ==
-                                                                'kommunicate' &&
+                                                            'kommunicate' &&
                                                             group.users[
-                                                                MCK_USER_ID
+                                                            MCK_USER_ID
                                                             ]
                                                         ) {
                                                             if (
@@ -6858,12 +6859,12 @@ var userOverride = {
                                                 );
                                                 typeof contact === 'undefined'
                                                     ? mckMessageLayout.createContactWithDetail(
-                                                          userDetail
-                                                      )
+                                                        userDetail
+                                                    )
                                                     : mckMessageLayout.updateContactDetail(
-                                                          contact,
-                                                          userDetail
-                                                      );
+                                                        contact,
+                                                        userDetail
+                                                    );
                                             }
                                         );
                                     }
@@ -7044,10 +7045,10 @@ var userOverride = {
                             if (
                                 data.userDetails[key].userId &&
                                 data.userDetails[key].userId ==
-                                    CURRENT_GROUP_DATA.conversationAssignee &&
+                                CURRENT_GROUP_DATA.conversationAssignee &&
                                 data.userDetails[key].roleType ==
-                                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE
-                                        .BOT
+                                KommunicateConstants.APPLOZIC_USER_ROLE_TYPE
+                                    .BOT
                             ) {
                                 mckGroupLayout.checkBotDetail(
                                     CURRENT_GROUP_DATA.conversationAssignee
@@ -7091,7 +7092,7 @@ var userOverride = {
                     tabId &&
                     typeof roleType !== 'undefined' &&
                     roleType !==
-                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                 ) {
                     Kommunicate.getAwayMessage(
                         {
@@ -7118,7 +7119,7 @@ var userOverride = {
                 if (
                     typeof detailOfAssignedUser !== 'undefined' &&
                     detailOfAssignedUser.roleType ===
-                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                 ) {
                     // Checking if the CONVERSATION_ASSIGNEE is bot or not
                     data.availabilityStatus =
@@ -7126,8 +7127,8 @@ var userOverride = {
                 } else if (
                     typeof detailOfAssignedUser !== 'undefined' &&
                     detailOfAssignedUser.roleType ===
-                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE
-                            .APPLICATION_WEB_ADMIN
+                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE
+                        .APPLICATION_WEB_ADMIN
                 ) {
                     if (
                         typeof detailOfAssignedUser !== 'undefined' &&
@@ -7143,7 +7144,7 @@ var userOverride = {
                 }
                 typeof callback == 'function' && callback(data);
             };
-            _this.isFaqTabOpen = function () {    
+            _this.isFaqTabOpen = function () {
                 return (
                     document
                         .querySelector('#km-faqdiv')
@@ -7250,7 +7251,7 @@ var userOverride = {
                             {},
                             tabId,
                             conversationAssigneeDetails &&
-                                conversationAssigneeDetails.roleType,
+                            conversationAssigneeDetails.roleType,
                             data.isAgentOffline
                         );
                         mckMessageService.updateConversationHeader(
@@ -7285,20 +7286,20 @@ var userOverride = {
                             if (typeof message !== 'undefined') {
                                 message.groupId
                                     ? mckGroupService.addGroupFromMessage(
-                                          message,
-                                          true,
-                                          function (group, message, update) {
-                                              _this.updateRecentConversationList(
-                                                  group,
-                                                  message,
-                                                  update
-                                              );
-                                          }
-                                      )
+                                        message,
+                                        true,
+                                        function (group, message, update) {
+                                            _this.updateRecentConversationList(
+                                                group,
+                                                message,
+                                                update
+                                            );
+                                        }
+                                    )
                                     : mckMessageLayout.addContactsFromMessage(
-                                          message,
-                                          true
-                                      );
+                                        message,
+                                        true
+                                    );
                             }
                         }
                     },
@@ -7330,7 +7331,7 @@ var userOverride = {
                                 true
                             );
                         },
-                        error: function () {},
+                        error: function () { },
                     });
                 }
             };
@@ -7353,7 +7354,7 @@ var userOverride = {
                             params.conversationId = conversationPxy.id;
                             if (
                                 typeof MCK_TAB_CONVERSATION_MAP[
-                                    params.tabId
+                                params.tabId
                                 ] !== 'undefined'
                             ) {
                                 var tabConvArray =
@@ -7434,12 +7435,12 @@ var userOverride = {
                                     params.conversationId = conversationPxy.id;
                                     if (
                                         typeof MCK_TAB_CONVERSATION_MAP[
-                                            params.tabId
+                                        params.tabId
                                         ] !== 'undefined'
                                     ) {
                                         var tabConvArray =
                                             MCK_TAB_CONVERSATION_MAP[
-                                                params.tabId
+                                            params.tabId
                                             ];
                                         tabConvArray.push(conversationPxy);
                                         MCK_TAB_CONVERSATION_MAP[
@@ -7454,14 +7455,14 @@ var userOverride = {
                                     }
                                     params.isMessage && conversationPxy.created
                                         ? mckMessageLayout.loadTab(
-                                              params,
-                                              alMessageService.dispatchMessage
-                                          )
+                                            params,
+                                            alMessageService.dispatchMessage
+                                        )
                                         : mckMessageLayout.loadTab(params);
                                 }
                             }
                         },
-                        error: function () {},
+                        error: function () { },
                     });
                 }
             };
@@ -7609,12 +7610,12 @@ var userOverride = {
                                             );
                                             typeof contact === 'undefined'
                                                 ? mckMessageLayout.createContactWithDetail(
-                                                      userDetail
-                                                  )
+                                                    userDetail
+                                                )
                                                 : mckMessageLayout.updateContactDetail(
-                                                      contact,
-                                                      userDetail
-                                                  );
+                                                    contact,
+                                                    userDetail
+                                                );
                                         }
                                     );
                                 }
@@ -7622,7 +7623,7 @@ var userOverride = {
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
-                                CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
+                                CURRENT_GROUP_DATA.groupMembers = groupPxy.groupUsers;
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
@@ -7654,7 +7655,7 @@ var userOverride = {
                                     response.status = 'success';
                                     response.data = group;
                                     params.callback(response);
-                                    mckMessageLayout.loadDropdownOptions(); 
+                                    mckMessageLayout.loadDropdownOptions();
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -7798,7 +7799,7 @@ var userOverride = {
             var $mck_search_loading = $applozic('#mck-search-loading');
             var $mck_tab_individual = $applozic('#mck-tab-individual');
 
-            var $mck_attachfile_box = $applozic('#mck-attachfile-box'); 
+            var $mck_attachfile_box = $applozic('#mck-attachfile-box');
             var $mck_atttachmenu_box = $applozic('#mck-location-sharing-box');
             var $mck_sidebox_content = $applozic('#mck-sidebox-content');
 
@@ -7887,7 +7888,7 @@ var userOverride = {
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
             var csatModule =
-                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
+                '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
                 '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
@@ -7897,11 +7898,11 @@ var userOverride = {
                 $applozic.template('convTemplate', convbox);
                 $applozic.template('messageTemplate', markup);
                 $applozic.template('contactTemplate', contactbox);
-                $applozic.template('searchContactbox', searchContactbox);               
+                $applozic.template('searchContactbox', searchContactbox);
                 $applozic.template('csatModule', csatModule);
             };
             _this.loadDropdownOptions = function () {
-                if(document.querySelector('#mck-contact-list')){
+                if (document.querySelector('#mck-contact-list')) {
                     // if contact list is visible then dropdown options should not be loaded.
                     return;
                 }
@@ -7909,7 +7910,7 @@ var userOverride = {
                 var isConvRated =
                     appOptions.oneTimeRating &&
                     !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
-                        KommunicateConstants.FEEDBACK_API_STATUS.RATED;
+                    KommunicateConstants.FEEDBACK_API_STATUS.RATED;
                 /*
                     Mid conversation CSAT
                     update if dedicated parameter is introduced
@@ -7942,9 +7943,9 @@ var userOverride = {
                         CURRENT_GROUP_DATA.groupMembers.forEach(function (member) {
                             if (
                                 isIterable && (member.role == 2 ||
-                                member.roleType == 1) &&
-                                    member.userId ==
-                                        CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
+                                    member.roleType == 1) &&
+                                member.userId ==
+                                CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
                             ) {
                                 isIterable = false;
                                 CURRENT_GROUP_DATA.initialBot = member;
@@ -7955,7 +7956,7 @@ var userOverride = {
                         CURRENT_GROUP_DATA.initialBot &&
                         CURRENT_GROUP_DATA.conversationAssignee &&
                         CURRENT_GROUP_DATA.conversationAssignee ==
-                            CURRENT_GROUP_DATA.initialBot.userId
+                        CURRENT_GROUP_DATA.initialBot.userId
                     ) {
                         kommunicateCommons.modifyClassList(
                             { id: ['km-restart-conversation'] },
@@ -8348,7 +8349,7 @@ var userOverride = {
                         updateConversationHeaderParams
                     );
                     conversationAssigneeDetails.roleType ==
-                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
                     $applozic("#km-faq").removeClass('n-vis').addClass('vis');
@@ -8384,18 +8385,18 @@ var userOverride = {
                     ? '<img src="' + topicLink + '">'
                     : '<span class="mck-icon-no-image"></span>';
             };
-            _this.isFileEncrypted = function (fileMeta){
+            _this.isFileEncrypted = function (fileMeta) {
                 return (
                     fileMeta &&
                     fileMeta.name && fileMeta.name.indexOf('AWS-ENCRYPTED') !== -1
-                    );
+                );
             };
-            _this.isFileEncryptedImage = function (fileMeta){
+            _this.isFileEncryptedImage = function (fileMeta) {
                 return (
-                    fileMeta && 
+                    fileMeta &&
                     fileMeta.contentType && fileMeta.contentType.indexOf('image') !== -1 &&
                     fileMeta.name && fileMeta.name.indexOf('AWS-ENCRYPTED') !== -1
-                    );
+                );
             };
             _this.processMessageList = function (
                 data,
@@ -8447,10 +8448,10 @@ var userOverride = {
                             !enableAttachment &&
                                 (enableAttachment =
                                     typeof message.metadata === 'object' &&
-                                    message.metadata.KM_ENABLE_ATTACHMENT
+                                        message.metadata.KM_ENABLE_ATTACHMENT
                                         ? message.metadata.KM_ENABLE_ATTACHMENT
                                         : '');
-                            if(message && message.fileMeta && mckMessageLayout.isFileEncrypted(message.fileMeta)){
+                            if (message && message.fileMeta && mckMessageLayout.isFileEncrypted(message.fileMeta)) {
                                 message.fileMeta.url = '';
                                 message.fileMeta.hasOwnProperty("thumbnailUrl") && (message.fileMeta.thumbnailUrl = KommunicateConstants.IMAGE_PLACEHOLDER_URL);
                             };
@@ -8478,8 +8479,8 @@ var userOverride = {
                 if (!scroll && $scrollToDiv.length > 0) {
                     $mck_msg_inner.scrollTop(
                         $scrollToDiv.offset().top -
-                            $mck_msg_inner.offset().top +
-                            $mck_msg_inner.scrollTop()
+                        $mck_msg_inner.offset().top +
+                        $mck_msg_inner.scrollTop()
                     );
                 } else if (scroll) {
                     $mck_msg_inner.animate(
@@ -8487,12 +8488,12 @@ var userOverride = {
                             scrollTop: $mck_msg_inner.prop('scrollHeight'),
                         },
                         'slow',
-                        function (){
+                        function () {
                             var lazyImages = document.querySelectorAll('img.file-enc')
                             // Array.prototype.slice.call(lazyImages) convertes nodeList to Array for traversal
-                            lazyImages && lazyImages.length > 0 && Array.prototype.slice.call(lazyImages).map(function(img){
-                                KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) && 
-                                KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
+                            lazyImages && lazyImages.length > 0 && Array.prototype.slice.call(lazyImages).map(function (img) {
+                                KommunicateUI.isInView(img, document.querySelector('#mck-message-cell .mck-message-inner')) &&
+                                    KommunicateUI.processLazyImage(img, img.getAttribute('data-thumbnailBlobKey'))
                             })
                         }
                     );
@@ -8606,7 +8607,7 @@ var userOverride = {
                             $applozic('#input-for-email').remove();
                             $applozic('#send-email-button').remove();
                         },
-                        error: function (error) {},
+                        error: function (error) { },
                     });
                 } else {
                     alert('No email');
@@ -8629,12 +8630,12 @@ var userOverride = {
                     },
                 });
             };
-            _this.populateDataInForm = function(associatedFormKey, submittedFormDetails){
-                if(submittedFormDetails && associatedFormKey){
-                    var form = document.querySelector('[data-msgcontent="'+associatedFormKey+'"] form');
+            _this.populateDataInForm = function (associatedFormKey, submittedFormDetails) {
+                if (submittedFormDetails && associatedFormKey) {
+                    var form = document.querySelector('[data-msgcontent="' + associatedFormKey + '"] form');
                     var elements = form.elements;
                     for (var i = 0, len = elements.length; i < len; ++i) {
-                        switch(elements[i].type){
+                        switch (elements[i].type) {
                             case 'text':
                                 elements[i].value = submittedFormDetails[elements[i].name];
                                 break;
@@ -8642,13 +8643,13 @@ var userOverride = {
                                 elements[i].value = submittedFormDetails[elements[i].name];
                                 break;
                             case 'radio':
-                                if(elements[i].value == submittedFormDetails[elements[i].name]){
+                                if (elements[i].value == submittedFormDetails[elements[i].name]) {
                                     elements[i].checked = true
                                 };
                                 break;
                             case 'checkbox':
                                 var selectedCheckBoxes = submittedFormDetails[elements[i].name];
-                                if(selectedCheckBoxes && selectedCheckBoxes.indexOf(elements[i].value) != -1){
+                                if (selectedCheckBoxes && selectedCheckBoxes.indexOf(elements[i].value) != -1) {
                                     elements[i].checked = true
                                 };
                                 break;
@@ -8656,7 +8657,7 @@ var userOverride = {
                                 elements[i].classList.add("n-vis");
                                 break;
                             default:
-                                elements[i].value = submittedFormDetails[elements[i].name]          
+                                elements[i].value = submittedFormDetails[elements[i].name]
                         }
                         elements[i].readOnly = true;
                         elements[i].disabled = true
@@ -8748,9 +8749,9 @@ var userOverride = {
 
                 if (
                     msg.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
                     msg.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
                 ) {
                     messageClass = msg.message ? 'vis km-attach-msg-right' : 'n-vis';
                     progressMeterClass = 'n-vis';
@@ -8762,11 +8763,11 @@ var userOverride = {
                             KommunicateConstants.MESSAGE_CONTENT_TYPE
                                 .TEXT_HTML &&
                             msg.source ==
-                                KommunicateConstants.MESSAGE_SOURCE
-                                    .MAIL_INTERCEPTOR) ||
-                        (msg.contentType ==
-                            KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT &&
-                            typeof msg.message != 'string')
+                            KommunicateConstants.MESSAGE_SOURCE
+                                .MAIL_INTERCEPTOR) ||
+                            (msg.contentType ==
+                                KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT &&
+                                typeof msg.message != 'string')
                             ? 'n-vis'
                             : 'vis';
                 }
@@ -8791,7 +8792,7 @@ var userOverride = {
                         ? 'km-custom-widget-background-color'
                         : 'km-custom-widget-background-color-secondary';
 
-                if ( floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg') {
+                if (floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg') {
                     messageClass = 'vis km-attach-msg-left';
                     attachmentBox = 'km-attach-msg-left';
                 }
@@ -8912,11 +8913,11 @@ var userOverride = {
                     ));
                 var attachmentTemplate = attachment
                     ? Kommunicate.messageTemplate.getAttachmentContanier(
-                          msg,
-                          mckMessageLayout.getFilePath(msg),
-                          alFileService.getFileAttachment(msg),
-                          alFileService.getFileurl(msg)
-                      )
+                        msg,
+                        mckMessageLayout.getFilePath(msg),
+                        alFileService.getFileAttachment(msg),
+                        alFileService.getFileurl(msg)
+                    )
                     : '';
                 if (
                     msg.contentType ==
@@ -8927,15 +8928,15 @@ var userOverride = {
                     var progressMeter =
                         attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey
                             ? Kommunicate.messageTemplate.getProgressMeterContanier(
-                                  msg.key
-                              )
+                                msg.key
+                            )
                             : '';
                 }
 
                 if (
                     !msg.message ||
                     msg.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
                 ) {
                     messageClass = 'n-vis';
                 }
@@ -8948,26 +8949,26 @@ var userOverride = {
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
-                 if (
+                if (
                     HIDE_POST_CTA &&
                     richText &&
                     (
-                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
+                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 ||
                         kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 ||
                         (containerType && containerType.indexOf('km-cta-multi-button-container') != -1)
                     ) &&
-                    (   
-                        kmRichTextMarkup.indexOf('<button') != -1 || 
-                        kmRichTextMarkup.indexOf('km-list-item-handler') != -1 
-                    ) 
+                    (
+                        kmRichTextMarkup.indexOf('<button') != -1 ||
+                        kmRichTextMarkup.indexOf('km-list-item-handler') != -1
+                    )
                     &&
                     kmRichTextMarkup.indexOf('km-link-button') == -1
                 ) {
-                        // this class is added to the message template if the message contains CTA buttons having only quick replies.
-                       botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
-                 
+                    // this class is added to the message template if the message contains CTA buttons having only quick replies.
+                    botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
+
                 }
-                
+
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
@@ -9011,9 +9012,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9044,11 +9043,11 @@ var userOverride = {
 
                 append
                     ? $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .appendTo('#mck-message-cell .mck-message-inner')
+                        .tmpl('messageTemplate', msgList)
+                        .appendTo('#mck-message-cell .mck-message-inner')
                     : $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .prependTo('#mck-message-cell .mck-message-inner');
+                        .tmpl('messageTemplate', msgList)
+                        .prependTo('#mck-message-cell .mck-message-inner');
 
                 if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
                     var chatContext, submittedFormDetails, associatedFormKey;
@@ -9058,7 +9057,7 @@ var userOverride = {
                         associatedFormKey = chatContext.formMsgKey;
                         SUBMITTED_FORMS[associatedFormKey] = submittedFormDetails;
                         append && mckMessageLayout.populateDataInForm(associatedFormKey, submittedFormDetails);
-                    }else if (msg.metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM ){
+                    } else if (msg.metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM) {
                         associatedFormKey = msg.key;
                         submittedFormDetails = SUBMITTED_FORMS[associatedFormKey];
                         mckMessageLayout.populateDataInForm(associatedFormKey, submittedFormDetails);
@@ -9368,8 +9367,8 @@ var userOverride = {
                 );
                 var url = kommunicateCommons.isMessageContainsUrl(msg.message);
                 var isIE =
-                window.navigator.userAgent.indexOf('MSIE') > -1 ||
-                !!window.navigator.userAgent.match(/Trident.*rv\:11\./);
+                    window.navigator.userAgent.indexOf('MSIE') > -1 ||
+                    !!window.navigator.userAgent.match(/Trident.*rv\:11\./);
                 if (
                     !isIE &&
                     msg.contentType === 0 &&
@@ -9629,9 +9628,9 @@ var userOverride = {
                                         '" area-hidden="true" ></img></a>'
                                     );
                                 } else {
-                                    var url = addfileEncClass ? "" :  alFileService.getFileurl(msg);
+                                    var url = addfileEncClass ? "" : alFileService.getFileurl(msg);
                                     var thumbnailUrl = addfileEncClass ? KommunicateConstants.IMAGE_PLACEHOLDER_URL : msg.fileMeta.thumbnailUrl;
-                                    
+
                                     return (
                                         '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
                                         msg.fileMeta.contentType +
@@ -9641,12 +9640,12 @@ var userOverride = {
                                         kommunicateCommons.formatHtmlTag(
                                             fileName
                                         ) +
-                                        '"><img'+
+                                        '"><img' +
                                         (addfileEncClass ? ' class="file-enc"' : '') +
                                         ' src="' +
                                         thumbnailUrl +
-                                        '" area-hidden="true" data-blobKey="'+ msg.fileMeta.blobKey +
-                                        '" data-thumbnailBlobKey="'+msg.fileMeta.thumbnailBlobKey +'" ></img></a>'
+                                        '" area-hidden="true" data-blobKey="' + msg.fileMeta.blobKey +
+                                        '" data-thumbnailBlobKey="' + msg.fileMeta.thumbnailBlobKey + '" ></img></a>'
                                     );
                                 }
                             } else if (
@@ -9688,8 +9687,8 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('video') !== -1
                     ) {
                         return (
-                            '<video controls class="mck-video-player'+
-                            (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
+                            '<video controls class="mck-video-player' +
+                            (addfileEncClass ? ' file-enc" data-blobkey="' + msg.fileMeta.blobKey + '">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="video/mp4">' +
@@ -9702,8 +9701,8 @@ var userOverride = {
                         msg.fileMeta.contentType.indexOf('audio') !== -1
                     ) {
                         return (
-                            '<a href="javascript:void(0)" target="_self" ><audio controls class="mck-audio-player'+
-                            (addfileEncClass ? ' file-enc" data-blobkey="'+msg.fileMeta.blobKey+'">' : '">') +
+                            '<a href="javascript:void(0)" target="_self" ><audio controls class="mck-audio-player' +
+                            (addfileEncClass ? ' file-enc" data-blobkey="' + msg.fileMeta.blobKey + '">' : '">') +
                             '<source src="' +
                             alFileService.getFileurl(msg) +
                             '" type="audio/ogg">' +
@@ -9718,6 +9717,41 @@ var userOverride = {
                 }
                 return '';
             };
+            _this.getMessageCreatedAtTime = function (createdAtTime) {
+                if (TIME_FORMAT_24_HOURS) {
+                    var msgtime = new Date(createdAtTime);
+                    var yesterday = new Date();
+                    if (yesterday.getDate() != msgtime.getDate()) {
+                        var time = msgtime.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time;
+                    }
+                    else if (yesterday.getDate() != msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth()) {
+                        var time = msgtime.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time;
+                    }
+                    else if (yesterday.getDate() != msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth() && yesterday.getFullYear() != msgtime.getFullYear()) {
+                        var time = msgtime.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time;
+                    }
+                    else {
+                        return time = msgtime.getHours() + ":" + msgtime.getMinutes();
+                    }
+
+                } else {
+                    return mckDateUtils.getDate(
+                        createdAtTime
+                    );
+                }
+            }
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
@@ -9834,14 +9868,14 @@ var userOverride = {
             _this.getImageUrlForGroupType = function (contact, displayName) {
                 var profileDisplayName = displayName
                     ? kommunicateCommons.formatHtmlTag(displayName) +
-                      ' profile image'
+                    ' profile image'
                     : 'Profile image';
                 return contact.imageUrl
                     ? '<img src="' +
-                          contact.imageUrl +
-                          '" alt="' +
-                          profileDisplayName +
-                          '"/>'
+                    contact.imageUrl +
+                    '" alt="' +
+                    profileDisplayName +
+                    '"/>'
                     : _this.getContactImageByAlphabet(displayName);
             };
 
@@ -9853,7 +9887,7 @@ var userOverride = {
                 var imgsrctag = '';
                 var profileDisplayName = displayName
                     ? kommunicateCommons.formatHtmlTag(displayName) +
-                      ' profile image'
+                    ' profile image'
                     : 'Profile image';
                 if (!contact.isGroup) {
                     if (
@@ -9880,16 +9914,16 @@ var userOverride = {
                             message.senderName
                         ].imageLink
                             ? '<img src="' +
-                              alUserService.MCK_USER_DETAIL_MAP[
-                                  message.senderName
-                              ].imageLink +
-                              '" alt="' +
-                              profileDisplayName +
-                              '"/>'
+                            alUserService.MCK_USER_DETAIL_MAP[
+                                message.senderName
+                            ].imageLink +
+                            '" alt="' +
+                            profileDisplayName +
+                            '"/>'
                             : _this.getImageUrlForGroupType(
-                                  contact,
-                                  displayName
-                              );
+                                contact,
+                                displayName
+                            );
                     } else {
                         imgsrctag = _this.getImageUrlForGroupType(
                             contact,
@@ -10034,20 +10068,20 @@ var userOverride = {
                             if (!(typeof message.to === 'undefined')) {
                                 message.groupId
                                     ? mckGroupService.addGroupFromMessage(
-                                          message,
-                                          true,
-                                          function (group, message, update) {
-                                              _this.updateRecentConversationList(
-                                                  group,
-                                                  message,
-                                                  update
-                                              );
-                                          }
-                                      )
+                                        message,
+                                        true,
+                                        function (group, message, update) {
+                                            _this.updateRecentConversationList(
+                                                group,
+                                                message,
+                                                update
+                                            );
+                                        }
+                                    )
                                     : _this.addContactsFromMessage(
-                                          message,
-                                          true
-                                      );
+                                        message,
+                                        true
+                                    );
                                 showMoreDateTime = message.createdAtTime;
                             }
                         });
@@ -10059,9 +10093,9 @@ var userOverride = {
                             var scrollTabId = params.isLastActiveTabGroup
                                 ? 'group-' + params.lastActiveTabId
                                 : 'user-' +
-                                  mckContactUtils.formatContactId(
-                                      params.lastActiveTabId
-                                  );
+                                mckContactUtils.formatContactId(
+                                    params.lastActiveTabId
+                                );
                             $scrollToDiv = $applozic('#li-' + scrollTabId);
                         }
                         if ($scrollToDiv.length > 0) {
@@ -10265,10 +10299,10 @@ var userOverride = {
                 ) {
                     var $mck_msg_part = $applozic(
                         '#' +
-                            $listId +
-                            ' #li-' +
-                            contact.htmlId +
-                            ' .mck-cont-msg-wrapper'
+                        $listId +
+                        ' #li-' +
+                        contact.htmlId +
+                        ' .mck-cont-msg-wrapper'
                     );
                     if (
                         ($mck_msg_part.is(':empty') || update) &&
@@ -10390,18 +10424,18 @@ var userOverride = {
                         params && params.source
                             ? _this.processAutosuggestData(params.source)
                             : function (query, process) {
-                                  mckUtils.ajax({
-                                      url: params.sourceUrl + query,
-                                      type: params.method,
-                                      header: params.headers,
-                                      success: function (data) {
-                                          var items = _this.processAutosuggestData(
-                                              data.data
-                                          );
-                                          process(items);
-                                      },
-                                  });
-                              },
+                                mckUtils.ajax({
+                                    url: params.sourceUrl + query,
+                                    type: params.method,
+                                    header: params.headers,
+                                    success: function (data) {
+                                        var items = _this.processAutosuggestData(
+                                            data.data
+                                        );
+                                        process(items);
+                                    },
+                                });
+                            },
                     items: 8,
                     highlight: true,
                     updater: function (metadataString) {
@@ -10448,12 +10482,12 @@ var userOverride = {
                 // updating data source
                 params && params.source
                     ? ($mck_autosuggest_search_input
-                          .mcktypeahead()
-                          .data(
-                              'mcktypeahead'
-                          ).source = _this.processAutosuggestData(
-                          params.source
-                      ))
+                        .mcktypeahead()
+                        .data(
+                            'mcktypeahead'
+                        ).source = _this.processAutosuggestData(
+                            params.source
+                        ))
                     : '';
                 $mck_autosuggest_search_input.focus();
             };
@@ -10489,8 +10523,8 @@ var userOverride = {
                             var value = message.searchKey;
                             return String.prototype.replace.apply(
                                 '<div style="padding: 10px; font-size: 1.5em;">' +
-                                    value +
-                                    '</div>',
+                                value +
+                                '</div>',
                                 arguments
                             );
                         },
@@ -10609,7 +10643,7 @@ var userOverride = {
                                 ) {
                                     userId =
                                         typeof userId !== 'undefined' &&
-                                        userId !== ''
+                                            userId !== ''
                                             ? userId.toString()
                                             : '';
                                     if (userId) {
@@ -10713,9 +10747,9 @@ var userOverride = {
                         typeof message.createdAtTime === 'undefined'
                             ? ''
                             : kommunicateCommons.getTimeOrDate(
-                                  message ? message.createdAtTime : '',
-                                  true
-                              )
+                                message ? message.createdAtTime : '',
+                                true
+                            )
                     );
                     var $messageText = $applozic(
                         '#li-' + contHtmlExpr + ' .mck-cont-msg-wrapper'
@@ -10735,8 +10769,8 @@ var userOverride = {
                                 if (typeof topicDetail === 'object') {
                                     $applozic(
                                         '#li-' +
-                                            contHtmlExpr +
-                                            ' .mck-conversation-topic'
+                                        contHtmlExpr +
+                                        ' .mck-conversation-topic'
                                     ).html(topicDetail.title);
                                 }
                             }
@@ -10763,7 +10797,7 @@ var userOverride = {
                     if (
                         (typeof latestCreatedAtTime === 'undefined' ||
                             (message ? message.createdAtTime : '') >=
-                                latestCreatedAtTime) &&
+                            latestCreatedAtTime) &&
                         $applozic('#mck-contact-list li').index(
                             $contactElem
                         ) !== 0
@@ -10814,7 +10848,7 @@ var userOverride = {
                     contact &&
                     contact.metadata &&
                     contact.metadata.CONVERSATION_STATUS ==
-                        Kommunicate.conversationHelper.status.WAITING
+                    Kommunicate.conversationHelper.status.WAITING
                 ) {
                     // if conversation is in waiting queue
                     displayName =
@@ -10842,8 +10876,8 @@ var userOverride = {
                 var displayCount = isGroupTab && IS_MCK_GROUPUSERCOUNT;
                 var statusClass =
                     contact &&
-                    contact.metadata &&
-                    contact.metadata.CONVERSATION_STATUS ==
+                        contact.metadata &&
+                        contact.metadata.CONVERSATION_STATUS ==
                         Kommunicate.conversationHelper.status.CLOSED
                         ? 'mck-conversation-resolved'
                         : 'mck-conversation-open';
@@ -10921,9 +10955,9 @@ var userOverride = {
                             : 'n-vis',
                         msgCreatedDateExpr: message
                             ? kommunicateCommons.getTimeOrDate(
-                                  message.createdAtTime,
-                                  true
-                              )
+                                message.createdAtTime,
+                                true
+                            )
                             : '',
                         conversationStatusClass: statusClass,
                         isConversationInWaitingQueue: isConversationInWaitingQueue,
@@ -10935,7 +10969,7 @@ var userOverride = {
                 if (
                     typeof latestCreatedAtTime === 'undefined' ||
                     (message ? message.createdAtTime : '') >=
-                        latestCreatedAtTime ||
+                    latestCreatedAtTime ||
                     ($listId.indexOf('search') !== -1 && prepend)
                 ) {
                     $applozic
@@ -11329,9 +11363,9 @@ var userOverride = {
                     message &&
                     message.message &&
                     message.contentType !==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION &&
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION &&
                     message.contentType !==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
                     !Kommunicate.isRichTextMessage(message.metadata)
                 ) {
                     if (
@@ -11370,11 +11404,11 @@ var userOverride = {
                                 '<span class="mck-icon--location"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="rgba(38,50,56,.52)"/><path d="M0 0h24v24H0z" fill="none"/></svg></span><span>Location</span>';
                         } else if (
                             message.contentType ===
-                                KommunicateConstants.MESSAGE_CONTENT_TYPE
-                                    .TEXT_HTML &&
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE
+                                .TEXT_HTML &&
                             message.source ===
-                                KommunicateConstants.MESSAGE_SOURCE
-                                    .MAIL_INTERCEPTOR
+                            KommunicateConstants.MESSAGE_SOURCE
+                                .MAIL_INTERCEPTOR
                         ) {
                             var s = message.message;
                             var result = s
@@ -11407,11 +11441,11 @@ var userOverride = {
                                     emoji_template =
                                         emoji_template.indexOf('</span>') !== -1
                                             ? emoji_template.substring(
-                                                  0,
-                                                  emoji_template.lastIndexOf(
-                                                      '</span>'
-                                                  )
-                                              )
+                                                0,
+                                                emoji_template.lastIndexOf(
+                                                    '</span>'
+                                                )
+                                            )
                                             : emoji_template;
                                 } else {
                                     emoji_template = msg;
@@ -11420,10 +11454,10 @@ var userOverride = {
                             if (!contact.isGroup) {
                                 if (
                                     emoji_template.indexOf('emoji-inner') ===
-                                        -1 &&
+                                    -1 &&
                                     message.contentType ===
-                                        KommunicateConstants
-                                            .MESSAGE_CONTENT_TYPE.DEFAULT
+                                    KommunicateConstants
+                                        .MESSAGE_CONTENT_TYPE.DEFAULT
                                 ) {
                                     var x = d.createElement('p');
                                     x.appendChild(
@@ -11448,7 +11482,7 @@ var userOverride = {
                     if (
                         Kommunicate.isRichTextMessage(message.metadata) ||
                         message.contentType ==
-                            KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML
+                        KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML
                     ) {
                         var messageContent = message.message;
                         message.contentType ==
@@ -11460,30 +11494,30 @@ var userOverride = {
                             '</span><span>' +
                             (messageContent ||
                                 MCK_LABELS['rich.message'][
-                                    'notification.preview'
+                                'notification.preview'
                                 ]) +
                             '</span>';
                     }
                     if (
                         contact.isGroup &&
                         contact.type !==
-                            KommunicateConstants.GROUP_TYPE.SELLER &&
+                        KommunicateConstants.GROUP_TYPE.SELLER &&
                         contact.type !==
-                            KommunicateConstants.GROUP_TYPE.GROUP_OF_TWO
+                        KommunicateConstants.GROUP_TYPE.GROUP_OF_TWO
                     ) {
                         var msgFrom =
                             message.to.split(',')[0] === MCK_USER_ID
                                 ? 'Me'
                                 : mckMessageLayout.getTabDisplayName(
-                                      message.to.split(',')[0],
-                                      false
-                                  );
+                                    message.to.split(',')[0],
+                                    false
+                                );
                         if (
                             message.contentType !==
-                                KommunicateConstants.MESSAGE_CONTENT_TYPE
-                                    .NOTIFY_MESSAGE &&
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE
+                                .NOTIFY_MESSAGE &&
                             contact.type !==
-                                KommunicateConstants.GROUP_TYPE.SUPPORT
+                            KommunicateConstants.GROUP_TYPE.SUPPORT
                         ) {
                             emoji_template = msgFrom + ': ' + emoji_template;
                         }
@@ -11492,8 +11526,8 @@ var userOverride = {
                             message &&
                             message.message &&
                             message.contentType ===
-                                KommunicateConstants.MESSAGE_CONTENT_TYPE
-                                    .DEFAULT &&
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE
+                                .DEFAULT &&
                             !Kommunicate.isRichTextMessage(message.metadata)
                         ) {
                             var x = d.createElement('p');
@@ -11537,9 +11571,9 @@ var userOverride = {
                             message.to.split(',')[0] === MCK_USER_ID
                                 ? 'Me'
                                 : mckMessageLayout.getTabDisplayName(
-                                      message.to.split(',')[0],
-                                      false
-                                  );
+                                    message.to.split(',')[0],
+                                    false
+                                );
                         emoji_template = msgFrom + ': ' + emoji_template;
                     }
                 }
@@ -11743,23 +11777,23 @@ var userOverride = {
                             typeof message.metadata == 'object' &&
                             (typeof message.metadata.KM_ASSIGN == 'undefined' ||
                                 typeof message.metadata.KM_STATUS ==
-                                    'undefined');
+                                'undefined');
                         message.groupId
                             ? mckGroupService.addGroupFromMessage(
-                                  message,
-                                  update,
-                                  function (group, message, update) {
-                                      _this.updateRecentConversationList(
-                                          group,
-                                          message,
-                                          update
-                                      );
-                                  }
-                              )
+                                message,
+                                update,
+                                function (group, message, update) {
+                                    _this.updateRecentConversationList(
+                                        group,
+                                        message,
+                                        update
+                                    );
+                                }
+                            )
                             : mckMessageLayout.addContactsFromMessage(
-                                  message,
-                                  true
-                              );
+                                message,
+                                true
+                            );
                     } else {
                         mckMessageLayout.addContactsFromMessageList(
                             { message: [message] },
@@ -11811,8 +11845,8 @@ var userOverride = {
                         if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
                             $applozic(
                                 '#li-' +
-                                    contactHtmlExpr +
-                                    ' .mck-unread-count-box'
+                                contactHtmlExpr +
+                                ' .mck-unread-count-box'
                             )
                                 .removeClass('n-vis')
                                 .addClass('vis');
@@ -11836,9 +11870,9 @@ var userOverride = {
                             if (
                                 ((typeof message.oldKey === 'undefined' ||
                                     $applozic('.' + message.oldKey).length ===
-                                        0) &&
+                                    0) &&
                                     $applozic('.' + message.key).length ===
-                                        0) ||
+                                    0) ||
                                 message.contentType === 10
                             ) {
                                 if (
@@ -11864,12 +11898,12 @@ var userOverride = {
                                         if (
                                             currConvId &&
                                             currConvId.toString() ===
-                                                message.conversationId.toString()
+                                            message.conversationId.toString()
                                         ) {
                                             if (
                                                 !message.metadata ||
                                                 message.metadata.category !==
-                                                    'HIDDEN'
+                                                'HIDDEN'
                                             ) {
                                                 mckMessageLayout.addMessage(
                                                     message,
@@ -11924,7 +11958,7 @@ var userOverride = {
                                             (message.metadata.category !==
                                                 'HIDDEN' &&
                                                 message.metadata.hide !==
-                                                    'true' &&
+                                                'true' &&
                                                 contact.type !== 7) ||
                                             (!message.message &&
                                                 (message.metadata.hasOwnProperty(
@@ -12070,7 +12104,7 @@ var userOverride = {
                                         if (
                                             !message.metadata ||
                                             message.metadata.category !==
-                                                'HIDDEN'
+                                            'HIDDEN'
                                         ) {
                                             mckMessageLayout.addMessage(
                                                 message,
@@ -12083,8 +12117,8 @@ var userOverride = {
                                         if (message.type === 3) {
                                             $applozic(
                                                 '.' +
-                                                    message.key +
-                                                    ' .mck-message-status'
+                                                message.key +
+                                                ' .mck-message-status'
                                             )
                                                 .removeClass('mck-pending-icon')
                                                 .addClass('mck-sent-icon');
@@ -12107,7 +12141,7 @@ var userOverride = {
                     contact.users[message.to] &&
                     contact.users[message.to].userId !== 'bot' &&
                     contact.users[message.to].role ===
-                        KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
+                    KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
                 );
             };
 
@@ -12121,8 +12155,8 @@ var userOverride = {
 
             _this.procesMessageTimerDelay = function () {
                 var messageContainer = document.getElementById(
-                        'mck-message-cell'
-                    ),
+                    'mck-message-cell'
+                ),
                     message;
 
                 if (!document.querySelector('.km-typing-wrapper')) {
@@ -12295,11 +12329,11 @@ var userOverride = {
                         allMessages[_len - 2].getAttribute('data-msgtime');
                     if (
                         allMessages[_len - 2].getAttribute('data-contact') ==
-                            allMessages[_len - 1].getAttribute(
-                                'data-contact'
-                            ) &&
+                        allMessages[_len - 1].getAttribute(
+                            'data-contact'
+                        ) &&
                         timeOffset <
-                            KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME
+                        KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME
                     ) {
                         allMessages[_len - 2].classList.add(
                             'km-clubbing-first'
@@ -12318,12 +12352,12 @@ var userOverride = {
                                 allMessages[key].nextSibling.getAttribute(
                                     'data-contact'
                                 ) ==
-                                    allMessages[key].getAttribute(
-                                        'data-contact'
-                                    ) &&
+                                allMessages[key].getAttribute(
+                                    'data-contact'
+                                ) &&
                                 timeOffset <
-                                    KommunicateConstants.MESSAGE_CLUBBING
-                                        .TIME_FRAME
+                                KommunicateConstants.MESSAGE_CLUBBING
+                                    .TIME_FRAME
                             ) {
                                 allMessages[key].classList.add(
                                     'km-clubbing-first'
@@ -12375,8 +12409,8 @@ var userOverride = {
                     });
                     otherUserIdArray.length > 0
                         ? mckContactService.getUsersDetail(otherUserIdArray, {
-                              setStatus: true,
-                          })
+                            setStatus: true,
+                        })
                         : _this.updateUserConnectedStatus();
                 }
             };
@@ -12388,7 +12422,7 @@ var userOverride = {
                         var userDetail = MCK_USER_DETAIL_MAP[tabId];
                         if (
                             typeof alUserService.MCK_USER_DETAIL_MAP[tabId] !==
-                                'undefined' &&
+                            'undefined' &&
                             userDetail.connected
                         ) {
                             $this.removeClass('n-vis').addClass('vis');
@@ -12528,7 +12562,7 @@ var userOverride = {
                             mckContactNameArray
                         );
                     },
-                    error: function () {},
+                    error: function () { },
                 });
             };
             _this.loadContacts = function () {
@@ -12552,12 +12586,12 @@ var userOverride = {
                                         contact =
                                             typeof contact === 'undefined'
                                                 ? mckMessageLayout.createContactWithDetail(
-                                                      user
-                                                  )
+                                                    user
+                                                )
                                                 : mckMessageLayout.updateContactDetail(
-                                                      contact,
-                                                      user
-                                                  );
+                                                    contact,
+                                                    user
+                                                );
                                         MCK_CONTACT_ARRAY.push(contact);
                                         mckContactNameArray.push([
                                             user.userId,
@@ -12626,7 +12660,7 @@ var userOverride = {
                     if (
                         !cached ||
                         typeof alUserService.MCK_USER_DETAIL_MAP[userId] ===
-                            'undefined'
+                        'undefined'
                     ) {
                         userIdList.push(userId);
                     }
@@ -12669,12 +12703,12 @@ var userOverride = {
                                         contact =
                                             typeof contact === 'undefined'
                                                 ? mckMessageLayout.createContactWithDetail(
-                                                      userDetail
-                                                  )
+                                                    userDetail
+                                                )
                                                 : mckMessageLayout.updateContactDetail(
-                                                      contact,
-                                                      userDetail
-                                                  );
+                                                    contact,
+                                                    userDetail
+                                                );
                                     }
                                 );
                             }
@@ -12795,7 +12829,7 @@ var userOverride = {
                             }
                         }
                     },
-                    error: function () {},
+                    error: function () { },
                 });
             };
         }
@@ -13186,7 +13220,7 @@ var userOverride = {
                         CURRENT_GROUP_DATA.CHAR_CHECK =
                             data.data[0] &&
                             data.data[0].aiPlatform ==
-                                KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
+                            KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
                         !CURRENT_GROUP_DATA.CHAR_CHECK &&
                             _this.removeWarningsFromTextBox();
                         CURRENT_GROUP_DATA.CHAR_CHECK &&
@@ -13314,7 +13348,7 @@ var userOverride = {
                             .addClass('n-vis');
                         if (
                             typeof OPEN_GROUP_SUBSCRIBER_MAP[
-                                group.contactId
+                            group.contactId
                             ] === 'undefined'
                         ) {
                             window.Applozic.ALSocket.subscribeToOpenGroup(
@@ -13376,7 +13410,7 @@ var userOverride = {
                         if (
                             MCK_USER_ID === '' + group.members[i] ||
                             group.removedMembersId.indexOf(group.members[i]) !==
-                                -1
+                            -1
                         ) {
                             isGroupMember = true;
                             continue;
@@ -13452,7 +13486,7 @@ var userOverride = {
                     if (response.status === 'error') {
                         alert(
                             'Unable to process your request. ' +
-                                response.errorMessage
+                            response.errorMessage
                         );
                         return;
                     }
@@ -13480,7 +13514,7 @@ var userOverride = {
                     if (response.status === 'error') {
                         alert(
                             'Unable to process your request. ' +
-                                response.errorMessage
+                            response.errorMessage
                         );
                         return;
                     }
@@ -13533,7 +13567,7 @@ var userOverride = {
                     if (response.status === 'error') {
                         alert(
                             'Unable to process your request. ' +
-                                response.errorMessage
+                            response.errorMessage
                         );
                         return;
                     }
@@ -13657,7 +13691,7 @@ var userOverride = {
                     if (response.status === 'error') {
                         alert(
                             'Unable to process your request. ' +
-                                response.errorMessage
+                            response.errorMessage
                         );
                         return;
                     }
@@ -13694,11 +13728,11 @@ var userOverride = {
                             _this.addMembersToGroupInfoList(group);
                             group.adminName === MCK_USER_ID
                                 ? $mck_group_add_member_box
-                                      .removeClass('n-vis')
-                                      .addClass('vis')
+                                    .removeClass('n-vis')
+                                    .addClass('vis')
                                 : $mck_group_add_member_box
-                                      .removeClass('vis')
-                                      .addClass('n-vis');
+                                    .removeClass('vis')
+                                    .addClass('n-vis');
                         }
                     } else if ($mck_sidebox_content.hasClass('vis')) {
                         var currTabId = $mck_msg_inner.data('mck-id');
@@ -13717,14 +13751,14 @@ var userOverride = {
                             ) {
                                 $applozic(
                                     '#li-group-' +
-                                        group.htmlId +
-                                        ' .mck-cont-name strong'
+                                    group.htmlId +
+                                    ' .mck-cont-name strong'
                                 ).html(group.displayName);
                                 if (groupInfo.imageUrl) {
                                     $applozic(
                                         '#li-group-' +
-                                            group.htmlId +
-                                            ' .blk-lg-3'
+                                        group.htmlId +
+                                        ' .blk-lg-3'
                                     ).html(
                                         "<img src=' " + group.imageUrl + "'>"
                                     );
@@ -13746,7 +13780,7 @@ var userOverride = {
                         if (
                             typeof conversationPxy !== 'object' ||
                             typeof MCK_TOPIC_DETAIL_MAP[
-                                conversationPxy.topicId
+                            conversationPxy.topicId
                             ] !== 'object'
                         ) {
                             params.conversationId = message.conversationId;
@@ -13767,7 +13801,7 @@ var userOverride = {
                 if (response.status === 'error') {
                     alert(
                         'Unable to process your request. ' +
-                            response.errorMessage
+                        response.errorMessage
                     );
                 } else {
                     var group = response.data;
@@ -13911,7 +13945,7 @@ var userOverride = {
                             }
                             if (
                                 groupMemberArray.indexOf(contact.contactId) ===
-                                    -1 ||
+                                -1 ||
                                 (groupMemberArray.indexOf(contact.contactId) !==
                                     -1 &&
                                     group.removedMembersId.indexOf(
@@ -14020,11 +14054,11 @@ var userOverride = {
                         _this.addMembersToGroupInfoList(group);
                         group.adminName === MCK_USER_ID
                             ? $mck_group_add_member_box
-                                  .removeClass('n-vis')
-                                  .addClass('vis')
+                                .removeClass('n-vis')
+                                .addClass('vis')
                             : $mck_group_add_member_box
-                                  .removeClass('vis')
-                                  .addClass('n-vis');
+                                .removeClass('vis')
+                                .addClass('n-vis');
                     } else {
                         mckGroupService.getGroupFeed({
                             groupId: params.groupId,
@@ -14147,9 +14181,9 @@ var userOverride = {
             _this.onErrorMyCurrLocation = function (err) {
                 alert(
                     'Unable to retrieve your location. ERROR(' +
-                        err.code +
-                        '): ' +
-                        err.message
+                    err.code +
+                    '): ' +
+                    err.message
                 );
             };
             _this.onGetMyCurrLocation = function (loc) {
@@ -14394,10 +14428,10 @@ var userOverride = {
                     _this.uplaodFileToAWS(file, UPLOAD_VIA[1]);
                     return false;
                 });
-                
-                
-                $mck_file_input.on('change', _this.uploadFileFunction );
-                $mck_img_file_input.on('change', _this.uploadFileFunction );
+
+
+                $mck_file_input.on('change', _this.uploadFileFunction);
+                $mck_img_file_input.on('change', _this.uploadFileFunction);
                 $mck_vid_file_input.on('change', function () {
                     var file = $applozic(this)[0].files[0];
                     var params = {};
@@ -14409,7 +14443,7 @@ var userOverride = {
                         MCK_CUSTOM_UPLOAD_SETTINGS
                     );
                 });
-                
+
                 $applozic(d).on('click', '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
                     var currFileMeta = $currFileBox.data('mckfile');
@@ -14494,8 +14528,8 @@ var userOverride = {
                 if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
                     uploadErrors.push(
                         'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
+                        MCK_FILEMAXSIZE +
+                        ' MB'
                     );
                 }
                 if (uploadErrors.length > 0) {
@@ -14528,7 +14562,7 @@ var userOverride = {
                     messagePxy &&
                         ($attchement_progressbar = $applozic(
                             '.km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-' +
-                                messagePxy.key
+                            messagePxy.key
                         ));
                     var $file_progress = $applozic(
                         '.mck-file-box.' + randomId + ' .km-progress'
@@ -14669,7 +14703,7 @@ var userOverride = {
                             xhr.open('POST', result, true);
                             xhr.send(fd);
                         },
-                        error: function () {},
+                        error: function () { },
                     });
                 }
             };
@@ -14691,8 +14725,8 @@ var userOverride = {
                 if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
                     uploadErrors.push(
                         'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
+                        MCK_FILEMAXSIZE +
+                        ' MB'
                     );
                 }
                 if (uploadErrors.length > 0) {
@@ -14725,7 +14759,7 @@ var userOverride = {
                     messagePxy &&
                         ($attchement_progressbar = $applozic(
                             '.km-msg-box-attachment .km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success-' +
-                                messagePxy.key
+                            messagePxy.key
                         ));
                     var $file_progress = $applozic(
                         '.mck-file-box.' + randomId + ' .km-progress'
@@ -14806,10 +14840,10 @@ var userOverride = {
                             var fileExpr =
                                 typeof file_meta === 'object'
                                     ? '<a href="' +
-                                      file_meta.url +
-                                      '" target="_blank">' +
-                                      file_meta.name +
-                                      '</a>'
+                                    file_meta.url +
+                                    '" target="_blank">' +
+                                    file_meta.name +
+                                    '</a>'
                                     : '';
                             var name = file_meta.name;
                             var size = file_meta.size;
@@ -14973,8 +15007,8 @@ var userOverride = {
                     $file_progress.removeClass('n-vis').addClass('vis');
                 }
             };
-            _this.handleEncryptedElements = function(encryptedElements){
-                for(var i = 0; i < encryptedElements.length; i++){
+            _this.handleEncryptedElements = function (encryptedElements) {
+                for (var i = 0; i < encryptedElements.length; i++) {
                     var isElementInView = KommunicateUI.isInView(encryptedElements[i], document.querySelector('#mck-message-cell .mck-message-inner'))
                     if (!isElementInView) { return };
                     switch (encryptedElements[i].tagName) {
@@ -15043,8 +15077,8 @@ var userOverride = {
                 var contact = message.groupId
                     ? mckGroupUtils.getGroup('' + message.groupId)
                     : mckMessageLayout.fetchContact(
-                          '' + message.to.split(',')[0]
-                      );
+                        '' + message.to.split(',')[0]
+                    );
                 var isGroup = false;
                 if (message.groupId) {
                     isGroup = true;
@@ -15159,7 +15193,7 @@ var userOverride = {
                 msgLength > MAX_CHAR_IN_ONE_LINE
                     ? (visualTextIndicator.style.width = '200px')
                     : (visualTextIndicator.style.width =
-                          msgLength * WIDTH_MULTIPLIER + 'px');
+                        msgLength * WIDTH_MULTIPLIER + 'px');
                 msgLength > MAX_NOTIFICATION_CHAR &&
                     (msg.innerHTML =
                         msg.innerHTML
@@ -15198,7 +15232,7 @@ var userOverride = {
                         );
                         currConvId =
                             typeof currConvId !== 'undefined' &&
-                            currConvId !== ''
+                                currConvId !== ''
                                 ? currConvId.toString()
                                 : '';
                         if (currConvId === message.conversationId.toString()) {
@@ -15493,8 +15527,8 @@ var userOverride = {
                                             )[0];
                                             $mck_typing_label.html(
                                                 displayName +
-                                                    ' ' +
-                                                    MCK_LABELS['is.typing']
+                                                ' ' +
+                                                MCK_LABELS['is.typing']
                                             );
                                         }
                                         if (group.type === 7) {
@@ -15536,8 +15570,8 @@ var userOverride = {
                                     if (
                                         $mck_tab_title.hasClass(
                                             'mck-tab-title-w-status' &&
-                                                (typeof group === 'undefined' ||
-                                                    group.type != 7)
+                                            (typeof group === 'undefined' ||
+                                                group.type != 7)
                                         )
                                     ) {
                                         // $mck_tab_status.removeClass('n-vis').addClass('vis');
@@ -15635,7 +15669,7 @@ var userOverride = {
                                 (IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX) &&
                                 (typeof conversationPxy !== 'object' ||
                                     typeof MCK_TOPIC_DETAIL_MAP[
-                                        conversationPxy.topicId
+                                    conversationPxy.topicId
                                     ] !== 'object')
                             ) {
                                 alMessageService.getTopicId(
@@ -15700,8 +15734,8 @@ var userOverride = {
                 ) {
                     $applozic(
                         '.' +
-                            resp.message.split(',')[0] +
-                            ' .mck-message-status'
+                        resp.message.split(',')[0] +
+                        ' .mck-message-status'
                     )
                         .removeClass('mck-pending-icon')
                         .removeClass('mck-sent-icon')
@@ -15717,8 +15751,8 @@ var userOverride = {
                 ) {
                     $applozic(
                         '.' +
-                            resp.message.split(',')[0] +
-                            ' .mck-message-status'
+                        resp.message.split(',')[0] +
+                        ' .mck-message-status'
                     )
                         .removeClass('mck-pending-icon')
                         .removeClass('mck-sent-icon')
@@ -15877,8 +15911,8 @@ var userOverride = {
                     if (typeof tabId === 'undefined' || tabId === '') {
                         $applozic(
                             '#li-user-' +
-                                contact.htmlId +
-                                ' .mck-unread-count-text'
+                            contact.htmlId +
+                            ' .mck-unread-count-text'
                         ).html(
                             mckMessageLayout.getUnreadCount(
                                 'user_' + contact.contactId
@@ -15886,8 +15920,8 @@ var userOverride = {
                         );
                         $applozic(
                             '#li-user-' +
-                                contact.htmlId +
-                                ' .mck-unread-count-box'
+                            contact.htmlId +
+                            ' .mck-unread-count-box'
                         )
                             .removeClass('vis')
                             .addClass('n-vis');
@@ -16010,7 +16044,7 @@ var userOverride = {
                     var userId = resp.message.split(",")[0];
                     var status = parseInt(resp.message.split(",")[1]);
                     var lastSeenAtTime = resp.message.split(",")[2];
-                    if(CURRENT_GROUP_DATA.conversationAssignee != userId){
+                    if (CURRENT_GROUP_DATA.conversationAssignee != userId) {
                         return;
                     }
                     var statusToSet = KommunicateConstants.APPLOZIC_USER_STATUS[status];
@@ -16024,9 +16058,9 @@ var userOverride = {
                         conversationAssigneeDetails &&
                         conversationAssigneeDetails.roleType,
                         isAgentOffline
-                    ); 
+                    );
                 } else if (messageType === 'APPLOZIC_33') {
-                    if(resp.message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]){
+                    if (resp.message.metadata["AL_DELETE_GROUP_MESSAGE_FOR_ALL"]) {
                         var key = resp.message.key;
                         var groupId = resp.message.groupId;
                         var isGroup = true;
@@ -16083,12 +16117,12 @@ var userOverride = {
                                     resp.message.groupId
                                 ].metadata.CONVERSATION_STATUS =
                                     Kommunicate.conversationHelper.status[
-                                        conversationStatus.toUpperCase()
+                                    conversationStatus.toUpperCase()
                                     ]);
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
                             CURRENT_GROUP_DATA.conversationStatus =
                                 Kommunicate.conversationHelper.status[
-                                    conversationStatus.toUpperCase()
+                                conversationStatus.toUpperCase()
                                 ];
                             if (
                                 resp.message.metadata.KM_STATUS ===
@@ -16127,9 +16161,9 @@ var userOverride = {
                             CURRENT_GROUP_DATA.tabId = resp.message.groupId;
                             if (
                                 resp.message.metadata.KM_STATUS ===
-                                    KommunicateConstants.CONVERSATION_CLOSED_STATUS ||
+                                KommunicateConstants.CONVERSATION_CLOSED_STATUS ||
                                 resp.message.metadata.KM_STATUS ===
-                                    KommunicateConstants.CONVERSATION_RESOLVED_STATUS
+                                KommunicateConstants.CONVERSATION_RESOLVED_STATUS
                             ) {
                                 if (
                                     MCK_BOT_MESSAGE_DELAY !== 0 &&
@@ -16226,7 +16260,7 @@ var userOverride = {
                                 (IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX) &&
                                 (typeof conversationPxy !== 'object' ||
                                     typeof MCK_TOPIC_DETAIL_MAP[
-                                        conversationPxy.topicId
+                                    conversationPxy.topicId
                                     ] !== 'object')
                             ) {
                                 alMessageService.getTopicId(

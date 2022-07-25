@@ -36,7 +36,7 @@ function ApplozicSidebox() {
             url: 'https://maps.google.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
-                applozic._globals.googleApiKey
+                    applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         },
@@ -175,8 +175,8 @@ function ApplozicSidebox() {
                     var body = document.getElementsByTagName('body')[0];
                     body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
-                    var kmScript  = window.parent && window.parent.document.getElementById('km-widget-script');
-                    if(kmScript && kmScript.nonce){
+                    var kmScript = window.parent && window.parent.document.getElementById('km-widget-script');
+                    if (kmScript && kmScript.nonce) {
                         scriptContent.nonce = kmScript.nonce;
                     }
                     body.appendChild(scriptContent);
@@ -469,14 +469,17 @@ function ApplozicSidebox() {
                     ? options.hidePostFormSubmit
                     : widgetSettings && widgetSettings.hidePostFormSubmit;
             options.disableFormPostSubmit =
-                options.disableFormPostSubmit || 
-                    (widgetSettings && widgetSettings.disableFormPostSubmit);
+                options.disableFormPostSubmit ||
+                (widgetSettings && widgetSettings.disableFormPostSubmit);
+            options.timeformat24hours =
+                options.timeformat24hours != null
+                    ? options.timeformat24hours
+                    : widgetSettings && widgetSettings.timeformat24hours;
             options.voiceNote =
                 options.voiceNote != null
                     ? options.voiceNote
                     : widgetSettings && widgetSettings.voiceNote;
             KommunicateUtils.deleteDataFromKmSession('settings');
-
             if (
                 sessionTimeout != null &&
                 !(options.preLeadCollection || options.askUserDetails)
