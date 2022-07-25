@@ -471,6 +471,10 @@ function ApplozicSidebox() {
             options.disableFormPostSubmit =
                 options.disableFormPostSubmit || 
                     (widgetSettings && widgetSettings.disableFormPostSubmit);
+            options.timeformat24hours =
+                options.timeformat24hours != null
+                    ? options.timeformat24hours
+                    : widgetSettings && widgetSettings.timeformat24hours;         
             options.voiceNote =
                 options.voiceNote != null
                     ? options.voiceNote

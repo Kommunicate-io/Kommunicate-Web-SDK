@@ -603,6 +603,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT_24_HOURS = appOptions.timeformat24hours;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -9011,9 +9012,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9718,6 +9717,41 @@ var userOverride = {
                 }
                 return '';
             };
+            _this.getMessageCreatedAtTime = function (createdAtTime) {
+                if (TIME_FORMAT_24_HOURS) {
+                    var msgtime = new Date(createdAtTime);
+                    var yesterday = new Date();
+                    if (yesterday.getDate() != msgtime.getDate()) {
+                        var time = msgtime.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time;
+                    }
+                    else if (yesterday.getDate() != msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth()) {
+                        var time = msgtime.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time;
+                    }
+                    else if (yesterday.getDate() != msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth() && yesterday.getFullYear() != msgtime.getFullYear()) {
+                        var time = msgtime.toLocaleString('en-US', {
+                            day: 'numeric',
+                            month: 'short'
+                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time;
+                    }
+                    else {
+                        return time = msgtime.getHours() + ":" + msgtime.getMinutes();
+                    }
+
+                } else {
+                    return mckDateUtils.getDate(
+                        createdAtTime
+                    );
+                }
+            }   
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
