@@ -9728,14 +9728,14 @@ var userOverride = {
                         }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
                         return time;
                     }
-                    else if (yesterday.getDate() != msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth()) {
+                    else if (yesterday.getDate() == msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth()) {
                         var time = msgtime.toLocaleString('en-US', {
                             day: 'numeric',
                             month: 'short'
                         }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
                         return time;
                     }
-                    else if (yesterday.getDate() != msgtime.getDate() && yesterday.getMonth() != msgtime.getMonth() && yesterday.getFullYear() != msgtime.getFullYear()) {
+                    else if (yesterday.getDate() == msgtime.getDate() && yesterday.getMonth() == msgtime.getMonth() && yesterday.getFullYear() != msgtime.getFullYear()) {
                         var time = msgtime.toLocaleString('en-US', {
                             day: 'numeric',
                             month: 'short'
