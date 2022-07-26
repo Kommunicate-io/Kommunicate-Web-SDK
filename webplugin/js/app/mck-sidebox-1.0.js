@@ -9719,17 +9719,17 @@ var userOverride = {
             };
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
-                    var msgtime = new Date(createdAtTime);
-                    var yesterday = new Date();
-                    if (yesterday.getDate() != msgtime.getDate() || yesterday.getMonth() != msgtime.getMonth() || yesterday.getFullYear() != msgtime.getFullYear()) {
-                        var time = msgtime.toLocaleString('en-US', {
+                    var messageTime = new Date(createdAtTime);
+                    var currentTime = new Date();
+                    if (currentTime.getDate() != messageTime.getDate() || currentTime.getMonth() != messageTime.getMonth() || currentTime.getFullYear() != messageTime.getFullYear()) {
+                        var time = messageTime.toLocaleString('en-US', {
                             day: 'numeric',
                             month: 'short'
-                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
+                        }) + ", " + messageTime.getHours() + ":" + messageTime.getMinutes();
                         return time;
                     }
                     else {
-                        return time = msgtime.getHours() + ":" + msgtime.getMinutes();
+                        return time = messageTime.getHours() + ":" + messageTime.getMinutes();
                     }
 
                 } else {
