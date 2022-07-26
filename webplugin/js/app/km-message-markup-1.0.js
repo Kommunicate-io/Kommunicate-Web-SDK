@@ -109,21 +109,62 @@ Kommunicate.popupChatTemplate = {
             popupWidgetContent &&
             popupWidgetContent.length &&
             popupWidgetContent[0].message;
+        var buttonDetails = popupWidgetContent &&
+            popupWidgetContent.length &&
+            popupWidgetContent[0].buttons;
+        var templateKey =
+            (popupWidgetContent &&
+                popupWidgetContent.length &&
+                popupWidgetContent[0].templateKey) ||
+            KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
 
+        if(Array.isArray(popupMessageContent)){
+            var len = popupMessageContent.length;
+            if(!len){ popupMessageContent = ""; }
+            var randomIndex = Math.floor(Math.random() * len); // index in range [0, len)
+            popupMessageContent = popupMessageContent[randomIndex];
+        }
+
+        var actionButton = {
+            0: {
+                label: "",
+                onClickAction: function(){},
+            },
+            1: {
+                label: "",
+                onClickAction: function(){},
+            }
+        }
+        Kommunicate['chatPopupActions'] = {}
+
+        if (Array.isArray(buttonDetails) && buttonDetails.length) {
+            for (var i = 0; i < buttonDetails.length; i++) {
+                if (i <= 1) {
+                    actionButton[i].label = buttonDetails[i].label
+                    if(typeof buttonDetails[i].onClickAction == 'function'){
+                        Kommunicate['chatPopupActions'][i] = buttonDetails[i].onClickAction
+                    } else {
+                        Kommunicate['chatPopupActions'][i] = actionButton[i].onClickAction    
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+
+        var actionableButtonTemplateMarkup = '<div id="chat-popup-actionable-btn-container">' +
+            (actionButton[0].label && '<button id="chat-popup-actionable-btn-1" onclick="window.kommunicate.chatPopupActions[0]()">' + actionButton[0].label + '</button>') +
+            (actionButton[1].label && '<button id="chat-popup-actionable-btn-2" onclick="window.kommunicate.chatPopupActions[1]()">' + actionButton[1].label + '</button></div>');
+        
+            
         if (isPopupEnabled) {
             var launcherClass = isAnonymousChat
                 ? 'km-anonymous-chat-launcher'
                 : 'applozic-launcher';
-            var index =
-                (popupWidgetContent &&
-                    popupWidgetContent.length &&
-                    popupWidgetContent[0].templateKey) ||
-                KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
             var templateCss =
-                index === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL
-                    ? 'chat-popup-widget-container--horizontal'
-                    : 'chat-popup-widget-container--vertical';
-            chatPopupTemplateMarkup =
+                KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[templateKey];
+            
+                chatPopupTemplateMarkup =
                 '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' +
                 templateCss +
                 ' n-vis"><div class="chat-popup-widget-text-wrapper ' +
@@ -133,6 +174,8 @@ Kommunicate.popupChatTemplate = {
                     kommunicateCommons.formatHtmlTag(popupMessageContent)) +
                 '</p></div>' +
                 '<div class="chat-popup-widget-close-btn-container"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"></path></svg></span></div></div>' +
+                (templateKey == KommunicateConstants.CHAT_POPUP_TEMPLATE.ACTIONABLE ?
+                    actionableButtonTemplateMarkup : "") +
                 '</div>';
         }
 

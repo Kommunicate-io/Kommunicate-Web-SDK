@@ -178,6 +178,12 @@ KommunicateConstants = {
     CHAT_POPUP_TEMPLATE: {
         HORIZONTAL: 1,
         VERTICAL: 2,
+        ACTIONABLE: 3
+    },
+    CHAT_POPUP_TEMPLATE_CLASS: {
+        1: 'chat-popup-widget-container--horizontal',
+        2: 'chat-popup-widget-container--vertical',
+        3: 'chat-popup-widget-container--actionable'
     },
     GROUP_ROLE: {
         USER: 0,

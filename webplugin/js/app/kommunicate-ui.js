@@ -1512,7 +1512,11 @@ KommunicateUI = {
                     false
                 );
             }
-
+            var popupTemplateClass = 
+                KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey]; 
+                
+            kommunicateIframe.classList.add(popupTemplateClass.replace('-container-',''));
+            
             popupTemplateKey ===
                 KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL &&
                 kommunicateCommons.modifyClassList(
@@ -1520,13 +1524,8 @@ KommunicateUI = {
                     'km-no-box-shadow',
                     ''
                 );
-            popupTemplateKey ===
-            KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL
-                ? kommunicateIframe.classList.add(
-                      'chat-popup-widget-horizontal'
-                  )
-                : kommunicateIframe.classList.add('chat-popup-widget-vertical');
-            kommunicateCommons.modifyClassList(
+            
+                kommunicateCommons.modifyClassList(
                 { id: ['launcher-svg-container'] },
                 'km-animate',
                 ''
