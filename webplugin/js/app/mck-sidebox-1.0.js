@@ -9721,21 +9721,7 @@ var userOverride = {
                 if (TIME_FORMAT_24_HOURS) {
                     var msgtime = new Date(createdAtTime);
                     var yesterday = new Date();
-                    if (yesterday.getDate() != msgtime.getDate()) {
-                        var time = msgtime.toLocaleString('en-US', {
-                            day: 'numeric',
-                            month: 'short'
-                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
-                        return time;
-                    }
-                    else if (yesterday.getMonth() != msgtime.getMonth()) {
-                        var time = msgtime.toLocaleString('en-US', {
-                            day: 'numeric',
-                            month: 'short'
-                        }) + ", " + msgtime.getHours() + ":" + msgtime.getMinutes();
-                        return time;
-                    }
-                    else if (yesterday.getFullYear() != msgtime.getFullYear()) {
+                    if (yesterday.getDate() != msgtime.getDate() || yesterday.getMonth() != msgtime.getMonth() || yesterday.getFullYear() != msgtime.getFullYear()) {
                         var time = msgtime.toLocaleString('en-US', {
                             day: 'numeric',
                             month: 'short'
