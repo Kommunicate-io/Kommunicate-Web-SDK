@@ -9721,15 +9721,27 @@ var userOverride = {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);
                     var currentTime = new Date();
+                    function addZeroInHours() {
+                        if (messageTime.getHours() < 10) {
+                            return "0";
+                        }
+                        return "";
+                    }
+                    function addZeroInMinutes() {
+                        if (messageTime.getMinutes() < 10) {
+                            return "0";
+                        }
+                        return "";
+                    }
                     if (currentTime.getDate() != messageTime.getDate() || currentTime.getMonth() != messageTime.getMonth() || currentTime.getFullYear() != messageTime.getFullYear()) {
-                        var time = messageTime.toLocaleString('en-US', {
+                        return messageTime.toLocaleString('en-US', {
                             day: 'numeric',
                             month: 'short'
-                        }) + ", " + messageTime.getHours() + ":" + messageTime.getMinutes();
-                        return time;
+                        }) + ", " + addZeroInHours() + messageTime.getHours() + ":" + addZeroInMinutes() + messageTime.getMinutes();
+
                     }
                     else {
-                        return time = messageTime.getHours() + ":" + messageTime.getMinutes();
+                        return addZeroInHours() + messageTime.getHours() + ":" + addZeroInMinutes() + messageTime.getMinutes();
                     }
 
                 } else {
