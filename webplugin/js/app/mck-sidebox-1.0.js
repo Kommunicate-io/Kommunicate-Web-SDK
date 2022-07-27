@@ -603,7 +603,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
-        var TIME_FORMAT_24_HOURS = appOptions.timeformat24hours;
+        var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
