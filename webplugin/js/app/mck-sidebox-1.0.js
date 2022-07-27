@@ -9720,31 +9720,14 @@ var userOverride = {
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);
-                    var currentTime = new Date();
-                    function addZeroInHours() {
-                        if (messageTime.getHours() < 10) {
-                            return "0";
-                        }
-                        return "";
-                    }
-                    function addZeroInMinutes() {
-                        if (messageTime.getMinutes() < 10) {
-                            return "0";
-                        }
-                        return "";
-                    }
+                    var currentTime = new Date();                 
                     if (currentTime.getDate() != messageTime.getDate() || currentTime.getMonth() != messageTime.getMonth() || currentTime.getFullYear() != messageTime.getFullYear()) {
-                        return messageTime.toLocaleString('en-US', {
-                            day: 'numeric',
-                            month: 'short'
-                        }) + ", " + addZeroInHours() + messageTime.getHours() + ":" + addZeroInMinutes() + messageTime.getMinutes();
-
+                       return messageTime.toLocaleString('en-US', {day: 'numeric',month: 'short',hour: '2-digit', minute: '2-digit',hour12:false});
                     }
                     else {
-                        return addZeroInHours() + messageTime.getHours() + ":" + addZeroInMinutes() + messageTime.getMinutes();
+                        return messageTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit', hour12:false});
                     }
-
-                } else {
+                }else {
                     return mckDateUtils.getDate(
                         createdAtTime
                     );
