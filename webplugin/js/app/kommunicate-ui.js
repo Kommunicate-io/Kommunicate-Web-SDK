@@ -1517,15 +1517,13 @@ KommunicateUI = {
                 
             kommunicateIframe.classList.add(popupTemplateClass.replace('-container-',''));
             
-            popupTemplateKey ===
-                KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL &&
+            (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL) &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-sidebox-launcher', 'launcher-svg-container'] },
                     'km-no-box-shadow',
                     ''
                 );
-            
-                kommunicateCommons.modifyClassList(
+            kommunicateCommons.modifyClassList(
                 { id: ['launcher-svg-container'] },
                 'km-animate',
                 ''
