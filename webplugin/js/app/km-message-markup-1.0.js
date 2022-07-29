@@ -120,7 +120,7 @@ Kommunicate.popupChatTemplate = {
 
         if(Array.isArray(popupMessageContent)){
             var len = popupMessageContent.length;
-            if(!len){ popupMessageContent = ""; }
+            if (!len) { popupMessageContent = ""; }
             var randomIndex = Math.floor(Math.random() * len); // index in range [0, len)
             popupMessageContent = popupMessageContent[randomIndex];
         }
