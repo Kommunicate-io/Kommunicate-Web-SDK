@@ -79,6 +79,13 @@ const compressAndOptimize = () => {
         if (!fs.existsSync(`${buildDir}/resources`)){
             fs.mkdirSync(`${buildDir}/resources`);
         }
+
+        // add third party scripts here
+        if (!fs.existsSync(`${buildDir}/resources/third-party-scripts`)){
+            fs.mkdirSync(`${buildDir}/resources/third-party-scripts`);
+        }
+
+
     }
     minify({
         compressor: jsCompressor,
@@ -268,8 +275,13 @@ const generateBuildFiles = () => {
 
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
+
+        // third party script for location picker
+        copyFileToBuild('lib/js/locationpicker.jquery.min.js', `${resourceLocation}/third-party-scripts/locationpicker.jquery.min.js`);
+
+        // third party script for emoticons
+        copyFileToBuild('lib/js/mck-emojis.min.js', `${resourceLocation}/third-party-scripts/mck-emojis.min.js`);
     }
-    
     // Generate chat.html for /chat route
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);

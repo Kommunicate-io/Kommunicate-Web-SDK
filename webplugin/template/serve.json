@@ -1,5 +1,9 @@
 {
-    "rewrites": [{ "source": "/chat", "destination": "/chat.html" }],
+    "rewrites": [
+        { "source": "/chat", "destination": "/chat.html" },
+        { "source": "/plugin/lib/js/locationpicker.jquery.min.js", "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js" },
+        { "source": "/plugin/lib/js/mck-emojis.min.js", "destination": "/resources/third-party-scripts/mck-emojis.min.js" }
+    ],
     "headers": [
         {
             "source": "**",
