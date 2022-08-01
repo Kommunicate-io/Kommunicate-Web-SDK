@@ -13,6 +13,7 @@ exports.getPlugin = async (req, res) => {
     var data = Object.keys(pluginVersionData).length
         ? pluginVersionData[MCK_PLUGIN_VERSION]
         : await generatePluginFile(req, res);
+        
     res.setHeader('Content-Type', 'application/javascript');
     res.send(data);
     console.log('plugin code sent successfully');
@@ -49,17 +50,10 @@ const generatePluginFile = async (req, res) => {
 
 exports.getPluginHTML = async (req, res) => {
     const APP_ID = req.query.appId;
-    const MCK_CONTEXTPATH = config.urls.hostUrl;
     if (!APP_ID) {
         res.send('Error while getting application id...');
         return console.log('Unable to get application id');
     }
-    const OVERRIDES = {};
-    OVERRIDES.referer = req.header('Referer');
-    res.render('plugin',{
-        APP_ID,
-        MCK_CONTEXTPATH,
-        OVERRIDES
-    });
+    res.sendFile(path.join(__dirname, '/build/chat.html'));
     console.log('plugin HTML sent successfully');
 };

@@ -7,10 +7,12 @@ function ZendeskChatService() {
     var ZENDESK_CHAT_SDK_KEY = "";
     var AGENT_INFO_MAP = {};
     var preChatLeadData = {};
+    var phoneNumber = "";
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
         preChatLeadData = preChatData;
+        phoneNumber = preChatLeadData.contactNumber;
         _this.loadZopimSDK();
         var events = {
             'onMessageSent': _this.handleUserMessage,
@@ -72,6 +74,7 @@ function ZendeskChatService() {
             }
             zChat.init(zendeskInitOptions);
             zChat.on("chat", function (eventDetails) {
+                _this.updateNumberInZopim();
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
                 if (eventDetails.type == "chat.msg") { //If agent sends normal message
                     _this.handleZendeskAgentMessageEvent(eventDetails);
@@ -79,6 +82,15 @@ function ZendeskChatService() {
                     _this.handleZendeskAgentFileSendEvent(eventDetails);
                 } else if (eventDetails.type == "chat.memberleave") { //If agent leaves conversation
                     _this.handleZendeskAgentLeaveEvent(eventDetails);
+                }
+            });
+        }
+    };
+    _this.updateNumberInZopim = function() {
+        if(phoneNumber && zChat.getVisitorInfo().phone != phoneNumber){
+            zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
+                if (!err) {
+                     console.log(zChat.getVisitorInfo());
                 }
             });
         }

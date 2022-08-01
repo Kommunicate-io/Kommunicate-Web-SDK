@@ -15,7 +15,12 @@
     "test": "NODE_ENV=test node ./server/app.js",
     "staging": "NODE_ENV=staging node ./server/app.js",
     "prod": "NODE_ENV=prod node ./server/app.js",
-    "prod_ca": "NODE_ENV=prod_ca node ./server/app.js"
+    "prod_ca": "NODE_ENV=prod_ca node ./server/app.js",
+    "build-test": "NODE_ENV=test node ./server/build.js",
+    "build-release": "NODE_ENV=release node ./server/build.js",
+    "build-prod": "NODE_ENV=prod node ./server/build.js",
+    "build-staging": "NODE_ENV=staging node ./server/build.js",
+    "serve-build": "serve -C -l 3030 webplugin/build"
   },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",
@@ -25,18 +30,18 @@
     "@node-minify/terser": "6.0.0",
     "compression": "1.7.4",
     "cors": "2.8.5",
-    "ejs": "^3.1.6",
     "express": "4.17.1",
     "form-data": "3.0.0",
-    "minimist": "1.2.5",
-    "node-fetch": "2.6.1"
+    "minimist": "1.2.6",
+    "node-fetch": "2.6.7"
   },
   "devDependencies": {
     "husky": "5.0.9",
     "nodemon": "2.0.7",
     "pinst": "2.1.4",
     "prettier": "2.2.1",
-    "pretty-quick": "3.1.0"
+    "pretty-quick": "3.1.0",
+    "serve": "14.0.1"
   },
   "nodemonConfig": {
     "verbose": true,

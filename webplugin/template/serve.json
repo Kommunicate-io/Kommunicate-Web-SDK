@@ -1,0 +1,45 @@
+{
+    "rewrites": [{ "source": "/chat", "destination": "/chat.html" }],
+    "headers": [
+        {
+            "source": "**",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        },
+        {
+            "source": "v2/kommunicate.app",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/javascript"
+                },
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=300"
+                }
+            ]
+        },
+        {
+            "source": "*.html",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=300"
+                }
+            ]
+        },
+        {
+            "source": "resources/**",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=86400"
+                }
+            ]
+        }
+    ]
+}
