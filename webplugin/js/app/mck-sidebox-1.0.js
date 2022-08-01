@@ -653,7 +653,7 @@ var userOverride = {
         };
         var CONNECT_SOCKET_ON_WIDGET_CLICK =
             appOptions.connectSocketOnWidgetClick;
-        var SUBSCRIBE_TO_EVENTS_BACKUP = {};
+        var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
             (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
@@ -744,14 +744,15 @@ var userOverride = {
                 );
                 SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
-                    typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' &&
-                    Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0
+                    Array.isArray(SUBSCRIBE_TO_EVENTS_BACKUP) &&
+                    SUBSCRIBE_TO_EVENTS_BACKUP.length
                 ) {
                     _this.subscribeToEvents(
                         SUBSCRIBE_TO_EVENTS_BACKUP,
                         function () {
-                            SUBSCRIBE_TO_EVENTS_BACKUP = {};
-                        }
+                            SUBSCRIBE_TO_EVENTS_BACKUP = [];
+                        },
+                        true
                     );
                 }
             },
@@ -1867,10 +1868,23 @@ var userOverride = {
          * Note: This function should not be called more than one time as it will override the previous values as we're assigning event functions to object keys.
          * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
          */
-        _this.subscribeToEvents = function (events, callback) {
+        _this.subscribeToEvents = function (events, callback, isEventArray) {
             if (!IS_SOCKET_CONNECTED) {
-                SUBSCRIBE_TO_EVENTS_BACKUP = events;
+                SUBSCRIBE_TO_EVENTS_BACKUP.push(events);
                 return;
+            }
+            if(isEventArray){
+                let eventObject = {};
+                events.forEach(eventSet => {
+                    Object.keys(eventSet).forEach(eventName => {
+                        if(eventObject.hasOwnProperty(eventName)){
+                            eventObject[eventName].push(eventSet[eventName]);
+                        }else{
+                            eventObject[eventName] = [eventSet[eventName]];
+                        }
+                    })
+                })
+                events = eventObject;
             }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
@@ -1925,21 +1939,17 @@ var userOverride = {
                             events.onMessageReceived(data);
                         }
                     }
-                }
+                } 
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
                 }
                 if (typeof events.onMessageSent === 'function') {
                     if (window.Applozic.ALSocket.events.onMessageSent) {
-                        var oldCallback = window.Applozic.ALSocket.events.onMessageSent;
-                        window.Applozic.ALSocket.events.onMessageSent = function (data) {
-                            console.log("onMessageSent callback ", data);
-                            oldCallback(data);
-                            events.onMessageSent(data);
-                        }
+                        window.Applozic.ALSocket.events.onMessageSent =
+                            events.onMessageSent;
                     }
-                }
+                } 
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
                         events.onUserBlocked;
@@ -1969,6 +1979,19 @@ var userOverride = {
                         }
                     }
                 }
+                Object.keys(events).forEach(event => {
+                    if (Array.isArray(events[event])) {
+                        function executeableFunction (responseObject) {
+                            events[event].forEach(eventCall => {
+                                eventCall(responseObject);
+                            })
+                        }
+                        window.Applozic.ALSocket.events[event] = executeableFunction;
+                        if (eventMapping.hasOwnProperty(event)) {
+                            eventMapping[event].eventFunction = executeableFunction;
+                        }
+                    }
+                });
                 typeof callback == 'function' && callback();
             }
         };
@@ -1988,18 +2011,18 @@ var userOverride = {
             );
         };
 
-        _this.initializeSocketConnection = function (isReInit) {
-            isReInit
+        _this.initializeSocketConnection = function (isReInit) {  
+                isReInit
                 ? window.Applozic.ALSocket.reconnect()
                 : window.Applozic.ALSocket.init(
-                      MCK_APP_ID,
-                      INIT_APP_DATA,
-                      EVENTS
-                  );
-            // Disconnect open sockets if user has no conversations.
-            !CONNECT_SOCKET_ON_WIDGET_CLICK &&
-                !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
-                window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();
+                    MCK_APP_ID,
+                    INIT_APP_DATA,
+                    EVENTS
+                );
+                // Disconnect open sockets if user has no conversations.
+                !CONNECT_SOCKET_ON_WIDGET_CLICK &&
+                    !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
+                    window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
         function MckInit() {
             var _this = this;
@@ -2499,7 +2522,7 @@ var userOverride = {
                                 checkIfUserHasConversations &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
-                                        IS_REINITIALIZE
+                                        IS_REINITIALIZE,
                                     );
                             }
                         );
@@ -3364,8 +3387,6 @@ var userOverride = {
                     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
                 document.getElementById('mck-other-queries').innerHTML =
                     MCK_LABELS['csat.rating'].OTHER_QUERIES;
-                document.getElementById('mck-resolved-text').innerHTML =
-                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-restart-conversation').innerHTML =
                     MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
                 document
@@ -7864,7 +7885,7 @@ var userOverride = {
                 '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' +
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            var csatModule =
+            var csatModule = 
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
