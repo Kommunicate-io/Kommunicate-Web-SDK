@@ -225,7 +225,8 @@ const configEnv = {
             applozicBaseUrl: 'https://chat.kommunicate.io',
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
-            hostUrl: 'https://widget-beta.kommunicate.io',
+            // hostUrl: 'https://widget-beta.kommunicate.io',
+            hostUrl: 'https://bugfix-10-9-release.d2lkilxf3g0adt.amplifyapp.com',
             dashboardUrl: 'https://beta.kommunicate.io',
         },
         pluginProperties: {
