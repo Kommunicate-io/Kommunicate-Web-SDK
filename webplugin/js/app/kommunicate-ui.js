@@ -1586,6 +1586,10 @@ KommunicateUI = {
                 kommunicateIframe.classList.remove(
                     'chat-popup-widget-vertical'
                 );
+            kommunicateIframe &&
+                kommunicateIframe.classList.remove(
+                    'chat-popup-widget-actionable'
+                );
             kommunicateCommons.modifyClassList(
                 { id: ['chat-popup-widget-container'] },
                 'n-vis',
