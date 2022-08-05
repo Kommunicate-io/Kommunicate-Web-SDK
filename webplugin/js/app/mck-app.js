@@ -475,6 +475,9 @@ function ApplozicSidebox() {
                 options.voiceNote != null
                     ? options.voiceNote
                     : widgetSettings && widgetSettings.voiceNote;
+            options.attachmentHandler = options.attachmentHandler != null 
+                    ? options.attachmentHandler 
+                    : function (file) { return file; };
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
