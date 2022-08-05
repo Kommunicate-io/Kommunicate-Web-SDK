@@ -603,6 +603,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -1875,8 +1876,8 @@ var userOverride = {
             }
             if(isEventArray){
                 let eventObject = {};
-                events.forEach(eventSet => {
-                    Object.keys(eventSet).forEach(eventName => {
+                events.forEach(function (eventSet) {
+                    Object.keys(eventSet).forEach(function (eventName) {
                         if(eventObject.hasOwnProperty(eventName)){
                             eventObject[eventName].push(eventSet[eventName]);
                         }else{
@@ -1979,10 +1980,10 @@ var userOverride = {
                         }
                     }
                 }
-                Object.keys(events).forEach(event => {
+                Object.keys(events).forEach(function (event) {
                     if (Array.isArray(events[event])) {
                         function executeableFunction (responseObject) {
-                            events[event].forEach(eventCall => {
+                            events[event].forEach(function (eventCall) {
                                 eventCall(responseObject);
                             })
                         }
@@ -9011,9 +9012,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9718,6 +9717,22 @@ var userOverride = {
                 }
                 return '';
             };
+            _this.getMessageCreatedAtTime = function (createdAtTime) {
+                if (TIME_FORMAT_24_HOURS) {
+                    var messageTime = new Date(createdAtTime);
+                    var currentTime = new Date();                 
+                    if (currentTime.getDate() != messageTime.getDate() || currentTime.getMonth() != messageTime.getMonth() || currentTime.getFullYear() != messageTime.getFullYear()) {
+                       return messageTime.toLocaleString('en-US', {day: 'numeric',month: 'short',hour: '2-digit', minute: '2-digit',hour12:false});
+                    }
+                    else {
+                        return messageTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit', hour12:false});
+                    }
+                }else {
+                    return mckDateUtils.getDate(
+                        createdAtTime
+                    );
+                }
+            }   
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {

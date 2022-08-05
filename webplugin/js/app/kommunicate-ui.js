@@ -1502,20 +1502,17 @@ KommunicateUI = {
                     false
                 );
             }
-
-            popupTemplateKey ===
-                KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL &&
+            var popupTemplateClass = 
+                KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey]; 
+                
+            kommunicateIframe.classList.add(popupTemplateClass.replace('-container-',''));
+            
+            (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL) &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-sidebox-launcher', 'launcher-svg-container'] },
                     'km-no-box-shadow',
                     ''
                 );
-            popupTemplateKey ===
-            KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL
-                ? kommunicateIframe.classList.add(
-                      'chat-popup-widget-horizontal'
-                  )
-                : kommunicateIframe.classList.add('chat-popup-widget-vertical');
             kommunicateCommons.modifyClassList(
                 { id: ['launcher-svg-container'] },
                 'km-animate',
@@ -1588,6 +1585,10 @@ KommunicateUI = {
             kommunicateIframe &&
                 kommunicateIframe.classList.remove(
                     'chat-popup-widget-vertical'
+                );
+            kommunicateIframe &&
+                kommunicateIframe.classList.remove(
+                    'chat-popup-widget-actionable'
                 );
             kommunicateCommons.modifyClassList(
                 { id: ['chat-popup-widget-container'] },
