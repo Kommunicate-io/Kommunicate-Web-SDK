@@ -14,7 +14,7 @@ var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
-var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 var userOverride = {
     voiceOutput: true,
 };
@@ -653,7 +653,7 @@ var userOverride = {
         };
         var CONNECT_SOCKET_ON_WIDGET_CLICK =
             appOptions.connectSocketOnWidgetClick;
-        var SUBSCRIBE_TO_EVENTS_BACKUP = {};
+        var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
             (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
@@ -744,14 +744,15 @@ var userOverride = {
                 );
                 SOCKET_RECONNECT_FAIL_COUNT = 0;
                 if (
-                    typeof SUBSCRIBE_TO_EVENTS_BACKUP == 'object' &&
-                    Object.keys(SUBSCRIBE_TO_EVENTS_BACKUP).length != 0
+                    Array.isArray(SUBSCRIBE_TO_EVENTS_BACKUP) &&
+                    SUBSCRIBE_TO_EVENTS_BACKUP.length
                 ) {
                     _this.subscribeToEvents(
                         SUBSCRIBE_TO_EVENTS_BACKUP,
                         function () {
-                            SUBSCRIBE_TO_EVENTS_BACKUP = {};
-                        }
+                            SUBSCRIBE_TO_EVENTS_BACKUP = [];
+                        },
+                        true
                     );
                 }
             },
@@ -886,13 +887,13 @@ var userOverride = {
 
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
-            if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
+            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
-                }
+                  }
             }
         };
         _this.reInit = function (optns) {
@@ -1867,9 +1868,23 @@ var userOverride = {
          * Note: This function should not be called more than one time as it will override the previous values as we're assigning event functions to object keys.
          * Where window.Applozic.ALSocket.events is the object we're referring to in the above scenario.
          */
-        _this.subscribeToEvents = function (events, callback) {
+        _this.subscribeToEvents = function (events, callback, isEventArray) {
             if (!IS_SOCKET_CONNECTED) {
-                SUBSCRIBE_TO_EVENTS_BACKUP = events;
+                SUBSCRIBE_TO_EVENTS_BACKUP.push(events);
+                return;
+            }
+            if(isEventArray){
+                let eventObject = {};
+                events.forEach(eventSet => {
+                    Object.keys(eventSet).forEach(eventName => {
+                        if(eventObject.hasOwnProperty(eventName)){
+                            eventObject[eventName].push(eventSet[eventName]);
+                        }else{
+                            eventObject[eventName] = [eventSet[eventName]];
+                        }
+                    })
+                })
+                events = eventObject;
             }
             if (typeof events === 'object') {
                 if (typeof events.onConnectFailed === 'function') {
@@ -1924,7 +1939,7 @@ var userOverride = {
                             events.onMessageReceived(data);
                         }
                     }
-                }
+                } 
                 if (typeof events.onMessageSentUpdate === 'function') {
                     window.Applozic.ALSocket.events.onMessageSentUpdate =
                         events.onMessageSentUpdate;
@@ -1934,7 +1949,7 @@ var userOverride = {
                         window.Applozic.ALSocket.events.onMessageSent =
                             events.onMessageSent;
                     }
-                }
+                } 
                 if (typeof events.onUserBlocked === 'function') {
                     window.Applozic.ALSocket.events.onUserBlocked =
                         events.onUserBlocked;
@@ -1964,6 +1979,19 @@ var userOverride = {
                         }
                     }
                 }
+                Object.keys(events).forEach(event => {
+                    if (Array.isArray(events[event])) {
+                        function executeableFunction (responseObject) {
+                            events[event].forEach(eventCall => {
+                                eventCall(responseObject);
+                            })
+                        }
+                        window.Applozic.ALSocket.events[event] = executeableFunction;
+                        if (eventMapping.hasOwnProperty(event)) {
+                            eventMapping[event].eventFunction = executeableFunction;
+                        }
+                    }
+                });
                 typeof callback == 'function' && callback();
             }
         };
@@ -3069,7 +3097,6 @@ var userOverride = {
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-
                     kmChatInput.setAttribute(
                         'name',
                         'km-' + preLeadCollection.field.toLowerCase()
@@ -3159,8 +3186,8 @@ var userOverride = {
                             element.value.slice(1);
                         selectElement.appendChild(dropDownOption);
                     } else {
-                        throw new TypeError(
-                            'expected object in option array but got ' +
+                        console.error(
+                            'Expected object inside options array but got ' +
                                 typeof element
                         );
                     }
@@ -3380,7 +3407,7 @@ var userOverride = {
                 document.getElementById('km-csat-trigger-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
                 document.getElementById('km-restart-conversation-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
+                    MCK_LABELS['conversation.header.dropdown'].RESET_CONVERSATION;
                 document.getElementById('km-voice-note-trigger-text').innerText =
                     MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
                 document.getElementById('km-voice-input-trigger-text').innerText =
@@ -7858,11 +7885,11 @@ var userOverride = {
                 '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' +
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            var csatModule =
+            var csatModule = 
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
-                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
             var SUBMITTED_FORMS = {};
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
@@ -7895,23 +7922,12 @@ var userOverride = {
                     );
                 }
                 if (appOptions.restartConversationByUser) {
-                    enableDropdown = true;
-                    var isIterable = true;
                     var restartConversationBtn = document.getElementById(
                         'km-restart-conversation'
                     );
-                    if (
-                        restartConversationBtn &&
-                        restartConversationBtn.classList.contains('n-vis')
-                    ) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            '',
-                            'n-vis'
-                        );
-                    }
+                    var isIterable = true;
                     CURRENT_GROUP_DATA.groupMembers &&
-                        CURRENT_GROUP_DATA.groupMembers.forEach(function (member) {
+                        CURRENT_GROUP_DATA.groupMembers.map(function (member) {
                             if (
                                 isIterable && (member.role == 2 ||
                                 member.roleType == 1) &&
@@ -7950,7 +7966,7 @@ var userOverride = {
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;
+                    enableDropdown = true;  
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
@@ -8860,22 +8876,12 @@ var userOverride = {
                 ) {
                     olStatus = 'vis';
                 }
-                KommunicateUI.handleAttachmentIconVisibility(
-                    enableAttachment,
-                    msg,
-                    !append
-                );
-                var richText =
-                    Kommunicate.isRichTextMessage(msg.metadata) ||
-                    msg.contentType == 3;
-                var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
-                var kmRichTextMarkup = richText
-                    ? Kommunicate.getRichTextMessageTemplate(msg)
-                    : '';
-
-                var containerType = Kommunicate.getContainerTypeForRichMessage(
-                    msg
-                );
+                KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
+                var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+                var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
+                var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
+                
+                var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 msg.fileMeta &&
                     msg.fileMeta.size &&
@@ -13127,13 +13133,9 @@ var userOverride = {
                     'settings'
                 );
                 var conversationDetail = {
-                    groupName:
-                        (defaultSettings && defaultSettings.groupName) ||
-                        DEFAULT_GROUP_NAME,
-                    agentId: defaultSettings && defaultSettings.agentId, // || DEFAULT_AGENT_ID,
-                    botIds:
-                        (defaultSettings && defaultSettings.botIds) ||
-                        DEFAULT_BOT_IDS,
+                    groupName: (defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
+                    agentId: (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    botIds: (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
                 };
                 return conversationDetail;
             };

@@ -377,96 +377,95 @@
         margin-top: 10px;
         width:50%;
     } */
-.km-cta-multi-button-container .km-cta-button-2 {
-    margin-top: 10px;
-    margin-right: 10px;
-    padding: 6px 14px;
-}
-.km-cta-multi-button-container button a {
-    margin: -6px -10px;
-    padding: 8px 10px;
-}
-.km-cta-button {
-    color: #5553b7;
-    border: 1px solid #5553b7;
-}
-.km-undecorated-link {
-    text-decoration: none;
-}
-.km-cta-button.km-link-button {
-    text-align: left;
-    font-size: 14px;
-}
-.km-cta-button.km-link-button span {
-    vertical-align: sub;
-    margin-left: 5px;
-}
-.km-cta-button.km-link-button span svg {
-    margin-bottom: 0.1rem;
-}
-.km-cta-button.km-carousel-card-button,
-.km-cta-button.km-faq-list-link-button {
-    border: 1px solid #e7e4e4;
-    text-align: center;
-    padding-left: 0px;
-    font-size: 12px;
-}
-.km-cta-button.km-faq-list-link-button {
-    border: none;
-    font-size: 14px;
-}
-.km-cta-button.km-carousel-card-button:hover,
-.km-cta-button.km-faq-list-link-button:hover {
-    text-decoration: none;
-}
-
-/********** Guest Details Form Starts Here ***********/
-
-.km-guest-detail-form {
-    border-bottom: 1px solid#eee;
-}
-.km-title-select {
-    -webkit-appearance: none;
-    margin-top: 10px;
-    display: inline;
-    width: 41.5%;
-    font-size: 16px !important;
-    border-radius: 18px;
-    padding: 6px 5px 6px 10px;
-    outline: none;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    position: relative;
-}
-.km-select-title {
-    position: relative;
-    display: inline;
-}
-.km-select-title::after {
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    padding: 0;
-    content: '';
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid #333333;
-    pointer-events: none;
-}
-
-.km-guest-details-container input {
-    width: 91.5%;
-    border-radius: 18px;
-    outline: none;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    margin-top: 8px;
-    font-size: 16px;
-    padding: 6.5px 10px;
-}
-
-/*.km-input {
+    .km-cta-multi-button-container .km-cta-button-2{
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 6px 14px;
+    }
+    .km-cta-multi-button-container button a {
+        margin: -6px -10px;
+        padding: 8px 10px;
+    }
+    .km-cta-button {
+        color: #5553b7;
+        border: 1px solid #5553b7;
+    }
+    .km-undecorated-link{
+        text-decoration:none;
+    }
+    .km-cta-button.km-link-button {
+        text-align: left;
+        font-size: 12px;
+    }
+    .km-cta-button.km-link-button span {
+        vertical-align: sub;
+        margin-left: 5px;
+    }
+    .km-cta-button.km-link-button span svg {
+        margin-bottom: 0.1rem;
+    }
+    .km-cta-button.km-carousel-card-button, .km-cta-button.km-faq-list-link-button {
+        border: 1px solid #e7e4e4;
+        text-align: center;
+        padding-left: 0px;
+        font-size: 12px;
+    }
+    .km-cta-button.km-faq-list-link-button {
+        border: none;
+        font-size: 14px;
+    }
+    .km-cta-button.km-carousel-card-button:hover, .km-cta-button.km-faq-list-link-button:hover {
+        text-decoration: none;
+    }
+    
+    /********** Guest Details Form Starts Here ***********/
+    
+    .km-guest-detail-form {
+        border-bottom: 1px solid#eee;
+    }
+    .km-title-select {
+            -webkit-appearance: none;
+            margin-top: 10px;
+            display: inline;
+            width: 41.5%;
+            font-size: 16px !important;
+            border-radius: 18px;
+            padding: 6px 5px 6px 10px;
+            outline: none;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+            position: relative;
+            }
+            .km-select-title {
+            position: relative;
+            display: inline;
+            
+            }
+            .km-select-title::after {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            padding: 0;
+            content: '';
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #333333;
+            pointer-events: none;
+            }
+    
+    .km-guest-details-container input{
+        width: 91.5%;
+        border-radius: 18px;
+        outline: none ;
+        border: 1px solid rgba(0, 0, 0, 0.5) ;
+        margin-top: 8px ;
+        font-size: 16px ;
+        padding: 6.5px 10px ;
+    }
+    
+    /*.km-input {
         width: 91.5% !important;
         border-radius: 18px !important;
         outline: none !important;
@@ -504,175 +503,168 @@
         padding: 5px 10px;
         cursor: pointer;
     }*/
-.km-done-button {
-    float: right;
-}
-
-/********** Guest Details Form Ends Here ***********/
-
-.km-fixed-container {
-    width: 96%;
-    overflow: hidden;
-    overflow: hidden;
-    border-radius: 5px;
-    /* border: solid 1px #e5e5e5; */
-}
-
-.km-border-less-container {
-    width: 96%;
-    overflow: hidden;
-    overflow: hidden;
-}
-.km-border-less-container button {
-    display: inline-block !important;
-}
-.km-slick-container .tns-controls button {
-    position: absolute;
-    padding: 0;
-    bottom: 50%;
-    background-color: #ffffff;
-    width: 30px;
-    height: 30px;
-    border-radius: 44px;
-    box-shadow: 1px 2px 4px 1px rgba(0, 0, 0, 0.12);
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    z-index: 5;
-    transform: translateY(50%);
-    padding: 0;
-}
-
-.km-slick-container .tns-controls button:first-child {
-    left: 45px;
-}
-.km-slick-container .tns-controls button:last-child {
-    right: 0;
-}
-.km-slider-multiple-cards-container .tns-controls button:first-child {
-    left: 0;
-}
-
-/* Room Details after Blocking Room */
-.km-card-room-detail-container {
-    /* width: 90%; */
-    /*overflow-x: hidden;*/
-    /* margin-right: 0px; */
-    margin: 0;
-    width: 315px;
-    padding-left: 0;
-    max-width: 100%;
-    transform: translateX(-10px);
-}
-.message.km-blocked-room {
-    padding: 0;
-    width: 100%;
-}
-.km-blocked-room-details {
-    padding: 0px;
-}
-.km-blocked-room-image-container {
-    border-radius: 8px 8px 0px 0px;
-    width: 100%;
-    height: 100px;
-    /* background-image: url('/images/card-message-img-1.jpg');*/
-    background-size: cover;
-    background-position-y: 30%;
-}
-.km-blocked-room-text-container {
-    padding-top: 5px;
-}
-.km-blocked-room-button-container {
-    width: 100%;
-    height: 35px;
-}
-.km-blocked-room-button-container button {
-    width: 100%;
-    outline: none;
-    border: none;
-    background: transparent;
-    height: 100%;
-    font-size: 15px;
-    cursor: pointer;
-}
-.km-blocked-room-room-type,
-.km-blocked-room-guests,
-.km-blocked-room-price,
-.km-blocked-room-sub-total {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.24);
-    padding: 7px 12px;
-    display: flex;
-    justify-content: space-between;
-}
-.km-blocked-room-room-type span:first-child,
-.km-blocked-room-guests span:first-child {
-    font-size: 14px;
-    font-weight: normal;
-}
-
-.km-blocked-room-room-type span:last-child,
-.km-blocked-room-guests span:last-child,
-.km-blocked-room-price span:last-child,
-.km-blocked-room-sub-total span:last-child {
-    font-size: 16px;
-    font-weight: bold;
-    display: inline-block;
-    width: 122px;
-    overflow: hidden;
-    text-align: right;
-    word-wrap: break-word;
-}
-.km-blocked-room-sub-total span:last-child {
-    font-size: 20px;
-    font-weight: bold;
-    float: right;
-}
-.km-blocked-room-price p {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0px 0px 5px;
-    display: inline-block;
-}
-.km-blocked-room-price p > span,
-.km-blocked-room-sub-total p > span {
-    font-size: 12px !important;
-    font-weight: normal !important;
-}
-.km-blocked-room-sub-total p {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0px 0px 5px;
-    display: inline-block;
-}
-.km-pxinfo-btn-left {
-    display: inline !important;
-    width: 41.5% !important;
-}
-.km-pxinfo-btn-right {
-    display: inline !important;
-    width: 43% !important;
-    margin-left: 5px !important;
-}
-/********** Guest Details Form Ends Here ***********/
-
-.mck-away-msg {
-    font-family: Roboto;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    text-align: center;
-    color: #8f8f8f;
-    margin-bottom: 0px !important;
-    font-weight: 300;
-    line-height: 17px;
-}
-#mck-away-msg-box {
-    /* border-top: dashed 1px #bebbbb; */
-    border: none;
-    /* border-bottom: solid 1px #654df7; */
-    padding: 0px 25px 20px;
-    /* position: absolute;
+    .km-done-button {
+        float: right;
+    }
+    
+    /********** Guest Details Form Ends Here ***********/
+    
+    
+    .km-fixed-container{
+        width:96%;
+        overflow:hidden;
+        overflow: hidden;
+        border-radius: 5px;
+        /* border: solid 1px #e5e5e5; */
+    }
+    
+    .km-border-less-container{
+        width:96%;
+        overflow:hidden;
+        overflow: hidden;
+    }
+    .km-border-less-container button{
+        display: inline-block!important;
+    }
+    .km-slick-container .tns-controls button{
+        position: absolute;
+        padding: 0;
+        bottom: 50%;
+        background-color: #ffffff;
+        width: 30px;
+        height: 30px;
+        border-radius: 44px;
+        box-shadow: 1px 2px 4px 1px rgba(0,0,0,.12);
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        z-index: 5;
+        transform: translateY(50%);
+        padding: 0
+    }
+    
+    .km-slick-container .tns-controls button:first-child{
+        left :45px;
+    }
+    .km-slick-container .tns-controls button:last-child{
+        right :0;
+    }
+    .km-slider-multiple-cards-container .tns-controls button:first-child {
+        left: 0;
+    }
+    
+    /* Room Details after Blocking Room */
+    .km-card-room-detail-container {
+        /* width: 90%; */
+         /*overflow-x: hidden;*/
+         /* margin-right: 0px; */
+         margin: 0;
+         width: 315px;
+         padding-left: 0;
+         max-width: 100%;
+         transform: translateX(-10px);
+     }
+    .message.km-blocked-room {
+        padding: 0;
+        width: 100%;
+    }
+    .km-blocked-room-details {
+        padding: 0px;;
+    }
+    .km-blocked-room-image-container {
+        border-radius: 8px 8px 0px 0px;
+        width: 100%;
+        height: 100px;
+       /* background-image: url('/images/card-message-img-1.jpg');*/
+        background-size: cover;
+        background-position-y: 30%;
+    }
+    .km-blocked-room-text-container {
+        padding-top: 5px;
+    }
+    .km-blocked-room-button-container{
+        width: 100%;
+        height: 35px;
+    }
+    .km-blocked-room-button-container button{
+        width: 100%;
+        outline: none;
+        border: none;
+        background: transparent;
+        height: 100%;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    .km-blocked-room-room-type, .km-blocked-room-guests, .km-blocked-room-price, .km-blocked-room-sub-total {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+        padding: 7px 12px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .km-blocked-room-room-type span:first-child, .km-blocked-room-guests span:first-child  {
+        font-size: 14px;
+        font-weight: normal;
+    }
+    
+    .km-blocked-room-room-type span:last-child, .km-blocked-room-guests span:last-child, .km-blocked-room-price span:last-child, .km-blocked-room-sub-total span:last-child {
+        font-size: 16px;
+        font-weight: bold;
+        display: inline-block;
+           width: 122px;
+           overflow: hidden;
+        text-align: right;
+        word-wrap: break-word;	
+    }
+    .km-blocked-room-sub-total span:last-child {
+        font-size: 20px;
+        font-weight: bold;
+        float: right;
+    }
+    .km-blocked-room-price p {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px 0px 5px;
+        display: inline-block;
+    }
+    .km-blocked-room-price p>span, .km-blocked-room-sub-total p>span {
+        font-size: 12px !important;
+        font-weight: normal !important;
+    }
+    .km-blocked-room-sub-total p {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0px 0px 5px;
+        display: inline-block;
+    }
+    .km-pxinfo-btn-left{
+        display: inline !important;
+        width: 41.5% !important;
+      }
+      .km-pxinfo-btn-right{
+        display: inline !important;
+        width: 43% !important;
+        margin-left: 5px !important;
+      }
+    /********** Guest Details Form Ends Here ***********/
+    
+    .mck-away-msg{
+        font-family: Roboto;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        text-align: center;
+        color: #8f8f8f;
+        margin-bottom: 0px !important;  
+        font-weight: 300;
+        line-height: 17px;
+    }
+    #mck-away-msg-box{
+        /* border-top: dashed 1px #bebbbb; */
+        border: none;
+        /* border-bottom: solid 1px #654df7; */
+        padding: 0px 25px 20px
+        /* position: absolute;
         bottom: 52px;
         left:0; 
         width: 97%;
@@ -712,57 +704,162 @@
         rgba(255, 255, 255, 0) 0%
     );
     background-position: left;
-    background-size: 14px 1px;
-    background-repeat: repeat-x;
-    height: 2px;
-}
-/******** Generic list template*************/
-/* FAQ List */
-.km-message.km-received.km-chat-faq-list {
-    padding: 0px;
-    background: transparent;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-}
-.km-faq-list--body,
-.km-faq-list--footer {
-    /*background-color: #e5e5e5;*/
-}
-.km-list-image {
-    max-width: 100%;
-    object-fit: contain;
-}
-.km-faq-list--header_text-img {
-    background-color: rgba(103, 103, 103, 0);
-    background: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0%, rgba(255, 255, 255, 0)),
-        color-stop(100%, rgba(0, 0, 0, 0.75))
-    );
-    background: -webkit-linear-gradient(
-        top,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0.75) 100%
-    );
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0.75) 100%
-    );
-}
-.km-faq-list--header_text-img img {
-    object-fit: cover;
-    width: 100%;
-    height: 110px;
-    position: relative;
-    z-index: 0;
-    display: block;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
+        background-size: 14px 1px;
+        background-repeat: repeat-x;
+        height: 2px;
+    }
+    /******** Generic list template*************/
+    /* FAQ List */
+    .km-message.km-received.km-chat-faq-list {
+        padding: 0px;
+        background: transparent;
+        width:100%;
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+    .km-faq-list--body, .km-faq-list--footer {
+        /*background-color: #e5e5e5;*/
+    }
+    .km-list-image {
+        max-width: 100%;
+        object-fit: contain;
+    }
+    .km-faq-list--header_text-img {
+        background-color: rgba(103, 103, 103, 0);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255, 0)), color-stop(100%,rgba(0, 0, 0, 0.75)));
+        background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+    }
+    .km-faq-list--header_text-img img {
+        object-fit: cover;
+        width: 100%;
+        height: 110px;
+        position: relative;
+        z-index: 0;
+        display: block;
+        border-top-left-radius:5px;
+        border-top-right-radius:5px;
+    }
+    
+    .km-faq-list--body_list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 0px !important;
+    }
+    .km-faq-list--body_list li>a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-decoration: none;
+        border-bottom: solid 1px #e5e5e5;
+        color: grey;
+        transition: all 0.3s ease-in-out;
+    }
+    .km-faq-list--body_que-ans {
+        padding: 10px 12px;
+        /*width: calc(100% - 106px);*/
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-height: 51px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+    }
+    .km-faq-list--body_que-ans * {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .km-faq-list--body_list li>a:hover {
+        background-color: #efefef;
+        color: grey;
+        text-decoration: none!important;
+    }
+    
+    .km-faq-list--body_que-ans .km-faq-list--body_que {
+        font-size: 15px;
+        color: #000;
+        margin: 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        
+    }
+    .km-faq-list--body_que-ans .km-faq-list--body_ans {
+        font-size: 14px;
+        color: #797474;
+        margin: 5px 0px 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .km-faq-list--body_img {
+        padding: 10px 0px 10px 12px;
+        /*width: 70px;*/
+        height: 50px;
+        border-radius: 4px;
+    }
+    .km-faq-list--body_img img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .km-faq-list--body_img:empty .km-faq-list--body_que-ans {
+        width: 100%;
+    }
+    .km-faq-list--header {
+        position: relative;
+    }
+   
+    .km-faq-list--header_text {
+        bottom: 2px;
+        left: 12px;
+        margin: 0;
+        margin-bottom: 0px !important;
+        padding: 9px 7px !important;
+        text-align:center;
+        width: calc(100% - 12px);
+        color: rgb(48, 48, 48);
+        word-wrap: break-word;
+        font-size: 16px;
+        border-bottom: 1px solid #edeff1;
+    }
+    
+    .km-faq-list--footer {
+        width: 100%;
+        /* min-height: 35px; */
+        border-bottom-left-radius: 18px;
+        border-bottom-right-radius: 18px;
+    }
+    .km-faq-list--footer_button-container button {
+        width: 100%;
+        outline: none;
+        border: none;
+        background: transparent;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        font-size: 15px;
+        cursor: pointer;
+        padding: 12px 0px;
+        border-radius: 0px;
+    }
+    .km-faq-list--footer_button-container button a{
+        color: #5c5aa7;
+    }
+    
+    .km-faq-list--header_text-container {
+        /*background-color: #e5e5e5;*/
+        border: none !important;
+        min-height:10px;
+    }
+    
+    .km-faq-list--footer_button-container button:not(:last-child){
+        border-bottom: 1px solid #e5e5e5!important;
+    }
+    .km-dialog-box{
+        /*width:96%;*/
+    }
 
 .km-faq-list--body_list {
     list-style: none;

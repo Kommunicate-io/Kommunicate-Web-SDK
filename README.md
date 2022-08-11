@@ -10,6 +10,27 @@ It lets you easily add real-time live chat and in-app messaging in your websites
 
 Kommunicate has a powerful human + chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
 
+![Chat-widget](https://user-images.githubusercontent.com/32258004/95323958-9dd83c00-08bc-11eb-8744-bbf33140e00d.png)
+
+
+
+## Build a BOT on Kommunicate and integrate it in your Website 
+
+### Kompose
+
+[Kompose](https://dashboard.kommunicate.io/bots/bot-builder) is a Kommunicate’s bot builder that help you in building your own bot, a techie, non-techie, or a person who doesn’t have any idea about chatbots can also build the bot. Anyone can create a chatbot with the Kompose without any assistance.
+
+![Kompose-build](https://user-images.githubusercontent.com/38066371/87525821-a519f000-c6a7-11ea-90d6-97e8fab4d1b3.gif)
+
+
+
+### Following is the UI to create the BOT
+
+![Kompose](https://user-images.githubusercontent.com/32258004/95324271-1808c080-08bd-11eb-9bed-768e87977648.png)
+
+
+
+
 ## Dialogflow Chatbot Integration
 
 Dialogflow is a Google-owned NLP platform to facilitate human-computer interactions such as chatbots, voice bots, etc. 
@@ -25,7 +46,7 @@ You can connect your Dialogflow chatbot with Kommunicate in the following 4 simp
 - After getting redirected to your SERVICE ACCOUNT, create a key in JSON format for your project from the actions section and it will get automatically downloaded.
 
 ### Step 2: Create a free Kommunicate account
-Create a free account on [Kommunicate](https://dashboard.kommunicate.io/signup) and navigate to the [Bots section](https://dashboard.kommunicate.io/bots/bot-integrations).
+Create a free account on [Kommunicate](https://dashboard.kommunicate.io/signup) and navigate to the [Bots section](https://dashboard.kommunicate.io/bots/bot-integrations). 
 
 ### Step 3: Integrate your Dialogflow chatbot with Kommunicate
 - In the Bot integrations section, choose Dialogflow. A popup window will open.
