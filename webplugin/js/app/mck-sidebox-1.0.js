@@ -14375,7 +14375,7 @@ var userOverride = {
 
             _this.processBeforeUpload = function (event) {
                 var fileToUpload = $applozic(this)[0].files[0];
-                if (fileToUpload.size >= 25000000) {
+                if (fileToUpload.size >= KommunicateConstants.MAX_UPLOAD_SIZE) {
                     var returnedData = appOptions.attachmentHandler(fileToUpload);
                     if (returnedData && returnedData.name && returnedData.size) {
                         _this.uploadFileFunction(null, returnedData);
