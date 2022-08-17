@@ -843,7 +843,6 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 : {};
         options.payload = payload;
         options.buttons = [];
-        console.log(options.payload)
         if (kommunicateCommons.isObject(options.payload[0].data)) {
             options.payload = options.payload.map(function (item) {
                 data = {};
@@ -855,7 +854,6 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 }
                 return data;
             });
-            console.log(options.payload)
         options.payload.forEach(function (item, index) {
             if (item.type == 'submit') {
                 isActionObject = kommunicateCommons.isObject(item.action);
@@ -894,7 +892,6 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 }
             }
         });
-        // console.log(options)
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
     }
 };
