@@ -609,7 +609,6 @@ Kommunicate.richMsgEventHandler = {
                     }
                     break;
                 default:
-                    console.log(formElements[i]);
                     data[name] = value;
                     try {
                         if (formElements[i].dataset.regex) {
