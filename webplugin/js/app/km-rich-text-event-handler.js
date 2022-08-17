@@ -576,6 +576,8 @@ Kommunicate.richMsgEventHandler = {
         var name = '';
         var type = '';
         var value = '';
+        let radioerror=true;
+        let idx=-1;
         for (var i = 0; i < formElements.length; i++) {
             name = formElements[i].name;
             type = formElements[i].type;
@@ -584,7 +586,9 @@ Kommunicate.richMsgEventHandler = {
                 case 'radio':
                     if (formElements[i].checked) {
                         data[name] = value;
+                        radioerror=false;
                     }
+                    idx=i; 
                     break;
                 case 'checkbox':
                     if (formElements[i].checked) {
@@ -605,6 +609,7 @@ Kommunicate.richMsgEventHandler = {
                     }
                     break;
                 default:
+                    console.log(formElements[i]);
                     data[name] = value;
                     try {
                         if (formElements[i].dataset.regex) {
@@ -635,6 +640,20 @@ Kommunicate.richMsgEventHandler = {
                 postBackData[name] = data[name];
             }
         }
+       if(idx!=-1){
+        if (formElements[idx].dataset.errorText) {
+                           
+            Kommunicate.richMsgEventHandler.handleFormErrorMessage(
+                form,
+                formElements[idx].name,
+                formElements[idx].dataset.errorText,
+                radioerror
+            );
+            validationResults.push(!radioerror ? 'success' : 'failed');
+        }
+        
+       }
+
         if (isActionableForm && validationResults.indexOf('failed') != -1) {
             return;
         }
