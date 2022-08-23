@@ -4212,7 +4212,7 @@ display: none;
     border-top: 2px solid #5553b7;
     border-radius: 4px;
     min-height: 150px;
-	word-break: break-word;
+    word-break: break-word;
     transition: all ease 0.3s;
     cursor: pointer;
     margin: 8px;
