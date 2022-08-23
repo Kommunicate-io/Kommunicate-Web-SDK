@@ -639,8 +639,8 @@ Kommunicate.richMsgEventHandler = {
                 postBackData[name] = data[name];
             }
         }
-       if(index!=-1){
-        if (formElements[index].dataset.errorText) {
+       
+        if (index!=-1 && formElements[index].dataset.errorText) {
                            
             Kommunicate.richMsgEventHandler.handleFormErrorMessage(
                 form,
@@ -651,7 +651,7 @@ Kommunicate.richMsgEventHandler = {
             validationResults.push(!radioerror ? 'success' : 'failed');
         }
         
-       }
+       
 
         if (isActionableForm && validationResults.indexOf('failed') != -1) {
             return;
