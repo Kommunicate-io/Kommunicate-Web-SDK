@@ -4204,6 +4204,7 @@ display: none;
 }
 
 .km-faq-category-card{
+	align-self: stretch;
     width: 25%;
     padding: 10px;
     text-align: center;
@@ -4260,7 +4261,7 @@ display: none;
     font-size: 13px;
     line-height: 1.4;
     margin-top: 8px;
-    max-height: 133px;
+    /* max-height: 133px; */
     overflow: hidden;
 }
 .km-faq-list:last-child{
