@@ -15135,7 +15135,9 @@ var userOverride = {
 
             _this.clearFlashPageTitleInterval = function () {
                 clearInterval(FLASH_PAGE_TITLE);
-                parent.document.title = CURRENT_PAGE_TITLE;
+
+                var currentPageTitle = parent.document.title ||  "";
+                parent.document.title = currentPageTitle;
             };
 
             _this.handleIframeNotification = function () {
