@@ -3525,6 +3525,7 @@ var userOverride = {
                             window.Applozic.ALSocket.checkConnected(true);
                         }
                         _this.stopIdleTimeCounter();
+                        CURRENT_PAGE_TITLE = parent.document.title;
                         mckNotificationService.clearFlashPageTitleInterval();
                     } else {
                         if (window.Applozic.ALSocket.mck_typing_status === 1) {
@@ -15079,6 +15080,7 @@ var userOverride = {
 
             _this.clearFlashPageTitleInterval = function () {
                 clearInterval(FLASH_PAGE_TITLE);
+
                 parent.document.title = CURRENT_PAGE_TITLE;
             };
 
