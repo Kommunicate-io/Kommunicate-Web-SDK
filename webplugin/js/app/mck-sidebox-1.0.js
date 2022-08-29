@@ -603,6 +603,7 @@ var userOverride = {
                 ? appOptions.useBranding
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
+        var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -8990,9 +8991,7 @@ var userOverride = {
                         msgStatusAriaTag: messageStatusAriaTag,
                         timeStampExpr: timeStamp,
                         replyIdExpr: replyId,
-                        createdAtTimeExpr: mckDateUtils.getDate(
-                            msg.createdAtTime
-                        ),
+                        createdAtTimeExpr: _this.getMessageCreatedAtTime(msg.createdAtTime),
                         msgFeatExpr: msgFeatExpr,
                         replyMessageParametersExpr: replyMessageParameters,
                         downloadMediaUrlExpr: alFileService.getFileAttachment(
@@ -9697,6 +9696,22 @@ var userOverride = {
                 }
                 return '';
             };
+            _this.getMessageCreatedAtTime = function (createdAtTime) {
+                if (TIME_FORMAT_24_HOURS) {
+                    var messageTime = new Date(createdAtTime);
+                    var currentTime = new Date();                 
+                    if (currentTime.getDate() != messageTime.getDate() || currentTime.getMonth() != messageTime.getMonth() || currentTime.getFullYear() != messageTime.getFullYear()) {
+                       return messageTime.toLocaleString('en-US', {day: 'numeric',month: 'short',hour: '2-digit', minute: '2-digit',hour12:false});
+                    }
+                    else {
+                        return messageTime.toLocaleString('en-US', {hour: '2-digit', minute: '2-digit', hour12:false});
+                    }
+                }else {
+                    return mckDateUtils.getDate(
+                        createdAtTime
+                    );
+                }
+            }   
 
             _this.getImageForMessagePreview = function (message) {
                 if (typeof message.fileMeta === 'object') {
@@ -14295,7 +14310,6 @@ var userOverride = {
                 '<span class="move-right">' +
                 '<button type="button" class="mck-attach-icon mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' +
                 '</span></div></div>';
-
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
@@ -14334,6 +14348,22 @@ var userOverride = {
                 }
             };
 
+            _this.processBeforeUpload = function (event) {
+                var fileToUpload = $applozic(this)[0].files[0];
+                if (fileToUpload.size >= KommunicateConstants.MAX_UPLOAD_SIZE) {
+                    var returnedData = appOptions.attachmentHandler(fileToUpload);
+                    if (returnedData && returnedData.name && returnedData.size) {
+                        _this.uploadFileFunction(null, returnedData);
+                    } else if (typeof returnedData == 'string') {
+                        document.getElementById(
+                            'mck-text-box'
+                        ).innerText = returnedData;
+                        document.getElementById('mck-msg-sbmt').click();
+                    }
+                } else {
+                    _this.uploadFileFunction(null, fileToUpload);
+                }
+            }
             _this.init = function () {
                 $applozic.template('fileboxTemplate', mck_filebox_tmpl);
                 //ataching events for rich msh templates
@@ -14371,8 +14401,8 @@ var userOverride = {
                 });
                 
                 
-                $mck_file_input.on('change', _this.uploadFileFunction );
-                $mck_img_file_input.on('change', _this.uploadFileFunction );
+                $mck_file_input.on('change', _this.processBeforeUpload );
+                $mck_img_file_input.on('change', _this.processBeforeUpload );
                 $mck_vid_file_input.on('change', function () {
                     var file = $applozic(this)[0].files[0];
                     var params = {};
