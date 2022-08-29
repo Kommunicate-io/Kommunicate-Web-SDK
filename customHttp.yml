@@ -1,0 +1,19 @@
+customHeaders:
+  - pattern: '**'
+    headers:
+      - key: 'Access-Control-Allow-Origin'
+        value: '*'
+  - pattern: '/v2/kommunicate.app'
+    headers:
+      - key: 'Content-Type'
+        value: 'text/javascript'
+      - key: 'Cache-Control'
+        value: 'public, max-age=300'
+  - pattern: '*.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=300'
+  - pattern: 'resources/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400'

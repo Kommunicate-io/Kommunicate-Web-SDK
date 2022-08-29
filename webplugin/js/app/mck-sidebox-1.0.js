@@ -1875,8 +1875,8 @@ var userOverride = {
             }
             if(isEventArray){
                 let eventObject = {};
-                events.forEach(eventSet => {
-                    Object.keys(eventSet).forEach(eventName => {
+                events.forEach(function (eventSet) {
+                    Object.keys(eventSet).forEach(function (eventName) {
                         if(eventObject.hasOwnProperty(eventName)){
                             eventObject[eventName].push(eventSet[eventName]);
                         }else{
@@ -1979,10 +1979,10 @@ var userOverride = {
                         }
                     }
                 }
-                Object.keys(events).forEach(event => {
+                Object.keys(events).forEach(function (event) {
                     if (Array.isArray(events[event])) {
                         function executeableFunction (responseObject) {
-                            events[event].forEach(eventCall => {
+                            events[event].forEach(function (eventCall) {
                                 eventCall(responseObject);
                             })
                         }
@@ -3525,6 +3525,7 @@ var userOverride = {
                             window.Applozic.ALSocket.checkConnected(true);
                         }
                         _this.stopIdleTimeCounter();
+                        CURRENT_PAGE_TITLE = parent.document.title;
                         mckNotificationService.clearFlashPageTitleInterval();
                     } else {
                         if (window.Applozic.ALSocket.mck_typing_status === 1) {
@@ -15079,6 +15080,7 @@ var userOverride = {
 
             _this.clearFlashPageTitleInterval = function () {
                 clearInterval(FLASH_PAGE_TITLE);
+
                 parent.document.title = CURRENT_PAGE_TITLE;
             };
 

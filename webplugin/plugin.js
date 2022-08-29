@@ -77,6 +77,10 @@ var kmCustomIframe =
     '   width: 415px;' +
     '   height: 153px;' +
     '} \n' +
+    '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
+    '   width: 415px;' +
+    '   height: 300px;' +
+    '} \n' +
     '@media only screen and (max-device-width: 420px) { ' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     'width: 100%;' +
@@ -84,6 +88,10 @@ var kmCustomIframe =
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
     '   width: 100%;' +
+    '} \n' +
+    '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
+    'width: 100%;' +
+    'height: 300px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' +
     'width: 100%;' +
@@ -150,8 +158,6 @@ function createKommunicateIframe() {
     kommunicateIframe.setAttribute('data-protocol', window.location.protocol);
     kommunicateIframe.setAttribute('data-url', window.location.href);
     document.body.appendChild(kommunicateIframe);
-    kommunicateIframe.innerHTML =
-        '<a href="https://www.kommunicate.io/"> Kommunicate Live chat </a>';
     var iframeDocument =
         kommunicateIframe.contentDocument ||
         kommunicateIframe.contentWindow.document;

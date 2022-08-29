@@ -178,6 +178,12 @@ KommunicateConstants = {
     CHAT_POPUP_TEMPLATE: {
         HORIZONTAL: 1,
         VERTICAL: 2,
+        ACTIONABLE: 3
+    },
+    CHAT_POPUP_TEMPLATE_CLASS: {
+        1: 'chat-popup-widget-container--horizontal',
+        2: 'chat-popup-widget-container--vertical',
+        3: 'chat-popup-widget-container--actionable'
     },
     GROUP_ROLE: {
         USER: 0,
@@ -261,6 +267,7 @@ KommunicateUtils = {
             typeof cookie.secure == 'undefined'
                 ? this.isHttpsEnabledConnection()
                 : cookie.secure;
+
         var cookieExpiry = new Date('2038-01-19 04:14:07').toUTCString();
         var isChrome =
             navigator.userAgent.indexOf('Chrome') != -1 &&
@@ -286,7 +293,7 @@ KommunicateUtils = {
             path +
             (secure ? ';secure' : '') +
             (domain ? ';domain=' + domain : '') +
-            (isChrome ? ';samesite=lax' : '');
+            (';samesite=strict');
     },
     getCookiePrefix: function () {
         var appOptions =
