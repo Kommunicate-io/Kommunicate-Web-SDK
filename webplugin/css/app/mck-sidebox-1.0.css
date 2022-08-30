@@ -4260,7 +4260,6 @@ display: none;
     line-height: 1.4;
     margin-top: 8px;
     max-height: 131px;
-    /* overflow: hidden; */
 }
 .km-faq-list:last-child{
 	margin-bottom: 72px;
@@ -6219,11 +6218,6 @@ body.accesibility :focus {
 	}
 	.chat-popup-widget-container .chat-popup-widget-close-btn-container {
 		display: block;
-	}
-}
-@media only screen and (min-width:385px) and (max-width:395px){
-	.km-faq-category-card{
-		min-height: 180px;
 	}
 }
 @media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
