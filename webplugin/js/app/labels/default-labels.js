@@ -134,7 +134,7 @@ Kommunicate.defaultLabels = {
         OTHER_QUERIES: 'Have other queries? ',
         RESTART_CONVERSATION: 'Restart this conversation',
         SUBMIT_RATING: 'Submit your rating',
-        CONVERSATION_RESOLVED: "This conversation was resolved" 
+        CONVERSATION_RESOLVED: 'This conversation was resolved',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {
@@ -179,14 +179,13 @@ Kommunicate.defaultLabels = {
         'header.text': 'In queue...',
         'first.Part': 'You are currently',
         'waiting.queue.number': '5',
-        'last.part':
-            ' in the waiting queue, our agents will get back you shortly.',
+        'last.part': ' in the waiting queue, our agents will get back to you shortly.'
     },
     'conversation.header.dropdown': {
         CSAT_RATING_TEXT: 'Rate this conversation',
         USER_OVERIDE_VOICE_OUTPUT_ON: 'Turn on text to speech',
         USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
-        RESTART_CONVERSATION: 'Restart conversation',
+        RESET_CONVERSATION: 'Reset conversation',
     },
     'micOptions.dropup': {
         VOICE_NOTE_TRIGGER: 'Send voice message',
