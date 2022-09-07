@@ -854,6 +854,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 }
                 return data;
             });
+        }
         options.payload.forEach(function (item, index) {
             if (item.type == 'submit') {
                 isActionObject = kommunicateCommons.isObject(item.action);
@@ -1115,4 +1116,3 @@ Kommunicate.markup.getVideoMarkup = function (options) {
         return Mustache.to_html(Kommunicate.markup.getVideoTemplate(), options);
     }
 };
-}
