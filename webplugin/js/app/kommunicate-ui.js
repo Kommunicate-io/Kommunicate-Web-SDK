@@ -226,7 +226,7 @@ KommunicateUI = {
     isAttachmentV2: function (mediaType) {
         if (!mediaType) {
             return true;
-            // if attachment has no file type/media type considering as v2 attachment. for example java file doesn't have media type.
+            // if attachment has no file type or media type considering as v2 attachment. for example java file doesn't have media type.
         }
         var type = mediaType.substring(0, mediaType.indexOf('/'));
         return KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES.indexOf(type) != -1;
@@ -254,10 +254,12 @@ KommunicateUI = {
                 'data-filetype',
                 file_meta.contentType || file_meta.fileMeta.contentType
             );
-            file_meta.url &&
+            // need to update blobkey if media is encrypted. 
+            // Note: All the attachements sent from widget are encrypted
+            file_meta.blobKey &&
                 $applozic('.km-attachment-preview-href-' + key).attr(
-                    'href',
-                    file_meta.url
+                    'blobkey',
+                    file_meta.blobKey
                 );
         }
     },
