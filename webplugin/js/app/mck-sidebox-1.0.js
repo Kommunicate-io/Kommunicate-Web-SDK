@@ -14339,7 +14339,7 @@ var userOverride = {
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
-                if (file && KommunicateUI.isAttachmentV2(file.type)) {
+                if (file && KommunicateUI.isAttachmentV2(file.type) && file['size'] < MCK_FILEMAXSIZE * ONE_MB){
                     Kommunicate.attachmentService.getFileMeta(
                         file,
                         tabId,
