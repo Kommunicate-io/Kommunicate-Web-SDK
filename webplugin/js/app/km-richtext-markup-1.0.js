@@ -420,7 +420,7 @@ getListMarkup:function(){
                                         <div class="mck-form-radio-wrapper">
                                             {{#options}}
                                                 <div>
-                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <input id="{{label}}" type="{{type}}" name="{{name}}" value="{{value}}">
                                                     <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
                                                 </div>                                     
                                             {{/options}}
@@ -431,7 +431,7 @@ getListMarkup:function(){
                                         <div class="mck-form-radio-wrapper">
                                             {{#options}}
                                                 <div>
-                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <input id="{{label}}" type="{{type}}" name="{{name}}" value="{{value}}">
                                                     <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
                                                 </div>                                     
                                             {{/options}}
