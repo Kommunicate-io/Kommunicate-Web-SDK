@@ -1150,6 +1150,16 @@ KommunicateUI = {
                     'n-vis'
                 );
             }
+
+            document.getElementById('mck-csat-close').onclick = function (e) {
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-ratings-smilies'],
+                    },
+                    'n-vis'
+                );
+            }
+
             document.getElementById('mck-submit-comment').onclick = function (
                 e
             ) {
@@ -1726,6 +1736,7 @@ KommunicateUI = {
                 : backButton.classList.add('force-n-vis');
         }
     },
+
     handleWaitingQueueMessage: function () {
         var group = CURRENT_GROUP_DATA;
         var groupId = group && group.tabId;
