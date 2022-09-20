@@ -422,7 +422,7 @@ Kommunicate.markup = {
                                         <div class="mck-form-radio-wrapper" style="margin-bottom:0px">
                                         {{#options}}
                                         <div>
-                                            <input type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
+                                            <input id="{{label}}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
                                             <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
                                         </div>                                 
                                     {{/options}} 
@@ -440,7 +440,7 @@ Kommunicate.markup = {
     
                                             {{#options}}
                                                 <div>
-                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <input id="{{label}}" type="{{type}}" name="{{name}}" value="{{value}}">
                                                     <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
                                                     {{#validation}}
                                                     <span class="mck-form-error-text mck-form-error-{{className}}"></span>
