@@ -6203,6 +6203,9 @@ body.accesibility :focus {
 	.chat-popup-widget-container--horizontal {
 		padding-right: 70px;
 	}
+    .chat-popup-widget-container--actionable {
+		width: calc(100% - 70px);
+	}
 }
 
 @media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
