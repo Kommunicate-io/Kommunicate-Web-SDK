@@ -836,7 +836,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
     var action = {};
     var data = {};
     var isActionObject = false;
-    let msgKey = options.msgKey
+    var msgKey = options.msgKey
     if (options && options.payload) {
         var payload =
             typeof options.payload == 'string'
