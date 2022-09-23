@@ -11340,6 +11340,16 @@ var userOverride = {
                     }
                 }
             };
+            _this.showPrevMsgPicAfterDeleteMsg = function () {
+                var allMessage = $applozic(
+                    '#mck-message-cell .mck-message-inner div[name="message"]'
+                )
+                var lastElement = allMessage[allMessage.length - 1];
+
+                if(lastElement){
+                    lastElement.classList.remove("km-clubbing-first")
+                }
+            }
             _this.getScriptMessagePreview = function (message, emoji_template) {
                 if (
                     message &&
@@ -16060,6 +16070,7 @@ var userOverride = {
                         var groupId = resp.message.groupId;
                         var isGroup = true;
                         mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        mckMessageLayout.showPrevMsgPicAfterDeleteMsg()
                         // events.onMessageDeleted(eventResponse);
                     }
                 } else {
