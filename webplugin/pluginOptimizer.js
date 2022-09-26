@@ -277,11 +277,12 @@ const generateBuildFiles = () => {
 
     if (env) {
         // Generate index.html for home route
-        fs.readFile('template/index.html', 'utf8', function (err, data) {
+        fs.readFile(path.join(__dirname, 'template/index.html'), 'utf8', function (err, data) {
             if (err) {
                 return console.log(err);
             }
-            var result = data.replace(":BRANCH_NAME", branch).replace(":CONFIG", env);
+            var result = data.replace(":BRANCH_NAME", branch).replace(":CONFIG", config.getEnvId());
+            console.log(`build path ${buildDir}/index.html`)
             fs.writeFile(`${buildDir}/index.html`, result, 'utf8', function (err) {
                 if (err) return console.log(err);
             });
