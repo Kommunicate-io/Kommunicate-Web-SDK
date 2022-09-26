@@ -12,12 +12,6 @@ const version = require('child_process')
     })
     .toString()
     .trim();
-const branch = require('child_process')
-    .execSync('git rev-parse --abbrev-ref HEAD', {
-        cwd: __dirname,
-    })
-    .toString()
-    .trim();
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
 const pluginClient = require('../server/src/pluginClient');
@@ -277,16 +271,7 @@ const generateBuildFiles = () => {
 
     if (env) {
         // Generate index.html for home route
-        fs.readFile(path.join(__dirname, 'template/index.html'), 'utf8', function (err, data) {
-            if (err) {
-                return console.log(err);
-            }
-            var result = data.replace(":BRANCH_NAME", branch).replace(":CONFIG", config.getEnvId());
-            console.log(`build path ${buildDir}/index.html`)
-            fs.writeFile(`${buildDir}/index.html`, result, 'utf8', function (err) {
-                if (err) return console.log(err);
-            });
-        });
+        copyFileToBuild('template/index.html', `${buildDir}/index.html`);
 
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
