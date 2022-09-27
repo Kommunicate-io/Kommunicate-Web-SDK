@@ -1,7 +1,7 @@
 Kommunicate = typeof Kommunicate == 'undefined' ? {} : Kommunicate;
 
 Kommunicate.defaultLabels = {
-    'input.message': 'shantnu...',
+    'input.message': 'Type your message...',
     'conversations.title': 'Conversations',
     'start.new': 'Start New Conversation',
     'search.contacts': 'Contacts',
