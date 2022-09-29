@@ -6213,7 +6213,7 @@ body.accesibility :focus {
 		padding-right: 70px;
 	}
     .chat-popup-widget-container--actionable {
-		width: calc(100% - 70px);
+		width: calc(100% - 50px);
 	}
 }
 
