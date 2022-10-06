@@ -36,7 +36,7 @@ var userOverride = {
             'https://googleupload.applozic.com/files/url?key={key}', // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
         notificationSoundLink: '',
-        mapStaticAPIkey: 'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
+        mapStaticAPIkey: 'AIzaSyCTGgLQbsvMotNNjRqPnWCln4y4LcBvxxE',
         launcher: 'applozic-launcher',
         emojilibrary: false,
         userId: null,
