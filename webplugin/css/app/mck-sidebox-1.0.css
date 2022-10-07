@@ -5917,6 +5917,8 @@ body.accesibility :focus {
     position: absolute;
     right: 0px;
     bottom: -48px;
+    display: flex;
+    max-width: 100%
 }
 .chat-popup-widget-container--actionable.align-left #chat-popup-actionable-btn-container {
     right: unset;
@@ -5934,6 +5936,10 @@ body.accesibility :focus {
     cursor: pointer;
     box-shadow: 0px 0px 4px rgba(17, 34, 34, 0.24);
     transition: all .25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 210px;
 }
 
 #chat-popup-actionable-btn-container button:hover {
@@ -6205,6 +6211,9 @@ body.accesibility :focus {
 	}
 	.chat-popup-widget-container--horizontal {
 		padding-right: 70px;
+	}
+    .chat-popup-widget-container--actionable {
+		width: calc(100% - 50px);
 	}
 }
 
