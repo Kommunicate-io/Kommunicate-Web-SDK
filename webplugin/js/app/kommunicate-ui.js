@@ -1140,7 +1140,7 @@ KommunicateUI = {
                 'n-vis'
             );
         if (KommunicateUI.isConversationResolvedFromZendesk) {
-            KommunicateUI.triggerCSAT();
+            isCSATenabled && KommunicateUI.triggerCSAT();
             if (document.getElementById('mck-csat-close').className == "n-vis") {
                 kommunicateCommons.modifyClassList(
                     {
@@ -1211,13 +1211,6 @@ KommunicateUI = {
                     id: ['mck-sidebox-ft'],
                 },
                 'km-mid-conv-csat'
-            );
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['csat-1'],
-                },
-                'vis',
-                'n-vis'
             );
             return;
         }
