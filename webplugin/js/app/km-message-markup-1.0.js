@@ -57,9 +57,11 @@ Kommunicate.messageTemplate = {
                     data.progressBarClass =
                         data.sent || data.delivered ? 'n-vis' : 'vis';
                 }
+                // url will be present in media which is not encrypted
+                // thumbnailUrl will be present in media which is just uploaded
                 data.fileMeta.url =
                     (data.fileMeta && data.fileMeta.url) ||
-                    data.fileUrl ||
+                    data.fileMeta.thumbnailUrl || data.fileUrl ||
                     'javascript:void(0)';
                 data.fileNameToShow = data.fileMeta.name
                 if( data.fileNameToShow.indexOf('AWS-ENCRYPTED') !== -1){

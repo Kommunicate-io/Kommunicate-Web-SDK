@@ -408,7 +408,7 @@ getListMarkup:function(){
             <div class="km-carousel-card-sub-title">{{subtitle}}</div>
             <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`;
     },
-    getFormTemplate: function () {
+    getFormTemplate: function (msgKey) {
         return `<div class="mck-msg-box-rich-text-container mck-form-template-container" data-hidePostFormSubmit="{{hidePostFormSubmit}}">
                 <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" data-msg-key={{msgKey}} >
                     <div class="mck-form-template-wrapper">
@@ -417,22 +417,33 @@ getListMarkup:function(){
                                 {{#supported}}
                                     {{#radio}}
                                         <p class="mck-radio-group-title">{{title}}</p>
-                                        <div class="mck-form-radio-wrapper">
-                                            {{#options}}
-                                                <div>
-                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
-                                                    <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
-                                                </div>                                     
-                                            {{/options}}
+                                        <div>
+                                        <div class="mck-form-radio-wrapper" style="margin-bottom:0px">
+                                        {{#options}}
+                                        <div>
+                                            <input id="{{label}} ${msgKey}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
+                                            <label for="{{label}} ${msgKey}" class="mck-form-label"><b>{{label}}</b></label>   
+                                        </div>                                 
+                                    {{/options}} 
                                         </div>
+                                        {{#validation}}
+                                        <span class="mck-form-error-text mck-form-error-{{className}}" style="margin-top:0px"></span>
+                                    {{/validation}}     
+                                        </div>
+                                       
+                                      
                                     {{/radio}}
                                     {{#checkbox}}
                                         <p class="mck-radio-group-title">{{title}}</p>
                                         <div class="mck-form-radio-wrapper">
+    
                                             {{#options}}
                                                 <div>
-                                                    <input type="{{type}}" name="{{name}}" value="{{value}}">
-                                                    <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>   
+                                                    <input id="{{label}} ${msgKey}" type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <label for="{{label}} ${msgKey}" class="mck-form-label"><b>{{label}}</b></label>   
+                                                    {{#validation}}
+                                                    <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                                {{/validation}}
                                                 </div>                                     
                                             {{/options}}
                                         </div>
@@ -483,7 +494,10 @@ getListMarkup:function(){
                                 {{^supported}}
                                     <div class="mck-form-text-wrapper">
                                         <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
-                                        <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" >
+                                        <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
+                                        {{#validation}}
+                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                            {{/validation}}
                                     </div>
                                 {{/supported}}
                             {{/.}}
@@ -791,6 +805,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
     var action = {};
     var data = {};
     var isActionObject = false;
+    var msgKey = options.msgKey
     if (options && options.payload) {
         var payload =
             typeof options.payload == 'string'
@@ -848,7 +863,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 }
             }
         });
-        return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
+        return Mustache.to_html(Kommunicate.markup.getFormTemplate(msgKey), options);
     }
 };
 Kommunicate.markup.getCarouselMarkup = function (options) {

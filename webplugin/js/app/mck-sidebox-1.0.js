@@ -3141,7 +3141,7 @@ var userOverride = {
                             );
                             kmChatInput.setAttribute(
                                 'oninvalid',
-                                'setCustomValidity(' + MCK_LABELS['lead.collection'].errorEmail + ')'
+                                "setCustomValidity('"+ MCK_LABELS['lead.collection'].errorEmail +"')"
                             );
                             kmChatInput.setAttribute(
                                 'oninput',
@@ -11318,6 +11318,16 @@ var userOverride = {
                     }
                 }
             };
+            _this.showPrevMsgPicAfterDeleteMsg = function () {
+                var allMessage = $applozic(
+                    '#mck-message-cell .mck-message-inner div[name="message"]'
+                )
+                var lastElement = allMessage[allMessage.length - 1];
+
+                if(lastElement){
+                    lastElement.classList.remove("km-clubbing-first")
+                }
+            }
             _this.getScriptMessagePreview = function (message, emoji_template) {
                 if (
                     message &&
@@ -14313,7 +14323,7 @@ var userOverride = {
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
-                if (file && KommunicateUI.isAttachmentV2(file.type)) {
+                if (file && KommunicateUI.isAttachmentV2(file.type) && file['size'] < MCK_FILEMAXSIZE * ONE_MB){
                     Kommunicate.attachmentService.getFileMeta(
                         file,
                         tabId,
@@ -16034,6 +16044,7 @@ var userOverride = {
                         var groupId = resp.message.groupId;
                         var isGroup = true;
                         mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        mckMessageLayout.showPrevMsgPicAfterDeleteMsg()
                         // events.onMessageDeleted(eventResponse);
                     }
                 } else {
