@@ -482,10 +482,17 @@ function ApplozicSidebox() {
             options.disableFormPostSubmit =
                 options.disableFormPostSubmit || 
                     (widgetSettings && widgetSettings.disableFormPostSubmit);
+            options.timeFormat24Hours =
+                options.timeFormat24Hours != null
+                    ? options.timeFormat24Hours
+                    : widgetSettings && widgetSettings.timeFormat24Hours;         
             options.voiceNote =
                 options.voiceNote != null
                     ? options.voiceNote
                     : widgetSettings && widgetSettings.voiceNote;
+            options.attachmentHandler = options.attachmentHandler != null 
+                    ? options.attachmentHandler 
+                    : function (file) { return file; };
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (

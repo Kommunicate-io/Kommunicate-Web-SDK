@@ -198,6 +198,7 @@ KommunicateConstants = {
     KOMMUNICATE_DOMAINS: ['kommunicate.io'],
     AWS_IMAGE_URL_EXPIRY_TIME: 15*60*1000,
     IMAGE_PLACEHOLDER_URL: 'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
+    MAX_UPLOAD_SIZE: 25000000,
     FEEDBACK_API_STATUS: {
         INIT: 1,
         RATED: 2,
