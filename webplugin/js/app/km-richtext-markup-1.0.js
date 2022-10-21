@@ -409,7 +409,7 @@ Kommunicate.markup = {
             <div class="km-carousel-card-sub-title">{{subtitle}}</div>
             <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`;
     },
-    getFormTemplate: function (msgKey) {
+    getFormTemplate: function () {
         return `<div class="mck-msg-box-rich-text-container mck-form-template-container" data-hidePostFormSubmit="{{hidePostFormSubmit}}">
                 <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" data-msg-key={{msgKey}} >
                     <div class="mck-form-template-wrapper">
@@ -422,8 +422,8 @@ Kommunicate.markup = {
                                         <div class="mck-form-radio-wrapper" style="margin-bottom:0px">
                                         {{#options}}
                                         <div>
-                                            <input id="{{label}} ${msgKey}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
-                                            <label for="{{label}} ${msgKey}" class="mck-form-label"><b>{{label}}</b></label>   
+                                            <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
+                                            <label for="{{label}} {{msgKey}}" class="mck-form-label"><b>{{label}}</b></label>   
                                         </div>                                 
                                     {{/options}} 
                                         </div>
@@ -440,8 +440,8 @@ Kommunicate.markup = {
     
                                             {{#options}}
                                                 <div>
-                                                    <input id="{{label}} ${msgKey}" type="{{type}}" name="{{name}}" value="{{value}}">
-                                                    <label for="{{label}} ${msgKey}" class="mck-form-label"><b>{{label}}</b></label>   
+                                                    <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}">
+                                                    <label for="{{label}} {{msgKey}}" class="mck-form-label"><b>{{label}}</b></label>   
                                                     {{#validation}}
                                                     <span class="mck-form-error-text mck-form-error-{{className}}"></span>
                                                 {{/validation}}
@@ -836,7 +836,6 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
     var action = {};
     var data = {};
     var isActionObject = false;
-    var msgKey = options.msgKey
     if (options && options.payload) {
         var payload =
             typeof options.payload == 'string'
@@ -894,7 +893,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 }
             }
         });
-        return Mustache.to_html(Kommunicate.markup.getFormTemplate(msgKey), options);
+        return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
     }
 };
 Kommunicate.markup.getCarouselMarkup = function (options) {
