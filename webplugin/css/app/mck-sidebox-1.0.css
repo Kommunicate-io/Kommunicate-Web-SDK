@@ -2242,6 +2242,7 @@ ul.mck-intent-menu>li:hover {
 }
 
 .mck-msg-right-muted {
+	box-sizing: border-box;
 	float: right;
 	padding-right: 15px;
 }
