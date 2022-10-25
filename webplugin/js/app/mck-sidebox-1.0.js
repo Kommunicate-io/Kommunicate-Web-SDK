@@ -2209,6 +2209,11 @@ var userOverride = {
                         );
 
                         if (KOMMUNICATE_VERSION === 'v2') {
+                            //intialise onInit in prechatLead Collection
+                            if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                                MCK_ON_PLUGIN_INIT('success', {});
+                            }
+
                             if (
                                 WIDGET_POSITION ===
                                 KommunicateConstants.POSITION.LEFT
