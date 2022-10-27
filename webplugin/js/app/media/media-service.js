@@ -49,7 +49,11 @@ Kommunicate.mediaService = {
             };
         }
     },
-    voiceOutputIncomingMessage: function (message) {
+    voiceOutputIncomingMessage: function (message, offSpeech) {
+        if(offSpeech){
+          window.speechSynthesis.cancel();
+          return;
+        }
         // get appoptions
         var timeOut;
         var appOptions =

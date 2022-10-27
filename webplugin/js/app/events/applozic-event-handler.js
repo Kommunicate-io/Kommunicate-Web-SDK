@@ -43,8 +43,14 @@ Kommunicate.KmEventHandler = {
                 .classList.remove('vis');
         }
     },
-    onMessageReceived: function (message) {
+    onMessageReceived: function (message, toggleSound) {
         //message received
+
+        // turn off the speech 
+        if(toggleSound){
+            Kommunicate.mediaService.voiceOutputIncomingMessage(message, toggleSound);
+            return;
+        }
         var validMessageMetadata =
             message.metadata &&
             message.metadata.category != 'HIDDEN' &&

@@ -4745,6 +4745,9 @@ var userOverride = {
                     'user-overide-voice-output'
                 ).onclick = function (e) {
                     e.preventDefault();
+                    if(userOverride.voiceOutput){
+                       Kommunicate.KmEventHandler.onMessageReceived(undefined, userOverride.voiceOutput)
+                    }
                     userOverride.voiceOutput = !userOverride.voiceOutput;
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
