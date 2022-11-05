@@ -792,15 +792,18 @@ $applozic.extend(true, Kommunicate, {
 
         var quickReplyCtaPrevSibling = parentEle.previousElementSibling;
 
-        if(!quickReplyCtaPrevSibling) {
-            return;
-        }
-
-        while (quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
+        while (
+            quickReplyCtaPrevSibling &&
+            quickReplyCtaPrevSibling.classList.contains(
+                'contains-quick-replies-only'
+            )
+        ) {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-        quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+        if(quickReplyCtaPrevSibling) {
+            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+        }
     },
     getAllSiblings: function (element) {
         var siblings = [];
