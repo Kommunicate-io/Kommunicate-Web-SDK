@@ -786,7 +786,7 @@ $applozic.extend(true, Kommunicate, {
         }
         var kmClubbingChild = element.closest('.mck-message-inner').children;
         if(kmClubbingChild) {
-            Array.from(kmClubbingChild).some(child => {
+            Array.from(kmClubbingChild).find(child => {
                 var isQuickReplyCta = child.classList.contains("contains-quick-replies-only");
                 isQuickReplyCta && child.previousElementSibling.classList.remove(
                     'km-clubbing-first'
