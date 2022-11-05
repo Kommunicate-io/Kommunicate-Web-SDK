@@ -802,7 +802,9 @@ $applozic.extend(true, Kommunicate, {
             quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
         }
         parentEle.classList.add('n-vis');
-        if(quickReplyCtaPrevSibling) {quickReplyCtaPrevSibling.classList.remove('km-clubbing-first')};
+        if(quickReplyCtaPrevSibling) {
+            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first')
+        };
     },
     getAllSiblings: function (element) {
         var siblings = [];
