@@ -791,20 +791,23 @@ $applozic.extend(true, Kommunicate, {
         if (!element) {
             return;
         }
-
         var parentEle = element.parentElement;
         while (!parentEle.classList.contains('mck-msg-left')) {
             parentEle = parentEle.parentElement;
         }
+        parentEle.classList.add('n-vis');
 
         var quickReplyCtaPrevSibling = parentEle.previousElementSibling;
-        while(quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
-            quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
+
+        if(!quickReplyCtaPrevSibling) {
+            return;
         }
-        parentEle.classList.add('n-vis');
-        if(quickReplyCtaPrevSibling) {
-            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first')
-        };
+
+        while (quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
+            quickReplyCtaPrevSibling =
+                quickReplyCtaPrevSibling.previousElementSibling;
+        }
+        quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
     },
     getAllSiblings: function (element) {
         var siblings = [];
