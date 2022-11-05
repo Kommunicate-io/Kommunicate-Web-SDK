@@ -784,20 +784,18 @@ $applozic.extend(true, Kommunicate, {
         if (!element) {
             return;
         }
-        var kmClubbingChild = element.closest('.mck-message-inner').children;
-        if(kmClubbingChild) {
-            Array.from(kmClubbingChild).find(child => {
-                var isQuickReplyCta = child.classList.contains("contains-quick-replies-only");
-                isQuickReplyCta && child.previousElementSibling.classList.remove(
-                    'km-clubbing-first'
-                );
-            })
-        };
+
         var parentEle = element.parentElement;
         while (!parentEle.classList.contains('mck-msg-left')) {
             parentEle = parentEle.parentElement;
         }
+
+        var quickReplyCtaPrevSibling = parentEle.previousElementSibling;
+        while(quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
+            quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
+        }
         parentEle.classList.add('n-vis');
+        quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
     },
     getAllSiblings: function (element) {
         var siblings = [];
