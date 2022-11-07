@@ -324,6 +324,7 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
         })
         if (!newConversationCreated && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
             newConversationCreated = true;
+            Kommunicate.startConversation();
         }
     }
 };
