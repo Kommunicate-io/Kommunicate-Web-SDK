@@ -12348,6 +12348,9 @@ var userOverride = {
                                 'data-msgtime'
                             ) - allMessages[key].getAttribute('data-msgtime');
                         if (allMessages[key].nextSibling) {
+                            if(allMessages[key].nextSibling.classList.contains("contains-quick-replies-only")) {
+                                return
+                            };
                             if (
                                 allMessages[key].nextSibling.getAttribute(
                                     'data-contact'
