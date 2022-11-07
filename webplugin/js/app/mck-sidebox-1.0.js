@@ -15289,7 +15289,7 @@ var userOverride = {
 
                 // contentType == 3 - text html
                 if (contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
-                    messageToShowInPreview = "HTML";
+                    messageToShowInPreview = "HTML message";
                     imgIconToShowInPreview = KommunicateConstants.DOCUMENT_ICON
                 }
 
