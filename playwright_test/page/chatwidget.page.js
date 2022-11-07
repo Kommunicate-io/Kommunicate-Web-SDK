@@ -8,7 +8,7 @@ class ChatWidgetPage {
 
         //Locators
         this.testRadioBtn = page.locator("#test");
-        this.appIDbox = page.getByPlaceholder("23a6d30a59d247fa64605501f58074ea3");
+        this.appIDbox = page.getByPlaceholder(APP_ID.DEF_APP_ID);
         this.launchWidgetBtn = page.getByRole("button", {name: "Launch Widget"});
         this.kommunicateChatWidgetiframe = page.frameLocator('iframe[name="Kommunicate widget iframe"]');
         this.chatWidgetLaunchBtn = this.kommunicateChatWidgetiframe.locator("#launcher-svg-container");
