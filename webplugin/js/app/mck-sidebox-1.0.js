@@ -15191,6 +15191,120 @@ var userOverride = {
                 kmIframe.style.width = '';
             };
 
+            _this.showMessagePreview = function(message){
+                var messageToShowInPreview;
+                var imgIconToShowInPreview;
+                var contentType = message && message.contentType;
+                
+                // contentType == 0 - default
+                if (contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
+                    if (message && message.metadata) {
+                        var fileType;
+                        var templateId = message.metadata.templateId;
+                        // templateId is not present in text messages and messages which contain attachements.
+                        // hence check for fileMeta too.
+                        if (message.fileMeta) {
+                            fileType = message.fileMeta.contentType.split('/')[0];
+                        }
+                        var payload = message.metadata && message.metadata.payload && JSON.parse(message.metadata.payload);
+
+                        switch (templateId || fileType) {
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LINK_BUTTON:
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS_V2:
+                                messageToShowInPreview = message.message || (payload && payload[0] && payload[0].message) || btnPayload[0].name;
+                                break;
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
+                                messageToShowInPreview = message.message || (payload && payload[0] && payload[0].caption) || "Photo";
+                                imgIconToShowInPreview = KommunicateConstants.IMAGE_ICON;
+                                break;
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:
+                                messageToShowInPreview = message.message || (payload && payload[0] && payload[0].caption) || "Video";
+                                imgIconToShowInPreview = KommunicateConstants.VIDEO_ICON;
+                                break;
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
+                                messageToShowInPreview = (payload && payload.elements && payload.elements[0].title);
+                                if (payload && payload.headerImgSrc) {
+                                    imgIconToShowInPreview = KommunicateConstants.IMAGE_ICON;
+                                }
+                                break;
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
+                                messageToShowInPreview = (payload && payload[0].title);
+                                if (payload && payload.header && payload.header.ImgSrc) {
+                                    imgIconToShowInPreview = KommunicateConstants.IMAGE_ICON;
+                                }
+                                break;
+                            case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
+                                messageToShowInPreview = message.message || "Form";
+                                if (payload && payload.header && payload.header.ImgSrc) {
+                                    imgIconToShowInPreview = KommunicateConstants.DOCUMENT_ICON;
+                                }
+                                break;
+                            default:
+                                messageToShowInPreview = message.message;
+                                break;
+                        }
+                    } else {
+                        messageToShowInPreview = message.message;
+                    }
+                }
+
+                // contentType == 1 - attachments
+                if (contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
+                    var fileType;
+                    if (message.fileMeta) {
+                        fileType = message.fileMeta.contentType.split('/')[0];
+                    }
+                    var payload = message.metadata && message.metadata.payload && JSON.parse(message.metadata.payload);
+
+                    switch (fileType) {
+                        case 'image':
+                            messageToShowInPreview = message.message || (payload && payload[0] && payload[0].caption) || "Photo";
+                            imgIconToShowInPreview = KommunicateConstants.IMAGE_ICON;
+                            break;
+                        case 'video':
+                            messageToShowInPreview = message.message || (payload && payload[0] && payload[0].caption) || "Video";
+                            imgIconToShowInPreview = KommunicateConstants.VIDEO_ICON;
+                            break;
+                        case 'audio':
+                            messageToShowInPreview = "Audio";
+                            imgIconToShowInPreview = KommunicateConstants.ATTACHMENT_ICON;
+                            break;
+                        default:
+                            messageToShowInPreview = "File";
+                            imgIconToShowInPreview = KommunicateConstants.ATTACHMENT_ICON;
+                            break;
+                    }
+                }
+
+                // contentType == 2 - location
+                if (contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION) {
+                    messageToShowInPreview = "Location";
+                    imgIconToShowInPreview = KommunicateConstants.LOCATION_ICON
+                }
+
+                // contentType == 3 - text html
+                if (contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                    messageToShowInPreview = "HTML";
+                    imgIconToShowInPreview = KommunicateConstants.DOCUMENT_ICON
+                }
+
+                if(!messageToShowInPreview) return;
+
+                var htmlPayload = '<span class="message-preview-text">' + messageToShowInPreview + '</span>';
+                if(imgIconToShowInPreview){
+                    htmlPayload = '<span class="mck-icon--rich-message">' + imgIconToShowInPreview + '</span>' + htmlPayload;
+                }
+
+                $mck_msg_preview_visual_indicator_text.html(htmlPayload);
+                kommunicateCommons.modifyClassList(
+                    { id: ['mck-msg-preview-visual-indicator'] },
+                    '',
+                    'n-vis'
+                );
+            };
+
             _this.formatMessageForNotification = function (msg) {
                 var WIDTH_MULTIPLIER = 7;
                 var MAX_NOTIFICATION_CHAR = 86;
@@ -15273,86 +15387,9 @@ var userOverride = {
                     displayName,
                     message
                 );
-                if (message.message) {
-                    var msg = mckMessageLayout.getMessageTextForContactPreview(
-                        message,
-                        contact
-                    );
-                    // $mck_preview_msg_content.html('');
-                    $mck_msg_preview_visual_indicator_text.html('');
-                    $mck_msg_preview_visual_indicator_text.removeClass(
-                        'mck-flexi'
-                    );
-                    if (typeof msg === 'object') {
-                        // $mck_preview_msg_content.append(msg);
-                        var finalMessage = _this.formatMessageForNotification(
-                            msg
-                        );
-                        $mck_msg_preview_visual_indicator_text.append(
-                            finalMessage
-                        );
-                    } else if (message.contentType === 3) {
-                        var formattedMessage = kommunicateCommons.removeHtmlTag(
-                            message.message
-                        );
-                        var notificationContent = document.createElement('p');
-                        notificationContent.appendChild(
-                            document.createTextNode(formattedMessage)
-                        );
-                        var finalMessage = _this.formatMessageForNotification(
-                            notificationContent
-                        );
-                        $mck_msg_preview_visual_indicator_text.append(
-                            finalMessage
-                        );
-                    } else {
-                        // $mck_preview_msg_content.html(msg);
-                        $mck_msg_preview_visual_indicator_text.html(msg);
-                    }
-                    // $mck_preview_msg_content.removeClass('n-vis').addClass('vis');
-                    $mck_msg_preview_visual_indicator
-                        .removeClass('n-vis')
-                        .addClass('vis');
-                } else {
-                    // $mck_preview_msg_content.html('');
-                    $mck_msg_preview_visual_indicator_text.html('');
-                }
-                if (message.fileMetaKey) {
-                    // $mck_preview_file_content.html(alFileService.getFileIcon(message));
-                    $mck_msg_preview_visual_indicator_text.html(
-                        alFileService.getFileIcon(message)
-                    );
-                    // $mck_preview_file_content.removeClass('n-vis').addClass('vis');
-                    $mck_msg_preview_visual_indicator
-                        .removeClass('n-vis')
-                        .addClass('vis');
-                    $mck_msg_preview_visual_indicator_text.addClass(
-                        'mck-flexi'
-                    );
-                    // if ($mck_preview_msg_content.html() === '' || $mck_msg_preview_visual_indicator_text.html() === '') {
-                    //     $mck_preview_msg_content.removeClass('vis').addClass('n-vis');
-                    //     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
-                    // }
-                } else if (message.contentType === 2) {
-                    while (msg[msg.length - 1] === '.') msg = msg.slice(0, -1);
-                    $mck_msg_preview_visual_indicator_text.html(msg);
-                    $mck_msg_preview_visual_indicator
-                        .removeClass('n-vis')
-                        .addClass('vis');
-                    $mck_msg_preview_visual_indicator_text.addClass(
-                        'mck-flexi'
-                    );
-                }
-                // else {
-                //     // $mck_preview_file_content.html('');
-                //     // $mck_preview_file_content.removeClass('vis').addClass('n-vis');
-                //     // $mck_msg_preview_visual_indicator_text.html('');
-                //     // $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
-                // }
-                // if (contact.isGroup === true && contact.type !== 10) {
-                //     $mck_preview_name.html(displayName);
-                // }
-                // $mck_preview_icon.html(imgsrctag);
+                
+                _this.showMessagePreview(message);
+
                 if (!imgsrctag.indexOf('/avatars/default.png') != -1) {
                     $applozic('#launcher-agent-img-container').html(imgsrctag);
                     $applozic('#launcher-agent-img-container')
