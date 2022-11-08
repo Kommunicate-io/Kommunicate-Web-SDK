@@ -322,9 +322,11 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
+        if (document.getElementById('mck-tab-title').innerHTML == "Conversations" && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
+            kommunicate.startConversation();
+        }
         if (!newConversationCreated && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
             newConversationCreated = true;
-            Kommunicate.startConversation();
         }
     }
 };
