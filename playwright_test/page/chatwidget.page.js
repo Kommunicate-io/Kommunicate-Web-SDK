@@ -9,7 +9,8 @@ class ChatWidgetPage {
         //Locators
         this.testRadioBtn = page.locator("#test");
         this.appIDbox = page.getByPlaceholder(APP_ID.DEF_APP_ID);
-        this.launchWidgetBtn = page.getByRole("button", {name: "Launch Widget"});
+        //As id is not present in project, using xpath
+        this.launchWidgetBtn = page.locator('xpath=//button[text()="Launch Widget"]');
         this.kommunicateChatWidgetiframe = page.frameLocator('iframe[name="Kommunicate widget iframe"]');
         this.chatWidgetLaunchBtn = this.kommunicateChatWidgetiframe.locator("#launcher-svg-container");
         this.chatWidgetTextBox = this.kommunicateChatWidgetiframe.locator("#mck-text-box");
