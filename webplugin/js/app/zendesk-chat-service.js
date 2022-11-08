@@ -321,8 +321,12 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
         Kommunicate.updateConversationMetadata(conversationInfo);
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
-        })
-        if (document.getElementById('mck-tab-title').innerHTML == "Conversations" && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
+        });
+        
+        if (
+            document.getElementById('mck-tab-title').innerHTML == MCK_LABELS['conversations.title'] &&
+            assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
+        ) {
             kommunicate.startConversation();
         }
         if (!newConversationCreated && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
