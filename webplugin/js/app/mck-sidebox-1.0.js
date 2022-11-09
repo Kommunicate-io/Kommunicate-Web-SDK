@@ -691,6 +691,9 @@ var userOverride = {
                     );
                     KommunicateUI.activateTypingField();
                     mckMessageLayout.loadDropdownOptions();
+                    if (kommunicate._globals.zendeskChatSdkKey) {
+                        kommunicate.startConversation();
+                    }
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
