@@ -322,10 +322,10 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
         var assigneeInfo = currentGroupData && currentGroupData.users && Object.values(currentGroupData.users).find(function (member) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         });
-        
         if (
-            document.getElementById('mck-tab-title').innerHTML == MCK_LABELS['conversations.title'] &&
-            assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
+            (document.getElementById('mck-tab-title').innerHTML == MCK_LABELS['conversations.title'] &&
+            assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) ||
+            MCK_GROUP_MAP[event.tabId].users.hasOwnProperty(MCK_GROUP_MAP[event.tabId].displayName) 
         ) {
             kommunicate.startConversation();
         }
