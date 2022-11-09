@@ -15216,7 +15216,7 @@ var userOverride = {
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS_V2:
-                                messageToShowInPreview = message.message || (payload && payload[0] && payload[0].message) || btnPayload[0].name;
+                                messageToShowInPreview = message.message || (payload && payload[0] && payload[0].message) || payload[0].name;
                                 break;
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
                                 messageToShowInPreview = message.message || (payload && payload[0] && payload[0].caption) || "Photo";
@@ -15234,15 +15234,14 @@ var userOverride = {
                                 break;
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                                 messageToShowInPreview = (payload && payload[0].title);
-                                if (payload && payload.header && payload.header.ImgSrc) {
+                                var containsImage = payload && JSON.stringify(payload).includes('imgSrc');
+                                if (containsImage) {
                                     imgIconToShowInPreview = KommunicateConstants.IMAGE_ICON;
                                 }
                                 break;
                             case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
                                 messageToShowInPreview = message.message || "Form";
-                                if (payload && payload.header && payload.header.ImgSrc) {
-                                    imgIconToShowInPreview = KommunicateConstants.DOCUMENT_ICON;
-                                }
+                                imgIconToShowInPreview = KommunicateConstants.DOCUMENT_ICON;
                                 break;
                             default:
                                 messageToShowInPreview = message.message;
@@ -15303,7 +15302,7 @@ var userOverride = {
                 $mck_msg_preview_visual_indicator_text.html(htmlPayload);
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-msg-preview-visual-indicator'] },
-                    '',
+                    'vis',
                     'n-vis'
                 );
             };
