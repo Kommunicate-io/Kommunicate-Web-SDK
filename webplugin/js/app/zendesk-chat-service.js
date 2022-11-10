@@ -328,9 +328,5 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
             newConversationCreated = true;
             Kommunicate.startConversation();
         }
-        // if (document.getElementById('mck-tab-title').innerHTML == MCK_LABELS['conversations.title']) {
-        //     console.log("okoko")
-        //     Kommunicate.startConversation();
-        // }
     }
 };

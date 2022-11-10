@@ -692,10 +692,6 @@ var userOverride = {
                     );
                     KommunicateUI.activateTypingField();
                     mckMessageLayout.loadDropdownOptions();
-                    // if (kommunicate._globals.zendeskChatSdkKey && KM_PRELEAD_COLLECTION.length) {
-                    //     Kommunicate.startConversation();
-                    //     // console.log("document.getElementById('mck-contact-list')", document.getElementById('mck-contact-list').children);
-                    // }
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
