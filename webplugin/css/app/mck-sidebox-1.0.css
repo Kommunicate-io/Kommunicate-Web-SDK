@@ -5430,7 +5430,7 @@ div[name="message"]:last-child {
 .mck-msg-preview-visual-indicator-text.applozic-launcher .mck-icon--rich-message{
 	min-width: 25px;
 }
-.mck-msg-preview-visual-indicator-text.applozic-launcher .mck-icon--rich-message + span{
+.mck-msg-preview-visual-indicator-text.applozic-launcher .message-preview-text{
 	white-space: nowrap;
 }
 
