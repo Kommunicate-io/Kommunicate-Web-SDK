@@ -126,6 +126,7 @@ function ZendeskChatService() {
         console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
             ZENDESK_SDK_INITIALIZED = true;
+            newConversationCreated = true;
             zChat.sendChatMsg(
                 'This chat is initiated from kommunicate widget, look for more here: ' +
                 KM_PLUGIN_SETTINGS.dashboardUrl +
@@ -323,8 +324,13 @@ var onTabClickedHandlerForZendeskConversations = function (event) {
             return member.userId == currentGroupData.metadata.CONVERSATION_ASSIGNEE
         })
         if (!newConversationCreated && assigneeInfo.role != KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT) {
+            console.log("currentGroupData ", currentGroupData, assigneeInfo, newConversationCreated);
             newConversationCreated = true;
             Kommunicate.startConversation();
         }
+        // if (document.getElementById('mck-tab-title').innerHTML == MCK_LABELS['conversations.title']) {
+        //     console.log("okoko")
+        //     Kommunicate.startConversation();
+        // }
     }
 };

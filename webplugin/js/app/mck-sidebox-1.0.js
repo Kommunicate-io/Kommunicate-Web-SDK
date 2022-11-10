@@ -401,6 +401,7 @@ var userOverride = {
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
+            console.log("In on_tab_clicked", event);
             if (kommunicate._globals.zendeskChatSdkKey) {
                 onTabClickedHandlerForZendeskConversations(event);
             }
@@ -691,6 +692,10 @@ var userOverride = {
                     );
                     KommunicateUI.activateTypingField();
                     mckMessageLayout.loadDropdownOptions();
+                    // if (kommunicate._globals.zendeskChatSdkKey && KM_PRELEAD_COLLECTION.length) {
+                    //     Kommunicate.startConversation();
+                    //     // console.log("document.getElementById('mck-contact-list')", document.getElementById('mck-contact-list').children);
+                    // }
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -4016,10 +4021,19 @@ var userOverride = {
                                 callback
                             );
                         } else {
-                            if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
-                                ALStorage.clearMckMessageArray();
+                            if (kommunicate._globals.zendeskChatSdkKey) {
+                                var groupId = result.response[0].id;
+                                $applozic.fn.applozic(
+                                    'loadGroupTab',
+                                    groupId,
+                                    callback
+                                );
+                            } else {
+                                if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                                    ALStorage.clearMckMessageArray();
+                                }
+                                $applozic.fn.applozic('loadTab', null, callback);
                             }
-                            $applozic.fn.applozic('loadTab', null, callback);
                         }
                     }
                 );
