@@ -4018,7 +4018,7 @@ var userOverride = {
                             );
                         } else {
                             if (kommunicate._globals.zendeskChatSdkKey) {
-                                var groupId = result.response[0].id;
+                                var groupId = result.response[result.response.length-1].id;
                                 $applozic.fn.applozic(
                                     'loadGroupTab',
                                     groupId,

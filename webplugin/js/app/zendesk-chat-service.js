@@ -303,6 +303,7 @@ function ZendeskChatService() {
                 return;
             }
             console.log("Resolved conversation on Kommunicate Dashboard", result);
+            zChat.logout();
         });
 
     }; 
