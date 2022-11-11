@@ -4,10 +4,12 @@ function ZendeskChatService() {
     // This integration is supported by zopim, for any apis please refer their docs.
     var _this = this;
     var ZENDESK_SDK_INITIALIZED = false;
+    var ZENDESK_SDK_CONNECTED = false;
     var ZENDESK_CHAT_SDK_KEY = "";
     var AGENT_INFO_MAP = {};
     var preChatLeadData = {};
     var phoneNumber = "";
+    var messagesInBuffer = [];
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
@@ -40,9 +42,6 @@ function ZendeskChatService() {
         s.src = "https://cdn.kommunicate.io/kommunicate/zendesk-web-sdk-1.11.2.js";
         var h = document.getElementsByTagName("head")[0];
         h.appendChild(s);
-        s.onload = function () {
-            _this.initializeSDK();
-        };
     };
 
     _this.initializeSDK = function () {
@@ -82,6 +81,17 @@ function ZendeskChatService() {
                 }
             }
             zChat.init(zendeskInitOptions);
+            zChat.on('connection_update', function(status) {
+                if (status === 'connected') {
+                    ZENDESK_SDK_CONNECTED = true;
+                    console.log("SDK Connected");
+                    messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
+                        console.log("handleUserMessage: ", messageEvent);
+                        _this.sendMessageToZendesk(messageEvent);                
+                    });
+                    messagesInBuffer = [];
+                }
+            });
             zChat.on("chat", function (eventDetails) {
                 _this.updateNumberInZopim();
                 console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
@@ -108,13 +118,21 @@ function ZendeskChatService() {
         if (!event.message || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
-        console.log("handleUserMessage: ", event);
 
-        if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
-            zChat.sendChatMsg(event.message.message, function (err, data) {
+        _this.sendMessageToZendesk(event)
+    };
+
+    _this.sendMessageToZendesk = (messageEvent) => {
+        if (!ZENDESK_SDK_CONNECTED) {
+            messagesInBuffer.push(messageEvent);
+            return;
+        }  
+
+        if (messageEvent.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
+            zChat.sendChatMsg(messageEvent.message.message, function (err, data) {
                 console.log("zChat.sendChatMsg ", err, data)
             });
-        } else if (event.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
+        } else if (messageEvent.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
 
             var fileInputElement = document.getElementById("mck-file-input");
 
@@ -128,23 +146,24 @@ function ZendeskChatService() {
                 }
             });
         }
-
     };
 
     _this.handleBotMessage = function (event) {
         console.log("handleBotMessage: ", event);
         if (event.message.metadata.hasOwnProperty("KM_ASSIGN_TO")) {
-            ZENDESK_SDK_INITIALIZED = true;
             newConversationCreated = true;
-            zChat.sendChatMsg(
-                'This chat is initiated from kommunicate widget, look for more here: ' +
-                KM_PLUGIN_SETTINGS.dashboardUrl +
-                '/conversations/' +
-                CURRENT_GROUP_DATA.tabId,
-                function (err, data) {
-                    console.log('zChat.sendChatMsg ', err, data);
+            _this.initializeSDK();
+            ZENDESK_SDK_INITIALIZED = true;
+
+            _this.sendMessageToZendesk({
+                message: {
+                    contentType: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
+                    message: 'This chat is initiated from kommunicate widget, look for more here: ' +
+                                KM_PLUGIN_SETTINGS.dashboardUrl +
+                                '/conversations/' +
+                                CURRENT_GROUP_DATA.tabId
                 }
-            );
+            });
 
             //Sending chat transcript        
             kommunicate.client.getChatListByGroupId({ 
@@ -185,13 +204,13 @@ function ZendeskChatService() {
                 }
 
                 console.log(transcriptString);
-
-                zChat.sendChatMsg(
-                    transcriptString,
-                    function (err, data) {
-                        console.log('sending transcript to zendesk',err, data);
+               
+                _this.sendMessageToZendesk({
+                    message: {
+                        contentType: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
+                        message: transcriptString
                     }
-                );
+                });
             });
         }
     };
@@ -313,6 +332,8 @@ function ZendeskChatService() {
             }
             console.log("Resolved conversation on Kommunicate Dashboard", result);
             zChat.logout();
+            ZENDESK_SDK_INITIALIZED = false;
+            ZENDESK_SDK_CONNECTED = false;
         });
 
     }; 
