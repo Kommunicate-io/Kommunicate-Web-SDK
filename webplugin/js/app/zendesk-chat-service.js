@@ -10,6 +10,8 @@ function ZendeskChatService() {
     var preChatLeadData = {};
     var phoneNumber = "";
     var messagesInBuffer = [];
+    var userJWT = "";
+    
 
     _this.init = function (zendeskChatSdkKey, preChatData) {
         ZENDESK_CHAT_SDK_KEY = zendeskChatSdkKey;
@@ -69,6 +71,7 @@ function ZendeskChatService() {
                                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
                             },
                             success: function (result) {
+                                userJWT = result.data.jwt;
                                 console.log("result: ", result);
                                 callback(result.data.jwt);
                             },
@@ -81,30 +84,33 @@ function ZendeskChatService() {
                 }
             }
             zChat.init(zendeskInitOptions);
-            zChat.on('connection_update', function(status) {
-                if (status === 'connected') {
-                    ZENDESK_SDK_CONNECTED = true;
-                    console.log("SDK Connected");
-                    messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
-                        console.log("handleUserMessage: ", messageEvent);
-                        _this.sendMessageToZendesk(messageEvent);                
-                    });
-                    messagesInBuffer = [];
-                }
-            });
-            zChat.on("chat", function (eventDetails) {
-                _this.updateNumberInZopim();
-                console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
-                if (eventDetails.type == "chat.msg") { //If agent sends normal message
-                    _this.handleZendeskAgentMessageEvent(eventDetails);
-                } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
-                    _this.handleZendeskAgentFileSendEvent(eventDetails);
-                } else if (eventDetails.type == "chat.memberleave") { //If agent leaves conversation
-                    _this.handleZendeskAgentLeaveEvent(eventDetails);
-                }
-            });
+            zChat.on('connection_update', _this.handleZopimConnectedStatus);
+            zChat.on("chat", _this.zopimEvents);
         }
     };
+
+    _this.handleZopimConnectedStatus = function (status) {
+        if (status === 'connected') {
+            ZENDESK_SDK_CONNECTED = true;
+            console.log("SDK Connected");
+            messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
+                console.log("handleUserMessage: ", messageEvent);
+                _this.sendMessageToZendesk(messageEvent);                
+            });
+            messagesInBuffer = [];
+        }
+    }
+    _this.zopimEvents = function b(eventDetails) {
+        _this.updateNumberInZopim();
+        console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
+        if (eventDetails.type == "chat.msg") { //If agent sends normal message
+            _this.handleZendeskAgentMessageEvent(eventDetails);
+        } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
+            _this.handleZendeskAgentFileSendEvent(eventDetails);
+        } else if (eventDetails.type == "chat.memberleave") { //If agent leaves conversation
+            _this.handleZendeskAgentLeaveEvent(eventDetails);
+        }
+    }
     _this.updateNumberInZopim = function() {
         if(phoneNumber && zChat.getVisitorInfo().phone != phoneNumber){
             zChat.setVisitorInfo({ phone: phoneNumber }, function(err) {
@@ -331,11 +337,14 @@ function ZendeskChatService() {
                 return;
             }
             console.log("Resolved conversation on Kommunicate Dashboard", result);
+
+            zChat.un('chat', _this.zopimEvents);
+            zChat.un('connection_update', _this.handleZopimConnectedStatus);
             zChat.logout();
+            
             ZENDESK_SDK_INITIALIZED = false;
             ZENDESK_SDK_CONNECTED = false;
         });
-
     }; 
 };
 
