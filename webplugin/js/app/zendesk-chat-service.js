@@ -327,6 +327,12 @@ function ZendeskChatService() {
         );
         KommunicateUI.isConvJustResolved = true;
         KommunicateUI.isConversationResolvedFromZendesk = true;
+
+        ZENDESK_SDK_INITIALIZED = false;
+        ZENDESK_SDK_CONNECTED = false;
+        zChat.un('chat', _this.zopimEvents);
+        zChat.un('connection_update', _this.handleZopimConnectedStatus);
+        zChat.logout();
         
         //Call API to resolve the conversation on Dashboard
         kommunicate.client.resolveConversation({ 
@@ -337,13 +343,6 @@ function ZendeskChatService() {
                 return;
             }
             console.log("Resolved conversation on Kommunicate Dashboard", result);
-
-            zChat.un('chat', _this.zopimEvents);
-            zChat.un('connection_update', _this.handleZopimConnectedStatus);
-            zChat.logout();
-            
-            ZENDESK_SDK_INITIALIZED = false;
-            ZENDESK_SDK_CONNECTED = false;
         });
     }; 
 };
