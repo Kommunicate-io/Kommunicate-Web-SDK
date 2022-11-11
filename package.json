@@ -19,6 +19,7 @@
     "build-test": "NODE_ENV=test node ./server/build.js",
     "build-release": "NODE_ENV=release node ./server/build.js",
     "build-prod": "NODE_ENV=prod node ./server/build.js",
+    "build-beta": "NODE_ENV=prod_beta node ./server/build.js",
     "build-staging": "NODE_ENV=staging node ./server/build.js",
     "serve-build": "serve -C -l 3030 webplugin/build"
   },
