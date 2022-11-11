@@ -93,18 +93,14 @@ function ZendeskChatService() {
         if (status === 'connected') {
             ZENDESK_SDK_CONNECTED = true;
             console.log("SDK Connected");
-            // setTimeout(() => {
-            //     messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
-            //         console.log("handleUserMessage: ", messageEvent);
-            //         _this.sendMessageToZendesk(messageEvent);                
-            //     }); 
-            //     messagesInBuffer = [];  
-            // }, 5000);
+            messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
+                console.log("handleUserMessage: ", messageEvent);
+                _this.sendMessageToZendesk(messageEvent);                
+            }); 
+            messagesInBuffer = [];  
         }
-        window.a = _this.sendMessageToZendesk;
-        window.b = messagesInBuffer;
     }
-    _this.zopimEvents = function b(eventDetails) {
+    _this.zopimEvents = function (eventDetails) {
         console.log('[ZendeskChat] zChat.on("chat") ', eventDetails, CURRENT_GROUP_DATA);
         if (CURRENT_GROUP_DATA.createdAt && (eventDetails.timestamp < CURRENT_GROUP_DATA.createdAt)) {
             return;

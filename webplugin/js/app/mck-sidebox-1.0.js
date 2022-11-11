@@ -4017,6 +4017,9 @@ var userOverride = {
                                 callback
                             );
                         } else {
+                            if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                                ALStorage.clearMckMessageArray();
+                            }
                             if (kommunicate._globals.zendeskChatSdkKey) {
                                 var groupId = result.response[result.response.length-1].id;
                                 $applozic.fn.applozic(
@@ -4025,9 +4028,6 @@ var userOverride = {
                                     callback
                                 );
                             } else {
-                                if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
-                                    ALStorage.clearMckMessageArray();
-                                }
                                 $applozic.fn.applozic('loadTab', null, callback);
                             }
                         }
