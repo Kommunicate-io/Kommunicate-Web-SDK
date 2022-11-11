@@ -93,16 +93,23 @@ function ZendeskChatService() {
         if (status === 'connected') {
             ZENDESK_SDK_CONNECTED = true;
             console.log("SDK Connected");
-            messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
-                console.log("handleUserMessage: ", messageEvent);
-                _this.sendMessageToZendesk(messageEvent);                
-            });
-            messagesInBuffer = [];
+            // setTimeout(() => {
+            //     messagesInBuffer.length && messagesInBuffer.map(messageEvent => {
+            //         console.log("handleUserMessage: ", messageEvent);
+            //         _this.sendMessageToZendesk(messageEvent);                
+            //     }); 
+            //     messagesInBuffer = [];  
+            // }, 5000);
         }
+        window.a = _this.sendMessageToZendesk;
+        window.b = messagesInBuffer;
     }
     _this.zopimEvents = function b(eventDetails) {
+        console.log('[ZendeskChat] zChat.on("chat") ', eventDetails, CURRENT_GROUP_DATA);
+        if (CURRENT_GROUP_DATA.createdAt && (eventDetails.timestamp < CURRENT_GROUP_DATA.createdAt)) {
+            return;
+        }
         _this.updateNumberInZopim();
-        console.log('[ZendeskChat] zChat.on("chat") ', eventDetails);
         if (eventDetails.type == "chat.msg") { //If agent sends normal message
             _this.handleZendeskAgentMessageEvent(eventDetails);
         } else if (eventDetails.type == "chat.file") { //If agent sends file attachments
@@ -121,6 +128,8 @@ function ZendeskChatService() {
         }
     };
     _this.handleUserMessage = function (event) {
+        console.log("handleUserMessage ", event);
+
         if (!event.message || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
@@ -129,6 +138,8 @@ function ZendeskChatService() {
     };
 
     _this.sendMessageToZendesk = (messageEvent) => {
+        console.log("sendMessageToZendesk ", messageEvent);
+
         if (!ZENDESK_SDK_CONNECTED) {
             messagesInBuffer.push(messageEvent);
             return;
@@ -328,11 +339,13 @@ function ZendeskChatService() {
         KommunicateUI.isConvJustResolved = true;
         KommunicateUI.isConversationResolvedFromZendesk = true;
 
-        ZENDESK_SDK_INITIALIZED = false;
-        ZENDESK_SDK_CONNECTED = false;
-        zChat.un('chat', _this.zopimEvents);
-        zChat.un('connection_update', _this.handleZopimConnectedStatus);
-        zChat.logout();
+        if (userJWT) { 
+            ZENDESK_SDK_INITIALIZED = false;
+            ZENDESK_SDK_CONNECTED = false;
+            zChat.un('chat', _this.zopimEvents);
+            zChat.un('connection_update', _this.handleZopimConnectedStatus);
+            zChat.logout();
+        }
         
         //Call API to resolve the conversation on Dashboard
         kommunicate.client.resolveConversation({ 
