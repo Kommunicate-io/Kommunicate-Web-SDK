@@ -62,6 +62,7 @@ function ZendeskChatService() {
                             email,
                             externalId
                         }
+                        //To do: see if jwt is present first, then only call this api. otherwise this api is always getting called currently
                         mckUtils.ajax({
                             url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/jwt",
                             type: 'post',
