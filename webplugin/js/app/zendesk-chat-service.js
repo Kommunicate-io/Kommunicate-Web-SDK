@@ -102,7 +102,7 @@ function ZendeskChatService() {
     }
     _this.zopimEvents = function (eventDetails) {
         console.log('[ZendeskChat] zChat.on("chat") ', eventDetails, CURRENT_GROUP_DATA);
-        if (CURRENT_GROUP_DATA.createdAt && (eventDetails.timestamp < CURRENT_GROUP_DATA.createdAt)) {
+        if ((CURRENT_GROUP_DATA.createdAt && (eventDetails.timestamp < CURRENT_GROUP_DATA.createdAt)) || (eventDetails.nick != "visitor")) {
             return;
         }
         _this.updateNumberInZopim();
