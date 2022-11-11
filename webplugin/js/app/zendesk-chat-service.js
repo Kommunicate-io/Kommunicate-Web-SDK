@@ -19,6 +19,15 @@ function ZendeskChatService() {
             'onMessageReceived': _this.handleBotMessage,
         };
         Kommunicate.subscribeToEvents(events);
+
+        var restartConversation = document.getElementById(
+            'mck-restart-conversation'
+        );
+        restartConversation.addEventListener('click', function () {
+            Kommunicate.startConversation(); 
+            console.log("Inside addEventListener");
+        })
+
         // Hide back button
         document.getElementById('mck-contacts-content').classList.add('force-n-vis');
         document.querySelector('.mck-back-btn-container').classList.add('force-n-vis');
