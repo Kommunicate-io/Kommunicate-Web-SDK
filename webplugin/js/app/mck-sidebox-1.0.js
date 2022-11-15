@@ -3994,7 +3994,7 @@ var userOverride = {
                 Kommunicate.client.getGroupDetailByType(
                     options,
                     function (err, result) {
-                        if (err || !result) {
+                        if (err || !result || !result.response) {
                             console.log(
                                 'error while fetching group detail by type',
                                 err
