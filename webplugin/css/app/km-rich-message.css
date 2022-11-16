@@ -1343,6 +1343,7 @@
     .km-cta-multi-button-container
     button.km-quick-replies {
     border-bottom: none;
+    text-align: center;
 }
 .km-slider-multiple-cards-container {
     margin-left: -65px;
