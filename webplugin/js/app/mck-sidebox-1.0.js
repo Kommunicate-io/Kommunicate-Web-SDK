@@ -401,6 +401,7 @@ var userOverride = {
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
+            console.log("In on_tab_clicked", event);
             if (kommunicate._globals.zendeskChatSdkKey) {
                 onTabClickedHandlerForZendeskConversations(event);
             }
@@ -3993,7 +3994,7 @@ var userOverride = {
                 Kommunicate.client.getGroupDetailByType(
                     options,
                     function (err, result) {
-                        if (err || !result) {
+                        if (err || !result || !result.response) {
                             console.log(
                                 'error while fetching group detail by type',
                                 err
@@ -4019,7 +4020,16 @@ var userOverride = {
                             if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
                                 ALStorage.clearMckMessageArray();
                             }
-                            $applozic.fn.applozic('loadTab', null, callback);
+                            if (kommunicate._globals.zendeskChatSdkKey) {
+                                var groupId = result.response[result.response.length-1].id;
+                                $applozic.fn.applozic(
+                                    'loadGroupTab',
+                                    groupId,
+                                    callback
+                                );
+                            } else {
+                                $applozic.fn.applozic('loadTab', null, callback);
+                            }
                         }
                     }
                 );
@@ -6379,6 +6389,7 @@ var userOverride = {
                     success: function (data) {
                         var isMessages = true;
                         //Display/hide lead(email) collection template
+                        CURRENT_GROUP_DATA.createdAt = data.groupFeeds[0].createdAtTime;
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus =
                             data &&
@@ -7628,11 +7639,15 @@ var userOverride = {
                                         }
                                     );
                                 }
+                               
                                 CURRENT_GROUP_DATA.tabId =
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
+                                console.log("groupPxy now checking", groupPxy);
+                                CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
+
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
