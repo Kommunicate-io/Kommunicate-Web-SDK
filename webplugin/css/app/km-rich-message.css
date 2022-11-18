@@ -371,7 +371,7 @@
 .km-quick-rpy-btn,
 .km-cta-button {
     word-break: break-word;
-    text-align: left;
+    overflow-wrap: break-word;
 }
 .km-cta-multi-button-container .km-cta-button-many,
 .km-cta-multi-button-container .km-cta-button-1 {
@@ -1369,7 +1369,7 @@
 .mck-form-template-container button {
     min-width: 23%;
     border-radius: 19px;
-    padding: 5px;
+    padding: 7px;
     margin-top: 12px;
     background-color: white;
 }
