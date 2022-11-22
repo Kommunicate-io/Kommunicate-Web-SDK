@@ -19,7 +19,7 @@ frontend:
                 - if [ "${BUILD_ENV}" = "staging" ]; then npm run build-staging; fi
                 # Kommunicate Prod
                 - if [ "${BUILD_ENV}" = "prod" ]; then npm run build-prod; fi
-                # Kommunicate Prod
+                # Kommunicate Prod Europe
                 - if [ "${BUILD_ENV}" = "prod-eu" ]; then npm run build-prod-eu; fi
                 # If no environment variable is provided then build kommunicate test bundle.
                 - if [ "${BUILD_ENV}" = "" ]; then npm run build-test; fi
