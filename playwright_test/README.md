@@ -16,7 +16,7 @@ npm init playwright@latest
 
 Run the install command and select the following to get started:
 
-- Choose between TypeScript or JavaScript (default is TypeScript)
+- Choose between TypeScript or JavaScript (we are using JavaScript)
 - Name of your Tests folder (default is tests or e2e if you already have a tests folder in your project)
 
 ## Folder Structure
