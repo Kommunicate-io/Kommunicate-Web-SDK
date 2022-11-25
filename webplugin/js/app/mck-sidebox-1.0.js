@@ -5969,6 +5969,9 @@ var userOverride = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
+                        if (kommunicate._globals.zendeskChatSdkKey){
+                            zendeskChatService.handleUserMessage(messagePxy)
+                        }
                         if (
                             messagePxy &&
                             typeof messagePxy.fileMeta === 'object' &&

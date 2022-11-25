@@ -19,7 +19,6 @@ function ZendeskChatService() {
         phoneNumber = preChatLeadData.contactNumber;
         _this.loadZopimSDK();
         var events = {
-            'onMessageSent': _this.handleUserMessage,
             'onMessageReceived': _this.handleBotMessage,
         };
         Kommunicate.subscribeToEvents(events);
@@ -54,6 +53,7 @@ function ZendeskChatService() {
             var name = preChatLeadData.displayName;
             var email = preChatLeadData.email;
             var externalId = preChatLeadData.userId;
+            
             if (name && email && externalId) {
                 zendeskInitOptions.authentication = {
                     jwt_fn: function (callback) {
@@ -62,6 +62,7 @@ function ZendeskChatService() {
                             email,
                             externalId
                         }
+                        
                         //To do: see if jwt is present first, then only call this api. otherwise this api is always getting called currently
                         mckUtils.ajax({
                             url: Kommunicate.getBaseUrl() + "/rest/ws/zendesk/jwt",
@@ -127,7 +128,7 @@ function ZendeskChatService() {
     _this.handleUserMessage = function (event) {
         console.log("handleUserMessage ", event);
 
-        if (!event.message || !ZENDESK_SDK_INITIALIZED) {
+        if ((!event.message && !event.fileMeta) || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
 
@@ -141,12 +142,14 @@ function ZendeskChatService() {
             messagesInBuffer.push(messageEvent);
             return;
         }  
+        var contentType = messageEvent.contentType;
+        var message = messageEvent.message;
 
-        if (messageEvent.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
-            zChat.sendChatMsg(messageEvent.message.message, function (err, data) {
+        if (contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT) {
+            zChat.sendChatMsg(message, function (err, data) {
                 console.log("zChat.sendChatMsg ", err, data)
             });
-        } else if (messageEvent.message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
+        } else if (contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
 
             var fileInputElement = document.getElementById("mck-file-input");
 
@@ -170,13 +173,11 @@ function ZendeskChatService() {
             ZENDESK_SDK_INITIALIZED = true;
 
             _this.sendMessageToZendesk({
-                message: {
-                    contentType: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
-                    message: 'This chat is initiated from kommunicate widget, look for more here: ' +
-                                KM_PLUGIN_SETTINGS.dashboardUrl +
-                                '/conversations/' +
-                                CURRENT_GROUP_DATA.tabId
-                }
+                contentType: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
+                message: 'This chat is initiated from kommunicate widget, look for more here: ' +
+                    KM_PLUGIN_SETTINGS.dashboardUrl +
+                    '/conversations/' +
+                    CURRENT_GROUP_DATA.tabId
             });
 
             //Sending chat transcript        
@@ -220,10 +221,8 @@ function ZendeskChatService() {
                 console.log(transcriptString);
                
                 _this.sendMessageToZendesk({
-                    message: {
-                        contentType: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
-                        message: transcriptString
-                    }
+                    contentType: KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT,
+                    message: transcriptString
                 });
             });
         }
@@ -252,9 +251,10 @@ function ZendeskChatService() {
     };
 
     _this.handleZendeskAgentMessageEvent = function (event) {
-
         console.log("handleZendeskAgentMessageEvent ", event);
-        var agentId = event.nick.replace(":", "-")
+        var agentId = event.nick.replace(":", "-");
+        var msgTimestamp = event.timestamp;
+
         if (!AGENT_INFO_MAP[agentId]) {
             AGENT_INFO_MAP[agentId] = {
                 displayName: event.display_name,
@@ -267,7 +267,8 @@ function ZendeskChatService() {
             message: event.msg,
             fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
-            agentInfo: AGENT_INFO_MAP[agentId]
+            agentInfo: AGENT_INFO_MAP[agentId],
+            messageDeduplicationKey: agentId + "-" + msgTimestamp
         };
 
         return mckUtils.ajax({
@@ -291,7 +292,9 @@ function ZendeskChatService() {
     _this.handleZendeskAgentFileSendEvent = function (event) {
 
         console.log("handleZendeskAgentFileSendEvent ", event);
-        var agentId = event.nick.replace(":", "-")
+        var agentId = event.nick.replace(":", "-");
+        var msgTimestamp = event.timestamp;
+
         if (!AGENT_INFO_MAP[agentId]) {
             AGENT_INFO_MAP[agentId] = {
                 displayName: event.display_name,
@@ -306,7 +309,8 @@ function ZendeskChatService() {
             fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
             auth: window.Applozic.ALApiService.AUTH_TOKEN,
-            agentInfo: AGENT_INFO_MAP[agentId]
+            agentInfo: AGENT_INFO_MAP[agentId],
+            messageDeduplicationKey: agentId+"-"+msgTimestamp
         };
 
         return mckUtils.ajax({
