@@ -268,7 +268,7 @@ function ZendeskChatService() {
             fromUserName: agentId,
             groupId: CURRENT_GROUP_DATA.tabId,
             agentInfo: AGENT_INFO_MAP[agentId],
-            deDuplicationKey: agentId + "-" + msgTimestamp
+            messageDeduplicationKey: agentId + "-" + msgTimestamp
         };
 
         return mckUtils.ajax({
@@ -310,7 +310,7 @@ function ZendeskChatService() {
             groupId: CURRENT_GROUP_DATA.tabId,
             auth: window.Applozic.ALApiService.AUTH_TOKEN,
             agentInfo: AGENT_INFO_MAP[agentId],
-            deDuplicationKey: agentId+"-"+msgTimestamp
+            messageDeduplicationKey: agentId+"-"+msgTimestamp
         };
 
         return mckUtils.ajax({
