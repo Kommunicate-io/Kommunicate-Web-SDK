@@ -687,13 +687,20 @@ function ApplozicSidebox() {
             (widgetSettings = KommunicateUtils.getItemFromLocalStorage(
                 applozic._globals.appId
             ));
-        var timeStampDifference =
-            widgetSettings &&
-            widgetSettings.sessionEndTime - widgetSettings.sessionStartTime;
+        var endTime = widgetSettings && widgetSettings.sessionEndTime;
+        var startTime = widgetSettings && widgetSettings.sessionStartTime
+        var timeStampDifference = endTime - startTime;
+        
+        // // timeStampDiff is NaN when endTime is not set 
+        // // this happens when the user opens the widget for the first time
+        if(Number.isNaN(timeStampDifference)){
+            timeStampDifference = 0;
+        }
+
         if (
             widgetSettings &&
             sessionTimeout != null &&
-            timeStampDifference > sessionTimeout
+            timeStampDifference >= sessionTimeout
         ) {
             KommunicateUtils.deleteUserCookiesOnLogout();
             sessionStorage.removeItem('kommunicate');
