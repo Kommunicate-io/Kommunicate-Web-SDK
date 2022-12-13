@@ -4018,7 +4018,16 @@ var userOverride = {
                             if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
                                 ALStorage.clearMckMessageArray();
                             }
-                            $applozic.fn.applozic('loadTab', null, callback);
+                            if (kommunicate._globals.zendeskChatSdkKey) {
+                                var groupId = result.response[result.response.length-1].id;
+                                $applozic.fn.applozic(
+                                    'loadGroupTab',
+                                    groupId,
+                                    callback
+                                );
+                            } else {
+                                $applozic.fn.applozic('loadTab', null, callback);
+                            }
                         }
                     }
                 );
@@ -5960,6 +5969,9 @@ var userOverride = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
+                        if (kommunicate._globals.zendeskChatSdkKey){
+                            zendeskChatService.handleUserMessage(messagePxy)
+                        }
                         if (
                             messagePxy &&
                             typeof messagePxy.fileMeta === 'object' &&
@@ -6378,6 +6390,7 @@ var userOverride = {
                     success: function (data) {
                         var isMessages = true;
                         //Display/hide lead(email) collection template
+                        CURRENT_GROUP_DATA.createdAt = data.groupFeeds[0].createdAtTime;
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus =
                             data &&
@@ -7632,6 +7645,8 @@ var userOverride = {
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
+                                console.log("groupPxy now checking", groupPxy);
+                                CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&

@@ -226,7 +226,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-beta.kommunicate.io',
-            dashboardUrl: 'https://dashboard-beta.kommunicate.io',
+            dashboardUrl: 'https://beta.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,

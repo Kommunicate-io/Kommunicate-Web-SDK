@@ -1190,12 +1190,6 @@ KommunicateUI = {
                     'vis'
                 );   
             }
-            var restartConversation = document.getElementById(
-                'mck-restart-conversation'
-            );
-            restartConversation.addEventListener('click', function () {
-                Kommunicate.startConversation(); 
-            })
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
                 { class: ['mck-rating-box'] },
