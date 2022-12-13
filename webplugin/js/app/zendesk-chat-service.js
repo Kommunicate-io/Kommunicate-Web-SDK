@@ -128,7 +128,7 @@ function ZendeskChatService() {
     _this.handleUserMessage = function (event) {
         console.log("handleUserMessage ", event);
 
-        if (!event.message || !ZENDESK_SDK_INITIALIZED) {
+        if ((!event.message && !event.fileMeta) || !ZENDESK_SDK_INITIALIZED) {
             return;
         }
 
