@@ -18,5 +18,5 @@ export const widgetLocators = {
     kmLaunchWidget : '//*[@id="launcher-svg-container"]',
     kmTextBox : '#mck-text-box',
     kmSendButton : '//button[@title="Send Message"]//span[1]',
-    kmMsgStatus : '//div[@id="mck-message-cell"]//span[@aria-hidden="false"]]'
+    kmMsgStatus : '//div[@id="mck-message-cell"]//span[@aria-hidden="false"]'
 };
