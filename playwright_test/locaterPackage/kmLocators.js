@@ -7,8 +7,8 @@
 
 export const locators = {
     envBtn : '//label[@for="test"]',
-    appIdField : '//*[@id="root"]/div/div/div[2]/div/div/input',
-    scriptFiled : '//*[@id="root"]/div/div/div[3]/div/div/textarea',
+    appIdField : '//span[text()="App ID"]/following::input',
+    scriptFiled : '//textarea[@data-gramm="false"]',
     launchWidgetBtn : '(//button[@type="button"])[3]',
     logoutWidgetBtn : '//button[text()="Logout & Reload"]'
 }

@@ -6,7 +6,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { widgetLocators, locators } from '../utils/kmLocators';
+import { widgetLocators, locators } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
 const {chromium} = require('playwright');
