@@ -50,6 +50,7 @@ const config = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
     },
 
@@ -57,6 +58,7 @@ const config = {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
+        channel: 'firefox',
       },
     },
 
@@ -64,6 +66,7 @@ const config = {
       name: 'webkit',
       use: {
         ...devices['Desktop Safari'],
+        channel: 'safari',
       },
     },
 
