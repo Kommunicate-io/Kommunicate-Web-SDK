@@ -15,8 +15,14 @@ export const locators = {
 
 export const widgetLocators = {
     kmIframe : 'iframe[name="Kommunicate widget iframe"]',
-    kmLaunchWidget : '//*[@id="launcher-svg-container"]',
+    kmLaunchWidget : '#launcher-svg-container',
     kmTextBox : '#mck-text-box',
     kmSendButton : '//button[@title="Send Message"]//span[1]',
-    kmMsgStatus : '//div[@id="mck-message-cell"]//span[@aria-hidden="false"]'
+    kmMsgStatus : '//div[@id="mck-message-cell"]//span[@aria-hidden="false"]',
+    kmEmojiBtn : '#mck-btn-smiley',
+    kmMicBtn : '#mck-mic-btn',
+    kmLocBtn : '#mck-btn-loc',
+    kmAttachmentBtn : '#mck-file-up',
+    kmSmirkEmoji : '//*[@id="group_0"]/a[6]',
+    kmLocSendBtn : '#mck-loc-submit'
 };
