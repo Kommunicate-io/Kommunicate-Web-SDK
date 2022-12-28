@@ -12,6 +12,7 @@ const PR_REVIEWS_CHECKS = Object.freeze({
         WIP: `PR is classed as Work in Progress`,
         EXCEED_THRESHOLD: `:exclamation: Your PR has over ${BIG_PR_THRESHOLD} lines of code, please consider breaking it down so we can effectively review it. :thumbsup:`,
         MERGE_CONFLICTS: `Please merge development branch`,
+        ONLY_DEV_BRANCH: `:exclamation: Please re-submit this PR to development branch, we may have already fixed your issue. 🙏`,
         MISSING_DES: `:exclamation: Please add a description to your PR to make it easier to review`,
         MERGE_COMMITS: `Please rebase to get rid of the merge commits in this PR 🙏`,
         FILE_ISSUE: `Please file the issue for development branch`,
@@ -25,11 +26,14 @@ const PR_REVIEWS_CHECKS = Object.freeze({
     }
 });
 
+//Accept PR only for development branch
+if(danger.github.base && danger.github.base == "master") return fail(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
+
 // check if PR is in WIP
 if (danger.github.pr.title.toLowerCase().includes("[wip]")) return warn(PR_REVIEWS_CHECKS.WARNS.WIP);
 
 //checks for description
-const isDesAdded = danger.github.pr.body.length == 0;
+const isDesAdded = danger.github.pr.body.length <= 10;
 isDesAdded && fail(PR_REVIEWS_CHECKS.WARNS.MISSING_DES);
 
 // new Files in the PR
