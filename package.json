@@ -3,7 +3,7 @@
   "version": "3.0.0-sasuke",
   "description": "",
   "main": "app.js",
-  "author": "Abhinav <abhinav@kommunicate.io>",
+  "author": "Forward <team.engineering@kommunicate.io>",
   "license": "ISC",
   "scripts": {
     "postinstall": "husky install",
@@ -38,6 +38,9 @@
     "node-fetch": "2.6.7"
   },
   "devDependencies": {
+    "danger": "^11.2.0",
+    "danger-plugin-jira-issue": "^1.4.1",
+    "danger-plugin-no-console": "^1.1.2",
     "husky": "5.0.9",
     "nodemon": "2.0.7",
     "pinst": "2.1.4",
