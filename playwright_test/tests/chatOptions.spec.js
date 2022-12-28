@@ -8,15 +8,11 @@ import { test, expect } from '@playwright/test';
 import { widgetLocators, locators } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
-const { chromium, firefox, webkit } = require('playwright');
 
 let browser;
 let page;
 
-  test.beforeAll(async () => {
-    browser = await chromium.launch({ headless: false });
-    // browser = await firefox.launch({ headless: false });
-    // browser = await webkit.launch({ headless: false });
+  test.beforeAll(async ({browser}) => {
     page = await browser.newPage();
     await page.goto(url.kmWidgetURL);
     await page.waitForSelector(locators.envBtn);
@@ -75,8 +71,8 @@ let page;
                 .click(); 
     const fileChooser = await fileChooserPromise;
 
-    // Change file path to 'utils/hokage.jpg' if running outside the tests folder
-    await fileChooser.setFiles('../utils/Hokage.jpg'); 
+    // Change file path to '../utils/hokage.jpg' if running inside the tests folder
+    await fileChooser.setFiles('utils/Hokage.jpg'); 
     await page.waitForTimeout(4000)
 
     // The message status verify that the message was successfully sent
@@ -86,5 +82,4 @@ let page;
 
   test.afterAll(async () => {
     await page.click(locators.logoutWidgetBtn)
-    await browser.close();
   })

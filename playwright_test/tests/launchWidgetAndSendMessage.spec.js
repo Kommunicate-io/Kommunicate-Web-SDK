@@ -9,16 +9,12 @@ import { test, expect } from '@playwright/test';
 import { widgetLocators, locators } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
-const {chromium, firefox, webkit} = require('playwright');
 
 let browser;
 let page;
 
 // Launching widget
-  test.beforeAll(async () => {
-    // browser = await chromium.launch({ headless: false });
-    browser = await firefox.launch({ headless: false });
-    // browser = await webkit.launch({ headless: false });
+  test.beforeAll(async ({browser}) => {
     page = await browser.newPage();
     await page.goto(url.kmWidgetURL);
     await page.waitForSelector(locators.envBtn);
@@ -57,5 +53,4 @@ let page;
 
   test.afterAll(async () => {
     await page.click(locators.logoutWidgetBtn)
-    await browser.close();
   })
