@@ -1701,6 +1701,7 @@
 	resize: none;
 	background-color: white;
 	width: auto;
+	/* text-align: left; */
 	outline: none !important;
 	margin: 0px;
 	font-size: 16px;
@@ -1708,7 +1709,6 @@
 	line-height: 1.2em;
 	overflow-x: hidden;
 	display: block !important;
-	text-align: left;
 	box-shadow: none !important;
 	-webkit-user-select: text;
 	border: none;

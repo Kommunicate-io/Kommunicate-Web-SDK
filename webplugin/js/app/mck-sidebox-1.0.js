@@ -401,7 +401,6 @@ var userOverride = {
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
-            console.log("In on_tab_clicked", event);
             if (kommunicate._globals.zendeskChatSdkKey) {
                 onTabClickedHandlerForZendeskConversations(event);
             }
