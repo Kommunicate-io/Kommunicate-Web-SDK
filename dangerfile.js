@@ -45,7 +45,7 @@ totalChanges && warn(PR_REVIEWS_CHECKS.WARNS.EXCEED_THRESHOLD);
 if(removedLines > PR_REVIEWS_CHECKS.REMOVED_LINE_THRESHOLD) message(PR_REVIEWS_CHECKS.SUCCESS.LINES_REMOVED);
 
 // check if PR has some merge conflicts
-const mergeCommits = danger.github.commits.filter(({ commit }) => commit.message.includes(`Merge branch 'master'`));
+const mergeCommits = danger.github.commits.filter(({ commit }) => commit.message.includes(`Merge branch 'development'`));
 if(mergeCommits.length) fail(PR_REVIEWS_CHECKS.WARNS.MERGE_COMMITS)
 
 // Check if package.json is modified but package-lock.json is modified or not
