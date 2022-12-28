@@ -2,10 +2,13 @@ name: Automate Common Checks
 
 on: [pull_request]
 jobs:
-    pull_request:
+    tasks:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@development
+            - name: Checkout
+            - uses: actions/checkout@v1
+              with:
+                ref: 'development'
             - name: Use Node.js 14.x
               uses: actions/setup-node@v1
               with:
