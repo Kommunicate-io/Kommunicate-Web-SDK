@@ -27,7 +27,7 @@ const PR_REVIEWS_CHECKS = Object.freeze({
 });
 
 //Accept PR only for development branch
-if(danger.github.base && danger.github.base == "master") return fail(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
+if(danger.github.pr.base == "master") return fail(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
 
 // check if PR is in WIP
 if (danger.github.pr.title.toLowerCase().includes("[wip]")) return warn(PR_REVIEWS_CHECKS.WARNS.WIP);

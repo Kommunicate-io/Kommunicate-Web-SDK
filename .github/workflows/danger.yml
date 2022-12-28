@@ -2,14 +2,14 @@ name: Automate Common Checks
 
 on: [pull_request]
 jobs:
-    test_pull_request:
+    pull_request:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@development
-            - name: Use Node.js 14.x.x
+            - name: Use Node.js 14.x
               uses: actions/setup-node@v1
               with:
-                  node-version: 14.x.x
+                  node-version: 14.x
             - name: Install packages
               run: npm install
             - name: Danger
