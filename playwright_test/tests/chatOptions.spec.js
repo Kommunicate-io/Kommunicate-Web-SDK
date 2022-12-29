@@ -52,9 +52,6 @@ let page;
     const iframe = page.frameLocator(widgetLocators.kmIframe)
     await iframe.locator(widgetLocators.kmLocBtn)
                 .click();
-    // one extra click to ignore permission pop-up and comment the only next line if using webkit browser
-    await iframe.locator(widgetLocators.kmLocBtn)
-                    .click();
     await iframe.locator(widgetLocators.kmLocSendBtn)
                    .click();
     await page.waitForTimeout(3000)

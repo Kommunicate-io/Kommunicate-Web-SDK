@@ -18,6 +18,7 @@ const config = {
       use: {
         browserName: 'chromium',
         viewport: { width: 1280, height: 720 },
+        permissions: ['geolocation'],
       },
     },
     {
@@ -32,6 +33,7 @@ const config = {
       use: {
         browserName: 'firefox',
         viewport: { width: 1280, height: 720 },
+        permissions: ['geolocation'],
       }
     },
   ],
