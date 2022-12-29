@@ -1,6 +1,6 @@
 const { danger, message, fail, warn, schedule } = require("danger");
 const { default: jiraIssue } = require("danger-plugin-jira-issue");
-const { default: noConsole } = require("danger-plugin-no-console");
+// const { default: noConsole } = require("danger-plugin-no-console"); this plugin has some issues
 
 const PR_REVIEWS_CHECKS = Object.freeze({
     BIG_PR_THRESHOLD: 700,
@@ -59,7 +59,7 @@ const packageChanged = danger.git.modified_files.includes("package.json"),
 if (packageChanged && !lockfileChanged) fail(PR_REVIEWS_CHECKS.WARNS.PACKAGE_JSON_ERR);
 
 //checks for console.log in PR
-schedule(noConsole({ whitelist: ['error', 'warn'] }))
+// schedule(noConsole({ whitelist: ['error', 'warn'] }))
 
 jiraIssue({
     key: PR_REVIEWS_CHECKS.TEAMS_INITIALS,
