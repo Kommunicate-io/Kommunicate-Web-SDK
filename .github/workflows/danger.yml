@@ -1,4 +1,4 @@
-name: Automate Common Checks
+name: Automate Common Checks Danger JS
 
 on: 
     pull_request:
@@ -6,17 +6,18 @@ on:
         - master
         - 'development'
 jobs:
-    tasks:
+    PR_Test:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@development
+            - name: Check out branch
+            - uses: actions/checkout@master
             - name: Use Node.js 14.x
               uses: actions/setup-node@v1
               with:
                   node-version: 14.x
             - name: Install packages
               run: npm install
-            - name: Danger
+            - name: Run Danger Test
               run: npm run run-danger-test
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

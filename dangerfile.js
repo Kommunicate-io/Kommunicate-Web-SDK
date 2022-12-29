@@ -65,7 +65,7 @@ jiraIssue({
     key: PR_REVIEWS_CHECKS.TEAMS_INITIALS,
     url: "https://kommunicate.atlassian.net/browse",
     format(emoji, jiraUrls) {
-        return `Jira Link - ${emoji} ${jiraUrls}`;
+        return `Jira Issue Link - ${emoji} ${jiraUrls}`;
     },
     fail_on_warning: false,
 });
