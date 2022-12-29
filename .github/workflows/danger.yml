@@ -9,7 +9,6 @@ jobs:
     PR_Test:
         runs-on: ubuntu-latest
         steps:
-            - name: Check out branch
             - uses: actions/checkout@master
             - name: Use Node.js 14.x
               uses: actions/setup-node@v1
