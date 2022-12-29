@@ -22,7 +22,9 @@
     "build-prod": "NODE_ENV=prod node ./server/build.js",
     "build-prod-eu": "NODE_ENV=prod_eu node ./server/build.js",
     "build-staging": "NODE_ENV=staging node ./server/build.js",
-    "serve-build": "serve -C -l 3030 webplugin/build"
+    "serve-build": "serve -C -l 3030 webplugin/build",
+    "run-danger-local": "danger local",
+    "run-danger-test": "danger ci"
   },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",
