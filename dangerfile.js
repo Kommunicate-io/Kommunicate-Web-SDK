@@ -10,7 +10,7 @@ const PR_REVIEWS_CHECKS = Object.freeze({
         TITLE: `Title required Issue number`,
         CHECK_LOCK_FILE: `:exclamation: Changes were made to package.json, but not to package-lock.json - <i>'Perhaps you need to run \`npm install\`?'`,
         WIP: `PR is classed as Work in Progress`,
-        EXCEED_THRESHOLD: `:exclamation: Your PR has over ${this.BIG_PR_THRESHOLD} lines of code, please consider breaking it down so we can effectively review it. :thumbsup:`,
+        EXCEED_THRESHOLD: `:exclamation: Your PR has over 700 lines of code, please consider breaking it down so we can effectively review it. :thumbsup:`,
         MERGE_CONFLICTS: `Please merge development branch`,
         ONLY_DEV_BRANCH: `:exclamation: Please re-submit this PR to development branch, we may have already fixed your issue. 🙏`,
         MISSING_DES: `:exclamation: Please add a description to your PR to make it easier to review`,
@@ -27,7 +27,7 @@ const PR_REVIEWS_CHECKS = Object.freeze({
 });
 
 //Accept PR only for development branch
-if(danger.github.pr.base == "master") return fail(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
+if(danger.github.pr.head.ref == "master") return fail(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
 
 // check if PR is in WIP
 if (danger.github.pr.title.toLowerCase().includes("[wip]")) return warn(PR_REVIEWS_CHECKS.WARNS.WIP);
@@ -37,7 +37,7 @@ const isDesAdded = danger.github.pr.body.length <= 10;
 isDesAdded && fail(PR_REVIEWS_CHECKS.WARNS.MISSING_DES);
 
 // new Files in the PR
-const newFiles = danger.git.created_files.join("- ");
+const newFiles = danger.git.created_files.join(" , ");
 message(`${PR_REVIEWS_CHECKS.SUCCESS.NEW_FILES} ${newFiles}` );
 
 // check PR is changes Threshold
