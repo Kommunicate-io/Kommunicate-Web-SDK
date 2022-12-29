@@ -22,7 +22,7 @@ const PR_REVIEWS_CHECKS = Object.freeze({
     },
     SUCCESS: {
         LINES_REMOVED : `:tada: The PR removed ${danger.github.pr.deletions} lines. :clap:`,
-        NEW_FILES: `New Files in this PR: \n - " ${newFiles}`
+        NEW_FILES: `New Files in this PR: \n - `
     }
 });
 
@@ -38,7 +38,7 @@ isDesAdded && fail(PR_REVIEWS_CHECKS.WARNS.MISSING_DES);
 
 // new Files in the PR
 const newFiles = danger.git.created_files.join("- ");
-message(PR_REVIEWS_CHECKS.SUCCESS.NEW_FILES);
+message(`PR_REVIEWS_CHECKS.SUCCESS.NEW_FILES ${newFiles}` );
 
 // check PR is changes Threshold
 const removedLines = danger.github.pr.deletions,
