@@ -26,11 +26,11 @@ const PR_REVIEWS_CHECKS = Object.freeze({
     }
 });
 
-//Accept PR only for development branch
-if(danger.github.pr.head.ref == "master") return fail(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
-
 // check if PR is in WIP
 if (danger.github.pr.title.toLowerCase().includes("[wip]")) return warn(PR_REVIEWS_CHECKS.WARNS.WIP);
+
+//Accept PR only for development branch and warn
+if(danger.github.pr.head.ref == "master") warn(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
 
 //checks for description
 const isDesAdded = danger.github.pr.body.length <= 10;
@@ -49,7 +49,9 @@ totalChanges && warn(PR_REVIEWS_CHECKS.WARNS.EXCEED_THRESHOLD);
 if(removedLines > PR_REVIEWS_CHECKS.REMOVED_LINE_THRESHOLD) message(PR_REVIEWS_CHECKS.SUCCESS.LINES_REMOVED);
 
 // check if PR has some merge conflicts
-const mergeCommits = danger.github.commits.filter(({ commit }) => commit.message.includes(`Merge branch 'development'`));
+const mergeCommits = danger.github.commits.filter(({ commit }) => {
+    commit.message.includes(`Merge branch development`)
+});
 if(mergeCommits.length) fail(PR_REVIEWS_CHECKS.WARNS.MERGE_COMMITS)
 
 // Check if package.json is modified but package-lock.json is modified or not
