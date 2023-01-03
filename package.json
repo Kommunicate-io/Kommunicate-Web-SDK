@@ -35,9 +35,11 @@
     "express": "4.17.1",
     "form-data": "3.0.0",
     "minimist": "1.2.6",
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "playwright": "^1.29.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.29.1",
     "husky": "5.0.9",
     "nodemon": "2.0.7",
     "pinst": "2.1.4",

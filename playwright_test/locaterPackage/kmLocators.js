@@ -1,0 +1,22 @@
+
+/*
+ * kmLocators.js
+ * playwright_test/utils
+ * Created by Archit on 21/12/2011. 
+ */
+
+export const locators = {
+    envBtn : '//label[@for="test"]',
+    appIdField : '//span[text()="App ID"]/following::input',
+    scriptFiled : '//textarea[@data-gramm="false"]',
+    launchWidgetBtn : '(//button[@type="button"])[3]',
+    logoutWidgetBtn : '//button[text()="Logout & Reload"]'
+}
+
+export const widgetLocators = {
+    kmIframe : 'iframe[name="Kommunicate widget iframe"]',
+    kmLaunchWidget : '//*[@id="launcher-svg-container"]',
+    kmTextBox : '#mck-text-box',
+    kmSendButton : '//button[@title="Send Message"]//span[1]',
+    kmMsgStatus : '//div[@id="mck-message-cell"]//span[@aria-hidden="false"]'
+};
