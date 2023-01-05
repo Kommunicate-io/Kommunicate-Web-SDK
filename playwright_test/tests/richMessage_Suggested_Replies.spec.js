@@ -1,12 +1,11 @@
-
 /*
- * LaunchWidgetAndSendMessage.spec.js
+ * richMessage_Suggested_Replies.spec.js
  * playwright_test/test
- * Created by Archit on 20/12/2022. 
+ * Created by Archit on 01/01/2023. 
  */
 
 import { test, expect } from '@playwright/test';
-import { widgetLocators, locators } from '../locaterPackage/kmLocators';
+import { widgetLocators, locators, richMessagesLocators } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
 
@@ -34,19 +33,25 @@ let page;
               .click();
   })
 
-  // Testing chat creation and message sending
-  test("send message", async () => {
+  // Testing Suggested Replies
+  test("Suggested Replies", async () => {
     const iframe = page.frameLocator(widgetLocators.kmIframe)
     await iframe.locator(widgetLocators.kmTextBox)
                 .click();
     await iframe.locator(widgetLocators.kmTextBox)
-                .type("hello");
+                .type("Suggested Replies");
     await iframe.locator(widgetLocators.kmSendButton)
                 .click();
-    await page.waitForTimeout(3000)
+    await page.waitForTimeout(2000)
 
-  // The message status verify that the message was successfully sent
-    const isVisible = await iframe.locator(widgetLocators.kmMsgStatus).isVisible();
+  // The UI of rich message check using snapshot
+    expect(await page.screenshot()).toMatchSnapshot('Suggested_Replies.png',{threshold: 1});
+    await iframe.locator(richMessagesLocators.kmSuggestedRepliesYesBtn)
+                .click();
+    await page.waitForTimeout(2000)
+
+  // The message Response verify that the message was successfully sent
+    const isVisible = await iframe.locator(richMessagesLocators.kmSuggestedRepliesYesBtnResponse).isVisible();
     expect(isVisible).toBe(true);
   })
 

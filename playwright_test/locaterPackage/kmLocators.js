@@ -2,7 +2,7 @@
 /*
  * kmLocators.js
  * playwright_test/utils
- * Created by Archit on 21/12/2011. 
+ * Created by Archit on 21/12/2022. 
  */
 
 export const locators = {
@@ -26,3 +26,8 @@ export const widgetLocators = {
     kmSmirkEmoji : '//*[@id="group_0"]/a[6]',
     kmLocSendBtn : '#mck-loc-submit'
 };
+
+export const richMessagesLocators = {
+    kmSuggestedRepliesYesBtn : '//button[@aria-label="Yes"]',
+    kmSuggestedRepliesYesBtnResponse : '//div[text()="Cool! send me more."]'
+}

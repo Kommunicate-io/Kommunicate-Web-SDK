@@ -9,6 +9,8 @@ const config = {
   use: {
     ignoreHTTPSErrors: true,
     headless: false,
+    screenshot: 'only-on-failure',
+    trace: 'on'
   },
 
   // Options specific to each project.
