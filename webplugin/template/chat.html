@@ -13,15 +13,25 @@
     <script type="text/javascript">
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
+        let botIds = params.get('botIds')
+        let assignee = params.get('assignee')
         let referer = window.document.referrer;
 
         if (!appId) {
             document.getElementById('error-msg').innerText = "no app id"
         } else {
             (function (d, m) {
+                if(botIds && assignee ){
+                var defaultSettings = {
+                "defaultBotIds": [botIds], // Optional. Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard. Include this parameter if you want to assign the conversation to a bot.
+                "defaultAssignee": assignee, // Replace <ASSIGNEE_ID> with your bot/agent ID  whom you're assigning the conversation.
+                "skipRouting": true
+                 };}
                 var kommunicateSettings = {
                     "appId": appId, // replace this with your application id
                     "onInit": function () {
+                        if (defaultSettings){
+                        Kommunicate.updateSettings(defaultSettings);} 
                         var iframeStyle = document.createElement('style');
                         var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
                         iframeStyle.type = 'text/css';
