@@ -9,14 +9,12 @@ import { test, expect } from '@playwright/test';
 import { widgetLocators, locators } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
-const {chromium} = require('playwright');
 
 let browser;
 let page;
 
 // Launching widget
-  test.beforeAll(async () => {
-    browser = await chromium.launch({ headless: false });
+  test.beforeAll(async ({browser}) => {
     page = await browser.newPage();
     await page.goto(url.kmWidgetURL);
     await page.waitForSelector(locators.envBtn);
@@ -39,23 +37,20 @@ let page;
 
   // Testing chat creation and message sending
   test("send message", async () => {
-    await page.frameLocator(widgetLocators.kmIframe)
-              .locator(widgetLocators.kmTextBox)
-              .click();
-    await page.frameLocator(widgetLocators.kmIframe)
-              .locator(widgetLocators.kmTextBox)
-              .type("hello");
-    await page.frameLocator(widgetLocators.kmIframe)
-              .locator(widgetLocators.kmSendButton)
-              .click();
-    await page.waitForTimeout(6000)
+    const iframe = page.frameLocator(widgetLocators.kmIframe)
+    await iframe.locator(widgetLocators.kmTextBox)
+                .click();
+    await iframe.locator(widgetLocators.kmTextBox)
+                .type("hello");
+    await iframe.locator(widgetLocators.kmSendButton)
+                .click();
+    await page.waitForTimeout(3000)
 
   // The message status verify that the message was successfully sent
-    await page.locator(widgetLocators.kmMsgStatus)
-              .isVisible()
+    const isVisible = await iframe.locator(widgetLocators.kmMsgStatus).isVisible();
+    expect(isVisible).toBe(true);
   })
 
   test.afterAll(async () => {
     await page.click(locators.logoutWidgetBtn)
-    await browser.close();
   })
