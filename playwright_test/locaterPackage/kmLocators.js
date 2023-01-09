@@ -11,7 +11,7 @@ export const locators = {
     scriptFiled : '//textarea[@data-gramm="false"]',
     launchWidgetBtn : '(//button[@type="button"])[3]',
     logoutWidgetBtn : '//button[text()="Logout & Reload"]'
-}
+};
 
 export const widgetLocators = {
     kmIframe : 'iframe[name="Kommunicate widget iframe"]',
@@ -32,4 +32,4 @@ export const richMessagesLocators = {
     kmSuggestedRepliesYesBtnResponse : '//div[text()="Cool! send me more."]',
     kmLinkButton : '//button[@aria-label="Go To Google"]',
     kmLinkOnNewTab : '//img[@alt="Google"]'
-}
+};
