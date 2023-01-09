@@ -28,7 +28,7 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://kom-prod-cdn.s3.amazonaws.com/applozic/applozic.chat-6.2.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.min.js',
             alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.2.min.js',
         },
         {
