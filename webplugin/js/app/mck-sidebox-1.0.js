@@ -5972,6 +5972,9 @@ var userOverride = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
+                        if (kommunicate._globals.zendeskChatSdkKey){
+                            zendeskChatService.handleUserMessage(messagePxy)
+                        }
                         if (
                             messagePxy &&
                             typeof messagePxy.fileMeta === 'object' &&
@@ -6390,7 +6393,7 @@ var userOverride = {
                     success: function (data) {
                         var isMessages = true;
                         //Display/hide lead(email) collection template
-                        CURRENT_GROUP_DATA.createdAt = data.groupFeeds[0].createdAtTime;
+                        CURRENT_GROUP_DATA.createdAt = data && data.groupFeeds[0] && data.groupFeeds[0].createdAtTime;
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus =
                             data &&

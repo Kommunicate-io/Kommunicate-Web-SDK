@@ -14,4 +14,7 @@ Please fill these details, it will help the reviewers.
 ### In case you fixed a bug then please describe the root cause of it? 
 -
 
+### Screenshot
+- 
+
 NOTE: Make sure you're comparing your branch with the correct base branch

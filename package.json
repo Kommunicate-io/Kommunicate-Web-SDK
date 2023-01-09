@@ -3,7 +3,7 @@
   "version": "3.0.0-sasuke",
   "description": "",
   "main": "app.js",
-  "author": "Abhinav <abhinav@kommunicate.io>",
+  "author": "Forward <team.engineering@kommunicate.io>",
   "license": "ISC",
   "scripts": {
     "postinstall": "husky install",
@@ -22,7 +22,9 @@
     "build-prod": "NODE_ENV=prod node ./server/build.js",
     "build-prod-eu": "NODE_ENV=prod_eu node ./server/build.js",
     "build-staging": "NODE_ENV=staging node ./server/build.js",
-    "serve-build": "serve -C -l 3030 webplugin/build"
+    "serve-build": "serve -C -l 3030 webplugin/build",
+    "run-danger-local": "danger local",
+    "run-danger-test": "danger ci"
   },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",
@@ -38,6 +40,9 @@
     "node-fetch": "2.6.7"
   },
   "devDependencies": {
+    "danger": "11.2.0",
+    "danger-plugin-jira-issue": "1.4.1",
+    "danger-plugin-no-console": "1.1.2",
     "husky": "5.0.9",
     "nodemon": "2.0.7",
     "pinst": "2.1.4",
