@@ -2491,6 +2491,7 @@ var userOverride = {
                     MCK_ACCESS_TOKEN,
                     MCK_APP_MODULE_NAME
                 );
+                mckUtils.setCryptographyUtils(data.encryptionIV, data.encryptionType);
                 window.Applozic.ALApiService.setEncryptionKeys(
                     data.encryptionKey,
                     data.userEncryptionKey
