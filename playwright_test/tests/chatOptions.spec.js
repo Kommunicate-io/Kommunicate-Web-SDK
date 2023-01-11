@@ -1,6 +1,7 @@
 /*
  * chatOptions.spec.js
  * playwright_test/tests
+ * Created by Archit on 23/12/2022. 
  * Created by Archit on 23/12/2011. 
  */
 
@@ -9,7 +10,6 @@ import { widgetLocators, locators } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
 
-let browser;
 let page;
 
   test.beforeAll(async ({browser}) => {
