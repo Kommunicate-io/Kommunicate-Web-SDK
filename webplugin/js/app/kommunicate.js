@@ -796,6 +796,21 @@ $applozic.extend(true, Kommunicate, {
             parentEle = parentEle.parentElement;
         }
         parentEle.classList.add('n-vis');
+
+        var quickReplyCtaPrevSibling = parentEle.previousElementSibling;
+
+        while (
+            quickReplyCtaPrevSibling &&
+            quickReplyCtaPrevSibling.classList.contains(
+                'contains-quick-replies-only'
+            )
+        ) {
+            quickReplyCtaPrevSibling =
+                quickReplyCtaPrevSibling.previousElementSibling;
+        }
+        if(quickReplyCtaPrevSibling) {
+            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+        }
     },
     getAllSiblings: function (element) {
         var siblings = [];

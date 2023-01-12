@@ -1190,6 +1190,7 @@ KommunicateUI = {
                     'vis'
                 );   
             }
+           
             document.getElementById('mck-submit-comment').disabled = false;
             kommunicateCommons.modifyClassList(
                 { class: ['mck-rating-box'] },
