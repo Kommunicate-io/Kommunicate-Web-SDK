@@ -31,5 +31,6 @@ export const richMessagesLocators = {
     kmSuggestedRepliesYesBtn : '//button[@aria-label="Yes"]',
     kmSuggestedRepliesYesBtnResponse : '//div[text()="Cool! send me more."]',
     kmLinkButton : '//button[@aria-label="Go To Google"]',
-    kmLinkOnNewTab : '//img[@alt="Google"]'
+    kmLinkOnNewTab : '//img[@alt="Google"]',
+    kmImageResponse: '//div[@class="km-image-template"]'
 };
