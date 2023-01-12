@@ -6,7 +6,7 @@
  */
 
 export const locators = {
-    envBtn : '//label[@for="test"]',
+    envBtn : '#test',
     appIdField : '//span[text()="App ID"]/following::input',
     scriptFiled : '//textarea[@data-gramm="false"]',
     launchWidgetBtn : '(//button[@type="button"])[3]',
@@ -31,5 +31,7 @@ export const richMessagesLocators = {
     kmSuggestedRepliesYesBtn : '//button[@aria-label="Yes"]',
     kmSuggestedRepliesYesBtnResponse : '//div[text()="Cool! send me more."]',
     kmLinkButton : '//button[@aria-label="Go To Google"]',
-    kmLinkOnNewTab : '//img[@alt="Google"]'
+    kmLinkOnNewTab : '//img[@alt="Google"]',
+    kmSubmitButton: '//button[@data-buttontype="submit"]',
+    kmSubmitButtonResponse: '//div[text()="Button Response"]'
 };
