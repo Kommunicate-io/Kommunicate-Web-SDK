@@ -2209,6 +2209,11 @@ var userOverride = {
                         );
 
                         if (KOMMUNICATE_VERSION === 'v2') {
+                            //intialise onInit in prechatLead Collection
+                            if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                                MCK_ON_PLUGIN_INIT('success', {});
+                            }
+
                             if (
                                 WIDGET_POSITION ===
                                 KommunicateConstants.POSITION.LEFT
@@ -3141,7 +3146,7 @@ var userOverride = {
                             );
                             kmChatInput.setAttribute(
                                 'oninvalid',
-                                'setCustomValidity(' + MCK_LABELS['lead.collection'].errorEmail + ')'
+                                "setCustomValidity('"+ MCK_LABELS['lead.collection'].errorEmail +"')"
                             );
                             kmChatInput.setAttribute(
                                 'oninput',
@@ -4013,7 +4018,16 @@ var userOverride = {
                             if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
                                 ALStorage.clearMckMessageArray();
                             }
-                            $applozic.fn.applozic('loadTab', null, callback);
+                            if (kommunicate._globals.zendeskChatSdkKey) {
+                                var groupId = result.response[result.response.length-1].id;
+                                $applozic.fn.applozic(
+                                    'loadGroupTab',
+                                    groupId,
+                                    callback
+                                );
+                            } else {
+                                $applozic.fn.applozic('loadTab', null, callback);
+                            }
                         }
                     }
                 );
@@ -4744,6 +4758,9 @@ var userOverride = {
                     'user-overide-voice-output'
                 ).onclick = function (e) {
                     e.preventDefault();
+                    if(userOverride.voiceOutput){
+                       Kommunicate.KmEventHandler.onMessageReceived(undefined, userOverride.voiceOutput)
+                    }
                     userOverride.voiceOutput = !userOverride.voiceOutput;
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
@@ -5952,6 +5969,9 @@ var userOverride = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
+                        if (kommunicate._globals.zendeskChatSdkKey){
+                            zendeskChatService.handleUserMessage(messagePxy)
+                        }
                         if (
                             messagePxy &&
                             typeof messagePxy.fileMeta === 'object' &&
@@ -6370,6 +6390,7 @@ var userOverride = {
                     success: function (data) {
                         var isMessages = true;
                         //Display/hide lead(email) collection template
+                        CURRENT_GROUP_DATA.createdAt = data && data.groupFeeds[0] && data.groupFeeds[0].createdAtTime;
                         CURRENT_GROUP_DATA.isgroup = params.isGroup;
                         CURRENT_GROUP_DATA.conversationStatus =
                             data &&
@@ -7624,6 +7645,8 @@ var userOverride = {
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
+                                console.log("groupPxy now checking", groupPxy);
+                                CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
@@ -11318,6 +11341,16 @@ var userOverride = {
                     }
                 }
             };
+            _this.showPrevMsgPicAfterDeleteMsg = function () {
+                var allMessage = $applozic(
+                    '#mck-message-cell .mck-message-inner div[name="message"]'
+                )
+                var lastElement = allMessage[allMessage.length - 1];
+
+                if(lastElement){
+                    lastElement.classList.remove("km-clubbing-first")
+                }
+            }
             _this.getScriptMessagePreview = function (message, emoji_template) {
                 if (
                     message &&
@@ -14313,7 +14346,7 @@ var userOverride = {
             _this.uploadFileFunction = function (event, fileToUpload) {
                 var file = fileToUpload || $applozic(this)[0].files[0];
                 var tabId = $mck_msg_inner.data('mck-id');
-                if (file && KommunicateUI.isAttachmentV2(file.type)) {
+                if (file && KommunicateUI.isAttachmentV2(file.type) && file['size'] < MCK_FILEMAXSIZE * ONE_MB){
                     Kommunicate.attachmentService.getFileMeta(
                         file,
                         tabId,
@@ -16034,6 +16067,7 @@ var userOverride = {
                         var groupId = resp.message.groupId;
                         var isGroup = true;
                         mckMessageLayout.removedDeletedMessage(key, tabId, isGroup);
+                        mckMessageLayout.showPrevMsgPicAfterDeleteMsg()
                         // events.onMessageDeleted(eventResponse);
                     }
                 } else {
