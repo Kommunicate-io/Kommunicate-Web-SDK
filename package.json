@@ -24,7 +24,8 @@
     "build-staging": "NODE_ENV=staging node ./server/build.js",
     "serve-build": "serve -C -l 3030 webplugin/build",
     "run-danger-local": "danger local",
-    "run-danger-test": "danger ci"
+    "run-danger-test": "danger ci",
+    "build-beta": "NODE_ENV=prod_beta node ./server/build.js"
   },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",
@@ -37,9 +38,11 @@
     "express": "4.17.1",
     "form-data": "3.0.0",
     "minimist": "1.2.6",
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "playwright": "1.29.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.29.1",
     "danger": "11.2.0",
     "danger-plugin-jira-issue": "1.4.1",
     "danger-plugin-no-console": "1.1.2",
