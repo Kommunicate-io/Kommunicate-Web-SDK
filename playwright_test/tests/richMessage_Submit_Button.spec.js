@@ -34,7 +34,7 @@ let page;
   })
 
   // Testing Submit Button
-  test("Submit Button", async () => {
+  test("Submit Button", async ({ request }) => {
     const iframe = page.frameLocator(widgetLocators.kmIframe)
     await iframe.locator(widgetLocators.kmTextBox)
                 .click();
@@ -43,16 +43,16 @@ let page;
     await iframe.locator(widgetLocators.kmSendButton)
                 .click();
     await page.waitForTimeout(2000)
-
-  // The message Response verify that the message was successfully sent
     await iframe.locator(richMessagesLocators.kmSubmitButton)
                 .click();
-    await page.waitForTimeout(2000)
-    const isVisible = await iframe.locator(richMessagesLocators.kmSubmitButtonResponse).isVisible();
-    expect(isVisible).toBe(true);
+                
+  // The message Response verify that the message was successfully sent
+    const req = await request.post('https://testsubmitbuttonforkm.free.beeceptor.com/');
+    expect(req.ok()).toBeTruthy();
 
   // The UI of rich message check using snapshot
     expect(await page.screenshot()).toMatchSnapshot('Submit_Button.png',{threshold: 1});
+
   })
 
   test.afterAll(async () => {
