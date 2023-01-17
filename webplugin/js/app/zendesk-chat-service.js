@@ -86,6 +86,7 @@ function ZendeskChatService() {
                 }
             }
             zChat.init(zendeskInitOptions);
+            _this.updateVisitorPath();
             zChat.on('connection_update', _this.handleZopimConnectedStatus);
             zChat.on("chat", _this.zopimEvents);
         }
@@ -358,7 +359,21 @@ function ZendeskChatService() {
             }
             console.log("Resolved conversation on Kommunicate Dashboard", result);
         });
-    }; 
+    };
+
+    _this.updateVisitorPath = () => {
+        try{
+            var currPage = {
+                title: window.parent.document.title,
+                url: window.parent.location.href
+            };
+            zChat.sendVisitorPath(currPage, function(err) { 
+                console.log("An error occurred while updating visitor path ", err)
+            });
+        } catch (error){
+            console.log("An error occurred while updating visitor path ", err)
+        }
+    }
 };
 
 
