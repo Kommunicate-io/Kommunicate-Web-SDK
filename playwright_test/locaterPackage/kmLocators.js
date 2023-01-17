@@ -34,4 +34,5 @@ export const richMessagesLocators = {
     kmLinkOnNewTab : '//img[@alt="Google"]',
     kmSubmitButton: '//button[@data-buttontype="submit"]',
     kmSubmitButtonResponse: '//div[text()="Button Response"]'
+    kmImageResponse: '//div[@class="km-image-template"]'
 };
