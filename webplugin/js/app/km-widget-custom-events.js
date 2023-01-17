@@ -110,7 +110,7 @@ var eventMapping = {
     onRichMessageButtonClick: {
         data: {
             eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_rich_message_click',
+            eventAction: 'km_widget_rich_message_button_click',
         },
         eventFunction: null,
     },
@@ -157,7 +157,7 @@ var eventMapping = {
     onGreetingMessageNotificationClick: {
         data: {
             eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_greeting_click',
+            eventAction: 'km_widget_greeting_message_click',
             eventLabel: 'Greeting',
         },
         eventFunction: null,
@@ -173,7 +173,7 @@ var eventMapping = {
     onRateConversationEmoticonsClick: {
         data: {
             eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_rate',
+            eventAction: 'km_widget_ratings_conversation',
         },
         eventFunction: null,
     },
