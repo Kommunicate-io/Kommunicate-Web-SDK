@@ -48,18 +48,17 @@
                                 iframe.classList.add("change-kommunicate-iframe-height");
                             });
                         });
-                        //to show the pre chat lead collection Form if enabled 
+                        //to show the pre chat lead collection Form if enabled
                         var preChatLauncher = window.KommunicateGlobal.window.document.getElementById("km-anonymous-chat-launcher")
                         if (window.KommunicateGlobal && preChatLauncher) {
                             var intervalForPreChatLead = setTimeout(function () {
                                 preChatLauncher.click()
                                 window.KommunicateGlobal.window.document.getElementById("km-modal-close").style.display = "none"
                             }, 500);
-                        }
-                        window.KommunicateGlobal && preChatLauncher &&
                             preChatLauncher.addEventListener("click", function () {
                                 { clearInterval(intervalForPreChatLead) }
                             })
+                        }
                         closeButton.parentElement.style.display = "none";
                         Kommunicate.launchConversation();
                         // KommunicateGlobal.document.getElementById('mck-sidebox-launcher').click();
