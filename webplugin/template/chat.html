@@ -13,15 +13,25 @@
     <script type="text/javascript">
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
+        let botIds = params.get('botIds')
+        let assignee = params.get('assignee')
         let referer = window.document.referrer;
 
         if (!appId) {
             document.getElementById('error-msg').innerText = "no app id"
         } else {
             (function (d, m) {
+                if(botIds && assignee ){
+                var defaultSettings = {
+                "defaultBotIds": [botIds], // Optional. Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard. Include this parameter if you want to assign the conversation to a bot.
+                "defaultAssignee": assignee, // Replace <ASSIGNEE_ID> with your bot/agent ID  whom you're assigning the conversation.
+                "skipRouting": true
+                 };}
                 var kommunicateSettings = {
                     "appId": appId, // replace this with your application id
                     "onInit": function () {
+                        if (defaultSettings){
+                        Kommunicate.updateSettings(defaultSettings);} 
                         var iframeStyle = document.createElement('style');
                         var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
                         iframeStyle.type = 'text/css';
@@ -38,9 +48,20 @@
                                 iframe.classList.add("change-kommunicate-iframe-height");
                             });
                         });
+                        //to show the pre chat lead collection Form if enabled
+                        var preChatLauncher = window.KommunicateGlobal.window.document.getElementById("km-anonymous-chat-launcher")
+                        if (window.KommunicateGlobal && preChatLauncher) {
+                            var intervalForPreChatLead = setTimeout(function () {
+                                preChatLauncher.click()
+                                window.KommunicateGlobal.window.document.getElementById("km-modal-close").style.display = "none"
+                            }, 500);
+                            preChatLauncher.addEventListener("click", function () {
+                                { clearInterval(intervalForPreChatLead) }
+                            })
+                        }
                         closeButton.parentElement.style.display = "none";
                         Kommunicate.launchConversation();
-                        KommunicateGlobal.document.getElementById('mck-sidebox-launcher').click();
+                        // KommunicateGlobal.document.getElementById('mck-sidebox-launcher').click();
                     }
                 };
                 var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
