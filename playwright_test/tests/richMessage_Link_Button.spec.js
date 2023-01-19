@@ -31,13 +31,9 @@ test("Link Button", async ({ browser }) => {
               .click();
   await iframe.locator(widgetLocators.kmTextBox)
               .type("Link Button");
-  await iframe.locator(widgetLocators
-              .kmSendButton)
+  await iframe.locator(widgetLocators.kmSendButton)
               .click();
   await page.waitForTimeout(2000);
-
-  // The UI of rich message check using snapshot
-  expect(await page.screenshot()).toMatchSnapshot('Link_Button.png', { threshold: 1 });
 
   // The message Response verify that the message was successfully sent
   await page.waitForTimeout(2000);
@@ -47,7 +43,10 @@ test("Link Button", async ({ browser }) => {
                 .click(),
   ]);
   await newPage.isVisible(richMessagesLocators.kmLinkOnNewTab);
-
   await newPage.close();
+
+  // The UI of rich message check using snapshot
+  expect(await page.screenshot()).toMatchSnapshot('Link_Button.png', { threshold: 1 });
+
   await page.click(locators.logoutWidgetBtn);
 });

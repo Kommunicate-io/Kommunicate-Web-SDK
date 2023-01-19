@@ -1,7 +1,7 @@
 /*
- * richMessage_Suggested_Replies.spec.js
+ * richMessage_Submit_Button.spec.js
  * playwright_test/test
- * Created by Archit on 01/01/2023. 
+ * Created by Archit on 08/01/2023. 
  */
 
 import { test, expect } from '@playwright/test';
@@ -33,26 +33,26 @@ let page;
               .click();
   })
 
-  // Testing Suggested Replies
-  test("Suggested Replies", async () => {
+  // Testing Submit Button
+  test("Submit Button", async ({ request }) => {
     const iframe = page.frameLocator(widgetLocators.kmIframe)
     await iframe.locator(widgetLocators.kmTextBox)
                 .click();
     await iframe.locator(widgetLocators.kmTextBox)
-                .type("Suggested Replies");
+                .type("Submit Button");
     await iframe.locator(widgetLocators.kmSendButton)
                 .click();
     await page.waitForTimeout(2000)
-
-  // The message Response verify that the message was successfully sent
-    await iframe.locator(richMessagesLocators.kmSuggestedRepliesYesBtn)
+    await iframe.locator(richMessagesLocators.kmSubmitButton)
                 .click();
-    await page.waitForTimeout(2000)
-    const isVisible = await iframe.locator(richMessagesLocators.kmSuggestedRepliesYesBtnResponse).isVisible();
-    expect(isVisible).toBe(true);
+                
+  // The message Response verify that the message was successfully sent
+    const req = await request.post('https://testsubmitbuttonforkm.free.beeceptor.com/');
+    expect(req.ok()).toBeTruthy();
 
   // The UI of rich message check using snapshot
-    expect(await page.screenshot()).toMatchSnapshot('Suggested_Replies.png',{threshold: 1});
+    expect(await page.screenshot()).toMatchSnapshot('Submit_Button.png',{threshold: 1});
+
   })
 
   test.afterAll(async () => {
