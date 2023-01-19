@@ -1,8 +1,7 @@
 /*
  * chatOptions.spec.js
  * playwright_test/tests
- * Created by Archit on 23/12/2022. 
- * Created by Archit on 23/12/2011. 
+ * Created by Archit on 23/12/2022.
  */
 
 import { test, expect } from '@playwright/test';
@@ -53,7 +52,7 @@ let page;
     await iframe.locator(widgetLocators.kmLocBtn)
                 .click();
     await iframe.locator(widgetLocators.kmLocSendBtn)
-                   .click();
+                .click();
     await page.waitForTimeout(3000)
 
     // The message status verify that the message was successfully sent

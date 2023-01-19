@@ -6,6 +6,7 @@ const { devices } = require('@playwright/test');
 const config = {
   // Options shared for all projects.
   timeout: 30000,
+  reporter: 'html',
   use: {
     ignoreHTTPSErrors: true,
     headless: false,
