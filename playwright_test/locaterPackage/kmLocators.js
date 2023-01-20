@@ -35,8 +35,8 @@ export const richMessagesLocators = {
     kmImageResponse: '//div[@class="km-image-template"]',
     kmCombiSuggestedRepliesBtn : '//button[@aria-label="Suggested reply Button"]',
     kmCombiSubmitBtn : '//button[@data-buttontype="submit"]',
-    kmCombiSuggestedRepliesBtnResponse : '//div[text()="text will be sent as message"]'
+    kmCombiSuggestedRepliesBtnResponse : '//div[text()="text will be sent as message"]',
     kmSubmitButton: '//button[@data-buttontype="submit"]',
-    kmSubmitButtonResponse: '//div[text()="Button Response"]'
+    kmSubmitButtonResponse: '//div[text()="Button Response"]',
     kmImageResponse: '//div[@class="km-image-template"]'
 };
