@@ -45,7 +45,11 @@ let page;
     const iframe = page.frameLocator(widgetLocators.kmIframe)
 
   // The UI of rich message check using snapshot
-    expect(await page.screenshot()).toMatchSnapshot('Button_Combination.png',{threshold: 1});
+    const screenshot = await page.screenshot();
+    expect(screenshot).toMatchSnapshot({
+      threshold: 0.98,
+      name: 'Button_Combination.png'
+    }, './richMessage_Combination_buttons.spec.js-snapshots/');
     await iframe.locator(richMessagesLocators.kmCombiSuggestedRepliesBtn)
                 .click();
     await page.waitForTimeout(2000)

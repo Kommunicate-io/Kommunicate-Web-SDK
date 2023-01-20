@@ -1,7 +1,7 @@
 /*
- * richMessage_Image.spec.js
+ * richMessage_List_Template.spec.js
  * playwright_test/test
- * Created by Archit on 03/01/2023. 
+ * Created by Archit on 18/01/2023. 
  */
 
 import { test, expect } from '@playwright/test';
@@ -33,28 +33,22 @@ let page;
               .click();
   })
 
-  // Testing Image
-  test("Image", async () => {
+  // Testing List Template
+  test("List Template", async () => {
     const iframe = page.frameLocator(widgetLocators.kmIframe)
     await iframe.locator(widgetLocators.kmTextBox)
                 .click();
     await iframe.locator(widgetLocators.kmTextBox)
-                .type("Image");
+                .type("List Template");
     await iframe.locator(widgetLocators.kmSendButton)
                 .click();
-    await page.waitForTimeout(8000)
+    await page.waitForTimeout(6000)
 
- // The message Response verify that the message was successfully sent
-    const isVisible = await iframe.locator(richMessagesLocators.kmImageResponse).isVisible();
-    expect(isVisible).toBe(true);
-
-  // The UI of rich message check using snapshot
     const screenshot = await page.screenshot();
     expect(screenshot).toMatchSnapshot({
       threshold: 0.98,
-      name: 'Images.png'
-    }, './richMessage_Image.spec.js-snapshots/');
-
+      name: 'List_Template.png'
+    }, './richMessage_List_Template.spec.js-snapshots/');
   })
 
   test.afterAll(async () => {

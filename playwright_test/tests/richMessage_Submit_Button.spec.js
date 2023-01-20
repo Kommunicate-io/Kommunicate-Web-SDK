@@ -51,7 +51,11 @@ let page;
     expect(req.ok()).toBeTruthy();
 
   // The UI of rich message check using snapshot
-    expect(await page.screenshot()).toMatchSnapshot('Submit_Button.png',{threshold: 1});
+    const screenshot = await page.screenshot();
+    expect(screenshot).toMatchSnapshot({
+      threshold: 0.98,
+      name: 'Submit_Button.png'
+    }, './richMessage_Submit_Button.spec.js-snapshots/');
 
   })
 

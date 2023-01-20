@@ -52,7 +52,11 @@ let page;
     expect(isVisible).toBe(true);
 
   // The UI of rich message check using snapshot
-    expect(await page.screenshot()).toMatchSnapshot('Suggested_Replies.png',{threshold: 1});
+    const screenshot = await page.screenshot();
+    expect(screenshot).toMatchSnapshot({
+      threshold: 0.98,
+      name: 'Suggested_Replies.png'
+    }, './richMessage_Suggested_Replies.spec.js-snapshots/');
   })
 
   test.afterAll(async () => {

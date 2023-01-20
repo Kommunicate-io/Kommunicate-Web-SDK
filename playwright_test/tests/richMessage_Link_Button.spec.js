@@ -46,7 +46,11 @@ test("Link Button", async ({ browser }) => {
   await newPage.close();
 
   // The UI of rich message check using snapshot
-  expect(await page.screenshot()).toMatchSnapshot('Link_Button.png', { threshold: 1 });
+  const screenshot = await page.screenshot();
+  expect(screenshot).toMatchSnapshot({
+    threshold: 0.98,
+    name: 'Link_Button.png'
+  }, './richMessage_Link_Button.spec.js-snapshots/');
 
   await page.click(locators.logoutWidgetBtn);
 });
