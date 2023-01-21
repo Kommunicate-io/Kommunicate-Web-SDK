@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { widgetLocators, locators, richMessagesLocators } from '../locaterPackage/kmLocators';
+import { widgetLocators, locators, richMessagesLocators, commonValue } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
 
@@ -51,7 +51,7 @@ let page;
   // The UI of rich message check using snapshot
     const screenshot = await page.screenshot();
     expect(screenshot).toMatchSnapshot({
-      threshold: 0.98,
+      threshold: commonValue.thresholdValue,
       name: 'Images.png'
     }, './richMessage_Image.spec.js-snapshots/');
 

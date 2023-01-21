@@ -40,3 +40,7 @@ export const richMessagesLocators = {
     kmSubmitButtonResponse: '//div[text()="Button Response"]',
     kmImageResponse: '//div[@class="km-image-template"]'
 };
+
+export const commonValue = {
+    thresholdValue : 0.98
+};
