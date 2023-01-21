@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { widgetLocators, locators, richMessagesLocators, commonValue } from '../locaterPackage/kmLocators';
+import { widgetLocators, locators, richMessagesLocators, common_Values } from '../locaterPackage/kmLocators';
 import { url , app_id } from '../utils/kmSecret';
 import { script } from '../utils/kmScript';
 
@@ -47,7 +47,7 @@ let page;
   // The UI of rich message check using snapshot
     const screenshot = await page.screenshot();
     expect(screenshot).toMatchSnapshot({
-      threshold: commonValue.thresholdValue,
+      threshold: common_Values.thresholdValue,
       name: 'Button_Combination.png'
     }, './richMessage_Combination_buttons.spec.js-snapshots/');
     await iframe.locator(richMessagesLocators.kmCombiSuggestedRepliesBtn)

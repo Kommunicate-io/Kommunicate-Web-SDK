@@ -41,6 +41,6 @@ export const richMessagesLocators = {
     kmImageResponse: '//div[@class="km-image-template"]'
 };
 
-export const commonValue = {
+export const common_Values = {
     thresholdValue : 0.98
 };
