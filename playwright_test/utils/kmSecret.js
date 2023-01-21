@@ -4,10 +4,10 @@
  * Created by Archit on 21/12/2022. 
  */
 
-export const app_id = {
+export const APP_ID = {
     kmAppId : '25a8b220c6c9df9396582e1c60fd146bf'
 };
 
-export const url = {
+export const URL = {
     kmWidgetURL : 'https://test.prochnost.tk/widget-test'
 }

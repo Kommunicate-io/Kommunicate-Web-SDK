@@ -5,65 +5,65 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { widgetLocators, locators } from '../locaterPackage/kmLocators';
-import { url , app_id } from '../utils/kmSecret';
-import { script } from '../utils/kmScript';
+import { WIDGET_LOCATORS, LOCATORS } from '../locaterPackage/kmLocators';
+import { URL , APP_ID } from '../utils/kmSecret';
+import { SCRIPT } from '../utils/kmScript';
 
 let page;
 
   test.beforeAll(async ({browser}) => {
     page = await browser.newPage();
-    await page.goto(url.kmWidgetURL);
-    await page.waitForSelector(locators.envBtn);
-    await page.click(locators.envBtn);
-    await page.click(locators.appIdField);
+    await page.goto(URL.kmWidgetURL);
+    await page.waitForSelector(LOCATORS.envBtn);
+    await page.click(LOCATORS.envBtn);
+    await page.click(LOCATORS.appIdField);
     await page.keyboard
               .press('Meta+A');
-    await page.type(locators.appIdField, app_id.kmAppId);
-    await page.click(locators.scriptFiled);
+    await page.type(LOCATORS.appIdField, APP_ID.kmAppId);
+    await page.click(LOCATORS.scriptFiled);
     await page.keyboard
               .press('Meta+A');
     await page.keyboard
               .press('Delete');
-    await page.type(locators.scriptFiled,script.kmAllBooleanIsTrue);
-    await page.click(locators.launchWidgetBtn);
-    await page.frameLocator(widgetLocators.kmIframe)
-              .locator(widgetLocators.kmLaunchWidget)
+    await page.type(LOCATORS.scriptFiled,SCRIPT.kmAllBooleanIsTrue);
+    await page.click(LOCATORS.launchWidgetBtn);
+    await page.frameLocator(WIDGET_LOCATORS.kmIframe)
+              .locator(WIDGET_LOCATORS.kmLaunchWidget)
               .click();
   })
 
   test("Send Emoji", async () => {
-    const iframe = page.frameLocator(widgetLocators.kmIframe)
-    await iframe.locator(widgetLocators.kmEmojiBtn)
+    const iframe = page.frameLocator(WIDGET_LOCATORS.kmIframe)
+    await iframe.locator(WIDGET_LOCATORS.kmEmojiBtn)
                 .click();
-    await iframe.locator(widgetLocators.kmSmirkEmoji)
+    await iframe.locator(WIDGET_LOCATORS.kmSmirkEmoji)
                 .click();
     await page.keyboard
               .press('Enter');
     await page.waitForTimeout(3000)
 
   // The message status verify that the message was successfully sent
-    const isVisible = await iframe.locator(widgetLocators.kmMsgStatus).isVisible();
+    const isVisible = await iframe.locator(WIDGET_LOCATORS.kmMsgStatus).isVisible();
     expect(isVisible).toBe(true);
   })
 
   test("Send Location", async() =>{
-    const iframe = page.frameLocator(widgetLocators.kmIframe)
-    await iframe.locator(widgetLocators.kmLocBtn)
+    const iframe = page.frameLocator(WIDGET_LOCATORS.kmIframe)
+    await iframe.locator(WIDGET_LOCATORS.kmLocBtn)
                 .click();
-    await iframe.locator(widgetLocators.kmLocSendBtn)
+    await iframe.locator(WIDGET_LOCATORS.kmLocSendBtn)
                 .click();
     await page.waitForTimeout(3000)
 
     // The message status verify that the message was successfully sent
-    await page.locator(widgetLocators.kmMsgStatus)
+    await page.locator(WIDGET_LOCATORS.kmMsgStatus)
               .isVisible()
   })
 
   test("Send attachment", async() =>{
-    const iframe = page.frameLocator(widgetLocators.kmIframe);
+    const iframe = page.frameLocator(WIDGET_LOCATORS.kmIframe);
     const fileChooserPromise = page.waitForEvent('filechooser');
-    await iframe.locator(widgetLocators.kmAttachmentBtn)
+    await iframe.locator(WIDGET_LOCATORS.kmAttachmentBtn)
                 .click(); 
     const fileChooser = await fileChooserPromise;
 
@@ -72,10 +72,10 @@ let page;
     await page.waitForTimeout(4000)
 
     // The message status verify that the message was successfully sent
-    await page.locator(widgetLocators.kmMsgStatus)
+    await page.locator(WIDGET_LOCATORS.kmMsgStatus)
               .isVisible()
   })
 
   test.afterAll(async () => {
-    await page.click(locators.logoutWidgetBtn)
+    await page.click(LOCATORS.logoutWidgetBtn)
   })
