@@ -367,8 +367,12 @@ function ZendeskChatService() {
                 title: window.parent.document.title,
                 url: window.parent.location.href
             };
-            zChat.sendVisitorPath(currPage, function(err) { 
-                console.log("An error occurred while updating visitor path ", err)
+            zChat.sendVisitorPath(currPage, function(err, data) { 
+                if(err){
+                    console.log("An error occurred while updating visitor path ", err);
+                } else {
+                    console.log("Visitor path updated");
+                }
             });
         } catch (error){
             console.log("An error occurred while updating visitor path ", err)
