@@ -5,7 +5,7 @@
  * Created by Archit on 21/12/2022. 
  */
 
-export const locators = {
+export const LOCATORS = {
     envBtn : '#test',
     appIdField : '//span[text()="App ID"]/following::input',
     scriptFiled : '//textarea[@data-gramm="false"]',
@@ -13,7 +13,7 @@ export const locators = {
     logoutWidgetBtn : '//button[text()="Logout & Reload"]'
 };
 
-export const widgetLocators = {
+export const WIDGET_LOCATORS = {
     kmIframe : 'iframe[name="Kommunicate widget iframe"]',
     kmLaunchWidget : '#launcher-svg-container',
     kmTextBox : '#mck-text-box',
@@ -27,7 +27,7 @@ export const widgetLocators = {
     kmLocSendBtn : '#mck-loc-submit'
 };
 
-export const richMessagesLocators = {
+export const RICHMESSAGES_LOCATORS = {
     kmSuggestedRepliesYesBtn : '//button[@aria-label="Yes"]',
     kmSuggestedRepliesYesBtnResponse : '//div[text()="Cool! send me more."]',
     kmLinkButton : '//button[@aria-label="Go To Google"]',
@@ -39,4 +39,8 @@ export const richMessagesLocators = {
     kmSubmitButton: '//button[@data-buttontype="submit"]',
     kmSubmitButtonResponse: '//div[text()="Button Response"]',
     kmImageResponse: '//div[@class="km-image-template"]'
+};
+
+export const COMMON_VALUES = {
+    thresholdValue : 0.98
 };
