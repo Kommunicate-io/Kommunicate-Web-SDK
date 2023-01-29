@@ -10,7 +10,8 @@ It lets you easily add real-time live chat and in-app messaging in your websites
 
 Kommunicate has a powerful human + chatbot hybrid platform, where you can integrate Dialogflow and Amazon Lex chatbot without using any code. You can also integrate any third-party or custom chatbot in Kommunciate as well. The automatic bot to human handoff enabled, customizable and rich-messaging equipped chat-widget gives you ample options to make your chatbot more powerful. 
 
-![Chat-widget](https://user-images.githubusercontent.com/32258004/95323958-9dd83c00-08bc-11eb-8744-bbf33140e00d.png)
+![Chat-widget](https://user-images.githubusercontent.com/91717856/215320134-f4f7308c-0e31-45cd-8c5b-619c4bba63b8.png)
+
 
 
 
@@ -20,13 +21,14 @@ Kommunicate has a powerful human + chatbot hybrid platform, where you can integr
 
 [Kompose](https://dashboard.kommunicate.io/bots/bot-builder) is a Kommunicate’s bot builder that help you in building your own bot, a techie, non-techie, or a person who doesn’t have any idea about chatbots can also build the bot. Anyone can create a chatbot with the Kompose without any assistance.
 
-![Kompose-build](https://user-images.githubusercontent.com/38066371/87525821-a519f000-c6a7-11ea-90d6-97e8fab4d1b3.gif)
+![Kompose-build](https://user-images.githubusercontent.com/91717856/215320213-8f09b877-dc17-46b8-aac2-1caf4a0b5be4.gif)
 
 
 
 ### Following is the UI to create the BOT
 
-![Kompose](https://user-images.githubusercontent.com/32258004/95324271-1808c080-08bd-11eb-9bed-768e87977648.png)
+![Kompose](https://user-images.githubusercontent.com/91717856/215320299-9cdb5428-444d-429e-bdd7-78f187b6b004.png)
+
 
 
 
@@ -81,6 +83,18 @@ You can install the Kommunicate chat widget on your website by adding a code sni
 **Smart Rich Messaging:** Leverage rich messages using buttons, cards, carousels, forms or lists to provide an exquisite support chat experience to your customers.
 
 **Quick Replies:** Quickly respond to generic user queries using Quick Replies. Easily create and manage templated messages from your dashboard.
+Conversation Auto-resolve: Reduce redundant tasks such as manually resolving dormant conversation using automation.
+
+**Push Notifications:** Set up interactive alerts for both your agents and customers for new messages in conversations
+
+**Fallback Emails:** Get notified through email if you miss any messages from your users and vice versa.
+
+**Omnichannel Support:** Manage customer requests from live chat, email, chatbots, social media at a single place.
+
+**Team Roles:** Manage your team, and assign roles and access permission level to each of your agents.
+
+**CSAT Ratings:** Keep track of your customer's overall satisfaction and your team's performance.
+
 
 ### Example :
 
