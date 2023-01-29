@@ -38,7 +38,17 @@ export const RICHMESSAGES_LOCATORS = {
     kmCombiSuggestedRepliesBtnResponse : '//div[text()="text will be sent as message"]',
     kmSubmitButton: '//button[@data-buttontype="submit"]',
     kmSubmitButtonResponse: '//div[text()="Button Response"]',
-    kmImageResponse: '//div[@class="km-image-template"]'
+    kmImageResponse: '//div[@class="km-image-template"]',
+    kmNameInFormTemplate : '//input[@placeholder="Enter your name"]',
+    kmPhoneInFormTemplate : '//input[@placeholder="Enter your Phone No"]',
+    kmRadioButtonInFormTemplate : '//input[@value="male"]',
+    kmCheckBox1InFormTemplate : '//input[@value="metal"]',
+    kmCheckBox2InFormTemplate : '//input[@value="blues"]',
+    kmSubmitBtnInFormTemplate : '//button[text()="Submit"]',
+    kmDropDownInFormTemplate : '//select[@data-error-text="Please select your profession"]',
+    kmTextAreaInFormTemplate : '//textarea[@cols="10"]',
+    kmDateInFormTemplate : '//input[@type="date"]'
+
 };
 
 export const COMMON_VALUES = {
