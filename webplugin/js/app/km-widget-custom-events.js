@@ -5,16 +5,12 @@
  */
 var kmWidgetEvents = {
     gaTrackingId: function () {
-        var trackingID = '';
+        var trackingID =
+            applozic._globals.gaTrackingID ||
+            (applozic._globals.appSettings.chatWidget.isGAEnabled &&
+                applozic._globals.appSettings.chatWidget.gaTrackingId);
 
-        if (!trackingID) {
-            trackingID =
-                applozic._globals.gaTrackingID ||
-                (applozic._globals.appSettings.chatWidget.isGAEnabled &&
-                    applozic._globals.appSettings.chatWidget.gaTrackingId);
-        }
-
-        return trackingID.toString();
+        return (trackingID && trackingID.toString()) || '';
     },
     sendEventToGoogleAnalytics: function (
         eventCategory,
