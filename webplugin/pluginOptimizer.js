@@ -286,6 +286,9 @@ const generateBuildFiles = () => {
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
+    // copy applozic.chat.{version}.min.js to build
+    copyFileToBuild('js/app/applozic.chat-6.2.2.min.js', `${buildDir}/applozic.chat-6.2.2.min.js`)
+
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
