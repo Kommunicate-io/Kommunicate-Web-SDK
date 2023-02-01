@@ -24,7 +24,9 @@ export const WIDGET_LOCATORS = {
     kmLocBtn : '#mck-btn-loc',
     kmAttachmentBtn : '#mck-file-up',
     kmSmirkEmoji : '//*[@id="group_0"]/a[6]',
-    kmLocSendBtn : '#mck-loc-submit'
+    kmLocSendBtn : '#mck-loc-submit',
+    kmQuickRepliesBtn : '#intent-option',
+    kmQuickReplyOptions : '//li[text()="Book a Demo"]'
 };
 
 export const RICHMESSAGES_LOCATORS = {
