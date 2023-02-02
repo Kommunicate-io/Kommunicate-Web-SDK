@@ -6,5 +6,6 @@
 
 export const SCRIPT = {
     kmSendMessageScript : '{"popupWidget": true, "automaticChatOpenOnNavigation": true}',
-    kmAllBooleanIsTrue : '{"popupWidget": true, "automaticChatOpenOnNavigation": true, "attachment": true, "emojilibrary": true, "locShare": true}'
+    kmAllBooleanIsTrue : '{"popupWidget": true, "automaticChatOpenOnNavigation": true, "attachment": true, "emojilibrary": true, "locShare": true}',
+    kmAllBooleanIsFalse : '{"popupWidget": false, "automaticChatOpenOnNavigation": false,"attachment": false}'
 };
