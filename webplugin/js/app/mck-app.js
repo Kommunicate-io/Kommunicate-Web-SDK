@@ -481,6 +481,7 @@ function ApplozicSidebox() {
             options.attachmentHandler = options.attachmentHandler != null 
                     ? options.attachmentHandler 
                     : function (file) { return file; };
+            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
