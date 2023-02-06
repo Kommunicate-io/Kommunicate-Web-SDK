@@ -1,23 +1,45 @@
-name: Playwright tests
+name: Playwright Test
 
 on:
   pull_request:
     branches:
       - master
 
+env:
+  NODE_ENV: test
+
 jobs:
-  test:
+  run_tests:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Copy config.js
-      run: cp playwright_test/playwright.config.js playwright_test/tests
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
 
     - name: Install dependencies
       run: npm install
 
-    - name: Run Playwright tests
-      run: npx playwright test
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Run Playwright Tests
+      run: npx playwright test --parallel
+      env:
+        NODE_ENV: test
+
+    - name: Store test result
+      run: echo ::set-output name=result::$?
+
+    - name: Show test result in Pull Request
+      uses: endBug/github-action-summary-pull-request@v2
+      with:
+        result: ${{ steps.store_test_result.outputs.result }}
+        success_emoji: ':white_check_mark:'
+        success_message: 'All tests passed'
+        failure_emoji: ':x:'
+        failure_message: 'Some tests failed'
