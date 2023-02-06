@@ -8776,7 +8776,7 @@ var userOverride = {
                 if (
                     msg.contentType ==
                         KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
-                    msg.contentType == 8 ||
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
                     msg.contentType ==
                         KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION 
                 ) {
