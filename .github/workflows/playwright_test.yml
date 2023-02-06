@@ -1,17 +1,20 @@
-name: Playwright Test
+name: Test and Report Results
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    branches:
+      - main
+
+env:
+  CI: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.head_ref }}
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
@@ -19,7 +22,13 @@ jobs:
         node-version: 14
 
     - name: Install dependencies
-      run: npm ci
+      run: npm install
 
     - name: Run tests
-      run: npm test
+      run: npx playwright test
+
+    - name: Report test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: test-results
