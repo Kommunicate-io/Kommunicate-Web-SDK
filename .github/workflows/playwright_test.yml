@@ -1,23 +1,24 @@
-name: Playwright Tests
+name: Playwright Test
 
 on:
-  push:
-    branches: [master]
   pull_request:
     branches: [master]
 
+env:
+  NODE_ENV: test
+
 jobs:
-  test:
-    timeout-minutes: 60
+  playwright_test:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v1
       with:
-        node-version: 18
+        node-version: 14
 
     - name: Install dependencies
       run: npm install
@@ -25,10 +26,42 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
 
-    - name: Upload Playwright report
-      uses: actions/upload-artifact@v3
-      if: always()
+    - name: Display test results in pull request
+      uses: actions/github-script@0.7.0
       with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+        script: |
+          const output = process.env.GITHUB_WORKSPACE + "/test-results.xml";
+          const tests = await require("junit-reporter").read(output);
+          const annotations = tests.testsuites.testsuite.map(testsuite => {
+            return testsuite.testcase.map(testcase => {
+              return {
+                path: testcase.$.file,
+                start_line: testcase.$.line,
+                end_line: testcase.$.line,
+                annotation_level: testcase.failure ? "failure" : "notice",
+                message: testcase.failure ? testcase.failure[0] : "Test passed",
+              };
+            });
+          });
+
+          const pull_request = context.payload.pull_request;
+          const client = new GitHub();
+          annotations.forEach(annotation => {
+            client.checks.create({
+              name: "Playwright tests",
+              head_sha: pull_request.head.sha,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              details_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pull_request.number}`,
+              status: "completed",
+              conclusion: "success",
+              completed_at: new Date(),
+              output: {
+                title: "Playwright tests",
+                summary: `${annotations.length} tests ran`,
+                annotations: annotation,
+              },
+            });
+          });
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
