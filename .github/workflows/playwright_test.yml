@@ -1,4 +1,4 @@
-name: Test and Report Results
+name: Playwright Test
 
 on:
   pull_request:
