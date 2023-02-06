@@ -76,7 +76,7 @@ $applozic.extend(true, Kommunicate, {
         params.WELCOME_MESSAGE &&
             (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
         params.conversationMetadata &&
-            typeof params.conversationMetadata == 'object' &&
+        typeof params.conversationMetadata == 'object' &&
             (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
@@ -206,7 +206,7 @@ $applozic.extend(true, Kommunicate, {
                 'loadGroupTabByClientGroupId',
                 groupDetail
             );
-        }
+        } 
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
@@ -493,8 +493,8 @@ $applozic.extend(true, Kommunicate, {
         return (
             (typeof msg.fileMeta === 'object' &&
                 msg.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
-            msg.contentType == 8 ||
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) || 
+                    msg.contentType == 8 ||
             msg.contentType ==
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
         );
@@ -607,7 +607,7 @@ $applozic.extend(true, Kommunicate, {
                     .GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
-                    metadata['msgKey'] = message.key;
+                    metadata['msgKey'] = message.key; 
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:
@@ -766,7 +766,7 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            (msg.metadata && msg.metadata.category === 'HIDDEN') ||
+            (msg.metadata && msg.metadata.category === 'HIDDEN' ) ||
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
         ) {
@@ -782,8 +782,7 @@ $applozic.extend(true, Kommunicate, {
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE &&
             msg.metadata &&
-            (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') ||
-                msg.metadata.hide === 'true')
+           (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') || msg.metadata.hide === 'true')
         ) {
             return false;
         }
