@@ -34,7 +34,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test playwright_test
+        run: npx playwright test --workers 16
 
       - name: Show test result
         run: |
