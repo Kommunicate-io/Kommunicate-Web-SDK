@@ -23,6 +23,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+          
+      - name: path to test
+        run: cd playwright_test
 
       - name: Install dependencies
         run: npm install
