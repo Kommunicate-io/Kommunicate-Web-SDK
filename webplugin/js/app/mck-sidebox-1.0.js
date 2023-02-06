@@ -8776,8 +8776,9 @@ var userOverride = {
                 if (
                     msg.contentType ==
                         KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
+                    msg.contentType == 8 ||
                     msg.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION 
                 ) {
                     messageClass = msg.message ? 'vis km-attach-msg-right' : 'n-vis';
                     progressMeterClass = 'n-vis';
@@ -8818,7 +8819,7 @@ var userOverride = {
                         ? 'km-custom-widget-background-color'
                         : 'km-custom-widget-background-color-secondary';
 
-                if ( (floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg') || msg.contentType == 8) {
+                if ( (floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg')) {
                     messageClass = 'vis km-attach-msg-left';
                     attachmentBox = 'km-attach-msg-left';
                 }
