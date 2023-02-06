@@ -9067,13 +9067,11 @@ var userOverride = {
                           alFileService.getFileurl(msg)
                       )
                     : '';
-                console.log(attachmentBox);
                 if (
                     msg.contentType ==
                     KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT
                 ) {
                     var progressMeterClass = attachment ? 'n-vis' : 'vis';
-                    console.log(attachmentBox);
                     attachmentBox = attachment ? attachmentBox : 'n-vis';
                     var progressMeter =
                         attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey
