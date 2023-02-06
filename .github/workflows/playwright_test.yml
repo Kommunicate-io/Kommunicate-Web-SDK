@@ -2,66 +2,24 @@ name: Playwright Test
 
 on:
   pull_request:
-    branches: [master]
-
-env:
-  NODE_ENV: test
+    types: [opened, synchronize]
 
 jobs:
-  playwright_test:
+  test:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
 
     - name: Set up Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: 14
 
     - name: Install dependencies
       run: npm ci
 
-    - name: Run Playwright tests
-      run: npm run test
-
-    - name: Display test results in pull request
-      uses: actions/github-script@0.7.0
-      with:
-        script: |
-          const output = process.env.GITHUB_WORKSPACE + "/test-results.xml";
-          const tests = await require("junit-reporter").read(output);
-          const annotations = tests.testsuites.testsuite.map(testsuite => {
-            return testsuite.testcase.map(testcase => {
-              return {
-                path: testcase.$.file,
-                start_line: testcase.$.line,
-                end_line: testcase.$.line,
-                annotation_level: testcase.failure ? "failure" : "notice",
-                message: testcase.failure ? testcase.failure[0] : "Test passed",
-              };
-            });
-          });
-
-          const pull_request = context.payload.pull_request;
-          const client = new GitHub();
-          annotations.forEach(annotation => {
-            client.checks.create({
-              name: "Playwright tests",
-              head_sha: pull_request.head.sha,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              details_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/${pull_request.number}`,
-              status: "completed",
-              conclusion: "success",
-              completed_at: new Date(),
-              output: {
-                title: "Playwright tests",
-                summary: `${annotations.length} tests ran`,
-                annotations: annotation,
-              },
-            });
-          });
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run tests
+      run: npm test
