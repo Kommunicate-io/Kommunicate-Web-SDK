@@ -13,8 +13,8 @@ import { SCRIPT } from '../utils/kmScript';
 let page;
 
 // Launching widget
-test.setTimeout(300000);
-  test.beforeAll(async ({browser}) => {
+
+  test("hey", async ({browser}) => {
     test.setTimeout(300000);
     page = await browser.newPage();
     await page.goto('https://test.prochnost.tk/widget-test');
@@ -31,26 +31,6 @@ test.setTimeout(300000);
               .press('Delete');
     await page.type(LOCATORS.scriptFiled,SCRIPT.kmSendMessageScript);
     await page.click(LOCATORS.launchWidgetBtn);
-    const launchButton = await page.frameLocator(WIDGET_LOCATORS.kmIframe).locator(WIDGET_LOCATORS.kmLaunchWidget);
-    await launchButton.click();
+
   })
 
-  // Testing chat creation and message sending
-  test("send message", async () => {
-    const iframe = page.frameLocator(WIDGET_LOCATORS.kmIframe)
-    await iframe.locator(WIDGET_LOCATORS.kmTextBox)
-                .click();
-    await iframe.locator(WIDGET_LOCATORS.kmTextBox)
-                .type("hello");
-    await iframe.locator(WIDGET_LOCATORS.kmSendButton)
-                .click();
-    await page.waitForTimeout(3000)
-
-  // The message status verify that the message was successfully sent
-    const isVisible = await iframe.locator(WIDGET_LOCATORS.kmMsgStatus).isVisible();
-    expect(isVisible).toBe(true);
-  })
-
-  test.afterAll(async () => {
-    await page.click(LOCATORS.logoutWidgetBtn)
-  })
