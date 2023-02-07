@@ -14,7 +14,7 @@ let page;
 
 // Launching widget
   test.beforeAll(async ({browser}) => {
-    await page.waitForTimeout(300000)
+    test.setTimeout(300000);
     page = await browser.newPage();
     await page.goto(URL.kmWidgetURL);
     await page.waitForSelector(LOCATORS.envBtn);
