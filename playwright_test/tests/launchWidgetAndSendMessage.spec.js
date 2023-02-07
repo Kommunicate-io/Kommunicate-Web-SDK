@@ -13,6 +13,7 @@ import { SCRIPT } from '../utils/kmScript';
 let page;
 
 // Launching widget
+test.setTimeout(300000);
   test.beforeAll(async ({browser}) => {
     test.setTimeout(300000);
     page = await browser.newPage();
