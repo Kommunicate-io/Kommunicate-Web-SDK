@@ -25,6 +25,7 @@ jobs:
           node-version: 14
           
       - name: path to test
+        run: pwd
         run: cd playwright_test
 
       - name: Install dependencies
