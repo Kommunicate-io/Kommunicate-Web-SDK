@@ -1,45 +1,35 @@
-name: Playwright tests
+name: CI
 
 on:
   pull_request:
-    branches:
-      - master
-  push:
-    branches:
-      - master
-
-env:
-  NODE_ENV: test
+    branches: [ master ]
 
 jobs:
-  run_tests:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-          
-      - name: path to test
-        run: |
-          cd playwright_test
-          pwd
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: |
+        npm install
+        
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+    - name: Run tests
+      run: |
+        npx playwright test --workers 6
 
-      - name: Run Playwright tests
-        run: npx playwright test --workers 16
-
-      - name: Show test result
-        run: |
+    - name: Show test result
+      run: |
           echo "Total tests: $(find test -name '*.js' | wc -l)"
           echo "Passed tests: $(grep --no-filename -c 'passed' test/report.xml)"
           echo "Failed tests: $(grep --no-filename -c 'failed' test/report.xml)"
