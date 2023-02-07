@@ -13,7 +13,9 @@ import { SCRIPT } from '../utils/kmScript';
 let page;
 
 // Launching widget
+test.setTimeout(300000);
   test.beforeAll(async ({browser}) => {
+    test.setTimeout(300000);
     page = await browser.newPage();
     await page.goto(URL.kmWidgetURL);
     await page.waitForSelector(LOCATORS.envBtn);
@@ -22,6 +24,22 @@ let page;
 
   })
 
+  // Testing chat creation and message sending
+  test("send message", async () => {
+     await page.keyboard
+              .press('Meta+A');
+    await page.type(LOCATORS.appIdField, APP_ID.kmAppId);
+    await page.click(LOCATORS.scriptFiled);
+    await page.keyboard
+              .press('Meta+A');
+    await page.keyboard
+              .press('Delete');
+    await page.type(LOCATORS.scriptFiled,SCRIPT.kmSendMessageScript);
+    await page.click(LOCATORS.launchWidgetBtn);
+    await page.frameLocator(WIDGET_LOCATORS.kmIframe)
+              .locator(WIDGET_LOCATORS.kmLaunchWidget)
+              .click();
+  })
 
   test.afterAll(async () => {
     await page.click(LOCATORS.logoutWidgetBtn)
