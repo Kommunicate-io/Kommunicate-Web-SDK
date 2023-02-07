@@ -17,7 +17,7 @@ test.setTimeout(300000);
   test.beforeAll(async ({browser}) => {
     test.setTimeout(300000);
     page = await browser.newPage();
-    await page.goto(URL.kmWidgetURL);
+    await page.goto('https://test.prochnost.tk/widget-test');
     await page.waitForSelector(LOCATORS.envBtn);
     await page.click(LOCATORS.envBtn);
     await page.click(LOCATORS.appIdField);
