@@ -30,11 +30,13 @@ let page;
               .press('Delete');
     await page.type(LOCATORS.scriptFiled,SCRIPT.kmSendMessageScript);
     await page.click(LOCATORS.launchWidgetBtn);
-    const req = await request.get('https://widget-test.kommunicate.io/v2/kommunicate.app');
-    expect(req.ok()).toBeTruthy();
-    await page.frameLocator(WIDGET_LOCATORS.kmIframe)
-              .locator(WIDGET_LOCATORS.kmLaunchWidget)
-              .click();
+    const [response] = await Promise.all([
+      page.waitForResponse(response => response.url().includes('https://widget-test.kommunicate.io/v2/kommunicate.app')),
+      page.frameLocator(WIDGET_LOCATORS.kmIframe)
+      .locator(WIDGET_LOCATORS.kmLaunchWidget)
+      .click(),
+    ]);
+    
   })
 
   // Testing chat creation and message sending
