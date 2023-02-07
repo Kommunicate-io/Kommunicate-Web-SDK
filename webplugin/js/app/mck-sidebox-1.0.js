@@ -14,7 +14,7 @@ var IS_SOCKET_CONNECTED = false;
 var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
-var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ["application","text","image"];
 var userOverride = {
     voiceOutput: true,
 };
@@ -889,13 +889,13 @@ var userOverride = {
 
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
-            if (VOICE_OUTPUT_ENABLED && 'speechSynthesis' in window) {
+            if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
-                }
+                  }
             }
         };
         _this.reInit = function (optns) {
@@ -3105,7 +3105,6 @@ var userOverride = {
                         'id',
                         'km-' + preLeadCollection.field.toLowerCase()
                     );
-
                     kmChatInput.setAttribute(
                         'name',
                         'km-' + preLeadCollection.field.toLowerCase()
@@ -7651,7 +7650,6 @@ var userOverride = {
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 console.log("groupPxy now checking", groupPxy);
                                 CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
-
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
@@ -8007,7 +8005,7 @@ var userOverride = {
 
                 // For voice output user override
                 if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;
+                    enableDropdown = true;  
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
@@ -8778,8 +8776,9 @@ var userOverride = {
                 if (
                     msg.contentType ==
                         KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
                     msg.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION 
                 ) {
                     messageClass = msg.message ? 'vis km-attach-msg-right' : 'n-vis';
                     progressMeterClass = 'n-vis';
@@ -8820,7 +8819,7 @@ var userOverride = {
                         ? 'km-custom-widget-background-color'
                         : 'km-custom-widget-background-color-secondary';
 
-                if ( floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg') {
+                if ( (floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg')) {
                     messageClass = 'vis km-attach-msg-left';
                     attachmentBox = 'km-attach-msg-left';
                 }
@@ -8917,22 +8916,12 @@ var userOverride = {
                 ) {
                     olStatus = 'vis';
                 }
-                KommunicateUI.handleAttachmentIconVisibility(
-                    enableAttachment,
-                    msg,
-                    !append
-                );
-                var richText =
-                    Kommunicate.isRichTextMessage(msg.metadata) ||
-                    msg.contentType == 3;
-                var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
-                var kmRichTextMarkup = richText
-                    ? Kommunicate.getRichTextMessageTemplate(msg)
-                    : '';
-
-                var containerType = Kommunicate.getContainerTypeForRichMessage(
-                    msg
-                );
+                KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
+                var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+                var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
+                var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
+                
+                var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 msg.fileMeta &&
                     msg.fileMeta.size &&
@@ -13211,13 +13200,9 @@ var userOverride = {
                     'settings'
                 );
                 var conversationDetail = {
-                    groupName:
-                        (defaultSettings && defaultSettings.groupName) ||
-                        DEFAULT_GROUP_NAME,
-                    agentId: defaultSettings && defaultSettings.agentId, // || DEFAULT_AGENT_ID,
-                    botIds:
-                        (defaultSettings && defaultSettings.botIds) ||
-                        DEFAULT_BOT_IDS,
+                    groupName: (defaultSettings && defaultSettings.groupName) || DEFAULT_GROUP_NAME,
+                    agentId: (defaultSettings && defaultSettings.agentId) || DEFAULT_AGENT_ID,
+                    botIds: (defaultSettings && defaultSettings.botIds) || DEFAULT_BOT_IDS
                 };
                 return conversationDetail;
             };
