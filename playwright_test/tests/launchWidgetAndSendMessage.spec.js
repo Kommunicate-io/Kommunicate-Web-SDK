@@ -31,9 +31,8 @@ test.setTimeout(300000);
               .press('Delete');
     await page.type(LOCATORS.scriptFiled,SCRIPT.kmSendMessageScript);
     await page.click(LOCATORS.launchWidgetBtn);
-    await page.frameLocator(WIDGET_LOCATORS.kmIframe)
-              .locator(WIDGET_LOCATORS.kmLaunchWidget)
-              .click();
+    const launchButton = await page.frameLocator(WIDGET_LOCATORS.kmIframe).locator(WIDGET_LOCATORS.kmLaunchWidget);
+    await launchButton.click();
   })
 
   // Testing chat creation and message sending
