@@ -13,20 +13,14 @@ import { SCRIPT } from '../utils/kmScript';
 let page;
 
 // Launching widget
-test.setTimeout(300000);
-  test.beforeAll(async ({browser}) => {
-    test.setTimeout(300000);
+
+  test.beforeAll(async ({browser, request}) => {
     page = await browser.newPage();
     await page.goto(URL.kmWidgetURL);
     await page.waitForSelector(LOCATORS.envBtn);
     await page.click(LOCATORS.envBtn);
     await page.click(LOCATORS.appIdField);
-
-  })
-
-  // Testing chat creation and message sending
-  test("send message", async () => {
-     await page.keyboard
+    await page.keyboard
               .press('Meta+A');
     await page.type(LOCATORS.appIdField, APP_ID.kmAppId);
     await page.click(LOCATORS.scriptFiled);
@@ -36,7 +30,27 @@ test.setTimeout(300000);
               .press('Delete');
     await page.type(LOCATORS.scriptFiled,SCRIPT.kmSendMessageScript);
     await page.click(LOCATORS.launchWidgetBtn);
- 
+    const req = await request.get('https://widget-test.kommunicate.io/v2/kommunicate.app');
+    expect(req.ok()).toBeTruthy();
+    await page.frameLocator(WIDGET_LOCATORS.kmIframe)
+              .locator(WIDGET_LOCATORS.kmLaunchWidget)
+              .click();
+  })
+
+  // Testing chat creation and message sending
+  test("send message", async () => {
+    const iframe = page.frameLocator(WIDGET_LOCATORS.kmIframe)
+    await iframe.locator(WIDGET_LOCATORS.kmTextBox)
+                .click();
+    await iframe.locator(WIDGET_LOCATORS.kmTextBox)
+                .type("hello");
+    await iframe.locator(WIDGET_LOCATORS.kmSendButton)
+                .click();
+    await page.waitForTimeout(3000)
+
+  // The message status verify that the message was successfully sent
+    const isVisible = await iframe.locator(WIDGET_LOCATORS.kmMsgStatus).isVisible();
+    expect(isVisible).toBe(true);
   })
 
   test.afterAll(async () => {
