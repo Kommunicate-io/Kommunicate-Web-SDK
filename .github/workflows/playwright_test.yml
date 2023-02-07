@@ -26,8 +26,8 @@ jobs:
           
       - name: path to test
         run: |
-          pwd
           cd playwright_test
+          pwd
 
       - name: Install dependencies
         run: npm install
