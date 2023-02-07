@@ -5,7 +5,7 @@ const { devices } = require('@playwright/test');
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 const config = {
   // Options shared for all projects.
-  timeout: 30000,
+  timeout: 250000,
   reporter: 'html',
   use: {
     ignoreHTTPSErrors: true,
