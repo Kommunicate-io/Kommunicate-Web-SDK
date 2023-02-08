@@ -5574,7 +5574,6 @@ var userOverride = {
                 ) {
                     metadata.AL_REPLY = msgKeys;
                 }
-
                 messagePxy.metadata = metadata;
                 if (
                     (typeof messagePxy.message === 'undefined' ||
@@ -5963,6 +5962,9 @@ var userOverride = {
                     ),
                 });
 
+                if(metadata && metadata.payload && typeof metadata.payload !== 'string'){
+                    metadata.payload = JSON.stringify(metadata.payload);
+                }
                 messagePxy.metadata = metadata;
                 window.Applozic.ALApiService.ajax({
                     type: 'POST',
@@ -14729,7 +14731,7 @@ var userOverride = {
                     });
                 }
             };
-
+            
             _this.uploadAttachment2AWS = function (params, messagePxy) {
                 var file = params.file;
                 var data = new FormData();
@@ -14807,8 +14809,7 @@ var userOverride = {
                     var uniqueId = params.name + file.size;
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
-                    var newFileName = 'AWS-ENCRYPTED-' + file.name;
-                    data.append('file', file, newFileName);
+                    
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
                         'progress',
@@ -14844,19 +14845,31 @@ var userOverride = {
                                 stopUpload = KommunicateUI.getAttachmentStopUploadStatus(
                                     messagePxy.key
                                 );
-                                KommunicateUI.updateAttachmentTemplate(
-                                    file_meta,
-                                    messagePxy.key
-                                );
+
+                                if(appOptions.defaultUploadOverride){
+                                    let messageToSend = responseJson;
+                                    mckMessageLayout.removedDeletedMessage(
+                                        messagePxy.key,
+                                        messagePxy.groupId,
+                                        true
+                                    );
+                                    messagePxy.metadata = messageToSend.metadata;
+                                    delete messagePxy.fileMeta;
+                                } else {
+                                    KommunicateUI.updateAttachmentTemplate(
+                                        file_meta,
+                                        messagePxy.key
+                                    );
+                                    KommunicateUI.updateImageAttachmentPreview(
+                                        file_meta,
+                                        messagePxy.key
+                                    );
+                                }      
                                 !stopUpload &&
                                     mckMessageService.submitMessage(
                                         messagePxy,
                                         optns
                                     );
-                                KommunicateUI.updateImageAttachmentPreview(
-                                    file_meta,
-                                    messagePxy.key
-                                );
                                 return;
                             }
                             var fileExpr =
@@ -14905,11 +14918,36 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
+                    
                     var queryParams = '?aclsPrivate=true';
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
                     queryParams && (url = url + queryParams);
-                    xhr.open('post', url, true);
-                    window.Applozic.ALApiService.addRequestHeaders(xhr);
+
+                    if(appOptions.defaultUploadOverride){
+                        url = appOptions.defaultUploadOverride.url;
+                        
+                        xhr.open('post', url, true);
+                        data.append('file', file, newFileName);
+                        data.append('data', JSON.stringify({"groupId": messagePxy.groupId}));
+
+                        var headerKeys = Object.keys(appOptions.defaultUploadOverride.headers);
+
+                        for(var i = 0; i < headerKeys.length; i++){
+                            var headerKey = headerKeys[i];
+                            xhr.setRequestHeader(
+                                headerKey,
+                                appOptions.defaultUploadOverride.headers[headerKey]
+                            );
+                        }
+                    } else {
+                        var newFileName = 'AWS-ENCRYPTED-' + file.name;
+                        
+                        xhr.open('post', url, true);
+                        data.append('file', file, newFileName);
+                        window.Applozic.ALApiService.addRequestHeaders(xhr);
+                    }
+                    
+                    
                     xhr.send(data);
                 }
             };
