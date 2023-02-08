@@ -13,8 +13,7 @@ import { SCRIPT } from '../utils/kmScript';
 let page;
 
 // Launching widget
-
-  test.beforeAll(async ({browser, request}) => {
+  test.beforeAll(async ({browser}) => {
     page = await browser.newPage();
     await page.goto(URL.kmWidgetURL);
     await page.waitForSelector(LOCATORS.envBtn);
@@ -30,14 +29,9 @@ let page;
               .press('Delete');
     await page.type(LOCATORS.scriptFiled,SCRIPT.kmSendMessageScript);
     await page.click(LOCATORS.launchWidgetBtn);
-     await page.waitForTimeout(30000)
-    const [response] = await Promise.all([
-      page.waitForResponse(response => response.url().includes('https://widget-test.kommunicate.io/v2/kommunicate.app')),
-      page.frameLocator(WIDGET_LOCATORS.kmIframe)
-      .locator(WIDGET_LOCATORS.kmLaunchWidget)
-      .click(),
-    ]);
-    
+    await page.frameLocator(WIDGET_LOCATORS.kmIframe)
+              .locator(WIDGET_LOCATORS.kmLaunchWidget)
+              .click();
   })
 
   // Testing chat creation and message sending

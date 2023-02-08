@@ -9,7 +9,7 @@ const config = {
   reporter: 'html',
   use: {
     ignoreHTTPSErrors: true,
-    headless: true,
+    headless: false,
     screenshot: 'only-on-failure',
     trace: 'on'
   },
