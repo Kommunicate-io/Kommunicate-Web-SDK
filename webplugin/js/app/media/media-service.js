@@ -1,4 +1,6 @@
 Kommunicate.mediaService = {
+    browserLocale:
+       window.navigator.language || window.navigator.userLanguage || 'en-us',
     capitalizeFirstCharacter: function (str) {
         var firstCharRegex = /\S/;
         return str.replace(firstCharRegex, function (m) {
@@ -17,7 +19,7 @@ Kommunicate.mediaService = {
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end.
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
             finalTranscript = '';
-            recognition.lang = appOptions.language || 'en-us';
+            recognition.lang =  appOptions.language || Kommunicate.mediaService.browserLocale;
             recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
@@ -100,7 +102,7 @@ Kommunicate.mediaService = {
                     skipForEach = true;
                 }
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = appOptions.language || 'en-US';
+                utterance.lang =  appOptions.language || Kommunicate.mediaService.browserLocale;
                 utterance.rate = appOptions.voiceRate || 1;
                 var skipForEach = false;
                 if (appOptions.voiceName) {
