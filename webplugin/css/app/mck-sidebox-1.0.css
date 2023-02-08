@@ -5608,6 +5608,7 @@ div#mck-waiting-queue {
 	letter-spacing: 0.3px;
 	color: #676262;
 	font-size: 14px;
+	word-break: break-word;
 }
 
 div#separator {
