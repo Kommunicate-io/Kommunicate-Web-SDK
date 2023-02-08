@@ -26,6 +26,7 @@ jobs:
 
     - name: Run tests
       run: |
+        pwd
         npx playwright test --workers 16
 
     - name: Show test result
