@@ -53,15 +53,20 @@
                         if (window.KommunicateGlobal && preChatLauncher) {
                             var intervalForPreChatLead = setTimeout(function () {
                                 preChatLauncher.click()
+                                iframe.classList.add("change-kommunicate-iframe-height");
+                                var preChatLeadScreenId = window.KommunicateGlobal.window.document.getElementById("km-chat-login-modal")
+                                var cssForPreChatLeadScreen = "#km-chat-login-modal{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}"
+                                preChatLeadScreenId && Kommunicate.customizeWidgetCss(cssForPreChatLeadScreen);
                                 window.KommunicateGlobal.window.document.getElementById("km-modal-close").style.display = "none"
-                            }, 500);
+                            }, 100);
                             preChatLauncher.addEventListener("click", function () {
                                 { clearInterval(intervalForPreChatLead) }
                             })
                         }
                         closeButton.parentElement.style.display = "none";
                         Kommunicate.launchConversation();
-                        // KommunicateGlobal.document.getElementById('mck-sidebox-launcher').click();
+                        var launcherIcon = KommunicateGlobal.document.getElementById('mck-sidebox-launcher')
+                        launcherIcon && launcherIcon.click();
                     }
                 };
                 var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
