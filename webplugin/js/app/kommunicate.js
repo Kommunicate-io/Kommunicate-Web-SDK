@@ -493,7 +493,8 @@ $applozic.extend(true, Kommunicate, {
         return (
             (typeof msg.fileMeta === 'object' &&
                 msg.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) || 
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
             msg.contentType ==
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
         );
