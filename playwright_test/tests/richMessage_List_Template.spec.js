@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { WIDGET_LOCATORS, LOCATORS, COMMON_VALUES } from '../locaterPackage/kmLocators';
+import { WIDGET_LOCATORS, LOCATORS, COMMON_VALUES, BUTTON_VERIFICATION } from '../locaterPackage/kmLocators';
 import { URL , APP_ID } from '../utils/kmSecret';
 import { SCRIPT } from '../utils/kmScript';
 
@@ -49,6 +49,10 @@ let page;
       threshold: COMMON_VALUES.thresholdValue,
       name: 'List_Template.png'
     }, './richMessage_List_Template.spec.js-snapshots/');
+
+  // verifying rich message using title and text of button 
+    const linkButton = await iframe.locator(BUTTON_VERIFICATION.seeUsOnFacebook).isVisible();
+    expect(linkButton).toBe(true);
   })
 
   test.afterAll(async () => {
