@@ -39,7 +39,7 @@ function ApplozicSidebox() {
                 typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
-                    : 'AIzaSyCTGgLQbsvMotNNjRqPnWCln4y4LcBvxxE',
+                    : 'AIzaSyA38UpjswOn3EN59MD1QrAoiKZ0fjXMlpE',
         },
     ];
     var mck_style_loader = [
