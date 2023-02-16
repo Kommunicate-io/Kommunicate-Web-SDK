@@ -5267,6 +5267,35 @@ var userOverride = {
                         return false;
                     }
                     if (
+                        $applozic('#mck-text-box').data('validation') &&
+                        $applozic('#mck-text-box').data('validation') != ''
+                    ) {
+                        var regexForm = $applozic('#mck-text-box').data(
+                            'validation'
+                        );
+                        var fieldValue = message;
+                        regexForm = new RegExp(regexForm);
+                        if (!regexForm.test(fieldValue)) {
+                            document.getElementById(
+                                'mck-form-field-error-alert'
+                            ).innerHTML = $applozic('#mck-text-box').data(
+                                'ErrorMessage'
+                            );
+                            $applozic('#mck-form-field-error-alert-box')
+                                .removeClass('n-vis')
+                                .addClass('vis');
+                            setTimeout(function () {
+                                $applozic('#mck-form-field-error-alert-box')
+                                    .removeClass('vis')
+                                    .addClass('n-vis');
+                            }, 2000);
+                        }
+                        $mck_text_box.attr('data-text', 'Type your message...');
+                        $mck_text_box.data('validation', '');
+                        $mck_text_box.data('ErrorMessage', '');
+                        $mck_text_box.data('SuccessMessage', '');
+                    }
+                    if (
                         typeof MCK_MSG_VALIDATION === 'function' &&
                         !MCK_MSG_VALIDATION(message)
                     ) {
@@ -9158,6 +9187,31 @@ var userOverride = {
                                 : {}
                         );
                     }
+                } else if (
+                    !(
+                        msg.metadata.obsolete && msg.metadata.obsolete == 'true'
+                    ) &&
+                    msg.metadata.KM_FIELD
+                ) {
+                    var fieldMetadata = {};
+                    try {
+                        fieldMetadata = JSON.parse(msg.metadata.KM_FIELD);
+                    } catch (e) {
+                         console.error('fieldMetadata should not be empty');
+                    }
+                    var fieldValidation = fieldMetadata.validation.regex;
+                    var errorMessage = fieldMetadata.validation.errorText;
+                    $mck_text_box
+                        .addClass('mck-text-box')
+                        .removeClass('n-vis')
+                        .data('validation', fieldValidation);
+                    $mck_text_box.data('ErrorMessage', errorMessage);
+                    $mck_text_box.attr(
+                        'data-text',
+                        fieldMetadata.placeholder
+                            ? fieldMetadata.placeholder
+                            : ''
+                    );
                 } else {
                     // hide the auto suggestion box and show the text box
                     mckMessageService.hideAutoSuggestionBoxEnableTxtBox();
