@@ -4825,6 +4825,7 @@ var userOverride = {
                         googleApiKey: MCK_GOOGLE_API_KEY,
                         chatNotificationMailSent: true,
                         authenticationTypeId: MCK_AUTHENTICATION_TYPE_ID,
+                        enableEncryption: true
                     };
                     if (email) {
                         options.email = email.toLowerCase();
