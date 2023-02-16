@@ -5289,6 +5289,7 @@ var userOverride = {
                                     .removeClass('vis')
                                     .addClass('n-vis');
                             }, 2000);
+                            return false;
                         }
                         $mck_text_box.attr('data-text', 'Type your message...');
                         $mck_text_box.data('validation', '');

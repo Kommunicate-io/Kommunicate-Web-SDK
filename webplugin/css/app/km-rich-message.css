@@ -724,20 +724,6 @@
         background-repeat: repeat-x;
         height: 2px;
     }
-#mck-form-field-error-alert-box hr {
-    border: none;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    background-image: linear-gradient(
-        to right,
-        #dddddd 40%,
-        rgba(255, 255, 255, 0) 0%
-    );
-    background-position: left;
-        background-size: 14px 1px;
-        background-repeat: repeat-x;
-        height: 2px;
-    }
     /******** Generic list template*************/
     /* FAQ List */
     .km-message.km-received.km-chat-faq-list {
@@ -1098,29 +1084,13 @@
     line-height: 52px;
     margin: 5px auto;
 }
-#mck-form-field-error-alert-box .svg-container {
-    width: 45px;
-    height: 45px;
-    border-radius: 40px;
-    background-color: #edebeb;
-    line-height: 52px;
-    margin: 5px auto;
-}
 
 #mck-email-collection-box .svg-container svg,
 #mck-email-error-alert-box .svg-container svg {
     margin-top: 16px;
 }
 
-#mck-form-field-error-alert-box .svg-container svg {
-    margin-top: 16px;
-}
-
 #mck-email-error-alert-box .svg-container {
-    background-color: #f1a5a5;
-}
-
-#mck-form-field-error-alert-box .svg-container {
     background-color: #f1a5a5;
 }
 
