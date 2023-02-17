@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { WIDGET_LOCATORS, LOCATORS, RICHMESSAGES_LOCATORS, COMMON_VALUES } from '../locaterPackage/kmLocators';
+import { WIDGET_LOCATORS, LOCATORS, RICHMESSAGES_LOCATORS, COMMON_VALUES, BUTTON_VERIFICATION } from '../locaterPackage/kmLocators';
 import { URL , APP_ID } from '../utils/kmSecret';
 import { SCRIPT } from '../utils/kmScript';
 
@@ -57,6 +57,10 @@ let page;
   // The message Response verify that the message was successfully sent
     const isVisible = await iframe.locator(RICHMESSAGES_LOCATORS.kmCombiSuggestedRepliesBtnResponse).isVisible();
     expect(isVisible).toBe(true);
+
+  // verifying rich message using title and text of button 
+    const suggestedRepliesButton = await iframe.locator(BUTTON_VERIFICATION.suggestedRepliesInCombi).isVisible();
+    expect(suggestedRepliesButton).toBe(true);
   })
 
   test("Combination Submit Button", async ({ request }) => {
@@ -67,6 +71,10 @@ let page;
   // The message Response verify that the message was successfully sent
     const req = await request.post('https://testcombinationsubmitbutton.free.beeceptor.com/');
     expect(req.ok()).toBeTruthy();
+
+  // verifying rich message using title and text of button 
+    const submitButton = await iframe.locator(BUTTON_VERIFICATION.submitButtonInCombi).isVisible();
+    expect(submitButton).toBe(true);
   })
 
   test.afterAll(async () => {

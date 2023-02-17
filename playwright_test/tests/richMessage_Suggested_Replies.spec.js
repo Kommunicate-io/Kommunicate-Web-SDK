@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { WIDGET_LOCATORS, LOCATORS, RICHMESSAGES_LOCATORS, COMMON_VALUES } from '../locaterPackage/kmLocators';
+import { WIDGET_LOCATORS, LOCATORS, RICHMESSAGES_LOCATORS, COMMON_VALUES, BUTTON_VERIFICATION } from '../locaterPackage/kmLocators';
 import { URL , APP_ID } from '../utils/kmSecret';
 import { SCRIPT } from '../utils/kmScript';
 
@@ -57,6 +57,12 @@ let page;
       threshold: COMMON_VALUES.thresholdValue,
       name: 'Suggested_Replies.png'
     }, './richMessage_Suggested_Replies.spec.js-snapshots/');
+
+  // verifying rich message using title and text of button 
+    const yesButton = await iframe.locator(BUTTON_VERIFICATION.yesInSuggestedReplies).isVisible();
+    expect(yesButton).toBe(true);
+    const NoButton = await iframe.locator(BUTTON_VERIFICATION.noInSuggestedReplies).isVisible();
+    expect(NoButton).toBe(true);
   })
 
   test.afterAll(async () => {

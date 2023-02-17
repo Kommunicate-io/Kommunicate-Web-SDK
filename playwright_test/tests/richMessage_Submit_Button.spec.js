@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { WIDGET_LOCATORS, LOCATORS, RICHMESSAGES_LOCATORS, COMMON_VALUES } from '../locaterPackage/kmLocators';
+import { WIDGET_LOCATORS, LOCATORS, RICHMESSAGES_LOCATORS, COMMON_VALUES, BUTTON_VERIFICATION } from '../locaterPackage/kmLocators';
 import { URL , APP_ID } from '../utils/kmSecret';
 import { SCRIPT } from '../utils/kmScript';
 
@@ -56,6 +56,10 @@ let page;
       threshold: COMMON_VALUES.thresholdValue,
       name: 'Submit_Button.png'
     }, './richMessage_Submit_Button.spec.js-snapshots/');
+
+  // verifying rich message using title and text of button 
+  const submitButton = await iframe.locator(BUTTON_VERIFICATION.payButtonInSubmit).isVisible();
+  expect(submitButton).toBe(true);
 
   })
 

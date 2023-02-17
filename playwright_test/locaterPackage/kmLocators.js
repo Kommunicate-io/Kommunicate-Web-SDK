@@ -52,6 +52,20 @@ export const RICHMESSAGES_LOCATORS = {
     kmDateInFormTemplate : '//input[@type="date"]'
 };
 
+export const BUTTON_VERIFICATION = {
+    linkButtonInCard : '(//button[@title="Link Button"])[1]',
+    suggestedRepliesInCard : '(//button[text()="Suggested Reply"])[1]',
+    submitButtonInCard : '(//button[@title="Submit button"])[1]',
+    suggestedRepliesInCombi : '//button[text()="Suggested reply Button"]',
+    submitButtonInCombi : '//button[@title="Combination Submit Button"]',
+    googleButtonInLink : '//button[@title="Go To Google"]',
+    facebookButtonInLink : '//button[@title="Go To Facebook"]',
+    seeUsOnFacebook : '//button[@aria-label="See us on facebook"]',
+    payButtonInSubmit : '//button[text()="Pay"]',
+    yesInSuggestedReplies : '//button[text()="Yes"]',
+    noInSuggestedReplies : '//button[text()="No"]'
+}
+
 export const COMMON_VALUES = {
     thresholdValue : 0.98
 };

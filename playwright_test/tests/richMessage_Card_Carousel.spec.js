@@ -5,7 +5,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { WIDGET_LOCATORS, LOCATORS, COMMON_VALUES } from '../locaterPackage/kmLocators.js';
+import { WIDGET_LOCATORS, LOCATORS, COMMON_VALUES, BUTTON_VERIFICATION } from '../locaterPackage/kmLocators.js';
 import { URL , APP_ID } from '../utils/kmSecret';
 import { SCRIPT } from '../utils/kmScript';
 
@@ -42,13 +42,21 @@ let page;
                 .type("Card Carousel");
     await iframe.locator(WIDGET_LOCATORS.kmSendButton)
                 .click();
-    await page.waitForTimeout(6000)
+    await page.waitForTimeout(8000)
 
     const screenshot = await page.screenshot();
     expect(screenshot).toMatchSnapshot({
       threshold: COMMON_VALUES.thresholdValue,
       name: 'Card_Carousel.png'
     }, './richMessage_Card_Carousel.spec.js-snapshots/');
+
+    // verifying rich message using title and text of button 
+    const LinkButton = await iframe.locator(BUTTON_VERIFICATION.linkButtonInCard).isVisible();
+    expect(LinkButton).toBe(true);
+    const SuggestedRepliesButton = await iframe.locator(BUTTON_VERIFICATION.suggestedRepliesInCard).isVisible();
+    expect(SuggestedRepliesButton).toBe(true);
+    const SubmitButton = await iframe.locator(BUTTON_VERIFICATION.submitButtonInCard).isVisible();
+    expect(SubmitButton).toBe(true);
   })
 
   test.afterAll(async () => {
