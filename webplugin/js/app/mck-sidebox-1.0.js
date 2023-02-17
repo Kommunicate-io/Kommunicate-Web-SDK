@@ -5267,18 +5267,17 @@ var userOverride = {
                         return false;
                     }
                     if (
-                        $applozic('#mck-text-box').data('validation') &&
-                        $applozic('#mck-text-box').data('validation') != ''
+                        $mck_text_box.data('validation') &&
+                        $mck_text_box.data('validation') != ''
                     ) {
-                        var regexForm = $applozic('#mck-text-box').data(
+                        var regexForm = $mck_text_box.data(
                             'validation'
                         );
-                        var fieldValue = message;
                         regexForm = new RegExp(regexForm);
-                        if (!regexForm.test(fieldValue)) {
+                        if (!regexForm.test(message)) {
                             document.getElementById(
                                 'mck-form-field-error-alert'
-                            ).innerHTML = $applozic('#mck-text-box').data(
+                            ).innerHTML = $mck_text_box.data(
                                 'ErrorMessage'
                             );
                             $applozic('#mck-form-field-error-alert-box')
