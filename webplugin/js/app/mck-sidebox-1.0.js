@@ -5267,8 +5267,7 @@ var userOverride = {
                         return false;
                     }
                     if (
-                        $mck_text_box.data('validation') &&
-                        $mck_text_box.data('validation') != ''
+                        $mck_text_box.data('fieldType')
                     ) {
                         var regexForm = $mck_text_box.data(
                             'validation'
@@ -5278,7 +5277,7 @@ var userOverride = {
                             document.getElementById(
                                 'mck-form-field-error-alert'
                             ).innerHTML = $mck_text_box.data(
-                                'ErrorMessage'
+                                'errorMessage'
                             );
                             $applozic('#mck-form-field-error-alert-box')
                                 .removeClass('n-vis')
@@ -5290,10 +5289,27 @@ var userOverride = {
                             }, 2000);
                             return false;
                         }
-                        $mck_text_box.attr('data-text', 'Type your message...');
-                        $mck_text_box.data('validation', '');
-                        $mck_text_box.data('ErrorMessage', '');
-                        $mck_text_box.data('SuccessMessage', '');
+                        if($mck_text_box.data('fieldAction')){
+                            if($mck_text_box.data('fieldType') === 'EMAIL'){
+                                mckContactService.updateUser({
+                                    data: { email: message }});
+                            }
+                            else if($mck_text_box.data('fieldType') === 'NAME'){
+                                mckContactService.updateUser({
+                                    data: { displayName: message }});
+                            }
+                            else if($mck_text_box.data('fieldType') === 'PHONE_NUMBER'){
+                                mckContactService.updateUser({
+                                    data: { phoneNumber: message }});
+                            }
+                            else{
+                            }
+                        }
+                        $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
+                        $mck_text_box.data('fieldAction', null);
+                        $mck_text_box.data('fieldType', null);
+                        $mck_text_box.data('validation', null);
+                        $mck_text_box.data('errorMessage', null);
                     }
                     if (
                         typeof MCK_MSG_VALIDATION === 'function' &&
@@ -9201,17 +9217,18 @@ var userOverride = {
                     }
                     var fieldValidation = fieldMetadata.validation.regex;
                     var errorMessage = fieldMetadata.validation.errorText;
+                    var fieldType= fieldMetadata.fieldType;
+                    var fieldAction = fieldMetadata.action ? fieldMetadata.action : null;
+                    if(fieldAction){
+                        $mck_text_box.data('fieldAction', fieldAction);
+                    }
                     $mck_text_box
                         .addClass('mck-text-box')
                         .removeClass('n-vis')
                         .data('validation', fieldValidation);
-                    $mck_text_box.data('ErrorMessage', errorMessage);
-                    $mck_text_box.attr(
-                        'data-text',
-                        fieldMetadata.placeholder
-                            ? fieldMetadata.placeholder
-                            : ''
-                    );
+                    $mck_text_box.data('fieldType', fieldType);
+                    $mck_text_box.data('errorMessage', errorMessage);
+                    $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
                     // hide the auto suggestion box and show the text box
                     mckMessageService.hideAutoSuggestionBoxEnableTxtBox();
