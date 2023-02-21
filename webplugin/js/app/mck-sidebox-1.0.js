@@ -5278,11 +5278,7 @@ var userOverride = {
                             regexForm = new RegExp(regexForm);
                             //If the input does not match the regex validation then show an error message for 2 seconds.
                             if (!regexForm.test(message)) {
-                                document.getElementById(
-                                    'mck-form-field-error-alert'
-                                ).innerHTML = $mck_text_box.data(
-                                    'errorMessage'
-                                );
+                                $('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
                                 $applozic('#mck-form-field-error-alert-box')
                                     .removeClass('n-vis')
                                     .addClass('vis');
@@ -5297,8 +5293,8 @@ var userOverride = {
                         if($mck_text_box.data('updateUserDetails')){
                             // If the field is a form field and the user details need to be updated then update the user details
                             var fieldVal = $mck_text_box.data('field');
-                            var keyValuePair = {};
-                            keyValuePair[fieldVal] = message;
+                            var userUpdateField = {};
+                            userUpdateField[fieldVal] = message;
                             if (
                                 $mck_text_box.data('fieldType') === 'EMAIL' ||
                                 $mck_text_box.data('fieldType') === 'NAME' ||
@@ -5306,11 +5302,11 @@ var userOverride = {
                                     'PHONE_NUMBER'
                             ) {
                                 mckContactService.updateUser({
-                                    data: keyValuePair,
+                                    data: userUpdateField,
                                 });
                             } else {
                                 mckContactService.updateUser({
-                                    data: { metadata: keyValuePair },
+                                    data: { metadata: userUpdateField },
                                 });
                             }
                         }
