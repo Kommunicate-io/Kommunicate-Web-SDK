@@ -5297,23 +5297,20 @@ var userOverride = {
                         if($mck_text_box.data('updateUserDetails')){
                             // If the field is a form field and the user details need to be updated then update the user details
                             var fieldVal = $mck_text_box.data('field');
-                            if($mck_text_box.data('fieldType') === 'EMAIL'){
+                            var keyValuePair = {};
+                            keyValuePair[fieldVal] = message;
+                            if (
+                                $mck_text_box.data('fieldType') === 'EMAIL' ||
+                                $mck_text_box.data('fieldType') === 'NAME' ||
+                                $mck_text_box.data('fieldType') ===
+                                    'PHONE_NUMBER'
+                            ) {
                                 mckContactService.updateUser({
-                                    data: { email: message }});
-                            }
-                            else if($mck_text_box.data('fieldType') === 'NAME'){
+                                    data: keyValuePair,
+                                });
+                            } else {
                                 mckContactService.updateUser({
-                                    data: { displayName: message }});
-                            }
-                            else if($mck_text_box.data('fieldType') === 'PHONE_NUMBER'){
-                                mckContactService.updateUser({
-                                    data: { phoneNumber: message }});
-                            }
-                            else{
-                                var keyValuePair = {};
-                                keyValuePair[fieldVal] = message;
-                                mckContactService.updateUser({
-                                    data:{ metadata: keyValuePair }
+                                    data: { metadata: keyValuePair },
                                 });
                             }
                         }
