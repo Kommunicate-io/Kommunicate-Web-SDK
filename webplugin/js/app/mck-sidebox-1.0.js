@@ -5278,7 +5278,7 @@ var userOverride = {
                             regexForm = new RegExp(regexForm);
                             //If the input does not match the regex validation then show an error message for 2 seconds.
                             if (!regexForm.test(message)) {
-                                $('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
+                                $applozic('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
                                 $applozic('#mck-form-field-error-alert-box')
                                     .removeClass('n-vis')
                                     .addClass('vis');
