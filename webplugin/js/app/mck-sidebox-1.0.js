@@ -5266,8 +5266,8 @@ var userOverride = {
                         $mck_box_form.addClass('mck-text-req');
                         return false;
                     }
+                    //If the field is a form field then validate the input, update user details before sending the message
                     if (
-                        //If the field is a form field then validate the input, update user details before sending the message
                         $mck_text_box.data('fieldType')
                     ) {
                         //If the field has a regex validation then validate the input otherwise skip validation
