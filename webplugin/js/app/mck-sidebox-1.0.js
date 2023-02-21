@@ -5267,14 +5267,17 @@ var userOverride = {
                         return false;
                     }
                     if (
-                        $mck_text_box.data('fieldType')//If the field is a form field then validate the input, update user details before sending the message
+                        //If the field is a form field then validate the input, update user details before sending the message
+                        $mck_text_box.data('fieldType')
                     ) {
-                        if($mck_text_box.data('validation')){//If the field has a regex validation then validate the input otherwise skip validation
+                        //If the field has a regex validation then validate the input otherwise skip validation
+                        if($mck_text_box.data('validation')){
                             var regexForm = $mck_text_box.data(
                                 'validation'
                             );
                             regexForm = new RegExp(regexForm);
-                            if (!regexForm.test(message)) {//If the input does not match the regex validation then show an error message for 2 seconds.
+                            //If the input does not match the regex validation then show an error message for 2 seconds.
+                            if (!regexForm.test(message)) {
                                 document.getElementById(
                                     'mck-form-field-error-alert'
                                 ).innerHTML = $mck_text_box.data(
@@ -5291,7 +5294,9 @@ var userOverride = {
                                 return false;
                             }
                         }
-                        if($mck_text_box.data('updateUserDetails')){// If the field is a form field and the user details need to be updated then update the user details
+                        if($mck_text_box.data('updateUserDetails')){
+                            // If the field is a form field and the user details need to be updated then update the user details
+                            var fieldVal = $mck_text_box.data('field');
                             if($mck_text_box.data('fieldType') === 'EMAIL'){
                                 mckContactService.updateUser({
                                     data: { email: message }});
@@ -5305,10 +5310,18 @@ var userOverride = {
                                     data: { phoneNumber: message }});
                             }
                             else{
+                                var keyValuePair = {};
+                                keyValuePair[fieldVal] = message;
+                                mckContactService.updateUser({
+                                    data:{ metadata: keyValuePair }
+                                });
                             }
                         }
-                        $mck_text_box.attr('data-text', MCK_LABELS['input.message']);// Reset the text box to default text
-                        $mck_text_box.data('updateUserDetails', null);// Reset the data attribute
+                        // Reset the placeholder text to default text
+                        $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
+                        // Reset the data attributes
+                        $mck_text_box.data('updateUserDetails', null); 
+                        $mck_text_box.data('field', null);
                         $mck_text_box.data('fieldType', null);
                         $mck_text_box.data('validation', null);
                         $mck_text_box.data('errorMessage', null);
@@ -9219,18 +9232,22 @@ var userOverride = {
                     }
                     var fieldValidation = fieldMetadata.validation ? fieldMetadata.validation.regex : false;
                     var fieldType= fieldMetadata.fieldType;
+                    var field= fieldMetadata.field;
                     var updateUserDetails = fieldMetadata.action ? fieldMetadata.action.updateUserDetails : false;
                     $mck_text_box
                         .addClass('mck-text-box')
                         .removeClass('n-vis');
-                    if(updateUserDetails){//if update user details is true then set the data attribute for updateuserdetails
+                    //if update user details is true then set the data attribute for updateuserdetails
+                    if(updateUserDetails){
                         $mck_text_box.data('updateUserDetails', updateUserDetails);
                     }
-                    if(fieldValidation){// if field validation is true then set the data attributes for validation and errorMessage
+                    // if field validation is true then set the data attributes for validation and errorMessage
+                    if(fieldValidation){
                         var errorMessage = fieldMetadata.validation.errorText;
                         $mck_text_box.data('validation', fieldValidation);
                         $mck_text_box.data('errorMessage', errorMessage);
                     }
+                    $mck_text_box.data('field', field);
                     $mck_text_box.data('fieldType', fieldType);
                     $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
