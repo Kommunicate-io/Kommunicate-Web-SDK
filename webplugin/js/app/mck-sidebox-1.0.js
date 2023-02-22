@@ -5920,6 +5920,15 @@ var userOverride = {
                 var chatContext = KommunicateUtils.getSettings(
                     'KM_CHAT_CONTEXT'
                 );
+                var userLocale = kommunicate._globals.userLocale;
+                var currentLanguage = {
+                    kmUserLocale: userLocale
+                        ? userLocale.split('-')[0]
+                        : (
+                              window.navigator.language || window.navigator.userLanguage
+                          ).split('-')[0],
+                };
+                chatContext = $applozic.extend(chatContext, currentLanguage);
                 chatContext = typeof chatContext == 'object' ? chatContext : {};
                 MCK_DEFAULT_MESSAGE_METADATA =
                     typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'
