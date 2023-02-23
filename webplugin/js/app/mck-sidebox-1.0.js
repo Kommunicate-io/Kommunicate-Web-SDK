@@ -9221,6 +9221,7 @@ var userOverride = {
                     msg.metadata.KM_FIELD
                 ) {
                     var fieldMetadata = {};
+                    var fieldReplyMetadata= {};
                     try {
                         fieldMetadata = JSON.parse(msg.metadata.KM_FIELD);
                     } catch (e) {
@@ -9230,7 +9231,13 @@ var userOverride = {
                     var fieldType= fieldMetadata.fieldType;
                     var field= fieldMetadata.field;
                     var updateUserDetails = fieldMetadata.action ? fieldMetadata.action.updateUserDetails : false;
-                    var triggerNextIntent= fieldMetadata.KM_TRIGGER_EVENT ? fieldMetadata.KM_TRIGGER_EVENT : false;
+                    if(msg.metadata.replyMetadata){
+                        fieldReplyMetadata= JSON.parse(msg.metadata.replyMetadata);
+                        var triggerNextIntent= fieldReplyMetadata.KM_TRIGGER_EVENT;
+                    }
+                    else{
+                        var triggerNextIntent= false;
+                    }
                     $mck_text_box
                         .addClass('mck-text-box')
                         .removeClass('n-vis');
@@ -9238,15 +9245,25 @@ var userOverride = {
                     if(triggerNextIntent){
                         $mck_text_box.data('triggerNextIntent', triggerNextIntent);
                     }
+                    else{
+                        $mck_text_box.data('triggerNextIntent', null);
+                    }
                     //if update user details is true then set the data attribute for updateuserdetails
                     if(updateUserDetails){
                         $mck_text_box.data('updateUserDetails', updateUserDetails);
+                    }
+                    else{
+                        $mck_text_box.data('updateUserDetails', null);
                     }
                     // if field validation is true then set the data attributes for validation and errorMessage
                     if(fieldValidation){
                         var errorMessage = fieldMetadata.validation.errorText;
                         $mck_text_box.data('validation', fieldValidation);
                         $mck_text_box.data('errorMessage', errorMessage);
+                    }
+                    else{
+                        $mck_text_box.data('validation', null);
+                        $mck_text_box.data('errorMessage', null);
                     }
                     $mck_text_box.data('field', field);
                     $mck_text_box.data('fieldType', fieldType);
