@@ -6013,7 +6013,10 @@ var userOverride = {
                         _this.getChatContext(messagePxy)
                     ),
                 });
-
+                if($mck_text_box.data('triggerNextIntent')){
+                    metadata.KM_TRIGGER_EVENT= $mck_text_box.data('triggerNextIntent');
+                    $mck_text_box.data('triggerNextIntent',null);
+                }
                 messagePxy.metadata = metadata;
                 window.Applozic.ALApiService.ajax({
                     type: 'POST',
@@ -9227,9 +9230,14 @@ var userOverride = {
                     var fieldType= fieldMetadata.fieldType;
                     var field= fieldMetadata.field;
                     var updateUserDetails = fieldMetadata.action ? fieldMetadata.action.updateUserDetails : false;
+                    var triggerNextIntent= fieldMetadata.KM_TRIGGER_EVENT ? fieldMetadata.KM_TRIGGER_EVENT : false;
                     $mck_text_box
                         .addClass('mck-text-box')
                         .removeClass('n-vis');
+                    // if trigger next event is true then set the data attribute for triggerNextEvent
+                    if(triggerNextIntent){
+                        $mck_text_box.data('triggerNextIntent', triggerNextIntent);
+                    }
                     //if update user details is true then set the data attribute for updateuserdetails
                     if(updateUserDetails){
                         $mck_text_box.data('updateUserDetails', updateUserDetails);
