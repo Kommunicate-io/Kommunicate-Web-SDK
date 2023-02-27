@@ -5318,6 +5318,12 @@ var userOverride = {
                         $mck_text_box.data('fieldType', null);
                         $mck_text_box.data('validation', null);
                         $mck_text_box.data('errorMessage', null);
+                        if($mck_text_box.data('trigger')){
+                            $mck_text_box.data('triggerNextIntent',$mck_text_box.data('trigger'));
+                        }
+                        else{
+                            $mck_text_box.data('triggerNextIntent',null);
+                        }
                     }
                     if (
                         typeof MCK_MSG_VALIDATION === 'function' &&
@@ -7760,6 +7766,13 @@ var userOverride = {
                         }
                     },
                 });
+                $mck_text_box.data('updateUserDetails', null); 
+                $mck_text_box.data('field', null);
+                $mck_text_box.data('fieldType', null);
+                $mck_text_box.data('validation', null);
+                $mck_text_box.data('errorMessage', null);
+                $mck_text_box.data('triggerNextIntent', null);
+                $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
             };
 
             _this.sendDeliveryUpdate = function (key) {
@@ -9243,10 +9256,10 @@ var userOverride = {
                         .removeClass('n-vis');
                     // if trigger next event is true then set the data attribute for triggerNextEvent
                     if(triggerNextIntent){
-                        $mck_text_box.data('triggerNextIntent', triggerNextIntent);
+                        $mck_text_box.data('trigger', triggerNextIntent);
                     }
                     else{
-                        $mck_text_box.data('triggerNextIntent', null);
+                        $mck_text_box.data('trigger', null);
                     }
                     //if update user details is true then set the data attribute for updateuserdetails
                     if(updateUserDetails){
