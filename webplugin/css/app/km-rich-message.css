@@ -693,17 +693,18 @@
     letter-spacing: 0.4px;
     color: #6b6767;
 }
-#mck-email-error-alert {
+#mck-email-error-alert,
+#mck-form-field-error-alert {
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.4px;
     color: #f46262;
 }
 #mck-email-collection-box,
-#mck-email-error-alert-box {
+#mck-email-error-alert-box,
+#mck-form-field-error-alert-box {
     text-align: center;
     padding: 0px 25px 10px;
-    /* background-color: #d8d8d8; */
 }
 #mck-away-msg-box hr,
 #mck-email-collection-box hr,
