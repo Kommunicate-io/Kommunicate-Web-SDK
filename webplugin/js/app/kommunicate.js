@@ -46,16 +46,22 @@ $applozic.extend(true, Kommunicate, {
             params.agentId = appOptions.agentId;
         }
         var user = [];
-        if (params.agentIds) {
+        if (params.agentIds && Array.isArray(params.agentIds)) {
             for (var i = 0; i < params.agentIds.length; i++) {
                 user.push({ userId: params.agentIds[i], groupRole: 1 });
             }
+        } else {
+            user.push({ userId: params.agentIds, groupRole: 1 });
         }
-        if (params.botIds) {
+
+        if (params.botIds && Array.isArray(params.botIds)) {
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({ userId: params.botIds[i], groupRole: 2 });
             }
+        } else {
+            user.push({ userId: params.botIds, groupRole: 2 });
         }
+        
         var groupName =
             params.defaultGroupName ||
             params.conversationTitle ||
