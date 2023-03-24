@@ -61,7 +61,7 @@ $applozic.extend(true, Kommunicate, {
         } else {
             user.push({ userId: params.botIds, groupRole: 2 });
         }
-        
+
         var groupName =
             params.defaultGroupName ||
             params.conversationTitle ||
@@ -82,7 +82,7 @@ $applozic.extend(true, Kommunicate, {
         params.WELCOME_MESSAGE &&
             (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
         params.conversationMetadata &&
-        typeof params.conversationMetadata == 'object' &&
+            typeof params.conversationMetadata == 'object' &&
             (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
@@ -492,8 +492,9 @@ $applozic.extend(true, Kommunicate, {
         return (
             (typeof msg.fileMeta === 'object' &&
                 msg.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) || 
-                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
+            msg.contentType ==
+                KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
             msg.contentType ==
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
         );
@@ -606,7 +607,7 @@ $applozic.extend(true, Kommunicate, {
                     .GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
-                    metadata['msgKey'] = message.key; 
+                    metadata['msgKey'] = message.key;
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:
@@ -765,7 +766,7 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            (msg.metadata && msg.metadata.category === 'HIDDEN' ) ||
+            (msg.metadata && msg.metadata.category === 'HIDDEN') ||
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
         ) {
@@ -781,7 +782,8 @@ $applozic.extend(true, Kommunicate, {
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE &&
             msg.metadata &&
-           (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') || msg.metadata.hide === 'true')
+            (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') ||
+                msg.metadata.hide === 'true')
         ) {
             return false;
         }
@@ -808,7 +810,7 @@ $applozic.extend(true, Kommunicate, {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-        if(quickReplyCtaPrevSibling) {
+        if (quickReplyCtaPrevSibling) {
             quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
         }
     },
@@ -825,5 +827,18 @@ $applozic.extend(true, Kommunicate, {
             sibling = sibling.nextSibling;
         }
         return siblings;
+    },
+    btnClickPreChatOpen: function () {
+        var kommunicateIframe = parent.document.getElementById(
+                'kommunicate-widget-iframe'
+            ),
+            modal = document.getElementById('km-chat-login-modal'),
+            closeBtn = document.getElementById('km-popup-close-button'),
+            popupMsg = document.getElementById('chat-popup-widget-container');
+        kommunicateIframe.className =
+            'kommunicate-custom-iframe km-iframe-dimension-with-popup kommunicate-iframe-enable-media-query';
+        if (modal) modal.style.display = 'block';
+        if (closeBtn) closeBtn.style.display = 'flex';
+        if (popupMsg) popupMsg.style.display = 'none';
     },
 });
