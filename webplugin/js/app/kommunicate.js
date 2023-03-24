@@ -830,15 +830,21 @@ $applozic.extend(true, Kommunicate, {
     },
     btnClickPreChatOpen: function () {
         var kommunicateIframe = parent.document.getElementById(
-                'kommunicate-widget-iframe'
-            ),
-            modal = document.getElementById('km-chat-login-modal'),
-            closeBtn = document.getElementById('km-popup-close-button'),
-            popupMsg = document.getElementById('chat-popup-widget-container');
+            'kommunicate-widget-iframe'
+        );
+        var modal = document.getElementById('km-chat-login-modal');
+        var closeBtn = document.getElementById('km-popup-close-button');
+        var popupMsg = document.getElementById('chat-popup-widget-container');
         kommunicateIframe.className =
             'kommunicate-custom-iframe km-iframe-dimension-with-popup kommunicate-iframe-enable-media-query';
-        if (modal) modal.style.display = 'block';
-        if (closeBtn) closeBtn.style.display = 'flex';
-        if (popupMsg) popupMsg.style.display = 'none';
+        if (modal) {
+            modal.style.display = 'block';
+        }
+        if (closeBtn) {
+            closeBtn.style.display = 'flex';
+        }
+        if (popupMsg) {
+            popupMsg.style.display = 'none';
+        }
     },
 });
