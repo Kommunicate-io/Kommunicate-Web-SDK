@@ -434,13 +434,20 @@ getListMarkup:function(){
                                       
                                     {{/radio}}
                                     {{#checkbox}}
-                                        <p class="mck-radio-group-title">{{title}}</p>
-                                        <div class="mck-form-radio-wrapper">
+                                        <p class="mck-checkbox-group-title">{{title}}</p>
+                                        <div class="mck-form-checkbox-wrapper">
     
                                             {{#options}}
-                                                <div>
-                                                    <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}">
-                                                    <label for="{{label}} {{msgKey}}" class="mck-form-label"><b>{{label}}</b></label>   
+                                                <div class="{{checkboxClass}}">
+                                                    <label class="mck-form-label ${msgKey}">
+                                                        <input id="{{label}} ${msgKey}" type="{{type}}" name="{{name}}" value="{{value}}">
+                                                        <span>
+                                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <rect width="18" height="18" rx="9" fill="#00A4BF"/>
+                                                                <path d="M7.4001 10.9499L5.3001 8.8499L4.6001 9.5499L7.4001 12.3499L13.4001 6.3499L12.7001 5.6499L7.4001 10.9499Z" fill="white"/>
+                                                            </svg> {{label}}
+                                                        </span>
+                                                    </label>   
                                                     {{#validation}}
                                                     <span class="mck-form-error-text mck-form-error-{{className}}"></span>
                                                 {{/validation}}
@@ -824,6 +831,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 return data;
             });
         }
+        options.checkboxClass = Kommunicate._globals.checkboxAsMultipleButton ? "checkbox-as-button" : "checkbox-container";
         options.payload.forEach(function (item, index) {
             if (item.type == 'submit') {
                 isActionObject = kommunicateCommons.isObject(item.action);

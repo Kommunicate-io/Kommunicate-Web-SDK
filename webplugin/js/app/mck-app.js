@@ -494,6 +494,7 @@ function ApplozicSidebox() {
                     ? options.attachmentHandler 
                     : function (file) { return file; };
             options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride
+            options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
