@@ -1295,32 +1295,34 @@
 
 /* ------ START: checkbox as button style ------ */
 .checkbox-as-button {
-	background-color: transparent;
-	border-radius: 8px;
-	border: 1px solid #00A4BF;
+    background-color: transparent;
+    border-radius: 8px;
+    border: 1px solid #00A4BF;
 }
 
 .checkbox-as-button label {
-	line-height: 3.0em;
+    line-height: 3.0em;
     height: 3.0em;
     cursor: pointer;
 }
+
 .checkbox-as-button label span {
-	text-align: center;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
 }
 
-.checkbox-container label span > svg, .checkbox-as-button label input+span > svg {
+.checkbox-container label span>svg,
+.checkbox-as-button label input+span>svg {
     display: none;
 }
 
 .checkbox-as-button label input {
-	position: absolute;
-	display: none;
-	color: #fff !important;
+    position: absolute;
+    display: none;
+    color: #fff !important;
 }
 
 .checkbox-as-button label input+span {
@@ -1333,11 +1335,11 @@
 .checkbox-as-button input:checked+span {
     color: #00A4BF;
     font-weight: unset;
-	background-color: #D4F3F8;
+    background-color: #D4F3F8;
     border-radius: 8px;
 }
 
-.checkbox-as-button input:checked+span > svg {
+.checkbox-as-button input:checked+span>svg {
     display: block;
 }
 /* ------ END: checkbox as button style ------ */
