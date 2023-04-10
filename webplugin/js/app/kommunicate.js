@@ -828,23 +828,17 @@ $applozic.extend(true, Kommunicate, {
         }
         return siblings;
     },
-    btnClickPreChatOpen: function () {
-        var kommunicateIframe = parent.document.getElementById(
-            'kommunicate-widget-iframe'
+    openWidgetPreview: function () {
+        var isPreChatForm = document.getElementById(
+            'km-anonymous-chat-launcher'
         );
-        var modal = document.getElementById('km-chat-login-modal');
+
+        isPreChatForm
+            ? isPreChatForm.click()
+            : Kommunicate.launchConversation();
+    },
+    closeWidgetPreview: function () {
         var closeBtn = document.getElementById('km-popup-close-button');
-        var popupMsg = document.getElementById('chat-popup-widget-container');
-        kommunicateIframe.className =
-            'kommunicate-custom-iframe km-iframe-dimension-with-popup kommunicate-iframe-enable-media-query';
-        if (modal) {
-            modal.style.display = 'block';
-        }
-        if (closeBtn) {
-            closeBtn.style.display = 'flex';
-        }
-        if (popupMsg) {
-            popupMsg.style.display = 'none';
-        }
+        closeBtn && closeBtn.click();
     },
 });
