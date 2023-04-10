@@ -670,9 +670,6 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
-            var isPreChatForm = document.getElementById("km-anonymous-chat-launcher");
-            if(isPreChatForm) return Kommunicate.btnClickPreChatOpen();
-     
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
                 $applozic('#mck-sidebox-launcher')
