@@ -484,6 +484,17 @@ function ApplozicSidebox() {
                     : function (file) { return file; };
             options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride
             options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
+            
+            // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
+            options.staticTopMessage =
+                options.staticTopMessage != null
+                    ? options.staticTopMessage
+                    : widgetSettings && widgetSettings.staticTopMessage;
+            options.staticTopIcon =
+                options.staticTopIcon != null
+                    ? options.staticTopIcon
+                    : widgetSettings && widgetSettings.staticTopIcon;
+                    
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
