@@ -22,7 +22,7 @@ frontend:
                 # Kommunicate Prod
                 - if [ "${BUILD_ENV}" = "prod" ]; then npm run build-prod; fi
                  # Kommunicate Enterprise
-                - if [ "${BUILD_ENV}" = "enterprise" ]; then npm run build-enterprise; fi
+                - if [ "${BUILD_ENV}" = "prod-enterprise" ]; then npm run build-prod-enterprise; fi
                  # Kommunicate Prod Mumbai
                 - if [ "${BUILD_ENV}" = "prod-in" ]; then npm run build-prod-in; fi
                 # Kommunicate Prod Europe
