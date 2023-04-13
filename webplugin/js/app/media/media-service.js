@@ -101,7 +101,7 @@ Kommunicate.mediaService = {
             if (textToSpeak) {
                 var skipForEach = false;
                 var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                    utterance.lang =  appOptions.language;
+                    utterance.lang =  appOptions.language || "en-US";
                     utterance.rate = appOptions.voiceRate || 1;
                     utterance.text = textToSpeak;
 
@@ -110,16 +110,25 @@ Kommunicate.mediaService = {
                     skipForEach = true;
                 }
                 function hackForIosDevices() {
-                    //it is only for IOS devices so using newer syntax
-                    if(!isIosDevice) return;
+                    /** 
+                        it is only for IOS devices so using newer syntax
+                        IOS devices would not let the speech API run programmatically unless we have triggered one time under the user's interaction.
+                    */
+                    const kmIframe = document.querySelector(
+                        '#kommunicate-widget-iframe'
+                    );
                     const simulateFakeVoice = () => {
                         const fakeInstance = new SpeechSynthesisUtterance('');
                         speechSynthesis.speak(fakeInstance);
-                        document.removeEventListener('click', simulateFakeVoice);
-                    }
-                    document.addEventListener('click', simulateFakeVoice);
+                    };
+                    (kmIframe || document).addEventListener(
+                        'click',
+                        simulateFakeVoice,
+                        { once: true }
+                    );
                 }
-                hackForIosDevices();
+                isIosDevice && hackForIosDevices();
+
                 if (appOptions.voiceName) {
                     AVAILABLE_VOICES_FOR_TTS.forEach(function(voice) {
                         if (skipForEach) return;
