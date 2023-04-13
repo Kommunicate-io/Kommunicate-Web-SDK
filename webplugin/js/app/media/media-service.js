@@ -74,8 +74,6 @@ Kommunicate.mediaService = {
         if (appOptions.voiceOutput && 'speechSynthesis' in window) {
             var textToSpeak = '';
             var isChrome = !!window.chrome || navigator.userAgent.indexOf('Chrome')>-1;
-            var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
-
             if (message.hasOwnProperty('fileMeta')) {
                 textToSpeak += MCK_LABELS['voice.output'].attachment;
                 textToSpeak += message.fileMeta.name;
@@ -109,25 +107,6 @@ Kommunicate.mediaService = {
                     utterance.voice = voice;
                     skipForEach = true;
                 }
-                function hackForIosDevices() {
-                    /** 
-                        it is only for IOS devices so using newer syntax
-                        IOS devices would not let the speech API run programmatically unless we have triggered one time under the user's interaction.
-                    */
-                    const kmIframe = document.querySelector(
-                        '#kommunicate-widget-iframe'
-                    );
-                    const simulateFakeVoice = () => {
-                        const fakeInstance = new SpeechSynthesisUtterance('');
-                        speechSynthesis.speak(fakeInstance);
-                    };
-                    (kmIframe || document).addEventListener(
-                        'click',
-                        simulateFakeVoice,
-                        { once: true }
-                    );
-                }
-                isIosDevice && hackForIosDevices();
 
                 if (appOptions.voiceName) {
                     AVAILABLE_VOICES_FOR_TTS.forEach(function(voice) {
