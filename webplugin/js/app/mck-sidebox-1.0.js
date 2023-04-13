@@ -890,12 +890,29 @@ var userOverride = {
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
             if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
+                var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
+
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
                   }
+                function hackForIosDevices() {
+                    /** 
+                        it is only for IOS devices so using newer syntax
+                        IOS devices would not let the speech API run programmatically unless we have triggered manually one time under the user's interaction.
+                     */
+
+                    const simulateFakeVoice = () => {
+                        const fakeInstance = new SpeechSynthesisUtterance('');
+                        speechSynthesis.speak(fakeInstance);
+                    };
+                    document.addEventListener('click', simulateFakeVoice, {
+                        once: true,
+                    });
+                }
+                isIosDevice && hackForIosDevices();  
             }
         };
         _this.reInit = function (optns) {
