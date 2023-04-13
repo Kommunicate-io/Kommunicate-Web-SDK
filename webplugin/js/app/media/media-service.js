@@ -74,6 +74,8 @@ Kommunicate.mediaService = {
         if (appOptions.voiceOutput && 'speechSynthesis' in window) {
             var textToSpeak = '';
             var isChrome = !!window.chrome || navigator.userAgent.indexOf('Chrome')>-1;
+            var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
+
             if (message.hasOwnProperty('fileMeta')) {
                 textToSpeak += MCK_LABELS['voice.output'].attachment;
                 textToSpeak += message.fileMeta.name;
@@ -107,7 +109,17 @@ Kommunicate.mediaService = {
                     utterance.voice = voice;
                     skipForEach = true;
                 }
-
+                function hackForIosDevices() {
+                    //it is only for IOS devices so using newer syntax
+                    if(!isIosDevice) return;
+                    const simulateFakeVoice = () => {
+                        const fakeInstance = new SpeechSynthesisUtterance('');
+                        speechSynthesis.speak(fakeInstance);
+                        document.removeEventListener('click', simulateFakeVoice);
+                    }
+                    document.addEventListener('click', simulateFakeVoice);
+                }
+                hackForIosDevices();
                 if (appOptions.voiceName) {
                     AVAILABLE_VOICES_FOR_TTS.forEach(function(voice) {
                         if (skipForEach) return;
