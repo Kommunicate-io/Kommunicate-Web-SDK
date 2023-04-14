@@ -56,7 +56,7 @@ Kommunicate.mediaService = {
           window.speechSynthesis.cancel();
           return;
         }
-        // get appoptions
+        // get appOptions from widget script
         var timeOut;
         var appOptions =
             KommunicateUtils.getDataFromKmSession('appOptions') ||
@@ -97,29 +97,28 @@ Kommunicate.mediaService = {
                 textToSpeak += message.message;
             }
             if (textToSpeak) {
+                var skipForEach = false;
+                var utterance = new SpeechSynthesisUtterance(textToSpeak);
+                    utterance.lang =  appOptions.language || "en-US";
+                    utterance.rate = appOptions.voiceRate || 1;
+                    utterance.text = textToSpeak;
+
                 function updateVoiceName(voice) {
                     utterance.voice = voice;
                     skipForEach = true;
                 }
-                var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang =  appOptions.language || Kommunicate.mediaService.browserLocale;
-                utterance.rate = appOptions.voiceRate || 1;
-                var skipForEach = false;
+
                 if (appOptions.voiceName) {
-                    AVAILABLE_VOICES_FOR_TTS.forEach( function (voice) {
-                        if (skipForEach) {
-                            return;
-                        }
+                    AVAILABLE_VOICES_FOR_TTS.forEach(function(voice) {
+                        if (skipForEach) return;
+                        
                         if (Array.isArray(appOptions.voiceName)) {
                             appOptions.voiceName.forEach(function (voiceName) {
-                                if (
-                                    voice.name === voiceName.trim() &&
-                                    !skipForEach
-                                ) {
+                                if (voice.name === voiceName.trim()) {
                                     updateVoiceName(voice);
                                 }
                             });
-                        } else if (voice.name === appOptions.voiceName.trim() && !skipForEach) {
+                        } else if (voice.name === appOptions.voiceName.trim()) {
                             updateVoiceName(voice);
                         }
                     })
@@ -139,7 +138,6 @@ Kommunicate.mediaService = {
                     };
                 }
                 speechSynthesis.speak(utterance);
-            
             }
         }
     },
