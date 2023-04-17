@@ -20,7 +20,6 @@ Kommunicate.mediaService = {
             recognition.lang =  appOptions.language || Kommunicate.mediaService.browserLocale;
             recognition.start();
             recognition.onstart = function () {
-                console.log("Voice recognition START");
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
             };
@@ -45,7 +44,7 @@ Kommunicate.mediaService = {
             };
             recognition.onspeechend = function () {
                 // stop mic effect
-                console.log("Voice recognition END");
+                recognition.stop();
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
             };
