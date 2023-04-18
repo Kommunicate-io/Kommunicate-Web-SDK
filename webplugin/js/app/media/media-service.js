@@ -40,8 +40,8 @@ Kommunicate.mediaService = {
                 );
             };
             recognition.onerror = function (err) {
+                console.error('error while speech recognition', err);
                 recognition.abort();
-                console.log('error while speech recognition', err);
             };
             recognition.onspeechend = function() {
                 recognition.stop();
