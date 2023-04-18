@@ -15,7 +15,7 @@ Kommunicate.mediaService = {
             var recognition = new webkitSpeechRecognition();
             var appOptions = KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals;
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end.
-            recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
+            recognition.interimResults = false; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
             finalTranscript = '';
             recognition.lang =  appOptions.language || Kommunicate.mediaService.browserLocale;
             recognition.start();
@@ -40,6 +40,7 @@ Kommunicate.mediaService = {
                 );
             };
             recognition.onerror = function (err) {
+                recognition.abort();
                 console.log('error while speech recognition', err);
             };
             recognition.onspeechend = function () {
@@ -47,6 +48,7 @@ Kommunicate.mediaService = {
             };
             recognition.onend = function(){
                 // stop mic effect
+                recognition.continuous = false;
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
             }
