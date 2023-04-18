@@ -9,7 +9,7 @@ Kommunicate.mediaService = {
     processVoiceInputClickedEvent: function () {
         kmWidgetEvents.eventTracking(eventMapping.onVoiceIconClick);
         if (!('webkitSpeechRecognition' in window)) {
-            alert('browser do not support speech recogization');
+            alert('browser do not support speech recognition');
         } else {
             var recognition = new webkitSpeechRecognition();
             var appOptions = KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals;
@@ -38,16 +38,19 @@ Kommunicate.mediaService = {
                     )
                 );
             };
-            recognition.onerror = function (err) {
-                console.log('error while speech recognition', err);
-                recognition.abort();
+            recognition.onspeechend = function() {
+                // stop speech recognition explicitly
+                recognition.stop();
             };
             recognition.onend = function(){
-                // stop speech recognition and mic effect
-                recognition.stop();
+                // stop mic effect
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
-            }
+            };
+            recognition.onerror = function (event) {
+                console.log('error while speech recognition', event.error);
+                recognition.abort();
+            };
         }
     },
     voiceOutputIncomingMessage: function (message, offSpeech) {
