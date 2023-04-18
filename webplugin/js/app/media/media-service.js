@@ -43,11 +43,13 @@ Kommunicate.mediaService = {
                 console.log('error while speech recognition', err);
             };
             recognition.onspeechend = function () {
-                // stop mic effect
                 recognition.stop();
+            };
+            recognition.onend = function(){
+                // stop mic effect
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
-            };
+            }
         }
     },
     voiceOutputIncomingMessage: function (message, offSpeech) {
