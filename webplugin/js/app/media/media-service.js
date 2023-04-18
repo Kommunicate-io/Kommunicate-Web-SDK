@@ -1,6 +1,5 @@
 Kommunicate.mediaService = {
-    browserLocale:
-       window.navigator.language || window.navigator.userLanguage || "en-US",
+    browserLocale: window.navigator.language || window.navigator.userLanguage || "en-US",
     capitalizeFirstCharacter: function (str) {
         var firstCharRegex = /\S/;
         return str.replace(firstCharRegex, function (m) {
@@ -40,14 +39,12 @@ Kommunicate.mediaService = {
                 );
             };
             recognition.onerror = function (err) {
-                console.error('error while speech recognition', err);
+                console.log('error while speech recognition', err);
                 recognition.abort();
             };
-            recognition.onspeechend = function() {
-                recognition.stop();
-            };
             recognition.onend = function(){
-                // stop mic effect
+                // stop speech recognition and mic effect
+                recognition.stop();
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
             }
