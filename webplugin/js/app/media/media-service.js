@@ -21,6 +21,14 @@ Kommunicate.mediaService = {
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
+                
+                //explicitly Stop the Mic recording on Apple Products after 10 sec
+                var isAppleDevice = /iPhone|iPad|iPod|Safari/i.test(navigator.userAgent);
+                if(isAppleDevice) {
+                    setTimeout(() => {
+                        recognition.stop();
+                    }, 10000);
+                }
             };
             recognition.onresult = function (event) {
                 //get called for each new set of results captured by recognizer
