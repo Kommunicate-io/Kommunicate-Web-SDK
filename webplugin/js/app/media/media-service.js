@@ -72,7 +72,6 @@ Kommunicate.mediaService = {
                 );
             };
             recognition.onend = function () {
-                console.log("recognition.onend run")
                 recognizingDone = false;
 
                 // stop mic effect
@@ -87,7 +86,6 @@ Kommunicate.mediaService = {
 
             //explicitly Stop the Mic recording only for IOS
             if(Kommunicate.mediaService.isAppleDevice()) {
-                console.log("APPLE:", Kommunicate.mediaService.isAppleDevice())
                 setInterval(function () {
                     Kommunicate.mediaService.endSttExplicitly(
                         lastListeningEventTime,
