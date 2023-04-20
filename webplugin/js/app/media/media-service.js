@@ -20,6 +20,12 @@ Kommunicate.mediaService = {
             var appOptions =
                 KommunicateUtils.getDataFromKmSession('appOptions') ||
                 applozic._globals;
+
+            if (recognizingDone) {
+                recognition.stop();
+                return;
+            }    
+
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end.
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
             finalTranscript = '';
