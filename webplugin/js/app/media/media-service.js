@@ -52,9 +52,9 @@ Kommunicate.mediaService = {
                 lastListeningEventTime = new Date();
             };
             recognition.onend = function () {
-                // stop mic effect
                 recognizingDone = false;
 
+                // stop mic effect
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
             };
@@ -66,9 +66,9 @@ Kommunicate.mediaService = {
             //explicitly Stop the Mic recording only for IOS
             if (Kommunicate.mediaService.isAppleDevice) {
                 const disableStt = () => {
-                    const checkTimeSTT = 1000;
-                    const customTimeSet = 10;
                     setInterval(function () {
+                        const checkTimeSTT = 1000;
+                        const customTimeSet = 10;
                         const currentTime = new Date().getTime();
                         if (
                             lastListeningEventTime != null &&
