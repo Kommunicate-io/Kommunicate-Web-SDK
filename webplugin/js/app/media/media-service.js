@@ -8,13 +8,13 @@ Kommunicate.mediaService = {
         return isIOSDevice || isMacSafari
     },
     endSttExplicitly: function (lastListeningEventTime, recognizingDone, recognition) {
-        const checkTimeSTT = 1000;
-        const customTimeSet = 5; //To do setting this via widget script
+        const MILLISECOND_TO_SEC = 1000;
+        const CUSTOM_TIMEOUT_STT = 5; //To do set this via widget script
         const currentTime = new Date().getTime();
         if (
             lastListeningEventTime != null &&
-            (currentTime - lastListeningEventTime.getTime()) / checkTimeSTT >
-                customTimeSet
+            (currentTime - lastListeningEventTime.getTime()) / MILLISECOND_TO_SEC >
+            CUSTOM_TIMEOUT_STT
         ) {
             if (recognizingDone) {
                 recognizingDone = false;
