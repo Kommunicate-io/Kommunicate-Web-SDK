@@ -28,6 +28,7 @@ Kommunicate.mediaService = {
             recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
+                recognizingDone = true;
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
             };
             recognition.onresult = function (event) {
@@ -45,7 +46,7 @@ Kommunicate.mediaService = {
                         finalTranscript || interimTranscript
                     )
                 );
-                astListeningEventTime = new Date().getTime();
+                lastListeningEventTime = new Date().getTime();
             };
             recognition.onspeechend = function () {
                 // stop speech recognition explicitly
@@ -53,7 +54,7 @@ Kommunicate.mediaService = {
             };
             recognition.onend = function () {
                 // stop mic effect'
-                recognizingDone = true;
+                recognizingDone = false;
 
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
