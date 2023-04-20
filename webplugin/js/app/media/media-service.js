@@ -15,22 +15,19 @@ Kommunicate.mediaService = {
             //As of April 2023, works only in chrome and edge
             var recognizingDone = false;
             var lastListeningEventTime = null;
+            var finalTranscript = '';
+            var appOptions = KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals;
 
             var recognition = new webkitSpeechRecognition();
-            var appOptions =
-                KommunicateUtils.getDataFromKmSession('appOptions') ||
-                applozic._globals;
-
             if (recognizingDone) {
                 recognition.stop();
                 return;
-            }    
-
+            };
+            
             recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end.
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
-            finalTranscript = '';
             recognition.lang =
-                appOptions.language || Kommunicate.mediaService.browserLocale;
+            appOptions.language || Kommunicate.mediaService.browserLocale;
             recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
@@ -52,14 +49,10 @@ Kommunicate.mediaService = {
                         finalTranscript || interimTranscript
                     )
                 );
-                lastListeningEventTime = new Date().getTime();
-            };
-            recognition.onspeechend = function () {
-                // stop speech recognition explicitly
-                recognition.stop();
+                lastListeningEventTime = new Date();
             };
             recognition.onend = function () {
-                // stop mic effect'
+                // stop mic effect
                 recognizingDone = false;
 
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
@@ -74,19 +67,19 @@ Kommunicate.mediaService = {
             if (Kommunicate.mediaService.isAppleDevice) {
                 const disableStt = () => {
                     const checkTimeSTT = 1000;
-                    const customTimeSet = 2;
+                    const customTimeSet = 10;
                     setInterval(function () {
                         const currentTime = new Date().getTime();
                         if (
                             lastListeningEventTime != null &&
-                            (currentTime - lastListeningEventTime) /
+                            (currentTime - lastListeningEventTime.getTime()) /
                                 checkTimeSTT >
                                 customTimeSet
                         ) {
                             if (recognizingDone) {
-                                recognition.stop();
-                                lastListeningEventTime = null;
                                 recognizingDone = false;
+                                lastListeningEventTime = null;
+                                recognition.stop();
                             }
                         }
                     }, checkTimeSTT);
