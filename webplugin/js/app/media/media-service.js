@@ -1,7 +1,12 @@
 Kommunicate.mediaService = {
     browserLocale:
         window.navigator.language || window.navigator.userLanguage || 'en-US',
-    isAppleDevice: /iPhone|iPad|iPod/i.test(navigator.userAgent) || false,
+    isAppleDevice: function () {
+        var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        var isMacSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        return isIOSDevice || isMacSafari
+    },
     endSttExplicitly: function (lastListeningEventTime, recognizingDone, recognition) {
         const checkTimeSTT = 1000;
         const customTimeSet = 5; //To do setting this via widget script
@@ -11,10 +16,7 @@ Kommunicate.mediaService = {
             (currentTime - lastListeningEventTime.getTime()) / checkTimeSTT >
                 customTimeSet
         ) {
-            console.log('lastListeningEventTime 2', lastListeningEventTime);
-            console.log('recognizingDone 2', recognizingDone);
             if (recognizingDone) {
-                console.log("@@@ recognition.stop(); RUNS")
                 recognizingDone = false;
                 lastListeningEventTime = null;
                 recognition.stop();
@@ -41,7 +43,7 @@ Kommunicate.mediaService = {
                 applozic._globals;
 
             var recognition = new webkitSpeechRecognition();
-            recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end.
+            recognition.continuous = Kommunicate.mediaService.isAppleDevice(); // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
             recognition.lang =
                 appOptions.language || Kommunicate.mediaService.browserLocale;
@@ -49,7 +51,7 @@ Kommunicate.mediaService = {
             if (!recognizingDone) recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
-                // recognizingDone = true;
+                recognizingDone = true;
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
             };
             recognition.onresult = function (event) {
@@ -71,7 +73,7 @@ Kommunicate.mediaService = {
             };
             recognition.onend = function () {
                 console.log("recognition.onend run")
-                recognizingDone = true;
+                recognizingDone = false;
 
                 // stop mic effect
                 recognition.stop();
@@ -84,34 +86,16 @@ Kommunicate.mediaService = {
             };
 
             //explicitly Stop the Mic recording only for IOS
-            setInterval(function () {
-                Kommunicate.mediaService.endSttExplicitly(
-                    lastListeningEventTime,
-                    recognizingDone,
-                    recognition
-                );
-            }, 1000);
-
-            // var disableStt = () => {
-            //     setInterval(function () {
-            //         const checkTimeSTT = 1000;
-            //         const customTimeSet = 10;
-            //         const currentTime = new Date().getTime();
-            //         if (
-            //             lastListeningEventTime != null &&
-            //             (currentTime - lastListeningEventTime.getTime()) /
-            //                 checkTimeSTT >
-            //                 customTimeSet
-            //         ) {
-            //             if (recognizingDone) {
-            //                 recognizingDone = false;
-            //                 lastListeningEventTime = null;
-            //                 recognition.stop();
-            //             }
-            //         }
-            //     }, checkTimeSTT);
-            //     disableStt();
-            // };
+            if(Kommunicate.mediaService.isAppleDevice()) {
+                console.log("APPLE:", Kommunicate.mediaService.isAppleDevice())
+                setInterval(function () {
+                    Kommunicate.mediaService.endSttExplicitly(
+                        lastListeningEventTime,
+                        recognizingDone,
+                        recognition
+                    );
+                }, 1000);
+            }
         }
     },
     voiceOutputIncomingMessage: function (message, offSpeech) {
