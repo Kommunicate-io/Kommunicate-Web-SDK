@@ -3,23 +3,32 @@ Kommunicate.mediaService = {
         window.navigator.language || window.navigator.userLanguage || 'en-US',
     isAppleDevice: function () {
         var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        var isMacSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        var isMacSafari = /^((?!chrome|android).)*safari/i.test(
+            navigator.userAgent
+        );
 
-        return isIOSDevice || isMacSafari
+        return isIOSDevice || isMacSafari;
     },
-    endSttExplicitly: function (lastListeningEventTime, recognizingDone, recognition) {
+    endSttExplicitly: function (
+        lastListeningEventTime,
+        recognizingDone,
+        recognition,
+        checkLastSpeech
+    ) {
         const MILLISECOND_TO_SEC = 1000;
         const CUSTOM_TIMEOUT_STT = 5; //To do set this via widget script
         const currentTime = new Date().getTime();
         if (
             lastListeningEventTime != null &&
-            (currentTime - lastListeningEventTime.getTime()) / MILLISECOND_TO_SEC >
-            CUSTOM_TIMEOUT_STT
+            (currentTime - lastListeningEventTime.getTime()) /
+                MILLISECOND_TO_SEC >
+                CUSTOM_TIMEOUT_STT
         ) {
             if (recognizingDone) {
                 recognizingDone = false;
                 lastListeningEventTime = null;
                 recognition.stop();
+                clearInterval(checkLastSpeech);
             }
         }
     },
@@ -38,12 +47,13 @@ Kommunicate.mediaService = {
             var recognizingDone = false;
             var lastListeningEventTime = null;
             var finalTranscript = '';
+            var isAppleProduct = Kommunicate.mediaService.isAppleDevice();
             var appOptions =
                 KommunicateUtils.getDataFromKmSession('appOptions') ||
                 applozic._globals;
 
             var recognition = new webkitSpeechRecognition();
-            recognition.continuous = Kommunicate.mediaService.isAppleDevice(); // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
+            recognition.continuous = isAppleProduct; // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
             recognition.lang =
                 appOptions.language || Kommunicate.mediaService.browserLocale;
@@ -72,8 +82,6 @@ Kommunicate.mediaService = {
                 );
             };
             recognition.onend = function () {
-                recognizingDone = false;
-
                 // stop mic effect
                 recognition.stop();
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
@@ -84,13 +92,14 @@ Kommunicate.mediaService = {
                 recognition.abort();
             };
 
-            //explicitly Stop the Mic recording only for IOS
-            if(Kommunicate.mediaService.isAppleDevice()) {
-                setInterval(function () {
+            //explicitly Stop the Mic recording only for Safari
+            if (isAppleProduct) {
+                var checkLastSpeech = setInterval(function () {
                     Kommunicate.mediaService.endSttExplicitly(
                         lastListeningEventTime,
                         recognizingDone,
-                        recognition
+                        recognition,
+                        checkLastSpeech
                     );
                 }, 1000);
             }
