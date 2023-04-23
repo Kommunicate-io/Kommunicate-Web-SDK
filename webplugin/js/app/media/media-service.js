@@ -1,36 +1,34 @@
 Kommunicate.mediaService = {
-    browserLocale:
-        window.navigator.language || window.navigator.userLanguage || 'en-US',
+    browserLocale: window.navigator.language || window.navigator.userLanguage || 'en-US',
+    appOptions: KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals,
+    userInActiveSec: 0,
     isAppleDevice: function () {
         var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
         var isMacSafari = /^((?!chrome|android).)*safari/i.test(
             navigator.userAgent
         );
-
         return isIOSDevice || isMacSafari;
     },
-    endSttExplicitly: function (
-        lastListeningEventTime,
-        recognizingDone,
-        recognition,
-        checkLastSpeech
-    ) {
-        const MILLISECOND_TO_SEC = 1000;
-        const CUSTOM_TIMEOUT_STT = 5; //To do set this via widget script
-        const currentTime = new Date().getTime();
-        if (
-            lastListeningEventTime != null &&
-            (currentTime - lastListeningEventTime.getTime()) /
-                MILLISECOND_TO_SEC >
-                CUSTOM_TIMEOUT_STT
-        ) {
-            if (recognizingDone) {
-                recognizingDone = false;
-                lastListeningEventTime = null;
-                recognition.stop();
-                clearInterval(checkLastSpeech);
-            }
-        }
+    endSttExplicitly: function (params) {
+        var that = this;
+        var voiceInputTimeOut = that.appOptions.voiceInputTimeout || 10;
+        var currentTime = new Date().getTime();
+        var lastListeningEventTime = params.lastListeningEventTime;
+
+        var isUserSilent = function() {
+            //if user remains silent for atLeast voiceInputTimeOut sec
+            if (lastListeningEventTime === 0) {
+                return ++(that.userInActiveSec) === voiceInputTimeOut;
+            };
+            //else acc to condition we return true/false
+            return (currentTime - params.lastListeningEventTime) / 1000 >= voiceInputTimeOut;
+        };    
+        if (isUserSilent()) {
+            params.lastListeningEventTime = 0;
+            that.userInActiveSec = 0;
+            params.recognition.stop();
+            clearInterval(params.checkLastSpeech);
+        };
     },
     capitalizeFirstCharacter: function (str) {
         var firstCharRegex = /\S/;
@@ -44,29 +42,23 @@ Kommunicate.mediaService = {
             alert('browser do not support speech recognition');
         } else {
             //As of April 2023, works only in chrome, edge and safari(limited support)
-            var recognizingDone = false;
-            var lastListeningEventTime = null;
+            var lastListeningEventTime = 0;
             var finalTranscript = '';
             var isAppleProduct = Kommunicate.mediaService.isAppleDevice();
-            var appOptions =
-                KommunicateUtils.getDataFromKmSession('appOptions') ||
-                applozic._globals;
+            var appOptions = Kommunicate.mediaService.appOptions;
 
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = isAppleProduct; // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
-            recognition.lang =
-                appOptions.language || Kommunicate.mediaService.browserLocale;
+            recognition.lang = appOptions.language || Kommunicate.mediaService.browserLocale;
 
-            if (!recognizingDone) recognition.start();
-            recognition.onstart = function () {
+            recognition.start();
+            recognition.onstart = function (event) {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
-                recognizingDone = true;
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
             };
             recognition.onresult = function (event) {
                 //get called for each new set of results captured by recognizer
-                lastListeningEventTime = new Date();
                 var interimTranscript = '';
                 for (var i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
@@ -80,7 +72,12 @@ Kommunicate.mediaService = {
                         finalTranscript || interimTranscript
                     )
                 );
+
+                if (isAppleProduct && interimTranscript) {
+                    lastListeningEventTime = new Date().getTime();
+                };
             };
+
             recognition.onend = function () {
                 // stop mic effect
                 recognition.stop();
@@ -88,19 +85,18 @@ Kommunicate.mediaService = {
                 window.$applozic.fn.applozic('toggleMediaOptions');
             };
             recognition.onerror = function (event) {
-                console.log('error while speech recognition', event.error);
+                console.log('error while speech recognition:', event.error);
                 recognition.abort();
             };
 
             //explicitly Stop the Mic recording only for Safari
-            if (isAppleProduct) {
+             if (isAppleProduct) {
                 var checkLastSpeech = setInterval(function () {
-                    Kommunicate.mediaService.endSttExplicitly(
+                    Kommunicate.mediaService.endSttExplicitly({
                         lastListeningEventTime,
-                        recognizingDone,
                         recognition,
-                        checkLastSpeech
-                    );
+                        checkLastSpeech,
+                    });
                 }, 1000);
             }
         }
