@@ -3770,10 +3770,10 @@ var userOverride = {
                 var customEvent = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 );
-                var eventToTrigger = customEvent
+                var eventToTrigger = customEvent && customEvent.customWelcomeEvent
                     ? customEvent.customWelcomeEvent
                     : 'WELCOME';
-                window.Applozic.ALApiService.sendMessage({
+                eventToTrigger && window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
