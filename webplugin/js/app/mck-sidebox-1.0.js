@@ -3770,10 +3770,10 @@ var userOverride = {
                 var customEvent = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 );
-                var eventToTrigger = customEvent
+                var eventToTrigger = customEvent && customEvent.customWelcomeEvent
                     ? customEvent.customWelcomeEvent
                     : 'WELCOME';
-                window.Applozic.ALApiService.sendMessage({
+                eventToTrigger && window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
@@ -4120,6 +4120,7 @@ var userOverride = {
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
+                    // mck-msg-new click handler
                     // mckMessageLayout.addContactsToContactSearchList();
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     mckMessageService.createNewConversation(
@@ -8014,7 +8015,12 @@ var userOverride = {
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
-                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+            var staticMessageModule = 
+                '<div id="km-static-message" class="km-custom-widget-background-color-secondary">' +
+                '<span id="km-static-message-icon">{{html staticIconSVG}}</span>'+
+                '<span id="km-static-message-text">${message}</span>' +
+                '</div>';
             var SUBMITTED_FORMS = {};
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
@@ -8023,6 +8029,35 @@ var userOverride = {
                 $applozic.template('contactTemplate', contactbox);
                 $applozic.template('searchContactbox', searchContactbox);               
                 $applozic.template('csatModule', csatModule);
+                $applozic.template('staticMessageTemplate', staticMessageModule);
+            };
+            _this.removeStaticMessage = function () {
+                var staticMessageContainer = document.getElementById("km-static-message");
+                if (staticMessageContainer) {
+                    staticMessageContainer.remove();
+                }
+            };
+            _this.addStaticMessage = function () {
+                // remove any static message if present
+                _this.removeStaticMessage();
+                if (document.querySelector('#mck-contact-list')) {
+                    // if contact list is visible then dropdown options should not be loaded.
+                    return;
+                }
+
+                var staticMessage = kommunicate._globals.staticTopMessage;
+                var svgIconKey = kommunicate._globals.staticTopIcon || "KM_LOCK";
+                var staticIcon = KommunicateConstants.STATIC_MESSAGE_ICONS[svgIconKey];
+
+                if (typeof staticMessage === 'string' && staticMessage !== '') {
+                    var content = {
+                        message: staticMessage,
+                        staticIconSVG: staticIcon
+                    };
+                    $applozic
+                        .tmpl('staticMessageTemplate', content)
+                        .prependTo('#mck-message-cell .mck-message-inner');
+                }
             };
             _this.loadDropdownOptions = function () {
                 if(document.querySelector('#mck-contact-list')){
@@ -8465,6 +8500,7 @@ var userOverride = {
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
                     $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
                     mckMessageService.loadMessageList(params, callback);
@@ -8610,6 +8646,7 @@ var userOverride = {
                         }
                     );
                 }
+                mckMessageLayout.addStaticMessage();
             };
             _this.closeConversation = function (data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {
