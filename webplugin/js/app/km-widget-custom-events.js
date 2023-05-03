@@ -4,31 +4,37 @@
  // definition of function can be overwrite by user through subscribeToEvents function.
  */
 var kmWidgetEvents = {
+    gaTrackingId: function () {
+        var trackingID =
+            applozic._globals.gaTrackingID ||
+            (applozic._globals.appSettings.chatWidget.isGAEnabled &&
+                applozic._globals.appSettings.chatWidget.gaTrackingId);
+
+        return (trackingID && trackingID.toString()) || '';
+    },
     sendEventToGoogleAnalytics: function (
-        eventCateogry,
+        eventCategory,
         eventAction,
         eventLabel,
         eventValue
     ) {
-        var trackingID =
-                applozic._globals.gaTrackingID ||
-                (applozic._globals.appSettings.chatWidget.isGAEnabled &&
-                    applozic._globals.appSettings.chatWidget.gaTrackingId);
-        try{
-            if (trackingID && typeof window.top.ga !== 'undefined') {
-                window.top.ga('create', trackingID.toString(), 'auto');
+        try {
+            if (
+                kmWidgetEvents.gaTrackingId() &&
+                typeof window.top.ga !== 'undefined'
+            ) {
+                window.top.ga('create', kmWidgetEvents.gaTrackingId(), 'auto');
                 window.top.ga('send', {
                     hitType: 'event',
-                    eventCategory: eventCateogry,
+                    eventCategory: eventCategory,
                     eventAction: eventAction,
                     eventLabel: eventLabel,
                     eventValue: eventValue,
                 });
             }
-        } catch(error){
+        } catch (error) {
             console.log('Cannot reach to top window. Error => ', error);
         }
-        
     },
     eventTracking: function (eventObject, customLabel, customValue) {
         // Any other analytics tool related code can be add here no need to paste it in every function
@@ -39,13 +45,9 @@ var kmWidgetEvents = {
             if (customValue) {
                 eventObject.data.eventValue = customValue;
             }
-            var trackingID =
-                applozic._globals.gaTrackingID ||
-                (applozic._globals.appSettings.chatWidget.isGAEnabled &&
-                    applozic._globals.appSettings.chatWidget.gaTrackingId);
-            trackingID &&
+            kmWidgetEvents.gaTrackingId() &&
                 kmWidgetEvents.sendEventToGoogleAnalytics(
-                    eventObject.data.eventCateogry,
+                    eventObject.data.eventCategory,
                     eventObject.data.eventAction,
                     eventObject.data.eventLabel,
                     eventObject.data.eventValue
@@ -69,156 +71,162 @@ var kmWidgetEvents = {
 /* Description for the events in eventMapping object.
     eventName: {
         data:{
-            eventCateogry: carteogry of event,
+            eventCategory: category of event,
             eventAction: action happening on the,
-            eventLabel: unique label for every event (for some events ie. onRichButtonClick it get created dynamically while calling the respective fucntion),
-            eventValue: getting created dynamically while calling the respective fucntion,
+            eventLabel: unique label for every event (for some events ie. onRichButtonClick it get created dynamically while calling the respective function),
+            eventValue: getting created dynamically while calling the respective function,
         },
         eventFunction: default is null but overwrite the function here which is sent by user in subscribeToEvents(),
     }
     data property 
+    similar format will follow in ga4 as follow
+    {
+        eventCategory: became custom parameter
+        eventAction: became event name
+        eventLabel: became custom parameter
+    }
 */
 var eventMapping = {
     onChatWidgetOpen: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Open',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_open',
             eventLabel: 'Chat Widget Open',
         },
         eventFunction: null,
     },
     onChatWidgetClose: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Close',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_close',
             eventLabel: 'Chat Widget Close',
         },
         eventFunction: null,
     },
     onRichMessageButtonClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Rich Message Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_rich_message_button_click',
         },
         eventFunction: null,
     },
     onFaqClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_faq_click',
             eventLabel: 'FAQ Menu',
         },
         eventFunction: null,
     },
     onRateConversationClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Started',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_CSAT_started',
             eventLabel: 'CSAT Start',
         },
         eventFunction: null,
     },
     onSubmitRatingClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Submit',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_CSAT_submit',
             eventLabel: 'CSAT Submit',
         },
         eventFunction: null,
     },
     onShowResolvedClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_resolve_click',
             eventLabel: 'Show Resolve',
         },
         eventFunction: null,
     },
     onStartNewConversation: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Start New',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_start_new_conversation',
             eventLabel: 'Conversation Start',
         },
         eventFunction: null,
     },
     onGreetingMessageNotificationClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_greeting_message_click',
             eventLabel: 'Greeting',
         },
         eventFunction: null,
     },
     onRestartConversationClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Restart',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_restart_conversation',
             eventLabel: 'Conversation Restart',
         },
         eventFunction: null,
     },
     onRateConversationEmoticonsClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Rate',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_ratings_conversation',
         },
         eventFunction: null,
     },
     onLocationIconClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_location_share',
             eventLabel: 'Location',
         },
         eventFunction: null,
     },
     onAttachmentClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_send_attachment',
             eventLabel: 'Attachment',
         },
         eventFunction: null,
     },
     onCameraButtonClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_camera_icon_click',
             eventLabel: 'Camera Button Click',
         },
         eventFunction: null,
     },
     onNotificationClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_notification_click',
             eventLabel: 'Notification',
         },
         eventFunction: null,
     },
     onVoiceIconClick: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Click',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_voice_input',
             eventLabel: 'VoiceInput',
         },
         eventFunction: null,
     },
     onMessageSent: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Sent',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_message_sent',
             eventLabel: 'Message',
         },
         eventFunction: null,
     },
     onMessageReceived: {
         data: {
-            eventCateogry: 'Kommunicate',
-            eventAction: 'Received',
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_message_received',
             eventLabel: 'Message',
         },
         eventFunction: null,
-    }
+    },
 };

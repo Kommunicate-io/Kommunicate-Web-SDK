@@ -91,6 +91,9 @@
     content: attr(data-text);
 	color: #949494;
 	opacity:0.6;
+    /* the properties mentioned below fixes text cursor disappear issue */
+    position: relative;
+    z-index: -1;
 }
 
 .mck-running-on > a:hover{
@@ -1699,7 +1702,6 @@
 	min-height: 18px;
 	max-height: 78px;
 	resize: none;
-	background-color: white;
 	width: auto;
 	outline: none !important;
 	margin: 0px;
@@ -1712,6 +1714,11 @@
 	box-shadow: none !important;
 	-webkit-user-select: text;
 	border: none;
+    /* the properties mentioned below fixes text cursor disappear issue */
+    background: transparent;
+    caret-color: black; 
+    position: relative;
+    z-index: 0;
 }
 
 .mck-text-box-panel {

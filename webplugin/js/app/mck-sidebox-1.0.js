@@ -36,7 +36,7 @@ var userOverride = {
             'https://googleupload.applozic.com/files/url?key={key}', // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
         notificationSoundLink: '',
-        mapStaticAPIkey: 'AIzaSyCTGgLQbsvMotNNjRqPnWCln4y4LcBvxxE',
+        mapStaticAPIkey: 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk',
         launcher: 'applozic-launcher',
         emojilibrary: false,
         userId: null,
@@ -890,12 +890,29 @@ var userOverride = {
             // the browser call getVoices is async
             // so we are updating the array whenever they're available
             if (VOICE_OUTPUT_ENABLED && "speechSynthesis" in window) {
+                var isIosDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent) || false;
+
                 AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                 if (speechSynthesis.onvoiceschanged !== undefined) {
                     speechSynthesis.onvoiceschanged = function () {
                         AVAILABLE_VOICES_FOR_TTS = speechSynthesis.getVoices();
                     };
                   }
+                function hackForIosDevices() {
+                    /** 
+                        it is only for IOS devices so using newer syntax
+                        IOS devices would not let the speech API run programmatically unless we have triggered manually one time under the user's interaction.
+                     */
+
+                    const simulateFakeVoice = () => {
+                        const fakeInstance = new SpeechSynthesisUtterance('');
+                        speechSynthesis.speak(fakeInstance);
+                    };
+                    document.addEventListener('click', simulateFakeVoice, {
+                        once: true,
+                    });
+                }
+                isIosDevice && hackForIosDevices();  
             }
         };
         _this.reInit = function (optns) {
@@ -4825,6 +4842,7 @@ var userOverride = {
                         googleApiKey: MCK_GOOGLE_API_KEY,
                         chatNotificationMailSent: true,
                         authenticationTypeId: MCK_AUTHENTICATION_TYPE_ID,
+                        enableEncryption: true
                     };
                     if (email) {
                         options.email = email.toLowerCase();
@@ -5268,6 +5286,63 @@ var userOverride = {
                         $mck_box_form.addClass('mck-text-req');
                         return false;
                     }
+                    //If the field is a form field then validate the input, update user details before sending the message
+                    if ($mck_text_box.data('fieldType')) {
+                        //If the field has a regex validation then validate the input otherwise skip validation
+                        if($mck_text_box.data('validation')){
+                            var regexForm = $mck_text_box.data(
+                                'validation'
+                            );
+                            regexForm = new RegExp(regexForm);
+                            //If the input does not match the regex validation then show an error message for 2 seconds.
+                            if (!regexForm.test(message)) {
+                                $applozic('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
+                                $applozic('#mck-form-field-error-alert-box')
+                                    .removeClass('n-vis')
+                                    .addClass('vis');
+                                setTimeout(function () {
+                                    $applozic('#mck-form-field-error-alert-box')
+                                        .removeClass('vis')
+                                        .addClass('n-vis');
+                                }, 2000);
+                                return false;
+                            }
+                        }
+                        if($mck_text_box.data('updateUserDetails')){
+                            // If the field is a form field and the user details need to be updated then update the user details
+                            var fieldVal = $mck_text_box.data('field');
+                            var userUpdateField = {};
+                            userUpdateField[fieldVal] = message;
+                            if (
+                                $mck_text_box.data('fieldType') === 'EMAIL' ||
+                                $mck_text_box.data('fieldType') === 'NAME' ||
+                                $mck_text_box.data('fieldType') ===
+                                    'PHONE_NUMBER'
+                            ) {
+                                mckContactService.updateUser({
+                                    data: userUpdateField,
+                                });
+                            } else {
+                                mckContactService.updateUser({
+                                    data: { metadata: userUpdateField },
+                                });
+                            }
+                        }
+                        // Reset the placeholder text to default text
+                        $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
+                        // Reset the data attributes
+                        $mck_text_box.data('updateUserDetails', null); 
+                        $mck_text_box.data('field', null);
+                        $mck_text_box.data('fieldType', null);
+                        $mck_text_box.data('validation', null);
+                        $mck_text_box.data('errorMessage', null);
+                        if($mck_text_box.data('trigger')){
+                            $mck_text_box.data('triggerNextIntent',$mck_text_box.data('trigger'));
+                        }
+                        else{
+                            $mck_text_box.data('triggerNextIntent',null);
+                        }
+                    }
                     if (
                         typeof MCK_MSG_VALIDATION === 'function' &&
                         !MCK_MSG_VALIDATION(message)
@@ -5574,7 +5649,6 @@ var userOverride = {
                 ) {
                     metadata.AL_REPLY = msgKeys;
                 }
-
                 messagePxy.metadata = metadata;
                 if (
                     (typeof messagePxy.message === 'undefined' ||
@@ -5920,6 +5994,15 @@ var userOverride = {
                 var chatContext = KommunicateUtils.getSettings(
                     'KM_CHAT_CONTEXT'
                 );
+                var userLocale = kommunicate._globals.userLocale;
+                var currentLanguage = {
+                    kmUserLocale: userLocale
+                        ? userLocale.split('-')[0]
+                        : (
+                              window.navigator.language || window.navigator.userLanguage
+                          ).split('-')[0],
+                };
+                chatContext = $applozic.extend(chatContext, currentLanguage);
                 chatContext = typeof chatContext == 'object' ? chatContext : {};
                 MCK_DEFAULT_MESSAGE_METADATA =
                     typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'
@@ -5963,6 +6046,13 @@ var userOverride = {
                     ),
                 });
 
+                if(metadata && metadata.payload && typeof metadata.payload !== 'string'){
+                    metadata.payload = JSON.stringify(metadata.payload);
+                }
+                if($mck_text_box.data('triggerNextIntent')){
+                    metadata.KM_TRIGGER_EVENT= $mck_text_box.data('triggerNextIntent');
+                    $mck_text_box.data('triggerNextIntent',null);
+                }
                 messagePxy.metadata = metadata;
                 window.Applozic.ALApiService.ajax({
                     type: 'POST',
@@ -7707,6 +7797,13 @@ var userOverride = {
                         }
                     },
                 });
+                $mck_text_box.data('updateUserDetails', null); 
+                $mck_text_box.data('field', null);
+                $mck_text_box.data('fieldType', null);
+                $mck_text_box.data('validation', null);
+                $mck_text_box.data('errorMessage', null);
+                $mck_text_box.data('triggerNextIntent', null);
+                $mck_text_box.attr('data-text', MCK_LABELS['input.message'])
             };
 
             _this.sendDeliveryUpdate = function (key) {
@@ -8765,8 +8862,9 @@ var userOverride = {
                 if (
                     msg.contentType ==
                         KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT ||
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
                     msg.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                        KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION 
                 ) {
                     messageClass = msg.message ? 'vis km-attach-msg-right' : 'n-vis';
                     progressMeterClass = 'n-vis';
@@ -8807,7 +8905,7 @@ var userOverride = {
                         ? 'km-custom-widget-background-color'
                         : 'km-custom-widget-background-color-secondary';
 
-                if ( floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg') {
+                if ( (floatWhere !== 'mck-msg-right' && kmAttchMsg === 'km-attach-msg')) {
                     messageClass = 'vis km-attach-msg-left';
                     attachmentBox = 'km-attach-msg-left';
                 }
@@ -9161,6 +9259,58 @@ var userOverride = {
                                 : {}
                         );
                     }
+                } else if (
+                    !(
+                        msg.metadata.obsolete && msg.metadata.obsolete == 'true'
+                    ) && msg.metadata.KM_FIELD) {
+                        var fieldMetadata = {};
+                        var fieldReplyMetadata= {};
+                    try {
+                        fieldMetadata = JSON.parse(msg.metadata.KM_FIELD);
+                    } catch (e) {
+                         console.error('fieldMetadata should not be empty');
+                    }
+                    var fieldValidation = fieldMetadata.validation ? fieldMetadata.validation.regex : false;
+                    var fieldType= fieldMetadata.fieldType;
+                    var field= fieldMetadata.field;
+                    var updateUserDetails = fieldMetadata.action ? fieldMetadata.action.updateUserDetails : false;
+                    if(msg.metadata.replyMetadata){
+                        fieldReplyMetadata= JSON.parse(msg.metadata.replyMetadata);
+                        var triggerNextIntent= fieldReplyMetadata.KM_TRIGGER_EVENT;
+                    }
+                    else{
+                        var triggerNextIntent= false;
+                    }
+                    $mck_text_box
+                        .addClass('mck-text-box')
+                        .removeClass('n-vis');
+                    // if trigger next event is true then set the data attribute for triggerNextEvent
+                    if(triggerNextIntent){
+                        $mck_text_box.data('trigger', triggerNextIntent);
+                    }
+                    else{
+                        $mck_text_box.data('trigger', null);
+                    }
+                    //if update user details is true then set the data attribute for updateuserdetails
+                    if(updateUserDetails){
+                        $mck_text_box.data('updateUserDetails', updateUserDetails);
+                    }
+                    else{
+                        $mck_text_box.data('updateUserDetails', null);
+                    }
+                    // if field validation is true then set the data attributes for validation and errorMessage
+                    if(fieldValidation){
+                        var errorMessage = fieldMetadata.validation.errorText;
+                        $mck_text_box.data('validation', fieldValidation);
+                        $mck_text_box.data('errorMessage', errorMessage);
+                    }
+                    else{
+                        $mck_text_box.data('validation', null);
+                        $mck_text_box.data('errorMessage', null);
+                    }
+                    $mck_text_box.data('field', field);
+                    $mck_text_box.data('fieldType', fieldType);
+                    $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
                     // hide the auto suggestion box and show the text box
                     mckMessageService.hideAutoSuggestionBoxEnableTxtBox();
@@ -14717,7 +14867,7 @@ var userOverride = {
                     });
                 }
             };
-
+            
             _this.uploadAttachment2AWS = function (params, messagePxy) {
                 var file = params.file;
                 var data = new FormData();
@@ -14795,8 +14945,7 @@ var userOverride = {
                     var uniqueId = params.name + file.size;
                     TAB_FILE_DRAFT[uniqueId] = currTab;
                     $mck_msg_sbmt.attr('disabled', true);
-                    var newFileName = 'AWS-ENCRYPTED-' + file.name;
-                    data.append('file', file, newFileName);
+                    
                     var xhr = new XMLHttpRequest();
                     (xhr.upload || xhr).addEventListener(
                         'progress',
@@ -14832,19 +14981,31 @@ var userOverride = {
                                 stopUpload = KommunicateUI.getAttachmentStopUploadStatus(
                                     messagePxy.key
                                 );
-                                KommunicateUI.updateAttachmentTemplate(
-                                    file_meta,
-                                    messagePxy.key
-                                );
+
+                                if(appOptions.defaultUploadOverride){
+                                    let messageToSend = responseJson;
+                                    mckMessageLayout.removedDeletedMessage(
+                                        messagePxy.key,
+                                        messagePxy.groupId,
+                                        true
+                                    );
+                                    messagePxy.metadata = messageToSend.metadata;
+                                    delete messagePxy.fileMeta;
+                                } else {
+                                    KommunicateUI.updateAttachmentTemplate(
+                                        file_meta,
+                                        messagePxy.key
+                                    );
+                                    KommunicateUI.updateImageAttachmentPreview(
+                                        file_meta,
+                                        messagePxy.key
+                                    );
+                                }      
                                 !stopUpload &&
                                     mckMessageService.submitMessage(
                                         messagePxy,
                                         optns
                                     );
-                                KommunicateUI.updateImageAttachmentPreview(
-                                    file_meta,
-                                    messagePxy.key
-                                );
                                 return;
                             }
                             var fileExpr =
@@ -14893,11 +15054,36 @@ var userOverride = {
                             $file_remove.trigger('click');
                         }
                     });
+                    
                     var queryParams = '?aclsPrivate=true';
                     var url = MCK_BASE_URL + ATTACHMENT_UPLOAD_URL;
                     queryParams && (url = url + queryParams);
-                    xhr.open('post', url, true);
-                    window.Applozic.ALApiService.addRequestHeaders(xhr);
+
+                    if(appOptions.defaultUploadOverride){
+                        url = appOptions.defaultUploadOverride.url;
+                        
+                        xhr.open('post', url, true);
+                        data.append('file', file, newFileName);
+                        data.append('data', JSON.stringify({"groupId": messagePxy.groupId}));
+
+                        var headerKeys = Object.keys(appOptions.defaultUploadOverride.headers);
+
+                        for(var i = 0; i < headerKeys.length; i++){
+                            var headerKey = headerKeys[i];
+                            xhr.setRequestHeader(
+                                headerKey,
+                                appOptions.defaultUploadOverride.headers[headerKey]
+                            );
+                        }
+                    } else {
+                        var newFileName = 'AWS-ENCRYPTED-' + file.name;
+                        
+                        xhr.open('post', url, true);
+                        data.append('file', file, newFileName);
+                        window.Applozic.ALApiService.addRequestHeaders(xhr);
+                    }
+                    
+                    
                     xhr.send(data);
                 }
             };

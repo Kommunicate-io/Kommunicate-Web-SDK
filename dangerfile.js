@@ -37,7 +37,7 @@ const isDesAdded = danger.github.pr.body.length <= 10;
 isDesAdded && fail(PR_REVIEWS_CHECKS.WARNS.MISSING_DES);
 
 // new Files in the PR
-const newFiles = danger.git.created_files.join(" , ");
+const newFiles = danger.git.created_files.join(" , ") || 0;
 message(`${PR_REVIEWS_CHECKS.SUCCESS.NEW_FILES} ${newFiles}` );
 
 // check PR is changes Threshold

@@ -28,8 +28,9 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.1.min.js',
-            alternateUrl: MCK_STATICPATH + '/js/app/applozic.chat-6.2.1.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.2.min.js',
+            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.2.min.js',
+            // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
             name: 'maps',
@@ -38,7 +39,7 @@ function ApplozicSidebox() {
                 typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
-                    : 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
+                    : 'AIzaSyA38UpjswOn3EN59MD1QrAoiKZ0fjXMlpE',
         },
     ];
     var mck_style_loader = [
@@ -492,6 +493,8 @@ function ApplozicSidebox() {
             options.attachmentHandler = options.attachmentHandler != null 
                     ? options.attachmentHandler 
                     : function (file) { return file; };
+            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride
+            options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (

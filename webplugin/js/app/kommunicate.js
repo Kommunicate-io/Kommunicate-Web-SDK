@@ -46,16 +46,22 @@ $applozic.extend(true, Kommunicate, {
             params.agentId = appOptions.agentId;
         }
         var user = [];
-        if (params.agentIds) {
+        if (params.agentIds && Array.isArray(params.agentIds)) {
             for (var i = 0; i < params.agentIds.length; i++) {
                 user.push({ userId: params.agentIds[i], groupRole: 1 });
             }
+        } else {
+            user.push({ userId: params.agentIds, groupRole: 1 });
         }
-        if (params.botIds) {
+
+        if (params.botIds && Array.isArray(params.botIds)) {
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({ userId: params.botIds[i], groupRole: 2 });
             }
+        } else {
+            user.push({ userId: params.botIds, groupRole: 2 });
         }
+
         var groupName =
             params.defaultGroupName ||
             params.conversationTitle ||
@@ -76,7 +82,7 @@ $applozic.extend(true, Kommunicate, {
         params.WELCOME_MESSAGE &&
             (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
         params.conversationMetadata &&
-        typeof params.conversationMetadata == 'object' &&
+            typeof params.conversationMetadata == 'object' &&
             (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
@@ -495,6 +501,8 @@ $applozic.extend(true, Kommunicate, {
                 msg.contentType ==
                     KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
             msg.contentType ==
+                KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
+            msg.contentType ==
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
         );
     },
@@ -606,7 +614,7 @@ $applozic.extend(true, Kommunicate, {
                     .GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
-                    metadata['msgKey'] = message.key; 
+                    metadata['msgKey'] = message.key;
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:
@@ -765,7 +773,7 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            (msg.metadata && msg.metadata.category === 'HIDDEN' ) ||
+            (msg.metadata && msg.metadata.category === 'HIDDEN') ||
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
         ) {
@@ -781,7 +789,8 @@ $applozic.extend(true, Kommunicate, {
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE &&
             msg.metadata &&
-           (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') || msg.metadata.hide === 'true')
+            (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') ||
+                msg.metadata.hide === 'true')
         ) {
             return false;
         }
@@ -808,7 +817,7 @@ $applozic.extend(true, Kommunicate, {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-        if(quickReplyCtaPrevSibling) {
+        if (quickReplyCtaPrevSibling) {
             quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
         }
     },
@@ -825,5 +834,18 @@ $applozic.extend(true, Kommunicate, {
             sibling = sibling.nextSibling;
         }
         return siblings;
+    },
+    openWidgetPreview: function () {
+        var isPreChatForm = document.getElementById(
+            'km-anonymous-chat-launcher'
+        );
+
+        isPreChatForm
+            ? isPreChatForm.click()
+            : Kommunicate.launchConversation();
+    },
+    closeWidgetPreview: function () {
+        var closeBtn = document.getElementById('km-popup-close-button');
+        closeBtn && closeBtn.click();
     },
 });

@@ -685,17 +685,18 @@
     letter-spacing: 0.4px;
     color: #6b6767;
 }
-#mck-email-error-alert {
+#mck-email-error-alert,
+#mck-form-field-error-alert {
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.4px;
     color: #f46262;
 }
 #mck-email-collection-box,
-#mck-email-error-alert-box {
+#mck-email-error-alert-box,
+#mck-form-field-error-alert-box {
     text-align: center;
     padding: 0px 25px 10px;
-    /* background-color: #d8d8d8; */
 }
 #mck-away-msg-box hr,
 #mck-email-collection-box hr,
@@ -1369,25 +1370,76 @@
     background-position-x: 98%;
     background-position-y: 5px;
 }
-.mck-radio-group-title {
+.mck-radio-group-title, .mck-checkbox-group-title  {
     color: black;
     margin-bottom: 5px;
 }
-.mck-form-radio-wrapper {
+.mck-form-radio-wrapper, .mck-form-checkbox-wrapper {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
 }
-.mck-form-radio-wrapper div {
+.mck-form-radio-wrapper div, .mck-form-checkbox-wrapper div {
     margin-right: 10px;
 }
-.mck-form-radio-wrapper input {
+.mck-form-radio-wrapper input, .mck-form-checkbox-wrapper input {
     font-size: 11px;
     margin-right: 3px;
 }
 .mck-form-textarea-wrapper textarea {
     resize: vertical;
 }
+
+/* ------ START: checkbox as button style ------ */
+.checkbox-as-button {
+    background-color: transparent;
+    border-radius: 8px;
+    border: 1px solid #00A4BF;
+}
+
+.checkbox-as-button label {
+    line-height: 3.0em;
+    height: 3.0em;
+    cursor: pointer;
+}
+
+.checkbox-as-button label span {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.checkbox-container label span>svg,
+.checkbox-as-button label input+span>svg {
+    display: none;
+}
+
+.checkbox-as-button label input {
+    position: absolute;
+    display: none;
+    color: #fff !important;
+}
+
+.checkbox-as-button label input+span {
+    color: #00A4BF;
+    font-weight: 400;
+    padding: 0 10px;
+}
+
+
+.checkbox-as-button input:checked+span {
+    color: #00A4BF;
+    font-weight: unset;
+    background-color: #D4F3F8;
+    border-radius: 8px;
+}
+
+.checkbox-as-button input:checked+span>svg {
+    display: block;
+}
+/* ------ END: checkbox as button style ------ */
 
 .mck-form-text-wrapper input,
 .mck-form-dropdown-wrapper select,

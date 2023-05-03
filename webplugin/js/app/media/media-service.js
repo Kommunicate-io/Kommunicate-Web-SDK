@@ -1,30 +1,58 @@
 Kommunicate.mediaService = {
+    browserLocale:
+       window.navigator.language || window.navigator.userLanguage || 'en-us',
+    isAppleDevice: function () {
+        var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+        var isMacSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        return isIOSDevice || isMacSafari
+    },
     capitalizeFirstCharacter: function (str) {
         var firstCharRegex = /\S/;
         return str.replace(firstCharRegex, function (m) {
             return m.toUpperCase();
         });
     },
+    endSttExplicitly: function (lastListeningEventTime, recognizingDone, recognition) {
+        const MILLISECOND_TO_SEC = 1000;
+        const CUSTOM_TIMEOUT_STT = 5; //To do set this via widget script
+        const currentTime = new Date().getTime();
+        if (
+            lastListeningEventTime != null &&
+            (currentTime - lastListeningEventTime.getTime()) / MILLISECOND_TO_SEC >
+            CUSTOM_TIMEOUT_STT
+        ) {
+            if (recognizingDone) {
+                recognizingDone = false;
+                lastListeningEventTime = null;
+                recognition.stop();
+            }
+        }
+    },
     processVoiceInputClickedEvent: function () {
         kmWidgetEvents.eventTracking(eventMapping.onVoiceIconClick);
         if (!('webkitSpeechRecognition' in window)) {
-            alert('browser do not support speech recogization');
+            alert('browser do not support speech recognition');
         } else {
+            //As of April 2023, works only in chrome, edge and safari(limited support)
+            var recognizingDone = false;
+            var lastListeningEventTime = null;
+            var finalTranscript = '';
+            var appOptions = KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals;
             var recognition = new webkitSpeechRecognition();
-            var appOptions =
-                KommunicateUtils.getDataFromKmSession('appOptions') ||
-                applozic._globals;
-            recognition.continuous = false; // The default value for continuous is false, meaning that when the user stops talking, speech recognition will end.
+            
+            recognition.continuous = Kommunicate.mediaService.isAppleDevice(); // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
-            finalTranscript = '';
-            recognition.lang = appOptions.language || 'en-us';
-            recognition.start();
+            recognition.lang =  appOptions.language || Kommunicate.mediaService.browserLocale;
+            if (!recognizingDone) recognition.start();
             recognition.onstart = function () {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
+                recognizingDone = true;
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
             };
             recognition.onresult = function (event) {
                 //get called for each new set of results captured by recognizer
+                lastListeningEventTime = new Date();
                 var interimTranscript = '';
                 for (var i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
@@ -39,14 +67,28 @@ Kommunicate.mediaService = {
                     )
                 );
             };
-            recognition.onerror = function (err) {
-                console.log('error while speech recognition', err);
-            };
             recognition.onend = function () {
+                recognizingDone = false;
                 // stop mic effect
+                recognition.stop();
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
                 window.$applozic.fn.applozic('toggleMediaOptions');
             };
+            recognition.onerror = function (event) {
+                console.log('error while speech recognition', event.error);
+                recognition.abort();
+            };
+
+            //explicitly Stop the Mic recording only for IOS
+            if(Kommunicate.mediaService.isAppleDevice()) {
+            setInterval(function () {
+                Kommunicate.mediaService.endSttExplicitly(
+                    lastListeningEventTime,
+                    recognizingDone,
+                    recognition
+                );
+            }, 1000);
+            }
         }
     },
     voiceOutputIncomingMessage: function (message, offSpeech) {
@@ -54,7 +96,7 @@ Kommunicate.mediaService = {
           window.speechSynthesis.cancel();
           return;
         }
-        // get appoptions
+        // get appOptions from widget script
         var timeOut;
         var appOptions =
             KommunicateUtils.getDataFromKmSession('appOptions') ||
@@ -95,29 +137,28 @@ Kommunicate.mediaService = {
                 textToSpeak += message.message;
             }
             if (textToSpeak) {
+                var skipForEach = false;
+                var utterance = new SpeechSynthesisUtterance(textToSpeak);
+                    utterance.lang =  appOptions.language || "en-US";
+                    utterance.rate = appOptions.voiceRate || 1;
+                    utterance.text = textToSpeak;
+
                 function updateVoiceName(voice) {
                     utterance.voice = voice;
                     skipForEach = true;
                 }
-                var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = appOptions.language || "en-US";
-                utterance.rate = appOptions.voiceRate || 1;
-                var skipForEach = false;
+
                 if (appOptions.voiceName) {
-                    AVAILABLE_VOICES_FOR_TTS.forEach( function (voice) {
-                        if (skipForEach) {
-                            return;
-                        }
+                    AVAILABLE_VOICES_FOR_TTS.forEach(function(voice) {
+                        if (skipForEach) return;
+                        
                         if (Array.isArray(appOptions.voiceName)) {
                             appOptions.voiceName.forEach(function (voiceName) {
-                                if (
-                                    voice.name === voiceName.trim() &&
-                                    !skipForEach
-                                ) {
+                                if (voice.name === voiceName.trim()) {
                                     updateVoiceName(voice);
                                 }
                             });
-                        } else if (voice.name === appOptions.voiceName.trim() && !skipForEach) {
+                        } else if (voice.name === appOptions.voiceName.trim()) {
                             updateVoiceName(voice);
                         }
                     })
@@ -137,7 +178,6 @@ Kommunicate.mediaService = {
                     };
                 }
                 speechSynthesis.speak(utterance);
-            
             }
         }
     },
