@@ -115,8 +115,7 @@ Kommunicate.mediaService = {
         }
         // get appOptions from widget script
         var timeOut;
-            KommunicateUtils.getDataFromKmSession('appOptions') ||
-            applozic._globals;
+        var appOptions = Kommunicate.mediaService.appOptions;
         function longTextSupport() {
             window.speechSynthesis.pause();
             window.speechSynthesis.resume();
