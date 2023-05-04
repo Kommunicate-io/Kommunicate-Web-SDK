@@ -117,11 +117,6 @@ function removeKommunicateScripts() {
     originFile && originFile.parentNode.removeChild(originFile);
 }
 
-(function ifClickJacked() {
-    if (window.self !== window.top) {
-        window.top.location = window.self.location;
-    }
-})()
 function removeElementFromHtmlById(elementIdArray) {
     for (var index in elementIdArray) {
         var element = document.getElementById(elementIdArray[index]);
