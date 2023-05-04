@@ -36,22 +36,6 @@ Kommunicate.mediaService = {
             return m.toUpperCase();
         });
     },
-    endSttExplicitly: function (lastListeningEventTime, recognizingDone, recognition) {
-        const MILLISECOND_TO_SEC = 1000;
-        const CUSTOM_TIMEOUT_STT = 5; //To do set this via widget script
-        const currentTime = new Date().getTime();
-        if (
-            lastListeningEventTime != null &&
-            (currentTime - lastListeningEventTime.getTime()) / MILLISECOND_TO_SEC >
-            CUSTOM_TIMEOUT_STT
-        ) {
-            if (recognizingDone) {
-                recognizingDone = false;
-                lastListeningEventTime = null;
-                recognition.stop();
-            }
-        }
-    },
     processVoiceInputClickedEvent: function () {
         kmWidgetEvents.eventTracking(eventMapping.onVoiceIconClick);
         if (!('webkitSpeechRecognition' in window)) {
@@ -71,21 +55,30 @@ Kommunicate.mediaService = {
             recognition.start();
             recognition.onstart = function (event) {
                 // when recognition.start() method is called it begins capturing audio and calls the onstart event handler
-                recognizingDone = true;
                 Kommunicate.typingAreaService.showMicRcordingAnimation();
             };
             recognition.onresult = function (event) {
                 //get called for each new set of results captured by recognizer
-                lastListeningEventTime = new Date();
                 var interimTranscript = '';
                 for (var i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
                         finalTranscript += event.results[i][0].transcript;
-                    };
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
                 }
+                Kommunicate.typingAreaService.populateText(
+                    Kommunicate.mediaService.capitalizeFirstCharacter(
+                        finalTranscript || interimTranscript
+                    )
+                );
+
+                if (isAppleProduct && interimTranscript) {
+                    lastListeningEventTime = new Date().getTime();
+                };
             };
+
             recognition.onend = function () {
-                recognizingDone = false;
                 // stop mic effect
                 recognition.stop();
                 Kommunicate.typingAreaService.hideMiceRecordingAnimation();
@@ -177,7 +170,7 @@ Kommunicate.mediaService = {
                         } else if (voice.name === appOptions.voiceName.trim()) {
                             updateVoiceName(voice);
                         }
-                    })
+                    });
                 }
                 utterance.onerror = function (event) {
                     if (event.error !== 'not-allowed') {
