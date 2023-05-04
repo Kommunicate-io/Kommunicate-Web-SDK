@@ -249,7 +249,9 @@ KommunicateUI = {};
 KommunicateUtils = {
     getCookie: function (cname, skipPrefix) {
         var cookiePrefix = this.getCookiePrefix();
-        var name = (skipPrefix ? cname : cookiePrefix + cname) + '=';
+        var name = (skipPrefix ? cname : cookiePrefix + cname) ;
+        var appId = applozic._globals.appId;
+        name += "." + appId + '=';
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
@@ -270,6 +272,7 @@ KommunicateUtils = {
             cookie && cookie.skipPrefix
                 ? cookie.name
                 : cookiePrefix + cookie.name;
+        var appId = applozic._globals.appId;
         var value = cookie.value;
         var path = '/';
         var secure =
@@ -282,6 +285,7 @@ KommunicateUtils = {
             navigator.userAgent.indexOf('Chrome') != -1 &&
             navigator.vendor.indexOf('Google') != -1;
         var domain = cookie.domain;
+        name += "."+appId;
         if (cookie.path) {
             path = cookie.path;
         }
@@ -323,6 +327,8 @@ KommunicateUtils = {
             cookie && cookie.skipPrefix
                 ? cookie.name
                 : cookiePrefix + cookie.name;
+        var appId = applozic._globals.appId;
+        name += "." + appId;
         var value = '';
         var path = cookie.path || '/';
         var secure =
@@ -349,14 +355,17 @@ KommunicateUtils = {
     },
     getDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
             var session = sessionStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" +
+                appId
             );
             return session ? JSON.parse(session)[key] : '';
         }
     },
     storeDataIntoKmSession: function (key, data) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
             var session =
                 typeof sessionStorage !== 'undefined' &&
                 sessionStorage.getItem(
@@ -366,17 +375,20 @@ KommunicateUtils = {
             session[key] = data;
             typeof sessionStorage !== 'undefined' &&
                 sessionStorage.setItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY,
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" +
+                    appId,
                     JSON.stringify(session)
                 );
         }
     },
     deleteDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
             var session =
                 typeof sessionStorage !== 'undefined' &&
                 sessionStorage.getItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" +
+                    appId
                 );
             session = session ? JSON.parse(session) : {};
             delete session[key];
@@ -425,34 +437,37 @@ KommunicateUtils = {
     },
     getItemFromLocalStorage: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId
             );
             return session ? JSON.parse(session)[key] : '';
         }
     },
     removeItemFromLocalStorage: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId
             );
             session = session ? JSON.parse(session) : {};
             delete session[key];
             localStorage.setItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY,
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId,
                 JSON.stringify(session)
             );
         }
     },
     setItemToLocalStorage: function (key, data) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId
             );
             session = session ? JSON.parse(session) : {};
             session[key] = data;
             localStorage.setItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY,
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId,
                 JSON.stringify(session)
             );
         }
