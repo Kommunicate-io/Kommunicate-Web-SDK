@@ -247,13 +247,17 @@ KommunicateUI = {};
 
 /**all  utilities*/
 KommunicateUtils = {
-    getCookie: function (cname, skipPrefix) {
+    getCookie: function (cname, skipPrefix, isOld) {
         var cookiePrefix = this.getCookiePrefix();
         var name = (skipPrefix ? cname : cookiePrefix + cname) ;
-        var appId = applozic._globals.appId;
-        name += "." + appId + '=';
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
+        var appId = applozic._globals.appId;
+        if(!isOld){
+            name += "-" + appId + '=';
+        } else {
+            name += '=';
+        }
         for (var i = 0; i < ca.length; i++) {
             var c = ca[i];
             while (c.charAt(0) == ' ') {
@@ -285,7 +289,6 @@ KommunicateUtils = {
             navigator.userAgent.indexOf('Chrome') != -1 &&
             navigator.vendor.indexOf('Google') != -1;
         var domain = cookie.domain;
-        name += "."+appId;
         if (cookie.path) {
             path = cookie.path;
         }
@@ -295,6 +298,7 @@ KommunicateUtils = {
                 today.setDate(today.getDate() + cookie.expiresInDays)
             ).toUTCString();
         }
+        name += "-"+appId;
         document.cookie =
             name +
             '=' +
@@ -321,14 +325,16 @@ KommunicateUtils = {
     isHttpsEnabledConnection: function () {
         return parent.window.location.protocol == 'https:';
     },
-    deleteCookie: function (cookie) {
+    deleteCookie: function (cookie, isOld) {
         var cookiePrefix = this.getCookiePrefix();
         var name =
             cookie && cookie.skipPrefix
                 ? cookie.name
                 : cookiePrefix + cookie.name;
         var appId = applozic._globals.appId;
-        name += "." + appId;
+        if(!isOld){
+            name += "-" + appId;
+        }
         var value = '';
         var path = cookie.path || '/';
         var secure =
@@ -357,9 +363,16 @@ KommunicateUtils = {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             var session = sessionStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" +
-                appId
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );
+            if (session) {
+                this.storeDataIntoKmSession(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId);
+                sessionStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            } else {
+                session = sessionStorage.getItem(
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
+                );
+            }
             return session ? JSON.parse(session)[key] : '';
         }
     },
@@ -439,8 +452,16 @@ KommunicateUtils = {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );
+            if (session) {
+                this.storeDataIntoKmSession(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId);
+                sessionStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            } else {
+                session = sessionStorage.getItem(
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
+                );
+            }
             return session ? JSON.parse(session)[key] : '';
         }
     },
@@ -500,6 +521,28 @@ KommunicateUtils = {
         var domainLength = MCK_COOKIE_DOMAIN.length;
         var subDomain = hostName.substr(0, hostName.length - domainLength);
         return subDomain;
+    },
+    replaceOldCookies: function() {
+        Object.values(KommunicateConstants.COOKIES).forEach(cookie => {
+            let cookieData = KommunicateUtils.getCookie(
+                cookie,
+                false,
+                true
+            )
+
+            if(cookieData){
+                KommunicateUtils.deleteCookie({
+                    name: cookie,
+                    domain: MCK_COOKIE_DOMAIN,
+                }, true)
+                KommunicateUtils.setCookie({
+                    name: cookie,
+                    value: cookieData,
+                    expiresInDays: 30,
+                    domain: MCK_COOKIE_DOMAIN,
+                })
+            }
+        })
     },
     deleteUserCookiesOnLogout: function () {
         KommunicateUtils.deleteCookie({
