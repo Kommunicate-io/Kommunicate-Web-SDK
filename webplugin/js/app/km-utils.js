@@ -456,7 +456,7 @@ KommunicateUtils = {
             );
             if (session) {
                 this.storeDataIntoKmSession(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId);
-                sessionStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+                localStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
             } else {
                 session = sessionStorage.getItem(
                     KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId

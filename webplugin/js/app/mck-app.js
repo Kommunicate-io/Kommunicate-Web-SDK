@@ -377,6 +377,8 @@ function ApplozicSidebox() {
                         '.' + domain)
                 );
             };
+            // replace cookies in old format with cookies in new format
+            KommunicateUtils.replaceOldCookies();
 
             // Remove scripts if chatwidget is restricted by domains
             var isCurrentDomainDisabled =
