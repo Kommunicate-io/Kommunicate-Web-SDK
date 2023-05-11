@@ -426,6 +426,7 @@ var userOverride = {
         var MCK_ENABLE_BADGE_COUNT = appOptions.unreadCountOnchatLauncher;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
+        var INTL_TEL_INSTANCE;
         //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_VOLUME =
             WIDGET_SETTINGS &&
@@ -2493,7 +2494,7 @@ var userOverride = {
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;
                 MCK_USER_TIMEZONEOFFSET = data.timeZoneOffset;
                 MCK_FILE_URL = data.fileBaseUrl;
-                IS_MCK_USER_DEACTIVATED = data.deactivated;
+                IS_MCK_USER_DEACTIVATED = data.deactivated; 
                 // For trial plan connect to socket only when someone opens the chat or have some existing chat thread
                 CONNECT_SOCKET_ON_WIDGET_CLICK == null &&
                     (CONNECT_SOCKET_ON_WIDGET_CLICK = kommunicateCommons.isTrialPlan(
@@ -3099,91 +3100,129 @@ var userOverride = {
                 submitBtn.removeAttribute('disabled');
                 submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
             },
-            _this.addLeadCollectionInputDiv = function () {
-                KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
-                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
-                    //Create dynamic input field
-                    var preLeadCollection = KM_PRELEAD_COLLECTION[i];
-                    var kmChatInputDiv = document.createElement('div');
-                    var preLeadCollectionClass =
+            _this.createInputField = function (preLeadCollection){
+                var kmChatInputDiv = document.createElement('div');
+                kmChatInputDiv.setAttribute(
+                    'class',
+                    'km-form-group km-form-group-container'
+                );
+
+                var kmChatInput = document.createElement(
+                    preLeadCollection.element || 'input'
+                );
+                var preLeadCollectionClass =
                         'km-form-control ' +
                         (preLeadCollection.element === 'textarea'
                             ? 'mck-preleadcollection-textarea'
                             : 'km-input-width');
-                    kmChatInputDiv.setAttribute(
-                        'class',
-                        'km-form-group km-form-group-container'
-                    );
-                    var kmChatInput = document.createElement(
-                        preLeadCollection.element || 'input'
-                    );
-
+                kmChatInput.setAttribute('class', preLeadCollectionClass);
+                
+                kmChatInput.setAttribute(
+                    'id',
+                    'km-' + preLeadCollection.field.toLowerCase()
+                );
+                kmChatInput.setAttribute(
+                    'name',
+                    'km-' + preLeadCollection.field.toLowerCase()
+                );
+                if(preLeadCollection.required){
                     kmChatInput.setAttribute(
-                        'id',
-                        'km-' + preLeadCollection.field.toLowerCase()
+                        'required',
+                        preLeadCollection.required
                     );
-                    kmChatInput.setAttribute(
-                        'name',
-                        'km-' + preLeadCollection.field.toLowerCase()
-                    );
-                    preLeadCollection.required &&
-                        kmChatInput.setAttribute(
-                            'required',
-                            preLeadCollection.required
-                        );
-                    kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    if (
-                        preLeadCollection.element == 'select' &&
-                        preLeadCollection.options &&
-                        mckMessageService.checkArray(preLeadCollection.options)
-                    ) {
-                        kmChatInput = _this.createSelectFieldDropdown(
-                            preLeadCollection.options,
-                            kmChatInput
-                        );
-                    } else {
-                        kmChatInput.setAttribute(
-                            'type',
-                            preLeadCollection.type || 'text'
-                        );
-                        kmChatInput.setAttribute(
-                            'placeholder',
-                            preLeadCollection.placeholder || ''
-                        );
-                        kmChatInput.setAttribute(
-                            'aria-label',
-                            preLeadCollection.field
-                        );
-                        if (preLeadCollection.type == "email"){
-                            kmChatInput.setAttribute(
-                                'pattern',
-                                "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
-                            );
-                            kmChatInput.setAttribute(
-                                'title',
-                                ''
-                            );
-                            kmChatInput.setAttribute(
-                                'oninvalid',
-                                "setCustomValidity('"+ MCK_LABELS['lead.collection'].errorEmail +"')"
-                            );
-                            kmChatInput.setAttribute(
-                                'oninput',
-                                "setCustomValidity('')"
-                            );
-                        } 
-                    }
-                    $applozic(kmChatInputDiv).append(kmChatInput);
-                    $applozic('.km-last-child').append(kmChatInputDiv);
                 }
+                if (
+                    preLeadCollection.element == 'select' &&
+                    preLeadCollection.options &&
+                    mckMessageService.checkArray(preLeadCollection.options)
+                ) {
+                    kmChatInput = _this.createSelectFieldDropdown(
+                        preLeadCollection.options,
+                        kmChatInput
+                    );
+                } else {
+                    kmChatInput.setAttribute(
+                        'type',
+                        preLeadCollection.type || 'text'
+                    );
+                    kmChatInput.setAttribute(
+                        'placeholder',
+                        preLeadCollection.placeholder || ''
+                    );
+                    kmChatInput.setAttribute(
+                        'aria-label',
+                        preLeadCollection.field
+                    );
+                    if (preLeadCollection.type == "email"){
+                        kmChatInput.setAttribute(
+                            'pattern',
+                            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+                        );
+                        kmChatInput.setAttribute(
+                            'title',
+                            ''
+                        );
+                        kmChatInput.setAttribute(
+                            'oninvalid',
+                            "setCustomValidity('"+ MCK_LABELS['lead.collection'].errorEmail +"')"
+                        );
+                        kmChatInput.setAttribute(
+                            'oninput',
+                            "setCustomValidity('')"
+                        );
+                    } 
+                }
+                $applozic(kmChatInputDiv).append(kmChatInput);
+                return kmChatInputDiv;
+            };
+
+            _this.addLeadCollectionInputDiv = function () {
+                KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
+                var enableCountryCode = false;
+                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
+                    var dataToCollect = KM_PRELEAD_COLLECTION[i];
+                    if(dataToCollect.field.toLowerCase() == 'phone'){
+                        enableCountryCode = dataToCollect.enableCountryCode;
+                    }
+                    var kmInputField = _this.createInputField(dataToCollect);
+                    $applozic('.km-last-child').append(kmInputField);
+                }
+                _this.addPhoneNumberValidation(enableCountryCode);
+            };
+            
+            _this.addPhoneNumberValidation = function (enableCountryCode) {
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
-                    phoneField.addEventListener(
-                        'keydown',
-                        _this.phoneNumberValidation
-                    );
+                    if (enableCountryCode) {
+                        INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
+                            customContainer: "km-intl-container",
+                            separateDialCode: true,
+                            initialCountry: "auto",
+                            geoIpLookup: _this.geoIpLookupFunction,
+                            utilsScript: "https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js"
+                        })
+                        
+                        phoneField.addEventListener(
+                            'keydown',
+                            _this.phoneNumberValidation
+                        );
+                    }
+                    
                 }
             };
+
+            _this.geoIpLookupFunction = function (callback) {
+                mckUtils.ajax({
+                    url: "https://ipapi.co/json",
+                    success: function (data) {
+                        callback(data.country_code); 
+                    },
+                    error: function() {
+                        callback("us");
+                    }
+                });
+            }
+            
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
             };
@@ -4801,6 +4840,10 @@ var userOverride = {
                         MCK_ACCESS_TOKEN = password;
                     }
                     if (contactNumber) {
+                        if(INTL_TEL_INSTANCE){
+                            // get number in international format as a string
+                            contactNumber = INTL_TEL_INSTANCE.getNumber();
+                        }
                         userId = contactNumber;
                         // Remove listener from phone number
                         document
