@@ -5589,16 +5589,13 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
+                var lastMessageBeforeSend = $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child");
+
                 kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
-                    Kommunicate.internetStatus &&
-                    $applozic(
-                        "#mck-message-cell .mck-message-inner div[name='message']:last-child"
-                    ).data('msgkey') !== undefined
+                    Kommunicate.internetStatus && lastMessageBeforeSend.data('msgkey') !== undefined
                 ) {
-                    key = $applozic(
-                        "#mck-message-cell .mck-message-inner div[name='message']:last-child"
-                    ).data('msgkey');
+                    key = lastMessageBeforeSend.data('msgkey');
                     message = alMessageService.getReplyMessageByKey(key);
                 }
                 if (typeof messagePxy !== 'object') {
@@ -5715,6 +5712,9 @@ var userOverride = {
                                 );
                             }
                         );
+                        HIDE_POST_CTA &&
+                            lastMessageBeforeSend &&
+                            Kommunicate.hideMessage(lastMessageBeforeSend);
                     }
                     var optns = {
                         tabId: contact.contactId,
@@ -5819,6 +5819,9 @@ var userOverride = {
                                     );
                                 }
                             );
+                            HIDE_POST_CTA &&
+                                lastMessageBeforeSend &&
+                                Kommunicate.hideMessage(lastMessageBeforeSend);
                         }
                         var optns = {
                             tabId: contact.contactId,
@@ -14538,7 +14541,7 @@ var userOverride = {
             }
             _this.init = function () {
                 $applozic.template('fileboxTemplate', mck_filebox_tmpl);
-                //ataching events for rich msh templates
+                //ataching events for rich msg templates
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
