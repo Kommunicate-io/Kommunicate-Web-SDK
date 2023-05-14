@@ -811,14 +811,6 @@ Kommunicate.richMsgEventHandler = {
             .getElementById('mck-text-box')
             .setAttribute('data-quick-reply', true);
         Kommunicate.sendMessage(messagePxy);
-
-        if (kommunicate._globals.hidePostCTA) {
-            var siblingsArray = Kommunicate.getAllSiblings(e.target);
-            var siblingContainsLink = siblingsArray.some(function (sibling) {
-                return sibling.classList.contains('km-link-button');
-            });
-            !siblingContainsLink && Kommunicate.hideMessage(e.target);
-        }
     },
     processClickOnListItem: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);

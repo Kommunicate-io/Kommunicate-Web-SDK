@@ -790,29 +790,16 @@ $applozic.extend(true, Kommunicate, {
         return true;
     },
     hideMessage: function (element) {
-        if (!element) {
-            return;
-        }
-        var parentEle = element.parentElement;
-        while (!parentEle.classList.contains('mck-msg-left')) {
-            parentEle = parentEle.parentElement;
-        }
-        parentEle.classList.add('n-vis');
+        //all cta expect link button will hide if hidePostCta is enable
+        if (!element && !element[0]) return;
+        var quickReplyCtaPrevSibling = element[0];
 
-        var quickReplyCtaPrevSibling = parentEle.previousElementSibling;
-
-        while (
-            quickReplyCtaPrevSibling &&
-            quickReplyCtaPrevSibling.classList.contains(
-                'contains-quick-replies-only'
-            )
-        ) {
-            quickReplyCtaPrevSibling =
-                quickReplyCtaPrevSibling.previousElementSibling;
+        while (quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
+            quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
         }
-        if (quickReplyCtaPrevSibling) {
-            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-        }
+        
+        quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+        quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
     },
     getAllSiblings: function (element) {
         var siblings = [];
