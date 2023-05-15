@@ -1459,7 +1459,7 @@
 }
 .link-preview-image{
     border-radius: 3px 0 0 3px;
-    object-fit: cover;
+    object-fit: contain;
     width: inherit;
     height: inherit;
 }
