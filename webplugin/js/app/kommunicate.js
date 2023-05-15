@@ -796,17 +796,43 @@ $applozic.extend(true, Kommunicate, {
         }
         return true;
     },
+    isHideMessage: function (className) {
+        var HIDE_MESSAGES = ['km-clubbing-first', 'km-clubbing-last'];
+        return HIDE_MESSAGES.some((clName) => {
+            return className.classList.contains(clName);
+        });
+    },
     hideMessage: function (element) {
         //all cta expect link button will hide if hidePostCta is enable
-        if (!element && !element[0]) return;
+        if (!element || !element[0]) return;
         var quickReplyCtaPrevSibling = element[0];
 
-        while (quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
-            quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
+        //return if HIDE_MESSAGES classes are not present
+        var isClubbing = this.isHideMessage(quickReplyCtaPrevSibling);
+        if (!isClubbing) return;
+
+        //if cta button and last message is in same container in UI
+        var isCtaMultiContainerExist = quickReplyCtaPrevSibling.querySelector(
+            '.mck-msg-box-rich-text-container.km-cta-multi-button-container'
+        );
+
+        if (isCtaMultiContainerExist) {
+            quickReplyCtaPrevSibling.style.display="block";
+            isCtaMultiContainerExist.classList.remove('vis');
+            isCtaMultiContainerExist.classList.add('n-vis');
+            return;
+        };
+
+        while (
+            quickReplyCtaPrevSibling.classList.contains(
+                'contains-quick-replies-only'
+            )
+        ) {
+            quickReplyCtaPrevSibling =
+                quickReplyCtaPrevSibling.previousElementSibling;
         }
-        
+
         quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-        quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
     },
     getAllSiblings: function (element) {
         var siblings = [];
