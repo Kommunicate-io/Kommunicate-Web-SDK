@@ -61,7 +61,7 @@ $applozic.extend(true, Kommunicate, {
         } else {
             user.push({ userId: params.botIds, groupRole: 2 });
         }
-        
+
         var groupName =
             params.defaultGroupName ||
             params.conversationTitle ||
@@ -82,7 +82,7 @@ $applozic.extend(true, Kommunicate, {
         params.WELCOME_MESSAGE &&
             (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
         params.conversationMetadata &&
-        typeof params.conversationMetadata == 'object' &&
+            typeof params.conversationMetadata == 'object' &&
             (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
@@ -212,7 +212,7 @@ $applozic.extend(true, Kommunicate, {
                 'loadGroupTabByClientGroupId',
                 groupDetail
             );
-        } 
+        }
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
@@ -499,8 +499,9 @@ $applozic.extend(true, Kommunicate, {
         return (
             (typeof msg.fileMeta === 'object' &&
                 msg.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) || 
-                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
+            msg.contentType ==
+                KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
             msg.contentType ==
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
         );
@@ -613,7 +614,7 @@ $applozic.extend(true, Kommunicate, {
                     .GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
-                    metadata['msgKey'] = message.key; 
+                    metadata['msgKey'] = message.key;
                     return Kommunicate.markup.getActionableFormMarkup(metadata);
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.VIDEO:
@@ -772,7 +773,7 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            (msg.metadata && msg.metadata.category === 'HIDDEN' ) ||
+            (msg.metadata && msg.metadata.category === 'HIDDEN') ||
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
         ) {
@@ -788,23 +789,50 @@ $applozic.extend(true, Kommunicate, {
             msg.contentType ===
                 KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE &&
             msg.metadata &&
-           (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') || msg.metadata.hide === 'true')
+            (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') ||
+                msg.metadata.hide === 'true')
         ) {
             return false;
         }
         return true;
     },
+    isHideMessage: function (className) {
+        var HIDE_MESSAGES = ['km-clubbing-first', 'km-clubbing-last'];
+        return HIDE_MESSAGES.some((clName) => {
+            return className.classList.contains(clName);
+        });
+    },
     hideMessage: function (element) {
         //all cta expect link button will hide if hidePostCta is enable
-        if (!element && !element[0]) return;
+        if (!element || !element[0]) return;
         var quickReplyCtaPrevSibling = element[0];
 
-        while (quickReplyCtaPrevSibling.classList.contains('contains-quick-replies-only')) {
-            quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
+        //return if HIDE_MESSAGES classes are not present
+        var isClubbing = this.isHideMessage(quickReplyCtaPrevSibling);
+        if (!isClubbing) return;
+
+        //if cta button and last message is in same container in UI
+        var isCtaMultiContainerExist = quickReplyCtaPrevSibling.querySelector(
+            '.mck-msg-box-rich-text-container.km-cta-multi-button-container'
+        );
+
+        if (isCtaMultiContainerExist) {
+            quickReplyCtaPrevSibling.style.display="block";
+            isCtaMultiContainerExist.classList.remove('vis');
+            isCtaMultiContainerExist.classList.add('n-vis');
+            return;
+        };
+
+        while (
+            quickReplyCtaPrevSibling.classList.contains(
+                'contains-quick-replies-only'
+            )
+        ) {
+            quickReplyCtaPrevSibling =
+                quickReplyCtaPrevSibling.previousElementSibling;
         }
-        
+
         quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-        quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
     },
     getAllSiblings: function (element) {
         var siblings = [];
