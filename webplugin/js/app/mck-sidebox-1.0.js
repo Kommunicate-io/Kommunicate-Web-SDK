@@ -3025,6 +3025,13 @@ var userOverride = {
                     contentType: 'application/json',
                     success: function (result) {
                         if (result && result.data) {
+                            var lastMessageBeforeSend = $applozic(
+                                "#mck-message-cell .mck-message-inner div[name='message']:last-child"
+                            );
+                            HIDE_POST_CTA &&
+                                lastMessageBeforeSend &&
+                                Kommunicate.hideMessage(lastMessageBeforeSend);
+
                             CURRENT_GROUP_DATA.currentGroupFeedback =
                                 result.data.data;
                             KommunicateUI.showClosedConversationBanner(true);
@@ -3036,6 +3043,7 @@ var userOverride = {
                                 'n-vis',
                                 ''
                             );
+
                         }
                     },
                     error: function () {
@@ -9055,7 +9063,6 @@ var userOverride = {
                 ) {
                         // this class is added to the message template if the message contains CTA buttons having only quick replies.
                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
-                 
                 }
                 
 

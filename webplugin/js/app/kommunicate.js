@@ -796,9 +796,9 @@ $applozic.extend(true, Kommunicate, {
         }
         return true;
     },
-    isHideMessage: function (className) {
-        var HIDE_MESSAGES = ['km-clubbing-first', 'km-clubbing-last'];
-        return HIDE_MESSAGES.some((clName) => {
+    isMessageClubbing: function (className) {
+        var CLUBBING_CLASSES = ['km-clubbing-first', 'km-clubbing-last'];
+        return CLUBBING_CLASSES.some(function(clName) {
             return className.classList.contains(clName);
         });
     },
@@ -807,8 +807,8 @@ $applozic.extend(true, Kommunicate, {
         if (!element || !element[0]) return;
         var quickReplyCtaPrevSibling = element[0];
 
-        //return if HIDE_MESSAGES classes are not present
-        var isClubbing = this.isHideMessage(quickReplyCtaPrevSibling);
+        //return if CLUBBING_CLASSES classes are not present
+        var isClubbing = this.isMessageClubbing(quickReplyCtaPrevSibling);
         if (!isClubbing) return;
 
         //if cta button and last message is in same container in UI
@@ -831,8 +831,9 @@ $applozic.extend(true, Kommunicate, {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-
+        var isFirstGroupMessage = quickReplyCtaPrevSibling.previousElementSibling;
         quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+        isFirstGroupMessage && quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
     },
     getAllSiblings: function (element) {
         var siblings = [];
