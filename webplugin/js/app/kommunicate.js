@@ -789,20 +789,34 @@ $applozic.extend(true, Kommunicate, {
         }
         return true;
     },
+    isMessageClubbing: function (className) {
+        var CLUBBING_CLASSES = ['km-clubbing-first', 'km-clubbing-last'];
+        return CLUBBING_CLASSES.some(function(clName) {
+            return className.classList.contains(clName);
+        });
+    },
     hideMessage: function (element) {
-        if (!element) {
-            return;
-        }
-        var parentEle = element.parentElement;
-        while (!parentEle.classList.contains('mck-msg-left')) {
-            parentEle = parentEle.parentElement;
-        }
-        parentEle.classList.add('n-vis');
+        //all cta expect link button will hide if hidePostCta is enable
+        if (!element || !element[0]) return;
+        var quickReplyCtaPrevSibling = element[0];
 
-        var quickReplyCtaPrevSibling = parentEle.previousElementSibling;
+        //return if CLUBBING_CLASSES classes are not present
+        var isClubbing = this.isMessageClubbing(quickReplyCtaPrevSibling);
+        if (!isClubbing) return;
+
+        //if cta button and last message is in same container in UI
+        var isCtaMultiContainerExist = quickReplyCtaPrevSibling.querySelector(
+            '.mck-msg-box-rich-text-container.km-cta-multi-button-container'
+        );
+
+        if (isCtaMultiContainerExist) {
+            quickReplyCtaPrevSibling.style.display="block";
+            isCtaMultiContainerExist.classList.remove('vis');
+            isCtaMultiContainerExist.classList.add('n-vis');
+            return;
+        };
 
         while (
-            quickReplyCtaPrevSibling &&
             quickReplyCtaPrevSibling.classList.contains(
                 'contains-quick-replies-only'
             )
@@ -810,9 +824,9 @@ $applozic.extend(true, Kommunicate, {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-        if (quickReplyCtaPrevSibling) {
-            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-        }
+        var isFirstGroupMessage = quickReplyCtaPrevSibling.previousElementSibling;
+        quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+        isFirstGroupMessage && quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
     },
     getAllSiblings: function (element) {
         var siblings = [];
