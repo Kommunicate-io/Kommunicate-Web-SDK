@@ -812,16 +812,16 @@ $applozic.extend(true, Kommunicate, {
         if (!isClubbing) return;
 
         //if cta button and last message is in same container in UI
-        var isCtaMultiContainerExist = quickReplyCtaPrevSibling.querySelector(
-            '.mck-msg-box-rich-text-container.km-cta-multi-button-container'
-        );
+        // var isCtaMultiContainerExist = quickReplyCtaPrevSibling.querySelector(
+        //     '.mck-msg-box-rich-text-container.km-cta-multi-button-container'
+        // );
 
-        if (isCtaMultiContainerExist) {
-            quickReplyCtaPrevSibling.style.display="block";
-            isCtaMultiContainerExist.classList.remove('vis');
-            isCtaMultiContainerExist.classList.add('n-vis');
-            return;
-        };
+        // if (isCtaMultiContainerExist) {
+        //     quickReplyCtaPrevSibling.style.display="block";
+        //     isCtaMultiContainerExist.classList.remove('vis');
+        //     isCtaMultiContainerExist.classList.add('n-vis');
+        //     return;
+        // };
 
         while (
             quickReplyCtaPrevSibling.classList.contains(
