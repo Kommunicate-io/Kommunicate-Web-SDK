@@ -484,7 +484,16 @@ function ApplozicSidebox() {
             options.attachmentHandler = options.attachmentHandler != null 
                     ? options.attachmentHandler 
                     : function (file) { return file; };
-            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride
+            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride;
+
+            options.maxAttachmentSize = (options.maxAttachmentSize != null 
+                    ? options.maxAttachmentSize 
+                    : widgetSettings && widgetSettings.maxAttachmentSize);
+            options.maxAttachmentSizeErrorMsg = options.maxAttachmentSizeErrorMsg != null 
+                    ? options.maxAttachmentSizeErrorMsg 
+                    : widgetSettings && widgetSettings.maxAttachmentSizeErrorMsg;
+            
+            
             options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
             
             // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.

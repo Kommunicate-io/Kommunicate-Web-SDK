@@ -76,6 +76,8 @@ var userOverride = {
         voiceOutput: false,
         capturePhoto: false,
         captureVideo: false,
+        maxAttachmentSize: 25, // default size is 25MB
+        maxAttachmentSizeErrorMsg: "File size cannot be more than $maxAttachmentSize MB"
     };
     var message_default_options = {
         messageType: 5,
@@ -409,6 +411,7 @@ var userOverride = {
         };
         var MCK_CONTACT_NUMBER = appOptions.contactNumber;
         var MCK_FILEMAXSIZE = appOptions.maxAttachmentSize;
+        var MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg;
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
         var MCK_GETTOPICDETAIL = appOptions.getTopicDetail;
         var MCK_GETUSERNAME = appOptions.contactDisplayName;
@@ -1223,6 +1226,7 @@ var userOverride = {
             MCK_APP_MODULE_NAME = optns.appModuleName;
             MCK_GETTOPICDETAIL = optns.getTopicDetail;
             MCK_FILEMAXSIZE = optns.maxAttachmentSize;
+            MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg;
             MCK_MSG_VALIDATION = optns.validateMessage;
             MCK_GETUSERNAME = optns.contactDisplayName;
             MCK_GROUP_MEMBER_SEARCH_ARRAY = new Array();
@@ -14787,11 +14791,13 @@ var userOverride = {
                     );
                 }
                 if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
-                    uploadErrors.push(
-                        'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
-                    );
+                    MCK_MSG_FILEMAXSIZE &&
+                        uploadErrors.push(
+                            MCK_MSG_FILEMAXSIZE.replace(
+                                "$maxAttachmentSize",
+                                MCK_FILEMAXSIZE
+                            )
+                        );
                 }
                 if (uploadErrors.length > 0) {
                     alert(uploadErrors.toString());
@@ -14984,11 +14990,13 @@ var userOverride = {
                     );
                 }
                 if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
-                    uploadErrors.push(
-                        'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
-                    );
+                    MCK_MSG_FILEMAXSIZE &&
+                        uploadErrors.push(
+                            MCK_MSG_FILEMAXSIZE.replace(
+                                "$maxAttachmentSize",
+                                MCK_FILEMAXSIZE
+                            )
+                        );
                 }
                 if (uploadErrors.length > 0) {
                     alert(uploadErrors.toString());
