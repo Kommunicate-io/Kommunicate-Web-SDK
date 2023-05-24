@@ -77,7 +77,6 @@ var userOverride = {
         capturePhoto: false,
         captureVideo: false,
         maxAttachmentSize: 25, // default size is 25MB
-        maxAttachmentSizeErrorMsg: "File size cannot be more than $maxAttachmentSize MB"
     };
     var message_default_options = {
         messageType: 5,
@@ -411,7 +410,7 @@ var userOverride = {
         };
         var MCK_CONTACT_NUMBER = appOptions.contactNumber;
         var MCK_FILEMAXSIZE = appOptions.maxAttachmentSize;
-        var MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg;
+        var MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg || MCK_LABELS['file.size.limit.exceeded'];
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
         var MCK_GETTOPICDETAIL = appOptions.getTopicDetail;
         var MCK_GETUSERNAME = appOptions.contactDisplayName;
@@ -1225,7 +1224,7 @@ var userOverride = {
             MCK_APP_MODULE_NAME = optns.appModuleName;
             MCK_GETTOPICDETAIL = optns.getTopicDetail;
             MCK_FILEMAXSIZE = optns.maxAttachmentSize;
-            MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg;
+            MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg || MCK_LABELS['file.size.limit.exceeded'];
             MCK_MSG_VALIDATION = optns.validateMessage;
             MCK_GETUSERNAME = optns.contactDisplayName;
             MCK_GROUP_MEMBER_SEARCH_ARRAY = new Array();
