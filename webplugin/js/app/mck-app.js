@@ -730,7 +730,7 @@ function ApplozicSidebox() {
             timeStampDifference >= sessionTimeout
         ) {
             KommunicateUtils.deleteUserCookiesOnLogout();
-            sessionStorage.removeItem('kommunicate');
+            KommunicateUtils.removeKmSession();
             KommunicateUtils.removeItemFromLocalStorage(
                 applozic._globals.appId
             );
