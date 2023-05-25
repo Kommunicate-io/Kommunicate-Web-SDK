@@ -12,6 +12,7 @@ Kommunicate.defaultLabels = {
     'limit.characters': 'characters',
     'limit.remaining': 'remaining',
     'file.uploading.wait': 'Please wait file is uploading.',
+    'file.size.limit.exceeded': "File size cannot be more than $maxAttachmentSize MB",
     'empty.groups': 'No groups yet!',
     'empty.contacts': 'No contacts yet!',
     'empty.messages': 'No messages yet!',
