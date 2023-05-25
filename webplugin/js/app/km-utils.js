@@ -359,31 +359,60 @@ KommunicateUtils = {
             );
         return text;
     },
+    migrateKmSession: function(appId){
+        if(KommunicateUtils.isSessionStorageAvailable){
+            // a session with old key exists then migrate to new format 
+            var oldData = sessionStorage.getItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+            );
+            if(oldData){
+                sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId, oldData);
+                sessionStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            }
+        }
+    },
+    removeKmSession: function(){
+        if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
+            sessionStorage.removeItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId,
+            )
+        }
+    },
+    getKmSession: function(){
+        if (KommunicateUtils.isSessionStorageAvailable()) {
+            var appId = applozic._globals.appId;
+            migrateKmSession(appId);
+            
+
+            var session = sessionStorage.getItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId,
+            )
+            
+            return session ? JSON.parse(session) : {};
+        }
+    },
     getDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
+            migrateKmSession(appId);
+            
             var session = sessionStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
             );
-            if (session) {
-                this.storeDataIntoKmSession(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId);
-                sessionStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-            } else {
-                session = sessionStorage.getItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
-                );
-            }
+
             return session ? JSON.parse(session)[key] : '';
         }
     },
     storeDataIntoKmSession: function (key, data) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
-            var session =
-                typeof sessionStorage !== 'undefined' &&
-                sessionStorage.getItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY
-                );
+            migrateKmSession(appId);
+            
+            var session = sessionStorage.getItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
+            );
+
             session = session ? JSON.parse(session) : {};
             session[key] = data;
             typeof sessionStorage !== 'undefined' &&
@@ -396,18 +425,17 @@ KommunicateUtils = {
     },
     deleteDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
-            var appId = applozic._globals.appId;
+            migrateKmSession(appId);
+            
             var session =
-                typeof sessionStorage !== 'undefined' &&
                 sessionStorage.getItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" +
-                    appId
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
                 );
             session = session ? JSON.parse(session) : {};
             delete session[key];
             typeof sessionStorage !== 'undefined' &&
                 sessionStorage.setItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY,
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId,
                     JSON.stringify(session)
                 );
         }
