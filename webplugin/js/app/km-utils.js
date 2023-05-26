@@ -360,7 +360,7 @@ KommunicateUtils = {
         return text;
     },
     migrateKmSession: function(appId){
-        if(KommunicateUtils.isSessionStorageAvailable){
+        if(KommunicateUtils.isSessionStorageAvailable()){
             // a session with old key exists then migrate to new format 
             var oldData = sessionStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY
@@ -382,7 +382,7 @@ KommunicateUtils = {
     getKmSession: function(){
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
-            migrateKmSession(appId);
+            KommunicateUtils.migrateKmSession(appId);
             
 
             var session = sessionStorage.getItem(
@@ -395,7 +395,7 @@ KommunicateUtils = {
     getDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
-            migrateKmSession(appId);
+            KommunicateUtils.migrateKmSession(appId);
             
             var session = sessionStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
@@ -407,7 +407,7 @@ KommunicateUtils = {
     storeDataIntoKmSession: function (key, data) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
-            migrateKmSession(appId);
+            KommunicateUtils.migrateKmSession(appId);
             
             var session = sessionStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
@@ -425,7 +425,8 @@ KommunicateUtils = {
     },
     deleteDataFromKmSession: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
-            migrateKmSession(appId);
+            var appId = applozic._globals.appId;
+            KommunicateUtils.migrateKmSession(appId);
             
             var session =
                 sessionStorage.getItem(
@@ -476,33 +477,41 @@ KommunicateUtils = {
         settings = settings ? settings : null;
         return key && settings ? settings[key] : settings ? settings : '';
     },
+    migrateLocalStore: function(appId){
+        if(KommunicateUtils.isSessionStorageAvailable()){
+            var oldData = localStorage.getItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+            );
+            if(oldData){
+                localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId, oldData);
+                localStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            }
+        }
+    },
     getItemFromLocalStorage: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
+            KommunicateUtils.migrateLocalStore(appId);
+
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
             );
-            if (session) {
-                this.storeDataIntoKmSession(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId);
-                localStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
-            } else {
-                session = sessionStorage.getItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
-                );
-            }
+
             return session ? JSON.parse(session)[key] : '';
         }
     },
     removeItemFromLocalStorage: function (key) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
+            KommunicateUtils.migrateLocalStore(appId);
+
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
             );
             session = session ? JSON.parse(session) : {};
             delete session[key];
             localStorage.setItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId,
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId,
                 JSON.stringify(session)
             );
         }
@@ -510,13 +519,15 @@ KommunicateUtils = {
     setItemToLocalStorage: function (key, data) {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
+            KommunicateUtils.migrateLocalStore(appId);
+
             var session = localStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
             );
             session = session ? JSON.parse(session) : {};
             session[key] = data;
             localStorage.setItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '_' + appId,
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId,
                 JSON.stringify(session)
             );
         }
