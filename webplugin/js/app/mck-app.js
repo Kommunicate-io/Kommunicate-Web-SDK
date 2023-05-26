@@ -354,6 +354,7 @@ function ApplozicSidebox() {
             }
             return false;
         }
+        checkForChurnCustomer()
     }
     function mckInitSidebox(data, randomUserId) {
         try {
@@ -627,7 +628,31 @@ function ApplozicSidebox() {
     //         }
     //     })
     // };
-
+    function checkForChurnCustomer(){
+        let appId=applozic._globals.appId;
+        let uploadUrl = `http://localhost:3999/users/v2/chat/plugin/get-current-plan?appId=${appId}`
+         fetch(uploadUrl, {
+            method: 'get',
+        })
+        .then(response => {
+            if (response.ok) {
+              return response.json(); 
+            } else {
+              throw new Error('Request failed with status ' + response.status);
+            }
+          })
+          .then(res => {
+            if(res.churnStatus=="churn"){
+                var churnCust = document.getElementById("km-churn-customer")
+                if(churnCust){
+                    churnCust.classList.add("is-churn-customer")
+                }     
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    }
     function getApplicationSettings(userId) {
         var data = {};
         applozic._globals.appId && (data.appId = applozic._globals.appId);
