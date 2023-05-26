@@ -43,6 +43,23 @@
     padding: 12px 16px;
     font-size: 14px;
 }
+#km-churn-customer{
+    color:#886026;
+    position: relative;
+    z-index: 999;
+    background:#fbd683;
+    -webkit-box-align: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    display: none;
+}
+.is-churn-customer{
+    display:flex !important;
+    align-items: flex-start;
+}
+.is-churn-customer .churn-heading{
+    padding-left: 5px;
+}
 
 @keyframes km-typing-anim {
     0% {
