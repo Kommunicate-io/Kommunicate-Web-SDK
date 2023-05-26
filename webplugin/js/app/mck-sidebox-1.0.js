@@ -1314,7 +1314,7 @@ var userOverride = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
-                sessionStorage.removeItem('kommunicate');
+                KommunicateUtils.removeKmSession();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
@@ -7197,9 +7197,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.isSessionStorageAvailable() && sessionStorage.kommunicate
-                    ? JSON.parse(sessionStorage.kommunicate)
-                    : {};
+                var userSession = KommunicateUtils.getKmSession();
                 var languageCode =
                     userSession &&
                     userSession.settings &&
