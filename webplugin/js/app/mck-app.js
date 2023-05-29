@@ -354,7 +354,6 @@ function ApplozicSidebox() {
             }
             return false;
         }
-        checkForChurnCustomer()
     }
     function mckInitSidebox(data, randomUserId) {
         try {
@@ -380,6 +379,14 @@ function ApplozicSidebox() {
             };
             // replace cookies in old format with cookies in new format
             KommunicateUtils.replaceOldCookies();
+
+            //to check if the customer has been churned then show the churn banner
+            if (data.currentActivatedPlan == "churn") {
+                var churnCust = document.getElementById("km-churn-customer")
+                if (churnCust) {
+                    churnCust.classList.add("is-churn-customer")
+                }
+            }
 
             // Remove scripts if chatwidget is restricted by domains
             var isCurrentDomainDisabled =
@@ -617,33 +624,10 @@ function ApplozicSidebox() {
     //         }
     //     })
     // };
-    function checkForChurnCustomer(){
-        let appId=applozic._globals.appId;
-        let uploadUrl = `http://localhost:3999/users/v2/chat/plugin/get-current-plan?appId=${appId}`
-         fetch(uploadUrl, {
-            method: 'get',
-        })
-        .then(response => {
-            if (response.ok) {
-              return response.json(); 
-            } else {
-              throw new Error('Request failed with status ' + response.status);
-            }
-          })
-          .then(res => {
-            if(res.churnStatus=="churn"){
-                var churnCust = document.getElementById("km-churn-customer")
-                if(churnCust){
-                    churnCust.classList.add("is-churn-customer")
-                }     
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
-    }
+
     function getApplicationSettings(userId) {
         var data = {};
+        console.log("applozic._globals", applozic._globals)
         applozic._globals.appId && (data.appId = applozic._globals.appId);
         applozic._globals.widgetPlatformUrl && (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
