@@ -381,7 +381,7 @@ function ApplozicSidebox() {
             if (data.currentActivatedPlan == "churn") {
                 var churnCust = document.getElementById("km-churn-customer")
                 if (churnCust) {
-                    churnCust.classList.add("is-churn-customer")
+                    churnCust.classList.remove("n-vis")
                 }
             }
 
