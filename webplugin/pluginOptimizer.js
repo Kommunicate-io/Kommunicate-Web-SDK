@@ -95,6 +95,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
             path.resolve(__dirname, 'lib/js/mustache.js'),
             path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
+            path.resolve(__dirname, 'lib/js/intl-tel-lib.js')
         ],
         output: path.resolve(
             __dirname,
@@ -128,6 +129,7 @@ const compressAndOptimize = () => {
             path.resolve(__dirname, 'css/app/km-login-model.css'),
             path.resolve(__dirname, 'lib/css/tiny-slider-2.9.2.css'),
             path.resolve(__dirname, 'css/app/km-sidebox.css'),
+            path.resolve(__dirname, 'lib/css/intl-tel-lib.css')
         ],
         output: path.resolve(
             __dirname,

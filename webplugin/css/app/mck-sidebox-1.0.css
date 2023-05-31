@@ -6455,3 +6455,19 @@ body.accesibility :focus {
 #km-static-message-icon > svg {
     width: 18px;
 }
+
+/* ---------------- intl-tel phone number input -----------------------------*/
+
+.km-intl-container {
+    width: 100%;
+}
+
+.km-intl-container .iti__dial-code{
+    margin-left: auto;
+}
+
+.km-intl-container .iti__country-name{
+    width: 200px;
+}
+/* ----------------------------------------------------------------- */
+
