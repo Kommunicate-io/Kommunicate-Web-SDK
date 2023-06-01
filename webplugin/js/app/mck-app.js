@@ -381,10 +381,24 @@ function ApplozicSidebox() {
             KommunicateUtils.replaceOldCookies();
 
             //to check if the customer has been churned then show the churn banner
-            if (data.currentActivatedPlan == "churn") {
-                var churnCust = document.getElementById("km-churn-customer")
+            if (data.currentActivatedPlan == 'churn') {
+                var kommunicateIframe = parent.document.getElementById(
+                    'kommunicate-widget-iframe'
+                );
+                var utmSourceUrl = kommunicateIframe
+                    ? kommunicateIframe.getAttribute('data-url') ||
+                      parent.window.location.href
+                    : w.location.href;
+                var poweredByUrl =
+                    'https://www.kommunicate.io/poweredby?utm_source=' +
+                    utmSourceUrl +
+                    '&utm_medium=webplugin&utm_campaign=deactivation';
+                var linkForChurn = document.getElementById('deactivate-link');
+                var churnCust = document.getElementById('km-churn-customer');
                 if (churnCust) {
-                    churnCust.classList.remove("n-vis")
+                    linkForChurn &&
+                        linkForChurn.setAttribute('href', poweredByUrl);
+                    churnCust.classList.remove('n-vis');
                 }
             }
 

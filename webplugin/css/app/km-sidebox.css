@@ -24,8 +24,27 @@
     align-items: flex-start;
 }
 
-#km-churn-customer .km-churn-heading{
+#km-churn-customer .km-churn-heading {
     padding-left: 5px;
+}
+
+#deactivate-link {
+    color: #886026;
+}
+
+@keyframes km-typing-anim {
+    0% {
+        background: rgb(221, 221, 221);
+        transform: scale(1);
+    }
+    50% {
+        background: black;
+        transform: scale(1.4);
+    }
+    100% {
+        background: rgb(221, 221, 221);
+        transform: scale(1);
+    }
 }
 
 /* FAQ CSS STYLES STARTS HERE*/
