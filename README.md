@@ -84,7 +84,7 @@ You can install the Kommunicate chat widget on your website by adding a code sni
 
 ### Example :
 
-https://jsfiddle.net/Kommunicate_Support/abkrsfcz/3/
+https://jsfiddle.net/Kommunicate_Support/abkrsfcz/29/
 
 ## Getting Started :
 
