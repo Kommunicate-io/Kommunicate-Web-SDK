@@ -256,6 +256,8 @@ var userOverride = {
                         break;
                     case 'initializeSocketConnection':
                         return oInstance.initializeSocketConnection(params);
+                    case 'restartCurrentConversation':
+                        return oInstance.restartCurrentConversation();
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -2047,6 +2049,11 @@ var userOverride = {
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
                     window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
+        
+        _this.restartCurrentConversation = function() {
+             mckMessageService.changeConversationAssignee();
+        };
+
         function MckInit() {
             var _this = this;
             var IS_REINITIALIZE = false;
