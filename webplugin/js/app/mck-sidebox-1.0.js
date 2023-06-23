@@ -2051,7 +2051,7 @@ var userOverride = {
         };
         
         _this.restartCurrentConversation = function() {
-             mckMessageService.changeConversationAssignee();
+             mckMessageService.changeConversationAssignee(true);
         };
 
         function MckInit() {
@@ -3852,7 +3852,7 @@ var userOverride = {
                 });
             },
             // change the conversation assignee
-            _this.changeConversationAssignee = function () {
+            _this.changeConversationAssignee = function (triggerWelcomeForceFully) {
                 window.Applozic.ALApiService.ajax({
                     type: 'PATCH',
                     url:
@@ -3889,8 +3889,8 @@ var userOverride = {
                             });
                            
                         } else {
-                            appOptions.restartConversationByUser &&
-                                _this.triggerWelcomeEvent();
+                            var triggerWelcome= appOptions.restartConversationByUser || triggerWelcomeForceFully
+                            triggerWelcome && _this.triggerWelcomeEvent();
                         }
                     },
                     error: function (data) {
