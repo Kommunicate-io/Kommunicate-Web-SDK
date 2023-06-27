@@ -1,6 +1,7 @@
 var $original;
 var oModal = '';
 var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
+var DASHBOARD_URL = KM_PLUGIN_SETTINGS.dashboardUrl;
 var MCK_COOKIE_DOMAIN;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
@@ -387,8 +388,13 @@ function ApplozicSidebox() {
                 !allowedDomains.some(isSubDomain);
             // exclude kommunicate.io from restricted domains for
             // the chatbot preview feature
-            var isCurrentDomainKommunicate = KommunicateConstants.KOMMUNICATE_DOMAINS.some(
-                isSubDomain
+
+            var KM_DOMAINS = KommunicateConstants.KOMMUNICATE_DOMAINS
+            var KM_DASHBOARD = DASHBOARD_URL.split("//")[1]
+            KM_DOMAINS.push(KM_DASHBOARD )
+
+            var isCurrentDomainKommunicate = KM_DOMAINS.some(
+                 isSubDomain
             );
             // Remove scripts if disableChatWidget property is enabled
             // or domain restrictions are enabled
