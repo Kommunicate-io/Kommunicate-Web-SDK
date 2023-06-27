@@ -2977,6 +2977,7 @@ var userOverride = {
                         CURRENT_GROUP_DATA &&
                         CURRENT_GROUP_DATA.conversationAssignee;
                     feedbackObject.applicationId = MCK_APP_ID;
+                    feedbackObject.teamId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId
                     var LOGGED_IN_USER =
                         alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
                     feedbackObject.userInfo = {
@@ -6554,6 +6555,10 @@ var userOverride = {
                             data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember =
                             data.message[0] && data.message[0].contactIds;
+                        CURRENT_GROUP_DATA.teamId = 
+                            data &&
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata.KM_TEAM_ID;
                         params.isWaitingQueue &&
                             KommunicateUI.handleWaitingQueueMessage();
                         var currTabId = $mck_msg_inner.data('mck-id');
@@ -7796,6 +7801,7 @@ var userOverride = {
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 console.log("groupPxy now checking", groupPxy);
                                 CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
+                                CURRENT_GROUP_DATA.teamId = groupPxy.metadata && groupPxy.metadata.KM_TEAM_ID
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
