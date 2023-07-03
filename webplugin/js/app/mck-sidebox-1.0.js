@@ -256,6 +256,8 @@ var userOverride = {
                         break;
                     case 'initializeSocketConnection':
                         return oInstance.initializeSocketConnection(params);
+                    case 'restartCurrentConversation':
+                        return oInstance.restartCurrentConversation();
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -2047,6 +2049,11 @@ var userOverride = {
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
                     window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
+        
+        _this.restartCurrentConversation = function() {
+             mckMessageService.changeConversationAssignee(true);
+        };
+
         function MckInit() {
             var _this = this;
             var IS_REINITIALIZE = false;
@@ -3846,7 +3853,7 @@ var userOverride = {
                 });
             },
             // change the conversation assignee
-            _this.changeConversationAssignee = function () {
+            _this.changeConversationAssignee = function (triggerWelcomeForceFully) {
                 window.Applozic.ALApiService.ajax({
                     type: 'PATCH',
                     url:
@@ -3883,8 +3890,8 @@ var userOverride = {
                             });
                            
                         } else {
-                            appOptions.restartConversationByUser &&
-                                _this.triggerWelcomeEvent();
+                            var triggerWelcome= appOptions.restartConversationByUser || triggerWelcomeForceFully
+                            triggerWelcome && _this.triggerWelcomeEvent();
                         }
                     },
                     error: function (data) {
