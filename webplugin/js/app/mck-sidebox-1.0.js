@@ -3119,12 +3119,27 @@ var userOverride = {
                 submitBtn.removeAttribute('disabled');
                 submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
             },
+            _this.createPreChatLabel=function(leadCollection,inputId){
+                var kmLabelDiv = document.createElement('div')
+                kmLabelDiv.setAttribute('class', "km-form-label-container");
+                var fieldName = leadCollection.field;
+                var requiredSVG =`<svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"/>
+               </svg>`;
+
+
+                var label =`${leadCollection.required?requiredSVG:""}<label class='km-form-label km-tertiary-title' for=${inputId}>${fieldName}</label>`
+               kmLabelDiv.innerHTML=label
+return kmLabelDiv
+            },
             _this.createInputField = function (preLeadCollection){
                 var kmChatInputDiv = document.createElement('div');
                 kmChatInputDiv.setAttribute(
                     'class',
                     'km-form-group km-form-group-container'
                 );
+            var inputId='km-' + preLeadCollection.field.toLowerCase();
+               var kmLabelDiv= _this.createPreChatLabel(preLeadCollection,inputId)
 
                 var kmChatInput = document.createElement(
                     preLeadCollection.element || 'input'
@@ -3138,11 +3153,11 @@ var userOverride = {
                 
                 kmChatInput.setAttribute(
                     'id',
-                    'km-' + preLeadCollection.field.toLowerCase()
+                   inputId
                 );
                 kmChatInput.setAttribute(
                     'name',
-                    'km-' + preLeadCollection.field.toLowerCase()
+                    inputId
                 );
                 if(preLeadCollection.required){
                     kmChatInput.setAttribute(
@@ -3191,7 +3206,7 @@ var userOverride = {
                         );
                     } 
                 }
-                $applozic(kmChatInputDiv).append(kmChatInput);
+                $applozic(kmChatInputDiv).append(kmLabelDiv, kmChatInput);
                 return kmChatInputDiv;
             };
 

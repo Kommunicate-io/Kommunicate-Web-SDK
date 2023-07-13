@@ -1,0 +1,10 @@
+@mixin flexMixin($alignItems: center, $justifyContent: center) {
+    display: flex;
+    align-items: if($alignItems, $alignItems, center);
+    justify-content: if(
+        $justifyContent,
+        $justifyContent,
+        center
+    ); // center default
+}
+// if($condition, $value-if-true, $value-if-false)
