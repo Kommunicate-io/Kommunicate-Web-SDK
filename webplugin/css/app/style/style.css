@@ -2,6 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
 body {
   font-family: 'Open Sans', 'Inter', sans-serif; }
+  body.accesibility:focus {
+    outline: 2px auto #7761F9; }
+  body:not(.accesibility):focus {
+    outline: none; }
 
 .km-sidemodal {
   display: block;
@@ -179,7 +183,7 @@ body {
   padding: 10px 8px;
   font-size: 14px;
   line-height: 1.42857143;
-  color: #555;
+  color: #1c1c1c;
   background-color: #fafafa;
   background-image: none;
   border: 1px solid #ccc;

@@ -3,4 +3,11 @@
 
 body {
     font-family: 'Open Sans', 'Inter', sans-serif;
+
+    &.accesibility:focus {
+        outline: 2px auto $outline-color;
+    }
+    &:not(.accesibility):focus {
+        outline: none;
+    }
 }
