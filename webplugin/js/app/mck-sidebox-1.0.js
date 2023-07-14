@@ -3101,7 +3101,7 @@ var userOverride = {
                     }
                 }
             };
-            _this.loginInputBlur = function(input){
+            _this.loginInputKeyup = function(input){
                 input.addEventListener("keyup", function(event){
                     var target = event.target;
                     var isClassExist = target.classList.contains("km-login-error");
@@ -3144,7 +3144,7 @@ var userOverride = {
                         for (var key in data) {
                             passwordField.setAttribute(key, data[key]);
                         }
-                        passwordField.onblur = _this.loginInputBlur(passwordField);
+                        passwordField.onblur = _this.loginInputKeyup(passwordField);
                         $applozic(kmChatInputDiv).append(kmLabelDiv, passwordField, errorDiv)
                         $applozic(kmChatInputDiv).insertAfter(emailContainer)
                     }else if(isPassField){
