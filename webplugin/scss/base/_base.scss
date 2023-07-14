@@ -4,7 +4,7 @@
 body {
     font-family: 'Open Sans', 'Inter', sans-serif;
 
-    &.accesibility:focus {
+    &.accesibility :focus {
         outline: 2px auto $outline-color;
     }
     &:not(.accesibility):focus {
