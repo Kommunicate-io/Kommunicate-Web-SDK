@@ -50,7 +50,10 @@
 }
 
 .km-modal-body {
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 15px;
     height: calc(100% - 61px);
     border-radius: 0px 0px 6px 6px;
     background-color: #fff;
@@ -115,7 +118,7 @@
         resize: none;
     }
     & .km-section-title {
-        height: 57px;
+        // height: 57px;
         font-size: 12px;
         font-weight: normal;
         font-style: normal;
@@ -123,7 +126,8 @@
         line-height: normal;
         letter-spacing: 0.8px;
         color: #565658;
-        margin: 48px 15px 20px;
+        padding: 0 15px;
+        margin-bottom: 10px;
     }
     & .mck-preleadcollection-textarea {
         overflow-y: scroll;
@@ -171,7 +175,7 @@
 }
 .km-modal-span {
     width: 100%;
-    height: 57px;
+    // height: 57px;
     font-size: $heading-primary;
     font-weight: normal;
     font-style: normal;
