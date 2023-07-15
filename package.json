@@ -60,7 +60,7 @@
   },
   "nodemonConfig": {
     "verbose": true,
-    "ext": "js, html, css, json",
+    "ext": "js, html, css, json, scss",
     "ignore": [
       "*.min.*",
       "./webplugin/build/"
