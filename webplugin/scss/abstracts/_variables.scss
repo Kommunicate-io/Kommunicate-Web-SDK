@@ -8,6 +8,7 @@ $km-white-bg: #f5f5f5;
 $km-danger-color: #d64242;
 $disable-input-color: #fafafa;
 $outline-color: #7761f9;
+$popup-boxShadow-color: #04444d26;
 
 //border
 $form-btn-radius: 4px;
@@ -20,3 +21,15 @@ $heading-tertiary: 12px;
 //FONT FAMILY
 $font-family-primary: 'Open Sans', sans-serif;
 $font-family-secondary: 'Inter', sans-serif;
+
+//POPUP
+$popup-border-radius: 20px;
+
+// browser prefix
+$known-prefixes: webkit, moz, ms, o;
+/**
+ webkit - safari, chrome
+ moz - firefox
+ ms - microsoft browser ex- ie, edge
+ o - opera browsers
+**/

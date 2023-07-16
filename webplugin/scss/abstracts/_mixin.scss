@@ -8,3 +8,26 @@
     ); // center default
 }
 // if($condition, $value-if-true, $value-if-false)
+
+/**
+ if in prefix you pass typo prefix 
+ TODO: Got this error in terminal
+WARNING: Unknown prefix wekit.
+         on line 23 of webplugin/scss/abstracts/_mixin.scss, in mixin `prefix`
+         from line 34 of webplugin/scss/components/_km-chat-popup.scss
+         from line 6 of webplugin/scss/style.scss
+**/
+
+@mixin prefix($property, $value, $prefixes) {
+    @each $prefix in $prefixes {
+        @if not index($known-prefixes, $prefix) {
+            @warn "Unknown prefix #{$prefix}.";
+        }
+
+        -#{$prefix}-#{$property}: $value;
+    }
+    #{$property}: $value;
+}
+
+
+// @mixin keyFrames-prefix()
