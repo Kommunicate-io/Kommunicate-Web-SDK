@@ -1,16 +1,11 @@
 /**
+
+$known-prefixes
+
  webkit - safari, chrome
  moz - firefox
  ms - microsoft browser ex- ie, edge
  o - opera browsers
-**/
-/**
- if in prefix you pass typo prefix 
- TODO: Got this error in terminal
-WARNING: Unknown prefix wekit.
-         on line 23 of webplugin/scss/abstracts/_mixin.scss, in mixin `prefix`
-         from line 34 of webplugin/scss/components/_km-chat-popup.scss
-         from line 6 of webplugin/scss/style.scss
 **/
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
