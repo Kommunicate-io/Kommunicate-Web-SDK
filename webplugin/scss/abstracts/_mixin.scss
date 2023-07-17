@@ -1,3 +1,4 @@
+// if($condition, $value-if-true, $value-if-false)
 @mixin flexMixin($alignItems: center, $justifyContent: center) {
     display: flex;
     align-items: if($alignItems, $alignItems, center);
@@ -7,4 +8,25 @@
         center
     ); // center default
 }
-// if($condition, $value-if-true, $value-if-false)
+
+/**
+
+$known-prefixes
+
+ webkit - safari, chrome
+ moz - firefox
+ ms - microsoft browser ex- ie, edge
+ o - opera browsers
+**/
+
+@mixin prefix($property, $value, $prefixes) {
+    @each $prefix in $prefixes {
+        @if not index($known-prefixes, $prefix) {
+            // if we pass typo in prefix mixin then we got warning in terminal
+            @warn "Unknown prefix #{$prefix}.";
+        }
+
+        -#{$prefix}-#{$property}: $value;
+    }
+    #{$property}: $value;
+}

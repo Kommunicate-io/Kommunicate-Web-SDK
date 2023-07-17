@@ -11,3 +11,11 @@ body {
         outline: none;
     }
 }
+
+button {
+    font-size: $heading-secondary;
+    font-family: $font-family-primary;
+    font-weight: 500;
+    padding: 8px 12px;
+    line-height: 19px;
+}

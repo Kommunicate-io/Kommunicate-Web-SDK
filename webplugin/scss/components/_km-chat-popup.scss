@@ -1,0 +1,428 @@
+/* Chat Popup Template Code Starts */
+$popupClass: '.chat-popup-widget-container';
+
+#{$popupClass} {
+    /* Menu-Shadow */
+    box-shadow: 0px 0px 12px 0px $popup-boxShadow-color;
+    background-color: #ffffff;
+    position: absolute;
+    min-height: 70px;
+    font-family: $font-family-primary;
+    width: 100%;
+    max-width: 390px;
+    cursor: pointer;
+
+    &:hover .chat-popup-widget-close-btn-container {
+        display: block;
+    }
+
+    .chat-popup-widget-close-btn-container {
+        top: 0%;
+
+        &.align-left {
+            left: 260px;
+        }
+    }
+
+    &--horizontal {
+        border-radius: 40px !important;
+        bottom: 5px;
+        right: 5px;
+
+        &.km-animate {
+            opacity: 0;
+            @include prefix(clip-path, circle(35px at 345px 35px), moz webkit);
+            @include prefix(
+                animation,
+                km-reveal-animation-horizontal 0.3s ease-in-out 0.3s 1 forwards,
+                webkit moz o
+            );
+        }
+
+        &.align-left {
+            right: 30px;
+        }
+
+        & .chat-popup-widget-text-wrapper {
+            padding-left: 15px;
+        }
+
+        & .chat-popup-widget-close-btn-container {
+            transform: translateY(10px);
+            .align-left {
+                left: 390px;
+            }
+        }
+    }
+
+    &--vertical {
+        border-radius: $popup-border-radius;
+        bottom: 80px;
+        right: 10px;
+        min-height: 75px;
+        max-width: 300px;
+
+        &.km-animate {
+            @include prefix(clip-path, circle(55px at 300px 50px), webkit);
+            @include prefix(
+                animation,
+                km-reveal-animation-vertical 0.3s ease-in-out 0.3s 1 forwards,
+                webkit moz o
+            );
+        }
+
+        &.align-left {
+            left: 85px;
+
+            & #chat-popup-actionable-btn-container {
+                right: unset;
+            }
+        }
+
+        & .chat-popup-widget-text-wrapper {
+            min-height: 75px;
+        }
+    }
+
+    &--actionable {
+        border-radius: $popup-border-radius;
+        bottom: 130px;
+        right: 10px;
+        min-height: 75px;
+        max-width: 300px;
+        &.align-left {
+            left: 10px;
+        }
+        // & .chat-popup-widget-close-btn-container {
+        // top: 22%;
+        // }
+    }
+
+    &--horizontal.km-animate .chat-popup-widget-text,
+    &--vertical.km-animate .chat-popup-widget-text,
+    &--actionable.km-animate .chat-popup-widget-text {
+        opacity: 0;
+        @include prefix(
+            animation,
+            km-slide-in-animation 0.5s ease 0.5s 1 forwards,
+            webkit moz o
+        );
+    }
+
+    & .chat-popup-widget-text-wrapper {
+        min-height: 70px;
+        @include flexMixin(null, flex-start);
+    }
+
+    & .chat-popup-widget-text {
+        margin: 15px;
+    }
+}
+
+#chat-popup-actionable-btn-container {
+    position: absolute;
+    right: 0px;
+    bottom: -48px;
+    display: flex;
+    max-width: 100%;
+
+    button {
+        text-align: center;
+        color: $primary-color;
+        background: #ffffff;
+        border: 1px solid $primary-color;
+        border-radius: 31px;
+        cursor: pointer;
+        box-shadow: 0px 0px 4px $popup-boxShadow-color;
+        transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 210px;
+
+        &:hover {
+            background: #e9e9ff;
+        }
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
+}
+
+.chat-popup-widget-text {
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: 0.49px;
+    color: $text-primary-color;
+}
+
+.km-no-box-shadow {
+    box-shadow: none;
+}
+
+#launcher-svg-container.km-animate {
+    @include prefix(transform, scale(1), webkit moz o ms);
+    @include prefix(
+        animation,
+        km-scale-animation 0.5s ease-in-out 1 forwards,
+        webkit moz o ms
+    );
+}
+
+@-webkit-keyframes km-reveal-animation-horizontal {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+        @include prefix(clip-path, circle(345px at 280px 35px), webkit);
+    }
+}
+@-moz-keyframes km-reveal-animation-horizontal {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+        clip-path: circle(345px at 315px 35px);
+    }
+}
+@-o-keyframes km-reveal-animation-horizontal {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+        clip-path: circle(345px at 315px 35px);
+    }
+}
+@keyframes km-reveal-animation-horizontal {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 1;
+        @include prefix(clip-path, circle(345px at 280px 35px), webkit);
+    }
+}
+@-webkit-keyframes km-scale-animation {
+    0% {
+        @include prefix(transform, scale(1), webkit);
+    }
+    50% {
+        @include prefix(transform, scale(1.3), webkit);
+    }
+    100% {
+        @include prefix(transform, scale(1), webkit);
+    }
+}
+@-moz-keyframes km-scale-animation {
+    0% {
+        @include prefix(transform, scale(1), moz);
+    }
+    50% {
+        @include prefix(transform, scale(1.3), moz);
+    }
+    100% {
+        @include prefix(transform, scale(1), moz);
+    }
+}
+@-o-keyframes km-scale-animation {
+    0% {
+        @include prefix(transform, scale(1), o);
+    }
+    50% {
+        @include prefix(transform, scale(1.3), o);
+    }
+    100% {
+        @include prefix(transform, scale(1), o);
+    }
+}
+
+@keyframes km-scale-animation {
+    0% {
+        @include prefix(transform, scale(1), webkit moz o);
+    }
+    50% {
+        @include prefix(transform, scale(1.3), webkit moz o);
+    }
+    100% {
+        @include prefix(transform, scale(1), webkit moz o);
+    }
+}
+@-webkit-keyframes km-slide-in-animation {
+    from {
+        opacity: 0;
+        padding-left: 5px;
+    }
+    to {
+        opacity: 1;
+        padding-left: 0;
+    }
+}
+@-moz-keyframes km-slide-in-animation {
+    from {
+        opacity: 0;
+        padding-left: 5px;
+    }
+    to {
+        opacity: 1;
+        padding-left: 0;
+    }
+}
+@-o-keyframes km-slide-in-animation {
+    from {
+        opacity: 0;
+        padding-left: 5px;
+    }
+    to {
+        opacity: 1;
+        padding-left: 0;
+    }
+}
+@keyframes km-slide-in-animation {
+    from {
+        opacity: 0;
+        padding-left: 5px;
+    }
+    to {
+        opacity: 1;
+        padding-left: 0;
+    }
+}
+
+@-webkit-keyframes km-reveal-animation-vertical {
+    from {
+        opacity: 0.6;
+    }
+    to {
+        opacity: 1;
+        @include prefix(clip-path, circle(365px at 335px 50px), webkit);
+    }
+}
+@-moz-keyframes km-reveal-animation-vertical {
+    from {
+        opacity: 0.6;
+    }
+    to {
+        opacity: 1;
+        clip-path: circle(365px at 335px 50px);
+    }
+}
+@-o-keyframes km-reveal-animation-vertical {
+    from {
+        opacity: 0.6;
+    }
+    to {
+        opacity: 1;
+        clip-path: circle(365px at 335px 50px);
+    }
+}
+@keyframes km-reveal-animation-vertical {
+    from {
+        opacity: 0.6;
+    }
+    to {
+        opacity: 1;
+        @include prefix(clip-path, circle(365px at 300px 50px), webkit);
+    }
+}
+
+@media only screen and (max-width: 420px) {
+    #{$popupClass} {
+        width: calc(100% - 30px);
+
+        &--horizontal {
+            padding-right: 70px;
+        }
+        &----actionable {
+            width: calc(100% - 50px);
+        }
+    }
+}
+
+@media only screen and (max-device-width: 360px) and (min-device-width: 320px) {
+    #{$popupClass} {
+        &--horizontal {
+            width: 61% !important;
+            padding-right: 70px;
+        }
+
+        .chat-popup-widget-close-btn-container {
+            display: block;
+        }
+    }
+
+    .mck-sidebox.fade.in .mck-name-status-container {
+        #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
+            width: 187px !important;
+        }
+
+        #mck-tab-title.mck-title-width-with-faq,
+        #mck-tab-title.mck-title-width-with-faq-close-btn {
+            width: 130px !important;
+        }
+    }
+}
+
+@media only screen and (min-device-width: 365px) and (max-device-width: 415px) {
+    #{$popupClass} {
+        &--horizontal {
+            width: 65% !important;
+            padding-right: 70px;
+        }
+
+        .chat-popup-widget-close-btn-container {
+            display: block;
+        }
+    }
+
+    .mck-sidebox.fade.in .mck-name-status-container {
+        #mck-tab-title.mck-title-width-with-faq,
+        #mck-tab-title.mck-title-width-with-faq-close-btn {
+            width: 145px !important;
+        }
+
+        #mck-tab-title.mck-title-width-wo-faq-with-close-btn {
+            width: 205px !important;
+            width: 205px !important;
+            width: 205px !important;
+        }
+    }
+
+    .mck-name-status-container {
+        #mck-tab-title,
+        .mck-tab-title-w-typing {
+            width: 270px;
+        }
+    }
+}
+
+@media only screen and (max-device-width: 320px) {
+    .chat-popup-widget-container--horizontal {
+        width: 61% !important;
+        padding-right: 70px;
+
+        &.km-animate .chat-popup-widget-text {
+            margin: 7px 7px 7px 15px;
+        }
+    }
+
+    .mck-sidebox.fade.in
+        .mck-name-status-container
+        #mck-tab-title.mck-title-width-with-faq {
+        width: 88px !important;
+    }
+}
+
+@media only screen and (min-device-width: 420px) {
+    .chat-popup-widget-container--horizontal {
+        & .chat-popup-widget-text-wrapper {
+            padding: 0 65px 0 15px;
+        }
+        & .chat-popup-widget-text-wrapper.align-left {
+            padding: 0 15px 0 65px;
+        }
+    }
+}
+/* Chat Popup Template Code Ends */
