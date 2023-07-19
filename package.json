@@ -11,7 +11,9 @@
     "postpublish": "pinst --enable",
     "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.js'",
     "prettify-commit": "pretty-quick --staged --pattern '**/*.js'",
-    "dev": "nodemon ./server/app.js ",
+    "build:scss-to-css": "node-sass --watch ./webplugin/scss -o ./webplugin/css/app/style",
+    "build:dev": "nodemon ./server/app.js",
+    "dev": "npm-run-all -p build:dev build:scss-to-css",
     "test": "NODE_ENV=test node ./server/app.js",
     "staging": "NODE_ENV=staging node ./server/app.js",
     "prod": "NODE_ENV=prod node ./server/app.js",
@@ -48,7 +50,9 @@
     "danger-plugin-jira-issue": "1.4.1",
     "danger-plugin-no-console": "1.1.2",
     "husky": "5.0.9",
+    "node-sass": "9.0.0",
     "nodemon": "2.0.7",
+    "npm-run-all": "4.1.5",
     "pinst": "2.1.4",
     "prettier": "2.2.1",
     "pretty-quick": "3.1.0",
@@ -56,7 +60,7 @@
   },
   "nodemonConfig": {
     "verbose": true,
-    "ext": "js, html, css, json",
+    "ext": "js, html, css, json, scss",
     "ignore": [
       "*.min.*",
       "./webplugin/build/"
