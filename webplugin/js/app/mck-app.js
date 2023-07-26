@@ -28,7 +28,7 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.2.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.3.min.js',
             alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.2.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
@@ -377,6 +377,8 @@ function ApplozicSidebox() {
                         '.' + domain)
                 );
             };
+            // replace cookies in old format with cookies in new format
+            KommunicateUtils.replaceOldCookies();
 
             // Remove scripts if chatwidget is restricted by domains
             var isCurrentDomainDisabled =
@@ -493,8 +495,28 @@ function ApplozicSidebox() {
             options.attachmentHandler = options.attachmentHandler != null 
                     ? options.attachmentHandler 
                     : function (file) { return file; };
-            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride
+            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride;
+
+            options.maxAttachmentSize = (options.maxAttachmentSize != null 
+                    ? options.maxAttachmentSize 
+                    : widgetSettings && widgetSettings.maxAttachmentSize);
+            options.maxAttachmentSizeErrorMsg = options.maxAttachmentSizeErrorMsg != null 
+                    ? options.maxAttachmentSizeErrorMsg 
+                    : widgetSettings && widgetSettings.maxAttachmentSizeErrorMsg;
+            
+            
             options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
+            
+            // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
+            options.staticTopMessage =
+                options.staticTopMessage != null
+                    ? options.staticTopMessage
+                    : widgetSettings && widgetSettings.staticTopMessage;
+            options.staticTopIcon =
+                options.staticTopIcon != null
+                    ? options.staticTopIcon
+                    : widgetSettings && widgetSettings.staticTopIcon;
+                    
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
@@ -717,7 +739,7 @@ function ApplozicSidebox() {
             timeStampDifference >= sessionTimeout
         ) {
             KommunicateUtils.deleteUserCookiesOnLogout();
-            sessionStorage.removeItem('kommunicate');
+            KommunicateUtils.removeKmSession();
             KommunicateUtils.removeItemFromLocalStorage(
                 applozic._globals.appId
             );

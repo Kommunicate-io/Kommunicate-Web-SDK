@@ -6443,3 +6443,31 @@ body.accesibility :focus {
 	display: block;
 	visibility: visible;
 }
+/*----------------- support for adding static message in conversation ---------*/
+#km-static-message {
+    margin: 10px 16px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+}
+#km-static-message-icon > svg {
+    width: 18px;
+}
+
+/* ---------------- intl-tel phone number input -----------------------------*/
+
+.km-intl-container {
+    width: 100%;
+}
+
+.km-intl-container .iti__dial-code{
+    margin-left: auto;
+}
+
+.km-intl-container .iti__country-name{
+    width: 200px;
+}
+/* ----------------------------------------------------------------- */
+

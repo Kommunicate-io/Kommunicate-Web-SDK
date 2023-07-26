@@ -76,6 +76,7 @@ var userOverride = {
         voiceOutput: false,
         capturePhoto: false,
         captureVideo: false,
+        maxAttachmentSize: 25, // default size is 25MB
     };
     var message_default_options = {
         messageType: 5,
@@ -409,6 +410,7 @@ var userOverride = {
         };
         var MCK_CONTACT_NUMBER = appOptions.contactNumber;
         var MCK_FILEMAXSIZE = appOptions.maxAttachmentSize;
+        var MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg || MCK_LABELS['file.size.limit.exceeded'];
         var MCK_APP_MODULE_NAME = appOptions.appModuleName;
         var MCK_GETTOPICDETAIL = appOptions.getTopicDetail;
         var MCK_GETUSERNAME = appOptions.contactDisplayName;
@@ -426,6 +428,7 @@ var userOverride = {
         var MCK_ENABLE_BADGE_COUNT = appOptions.unreadCountOnchatLauncher;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileUpload;
+        var INTL_TEL_INSTANCE;
         //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_VOLUME =
             WIDGET_SETTINGS &&
@@ -1222,6 +1225,7 @@ var userOverride = {
             MCK_APP_MODULE_NAME = optns.appModuleName;
             MCK_GETTOPICDETAIL = optns.getTopicDetail;
             MCK_FILEMAXSIZE = optns.maxAttachmentSize;
+            MCK_MSG_FILEMAXSIZE = appOptions.maxAttachmentSizeErrorMsg || MCK_LABELS['file.size.limit.exceeded'];
             MCK_MSG_VALIDATION = optns.validateMessage;
             MCK_GETUSERNAME = optns.contactDisplayName;
             MCK_GROUP_MEMBER_SEARCH_ARRAY = new Array();
@@ -1311,7 +1315,7 @@ var userOverride = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
-                sessionStorage.removeItem('kommunicate');
+                KommunicateUtils.removeKmSession();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
@@ -2493,7 +2497,7 @@ var userOverride = {
                 MCK_IDLE_TIME_LIMIT = data.websocketIdleTimeLimit;
                 MCK_USER_TIMEZONEOFFSET = data.timeZoneOffset;
                 MCK_FILE_URL = data.fileBaseUrl;
-                IS_MCK_USER_DEACTIVATED = data.deactivated;
+                IS_MCK_USER_DEACTIVATED = data.deactivated; 
                 // For trial plan connect to socket only when someone opens the chat or have some existing chat thread
                 CONNECT_SOCKET_ON_WIDGET_CLICK == null &&
                     (CONNECT_SOCKET_ON_WIDGET_CLICK = kommunicateCommons.isTrialPlan(
@@ -3042,6 +3046,13 @@ var userOverride = {
                     contentType: 'application/json',
                     success: function (result) {
                         if (result && result.data) {
+                            var lastMessageBeforeSend = $applozic(
+                                "#mck-message-cell .mck-message-inner div[name='message']:last-child"
+                            );
+                            HIDE_POST_CTA &&
+                                lastMessageBeforeSend &&
+                                Kommunicate.hideMessage(lastMessageBeforeSend);
+
                             CURRENT_GROUP_DATA.currentGroupFeedback =
                                 result.data.data;
                             KommunicateUI.showClosedConversationBanner(true);
@@ -3053,6 +3064,7 @@ var userOverride = {
                                 'n-vis',
                                 ''
                             );
+
                         }
                     },
                     error: function () {
@@ -3099,91 +3111,129 @@ var userOverride = {
                 submitBtn.removeAttribute('disabled');
                 submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
             },
-            _this.addLeadCollectionInputDiv = function () {
-                KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
-                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
-                    //Create dynamic input field
-                    var preLeadCollection = KM_PRELEAD_COLLECTION[i];
-                    var kmChatInputDiv = document.createElement('div');
-                    var preLeadCollectionClass =
+            _this.createInputField = function (preLeadCollection){
+                var kmChatInputDiv = document.createElement('div');
+                kmChatInputDiv.setAttribute(
+                    'class',
+                    'km-form-group km-form-group-container'
+                );
+
+                var kmChatInput = document.createElement(
+                    preLeadCollection.element || 'input'
+                );
+                var preLeadCollectionClass =
                         'km-form-control ' +
                         (preLeadCollection.element === 'textarea'
                             ? 'mck-preleadcollection-textarea'
                             : 'km-input-width');
-                    kmChatInputDiv.setAttribute(
-                        'class',
-                        'km-form-group km-form-group-container'
-                    );
-                    var kmChatInput = document.createElement(
-                        preLeadCollection.element || 'input'
-                    );
-
+                kmChatInput.setAttribute('class', preLeadCollectionClass);
+                
+                kmChatInput.setAttribute(
+                    'id',
+                    'km-' + preLeadCollection.field.toLowerCase()
+                );
+                kmChatInput.setAttribute(
+                    'name',
+                    'km-' + preLeadCollection.field.toLowerCase()
+                );
+                if(preLeadCollection.required){
                     kmChatInput.setAttribute(
-                        'id',
-                        'km-' + preLeadCollection.field.toLowerCase()
+                        'required',
+                        preLeadCollection.required
                     );
-                    kmChatInput.setAttribute(
-                        'name',
-                        'km-' + preLeadCollection.field.toLowerCase()
-                    );
-                    preLeadCollection.required &&
-                        kmChatInput.setAttribute(
-                            'required',
-                            preLeadCollection.required
-                        );
-                    kmChatInput.setAttribute('class', preLeadCollectionClass);
-                    if (
-                        preLeadCollection.element == 'select' &&
-                        preLeadCollection.options &&
-                        mckMessageService.checkArray(preLeadCollection.options)
-                    ) {
-                        kmChatInput = _this.createSelectFieldDropdown(
-                            preLeadCollection.options,
-                            kmChatInput
-                        );
-                    } else {
-                        kmChatInput.setAttribute(
-                            'type',
-                            preLeadCollection.type || 'text'
-                        );
-                        kmChatInput.setAttribute(
-                            'placeholder',
-                            preLeadCollection.placeholder || ''
-                        );
-                        kmChatInput.setAttribute(
-                            'aria-label',
-                            preLeadCollection.field
-                        );
-                        if (preLeadCollection.type == "email"){
-                            kmChatInput.setAttribute(
-                                'pattern',
-                                "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
-                            );
-                            kmChatInput.setAttribute(
-                                'title',
-                                ''
-                            );
-                            kmChatInput.setAttribute(
-                                'oninvalid',
-                                "setCustomValidity('"+ MCK_LABELS['lead.collection'].errorEmail +"')"
-                            );
-                            kmChatInput.setAttribute(
-                                'oninput',
-                                "setCustomValidity('')"
-                            );
-                        } 
-                    }
-                    $applozic(kmChatInputDiv).append(kmChatInput);
-                    $applozic('.km-last-child').append(kmChatInputDiv);
                 }
+                if (
+                    preLeadCollection.element == 'select' &&
+                    preLeadCollection.options &&
+                    mckMessageService.checkArray(preLeadCollection.options)
+                ) {
+                    kmChatInput = _this.createSelectFieldDropdown(
+                        preLeadCollection.options,
+                        kmChatInput
+                    );
+                } else {
+                    kmChatInput.setAttribute(
+                        'type',
+                        preLeadCollection.type || 'text'
+                    );
+                    kmChatInput.setAttribute(
+                        'placeholder',
+                        preLeadCollection.placeholder || ''
+                    );
+                    kmChatInput.setAttribute(
+                        'aria-label',
+                        preLeadCollection.field
+                    );
+                    if (preLeadCollection.type == "email"){
+                        kmChatInput.setAttribute(
+                            'pattern',
+                            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$"
+                        );
+                        kmChatInput.setAttribute(
+                            'title',
+                            ''
+                        );
+                        kmChatInput.setAttribute(
+                            'oninvalid',
+                            "setCustomValidity('"+ MCK_LABELS['lead.collection'].errorEmail +"')"
+                        );
+                        kmChatInput.setAttribute(
+                            'oninput',
+                            "setCustomValidity('')"
+                        );
+                    } 
+                }
+                $applozic(kmChatInputDiv).append(kmChatInput);
+                return kmChatInputDiv;
+            };
+
+            _this.addLeadCollectionInputDiv = function () {
+                KM_ASK_USER_DETAILS && _this.getPreLeadDataForAskUserDetail();
+                var enableCountryCode = false;
+                for (var i = 0; i < KM_PRELEAD_COLLECTION.length; i++) {
+                    var dataToCollect = KM_PRELEAD_COLLECTION[i];
+                    if(dataToCollect.field.toLowerCase() == 'phone'){
+                        enableCountryCode = dataToCollect.enableCountryCode;
+                    }
+                    var kmInputField = _this.createInputField(dataToCollect);
+                    $applozic('.km-last-child').append(kmInputField);
+                }
+                _this.addPhoneNumberValidation(enableCountryCode);
+            };
+            
+            _this.addPhoneNumberValidation = function (enableCountryCode) {
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
-                    phoneField.addEventListener(
-                        'keydown',
-                        _this.phoneNumberValidation
-                    );
+                    if (enableCountryCode) {
+                        INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
+                            customContainer: "km-intl-container",
+                            separateDialCode: true,
+                            initialCountry: "auto",
+                            geoIpLookup: _this.geoIpLookupFunction,
+                            utilsScript: "https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js"
+                        })
+                        
+                        phoneField.addEventListener(
+                            'keydown',
+                            _this.phoneNumberValidation
+                        );
+                    }
+                    
                 }
             };
+
+            _this.geoIpLookupFunction = function (callback) {
+                mckUtils.ajax({
+                    url: "https://ipapi.co/json",
+                    success: function (data) {
+                        callback(data.country_code); 
+                    },
+                    error: function() {
+                        callback("us");
+                    }
+                });
+            }
+            
             _this.phoneNumberValidation = function (e) {
                 e.target.value = e.target.value.match(/^([0-9]{0,15})/)[0];
             };
@@ -3770,10 +3820,10 @@ var userOverride = {
                 var customEvent = KommunicateUtils.getDataFromKmSession(
                     'settings'
                 );
-                var eventToTrigger = customEvent
+                var eventToTrigger = customEvent && customEvent.customWelcomeEvent
                     ? customEvent.customWelcomeEvent
                     : 'WELCOME';
-                window.Applozic.ALApiService.sendMessage({
+                eventToTrigger && window.Applozic.ALApiService.sendMessage({
                     data: {
                         message: {
                             type: 5,
@@ -4120,6 +4170,7 @@ var userOverride = {
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
+                    // mck-msg-new click handler
                     // mckMessageLayout.addContactsToContactSearchList();
                     var conversationDetail = mckGroupLayout.createGroupDefaultSettings();
                     mckMessageService.createNewConversation(
@@ -4800,6 +4851,10 @@ var userOverride = {
                         MCK_ACCESS_TOKEN = password;
                     }
                     if (contactNumber) {
+                        if(INTL_TEL_INSTANCE){
+                            // get number in international format as a string
+                            contactNumber = INTL_TEL_INSTANCE.getNumber();
+                        }
                         userId = contactNumber;
                         // Remove listener from phone number
                         document
@@ -5606,16 +5661,13 @@ var userOverride = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
+                var lastMessageBeforeSend = $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child");
+
                 kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
-                    Kommunicate.internetStatus &&
-                    $applozic(
-                        "#mck-message-cell .mck-message-inner div[name='message']:last-child"
-                    ).data('msgkey') !== undefined
+                    Kommunicate.internetStatus && lastMessageBeforeSend.data('msgkey') !== undefined
                 ) {
-                    key = $applozic(
-                        "#mck-message-cell .mck-message-inner div[name='message']:last-child"
-                    ).data('msgkey');
+                    key = lastMessageBeforeSend.data('msgkey');
                     message = alMessageService.getReplyMessageByKey(key);
                 }
                 if (typeof messagePxy !== 'object') {
@@ -5732,6 +5784,9 @@ var userOverride = {
                                 );
                             }
                         );
+                        HIDE_POST_CTA &&
+                            lastMessageBeforeSend &&
+                            Kommunicate.hideMessage(lastMessageBeforeSend);
                     }
                     var optns = {
                         tabId: contact.contactId,
@@ -5836,6 +5891,9 @@ var userOverride = {
                                     );
                                 }
                             );
+                            HIDE_POST_CTA &&
+                                lastMessageBeforeSend &&
+                                Kommunicate.hideMessage(lastMessageBeforeSend);
                         }
                         var optns = {
                             tabId: contact.contactId,
@@ -7193,9 +7251,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.isSessionStorageAvailable() && sessionStorage.kommunicate
-                    ? JSON.parse(sessionStorage.kommunicate)
-                    : {};
+                var userSession = KommunicateUtils.getKmSession();
                 var languageCode =
                     userSession &&
                     userSession.settings &&
@@ -8014,7 +8070,12 @@ var userOverride = {
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 MCK_LABELS['csat.rating'].CONVERSATION_RATED +
-                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '</span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+            var staticMessageModule = 
+                '<div id="km-static-message" class="km-custom-widget-background-color-secondary">' +
+                '<span id="km-static-message-icon">{{html staticIconSVG}}</span>'+
+                '<span id="km-static-message-text">${message}</span>' +
+                '</div>';
             var SUBMITTED_FORMS = {};
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
@@ -8023,6 +8084,35 @@ var userOverride = {
                 $applozic.template('contactTemplate', contactbox);
                 $applozic.template('searchContactbox', searchContactbox);               
                 $applozic.template('csatModule', csatModule);
+                $applozic.template('staticMessageTemplate', staticMessageModule);
+            };
+            _this.removeStaticMessage = function () {
+                var staticMessageContainer = document.getElementById("km-static-message");
+                if (staticMessageContainer) {
+                    staticMessageContainer.remove();
+                }
+            };
+            _this.addStaticMessage = function () {
+                // remove any static message if present
+                _this.removeStaticMessage();
+                if (document.querySelector('#mck-contact-list')) {
+                    // if contact list is visible then dropdown options should not be loaded.
+                    return;
+                }
+
+                var staticMessage = kommunicate._globals.staticTopMessage;
+                var svgIconKey = kommunicate._globals.staticTopIcon || "KM_LOCK";
+                var staticIcon = KommunicateConstants.STATIC_MESSAGE_ICONS[svgIconKey];
+
+                if (typeof staticMessage === 'string' && staticMessage !== '') {
+                    var content = {
+                        message: staticMessage,
+                        staticIconSVG: staticIcon
+                    };
+                    $applozic
+                        .tmpl('staticMessageTemplate', content)
+                        .prependTo('#mck-message-cell .mck-message-inner');
+                }
             };
             _this.loadDropdownOptions = function () {
                 if(document.querySelector('#mck-contact-list')){
@@ -8465,6 +8555,7 @@ var userOverride = {
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
                     $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
                     mckMessageService.loadMessageList(params, callback);
@@ -8610,6 +8701,7 @@ var userOverride = {
                         }
                     );
                 }
+                mckMessageLayout.addStaticMessage();
             };
             _this.closeConversation = function (data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {
@@ -9069,7 +9161,6 @@ var userOverride = {
                 ) {
                         // this class is added to the message template if the message contains CTA buttons having only quick replies.
                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
-                 
                 }
                 
 
@@ -14555,7 +14646,7 @@ var userOverride = {
             }
             _this.init = function () {
                 $applozic.template('fileboxTemplate', mck_filebox_tmpl);
-                //ataching events for rich msh templates
+                //ataching events for rich msg templates
                 Kommunicate.attachEvents($applozic);
                 $mck_file_upload.on('click', function (e) {
                     e.preventDefault();
@@ -14686,11 +14777,13 @@ var userOverride = {
                     );
                 }
                 if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
-                    uploadErrors.push(
-                        'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
-                    );
+                    MCK_MSG_FILEMAXSIZE &&
+                        uploadErrors.push(
+                            MCK_MSG_FILEMAXSIZE.replace(
+                                "$maxAttachmentSize",
+                                MCK_FILEMAXSIZE
+                            )
+                        );
                 }
                 if (uploadErrors.length > 0) {
                     alert(uploadErrors.toString());
@@ -14883,11 +14976,13 @@ var userOverride = {
                     );
                 }
                 if (file['size'] > MCK_FILEMAXSIZE * ONE_MB) {
-                    uploadErrors.push(
-                        'file size can not be more than ' +
-                            MCK_FILEMAXSIZE +
-                            ' MB'
-                    );
+                    MCK_MSG_FILEMAXSIZE &&
+                        uploadErrors.push(
+                            MCK_MSG_FILEMAXSIZE.replace(
+                                "$maxAttachmentSize",
+                                MCK_FILEMAXSIZE
+                            )
+                        );
                 }
                 if (uploadErrors.length > 0) {
                     alert(uploadErrors.toString());
