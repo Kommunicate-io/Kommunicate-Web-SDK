@@ -3,7 +3,7 @@ var kommunicateCommons = new KommunicateCommons();
 function KmCustomTheme() {
     var _this = this;
     var WIDGET_SETTINGS;
-    var DEFAULT_BACKGROUND_COLOR = '#5553B7';
+    var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
     var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#e6e5ec';
 
     _this.init = function (optns) {

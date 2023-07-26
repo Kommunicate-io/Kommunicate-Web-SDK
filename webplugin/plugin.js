@@ -70,15 +70,15 @@ var kmCustomIframe =
     'width:100vw;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
-    '   width: 445px;' +
+    '   width: 455px;' +
     '   height: 80px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
-    '   width: 415px;' +
-    '   height: 153px;' +
+    '   width: 380px;' +
+    '   height: 215px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
-    '   width: 350px;' +
+    '   width: 370px;' +
     '   height: 270px;' +
     '} \n' +
     '@media only screen and (max-device-width: 420px) { ' +

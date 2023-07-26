@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+
+body {
+    font-family: 'Open Sans', 'Inter', sans-serif;
+
+    &.accesibility :focus {
+        outline: 2px auto $outline-color;
+    }
+    &:not(.accesibility):focus {
+        outline: none;
+    }
+}
+
+button {
+    font-size: $heading-secondary;
+    font-family: $font-family-primary;
+    font-weight: 500;
+    padding: 8px 12px;
+    line-height: 19px;
+}

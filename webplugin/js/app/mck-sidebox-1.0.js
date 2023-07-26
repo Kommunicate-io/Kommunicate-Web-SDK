@@ -256,6 +256,8 @@ var userOverride = {
                         break;
                     case 'initializeSocketConnection':
                         return oInstance.initializeSocketConnection(params);
+                    case 'restartCurrentConversation':
+                        return oInstance.restartCurrentConversation();
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -2047,6 +2049,11 @@ var userOverride = {
                     !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
                     window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();         
         };
+        
+        _this.restartCurrentConversation = function() {
+             mckMessageService.changeConversationAssignee(true);
+        };
+
         function MckInit() {
             var _this = this;
             var IS_REINITIALIZE = false;
@@ -2977,6 +2984,7 @@ var userOverride = {
                         CURRENT_GROUP_DATA &&
                         CURRENT_GROUP_DATA.conversationAssignee;
                     feedbackObject.applicationId = MCK_APP_ID;
+                    feedbackObject.teamId = CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId
                     var LOGGED_IN_USER =
                         alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
                     feedbackObject.userInfo = {
@@ -3093,30 +3101,88 @@ var userOverride = {
                     }
                 }
             };
-            _this.addPasswordField = function(data){
-                var emailField = document.getElementById('km-email');
+            _this.loginInputKeyup = function(input){
+                input.addEventListener("keyup", function(event){
+                    var target = event.target;
+                    var isClassExist = target.classList.contains("km-login-error");
+        
+                    if(isClassExist){
+                       input.classList.remove("km-login-error");
+                       // hide the error messge.
+                       target.nextElementSibling && (target.nextElementSibling.style.display = "none")   
+                    }
+                })
+               
+            }
+            _this.addPasswordField = function (data) {
+                var inputId = 'km-password';
+                var kmChatInputDiv = _this.createInputContainer(inputId)
+                var emailContainer = document.getElementById('km-email-container');
                 var isPassField = document.getElementById('km-password');
                 var submitBtn = document.getElementById('km-submit-chat-login');
-                if(emailField && isPassField == null){
-                    var  passwordField = document.createElement('input');
-                    var errorMsg = document.createElement('p');
-                    errorMsg.innerText = MCK_LABELS['lead.collection'].errorText;
-                    errorMsg.classList.add('km-error-msg');
-                    for(var key in data){
-                        passwordField.setAttribute(key,data[key]);
-                    }
-                    emailField.insertAdjacentElement('afterend',passwordField);
-                    passwordField.insertAdjacentElement('afterend',errorMsg);
+                var errorContainer = document.querySelector("#km-password-container .km-login-form-error")
+
+                var labelAttribute = {
+                    field: 'Password',
+                    required: data.required,
+                };
+                var kmLabelDiv = _this.createPreChatLabel(
+                    labelAttribute,
+                    inputId
+                );
+                if (emailContainer) {
+                    if(isPassField == null){
+                        var passwordField = document.createElement('input');
+                        var errorDiv = document.createElement('div');
+                        errorDiv.className += 'km-login-form-error km-error-container'
+    
+                        errorDiv.innerHTML += `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                        <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                        </svg>
+                        <p class='km-error-msg'>${MCK_LABELS['lead.collection'].errorText}</p>`;
+    
+                        for (var key in data) {
+                            passwordField.setAttribute(key, data[key]);
+                        }
+                        passwordField.onblur = _this.loginInputKeyup(passwordField);
+                        $applozic(kmChatInputDiv).append(kmLabelDiv, passwordField, errorDiv)
+                        $applozic(kmChatInputDiv).insertAfter(emailContainer)
+                    }else if(isPassField){
+                        errorContainer.style.display = "flex";
+                        isPassField.classList.add("km-login-error")
+                    }    
                 }
                 submitBtn.removeAttribute('disabled');
                 submitBtn.innerText = MCK_LABELS['lead.collection'].submit;
             },
-            _this.createInputField = function (preLeadCollection){
+            _this.createPreChatLabel=function(leadCollection,inputId){
+                var kmLabelDiv = document.createElement('div')
+                kmLabelDiv.setAttribute('class', "km-form-label-container");
+                var fieldName = leadCollection.field;
+                var requiredSVG =`<svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"/>
+               </svg>`;
+
+
+                var label =`${leadCollection.required ? requiredSVG : ""}<label class='km-form-label km-tertiary-title' for=${inputId}>${fieldName}</label>`
+                kmLabelDiv.innerHTML = label;
+                return kmLabelDiv
+            },
+
+            _this.createInputContainer = function(id){
                 var kmChatInputDiv = document.createElement('div');
+               
+                kmChatInputDiv.setAttribute('id', `${id}-container` )
                 kmChatInputDiv.setAttribute(
                     'class',
                     'km-form-group km-form-group-container'
                 );
+                return kmChatInputDiv
+            }
+            _this.createInputField = function (preLeadCollection){
+                var inputId = 'km-' + preLeadCollection.field.toLowerCase();
+                var kmChatInputDiv = _this.createInputContainer(inputId)
+                var kmLabelDiv = _this.createPreChatLabel(preLeadCollection, inputId)
 
                 var kmChatInput = document.createElement(
                     preLeadCollection.element || 'input'
@@ -3130,11 +3196,11 @@ var userOverride = {
                 
                 kmChatInput.setAttribute(
                     'id',
-                    'km-' + preLeadCollection.field.toLowerCase()
+                   inputId
                 );
                 kmChatInput.setAttribute(
                     'name',
-                    'km-' + preLeadCollection.field.toLowerCase()
+                    inputId
                 );
                 if(preLeadCollection.required){
                     kmChatInput.setAttribute(
@@ -3183,7 +3249,7 @@ var userOverride = {
                         );
                     } 
                 }
-                $applozic(kmChatInputDiv).append(kmChatInput);
+                $applozic(kmChatInputDiv).append(kmLabelDiv, kmChatInput);
                 return kmChatInputDiv;
             };
 
@@ -3845,7 +3911,7 @@ var userOverride = {
                 });
             },
             // change the conversation assignee
-            _this.changeConversationAssignee = function () {
+            _this.changeConversationAssignee = function (triggerWelcomeForceFully) {
                 window.Applozic.ALApiService.ajax({
                     type: 'PATCH',
                     url:
@@ -3882,8 +3948,8 @@ var userOverride = {
                             });
                            
                         } else {
-                            appOptions.restartConversationByUser &&
-                                _this.triggerWelcomeEvent();
+                            var triggerWelcome= appOptions.restartConversationByUser || triggerWelcomeForceFully
+                            triggerWelcome && _this.triggerWelcomeEvent();
                         }
                     },
                     error: function (data) {
@@ -6554,6 +6620,10 @@ var userOverride = {
                             data.userDetails && data.userDetails;
                         CURRENT_GROUP_DATA.lastMessagingMember =
                             data.message[0] && data.message[0].contactIds;
+                        CURRENT_GROUP_DATA.teamId = 
+                            data &&
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata.KM_TEAM_ID;
                         params.isWaitingQueue &&
                             KommunicateUI.handleWaitingQueueMessage();
                         var currTabId = $mck_msg_inner.data('mck-id');
@@ -7796,6 +7866,7 @@ var userOverride = {
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 console.log("groupPxy now checking", groupPxy);
                                 CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
+                                CURRENT_GROUP_DATA.teamId = groupPxy.metadata && groupPxy.metadata.KM_TEAM_ID
                                 params.tabId = group.contactId;
                                 params.isGroup = true;
                                 !params.allowMessagesViaSocket &&
