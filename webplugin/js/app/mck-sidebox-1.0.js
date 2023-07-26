@@ -5341,63 +5341,6 @@ var userOverride = {
                         $mck_box_form.addClass('mck-text-req');
                         return false;
                     }
-                    //If the field is a form field then validate the input, update user details before sending the message
-                    if ($mck_text_box.data('fieldType')) {
-                        //If the field has a regex validation then validate the input otherwise skip validation
-                        if($mck_text_box.data('validation')){
-                            var regexForm = $mck_text_box.data(
-                                'validation'
-                            );
-                            regexForm = new RegExp(regexForm);
-                            //If the input does not match the regex validation then show an error message for 2 seconds.
-                            if (!regexForm.test(message)) {
-                                $applozic('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
-                                $applozic('#mck-form-field-error-alert-box')
-                                    .removeClass('n-vis')
-                                    .addClass('vis');
-                                setTimeout(function () {
-                                    $applozic('#mck-form-field-error-alert-box')
-                                        .removeClass('vis')
-                                        .addClass('n-vis');
-                                }, 2000);
-                                return false;
-                            }
-                        }
-                        if($mck_text_box.data('updateUserDetails')){
-                            // If the field is a form field and the user details need to be updated then update the user details
-                            var fieldVal = $mck_text_box.data('field');
-                            var userUpdateField = {};
-                            userUpdateField[fieldVal] = message;
-                            if (
-                                $mck_text_box.data('fieldType') === 'EMAIL' ||
-                                $mck_text_box.data('fieldType') === 'NAME' ||
-                                $mck_text_box.data('fieldType') ===
-                                    'PHONE_NUMBER'
-                            ) {
-                                mckContactService.updateUser({
-                                    data: userUpdateField,
-                                });
-                            } else {
-                                mckContactService.updateUser({
-                                    data: { metadata: userUpdateField },
-                                });
-                            }
-                        }
-                        // Reset the placeholder text to default text
-                        $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
-                        // Reset the data attributes
-                        $mck_text_box.data('updateUserDetails', null); 
-                        $mck_text_box.data('field', null);
-                        $mck_text_box.data('fieldType', null);
-                        $mck_text_box.data('validation', null);
-                        $mck_text_box.data('errorMessage', null);
-                        if($mck_text_box.data('trigger')){
-                            $mck_text_box.data('triggerNextIntent',$mck_text_box.data('trigger'));
-                        }
-                        else{
-                            $mck_text_box.data('triggerNextIntent',null);
-                        }
-                    }
                     if (
                         typeof MCK_MSG_VALIDATION === 'function' &&
                         !MCK_MSG_VALIDATION(message)
@@ -5485,9 +5428,95 @@ var userOverride = {
                             return false;
                         }
                     }
-                    _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
-                    _this.sendMessage(messagePxy);
+                    //If the field is a form field then validate the input, update user details before sending the message
+                    if ($mck_text_box.data('fieldType')) {
+                        //If the field has a regex validation then validate the input otherwise skip validation
+                        if($mck_text_box.data('validation')){
+                            var regexForm = $mck_text_box.data(
+                                'validation'
+                            );
+                            regexForm = new RegExp(regexForm);
+                            //If the input does not match the regex validation then show an error message for 2 seconds.
+                            if (!regexForm.test(message)) {
+                                $applozic('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
+                                $applozic('#mck-form-field-error-alert-box')
+                                    .removeClass('n-vis')
+                                    .addClass('vis');
+                                setTimeout(function () {
+                                    $applozic('#mck-form-field-error-alert-box')
+                                        .removeClass('vis')
+                                        .addClass('n-vis');
+                                }, 2000);
+                                return false;
+                            }
+                        }
+                        if($mck_text_box.data('updateUserDetails')){
+                            // If the field is a form field and the user details need to be updated then update the user details
+                            var fieldVal = $mck_text_box.data('field');
+                            var userUpdateField = {};
+                            userUpdateField[fieldVal] = message;
+                            if (
+                                $mck_text_box.data('fieldType') === 'EMAIL' ||
+                                $mck_text_box.data('fieldType') === 'NAME' ||
+                                $mck_text_box.data('fieldType') ===
+                                    'PHONE_NUMBER'
+                            ) {
+                                mckContactService.updateUser({
+                                    data: userUpdateField,
+                                    success: function () {
+                                        sendMessageWhenFieldType();
+                                    },
+                                    error: function () {
+                                        sendMessageWhenFieldType();
+                                    }
+                                });
+                            } else {
+                                mckContactService.updateUser({
+                                    data: { metadata: userUpdateField },
+                                    success: function () {
+                                        sendMessageWhenFieldType();
+                                    },
+                                    error: function () {
+                                        sendMessageWhenFieldType();
+                                    }
+                                });
+                            }
+                        }
+                        else{
+                            sendMessageWhenFieldType();
+                        }
+                    }
+                    else{
+                        sendMessageWithoutFieldType();
+                    }
+
+                    //This function is basically delays the execution of the below send request until the updateUser function gives back a success/error response  
+                    function sendMessageWhenFieldType() {
+                        // Reset the placeholder text to default text
+                        $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
+                        // Reset the data attributes
+                        $mck_text_box.data('updateUserDetails', null);
+                        $mck_text_box.data('field', null);
+                        $mck_text_box.data('fieldType', null);
+                        $mck_text_box.data('validation', null);
+                        $mck_text_box.data('errorMessage', null);
+                        if($mck_text_box.data('trigger')){
+                            $mck_text_box.data('triggerNextIntent',$mck_text_box.data('trigger'));
+                        }
+                        else{
+                            $mck_text_box.data('triggerNextIntent',null);
+                        }
+                        _this.hideSendButton();
+                        Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
+                        _this.sendMessage(messagePxy);
+                    };
+
+                    // when Field Type is not true, just process the message
+                    function sendMessageWithoutFieldType(){
+                        _this.hideSendButton();
+                        Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
+                        _this.sendMessage(messagePxy);
+                    }
                     !KommunicateUtils.isCurrentAssigneeBot() && messageSentToHumanAgent++;
                     return false;
                 });
