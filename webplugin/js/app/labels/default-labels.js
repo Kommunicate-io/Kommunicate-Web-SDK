@@ -127,6 +127,7 @@ Kommunicate.defaultLabels = {
         password: 'Password',
         errorText: 'Please enter your account password',
         errorEmail: 'Please enter a valid email address',
+        commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
     },
     'csat.rating': {
         CONVERSATION_RATED: 'You rated the conversation',
