@@ -376,7 +376,7 @@ Kommunicate.markup = {
     {{#payload}}
     <div class="km-image-template">
        <img class="km-template-img" src="{{url}}"></img>
-       <div class="km-template-image-caption-wrapper">
+       <div class="km-template-image-caption-wrapper {{^caption}}n-vis{{/caption}}">
            <p class="km-template-img-caption">{{caption}}</p>
        </div>
    </div>
@@ -424,14 +424,19 @@ Kommunicate.markup = {
                                         <div>
                                         <div class="mck-form-radio-wrapper" style="margin-bottom:0px">
                                         {{#options}}
-                                        <div>
+                                        <div class="mck-radio-input-container">
                                             <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
-                                            <label for="{{label}} {{msgKey}}" class="mck-form-label"><b>{{label}}</b></label>   
+                                            <label for="{{label}} {{msgKey}}" class="mck-form-label mck-radio-label"><b>{{label}}</b></label>   
                                         </div>                                 
                                     {{/options}} 
                                         </div>
                                         {{#validation}}
-                                        <span class="mck-form-error-text mck-form-error-{{className}}" style="margin-top:0px"></span>
+                                            <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                                                 <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                                                </svg>
+                                                <span class="mck-form-error-text mck-form-error-{{className}}" style="margin-top:0px"></span>
+                                           </div
                                     {{/validation}}     
                                         </div>
                                        
@@ -443,7 +448,13 @@ Kommunicate.markup = {
     
                                             {{#options}}
                                                 <div class="{{checkboxClass}}">
-                                                    <label class="mck-form-label {{msgKey}}">
+                                                   <div class="mck-form-label-container">
+                                                    {{#validation}}
+                                                     <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"></path>
+                                                     </svg>
+                                                    {{/validation}}
+                                                     <label class="mck-form-label mck-checkbox-label {{msgKey}}">
                                                         <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}">
                                                         <span>
                                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -451,9 +462,15 @@ Kommunicate.markup = {
                                                                 <path d="M7.4001 10.9499L5.3001 8.8499L4.6001 9.5499L7.4001 12.3499L13.4001 6.3499L12.7001 5.6499L7.4001 10.9499Z" fill="white"/>
                                                             </svg> {{label}}
                                                         </span>
-                                                    </label>   
+                                                     </label>   
+                                                    </div>
                                                     {{#validation}}
-                                                    <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                                    <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                                                       <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                                                      </svg>
+                                                      <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                                    </div>
                                                 {{/validation}}
                                                 </div>                                     
                                             {{/options}}
@@ -461,25 +478,56 @@ Kommunicate.markup = {
                                     {{/checkbox}}
                                     {{#text}}
                                         <div class="mck-form-text-wrapper">
-                                            <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                                            <div class="mck-form-label-container">
+                                            {{#validation}}
+                                              <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                               <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"></path>
+                                              </svg>
+                                            {{/validation}}
+                                              <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                                            </div>
                                             <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}">
                                             {{#validation}}
+                                              <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                                                 <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                                                </svg>
                                                 <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                              </div>
                                             {{/validation}}
                                         </div>
                                     {{/text}}
                                     {{#textarea}}
                                          <div class="mck-form-textarea-wrapper">
+                                           <div class="mck-form-label-container">
+                                            {{#validation}}
+                                            <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"></path>
+                                            </svg>
+                                            {{/validation}}
                                             <label class="mck-form-label" for="{{name}}">{{title}}</label>
+                                            </div>
                                             <textarea name="{{name}}" rows="{{rows}}" cols="{{cols}}" placeholder="{{placeholder}}" data-regex= "{{validation.regex}}" data-error-text="{{validation.errorText}}"></textarea>
                                             {{#validation}}
-                                                <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                              <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
+                                               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                                                <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                                               </svg>
+                                               <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                              </div>
                                             {{/validation}}
                                         </div>
                                     {{/textarea}}
                                     {{#dropdown}}
                                         <div class="mck-form-dropdown-wrapper">
-                                            <label for="{{name}}" class="mck-form-label">{{title}}</label><br>
+                                          <div class="mck-form-label-container">
+                                           {{#validation}}
+                                            <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"></path>
+                                            </svg>
+                                            {{/validation}}
+                                             <label for="{{name}}" class="mck-form-label">{{title}}</label><br>
+                                            </div>
                                             <select name="{{name}}" data-error-text = "{{validation.errorText}}">
                                                 {{#options}}
                                                     {{#selected}}{{#disabled}}
@@ -494,7 +542,12 @@ Kommunicate.markup = {
                                                 {{/options}}    
                                             </select>
                                             {{#validation}}
+                                               <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                                                 <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                                                 </svg>
                                                 <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                               </div>
                                             {{/validation}}
                                         </div>
                                     {{/dropdown}}
@@ -504,10 +557,22 @@ Kommunicate.markup = {
                                 {{/supported}}
                                 {{^supported}}
                                     <div class="mck-form-text-wrapper">
+                                        <div class="mck-form-label-container">
+                                         {{#validation}}
+                                        <svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                         <path d="M2.74006 5.18182L2.83807 3.45597L1.3892 4.40625L0.869318 3.50284L2.41619 2.72727L0.869318 1.9517L1.3892 1.0483L2.83807 1.99858L2.74006 0.272727H3.77557L3.68182 1.99858L5.13068 1.0483L5.65057 1.9517L4.09943 2.72727L5.65057 3.50284L5.13068 4.40625L3.68182 3.45597L3.77557 5.18182H2.74006Z" fill="#D64242"></path>
+                                        </svg>
+                                        {{/validation}}
                                         <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
+                                        </div>
                                         <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
                                         {{#validation}}
+                                             <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
+                                                 <path d="M6 1C3.24 1 1 3.24 1 6C1 8.76 3.24 11 6 11C8.76 11 11 8.76 11 6C11 3.24 8.76 1 6 1ZM6 8.5C5.725 8.5 5.5 8.275 5.5 8V6C5.5 5.725 5.725 5.5 6 5.5C6.275 5.5 6.5 5.725 6.5 6V8C6.5 8.275 6.275 8.5 6 8.5ZM6.5 4.5H5.5V3.5H6.5V4.5Z" fill="#D64242"/>
+                                                </svg>
                                                 <span class="mck-form-error-text mck-form-error-{{className}}"></span>
+                                              </div>
                                             {{/validation}}
                                     </div>
                                 {{/supported}}

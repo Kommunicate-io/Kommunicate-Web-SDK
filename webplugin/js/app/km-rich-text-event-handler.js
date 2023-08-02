@@ -720,8 +720,14 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleFormErrorMessage: function (form, name, errorText, validationFailed) {
+        var fieldName = name.toLowerCase()
+        var container = form.getElementsByClassName('mck-form-' + fieldName + '-error-container');
+        if (container.length) {
+            validationFailed ? container[0].classList.remove('n-vis'): container[0].classList.add('n-vis');
+        }
+
         var element = form.getElementsByClassName(
-            ('mck-form-error-' + name).toLowerCase().replace(/ +/g, '')
+            ('mck-form-error-' + fieldName).replace(/ +/g, '')
         )[0];
         element.innerHTML = validationFailed ? errorText : '';
     },

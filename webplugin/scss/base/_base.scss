@@ -19,3 +19,12 @@ button {
     padding: 8px 12px;
     line-height: 19px;
 }
+
+input,
+select,
+textarea {
+    font-size: $heading-secondary;
+    font-family: $font-family-primary !important;
+    border: 2px solid $input-border-color;
+    background-color: $disable-input-color;
+}

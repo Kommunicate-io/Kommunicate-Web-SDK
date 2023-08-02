@@ -1,0 +1,209 @@
+.mck-form-template-container {
+    width: $rich-msg-width;
+
+    @media (max-width: 350px) {
+        width: inherit;
+    }
+}
+
+.mck-form-template-wrapper {
+    padding: 20px 16px;
+    margin-top: 5px;
+    background-color: $secondary-color;
+    border: 1px solid $input-border-color;
+    border-radius: $msg-box-border-radius;
+
+    & form {
+        margin: 0px;
+    }
+    & > div:not(:last-child) {
+        margin-bottom: 13px;
+    }
+}
+
+.mck-form-text-wrapper {
+    margin-bottom: 15px;
+    input:focus {
+        outline: none;
+    }
+}
+
+.mck-form-text-wrapper,
+.mck-form-dropdown-wrapper,
+.mck-form-textarea-wrapper {
+    & label {
+        margin-bottom: 2px;
+        margin-left: 2px;
+    }
+    input,
+    select,
+    textarea {
+        display: inline-block;
+        color: $text-primary-color;
+        background-color: $disable-input-color;
+        padding: 6px 8px;
+        border: 2px solid $input-border-color;
+        width: 91%;
+        margin-bottom: 3px;
+        &:focus {
+            background-color: #ffffff;
+        }
+        &:disabled {
+            cursor: not-allowed;
+            background: #dddddd;
+            color: #5c6677;
+        }
+    }
+}
+
+.mck-form-text-wrapper,
+.mck-form-textarea-wrapper {
+    input::placeholder,
+    input::-webkit-input-placeholder,
+    input:-ms-input-placeholder,
+    input:-moz-placeholder,
+    textarea::placeholder,
+    textarea::-webkit-input-placeholder,
+    textarea:-ms-input-placeholder,
+    textarea::-moz-placeholder {
+        color: $placeholder-color;
+        font-size: 12px;
+    }
+}
+
+.mck-form-label {
+    font-size: 12px;
+    color: $text-tertiary-color;
+    letter-spacing: 0.36px;
+    margin-left: 0 !important;
+}
+
+.mck-form-template-container {
+    button {
+        min-width: 23%;
+        border-radius: 19px;
+        padding: 7px;
+        margin-top: 12px;
+        background-color: white;
+    }
+}
+.mck-form-error-container {
+    display: flex;
+    @include gap-supported(2px, 0 2px 0 0, '& svg');
+
+    & svg {
+        margin-top: 2px;
+        flex: 0 0 13px;
+    }
+
+    .mck-form-error-text {
+        font-size: 12px;
+        color: $km-danger-color !important;
+        margin: 0 0 2px;
+    }
+}
+.mck-form-submit-button {
+    font-size: 14px !important;
+}
+
+.mck-form-radio-wrapper,
+.mck-form-checkbox-wrapper {
+    div {
+        margin-right: 10px;
+    }
+}
+
+.mck-form-radio-wrapper,
+.mck-form-checkbox-wrapper {
+    input {
+        font-size: 11px;
+    }
+}
+.mck-form-textarea-wrapper textarea {
+    resize: vertical;
+}
+
+.mck-form-text-wrapper {
+    margin-bottom: 15px;
+}
+.mck-form-dropdown-wrapper select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 5px;
+    @include prefix(appearance, none, webkit moz);
+}
+
+.mck-form-radio-wrapper,
+.mck-form-checkbox-wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.mck-radio-group-title,
+.mck-checkbox-group-title {
+    color: $text-tertiary-color;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.mck-radio-label,
+.mck-checkbox-label {
+    b,
+    span {
+        font-weight: 500;
+        color: $text-primary-color;
+    }
+}
+.mck-radio-input-container,
+.mck-checkbox-label {
+    display: flex !important;
+    @include gap-supported(6px, 0 6px 0 0, '& input');
+}
+
+/* ------ START: checkbox as button style ------ */
+.checkbox-as-button {
+    background-color: transparent;
+    border-radius: 8px;
+    border: 1px solid #00a4bf;
+    label {
+        line-height: 3em;
+        height: 3em;
+        cursor: pointer;
+
+        .checkbox-as-button label input + span {
+            color: #00a4bf;
+            font-weight: 400;
+            padding: 0 10px;
+        }
+        & span {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        & input {
+            position: absolute;
+            display: none;
+            color: #fff !important;
+            &:checked + span {
+                color: #00a4bf;
+                font-weight: unset;
+                background-color: #d4f3f8;
+                border-radius: 8px;
+                & > svg {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+.checkbox-container label span > svg,
+.checkbox-as-button label input + span > svg {
+    display: none;
+}
+
+/* ------ END: checkbox as button style ------ */

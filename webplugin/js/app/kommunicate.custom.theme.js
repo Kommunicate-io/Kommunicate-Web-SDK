@@ -4,7 +4,7 @@ function KmCustomTheme() {
     var _this = this;
     var WIDGET_SETTINGS;
     var DEFAULT_BACKGROUND_COLOR = '#5F46F8';
-    var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#e6e5ec';
+    var DEFAULT_SECONDARY_BACKGROUND_COLOR = '#EFEFEF';
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
@@ -33,7 +33,10 @@ function KmCustomTheme() {
                 WIDGET_SETTINGS && WIDGET_SETTINGS.secondaryColor
                     ? WIDGET_SETTINGS.secondaryColor
                     : DEFAULT_SECONDARY_BACKGROUND_COLOR;
-            var squareIcon = kommunicate._globals.iconShape == 'square' ? 'km-square-chat-icon' : null;
+            var squareIcon =
+                kommunicate._globals.iconShape == 'square'
+                    ? 'km-square-chat-icon'
+                    : null;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
             var kmCustomWidgetCustomCSS =
@@ -66,7 +69,9 @@ function KmCustomTheme() {
             _this.createCustomClasses(kmChatWidgetBackgroundColor);
         }
         return (
-            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color ' + squareIcon + '" >' +
+            '<div id="launcher-svg-container" class="km-chat-icon-sidebox km-custom-widget-background-color km-chat-widget-background-color ' +
+            squareIcon +
+            '" >' +
             _this.returnCustomWidget() +
             '</div>'
         );
