@@ -5341,8 +5341,8 @@ var userOverride = {
                         $mck_box_form.addClass('mck-text-req');
                         return false;
                     }
-                    //If the field is a form field then validate the input, update user details before sending the message
-                    if ($mck_text_box.data('fieldType')) {
+                     //If the field is a form field then validate the input, update user details before sending the message
+                     if ($mck_text_box && $mck_text_box.data('fieldType')) {
                         //If the field has a regex validation then validate the input otherwise skip validation
                         if($mck_text_box.data('validation')){
                             var regexForm = $mck_text_box.data(
@@ -5351,7 +5351,11 @@ var userOverride = {
                             regexForm = new RegExp(regexForm);
                             //If the input does not match the regex validation then show an error message for 2 seconds.
                             if (!regexForm.test(message)) {
-                                $applozic('#mck-form-field-error-alert').html($mck_text_box.data('errorMessage'));
+                                var errMsg = $mck_text_box.data('errorMessage');
+                                if (!errMsg || errMsg.trim() === '') {
+                                    errMsg = MCK_LABELS['lead.collection'].commonErrorMsg;
+                                }
+                                $applozic('#mck-form-field-error-alert').html(errMsg);
                                 $applozic('#mck-form-field-error-alert-box')
                                     .removeClass('n-vis')
                                     .addClass('vis');
@@ -5368,25 +5372,34 @@ var userOverride = {
                             var fieldVal = $mck_text_box.data('field');
                             var userUpdateField = {};
                             userUpdateField[fieldVal] = message;
-                            if (
-                                $mck_text_box.data('fieldType') === 'EMAIL' ||
-                                $mck_text_box.data('fieldType') === 'NAME' ||
-                                $mck_text_box.data('fieldType') ===
-                                    'PHONE_NUMBER'
-                            ) {
-                                mckContactService.updateUser({
-                                    data: userUpdateField,
-                                });
-                            } else {
-                                mckContactService.updateUser({
-                                    data: { metadata: userUpdateField },
-                                });
-                            }
+                            var updateData = $mck_text_box.data('fieldType') === 'EMAIL' || $mck_text_box.data('fieldType') === 'NAME' || $mck_text_box.data('fieldType') === 'PHONE_NUMBER' ? userUpdateField : { metadata: userUpdateField };
+                            mckContactService.updateUser({
+                                data: updateData,
+                                success: function () {
+                                    resetFields();
+                                    continueMessageProcess();
+                                },
+                                error: function () {
+                                    resetFields();
+                                    continueMessageProcess();
+                                }
+                            });
                         }
+                        else{
+                            resetFields();
+                            continueMessageProcess();
+                        }
+                    }
+                    else{
+                        continueMessageProcess();
+                    }
+
+                    //reset fields
+                    function resetFields(){
                         // Reset the placeholder text to default text
                         $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
                         // Reset the data attributes
-                        $mck_text_box.data('updateUserDetails', null); 
+                        $mck_text_box.data('updateUserDetails', null);
                         $mck_text_box.data('field', null);
                         $mck_text_box.data('fieldType', null);
                         $mck_text_box.data('validation', null);
@@ -5398,96 +5411,99 @@ var userOverride = {
                             $mck_text_box.data('triggerNextIntent',null);
                         }
                     }
-                    if (
-                        typeof MCK_MSG_VALIDATION === 'function' &&
-                        !MCK_MSG_VALIDATION(message)
-                    ) {
-                        return false;
-                    }
-                    var messagePxy = {
-                        type: 5,
-                        contentType: 0,
-                        message: message,
-                    };
-                    var conversationId = $mck_msg_inner.data(
-                        'mck-conversationid'
-                    );
-                    var topicId = $mck_msg_inner.data('mck-topicid');
-                    if (conversationId) {
-                        messagePxy.conversationId = conversationId;
-                    } else if (topicId) {
-                        var conversationPxy = {
-                            topicId: topicId,
-                        };
-                        var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
-                        if (typeof topicDetail === 'object') {
-                            conversationPxy.topicDetail = w.JSON.stringify(
-                                topicDetail
-                            );
-                        }
-                        messagePxy.conversationPxy = conversationPxy;
-                    }
-                    var autosuggestMetadata = $mck_autosuggest_metadata.val();
-                    if (autosuggestMetadata && autosuggestMetadata != '') {
-                        messagePxy.metadata = {
-                            suggestMessageMetadata: autosuggestMetadata,
-                        };
-                        $mck_autosuggest_metadata.val('');
-                    }
-                    if (
-                        $mck_autosuggest_search_input.data('prev-msgkey') !=
-                            '' &&
-                        typeof $mck_autosuggest_search_input.data(
-                            'prev-msgkey'
-                        ) != 'undefined'
-                    ) {
-                        mckMessageService.updateMessageMetadata({
-                            key: $mck_autosuggest_search_input.data(
-                                'prev-msgkey'
-                            ),
-                            metadata: { obsolete: true },
-                        });
-                        $mck_autosuggest_search_input.data('prev-msgkey', '');
-                    }
-                    _this.hideAutoSuggestionBoxEnableTxtBox();
-                    if ($mck_msg_inner.data('isgroup') === true) {
-                        messagePxy.groupId = $mck_msg_to.val();
-                    } else {
-                        messagePxy.to = $mck_msg_to.val();
-                    }
-                    $mck_msg_sbmt.attr('disabled', true);
-                    $mck_msg_error.removeClass('vis').addClass('n-vis');
-                    $mck_msg_error.html('');
-                    $mck_response_text.html('');
-                    $mck_msg_response.removeClass('vis').addClass('n-vis');
-                    // Lead Collection - Email Validation
-                    if (
-                        messageSentToHumanAgent == 1 &&
-                        (
-                            (
-                                KommunicateUI.leadCollectionEnabledOnAwayMessage &&
-                                !KommunicateUtils.isCurrentAssigneeBot() &&
-                                KommunicateUI.awayMessageInfo.isEnabled &&
-                                KommunicateUI.awayMessageInfo.eventId == 1
-                            ) ||
-                            (
-                                KommunicateUI.welcomeMessageEnabled &&
-                                !KommunicateUtils.isCurrentAssigneeBot() &&
-                                KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
-                                KommunicateUI.anonymousUser
-                            )
-                        )
-                    ) {
-                        var isValid = KommunicateUI.validateEmail(
-                            messagePxy.message
-                        );
-                        if (!isValid) {
+                    //This function is basically delays the execution of the below send request until the updateUser function gives back a success/error response  
+                    function continueMessageProcess() {
+                        if (
+                            typeof MCK_MSG_VALIDATION === 'function' &&
+                            !MCK_MSG_VALIDATION(message)
+                        ) {
                             return false;
                         }
-                    }
-                    _this.hideSendButton();
-                    Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
-                    _this.sendMessage(messagePxy);
+                        var messagePxy = {
+                            type: 5,
+                            contentType: 0,
+                            message: message,
+                        };
+                        var conversationId = $mck_msg_inner.data(
+                            'mck-conversationid'
+                        );
+                        var topicId = $mck_msg_inner.data('mck-topicid');
+                        if (conversationId) {
+                            messagePxy.conversationId = conversationId;
+                        } else if (topicId) {
+                            var conversationPxy = {
+                                topicId: topicId,
+                            };
+                            var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
+                            if (typeof topicDetail === 'object') {
+                                conversationPxy.topicDetail = w.JSON.stringify(
+                                    topicDetail
+                                );
+                            }
+                            messagePxy.conversationPxy = conversationPxy;
+                        }
+                        var autosuggestMetadata = $mck_autosuggest_metadata.val();
+                        if (autosuggestMetadata && autosuggestMetadata != '') {
+                            messagePxy.metadata = {
+                                suggestMessageMetadata: autosuggestMetadata,
+                            };
+                            $mck_autosuggest_metadata.val('');
+                        }
+                        if (
+                            $mck_autosuggest_search_input.data('prev-msgkey') !=
+                                '' &&
+                            typeof $mck_autosuggest_search_input.data(
+                                'prev-msgkey'
+                            ) != 'undefined'
+                        ) {
+                            mckMessageService.updateMessageMetadata({
+                                key: $mck_autosuggest_search_input.data(
+                                    'prev-msgkey'
+                                ),
+                                metadata: { obsolete: true },
+                            });
+                            $mck_autosuggest_search_input.data('prev-msgkey', '');
+                        }
+                        _this.hideAutoSuggestionBoxEnableTxtBox();
+                        if ($mck_msg_inner.data('isgroup') === true) {
+                            messagePxy.groupId = $mck_msg_to.val();
+                        } else {
+                            messagePxy.to = $mck_msg_to.val();
+                        }
+                        $mck_msg_sbmt.attr('disabled', true);
+                        $mck_msg_error.removeClass('vis').addClass('n-vis');
+                        $mck_msg_error.html('');
+                        $mck_response_text.html('');
+                        $mck_msg_response.removeClass('vis').addClass('n-vis');
+                        // Lead Collection - Email Validation
+                        if (
+                            messageSentToHumanAgent == 1 &&
+                            (
+                                (
+                                    KommunicateUI.leadCollectionEnabledOnAwayMessage &&
+                                    !KommunicateUtils.isCurrentAssigneeBot() &&
+                                    KommunicateUI.awayMessageInfo.isEnabled &&
+                                    KommunicateUI.awayMessageInfo.eventId == 1
+                                ) ||
+                                (
+                                    KommunicateUI.welcomeMessageEnabled &&
+                                    !KommunicateUtils.isCurrentAssigneeBot() &&
+                                    KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&
+                                    KommunicateUI.anonymousUser
+                                )
+                            )
+                        ) {
+                            var isValid = KommunicateUI.validateEmail(
+                                messagePxy.message
+                            );
+                            if (!isValid) {
+                                return false;
+                            }
+                        }
+                        _this.hideSendButton();
+                        Kommunicate.typingAreaService.showMicIfRequiredWebAPISupported();
+                        _this.sendMessage(messagePxy);
+                    };
                     !KommunicateUtils.isCurrentAssigneeBot() && messageSentToHumanAgent++;
                     return false;
                 });
