@@ -121,13 +121,13 @@ const configEnv = {
             },
         },
     },
-    prod_ca: {
+    prod_cn: {
         port: '3030',
         urls: {
-            applozicBaseUrl: 'https://chat-ca.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-ca.kommunicate.io',
-            hostUrl: 'https://widget-ca.kommunicate.io',
-            dashboardUrl: 'https://dashboard-ca.kommunicate.io',
+            applozicBaseUrl: 'https://chat-cn.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-cn.kommunicate.io',
+            hostUrl: 'https://widget-cn.kommunicate.io',
+            dashboardUrl: 'https://dashboard-cn.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
