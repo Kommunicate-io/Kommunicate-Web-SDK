@@ -5,3 +5,142 @@
 .km-msg-box-attachment {
     width: $rich-msg-width !important;
 }
+
+.mck-audio-player {
+    width: $rich-msg-width;
+    /* height: 40px; */
+    margin-bottom: 8px;
+    overflow: hidden;
+    outline: none;
+    position: relative;
+    z-index: 88888;
+    @media (max-width: 330px) {
+        width: 90%;
+    }
+}
+.km-attach-msg-left .mck-audio-player,
+.km-attach-msg-right .mck-audio-player {
+    &::-webkit-media-controls-enclosure {
+        background: transparent;
+        border: 1px solid $input-border-color;
+    }
+    &::-webkit-media-controls-play-button {
+        border: 2px solid $text-primary-color;
+    }
+}
+
+.mck-msg-right .km-msg-box-attachment,
+.mck-msg-left .km-msg-box-attachment {
+    float: right !important;
+    font-size: 14px;
+    margin-right: 15px;
+    min-height: 20px;
+    padding: 10px 14px 12px;
+    -webkit-align-self: flex-start;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+    -webkit-animation-name: kmOpeningAnimation;
+    animation-name: kmOpeningAnimation;
+    border-radius: 5px;
+    /* max-width: 70%; */
+    width: 220px;
+    max-width: -moz-calc(85% - 58px);
+    max-width: calc(85% - 58px);
+    display: inline-block;
+    padding: 0;
+    position: relative;
+}
+.mck-msg-left .km-msg-box-attachment {
+    float: left !important;
+}
+.km-attachment-img {
+    border-radius: 10px;
+}
+.km-msg-box-attachment img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.km-msg-box-attachment > .km-application-attachment-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.km-msg-box-attachment > .km-attachment-wrapper .mck-msg-box {
+    align-self: flex-end;
+    margin-right: 0;
+    max-width: 220px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.km-attachment-progress-bar {
+    background: #64d9a8;
+    border-radius: 4px;
+    height: 4px;
+    margin: 3px 3px;
+    width: 220px;
+}
+.km-attachment-wrapper {
+    .km-attachment-cancel-icon,
+    .km-attachment-upload-icon,
+    .km-attachment-download-icon {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .km-attachment-file-name {
+        &,
+        span {
+            font-size: $heading-secondary;
+            font-family: $font-family-primary !important;
+        }
+
+        font-weight: 700;
+        white-space: nowrap;
+        width: 187px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #fff;
+        & span {
+            display: block;
+            font-weight: normal;
+            margin-top: 3px;
+        }
+    }
+}
+
+.km-attachment-progress-bar-wrapper {
+    margin: 3px 3px;
+    width: 242px;
+}
+
+.km-attachment-progress-bar-wrapper .km-attachment-progress-bar-success {
+    background: #64d9a8;
+    height: 4px;
+    transition: width 0.6s ease;
+    width: 0%;
+    border-radius: 4px;
+}
+
+.mck-attachment {
+    .mck-msg-box a {
+        display: flex;
+        text-decoration: none !important;
+        &:hover {
+            text-decoration: underline !important;
+            color: #fff !important;
+        }
+    }
+}
+
+.km-attachment-svg-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin-right: 10px;
+    @include flexMixin;
+    background-color: #fff;
+}

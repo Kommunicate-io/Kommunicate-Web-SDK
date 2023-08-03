@@ -1,8 +1,14 @@
 .mck-form-template-container {
-    width: $rich-msg-width;
-
-    @media (max-width: 350px) {
-        width: inherit;
+    width: $rich-msg-width ;
+    @media (max-width: 330px) {
+        width: 90% ;
+    }
+    button {
+        min-width: 23%;
+        border-radius: 19px;
+        padding: 7px;
+        margin-top: 12px;
+        background-color: white;
     }
 }
 
@@ -78,15 +84,7 @@
     margin-left: 0 !important;
 }
 
-.mck-form-template-container {
-    button {
-        min-width: 23%;
-        border-radius: 19px;
-        padding: 7px;
-        margin-top: 12px;
-        background-color: white;
-    }
-}
+
 .mck-form-error-container {
     display: flex;
     @include gap-supported(2px, 0 2px 0 0, '& svg');

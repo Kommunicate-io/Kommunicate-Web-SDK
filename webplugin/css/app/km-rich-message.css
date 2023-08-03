@@ -85,9 +85,7 @@
     margin: 1px 0px 0px 0px;
     color: #7766b5;
 }
-.mck-msg-box-rich-text-container .km-carousel-card-template.km-single-card {
-    margin-left: 0px!important;
-}
+
 .km-guest-text-lable .km-children-text-lable {
     width: 30 px;
 }
@@ -350,15 +348,7 @@
     display: none;
 }
 
-.tns-controls {
-    padding-bottom: 8px;
-}
-.km-cta-multi-button-container {
-    display: flex;
-    flex-flow: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
+
 .km-quick-rpy-btn {
     width: auto;
     padding: 5px 10px;
@@ -367,63 +357,7 @@
     font-size: 14px;
     letter-spacing: normal;
 }
-.km-cta-button-many,
-.km-quick-rpy-btn,
-.km-cta-button {
-    word-break: break-word;
-    overflow-wrap: break-word;
-}
-.km-cta-multi-button-container .km-cta-button-many,
-.km-cta-multi-button-container .km-cta-button-1 {
-    margin-top: 10px;
-    margin-right: 10px;
-}
-/* .km-cta-multi-button-container .km-cta-button-1{
-        margin-top: 10px;
-        width:50%;
-    } */
-.km-cta-multi-button-container .km-cta-button-2 {
-    margin-top: 10px;
-    margin-right: 10px;
-    padding: 6px 14px;
-}
-.km-cta-multi-button-container button a {
-    margin: -6px -10px;
-    padding: 8px 10px;
-}
-.km-cta-button {
-    color: #5553b7;
-    border: 1px solid #5553b7;
-}
-.km-undecorated-link {
-    text-decoration: none;
-}
-.km-cta-button.km-link-button {
-    text-align: left;
-    font-size: 14px;
-}
-.km-cta-button.km-link-button span {
-    vertical-align: sub;
-    margin-left: 5px;
-}
-.km-cta-button.km-link-button span svg {
-    margin-bottom: 0.1rem;
-}
-.km-cta-button.km-carousel-card-button,
-.km-cta-button.km-faq-list-link-button {
-    border: 1px solid #e7e4e4;
-    text-align: center;
-    padding-left: 0px;
-    font-size: 12px;
-}
-.km-cta-button.km-faq-list-link-button {
-    border: none;
-    font-size: 14px;
-}
-.km-cta-button.km-carousel-card-button:hover,
-.km-cta-button.km-faq-list-link-button:hover {
-    text-decoration: none;
-}
+
 
 /********** Guest Details Form Starts Here ***********/
 
@@ -530,34 +464,6 @@
 }
 .km-border-less-container button {
     display: inline-block !important;
-}
-.km-slick-container .tns-controls button {
-    position: absolute;
-    padding: 0;
-    bottom: 50%;
-    background-color: #ffffff;
-    width: 30px;
-    height: 30px;
-    border-radius: 44px;
-    box-shadow: 1px 2px 4px 1px rgba(0, 0, 0, 0.12);
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    z-index: 5;
-    transform: translateY(50%);
-    padding: 0;
-}
-
-.km-slick-container .tns-controls button:first-child {
-    left: 45px;
-}
-.km-slick-container .tns-controls button:last-child {
-    right: 0;
-}
-.km-slider-multiple-cards-container .tns-controls button:first-child {
-    left: 0;
 }
 
 /* Room Details after Blocking Room */
@@ -724,167 +630,7 @@
 }
 /******** Generic list template*************/
 /* FAQ List */
-.km-message.km-received.km-chat-faq-list {
-    padding: 0px;
-    background: transparent;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: 5px;
-}
-.km-faq-list--body,
-.km-faq-list--footer {
-    /*background-color: #e5e5e5;*/
-}
-.km-list-image {
-    max-width: 100%;
-    object-fit: contain;
-}
-.km-faq-list--header_text-img {
-    background-color: rgba(103, 103, 103, 0);
-    background: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        color-stop(0%, rgba(255, 255, 255, 0)),
-        color-stop(100%, rgba(0, 0, 0, 0.75))
-    );
-    background: -webkit-linear-gradient(
-        top,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0.75) 100%
-    );
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0.75) 100%
-    );
-}
-.km-faq-list--header_text-img img {
-    object-fit: cover;
-    width: 100%;
-    height: 110px;
-    position: relative;
-    z-index: 0;
-    display: block;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
 
-.km-faq-list--body_list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    margin-bottom: 0px !important;
-}
-.km-faq-list--body_list li > a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    text-decoration: none;
-    border-bottom: solid 1px #e5e5e5;
-    color: grey;
-    transition: all 0.3s ease-in-out;
-}
-.km-faq-list--body_que-ans {
-    padding: 10px 12px;
-    /*width: calc(100% - 106px);*/
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-height: 51px;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-}
-.km-faq-list--body_que-ans * {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.km-faq-list--body_list li > a:hover {
-    background-color: #efefef;
-    color: grey;
-    text-decoration: none !important;
-}
-
-.km-faq-list--body_que-ans .km-faq-list--body_que {
-    font-size: 15px;
-    color: #000;
-    margin: 0px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.km-faq-list--body_que-ans .km-faq-list--body_ans {
-    font-size: 14px;
-    color: #797474;
-    margin: 5px 0px 0px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.km-faq-list--body_img {
-    padding: 10px 0px 10px 12px;
-    /*width: 70px;*/
-    height: 50px;
-    border-radius: 4px;
-}
-.km-faq-list--body_img img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-.km-faq-list--body_img:empty .km-faq-list--body_que-ans {
-    width: 100%;
-}
-.km-faq-list--header {
-    position: relative;
-}
-
-.km-faq-list--header_text {
-    bottom: 2px;
-    left: 12px;
-    margin: 0;
-    margin-bottom: 0px !important;
-    padding: 9px 7px !important;
-    text-align: center;
-    width: calc(100% - 12px);
-    color: rgb(48, 48, 48);
-    word-wrap: break-word;
-    font-size: 16px;
-    border-bottom: 1px solid #edeff1;
-}
-
-.km-faq-list--footer {
-    width: 100%;
-    /* min-height: 35px; */
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
-}
-.km-faq-list--footer_button-container button {
-    width: 100%;
-    outline: none;
-    border: none;
-    background: transparent;
-    border-radius: 4px;
-    letter-spacing: 1px;
-    font-size: 15px;
-    cursor: pointer;
-    padding: 12px 0px;
-    border-radius: 0px;
-}
-.km-faq-list--footer_button-container button a {
-    color: #5c5aa7;
-}
-
-.km-faq-list--header_text-container {
-    /*background-color: #e5e5e5;*/
-    border: none !important;
-    min-height: 10px;
-}
-
-.km-faq-list--footer_button-container button:not(:last-child) {
-    border-bottom: 1px solid #e5e5e5 !important;
-}
 .km-dialog-box {
     /*width:96%;*/
 }
@@ -1052,208 +798,13 @@
 .mck-cont-msg-wrapper .email-message-indicator .mck-cont-msg-via-email {
     margin-left: 10px;
 }
-.km-carousel-card-template {
-    max-width: 240px;
-    width: 240px !important;
-    margin: 8px 4px 0 10px;
-    position: relative;
-}
-.tns-slider .km-carousel-card-template {
-    margin: 8px 4px 0 6px;
-}
-.km-carousel-card-img {
-    width: 100%;
-    height: 93px;
-    object-fit: cover;
-}
-.km-carousel-card-overlay-text {
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    background-color: #ffffff;
-    padding: 10px;
-    color: #0d0d0e;
-    font-weight: 500;
-    display: inline-block;
-    border-radius: 0 4px 4px 0;
-    font-size: 16px;
-    border-radius: 0 4px 4px 0;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-}
-.km-carousel-card-header {
-    position: relative;
-    height: 93px;
-}
-.km-carousel-card-title {
-    font-size: 18px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    color: #141313;
-    word-break: break-word;
-    text-overflow: ellipsis;
-}
-.km-carousel-card-sub-title {
-    font-size: 14px;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-    color: #565454;
-    margin-top: 4px;
-    font-weight: 400;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    padding-right: 20px;
-}
-.km-carousel-card-content-wrapper {
-    padding-top: 6px;
-    padding-left: 9px;
-    padding-bottom: 6px;
-    border: 1px solid #e7e4e4;
-    border-top: 0;
-}
-.km-carousel-url-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-.km-carousel-card-title-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.km-carousel-card-footer .km-cta-button,
-.km-carousel-card-footer .km-cta-multi-button-container button {
-    width: 100%;
-    height: 36px;
-    border-color: #e7e4e4;
-    border-bottom: none;
-    margin: 0;
-    background-color: white;
-}
-.km-carousel-card-footer {
-    border-bottom: 1px outset rgba(255, 255, 255, 0.4);
-    border-radius: 0px 0px 5px 5px;
-    overflow: hidden;
-}
-.km-carousel-card-img {
-    border-radius: 5px 5px 0 0;
-}
-.km-carousel-card-title {
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 220px;
-    text-overflow: ellipsis;
-}
-.km-carousel-card-title-extension {
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    color: #000000;
-    margin-right: 9px;
-    margin-left: 8px;
-    margin-top: 4px;
-}
-.km-carousel-card-description {
-    overflow: hidden;
-    position: relative;
-    line-height: 14.4px;
-    max-height: 43.2px;
-    margin-right: 12px;
-    padding-right: 12px;
-    margin-top: 4px;
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    color: #797474;
-    height: auto;
-    white-space: pre-line;
-    text-overflow: ellipsis;
-}
-.km-carousel-card-description:before {
-    content: '...';
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-.km-carousel-card-description:after {
-    content: '';
-    position: absolute;
-    right: 0;
-    width: 12px;
-    height: 12px;
-    margin-top: 2.4px;
-    background: white;
-}
-.km-carousel-card-overlay-text-without-img {
-    position: static;
-    background-color: #d6d6d6;
-    border-radius: 0 0 4px 0;
-    box-shadow: none;
-}
-.km-carousel-card-header-with-img {
-    border: 1px solid #e7e4e4;
-    border-bottom: none;
-    border-radius: 5px 5px 0 0;
-}
-.km-carousel-card-header-without-img {
-    height: 37px;
-    border: 1px solid #e7e4e4;
-    border-bottom: 0;
-    border-radius: 2px;
-}
-.km-carousel-card-description-wrapper {
-    height: 44px;
-}
-.km-carousel-card-info-wrapper-without-header {
-    border-top: 1px solid #e7e4e4;
-    border-radius: 7px 7px 0 0;
-}
-.km-carousel-card-info-wrapper-with-buttons {
-    border-bottom: 0;
-}
-.km-carousel-card-footer button {
-    width: 100% !important;
-    box-sizing: border-box;
-}
-.km-carousel-card-footer form {
-    margin: 0;
-}
-.km-list-container {
-    margin-top: 8px;
-    border: solid 1px #e5e5e5;
-}
-.tns-controls button[data-controls='next'] svg {
-    transform: rotate(180deg);
-}
-.tns-controls:focus {
-    outline: none;
-}
-.km-cta-multi-button-container button.km-quick-replies {
-    font-size: 14px;
-    border: 1px solid;
-    background-color: white;
-}
-.km-cta-multi-button-container button.km-cta-button {
-    font-size: 14px;
-}
 
-.km-carousel-card-footer
-    .km-cta-multi-button-container
-    button.km-quick-replies {
-    border-bottom: none;
-    text-align: center;
-}
+
+
 .km-slider-multiple-cards-container {
     margin-left: -65px;
 }
-.km-cta-multi-button-container .km-quick-replies.km-carousel-card-button {
-    border-color: #e7e4e4;
-}
+
 
 .mck-rich-video-container {
     margin-top: 5px;

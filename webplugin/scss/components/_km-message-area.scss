@@ -27,8 +27,14 @@
 }
 
 .mck-rich-msg-box {
+    width: $rich-msg-width;
+    max-width: unset !important;
     border: 1px solid $input-border-color;
     border-radius: $msg-box-border-radius;
+
+    @media (max-width: 330px) {
+        width: 90%;
+    }
     &.mck-left-link-box,
     &.mck-right-link-box {
         padding: 0;

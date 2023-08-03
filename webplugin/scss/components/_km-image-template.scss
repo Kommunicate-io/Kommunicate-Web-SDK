@@ -1,11 +1,15 @@
 .km-image-template {
     color: $text-primary-color;
+    width: $rich-msg-width;
     font-size: $heading-secondary;
     font-family: $font-family-primary !important;
     border: 1px solid $input-border-color;
     border-radius: $msg-box-border-radius;
     overflow: hidden;
 
+    @media (max-width: 350px) {
+        width: 90%;
+    }
     .km-template-img {
         width: 100%;
         height: auto;

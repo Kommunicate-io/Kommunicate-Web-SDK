@@ -9191,8 +9191,8 @@ var userOverride = {
                     ? Kommunicate.messageTemplate.getAttachmentContanier(
                           msg,
                           mckMessageLayout.getFilePath(msg),
-                          alFileService.getFileAttachment(msg),
-                          alFileService.getFileurl(msg)
+                        //   alFileService.getFileAttachment(msg),
+                        //   alFileService.getFileurl(msg)
                       )
                     : '';
                 if (
@@ -10048,7 +10048,8 @@ var userOverride = {
                             '" type="audio/mpeg"></audio>' +
                             '<p class="mck-file-tag"></p></a>'
                         );
-                    } else {
+                    } 
+                    else {
                         return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
                     }
                 }
