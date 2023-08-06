@@ -2,8 +2,9 @@
     border-radius: $msg-box-border-radius;
     overflow: hidden;
 }
-.km-msg-box-attachment {
-    width: $rich-msg-width !important;
+.mck-msg-right .km-msg-box-attachment{
+    width: $rich-msg-width !important ;
+    max-width: unset !important;
 }
 
 .mck-audio-player {

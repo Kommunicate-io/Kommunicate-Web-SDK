@@ -732,14 +732,7 @@
     background-color: #f1a5a5;
 }
 
-.km-template-video-caption {
-    padding-top: 5px;
-    font-weight: 400;
-    text-align: center;
-    color: #6f6e6e;
-    letter-spacing: 0.3px;
-    font-size: 15px;
-}
+
 .mck-msg-box-rich-text-container .email-message-indicator,
 .km-msg-box .email-message-indicator {
     margin-bottom: 15px;
@@ -806,16 +799,4 @@
 }
 
 
-.mck-rich-video-container {
-    margin-top: 5px;
-}
-.mck-rich-video-container video {
-    object-fit: initial;
-}
-.mck-rich-video-container video,
-.mck-rich-video-iframe,
-.km-template-video-caption-wrapper {
-    min-width: 160px;
-    max-width: 100%;
-}
 

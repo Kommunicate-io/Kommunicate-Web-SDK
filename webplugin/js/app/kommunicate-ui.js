@@ -1846,7 +1846,8 @@ KommunicateUI = {
                     sourceElement[1].src = url;
                     mediaElement.load();
                     var attachmentWrapper = $applozic(mediaElement).closest('div.mck-file-text.mck-attachment')[0];
-                    attachmentWrapper && (attachmentWrapper.querySelector("a.file-preview-link").href = url);
+                    var mediaURL = attachmentWrapper && attachmentWrapper.querySelector("a.file-preview-link")
+                    mediaURL && (mediaURL.href = url)
                 }
                 setTimeout(function () {
                     mediaElement.classList.add('file-enc');

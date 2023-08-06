@@ -1063,8 +1063,9 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 24px;
   overflow: hidden; }
 
-.km-msg-box-attachment {
-  width: 264px !important; }
+.mck-msg-right .km-msg-box-attachment {
+  width: 264px !important;
+  max-width: unset !important; }
 
 .mck-audio-player {
   width: 264px;
@@ -1608,3 +1609,53 @@ input[type='number']::-webkit-outer-spin-button {
 
 .km-faq-list--footer_button-container button:not(:last-child) {
   border-bottom: 1px solid #e5e5e5 !important; }
+
+.mck-rich-video-container video,
+.mck-rich-video-iframe {
+  min-width: 160px;
+  max-width: 100%; }
+
+.mck-video-player {
+  overflow: hidden;
+  outline: none;
+  transform-origin: left top;
+  z-index: 8888;
+  width: 100%;
+  position: relative;
+  object-fit: fill; }
+
+.mck-rich-video-container {
+  width: 264px;
+  border-radius: 24px;
+  background-color: #efefef;
+  overflow: hidden;
+  border: 1px solid #dcdcdc;
+  margin-top: 5px; }
+  @media (max-width: 350px) {
+    .mck-rich-video-container {
+      width: 90%; } }
+  .mck-rich-video-container a {
+    font-size: 14px;
+    display: block;
+    word-wrap: break-word;
+    color: #1c1c1c;
+    padding: 12px 16px;
+    text-decoration: none; }
+  .mck-rich-video-container video {
+    object-fit: initial; }
+  .mck-rich-video-container iframe {
+    border: 1px solid #dcdcdc; }
+    .mck-rich-video-container iframe .ytp-large-play-button {
+      width: 50px;
+      height: 51px; }
+  .mck-rich-video-container .km-template-video-caption-wrapper {
+    min-width: 160px;
+    max-width: 100%;
+    padding: 12px 16px;
+    background-color: #ffffff; }
+    .mck-rich-video-container .km-template-video-caption-wrapper .km-template-video-caption {
+      color: #1c1c1c;
+      padding: 0 !important;
+      margin: 0 !important;
+      font-size: 14px;
+      text-align: left; }

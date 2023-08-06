@@ -2993,15 +2993,6 @@ display: none;
     z-index: 88888;
 }
 
-.mck-video-player {
-	overflow: hidden;
-	outline: none;
-	transform-origin: left top;
-	z-index: 8888;
-	width: 100%;
-	position: relative;
-}
-
 .mck-typing-box {
 	opacity: 0.6;
 	line-height: 15px;

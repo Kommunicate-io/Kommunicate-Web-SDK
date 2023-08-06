@@ -588,6 +588,7 @@ Kommunicate.markup = {
     getVideoTemplate: function () {
         return `<div class= "mck-rich-video-container">
     {{#payload}}
+            <a href={{url}} target="_blank">{{url}}</a>
         {{#source}}
             <iframe width="{{width||100%}}" height="{{height||250px}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
         {{/source}}
