@@ -200,15 +200,17 @@ Kommunicate.markup = {
             </div>`
         );
     },
-    getLinkPreviewTemplate: function (extractedData,messageToDisplay) {
+    getLinkPreviewTemplate: function (extractedData, isMckRightMsg) {
         var data = extractedData.data;
         if (data && data.title) {
+            var mckRightLinkClass = isMckRightMsg ? "km-custom-widget-background-color" : "";
+
             return (
                 '<div class="link-preview-wrapper"><div class="link-preview-image-div"><img class="link-preview-image" src="' +
                 (data.images[0] || data.favicons[0]) +
                 '" alt="' +
                 (data.siteName || data.title) +
-                '"></div><div class="link-preview-content"><h5 class="link-preview-title link-preview-title-width"> ' +
+                '"></div><div class="link-preview-content ' + mckRightLinkClass + '"><h5 class="link-preview-title link-preview-title-width"> ' +
                 (data.siteName || data.title) +
                 '</h5><p class="link-preview-div-description">' +
                 (data.description || data.title)+
@@ -586,8 +588,9 @@ Kommunicate.markup = {
             </div>`;
     },
     getVideoTemplate: function () {
-        return `<div class= "mck-rich-video-container">
-    {{#payload}}
+        return `
+        {{#payload}}  
+        <div class= "mck-rich-video-container">
             <a href={{url}} target="_blank">{{url}}</a>
         {{#source}}
             <iframe width="{{width||100%}}" height="{{height||250px}}" src="{{url}}" url="{{url}}" class= "mck-rich-video-iframe"></iframe>
@@ -602,8 +605,8 @@ Kommunicate.markup = {
            <p class="km-template-video-caption">{{caption}}</p>
         </div>
         {{/caption}}
-    {{/payload}}
-    </div>`;
+        </div>
+       {{/payload}}`;
     },
     getFormDataMessageTemplate: function (data) {
         var element = '';

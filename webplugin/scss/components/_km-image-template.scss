@@ -6,6 +6,7 @@
     border: 1px solid $input-border-color;
     border-radius: $msg-box-border-radius;
     overflow: hidden;
+    margin-top: 6px;
 
     @media (max-width: 350px) {
         width: 90%;
@@ -24,4 +25,9 @@
             font-family: inherit;
         }
     }
+}
+
+.km-img-template-container {
+    border: 1px solid $input-border-color;
+    margin-top: 6px;
 }

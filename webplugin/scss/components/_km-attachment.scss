@@ -2,13 +2,10 @@
     border-radius: $msg-box-border-radius;
     overflow: hidden;
 }
-.mck-msg-right .km-msg-box-attachment{
-    width: $rich-msg-width !important ;
-    max-width: unset !important;
-}
 
 .mck-audio-player {
     width: $rich-msg-width;
+    margin-top: 6px;
     /* height: 40px; */
     margin-bottom: 8px;
     overflow: hidden;
@@ -44,8 +41,8 @@
     animation-name: kmOpeningAnimation;
     border-radius: 5px;
     /* max-width: 70%; */
-    width: 220px;
-    max-width: -moz-calc(85% - 58px);
+    width: $rich-msg-width !important ;
+    max-width: unset !important;
     max-width: calc(85% - 58px);
     display: inline-block;
     padding: 0;
@@ -84,9 +81,22 @@
     width: 220px;
 }
 .km-attachment-wrapper {
+    .km-attachment-cancel-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .km-attachment-upload-icon,
+    .km-attachment-download-icon {
+        width: 25px;
+        height: 25px;
+    }
+
     .km-attachment-cancel-icon,
     .km-attachment-upload-icon,
     .km-attachment-download-icon {
+        flex: 0 0 25px;
+        margin-right: 10px;
         &:hover {
             cursor: pointer;
         }
@@ -129,6 +139,7 @@
 .mck-attachment {
     .mck-msg-box a {
         display: flex;
+        align-items: center;
         text-decoration: none !important;
         &:hover {
             text-decoration: underline !important;
@@ -144,4 +155,19 @@
     margin-right: 10px;
     @include flexMixin;
     background-color: #fff;
+}
+
+.km-attach-preview-container {
+    background-color: transparent;
+    border: 1px solid $input-border-color;
+
+    a {
+        svg path {
+            fill: $text-primary-color;
+        }
+
+        .km-attachment-file-name {
+            color: $text-primary-color;
+        }
+    }
 }

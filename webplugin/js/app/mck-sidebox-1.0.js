@@ -9186,11 +9186,12 @@ var userOverride = {
                     msg.fileMeta.size &&
                     (msg.fileMeta.previewSize = alFileService.getFilePreviewSize(
                         msg.fileMeta.size
-                    ));
+                    ));    
                 var attachmentTemplate = attachment
                     ? Kommunicate.messageTemplate.getAttachmentContanier(
                           msg,
                           mckMessageLayout.getFilePath(msg),
+                          floatWhere === 'mck-msg-right'
                         //   alFileService.getFileAttachment(msg),
                         //   alFileService.getFileurl(msg)
                       )
@@ -9711,11 +9712,13 @@ var userOverride = {
                        $mckBox.addClass(
                             'mck-rich-msg-box ' + linkClass
                         );
+
                     KommunicateUI.getLinkDataToPreview(
                         url,
                         function (template) {
                             $textMessage.append(template);
-                        }
+                        },
+                        floatWhere === 'mck-msg-right'
                     );
                 }
                 if (

@@ -95,7 +95,7 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = false;
         }
     },
-    getLinkDataToPreview: function (url, callback) {
+    getLinkDataToPreview: function (url, callback, isMckRightMsg) {
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
@@ -109,7 +109,7 @@ KommunicateUI = {
             success: function (result) {
                 if (result) {
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
-                        result
+                        result, isMckRightMsg
                     );
                     callback(previewTemplate);
                 }
