@@ -5217,10 +5217,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .km-clubbing-first.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator, .km-clubbing-last.mck-msg-avator-bubble .mck-conversation-name {
 	display: none;
 }
-.km-clubbing-last.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
-	bottom: 22px;
-	top: auto;
-}
+
 button:focus, button:active, button:hover {
 	outline: none !important;
 }
