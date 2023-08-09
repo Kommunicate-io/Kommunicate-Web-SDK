@@ -794,6 +794,8 @@ input[type='number']::-webkit-outer-spin-button {
   object-fit: contain;
   width: inherit;
   height: inherit; }
+  .link-preview-image-broken {
+    display: none; }
 
 .link-preview-image-div {
   width: 100%;

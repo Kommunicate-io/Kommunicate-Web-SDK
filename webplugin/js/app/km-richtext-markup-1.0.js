@@ -208,7 +208,7 @@ Kommunicate.markup = {
             return (
                 '<div class="link-preview-wrapper"><div class="link-preview-image-div"><img class="link-preview-image" src="' +
                 (data.images[0] || data.favicons[0]) +
-                '" alt="' +
+                '" onerror="this.classList.add(\'link-preview-image-broken\')"  alt="' +
                 (data.siteName || data.title) +
                 '"></div><div class="link-preview-content ' + mckRightLinkClass + '"><h5 class="link-preview-title link-preview-title-width"> ' +
                 (data.siteName || data.title) +

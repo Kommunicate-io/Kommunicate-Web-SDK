@@ -95,6 +95,37 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = false;
         }
     },
+    
+    checkSvgHasChildren: function (images) {
+        var dataPrefix = 'data:image/svg+xml;base64,';
+        var newImages = [];
+        var isValidSvg = false;
+
+        for (var i = 0; i < images.length; i++) {
+            var image = images[i];
+            if (image.startsWith(dataPrefix)) {
+                isValidSvg = true;
+                var base64Data = image.slice(dataPrefix.length);
+                try {
+                    var decodedData = atob(base64Data);
+                    var parser = new DOMParser();
+                    var svgDocument = parser.parseFromString(
+                        decodedData,
+                        'image/svg+xml'
+                    );
+                    var svg = svgDocument && svgDocument.documentElement;
+                    if (svg && svg.children.length > 0) {
+                        newImages.push(image);
+                        break;
+                    }
+                } catch (err) {
+                    console.error('Error while decoding ', err);
+                }
+            }
+        }
+        return isValidSvg ? newImages : images;
+    },
+
     getLinkDataToPreview: function (url, callback, isMckRightMsg) {
         mckUtils.ajax({
             headers: {
@@ -108,6 +139,8 @@ KommunicateUI = {
             global: false,
             success: function (result) {
                 if (result) {
+                    var images = result.data.images;
+                    result.data.images = images.length ? KommunicateUI.checkSvgHasChildren(images) : [];
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
                         result, isMckRightMsg
                     );
