@@ -12,24 +12,16 @@ var kmWidgetEvents = {
 
         return (trackingID && trackingID.toString()) || '';
     },
-    sendEventToGoogleAnalytics: function (
-        eventCategory,
-        eventAction,
-        eventLabel,
-        eventValue
-    ) {
+    sendEventToGoogleAnalytics: function (eventObject) {
         try {
             if (
                 kmWidgetEvents.gaTrackingId() &&
-                typeof window.top.ga !== 'undefined'
+                typeof window.top.gtag !== 'undefined'
             ) {
-                window.top.ga('create', kmWidgetEvents.gaTrackingId(), 'auto');
-                window.top.ga('send', {
-                    hitType: 'event',
-                    eventCategory: eventCategory,
-                    eventAction: eventAction,
-                    eventLabel: eventLabel,
-                    eventValue: eventValue,
+                window.top.gtag('event', eventObject.data.eventAction, {
+                    category: eventObject.data.eventCategory,
+                    label: eventObject.data.eventLabel,
+                    value: eventObject.data.eventValue || "",
                 });
             }
         } catch (error) {
@@ -46,12 +38,7 @@ var kmWidgetEvents = {
                 eventObject.data.eventValue = customValue;
             }
             kmWidgetEvents.gaTrackingId() &&
-                kmWidgetEvents.sendEventToGoogleAnalytics(
-                    eventObject.data.eventCategory,
-                    eventObject.data.eventAction,
-                    eventObject.data.eventLabel,
-                    eventObject.data.eventValue
-                );
+                kmWidgetEvents.sendEventToGoogleAnalytics(eventObject);
             if (eventObject.eventFunction !== null) {
                 // checks if there is any errors in user provided function
                 try {
@@ -80,18 +67,15 @@ var kmWidgetEvents = {
     }
     data property 
     similar format will follow in ga4 as follow
-    {
-        eventCategory: became custom parameter
-        eventAction: became event name
-        eventLabel: became custom parameter
-    }
+    https://developers.google.com/tag-platform/gtagjs/reference#event
+   
 */
 var eventMapping = {
     onChatWidgetOpen: {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_open',
-            eventLabel: 'Chat Widget Open',
+            eventLabel: 'Km Widget Chat Widget Open',
         },
         eventFunction: null,
     },
@@ -99,7 +83,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_close',
-            eventLabel: 'Chat Widget Close',
+            eventLabel: 'Km Widget Chat Widget Close',
         },
         eventFunction: null,
     },
@@ -107,6 +91,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_rich_message_button_click',
+            eventLabel: 'Km Widget RichMessage Button Click',
         },
         eventFunction: null,
     },
@@ -114,7 +99,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_faq_click',
-            eventLabel: 'FAQ Menu',
+            eventLabel: 'Km Widget FAQ Menu',
         },
         eventFunction: null,
     },
@@ -122,7 +107,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_CSAT_started',
-            eventLabel: 'CSAT Start',
+            eventLabel: 'Km Widget CSAT Start',
         },
         eventFunction: null,
     },
@@ -130,7 +115,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_CSAT_submit',
-            eventLabel: 'CSAT Submit',
+            eventLabel: 'Km Widget CSAT Submit',
         },
         eventFunction: null,
     },
@@ -138,7 +123,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_resolve_click',
-            eventLabel: 'Show Resolve',
+            eventLabel: 'Km Widget Show Resolve',
         },
         eventFunction: null,
     },
@@ -146,7 +131,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_start_new_conversation',
-            eventLabel: 'Conversation Start',
+            eventLabel: 'Km Widget Conversation Start',
         },
         eventFunction: null,
     },
@@ -154,7 +139,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_greeting_message_click',
-            eventLabel: 'Greeting',
+            eventLabel: 'Km Widget Greeting Message Click',
         },
         eventFunction: null,
     },
@@ -162,7 +147,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_restart_conversation',
-            eventLabel: 'Conversation Restart',
+            eventLabel: 'Km Widget Conversation Restart',
         },
         eventFunction: null,
     },
@@ -170,6 +155,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_ratings_conversation',
+            eventLabel: 'Km Widget Rating Conversation',
         },
         eventFunction: null,
     },
@@ -177,7 +163,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_location_share',
-            eventLabel: 'Location',
+            eventLabel: 'Km Widget Location Share',
         },
         eventFunction: null,
     },
@@ -185,7 +171,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_send_attachment',
-            eventLabel: 'Attachment',
+            eventLabel: 'Km Widget Attachment Icon Click',
         },
         eventFunction: null,
     },
@@ -193,7 +179,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_camera_icon_click',
-            eventLabel: 'Camera Button Click',
+            eventLabel: 'Km Widget Camera Button Click',
         },
         eventFunction: null,
     },
@@ -201,7 +187,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_notification_click',
-            eventLabel: 'Notification',
+            eventLabel: 'Km Widget Notification',
         },
         eventFunction: null,
     },
@@ -209,7 +195,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_voice_input',
-            eventLabel: 'VoiceInput',
+            eventLabel: 'Km Widget VoiceInput',
         },
         eventFunction: null,
     },
@@ -217,7 +203,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_sent',
-            eventLabel: 'Message',
+            eventLabel: 'Km Widget Message Sent',
         },
         eventFunction: null,
     },
@@ -225,7 +211,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_received',
-            eventLabel: 'Message',
+            eventLabel: 'Km Widget Message Received',
         },
         eventFunction: null,
     },
