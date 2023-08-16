@@ -75,7 +75,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_open',
-            eventLabel: 'Km Widget Chat Widget Open',
+            eventLabel: 'Chat Widget Open',
         },
         eventFunction: null,
     },
