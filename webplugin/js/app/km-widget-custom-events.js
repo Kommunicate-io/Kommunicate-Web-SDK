@@ -83,7 +83,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_close',
-            eventLabel: 'Km Widget Chat Widget Close',
+            eventLabel: 'Chat Widget Close',
         },
         eventFunction: null,
     },
@@ -91,7 +91,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_rich_message_button_click',
-            eventLabel: 'Km Widget RichMessage Button Click',
+            eventLabel: 'RichMessage Button Click',
         },
         eventFunction: null,
     },
@@ -99,7 +99,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_faq_click',
-            eventLabel: 'Km Widget FAQ Menu',
+            eventLabel: 'FAQ Menu',
         },
         eventFunction: null,
     },
@@ -107,7 +107,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_CSAT_started',
-            eventLabel: 'Km Widget CSAT Start',
+            eventLabel: 'CSAT Start',
         },
         eventFunction: null,
     },
@@ -115,7 +115,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_CSAT_submit',
-            eventLabel: 'Km Widget CSAT Submit',
+            eventLabel: 'CSAT Submit',
         },
         eventFunction: null,
     },
@@ -123,7 +123,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_resolve_click',
-            eventLabel: 'Km Widget Show Resolve',
+            eventLabel: 'Show Resolve',
         },
         eventFunction: null,
     },
@@ -131,7 +131,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_start_new_conversation',
-            eventLabel: 'Km Widget Conversation Start',
+            eventLabel: 'Conversation Start',
         },
         eventFunction: null,
     },
@@ -139,7 +139,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_greeting_message_click',
-            eventLabel: 'Km Widget Greeting Message Click',
+            eventLabel: 'Greeting Message Click',
         },
         eventFunction: null,
     },
@@ -147,7 +147,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_restart_conversation',
-            eventLabel: 'Km Widget Conversation Restart',
+            eventLabel: 'Conversation Restart',
         },
         eventFunction: null,
     },
@@ -155,7 +155,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_ratings_conversation',
-            eventLabel: 'Km Widget Rating Conversation',
+            eventLabel: 'Rating Conversation',
         },
         eventFunction: null,
     },
@@ -163,7 +163,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_location_share',
-            eventLabel: 'Km Widget Location Share',
+            eventLabel: 'Location Share',
         },
         eventFunction: null,
     },
@@ -171,7 +171,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_send_attachment',
-            eventLabel: 'Km Widget Attachment Icon Click',
+            eventLabel: 'Attachment Icon Click',
         },
         eventFunction: null,
     },
@@ -179,7 +179,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_camera_icon_click',
-            eventLabel: 'Km Widget Camera Button Click',
+            eventLabel: 'Camera Button Click',
         },
         eventFunction: null,
     },
@@ -187,7 +187,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_notification_click',
-            eventLabel: 'Km Widget Notification',
+            eventLabel: 'Notification',
         },
         eventFunction: null,
     },
@@ -195,7 +195,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_voice_input',
-            eventLabel: 'Km Widget VoiceInput',
+            eventLabel: 'VoiceInput',
         },
         eventFunction: null,
     },
@@ -203,7 +203,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_sent',
-            eventLabel: 'Km Widget Message Sent',
+            eventLabel: 'Message Sent',
         },
         eventFunction: null,
     },
@@ -211,7 +211,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_received',
-            eventLabel: 'Km Widget Message Received',
+            eventLabel: 'Message Received',
         },
         eventFunction: null,
     },
