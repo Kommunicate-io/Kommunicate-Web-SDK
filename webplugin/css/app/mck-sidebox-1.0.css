@@ -4924,24 +4924,24 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 .mck-msg-preview-visual-indicator-container {
     background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 18px 0 rgba(219,219,219,.5), 0 2px 4px 0 rgba(176,174,174,.5);
+    border-radius: 24px;
+    box-shadow: 0px 0px 12px 0px #04444d26;
 	position: fixed;
     top: 50%;
     right: 70px;
 	transform: translateY(-50%);
 	max-height: 66px;
 	padding-bottom: 2px;
+	font-family: 'Inter', sans-serif;
 }
 .mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 400;
 	font-style: normal;
 	font-stretch: normal;
-	line-height: 1.36;
 	letter-spacing: .4px;
-	color: #646262;
-	padding: 5px 10px;
+	color: #1c1c1c;
+	padding: 12px 16px;
 	min-width: 60px;
 	max-width: 210px;
 	white-space: normal;
@@ -4949,7 +4949,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	box-sizing: content-box;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	min-height: 38px;
+	min-height: 24px;
     display: flex;
     align-items: center;
 }
