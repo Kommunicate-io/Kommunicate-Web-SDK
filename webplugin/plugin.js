@@ -47,7 +47,7 @@ var kmCustomIframe =
     '} } \n' +
     '.km-iframe-notification{ ' +
     '    height:80px; ' +
-    '    width:330px; ' +
+    '    width:370px !important; ' +
     '} \n ' +
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
