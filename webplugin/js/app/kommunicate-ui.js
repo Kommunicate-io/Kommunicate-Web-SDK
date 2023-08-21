@@ -95,7 +95,38 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = false;
         }
     },
-    getLinkDataToPreview: function (url, callback) {
+    
+    checkSvgHasChildren: function (images) {
+        var dataPrefix = 'data:image/svg+xml;base64,';
+        var newImages = [];
+        var isValidSvg = false;
+
+        for (var i = 0; i < images.length; i++) {
+            var image = images[i];
+            if (image.startsWith(dataPrefix)) {
+                isValidSvg = true;
+                var base64Data = image.slice(dataPrefix.length);
+                try {
+                    var decodedData = atob(base64Data);
+                    var parser = new DOMParser();
+                    var svgDocument = parser.parseFromString(
+                        decodedData,
+                        'image/svg+xml'
+                    );
+                    var svg = svgDocument && svgDocument.documentElement;
+                    if (svg && svg.children.length > 0) {
+                        newImages.push(image);
+                        break;
+                    }
+                } catch (err) {
+                    console.error('Error while decoding ', err);
+                }
+            }
+        }
+        return isValidSvg ? newImages : images;
+    },
+
+    getLinkDataToPreview: function (url, callback, isMckRightMsg) {
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
@@ -108,8 +139,10 @@ KommunicateUI = {
             global: false,
             success: function (result) {
                 if (result) {
+                    var images = result.data.images;
+                    result.data.images = images.length ? KommunicateUI.checkSvgHasChildren(images) : [];
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
-                        result
+                        result, isMckRightMsg
                     );
                     callback(previewTemplate);
                 }
@@ -1846,7 +1879,8 @@ KommunicateUI = {
                     sourceElement[1].src = url;
                     mediaElement.load();
                     var attachmentWrapper = $applozic(mediaElement).closest('div.mck-file-text.mck-attachment')[0];
-                    attachmentWrapper && (attachmentWrapper.querySelector("a.file-preview-link").href = url);
+                    var mediaURL = attachmentWrapper && attachmentWrapper.querySelector("a.file-preview-link")
+                    mediaURL && (mediaURL.href = url)
                 }
                 setTimeout(function () {
                     mediaElement.classList.add('file-enc');

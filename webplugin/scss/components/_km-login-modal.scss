@@ -295,10 +295,11 @@ input[type='number']::-webkit-outer-spin-button {
     margin: 0 0 2px;
 }
 
-.km-form-label-container {
+.km-form-label-container,
+.mck-form-label-container {
     display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
+    @include gap-supported(4px, 4px, '& svg');
+    margin-bottom: 4px !important;
 
     & svg {
         margin-top: 3px;

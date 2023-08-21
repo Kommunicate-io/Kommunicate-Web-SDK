@@ -1,0 +1,172 @@
+.km-message.km-received.km-chat-faq-list {
+    padding: 0px;
+    background: transparent;
+    width: $rich-msg-width;
+    box-sizing: border-box;
+    border-radius: $msg-box-border-radius;
+    overflow: hidden;
+
+    @media (max-width: 350px) {
+        width: 90%;
+    }
+}
+
+.km-list-image {
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.km-faq-list--body_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0px !important;
+}
+.km-faq-list--body_list li > a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    border-bottom: solid 1px #e5e5e5;
+    color: grey;
+    transition: all 0.3s ease-in-out;
+}
+.km-faq-list--body_que {
+}
+.km-faq-list--body_que-ans {
+    padding: 10px 12px;
+    /*width: calc(100% - 106px);*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-height: 51px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+.km-faq-list--body_que-ans * {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.km-faq-list--body_list li > a:hover {
+    background-color: #efefef;
+    color: grey;
+    text-decoration: none !important;
+}
+.km-faq-list--body_que {
+    font-family: $font-family-primary !important;
+}
+.km-faq-list--body_que-ans {
+    .km-faq-list--body_que,
+    .km-faq-list--body_ans {
+        color: $text-primary-color;
+        font-size: $heading-secondary;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .km-faq-list--body_que {
+        font-weight: 700;
+        margin: 0px;
+    }
+
+    .km-faq-list--body_ans {
+        font-weight: normal;
+        margin: 5px 0px 0px;
+    }
+}
+
+.km-faq-list--body_img {
+    padding: 10px 0px 10px 12px;
+    /*width: 70px;*/
+    height: 50px;
+    border-radius: 4px;
+}
+.km-faq-list--body_img img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+.km-faq-list--body_img:empty .km-faq-list--body_que-ans {
+    width: 100%;
+}
+.km-faq-list--header {
+    position: relative;
+}
+
+.km-faq-list--header_text {
+    color: $text-primary-color;
+    font-size: 18px;
+    bottom: 2px;
+    left: 12px;
+    margin: 0;
+    margin-bottom: 0px !important;
+    padding: $msg-box-padding !important;
+    text-align: left;
+    word-wrap: break-word;
+    border-bottom: 1px solid $input-border-color;
+
+    &-container {
+        border: none !important;
+        min-height: 10px;
+    }
+
+    &-img {
+        height: $card-img-height;
+        background-color: rgba(103, 103, 103, 0);
+        background: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0%, rgba(255, 255, 255, 0)),
+            color-stop(100%, rgba(0, 0, 0, 0.75))
+        );
+        background: -webkit-linear-gradient(
+            top,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.75) 100%
+        );
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.75) 100%
+        );
+        & img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 0;
+            display: block;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+    }
+}
+
+.km-faq-list--footer {
+    width: 100%;
+    /* min-height: 35px; */
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+.km-faq-list--footer_button-container button {
+    width: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 12px 0px;
+    border-radius: 0px;
+}
+.km-faq-list--footer_button-container button a {
+    color: #5c5aa7;
+}
+
+.km-faq-list--footer_button-container button:not(:last-child) {
+    border-bottom: 1px solid #e5e5e5 !important;
+}

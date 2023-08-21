@@ -9196,20 +9196,20 @@ var userOverride = {
                 var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
-                
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 msg.fileMeta &&
                     msg.fileMeta.size &&
                     (msg.fileMeta.previewSize = alFileService.getFilePreviewSize(
                         msg.fileMeta.size
-                    ));
+                    ));    
                 var attachmentTemplate = attachment
                     ? Kommunicate.messageTemplate.getAttachmentContanier(
                           msg,
                           mckMessageLayout.getFilePath(msg),
-                          alFileService.getFileAttachment(msg),
-                          alFileService.getFileurl(msg)
+                          floatWhere === 'mck-msg-right'
+                        //   alFileService.getFileAttachment(msg),
+                        //   alFileService.getFileurl(msg)
                       )
                     : '';
                 if (
@@ -9709,6 +9709,7 @@ var userOverride = {
                 var $textMessage = $applozic(
                     '.' + replyId + ' .mck-msg-content'
                 );
+                var $mckBox = $applozic('.' + replyId + ' ' + '.mck-msg-box')
                 var url = kommunicateCommons.isMessageContainsUrl(msg.message);
                 var isIE =
                 window.navigator.userAgent.indexOf('MSIE') > -1 ||
@@ -9718,11 +9719,22 @@ var userOverride = {
                     msg.contentType === 0 &&
                     url
                 ) {
+                    var linkClass = (floatWhere === 'mck-msg-left' ? 'mck-left' : 'mck-right') + '-link-box';
+
+                    var isClassExist = $mckBox.hasClass(
+                            'mck-rich-msg-box ' + linkClass
+                        );
+                    !isClassExist &&
+                       $mckBox.addClass(
+                            'mck-rich-msg-box ' + linkClass
+                        );
+
                     KommunicateUI.getLinkDataToPreview(
                         url,
                         function (template) {
-                            $textMessage.prepend(template);
-                        }
+                            $textMessage.append(template);
+                        },
+                        floatWhere === 'mck-msg-right'
                     );
                 }
                 if (
@@ -10055,7 +10067,8 @@ var userOverride = {
                             '" type="audio/mpeg"></audio>' +
                             '<p class="mck-file-tag"></p></a>'
                         );
-                    } else {
+                    } 
+                    else {
                         return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
                     }
                 }

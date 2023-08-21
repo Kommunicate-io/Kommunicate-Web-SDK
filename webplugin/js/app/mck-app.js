@@ -28,8 +28,8 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.3.min.js',
-            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.2.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.4.min.js',
+            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.4.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
