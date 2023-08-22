@@ -5383,17 +5383,6 @@ span#mck-rated-text {
 	list-style: 27px;
 }
 
-.mck-conversation-comment{
-	background: white;
-    padding: 50px 10px 10px;
-    text-align: center;
-    margin: 0 -15px;
-    font-weight: 300;
-    font-style: italic;
-    letter-spacing: 0.3px;
-	color: #676262;
-	font-size: 14px;
-}
 div#mck-waiting-queue {
 	color: #5C6677;
 	height: 40px;
@@ -5403,118 +5392,9 @@ div#mck-waiting-queue {
 	padding: 12px 5px 13px 5px;
 	border-top: 1px dashed #CAD3E3;
 }
-.km-csat-skeleton {
-	padding: 0 10px;
-	position: relative;
-}
 
-.km-csat-skeleton .mck-rated {
-	text-align: center;
-	font-size: 13px;
-	font-weight: 300;
-	color: #000;
-	position: absolute;
-	width: 95%;
-	overflow: hidden;
-	padding: 3px 0px;
-}
 
-.km-csat-skeleton .mck-rated span svg {
-	height: 16px;
-	width: 16px;
-	margin: 0 5px -4px 3px;
-}
 
-.km-csat-skeleton .mck-rated:after {
-	left: 79%;
-}
-
-.km-csat-skeleton .mck-rated:before {
-	right: 80%;
-}
-
-.km-csat-skeleton .mck-conversation-comment {
-	background: white;
-	padding: 60px 10px 10px;
-	text-align: center;
-	margin: 0 -15px;
-	font-weight: 300;
-	font-style: italic;
-	letter-spacing: 0.3px;
-	color: #676262;
-	font-size: 14px;
-	word-break: break-word;
-}
-
-div#separator {
-	display: flex;
-	align-items: center;
-	text-align: center;
-  }
-  
-div#separator::before,
-div#separator::after {
-	content: '';
-	flex: 1;
-	border-bottom: 1px solid #000;
-}
-
-div#separator:not(:empty)::before {
-	margin-right: .25em;
-}
-
-div#separator:not(:empty)::after {
-	margin-left: .25em;
-}
-
-span#mck-resolved-text {
-	background: white;
-    line-height: 33px;
-    text-align: center;
-    font-weight: 300;
-    font-style: italic;
-    letter-spacing: 0.3px;
-	color: #676262;
-	font-size: 14px;
-	background-image: linear-gradient(to right, #bcbd96 33%, rgba(255,255,255,0) 0%);
-    background-position: top;
-    background-size: 12px 1px;
-    background-repeat: repeat-x;
-    padding: 10px 81px 0;
-}
-
-div#mck-rated {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 300;
-    color: #676262;
-    position: absolute;
-    top: -24px;
-    width: 92%;
-    background: white;
-	overflow: hidden;
-	padding: 3px 0px;
-}
-div#mck-rated span svg{    
-	height: 16px;
-    width: 16px;
-    margin: 0 5px -4px 3px;
-}
-div#mck-rated:after, div#mck-rated:before{
-	content: "";
-    position: absolute;
-    height: 8px;
-    border-top: 1px solid #e2e2e2;
-    top: 50%;
-    width: 600px;
-    z-index: 0;  
-}
-div#mck-rated:after{
-	left: 79%;
-}
-div#mck-rated:before{
-	right: 80%;
-}
 .mck-feedback-text-wrapper{
     overflow: hidden;
     display: flex;

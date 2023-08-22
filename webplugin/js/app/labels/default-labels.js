@@ -130,7 +130,7 @@ Kommunicate.defaultLabels = {
         commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
     },
     'csat.rating': {
-        CONVERSATION_RATED: 'You rated the conversation',
+        CONVERSATION_RATED: 'You rated the conversation as',
         RATE_CONVERSATION: 'Rate your conversation',
         CONVERSATION_REVIEW_PLACEHOLDER: 'Add a feedback (optional)',
         OTHER_QUERIES: 'Have other queries? ',
