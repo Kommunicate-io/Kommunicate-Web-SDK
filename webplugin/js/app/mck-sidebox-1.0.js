@@ -8162,6 +8162,10 @@ var userOverride = {
                 '<span id="km-static-message-icon">{{html staticIconSVG}}</span>'+
                 '<span id="km-static-message-text">${message}</span>' +
                 '</div>';
+            var assigneeModule = 
+                '<div class="km-assignee-module"><div id="separator"> <span id="mck-assign-to-text">' +
+                MCK_LABELS['conversation.handoff'].ASSIGN_TO +
+                ' <strong>${assignee}</strong></span></div></div>'; 
             var SUBMITTED_FORMS = {};
             _this.latestMessageReceivedTime = '';
             _this.init = function () {
@@ -8171,6 +8175,7 @@ var userOverride = {
                 $applozic.template('searchContactbox', searchContactbox);               
                 $applozic.template('csatModule', csatModule);
                 $applozic.template('staticMessageTemplate', staticMessageModule);
+                $applozic.template('assigneeModule', assigneeModule)
             };
             _this.removeStaticMessage = function () {
                 var staticMessageContainer = document.getElementById("km-static-message");
@@ -8966,6 +8971,19 @@ var userOverride = {
                 }
             };
 
+            _this.getAssineeAndCsatTemplate = function(
+                replyId,
+                templateModule,
+                data
+            ) {
+                $applozic(
+                    '.' + replyId + ' .km-conversation-container-right'
+                ).remove();
+                $applozic
+                    .tmpl(templateModule, data)
+                    .appendTo('.' + replyId + ' .blk-lg-12');
+            }
+
             _this.addMessage = function (
                 msg,
                 contact,
@@ -9363,13 +9381,13 @@ var userOverride = {
                         var ratingSmileSVG = kommunicateCommons.getRatingSmilies(
                             userFeedback.rating
                         );
-                        //RESOLVED_CONVERSATION_RATED
+
                         var ratingComment = '';
                         if (userFeedback.comments) {
                             ratingComment =
                                 '"' + userFeedback.comments.trim() + '"';
                         }
-                        // CONVERSATION IS CLOSED OR RESOLVED
+                        // 2 = CONVERSATION IS CLOSED OR RESOLVED
                         var csatRatingLabel = CURRENT_GROUP_DATA.conversationStatus == 2 ? "RESOLVED_CONVERSATION_RATED" : "CONVERSATION_RATED";
                         var resolutionStatusClass = "";
                         if (!KommunicateUI.isConversationResolvedFromZendesk) {
@@ -9386,12 +9404,13 @@ var userOverride = {
                                 csatRatingLabel: MCK_LABELS['csat.rating'][csatRatingLabel]
                             },
                         ];
-                        $applozic(
-                            '.' + replyId + ' .km-conversation-container-right'
-                        ).remove();
-                        $applozic
-                            .tmpl('csatModule', ratingData)
-                            .appendTo('.' + replyId + ' .blk-lg-12');
+                        _this.getAssineeAndCsatTemplate(replyId, 'csatModule', ratingData)
+                    }
+                    else if (msg.metadata && msg.metadata.KM_ASSIGN) {
+                        var moduleData = {
+                            assignee: msg.metadata.LOCALIZATION_VALUE || msg.metadata.KM_ASSIGN
+                        };
+                        _this.getAssineeAndCsatTemplate(replyId, 'assigneeModule', moduleData)
                     }
                 }
 

@@ -1,9 +1,13 @@
-.km-csat-skeleton {
+.km-csat-skeleton,
+.km-assignee-module {
+    font-size: 14px;
     font-family: $font-family-primary !important;
     position: relative;
     margin-top: 3px;
+    padding: 0 6px;
 
-    .mck-rated {
+    .mck-rated,
+    .mck-assign-to {
         text-align: center;
         font-size: $heading-secondary;
         font-weight: 300;
@@ -17,13 +21,12 @@
             width: 16px;
             margin: -2px 5px -4px 5px;
         }
-    }
-
-    .mck-rated:after {
-        left: 79%;
-    }
-    .mck-rated:before {
-        right: 80%;
+        &:after {
+            left: 79%;
+        }
+        &:before {
+            right: 80%;
+        }
     }
     .mck-conversation-comment {
         background: white;
@@ -112,4 +115,8 @@ div#mck-rated:after {
 }
 div#mck-rated:before {
     right: 80%;
+}
+
+.km-assignee-module {
+    margin: 3px 0;
 }

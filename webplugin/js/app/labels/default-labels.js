@@ -12,7 +12,8 @@ Kommunicate.defaultLabels = {
     'limit.characters': 'characters',
     'limit.remaining': 'remaining',
     'file.uploading.wait': 'Please wait file is uploading.',
-    'file.size.limit.exceeded': "File size cannot be more than $maxAttachmentSize MB",
+    'file.size.limit.exceeded':
+        'File size cannot be more than $maxAttachmentSize MB',
     'empty.groups': 'No groups yet!',
     'empty.contacts': 'No contacts yet!',
     'empty.messages': 'No messages yet!',
@@ -100,7 +101,8 @@ Kommunicate.defaultLabels = {
     'conversation.rated': 'rated the conversation',
     'offline.msg':
         'Uh oh! No internet connection. Please check your network settings and try again.',
-    'socket-disconnect.msg': 'Error while syncing messages. Check your firewall settings or try again after some time.',
+    'socket-disconnect.msg':
+        'Error while syncing messages. Check your firewall settings or try again after some time.',
     'group.metadata': {
         CREATE_GROUP_MESSAGE: ':adminName created group :groupName',
         REMOVE_MEMBER_MESSAGE: ':adminName removed :userName',
@@ -127,17 +129,19 @@ Kommunicate.defaultLabels = {
         password: 'Password',
         errorText: 'Please enter your account password',
         errorEmail: 'Please enter a valid email address',
-        commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
+        commonErrorMsg:
+            'The input you have provided is either invalid or incorrect.',
     },
     'csat.rating': {
-        RESOLVED_CONVERSATION_RATED: 'Conversation resolved and you rated it as',
+        RESOLVED_CONVERSATION_RATED:
+            'Conversation resolved and you rated it as',
         CONVERSATION_RATED: 'You rated the conversation as',
         RATE_CONVERSATION: 'Rate your conversation',
         CONVERSATION_REVIEW_PLACEHOLDER: 'Add a feedback (optional)',
         OTHER_QUERIES: 'Have other queries? ',
         RESTART_CONVERSATION: 'Restart the conversation',
         SUBMIT_RATING: 'Submit your rating',
-        CONVERSATION_RESOLVED: "This conversation was resolved" //if conversation resolved through zendesk
+        CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {
@@ -194,5 +198,8 @@ Kommunicate.defaultLabels = {
     'micOptions.dropup': {
         VOICE_NOTE_TRIGGER: 'Send voice message',
         VOICE_INPUT_TRIGGER: 'Speech to text',
-    }
+    },
+    'conversation.handoff': {
+        ASSIGN_TO: 'Conversation transferred to',
+    },
 };
