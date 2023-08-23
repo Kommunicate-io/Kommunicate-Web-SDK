@@ -1787,3 +1787,67 @@ div#mck-rated:after {
 
 div#mck-rated:before {
   right: 80%; }
+
+.mck-box-ft {
+  text-align: left;
+  /* border-top: 1px solid #e5e5e5; */
+  padding: 0px 15px 10px;
+  /* position: absolute;
+    bottom: 8px; */
+  background-color: #ffff;
+  width: auto;
+  position: relative; }
+  .mck-box-ft .mck-box-form {
+    padding: 10px 5px 10px 0px;
+    border: thin solid #cecbcb;
+    border-radius: 4px;
+    background-color: #ffff;
+    position: relative; }
+  .mck-box-ft .mck-row {
+    margin: 0; }
+  .mck-box-ft .blk-lg-6 {
+    padding: 0px !important; }
+
+.mck-box-ft-lt {
+  text-align: left; }
+  .mck-box-ft-lt .mck-btn {
+    font-size: 16px;
+    text-transform: none; }
+
+.mck-csat-text-1 {
+  text-align: center;
+  font-size: 14px; }
+  .mck-csat-text-1 > span {
+    display: block; }
+  .mck-csat-text-1 span {
+    color: #1c1c1c;
+    display: inline-block;
+    max-width: 85%;
+    margin: 20 auto 5px; }
+    .mck-csat-text-1 span a {
+      text-decoration: none; }
+
+.mck-csat-wrapper > span {
+  margin-bottom: 22px;
+  color: #1c1c1c;
+  font-size: 14px; }
+
+#mck-restart-conversation {
+  color: #5f46f8;
+  text-decoration: none; }
+
+.km-mid-conv-csat,
+.mck-closed-conv-banner {
+  background-color: #efefef; }
+
+.mck-running-on {
+  text-align: center;
+  padding: 6px 4px;
+  vertical-align: middle;
+  color: #67757E;
+  /* border-top: 1px solid #E5E5E5; */ }
+  .mck-running-on > a {
+    text-decoration: none;
+    color: #5f46f8 !important; }
+    .mck-running-on > a:hover {
+      text-decoration: underline; }

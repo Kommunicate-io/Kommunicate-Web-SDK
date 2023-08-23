@@ -8156,8 +8156,7 @@ var userOverride = {
             var csatModule =
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
-                MCK_LABELS['csat.rating'].CONVERSATION_RATED +
-                ' <strong>${ratingTitle}</strong></span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
+                '${csatRatingLabel} <strong>${ratingTitle}</strong></span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
             var staticMessageModule = 
                 '<div id="km-static-message" class="km-custom-widget-background-color-secondary">' +
                 '<span id="km-static-message-icon">{{html staticIconSVG}}</span>'+
@@ -9364,12 +9363,14 @@ var userOverride = {
                         var ratingSmileSVG = kommunicateCommons.getRatingSmilies(
                             userFeedback.rating
                         );
+                        //RESOLVED_CONVERSATION_RATED
                         var ratingComment = '';
                         if (userFeedback.comments) {
                             ratingComment =
                                 '"' + userFeedback.comments.trim() + '"';
                         }
-
+                        // CONVERSATION IS CLOSED OR RESOLVED
+                        var csatRatingLabel = CURRENT_GROUP_DATA.conversationStatus == 2 ? "RESOLVED_CONVERSATION_RATED" : "CONVERSATION_RATED";
                         var resolutionStatusClass = "";
                         if (!KommunicateUI.isConversationResolvedFromZendesk) {
                             resolutionStatusClass = "n-vis";
@@ -9381,7 +9382,8 @@ var userOverride = {
                                 ratingSmileSVG: ratingSmileSVG,
                                 ratingComment: ratingComment,
                                 resolutionStatusClass: resolutionStatusClass,
-                                ratingTitle: ratingTitle
+                                ratingTitle: ratingTitle,
+                                csatRatingLabel: MCK_LABELS['csat.rating'][csatRatingLabel]
                             },
                         ];
                         $applozic(
