@@ -773,8 +773,8 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            msg.metadata &&
-            (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)
+            msg.metadata &&  msg.metadata.KM_STATUS
+            // (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)
         ) {
             return false;
         }

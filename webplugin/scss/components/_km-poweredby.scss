@@ -1,0 +1,14 @@
+.mck-running-on {
+    text-align: center;
+    padding: 6px 4px;
+    vertical-align: middle;
+    color: #67757E;
+    /* border-top: 1px solid #E5E5E5; */
+    > a {
+        text-decoration: none;
+        color: $primary-color !important;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
