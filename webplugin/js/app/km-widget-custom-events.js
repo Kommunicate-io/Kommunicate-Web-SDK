@@ -12,24 +12,16 @@ var kmWidgetEvents = {
 
         return (trackingID && trackingID.toString()) || '';
     },
-    sendEventToGoogleAnalytics: function (
-        eventCategory,
-        eventAction,
-        eventLabel,
-        eventValue
-    ) {
+    sendEventToGoogleAnalytics: function (eventObject) {
         try {
             if (
                 kmWidgetEvents.gaTrackingId() &&
-                typeof window.top.ga !== 'undefined'
+                typeof window.top.gtag !== 'undefined'
             ) {
-                window.top.ga('create', kmWidgetEvents.gaTrackingId(), 'auto');
-                window.top.ga('send', {
-                    hitType: 'event',
-                    eventCategory: eventCategory,
-                    eventAction: eventAction,
-                    eventLabel: eventLabel,
-                    eventValue: eventValue,
+                window.top.gtag('event', eventObject.data.eventAction, {
+                    category: eventObject.data.eventCategory,
+                    label: eventObject.data.eventLabel,
+                    value: eventObject.data.eventValue || "",
                 });
             }
         } catch (error) {
@@ -46,12 +38,7 @@ var kmWidgetEvents = {
                 eventObject.data.eventValue = customValue;
             }
             kmWidgetEvents.gaTrackingId() &&
-                kmWidgetEvents.sendEventToGoogleAnalytics(
-                    eventObject.data.eventCategory,
-                    eventObject.data.eventAction,
-                    eventObject.data.eventLabel,
-                    eventObject.data.eventValue
-                );
+                kmWidgetEvents.sendEventToGoogleAnalytics(eventObject);
             if (eventObject.eventFunction !== null) {
                 // checks if there is any errors in user provided function
                 try {
@@ -80,11 +67,8 @@ var kmWidgetEvents = {
     }
     data property 
     similar format will follow in ga4 as follow
-    {
-        eventCategory: became custom parameter
-        eventAction: became event name
-        eventLabel: became custom parameter
-    }
+    https://developers.google.com/tag-platform/gtagjs/reference#event
+   
 */
 var eventMapping = {
     onChatWidgetOpen: {
@@ -107,6 +91,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_rich_message_button_click',
+            eventLabel: 'RichMessage Button Click',
         },
         eventFunction: null,
     },
@@ -154,7 +139,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_greeting_message_click',
-            eventLabel: 'Greeting',
+            eventLabel: 'Greeting Message Click',
         },
         eventFunction: null,
     },
@@ -170,6 +155,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_ratings_conversation',
+            eventLabel: 'Rating Conversation',
         },
         eventFunction: null,
     },
@@ -177,7 +163,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_location_share',
-            eventLabel: 'Location',
+            eventLabel: 'Location Share',
         },
         eventFunction: null,
     },
@@ -185,7 +171,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_send_attachment',
-            eventLabel: 'Attachment',
+            eventLabel: 'Attachment Icon Click',
         },
         eventFunction: null,
     },
@@ -217,7 +203,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_sent',
-            eventLabel: 'Message',
+            eventLabel: 'Message Sent',
         },
         eventFunction: null,
     },
@@ -225,7 +211,7 @@ var eventMapping = {
         data: {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_received',
-            eventLabel: 'Message',
+            eventLabel: 'Message Received',
         },
         eventFunction: null,
     },
