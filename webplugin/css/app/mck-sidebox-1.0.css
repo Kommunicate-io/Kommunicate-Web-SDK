@@ -906,54 +906,6 @@
 	height: 100%;
 }
 
-.mck-box-top {
-	padding: 0 10px;
-	min-height: 60px;
-	text-align: left;
-	border-bottom: 1px solid #e5e5e5;
-	background-color:#5553b7;
-	color:white;
-}
-
-.mck-box-top .icon {
-	margin-right: 12px;
-}
-
-.mck-box-top [class*="blk-"] {
-	height: 48px;
-	line-height: 48px;
-}
-
-.mck-box-top.mck-row {
-	margin: 0px;
-}
-
-.mck-box-top .blk-lg-2 {
-	width: 20px;
-}
-
-.mck-sidebox-search .mck-box-top, .mck-search-tab-box {
-	padding-right: 0;
-}
-
-.mck-search-tab-box, .mck-search-box-top {
-	background-color: rgba(241, 241, 241, .6);
-}
-
-.mck-gm-search-box .mck-box-top .blk-lg-3 {
-	width: 30px;
-	height: inherit;
-	padding: 14px 0;
-}
-
-.mck-sidebox-search .mck-box-top .blk-lg-5 {
-	width: calc(100% - 60px);
-}
-
-.mck-gm-search-box .mck-box-top .blk-lg-7 {
-	width: calc(100% - 50px);
-}
-
 .mck-search-box-top {
 	border-bottom: 0 !important;
 	padding-right: 10px !important;
@@ -1362,27 +1314,6 @@
 
 .mck-product-group .mck-caret {
 	margin-top: 20px;
-}
-
-.mck-dropdown-menu {
-	position: absolute;
-	left: 0;
-	z-index: 1000;
-	display: none;
-	float: left;
-	min-width: 100px;
-	max-width: 300px;
-	padding: 5px 0;
-	margin: 2px 0 0;
-	font-size: 14px;
-	text-align: left;
-	list-style: none;
-	background-color: #fff;
-	-webkit-background-clip: padding-box;
-	background-clip: padding-box;
-	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-	box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 30px 0
-		rgba(0, 0, 0, 0.1) !important;
 }
 
 .mck-dropup-menu {
@@ -5597,49 +5528,6 @@ div#mck-waiting-queue {
 }
 #mck-conversation-filter span:last-child:hover{
 	text-decoration: underline;
-}
-
-#km-widget-options {
-	position: relative;
-	border-radius: 4px;
-}
-
-#km-widget-options.open {
-	background: #11101050;
-}
-
-#km-widget-options:hover {
-	cursor: pointer;
-}
-
-#km-widget-options .mck-dropdown-menu {
-	top: 40px;
-	border-radius: 4px;
-}
-
-#km-widget-options .mck-dropdown-menu::before {
-	content: none;
-}
-
-#km-widget-options .mck-dropdown-menu .menu-item {
-	padding: 5px 10px;
-	color: #333;
-	white-space: nowrap;
-	display: flex;
-}
-
-#km-widget-options .mck-dropdown-menu .menu-item:hover {
-	background: #F5F5F5;
-}
-
-.km-widget-options-button {
-	margin-right: 10px;
-	padding: 10px 0;
-	height: 100%;
-	max-height: 35px;
-	width: 100%;
-	border: 0;
-	text-align: center;
 }
 
 /* -----------------Support for hiding list and buttons post call to action------------- */

@@ -1,0 +1,48 @@
+.mck-box-top {
+    padding: 0 10px;
+    min-height: 60px;
+    text-align: left;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: $primary-color;
+    color: white;
+
+    .icon {
+        margin-right: 12px;
+    }
+
+    [class*='blk-'] {
+        height: 48px;
+        line-height: 48px;
+    }
+
+    &.mck-row {
+        margin: 0px;
+    }
+    .blk-lg-2 {
+        width: 20px;
+    }
+}
+
+.mck-sidebox-search .mck-box-top,
+.mck-search-tab-box {
+    padding-right: 0;
+}
+
+.mck-search-tab-box,
+.mck-search-box-top {
+    background-color: rgba(241, 241, 241, 0.6);
+}
+
+.mck-gm-search-box .mck-box-top .blk-lg-3 {
+    width: 30px;
+    height: inherit;
+    padding: 14px 0;
+}
+
+.mck-sidebox-search .mck-box-top .blk-lg-5 {
+    width: calc(100% - 60px);
+}
+
+.mck-gm-search-box .mck-box-top .blk-lg-7 {
+    width: calc(100% - 50px);
+}

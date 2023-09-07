@@ -8096,7 +8096,7 @@ var userOverride = {
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
             var markup =
                 '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
-                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr}">' +
+                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
                 '<div class="mck-clear">' +
                 '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="blk-lg-12">' +
@@ -9137,6 +9137,7 @@ var userOverride = {
                 var showNameExpr = 'n-vis';
                 var msgAvatorClassExpr = '';
                 var messageStatusAriaTag = '';
+                var conversationTransferred = ''; 
 
                 alUserService.loadUserProfile(msg.to);
 
@@ -9278,6 +9279,9 @@ var userOverride = {
                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
                 }
                 
+                if (msg.metadata && msg.metadata.KM_ASSIGN){
+                    conversationTransferred = 'mck-conversation-transferred'; 
+                }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
@@ -9347,6 +9351,7 @@ var userOverride = {
                         attachmentTemplate: attachmentTemplate,
                         progressMeter: progressMeter,
                         botMsgDelayExpr: botMessageDelayClass,
+                        conversationTransferred: conversationTransferred,
                     },
                 ];
 
@@ -12704,7 +12709,8 @@ var userOverride = {
                                 'data-contact'
                             ) &&
                         timeOffset <
-                            KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME
+                            KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME && 
+                        !allMessages[_len - 1].classList.contains("mck-conversation-transferred")
                     ) {
                         allMessages[_len - 2].classList.add(
                             'km-clubbing-first'

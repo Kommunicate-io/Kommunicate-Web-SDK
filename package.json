@@ -5,6 +5,11 @@
   "main": "app.js",
   "author": "Forward <team.engineering@kommunicate.io>",
   "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx pretty-quick --staged"
+    }
+  },
   "scripts": {
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
