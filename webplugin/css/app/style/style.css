@@ -72,7 +72,7 @@ button {
 .km-modal-body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0 15px;
   height: calc(100% - 61px);
   border-radius: 0px 0px 6px 6px;
@@ -132,7 +132,8 @@ button {
   letter-spacing: 0.8px;
   color: #565658;
   padding: 0 15px;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+  margin-top: 10px; }
 
 .km-modal .mck-preleadcollection-textarea {
   overflow-y: scroll;
