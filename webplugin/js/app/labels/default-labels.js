@@ -141,7 +141,9 @@ Kommunicate.defaultLabels = {
         OTHER_QUERIES: 'Have other queries? ',
         RESTART_CONVERSATION: 'Restart the conversation',
         SUBMIT_RATING: 'Submit your rating',
-        CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk
+        CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk,
+        CONVERSATION_RATING_HEADING:
+            'How satisfied you are with the conversation?',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {

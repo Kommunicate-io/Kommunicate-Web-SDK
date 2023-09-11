@@ -3364,6 +3364,7 @@ var userOverride = {
                 );
             };
             _this.setEmojiHoverText = function () {
+
                 var ratingList = document.getElementsByClassName(
                     'mck-rating-box'
                 );
@@ -3524,8 +3525,8 @@ var userOverride = {
                     MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-rated-text').innerHTML =
                     MCK_LABELS['csat.rating'].CONVERSATION_RATED;
-                document.getElementById('mck-rate-conversation').innerHTML =
-                    MCK_LABELS['csat.rating'].RATE_CONVERSATION;
+                // document.getElementById('mck-rate-conversation').innerHTML =
+                //     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
                 document.getElementById('mck-other-queries').innerHTML =
                     MCK_LABELS['csat.rating'].OTHER_QUERIES;
                 document.getElementById('mck-restart-conversation').innerHTML =

@@ -1,10 +1,11 @@
 .mck-box-ft {
     text-align: left;
+    border-radius: 24px 24px 4px 4px;
     /* border-top: 1px solid #e5e5e5; */
     padding: 0px 15px 10px;
     /* position: absolute;
     bottom: 8px; */
-    background-color: #ffff;
+    background-color: #fff;
     width: auto;
     position: relative;
     .mck-box-form {
@@ -58,7 +59,13 @@
     text-decoration: none;
 }
 
-.km-mid-conv-csat,
 .mck-closed-conv-banner {
     background-color: $secondary-color;
+}
+
+#csat-1 {
+    margin-top: 37px;
+}
+.km-mid-conv-csat {
+    box-shadow: 0px 0px 12px 0px rgba(77, 81, 91, 0.25);
 }

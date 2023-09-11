@@ -1150,8 +1150,13 @@ KommunicateUI = {
                     }
                 );
             }
-        }
+        }//CONVERSATION_RATING_HEADING
+        var ratingTitleElement = document.querySelector(".mck-csat-title");
         var messageText = MCK_LABELS['closed.conversation.message'];
+        var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
+        console.log(ratingTitle);
+
+        ratingTitleElement && (ratingTitleElement.innerHTML = ratingTitle);
         var conversationStatusDiv = document.getElementById(
             'mck-conversation-status-box'
         );

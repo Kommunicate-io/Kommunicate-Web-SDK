@@ -1624,7 +1624,7 @@
 	padding-left: 5px;
 }
 .mck-intent-box.open svg path{
-	fill: #5553b7;
+	fill: #1C1C1C;
 }
 
 .mck-bot-icon{
@@ -1645,7 +1645,7 @@
 }
 
 .mck-bot-icon svg:hover path {
-	fill: #5553b7;
+	fill: #1C1C1C;
 	transition: all ease 0.3s;
 }
 
@@ -2947,24 +2947,6 @@ display: none;
 	padding-top: 10px;
 }
 
-.mcktypeahead {
-	max-width: 255px !important;
-	min-width: 255px !important;
-	border-radius: 4px;
-	z-index: 22440000 !important;
-}
-
-.mcktypeahead li a {
-	white-space: normal !important;
-	word-wrap: break-word;
-	text-decoration: none;
-}
-
-.mcktypeahead .active>a, .mcktypeahead .active>a:hover {
-	color: #262626;
-	text-decoration: none;
-	background-color: #F5F5F5;
-}
 
 .mck-tab-menu-box.mck-dropdown-menu {
 	margin-top: 4px;
@@ -5063,7 +5045,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 #mck-autosuggest-search-input.km-auto-expand {  
 	box-sizing: border-box;
 	overflow: hidden;
-	width: calc(100% - 60px);
+	width: calc(100% - 120px);
 	border-radius: 6px;
 	border: 0;
 	resize: none;
@@ -5226,11 +5208,11 @@ div[name="message"]:last-child {
 .mck-rating-box:hover, .mck-rating-box.selected{
 	transform: scale(1.2);
 }
-.mck-rating-box div {
+/* .mck-rating-box div {
 	margin-top: 4px;
 	visibility: hidden;
 	color: #222222
-}
+} */
 .mck-rating-box:hover div, .mck-rating-box.selected div {
 	visibility: visible;
 }
