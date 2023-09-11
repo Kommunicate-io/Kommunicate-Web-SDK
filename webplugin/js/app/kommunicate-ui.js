@@ -1062,13 +1062,14 @@ KommunicateUI = {
                 },
                 'km-mid-conv-csat'
             );
+           
             kommunicateCommons.modifyClassList(
                 {
-                    id: ['csat-1'],
+                    id: ["csat-1", "csat-2", "mck-feedback-text-wrapper"],
                 },
                 'vis',
                 'n-vis'
-            );
+            )
             KommunicateUI.isConvJustResolved = false;
             KommunicateUI.updateScroll(messageBody);
         } else if (
@@ -1150,11 +1151,10 @@ KommunicateUI = {
                     }
                 );
             }
-        }//CONVERSATION_RATING_HEADING
+        }
         var ratingTitleElement = document.querySelector(".mck-csat-title");
         var messageText = MCK_LABELS['closed.conversation.message'];
         var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
-        console.log(ratingTitle);
 
         ratingTitleElement && (ratingTitleElement.innerHTML = ratingTitle);
         var conversationStatusDiv = document.getElementById(
@@ -1306,7 +1306,7 @@ KommunicateUI = {
                     // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['csat-1'],
+                            id: ['csat-1', 'csat-2'],
                         },
                         '',
                         'n-vis'

@@ -3364,7 +3364,6 @@ var userOverride = {
                 );
             };
             _this.setEmojiHoverText = function () {
-
                 var ratingList = document.getElementsByClassName(
                     'mck-rating-box'
                 );
@@ -3372,7 +3371,7 @@ var userOverride = {
                 if (ratingListLength) {
                     for (var a = 0; a < ratingListLength; a++) {
                         var ratingElement = ratingList[a];
-                        var dateSpan = document.createElement('div');
+                        var dateSpan = document.createElement('span');
                         dateSpan.innerHTML =
                             RATING_EMOJI_HOVER_TEXT_MAP[
                                 ratingElement.dataset.rating

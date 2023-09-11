@@ -137,7 +137,7 @@ Kommunicate.defaultLabels = {
             'Conversation resolved and you rated it as',
         CONVERSATION_RATED: 'You rated the conversation as',
         RATE_CONVERSATION: 'Rate your conversation',
-        CONVERSATION_REVIEW_PLACEHOLDER: 'Add a feedback (optional)',
+        CONVERSATION_REVIEW_PLACEHOLDER: '(optional)',
         OTHER_QUERIES: 'Have other queries? ',
         RESTART_CONVERSATION: 'Restart the conversation',
         SUBMIT_RATING: 'Submit your rating',
@@ -147,7 +147,7 @@ Kommunicate.defaultLabels = {
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {
-        poor: 'Poor',
+        poor: 'Bad',
         great: 'Great',
         average: 'Average',
     },
