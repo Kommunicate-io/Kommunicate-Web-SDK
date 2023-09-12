@@ -3769,6 +3769,7 @@ var userOverride = {
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_box_form = $applozic('.mck-box-form');
             var $mck_msg_form = $applozic('#mck-msg-form');
+            var $mck_msg_form_req = $applozic(".mck-text-req-error")
             var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
             var $mck_new_group = $applozic('#mck-new-group');
             var $mck_tab_title = $applozic('#mck-tab-title');
@@ -4595,6 +4596,7 @@ var userOverride = {
                 $mck_text_box.keydown(function (e) {
                     if ($mck_box_form.hasClass('mck-text-req')) {
                         $mck_box_form.removeClass('mck-text-req');
+                        $mck_msg_form_req.removeClass('vis').addClass("n-vis");            
                     }
                     if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
                         e.preventDefault();
@@ -5109,6 +5111,7 @@ var userOverride = {
                 $mck_price_text_box.on('click', function (e) {
                     e.preventDefault();
                     $mck_price_text_box.removeClass('mck-text-req');
+                    $mck_msg_form_req.removeClass('vis').addClass("n-vis"); 
                 });
                 $mck_block_button.on('click', function (e) {
                     e.preventDefault();
@@ -5405,6 +5408,9 @@ var userOverride = {
                     }
                     if (message.length === 0 && FILE_META.length === 0) {
                         $mck_box_form.addClass('mck-text-req');
+                        $mck_msg_form_req
+                        .addClass('vis')
+                        .removeClass('n-vis')
                         return false;
                     }
                      //If the field is a form field then validate the input, update user details before sending the message
@@ -5590,6 +5596,10 @@ var userOverride = {
                         mckMapLayout.fileMenuToggle();
                     }
                     $mck_box_form.removeClass('mck-text-req');
+                    $mck_msg_form_req
+                    .addClass('n-vis')
+                    .removeClass('vis')
+
                     if (d.activeElement && d.activeElement !== $mck_text_box) {
                         if (window.Applozic.ALSocket.mck_typing_status === 1) {
                             window.Applozic.ALSocket.sendTypingStatus(
@@ -5790,6 +5800,9 @@ var userOverride = {
                     FILE_META.length === 0
                 ) {
                     $mck_box_form.addClass('mck-text-req');
+                    $mck_msg_form_req
+                    .addClass('vis')
+                    .removeClass('n-vis')
                     return;
                 }
 
@@ -6023,6 +6036,9 @@ var userOverride = {
                     });
                 }
                 $mck_box_form.removeClass('mck-text-req');
+                $mck_msg_form_req
+                    .addClass('n-vis')
+                    .removeClass('vis')
                 $mck_msg_sbmt.attr('disabled', false);
                 $applozic('.' + randomId + ' .mck-message-status')
                     .removeClass('mck-sent-icon')
@@ -7726,6 +7742,9 @@ var userOverride = {
                 var priceText = $mck_price_text_box.val();
                 if (priceText === '') {
                     $mck_price_text_box.addClass('mck-text-req');
+                    $mck_msg_form_req
+                    .addClass('vis')
+                    .removeClass('n-vis')
                     return;
                 }
                 priceText = $applozic.trim(priceText);
@@ -7998,6 +8017,7 @@ var userOverride = {
             var $mck_product_title = $applozic('.mck-product-title');
             var $mck_product_subtitle = $applozic('.mck-product-subtitle');
             var $product_box_caret = $applozic('#mck-product-box .mck-caret');
+            var $mck_msg_form_req = $applozic(".mck-text-req-error")
             var $mck_product_up_key = $applozic(
                 '.mck-product-rt-up .mck-product-key'
             );
@@ -11608,6 +11628,9 @@ var userOverride = {
             _this.clearMessageField = function (keyboard) {
                 $mck_text_box.html('');
                 $mck_box_form.removeClass('mck-text-req');
+                $mck_msg_form_req
+                    .addClass('n-vis')
+                    .removeClass('vis')
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box
                     .removeClass('vis')
@@ -11644,6 +11667,9 @@ var userOverride = {
                         });
                         $file_name.html(draftMessage.filelb);
                         $file_size.html(draftMessage.filesize);
+                        $mck_msg_form_req
+                         .addClass('n-vis')
+                         .removeClass('vis')
                         $mck_file_box
                             .removeClass('n-vis')
                             .removeClass('mck-text-req')

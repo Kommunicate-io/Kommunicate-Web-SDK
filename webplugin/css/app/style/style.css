@@ -264,7 +264,8 @@ input[type='number']::-webkit-outer-spin-button {
   gap: 2px;
   margin-bottom: 10px; }
 
-.km-error-msg {
+.km-error-msg,
+.mck-text-req-error {
   color: #d64242;
   font-size: 12px;
   font-family: "Inter", sans-serif;
@@ -272,6 +273,13 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
   padding: 0;
   line-height: 16px; }
+
+.mck-text-req-error {
+  display: flex !important;
+  align-items: center;
+  text-align: left;
+  margin-top: 2px;
+  gap: 2px; }
 
 .km-login-error {
   border-color: #d64242 !important;
@@ -2092,3 +2100,15 @@ div#mck-rated:before {
   position: absolute;
   top: 5%;
   right: 5%; }
+
+#mck-email-collection-box,
+#mck-email-error-alert-box {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 6px; }
+
+#mck-email-error-alert-box,
+#mck-away-msg-box,
+#mck-email-collection-box {
+  padding: 3px 16px; }
