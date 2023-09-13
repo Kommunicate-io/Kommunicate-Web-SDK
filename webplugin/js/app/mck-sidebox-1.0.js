@@ -610,6 +610,8 @@ var userOverride = {
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
+        var DISABLE_TEXT_AREA = appOptions.disableTextArea;
+        var OPEN_CHAT_WIDGET_ON_WEBSITE_VISIT = appOptions.openChatWidgetOnWebsiteVisit;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -675,11 +677,12 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
+           
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
                 $applozic('#mck-sidebox-launcher')
                     .removeClass('vis')
-                    .addClass('n-vis');
+                    .addClass('n-vis');    
             KOMMUNICATE_VERSION === 'v2' &&
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             KommunicateUI.showChat();
@@ -806,7 +809,7 @@ var userOverride = {
         _this.getOptions = function () {
             return appOptions;
         };
-        _this.init = function () {
+        _this.init = function () {   
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
@@ -852,7 +855,7 @@ var userOverride = {
             mckGroupLayout.init();
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
-            mckMapLayout.init();
+            mckMapLayout.init(); 
             !MCK_ATTACHMENT &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-attachfile-box', 'mck-file-up'] },
@@ -1649,6 +1652,7 @@ var userOverride = {
             }
         };
         _this.sendMessage = function (params) {
+            console.log("paramsparams",params)
             if (typeof params === 'object') {
                 params = $applozic.extend(
                     true,
@@ -7807,6 +7811,7 @@ var userOverride = {
                                     groupPxy.metadata.CONVERSATION_STATUS;
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 console.log("groupPxy now checking", groupPxy);
+
                                 CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
                                 CURRENT_GROUP_DATA.teamId = groupPxy.metadata && groupPxy.metadata.KM_TEAM_ID
                                 params.tabId = group.contactId;
@@ -9987,6 +9992,7 @@ var userOverride = {
                 }
                 return '';
             };
+
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);
