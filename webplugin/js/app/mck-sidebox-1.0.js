@@ -611,7 +611,6 @@ var userOverride = {
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
         var DISABLE_TEXT_AREA = appOptions.disableTextArea;
-        var OPEN_CHAT_WIDGET_ON_WEBSITE_VISIT = appOptions.openChatWidgetOnWebsiteVisit;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -1652,7 +1651,6 @@ var userOverride = {
             }
         };
         _this.sendMessage = function (params) {
-            console.log("paramsparams",params)
             if (typeof params === 'object') {
                 params = $applozic.extend(
                     true,
