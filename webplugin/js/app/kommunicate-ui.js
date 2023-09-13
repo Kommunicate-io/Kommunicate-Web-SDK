@@ -942,6 +942,7 @@ KommunicateUI = {
             .text(MCK_LABELS[status])
             .addClass('vis')
             .removeClass('n-vis');
+        this.disableTextArea(window && window.CURRENT_GROUP_DATA) 
     },
     toggleVoiceOutputOverride: function (voiceOutput) {
         if (voiceOutput) {
@@ -1411,15 +1412,7 @@ KommunicateUI = {
                 },
                 'n-vis',
                 'vis'
-            );
-            this.disableTextArea(CURRENT_GROUP_DATA)
-            // kommunicateCommons.modifyClassList(
-            //     {
-            //         class: ['mck-box-form'],
-            //     },
-            //     '',
-            //     'n-vis'
-            // );
+            );  
             kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-csat-text-1'],
@@ -1906,36 +1899,20 @@ KommunicateUI = {
         );
     },
     disableTextArea: function (data) {
-        console.log('sonu-jangra11111', data);
         var isDisableTextAreaEnabled =
             kommunicate &&
             kommunicate._globals &&
             kommunicate._globals.disableTextArea;
         if (isDisableTextAreaEnabled) {
             if (data && data.conversationAssignee && data.groupMembers) {
-                var Assignee = data.conversationAssignee;
+                var assignee = data.conversationAssignee;
                 var groupMembers = data.groupMembers;
-                console.log(
-                    'data.groupMembers',
-                    data.groupMembers,
-                    'Assignee',
-                    Assignee
-                );
                 for (var i = 0; i < groupMembers.length; i++) {
-                    console.log(
-                        'groupMembers[i].userId',
-                        groupMembers[i].userId,
-                        '--',
-                        Assignee,
-                        '--groupMembers[i].roleType',
-                        groupMembers[i].roleType
-                    );
                     if (
-                        groupMembers[i].userId === Assignee &&
+                        groupMembers[i].userId === assignee &&
                         (groupMembers[i].roleType == '1' ||
                             groupMembers[i].role == '2')
                     ) {
-                        console.log('sonu-jangra2222', data);
                         kommunicateCommons.modifyClassList(
                             {
                                 class: ['mck-box-form'],
@@ -1945,7 +1922,6 @@ KommunicateUI = {
                         break;
                     }
                     else {
-                        console.log('sonu-jangra3333', data);
                         kommunicateCommons.modifyClassList(
                             {
                                 class: ['mck-box-form'],
