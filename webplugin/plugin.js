@@ -96,7 +96,7 @@ var kmCustomIframe =
     'width: 100%;' +
     '} \n' +
     '} \n' +
-    '@media only screen and (max-device-width: 310px) { ' +
+    '@media only screen and (max-device-width: 320px) { ' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     'height: 280px;' +
     '} \n' +
