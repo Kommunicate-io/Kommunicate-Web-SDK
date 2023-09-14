@@ -566,7 +566,7 @@ input[type='number']::-webkit-outer-spin-button {
 @media only screen and (max-device-width: 380px) {
   .chat-popup-widget-container--vertical {
     width: 70%; }
-    .chat-popup-widget-container--vertical .chat-popup-widget-close-btn-container {
+    .chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
       left: 95% !important;
       display: block; } }
 
@@ -613,8 +613,9 @@ input[type='number']::-webkit-outer-spin-button {
 @media only screen and (max-device-width: 310px) {
   .kommunicate-custom-iframe.chat-popup-widget-vertical {
     height: 280px; }
-  .chat-popup-widget-container--vertical
-.chat-popup-widget-close-btn-container {
+  .chat-popup-widget-container--vertical .chat-popup-widget-close-btn-container {
+    display: block; }
+  .chat-popup-widget-container--vertical.align-left .chat-popup-widget-close-btn-container {
     left: 90% !important; } }
 
 @media only screen and (min-device-width: 420px) {

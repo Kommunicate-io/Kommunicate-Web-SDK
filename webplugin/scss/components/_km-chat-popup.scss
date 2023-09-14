@@ -349,10 +349,11 @@ $popupClass: '.chat-popup-widget-container';
     #{$popupClass} {
         &--vertical {
             width: 70%;
-
-            .chat-popup-widget-close-btn-container {
-                left: 95% !important;
-                display: block;
+            &.align-left {
+                .chat-popup-widget-close-btn-container {
+                    left: 95% !important;
+                    display: block;
+                }
             }
         }
     }
@@ -436,9 +437,15 @@ $popupClass: '.chat-popup-widget-container';
     .kommunicate-custom-iframe.chat-popup-widget-vertical {
         height: 280px;
     }
-    .chat-popup-widget-container--vertical
+    .chat-popup-widget-container--vertical {
         .chat-popup-widget-close-btn-container {
-        left: 90% !important;
+            display: block;
+        }
+        &.align-left {
+            .chat-popup-widget-close-btn-container {
+                left: 90% !important;
+            }
+        }
     }
 }
 @media only screen and (min-device-width: 420px) {
