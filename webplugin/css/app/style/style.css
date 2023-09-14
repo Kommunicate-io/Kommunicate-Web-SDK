@@ -360,6 +360,7 @@ input[type='number']::-webkit-outer-spin-button {
     -o-animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards;
     animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards; }
   .chat-popup-widget-container .chat-popup-widget-text-wrapper {
+    word-break: break-word;
     min-height: 70px;
     display: flex;
     align-items: center;
@@ -609,7 +610,3 @@ input[type='number']::-webkit-outer-spin-button {
     padding: 0 15px 0 65px; } }
 
 /* Chat Popup Template Code Ends */
-#kommunicate-widget-iframe.align-left .chat-popup-widget-container--actionable {
-  right: 0; }
-  #kommunicate-widget-iframe.align-left .chat-popup-widget-container--actionable #chat-popup-actionable-btn-container {
-    right: unset; }

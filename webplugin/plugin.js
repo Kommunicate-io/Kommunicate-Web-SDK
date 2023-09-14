@@ -75,7 +75,7 @@ var kmCustomIframe =
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     '   width: 380px;' +
-    '   height: 215px;' +
+    '   height: 250px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
     '   width: 370px;' +
