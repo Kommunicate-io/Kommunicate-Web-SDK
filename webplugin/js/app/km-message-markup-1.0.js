@@ -119,6 +119,7 @@ Kommunicate.popupChatTemplate = {
                 popupWidgetContent.length &&
                 popupWidgetContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
+        var alignLeft = KommunicateConstants.POSITION.LEFT === chatWidget.position ? "align-left" : "align-right";
 
         if(Array.isArray(popupMessageContent)){
             var len = popupMessageContent.length;
@@ -168,7 +169,7 @@ Kommunicate.popupChatTemplate = {
             
                 chatPopupTemplateMarkup =
                 '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' +
-                templateCss +
+                templateCss + ' '+ alignLeft +
                 ' n-vis"><div class="chat-popup-widget-text-wrapper ' +
                 launcherClass +
                 '"><p class="chat-popup-widget-text">' +

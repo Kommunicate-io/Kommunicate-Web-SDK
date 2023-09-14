@@ -20,7 +20,7 @@ $popupClass: '.chat-popup-widget-container';
         top: 0%;
 
         &.align-left {
-            left: 260px;
+            left: 282px;
         }
     }
 
@@ -40,7 +40,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         &.align-left {
-            right: 30px;
+            right: 60px;
         }
 
         & .chat-popup-widget-text-wrapper {
@@ -49,8 +49,8 @@ $popupClass: '.chat-popup-widget-container';
 
         & .chat-popup-widget-close-btn-container {
             transform: translateY(10px);
-            .align-left {
-                left: 390px;
+            &.align-left {
+                left: 370px;
             }
         }
     }
@@ -72,7 +72,7 @@ $popupClass: '.chat-popup-widget-container';
         }
 
         &.align-left {
-            left: 85px;
+            left: 10px;
 
             & #chat-popup-actionable-btn-container {
                 right: unset;
@@ -92,6 +92,9 @@ $popupClass: '.chat-popup-widget-container';
         max-width: 300px;
         &.align-left {
             left: 10px;
+            #chat-popup-actionable-btn-container {
+                right: unset;
+            }
         }
         // & .chat-popup-widget-close-btn-container {
         // top: 22%;
@@ -110,6 +113,7 @@ $popupClass: '.chat-popup-widget-container';
     }
 
     & .chat-popup-widget-text-wrapper {
+        word-break: break-word;
         min-height: 70px;
         @include flexMixin(null, flex-start);
     }
@@ -420,6 +424,7 @@ $popupClass: '.chat-popup-widget-container';
         & .chat-popup-widget-text-wrapper {
             padding: 0 65px 0 15px;
         }
+
         & .chat-popup-widget-text-wrapper.align-left {
             padding: 0 15px 0 65px;
         }
