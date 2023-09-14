@@ -334,13 +334,27 @@ $popupClass: '.chat-popup-widget-container';
 
 @media only screen and (max-width: 420px) {
     #{$popupClass} {
-        width: calc(100% - 30px);
+        width: calc(100% - 80px);
 
         &--horizontal {
             padding-right: 70px;
         }
         &----actionable {
             width: calc(100% - 50px);
+        }
+    }
+}
+
+@media only screen and(max-device-width: 380px) {
+    #{$popupClass} {
+        &--vertical {
+            width: 70%;
+            &.align-left {
+                .chat-popup-widget-close-btn-container {
+                    left: 95% !important;
+                    display: block;
+                }
+            }
         }
     }
 }
@@ -419,6 +433,21 @@ $popupClass: '.chat-popup-widget-container';
     }
 }
 
+@media only screen and (max-device-width: 310px) {
+    .kommunicate-custom-iframe.chat-popup-widget-vertical {
+        height: 280px;
+    }
+    .chat-popup-widget-container--vertical {
+        .chat-popup-widget-close-btn-container {
+            display: block;
+        }
+        &.align-left {
+            .chat-popup-widget-close-btn-container {
+                left: 90% !important;
+            }
+        }
+    }
+}
 @media only screen and (min-device-width: 420px) {
     .chat-popup-widget-container--horizontal {
         & .chat-popup-widget-text-wrapper {
