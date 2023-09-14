@@ -113,6 +113,7 @@ $popupClass: '.chat-popup-widget-container';
     }
 
     & .chat-popup-widget-text-wrapper {
+        word-break: break-word;
         min-height: 70px;
         @include flexMixin(null, flex-start);
     }
@@ -423,7 +424,7 @@ $popupClass: '.chat-popup-widget-container';
         & .chat-popup-widget-text-wrapper {
             padding: 0 65px 0 15px;
         }
-        }
+
         & .chat-popup-widget-text-wrapper.align-left {
             padding: 0 15px 0 65px;
         }

@@ -377,6 +377,7 @@ input[type='number']::-webkit-outer-spin-button {
     -o-animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards;
     animation: km-slide-in-animation 0.5s ease 0.5s 1 forwards; }
   .chat-popup-widget-container .chat-popup-widget-text-wrapper {
+    word-break: break-word;
     min-height: 70px;
     display: flex;
     align-items: center;
