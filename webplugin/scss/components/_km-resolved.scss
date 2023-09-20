@@ -20,6 +20,18 @@
     .blk-lg-6 {
         padding: 0px !important;
     }
+
+    &.km-mid-conv-csat {
+        border-radius: 24px 24px 4px 4px;
+        box-shadow: 0px -7px 12px 0px rgba(77, 81, 91, 0.25);
+    }
+
+    &.mck-restart-conv-banner {
+        background-color: #f6f5f5;
+        margin-bottom: 6px;
+        border-radius: 0;
+        box-shadow: none;
+    }
 }
 
 .mck-box-ft-lt {
@@ -73,35 +85,34 @@
         font-size: 14px;
     }
 }
-.km-mid-conv-csat,
-.mck-closed-conv-banner {
-    border-radius: 24px 24px 4px 4px;
-    box-shadow: 0px -7px 12px 0px rgba(77, 81, 91, 0.25);
-}
+// .mck-closed-conv-banner{
+//     background-color: #f6f5f5;
+//     border-radius: none;
+//     box-shadow: none;
+// }
 
 .mck-feedback-text-wrapper {
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     border-radius: 3px;
     margin-top: 10px;
-    padding: 7px;
-    max-width: 96%;
+    max-width: 98%;
     width: 100%;
     flex-direction: column;
-}
-.mck-feedback-text-wrapper textarea {
-    background: white;
-    border: solid 0.5px $input-border-color;
-    outline: none;
-    width: 100%;
-    padding: 10px 6px;
-    border-radius: 4px;
-}
-.mck-feedback-text-wrapper textarea::-webkit-input-placeholder,
-.mck-feedback-text-wrapper textarea::-moz-placeholder,
-.mck-feedback-text-wrapper textarea:-ms-input-placeholder,
-.mck-feedback-text-wrapper textarea:-moz-placeholder {
-    font-size: 14px;
+    textarea {
+        background: white;
+        border: solid 0.5px $input-border-color;
+        outline: none;
+        width: 98%;
+        padding: 10px 6px;
+        border-radius: 4px;
+
+        &::-webkit-input-placeholder,
+        &::-moz-placeholder,
+        &:-ms-input-placeholder,
+        &:-moz-placeholder {
+            font-size: 14px;
+        }
+    }
 }

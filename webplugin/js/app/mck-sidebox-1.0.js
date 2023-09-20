@@ -3067,11 +3067,19 @@ var userOverride = {
                             document.getElementById(
                                 'mck-feedback-comment'
                             ).value = '';
-                            kommunicateCommons.modifyClassList(
-                                { class: ['mck-feedback-text-wrapper'] },
-                                'n-vis',
-                                ''
+                            $applozic('#mck-sidebox-ft').removeClass(
+                                'mck-restart-conv-banner km-mid-conv-csat'
                             );
+                            // kommunicateCommons.modifyClassList(
+                            //     { class: ['mck-feedback-text-wrapper'] },
+                            //     'n-vis',
+                            //     ''
+                            // );
+                            // kommunicateCommons.modifyClassList(
+                            //     { id: ['mck-sidebox-ft'] },
+                            //     'mck-restart-conv-banner',
+                            //     'km-mid-conv-csat'
+                            // );
 
                         }
                     },
@@ -3975,6 +3983,15 @@ var userOverride = {
                             '',
                             'n-vis'
                         );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: [ 'mck-sidebox-ft' ]
+            
+                            },
+                            '',
+                           'mck-restart-conv-banner'
+                        )
+
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                     KommunicateUI.isConversationResolvedFromZendesk = false;
@@ -12751,8 +12768,15 @@ var userOverride = {
                                 'data-msgtime'
                             ) - allMessages[key].getAttribute('data-msgtime');
                         if (allMessages[key].nextSibling) {
-                            if(allMessages[key].nextSibling.classList.contains("contains-quick-replies-only")) {
-                                return
+                            if (
+                                allMessages[key].nextSibling.classList.contains(
+                                    'contains-quick-replies-only'
+                                ) ||
+                                allMessages[key].nextSibling.classList.contains(
+                                    'mck-conversation-transferred'
+                                )
+                            ) {
+                                return;
                             };
                             if (
                                 allMessages[key].nextSibling.getAttribute(
