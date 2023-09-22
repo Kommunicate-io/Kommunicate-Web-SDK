@@ -2950,6 +2950,9 @@ var userOverride = {
                 var restartConversation = document.getElementById(
                     'mck-restart-conversation'
                 );
+                var ratingErrorMsgContainer = document.getElementById(
+                    'mck-rate-error-wrapper'
+                );
                 var feedbackObject = {
                     groupId: 0,
                     comments: [],
@@ -2958,6 +2961,13 @@ var userOverride = {
 
                 restartConversation.addEventListener('click', mckMessageService.restartConversation);
                 sendFeedbackComment.addEventListener('click', function () {
+                    const isAnyRatingSelected = document.querySelector(
+                        '.mck-rating-box.selected'
+                    );
+                    if (!isAnyRatingSelected) {
+                        ratingErrorMsgContainer.classList.remove("n-vis")
+                        return;
+                    }
                     kmWidgetEvents.eventTracking(
                         eventMapping.onSubmitRatingClick
                     );
@@ -3017,6 +3027,11 @@ var userOverride = {
                             'n-vis'
                         );
                         e.currentTarget.classList.add('selected');
+
+                        // if rating error msg exist in UI then hide the error msg
+                        !ratingErrorMsgContainer.classList.contains('n-vis') &&
+                            ratingErrorMsgContainer.classList.add('n-vis');
+
                         if (e.currentTarget.classList[1] == 'selected') {
                             var ratingValue = parseInt(
                                 e.currentTarget.dataset.rating
@@ -3561,6 +3576,8 @@ var userOverride = {
                     MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
                 document.getElementById('km-voice-input-trigger-text').innerText =
                     MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
+                document.getElementById('mck-rate-error').innerHTML =
+                    MCK_LABELS['csat.rating'].RATE_ERROR_MSG
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();

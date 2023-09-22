@@ -90,14 +90,12 @@
     @include gap-supported(2px, 0 2px 0 0, '& svg');
 
     & svg {
-        margin-top: 2px;
+        margin-top: 3px;
         flex: 0 0 13px;
     }
 
     .mck-form-error-text {
-        font-size: 12px;
-        color: $km-danger-color !important;
-        margin: 0 0 2px;
+       @include errorText;
     }
 }
 .mck-form-submit-button {

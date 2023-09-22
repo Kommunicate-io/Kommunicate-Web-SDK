@@ -979,12 +979,13 @@ input[type='number']::-webkit-outer-spin-button {
     .mck-form-error-container svg {
       margin: 0 2px 0 0; } }
   .mck-form-error-container svg {
-    margin-top: 2px;
+    margin-top: 3px;
     flex: 0 0 13px; }
   .mck-form-error-container .mck-form-error-text {
     font-size: 12px;
     color: #d64242 !important;
-    margin: 0 0 2px; }
+    margin: 0 0 2px;
+    line-height: 1.7; }
 
 .mck-form-submit-button {
   font-size: 14px !important; }
@@ -1898,8 +1899,9 @@ div#mck-rated:before {
     border: solid 0.5px #dcdcdc;
     outline: none;
     width: 98%;
-    padding: 10px 6px;
-    border-radius: 4px; }
+    padding: 6px 6px 0;
+    border-radius: 4px;
+    height: 64px; }
     .mck-feedback-text-wrapper textarea::-webkit-input-placeholder, .mck-feedback-text-wrapper textarea::-moz-placeholder, .mck-feedback-text-wrapper textarea:-ms-input-placeholder, .mck-feedback-text-wrapper textarea:-moz-placeholder {
       font-size: 14px; }
 
@@ -2090,6 +2092,12 @@ div#mck-rated:before {
 
 .mck-csat-wrapper {
   text-align: center; }
+  .mck-csat-wrapper .mck-csat-title-wrapper {
+    font-size: 14px;
+    display: flex;
+    gap: 4px; }
+  .mck-csat-wrapper svg {
+    margin-top: 3px; }
   .mck-csat-wrapper .mck-csat-title {
     margin-bottom: 0; }
 
@@ -2097,6 +2105,18 @@ div#mck-rated:before {
   position: absolute;
   top: 5%;
   right: 5%; }
+
+#mck-rate-error-wrapper {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px; }
+  #mck-rate-error-wrapper svg {
+    margin-top: 2px; }
+  #mck-rate-error-wrapper .mck-rate-error {
+    font-size: 12px;
+    color: #d64242 !important;
+    margin: 0 0 2px;
+    line-height: 1.7; }
 
 #mck-email-collection-box,
 #mck-email-error-alert-box {

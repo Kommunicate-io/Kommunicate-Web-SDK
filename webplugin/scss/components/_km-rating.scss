@@ -73,7 +73,14 @@
 
 .mck-csat-wrapper {
     text-align: center;
-
+    .mck-csat-title-wrapper {
+        font-size: 14px;
+        display: flex;
+        gap: 4px;
+    }
+    svg {
+        margin-top: 3px;
+    }
     .mck-csat-title {
         margin-bottom: 0;
     }
@@ -83,4 +90,16 @@
     position: absolute;
     top: 5%;
     right: 5%;
+}
+#mck-rate-error-wrapper {
+    display: flex;
+    gap: 3px;
+    margin-top: 8px;
+    svg{
+        margin-top: 2px
+    }
+
+    .mck-rate-error {
+        @include errorText;
+    }
 }

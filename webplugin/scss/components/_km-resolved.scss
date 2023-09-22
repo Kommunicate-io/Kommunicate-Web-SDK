@@ -105,8 +105,9 @@
         border: solid 0.5px $input-border-color;
         outline: none;
         width: 98%;
-        padding: 10px 6px;
+        padding: 6px 6px 0;
         border-radius: 4px;
+        height: 64px;
 
         &::-webkit-input-placeholder,
         &::-moz-placeholder,
