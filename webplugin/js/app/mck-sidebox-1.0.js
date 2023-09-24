@@ -9823,19 +9823,29 @@ var userOverride = {
                     emoji_template.indexOf('emoji-inner') === -1 &&
                     msg.contentType === 0
                 ) {
+                    var $normalTextMsg = $applozic(
+                        "<div class='mck-text-msg-" +
+                            (floatWhere === 'mck-msg-right'
+                                ? 'right'
+                                : 'left') +
+                            "'/>"
+                    );
                     var nodes = emoji_template.split('<br/>');
                     for (var i = 0; i < nodes.length; i++) {
-                        if (nodes[i] === '') {
+                        var currentNode = nodes[i];
+
+                        if (currentNode === '') {
                             var x = d.createElement('BR');
                         } else {
                             var x = d.createElement('div');
-                            x.appendChild(d.createTextNode(nodes[i]));
+                            x.appendChild(d.createTextNode(currentNode));
                             x = $applozic(x).linkify({
                                 target: '_blank',
                             });
                         }
-                        $textMessage.append(x);
+                        $normalTextMsg.append(x);
                     }
+                    $textMessage.append($normalTextMsg)
                 } else {
                     $textMessage.html(emoji_template);
                     $textMessage.linkify({

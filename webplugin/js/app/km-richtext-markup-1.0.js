@@ -204,16 +204,24 @@ Kommunicate.markup = {
         var data = extractedData.data;
         if (data && data.title) {
             var mckRightLinkClass = isMckRightMsg ? "km-custom-widget-background-color" : "";
+            var title = data.siteName || data.title;
+            var description = data.description || data.title;
 
             return (
                 '<div class="link-preview-wrapper"><div class="link-preview-image-div"><img class="link-preview-image" src="' +
                 (data.images[0] || data.favicons[0]) +
                 '" onerror="this.classList.add(\'link-preview-image-broken\')"  alt="' +
-                (data.siteName || data.title) +
-                '"></div><div class="link-preview-content ' + mckRightLinkClass + '"><h5 class="link-preview-title link-preview-title-width"> ' +
-                (data.siteName || data.title) +
-                '</h5><p class="link-preview-div-description">' +
-                (data.description || data.title)+
+                title +
+                '"></div><div class="link-preview-content ' +
+                mckRightLinkClass +
+                '"><h5 class="link-preview-title link-preview-title-width" title="' +
+                title +
+                '"> ' +
+                title +
+                '</h5><p class="link-preview-div-description" title="' +
+                description +
+                '">' +
+                description +
                 '</p></div></div>'
             );
         }
@@ -408,11 +416,11 @@ Kommunicate.markup = {
     },
     getCardInfoTemplate: function () {
         return `<div class="km-carousel-card-title-wrapper">
-                <div class="km-carousel-card-title">{{title}}</div>
+                <div class="km-carousel-card-title" title="{{title}}">{{title}}</div>
                 <div class="km-carousel-card-title-extension">{{titleExt}}</div>
             </div>
-            <div class="km-carousel-card-sub-title">{{subtitle}}</div>
-            <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description">{{description}}</div></div>`;
+            <div class="km-carousel-card-sub-title" title="{{subtitle}}">{{subtitle}}</div>
+            <div class="{{cardDescriptionClass}}"><div class="km-carousel-card-description" title="{{description}}">{{description}}</div></div>`;
     },
     getFormTemplate: function () {
         return `<div class="mck-msg-box-rich-text-container mck-form-template-container" data-hidePostFormSubmit="{{hidePostFormSubmit}}">

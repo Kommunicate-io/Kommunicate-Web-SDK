@@ -1961,6 +1961,8 @@ ul.mck-intent-menu>li:hover {
 }
 
 .mck-msg-content img {
+	width: 100%;
+	border-radius: 12px;
 	/* max-width: 225px !important;
 	max-height: 200px !important; */
 }
