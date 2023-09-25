@@ -148,7 +148,7 @@ Kommunicate.defaultLabels = {
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {
-        poor: 'Bad',
+        poor: 'Poor',
         great: 'Great',
         average: 'Average',
     },
