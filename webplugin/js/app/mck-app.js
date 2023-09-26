@@ -34,7 +34,7 @@ function ApplozicSidebox() {
         },
         {
             name: 'maps',
-            url: 'https://maps.google.com/maps/api/js?libraries=places',
+            url: 'https://maps.googleapis.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
