@@ -1,0 +1,20 @@
+.mcktypeahead {
+    max-width: 100% !important;
+    min-width: 255px !important;
+    border-radius: 4px;
+    z-index: 22440000 !important;
+    max-height: 180px;
+    overflow: scroll;
+
+    li a {
+        white-space: normal !important;
+        word-wrap: break-word;
+        text-decoration: none;
+        color: $text-primary-color !important;
+    }
+    .active > a,
+    .active > a:hover {
+        text-decoration: none;
+        background-color: #fff;
+    }
+}

@@ -572,8 +572,8 @@
     font-family: Roboto;
     font-size: 14px;
     letter-spacing: 0.5px;
-    text-align: center;
-    color: #8f8f8f;
+    text-align: left;
+    color: #1c1c1c;
     margin-bottom: 0px !important;
     font-weight: 300;
     line-height: 17px;
@@ -582,7 +582,6 @@
     /* border-top: dashed 1px #bebbbb; */
     border: none;
     /* border-bottom: solid 1px #654df7; */
-    padding: 0px 25px 20px;
     /* position: absolute;
         bottom: 52px;
         left:0; 
@@ -604,16 +603,13 @@
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.4px;
-    color: #f46262;
+    color: #D64242;
 }
-#mck-email-collection-box,
-#mck-email-error-alert-box,
 #mck-form-field-error-alert-box {
     text-align: center;
     padding: 0px 25px 10px;
 }
 #mck-away-msg-box hr,
-#mck-email-collection-box hr,
 #mck-email-error-alert-box hr {
     border: none;
     margin-top: 0px;
@@ -714,7 +710,6 @@
     height: auto;
 }
 
-#mck-email-collection-box .svg-container,
 #mck-email-error-alert-box .svg-container {
     width: 45px;
     height: 45px;
@@ -723,7 +718,7 @@
     line-height: 52px;
     margin: 5px auto;
 }
-#mck-email-collection-box .svg-container svg,
+
 #mck-email-error-alert-box .svg-container svg {
     margin-top: 16px;
 }

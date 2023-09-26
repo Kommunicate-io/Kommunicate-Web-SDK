@@ -111,8 +111,16 @@
     margin: -9px 0 0 3px;
 }
 
-
 .km-clubbing-last.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
-	bottom: 26px;
-	top: auto;
+    bottom: 26px;
+    top: auto;
+}
+
+.mck-text-msg-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.mck-conversation-transferred {
+    margin: 12px 0;
 }

@@ -1,4 +1,7 @@
 .link-preview {
+    &-container {
+        padding: 0 16px 12px;
+    }
     &-wrapper {
         font-family: $font-family-primary !important;
         width: auto;
@@ -12,8 +15,9 @@
     }
     &-image {
         object-fit: contain;
-        width: inherit;
-        height: inherit;
+        width: inherit !important;
+        height: inherit !important;
+        border-radius: 0 !important;
         &-broken {
             display: none;
         }
@@ -48,6 +52,7 @@
         padding: $msg-box-padding;
         border-bottom-left-radius: $msg-box-border-radius;
         border-bottom-right-radius: $msg-box-border-radius;
+        border-top: 1px solid $input-border-color;
     }
     // &-title-width {
     //     width: 200px;

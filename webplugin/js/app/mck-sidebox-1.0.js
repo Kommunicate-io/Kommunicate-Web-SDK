@@ -2950,6 +2950,9 @@ var userOverride = {
                 var restartConversation = document.getElementById(
                     'mck-restart-conversation'
                 );
+                var ratingErrorMsgContainer = document.getElementById(
+                    'mck-rate-error-wrapper'
+                );
                 var feedbackObject = {
                     groupId: 0,
                     comments: [],
@@ -2958,6 +2961,13 @@ var userOverride = {
 
                 restartConversation.addEventListener('click', mckMessageService.restartConversation);
                 sendFeedbackComment.addEventListener('click', function () {
+                    const isAnyRatingSelected = document.querySelector(
+                        '.mck-rating-box.selected'
+                    );
+                    if (!isAnyRatingSelected) {
+                        ratingErrorMsgContainer.classList.remove("n-vis")
+                        return;
+                    }
                     kmWidgetEvents.eventTracking(
                         eventMapping.onSubmitRatingClick
                     );
@@ -3017,6 +3027,11 @@ var userOverride = {
                             'n-vis'
                         );
                         e.currentTarget.classList.add('selected');
+
+                        // if rating error msg exist in UI then hide the error msg
+                        !ratingErrorMsgContainer.classList.contains('n-vis') &&
+                            ratingErrorMsgContainer.classList.add('n-vis');
+
                         if (e.currentTarget.classList[1] == 'selected') {
                             var ratingValue = parseInt(
                                 e.currentTarget.dataset.rating
@@ -3067,11 +3082,19 @@ var userOverride = {
                             document.getElementById(
                                 'mck-feedback-comment'
                             ).value = '';
-                            kommunicateCommons.modifyClassList(
-                                { class: ['mck-feedback-text-wrapper'] },
-                                'n-vis',
-                                ''
+                            $applozic('#mck-sidebox-ft').removeClass(
+                                'mck-restart-conv-banner km-mid-conv-csat'
                             );
+                            // kommunicateCommons.modifyClassList(
+                            //     { class: ['mck-feedback-text-wrapper'] },
+                            //     'n-vis',
+                            //     ''
+                            // );
+                            // kommunicateCommons.modifyClassList(
+                            //     { id: ['mck-sidebox-ft'] },
+                            //     'mck-restart-conv-banner',
+                            //     'km-mid-conv-csat'
+                            // );
 
                         }
                     },
@@ -3371,7 +3394,7 @@ var userOverride = {
                 if (ratingListLength) {
                     for (var a = 0; a < ratingListLength; a++) {
                         var ratingElement = ratingList[a];
-                        var dateSpan = document.createElement('div');
+                        var dateSpan = document.createElement('span');
                         dateSpan.innerHTML =
                             RATING_EMOJI_HOVER_TEXT_MAP[
                                 ratingElement.dataset.rating
@@ -3524,8 +3547,8 @@ var userOverride = {
                     MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
                 document.getElementById('mck-rated-text').innerHTML =
                     MCK_LABELS['csat.rating'].CONVERSATION_RATED;
-                document.getElementById('mck-rate-conversation').innerHTML =
-                    MCK_LABELS['csat.rating'].RATE_CONVERSATION;
+                // document.getElementById('mck-rate-conversation').innerHTML =
+                //     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
                 document.getElementById('mck-other-queries').innerHTML =
                     MCK_LABELS['csat.rating'].OTHER_QUERIES;
                 document.getElementById('mck-restart-conversation').innerHTML =
@@ -3553,6 +3576,8 @@ var userOverride = {
                     MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
                 document.getElementById('km-voice-input-trigger-text').innerText =
                     MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
+                document.getElementById('mck-rate-error').innerHTML =
+                    MCK_LABELS['csat.rating'].RATE_ERROR_MSG
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3769,6 +3794,7 @@ var userOverride = {
             var $mck_text_box = $applozic('#mck-text-box');
             var $mck_box_form = $applozic('.mck-box-form');
             var $mck_msg_form = $applozic('#mck-msg-form');
+            var $mck_msg_form_req = $applozic(".mck-text-req-error")
             var $mck_msg_sbmt = $applozic('#mck-msg-sbmt');
             var $mck_new_group = $applozic('#mck-new-group');
             var $mck_tab_title = $applozic('#mck-tab-title');
@@ -3974,6 +4000,15 @@ var userOverride = {
                             '',
                             'n-vis'
                         );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: [ 'mck-sidebox-ft' ]
+            
+                            },
+                            '',
+                           'mck-restart-conv-banner'
+                        )
+
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
                     KommunicateUI.isConversationResolvedFromZendesk = false;
@@ -4595,6 +4630,7 @@ var userOverride = {
                 $mck_text_box.keydown(function (e) {
                     if ($mck_box_form.hasClass('mck-text-req')) {
                         $mck_box_form.removeClass('mck-text-req');
+                        $mck_msg_form_req.removeClass('vis').addClass("n-vis");            
                     }
                     if (e.keyCode === 13 && (e.shiftKey || e.ctrlKey)) {
                         e.preventDefault();
@@ -5109,6 +5145,7 @@ var userOverride = {
                 $mck_price_text_box.on('click', function (e) {
                     e.preventDefault();
                     $mck_price_text_box.removeClass('mck-text-req');
+                    $mck_msg_form_req.removeClass('vis').addClass("n-vis"); 
                 });
                 $mck_block_button.on('click', function (e) {
                     e.preventDefault();
@@ -5405,6 +5442,9 @@ var userOverride = {
                     }
                     if (message.length === 0 && FILE_META.length === 0) {
                         $mck_box_form.addClass('mck-text-req');
+                        $mck_msg_form_req
+                        .addClass('vis')
+                        .removeClass('n-vis')
                         return false;
                     }
                      //If the field is a form field then validate the input, update user details before sending the message
@@ -5590,6 +5630,10 @@ var userOverride = {
                         mckMapLayout.fileMenuToggle();
                     }
                     $mck_box_form.removeClass('mck-text-req');
+                    $mck_msg_form_req
+                    .addClass('n-vis')
+                    .removeClass('vis')
+
                     if (d.activeElement && d.activeElement !== $mck_text_box) {
                         if (window.Applozic.ALSocket.mck_typing_status === 1) {
                             window.Applozic.ALSocket.sendTypingStatus(
@@ -5790,6 +5834,9 @@ var userOverride = {
                     FILE_META.length === 0
                 ) {
                     $mck_box_form.addClass('mck-text-req');
+                    $mck_msg_form_req
+                    .addClass('vis')
+                    .removeClass('n-vis')
                     return;
                 }
 
@@ -6023,6 +6070,9 @@ var userOverride = {
                     });
                 }
                 $mck_box_form.removeClass('mck-text-req');
+                $mck_msg_form_req
+                    .addClass('n-vis')
+                    .removeClass('vis')
                 $mck_msg_sbmt.attr('disabled', false);
                 $applozic('.' + randomId + ' .mck-message-status')
                     .removeClass('mck-sent-icon')
@@ -7726,6 +7776,9 @@ var userOverride = {
                 var priceText = $mck_price_text_box.val();
                 if (priceText === '') {
                     $mck_price_text_box.addClass('mck-text-req');
+                    $mck_msg_form_req
+                    .addClass('vis')
+                    .removeClass('n-vis')
                     return;
                 }
                 priceText = $applozic.trim(priceText);
@@ -7998,6 +8051,7 @@ var userOverride = {
             var $mck_product_title = $applozic('.mck-product-title');
             var $mck_product_subtitle = $applozic('.mck-product-subtitle');
             var $product_box_caret = $applozic('#mck-product-box .mck-caret');
+            var $mck_msg_form_req = $applozic(".mck-text-req-error")
             var $mck_product_up_key = $applozic(
                 '.mck-product-rt-up .mck-product-key'
             );
@@ -8096,7 +8150,7 @@ var userOverride = {
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
             var markup =
                 '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
-                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr}">' +
+                'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
                 '<div class="mck-clear">' +
                 '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="blk-lg-12">' +
@@ -9137,6 +9191,7 @@ var userOverride = {
                 var showNameExpr = 'n-vis';
                 var msgAvatorClassExpr = '';
                 var messageStatusAriaTag = '';
+                var conversationTransferred = ''; 
 
                 alUserService.loadUserProfile(msg.to);
 
@@ -9278,6 +9333,9 @@ var userOverride = {
                        botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
                 }
                 
+                if (msg.metadata && msg.metadata.KM_ASSIGN){
+                    conversationTransferred = 'mck-conversation-transferred'; 
+                }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
                 //     // if it is not a rich msg and neither contains any text then dont precess it because in UI it is shown as empty text box which does not look good.
@@ -9347,6 +9405,7 @@ var userOverride = {
                         attachmentTemplate: attachmentTemplate,
                         progressMeter: progressMeter,
                         botMsgDelayExpr: botMessageDelayClass,
+                        conversationTransferred: conversationTransferred,
                     },
                 ];
 
@@ -9764,19 +9823,29 @@ var userOverride = {
                     emoji_template.indexOf('emoji-inner') === -1 &&
                     msg.contentType === 0
                 ) {
+                    var $normalTextMsg = $applozic(
+                        "<div class='mck-text-msg-" +
+                            (floatWhere === 'mck-msg-right'
+                                ? 'right'
+                                : 'left') +
+                            "'/>"
+                    );
                     var nodes = emoji_template.split('<br/>');
                     for (var i = 0; i < nodes.length; i++) {
-                        if (nodes[i] === '') {
+                        var currentNode = nodes[i];
+
+                        if (currentNode === '') {
                             var x = d.createElement('BR');
                         } else {
                             var x = d.createElement('div');
-                            x.appendChild(d.createTextNode(nodes[i]));
+                            x.appendChild(d.createTextNode(currentNode));
                             x = $applozic(x).linkify({
                                 target: '_blank',
                             });
                         }
-                        $textMessage.append(x);
+                        $normalTextMsg.append(x);
                     }
+                    $textMessage.append($normalTextMsg)
                 } else {
                     $textMessage.html(emoji_template);
                     $textMessage.linkify({
@@ -11603,6 +11672,9 @@ var userOverride = {
             _this.clearMessageField = function (keyboard) {
                 $mck_text_box.html('');
                 $mck_box_form.removeClass('mck-text-req');
+                $mck_msg_form_req
+                    .addClass('n-vis')
+                    .removeClass('vis')
                 $mck_msg_sbmt.attr('disabled', false);
                 $mck_file_box
                     .removeClass('vis')
@@ -11639,6 +11711,9 @@ var userOverride = {
                         });
                         $file_name.html(draftMessage.filelb);
                         $file_size.html(draftMessage.filesize);
+                        $mck_msg_form_req
+                         .addClass('n-vis')
+                         .removeClass('vis')
                         $mck_file_box
                             .removeClass('n-vis')
                             .removeClass('mck-text-req')
@@ -12704,7 +12779,8 @@ var userOverride = {
                                 'data-contact'
                             ) &&
                         timeOffset <
-                            KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME
+                            KommunicateConstants.MESSAGE_CLUBBING.TIME_FRAME && 
+                        !allMessages[_len - 1].classList.contains("mck-conversation-transferred")
                     ) {
                         allMessages[_len - 2].classList.add(
                             'km-clubbing-first'
@@ -12719,8 +12795,15 @@ var userOverride = {
                                 'data-msgtime'
                             ) - allMessages[key].getAttribute('data-msgtime');
                         if (allMessages[key].nextSibling) {
-                            if(allMessages[key].nextSibling.classList.contains("contains-quick-replies-only")) {
-                                return
+                            if (
+                                allMessages[key].nextSibling.classList.contains(
+                                    'contains-quick-replies-only'
+                                ) ||
+                                allMessages[key].nextSibling.classList.contains(
+                                    'mck-conversation-transferred'
+                                )
+                            ) {
+                                return;
                             };
                             if (
                                 allMessages[key].nextSibling.getAttribute(

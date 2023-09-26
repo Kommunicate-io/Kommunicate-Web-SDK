@@ -1,0 +1,12 @@
+#mck-email-collection-box,
+#mck-email-error-alert-box {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+#mck-email-error-alert-box,
+#mck-away-msg-box,
+#mck-email-collection-box {
+    padding: 3px 16px;
+}
