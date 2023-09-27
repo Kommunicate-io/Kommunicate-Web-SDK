@@ -95,7 +95,38 @@ KommunicateUI = {
             KommunicateUI.awayMessageScroll = false;
         }
     },
-    getLinkDataToPreview: function (url, callback) {
+    
+    checkSvgHasChildren: function (images) {
+        var dataPrefix = 'data:image/svg+xml;base64,';
+        var newImages = [];
+        var isValidSvg = false;
+
+        for (var i = 0; i < images.length; i++) {
+            var image = images[i];
+            if (image.startsWith(dataPrefix)) {
+                isValidSvg = true;
+                var base64Data = image.slice(dataPrefix.length);
+                try {
+                    var decodedData = atob(base64Data);
+                    var parser = new DOMParser();
+                    var svgDocument = parser.parseFromString(
+                        decodedData,
+                        'image/svg+xml'
+                    );
+                    var svg = svgDocument && svgDocument.documentElement;
+                    if (svg && svg.children.length > 0) {
+                        newImages.push(image);
+                        break;
+                    }
+                } catch (err) {
+                    console.error('Error while decoding ', err);
+                }
+            }
+        }
+        return isValidSvg ? newImages : images;
+    },
+
+    getLinkDataToPreview: function (url, callback, isMckRightMsg) {
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
@@ -108,8 +139,10 @@ KommunicateUI = {
             global: false,
             success: function (result) {
                 if (result) {
+                    var images = result.data.images;
+                    result.data.images = images.length ? KommunicateUI.checkSvgHasChildren(images) : [];
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
-                        result
+                        result, isMckRightMsg
                     );
                     callback(previewTemplate);
                 }
@@ -1029,13 +1062,14 @@ KommunicateUI = {
                 },
                 'km-mid-conv-csat'
             );
+           
             kommunicateCommons.modifyClassList(
                 {
-                    id: ['csat-1'],
+                    id: ["csat-1", "csat-2", "mck-feedback-text-wrapper"],
                 },
                 'vis',
                 'n-vis'
-            );
+            )
             KommunicateUI.isConvJustResolved = false;
             KommunicateUI.updateScroll(messageBody);
         } else if (
@@ -1053,7 +1087,7 @@ KommunicateUI = {
                 {
                     id: ['mck-sidebox-ft'],
                 },
-                'mck-closed-conv-banner'
+                'km-mid-conv-csat'
             );
             kommunicateCommons.modifyClassList(
                 {
@@ -1084,6 +1118,13 @@ KommunicateUI = {
                 'vis',
                 'n-vis'
             );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: [ 'mck-sidebox-ft' ]
+
+                },
+               'mck-restart-conv-banner'
+            )
         }
     },
     askCSAT: function (triggeredByBot) {
@@ -1118,7 +1159,11 @@ KommunicateUI = {
                 );
             }
         }
+        var ratingTitleElement = document.querySelector(".mck-csat-title");
         var messageText = MCK_LABELS['closed.conversation.message'];
+        var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
+
+        ratingTitleElement && (ratingTitleElement.innerHTML = ratingTitle);
         var conversationStatusDiv = document.getElementById(
             'mck-conversation-status-box'
         );
@@ -1255,7 +1300,7 @@ KommunicateUI = {
                     {
                         id: ['mck-sidebox-ft'],
                     },
-                    'mck-closed-conv-banner'
+                    'mck-restart-conv-banner'
                 );
                 kommunicateCommons.modifyClassList(
                     {
@@ -1278,10 +1323,17 @@ KommunicateUI = {
                     // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['csat-1'],
+                            id: ['csat-1', 'csat-2'],
                         },
                         '',
                         'n-vis'
+                    );
+                    kommunicateCommons.modifyClassList(
+                        {
+                            id: ['mck-sidebox-ft'],
+                        },
+                        'km-mid-conv-csat',
+                        'mck-restart-conv-banner'
                     );
                     document.getElementById(
                         'mck-submit-comment'
@@ -1337,7 +1389,7 @@ KommunicateUI = {
                 {
                     id: ['mck-sidebox-ft'],
                 },
-                'mck-closed-conv-banner'
+                'km-mid-conv-csat'
             );
             kommunicateCommons.modifyClassList(
                 {
@@ -1367,13 +1419,6 @@ KommunicateUI = {
                 },
                 'n-vis',
                 ''
-            );
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['mck-sidebox-ft'],
-                },
-                '',
-                'mck-closed-conv-banner'
             );
             kommunicateCommons.modifyClassList(
                 {
@@ -1857,7 +1902,8 @@ KommunicateUI = {
                     sourceElement[1].src = url;
                     mediaElement.load();
                     var attachmentWrapper = $applozic(mediaElement).closest('div.mck-file-text.mck-attachment')[0];
-                    attachmentWrapper && (attachmentWrapper.querySelector("a.file-preview-link").href = url);
+                    var mediaURL = attachmentWrapper && attachmentWrapper.querySelector("a.file-preview-link")
+                    mediaURL && (mediaURL.href = url)
                 }
                 setTimeout(function () {
                     mediaElement.classList.add('file-enc');

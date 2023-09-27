@@ -30,3 +30,22 @@ $known-prefixes
     }
     #{$property}: $value;
 }
+
+@mixin gap-supported($gapValue: 1px, $margin: 0, $child-element: '>*') {
+    @supports (gap: $gapValue) {
+        gap: $gapValue;
+    }
+
+    @supports not (gap: $gapValue) {
+        #{$child-element} {
+            margin: $margin;
+        }
+    }
+}
+
+@mixin errorText {
+    font-size: 12px;
+    color: $km-danger-color !important;
+    margin: 0 0 2px;
+    line-height: 1.7;
+}

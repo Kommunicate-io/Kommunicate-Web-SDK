@@ -1,0 +1,126 @@
+.mck-group-inner {
+    background: #fafafa;
+    & .mck-msg-left {
+        .mck-msg-box:after {
+            border-right-color: #e6e5ec;
+        }
+    }
+}
+
+.mck-msg-left .mck-msg-box,
+.mck-msg-right .mck-msg-box {
+    font-size: $heading-secondary;
+    padding: $msg-box-padding;
+    border-radius: $msg-box-border-radius;
+    max-width: 70%;
+    @include prefix(max-width, calc(85% - 58px), moz);
+}
+
+.mck-msg-box {
+    padding: 8px;
+    border: 0px;
+    border-radius: 3px;
+    display: inline-block;
+    max-width: 85%;
+    min-height: 20px;
+    border: 0px solid $input-border-color;
+}
+
+.mck-rich-msg-box {
+    width: $rich-msg-width;
+    max-width: unset !important;
+    border: 1px solid $input-border-color;
+    border-radius: $msg-box-border-radius;
+
+    @media (max-width: 330px) {
+        width: 90%;
+    }
+    &.mck-left-link-box,
+    &.mck-right-link-box {
+        padding: 0;
+
+        & .mck-msg-text > div:first-child {
+            padding: $msg-box-padding;
+        }
+    }
+    &.mck-right-link-box {
+        & .link-preview-content {
+            color: #ffffff;
+            background-color: $primary-color;
+        }
+    }
+}
+
+.mck-msg-left {
+    .mck-msg-box {
+        position: relative;
+        float: left;
+        color: $text-primary-color;
+        min-height: 20px;
+        -ms-flex-item-align: end;
+        @include prefix(align-self, flex-end, webkit);
+        @include prefix(animation-name, slideFromRight, webkit);
+        &:after,
+        &:before {
+            right: 100%;
+            height: 0;
+            width: 0;
+            position: absolute;
+        }
+        & .mck-context-menu {
+            left: 20px !important;
+        }
+
+        a {
+            color: $text-primary-color;
+            text-decoration: none;
+            &:hover {
+                color: rgb(218, 85, 47);
+            }
+        }
+    }
+}
+
+.mck-msg-right .mck-msg-box a {
+    color: #fff;
+    text-decoration: underline;
+}
+.mck-msg-right .mck-msg-box a:hover {
+    color: yellow;
+}
+
+.mck-msg-right .mck-context-menu {
+    right: 20px !important;
+}
+.mck-msg-right .mck-msg-box {
+    color: $text-secondary-color;
+    background-color: $primary-color;
+    float: right !important;
+    margin-right: 15px;
+    min-height: 20px;
+    @include prefix(align-self, flex-start, webkit);
+    -ms-flex-item-align: start;
+    @include prefix(animation-name, kmOpeningAnimation, webkit);
+    display: inline-block;
+    position: relative;
+}
+
+.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
+    float: left;
+    left: 22px;
+    margin: -9px 0 0 3px;
+}
+
+.km-clubbing-last.mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
+    bottom: 26px;
+    top: auto;
+}
+
+.mck-text-msg-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.mck-conversation-transferred {
+    margin: 12px 0;
+}

@@ -1,0 +1,316 @@
+.mck-msg-box-rich-text-container .km-carousel-card-template.km-single-card {
+    margin-left: 0px !important;
+}
+.km-carousel-card {
+    &-template {
+        max-width: $rich-msg-width;
+        width: $rich-msg-width !important;
+        margin: 8px 4px 0 10px;
+        position: relative;
+        border-radius: $msg-box-border-radius;
+        border: 1px solid $input-border-color;
+        overflow: hidden;
+    }
+
+    &-title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &-title,
+    &-sub-title,
+    &-description,
+    &-title-extension {
+        color: $text-primary-color;
+        font-family: $font-family-primary !important;
+    }
+
+    &-title {
+        font-size: $heading-secondary;
+        font-weight: 700;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 0.6px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 220px;
+        text-overflow: ellipsis;
+    }
+    &-sub-title {
+        font-size: $heading-secondary;
+        font-weight: normal;
+        letter-spacing: 0.5px;
+        margin-top: 4px;
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        padding-right: 20px;
+    }
+
+    &-title-extension {
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        margin-right: 9px;
+        margin-left: 8px;
+        margin-top: 4px;
+    }
+
+    &-description {
+        overflow: hidden;
+        position: relative;
+        line-height: 14.4px;
+        max-height: 43.2px;
+        margin-right: 12px;
+        padding-right: 12px;
+        margin-top: 4px;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        height: auto;
+        white-space: pre-line;
+        text-overflow: ellipsis;
+
+        &-wrapper {
+            height: 44px;
+        }
+
+        &:before {
+            content: '...';
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+        &:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            margin-top: 2.4px;
+            background: #ffffff;
+        }
+    }
+
+    &-overlay-text {
+        position: absolute;
+        bottom: 55px;
+        left: 0;
+        background-color: #ffffff;
+        padding: 10px;
+        color: $text-primary-color;
+        font-weight: 500;
+        display: inline-block;
+        border-radius: 0 4px 4px 0;
+        font-size: 16px;
+        border-radius: 0 4px 4px 0;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+        &-without-img {
+            position: static;
+            background-color: #d6d6d6;
+            border-radius: 0 0 4px 0;
+            box-shadow: none;
+        }
+    }
+    &-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    &-header {
+        position: relative;
+        height: $card-img-height;
+        &-with-img {
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+        }
+
+        &-without-img {
+            height: 37px;
+            border-bottom: 0;
+            border-radius: 2px;
+        }
+    }
+    &-content-wrapper {
+        padding-top: 6px;
+        padding-left: 9px;
+        padding-bottom: 6px;
+        border-top: 0;
+    }
+
+    &-img {
+        border-radius: 5px 5px 0 0;
+    }
+
+    &-info-wrapper-without-header {
+        border-top: 1px solid #e7e4e4;
+        border-radius: 7px 7px 0 0;
+    }
+
+    &-info-wrapper-with-buttons {
+        border-bottom: 0;
+    }
+
+    &-footer {
+        form {
+            margin: 0;
+        }
+
+        button {
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        & .km-cta-button,
+        .km-cta-multi-button-container button {
+            width: 100%;
+            border-color: $input-border-color;
+            border-bottom: none;
+            margin: 0;
+            background: #ffffff !important;
+            padding: $msg-box-padding;
+        }
+        & .km-cta-multi-button-container button.km-quick-replies {
+            border-bottom: none;
+            text-align: center;
+            border: none;
+            border-top: 1px solid $input-border-color;
+        }
+    }
+}
+
+.tns-slider .km-carousel-card-template {
+    margin: 8px 4px 0 6px;
+}
+
+.km-carousel-url-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.km-list-container {
+    margin-top: 8px;
+    border: solid 1px #e5e5e5;
+}
+.tns-controls button[data-controls='next'] svg {
+    transform: rotate(180deg);
+}
+.tns-controls:focus {
+    outline: none;
+}
+
+.km-cta-button-many,
+.km-quick-rpy-btn,
+.km-cta-button {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.km-cta-multi-button-container .km-cta-button-many,
+.km-cta-multi-button-container .km-cta-button-1 {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+/* .km-cta-multi-button-container .km-cta-button-1{
+        margin-top: 10px;
+        width:50%;
+    } */
+.km-cta-multi-button-container .km-cta-button-2 {
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 6px 14px;
+}
+.km-cta-multi-button-container button a {
+    margin: -6px -10px;
+    padding: 8px 10px;
+}
+.km-cta-button {
+    color: #5553b7;
+    border: 1px solid #5553b7;
+}
+.km-undecorated-link {
+    text-decoration: none;
+}
+.km-cta-button.km-link-button {
+    text-align: left;
+    font-size: 14px;
+}
+.km-cta-button.km-link-button span {
+    vertical-align: sub;
+    margin-left: 5px;
+}
+.km-cta-button.km-link-button span svg {
+    margin-bottom: 0.1rem;
+}
+.km-cta-button.km-carousel-card-button,
+.km-cta-button.km-faq-list-link-button {
+    border: none;
+    border-top: 1px solid $input-border-color;
+    text-align: center;
+    padding-left: 0px;
+    font-size: 12px;
+}
+.km-cta-button.km-faq-list-link-button {
+    border: none;
+    font-size: 14px;
+}
+.km-cta-button.km-carousel-card-button:hover,
+.km-cta-button.km-faq-list-link-button:hover {
+    text-decoration: none;
+}
+
+.tns-controls {
+    padding-bottom: 0px;
+}
+.km-cta-multi-button-container {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.km-slick-container .tns-controls button {
+    position: absolute;
+    padding: 0;
+    bottom: 50%;
+    background-color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 44px;
+    box-shadow: 1px 2px 4px 1px rgba(0, 0, 0, 0.12);
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    z-index: 5;
+    transform: translateY(50%);
+    padding: 0;
+}
+
+.km-slick-container .tns-controls button:first-child {
+    left: 45px;
+}
+.km-slick-container .tns-controls button:last-child {
+    right: 0;
+}
+.km-slider-multiple-cards-container .tns-controls button:first-child {
+    left: 0;
+}
+
+.km-cta-multi-button-container button.km-quick-replies {
+    font-size: 14px;
+    border: 1px solid;
+    background-color: white;
+}
+.km-cta-multi-button-container button.km-cta-button {
+    font-size: 14px;
+}
+.km-cta-multi-button-container .km-quick-replies.km-carousel-card-button {
+    border-color: #e7e4e4;
+}

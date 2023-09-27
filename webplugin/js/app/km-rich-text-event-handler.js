@@ -375,7 +375,7 @@ Kommunicate.attachmentEventHandler = {
 Kommunicate.richMsgEventHandler = {
     svg: {
         arrow:
-            '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="11" viewBox="0 0 10 19"><path fill="#5B5959" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>',
+            '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 10 19"><path fill="#1c1c1c" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>',
     },
     initializeSlick: function ($cardMessageContainer) {
         if ($cardMessageContainer.length > 0) {
@@ -720,8 +720,14 @@ Kommunicate.richMsgEventHandler = {
         Kommunicate.sendMessage(messagePxy);
     },
     handleFormErrorMessage: function (form, name, errorText, validationFailed) {
+        var fieldName = name.toLowerCase()
+        var container = form.getElementsByClassName('mck-form-' + fieldName + '-error-container');
+        if (container.length) {
+            validationFailed ? container[0].classList.remove('n-vis'): container[0].classList.add('n-vis');
+        }
+
         var element = form.getElementsByClassName(
-            ('mck-form-error-' + name).toLowerCase().replace(/ +/g, '')
+            ('mck-form-error-' + fieldName).replace(/ +/g, '')
         )[0];
         element.innerHTML = validationFailed ? errorText : '';
     },
