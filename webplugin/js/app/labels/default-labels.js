@@ -137,11 +137,14 @@ Kommunicate.defaultLabels = {
             'Conversation resolved and you rated it as',
         CONVERSATION_RATED: 'You rated the conversation as',
         RATE_CONVERSATION: 'Rate your conversation',
-        CONVERSATION_REVIEW_PLACEHOLDER: 'Add a feedback (optional)',
+        CONVERSATION_REVIEW_PLACEHOLDER: '(optional)',
         OTHER_QUERIES: 'Have other queries? ',
         RESTART_CONVERSATION: 'Restart the conversation',
         SUBMIT_RATING: 'Submit your rating',
-        CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk
+        CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk,
+        CONVERSATION_RATING_HEADING:
+            'How satisfied you are with the conversation?',
+        RATE_ERROR_MSG: "Please rate the conversation"
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {

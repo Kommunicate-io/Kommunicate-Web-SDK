@@ -1062,13 +1062,14 @@ KommunicateUI = {
                 },
                 'km-mid-conv-csat'
             );
+           
             kommunicateCommons.modifyClassList(
                 {
-                    id: ['csat-1'],
+                    id: ["csat-1", "csat-2", "mck-feedback-text-wrapper"],
                 },
                 'vis',
                 'n-vis'
-            );
+            )
             KommunicateUI.isConvJustResolved = false;
             KommunicateUI.updateScroll(messageBody);
         } else if (
@@ -1086,7 +1087,7 @@ KommunicateUI = {
                 {
                     id: ['mck-sidebox-ft'],
                 },
-                'mck-closed-conv-banner'
+                'km-mid-conv-csat'
             );
             kommunicateCommons.modifyClassList(
                 {
@@ -1117,6 +1118,13 @@ KommunicateUI = {
                 'vis',
                 'n-vis'
             );
+            kommunicateCommons.modifyClassList(
+                {
+                    id: [ 'mck-sidebox-ft' ]
+
+                },
+               'mck-restart-conv-banner'
+            )
         }
     },
     askCSAT: function (triggeredByBot) {
@@ -1151,7 +1159,11 @@ KommunicateUI = {
                 );
             }
         }
+        var ratingTitleElement = document.querySelector(".mck-csat-title");
         var messageText = MCK_LABELS['closed.conversation.message'];
+        var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
+
+        ratingTitleElement && (ratingTitleElement.innerHTML = ratingTitle);
         var conversationStatusDiv = document.getElementById(
             'mck-conversation-status-box'
         );
@@ -1278,7 +1290,7 @@ KommunicateUI = {
                     {
                         id: ['mck-sidebox-ft'],
                     },
-                    'mck-closed-conv-banner'
+                    'mck-restart-conv-banner'
                 );
                 kommunicateCommons.modifyClassList(
                     {
@@ -1301,10 +1313,17 @@ KommunicateUI = {
                     // no rating given after conversation is resolved
                     kommunicateCommons.modifyClassList(
                         {
-                            id: ['csat-1'],
+                            id: ['csat-1', 'csat-2'],
                         },
                         '',
                         'n-vis'
+                    );
+                    kommunicateCommons.modifyClassList(
+                        {
+                            id: ['mck-sidebox-ft'],
+                        },
+                        'km-mid-conv-csat',
+                        'mck-restart-conv-banner'
                     );
                     document.getElementById(
                         'mck-submit-comment'
@@ -1360,7 +1379,7 @@ KommunicateUI = {
                 {
                     id: ['mck-sidebox-ft'],
                 },
-                'mck-closed-conv-banner'
+                'km-mid-conv-csat'
             );
             kommunicateCommons.modifyClassList(
                 {
@@ -1390,13 +1409,6 @@ KommunicateUI = {
                 },
                 'n-vis',
                 ''
-            );
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['mck-sidebox-ft'],
-                },
-                '',
-                'mck-closed-conv-banner'
             );
             kommunicateCommons.modifyClassList(
                 {
