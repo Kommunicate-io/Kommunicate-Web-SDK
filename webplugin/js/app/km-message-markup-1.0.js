@@ -119,6 +119,7 @@ Kommunicate.popupChatTemplate = {
                 popupWidgetContent.length &&
                 popupWidgetContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
+        var alignLeft = KommunicateConstants.POSITION.LEFT === chatWidget.position ? "align-left" : "align-right";
 
         if(Array.isArray(popupMessageContent)){
             var len = popupMessageContent.length;
@@ -168,14 +169,14 @@ Kommunicate.popupChatTemplate = {
             
                 chatPopupTemplateMarkup =
                 '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' +
-                templateCss +
+                templateCss + ' '+ alignLeft +
                 ' n-vis"><div class="chat-popup-widget-text-wrapper ' +
                 launcherClass +
                 '"><p class="chat-popup-widget-text">' +
                 (popupMessageContent &&
                     kommunicateCommons.formatHtmlTag(popupMessageContent)) +
                 '</p></div>' +
-                '<div class="chat-popup-widget-close-btn-container"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"><svg viewBox="0 0 64 64" width="8" xmlns="http://www.w3.org/2000/svg" height="8"><path fill="#fff" d="M28.941 31.786L.613 60.114a2.014 2.014 0 1 0 2.848 2.849l28.541-28.541 28.541 28.541c.394.394.909.59 1.424.59a2.014 2.014 0 0 0 1.424-3.439L35.064 31.786 63.41 3.438A2.014 2.014 0 1 0 60.562.589L32.003 29.15 3.441.59A2.015 2.015 0 0 0 .593 3.439l28.348 28.347z"></path></svg></span></div></div>' +
+                '<div class="chat-popup-widget-close-btn-container"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.6667 4.27337L11.7267 3.33337L8.00001 7.06004L4.27334 3.33337L3.33334 4.27337L7.06001 8.00004L3.33334 11.7267L4.27334 12.6667L8.00001 8.94004L11.7267 12.6667L12.6667 11.7267L8.94001 8.00004L12.6667 4.27337Z" fill="#1C1C1C"/></svg></span></div></div>' +
                 (templateKey == KommunicateConstants.CHAT_POPUP_TEMPLATE.ACTIONABLE ?
                     actionableButtonTemplateMarkup : "") +
                 '</div>';

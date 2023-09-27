@@ -47,7 +47,7 @@ var kmCustomIframe =
     '} } \n' +
     '.km-iframe-notification{ ' +
     '    height:80px; ' +
-    '    width:330px; ' +
+    '    width:370px !important; ' +
     '} \n ' +
     '.km-iframe-dimension-no-popup{' +
     '    height: 600px;' +
@@ -70,21 +70,20 @@ var kmCustomIframe =
     'width:100vw;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
-    '   width: 445px;' +
+    '   width: 455px;' +
     '   height: 80px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
-    '   width: 415px;' +
-    '   height: 153px;' +
+    '   width: 380px;' +
+    '   height: 250px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
-    '   width: 350px;' +
+    '   width: 370px;' +
     '   height: 270px;' +
     '} \n' +
     '@media only screen and (max-device-width: 420px) { ' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     'width: 100%;' +
-    'height: 155px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
     '   width: 100%;' +
@@ -95,6 +94,11 @@ var kmCustomIframe =
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' +
     'width: 100%;' +
+    '} \n' +
+    '} \n' +
+    '@media only screen and (max-device-width: 320px) { ' +
+    '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
+    'height: 280px;' +
     '} \n' +
     '} \n' +
     '.kommunicate-hide-custom-iframe { ' +
