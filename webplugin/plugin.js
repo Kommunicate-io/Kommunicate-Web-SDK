@@ -75,7 +75,7 @@ var kmCustomIframe =
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     '   width: 380px;' +
-    '   height: 215px;' +
+    '   height: 250px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-actionable { ' +
     '   width: 370px;' +
@@ -84,7 +84,6 @@ var kmCustomIframe =
     '@media only screen and (max-device-width: 420px) { ' +
     '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
     'width: 100%;' +
-    'height: 155px;' +
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-horizontal { ' +
     '   width: 100%;' +
@@ -95,6 +94,11 @@ var kmCustomIframe =
     '} \n' +
     '.kommunicate-custom-iframe.chat-popup-widget-container--horizontal { ' +
     'width: 100%;' +
+    '} \n' +
+    '} \n' +
+    '@media only screen and (max-device-width: 320px) { ' +
+    '.kommunicate-custom-iframe.chat-popup-widget-vertical { ' +
+    'height: 280px;' +
     '} \n' +
     '} \n' +
     '.kommunicate-hide-custom-iframe { ' +
