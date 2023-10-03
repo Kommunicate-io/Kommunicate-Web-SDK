@@ -405,6 +405,14 @@ var userOverride = {
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
             console.log("In on_tab_clicked", event);
+            const details = event.data.groupDetails;
+            if (details) {
+                const assignee =
+                    details.metadata && details.metadata.CONVERSATION_ASSIGNEE;
+                const groupUsers = details.groupUsers;
+                details &&  assignee && groupUsers && KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
+            }
+
             if (kommunicate._globals.zendeskChatSdkKey) {
                 onTabClickedHandlerForZendeskConversations(event);
             }
@@ -2733,7 +2741,9 @@ var userOverride = {
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
+                
                 // calling Kommunicate for post initialization processing. error first style.
+
                 Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     userId: MCK_USER_ID,
@@ -6644,6 +6654,18 @@ var userOverride = {
                             data.groupFeeds[0].metadata.KM_TEAM_ID;
                         params.isWaitingQueue &&
                             KommunicateUI.handleWaitingQueueMessage();
+
+                        const assignee =
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata &&
+                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                        const groupUsers = data.userDetails;
+                        assignee &&
+                            groupUsers &&
+                            KommunicateUI.toggleVisibilityOfTextArea(
+                                assignee,
+                                groupUsers
+                            );
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
@@ -7876,7 +7898,22 @@ var userOverride = {
                                         }
                                     );
                                 }
-                               
+                                kommunicateCommons.modifyClassList(
+                                    {
+                                        class: ['mck-box-form'],
+                                    },
+                                    'n-vis'
+                                );
+                                const assignee =
+                                    groupPxy.metadata &&
+                                    groupPxy.metadata.CONVERSATION_ASSIGNEE;
+                                const groupUsers = groupPxy.groupUsers;
+                                assignee &&
+                                    groupUsers &&
+                                    KommunicateUI.toggleVisibilityOfTextArea(
+                                        assignee,
+                                        groupUsers
+                                    );
                                 CURRENT_GROUP_DATA.tabId =
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
@@ -8592,6 +8629,7 @@ var userOverride = {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
                             isGroup: params.isGroup,
+                            data:params
                         });
                     }
                 } else {
@@ -13990,6 +14028,12 @@ var userOverride = {
                 }
             };
             _this.onGroupFeed = function (response, params) {
+                if(response && response.data){
+                    const assignee =  response.data.metadata && response.data.metadata.CONVERSATION_ASSIGNEE
+                    const groupUsers = response.data.groupUsers;
+                    KommunicateUI.toggleVisibilityOfTextArea(assignee,groupUsers)
+                }
+
                 $mck_loading.removeClass('vis').addClass('n-vis');
                 if (response.status === 'success') {
                     var groupFeed = response.data;
@@ -16189,7 +16233,7 @@ var userOverride = {
                     $mck_msg_inner.data(
                         'last-message-received-time',
                         resp.message.createdAtTime
-                    );
+                    )
                 var messageType = resp.type;
                 if (
                     messageType === 'APPLOZIC_04' ||
@@ -16664,7 +16708,7 @@ var userOverride = {
                                     contact.metadata &&
                                     contact.metadata.KM_ORIGINAL_TITLE
                                 )
-                            ) {
+                            ) { 
                                 var getUsersDetailparams = {
                                     cached: false,
                                 };
@@ -16683,6 +16727,15 @@ var userOverride = {
                                             updatedAssignee,
                                             tabId
                                         );
+                                        kommunicate.client.getChatListByGroupId({ 
+                                            groupId: CURRENT_GROUP_DATA.tabId 
+                                        },function(err, result){
+                                            if (err || !result) {
+                                                console.log('An error occurred while fetching chat users ',err);
+                                                return;
+                                            }
+                                            KommunicateUI.toggleVisibilityOfTextArea(updatedAssignee.userId,result.userDetails);
+                                        })
                                         if (
                                             updatedAssignee.roleType !=
                                             KommunicateConstants

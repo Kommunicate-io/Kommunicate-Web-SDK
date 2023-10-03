@@ -942,7 +942,6 @@ KommunicateUI = {
             .text(MCK_LABELS[status])
             .addClass('vis')
             .removeClass('n-vis');
-        this.disableTextArea(window && window.CURRENT_GROUP_DATA) 
     },
     toggleVoiceOutputOverride: function (voiceOutput) {
         if (voiceOutput) {
@@ -1898,26 +1897,27 @@ KommunicateUI = {
             }
         );
     },
-    disableTextArea: function (data) {
+    toggleVisibilityOfTextArea: function (assignee,groupMembers) {
         var isDisableTextAreaEnabled =
-            kommunicate &&
-            kommunicate._globals &&
-            kommunicate._globals.disableTextArea;
-        if (isDisableTextAreaEnabled) {
-            if (data && data.conversationAssignee && data.groupMembers) {
-                var assignee = data.conversationAssignee;
-                var groupMembers = data.groupMembers;
+        kommunicate &&
+        kommunicate._globals &&
+        kommunicate._globals.disableTextArea;
+        if(isDisableTextAreaEnabled){
+            if(assignee && groupMembers){
                 for (var i = 0; i < groupMembers.length; i++) {
                     if (
                         groupMembers[i].userId === assignee &&
-                        (groupMembers[i].roleType == '1' ||
-                            groupMembers[i].role == '2')
+                        (
+                            groupMembers[i].roleType == '1' ||
+                            groupMembers[i].role == '2' 
+                            )
                     ) {
                         kommunicateCommons.modifyClassList(
                             {
                                 class: ['mck-box-form'],
                             },
-                            'n-vis'
+                            'n-vis',
+                            'vis'
                         );
                         break;
                     }
@@ -1932,6 +1932,8 @@ KommunicateUI = {
                     }
                 }
             }
-        } 
+           
+        }
+
     },
 };
