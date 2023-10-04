@@ -50,7 +50,7 @@
                         if (
                             !response ||
                             !response.data ||
-                            !response.data.length //if articles is empty but there are one faq
+                            !response.data.length // if data is an empty array
                         ) {
                             return null;
                         }
