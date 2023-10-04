@@ -87,11 +87,17 @@
 	color: #aeaaaa !important;
 }
 
-#mck-text-box[contenteditable=true]:empty:not(:focus):before {
+#mck-text-box[contenteditable=true]::before {
     content: attr(data-text);
 	color: #949494;
 	opacity:0.6;
     /* the properties mentioned below fixes text cursor disappear issue */
+    position: relative;
+    z-index: -1;
+}
+
+#mck-text-box[contenteditable=true]:not(:empty)::before {
+    content: "";
     position: relative;
     z-index: -1;
 }
