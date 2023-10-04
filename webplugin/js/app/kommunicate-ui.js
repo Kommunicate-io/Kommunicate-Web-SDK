@@ -1902,37 +1902,34 @@ KommunicateUI = {
         kommunicate &&
         kommunicate._globals &&
         kommunicate._globals.disableTextArea;
-        if(isDisableTextAreaEnabled){
-            if(assignee && groupMembers){
-                for (var i = 0; i < groupMembers.length; i++) {
-                    if (
-                        groupMembers[i].userId === assignee &&
-                        (
-                            groupMembers[i].roleType == '1' ||
-                            groupMembers[i].role == '2' 
-                            )
-                    ) {
-                        kommunicateCommons.modifyClassList(
-                            {
-                                class: ['mck-box-form'],
-                            },
-                            'n-vis',
-                            'vis'
-                        );
-                        break;
-                    }
-                    else {
-                        kommunicateCommons.modifyClassList(
-                            {
-                                class: ['mck-box-form'],
-                            },
-                            'vis',
-                            'n-vis'
-                        );
-                    }
+        if (isDisableTextAreaEnabled && assignee && groupMembers) {
+            for (var i = 0; i < groupMembers.length; i++) {
+                if (
+                    groupMembers[i] &&
+                    groupMembers[i].userId === assignee &&
+                    (groupMembers[i].roleType ==
+                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT ||
+                        groupMembers[i].role ==
+                            KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT)
+                ) {
+                    kommunicateCommons.modifyClassList(
+                        {
+                            class: ['mck-box-form'],
+                        },
+                        'n-vis',
+                        'vis'
+                    );
+                    break;
+                } else {
+                    kommunicateCommons.modifyClassList(
+                        {
+                            class: ['mck-box-form'],
+                        },
+                        'vis',
+                        'n-vis'
+                    );
                 }
             }
-           
         }
 
     },

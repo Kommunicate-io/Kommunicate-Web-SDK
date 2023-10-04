@@ -405,12 +405,12 @@ var userOverride = {
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
             console.log("In on_tab_clicked", event);
-            const details = event.data.groupDetails;
+            const details = event && event.data && event.data.groupDetails;
             if (details) {
                 const assignee =
                     details.metadata && details.metadata.CONVERSATION_ASSIGNEE;
                 const groupUsers = details.groupUsers;
-                details &&  assignee && groupUsers && KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
+                assignee && groupUsers && KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
             }
 
             if (kommunicate._globals.zendeskChatSdkKey) {
@@ -8629,7 +8629,7 @@ var userOverride = {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
                             isGroup: params.isGroup,
-                            data:params
+                            data: params,
                         });
                     }
                 } else {
