@@ -57,17 +57,22 @@ KommunicateConstants = {
     RATING_TITLE: {
         1: 'Poor',
         5: 'Average',
-        10: 'Great'
+        10: 'Great',
     },
     DEFAULT_AVATAR_IMAGE:
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
     RICH_MESSAGE_ICON:
         '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg>',
-    VIDEO_ICON: '<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.612 1.69804L14.5899 4.0101V3.264C14.5899 2.62758 14.3371 2.01708 13.8869 1.56701C13.4369 1.11694 12.8264 0.864014 12.1899 0.864014H2.39999C1.76356 0.864014 1.15307 1.11694 0.702996 1.56701C0.25282 2.01708 0 2.62754 0 3.264V10.7361C0 11.3725 0.252788 11.983 0.702996 12.4331C1.15307 12.8832 1.76353 13.1361 2.39999 13.1361H12.1899C12.8264 13.1361 13.4369 12.8832 13.8869 12.4331C14.3371 11.983 14.5899 11.3726 14.5899 10.7361V9.99L18.612 12.3021C19.374 12.7401 20 12.38 20 11.5021V2.50218C20 1.62008 19.376 1.26015 18.612 1.69804Z" fill="#919EAD"/></svg>',
-    IMAGE_ICON: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M18 16V2C18 0.9 17.1 0 16 0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H16C17.1 18 18 17.1 18 16ZM5.9 10.98L8 13.51L11.1 9.52C11.3 9.26 11.7 9.26 11.9 9.53L15.41 14.21C15.66 14.54 15.42 15.01 15.01 15.01H3.02C2.6 15.01 2.37 14.53 2.63 14.2L5.12 11C5.31 10.74 5.69 10.73 5.9 10.98Z" fill="#919EAD"/></svg>',
-    DOCUMENT_ICON: '<svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.59 0.59C10.21 0.21 9.7 0 9.17 0H2C0.9 0 0 0.9 0 2V18C0 19.1 0.89 20 1.99 20H14C15.1 20 16 19.1 16 18V6.83C16 6.3 15.79 5.79 15.41 5.42L10.59 0.59ZM11 16H5C4.45 16 4 15.55 4 15C4 14.45 4.45 14 5 14H11C11.55 14 12 14.45 12 15C12 15.55 11.55 16 11 16ZM11 12H5C4.45 12 4 11.55 4 11C4 10.45 4.45 10 5 10H11C11.55 10 12 10.45 12 11C12 11.55 11.55 12 11 12ZM9 6V1.5L14.5 7H10C9.45 7 9 6.55 9 6Z" fill="#919EAD"/></svg>',
-    LOCATION_ICON: '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="rgba(38,50,56,.52)"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
-    ATTACHMENT_ICON: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><g data-name="Group 122"><path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 1"></path><path d="M19.00483767 16.29529691l-11.90272845-.0417193a4.358 4.358 0 0 1-4.32607928-4.32607929A4.259 4.259 0 0 1 7.0483691 7.65515915l10.48639356.03394113v.70710678L7.07241074 8.3382243a3.61826547 3.61826547 0 1 0 .00141421 7.2365308l11.89990002.03889087a2.647 2.647 0 0 0 2.68700577-2.68700576 2.688 2.688 0 0 0-2.70680476-2.70680476l-10.15476048-.0615183a1.774 1.774 0 0 0-1.75998878 1.75998879 1.8 1.8 0 0 0 1.76776695 1.76776695l8.82681395.02899138v.70710678l-8.81832866-.02333453a2.491 2.491 0 0 1-2.47840927-2.47840926 2.46 2.46 0 0 1 2.46426713-2.46426714l10.18375186.0311127a3.462 3.462 0 0 1 3.4400745 3.4400745 3.424 3.424 0 0 1-3.4202755 3.3679496z" data-name="Path 1"></path></g></svg>',
+    VIDEO_ICON:
+        '<svg width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18.612 1.69804L14.5899 4.0101V3.264C14.5899 2.62758 14.3371 2.01708 13.8869 1.56701C13.4369 1.11694 12.8264 0.864014 12.1899 0.864014H2.39999C1.76356 0.864014 1.15307 1.11694 0.702996 1.56701C0.25282 2.01708 0 2.62754 0 3.264V10.7361C0 11.3725 0.252788 11.983 0.702996 12.4331C1.15307 12.8832 1.76353 13.1361 2.39999 13.1361H12.1899C12.8264 13.1361 13.4369 12.8832 13.8869 12.4331C14.3371 11.983 14.5899 11.3726 14.5899 10.7361V9.99L18.612 12.3021C19.374 12.7401 20 12.38 20 11.5021V2.50218C20 1.62008 19.376 1.26015 18.612 1.69804Z" fill="#919EAD"/></svg>',
+    IMAGE_ICON:
+        '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M18 16V2C18 0.9 17.1 0 16 0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H16C17.1 18 18 17.1 18 16ZM5.9 10.98L8 13.51L11.1 9.52C11.3 9.26 11.7 9.26 11.9 9.53L15.41 14.21C15.66 14.54 15.42 15.01 15.01 15.01H3.02C2.6 15.01 2.37 14.53 2.63 14.2L5.12 11C5.31 10.74 5.69 10.73 5.9 10.98Z" fill="#919EAD"/></svg>',
+    DOCUMENT_ICON:
+        '<svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.59 0.59C10.21 0.21 9.7 0 9.17 0H2C0.9 0 0 0.9 0 2V18C0 19.1 0.89 20 1.99 20H14C15.1 20 16 19.1 16 18V6.83C16 6.3 15.79 5.79 15.41 5.42L10.59 0.59ZM11 16H5C4.45 16 4 15.55 4 15C4 14.45 4.45 14 5 14H11C11.55 14 12 14.45 12 15C12 15.55 11.55 16 11 16ZM11 12H5C4.45 12 4 11.55 4 11C4 10.45 4.45 10 5 10H11C11.55 10 12 10.45 12 11C12 11.55 11.55 12 11 12ZM9 6V1.5L14.5 7H10C9.45 7 9 6.55 9 6Z" fill="#919EAD"/></svg>',
+    LOCATION_ICON:
+        '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="rgba(38,50,56,.52)"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
+    ATTACHMENT_ICON:
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><g data-name="Group 122"><path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 1"></path><path d="M19.00483767 16.29529691l-11.90272845-.0417193a4.358 4.358 0 0 1-4.32607928-4.32607929A4.259 4.259 0 0 1 7.0483691 7.65515915l10.48639356.03394113v.70710678L7.07241074 8.3382243a3.61826547 3.61826547 0 1 0 .00141421 7.2365308l11.89990002.03889087a2.647 2.647 0 0 0 2.68700577-2.68700576 2.688 2.688 0 0 0-2.70680476-2.70680476l-10.15476048-.0615183a1.774 1.774 0 0 0-1.75998878 1.75998879 1.8 1.8 0 0 0 1.76776695 1.76776695l8.82681395.02899138v.70710678l-8.81832866-.02333453a2.491 2.491 0 0 1-2.47840927-2.47840926 2.46 2.46 0 0 1 2.46426713-2.46426714l10.18375186.0311127a3.462 3.462 0 0 1 3.4400745 3.4400745 3.424 3.424 0 0 1-3.4202755 3.3679496z" data-name="Path 1"></path></g></svg>',
     CONVERSATION_CLOSED_STATUS: 'closed',
     CONVERSATION_RESOLVED_STATUS: 'Resolved',
     CONVERSATION_OPEN_STATUS: 'Open',
@@ -188,12 +193,12 @@ KommunicateConstants = {
     CHAT_POPUP_TEMPLATE: {
         HORIZONTAL: 1,
         VERTICAL: 2,
-        ACTIONABLE: 3
+        ACTIONABLE: 3,
     },
     CHAT_POPUP_TEMPLATE_CLASS: {
         1: 'chat-popup-widget-container--horizontal',
         2: 'chat-popup-widget-container--vertical',
-        3: 'chat-popup-widget-container--actionable'
+        3: 'chat-popup-widget-container--actionable',
     },
     GROUP_ROLE: {
         USER: 0,
@@ -206,18 +211,48 @@ KommunicateConstants = {
         RIGHT: 'right',
     },
     KOMMUNICATE_DOMAINS: ['kommunicate.io'],
-    AWS_IMAGE_URL_EXPIRY_TIME: 15*60*1000,
-    IMAGE_PLACEHOLDER_URL: 'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
+    AWS_IMAGE_URL_EXPIRY_TIME: 15 * 60 * 1000,
+    IMAGE_PLACEHOLDER_URL:
+        'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
     MAX_UPLOAD_SIZE: 25000000,
     FEEDBACK_API_STATUS: {
         INIT: 1,
         RATED: 2,
     },
     APPLOZIC_USER_STATUS: {
-        0 : 'offline', 
-        1 : 'online', 
-        2 : 'away',
-        3 : 'online', // NOT_AWAY
+        0: 'offline',
+        1: 'online',
+        2: 'away',
+        3: 'online', // NOT_AWAY
+    },
+    HEADER_PRIMARY_CTA: {
+        CSAT_RATING: {
+            id: 'km-csat-trigger',
+            name: 'CSAT_RATING',
+            icon:
+                '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.99998 11.8467L12.12 14.3334L11.0266 9.64675L14.6666 6.49341L9.87331 6.08675L7.99998 1.66675L6.12665 6.08675L1.33331 6.49341L4.97331 9.64675L3.87998 14.3334L7.99998 11.8467Z" fill="#ffffff"></path></svg>',
+        },
+        RESTART_CONVERSATION: {
+            id: 'km-restart-conversation',
+            name: 'RESTART_CONVERSATION',
+            icon:
+                '<svg class="restart-conversation-icon" width="17" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.00002 8.85669C4.00002 7.75669 4.44669 6.75669 5.17335 6.03002L4.22669 5.08336C3.26669 6.05002 2.66669 7.38336 2.66669 8.85669C2.66669 11.5767 4.70002 13.8167 7.33335 14.1434V12.7967C5.44669 12.4767 4.00002 10.8367 4.00002 8.85669ZM13.3334 8.85669C13.3334 5.91002 10.9467 3.52336 8.00002 3.52336C7.96002 3.52336 7.92002 3.53002 7.88002 3.53002L8.60669 2.80336L7.66669 1.85669L5.33335 4.19002L7.66669 6.52336L8.60669 5.58336L7.88669 4.86336C7.92669 4.86336 7.96669 4.85669 8.00002 4.85669C10.2067 4.85669 12 6.65002 12 8.85669C12 10.8367 10.5534 12.4767 8.66669 12.7967V14.1434C11.3 13.8167 13.3334 11.5767 13.3334 8.85669Z" fill="#ffffff"></path></svg>',
+        },
+        TTS: {
+            id: 'user-overide-voice-output',
+            name: 'TTS',
+            icon: {
+                ON:
+                    '<svg width="16px" height="16px" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.458984 4.66672V7.33339C0.458984 7.70006 0.76882 8.00006 1.14751 8.00006H3.21308L5.47833 10.1934C5.9121 10.6134 6.65571 10.3134 6.65571 9.72006V2.27339C6.65571 1.68006 5.9121 1.38006 5.47833 1.80006L3.21308 4.00006H1.14751C0.76882 4.00006 0.458984 4.30006 0.458984 4.66672ZM9.75407 6.00006C9.75407 4.82006 9.05177 3.80672 8.03275 3.31339V8.68006C9.05177 8.19339 9.75407 7.18006 9.75407 6.00006ZM8.03275 0.966723V1.10006C8.03275 1.35339 8.20489 1.57339 8.44587 1.66672C10.2223 2.35339 11.4754 4.04006 11.4754 6.00006C11.4754 7.96006 10.2223 9.64672 8.44587 10.3334C8.198 10.4267 8.03275 10.6467 8.03275 10.9001V11.0334C8.03275 11.4534 8.46653 11.7467 8.86587 11.6001C11.2 10.7401 12.8524 8.56006 12.8524 6.00006C12.8524 3.44006 11.2 1.26006 8.86587 0.400057C8.46653 0.246723 8.03275 0.546723 8.03275 0.966723Z" fill="#ffffff"></path></svg>',
+                OFF: '<svg width="16px" height="16px" viewBox="0 0 7 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.459229 3.66668V6.33335C0.459229 6.70001 0.769065 7.00001 1.14775 7.00001H3.21333L5.47857 9.19335C5.91234 9.61335 6.65595 9.31335 6.65595 8.72001V1.27334C6.65595 0.680012 5.91234 0.380012 5.47857 0.800012L3.21333 3.00001H1.14775C0.769065 3.00001 0.459229 3.30001 0.459229 3.66668Z" fill="#FFFFFF"></path></svg>',
+            },
+        },
+        TTH: {
+            id: 'km-talk-to-human',
+            name: 'TTH',
+            icon:
+                '<svg width="20" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.6666 0.756661H2.34163C1.42496 0.756661 0.674959 1.50666 0.674959 2.42333L0.666626 15.4067C0.666626 16.1483 1.56663 16.5233 2.09163 15.9983L3.99996 14.09H15.6666C16.5833 14.09 17.3333 13.34 17.3333 12.4233V2.42333C17.3333 1.50666 16.5833 0.756661 15.6666 0.756661ZM8.99996 4.08999C9.91663 4.08999 10.6666 4.83999 10.6666 5.75666C10.6666 6.67333 9.91663 7.42333 8.99996 7.42333C8.08329 7.42333 7.33329 6.67333 7.33329 5.75666C7.33329 4.83999 8.08329 4.08999 8.99996 4.08999ZM12.3333 10.7567H5.66663V10.2817C5.66663 9.60666 6.06663 9.00666 6.68329 8.74C7.39163 8.43166 8.17496 8.25666 8.99996 8.25666C9.82496 8.25666 10.6083 8.43166 11.3166 8.74C11.9333 9.00666 12.3333 9.60666 12.3333 10.2817V10.7567Z" fill="#ffffff"></path></svg>',
+        },
     },
     // Left here for future reference.
     //  APPLOZIC_USER_STATUS: {
@@ -231,8 +266,9 @@ KommunicateConstants = {
     //     ONLINE_WITHOUT_NOTIFICATIONS: 7,
     // },
     STATIC_MESSAGE_ICONS: {
-        KM_LOCK: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM9 8V6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V8H9Z" fill="#112222"></path></svg>'
-    }
+        KM_LOCK:
+            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM9 8V6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V8H9Z" fill="#112222"></path></svg>',
+    },
 };
 
 /**
@@ -242,8 +278,8 @@ KommunicateConstants = {
 Kommunicate = {
     settings: {},
     internetStatus: true,
-    _globals:kommunicate._globals,
-    PRODUCT_ID:kommunicate.PRODUCT_ID,
+    _globals: kommunicate._globals,
+    PRODUCT_ID: kommunicate.PRODUCT_ID,
 };
 /**
  * stores all UI manipulation
@@ -254,12 +290,12 @@ KommunicateUI = {};
 KommunicateUtils = {
     getCookie: function (cname, skipPrefix, isOld) {
         var cookiePrefix = this.getCookiePrefix();
-        var name = (skipPrefix ? cname : cookiePrefix + cname) ;
+        var name = skipPrefix ? cname : cookiePrefix + cname;
         var decodedCookie = decodeURIComponent(document.cookie);
         var ca = decodedCookie.split(';');
         var appId = applozic._globals.appId;
-        if(!isOld){
-            name += "-" + appId + '=';
+        if (!isOld) {
+            name += '-' + appId + '=';
         } else {
             name += '=';
         }
@@ -303,7 +339,7 @@ KommunicateUtils = {
                 today.setDate(today.getDate() + cookie.expiresInDays)
             ).toUTCString();
         }
-        name += "-"+appId;
+        name += '-' + appId;
         document.cookie =
             name +
             '=' +
@@ -315,7 +351,7 @@ KommunicateUtils = {
             path +
             (secure ? ';secure' : '') +
             (domain ? ';domain=' + domain : '') +
-            (';samesite=strict');
+            ';samesite=strict';
     },
     getCookiePrefix: function () {
         var appOptions =
@@ -337,8 +373,8 @@ KommunicateUtils = {
                 ? cookie.name
                 : cookiePrefix + cookie.name;
         var appId = applozic._globals.appId;
-        if(!isOld){
-            name += "-" + appId;
+        if (!isOld) {
+            name += '-' + appId;
         }
         var value = '';
         var path = cookie.path || '/';
@@ -364,36 +400,40 @@ KommunicateUtils = {
             );
         return text;
     },
-    migrateKmSession: function(appId){
-        if(KommunicateUtils.isSessionStorageAvailable()){
-            // a session with old key exists then migrate to new format 
+    migrateKmSession: function (appId) {
+        if (KommunicateUtils.isSessionStorageAvailable()) {
+            // a session with old key exists then migrate to new format
             var oldData = sessionStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );
-            if(oldData){
-                sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId, oldData);
-                sessionStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            if (oldData) {
+                sessionStorage.setItem(
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId,
+                    oldData
+                );
+                sessionStorage.removeItem(
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                );
             }
         }
     },
-    removeKmSession: function(){
+    removeKmSession: function () {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             sessionStorage.removeItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId,
-            )
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
+            );
         }
     },
-    getKmSession: function(){
+    getKmSession: function () {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             KommunicateUtils.migrateKmSession(appId);
-            
 
             var session = sessionStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId,
-            )
-            
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
+            );
+
             return session ? JSON.parse(session) : {};
         }
     },
@@ -401,9 +441,9 @@ KommunicateUtils = {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             KommunicateUtils.migrateKmSession(appId);
-            
+
             var session = sessionStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
             );
 
             return session ? JSON.parse(session)[key] : '';
@@ -413,17 +453,16 @@ KommunicateUtils = {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             KommunicateUtils.migrateKmSession(appId);
-            
+
             var session = sessionStorage.getItem(
-                KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
             );
 
             session = session ? JSON.parse(session) : {};
             session[key] = data;
             typeof sessionStorage !== 'undefined' &&
                 sessionStorage.setItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" +
-                    appId,
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId,
                     JSON.stringify(session)
                 );
         }
@@ -432,16 +471,15 @@ KommunicateUtils = {
         if (KommunicateUtils.isSessionStorageAvailable()) {
             var appId = applozic._globals.appId;
             KommunicateUtils.migrateKmSession(appId);
-            
-            var session =
-                sessionStorage.getItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId
-                );
+
+            var session = sessionStorage.getItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId
+            );
             session = session ? JSON.parse(session) : {};
             delete session[key];
             typeof sessionStorage !== 'undefined' &&
                 sessionStorage.setItem(
-                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId,
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId,
                     JSON.stringify(session)
                 );
         }
@@ -482,14 +520,19 @@ KommunicateUtils = {
         settings = settings ? settings : null;
         return key && settings ? settings[key] : settings ? settings : '';
     },
-    migrateLocalStore: function(appId){
-        if(KommunicateUtils.isSessionStorageAvailable()){
+    migrateLocalStore: function (appId) {
+        if (KommunicateUtils.isSessionStorageAvailable()) {
             var oldData = localStorage.getItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );
-            if(oldData){
-                localStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY + "-" + appId, oldData);
-                localStorage.removeItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
+            if (oldData) {
+                localStorage.setItem(
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY + '-' + appId,
+                    oldData
+                );
+                localStorage.removeItem(
+                    KommunicateConstants.KOMMUNICATE_SESSION_KEY
+                );
             }
         }
     },
@@ -566,27 +609,26 @@ KommunicateUtils = {
         var subDomain = hostName.substr(0, hostName.length - domainLength);
         return subDomain;
     },
-    replaceOldCookies: function() {
-        Object.values(KommunicateConstants.COOKIES).forEach(cookie => {
-            let cookieData = KommunicateUtils.getCookie(
-                cookie,
-                false,
-                true
-            )
+    replaceOldCookies: function () {
+        Object.values(KommunicateConstants.COOKIES).forEach((cookie) => {
+            let cookieData = KommunicateUtils.getCookie(cookie, false, true);
 
-            if(cookieData){
-                KommunicateUtils.deleteCookie({
-                    name: cookie,
-                    domain: MCK_COOKIE_DOMAIN,
-                }, true)
+            if (cookieData) {
+                KommunicateUtils.deleteCookie(
+                    {
+                        name: cookie,
+                        domain: MCK_COOKIE_DOMAIN,
+                    },
+                    true
+                );
                 KommunicateUtils.setCookie({
                     name: cookie,
                     value: cookieData,
                     expiresInDays: 30,
                     domain: MCK_COOKIE_DOMAIN,
-                })
+                });
             }
-        })
+        });
     },
     deleteUserCookiesOnLogout: function () {
         KommunicateUtils.deleteCookie({
@@ -669,33 +711,39 @@ KommunicateUtils = {
     },
     /**
      * When a new group is created, initially CURRENT_GROUP_DATA.groupMembers array has role of a member.
-     * @param {object} assigneeDetails 
+     * @param {object} assigneeDetails
      * @returns boolean
      */
-    isCurrentAssigneeBot: function (){
-        if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
+    isCurrentAssigneeBot: function () {
+        if (
+            CURRENT_GROUP_DATA.groupMembers &&
+            CURRENT_GROUP_DATA.groupMembers.length
+        ) {
             var currentConversationAssignee = {};
-            for (
-                var i = 0;
-                i <= CURRENT_GROUP_DATA.groupMembers.length;
-                i++
-            ) {
+            for (var i = 0; i <= CURRENT_GROUP_DATA.groupMembers.length; i++) {
                 if (
                     CURRENT_GROUP_DATA.groupMembers[i] &&
                     CURRENT_GROUP_DATA.groupMembers[i].userId ==
-                    CURRENT_GROUP_DATA.conversationAssignee
+                        CURRENT_GROUP_DATA.conversationAssignee
                 ) {
-                    currentConversationAssignee = CURRENT_GROUP_DATA.groupMembers[i]
+                    currentConversationAssignee =
+                        CURRENT_GROUP_DATA.groupMembers[i];
                     break;
                 }
             }
 
-            if(currentConversationAssignee.hasOwnProperty('role')){
-                return currentConversationAssignee.role === KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT;
-            }else if(currentConversationAssignee.hasOwnProperty('roleType')){
-                return currentConversationAssignee.roleType === KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
+            if (currentConversationAssignee.hasOwnProperty('role')) {
+                return (
+                    currentConversationAssignee.role ===
+                    KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
+                );
+            } else if (currentConversationAssignee.hasOwnProperty('roleType')) {
+                return (
+                    currentConversationAssignee.roleType ===
+                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                );
             }
         }
         return false;
-    }
+    },
 };

@@ -2159,3 +2159,47 @@ div#mck-rated:before {
 #mck-away-msg-box,
 #mck-email-collection-box {
   padding: 3px 16px; }
+
+.km-header-cta {
+  position: relative;
+  display: inline-block;
+  border: none;
+  color: white;
+  height: 15px;
+  background-color: transparent;
+  width: auto;
+  font-size: 16px !important;
+  cursor: pointer;
+  line-height: 15px !important;
+  white-space: nowrap; }
+  .km-header-cta .restart-conversation-icon {
+    margin-top: -4px; }
+  .km-header-cta:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1; }
+  .km-header-cta .tooltip-text {
+    font-size: 14px;
+    visibility: hidden;
+    position: absolute;
+    background-color: #1c1c1c;
+    color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    z-index: 1;
+    /* Ensure the tooltip is on top of other elements */
+    opacity: 0;
+    transition: opacity 0.3s;
+    /* Center the tooltip using translate */
+    transform: translate(-50%, -50%);
+    top: 160%;
+    left: 50%;
+    padding: 8px 16px; }
+    .km-header-cta .tooltip-text::after {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent #1c1c1c transparent; }
