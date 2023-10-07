@@ -405,6 +405,14 @@ var userOverride = {
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
             console.log("In on_tab_clicked", event);
+            const details = event && event.data && event.data.groupDetails;
+            if (details) {
+                const assignee =
+                    details.metadata && details.metadata.CONVERSATION_ASSIGNEE;
+                const groupUsers = details.groupUsers;
+                assignee && groupUsers && KommunicateUI.toggleVisibilityOfTextArea(assignee, groupUsers);
+            }
+
             if (kommunicate._globals.zendeskChatSdkKey) {
                 onTabClickedHandlerForZendeskConversations(event);
             }
@@ -610,6 +618,7 @@ var userOverride = {
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
+        var DISABLE_TEXT_AREA = appOptions.disableTextArea;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -675,11 +684,12 @@ var userOverride = {
         };
 
         _this.mckLaunchSideboxChat = function () {
+           
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
                 $applozic('#mck-sidebox-launcher')
                     .removeClass('vis')
-                    .addClass('n-vis');
+                    .addClass('n-vis');    
             KOMMUNICATE_VERSION === 'v2' &&
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             KommunicateUI.showChat();
@@ -806,7 +816,7 @@ var userOverride = {
         _this.getOptions = function () {
             return appOptions;
         };
-        _this.init = function () {
+        _this.init = function () {   
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
@@ -852,7 +862,7 @@ var userOverride = {
             mckGroupLayout.init();
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
-            mckMapLayout.init();
+            mckMapLayout.init(); 
             !MCK_ATTACHMENT &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-attachfile-box', 'mck-file-up'] },
@@ -2731,7 +2741,9 @@ var userOverride = {
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
+                
                 // calling Kommunicate for post initialization processing. error first style.
+
                 Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     userId: MCK_USER_ID,
@@ -6692,6 +6704,18 @@ var userOverride = {
                             data.groupFeeds[0].metadata.KM_TEAM_ID;
                         params.isWaitingQueue &&
                             KommunicateUI.handleWaitingQueueMessage();
+
+                        const assignee =
+                            data.groupFeeds[0] &&
+                            data.groupFeeds[0].metadata &&
+                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                        const groupUsers = data.userDetails;
+                        assignee &&
+                            groupUsers &&
+                            KommunicateUI.toggleVisibilityOfTextArea(
+                                assignee,
+                                groupUsers
+                            );
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
@@ -7927,13 +7951,29 @@ var userOverride = {
                                         }
                                     );
                                 }
-                               
+                                kommunicateCommons.modifyClassList(
+                                    {
+                                        class: ['mck-box-form'],
+                                    },
+                                    'n-vis'
+                                );
+                                const assignee =
+                                    groupPxy.metadata &&
+                                    groupPxy.metadata.CONVERSATION_ASSIGNEE;
+                                const groupUsers = groupPxy.groupUsers;
+                                assignee &&
+                                    groupUsers &&
+                                    KommunicateUI.toggleVisibilityOfTextArea(
+                                        assignee,
+                                        groupUsers
+                                    );
                                 CURRENT_GROUP_DATA.tabId =
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
                                 CURRENT_GROUP_DATA.groupMembers=groupPxy.groupUsers;
                                 console.log("groupPxy now checking", groupPxy);
+
                                 CURRENT_GROUP_DATA.createdAt = groupPxy.createdAtTime;
                                 CURRENT_GROUP_DATA.teamId = groupPxy.metadata && groupPxy.metadata.KM_TEAM_ID
                                 params.tabId = group.contactId;
@@ -8643,6 +8683,7 @@ var userOverride = {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
                             isGroup: params.isGroup,
+                            data: params,
                         });
                     }
                 } else {
@@ -10166,6 +10207,7 @@ var userOverride = {
                 }
                 return '';
             };
+
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);
@@ -14069,6 +14111,12 @@ var userOverride = {
                 }
             };
             _this.onGroupFeed = function (response, params) {
+                if(response && response.data){
+                    const assignee =  response.data.metadata && response.data.metadata.CONVERSATION_ASSIGNEE
+                    const groupUsers = response.data.groupUsers;
+                    KommunicateUI.toggleVisibilityOfTextArea(assignee,groupUsers)
+                }
+
                 $mck_loading.removeClass('vis').addClass('n-vis');
                 if (response.status === 'success') {
                     var groupFeed = response.data;
@@ -16268,7 +16316,7 @@ var userOverride = {
                     $mck_msg_inner.data(
                         'last-message-received-time',
                         resp.message.createdAtTime
-                    );
+                    )
                 var messageType = resp.type;
                 if (
                     messageType === 'APPLOZIC_04' ||
@@ -16743,7 +16791,7 @@ var userOverride = {
                                     contact.metadata &&
                                     contact.metadata.KM_ORIGINAL_TITLE
                                 )
-                            ) {
+                            ) { 
                                 var getUsersDetailparams = {
                                     cached: false,
                                 };
@@ -16762,6 +16810,15 @@ var userOverride = {
                                             updatedAssignee,
                                             tabId
                                         );
+                                        kommunicate.client.getChatListByGroupId({ 
+                                            groupId: CURRENT_GROUP_DATA.tabId 
+                                        },function(err, result){
+                                            if (err || !result) {
+                                                console.log('An error occurred while fetching chat users ',err);
+                                                return;
+                                            }
+                                            KommunicateUI.toggleVisibilityOfTextArea(updatedAssignee.userId,result.userDetails);
+                                        })
                                         if (
                                             updatedAssignee.roleType !=
                                             KommunicateConstants
