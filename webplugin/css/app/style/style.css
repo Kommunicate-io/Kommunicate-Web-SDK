@@ -2159,12 +2159,3 @@ div#mck-rated:before {
 #mck-away-msg-box,
 #mck-email-collection-box {
   padding: 3px 16px; }
-
-#km-chat-widget-close-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 36px;
-  width: 26px;
-  margin-left: 6px;
-  border-radius: 4px; }
