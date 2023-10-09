@@ -345,7 +345,7 @@ $popupClass: '.chat-popup-widget-container';
     }
 }
 
-@media only screen and(max-device-width: 380px) {
+@media only screen and (max-device-width: 380px) {
     #{$popupClass} {
         &--vertical {
             width: 70%;
