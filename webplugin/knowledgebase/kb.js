@@ -47,7 +47,13 @@
                 KommunicateKB.getFaqs({
                     data: options.data,
                     success: function (response) {
-                        if(!response || !response.data) {return null};
+                        if (
+                            !response ||
+                            !response.data ||
+                            !response.data.length // if data is an empty array
+                        ) {
+                            return null;
+                        }
                         for (var i = 0; i < response.data.length; i++) {
                             var article = response.data[i];
                             articles.push({
