@@ -52,8 +52,13 @@
                             !response.data ||
                             !response.data.length // if data is an empty array
                         ) {
+                           //hide the dropdown faq also
+                            $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
+                            kommunicate._globals.hasArticles = false
                             return null;
                         }
+                        
+                        kommunicate._globals.hasArticles = true;
                         for (var i = 0; i < response.data.length; i++) {
                             var article = response.data[i];
                             articles.push({

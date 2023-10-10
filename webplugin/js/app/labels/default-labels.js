@@ -198,6 +198,7 @@ Kommunicate.defaultLabels = {
         USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
         RESTART_CONVERSATION: 'Restart conversation',
         HANDOFF: 'Talk to human',
+        FAQ: 'FAQ',
     },
     'micOptions.dropup': {
         VOICE_NOTE_TRIGGER: 'Send voice message',
@@ -214,6 +215,6 @@ Kommunicate.defaultLabels = {
             ON: 'Turn off text to speech',
             OFF: 'Turn on text to speech',
         },
-        TTH: 'Talk to human',
+        TALK_TO_HUMAN: 'Talk to human',
     },
 };

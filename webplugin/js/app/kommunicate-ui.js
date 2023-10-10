@@ -3,6 +3,7 @@
  *
  */
 var kommunicateCommons = new KommunicateCommons();
+var GLOBAL = kommunicate._globals;
 KommunicateUI = {
     awayMessageInfo: {},
     awayMessageScroll: true,
@@ -408,6 +409,7 @@ KommunicateUI = {
                         'mck-conversation',
                         'mck-agent-image-container',
                         'mck-agent-status-text',
+                        'km-header-cta'
                     ],
                 },
                 "n-vis",
@@ -576,7 +578,7 @@ KommunicateUI = {
                     KommunicateUI.activateTypingField();
                     return;
                 } else {
-                    $applozic('#km-faq').removeClass('n-vis').addClass('vis');
+                    KommunicateUI.isFAQPrimaryCTA() && $applozic('#km-faq').removeClass('n-vis').addClass('vis');
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     MCK_EVENT_HISTORY.length = 0;
@@ -584,9 +586,14 @@ KommunicateUI = {
                 }
             } else {
                 // remove n-vis
+               
+                KommunicateUI.isFAQPrimaryCTA()
+                    ? $applozic('#km-faq').addClass('vis')
+                    : $applozic('#km-faq').addClass('n-vis');
+
                 kommunicateCommons.modifyClassList(
                     {
-                        id: ['km-faq', 'mck-rate-conversation'],
+                        id: ['mck-rate-conversation'],
                         class: ['mck-conversation'],
                     },
                     'vis',
@@ -879,7 +886,7 @@ KommunicateUI = {
         kommunicateCommons.setWidgetStateOpen(true);
         $applozic('#faq-common').removeClass('vis').addClass('n-vis');
         $applozic('.mck-conversation').removeClass('n-vis').addClass('vis');
-        $applozic('#km-faq').removeClass('n-vis').addClass('vis');
+        KommunicateUI.isFAQPrimaryCTA() && $applozic('#km-faq').removeClass('n-vis').addClass('vis');
         $applozic('#mck-msg-new').attr('disabled', false);
         if (
             $applozic(
@@ -901,6 +908,16 @@ KommunicateUI = {
         $applozic('#mck-tab-individual').removeClass('n-vis').addClass('vis');
         $applozic('#mck-tab-conversation').removeClass('vis').addClass('n-vis');
         $applozic('#mck-msg-new').attr('disabled', false);
+    },
+
+    isFAQPrimaryCTA: function () {
+        var ctaData = KommunicateUI.getHeaderCurrentCTAData();
+
+        return (
+            !GLOBAL.primaryCTA ||
+            GLOBAL.primaryCTA === HEADER_CTA.FAQ ||
+            !ctaData.currentCTAKey //if cta button is not valid then use the FAQ button default
+        );
     },
 
     sendFaqQueryAsMsg: function (groupId) {
@@ -1812,14 +1829,18 @@ KommunicateUI = {
                             'title'
                         );
 
+                        var updateClasses = {
+                            class: [
+                                'mck-agent-image-container',
+                                'mck-agent-status-text',
+                            ],
+                        };
+
+                        KommunicateUI.isFAQPrimaryCTA() &&
+                            (updateClasses.id = ['km-faq']);
+
                         kommunicateCommons.modifyClassList(
-                            {
-                                class: [
-                                    'mck-agent-image-container',
-                                    'mck-agent-status-text',
-                                ],
-                                id: ['km-faq']
-                            },
+                            updateClasses,
                             'vis',
                             'n-vis'
                         );
@@ -1944,5 +1965,22 @@ KommunicateUI = {
             }
         }
 
+    },
+    getHeaderCurrentCTAData: function () {
+        var currentCTAKey;
+        var currentCTA;
+        var data = KommunicateConstants.HEADER_PRIMARY_CTA;
+
+        for (var key in data) {
+            if (key === GLOBAL.primaryCTA && GLOBAL[data[key].identifier]) {
+                currentCTAKey = key;
+                currentCTA = data[key];
+                break;
+            }
+        }
+        return {
+            currentCTAKey,
+            currentCTA,
+        };
     },
 };

@@ -707,7 +707,6 @@ var userOverride = {
                     );
                     KommunicateUI.activateTypingField();
                     mckMessageLayout.loadDropdownOptions();
-                    mckMessageLayout.setHeaderPrimaryCTA()
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -2777,6 +2776,7 @@ var userOverride = {
                 }
                 _this.setEmojiHoverText();
                 _this.configureRatingElements();
+                mckMessageLayout.setHeaderPrimaryCTA();
             };
 
             _this.validateAppSession = function (userPxy) {
@@ -2892,7 +2892,7 @@ var userOverride = {
                         'n-vis'
                     );
                     kommunicateCommons.modifyClassList(
-                        { id: ['km-widget-options'] },
+                        { id: ['km-widget-options'], class: ['km-header-cta'] },
                         'n-vis',
                         ''
                     );
@@ -3593,6 +3593,8 @@ var userOverride = {
                     MCK_LABELS['csat.rating'].RATE_ERROR_MSG;
                 document.getElementById('km-option-talk-to-human-text').innerHTML =
                     MCK_LABELS['conversation.header.dropdown'].HANDOFF;   
+                document.getElementById('km-option-faq-text').innerHTML =
+                    MCK_LABELS['conversation.header.dropdown'].FAQ;     
 
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
@@ -4402,7 +4404,7 @@ var userOverride = {
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
                 };
                 _this.toggleTTSCTA = function (userOverride) {
-                    var ctaData = mckMessageLayout.getHeaderCurrentCTAData();
+                    var ctaData = KommunicateUI.getHeaderCurrentCTAData();
 
                     var buttonPrimary = document.querySelector(
                         '#user-overide-voice-output'
@@ -5089,6 +5091,7 @@ var userOverride = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        $applozic('.km-header-cta').addClass("n-vis");
                         // To prevent conversation assignee details from being shown when in FAQ 
                         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
                         var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
@@ -7141,6 +7144,7 @@ var userOverride = {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
 
                                                             mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
+                                                            !KommunicateUI.isFAQPrimaryCTA() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -8045,6 +8049,7 @@ var userOverride = {
                                     response.data = group;
                                     params.callback(response);
                                     mckMessageLayout.loadDropdownOptions(); 
+                                    !KommunicateUI.isFAQPrimaryCTA() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -8337,31 +8342,14 @@ var userOverride = {
                 }
             };
 
-            _this.getHeaderCurrentCTAData = function () {
-                var currentCTAKey;
-                var currentCTA;
-
-                for (var key in KommunicateConstants.HEADER_PRIMARY_CTA) {
-                    if (key === appOptions.primaryCTA) {
-                        currentCTAKey = key;
-                        currentCTA =
-                            KommunicateConstants.HEADER_PRIMARY_CTA[key];
-                    }
-                }
-                return {
-                    currentCTAKey,
-                    currentCTA,
-                };
-            };
-
             _this.setHeaderCTALabel = function (
                 currentCTAKey,
                 currentCTA,
                 nestedKey
             ) {
-                var buttonPrimary = document.getElementById('km-header-cta');
-                var buttonTooltip = document.querySelector(
-                    '#km-header-cta .tooltip-text'
+                var buttonPrimary = document.querySelector('.km-header-cta');
+                var buttonTooltip = buttonPrimary.querySelector(
+                    '.tooltip-text'
                 );
                 var tooTipLabel = nestedKey
                     ? MCK_LABELS['header.primary.CTA'][currentCTAKey][nestedKey]
@@ -8375,12 +8363,12 @@ var userOverride = {
             };
 
             _this.setHeaderPrimaryCTA = function () {
-                if (!appOptions.primaryCTA) return;
-                var data = _this.getHeaderCurrentCTAData();
+                if (!appOptions.primaryCTA || appOptions.primaryCTA === 'FAQ') return;
+                var data = KommunicateUI.getHeaderCurrentCTAData();
                 var nestedKey;
                 var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
 
-                if (data.currentCTA && data.currentCTA !== ctaData.FAQ.name) {
+                if (data.currentCTA) {
                     kommunicateCommons.modifyClassList(
                         { id: ['km-faq'] },
                         'n-vis'
@@ -8461,11 +8449,12 @@ var userOverride = {
             };
 
             _this.loadDropdownOptions = function () {
-                if(document.querySelector('#mck-contact-list')){
+                if (document.querySelector('#mck-contact-list')) {
                     // if contact list is visible then dropdown options should not be loaded.
                     return;
                 }
                 var enableDropdown = false;
+                var primaryCTA = appOptions.primaryCTA;
                 var isConvRated =
                     appOptions.oneTimeRating &&
                     !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
@@ -8474,7 +8463,11 @@ var userOverride = {
                     Mid conversation CSAT
                     update if dedicated parameter is introduced
                 */
-                if (CSAT_ENABLED && !isConvRated) {
+                if (
+                    CSAT_ENABLED &&
+                    !isConvRated &&
+                    HEADER_CTA.CSAT_RATING !== primaryCTA
+                ) {
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList(
                         { id: ['km-csat-trigger'] },
@@ -8482,14 +8475,17 @@ var userOverride = {
                         'n-vis'
                     );
                 }
-                if (appOptions.restartConversationByUser) {
+                if (
+                    appOptions.restartConversationByUser &&
+                    HEADER_CTA.RESTART_CONVERSATION !== primaryCTA
+                ) {
                     enableDropdown = true;
                     _this.shouldRestartConversation('km-restart-conversation');
                 }
 
                 // For voice output user override
-                if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;  
+                if (VOICE_OUTPUT_ENABLED && HEADER_CTA.TTS !== primaryCTA) {
+                    enableDropdown = true;
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
@@ -8500,10 +8496,23 @@ var userOverride = {
                     );
                 }
 
-                if (appOptions.talkToHuman) {
+                if (appOptions.talkToHuman && HEADER_CTA.TALK_TO_HUMAN !== primaryCTA) {
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList(
                         { class: ['km-option-talk-to-human'] },
+                        '',
+                        'n-vis'
+                    );
+                }
+                // hasArticles initially will be undefined and after the faq load it will be boolean
+                if (
+                    !KommunicateUI.isFAQPrimaryCTA() &&
+                    (kommunicate._globals.hasArticles === undefined ||
+                        kommunicate._globals.hasArticles === true)
+                ) {
+                    enableDropdown = true;
+                    kommunicateCommons.modifyClassList(
+                        { class: ['km-option-faq'] },
                         '',
                         'n-vis'
                     );
@@ -8812,7 +8821,7 @@ var userOverride = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    KommunicateUI.isFAQPrimaryCTA() && $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box
                         .removeClass('n-vis')
@@ -8871,7 +8880,7 @@ var userOverride = {
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
-                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    KommunicateUI.isFAQPrimaryCTA() && $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
