@@ -1567,7 +1567,8 @@
     height: 50px;
 }
 .mck-sidebox .mck-box-top .blk-lg-2.mck-close-btn {
-	width: 45px;
+	width: auto;
+	height: auto;
  }
 
 .mck-gm-search-box .mck-box-body .mck-message-inner {
