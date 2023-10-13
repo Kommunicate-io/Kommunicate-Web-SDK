@@ -1441,6 +1441,13 @@ KommunicateUI = {
                 'n-vis',
                 'vis'
             );  
+            !GLOBAL.disableTextArea && kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-box-form'],
+                },
+                '',
+                'n-vis'
+            );
             kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-csat-text-1'],

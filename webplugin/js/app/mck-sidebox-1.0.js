@@ -3905,6 +3905,7 @@ var userOverride = {
             var $secondsLabel = $applozic('#mck-seconds');
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
+            var CHANGE_ASSIGNEE = '/rest/ws/group/assignee/change'
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
             _this.resetMessageSentToHumanAgent = function(){
                 // used in loadTab()
@@ -4986,8 +4987,25 @@ var userOverride = {
 
                 $applozic(d).on('click', '#km-talk-to-human', function (e) {
                     e.preventDefault();
-                    console.log('clicked on talk to human');
-                    // window.open(e.target.href);
+
+                    window.Applozic.ALApiService.ajax({
+                        type: 'PATCH',
+                        url:
+                            MCK_BASE_URL +
+                            CHANGE_ASSIGNEE +
+                            '?groupId=' +
+                            encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
+                            '&switchAssignee=' +
+                            encodeURIComponent(true),
+                        global: false,
+                        contentType: 'text/plain',
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            console.error(data);
+                        },
+                    });
                 });
                 
                 //----------------------------------------------------------------
@@ -8391,8 +8409,6 @@ var userOverride = {
                         data.currentCTA,
                         nestedKey
                     );
-
-                    _this.shouldRestartConversation('km-restart-conversation');
                 }
             };
 
@@ -8475,11 +8491,10 @@ var userOverride = {
                         'n-vis'
                     );
                 }
-                if (
-                    appOptions.restartConversationByUser &&
-                    HEADER_CTA.RESTART_CONVERSATION !== primaryCTA
-                ) {
-                    enableDropdown = true;
+                if (appOptions.restartConversationByUser) {
+                    if (HEADER_CTA.RESTART_CONVERSATION !== primaryCTA) {
+                        enableDropdown = true;
+                    }
                     _this.shouldRestartConversation('km-restart-conversation');
                 }
 
@@ -13196,7 +13211,7 @@ var userOverride = {
             _this.loadContacts = function () {
                 var mckContactNameArray = [];
                 var url =
-                    '/rest/ws/user/v3/filter?startIndex=0&pageSize=50&orderBy=1';
+                    '/rest/ws/user/v2/filter?startIndex=0&pageSize=50&orderBy=1';
                 window.Applozic.ALApiService.getContactList({
                     url: url,
                     baseUrl: MCK_BASE_URL,
