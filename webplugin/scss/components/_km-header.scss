@@ -44,7 +44,18 @@
             margin-left: -5px;
             border-width: 5px;
             border-style: solid;
-            border-color: transparent transparent $text-primary-color transparent;
+            border-color: transparent transparent $text-primary-color
+                transparent;
         }
     }
 }
+// header close button
+// #km-chat-widget-close-button {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     height: 36px;
+//     width: 26px;
+//     margin-left: 6px;
+//     border-radius: 4px;
+// }
