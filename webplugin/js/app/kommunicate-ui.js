@@ -1990,4 +1990,12 @@ KommunicateUI = {
             currentCTA,
         };
     },
+    isShowRestartConversation: function () {
+        if (GLOBAL.primaryCTA !== HEADER_CTA.RESTART_CONVERSATION) return false;
+
+        return (
+            GLOBAL.primaryCTA === HEADER_CTA.RESTART_CONVERSATION &&
+            !KommunicateUtils.isCurrentAssigneeBot()
+        );
+    },
 };

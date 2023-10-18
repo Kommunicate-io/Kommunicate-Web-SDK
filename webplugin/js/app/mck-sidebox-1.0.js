@@ -7165,7 +7165,7 @@ var userOverride = {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
 
                                                             mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
-                                                            !KommunicateUI.isFAQPrimaryCTA() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
+                                                            !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -8070,7 +8070,7 @@ var userOverride = {
                                     response.data = group;
                                     params.callback(response);
                                     mckMessageLayout.loadDropdownOptions(); 
-                                    !KommunicateUI.isFAQPrimaryCTA() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
+                                    !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -8445,7 +8445,6 @@ var userOverride = {
                     CURRENT_GROUP_DATA &&
                     CURRENT_GROUP_DATA.initialBot &&
                     CURRENT_GROUP_DATA.conversationAssignee &&
-                    CURRENT_GROUP_DATA.conversationAssignee ==
                         CURRENT_GROUP_DATA.initialBot.userId
                 ) {
                     kommunicateCommons.modifyClassList(
