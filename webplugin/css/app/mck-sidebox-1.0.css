@@ -84,7 +84,7 @@
 }
 
 
-#mck-text-box[contenteditable=true]:empty:not(:focus):before {
+#mck-text-box[contenteditable=true]::before {
     content: attr(data-text);
 	color: #949494;
 	opacity:0.6;
@@ -94,6 +94,16 @@
 }
 
 
+#mck-text-box[contenteditable=true]:not(:empty)::before {
+    content: "";
+    position: relative;
+    z-index: -1;
+}
+
+.mck-running-on > a:hover{
+	text-decoration:underline;
+	color: #5553B7 !important
+}
 /* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
 	opacity:0.6;
