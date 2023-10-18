@@ -635,7 +635,7 @@ function ApplozicSidebox() {
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            '/users/v2/chat/plugin/settings' + KommunicateUtils.formatParams(data);
+            '/users/v3/chat/plugin/settings' + KommunicateUtils.formatParams(data);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
