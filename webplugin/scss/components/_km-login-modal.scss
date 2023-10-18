@@ -281,7 +281,8 @@ input[type='number']::-webkit-outer-spin-button {
     margin-bottom: 10px;
 }
 
-.km-error-msg {
+.km-error-msg,
+.mck-text-req-error {
     color: $km-danger-color;
     font-size: $heading-tertiary;
     font-family: $font-family-secondary;
@@ -290,16 +291,24 @@ input[type='number']::-webkit-outer-spin-button {
     padding: 0;
     line-height: 16px;
 }
+.mck-text-req-error {
+    display: flex !important;
+    align-items: center;
+    text-align: left;
+    margin-top: 2px;
+    gap: 2px;
+}
 
 .km-login-error {
     border-color: $km-danger-color !important;
     margin: 0 0 2px;
 }
 
-.km-form-label-container {
+.km-form-label-container,
+.mck-form-label-container {
     display: flex;
-    gap: 4px;
-    margin-bottom: 4px;
+    @include gap-supported(4px, 4px, '& svg');
+    margin-bottom: 4px !important;
 
     & svg {
         margin-top: 3px;

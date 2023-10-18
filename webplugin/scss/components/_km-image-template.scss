@@ -1,0 +1,33 @@
+.km-image-template {
+    color: $text-primary-color;
+    width: $rich-msg-width;
+    font-size: $heading-secondary;
+    font-family: $font-family-primary !important;
+    border: 1px solid $input-border-color;
+    border-radius: $msg-box-border-radius;
+    overflow: hidden;
+    margin-top: 6px;
+
+    @media (max-width: 350px) {
+        width: 90%;
+    }
+    .km-template-img {
+        width: 100%;
+        height: auto;
+    }
+
+    .km-template-image-caption-wrapper {
+        padding: $msg-box-padding;
+        font-weight: 400;
+        letter-spacing: 0.3px;
+        p {
+            margin: 0;
+            font-family: inherit;
+        }
+    }
+}
+
+.km-img-template-container {
+    border: 1px solid $input-border-color;
+    margin-top: 6px;
+}

@@ -293,7 +293,7 @@ const generateBuildFiles = () => {
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
     // copy applozic.chat.{version}.min.js to build
-    copyFileToBuild('js/app/applozic.chat-6.2.3.min.js', `${buildDir}/applozic.chat-6.2.3.min.js`)
+    copyFileToBuild('js/app/applozic.chat-6.2.4.min.js', `${buildDir}/applozic.chat-6.2.4.min.js`)
 
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
