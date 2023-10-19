@@ -5112,7 +5112,12 @@ var userOverride = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
-                        $applozic('.km-header-cta').addClass("n-vis");
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-widget-options'], class:['km-header-cta'] },
+                            'n-vis',
+                            ''
+                        );
+
                         // To prevent conversation assignee details from being shown when in FAQ 
                         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
                         var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
@@ -8369,17 +8374,16 @@ var userOverride = {
                 nestedKey
             ) {
                 var buttonPrimary = document.querySelector('.km-header-cta');
-                var buttonTooltip = buttonPrimary.querySelector(
-                    '.tooltip-text'
-                );
-                var tooTipLabel = nestedKey
+               
+                var toolTipText = nestedKey
                     ? MCK_LABELS['header.primary.CTA'][currentCTAKey][nestedKey]
                     : MCK_LABELS['header.primary.CTA'][currentCTAKey];
-                buttonTooltip.innerHTML = tooTipLabel;
 
                 buttonPrimary.innerHTML += nestedKey
                     ? currentCTA.icon[nestedKey]
                     : currentCTA.icon;
+
+                buttonPrimary.setAttribute("title", toolTipText)    
                 buttonPrimary.id = currentCTA.id;
             };
 

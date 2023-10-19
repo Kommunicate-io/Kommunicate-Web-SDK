@@ -15,39 +15,39 @@
     .restart-conversation-icon {
         margin-top: -4px;
     }
-    &:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
-    }
-    & .tooltip-text {
-        font-size: 14px;
-        visibility: hidden;
-        position: absolute;
-        background-color: $text-primary-color;
-        color: $text-secondary-color;
-        border-radius: 2px;
-        text-align: center;
-        z-index: 1; /* Ensure the tooltip is on top of other elements */
-        opacity: 0;
-        transition: opacity 0.3s;
-        /* Center the tooltip using translate */
-        transform: translate(-50%, -50%);
-        top: 160%;
-        left: 50%;
-        padding: 8px 16px;
+    // &:hover .tooltip-text {
+    //     visibility: visible;
+    //     opacity: 1;
+    // }
+    // & .tooltip-text {
+    //     font-size: 14px;
+    //     visibility: hidden;
+    //     position: absolute;
+    //     background-color: $text-primary-color;
+    //     color: $text-secondary-color;
+    //     border-radius: 2px;
+    //     text-align: center;
+    //     z-index: 1; /* Ensure the tooltip is on top of other elements */
+    //     opacity: 0;
+    //     transition: opacity 0.3s;
+    //     /* Center the tooltip using translate */
+    //     transform: translate(-50%, -50%);
+    //     top: 160%;
+    //     left: 50%;
+    //     padding: 8px 16px;
 
-        &::after {
-            content: '';
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent $text-primary-color
-                transparent;
-        }
-    }
+    //     &::after {
+    //         content: '';
+    //         position: absolute;
+    //         bottom: 100%;
+    //         left: 50%;
+    //         margin-left: -5px;
+    //         border-width: 5px;
+    //         border-style: solid;
+    //         border-color: transparent transparent $text-primary-color
+    //             transparent;
+    //     }
+    // }
 }
 // header close button
 // #km-chat-widget-close-button {
