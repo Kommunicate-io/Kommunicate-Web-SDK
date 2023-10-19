@@ -425,7 +425,7 @@ Kommunicate.markup = {
     getFormTemplate: function () {
         return `<div class="mck-msg-box-rich-text-container mck-form-template-container" data-hidePostFormSubmit="{{hidePostFormSubmit}}">
                 <form class="km-btn-hidden-form mck-actionable-form" action="{{actionUrl}}" method="post" data-msg-key={{msgKey}} >
-                    <div class="mck-form-template-wrapper">
+                    <div class="mck-form-template-wrapper {{#isHideFormContainer}}n-vis{{/isHideFormContainer}}">
                         {{#payload}}
                             {{#.}}
                                 {{#supported}}
@@ -982,6 +982,11 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 }
             }
         });
+        // if all form field have type hidden
+        options.isHideFormContainer = options.payload.every(function (opt) {
+            return opt.type === 'hidden';
+        });
+
         return Mustache.to_html(Kommunicate.markup.getFormTemplate(), options);
     }
 };
