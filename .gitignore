@@ -7,3 +7,4 @@ webplugin/css/app/bin/
 webplugin/build/test.txt
 webplugin/css/app/style/
 yarn.lock
+.sass-cache/
