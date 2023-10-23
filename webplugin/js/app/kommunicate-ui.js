@@ -3,7 +3,7 @@
  *
  */
 var kommunicateCommons = new KommunicateCommons();
-var GLOBAL = kommunicate._globals;
+var KM_GLOBAL = kommunicate._globals;
 KommunicateUI = {
     awayMessageInfo: {},
     awayMessageScroll: true,
@@ -914,8 +914,8 @@ KommunicateUI = {
         var ctaData = KommunicateUI.getHeaderCurrentCTAData();
 
         return (
-            !GLOBAL.primaryCTA ||
-            GLOBAL.primaryCTA === HEADER_CTA.FAQ ||
+            !KM_GLOBAL.primaryCTA ||
+            KM_GLOBAL.primaryCTA === HEADER_CTA.FAQ ||
             !ctaData.currentCTAKey //if cta button is not valid then use the FAQ button default
         );
     },
@@ -1441,7 +1441,7 @@ KommunicateUI = {
                 'n-vis',
                 'vis'
             );  
-            !GLOBAL.disableTextArea && kommunicateCommons.modifyClassList(
+            !KM_GLOBAL.disableTextArea && kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-box-form'],
                 },
@@ -1979,7 +1979,7 @@ KommunicateUI = {
         var data = KommunicateConstants.HEADER_PRIMARY_CTA;
 
         for (var key in data) {
-            if (key === GLOBAL.primaryCTA && GLOBAL[data[key].identifier]) {
+            if (key === KM_GLOBAL.primaryCTA && KM_GLOBAL[data[key].identifier]) {
                 currentCTAKey = key;
                 currentCTA = data[key];
                 break;
@@ -1991,10 +1991,10 @@ KommunicateUI = {
         };
     },
     isShowRestartConversation: function () {
-        if (GLOBAL.primaryCTA !== HEADER_CTA.RESTART_CONVERSATION) return false;
+        if (KM_GLOBAL.primaryCTA !== HEADER_CTA.RESTART_CONVERSATION) return false;
 
         return (
-            GLOBAL.primaryCTA === HEADER_CTA.RESTART_CONVERSATION &&
+            KM_GLOBAL.primaryCTA === HEADER_CTA.RESTART_CONVERSATION &&
             !KommunicateUtils.isCurrentAssigneeBot()
         );
     },
