@@ -77,8 +77,6 @@ Kommunicate.client = {
             DELETED_GROUP_MESSAGE: '',
             GROUP_USER_ROLE_UPDATED_MESSAGE: '',
             GROUP_META_DATA_UPDATED_MESSAGE: '',
-            CONVERSATION_ASSIGNEE:
-                conversationDetail.assignee || conversationDetail.agentId,
             KM_CONVERSATION_TITLE: conversationDetail.groupName,
             //ALERT: "false",
             HIDE: 'true',
@@ -89,6 +87,7 @@ Kommunicate.client = {
             GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
             conversationMetadata:JSON.stringify(conversationDetail.metadata),
         };
+    
         typeof conversationDetail.teamId != 'undefined' &&
             (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
         conversationDetail.metadata.KM_ORIGINAL_TITLE &&
@@ -105,6 +104,10 @@ Kommunicate.client = {
             (groupMetadata.WELCOME_MESSAGE =
                 conversationDetail.metadata.WELCOME_MESSAGE);
 
+        if (conversationDetail.assignee || conversationDetail.agentId) {
+            groupMetadata.CONVERSATION_ASSIGNEE =
+                conversationDetail.assignee || conversationDetail.agentId;
+        }
         var groupOptions = {
             //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
