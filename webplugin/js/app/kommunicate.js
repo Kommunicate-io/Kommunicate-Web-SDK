@@ -86,9 +86,9 @@ $applozic.extend(true, Kommunicate, {
             (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
-            groupName: groupName,
+            groupName: groupName || "Conversations",
             type: 10,
-            agentId: params.agentId,
+            agentId: params.agentId || "",
             assignee: assignee,
             users: user,
             clientGroupId: params.clientGroupId,
