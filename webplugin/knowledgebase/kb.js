@@ -23,8 +23,9 @@
                     type: 'get',
                     success: function (data) {
                         response.status = 'success';
-                        response.data = data.data;
+                        response.data = data.data || [];
                         if (options.success) {
+                            response.data.length === 0 && $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
                             options.success(response);
                         }
                         return;
