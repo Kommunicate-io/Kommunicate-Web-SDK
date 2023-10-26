@@ -5903,6 +5903,7 @@ var userOverride = {
                         tabId.toString() === contact.contactId &&
                         messagePxy.contentType !== 102
                     ) {
+                        HIDE_POST_CTA && Kommunicate.hideMessageCta();
                         alMessageService.addMessageToTab(
                             messagePxy,
                             contact,
@@ -8817,6 +8818,8 @@ var userOverride = {
                                 null,
                                 allowReload
                             );
+                            HIDE_POST_CTA && Kommunicate.hideMessageCta(true);
+                            
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
                             allowReload &&
@@ -9306,24 +9309,31 @@ var userOverride = {
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
+                // if the button cta is separate message payload
                  if (
-                    HIDE_POST_CTA &&
-                    richText &&
-                    (
-                        kmRichTextMarkup.indexOf('km-cta-multi-button-container') != -1 || 
-                        kmRichTextMarkup.indexOf('km-faq-list--footer_button-container') != -1 ||
-                        (containerType && containerType.indexOf('km-cta-multi-button-container') != -1)
-                    ) &&
-                    (   
-                        kmRichTextMarkup.indexOf('<button') != -1 || 
-                        kmRichTextMarkup.indexOf('km-list-item-handler') != -1 
-                    ) 
-                    &&
-                    kmRichTextMarkup.indexOf('km-link-button') == -1
-                ) {
-                        // this class is added to the message template if the message contains CTA buttons having only quick replies.
-                       botMessageDelayClass = botMessageDelayClass + " contains-quick-replies-only";
-                }
+                     !msg.message &&
+                     HIDE_POST_CTA &&
+                     richText &&
+                     (kmRichTextMarkup.indexOf(
+                         'km-cta-multi-button-container'
+                     ) != -1 ||
+                         kmRichTextMarkup.indexOf(
+                             'km-faq-list--footer_button-container'
+                         ) != -1 ||
+                         (containerType &&
+                             containerType.indexOf(
+                                 'km-cta-multi-button-container'
+                             ) != -1)) &&
+                     (kmRichTextMarkup.indexOf('<button') != -1 ||
+                         kmRichTextMarkup.indexOf('km-list-item-handler') !=
+                             -1) &&
+                     kmRichTextMarkup.indexOf('km-link-button') == -1
+                 ) {
+                     // this class is added to the message template if the message contains CTA buttons having only quick replies.
+                     botMessageDelayClass =
+                         botMessageDelayClass + ' contains-quick-replies-only';
+
+                 }
                 
                 if (msg.metadata && msg.metadata.KM_ASSIGN){
                     conversationTransferred = 'mck-conversation-transferred'; 
