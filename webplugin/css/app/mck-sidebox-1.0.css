@@ -2730,9 +2730,9 @@ display: none;
 	-webkit-animation-name: kmOpeningAnimation;
 	animation-name: kmOpeningAnimation;
 	border-radius: 5px;
-	max-width: 70%; /* all browsers */
-	max-width: -moz-calc(85% - 58px); /* Firefox 4+ */
-	max-width: calc(85% - 58px); /* IE9+ and future browsers */
+	max-width: 70%; // all browsers 
+	max-width: -moz-calc(85% - 58px); // Firefox 4+ 
+	max-width: calc(85% - 58px); // IE9+ and future browsers
 	display: inline-block;
 	padding: 10px 10px 10px;
 	position: relative;
@@ -4719,7 +4719,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 
 #mck-msg-preview-visual-indicator .mck-close-btn-container.align-left{
 	left: auto;
-    right: -48%;
+    right: -30%;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn-container, .chat-popup-widget-container .chat-popup-widget-close-btn-container {
 	position: absolute;

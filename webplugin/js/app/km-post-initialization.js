@@ -8,6 +8,13 @@ Kommunicate.postPluginInitialization = function (err, data) {
     // get the third party settings
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var categoryName;
+    var primaryCTA =
+        kommunicate && kommunicate._globals && kommunicate._globals.primaryCTA;
+
+    if (primaryCTA && primaryCTA !== 'FAQ') {
+        $applozic('.km-kb-container').removeClass('n-vis').addClass('vis');
+        $applozic('#km-faq').addClass('n-vis').removeClass("vis");
+    }
     if (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory) {
         categoryName = kommunicate._globals.faqCategory;
         Kommunicate.getFaqList(data, categoryName);
@@ -20,7 +27,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
 Kommunicate.getFaqList = function (data, categoryName) {
     KommunicateKB.getArticles({
         data: { appId: data.appId, query: '', categoryName: categoryName },
-        success: function (response) {
+        success: function (response) {                
             if (
                 response.data &&
                 response.data.length > 0 &&
@@ -33,6 +40,14 @@ Kommunicate.getFaqList = function (data, categoryName) {
                     kommunicate._globals.popupWidget
                 );
             }
+
+            // hide the dropdown faq button if no articles there
+            if (response.data.length === 0) {
+                $applozic('.km-option-faq')
+                    .removeClass('vis')
+                    .addClass('n-vis');
+            }
+
             response.data.length ?
                 $applozic.each(response.data, function (i, faq) {
                     var title =

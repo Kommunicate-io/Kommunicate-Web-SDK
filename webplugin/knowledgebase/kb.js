@@ -23,8 +23,9 @@
                     type: 'get',
                     success: function (data) {
                         response.status = 'success';
-                        response.data = data.data;
+                        response.data = data.data || [];
                         if (options.success) {
+                            response.data.length === 0 && $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
                             options.success(response);
                         }
                         return;
@@ -52,8 +53,13 @@
                             !response.data ||
                             !response.data.length // if data is an empty array
                         ) {
+                           //hide the dropdown faq also
+                            $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
+                            kommunicate._globals.hasArticles = false
                             return null;
                         }
+                        
+                        kommunicate._globals.hasArticles = true;
                         for (var i = 0; i < response.data.length; i++) {
                             var article = response.data[i];
                             articles.push({

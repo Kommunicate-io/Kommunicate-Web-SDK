@@ -2779,6 +2779,7 @@ var userOverride = {
                 }
                 _this.setEmojiHoverText();
                 _this.configureRatingElements();
+                mckMessageLayout.setHeaderPrimaryCTA();
             };
 
             _this.validateAppSession = function (userPxy) {
@@ -2894,7 +2895,7 @@ var userOverride = {
                         'n-vis'
                     );
                     kommunicateCommons.modifyClassList(
-                        { id: ['km-widget-options'] },
+                        { id: ['km-widget-options'], class: ['km-header-cta'] },
                         'n-vis',
                         ''
                     );
@@ -3592,7 +3593,12 @@ var userOverride = {
                 document.getElementById('km-voice-input-trigger-text').innerText =
                     MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
                 document.getElementById('mck-rate-error').innerHTML =
-                    MCK_LABELS['csat.rating'].RATE_ERROR_MSG
+                    MCK_LABELS['csat.rating'].RATE_ERROR_MSG;
+                document.getElementById('km-option-talk-to-human-text').innerHTML =
+                    MCK_LABELS['conversation.header.dropdown'].HANDOFF;   
+                document.getElementById('km-option-faq-text').innerHTML =
+                    MCK_LABELS['conversation.header.dropdown'].FAQ;     
+
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -3902,6 +3908,7 @@ var userOverride = {
             var $secondsLabel = $applozic('#mck-seconds');
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
+            var CHANGE_ASSIGNEE = '/rest/ws/group/assignee/change'
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
             _this.resetMessageSentToHumanAgent = function(){
                 // used in loadTab()
@@ -4003,9 +4010,8 @@ var userOverride = {
                     eventMapping.onRestartConversationClick
                 );
                 if (
-                    event.target.id == 'km-restart-conversation' ||
-                    event.target.id == 'km-restart-conversation-text' &&
-                        appOptions.restartConversationByUser
+                    event.currentTarget.id == 'km-restart-conversation' &&
+                    appOptions.restartConversationByUser
                 ) {
                     _this.changeConversationAssignee();
                 } else {
@@ -4015,14 +4021,13 @@ var userOverride = {
                             '',
                             'n-vis'
                         );
-                        kommunicateCommons.modifyClassList(
-                            {
-                                id: [ 'mck-sidebox-ft' ]
-            
-                            },
-                            '',
-                           'mck-restart-conv-banner'
-                        )
+                    kommunicateCommons.modifyClassList(
+                        {
+                            id: ['mck-sidebox-ft'],
+                        },
+                        '',
+                        'mck-restart-conv-banner'
+                    );
 
                     KommunicateUI.showClosedConversationBanner(false);
                     KommunicateUI.isConvJustResolved = false;
@@ -4402,6 +4407,27 @@ var userOverride = {
                         : sendButton.removeAttribute('disabled');
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
                 };
+                _this.toggleTTSCTA = function (userOverride) {
+                    var ctaData = KommunicateUI.getHeaderCurrentCTAData();
+
+                    var buttonPrimary = document.querySelector(
+                        '#user-overide-voice-output'
+                    );
+                    var buttonTooltip = document.querySelector(
+                        '#user-overide-voice-output .tooltip-text'
+                    );
+                    var voiceState = userOverride.voiceOutput ? 'ON' : 'OFF';
+                    var secondChild = buttonPrimary.children[1];
+                    secondChild && buttonPrimary.removeChild(secondChild);
+
+                    buttonTooltip.innerHTML =
+                        MCK_LABELS['header.primary.CTA'][ctaData.currentCTAKey][
+                            voiceState
+                        ];
+                    buttonPrimary.innerHTML +=
+                        ctaData.currentCTA.icon[voiceState];
+                };
+
                 $mck_text_box.on('input paste', function (event) {
                     var fileFromClipboard = event.originalEvent.clipboardData && event.originalEvent.clipboardData.files && event.originalEvent.clipboardData.files[0];
                     if(fileFromClipboard){
@@ -4924,9 +4950,7 @@ var userOverride = {
 
                 //---------Place all the dropdown option triggers here-----------------
                 // CSAT trigger
-                document.getElementById('km-csat-trigger').onclick = function (
-                    e
-                ) {
+                $applozic(d).on('click', '#km-csat-trigger', function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
                     kommunicateCommons.modifyClassList(
@@ -4934,26 +4958,59 @@ var userOverride = {
                         'vis',
                         'n-vis'
                     );
-                };
+                });
+
                 document.getElementById('km-csat-close-button').onclick = function(e){
                     e.preventDefault();
                     KommunicateUI.showClosedConversationBanner(false);
                 }
 
-                // Voice Output Override trigger
-                document.getElementById(
-                    'user-overide-voice-output'
-                ).onclick = function (e) {
-                    e.preventDefault();
-                    if(userOverride.voiceOutput){
-                       Kommunicate.KmEventHandler.onMessageReceived(undefined, userOverride.voiceOutput)
-                    }
-                    userOverride.voiceOutput = !userOverride.voiceOutput;
-                    KommunicateUI.toggleVoiceOutputOverride(
-                        userOverride.voiceOutput
-                    );
-                };
+                // Voice Output Override trigger     
+                $applozic(d).on(
+                    'click',
+                    '#user-overide-voice-output',
+                    function (e) {
+                        e.preventDefault();
+                        if (userOverride.voiceOutput) {
+                            Kommunicate.KmEventHandler.onMessageReceived(
+                                undefined,
+                                userOverride.voiceOutput
+                            );
+                        }
+                        var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
 
+                        userOverride.voiceOutput = !userOverride.voiceOutput;
+                        appOptions.primaryCTA === ctaData.TTS.name
+                            ? _this.toggleTTSCTA(userOverride)
+                            : KommunicateUI.toggleVoiceOutputOverride(
+                                  userOverride.voiceOutput
+                              );
+                    }
+                );
+
+                $applozic(d).on('click', '#km-talk-to-human', function (e) {
+                    e.preventDefault();
+
+                    window.Applozic.ALApiService.ajax({
+                        type: 'PATCH',
+                        url:
+                            MCK_BASE_URL +
+                            CHANGE_ASSIGNEE +
+                            '?groupId=' +
+                            encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
+                            '&switchAssignee=' +
+                            encodeURIComponent(true),
+                        global: false,
+                        contentType: 'text/plain',
+                        success: function (data) {
+                            console.log(data);
+                        },
+                        error: function (data) {
+                            console.error(data);
+                        },
+                    });
+                });
+                
                 //----------------------------------------------------------------
 
                 $applozic('#km-form-chat-login').submit(function (e) {
@@ -5055,6 +5112,12 @@ var userOverride = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-widget-options'], class:['km-header-cta'] },
+                            'n-vis',
+                            ''
+                        );
+
                         // To prevent conversation assignee details from being shown when in FAQ 
                         var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1]
                         var isFaqCategoryPresent = kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
@@ -7107,6 +7170,7 @@ var userOverride = {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
 
                                                             mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
+                                                            !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -8011,6 +8075,7 @@ var userOverride = {
                                     response.data = group;
                                     params.callback(response);
                                     mckMessageLayout.loadDropdownOptions(); 
+                                    !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation() && $applozic('.km-header-cta').addClass('vis').removeClass('n-vis')
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -8302,12 +8367,116 @@ var userOverride = {
                         .prependTo('#mck-message-cell .mck-message-inner');
                 }
             };
+
+            _this.setHeaderCTALabel = function (
+                currentCTAKey,
+                currentCTA,
+                nestedKey
+            ) {
+                var buttonPrimary = document.querySelector('.km-header-cta');
+               
+                var toolTipText = nestedKey
+                    ? MCK_LABELS['header.primary.CTA'][currentCTAKey][nestedKey]
+                    : MCK_LABELS['header.primary.CTA'][currentCTAKey];
+
+                buttonPrimary.innerHTML += nestedKey
+                    ? currentCTA.icon[nestedKey]
+                    : currentCTA.icon;
+
+                buttonPrimary.setAttribute("title", toolTipText)    
+                buttonPrimary.id = currentCTA.id;
+            };
+
+            _this.setHeaderPrimaryCTA = function () {
+                if (!appOptions.primaryCTA || appOptions.primaryCTA === 'FAQ') return;
+                var data = KommunicateUI.getHeaderCurrentCTAData();
+                var nestedKey;
+                var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
+
+                if (data.currentCTA) {
+                    kommunicateCommons.modifyClassList(
+                        { id: ['km-faq'] },
+                        'n-vis'
+                    );
+                    kommunicateCommons.modifyClassList(
+                        { id: ['km-header-cta'] },
+                        '',
+                        'n-vis'
+                    );
+
+                    switch (true) {
+                        case appOptions.primaryCTA === ctaData.TTS.name:
+                            nestedKey = 'ON';
+                            break;
+                        default:
+                            break;
+                    }
+                    _this.setHeaderCTALabel(
+                        data.currentCTAKey,
+                        data.currentCTA,
+                        nestedKey
+                    );
+                }
+            };
+
+            _this.shouldRestartConversation = function (id) {
+                var isIterable = true;
+                var restartConversationBtn = document.getElementById(id);
+                if (
+                    restartConversationBtn &&
+                    restartConversationBtn.classList.contains('n-vis')
+                ) {
+                    kommunicateCommons.modifyClassList(
+                        { id: [id] },
+                        '',
+                        'n-vis'
+                    );
+                }
+
+                CURRENT_GROUP_DATA.groupMembers &&
+                    CURRENT_GROUP_DATA.groupMembers.forEach(function (member) {
+                        if (
+                            isIterable &&
+                            (member.role == 2 || member.roleType == 1) &&
+                            member.userId ==
+                                CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
+                        ) {
+                            isIterable = false;
+                            CURRENT_GROUP_DATA.initialBot = member;
+                        }
+                    });
+                if (
+                    CURRENT_GROUP_DATA &&
+                    CURRENT_GROUP_DATA.initialBot &&
+                    CURRENT_GROUP_DATA.conversationAssignee &&
+                        CURRENT_GROUP_DATA.initialBot.userId
+                ) {
+                    kommunicateCommons.modifyClassList(
+                        { id: [id] },
+                        '',
+                        'n-vis'
+                    );
+                    restartConversationBtn &&
+                        restartConversationBtn.addEventListener(
+                            'click',
+                            mckMessageService.restartConversation
+                        );
+                } else {
+                    kommunicateCommons.modifyClassList(
+                        { id: [id] },
+                        'n-vis',
+                        ''
+                    );
+                }
+            };
+
             _this.loadDropdownOptions = function () {
-                if(document.querySelector('#mck-contact-list')){
+                if (document.querySelector('#mck-contact-list')) {
                     // if contact list is visible then dropdown options should not be loaded.
                     return;
                 }
                 var enableDropdown = false;
+                var primaryCTA = appOptions.primaryCTA;
                 var isConvRated =
                     appOptions.oneTimeRating &&
                     !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] ==
@@ -8316,7 +8485,11 @@ var userOverride = {
                     Mid conversation CSAT
                     update if dedicated parameter is introduced
                 */
-                if (CSAT_ENABLED && !isConvRated) {
+                if (
+                    CSAT_ENABLED &&
+                    !isConvRated &&
+                    HEADER_CTA.CSAT_RATING !== primaryCTA
+                ) {
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList(
                         { id: ['km-csat-trigger'] },
@@ -8325,62 +8498,15 @@ var userOverride = {
                     );
                 }
                 if (appOptions.restartConversationByUser) {
-                    enableDropdown = true;
-                    var isIterable = true;
-                    var restartConversationBtn = document.getElementById(
-                        'km-restart-conversation'
-                    );
-                    if (
-                        restartConversationBtn &&
-                        restartConversationBtn.classList.contains('n-vis')
-                    ) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            '',
-                            'n-vis'
-                        );
+                    if (HEADER_CTA.RESTART_CONVERSATION !== primaryCTA) {
+                        enableDropdown = true;
                     }
-                    CURRENT_GROUP_DATA.groupMembers &&
-                        CURRENT_GROUP_DATA.groupMembers.forEach(function (member) {
-                            if (
-                                isIterable && (member.role == 2 ||
-                                member.roleType == 1) &&
-                                    member.userId ==
-                                        CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
-                            ) {
-                                isIterable = false;
-                                CURRENT_GROUP_DATA.initialBot = member;
-                            }
-                        });
-                    if (
-                        CURRENT_GROUP_DATA &&
-                        CURRENT_GROUP_DATA.initialBot &&
-                        CURRENT_GROUP_DATA.conversationAssignee &&
-                        CURRENT_GROUP_DATA.conversationAssignee ==
-                            CURRENT_GROUP_DATA.initialBot.userId
-                    ) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            '',
-                            'n-vis'
-                        );
-                        restartConversationBtn &&
-                            restartConversationBtn.addEventListener(
-                                'click',
-                                mckMessageService.restartConversation
-                            );
-                    } else {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['km-restart-conversation'] },
-                            'n-vis',
-                            ''
-                        );
-                    }
+                    _this.shouldRestartConversation('km-restart-conversation');
                 }
 
                 // For voice output user override
-                if (VOICE_OUTPUT_ENABLED) {
-                    enableDropdown = true;  
+                if (VOICE_OUTPUT_ENABLED && HEADER_CTA.TTS !== primaryCTA) {
+                    enableDropdown = true;
                     KommunicateUI.toggleVoiceOutputOverride(
                         userOverride.voiceOutput
                     );
@@ -8391,6 +8517,27 @@ var userOverride = {
                     );
                 }
 
+                if (appOptions.talkToHuman && HEADER_CTA.TALK_TO_HUMAN !== primaryCTA) {
+                    enableDropdown = true;
+                    kommunicateCommons.modifyClassList(
+                        { class: ['km-option-talk-to-human'] },
+                        '',
+                        'n-vis'
+                    );
+                }
+                // hasArticles initially will be undefined and after the faq load it will be boolean
+                if (
+                    !KommunicateUI.isFAQPrimaryCTA() &&
+                    (kommunicate._globals.hasArticles === undefined ||
+                        kommunicate._globals.hasArticles === true)
+                ) {
+                    enableDropdown = true;
+                    kommunicateCommons.modifyClassList(
+                        { class: ['km-option-faq'] },
+                        '',
+                        'n-vis'
+                    );
+                }
                 // For toggling display of three dot button (Dropdown btn)
                 enableDropdown &&
                     kommunicateCommons.modifyClassList(
@@ -8695,7 +8842,7 @@ var userOverride = {
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    KommunicateUI.isFAQPrimaryCTA() && $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box
                         .removeClass('n-vis')
@@ -8754,7 +8901,7 @@ var userOverride = {
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
                         : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
-                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    KommunicateUI.isFAQPrimaryCTA() && $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     mckMessageLayout.addStaticMessage();
                 } else {
                     params.isWaitingQueue = true;
@@ -13070,7 +13217,7 @@ var userOverride = {
             _this.loadContacts = function () {
                 var mckContactNameArray = [];
                 var url =
-                    '/rest/ws/user/v3/filter?startIndex=0&pageSize=50&orderBy=1';
+                    '/rest/ws/user/v2/filter?startIndex=0&pageSize=50&orderBy=1';
                 window.Applozic.ALApiService.getContactList({
                     url: url,
                     baseUrl: MCK_BASE_URL,
