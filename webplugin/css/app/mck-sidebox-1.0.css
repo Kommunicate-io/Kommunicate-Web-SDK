@@ -5495,7 +5495,7 @@ div#mck-waiting-queue {
 }
 
 /* -----------------Support for hiding list and buttons post call to action------------- */
-.mck-msg-left [data-hidepostcta="true"] {
+/* .mck-msg-left [data-hidepostcta="true"] {
 	display: none;
 }
 .mck-msg-left:last-child [data-hidepostcta="true"] {
@@ -5504,7 +5504,7 @@ div#mck-waiting-queue {
 }
 .mck-msg-left.contains-quick-replies-only:not(:last-child) {
 	display: none;
-}
+} */
 
 /* -----------------Support for hiding form post form submission------------- */
 .mck-msg-left [data-hidepostformsubmit="true"] {
