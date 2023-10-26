@@ -3088,9 +3088,14 @@ var userOverride = {
                             var lastMessageBeforeSend = $applozic(
                                 "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                             );
-                            HIDE_POST_CTA &&
+                            if (HIDE_POST_CTA) {
+                                Kommunicate.hideMessageCta();
                                 lastMessageBeforeSend &&
-                                Kommunicate.hideMessage(lastMessageBeforeSend);
+                                    Kommunicate.hideMessage(
+                                        lastMessageBeforeSend
+                                    );
+                            }
+                         
 
                             CURRENT_GROUP_DATA.currentGroupFeedback =
                                 result.data.data;
@@ -5003,7 +5008,19 @@ var userOverride = {
                         global: false,
                         contentType: 'text/plain',
                         success: function (data) {
-                            console.log(data);
+                            if (data.status === 'success') {
+                                var lastMessageBeforeSend = $applozic(
+                                    "#mck-message-cell .mck-message-inner div[name='message']:last-child"
+                                );
+                                if (HIDE_POST_CTA) {
+                                    Kommunicate.hideMessageCta();
+
+                                    lastMessageBeforeSend &&
+                                        Kommunicate.hideMessage(
+                                            lastMessageBeforeSend
+                                        );
+                                }
+                            }
                         },
                         error: function (data) {
                             console.error(data);
@@ -6086,6 +6103,7 @@ var userOverride = {
                             tabId &&
                             tabId.toString() === contact.contactId
                         ) {
+                            HIDE_POST_CTA && Kommunicate.hideMessageCta();
                             alMessageService.addMessageToTab(
                                 messagePxy,
                                 contact,

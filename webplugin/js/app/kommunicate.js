@@ -876,7 +876,7 @@ $applozic.extend(true, Kommunicate, {
                 currentMsg.dataset.msgkey ==
                     allMessages[lastMessage].dataset.msgkey
             ) {
-                console.log("don't process the hide post cta last msg");
+                // console.log("don't process the hide post cta last msg");
             } else if (
                 currentMsg.querySelector('.km-cta-multi-button-container') // checking if button container is exist in the message div
             ) {
