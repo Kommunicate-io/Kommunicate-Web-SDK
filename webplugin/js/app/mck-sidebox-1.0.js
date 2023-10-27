@@ -3076,7 +3076,7 @@ var userOverride = {
                                 "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                             );
                             if (HIDE_POST_CTA) {
-                                Kommunicate.hideMessageCta();
+                                Kommunicate.hideMessageCTA();
                                 lastMessageBeforeSend &&
                                     Kommunicate.hideMessage(
                                         lastMessageBeforeSend
@@ -5908,7 +5908,7 @@ var userOverride = {
                         tabId.toString() === contact.contactId &&
                         messagePxy.contentType !== 102
                     ) {
-                        HIDE_POST_CTA && Kommunicate.hideMessageCta();
+                        HIDE_POST_CTA && Kommunicate.hideMessageCTA();
                         alMessageService.addMessageToTab(
                             messagePxy,
                             contact,
@@ -6016,7 +6016,7 @@ var userOverride = {
                             tabId &&
                             tabId.toString() === contact.contactId
                         ) {
-                            HIDE_POST_CTA && Kommunicate.hideMessageCta();
+                            HIDE_POST_CTA && Kommunicate.hideMessageCTA();
                             alMessageService.addMessageToTab(
                                 messagePxy,
                                 contact,
@@ -8824,7 +8824,7 @@ var userOverride = {
                                 null,
                                 allowReload
                             );
-                            HIDE_POST_CTA && Kommunicate.hideMessageCta(true);
+                            HIDE_POST_CTA && Kommunicate.hideMessageCTA(true);
                             
                             Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
