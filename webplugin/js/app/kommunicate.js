@@ -855,7 +855,7 @@ $applozic.extend(true, Kommunicate, {
         var closeBtn = document.getElementById('km-popup-close-button');
         closeBtn && closeBtn.click();
     },
-    hideMessageCta: function (processAllMsg) {
+    hideMessageCTA: function (processAllMsg) {
         var allMessages = $applozic(
             '#mck-message-cell .mck-message-inner div[name="message"]'
         );
