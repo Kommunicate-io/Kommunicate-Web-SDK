@@ -355,6 +355,7 @@ function ApplozicSidebox() {
             return false;
         }
     }
+
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
@@ -377,6 +378,11 @@ function ApplozicSidebox() {
                         '.' + domain)
                 );
             };
+            function isSettingEnable(key) {
+                return options[key] != null
+                    ? options[key]
+                    : widgetSettings && widgetSettings[key];
+            }
             // replace cookies in old format with cookies in new format
             KommunicateUtils.replaceOldCookies();
 
@@ -505,6 +511,9 @@ function ApplozicSidebox() {
                 options.staticTopIcon != null
                     ? options.staticTopIcon
                     : widgetSettings && widgetSettings.staticTopIcon;
+
+            options.primaryCTA = isSettingEnable('primaryCTA');
+            options.talkToHuman = isSettingEnable('talkToHuman');  
                     
             KommunicateUtils.deleteDataFromKmSession('settings');
 

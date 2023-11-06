@@ -855,4 +855,45 @@ $applozic.extend(true, Kommunicate, {
         var closeBtn = document.getElementById('km-popup-close-button');
         closeBtn && closeBtn.click();
     },
+    hideMessageCTA: function (processAllMsg) {
+        var allMessages = $applozic(
+            '#mck-message-cell .mck-message-inner div[name="message"]'
+        );
+        var lastMessage = allMessages.length - 1;
+
+        for (var i = lastMessage; i >= 0; i--) {
+            var currentMsg = allMessages[i];
+
+            if (
+                !processAllMsg &&
+                currentMsg.classList.contains('mck-msg-right')
+            ) {
+                break;
+            }
+
+            if (
+                processAllMsg &&
+                currentMsg.dataset.msgkey ==
+                    allMessages[lastMessage].dataset.msgkey
+            ) {
+                // console.log("don't process the hide post cta last msg");
+            } else if (
+                currentMsg.querySelector('.km-cta-multi-button-container') // checking if button container is exist in the message div
+            ) {
+                var allCTAButtons = currentMsg.querySelectorAll(
+                    '.km-quick-replies'
+                );
+
+                allCTAButtons.forEach(function (cta) {
+                    cta.setAttribute('data-hidden', true);
+                });
+
+                allCTAButtons.length &&
+                    currentMsg.classList.contains(
+                        'contains-quick-replies-only'
+                    ) &&
+                    currentMsg.classList.add('km-hide-message');
+            }
+        }
+    },
 });
