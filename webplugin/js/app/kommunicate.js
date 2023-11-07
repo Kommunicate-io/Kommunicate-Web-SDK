@@ -893,6 +893,19 @@ $applozic.extend(true, Kommunicate, {
                         'contains-quick-replies-only'
                     ) &&
                     currentMsg.classList.add('km-hide-message');
+            } else if (
+                // ONLY FOR LIST RICH MESSAGE
+                currentMsg.querySelector(
+                    '.km-faq-list--footer_button-container'
+                )
+            ) {
+                var allCTAButtons = currentMsg.querySelectorAll(
+                    '[data-hidepostcta="true"]'
+                );
+                allCTAButtons.length &&
+                    allCTAButtons.forEach(function (cta) {
+                        cta.setAttribute('data-hidden', true);
+                    });
             }
         }
     },
