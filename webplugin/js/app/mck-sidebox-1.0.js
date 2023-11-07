@@ -384,7 +384,7 @@ var userOverride = {
         var OPEN_GROUP_SUBSCRIBER_MAP = [];
         var MCK_CONNECTED_CLIENT_COUNT = 0;
         var GROUP_ROLE_MAP = [0, 1, 2, 3];
-        var GROUP_TYPE_MAP = [1, 2, 5, 6, 10];
+        var GROUP_TYPE_MAP = [10];
         var MCK_TOPIC_CONVERSATION_MAP = [];
         var IS_MCK_USER_DEACTIVATED = false;
         var MCK_LAUNCHER = appOptions.launcher;
@@ -3371,8 +3371,8 @@ var userOverride = {
                             element.value.slice(1);
                         selectElement.appendChild(dropDownOption);
                     } else {
-                        throw new TypeError(
-                            'expected object in option array but got ' +
+                        console.error(
+                            'Expected object inside options array but got ' +
                                 typeof element
                         );
                     }
@@ -3592,7 +3592,7 @@ var userOverride = {
                 document.getElementById('km-csat-trigger-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
                 document.getElementById('km-restart-conversation-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
+                    MCK_LABELS['conversation.header.dropdown'].RESET_CONVERSATION;
                 document.getElementById('km-voice-note-trigger-text').innerText =
                     MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
                 document.getElementById('km-voice-input-trigger-text').innerText =
@@ -3852,8 +3852,6 @@ var userOverride = {
             var $mck_btn_leave_group = $applozic('#mck-btn-leave-group');
             var $mck_sidebox_content = $applozic('.mck-sidebox-content');
             var $mck_no_more_messages = $applozic('#mck-no-more-messages');
-            var $mck_btn_group_create = $applozic('#mck-btn-group-create');
-            var $mck_group_create_tab = $applozic('#mck-group-create-tab');
             var $mck_group_add_member = $applozic('#mck-group-add-member');
             var $mck_contacts_content = $applozic('#mck-contacts-content');
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
@@ -7970,9 +7968,9 @@ var userOverride = {
                 if (params.groupIcon) {
                     groupInfo.imageUrl = params.groupIcon;
                 }
-                groupInfo.metadata = params.metadata
-                    ? params.metadata
-                    : MCK_LABELS['group.metadata'];
+                if (params.metadata){
+                    groupInfo.metadata = params.metadata;
+                }
                 var response = new Object();
                 window.Applozic.ALApiService.ajax({
                     url: MCK_BASE_URL + GROUP_CREATE_URL,
@@ -7981,11 +7979,6 @@ var userOverride = {
                     type: 'post',
                     contentType: 'application/json',
                     success: function (data) {
-                        if (params.isInternal) {
-                            $mck_btn_group_create
-                                .attr('disabled', false)
-                                .html(MCK_LABELS['create.group.title']);
-                        }
                         if (
                             typeof data === 'object' &&
                             data.status === 'success'
@@ -8107,11 +8100,6 @@ var userOverride = {
                         }
                     },
                     error: function () {
-                        if (params.isInternal) {
-                            $mck_btn_group_create
-                                .attr('disabled', false)
-                                .html(MCK_LABELS['create.group.title']);
-                        }
                         if (typeof params.callback === 'function') {
                             response.status = 'error';
                             response.errorMessage =
@@ -8200,7 +8188,6 @@ var userOverride = {
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_group_search_tab = $applozic('#mck-group-search-tab');
             var $mck_no_search_groups = $applozic('#mck-no-search-groups');
-            var $mck_group_create_tab = $applozic('#mck-group-create-tab');
             var $mck_group_search_list = $applozic('#mck-group-search-list');
             var $mck_group_search_tabview = $applozic(
                 '#mck-group-search-tabview'
@@ -8334,7 +8321,7 @@ var userOverride = {
                 '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' +
                 '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' +
                 '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
-            var csatModule =
+            var csatModule = 
                 '<div class="km-csat-skeleton"> <div class="mck-rated"> <span id="mck-resolved-text" class=${resolutionStatusClass}>' + 
                 MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED + '</span><br><div id="separator"><span id="mck-rated-text">' +
                 '${csatRatingLabel} <strong>${ratingTitle}</strong></span><span class="mck-rating-container">{{html ratingSmileSVG}}</span></div></div><div class="mck-conversation-comment">${ratingComment}</div></div>';
@@ -8517,6 +8504,47 @@ var userOverride = {
                     );
                 }
                 if (appOptions.restartConversationByUser) {
+                    var restartConversationBtn = document.getElementById(
+                        'km-restart-conversation'
+                    );
+                    var isIterable = true;
+                    CURRENT_GROUP_DATA.groupMembers &&
+                        CURRENT_GROUP_DATA.groupMembers.map(function (member) {
+                            if (
+                                isIterable && (member.role == 2 ||
+                                member.roleType == 1) &&
+                                    member.userId ==
+                                        CURRENT_GROUP_DATA.conversationAssignee // setting a new property to CURRENT_GROUP_DATA
+                            ) {
+                                isIterable = false;
+                                CURRENT_GROUP_DATA.initialBot = member;
+                            }
+                        });
+                    if (
+                        CURRENT_GROUP_DATA &&
+                        CURRENT_GROUP_DATA.initialBot &&
+                        CURRENT_GROUP_DATA.conversationAssignee &&
+                        CURRENT_GROUP_DATA.conversationAssignee ==
+                            CURRENT_GROUP_DATA.initialBot.userId
+                    ) {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-restart-conversation'] },
+                            '',
+                            'n-vis'
+                        );
+                        restartConversationBtn &&
+                            restartConversationBtn.addEventListener(
+                                'click',
+                                mckMessageService.restartConversation
+                            );
+                    } else {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['km-restart-conversation'] },
+                            'n-vis',
+                            ''
+                        );
+                    }
+
                     if (HEADER_CTA.RESTART_CONVERSATION !== primaryCTA) {
                         enableDropdown = true;
                     }
@@ -8690,7 +8718,6 @@ var userOverride = {
                 QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
                 $mck_sidebox_search.removeClass('vis').addClass('n-vis');
                 $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_group_create_tab.removeClass('vis').addClass('n-vis');
                 $mck_sidebox_content.removeClass('n-vis').addClass('vis');
                 $mck_product_box.removeClass('vis').addClass('n-vis');
                 $mck_conversation_header.addClass('n-vis');
@@ -11669,7 +11696,6 @@ var userOverride = {
                 $mck_contacts_content.removeClass('vis').addClass('n-vis');
                 $mck_sidebox_content.removeClass('vis').addClass('n-vis');
                 $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_group_create_tab.removeClass('vis').addClass('n-vis');
                 $mck_sidebox_search.removeClass('n-vis').addClass('vis');
                 $mck_search_loading.removeClass('n-vis').addClass('vis');
                 if (MCK_CONTACT_ARRAY.length !== 0) {
@@ -11705,7 +11731,6 @@ var userOverride = {
                 $mck_contacts_content.removeClass('vis').addClass('n-vis');
                 $mck_sidebox_content.removeClass('vis').addClass('n-vis');
                 $mck_group_info_tab.removeClass('vis').addClass('n-vis');
-                $mck_group_create_tab.removeClass('vis').addClass('n-vis');
                 $mck_sidebox_search.removeClass('n-vis').addClass('vis');
                 $mck_search_loading.removeClass('n-vis').addClass('vis');
                 if (MCK_GROUP_ARRAY.length > 0) {
@@ -13519,19 +13544,6 @@ var userOverride = {
                 2: MCK_LABELS['moderator'],
                 3: MCK_LABELS['member'],
             };
-            var select = document.getElementById('mck-group-create-type');
-            select.options[select.options.length] = new Option(
-                MCK_LABELS['public'],
-                '1'
-            );
-            select.options[select.options.length] = new Option(
-                MCK_LABELS['private'],
-                '2'
-            );
-            select.options[select.options.length] = new Option(
-                MCK_LABELS['open'],
-                '6'
-            );
 
             var $mck_msg_form = $applozic('#mck-msg-form');
             var $mck_msg_error = $applozic('#mck-msg-error');
@@ -13544,14 +13556,11 @@ var userOverride = {
             var $mck_search_loading = $applozic('#mck-search-loading');
             var $mck_group_info_tab = $applozic('#mck-group-info-tab');
             var $mck_sidebox_search = $applozic('#mck-sidebox-search');
-            var $mck_group_name_box = $applozic('#mck-group-name-box');
             var $mck_group_back_link = $applozic('#mck-group-back-link');
             var $mck_group_name_edit = $applozic('#mck-group-name-edit');
             var $mck_group_name_save = $applozic('#mck-group-name-save');
             var $mck_sidebox_content = $applozic('#mck-sidebox-content');
             var $mck_tab_option_panel = $applozic('#mck-tab-option-panel');
-            var $mck_btn_group_create = $applozic('#mck-btn-group-create');
-            var $mck_group_create_tab = $applozic('#mck-group-create-tab');
             var $mck_contacts_content = $applozic('#mck-contacts-content');
             var $mck_btn_group_update = $applozic('#mck-btn-group-update');
             var $mck_group_create_type = $applozic('#mck-group-create-type');
@@ -13649,51 +13658,6 @@ var userOverride = {
                 '<div class="mck-row"><div class="blk-lg-12 mck-truncate mck-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' +
                 '</div></div></a></li>';
 
-            var MAX_GROUP_NAME_SIZE = 30;
-            $applozic('.mck-group-name-box div[contenteditable]')
-                .keypress(function (e) {
-                    if (
-                        e.which === 8 ||
-                        e.keyCode === 37 ||
-                        e.keyCode === 38 ||
-                        e.keyCode === 39 ||
-                        e.keyCode === 40 ||
-                        (e.ctrlKey && e.which === 97)
-                    ) {
-                        return true;
-                    } else if (e.keyCode === 13 && !(e.shiftKey || e.ctrlKey)) {
-                        if (
-                            $applozic(e.target).hasClass(
-                                'mck-group-create-title'
-                            )
-                        ) {
-                            _this.submitCreateGroup();
-                            return false;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return MAX_GROUP_NAME_SIZE > this.innerHTML.length;
-                    }
-                })
-                .on('paste', function (e) {
-                    var $this = this;
-                    setTimeout(function () {
-                        var len = $this.innerText.length;
-                        if (len > MAX_GROUP_NAME_SIZE) {
-                            $this.innerHTML = $this.innerText.substring(
-                                0,
-                                MAX_GROUP_NAME_SIZE
-                            );
-                            mckUtils.setEndOfContenteditable($this);
-                        }
-                        return false;
-                    }, 'fast');
-                })
-                .on('drop', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
             $applozic(d).on('click', '.mck-btn-change-role', function (e) {
                 e.preventDefault();
                 var $changeRoleBox = $applozic(this)
@@ -13849,9 +13813,6 @@ var userOverride = {
                     $mck_group_title.addClass('mck-req-border');
                 }
             });
-            $mck_btn_group_create.on('click', function () {
-                _this.submitCreateGroup();
-            });
 
             _this.init = function () {
                 $applozic.template('groupMemberTemplate', groupContactbox);
@@ -13938,33 +13899,6 @@ var userOverride = {
                 } else {
                     sendButton.removeAttribute('disabled');
                     CURRENT_GROUP_DATA.DISABLE_SEND_MESSAGE = value;
-                }
-            };
-            _this.submitCreateGroup = function () {
-                var groupName = $applozic.trim($mck_group_create_title.text());
-                var groupType = $mck_group_create_type.val();
-                var iconUrl = $mck_group_create_icon.data('iconurl');
-                if (groupName.length > 0) {
-                    var params = {
-                        groupName: groupName,
-                    };
-                    if (groupType) {
-                        groupType = parseInt(groupType);
-                        if (GROUP_TYPE_MAP.indexOf(groupType) !== -1) {
-                            params.type = groupType;
-                        }
-                    }
-                    if (iconUrl) {
-                        params.groupIcon = iconUrl;
-                    }
-                    $mck_group_create_icon.data('iconurl', '');
-                    params.isInternal = true;
-                    $mck_btn_group_create
-                        .attr('disabled', true)
-                        .html(MCK_LABELS['group.create.submit']);
-                    mckMessageService.getGroup(params);
-                } else {
-                    $mck_group_create_title.addClass('mck-req-border');
                 }
             };
             _this.loadGroups = function (response) {
@@ -14696,7 +14630,6 @@ var userOverride = {
                 $mck_group_create_icon.html(
                     mckGroupService.getGroupDefaultIcon()
                 );
-                $mck_group_create_tab.removeClass('n-vis').addClass('vis');
             };
             _this.loadGroupInfo = function (params) {
                 if (params.groupId) {
@@ -14708,7 +14641,6 @@ var userOverride = {
                     $mck_group_update_panel
                         .removeClass('vis')
                         .addClass('n-vis');
-                    $mck_group_create_tab.removeClass('vis').addClass('n-vis');
                     $mck_btn_group_icon_save
                         .removeClass('vis')
                         .addClass('n-vis');
