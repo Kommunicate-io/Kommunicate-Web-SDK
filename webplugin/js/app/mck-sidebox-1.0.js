@@ -4417,16 +4417,16 @@ var userOverride = {
                         '#user-overide-voice-output'
                     );
                     var buttonTooltip = document.querySelector(
-                        '#user-overide-voice-output .tooltip-text'
+                        '#user-overide-voice-output'
                     );
                     var voiceState = userOverride.voiceOutput ? 'ON' : 'OFF';
                     var secondChild = buttonPrimary.children[1];
                     secondChild && buttonPrimary.removeChild(secondChild);
 
-                    buttonTooltip.innerHTML =
+                    buttonTooltip.setAttribute("title",
                         MCK_LABELS['header.primary.CTA'][ctaData.currentCTAKey][
                             voiceState
-                        ];
+                        ])
                     buttonPrimary.innerHTML +=
                         ctaData.currentCTA.icon[voiceState];
                 };
