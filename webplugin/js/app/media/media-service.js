@@ -1,6 +1,9 @@
 Kommunicate.mediaService = {
-    browserLocale: window.navigator.language || window.navigator.userLanguage || 'en-US',
-    appOptions: KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals,
+    browserLocale:
+        window.navigator.language || window.navigator.userLanguage || 'en-US',
+    appOptions:
+        KommunicateUtils.getDataFromKmSession('appOptions') ||
+        applozic._globals,
     userInActiveSec: 0,
     isAppleDevice: function () {
         var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -15,20 +18,23 @@ Kommunicate.mediaService = {
         var currentTime = new Date().getTime();
         var lastListeningEventTime = params.lastListeningEventTime;
 
-        var isUserSilent = function() {
+        var isUserSilent = function () {
             //if user remains silent for atLeast voiceInputTimeOut sec
             if (lastListeningEventTime === 0) {
-                return ++(that.userInActiveSec) === voiceInputTimeOut;
-            };
+                return ++that.userInActiveSec === voiceInputTimeOut;
+            }
             //else acc to condition we return true/false
-            return (currentTime - params.lastListeningEventTime) / 1000 >= voiceInputTimeOut;
-        };    
+            return (
+                (currentTime - params.lastListeningEventTime) / 1000 >=
+                voiceInputTimeOut
+            );
+        };
         if (isUserSilent()) {
             params.lastListeningEventTime = 0;
             that.userInActiveSec = 0;
             params.recognition.stop();
             clearInterval(params.checkLastSpeech);
-        };
+        }
     },
     capitalizeFirstCharacter: function (str) {
         var firstCharRegex = /\S/;
@@ -50,7 +56,8 @@ Kommunicate.mediaService = {
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = isAppleProduct; // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
-            recognition.lang = appOptions.language || Kommunicate.mediaService.browserLocale;
+            recognition.lang =
+                appOptions.language || Kommunicate.mediaService.browserLocale;
 
             recognition.start();
             recognition.onstart = function (event) {
@@ -75,7 +82,7 @@ Kommunicate.mediaService = {
 
                 if (isAppleProduct && interimTranscript) {
                     lastListeningEventTime = new Date().getTime();
-                };
+                }
             };
 
             recognition.onend = function () {
@@ -90,7 +97,7 @@ Kommunicate.mediaService = {
             };
 
             //explicitly Stop the Mic recording only for Safari
-             if (isAppleProduct) {
+            if (isAppleProduct) {
                 var checkLastSpeech = setInterval(function () {
                     Kommunicate.mediaService.endSttExplicitly({
                         lastListeningEventTime,
@@ -102,91 +109,91 @@ Kommunicate.mediaService = {
         }
     },
     voiceOutputIncomingMessage: function (message, offSpeech) {
-        if (offSpeech) {
-            window.speechSynthesis.cancel();
-            return;
-        }
-        // get appOptions from widget script
-        var timeOut;
-        var appOptions = Kommunicate.mediaService.appOptions;
-        function longTextSupport() {
-            window.speechSynthesis.pause();
-            window.speechSynthesis.resume();
-            timeOut = setTimeout(longTextSupport, 10000);
-        }
-        // If the message isn't part of the UI, it's not included
-        // in voiceoutput either
-        if (!appOptions || !Kommunicate.visibleMessage(message)) return;
+        //Text to Speech
 
-        // if voiceoutput is enabled and browser supports it
-        if (appOptions.voiceOutput && 'speechSynthesis' in window) {
-            var textToSpeak = '';
-            var isChrome =
-                !!window.chrome || navigator.userAgent.indexOf('Chrome') > -1;
-            if (message.hasOwnProperty('fileMeta')) {
-                textToSpeak += MCK_LABELS['voice.output'].attachment;
-                textToSpeak += message.fileMeta.name;
-            } else if (
-                message.contentType ==
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
-            ) {
-                coord = JSON.parse(message.message);
-                textToSpeak += MCK_LABELS['voice.output'].location.init;
-                textToSpeak +=
-                    MCK_LABELS['voice.output'].location.lat +
-                    Math.round(coord.lat * 100) / 100;
-                textToSpeak +=
-                    MCK_LABELS['voice.output'].location.lon +
-                    Math.round(coord.lon * 100) / 100;
-            } else if (
-                message.message &&
-                message.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
-            ) {
-                textToSpeak += message.message;
+        if ('speechSynthesis' in window) {
+            var speechSynth= window.speechSynthesis;
+
+            if (offSpeech) {
+                speechSynth.cancel();
+                return;
             }
-            if (textToSpeak) {
-                var skipForEach = false;
-                var utterance = new SpeechSynthesisUtterance(textToSpeak);
-                utterance.lang = appOptions.language || 'en-US';
-                utterance.rate = appOptions.voiceRate || 1;
-                utterance.text = textToSpeak;
 
-                function updateVoiceName(voice) {
-                    utterance.voice = voice;
-                    skipForEach = true;
+            // get appOptions from widget script
+            var appOptions = KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals;
+
+            // If the message isn't part of the UI, it's not included in voice output either
+            if (!appOptions || !Kommunicate.visibleMessage(message)) return;
+
+            // if voiceOutput is enabled
+            if (appOptions.voiceOutput) {
+                var textToSpeak = '';
+
+                if (message.hasOwnProperty('fileMeta')) {
+                    textToSpeak += MCK_LABELS['voice.output'].attachment;
+                    textToSpeak += message.fileMeta.name;
+                } else if (
+                    message.contentType ==
+                    KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                ) {
+                    coord = JSON.parse(message.message);
+                    textToSpeak += MCK_LABELS['voice.output'].location.init;
+                    textToSpeak +=
+                        MCK_LABELS['voice.output'].location.lat +
+                        Math.round(coord.lat * 100) / 100;
+                    textToSpeak +=
+                        MCK_LABELS['voice.output'].location.lon +
+                        Math.round(coord.lon * 100) / 100;
+                } else if (
+                    message.message &&
+                    message.contentType ==
+                        KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
+                ) {
+                    textToSpeak += message.message;
                 }
 
-                if (appOptions.voiceName) {
-                    AVAILABLE_VOICES_FOR_TTS.forEach(function (voice) {
-                        if (skipForEach) return;
+                if (textToSpeak) {
+                    var skipForEach = false;
+                    var utterance = new SpeechSynthesisUtterance(textToSpeak);
+                    utterance.lang = appOptions.language || 'en-US';
+                    utterance.rate = appOptions.voiceRate || 1;
+                    utterance.text = textToSpeak;
 
-                        if (Array.isArray(appOptions.voiceName)) {
-                            appOptions.voiceName.forEach(function (voiceName) {
-                                if (voice.name === voiceName.trim()) {
-                                    updateVoiceName(voice);
-                                }
-                            });
-                        } else if (voice.name === appOptions.voiceName.trim()) {
-                            updateVoiceName(voice);
-                        }
-                    });
-                }
-                utterance.onerror = function (event) {
-                    if (event.error !== 'not-allowed') {
-                        throw new Error(
-                            'Error while converting the message to voice.',
-                            event.error
-                        );
+                    function updateVoiceName(voice) {
+                        utterance.voice = voice;
+                        skipForEach = true;
                     }
-                };
-                if (isChrome) {
-                    timeOut = setTimeout(longTextSupport, 10000);
-                    utterance.onend = function () {
-                        clearTimeout(timeOut);
+
+                    if (appOptions.voiceName) {
+                        AVAILABLE_VOICES_FOR_TTS.forEach(function (voice) {
+                            if (skipForEach) return;
+
+                            if (Array.isArray(appOptions.voiceName)) {
+                                appOptions.voiceName.forEach(function (
+                                    voiceName
+                                ) {
+                                    if (voice.name === voiceName.trim()) {
+                                        updateVoiceName(voice);
+                                    }
+                                });
+                            } else if (
+                                voice.name === appOptions.voiceName.trim()
+                            ) {
+                                updateVoiceName(voice);
+                            }
+                        });
+                    }
+                    utterance.onerror = function (event) {
+                        if (event.error !== 'not-allowed') {
+                            throw new Error(
+                                'Error while converting the message to voice.',
+                                event.error
+                            );
+                        }
                     };
+
+                    speechSynth.speak(utterance);
                 }
-                speechSynthesis.speak(utterance);
             }
         }
     },
