@@ -144,7 +144,7 @@ Kommunicate.defaultLabels = {
         CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk,
         CONVERSATION_RATING_HEADING:
             'How satisfied you are with the conversation?',
-        RATE_ERROR_MSG: "Please rate the conversation"
+        RATE_ERROR_MSG: 'Please rate the conversation',
     },
     'page.title.on.new.message': 'New message from ',
     'emoji.hover.text': {
@@ -189,13 +189,16 @@ Kommunicate.defaultLabels = {
         'header.text': 'In queue...',
         'first.Part': 'You are currently',
         'waiting.queue.number': '5',
-        'last.part': ' in the waiting queue, our agents will get back to you shortly.'
+        'last.part':
+            ' in the waiting queue, our agents will get back to you shortly.',
     },
     'conversation.header.dropdown': {
         CSAT_RATING_TEXT: 'Rate this conversation',
         USER_OVERIDE_VOICE_OUTPUT_ON: 'Turn on text to speech',
         USER_OVERIDE_VOICE_OUTPUT_OFF: 'Turn off text to speech',
-        RESET_CONVERSATION: 'Reset conversation',
+        RESTART_CONVERSATION: 'Restart conversation',
+        HANDOFF: 'Talk to human',
+        FAQ: 'FAQ',
     },
     'micOptions.dropup': {
         VOICE_NOTE_TRIGGER: 'Send voice message',
@@ -203,5 +206,15 @@ Kommunicate.defaultLabels = {
     },
     'conversation.handoff': {
         ASSIGN_TO: 'Conversation transferred to',
+    },
+    'header.primary.CTA': {
+        FAQ: 'FAQ',
+        CSAT_RATING: 'Rate this conversation',
+        RESTART_CONVERSATION: 'Restart conversation',
+        TTS: {
+            ON: 'Turn off text to speech',
+            OFF: 'Turn on text to speech',
+        },
+        TALK_TO_HUMAN: 'Talk to human',
     },
 };

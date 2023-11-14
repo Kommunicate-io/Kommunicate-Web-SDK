@@ -4,27 +4,36 @@
         var KommunicateKB = {};
         var KM_API_URL = 'https://api.kommunicate.io';
         var KB_SEARCH_URL = '/kb/search?appId=:appId';
-        var KB_URL = '/kb?categoryName=:categoryName&applicationId=:appId&status=published&type=faq'
+        var KB_URL =
+            '/kb?categoryName=:categoryName&applicationId=:appId&status=published&type=faq';
         var SOURCES = { kommunicate: 'KOMMUNICATE' };
         var SEARCH_ELASTIC = '/kb/_search';
-        
+
         //KommunicateKB.init("https://api.kommunicate.io");
         KommunicateKB.init = function (url) {
             KM_API_URL = url;
         };
-        KommunicateKB.getCategories = function(options){
+        KommunicateKB.getCategories = function (options) {
             var appId = options.data.appId;
-            var API_BASE_URL = options.data.baseUrl
-            var url = API_BASE_URL + "/kb/category?applicationId=" + appId + "&status=published"
+            var API_BASE_URL = options.data.baseUrl;
+            var url =
+                API_BASE_URL +
+                '/kb/category?applicationId=' +
+                appId +
+                '&status=published';
             var response = new Object();
-            try{
+            try {
                 KMCommonUtils.ajax({
                     url: url,
                     type: 'get',
                     success: function (data) {
                         response.status = 'success';
-                        response.data = data.data;
+                        response.data = data.data || [];
                         if (options.success) {
+                            response.data.length === 0 &&
+                                $applozic('.km-option-faq')
+                                    .removeClass('vis')
+                                    .addClass('n-vis');
                             options.success(response);
                         }
                         return;
@@ -35,12 +44,12 @@
                             options.error(response);
                         }
                     },
-                })
-            }catch(error){
+                });
+            } catch (error) {
                 options.error(error);
             }
         };
-        
+
         KommunicateKB.getArticles = function (options) {
             try {
                 var articles = [];
@@ -52,8 +61,15 @@
                             !response.data ||
                             !response.data.length // if data is an empty array
                         ) {
+                            //hide the dropdown faq also
+                            $applozic('.km-option-faq')
+                                .removeClass('vis')
+                                .addClass('n-vis');
+                            kommunicate._globals.hasArticles = false;
                             return null;
                         }
+
+                        kommunicate._globals.hasArticles = true;
                         for (var i = 0; i < response.data.length; i++) {
                             var article = response.data[i];
                             articles.push({
@@ -113,11 +129,18 @@
 
         //KommunicateKB.getFaqs({data: {appId: 'kommunicate-support', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getFaqs = function (options) {
-            var url = KM_API_URL + KB_SEARCH_URL.replace(':appId', options.data.appId);
+            var url =
+                KM_API_URL +
+                KB_SEARCH_URL.replace(':appId', options.data.appId);
             if (options.data.query) {
                 url = url + '&query=' + options.data.query;
-            }else if (options.data.categoryName){
-                url = KM_API_URL + KB_URL.replace(':appId', options.data.appId).replace(':categoryName', options.data.categoryName);
+            } else if (options.data.categoryName) {
+                url =
+                    KM_API_URL +
+                    KB_URL.replace(':appId', options.data.appId).replace(
+                        ':categoryName',
+                        options.data.categoryName
+                    );
             }
 
             //Todo: if query is present then call machine learning server to get answer ids.
@@ -219,7 +242,9 @@
         KommunicateKB.getFaq = function (options) {
             var response = new Object();
 
-            var url = KM_API_URL + KB_SEARCH_URL.replace(':appId', options.data.appId);
+            var url =
+                KM_API_URL +
+                KB_SEARCH_URL.replace(':appId', options.data.appId);
             if (options.data && options.data.articleId) {
                 url += '&articleId=' + options.data.articleId;
             }
