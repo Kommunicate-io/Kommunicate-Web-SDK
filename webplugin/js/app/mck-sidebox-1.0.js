@@ -3625,7 +3625,7 @@ var userOverride = {
                 ).innerText =
                     MCK_LABELS[
                         'conversation.header.dropdown'
-                    ].RESET_CONVERSATION;
+                    ].RESTART_CONVERSATION;
                 document.getElementById(
                     'km-voice-note-trigger-text'
                 ).innerText =
