@@ -3592,7 +3592,7 @@ var userOverride = {
                 document.getElementById('km-csat-trigger-text').innerText =
                     MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
                 document.getElementById('km-restart-conversation-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].RESET_CONVERSATION;
+                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
                 document.getElementById('km-voice-note-trigger-text').innerText =
                     MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
                 document.getElementById('km-voice-input-trigger-text').innerText =
@@ -4956,11 +4956,6 @@ var userOverride = {
                 $applozic(d).on('click', '#km-csat-trigger', function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
-                    kommunicateCommons.modifyClassList(
-                        { id: ['mck-csat-close'] },
-                        'vis',
-                        'n-vis'
-                    );
                 });
 
                 document.getElementById('km-csat-close-button').onclick = function(e){

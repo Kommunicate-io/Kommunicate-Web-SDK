@@ -1146,11 +1146,6 @@ KommunicateUI = {
     },
     askCSAT: function (triggeredByBot) {
         KommunicateUI.triggerCSAT(triggeredByBot);
-        kommunicateCommons.modifyClassList(
-            { id: ['mck-csat-close'] },
-            'vis',
-            'n-vis'
-        );
     },
     showClosedConversationBanner: function (isConversationClosed) {
         var isConvRated =
@@ -1203,15 +1198,15 @@ KommunicateUI = {
             );
         if (KommunicateUI.isConversationResolvedFromZendesk) {
             isCSATenabled && KommunicateUI.triggerCSAT();
-            if (document.getElementById('mck-csat-close').className == "n-vis") {
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: ['mck-csat-close'],
-                    },
-                    'vis',
-                    'n-vis'
-                );
-            }
+            // if (document.getElementById('mck-csat-close').className == "n-vis") {
+            //     kommunicateCommons.modifyClassList(
+            //         {
+            //             id: ['mck-csat-close'],
+            //         },
+            //         'vis',
+            //         'n-vis'
+            //     );
+            // }
             document.getElementById('mck-submit-comment').onclick = function (
                 e
             ) {
