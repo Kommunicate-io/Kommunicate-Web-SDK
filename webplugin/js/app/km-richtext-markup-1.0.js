@@ -435,7 +435,7 @@ Kommunicate.markup = {
                                         <div class="mck-form-radio-wrapper" style="margin-bottom:0px">
                                         {{#options}}
                                         <div class="mck-radio-input-container">
-                                            <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" >
+                                            <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}" {{#selected}}checked{{/selected}}>
                                             <label for="{{label}} {{msgKey}}" class="mck-form-label mck-radio-label"><b>{{label}}</b></label>   
                                         </div>                                 
                                     {{/options}} 
@@ -454,7 +454,7 @@ Kommunicate.markup = {
                                     {{/radio}}
                                     {{#checkbox}}
                                         <p class="mck-checkbox-group-title">{{title}}</p>
-                                        <div class="mck-form-checkbox-wrapper">
+                                        <div class="{{checkboxContainerClass}}">
     
                                             {{#options}}
                                                 <div class="{{checkboxClass}}">
@@ -465,7 +465,7 @@ Kommunicate.markup = {
                                                      </svg>
                                                     {{/validation}}
                                                      <label class="mck-form-label mck-checkbox-label {{msgKey}}">
-                                                        <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}">
+                                                        <input id="{{label}} {{msgKey}}" type="{{type}}" name="{{name}}" value="{{value}}" {{#selected}}checked{{/selected}}>
                                                         <span>
                                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <rect width="18" height="18" rx="9" fill="#00A4BF"/>
@@ -944,6 +944,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
             });
         }
         options.checkboxClass = Kommunicate._globals.checkboxAsMultipleButton ? "checkbox-as-button" : "checkbox-container";
+        options.checkboxContainerClass = Kommunicate._globals.checkboxAsMultipleButton ? "mck-form-checkbox-as-button-wrapper" : "mck-form-checkbox-wrapper"
         options.payload.forEach(function (item, index) {
             if (item.type == 'submit') {
                 isActionObject = kommunicateCommons.isObject(item.action);
