@@ -24,6 +24,7 @@
         let agentIds = splitByComma(params.get('agentIds'));
         let assignee = params.get('assignee');
         let teamId = params.get('teamId');
+        let skipRouting = params.get('skipRouting');
         let referer = window.document.referrer;
 
         if (!appId) {
@@ -43,12 +44,14 @@
                 if (teamId){
                     defaultSettings["teamId"] = teamId;
                 }
+                if (skipRouting){
+                    defaultSettings["skipRouting"] = !!skipRouting;
+                }
                 
                 var kommunicateSettings = {
                     "appId": appId, // replace this with your application id
                     "onInit": function () {
                         if (JSON.stringify(defaultSettings) != '{}') {
-                            defaultSettings["skipRouting"] = true;
                             Kommunicate.updateSettings(defaultSettings);
                         }
                         var iframeStyle = document.createElement('style');
