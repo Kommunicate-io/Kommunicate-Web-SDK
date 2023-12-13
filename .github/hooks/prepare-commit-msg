@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# This script serves as a shortcut to commit with your ticket id (that comes from branch name) prepended to your commit messages
+#   Ex: if your branch name is "FWH-1234/best-feature-ever", then when you run the command `git commit -m "test commit"`, it` will commit the message "[FWH-1234] test commit"
+
+# get name of current branch
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# get ticketid from branch name
+getticketid() {
+    # regex pattern to get ticket id (matching 2-6 letters, hypen, 1-5 numbers)
+    ticketidpattern="([A-Z]{2,6})-([0-9]{1,5})"
+    [[ $CURRENT_BRANCH =~ $ticketidpattern ]]
+    TICKET_ID="${BASH_REMATCH[0]}"
+
+    # check that the branch name has a ticket id that can be parsed
+    if [ -z "$TICKET_ID" ]
+    then
+        # if branch name starts with task, then ticketID is TASK
+        startwithtask="(^task|TASK)"
+        if [[ $CURRENT_BRANCH =~ $startwithtask ]]
+            then
+                TICKET_ID="TASK"
+            else
+                echo "Error: Your branch name ($CURRENT_BRANCH) does not have a ticket id in the correct format. Proceed commiting without ticket id."
+        fi
+    fi
+    echo "Ticket id: $TICKET_ID"
+}
+
+
+# don't do this on master branch
+if [ -z "$BRANCHES_TO_SKIP" ]; then
+  BRANCHES_TO_SKIP=(master HEAD)
+fi
+# get ticketid from branch name
+getticketid
+
+# Get the current branch name and check if it is excluded
+BRANCH_EXCLUDED=$(printf "%s\n" "${BRANCHES_TO_SKIP[@]}" | grep -c "^$CURRENT_BRANCH$")
+# Don't double-add prepending the ticket id if it's already in the commit
+TICKET_ID_IN_COMMIT=$(grep -c "\[$TICKET_ID\]" $1)
+
+
+if [ -n "$TICKET_ID" ] && ! [[ $BRANCH_EXCLUDED -eq 1 ]] && ! [[ $TICKET_ID_IN_COMMIT -ge 1 ]]; then 
+  sed -i.bak -e "1s/^/[$TICKET_ID] /" $1
+fi

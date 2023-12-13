@@ -14,7 +14,7 @@
     "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style",
     "build-prod:scss-to-css": "sass ./webplugin/scss:./webplugin/css/app/style",
     "build:dev": "nodemon ./server/app.js",
-    "dev": "npm-run-all -p build:dev build-dev:scss-to-css",
+    "dev": "npm-run-all -p build:dev build-dev:scss-to-css setup-git-hooks",
     "test": "npm-run-all build-prod:scss-to-css && NODE_ENV=test node ./server/app.js",
     "staging": "npm-run-all build-prod:scss-to-css && NODE_ENV=staging node ./server/app.js",
     "prod": "npm-run-all build-prod:scss-to-css && NODE_ENV=prod node ./server/app.js",
@@ -32,7 +32,8 @@
     "build-staging": "npm-run-all build-prod:scss-to-css && NODE_ENV=staging node ./server/build.js",
     "serve-build": "serve -C -l 3030 webplugin/build",
     "run-danger-local": "danger local",
-    "run-danger-test": "danger ci"
+    "run-danger-test": "danger ci",
+    "setup-git-hooks": "node setup-git-hooks.js"
   },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",

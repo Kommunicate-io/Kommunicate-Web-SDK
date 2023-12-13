@@ -405,6 +405,19 @@ var userOverride = {
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
             console.log('In on_tab_clicked', event);
+            const details = event && event.data && event.data.groupDetails;
+            if (details) {
+                const assignee =
+                    details.metadata && details.metadata.CONVERSATION_ASSIGNEE;
+                const groupUsers = details.groupUsers;
+                assignee &&
+                    groupUsers &&
+                    KommunicateUI.toggleVisibilityOfTextArea(
+                        assignee,
+                        groupUsers
+                    );
+            }
+
             if (kommunicate._globals.zendeskChatSdkKey) {
                 onTabClickedHandlerForZendeskConversations(event);
             }
@@ -5019,11 +5032,6 @@ var userOverride = {
                 $applozic(d).on('click', '#km-csat-trigger', function (e) {
                     e.preventDefault();
                     KommunicateUI.triggerCSAT();
-                    kommunicateCommons.modifyClassList(
-                        { id: ['mck-csat-close'] },
-                        'vis',
-                        'n-vis'
-                    );
                 });
 
                 document.getElementById(
@@ -8344,6 +8352,7 @@ var userOverride = {
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
+            var typingIndicatorStartTime = null;
             var markup =
                 '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
@@ -12683,8 +12692,9 @@ var userOverride = {
                     ? mckGroupUtils.getGroup(message.groupId)
                     : mckMessageLayout.getContact(message.to);
                 alUserService.loadUserProfile(message.to);
-                !_this.isMessageSentByBot(message, contact) &&
-                    $applozic('.km-typing-wrapper').remove();
+                if (!_this.isMessageSentByBot(message, contact)) {
+                    mckMessageLayout.hideTypingIndicator();
+                }
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isValidMeta = mckMessageLayout.isValidMetaData(message);
                 if (typeof tabId === 'undefined' || tabId === '') {
@@ -12914,9 +12924,7 @@ var userOverride = {
                                                     true,
                                                     validated
                                                 );
-                                                $applozic(
-                                                    '.km-typing-wrapper'
-                                                ).remove();
+                                                mckMessageLayout.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(
                                                 false
@@ -13071,13 +13079,9 @@ var userOverride = {
                     _this.procesMessageTimerDelay();
             };
 
-            _this.procesMessageTimerDelay = function () {
-                var messageContainer = document.getElementById(
-                        'mck-message-cell'
-                    ),
-                    message;
-
+            _this.showTypingIndicator = function () {
                 if (!document.querySelector('.km-typing-wrapper')) {
+                    typingIndicatorStartTime = new Date();
                     $mck_msg_inner.append(
                         '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
                     );
@@ -13087,13 +13091,30 @@ var userOverride = {
                         },
                         0
                     );
+                    setTimeout(_this.hideTypingIndicator, 15000);
                 }
+            };
 
-                setTimeout(function () {
-                    message = messageContainer.querySelector(
+            _this.hideTypingIndicator = function () {
+                if (document.querySelector('.km-typing-wrapper')) {
+                    typingIndicatorStartTime = null;
+                    $applozic('.km-typing-wrapper').remove();
+                }
+            };
+
+            _this.getTypingIndicatorElapsedTime = function () {
+                if (typingIndicatorStartTime === null) return -1;
+
+                return new Date() - typingIndicatorStartTime;
+            };
+
+            _this.procesMessageTimerDelay = function () {
+                const showMessage = () => {
+                    let message = messageContainer.querySelector(
                         'div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]'
                     );
-                    $applozic('.km-typing-wrapper').remove();
+                    mckMessageLayout.hideTypingIndicator();
+
                     if (message) {
                         message.classList.remove('n-vis');
                         $mck_msg_inner.animate(
@@ -13106,7 +13127,23 @@ var userOverride = {
                     MCK_BOT_MESSAGE_QUEUE.shift();
                     MCK_BOT_MESSAGE_QUEUE.length != 0 &&
                         _this.procesMessageTimerDelay();
-                }, MCK_BOT_MESSAGE_DELAY);
+                };
+                let messageContainer = document.getElementById(
+                    'mck-message-cell'
+                );
+
+                // delay in response from bot
+                let responseDelay = mckMessageLayout.getTypingIndicatorElapsedTime();
+                let configuredDelay = MCK_BOT_MESSAGE_DELAY;
+
+                if (responseDelay == -1) {
+                    mckMessageLayout.showTypingIndicator();
+                }
+                if (configuredDelay <= responseDelay) {
+                    showMessage();
+                    return;
+                }
+                setTimeout(showMessage, configuredDelay - responseDelay);
             };
 
             _this.getMessageFeed = function (message) {
@@ -14458,6 +14495,17 @@ var userOverride = {
                 }
             };
             _this.onGroupFeed = function (response, params) {
+                if (response && response.data) {
+                    const assignee =
+                        response.data.metadata &&
+                        response.data.metadata.CONVERSATION_ASSIGNEE;
+                    const groupUsers = response.data.groupUsers;
+                    KommunicateUI.toggleVisibilityOfTextArea(
+                        assignee,
+                        groupUsers
+                    );
+                }
+
                 $mck_loading.removeClass('vis').addClass('n-vis');
                 if (response.status === 'success') {
                     var groupFeed = response.data;
@@ -16515,6 +16563,7 @@ var userOverride = {
                 }
             };
             _this.onTypingStatus = function (resp) {
+                // when agent or user starts typing
                 var typingSubscriber =
                     window.Applozic.ALSocket.typingSubscriber;
                 if (
@@ -16589,33 +16638,12 @@ var userOverride = {
                                         .removeClass('vis')
                                         .addClass('n-vis');
                                 }
-                                $applozic('.km-typing-wrapper').remove();
-                                $mck_msg_inner_content.append(
-                                    '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
-                                );
-                                $mck_msg_inner_content.animate(
-                                    {
-                                        scrollTop: $mck_msg_inner_content.prop(
-                                            'scrollHeight'
-                                        ),
-                                    },
-                                    0
-                                );
-
+                                mckMessageLayout.showTypingIndicator();
                                 setTimeout(function () {
                                     $mck_tab_title.removeClass(
                                         'mck-tab-title-w-typing'
                                     );
-                                    $applozic('.km-typing-wrapper').remove();
-                                    if (
-                                        $mck_tab_title.hasClass(
-                                            'mck-tab-title-w-status' &&
-                                                (typeof group === 'undefined' ||
-                                                    group.type != 7)
-                                        )
-                                    ) {
-                                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
-                                    }
+                                    mckMessageLayout.hideTypingIndicator();
                                     $mck_typing_label.html(
                                         MCK_LABELS['typing']
                                     );
@@ -16628,7 +16656,7 @@ var userOverride = {
                             $mck_typing_box
                                 .removeClass('vis')
                                 .addClass('n-vis');
-                            $applozic('.km-typing-wrapper').remove();
+                            mckMessageLayout.hideTypingIndicator();
                             if (
                                 $mck_tab_title.hasClass(
                                     'mck-tab-title-w-status'
@@ -16799,6 +16827,9 @@ var userOverride = {
                         .removeClass('mck-delivered-icon')
                         .addClass('mck-read-icon');
                     mckMessageLayout.addTooltip(resp.message.split(',')[0]);
+                    if (KommunicateUtils.isCurrentAssigneeBot()) {
+                        mckMessageLayout.showTypingIndicator();
+                    }
                     // events.onMessageRead({
                     //     'messageKey': resp.message.split(",")[0]
                     // });
@@ -17271,6 +17302,25 @@ var userOverride = {
                                         mckMessageService.updateAssigneeDetails(
                                             updatedAssignee,
                                             tabId
+                                        );
+                                        kommunicate.client.getChatListByGroupId(
+                                            {
+                                                groupId:
+                                                    CURRENT_GROUP_DATA.tabId,
+                                            },
+                                            function (err, result) {
+                                                if (err || !result) {
+                                                    console.log(
+                                                        'An error occurred while fetching chat users ',
+                                                        err
+                                                    );
+                                                    return;
+                                                }
+                                                KommunicateUI.toggleVisibilityOfTextArea(
+                                                    updatedAssignee.userId,
+                                                    result.userDetails
+                                                );
+                                            }
                                         );
                                         if (
                                             updatedAssignee.roleType !=
