@@ -8601,7 +8601,7 @@ var userOverride = {
                 }
             };
 
-            _this.loadDropdownOptions = function () {
+            _this.loadDropdownOptions = function (convTransferred) {
                 if (document.querySelector('#mck-contact-list')) {
                     // if contact list is visible then dropdown options should not be loaded.
                     return;
@@ -8691,7 +8691,8 @@ var userOverride = {
 
                 if (
                     appOptions.talkToHuman &&
-                    HEADER_CTA.TALK_TO_HUMAN !== primaryCTA
+                    HEADER_CTA.TALK_TO_HUMAN !== primaryCTA &&
+                    !convTransferred
                 ) {
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList(
@@ -8713,13 +8714,16 @@ var userOverride = {
                         'n-vis'
                     );
                 }
+
+                var addClass = enableDropdown ? "vis" : "n-vis";
+                var removeClass = enableDropdown ? "n-vis" : "vis";
+
                 // For toggling display of three dot button (Dropdown btn)
-                enableDropdown &&
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-widget-options'] },
-                        '',
-                        'n-vis'
-                    );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-widget-options'] },
+                    addClass,
+                    removeClass
+                );
             };
 
             // _this.openConversation = function () {
@@ -9462,6 +9466,21 @@ var userOverride = {
                     .appendTo('.' + replyId + ' .blk-lg-12');
             };
 
+            _this.hideTalkToHumanBtnAfterHandoff = function () {
+                if (!appOptions.talkToHuman) return;
+
+                kommunicateCommons.modifyClassList(
+                    {
+                        id: ['km-talk-to-human'],
+                        class: ['km-option-talk-to-human'],
+                    },
+                    'n-vis',
+                    'vis'
+                );
+                HEADER_CTA.TALK_TO_HUMAN !== appOptions.primaryCTA &&
+                    _this.loadDropdownOptions(true);
+            };
+
             _this.addMessage = function (
                 msg,
                 contact,
@@ -9781,6 +9800,7 @@ var userOverride = {
 
                 if (msg.metadata && msg.metadata.KM_ASSIGN) {
                     conversationTransferred = 'mck-conversation-transferred';
+                    _this.hideTalkToHumanBtnAfterHandoff()
                 }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){
