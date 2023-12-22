@@ -148,8 +148,8 @@ const configEnv = {
     prod_in: {
         port: '3030',
         urls: {
-            applozicBaseUrl: 'https://chat-in.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-in.kommunicate.io',
+            applozicBaseUrl: 'https://chat-mumbai.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-mumbai.kommunicate.io',
             botPlatformApi: 'https://bots-in.kommunicate.io',
             hostUrl: 'https://widget-in.kommunicate.io',
             dashboardUrl: 'https://dashboard-in.kommunicate.io',
