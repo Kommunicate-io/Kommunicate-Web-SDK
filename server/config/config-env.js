@@ -151,7 +151,7 @@ const configEnv = {
             applozicBaseUrl: 'https://chat-mumbai.kommunicate.io',
             kommunicateBaseUrl: 'https://api-mumbai.kommunicate.io',
             botPlatformApi: 'https://bots-in.kommunicate.io',
-            hostUrl: 'https://widget-in.kommunicate.io',
+            hostUrl: 'https://widget-mumbai.kommunicate.io',
             dashboardUrl: 'https://dashboard-in.kommunicate.io',
         },
         pluginProperties: {
