@@ -352,7 +352,7 @@ Kommunicate.markup = {
          <div class="km-faq-list--footer">
             <div class="km-faq-list--footer_button-container">
                     {{#buttons}}
-                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-hidePostCTA="{{hidePostCTA}}" data-metadata = "{{replyMetadata}}" data-languageCode = "{{updateLanguage}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
+                        <button aria-label="{{name}}" class="{{buttonClass}} km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{handlerClass}} km-faq-list-link-button" data-type ="{{dataType}}" data-hidePostCTA="{{hidePostCTA}}" data-metadata="{{replyMetadata}}" data-languageCode="{{updateLanguage}}" data-url={{href}} type="button" data-target={{target}} data-reply="{{dataReply}}">{{name}}</button>
                     {{/buttons}}  
              </div>
          </div>
@@ -851,7 +851,7 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                     button.action.type == 'submit'
                 ) {
                     button.href = 'javascript:void(0)';
-                    button.handlerClass = 'km-list-button-item-handler';
+                    button.handlerClass = 'km-list-item-handler';
                 } else {
                     button.href = encodeURI(button.action.url);
                 }
