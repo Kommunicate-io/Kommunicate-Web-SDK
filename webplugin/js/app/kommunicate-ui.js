@@ -142,6 +142,10 @@ KommunicateUI = {
                 if (result) {
                     var images = result.data.images;
                     result.data.images = images.length ? KommunicateUI.checkSvgHasChildren(images) : [];
+
+                    // this happens when the link gets redirected
+                    if (result.data.title === "ERROR: The request could not be satisfied") return;
+
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
                         result, isMckRightMsg
                     );
