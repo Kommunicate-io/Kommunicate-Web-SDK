@@ -827,9 +827,13 @@ Kommunicate.richMsgEventHandler = {
         var source = target.dataset.source;
         var languageCode = target.dataset.languagecode;
         var metadata = {};
+
         try {
             metadata = JSON.parse(target.dataset.metadata);
-        } catch (e) {}
+        } catch (e) {
+            console.error('Metadata is not parsable' + e);
+        }
+
         metadata.KM_FAQ_ID = articleId;
         metadata.source = source;
         if (type && type == 'quick_reply') {
