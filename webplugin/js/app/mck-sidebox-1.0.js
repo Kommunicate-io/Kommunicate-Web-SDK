@@ -596,6 +596,7 @@ var userOverride = {
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
+        var kmNavBar = new KmNavBar(mckMessageLayout)
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -715,7 +716,7 @@ var userOverride = {
                         eventMapping.onStartNewConversation
                     );
                     KommunicateUI.activateTypingField();
-                    mckMessageLayout.loadDropdownOptions();
+                    kmNavBar.hideAndShowTalkToHumanBtn();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -7284,19 +7285,22 @@ var userOverride = {
                                                             .addClass('n-vis');
                                                         if (isMessages) {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
-
-                                                            mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
-                                                            !KommunicateUI.isFAQPrimaryCTA() &&
-                                                                !KommunicateUI.isShowRestartConversation() &&
-                                                                $applozic(
-                                                                    '.km-header-cta'
-                                                                )
-                                                                    .addClass(
-                                                                        'vis'
-                                                                    )
-                                                                    .removeClass(
-                                                                        'n-vis'
-                                                                    );
+                                                            kmNavBar.hideAndShowTalkToHumanBtn(); 
+                                                            /**  
+                                                             *  mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
+                                                             * !KommunicateUI.isFAQPrimaryCTA() &&
+                                                             *  !KommunicateUI.isShowRestartConversation() &&
+                                                             *  $applozic(
+                                                             *       '.km-header-cta'
+                                                             *  )
+                                                             *      .addClass(
+                                                             *           'vis'
+                                                             *       )
+                                                             *       .removeClass(
+                                                             *           'n-vis'
+                                                             *      );
+                                                             */ 
+                                                             
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -7753,6 +7757,10 @@ var userOverride = {
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
                 }
+                kmNavBar.hideAndShowTalkToHumanBtn(
+                    data.roleType !==
+                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                );
                 _this.processOnlineStatusChange(
                     tabId,
                     data,
@@ -8197,12 +8205,14 @@ var userOverride = {
                                     response.status = 'success';
                                     response.data = group;
                                     params.callback(response);
-                                    mckMessageLayout.loadDropdownOptions();
-                                    !KommunicateUI.isFAQPrimaryCTA() &&
-                                        !KommunicateUI.isShowRestartConversation() &&
-                                        $applozic('.km-header-cta')
-                                            .addClass('vis')
-                                            .removeClass('n-vis');
+                                    kmNavBar.hideAndShowTalkToHumanBtn();
+                                    // 
+                                    // !KommunicateUI.isFAQPrimaryCTA() &&
+                                    //     !KommunicateUI.isShowRestartConversation() &&
+                                    //     $applozic('.km-header-cta')
+                                    //         .addClass('vis')
+                                    //         .removeClass('n-vis');
+                                    // 
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -9466,21 +9476,6 @@ var userOverride = {
                     .appendTo('.' + replyId + ' .blk-lg-12');
             };
 
-            _this.hideTalkToHumanBtnAfterHandoff = function () {
-                if (!appOptions.talkToHuman) return;
-
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: ['km-talk-to-human'],
-                        class: ['km-option-talk-to-human'],
-                    },
-                    'n-vis',
-                    'vis'
-                );
-                HEADER_CTA.TALK_TO_HUMAN !== appOptions.primaryCTA &&
-                    _this.loadDropdownOptions(true);
-            };
-
             _this.addMessage = function (
                 msg,
                 contact,
@@ -9800,7 +9795,6 @@ var userOverride = {
 
                 if (msg.metadata && msg.metadata.KM_ASSIGN) {
                     conversationTransferred = 'mck-conversation-transferred';
-                    _this.hideTalkToHumanBtnAfterHandoff()
                 }
 
                 // if (!richText && !attachment && messageClass == "n-vis"){

@@ -7,6 +7,11 @@
         var KB_URL = '/kb?categoryName=:categoryName&applicationId=:appId&status=published&type=faq'
         var SOURCES = { kommunicate: 'KOMMUNICATE' };
         var SEARCH_ELASTIC = '/kb/_search';
+
+        function hideFAQBtn() {
+            $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
+            kommunicate._globals.hasArticles = false;
+        }
         
         //KommunicateKB.init("https://api.kommunicate.io");
         KommunicateKB.init = function (url) {
@@ -25,7 +30,7 @@
                         response.status = 'success';
                         response.data = data.data || [];
                         if (options.success) {
-                            response.data.length === 0 && $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
+                            response.data.length === 0 &&  hideFAQBtn();
                             options.success(response);
                         }
                         return;
@@ -54,8 +59,7 @@
                             !response.data.length // if data is an empty array
                         ) {
                            //hide the dropdown faq also
-                            $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
-                            kommunicate._globals.hasArticles = false
+                            hideFAQBtn()
                             return null;
                         }
                         
