@@ -1,7 +1,7 @@
 .mck-form-template-container {
-    width: $rich-msg-width ;
+    width: $rich-msg-width;
     @media (max-width: 330px) {
-        width: 90% ;
+        width: 90%;
     }
     button {
         min-width: 23%;
@@ -84,7 +84,6 @@
     margin-left: 0 !important;
 }
 
-
 .mck-form-error-container {
     display: flex;
     @include gap-supported(2px, 0 2px 0 0, '& svg');
@@ -95,7 +94,7 @@
     }
 
     .mck-form-error-text {
-       @include errorText;
+        @include errorText;
     }
 }
 .mck-form-submit-button {
@@ -201,5 +200,21 @@
 .checkbox-as-button label input + span > svg {
     display: none;
 }
-
+.mck-form-checkbox-as-button-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    & .checkbox-as-button {
+        label {
+            height: 100%;
+            line-height: unset;
+            & span {
+                padding: 8px;
+            }
+        }
+        .mck-form-label-container {
+            margin-bottom: 0 !important;
+        }
+    }
+}
 /* ------ END: checkbox as button style ------ */

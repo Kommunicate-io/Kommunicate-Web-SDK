@@ -12,27 +12,49 @@
 <body>
     <div id="error-msg"></div>
     <script type="text/javascript">
+        function splitByComma(inputString){
+            if(!inputString) return;
+
+            inputString = inputString.split(',');
+            inputString = inputString.map(each => each.trim());
+            return inputString;
+        }
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
-        let botIds = params.get('botIds')
-        let assignee = params.get('assignee')
+        let botIds = splitByComma(params.get('botIds'));
+        let agentIds = splitByComma(params.get('agentIds'));
+        let assignee = params.get('assignee');
+        let teamId = params.get('teamId');
+        let skipRouting = params.get('skipRouting');
         let referer = window.document.referrer;
 
         if (!appId) {
             document.getElementById('error-msg').innerText = "no app id"
         } else {
             (function (d, m) {
-                if(botIds && assignee ){
-                var defaultSettings = {
-                "defaultBotIds": [botIds], // Optional. Replace <BOT_ID> with your bot ID which you can find in bot section of dashboard. Include this parameter if you want to assign the conversation to a bot.
-                "defaultAssignee": assignee, // Replace <ASSIGNEE_ID> with your bot/agent ID  whom you're assigning the conversation.
-                "skipRouting": true
-                 };}
+                let defaultSettings = {};
+                if (botIds) {
+                    defaultSettings["defaultBotIds"] = botIds;
+                };
+                if (agentIds){
+                    defaultSettings["defaultAgentIds"] = agentIds;
+                }
+                if (assignee){
+                    defaultSettings["defaultAssignee"] = assignee;
+                }
+                if (teamId){
+                    defaultSettings["teamId"] = teamId;
+                }
+                if (skipRouting){
+                    defaultSettings["skipRouting"] = !!skipRouting;
+                }
+                
                 var kommunicateSettings = {
                     "appId": appId, // replace this with your application id
                     "onInit": function () {
-                        if (defaultSettings){
-                        Kommunicate.updateSettings(defaultSettings);} 
+                        if (JSON.stringify(defaultSettings) != '{}') {
+                            Kommunicate.updateSettings(defaultSettings);
+                        }
                         var iframeStyle = document.createElement('style');
                         var classSettings = ".change-kommunicate-iframe-height{height:100%!important;width:100%!important;right:0!important;bottom:0!important;max-height: 100%!important;}";
                         iframeStyle.type = 'text/css';

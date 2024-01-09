@@ -144,6 +144,9 @@ KommunicateUI = {
                     result.data.images = images.length
                         ? KommunicateUI.checkSvgHasChildren(images)
                         : [];
+                    // this happens when the link gets redirected
+                    if (result.data.title === "ERROR: The request could not be satisfied") return;
+
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
                         result,
                         isMckRightMsg
@@ -1174,11 +1177,6 @@ KommunicateUI = {
     },
     askCSAT: function (triggeredByBot) {
         KommunicateUI.triggerCSAT(triggeredByBot);
-        kommunicateCommons.modifyClassList(
-            { id: ['mck-csat-close'] },
-            'vis',
-            'n-vis'
-        );
     },
     showClosedConversationBanner: function (isConversationClosed) {
         var isConvRated =
@@ -1231,27 +1229,15 @@ KommunicateUI = {
             );
         if (KommunicateUI.isConversationResolvedFromZendesk) {
             isCSATenabled && KommunicateUI.triggerCSAT();
-            if (
-                document.getElementById('mck-csat-close').className == 'n-vis'
-            ) {
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: ['mck-csat-close'],
-                    },
-                    'vis',
-                    'n-vis'
-                );
-            }
-
-            document.getElementById('mck-csat-close').onclick = function (e) {
-                kommunicateCommons.modifyClassList(
-                    {
-                        class: ['mck-ratings-smilies'],
-                    },
-                    'n-vis'
-                );
-            };
-
+            // if (document.getElementById('mck-csat-close').className == "n-vis") {
+            //     kommunicateCommons.modifyClassList(
+            //         {
+            //             id: ['mck-csat-close'],
+            //         },
+            //         'vis',
+            //         'n-vis'
+            //     );
+            // }
             document.getElementById('mck-submit-comment').onclick = function (
                 e
             ) {
