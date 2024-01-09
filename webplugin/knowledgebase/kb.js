@@ -30,10 +30,7 @@
                         response.status = 'success';
                         response.data = data.data || [];
                         if (options.success) {
-                            response.data.length === 0 &&
-                                $applozic('.km-option-faq')
-                                    .removeClass('vis')
-                                    .addClass('n-vis');
+                            response.data.length === 0 &&  hideFAQBtn();
                             options.success(response);
                         }
                         return;
@@ -61,11 +58,8 @@
                             !response.data ||
                             !response.data.length // if data is an empty array
                         ) {
-                            //hide the dropdown faq also
-                            $applozic('.km-option-faq')
-                                .removeClass('vis')
-                                .addClass('n-vis');
-                            kommunicate._globals.hasArticles = false;
+                           //hide the dropdown faq also
+                            hideFAQBtn()
                             return null;
                         }
 
