@@ -1,0 +1,43 @@
+#mck-tab-conversation{
+	padding-left:6px;
+    float: right;
+}
+
+// .mck-box .blk-lg-3{
+//     float: right;
+// }
+// .mck-contact-list .mck-cont-name {
+// 	display: flex;
+//     float: right;
+// }
+.mck-row{
+	display: flex;
+	flex-direction: row-reverse;
+}
+.mck-cont-msg-wrapper p {
+    float: right;
+}
+.mck-cont-name strong {
+    float: right;
+}
+.mck-contact-list .mck-cont-name {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.mck-videocall-image {
+	float: right;
+}
+.mck-contact-list .mck-cont-msg-date {
+	direction: rtl;
+	padding-right: 1rem;
+}
+#mck-tab-individual {
+    display: flex;
+}
+.mck-contact-list li .blk-lg-3{
+	padding-left: 12px;
+}
+.km-header-container {
+    display: flex;
+    flex-direction: row-reverse;
+}
