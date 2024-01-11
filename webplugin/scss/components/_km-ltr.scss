@@ -1,0 +1,64 @@
+//USED WHEN THE DIRECTION/DIR IS LTR(LEFT TO RIGHT)
+
+:root {
+    --text-direction: ltr;
+}
+
+body {
+    direction: var(--text-direction);
+}
+
+#mck-tab-conversation{
+	padding-left:6px;
+    float: right;
+}
+.mck-row{
+	display: flex;
+	flex-direction: row-reverse;
+}
+.mck-cont-msg-wrapper p {
+    float: right;
+}
+.mck-cont-name strong {
+    float: right;
+}
+.mck-contact-list .mck-cont-name {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.mck-videocall-image {
+	float: right;
+}
+.mck-contact-list .mck-cont-msg-date {
+	direction: rtl;
+	padding-right: 1rem;
+}
+#mck-tab-individual .mck-name-status-container.mck-box-title{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.mck-contact-list li .blk-lg-3{
+	padding-left: 12px;
+}
+.km-header-container {
+    display: flex;
+    flex-direction: row-reverse;
+}
+#mck-tab-title.mck-tab-title {
+    text-overflow: ellipsis;
+    max-width: 140px;
+    text-align: right;
+}
+.mck-agent-status-text{
+    display: block;
+    text-align: right;
+}
+.mck-agent-image-container{
+    padding-left: 0.5rem;
+}
+// body svg{
+//     transform: scale(-1,1);
+// }
+// #launcher-svg-container{
+//     transform: scale(1,1);
+// }
