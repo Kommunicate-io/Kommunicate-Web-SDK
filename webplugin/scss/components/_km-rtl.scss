@@ -1,38 +1,32 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
-:root {
-    --text-direction: rtl;
-}
-
-body {
-    direction: var(--text-direction);
-}
-.mck-box .mck-nav{
+[dir="rtl"] .mck-box .mck-nav-tabs {
     padding-right: 0 !important;
 }
-.mck-box-title {
+
+[dir="rtl"] .mck-box-title {
     text-align: right !important;
 }
-.mck-box{
+[dir="rtl"] .mck-box{
     text-align: right !important;
 }
-#mck-tab-conversation{
+[dir="rtl"] #mck-tab-conversation{
 	padding-left:6px;
     float: right;
 }
-p {
+[dir="rtl"] p {
     text-align: right !important;
 }
-.mck-contact-list .mck-cont-msg-date {
+[dir="rtl"] .mck-contact-list .mck-cont-msg-date {
 	padding-right: 1rem;
 }
-.mck-box .mck-contact-list .mck-row, .mck-msg-preview .mck-row {
+[dir="rtl"] .mck-box .mck-contact-list .mck-row, .mck-msg-preview .mck-row {
     display: flex;
 }
-.mck-videocall-image{
+[dir="rtl"] .mck-videocall-image{
     margin-right: 0 !important;
     float: right;
 }
-svg.mck-msg-list-icon{
+[dir="rtl"] svg.mck-msg-list-icon, .mck-icon-send svg{
     transform: scale(-1,1);
 }
