@@ -28,8 +28,8 @@ var kmCustomIframe =
     '   right: 20px;' +
     '   height: 75px;' +
     '   width: 75px;' +
-    '   transition: unset;'+
-    '   color-scheme: light;'+
+    '   transition: unset;' +
+    '   color-scheme: light;' +
     '} \n ' +
     '.kommunicate-custom-iframe.align-left { ' +
     '   left: 20px;' +
@@ -145,6 +145,13 @@ function createCustomClasses(classSettings) {
     document.getElementsByTagName('head')[0].appendChild(style);
 }
 
+// Set language and direction based on browser's language
+function languagedirectionchangeauto() {
+    document.documentElement.lang = navigator.language.toLowerCase();
+    document.documentElement.dir = document.documentElement.lang === 'ar' || document.documentElement.lang === 'he' ? 'rtl' : 'ltr';
+    console.log(document.documentElement.lang)
+}
+
 // Create element iframe for kommunicate widget
 function createKommunicateIframe() {
     if (document.getElementById(kmCustomElements.iframe.id)) {
@@ -166,6 +173,9 @@ function createKommunicateIframe() {
         kommunicateIframe.contentDocument ||
         kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
+
+    languagedirectionchangeauto();
+    console.log(iframeDocument.body.setAttribute('dir', document.documentElement.dir))
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities

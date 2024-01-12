@@ -1,32 +1,79 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
-[dir="rtl"] .mck-box .mck-nav-tabs {
-    padding-right: 0;
-}
-
-[dir="rtl"] .mck-box-title {
-    text-align: right !important;
-}
-[dir="rtl"] .mck-box{
-    text-align: right;
-}
-[dir="rtl"] #mck-tab-conversation{
-	padding-left:6px;
-    float: right;
-}
-[dir="rtl"] p {
-    text-align: right;
-}
-[dir="rtl"] .mck-contact-list .mck-cont-msg-date {
-	padding-right: 1rem;
-}
-[dir="rtl"] .mck-box .mck-contact-list .mck-row, .mck-msg-preview .mck-row {
-    display: flex;
-}
-[dir="rtl"] .mck-videocall-image{
-    margin-right: 0;
-    float: right;
-}
-[dir="rtl"] svg.mck-msg-list-icon, .mck-icon-send svg{
-    transform: scale(-1,1);
-}
+[dir='rtl'] {
+    .mck-box .mck-nav-tabs {
+        padding-right: 0 !important;
+    }
+    
+    .mck-box-title {
+        text-align: right !important;
+    }
+    .mck-box {
+        text-align: right;
+    }
+    #mck-tab-conversation {
+        padding-left: 6px;
+        float: right;
+    }
+    p {
+        text-align: right;
+    }
+    .mck-contact-list .mck-cont-msg-date {
+        padding-right: 1rem;
+    }
+    .mck-box .mck-contact-list .mck-row,
+    .mck-msg-preview .mck-row {
+        display: flex;
+    }
+    .mck-videocall-image {
+        margin-right: 0;
+        float: right;
+    }
+    svg {
+        transform: scale(-1, 1);
+    }
+    
+    #launcher-svg-container svg,
+    #mck-attachfile-box svg{
+        transform: none !important;
+    }
+    
+    .mck-tab-link {
+        padding-left: 10px !important;
+        padding-right: 0 !important;
+    }
+    
+    .mck-agent-image-container {
+        margin-right: 0;
+        margin-left: 8px;
+    }
+    
+    .km-faq {
+        margin-right: 0 !important;
+        margin-left: 10px !important;
+    }
+    
+    .km-faq-category-card, input.placeholder, input, .mck-text-box.mck-text {
+        text-align: right;
+    }
+    
+    .km-faqimage {
+        margin-left: 15px;
+    }
+    
+    .km-faqanswer {
+        margin-right: 0;
+    }
+    
+    .km-faqsearch-input {
+        margin: 0 15px 0 0 !important;
+    }
+    
+    .km-faqsearch-icon {
+        right: 25px;
+    }
+    
+    .mck-box .move-right {
+        float: left !important;
+    }    
+} 
