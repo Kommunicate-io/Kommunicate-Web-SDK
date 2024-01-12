@@ -1,21 +1,21 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir="rtl"] .mck-box .mck-nav-tabs {
-    padding-right: 0 !important;
+    padding-right: 0;
 }
 
 [dir="rtl"] .mck-box-title {
     text-align: right !important;
 }
 [dir="rtl"] .mck-box{
-    text-align: right !important;
+    text-align: right;
 }
 [dir="rtl"] #mck-tab-conversation{
 	padding-left:6px;
     float: right;
 }
 [dir="rtl"] p {
-    text-align: right !important;
+    text-align: right;
 }
 [dir="rtl"] .mck-contact-list .mck-cont-msg-date {
 	padding-right: 1rem;
@@ -24,7 +24,7 @@
     display: flex;
 }
 [dir="rtl"] .mck-videocall-image{
-    margin-right: 0 !important;
+    margin-right: 0;
     float: right;
 }
 [dir="rtl"] svg.mck-msg-list-icon, .mck-icon-send svg{
