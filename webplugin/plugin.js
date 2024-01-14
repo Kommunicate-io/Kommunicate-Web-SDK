@@ -149,7 +149,6 @@ function createCustomClasses(classSettings) {
 function languagedirectionchangeauto() {
     document.documentElement.lang = navigator.language.toLowerCase();
     document.documentElement.dir = document.documentElement.lang === 'ar' || document.documentElement.lang === 'he' ? 'rtl' : 'ltr';
-    console.log(document.documentElement.lang)
 }
 
 // Create element iframe for kommunicate widget
@@ -175,7 +174,7 @@ function createKommunicateIframe() {
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
     languagedirectionchangeauto();
-    console.log(iframeDocument.body.setAttribute('dir', document.documentElement.dir))
+    iframeDocument.body.setAttribute('dir', document.documentElement.dir)
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities
