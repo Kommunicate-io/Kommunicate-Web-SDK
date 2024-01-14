@@ -174,7 +174,7 @@ function createKommunicateIframe() {
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
     languageDirectionChangeAuto();
-    iframeDocument.body.setAttribute('dir', 'rtl')
+    iframeDocument.body.setAttribute('dir', document.documentElement.dir)
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities
