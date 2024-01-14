@@ -4,6 +4,13 @@
     .mck-box .mck-nav-tabs {
         padding-right: 0 !important;
     }
+    // .mck-box{
+    //     text-align: right;
+    // }
+    .km-contact-input-container,
+    #km-faqanswer{
+        text-align: right !important;
+    }
     .mck-box-title {
         text-align: right !important;
     }
@@ -25,9 +32,13 @@
     svg {
         transform: scale(-1, 1);
     }
+    // .mck-msg-box-rich-text-container{
+    //     display: flex;
+    // }
     #launcher-svg-container svg,
     #mck-attachfile-box svg,
-    .mck-message-inner svg {
+    .mck-message-inner svg,
+    .km-faqsearch-icon svg{
         transform: none !important;
     }
     .mck-tab-link {
@@ -75,5 +86,26 @@
     .mck-smilies-inner,
     .mck-rating-box {
         flex-flow: row-reverse;
+    }
+    .km-form-label-container, .mck-form-label-container {
+        display: flex;
+        flex-flow: row-reverse;
+        float: inline-start;
+        margin-bottom: 4px !important;
+    }
+    .mck-text-box-panel .mck-blk-12 {
+        height: 30px;
+        padding: 0 0 0 10px;
+    }
+    .mck-dropdown-menu.menu-right, .mck-dropup-menu.menu-right {
+        right: auto;
+        left: 0;
+    }
+    #km-widget-options .mck-dropdown-menu .menu-item{
+        flex-flow: row-reverse;
+    }
+    .km-widget-options-button {
+        margin-left: 10px;
+        margin-right: 0;
     }
 }

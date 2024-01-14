@@ -146,7 +146,7 @@ function createCustomClasses(classSettings) {
 }
 
 // Set language and direction based on browser's language
-function languagedirectionchangeauto() {
+function languageDirectionChangeAuto() {
     document.documentElement.lang = navigator.language.toLowerCase();
     document.documentElement.dir = document.documentElement.lang === 'ar' || document.documentElement.lang === 'he' ? 'rtl' : 'ltr';
 }
@@ -173,8 +173,8 @@ function createKommunicateIframe() {
         kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
-    languagedirectionchangeauto();
-    iframeDocument.body.setAttribute('dir', document.documentElement.dir)
+    languageDirectionChangeAuto();
+    iframeDocument.body.setAttribute('dir', 'rtl')
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities
