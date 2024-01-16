@@ -5,7 +5,7 @@
         padding-right: 0 !important;
     }
     .km-contact-input-container,
-    #km-faqanswer{
+    #km-faqanswer {
         text-align: right !important;
     }
     .mck-box-title {
@@ -32,7 +32,7 @@
     #launcher-svg-container svg,
     #mck-attachfile-box svg,
     .mck-message-inner svg,
-    .km-faqsearch-icon svg{
+    .km-faqsearch-icon svg {
         transform: none !important;
     }
     .mck-tab-link {
@@ -81,7 +81,8 @@
     .mck-rating-box {
         flex-flow: row-reverse;
     }
-    .km-form-label-container, .mck-form-label-container {
+    .km-form-label-container,
+    .mck-form-label-container {
         display: flex;
         flex-flow: row-reverse;
         float: inline-start;
@@ -91,15 +92,19 @@
         height: 30px;
         padding: 0 0 0 10px;
     }
-    .mck-dropdown-menu.menu-right, .mck-dropup-menu.menu-right {
+    .mck-dropdown-menu.menu-right,
+    .mck-dropup-menu.menu-right {
         right: auto;
         left: 0;
     }
-    #km-widget-options .mck-dropdown-menu .menu-item{
+    #km-widget-options .mck-dropdown-menu .menu-item {
         flex-flow: row-reverse;
     }
     .km-widget-options-button {
         margin-left: 10px;
         margin-right: 0;
+    }
+    div#separator {
+        flex-flow: row-reverse;
     }
 }

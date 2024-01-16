@@ -147,8 +147,8 @@ function createCustomClasses(classSettings) {
 
 // Set language and direction based on browser's language
 function languageDirectionChangeAuto() {
-    document.documentElement.lang = navigator.language.toLowerCase();
-    document.documentElement.dir = document.documentElement.lang === 'ar' || document.documentElement.lang === 'he' ? 'rtl' : 'ltr';
+    var lang = navigator.language.toLowerCase();
+    return (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr';
 }
 
 // Create element iframe for kommunicate widget
@@ -173,8 +173,7 @@ function createKommunicateIframe() {
         kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
-    languageDirectionChangeAuto();
-    iframeDocument.body.setAttribute('dir', document.documentElement.dir)
+    iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto())
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities
