@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const util = require('util');
 const config = require('./../server/config/config-env');
-const { pluginVersionData } = require('./gulpfile.js');
+const { pluginVersionData } = require('./pluginOptimizer.js');
 
 exports.getPlugin = async (req, res) => {
     const MCK_PLUGIN_VERSION = req.params.version;
