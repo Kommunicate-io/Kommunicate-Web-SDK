@@ -1,6 +1,10 @@
+const isTestEnv = ['development', 'test', 'release'].includes(
+    process.env.NODE_ENV
+);
+
 module.exports = {
     compress: {
-        drop_console: true,
+        drop_console: !isTestEnv,
         dead_code: true,
         keep_fnames: true,
     },
