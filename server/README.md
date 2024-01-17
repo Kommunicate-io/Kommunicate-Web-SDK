@@ -11,11 +11,12 @@ Step-1: Open Terminal on your machine.
 
 Step-2: Change the current working directory to Kommunicate-Web-SDK directory.
 
-Step-3: Move to the server folder in Kommunicate-Web-SDK directory.
-> $ cd server
+Step-3: Open the terminal and run this command to install the dependencies
+> $ npm install
 
-Step-4  To run the node server run the below command.
-> $ NODE_ENV=prod node app
+Step-3: To run the Kommunicate-Web-SDK in local you need to run this command in terminal
+> $ npm run dev
+
 
 Step-5: Open your web browser and enter http://localhost:3030 to run the demo.
 
