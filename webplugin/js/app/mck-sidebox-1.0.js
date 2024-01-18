@@ -10520,21 +10520,26 @@ var userOverride = {
                     }
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
-                            return (
-                                '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
-                                msg.fileMeta.contentType +
-                                '" data-url="' +
-                                alFileService.getFileurl(msg) +
-                                '" data-name="' +
-                                kommunicateCommons.formatHtmlTag(
-                                    msg.fileMeta.name
-                                ) +
-                                '"><img src="' +
-                                MCK_FILE_URL +
-                                FILE_PREVIEW_URL +
-                                msg.fileMeta.blobKey +
-                                '" area-hidden="true"></img></a>'
-                            );
+                            var URL = addfileEncClass
+                                ? ''
+                                : alFileService.getFileurl(msg);
+                            if (msg.fileMeta.thumbnailUrl) {
+                                URL = msg.fileMeta.thumbnailUrl; // END USER ATTACHMENT
+                            } else if (!URL) {
+                                URL = addfileEncClass
+                                    ? KommunicateConstants.IMAGE_PLACEHOLDER_URL // FOR LAZY LOADING
+                                    : msg.fileMeta.thumbnailUrl;
+                            }
+
+                            return `<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="${
+                                msg.fileMeta.contentType
+                            }" data-url="${URL}" data-name="${kommunicateCommons.formatHtmlTag(
+                                msg.fileMeta.name
+                            )}"><img class="${
+                                addfileEncClass ? 'file-enc' : ''
+                            }" src="${URL}" 
+                            area-hidden="true" data-thumbnailBlobKey="${msg.fileMeta.blobKey}"
+                            ></img></a>`;
                         } else if (msg.contentType === 5) {
                             return (
                                 '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
