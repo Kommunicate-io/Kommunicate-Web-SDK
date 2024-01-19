@@ -10520,7 +10520,7 @@ var userOverride = {
                     }
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
-                            var URL = addfileEncClass
+                            let URL = addfileEncClass
                                 ? ''
                                 : alFileService.getFileurl(msg);
                             if (msg.fileMeta.thumbnailUrl) {
