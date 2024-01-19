@@ -147,8 +147,9 @@ function createCustomClasses(classSettings) {
 
 // Set language and direction based on browser's language
 function languageDirectionChangeAuto() {
+    const rtlLanguages = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'prs', 'yi', 'ku', 'ms', 'ug', 'syr', 'lrc'];
     var lang = navigator.language.toLowerCase();
-    return (lang === 'ar' || lang === 'he') ? 'rtl' : 'ltr';
+    return (rtlLanguages.includes(lang)) ? 'rtl' : 'ltr';
 }
 
 // Create element iframe for kommunicate widget
