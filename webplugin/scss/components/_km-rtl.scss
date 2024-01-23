@@ -1,0 +1,110 @@
+//USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
+
+[dir='rtl'] {
+    .mck-box .mck-nav-tabs {
+        padding-right: 0 !important;
+    }
+    .km-contact-input-container,
+    #km-faqanswer {
+        text-align: right !important;
+    }
+    .mck-box-title {
+        text-align: right !important;
+    }
+    #mck-tab-conversation {
+        padding-left: 6px;
+        float: right;
+    }
+    .mck-contact-list .mck-cont-msg-date {
+        padding-right: 1rem;
+    }
+    .mck-box .mck-contact-list .mck-row,
+    .mck-msg-preview .mck-row {
+        display: flex;
+    }
+    .mck-videocall-image {
+        margin-right: 0;
+        float: right;
+    }
+    svg {
+        transform: scale(-1, 1);
+    }
+    #launcher-svg-container svg,
+    #mck-attachfile-box svg,
+    .mck-message-inner svg,
+    .km-faqsearch-icon svg {
+        transform: none !important;
+    }
+    .mck-tab-link {
+        padding-left: 10px !important;
+        padding-right: 0 !important;
+    }
+    .mck-agent-image-container {
+        margin-right: 0;
+        margin-left: 8px;
+    }
+    .km-faq {
+        margin-right: 0 !important;
+        margin-left: 10px !important;
+    }
+    .km-faq-category-card,
+    input#km-faq-search-input::placeholder,
+    input,
+    .mck-text-box.mck-text,
+    p {
+        text-align: right;
+    }
+    .km-faqimage {
+        margin-left: 15px;
+    }
+    .km-faqanswer {
+        margin-right: 0;
+    }
+    .km-faqsearch-input {
+        margin: 0 15px 0 0 !important;
+    }
+    .km-faqsearch-icon {
+        right: 25px;
+    }
+    .mck-box .move-right,
+    .km-image-template {
+        float: left !important;
+    }
+    .km-cta-multi-button-container {
+        justify-content: flex-end;
+    }
+    #mck-csat-close {
+        left: 5%;
+        right: auto;
+    }
+    .mck-smilies-inner,
+    .mck-rating-box {
+        flex-flow: row-reverse;
+    }
+    .km-form-label-container,
+    .mck-form-label-container {
+        display: flex;
+        flex-flow: row-reverse;
+        float: inline-start;
+        margin-bottom: 4px !important;
+    }
+    .mck-text-box-panel .mck-blk-12 {
+        height: 30px;
+        padding: 0 0 0 10px;
+    }
+    .mck-dropdown-menu.menu-right,
+    .mck-dropup-menu.menu-right {
+        right: auto;
+        left: 0;
+    }
+    #km-widget-options .mck-dropdown-menu .menu-item {
+        flex-flow: row-reverse;
+    }
+    .km-widget-options-button {
+        margin-left: 10px;
+        margin-right: 0;
+    }
+    div#separator {
+        flex-flow: row-reverse;
+    }
+}
