@@ -9,6 +9,11 @@
         var SOURCES = { kommunicate: 'KOMMUNICATE' };
         var SEARCH_ELASTIC = '/kb/_search';
 
+        function hideFAQBtn() {
+            $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
+            kommunicate._globals.hasArticles = false;
+        }
+        
         //KommunicateKB.init("https://api.kommunicate.io");
         KommunicateKB.init = function (url) {
             KM_API_URL = url;
