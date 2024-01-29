@@ -33,8 +33,12 @@
     #mck-attachfile-box svg,
     .mck-message-inner svg,
     .km-faqsearch-icon svg,
-    #user-overide-voice-output svg {
+    #user-overide-voice-output svg,
+    #mck-contact-loading svg {
         transform: none !important;
+    }
+    .tns-controls button[data-controls=next] svg {
+        transform: rotate(180deg);
     }
     .mck-tab-link {
         padding-left: 10px !important;
@@ -109,14 +113,17 @@
     div#separator {
         flex-flow: row-reverse;
     }
-    .mck-cont-msg-wrapper span{
+    .mck-cont-msg-wrapper span {
         float: right;
     }
-    .mck-icon--rich-message svg{
+    .mck-icon--rich-message svg {
         margin-left: 7px;
         margin-right: 0;
     }
-    .blk-lg-3 img{
+    .blk-lg-3 img {
         float: right;
+    }
+    .mck-box ul li a {
+        text-align: right !important;
     }
 }
