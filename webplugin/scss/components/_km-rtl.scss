@@ -1,15 +1,13 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
+    *,
+    ::placeholder,
+    .mck-dropup-menu li > a {
+        text-align: right !important;
+    }
     .mck-box .mck-nav-tabs {
         padding-right: 0 !important;
-    }
-    .km-contact-input-container,
-    #km-faqanswer {
-        text-align: right !important;
-    }
-    .mck-box-title {
-        text-align: right !important;
     }
     #mck-tab-conversation {
         padding-left: 6px;
@@ -37,8 +35,8 @@
     #mck-contact-loading svg {
         transform: none !important;
     }
-    .tns-controls button[data-controls=next] svg {
-        transform: rotate(180deg);
+    .tns-controls button[data-controls='next'] svg {
+        transform: rotate(180deg) !important;
     }
     .mck-tab-link {
         padding-left: 10px !important;
@@ -51,13 +49,6 @@
     .km-faq {
         margin-right: 0 !important;
         margin-left: 10px !important;
-    }
-    .km-faq-category-card,
-    input#km-faq-search-input::placeholder,
-    input,
-    .mck-text-box.mck-text,
-    p {
-        text-align: right;
     }
     .km-faqimage {
         margin-left: 15px;
@@ -72,12 +63,11 @@
         right: 25px;
     }
     .mck-box .move-right,
-    .km-image-template,
     #mck-mic-animation-container {
         float: left !important;
     }
     .km-cta-multi-button-container {
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
     #mck-csat-close {
         left: 5%;
@@ -113,17 +103,81 @@
     div#separator {
         flex-flow: row-reverse;
     }
-    .mck-cont-msg-wrapper span {
-        float: right;
-    }
     .mck-icon--rich-message svg {
         margin-left: 7px;
         margin-right: 0;
     }
-    .blk-lg-3 img {
+    .mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
+        float: right;
+        right: 22px;
+        left: auto;
+        margin: -9px 3px 0 0;
+    }
+    .mck-msg-left .mck-msg-box,
+    .mck-msg-box-rich-text-container,
+    .blk-lg-3 img,
+    .mck-cont-msg-wrapper span {
         float: right;
     }
-    .mck-box ul li a {
-        text-align: right !important;
+    button,
+    .mck-running-on {
+        text-align: center !important;
+    }
+    .mck-conversation-name,
+    .km-conversation-container-right {
+        margin-right: 65px;
+        margin-left: 0;
+    }
+    .km-cta-multi-button-container .km-cta-button-many,
+    .km-cta-multi-button-container .km-cta-button-1 {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 0;
+    }
+    .mck-msg-right .mck-msg-box {
+        float: left !important;
+        margin-left: 15px;
+        margin-right: 0;
+    }
+    .mck-sidebox {
+        left: 29px !important;
+        right: 0 !important;
+    }
+    .mck-msg-right-muted {
+        float: left;
+        padding-left: 15px;
+        padding-right: 0;
+    }
+    .mck-msg-right-muted.mck-text-light.mck-text-xs.mck-t-xs {
+        text-align: left !important;
+    }
+    .km-carousel-card-content-wrapper {
+        padding-left: 0px;
+        padding-right: 9px;
+    }
+    .km-carousel-card-sub-title {
+        padding-right: 0;
+        padding-left: 20px;
+    }
+    .km-carousel-card-description:before,
+    .km-carousel-card-description:after {
+        left: 0;
+        right: auto;
+    }
+    .km-carousel-card-description {
+        margin-left: 12px;
+        padding-left: 12px;
+        margin-right: 0;
+        padding-right: 0;
+    }
+    .km-typing-wrapper {
+        margin: 1px 66px 10px 1px;
+        & .km-typing-indicator {
+            margin-left: 0 !important;
+            margin-right: 10px !important;
+        }
+    }
+    .mck-form-dropdown-wrapper select {
+        background-position-x: 2%;
     }
 }
