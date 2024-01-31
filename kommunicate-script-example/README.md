@@ -159,7 +159,7 @@ Example:
 <body>
     <script type="text/javascript">
         (function(d, m){
-		var kommunicateSettings = {"appId":"<APP_ID>","conversationTitle":"<CONVERSATION_TITLE>"
+		var kommunicateSettings = {"appId":"<APP_ID>",
 			"onInit": function() {
 	    			Kommunicate.launchConversation(); // To launch the chat widget
 	    		}
