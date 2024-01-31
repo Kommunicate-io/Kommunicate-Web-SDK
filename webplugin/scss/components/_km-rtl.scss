@@ -1,7 +1,7 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
-    *:not(span.mck-contact-icon):not(span.mck-unread-count-text):not(button):not(.mck-running-on),
+    *:not(span.mck-unread-count-text):not(button):not(.mck-running-on):not(.mck-videocall-image):not(#applozic-badge-count):not(.mck-msg-avator-bubble .mck-msg-right-muted),
     ::placeholder,
     .mck-dropup-menu li > a {
         text-align: right !important;
@@ -15,6 +15,9 @@
     }
     .mck-contact-list .mck-cont-msg-date {
         padding-right: 1rem;
+    }
+    .mck-msg-avator-bubble .mck-msg-right-muted {
+        text-align: left !important;
     }
     .mck-box .mck-contact-list .mck-row,
     .mck-msg-preview .mck-row {
@@ -32,7 +35,8 @@
     .mck-message-inner svg,
     .km-faqsearch-icon svg,
     #user-overide-voice-output svg,
-    #mck-contact-loading svg {
+    #mck-contact-loading svg,
+    .km-faqimage svg {
         transform: none !important;
     }
     .tns-controls button[data-controls='next'] svg {
@@ -175,5 +179,12 @@
     }
     .mck-form-dropdown-wrapper select {
         background-position-x: 2%;
+    }
+    .km-faq-list--body_img {
+        padding: 10px 12px 10px 0px;
+    }
+    .km-clear-faq-search-icon {
+        right: auto;
+        left: 25px;
     }
 }
