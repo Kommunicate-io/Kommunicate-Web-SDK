@@ -1,7 +1,7 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
-    *,
+    *:not(span.mck-contact-icon):not(span.mck-unread-count-text):not(button):not(.mck-running-on),
     ::placeholder,
     .mck-dropup-menu li > a {
         text-align: right !important;
@@ -118,10 +118,6 @@
     .blk-lg-3 img,
     .mck-cont-msg-wrapper span {
         float: right;
-    }
-    button,
-    .mck-running-on {
-        text-align: center !important;
     }
     .mck-conversation-name,
     .km-conversation-container-right {
