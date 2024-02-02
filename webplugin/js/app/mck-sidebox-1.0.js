@@ -597,6 +597,7 @@ var userOverride = {
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
         var kmNavBar = new KmNavBar(mckMessageLayout)
+        const typingService = new TypingService(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -6533,6 +6534,9 @@ var userOverride = {
                                     mckMessageLayout.messageContextMenu(
                                         messageKey
                                     );
+                                }
+                                if (KommunicateUtils.isCurrentAssigneeBot()) {
+                                    typingService.showTypingIndicator();
                                 }
                             }
                             if (messagePxy.conversationPxy) {
@@ -12738,9 +12742,9 @@ var userOverride = {
                     ? mckGroupUtils.getGroup(message.groupId)
                     : mckMessageLayout.getContact(message.to);
                 alUserService.loadUserProfile(message.to);
-                if (!_this.isMessageSentByBot(message, contact)) {
-                    mckMessageLayout.hideTypingIndicator();
-                }
+                // if (!_this.isMessageSentByBot(message, contact)) {
+                //     typingService.hideTypingIndicator();
+                // }
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isValidMeta = mckMessageLayout.isValidMetaData(message);
                 if (typeof tabId === 'undefined' || tabId === '') {
@@ -12957,7 +12961,7 @@ var userOverride = {
                                                     validated,
                                                     null,
                                                     function () {
-                                                        _this.processMessageInQueue(
+                                                        typingService.processMessageInQueue(
                                                             message
                                                         );
                                                     }
@@ -12970,7 +12974,7 @@ var userOverride = {
                                                     true,
                                                     validated
                                                 );
-                                                mckMessageLayout.hideTypingIndicator();
+                                                typingService.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(
                                                 false
@@ -13115,81 +13119,6 @@ var userOverride = {
                     contact.users[message.to].role ===
                         KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
                 );
-            };
-
-            _this.processMessageInQueue = function (message) {
-                message &&
-                    message.key &&
-                    MCK_BOT_MESSAGE_QUEUE.push(message.key);
-                MCK_BOT_MESSAGE_QUEUE.length == 1 &&
-                    _this.procesMessageTimerDelay();
-            };
-
-            _this.showTypingIndicator = function () {
-                if (!document.querySelector('.km-typing-wrapper')) {
-                    typingIndicatorStartTime = new Date();
-                    $mck_msg_inner.append(
-                        '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
-                    );
-                    $mck_msg_inner.animate(
-                        {
-                            scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                        },
-                        0
-                    );
-                    setTimeout(_this.hideTypingIndicator, 15000);
-                }
-            };
-
-            _this.hideTypingIndicator = function () {
-                if (document.querySelector('.km-typing-wrapper')) {
-                    typingIndicatorStartTime = null;
-                    $applozic('.km-typing-wrapper').remove();
-                }
-            };
-
-            _this.getTypingIndicatorElapsedTime = function () {
-                if (typingIndicatorStartTime === null) return -1;
-
-                return new Date() - typingIndicatorStartTime;
-            };
-
-            _this.procesMessageTimerDelay = function () {
-                const showMessage = () => {
-                    let message = messageContainer.querySelector(
-                        'div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]'
-                    );
-                    mckMessageLayout.hideTypingIndicator();
-
-                    if (message) {
-                        message.classList.remove('n-vis');
-                        $mck_msg_inner.animate(
-                            {
-                                scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                            },
-                            0
-                        );
-                    }
-                    MCK_BOT_MESSAGE_QUEUE.shift();
-                    MCK_BOT_MESSAGE_QUEUE.length != 0 &&
-                        _this.procesMessageTimerDelay();
-                };
-                let messageContainer = document.getElementById(
-                    'mck-message-cell'
-                );
-
-                // delay in response from bot
-                let responseDelay = mckMessageLayout.getTypingIndicatorElapsedTime();
-                let configuredDelay = MCK_BOT_MESSAGE_DELAY;
-
-                if (responseDelay == -1) {
-                    mckMessageLayout.showTypingIndicator();
-                }
-                if (configuredDelay <= responseDelay) {
-                    showMessage();
-                    return;
-                }
-                setTimeout(showMessage, configuredDelay - responseDelay);
             };
 
             _this.getMessageFeed = function (message) {
@@ -16684,16 +16613,18 @@ var userOverride = {
                                         .removeClass('vis')
                                         .addClass('n-vis');
                                 }
-                                mckMessageLayout.showTypingIndicator();
-                                setTimeout(function () {
+                                typingService.hideTypingIndicator();
+                                typingService.showTypingIndicator();
+                                const timeoutId = setTimeout(function () {
                                     $mck_tab_title.removeClass(
                                         'mck-tab-title-w-typing'
                                     );
-                                    mckMessageLayout.hideTypingIndicator();
+                                    typingService.hideTypingIndicator();
                                     $mck_typing_label.html(
                                         MCK_LABELS['typing']
                                     );
                                 }, 10000);
+                                typingService.addTimeoutIds(timeoutId)
                             }
                         } else {
                             $mck_tab_title.removeClass(
@@ -16702,7 +16633,7 @@ var userOverride = {
                             $mck_typing_box
                                 .removeClass('vis')
                                 .addClass('n-vis');
-                            mckMessageLayout.hideTypingIndicator();
+                            typingService.hideTypingIndicator();
                             if (
                                 $mck_tab_title.hasClass(
                                     'mck-tab-title-w-status'
@@ -16873,9 +16804,6 @@ var userOverride = {
                         .removeClass('mck-delivered-icon')
                         .addClass('mck-read-icon');
                     mckMessageLayout.addTooltip(resp.message.split(',')[0]);
-                    if (KommunicateUtils.isCurrentAssigneeBot()) {
-                        mckMessageLayout.showTypingIndicator();
-                    }
                     // events.onMessageRead({
                     //     'messageKey': resp.message.split(",")[0]
                     // });
