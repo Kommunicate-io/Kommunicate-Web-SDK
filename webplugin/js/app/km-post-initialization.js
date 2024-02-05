@@ -8,14 +8,13 @@ Kommunicate.postPluginInitialization = function (err, data) {
     // get the third party settings
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var categoryName;
-    var primaryCTA =
-        kommunicate && kommunicate._globals && kommunicate._globals.primaryCTA;
+    var primaryCTA = kommunicate?._globals?.primaryCTA;
 
     if (primaryCTA && primaryCTA !== 'FAQ') {
         $applozic('.km-kb-container').removeClass('n-vis').addClass('vis');
         $applozic('#km-faq').addClass('n-vis').removeClass("vis");
     }
-    if (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory) {
+    if (kommunicate?._globals?.faqCategory) {
         categoryName = kommunicate._globals.faqCategory;
         Kommunicate.getFaqList(data, categoryName);
     }else{
