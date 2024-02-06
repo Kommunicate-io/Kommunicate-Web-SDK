@@ -373,6 +373,7 @@ Kommunicate.attachmentEventHandler = {
 };
 
 Kommunicate.richMsgEventHandler = {
+    disabledCTAMap: [],
     svg: {
         arrow:
             '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 10 19"><path fill="#1c1c1c" fill-rule="evenodd" d="M9.076 18.266c.21.2.544.2.753 0a.53.53 0 0 0 0-.753L1.524 9.208 9.829.903a.53.53 0 0 0 0-.752.546.546 0 0 0-.753 0L.026 9.208l9.05 9.058z"/></svg>',
@@ -470,6 +471,7 @@ Kommunicate.richMsgEventHandler = {
             message +=
                 'Room ' + (i + 1) + ' Guest ' + roomGuest[i].value + '\n';
         }
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
         //send message to group
         //[{"NoOfAdults":1,"NoOfChild":2,"ChildAge":[8,9]}]
         var messagePxy = {
@@ -489,6 +491,7 @@ Kommunicate.richMsgEventHandler = {
         var resultIndex = target.dataset.resultindex;
         var hotelName = target.dataset.name;
 
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
         var messagePxy = {
             message: 'Get room detail of ' + hotelName.replace('_', ' '), //message to send
             metadata: {
@@ -708,6 +711,8 @@ Kommunicate.richMsgEventHandler = {
         var formDataMessageTemplate =
             postBackToKommunicate &&
             Kommunicate.markup.getFormDataMessageTemplate(postBackData);
+
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e); 
         formDataMessageTemplate &&
             Kommunicate.sendMessage({
                 message: formDataMessageTemplate,
@@ -768,6 +773,7 @@ Kommunicate.richMsgEventHandler = {
                 .addClass('vis');
             return;
         }
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
         var personDetail = {
             Title: title === 'title' ? '' : title,
             Age: age[0].value,
@@ -813,6 +819,8 @@ Kommunicate.richMsgEventHandler = {
             message: message, //message to send
             metadata: metadata,
         };
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
+        
         document
             .getElementById('mck-text-box')
             .setAttribute('data-quick-reply', true);
@@ -842,7 +850,7 @@ Kommunicate.richMsgEventHandler = {
                 message: reply, //message to send
                 metadata: metadata,
             };
-
+            Kommunicate.richMsgEventHandler.handleDisableCTA(e);
             Kommunicate.sendMessage(messagePxy);
         } else if (type && type == 'submit') {
             //TODO : support for post request with data.
@@ -864,6 +872,7 @@ Kommunicate.richMsgEventHandler = {
                 metadata: metadata,
             };
 
+            Kommunicate.richMsgEventHandler.handleDisableCTA(e);
             Kommunicate.sendMessage(messagePxy);
         } else if (type && type == 'submit') {
             //TODO : support for post request with data.
@@ -886,6 +895,7 @@ Kommunicate.richMsgEventHandler = {
             metadata: metadata,
         };
 
+        Kommunicate.richMsgEventHandler.handleDisableCTA(e);
         Kommunicate.sendMessage(messagePxy);
     },
     handleLinkButtonClick: function (e) {
@@ -899,5 +909,16 @@ Kommunicate.richMsgEventHandler = {
     },
     isValidString: function (str, value) {
         return new RegExp(str).test(value);
+    },
+    handleDisableCTA: function ({ target = {} }) {
+        // prevent cta double click
+        target.disabled = true;
+        Kommunicate.richMsgEventHandler.disabledCTAMap.push(target);
+    },
+    handleEnableCTA: function () {
+        Kommunicate.richMsgEventHandler.disabledCTAMap.forEach(
+            (ele = {}) => (ele.disabled = false)
+        );
+        Kommunicate.richMsgEventHandler.disabledCTAMap = [];
     },
 };
