@@ -1,7 +1,7 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
-    *:not(span.mck-unread-count-text):not(button):not(.mck-running-on):not(.mck-videocall-image):not(#applozic-badge-count):not(.mck-msg-avator-bubble .mck-msg-right-muted),
+    *:not(span.mck-unread-count-text):not(button):not(.mck-running-on):not(.mck-videocall-image):not(#applozic-badge-count):not(.mck-msg-avator-bubble .mck-msg-right-muted):not(div#mck-conversation-status-box):not(a.km-learn-more),
     ::placeholder,
     .mck-dropup-menu li > a {
         text-align: right !important;
@@ -186,5 +186,8 @@
     .km-clear-faq-search-icon {
         right: auto;
         left: 25px;
+    }
+    a.km-learn-more{
+        text-align: center;
     }
 }
