@@ -64,7 +64,7 @@ var userOverride = {
         agentId: '',
         agentName: '',
         msgTriggerTimeout: 0,
-        labels: Kommunicate.defaultLabels,
+        labels: kmLabel.getLabels(),
         useBranding: true,
         openGroupSettings: {
             deleteChatAccess: 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
@@ -2530,7 +2530,7 @@ var userOverride = {
                 INIT_APP_DATA = data;
                 var $mck_sidebox = $applozic('#mck-sidebox');
                 _this.appendLauncher();
-                _this.setLabels();
+                kmLabel.setLabels(MCK_LABELS);
                 if (KOMMUNICATE_VERSION === 'v2') {
                     _this.configureIframe();
                     _this.restrictScrollOnHandHeldDevices();
@@ -3471,189 +3471,6 @@ var userOverride = {
                         ratingElement.appendChild(dateSpan);
                     }
                 }
-            };
-            _this.setLabels = function () {
-                $applozic('#mck-conversation-title')
-                    .html(MCK_LABELS['conversations.title'])
-                    .attr('title', MCK_LABELS['conversations.title']);
-                $applozic('#mck-msg-new, #mck-sidebox-search .mck-box-title')
-                    .html(MCK_LABELS['start.new'])
-                    .attr('title', MCK_LABELS['start.new']);
-                $applozic('#mck-contact-search-tab strong')
-                    .html(MCK_LABELS['search.contacts'])
-                    .attr('title', MCK_LABELS['search.contacts']);
-                $applozic('#mck-group-search-tab strong')
-                    .html(MCK_LABELS['search.groups'])
-                    .attr('title', MCK_LABELS['search.groups']);
-                $applozic(
-                    '#mck-contact-search-input, #mck-group-search-input, #mck-group-member-search'
-                ).attr('placeholder', MCK_LABELS['search.placeholder']);
-                $applozic('#mck-loc-address').attr(
-                    'placeholder',
-                    MCK_LABELS['location.placeholder']
-                );
-                // $applozic('#mck-no-conversations').html(MCK_LABELS['empty.conversations']);
-                // $applozic('#mck-no-messages').html(MCK_LABELS['empty.messages']);
-                // $applozic('#mck-no-more-conversations').html(MCK_LABELS['no.more.conversations']);
-                // $applozic('#mck-no-more-messages').html(MCK_LABELS['no.more.messages']);
-                $applozic('#mck-no-search-contacts').html(
-                    MCK_LABELS['empty.contacts']
-                );
-                $applozic('#mck-no-search-groups').html(
-                    MCK_LABELS['empty.groups']
-                );
-                $applozic(
-                    '#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create'
-                )
-                    .html(MCK_LABELS['create.group.title'])
-                    .attr('title', MCK_LABELS['create.group.title']);
-                $applozic('#mck-gc-overlay-label').html(
-                    MCK_LABELS['add.group.icon']
-                );
-                $applozic('#mck-msg-error').html(MCK_LABELS['group.deleted']);
-                $applozic('#mck-gc-title-label').html(
-                    MCK_LABELS['group.title']
-                );
-                $applozic('#mck-gc-type-label').html(MCK_LABELS['group.type']);
-                $applozic(
-                    '#mck-group-info-btn, #mck-group-info-tab .mck-box-title'
-                )
-                    .html(MCK_LABELS['group.info.title'])
-                    .attr('title', MCK_LABELS['group.info.title']);
-                $applozic('#mck-gi-overlay-label').html(
-                    MCK_LABELS['change.group.icon']
-                );
-                $applozic('#mck-group-member-title')
-                    .html(MCK_LABELS['members.title'])
-                    .attr('title', MCK_LABELS['members.title']);
-                $applozic(
-                    '#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title'
-                )
-                    .html(MCK_LABELS['add.members.title'])
-                    .attr('title', MCK_LABELS['add.members.title']);
-                $applozic('#mck-btn-group-update')
-                    .html(MCK_LABELS['group.info.update'])
-                    .attr('title', MCK_LABELS['group.info.update']);
-                $applozic('#mck-btn-leave-group, #mck-btn-group-exit')
-                    .html(MCK_LABELS['exit.group'])
-                    .attr('title', MCK_LABELS['exit.group']);
-                $applozic('#mck-typing-label').html(MCK_LABELS['typing']);
-                $applozic('#mck-btn-clear-messages')
-                    .html(MCK_LABELS['clear.messages'])
-                    .attr('title', MCK_LABELS['clear.messages']);
-                $applozic('#mck-block-button')
-                    .html(MCK_LABELS['block.user'])
-                    .attr('title', MCK_LABELS['block.user']);
-                $applozic('#mck-loc-box .mck-box-title, #mck-share-loc-label')
-                    .html(MCK_LABELS['location.share.title'])
-                    .attr('title', MCK_LABELS['location.share.title']);
-                $applozic('#mck-btn-loc').attr(
-                    'title',
-                    MCK_LABELS['location.share.title']
-                );
-                $applozic('#mck-file-up-label').html(
-                    MCK_LABELS['file.attachment']
-                );
-                $applozic('#mck-file-up').attr(
-                    'title',
-                    MCK_LABELS['file.attachment']
-                );
-                $applozic('.mck-file-attach-label').attr(
-                    'title',
-                    MCK_LABELS['file.attach.title']
-                );
-                $applozic('#mck-my-loc')
-                    .html(MCK_LABELS['my.location'])
-                    .attr('title', MCK_LABELS['my.location']);
-                $applozic('#mck-btn-close-loc-box')
-                    .html(MCK_LABELS['close'])
-                    .attr('title', MCK_LABELS['close']);
-                $applozic('#mck-loc-submit')
-                    .html(MCK_LABELS['send'])
-                    .attr('title', MCK_LABELS['send']);
-                $applozic('#mck-msg-sbmt').attr(
-                    'title',
-                    MCK_LABELS['send.message']
-                );
-                $applozic('#mck-btn-smiley').attr(
-                    'title',
-                    MCK_LABELS['smiley']
-                );
-                $applozic('#mck-group-name-save').attr(
-                    'title',
-                    MCK_LABELS['save']
-                );
-                $applozic('#mck-btn-group-icon-save').attr(
-                    'title',
-                    MCK_LABELS['save']
-                );
-                $applozic('#mck-group-name-edit').attr(
-                    'title',
-                    MCK_LABELS['edit']
-                );
-                document.getElementById('mck-text-box').dataset.text =
-                    MCK_LABELS['input.message'];
-                document.getElementById('mck-char-warning-text').innerHTML =
-                    MCK_LABELS['char.limit.warn'];
-                document
-                    .getElementById('km-faq-search-input')
-                    .setAttribute('placeholder', MCK_LABELS['search.faq']);
-                document.getElementById('mck-no-faq-found').innerHTML =
-                    MCK_LABELS['looking.for.something.else'];
-                document.getElementById(
-                    'km-internet-disconnect-msg'
-                ).innerHTML = MCK_LABELS['offline.msg'];
-                document.getElementById('km-socket-disconnect-msg').innerHTML =
-                    MCK_LABELS['socket-disconnect.msg'];
-                document.getElementById('talk-to-human-link').innerHTML =
-                    MCK_LABELS['talk.to.agent'];
-                document.getElementById('mck-collect-email').innerHTML =
-                    MCK_LABELS['how.to.reachout'];
-                document.getElementById('mck-email-error-alert').innerHTML =
-                    MCK_LABELS['email.error.alert'];
-                document.getElementById('mck-resolved-text').innerHTML =
-                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
-                document.getElementById('mck-rated-text').innerHTML =
-                    MCK_LABELS['csat.rating'].CONVERSATION_RATED;
-                // document.getElementById('mck-rate-conversation').innerHTML =
-                //     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
-                document.getElementById('mck-other-queries').innerHTML =
-                    MCK_LABELS['csat.rating'].OTHER_QUERIES;
-                document.getElementById('mck-restart-conversation').innerHTML =
-                    MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
-                document
-                    .getElementById('mck-feedback-comment')
-                    .setAttribute(
-                        'placeholder',
-                        MCK_LABELS['csat.rating']
-                            .CONVERSATION_REVIEW_PLACEHOLDER
-                    );
-                document.getElementById('mck-submit-comment').innerHTML =
-                    MCK_LABELS['csat.rating'].SUBMIT_RATING;
-                document.getElementById('wq-msg-first-Part').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['first.Part'];
-                document.getElementById('waiting-queue-number').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
-                document.getElementById('wq-msg-last-part').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['last.part'];
-                document.getElementById('km-csat-trigger-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
-                document.getElementById('km-restart-conversation-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].RESTART_CONVERSATION;
-                document.getElementById('km-voice-note-trigger-text').innerText =
-                    MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
-                document.getElementById(
-                    'km-voice-input-trigger-text'
-                ).innerText =
-                    MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
-                document.getElementById('mck-rate-error').innerHTML =
-                    MCK_LABELS['csat.rating'].RATE_ERROR_MSG;
-                document.getElementById(
-                    'km-option-talk-to-human-text'
-                ).innerHTML =
-                    MCK_LABELS['conversation.header.dropdown'].HANDOFF;
-                document.getElementById('km-option-faq-text').innerHTML =
-                    MCK_LABELS['conversation.header.dropdown'].FAQ;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();

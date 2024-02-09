@@ -1,8 +1,11 @@
-const minify = require('@node-minify/core');
-const terser = require('@node-minify/terser');
-const noCompress = require('@node-minify/no-compress');
-const gcc = require('@node-minify/google-closure-compiler');
-const cleanCSS = require('@node-minify/clean-css');
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const concat = require('gulp-concat');
+const terser = require('gulp-terser');
+const cleanCss = require('gulp-clean-css');
+const cssnano = require('gulp-cssnano');
+const sass = require('gulp-sass')(require('sass'));
+const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const fs = require('fs');
 const argv = require('minimist')(process.argv.slice(2));
@@ -21,6 +24,7 @@ const {
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
 const pluginClient = require('../server/src/pluginClient');
+const TERSER_CONFIG = require('./terser.config');
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
@@ -40,25 +44,14 @@ let isAwsUploadEnabled = argv.upload;
 let BUILD_URL = isAwsUploadEnabled
     ? CDN_HOST_URL + '/' + version
     : MCK_STATIC_PATH + '/build';
-// Change "env" to "false" to un-compress all files.
+
 let env = config.getEnvId() !== 'development';
-let jsCompressor = !env ? noCompress : gcc;
-let terserCompressor = !env ? noCompress : terser;
-let cssCompressor = !env ? noCompress : cleanCSS;
+
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env
     ? path.resolve(__dirname, 'build/resources')
     : buildDir;
 
-/**
- *
- * @param {string} dirPath optional
- * @returns null
- *
- * Removes existing files and subdirectories from build folder if it exists.
- * If build folder doesn't exists then it create a build folder.
- *
- */
 const removeExistingFile = function (dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
@@ -77,8 +70,7 @@ const removeExistingFile = function (dirPath) {
     }
 };
 
-// Add already minified files only in the below compressor code.
-const compressAndOptimize = () => {
+const generateResourceFolder = () => {
     if (env) {
         // create resources folder
         // resources folder will contain the files generated with version
@@ -91,128 +83,80 @@ const compressAndOptimize = () => {
             fs.mkdirSync(`${buildDir}/resources/third-party-scripts`);
         }
     }
-    minify({
-        compressor: jsCompressor,
-        input: THIRD_PARTY_SCRIPTS,
-        output: path.resolve(
-            __dirname,
-            `${buildDir}/kommunicateThirdParty.min.js`
-        ),
-        options: {
-            compilationLevel: 'WHITESPACE_ONLY',
-        },
-        callback: function (err, min) {
-            if (!err) {
-                console.log(
-                    `kommunicateThirdParty.min.js combined successfully`
-                );
-            } else {
-                console.log(
-                    `err while minifying kommunicateThirdParty.min.js`,
-                    err
-                );
-            }
-        },
-    });
-
-    // minify applozic css files into a single file
-    minify({
-        compressor: cssCompressor,
-        input: PLUGIN_CSS_FILES,
-        output: path.resolve(
-            __dirname,
-            `${resourceLocation}/kommunicate.${version}.min.css`
-        ),
-        options: {
-            level: 1, // (default)
-            compatibility: '*', // (default) - Internet Explorer 10+ compatibility mode
-        },
-        callback: function (err, min) {
-            if (!err) {
-                console.log(
-                    `kommunicate.${version}.min.css combined successfully`
-                );
-            } else {
-                console.log(
-                    `err while minifying kommunicate.${version}.min.css`,
-                    err
-                );
-            }
-        },
-    });
-
-    minify({
-        compressor: terserCompressor,
-        input: PLUGIN_JS_FILES,
-        options: {
-            compress: {
-                drop_console: true,
-            },
-        },
-        output: path.resolve(
-            __dirname,
-            `${buildDir}/kommunicate-plugin.min.js`
-        ),
-        callback: function (err, min) {
-            if (!err)
-                console.log(`kommunicate-plugin.min.js combined successfully`);
-            else {
-                console.log(
-                    `err while minifying kommunicate-plugin.min.js`,
-                    err
-                );
-            }
-        },
-    });
 };
 
-const combineJsFiles = () => {
+const generateThirdPartyJSFiles = () => {
+    return gulp
+        .src(THIRD_PARTY_SCRIPTS)
+        .pipe(concat(`kommunicateThirdParty.min.js`))
+        .pipe(terser(TERSER_CONFIG))
+        .pipe(gulp.dest(`${buildDir}`))
+        .on('end', () => {
+            console.log(`kommunicateThirdParty.min.js combined successfully`);
+        });
+};
+
+const generateCSSFiles = () => {
+    return gulp
+        .src(PLUGIN_CSS_FILES)
+        .pipe(
+            cleanCss({
+                advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
+                aggressiveMerging: true, // set to false to disable aggressive merging of properties.
+                compatibility: 'ie9', // To add vendor prefixes for IE8+
+            })
+        ) // Minify and optimize CSS
+        .pipe(concat(`kommunicate.${version}.min.css`))
+        .pipe(gulp.dest(resourceLocation))
+        .on('end', () => {
+            console.log(`kommunicate.${version}.min.css combined successfully`);
+        });
+};
+
+const generatePluginJSFiles = () => {
+    return gulp
+        .src(PLUGIN_JS_FILES)
+        .pipe(babel()) // Run Babel
+        .pipe(concat(`kommunicate-plugin.min.js`))
+        .pipe(terser(TERSER_CONFIG))
+        .pipe(gulp.dest(`${buildDir}`)) // Destination directory
+        .on('end', () => {
+            console.log(`kommunicate-plugin.min.js combined successfully`);
+        });
+};
+
+const combineJsFiles = async () => {
     var paths = PLUGIN_BUNDLE_FILES;
-    minify({
-        compressor: terserCompressor,
-        input: paths,
-        options: {
-            compress: {
-                drop_console: true,
-                keep_fnames: true,
-            },
-            mangle: {
-                keep_fnames: true,
-            },
-        },
-        output: path.resolve(
-            __dirname,
-            `${resourceLocation}/kommunicate.${version}.min.js`
-        ),
-        callback: function (err, min) {
-            if (!err) {
-                console.log(`kommunicate.${version}.js combined successfully`);
-                paths.forEach(async function (value) {
-                    await deleteFilesUsingPath(value);
-                });
-                if (isAwsUploadEnabled) {
-                    uploadFilesToCdn(buildDir, version);
-                } else {
-                    console.log('Files not uploaded to CDN');
-                }
+
+    gulp.src(paths)
+        .pipe(concat(`kommunicate.${version}.min.js`))
+        .pipe(terser(TERSER_CONFIG))
+        .pipe(gulp.dest(resourceLocation))
+        .on('end', () => {
+            console.log(`kommunicate.${version}.js combined successfully`);
+            paths.forEach((value) => {
+                deleteFilesUsingPath(value);
+            });
+
+            if (isAwsUploadEnabled) {
+                uploadFilesToCdn(buildDir, version);
             } else {
-                console.log(
-                    `err while minifying kommunicate.${version}.js`,
-                    err
-                );
+                console.log('Files not uploaded to CDN');
             }
-        },
-    });
+        });
 };
 
-const copyFileToBuild = (src, dest) => {
-    fs.copyFile(path.join(__dirname, src), dest, (err) => {
-        if (err) {
-            console.log(`error while generating ${dest}`, err);
-        }
-        console.log(`${dest} generated successfully`);
-    });
+const minifyHtml = (paths, outputDir, fileName) => {
+    gulp.src(paths)
+        .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
+        .on('error', console.error)
+        .pipe(concat(fileName))
+        .pipe(gulp.dest(outputDir))
+        .on('end', () => {
+            console.log(`${fileName} generated successfully`);
+        });
 };
+
 const generateBuildFiles = () => {
     if (env) {
         // Generate index.html for home route
@@ -244,17 +188,11 @@ const generateBuildFiles = () => {
     );
 
     // Generate mck-sidebox.html file for build folder.
-    fs.copyFile(
-        path.join(__dirname, 'template/mck-sidebox.html'),
-        `${resourceLocation}/mck-sidebox.${version}.html`,
-        (err) => {
-            if (err) {
-                console.log('error while generating mck-sidebox.html', err);
-            }
-            console.log('mck-sidebox.html generated successfully');
-        }
+    minifyHtml(
+        [path.join(__dirname, 'template/mck-sidebox.html')],
+        resourceLocation,
+        `mck-sidebox.${version}.html`
     );
-
     // Generate plugin.js file for build folder.
     fs.readFile(
         path.join(__dirname, 'plugin.js'),
@@ -282,6 +220,7 @@ const generateBuildFiles = () => {
         path.join(__dirname, 'js/app/mck-app.js'),
         'utf8',
         function (err, data) {
+            // console.log(data, err);
             if (err) {
                 console.log('error while generating mck app', err);
             }
@@ -294,12 +233,16 @@ const generateBuildFiles = () => {
                     'MCK_SIDEBOX_HTML',
                     `"${pathToResource}/mck-sidebox.${version}.html"`
                 );
-            fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
-                if (err) {
-                    console.log('mck-file generation error');
+            fs.writeFile(
+                `${buildDir}/mck-app.js`,
+                mckApp,
+                function (err, data) {
+                    if (err) {
+                        console.log('mck-file generation error');
+                    }
+                    combineJsFiles();
                 }
-                combineJsFiles();
-            });
+            );
         }
     );
 };
@@ -370,10 +313,56 @@ const uploadFilesToCdn = async (buildDir, version) => {
         process.kill(process.pid);
     }
 };
+const copyFileToBuild = (src, dest) => {
+    // console.log(`Copying file from ${src} to ${dest}`);
+    fs.copyFile(path.join(__dirname, src), dest, (err) => {
+        if (err) {
+            console.log(`error while generating ${dest}`, err);
+        }
+        console.log(`${dest} generated successfully`);
+    });
+};
 
-removeExistingFile(buildDir);
-compressAndOptimize();
-generateBuildFiles();
+gulp.task('removeExistingFile', function (done) {
+    removeExistingFile(buildDir);
+    done && done();
+});
+
+gulp.task('generateResourceFolder', function (done) {
+    generateResourceFolder();
+    done();
+});
+gulp.task('sass', function () {
+    return gulp
+        .src('./scss/style.scss')
+        .pipe(sass())
+        .pipe(cssnano())
+        .pipe(gulp.dest('./css/app/style'))
+        .on('end', () => {
+            console.log('compiled scss to css');
+        });
+});
+
+gulp.task('generateThirdPartyJSFiles', generateThirdPartyJSFiles);
+gulp.task('generateCSSFiles', generateCSSFiles);
+gulp.task('generatePluginJSFiles', generatePluginJSFiles);
+gulp.task('generateBuildFiles', function (done) {
+    generateBuildFiles();
+    done();
+});
+
+gulp.task(
+    'default',
+    gulp.series(
+        'sass',
+        'removeExistingFile',
+        'generateResourceFolder',
+        'generateThirdPartyJSFiles',
+        'generateCSSFiles',
+        'generatePluginJSFiles',
+        'generateBuildFiles'
+    )
+);
 
 exports.pluginVersion = version;
 exports.pluginVersionData = PLUGIN_FILE_DATA;
