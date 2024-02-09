@@ -1,7 +1,7 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
-    *:not(span.mck-unread-count-text):not(button):not(.mck-running-on):not(.mck-videocall-image):not(#applozic-badge-count):not(.mck-msg-avator-bubble .mck-msg-right-muted):not(div#mck-conversation-status-box):not(a.km-learn-more),
+    *:not(span.mck-unread-count-text):not(button):not(.mck-running-on):not(.mck-videocall-image):not(#applozic-badge-count):not(.mck-msg-avator-bubble .mck-msg-right-muted):not(div#mck-conversation-status-box):not(a.km-learn-more):not(span.mck-created-at-time.notranslate):not(svg.mck-message-status.notranslate.mck-read-icon):not(svg.mck-read-icon.mck-message-status.notranslate):not(span.mck-message-status.notranslate),
     ::placeholder,
     .mck-dropup-menu li > a {
         text-align: right !important;
@@ -16,7 +16,9 @@
     .mck-contact-list .mck-cont-msg-date {
         padding-right: 1rem;
     }
-    .mck-msg-avator-bubble .mck-msg-right-muted {
+    .mck-msg-avator-bubble .mck-msg-right-muted,
+    span.mck-created-at-time.notranslate,
+    svg.mck-read-icon.mck-message-status.notranslate {
         text-align: left !important;
     }
     .mck-box .mck-contact-list .mck-row,
