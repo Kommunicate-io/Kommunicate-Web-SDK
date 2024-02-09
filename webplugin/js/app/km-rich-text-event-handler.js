@@ -891,6 +891,7 @@ Kommunicate.richMsgEventHandler = {
     handleLinkButtonClick: function (e) {
         kmWidgetEvents.eventTracking(eventMapping.onRichMessageButtonClick,e.target.innerText);
         var url = decodeURI(e.currentTarget.dataset.url);
+        console.log(e, e.currentTarget.dataset,e.currentTarget.dataset)
         window.open(url, e.currentTarget.dataset.target);
     },
     handleFormSubmit: function (e) {
