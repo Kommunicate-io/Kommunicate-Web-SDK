@@ -30,6 +30,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/km-attachment-service.js'),
     path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
     path.resolve(__dirname, 'js/app/km-nav-bar.js'),
+    path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/mck-sidebox-1.0.js'),
     path.resolve(__dirname, 'js/app/kommunicate.custom.theme.js'),
     path.resolve(__dirname, 'js/app/kommunicateCommons.js'),
