@@ -3441,7 +3441,7 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML = appOptions.preLeadCollection
+                leadCollectionHeading.innerHTML = (appOptions.preLeadCollection || LEAD_COLLECTION_LABEL)
                     ? LEAD_COLLECTION_LABEL.heading
                     : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
                       '';
