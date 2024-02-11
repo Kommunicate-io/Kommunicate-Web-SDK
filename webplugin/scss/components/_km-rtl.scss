@@ -1,10 +1,14 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
-    *:not(span.mck-unread-count-text):not(button):not(.mck-running-on):not(.mck-videocall-image):not(#applozic-badge-count):not(.mck-msg-avator-bubble .mck-msg-right-muted):not(div#mck-conversation-status-box):not(a.km-learn-more):not(span.mck-created-at-time.notranslate):not(svg.mck-message-status.notranslate.mck-read-icon):not(svg.mck-read-icon.mck-message-status.notranslate):not(span.mck-message-status.notranslate),
-    ::placeholder,
-    .mck-dropup-menu li > a {
-        text-align: right !important;
+    .mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq ,
+    .mck-dropup-menu li > a,
+    div#mck-agent-status-text,
+    p,
+    .mck-text-box.mck-text,
+    #km-faq-search-input::placeholder,
+    .km-contact-input-container.vis {
+        text-align: right;
     }
     .mck-box .mck-nav-tabs {
         padding-right: 0 !important;
@@ -15,11 +19,6 @@
     }
     .mck-contact-list .mck-cont-msg-date {
         padding-right: 1rem;
-    }
-    .mck-msg-avator-bubble .mck-msg-right-muted,
-    span.mck-created-at-time.notranslate,
-    svg.mck-read-icon.mck-message-status.notranslate {
-        text-align: left !important;
     }
     .mck-box .mck-contact-list .mck-row,
     .mck-msg-preview .mck-row {
@@ -129,6 +128,7 @@
     .km-conversation-container-right {
         margin-right: 65px;
         margin-left: 0;
+        text-align: right;
     }
     .km-cta-multi-button-container .km-cta-button-many,
     .km-cta-multi-button-container .km-cta-button-1 {
