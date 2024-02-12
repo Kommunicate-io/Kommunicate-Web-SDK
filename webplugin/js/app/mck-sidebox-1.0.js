@@ -6433,6 +6433,7 @@ var userOverride = {
                                 userDetail.userId
                             ] = userDetail;
                         }
+                        Kommunicate.richMsgEventHandler.handleEnableCTA();
                     },
                     error: function () {
                         $mck_msg_error.html(
@@ -6447,6 +6448,7 @@ var userOverride = {
                                 .removeClass('vis')
                                 .addClass('n-vis');
                         }
+                        Kommunicate.richMsgEventHandler.handleEnableCTA();
                     },
                 });
                 $applozic('#mck-reply-to-div')
