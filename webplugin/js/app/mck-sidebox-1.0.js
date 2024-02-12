@@ -376,8 +376,6 @@ var userOverride = {
         var CSAT_ENABLED = appOptions.collectFeedback;
         var HIDE_POST_CTA = appOptions.hidePostCTA;
         var MCK_MODE = appOptions.mode;
-        var DEFAULT_LABELS_HEADING =
-            default_options.labels['lead.collection'].heading;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
         var MCK_CUSTOM_URL = appOptions.customFileUrl;
@@ -598,7 +596,7 @@ var userOverride = {
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
-        var kmNavBar = new KmNavBar(mckMessageLayout)
+        var kmNavBar = new KmNavBar(mckMessageLayout);
         const typingService = new TypingService(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
@@ -3443,12 +3441,10 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML =
-                    LEAD_COLLECTION_LABEL &&
-                    LEAD_COLLECTION_LABEL.heading !== DEFAULT_LABELS_HEADING
-                        ? LEAD_COLLECTION_LABEL.heading
-                        : appOptions.appSettings.chatWidget
-                              .preChatGreetingMsg || '';
+                leadCollectionHeading.innerHTML = appOptions.headingFromWidget
+                    ? LEAD_COLLECTION_LABEL.heading
+                    : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
+                      '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
