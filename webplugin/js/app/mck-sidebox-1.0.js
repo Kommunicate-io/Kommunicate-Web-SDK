@@ -376,6 +376,8 @@ var userOverride = {
         var CSAT_ENABLED = appOptions.collectFeedback;
         var HIDE_POST_CTA = appOptions.hidePostCTA;
         var MCK_MODE = appOptions.mode;
+        var DEFAULT_LABELS_HEADING =
+            default_options.labels['lead.collection'].heading;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
         var MCK_CUSTOM_URL = appOptions.customFileUrl;
@@ -3441,10 +3443,12 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML = (appOptions.preLeadCollection || LEAD_COLLECTION_LABEL)
-                    ? LEAD_COLLECTION_LABEL.heading
-                    : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
-                      '';
+                leadCollectionHeading.innerHTML =
+                    LEAD_COLLECTION_LABEL &&
+                    LEAD_COLLECTION_LABEL.heading !== DEFAULT_LABELS_HEADING
+                        ? LEAD_COLLECTION_LABEL.heading
+                        : appOptions.appSettings.chatWidget
+                              .preChatGreetingMsg || '';
                 leadCollectionHeading.setAttribute(
                     'aria-label',
                     LEAD_COLLECTION_LABEL.heading
@@ -7106,8 +7110,8 @@ var userOverride = {
                                                             .addClass('n-vis');
                                                         if (isMessages) {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                            kmNavBar.hideAndShowTalkToHumanBtn(); 
-                                                            /**  
+                                                            kmNavBar.hideAndShowTalkToHumanBtn();
+                                                            /**
                                                              *  mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
                                                              * !KommunicateUI.isFAQPrimaryCTA() &&
                                                              *  !KommunicateUI.isShowRestartConversation() &&
@@ -7120,8 +7124,7 @@ var userOverride = {
                                                              *       .removeClass(
                                                              *           'n-vis'
                                                              *      );
-                                                             */ 
-                                                             
+                                                             */
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -8027,13 +8030,13 @@ var userOverride = {
                                     response.data = group;
                                     params.callback(response);
                                     kmNavBar.hideAndShowTalkToHumanBtn();
-                                    // 
+                                    //
                                     // !KommunicateUI.isFAQPrimaryCTA() &&
                                     //     !KommunicateUI.isShowRestartConversation() &&
                                     //     $applozic('.km-header-cta')
                                     //         .addClass('vis')
                                     //         .removeClass('n-vis');
-                                    // 
+                                    //
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -8546,8 +8549,8 @@ var userOverride = {
                     );
                 }
 
-                var addClass = enableDropdown ? "vis" : "n-vis";
-                var removeClass = enableDropdown ? "n-vis" : "vis";
+                var addClass = enableDropdown ? 'vis' : 'n-vis';
+                var removeClass = enableDropdown ? 'n-vis' : 'vis';
 
                 // For toggling display of three dot button (Dropdown btn)
                 kommunicateCommons.modifyClassList(
@@ -10359,7 +10362,9 @@ var userOverride = {
                             )}"><img class="${
                                 addfileEncClass ? 'file-enc' : ''
                             }" src="${URL}" 
-                            area-hidden="true" data-thumbnailBlobKey="${msg.fileMeta.blobKey}"
+                            area-hidden="true" data-thumbnailBlobKey="${
+                                msg.fileMeta.blobKey
+                            }"
                             ></img></a>`;
                         } else if (msg.contentType === 5) {
                             return (
@@ -16441,7 +16446,7 @@ var userOverride = {
                                         MCK_LABELS['typing']
                                     );
                                 }, 10000);
-                                typingService.addTimeoutIds(timeoutId)
+                                typingService.addTimeoutIds(timeoutId);
                             }
                         } else {
                             $mck_tab_title.removeClass(
