@@ -596,7 +596,7 @@ var userOverride = {
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
-        var kmNavBar = new KmNavBar(mckMessageLayout)
+        var kmNavBar = new KmNavBar(mckMessageLayout);
         const typingService = new TypingService(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
@@ -3441,7 +3441,7 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML = appOptions.preLeadCollection
+                leadCollectionHeading.innerHTML = appOptions.headingFromWidget
                     ? LEAD_COLLECTION_LABEL.heading
                     : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
                       '';
@@ -7108,8 +7108,8 @@ var userOverride = {
                                                             .addClass('n-vis');
                                                         if (isMessages) {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
-                                                            kmNavBar.hideAndShowTalkToHumanBtn(); 
-                                                            /**  
+                                                            kmNavBar.hideAndShowTalkToHumanBtn();
+                                                            /**
                                                              *  mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
                                                              * !KommunicateUI.isFAQPrimaryCTA() &&
                                                              *  !KommunicateUI.isShowRestartConversation() &&
@@ -7122,8 +7122,7 @@ var userOverride = {
                                                              *       .removeClass(
                                                              *           'n-vis'
                                                              *      );
-                                                             */ 
-                                                             
+                                                             */
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -8029,13 +8028,13 @@ var userOverride = {
                                     response.data = group;
                                     params.callback(response);
                                     kmNavBar.hideAndShowTalkToHumanBtn();
-                                    // 
+                                    //
                                     // !KommunicateUI.isFAQPrimaryCTA() &&
                                     //     !KommunicateUI.isShowRestartConversation() &&
                                     //     $applozic('.km-header-cta')
                                     //         .addClass('vis')
                                     //         .removeClass('n-vis');
-                                    // 
+                                    //
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -8548,8 +8547,8 @@ var userOverride = {
                     );
                 }
 
-                var addClass = enableDropdown ? "vis" : "n-vis";
-                var removeClass = enableDropdown ? "n-vis" : "vis";
+                var addClass = enableDropdown ? 'vis' : 'n-vis';
+                var removeClass = enableDropdown ? 'n-vis' : 'vis';
 
                 // For toggling display of three dot button (Dropdown btn)
                 kommunicateCommons.modifyClassList(
@@ -10361,7 +10360,9 @@ var userOverride = {
                             )}"><img class="${
                                 addfileEncClass ? 'file-enc' : ''
                             }" src="${URL}" 
-                            area-hidden="true" data-thumbnailBlobKey="${msg.fileMeta.blobKey}"
+                            area-hidden="true" data-thumbnailBlobKey="${
+                                msg.fileMeta.blobKey
+                            }"
                             ></img></a>`;
                         } else if (msg.contentType === 5) {
                             return (
@@ -16443,7 +16444,7 @@ var userOverride = {
                                         MCK_LABELS['typing']
                                     );
                                 }, 10000);
-                                typingService.addTimeoutIds(timeoutId)
+                                typingService.addTimeoutIds(timeoutId);
                             }
                         } else {
                             $mck_tab_title.removeClass(
