@@ -7,7 +7,11 @@
     p,
     .mck-text-box.mck-text,
     #km-faq-search-input::placeholder,
-    .km-contact-input-container.vis {
+    .km-contact-input-container.vis,
+    .mck-box-title {
+        text-align: right !important;
+    }
+    .mck-box{
         text-align: right;
     }
     .mck-box .mck-nav-tabs {
