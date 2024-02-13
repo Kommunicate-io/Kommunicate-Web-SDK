@@ -1,0 +1,199 @@
+//USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
+
+[dir='rtl'] {
+    .mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq ,
+    .mck-dropup-menu li > a,
+    div#mck-agent-status-text,
+    p,
+    .mck-text-box.mck-text,
+    #km-faq-search-input::placeholder,
+    .km-contact-input-container.vis,
+    .mck-box-title {
+        text-align: right !important;
+    }
+    .mck-box{
+        text-align: right;
+    }
+    .mck-box .mck-nav-tabs {
+        padding-right: 0 !important;
+    }
+    #mck-tab-conversation {
+        padding-left: 6px;
+        float: right;
+    }
+    .mck-contact-list .mck-cont-msg-date {
+        padding-right: 1rem;
+    }
+    .mck-box .mck-contact-list .mck-row,
+    .mck-msg-preview .mck-row {
+        display: flex;
+    }
+    .mck-videocall-image {
+        margin-right: 0;
+        float: right;
+    }
+    svg {
+        transform: scale(-1, 1);
+    }
+    #launcher-svg-container svg,
+    #mck-attachfile-box svg,
+    .mck-message-inner svg,
+    .km-faqsearch-icon svg,
+    #user-overide-voice-output svg,
+    #mck-contact-loading svg,
+    .km-faqimage svg {
+        transform: none !important;
+    }
+    .tns-controls button[data-controls='next'] svg {
+        transform: rotate(180deg) !important;
+    }
+    .mck-tab-link {
+        padding-left: 10px !important;
+        padding-right: 0 !important;
+    }
+    .mck-agent-image-container {
+        margin-right: 0;
+        margin-left: 8px;
+    }
+    .km-faq {
+        margin-right: 0 !important;
+        margin-left: 10px !important;
+    }
+    .km-faqimage {
+        margin-left: 15px;
+    }
+    .km-faqanswer {
+        margin-right: 0;
+    }
+    .km-faqsearch-input {
+        margin: 0 15px 0 0 !important;
+    }
+    .km-faqsearch-icon {
+        right: 25px;
+    }
+    .mck-box .move-right,
+    #mck-mic-animation-container {
+        float: left !important;
+    }
+    .km-cta-multi-button-container {
+        justify-content: flex-start;
+    }
+    #mck-csat-close {
+        left: 5%;
+        right: auto;
+    }
+    .mck-smilies-inner,
+    .mck-rating-box {
+        flex-flow: row-reverse;
+    }
+    .km-form-label-container,
+    .mck-form-label-container {
+        display: flex;
+        flex-flow: row-reverse;
+        float: inline-start;
+        margin-bottom: 4px !important;
+    }
+    .mck-text-box-panel .mck-blk-12 {
+        height: 30px;
+        padding: 0 0 0 10px;
+    }
+    .mck-dropdown-menu.menu-right,
+    .mck-dropup-menu.menu-right {
+        right: auto;
+        left: 0;
+    }
+    #km-widget-options .mck-dropdown-menu .menu-item {
+        flex-flow: row-reverse;
+    }
+    .km-widget-options-button {
+        margin-left: 10px;
+        margin-right: 0;
+    }
+    div#separator {
+        flex-flow: row-reverse;
+    }
+    .mck-icon--rich-message svg {
+        margin-left: 7px;
+        margin-right: 0;
+    }
+    .mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
+        float: right;
+        right: 22px;
+        left: auto;
+        margin: -9px 3px 0 0;
+    }
+    .mck-msg-left .mck-msg-box,
+    .mck-msg-box-rich-text-container,
+    .blk-lg-3 img,
+    .mck-cont-msg-wrapper span {
+        float: right;
+    }
+    .mck-conversation-name,
+    .km-conversation-container-right {
+        margin-right: 65px;
+        margin-left: 0;
+        text-align: right;
+    }
+    .km-cta-multi-button-container .km-cta-button-many,
+    .km-cta-multi-button-container .km-cta-button-1 {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 0;
+    }
+    .mck-msg-right .mck-msg-box {
+        float: left !important;
+        margin-left: 15px;
+        margin-right: 0;
+    }
+    .mck-sidebox {
+        left: 29px !important;
+        right: 0 !important;
+    }
+    .mck-msg-right-muted {
+        float: left;
+        padding-left: 15px;
+        padding-right: 0;
+    }
+    .mck-msg-right-muted.mck-text-light.mck-text-xs.mck-t-xs {
+        text-align: left !important;
+    }
+    .km-carousel-card-content-wrapper {
+        padding-left: 0px;
+        padding-right: 9px;
+    }
+    .km-carousel-card-sub-title {
+        padding-right: 0;
+        padding-left: 20px;
+    }
+    .km-carousel-card-description:before,
+    .km-carousel-card-description:after {
+        left: 0;
+        right: auto;
+    }
+    .km-carousel-card-description {
+        margin-left: 12px;
+        padding-left: 12px;
+        margin-right: 0;
+        padding-right: 0;
+    }
+    .km-typing-wrapper {
+        margin: 1px 66px 10px 1px;
+        & .km-typing-indicator {
+            margin-left: 0 !important;
+            margin-right: 10px !important;
+        }
+    }
+    .mck-form-dropdown-wrapper select {
+        background-position-x: 2%;
+    }
+    .km-faq-list--body_img {
+        padding: 10px 12px 10px 0px;
+    }
+    .km-clear-faq-search-icon {
+        right: auto;
+        left: 25px;
+    }
+    a.km-learn-more{
+        text-align: center;
+    }
+}
