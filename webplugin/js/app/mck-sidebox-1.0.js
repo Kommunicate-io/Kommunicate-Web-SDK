@@ -64,7 +64,7 @@ var userOverride = {
         agentId: '',
         agentName: '',
         msgTriggerTimeout: 0,
-        labels: Kommunicate.defaultLabels,
+        labels: kmLabel.getLabels(),
         useBranding: true,
         openGroupSettings: {
             deleteChatAccess: 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
@@ -596,6 +596,8 @@ var userOverride = {
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
+        var kmNavBar = new KmNavBar(mckMessageLayout);
+        const typingService = new TypingService(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -714,7 +716,7 @@ var userOverride = {
                         eventMapping.onStartNewConversation
                     );
                     KommunicateUI.activateTypingField();
-                    mckMessageLayout.loadDropdownOptions();
+                    kmNavBar.hideAndShowTalkToHumanBtn();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -2527,7 +2529,7 @@ var userOverride = {
                 INIT_APP_DATA = data;
                 var $mck_sidebox = $applozic('#mck-sidebox');
                 _this.appendLauncher();
-                _this.setLabels();
+                kmLabel.setLabels(MCK_LABELS);
                 if (KOMMUNICATE_VERSION === 'v2') {
                     _this.configureIframe();
                     _this.restrictScrollOnHandHeldDevices();
@@ -3436,7 +3438,7 @@ var userOverride = {
                     'aria-label',
                     LEAD_COLLECTION_LABEL.submit
                 );
-                leadCollectionHeading.innerHTML = appOptions.preLeadCollection
+                leadCollectionHeading.innerHTML = appOptions.headingFromWidget
                     ? LEAD_COLLECTION_LABEL.heading
                     : appOptions.appSettings.chatWidget.preChatGreetingMsg ||
                       '';
@@ -3466,195 +3468,6 @@ var userOverride = {
                         ratingElement.appendChild(dateSpan);
                     }
                 }
-            };
-            _this.setLabels = function () {
-                $applozic('#mck-conversation-title')
-                    .html(MCK_LABELS['conversations.title'])
-                    .attr('title', MCK_LABELS['conversations.title']);
-                $applozic('#mck-msg-new, #mck-sidebox-search .mck-box-title')
-                    .html(MCK_LABELS['start.new'])
-                    .attr('title', MCK_LABELS['start.new']);
-                $applozic('#mck-contact-search-tab strong')
-                    .html(MCK_LABELS['search.contacts'])
-                    .attr('title', MCK_LABELS['search.contacts']);
-                $applozic('#mck-group-search-tab strong')
-                    .html(MCK_LABELS['search.groups'])
-                    .attr('title', MCK_LABELS['search.groups']);
-                $applozic(
-                    '#mck-contact-search-input, #mck-group-search-input, #mck-group-member-search'
-                ).attr('placeholder', MCK_LABELS['search.placeholder']);
-                $applozic('#mck-loc-address').attr(
-                    'placeholder',
-                    MCK_LABELS['location.placeholder']
-                );
-                // $applozic('#mck-no-conversations').html(MCK_LABELS['empty.conversations']);
-                // $applozic('#mck-no-messages').html(MCK_LABELS['empty.messages']);
-                // $applozic('#mck-no-more-conversations').html(MCK_LABELS['no.more.conversations']);
-                // $applozic('#mck-no-more-messages').html(MCK_LABELS['no.more.messages']);
-                $applozic('#mck-no-search-contacts').html(
-                    MCK_LABELS['empty.contacts']
-                );
-                $applozic('#mck-no-search-groups').html(
-                    MCK_LABELS['empty.groups']
-                );
-                $applozic(
-                    '#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create'
-                )
-                    .html(MCK_LABELS['create.group.title'])
-                    .attr('title', MCK_LABELS['create.group.title']);
-                $applozic('#mck-gc-overlay-label').html(
-                    MCK_LABELS['add.group.icon']
-                );
-                $applozic('#mck-msg-error').html(MCK_LABELS['group.deleted']);
-                $applozic('#mck-gc-title-label').html(
-                    MCK_LABELS['group.title']
-                );
-                $applozic('#mck-gc-type-label').html(MCK_LABELS['group.type']);
-                $applozic(
-                    '#mck-group-info-btn, #mck-group-info-tab .mck-box-title'
-                )
-                    .html(MCK_LABELS['group.info.title'])
-                    .attr('title', MCK_LABELS['group.info.title']);
-                $applozic('#mck-gi-overlay-label').html(
-                    MCK_LABELS['change.group.icon']
-                );
-                $applozic('#mck-group-member-title')
-                    .html(MCK_LABELS['members.title'])
-                    .attr('title', MCK_LABELS['members.title']);
-                $applozic(
-                    '#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title'
-                )
-                    .html(MCK_LABELS['add.members.title'])
-                    .attr('title', MCK_LABELS['add.members.title']);
-                $applozic('#mck-btn-group-update')
-                    .html(MCK_LABELS['group.info.update'])
-                    .attr('title', MCK_LABELS['group.info.update']);
-                $applozic('#mck-btn-leave-group, #mck-btn-group-exit')
-                    .html(MCK_LABELS['exit.group'])
-                    .attr('title', MCK_LABELS['exit.group']);
-                $applozic('#mck-typing-label').html(MCK_LABELS['typing']);
-                $applozic('#mck-btn-clear-messages')
-                    .html(MCK_LABELS['clear.messages'])
-                    .attr('title', MCK_LABELS['clear.messages']);
-                $applozic('#mck-block-button')
-                    .html(MCK_LABELS['block.user'])
-                    .attr('title', MCK_LABELS['block.user']);
-                $applozic('#mck-loc-box .mck-box-title, #mck-share-loc-label')
-                    .html(MCK_LABELS['location.share.title'])
-                    .attr('title', MCK_LABELS['location.share.title']);
-                $applozic('#mck-btn-loc').attr(
-                    'title',
-                    MCK_LABELS['location.share.title']
-                );
-                $applozic('#mck-file-up-label').html(
-                    MCK_LABELS['file.attachment']
-                );
-                $applozic('#mck-file-up').attr(
-                    'title',
-                    MCK_LABELS['file.attachment']
-                );
-                $applozic('.mck-file-attach-label').attr(
-                    'title',
-                    MCK_LABELS['file.attach.title']
-                );
-                $applozic('#mck-my-loc')
-                    .html(MCK_LABELS['my.location'])
-                    .attr('title', MCK_LABELS['my.location']);
-                $applozic('#mck-btn-close-loc-box')
-                    .html(MCK_LABELS['close'])
-                    .attr('title', MCK_LABELS['close']);
-                $applozic('#mck-loc-submit')
-                    .html(MCK_LABELS['send'])
-                    .attr('title', MCK_LABELS['send']);
-                $applozic('#mck-msg-sbmt').attr(
-                    'title',
-                    MCK_LABELS['send.message']
-                );
-                $applozic('#mck-btn-smiley').attr(
-                    'title',
-                    MCK_LABELS['smiley']
-                );
-                $applozic('#mck-group-name-save').attr(
-                    'title',
-                    MCK_LABELS['save']
-                );
-                $applozic('#mck-btn-group-icon-save').attr(
-                    'title',
-                    MCK_LABELS['save']
-                );
-                $applozic('#mck-group-name-edit').attr(
-                    'title',
-                    MCK_LABELS['edit']
-                );
-                document.getElementById('mck-text-box').dataset.text =
-                    MCK_LABELS['input.message'];
-                document.getElementById('mck-char-warning-text').innerHTML =
-                    MCK_LABELS['char.limit.warn'];
-                document
-                    .getElementById('km-faq-search-input')
-                    .setAttribute('placeholder', MCK_LABELS['search.faq']);
-                document.getElementById('mck-no-faq-found').innerHTML =
-                    MCK_LABELS['looking.for.something.else'];
-                document.getElementById(
-                    'km-internet-disconnect-msg'
-                ).innerHTML = MCK_LABELS['offline.msg'];
-                document.getElementById('km-socket-disconnect-msg').innerHTML =
-                    MCK_LABELS['socket-disconnect.msg'];
-                document.getElementById('talk-to-human-link').innerHTML =
-                    MCK_LABELS['talk.to.agent'];
-                document.getElementById('mck-collect-email').innerHTML =
-                    MCK_LABELS['how.to.reachout'];
-                document.getElementById('mck-email-error-alert').innerHTML =
-                    MCK_LABELS['email.error.alert'];
-                document.getElementById('mck-resolved-text').innerHTML =
-                    MCK_LABELS['csat.rating'].CONVERSATION_RESOLVED;
-                document.getElementById('mck-rated-text').innerHTML =
-                    MCK_LABELS['csat.rating'].CONVERSATION_RATED;
-                // document.getElementById('mck-rate-conversation').innerHTML =
-                //     MCK_LABELS['csat.rating'].RATE_CONVERSATION;
-                document.getElementById('mck-other-queries').innerHTML =
-                    MCK_LABELS['csat.rating'].OTHER_QUERIES;
-                document.getElementById('mck-restart-conversation').innerHTML =
-                    MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
-                document
-                    .getElementById('mck-feedback-comment')
-                    .setAttribute(
-                        'placeholder',
-                        MCK_LABELS['csat.rating']
-                            .CONVERSATION_REVIEW_PLACEHOLDER
-                    );
-                document.getElementById('mck-submit-comment').innerHTML =
-                    MCK_LABELS['csat.rating'].SUBMIT_RATING;
-                document.getElementById('wq-msg-first-Part').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['first.Part'];
-                document.getElementById('waiting-queue-number').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['waiting.queue.number'];
-                document.getElementById('wq-msg-last-part').innerHTML =
-                    MCK_LABELS['waiting.queue.message']['last.part'];
-                document.getElementById('km-csat-trigger-text').innerText =
-                    MCK_LABELS['conversation.header.dropdown'].CSAT_RATING_TEXT;
-                document.getElementById(
-                    'km-restart-conversation-text'
-                ).innerText =
-                    MCK_LABELS[
-                        'conversation.header.dropdown'
-                    ].RESTART_CONVERSATION;
-                document.getElementById(
-                    'km-voice-note-trigger-text'
-                ).innerText =
-                    MCK_LABELS['micOptions.dropup'].VOICE_NOTE_TRIGGER;
-                document.getElementById(
-                    'km-voice-input-trigger-text'
-                ).innerText =
-                    MCK_LABELS['micOptions.dropup'].VOICE_INPUT_TRIGGER;
-                document.getElementById('mck-rate-error').innerHTML =
-                    MCK_LABELS['csat.rating'].RATE_ERROR_MSG;
-                document.getElementById(
-                    'km-option-talk-to-human-text'
-                ).innerHTML =
-                    MCK_LABELS['conversation.header.dropdown'].HANDOFF;
-                document.getElementById('km-option-faq-text').innerHTML =
-                    MCK_LABELS['conversation.header.dropdown'].FAQ;
             };
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
@@ -6536,6 +6349,9 @@ var userOverride = {
                                         messageKey
                                     );
                                 }
+                                if (KommunicateUtils.isCurrentAssigneeBot()) {
+                                    typingService.showTypingIndicator();
+                                }
                             }
                             if (messagePxy.conversationPxy) {
                                 var conversationPxy =
@@ -6614,6 +6430,7 @@ var userOverride = {
                                 userDetail.userId
                             ] = userDetail;
                         }
+                        Kommunicate.richMsgEventHandler.handleEnableCTA();
                     },
                     error: function () {
                         $mck_msg_error.html(
@@ -6628,6 +6445,7 @@ var userOverride = {
                                 .removeClass('vis')
                                 .addClass('n-vis');
                         }
+                        Kommunicate.richMsgEventHandler.handleEnableCTA();
                     },
                 });
                 $applozic('#mck-reply-to-div')
@@ -7275,19 +7093,21 @@ var userOverride = {
                                                             .addClass('n-vis');
                                                         if (isMessages) {
                                                             // $mck_no_messages.removeClass('vis').addClass('n-vis');
-
-                                                            mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
-                                                            !KommunicateUI.isFAQPrimaryCTA() &&
-                                                                !KommunicateUI.isShowRestartConversation() &&
-                                                                $applozic(
-                                                                    '.km-header-cta'
-                                                                )
-                                                                    .addClass(
-                                                                        'vis'
-                                                                    )
-                                                                    .removeClass(
-                                                                        'n-vis'
-                                                                    );
+                                                            kmNavBar.hideAndShowTalkToHumanBtn();
+                                                            /**
+                                                             *  mckMessageLayout.loadDropdownOptions(); // Loads the options dropdown in the widget
+                                                             * !KommunicateUI.isFAQPrimaryCTA() &&
+                                                             *  !KommunicateUI.isShowRestartConversation() &&
+                                                             *  $applozic(
+                                                             *       '.km-header-cta'
+                                                             *  )
+                                                             *      .addClass(
+                                                             *           'vis'
+                                                             *       )
+                                                             *       .removeClass(
+                                                             *           'n-vis'
+                                                             *      );
+                                                             */
 
                                                             mckMessageLayout.processMessageList(
                                                                 data,
@@ -7744,6 +7564,10 @@ var userOverride = {
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
                 }
+                kmNavBar.hideAndShowTalkToHumanBtn(
+                    data.roleType !==
+                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                );
                 _this.processOnlineStatusChange(
                     tabId,
                     data,
@@ -8172,12 +7996,14 @@ var userOverride = {
                                     response.status = 'success';
                                     response.data = group;
                                     params.callback(response);
-                                    mckMessageLayout.loadDropdownOptions();
-                                    !KommunicateUI.isFAQPrimaryCTA() &&
-                                        !KommunicateUI.isShowRestartConversation() &&
-                                        $applozic('.km-header-cta')
-                                            .addClass('vis')
-                                            .removeClass('n-vis');
+                                    kmNavBar.hideAndShowTalkToHumanBtn();
+                                    //
+                                    // !KommunicateUI.isFAQPrimaryCTA() &&
+                                    //     !KommunicateUI.isShowRestartConversation() &&
+                                    //     $applozic('.km-header-cta')
+                                    //         .addClass('vis')
+                                    //         .removeClass('n-vis');
+                                    //
                                 }
                             }
                         } else if (data.status === 'error') {
@@ -8576,7 +8402,7 @@ var userOverride = {
                 }
             };
 
-            _this.loadDropdownOptions = function () {
+            _this.loadDropdownOptions = function (convTransferred) {
                 if (document.querySelector('#mck-contact-list')) {
                     // if contact list is visible then dropdown options should not be loaded.
                     return;
@@ -8666,7 +8492,8 @@ var userOverride = {
 
                 if (
                     appOptions.talkToHuman &&
-                    HEADER_CTA.TALK_TO_HUMAN !== primaryCTA
+                    HEADER_CTA.TALK_TO_HUMAN !== primaryCTA &&
+                    !convTransferred
                 ) {
                     enableDropdown = true;
                     kommunicateCommons.modifyClassList(
@@ -8688,13 +8515,16 @@ var userOverride = {
                         'n-vis'
                     );
                 }
+
+                var addClass = enableDropdown ? 'vis' : 'n-vis';
+                var removeClass = enableDropdown ? 'n-vis' : 'vis';
+
                 // For toggling display of three dot button (Dropdown btn)
-                enableDropdown &&
-                    kommunicateCommons.modifyClassList(
-                        { id: ['km-widget-options'] },
-                        '',
-                        'n-vis'
-                    );
+                kommunicateCommons.modifyClassList(
+                    { id: ['km-widget-options'] },
+                    addClass,
+                    removeClass
+                );
             };
 
             // _this.openConversation = function () {
@@ -10480,21 +10310,28 @@ var userOverride = {
                     }
                     if (msg.fileMeta.contentType.indexOf('image') !== -1) {
                         if (msg.fileMeta.contentType.indexOf('svg') !== -1) {
-                            return (
-                                '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
-                                msg.fileMeta.contentType +
-                                '" data-url="' +
-                                alFileService.getFileurl(msg) +
-                                '" data-name="' +
-                                kommunicateCommons.formatHtmlTag(
-                                    msg.fileMeta.name
-                                ) +
-                                '"><img src="' +
-                                MCK_FILE_URL +
-                                FILE_PREVIEW_URL +
-                                msg.fileMeta.blobKey +
-                                '" area-hidden="true"></img></a>'
-                            );
+                            let URL = addfileEncClass
+                                ? ''
+                                : alFileService.getFileurl(msg);
+                            if (msg.fileMeta.thumbnailUrl) {
+                                URL = msg.fileMeta.thumbnailUrl; // END USER ATTACHMENT
+                            } else if (!URL) {
+                                URL = addfileEncClass
+                                    ? KommunicateConstants.IMAGE_PLACEHOLDER_URL // FOR LAZY LOADING
+                                    : msg.fileMeta.thumbnailUrl;
+                            }
+
+                            return `<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="${
+                                msg.fileMeta.contentType
+                            }" data-url="${URL}" data-name="${kommunicateCommons.formatHtmlTag(
+                                msg.fileMeta.name
+                            )}"><img class="${
+                                addfileEncClass ? 'file-enc' : ''
+                            }" src="${URL}" 
+                            area-hidden="true" data-thumbnailBlobKey="${
+                                msg.fileMeta.blobKey
+                            }"
+                            ></img></a>`;
                         } else if (msg.contentType === 5) {
                             return (
                                 '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' +
@@ -12692,9 +12529,9 @@ var userOverride = {
                     ? mckGroupUtils.getGroup(message.groupId)
                     : mckMessageLayout.getContact(message.to);
                 alUserService.loadUserProfile(message.to);
-                if (!_this.isMessageSentByBot(message, contact)) {
-                    mckMessageLayout.hideTypingIndicator();
-                }
+                // if (!_this.isMessageSentByBot(message, contact)) {
+                //     typingService.hideTypingIndicator();
+                // }
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isValidMeta = mckMessageLayout.isValidMetaData(message);
                 if (typeof tabId === 'undefined' || tabId === '') {
@@ -12911,7 +12748,7 @@ var userOverride = {
                                                     validated,
                                                     null,
                                                     function () {
-                                                        _this.processMessageInQueue(
+                                                        typingService.processMessageInQueue(
                                                             message
                                                         );
                                                     }
@@ -12924,7 +12761,7 @@ var userOverride = {
                                                     true,
                                                     validated
                                                 );
-                                                mckMessageLayout.hideTypingIndicator();
+                                                typingService.hideTypingIndicator();
                                             }
                                             mckMessageLayout.messageClubbing(
                                                 false
@@ -13069,81 +12906,6 @@ var userOverride = {
                     contact.users[message.to].role ===
                         KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
                 );
-            };
-
-            _this.processMessageInQueue = function (message) {
-                message &&
-                    message.key &&
-                    MCK_BOT_MESSAGE_QUEUE.push(message.key);
-                MCK_BOT_MESSAGE_QUEUE.length == 1 &&
-                    _this.procesMessageTimerDelay();
-            };
-
-            _this.showTypingIndicator = function () {
-                if (!document.querySelector('.km-typing-wrapper')) {
-                    typingIndicatorStartTime = new Date();
-                    $mck_msg_inner.append(
-                        '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
-                    );
-                    $mck_msg_inner.animate(
-                        {
-                            scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                        },
-                        0
-                    );
-                    setTimeout(_this.hideTypingIndicator, 15000);
-                }
-            };
-
-            _this.hideTypingIndicator = function () {
-                if (document.querySelector('.km-typing-wrapper')) {
-                    typingIndicatorStartTime = null;
-                    $applozic('.km-typing-wrapper').remove();
-                }
-            };
-
-            _this.getTypingIndicatorElapsedTime = function () {
-                if (typingIndicatorStartTime === null) return -1;
-
-                return new Date() - typingIndicatorStartTime;
-            };
-
-            _this.procesMessageTimerDelay = function () {
-                const showMessage = () => {
-                    let message = messageContainer.querySelector(
-                        'div[data-msgkey="' + MCK_BOT_MESSAGE_QUEUE[0] + '"]'
-                    );
-                    mckMessageLayout.hideTypingIndicator();
-
-                    if (message) {
-                        message.classList.remove('n-vis');
-                        $mck_msg_inner.animate(
-                            {
-                                scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                            },
-                            0
-                        );
-                    }
-                    MCK_BOT_MESSAGE_QUEUE.shift();
-                    MCK_BOT_MESSAGE_QUEUE.length != 0 &&
-                        _this.procesMessageTimerDelay();
-                };
-                let messageContainer = document.getElementById(
-                    'mck-message-cell'
-                );
-
-                // delay in response from bot
-                let responseDelay = mckMessageLayout.getTypingIndicatorElapsedTime();
-                let configuredDelay = MCK_BOT_MESSAGE_DELAY;
-
-                if (responseDelay == -1) {
-                    mckMessageLayout.showTypingIndicator();
-                }
-                if (configuredDelay <= responseDelay) {
-                    showMessage();
-                    return;
-                }
-                setTimeout(showMessage, configuredDelay - responseDelay);
             };
 
             _this.getMessageFeed = function (message) {
@@ -16638,16 +16400,18 @@ var userOverride = {
                                         .removeClass('vis')
                                         .addClass('n-vis');
                                 }
-                                mckMessageLayout.showTypingIndicator();
-                                setTimeout(function () {
+                                typingService.hideTypingIndicator();
+                                typingService.showTypingIndicator();
+                                const timeoutId = setTimeout(function () {
                                     $mck_tab_title.removeClass(
                                         'mck-tab-title-w-typing'
                                     );
-                                    mckMessageLayout.hideTypingIndicator();
+                                    typingService.hideTypingIndicator();
                                     $mck_typing_label.html(
                                         MCK_LABELS['typing']
                                     );
                                 }, 10000);
+                                typingService.addTimeoutIds(timeoutId);
                             }
                         } else {
                             $mck_tab_title.removeClass(
@@ -16656,7 +16420,7 @@ var userOverride = {
                             $mck_typing_box
                                 .removeClass('vis')
                                 .addClass('n-vis');
-                            mckMessageLayout.hideTypingIndicator();
+                            typingService.hideTypingIndicator();
                             if (
                                 $mck_tab_title.hasClass(
                                     'mck-tab-title-w-status'
@@ -16827,9 +16591,6 @@ var userOverride = {
                         .removeClass('mck-delivered-icon')
                         .addClass('mck-read-icon');
                     mckMessageLayout.addTooltip(resp.message.split(',')[0]);
-                    if (KommunicateUtils.isCurrentAssigneeBot()) {
-                        mckMessageLayout.showTypingIndicator();
-                    }
                     // events.onMessageRead({
                     //     'messageKey': resp.message.split(",")[0]
                     // });
