@@ -24,7 +24,7 @@ function App() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        fontSize: "21px",
+        fontSize: "20px",
       }}
     >
       <label>Email</label>
