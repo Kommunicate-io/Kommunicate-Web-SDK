@@ -18,6 +18,7 @@ class TypingService {
             ? widgetSettings.botMessageDelayInterval
             : 0;
     }
+
     processMessageInQueue = (message) => {
         message?.key && this.MCK_BOT_MESSAGE_QUEUE.push(message.key);
         this.MCK_BOT_MESSAGE_QUEUE.length == 1 &&
@@ -58,12 +59,14 @@ class TypingService {
             $mck_msg_inner.append(
                 '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
             );
-            $mck_msg_inner.animate(
-                {
-                    scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                },
-                0
-            );
+            if (!this.alreadyScrolledFirstMsg) {
+                $mck_msg_inner.animate(
+                    {
+                        scrollTop: $mck_msg_inner.prop('scrollHeight'),
+                    },
+                    0
+                );
+            }
             const id = setTimeout(() => {
                 if (document.querySelector('.km-typing-wrapper')) {
                     this.typingIndicatorStartTime = null;
@@ -104,42 +107,39 @@ class TypingService {
         setTimeout(showMessage, configuredDelay - responseDelay);
     };
 
-    scrollToTheCurrentMsg = (message, messageContainer) => {
+    scrollToView = (showMsgFromStart) => {
         const $mck_msg_inner = $applozic(
             '#mck-message-cell .mck-message-inner'
         );
+        const firstMsg = document
+            .querySelector('#mck-message-cell')
+            .querySelector(`div[data-msgkey="${this.FIRST_MESSAGE_KEY}"]`);
+
+        if (showMsgFromStart) {
+            // custom case
+            if (firstMsg && !this.alreadyScrolledFirstMsg) {
+                $mck_msg_inner.animate(
+                    {
+                        scrollTop: firstMsg.offsetTop - 30,
+                    },
+                    0
+                );
+                this.alreadyScrolledFirstMsg = true;
+            }
+        } else {
+            // Default case for all users
+            $mck_msg_inner.animate(
+                {
+                    scrollTop: $mck_msg_inner.prop('scrollHeight'),
+                },
+                0
+            );
+        }
+    };
+
+    scrollToTheCurrentMsg = (message) => {
         message.classList.remove('n-vis');
-
-        const firstMsg = messageContainer.querySelector(
-            `div[data-msgkey="${this.FIRST_MESSAGE_KEY}"]`
-        );
-
-        let scrollTop;
-
-        if (
-            this.appOptions.showMsgFromStart &&
-            firstMsg &&
-            !this.alreadyScrolledFirstMsg
-        )
-            scrollTop = firstMsg.offsetTop - 30;
-        else scrollTop = $mck_msg_inner.prop('scrollHeight');
-
-        // const scrollTop =
-        //     this.appOptions.showMsgFromStart && firstMsg
-        //         ? firstMsg.offsetTop
-        //         : $mck_msg_inner.prop('scrollHeight');
-        console.log(
-            $mck_msg_inner.prop('scrollHeight'),
-            'running on the processmessagedelay',
-            MCK_BOT_MESSAGE_QUEUE
-        );
-        // firstMsg.scrollIntoView();
-        $mck_msg_inner.animate(
-            {
-                scrollTop,
-            },
-            0
-        );
+        this.scrollToView(this.appOptions.showMsgFromStart);
     };
 
     resetState = () => {
