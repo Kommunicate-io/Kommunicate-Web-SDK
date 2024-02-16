@@ -388,7 +388,7 @@ KommunicateUI = {
                     MCK_EVENT_HISTORY.push('km-faq-category-list');
             }
 
-            MCK_BOT_MESSAGE_QUEUE = [];
+            typingService.resetState();
 
             // remove n-vis
             kommunicateCommons.modifyClassList(
@@ -492,7 +492,7 @@ KommunicateUI = {
                 },
                 'n-vis'
             );
-            MCK_BOT_MESSAGE_QUEUE = [];
+            typingService.resetState();
             if (MCK_EVENT_HISTORY.length >= 2) {
                 if (
                     MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] ==
