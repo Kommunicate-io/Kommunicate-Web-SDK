@@ -1,0 +1,4 @@
+When the user enters his email and click the login button the handleClick function triggers the logout function, and toggles the callAgain state to update the new widget.
+
+All the code related to specifically enabling the bot widget is in chat.js file.
+
