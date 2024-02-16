@@ -3520,7 +3520,6 @@ var userOverride = {
                 if ($mck_msg_inner.find('.mck-contact-list').length === 0) {
                     var scrollHeight = $mck_msg_inner.get(0).scrollHeight;
                     if ($mck_msg_inner.height() < scrollHeight) {
-                        console.log($mck_msg_inner.prop('scrollHeight'),"running on resize");
                         $mck_msg_inner.animate(
                             {
                                 scrollTop: $mck_msg_inner.prop('scrollHeight'),
@@ -9069,7 +9068,6 @@ var userOverride = {
                             $mck_msg_inner.scrollTop()
                     );
                 } else if (scroll) {
-                    console.log($mck_msg_inner.prop('scrollHeight'),"processMessageList");
                     $mck_msg_inner.animate(
                         {
                             scrollTop: $mck_msg_inner.prop('scrollHeight'),
@@ -10221,32 +10219,26 @@ var userOverride = {
                         .addClass('vis');
                 }
                 if (scroll) {
-                    if (appOptions.showMsgFromStart && !isUserMsg) {
-
-                        const firstMsg = document
-                            .getElementById('mck-message-cell')
-                            .querySelector(
-                                `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
-                            );
-
-                        if (firstMsg && !typingService.alreadyScrolledFirstMsg) {
-                            $mck_msg_inner.animate(
-                                {
-                                    scrollTop: firstMsg.offsetTop - 30,
-                                },
-                                0
-                            );
-
-                            typingService.alreadyScrolledFirstMsg = true;
-                        }
-                    } else {
-                        $mck_msg_inner.animate(
-                            {
-                                scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                            },
-                            'slow'
+                    const firstMsgOfMsgsGroup = document
+                        .querySelector('#mck-message-cell')
+                        .querySelector(
+                            `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
                         );
+                    let shouldScroll = true;
+                    switch (true) {
+                        case !appOptions.showMsgFromStart:
+                            shouldScroll = true;
+                            break;
+                        case isUserMsg:
+                            shouldScroll = true;
+                            break;
+                        case !firstMsgOfMsgsGroup?.classList.contains('n-vis'):
+                            shouldScroll = true;
+                            break;
+                        default:
+                            shouldScroll = false;
                     }
+                    typingService.scrollToView(shouldScroll);
                 }
                
                 if ($mck_tab_message_option.hasClass('n-vis')) {
@@ -10931,7 +10923,6 @@ var userOverride = {
                             $scrollToDiv = $applozic('#li-' + scrollTabId);
                         }
                         if ($scrollToDiv.length > 0) {
-                            console.log($mck_msg_inner.prop('scrollHeight'),"addContactsFromMessageList 1");
                             $mck_msg_inner.animate(
                                 {
                                     scrollTop:
@@ -10942,7 +10933,6 @@ var userOverride = {
                                 'fast'
                             );
                         } else {
-                            console.log($mck_msg_inner.prop('scrollHeight'),"addContactsFromMessageList 2");
                             $mck_msg_inner.animate(
                                 {
                                     scrollTop: 0,
