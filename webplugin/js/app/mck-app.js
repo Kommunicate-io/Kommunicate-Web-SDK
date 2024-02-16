@@ -588,6 +588,7 @@ function ApplozicSidebox() {
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
+            options.showMsgFromStart = isSettingEnable('showMsgFromStart');
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
