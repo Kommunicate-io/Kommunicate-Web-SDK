@@ -18,7 +18,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
-
 (function ($applozic, w, d) {
     'use strict';
     if (!w.applozic) {
@@ -597,7 +596,6 @@ var userOverride = {
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
         var kmNavBar = new KmNavBar(mckMessageLayout);
-        const typingService = new TypingService(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -609,6 +607,7 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
+        typingService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -3521,6 +3520,7 @@ var userOverride = {
                 if ($mck_msg_inner.find('.mck-contact-list').length === 0) {
                     var scrollHeight = $mck_msg_inner.get(0).scrollHeight;
                     if ($mck_msg_inner.height() < scrollHeight) {
+                        console.log($mck_msg_inner.prop('scrollHeight'),"running on resize");
                         $mck_msg_inner.animate(
                             {
                                 scrollTop: $mck_msg_inner.prop('scrollHeight'),
@@ -9069,6 +9069,7 @@ var userOverride = {
                             $mck_msg_inner.scrollTop()
                     );
                 } else if (scroll) {
+                    console.log($mck_msg_inner.prop('scrollHeight'),"processMessageList");
                     $mck_msg_inner.animate(
                         {
                             scrollTop: $mck_msg_inner.prop('scrollHeight'),
@@ -9321,6 +9322,7 @@ var userOverride = {
                 var progressMeterClass = 'n-vis';
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
+                let isUserMsg = true;
                 if (!Kommunicate.visibleMessage(msg)) return;
 
                 if (
@@ -9416,7 +9418,16 @@ var userOverride = {
                 var timeStamp = 'mck-timestamp-' + msg.key;
                 if (msg.type === 0 || msg.type === 4 || msg.type === 6) {
                     floatWhere = 'mck-msg-left';
+                    isUserMsg = false;
+                    if (
+                        typingService.IS_FIRST_BOT_MSG &&
+                        appOptions.showMsgFromStart
+                    ) {
+                        typingService.FIRST_MESSAGE_KEY = msg.key;
+                        typingService.IS_FIRST_BOT_MSG = false;
+                    }
                 }
+
                 if (
                     msg.contentType === 4 ||
                     msg.contentType === 10 ||
@@ -9437,6 +9448,19 @@ var userOverride = {
                     attachmentBox = 'km-attach-msg-left';
                 }
                 statusIcon = _this.getStatusIconName(msg);
+
+                if (
+                    floatWhere !== 'mck-msg-left' &&
+                    appOptions.showMsgFromStart
+                ) {
+                    // resetting the values
+                    typingService.FIRST_MESSAGE_KEY = '';
+                    typingService.IS_FIRST_BOT_MSG = true;
+                    typingService.alreadyScrolledFirstMsg = false;
+                }
+
+                if (floatWhere === 'mck-msg-right') isUserMsg = true;
+
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +
@@ -10197,13 +10221,34 @@ var userOverride = {
                         .addClass('vis');
                 }
                 if (scroll) {
-                    $mck_msg_inner.animate(
-                        {
-                            scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                        },
-                        'slow'
-                    );
+                    if (appOptions.showMsgFromStart && !isUserMsg) {
+
+                        const firstMsg = document
+                            .getElementById('mck-message-cell')
+                            .querySelector(
+                                `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
+                            );
+
+                        if (firstMsg && !typingService.alreadyScrolledFirstMsg) {
+                            $mck_msg_inner.animate(
+                                {
+                                    scrollTop: firstMsg.offsetTop - 30,
+                                },
+                                0
+                            );
+
+                            typingService.alreadyScrolledFirstMsg = true;
+                        }
+                    } else {
+                        $mck_msg_inner.animate(
+                            {
+                                scrollTop: $mck_msg_inner.prop('scrollHeight'),
+                            },
+                            'slow'
+                        );
+                    }
                 }
+               
                 if ($mck_tab_message_option.hasClass('n-vis')) {
                     if (msg.groupId) {
                         var group = mckGroupUtils.getGroup(msg.groupId);
@@ -10886,6 +10931,7 @@ var userOverride = {
                             $scrollToDiv = $applozic('#li-' + scrollTabId);
                         }
                         if ($scrollToDiv.length > 0) {
+                            console.log($mck_msg_inner.prop('scrollHeight'),"addContactsFromMessageList 1");
                             $mck_msg_inner.animate(
                                 {
                                     scrollTop:
@@ -10896,6 +10942,7 @@ var userOverride = {
                                 'fast'
                             );
                         } else {
+                            console.log($mck_msg_inner.prop('scrollHeight'),"addContactsFromMessageList 2");
                             $mck_msg_inner.animate(
                                 {
                                     scrollTop: 0,

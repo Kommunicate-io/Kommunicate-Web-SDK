@@ -516,8 +516,9 @@ function ApplozicSidebox() {
                     : widgetSettings && widgetSettings.staticTopIcon;
 
             options.primaryCTA = isSettingEnable('primaryCTA');
-            options.talkToHuman = isSettingEnable('talkToHuman');  
-                    
+            options.talkToHuman = isSettingEnable('talkToHuman');
+            options.showMsgFromStart = isSettingEnable('showMsgFromStart');
+
             KommunicateUtils.deleteDataFromKmSession('settings');
 
             if (
