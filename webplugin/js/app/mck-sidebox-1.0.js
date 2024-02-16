@@ -10227,7 +10227,7 @@ var userOverride = {
                     let shouldScroll = true;
                     switch (true) {
                         case !appOptions.showMsgFromStart:
-                            shouldScroll = true;
+                            shouldScroll = false;
                             break;
                         case isUserMsg:
                             shouldScroll = false;
@@ -10236,7 +10236,7 @@ var userOverride = {
                             shouldScroll = true;
                             break;
                         default:
-                            shouldScroll = false;
+                            shouldScroll = true;
                     }
                     typingService.scrollToView(shouldScroll);
                 }
