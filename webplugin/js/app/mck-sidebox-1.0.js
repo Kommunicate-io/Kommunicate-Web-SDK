@@ -10198,7 +10198,7 @@ var userOverride = {
                             shouldScroll = true;
                             break;
                         case isUserMsg:
-                            shouldScroll = true;
+                            shouldScroll = false;
                             break;
                         case !firstMsgOfMsgsGroup?.classList.contains('n-vis'):
                             shouldScroll = true;
