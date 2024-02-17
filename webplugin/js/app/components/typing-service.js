@@ -8,6 +8,7 @@ class TypingService {
         this.FIRST_MESSAGE_KEY = ''; // resetting when user send the message
         this.IS_FIRST_BOT_MSG = true;
         this.alreadyScrolledFirstMsg = false;
+        this.cumulativeHeight = 0;
     }
 
     init(appOptions = {}) {
@@ -85,7 +86,10 @@ class TypingService {
             this.hideTypingIndicator();
 
             if (message) {
-                this.scrollToTheCurrentMsg(message, messageContainer);
+                this.scrollToTheCurrentMsg(
+                    message,
+                    this.MCK_BOT_MESSAGE_QUEUE[0]
+                );
             }
             this.MCK_BOT_MESSAGE_QUEUE.shift();
             this.MCK_BOT_MESSAGE_QUEUE.length != 0 &&
@@ -107,17 +111,27 @@ class TypingService {
         setTimeout(showMessage, configuredDelay - responseDelay);
     };
 
-    scrollToView = (showMsgFromStart) => {
+    scrollToView = (showMsgFromStart, msgKey) => {
         const $mck_msg_inner = $applozic(
             '#mck-message-cell .mck-message-inner'
         );
+
         const firstMsg = document
             .querySelector('#mck-message-cell')
             .querySelector(`div[data-msgkey="${this.FIRST_MESSAGE_KEY}"]`);
 
+        const currentMessage = document.querySelector(
+            `div[data-msgkey="${msgKey}"]`
+        );
+        const container = document.querySelector('.mck-box-body');
+
+        if (currentMessage?.scrollHeight) {
+            this.cumulativeHeight += currentMessage.scrollHeight;
+        }
+
         if (showMsgFromStart) {
             // custom case
-            if (firstMsg && !this.alreadyScrolledFirstMsg) {
+            if (this.cumulativeHeight > container.scrollHeight && firstMsg) {
                 $mck_msg_inner.animate(
                     {
                         scrollTop: firstMsg.offsetTop - 30,
@@ -125,6 +139,17 @@ class TypingService {
                     0
                 );
                 this.alreadyScrolledFirstMsg = true;
+            } else if (!this.alreadyScrolledFirstMsg) {
+                $mck_msg_inner.animate(
+                    {
+                        scrollTop: $mck_msg_inner.prop('scrollHeight'),
+                    },
+                    0
+                );
+
+                if (this.cumulativeHeight + 30 > container.offsetHeight) {
+                    this.alreadyScrolledFirstMsg = true;
+                }
             }
         } else {
             // Default case for all users
@@ -137,9 +162,9 @@ class TypingService {
         }
     };
 
-    scrollToTheCurrentMsg = (message) => {
-        message.classList.remove('n-vis');
-        this.scrollToView(this.appOptions.showMsgFromStart);
+    scrollToTheCurrentMsg = (msgElement, msgKey) => {
+        msgElement.classList.remove('n-vis');
+        this.scrollToView(this.appOptions.showMsgFromStart, msgKey);
     };
 
     resetState = () => {
@@ -149,6 +174,7 @@ class TypingService {
         this.FIRST_MESSAGE_KEY = '';
         this.IS_FIRST_BOT_MSG = true;
         this.alreadyScrolledFirstMsg = false;
+        this.cumulativeHeight = 0;
     };
 }
 
