@@ -9457,8 +9457,10 @@ var userOverride = {
                     typingService.alreadyScrolledFirstMsg = false;
                 }
 
-                if (floatWhere === 'mck-msg-right') isUserMsg = true;
-
+                if (floatWhere === 'mck-msg-right') {
+                    isUserMsg = true;
+                    typingService.cumulativeHeight = 0;
+                }
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +
@@ -10232,13 +10234,13 @@ var userOverride = {
                         case isUserMsg:
                             shouldScroll = false;
                             break;
-                        case !firstMsgOfMsgsGroup?.classList.contains('n-vis'):
-                            shouldScroll = true;
+                        case firstMsgOfMsgsGroup?.classList.contains('n-vis'):
+                            shouldScroll = false;
                             break;
                         default:
                             shouldScroll = true;
                     }
-                    typingService.scrollToView(shouldScroll);
+                    typingService.scrollToView(shouldScroll, msg.key);
                 }
                
                 if ($mck_tab_message_option.hasClass('n-vis')) {
