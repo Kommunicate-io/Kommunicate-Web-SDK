@@ -115,26 +115,22 @@ class TypingService {
         const $mck_msg_inner = $applozic(
             '#mck-message-cell .mck-message-inner'
         );
-
-        const firstMsg = document
-            .querySelector('#mck-message-cell')
-            .querySelector(`div[data-msgkey="${this.FIRST_MESSAGE_KEY}"]`);
-
         const currentMessage = document.querySelector(
             `div[data-msgkey="${msgKey}"]`
         );
         const container = document.querySelector('.mck-box-body');
+        const firstMsg = document
+            .querySelector('#mck-message-cell')
+            .querySelector(`div[data-msgkey="${this.FIRST_MESSAGE_KEY}"]`);
 
-        if (currentMessage?.scrollHeight) {
-            this.cumulativeHeight += currentMessage.scrollHeight;
-        }
+        this.cumulativeHeight += currentMessage.scrollHeight;
 
         if (showMsgFromStart) {
             // custom case
             if (this.cumulativeHeight > container.scrollHeight && firstMsg) {
                 $mck_msg_inner.animate(
                     {
-                        scrollTop: firstMsg.offsetTop - 30,
+                        scrollTop: firstMsg.offsetTop - 15,
                     },
                     0
                 );
