@@ -10190,25 +10190,25 @@ var userOverride = {
                 }
                 if (scroll) {
                     const firstMsgOfMsgsGroup = document
-                        .querySelector('#mck-message-cell')
+
                         .querySelector(
                             `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
                         );
-                    let shouldScroll = true;
+                    let customScroll = true;
                     switch (true) {
                         case !appOptions.showMsgFromStart:
-                            shouldScroll = false;
+                            customScroll = false;
                             break;
                         case isUserMsg:
-                            shouldScroll = false;
+                            customScroll = false;
                             break;
                         case firstMsgOfMsgsGroup?.classList.contains('n-vis'):
-                            shouldScroll = false;
+                            customScroll = false;
                             break;
                         default:
-                            shouldScroll = true;
+                            customScroll = true;
                     }
-                    typingService.scrollToView(shouldScroll, msg.key);
+                    typingService.scrollToView(customScroll, msg.key);
                 }
                
                 if ($mck_tab_message_option.hasClass('n-vis')) {
