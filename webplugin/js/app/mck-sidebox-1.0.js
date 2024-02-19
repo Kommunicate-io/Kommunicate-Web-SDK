@@ -3871,6 +3871,8 @@ var userOverride = {
                                     appOptions.restartConversationByUser ||
                                     triggerWelcomeForceFully;
                                 triggerWelcome && _this.triggerWelcomeEvent();
+                                typingService.IS_FIRST_BOT_MSG = true;
+                                typingService.FIRST_MESSAGE_KEY = "";
                             }
                         },
                         error: function (data) {
