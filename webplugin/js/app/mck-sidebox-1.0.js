@@ -18,7 +18,6 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
-
 (function ($applozic, w, d) {
     'use strict';
     if (!w.applozic) {
@@ -597,7 +596,6 @@ var userOverride = {
         var alUserService = new AlUserService();
         var zendeskChatService = new ZendeskChatService();
         var kmNavBar = new KmNavBar(mckMessageLayout);
-        const typingService = new TypingService(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -609,6 +607,7 @@ var userOverride = {
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(
             appOptions.askUserDetails
         );
+        typingService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -3875,6 +3874,8 @@ var userOverride = {
                                     appOptions.restartConversationByUser ||
                                     triggerWelcomeForceFully;
                                 triggerWelcome && _this.triggerWelcomeEvent();
+                                typingService.IS_FIRST_BOT_MSG = true;
+                                typingService.FIRST_MESSAGE_KEY = "";
                             }
                         },
                         error: function (data) {
@@ -9321,6 +9322,7 @@ var userOverride = {
                 var progressMeterClass = 'n-vis';
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
+                let isUserMsg = true;
                 if (!Kommunicate.visibleMessage(msg)) return;
 
                 if (
@@ -9416,7 +9418,16 @@ var userOverride = {
                 var timeStamp = 'mck-timestamp-' + msg.key;
                 if (msg.type === 0 || msg.type === 4 || msg.type === 6) {
                     floatWhere = 'mck-msg-left';
+                    isUserMsg = false;
+                    if (
+                        typingService.IS_FIRST_BOT_MSG &&
+                        appOptions.showMsgFromStart
+                    ) {
+                        typingService.FIRST_MESSAGE_KEY = msg.key;
+                        typingService.IS_FIRST_BOT_MSG = false;
+                    }
                 }
+
                 if (
                     msg.contentType === 4 ||
                     msg.contentType === 10 ||
@@ -9437,6 +9448,21 @@ var userOverride = {
                     attachmentBox = 'km-attach-msg-left';
                 }
                 statusIcon = _this.getStatusIconName(msg);
+
+                if (
+                    floatWhere !== 'mck-msg-left' &&
+                    appOptions.showMsgFromStart
+                ) {
+                    // resetting the values
+                    typingService.FIRST_MESSAGE_KEY = '';
+                    typingService.IS_FIRST_BOT_MSG = true;
+                    typingService.alreadyScrolledFirstMsg = false;
+                }
+
+                if (floatWhere === 'mck-msg-right') {
+                    isUserMsg = true;
+                    typingService.cumulativeHeight = 0;
+                }
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +
@@ -10197,13 +10223,28 @@ var userOverride = {
                         .addClass('vis');
                 }
                 if (scroll) {
-                    $mck_msg_inner.animate(
-                        {
-                            scrollTop: $mck_msg_inner.prop('scrollHeight'),
-                        },
-                        'slow'
-                    );
+                    const firstMsgOfMsgsGroup = document
+
+                        .querySelector(
+                            `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
+                        );
+                    let customScroll = true;
+                    switch (true) {
+                        case !appOptions.showMsgFromStart:
+                            customScroll = false;
+                            break;
+                        case isUserMsg:
+                            customScroll = false;
+                            break;
+                        case firstMsgOfMsgsGroup?.classList.contains('n-vis'):
+                            customScroll = false;
+                            break;
+                        default:
+                            customScroll = true;
+                    }
+                    typingService.scrollToView(customScroll, msg.key);
                 }
+               
                 if ($mck_tab_message_option.hasClass('n-vis')) {
                     if (msg.groupId) {
                         var group = mckGroupUtils.getGroup(msg.groupId);
