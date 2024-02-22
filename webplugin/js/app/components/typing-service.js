@@ -123,7 +123,9 @@ class TypingService {
             .querySelector('#mck-message-cell')
             .querySelector(`div[data-msgkey="${this.FIRST_MESSAGE_KEY}"]`);
 
-        this.cumulativeHeight += currentMessage.scrollHeight;
+        if (currentMessage?.scrollHeight) {
+            this.cumulativeHeight += currentMessage.scrollHeight;
+        }    
 
         if (showMsgFromStart) {
             // custom case
