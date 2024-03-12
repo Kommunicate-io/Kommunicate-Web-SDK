@@ -147,6 +147,9 @@ function createCustomClasses(classSettings) {
 
 // Set language and direction based on browser's language
 function languageDirectionChangeAuto() {
+    if (window.kommunicate?._globals.hasOwnProperty('rtl') && window.kommunicate._globals.rtl === false) {
+        return 'ltr';
+    }
     const rtlLanguages = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'prs', 'yi', 'ku', 'ms', 'ug', 'syr', 'lrc'];
     const lang = navigator.language.toLowerCase();
     return (rtlLanguages.includes(lang)) ? 'rtl' : 'ltr';
@@ -273,7 +276,7 @@ function injectJquery() {
             kommunicateIframe.contentWindow.document;
         addableWindow = kommunicateIframe.contentWindow;
         addableDocument = iframeDocument;
-        addableDocument.body.setAttribute('dir',languageDirectionChangeAuto());
+        addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
     }
     var head = addableDocument.getElementsByTagName('head')[0];
     var script = addableDocument.createElement('script');
