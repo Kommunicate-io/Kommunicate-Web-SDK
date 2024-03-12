@@ -147,9 +147,6 @@ function createCustomClasses(classSettings) {
 
 // Set language and direction based on browser's language
 function languageDirectionChangeAuto() {
-    if (window.kommunicate?._globals.hasOwnProperty('rtl') && window.kommunicate._globals.rtl === false) {
-        return 'ltr';
-    }
     const rtlLanguages = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'prs', 'yi', 'ku', 'ms', 'ug', 'syr', 'lrc'];
     const lang = navigator.language.toLowerCase();
     return (rtlLanguages.includes(lang)) ? 'rtl' : 'ltr';
