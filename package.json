@@ -42,7 +42,7 @@
     "@node-minify/core": "6.0.0",
     "@node-minify/google-closure-compiler": "6.0.0",
     "@node-minify/no-compress": "6.0.0",
-    "@node-minify/terser": "6.0.0",
+    "@node-minify/terser": "6.4.0",
     "compression": "1.7.4",
     "cors": "2.8.5",
     "express": "4.17.1",
