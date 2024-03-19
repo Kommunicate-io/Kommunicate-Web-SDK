@@ -72,7 +72,7 @@
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.23.4",
     "@babel/preset-env": "^7.23.8",
     "@playwright/test": "^1.29.1",
-    "danger": "11.2.0",
+    "danger": "11.3.1",
     "danger-plugin-jira-issue": "1.4.1",
     "danger-plugin-no-console": "1.1.2",
     "husky": "5.0.9",
