@@ -1,13 +1,13 @@
 node_modules
-package-lock.json
+# package-lock.json
 .DS_Store/*
 .DS_Store
 webplugin/build/*
 webplugin/css/app/bin/
 webplugin/build/test.txt
 webplugin/css/app/style/
-yarn.lock
 /test-results/
 /playwright-report/
 /playwright/.cache/
+# yarn.lock
 .sass-cache/*

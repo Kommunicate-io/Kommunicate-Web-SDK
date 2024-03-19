@@ -365,6 +365,9 @@ function ApplozicSidebox() {
     function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
+            if (options.labels && options.labels["lead.collection"]?.heading) {
+                options["headingFromWidget"] = true;
+            }
             var widgetSettings = data.chatWidget;
             var disableChatWidget =
                 options.disableChatWidget != null
@@ -585,6 +588,7 @@ function ApplozicSidebox() {
 
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
+            options.showMsgFromStart = isSettingEnable('showMsgFromStart');
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
