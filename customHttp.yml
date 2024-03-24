@@ -15,7 +15,7 @@ customHeaders:
       - key: 'Cache-Control'
         value: 'public, max-age=2592000'
 
-  - pattern: '*.html'
+  - pattern: 'resources/**/*.html'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=300'
