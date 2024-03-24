@@ -9,13 +9,12 @@ customHeaders:
         value: 'text/javascript'
       - key: 'Cache-Control'
         value: 'public, max-age=300'
+  - pattern: '*.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=300'
   # 30 days
   - pattern: 'resources/**'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=2592000'
-
-  - pattern: '*.html'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=300'
