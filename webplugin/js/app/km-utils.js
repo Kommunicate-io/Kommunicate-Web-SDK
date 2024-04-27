@@ -6,7 +6,7 @@ HEADER_CTA = {
     CSAT_RATING: 'CSAT_RATING',
     RESTART_CONVERSATION: 'RESTART_CONVERSATION',
     TTS: 'TTS', // TEXT TO SPEECH
-    TALK_TO_HUMAN: 'TALK_TO_HUMAN'
+    TALK_TO_HUMAN: 'TALK_TO_HUMAN',
 };
 
 KommunicateConstants = {
@@ -68,6 +68,8 @@ KommunicateConstants = {
     },
     DEFAULT_AVATAR_IMAGE:
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
+    STAR_SVG:
+        '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="margin: 0 !important;" xmlns="http://www.w3.org/2000/svg"><path d="M9.00024 13.1393L12.1127 15.0218C12.6827 15.3668 13.3802 14.8568 13.2302 14.2118L12.4052 10.6718L15.1577 8.28684C15.6602 7.85184 15.3902 7.02684 14.7302 6.97434L11.1077 6.66684L9.69024 3.32184C9.43524 2.71434 8.56524 2.71434 8.31024 3.32184L6.89274 6.65934L3.27024 6.96684C2.61024 7.01934 2.34024 7.84434 2.84274 8.27934L5.59524 10.6643L4.77024 14.2043C4.62024 14.8493 5.31774 15.3593 5.88774 15.0143L9.00024 13.1393Z" fill="#FFC045"/></svg>',
     RICH_MESSAGE_ICON:
         '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg>',
     VIDEO_ICON:
@@ -281,9 +283,11 @@ KommunicateConstants = {
     //     ONLINE_WITHOUT_NOTIFICATIONS: 7,
     // },
     STATIC_MESSAGE_ICONS: {
-        KM_LOCK: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM9 8V6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V8H9Z" fill="#112222"></path></svg>'
+        KM_LOCK:
+            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 8H17V6C17 3.24 14.76 1 12 1C9.24 1 7 3.24 7 6V8H6C4.9 8 4 8.9 4 10V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V10C20 8.9 19.1 8 18 8ZM12 17C10.9 17 10 16.1 10 15C10 13.9 10.9 13 12 13C13.1 13 14 13.9 14 15C14 16.1 13.1 17 12 17ZM9 8V6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V8H9Z" fill="#112222"></path></svg>',
     },
-    MINIMIZE_ICON: '<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.77083 1L5.00417 4.23333L8.2375 1C8.5625 0.675 9.0875 0.675 9.4125 1C9.7375 1.325 9.7375 1.85 9.4125 2.175L5.5875 6C5.2625 6.325 4.7375 6.325 4.4125 6L0.5875 2.175C0.2625 1.85 0.2625 1.325 0.5875 1C0.9125 0.683334 1.44583 0.675 1.77083 1Z" fill="white"/></svg>'
+    MINIMIZE_ICON:
+        '<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.77083 1L5.00417 4.23333L8.2375 1C8.5625 0.675 9.0875 0.675 9.4125 1C9.7375 1.325 9.7375 1.85 9.4125 2.175L5.5875 6C5.2625 6.325 4.7375 6.325 4.4125 6L0.5875 2.175C0.2625 1.85 0.2625 1.325 0.5875 1C0.9125 0.683334 1.44583 0.675 1.77083 1Z" fill="white"/></svg>',
 };
 
 /**

@@ -136,6 +136,7 @@ class KMLabel {
             'csat.rating': {
                 RESOLVED_CONVERSATION_RATED:
                     'Conversation resolved and you rated it as',
+                NEW_RATING_LABEL: '',
                 CONVERSATION_RATED: 'You rated the conversation as',
                 RATE_CONVERSATION: 'Rate your conversation',
                 CONVERSATION_REVIEW_PLACEHOLDER: '(optional)',
@@ -144,7 +145,7 @@ class KMLabel {
                 SUBMIT_RATING: 'Submit your rating',
                 CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk,
                 CONVERSATION_RATING_HEADING:
-                    'How satisfied are you with the conversation?',
+                    'How satisfied you are with the conversation?',
                 RATE_ERROR_MSG: 'Please rate the conversation',
             },
             'page.title.on.new.message': 'New message from ',

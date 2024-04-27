@@ -24,7 +24,7 @@ function KommunicateCommons() {
         }
         return isTrialPlan;
     };
-    
+
     _this.isStartupPlan = function (data) {
         return (
             data &&
@@ -242,6 +242,14 @@ function KommunicateCommons() {
         return KommunicateConstants.RATINGS_SVG[rating];
     };
 
+    _this.generateStarSvgs = function (rating) {
+        const ratingSVGs = Array.from(
+            { length: rating },
+            () => KommunicateConstants.STAR_SVG
+        );
+        return ratingSVGs.join('');
+    };
+
     _this.getDefaultAvatarImageSvg = function () {
         return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
     };
@@ -264,9 +272,10 @@ function KommunicateCommons() {
 
     _this.debounce = function (func, wait, immediate) {
         var timeout;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
+        return function () {
+            var context = this,
+                args = arguments;
+            var later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
             };
