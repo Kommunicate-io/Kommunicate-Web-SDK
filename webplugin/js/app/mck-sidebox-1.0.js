@@ -2817,7 +2817,6 @@ var userOverride = {
                 }
                 _this.setEmojiHoverText();
                 _this.configureStarsOrRatingElement();
-                // _this.configureRatingElements();
                 mckMessageLayout.setHeaderPrimaryCTA();
             };
 
@@ -2995,123 +2994,6 @@ var userOverride = {
                             ));
                 });
             };
-            // _this.configureRatingElements = function () {
-            //     var ratingSmilies = document.getElementsByClassName(
-            //         'mck-rating-box'
-            //     );
-            //     var sendFeedbackComment = document.getElementById(
-            //         'mck-submit-comment'
-            //     );
-            //     var restartConversation = document.getElementById(
-            //         'mck-restart-conversation'
-            //     );
-            //     var ratingErrorMsgContainer = document.getElementById(
-            //         'mck-rate-error-wrapper'
-            //     );
-            //     var feedbackObject = {
-            //         groupId: 0,
-            //         comments: [],
-            //         rating: 0,
-            //     };
-
-            //     restartConversation.addEventListener(
-            //         'click',
-            //         mckMessageService.restartConversation
-            //     );
-            //     sendFeedbackComment.addEventListener('click', function () {
-            //         const isAnyRatingSelected = document.querySelector(
-            //             '.mck-rating-box.selected'
-            //         );
-            //         if (!isAnyRatingSelected) {
-            //             ratingErrorMsgContainer.classList.remove('n-vis');
-            //             return;
-            //         }
-            //         kmWidgetEvents.eventTracking(
-            //             eventMapping.onSubmitRatingClick
-            //         );
-            //         feedbackObject = {
-            //             groupId: 0,
-            //             comments: [],
-            //             rating: 0,
-            //         };
-            //         var comment = document.getElementById(
-            //             'mck-feedback-comment'
-            //         );
-            //         sendFeedbackComment.setAttribute('disabled', 'true');
-            //         comment &&
-            //             comment.value.trim() &&
-            //             (feedbackObject.comments = [comment.value]);
-            //         feedbackObject.rating = parseInt(
-            //             document
-            //                 .querySelector('.mck-rating-box.selected')
-            //                 .getAttribute('data-rating')
-            //         );
-            //         feedbackObject.groupId =
-            //             CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
-            //         feedbackObject.supportAgentName =
-            //             CURRENT_GROUP_DATA &&
-            //             CURRENT_GROUP_DATA.conversationAssignee;
-            //         feedbackObject.applicationId = MCK_APP_ID;
-            //         feedbackObject.teamId =
-            //             CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId;
-            //         var LOGGED_IN_USER =
-            //             alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
-            //         feedbackObject.userInfo = {
-            //             name: LOGGED_IN_USER.userName,
-            //             userId: MCK_USER_ID,
-            //             email: LOGGED_IN_USER.email,
-            //         };
-            //         _this.sendFeedback(feedbackObject);
-            //     });
-            //     for (var i = 0; i < ratingSmilies.length; i++) {
-            //         ratingSmilies[i].addEventListener('click', function (e) {
-            //             kommunicateCommons.modifyClassList(
-            //                 { id: ['csat-2'] },
-            //                 '',
-            //                 'n-vis'
-            //             );
-            //             kommunicateCommons.modifyClassList(
-            //                 { id: ['mck-rate-conversation'] },
-            //                 'n-vis',
-            //                 ''
-            //             );
-            //             kommunicateCommons.modifyClassList(
-            //                 { class: ['mck-rating-box'] },
-            //                 '',
-            //                 'selected'
-            //             );
-            //             kommunicateCommons.modifyClassList(
-            //                 { class: ['mck-feedback-text-wrapper'] },
-            //                 '',
-            //                 'n-vis'
-            //             );
-            //             e.currentTarget.classList.add('selected');
-
-            //             // if rating error msg exist in UI then hide the error msg
-            //             !ratingErrorMsgContainer.classList.contains('n-vis') &&
-            //                 ratingErrorMsgContainer.classList.add('n-vis');
-
-            //             if (e.currentTarget.classList[1] == 'selected') {
-            //                 var ratingValue = parseInt(
-            //                     e.currentTarget.dataset.rating
-            //                 );
-            //                 var ratingType =
-            //                     ratingValue == 1
-            //                         ? 'CSAT Rate Poor'
-            //                         : ratingValue == 5
-            //                         ? 'CSAT Rate Average'
-            //                         : ratingValue == 10
-            //                         ? 'CSAT Rate Great'
-            //                         : '';
-            //                 kmWidgetEvents.eventTracking(
-            //                     eventMapping.onRateConversationEmoticonsClick,
-            //                     ratingType,
-            //                     ratingValue
-            //                 );
-            //             }
-            //         });
-            //     }
-            // };
             _this.sendFeedback = function (feedbackData) {
                 mckUtils.ajax({
                     headers: {
