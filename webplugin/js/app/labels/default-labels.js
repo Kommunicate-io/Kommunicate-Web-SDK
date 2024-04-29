@@ -136,7 +136,7 @@ class KMLabel {
             'csat.rating': {
                 RESOLVED_CONVERSATION_RATED:
                     'Conversation resolved and you rated it as',
-                NEW_RATING_LABEL: '',
+                NEW_RATING_EMPTY_LABEL: '',
                 CONVERSATION_RATED: 'You rated the conversation as',
                 RATE_CONVERSATION: 'Rate your conversation',
                 CONVERSATION_REVIEW_PLACEHOLDER: '(optional)',

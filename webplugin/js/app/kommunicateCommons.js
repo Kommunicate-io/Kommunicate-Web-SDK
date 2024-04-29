@@ -242,14 +242,6 @@ function KommunicateCommons() {
         return KommunicateConstants.RATINGS_SVG[rating];
     };
 
-    _this.generateStarSvgs = function (rating) {
-        const ratingSVGs = Array.from(
-            { length: rating },
-            () => KommunicateConstants.STAR_SVG
-        );
-        return ratingSVGs.join('');
-    };
-
     _this.getDefaultAvatarImageSvg = function () {
         return KommunicateConstants.DEFAULT_AVATAR_IMAGE;
     };

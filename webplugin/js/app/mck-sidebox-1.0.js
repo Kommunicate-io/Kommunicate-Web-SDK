@@ -3148,12 +3148,12 @@ var userOverride = {
                             $applozic('#mck-sidebox-ft').removeClass(
                                 'mck-restart-conv-banner km-mid-conv-csat'
                             );
-                            const stars = document.querySelectorAll(
-                                '.star-rating label'
-                            );
-                            stars.forEach(function (star, index) {
-                                star.querySelector('svg path').style.fill = '';
-                            });
+                            if (
+                                appOptions.appSettings.chatWidget
+                                    .csatRatingBase == 5
+                            ) {
+                                ratingService.resetStarsColor();
+                            }
 
                             // kommunicateCommons.modifyClassList(
                             //     { class: ['mck-feedback-text-wrapper'] },
@@ -3623,44 +3623,7 @@ var userOverride = {
                     });
                 }
                 if (appOptions.appSettings.chatWidget.csatRatingBase == 5) {
-                    const stars = document.querySelectorAll(
-                        '.star-rating label'
-                    );
-                    let selectedRating = feedbackObject.rating;
-
-                    function highlightStars(index) {
-                        for (let i = 0; i < stars.length; i++) {
-                            stars[i].querySelector('svg path').style.fill =
-                                i <= index ? '#FFC045' : '#B3B3B3';
-                        }
-                    }
-                    function removeHighlightFromStars() {
-                        for (let i = 0; i < stars.length; i++) {
-                            stars[i].querySelector('svg path').style.fill =
-                                '#B3B3B3';
-                        }
-                    }
-                    highlightStars(selectedRating - 1);
-                    stars.forEach(function (star, index) {
-                        star.addEventListener('mouseover', function () {
-                            highlightStars(index);
-                        });
-                        star.addEventListener('mouseout', function () {
-                            const isAnyRatingSelected = document.querySelector(
-                                '.mck-rating-box.selected'
-                            );
-                            if (isAnyRatingSelected == null) {
-                                removeHighlightFromStars();
-                            } else {
-                                highlightStars(selectedRating - 1);
-                            }
-                        });
-
-                        star.addEventListener('click', function () {
-                            selectedRating = index + 1;
-                            highlightStars(selectedRating - 1);
-                        });
-                    });
+                    ratingService.setStarsEffect(feedbackObject.rating);
                 }
             };
 
@@ -9582,7 +9545,11 @@ var userOverride = {
                 }
 
                 // GEN AI BOT
-                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msgThroughListAPI) { // message not from the sockets
+                if (
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    !msgThroughListAPI
+                ) {
+                    // message not from the sockets
                     document
                         .getElementById('mck-text-box')
                         .setAttribute('contenteditable', false);
@@ -10032,7 +9999,7 @@ var userOverride = {
                                 ratingSmileSVG:
                                     appOptions.appSettings.chatWidget
                                         .csatRatingBase == 5
-                                        ? kommunicateCommons.generateStarSvgs(
+                                        ? ratingService.generateStarSvgs(
                                               userFeedback.rating
                                           )
                                         : ratingSmileSVG,

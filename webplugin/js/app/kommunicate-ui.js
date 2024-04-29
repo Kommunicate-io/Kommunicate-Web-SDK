@@ -1026,10 +1026,7 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function (triggeredByBot) {
-        const stars = document.querySelectorAll('.star-rating label');
-        stars.forEach(function(star, index) {
-            star.querySelector('svg path').style.fill = '';
-        });
+        ratingService.resetStarsColor();
         var isConvRated =
             document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
