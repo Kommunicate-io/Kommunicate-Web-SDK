@@ -2816,7 +2816,7 @@ var userOverride = {
                 }
                 _this.setEmojiHoverText();
                 _this.configureStarsElement();
-                // _this.configureRatingElements();
+                _this.configureRatingElements();
                 mckMessageLayout.setHeaderPrimaryCTA();
             };
 
@@ -3147,11 +3147,13 @@ var userOverride = {
                             $applozic('#mck-sidebox-ft').removeClass(
                                 'mck-restart-conv-banner km-mid-conv-csat'
                             );
-                            const stars = document.querySelectorAll('.star-rating label');
-                            stars.forEach(function(star, index) {
+                            const stars = document.querySelectorAll(
+                                '.star-rating label'
+                            );
+                            stars.forEach(function (star, index) {
                                 star.querySelector('svg path').style.fill = '';
                             });
-                            
+
                             // kommunicateCommons.modifyClassList(
                             //     { class: ['mck-feedback-text-wrapper'] },
                             //     'n-vis',
@@ -3478,7 +3480,7 @@ var userOverride = {
                     }
                 }
             };
-            _this.configureStarsElement = function() {
+            _this.configureStarsElement = function () {
                 var ratingStars = document.getElementsByClassName(
                     'mck-rating-box'
                 );
@@ -3505,7 +3507,6 @@ var userOverride = {
                     const isAnyRatingSelected = document.querySelector(
                         '.mck-rating-box.selected'
                     );
-                    console.log("Rating selected is :",isAnyRatingSelected);
                     if (!isAnyRatingSelected) {
                         ratingErrorMsgContainer.classList.remove('n-vis');
                         return;
@@ -3569,7 +3570,6 @@ var userOverride = {
                             '',
                             'n-vis'
                         );
-                        debugger;
                         e.currentTarget.classList.add('selected');
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             ratingErrorMsgContainer.classList.add('n-vis');
@@ -3600,43 +3600,42 @@ var userOverride = {
                 }
                 const stars = document.querySelectorAll('.star-rating label');
                 let selectedRating = feedbackObject.rating;
-            
+
                 function highlightStars(index) {
                     for (let i = 0; i < stars.length; i++) {
-                        stars[i].querySelector('svg path').style.fill = i <= index ? "#FFC045" : "#B3B3B3";
+                        stars[i].querySelector('svg path').style.fill =
+                            i <= index ? '#FFC045' : '#B3B3B3';
                     }
                 }
                 function removeHighlightFromStars() {
                     for (let i = 0; i < stars.length; i++) {
-                        stars[i].querySelector('svg path').style.fill = "#B3B3B3";
+                        stars[i].querySelector('svg path').style.fill =
+                            '#B3B3B3';
                     }
                 }
                 highlightStars(selectedRating - 1);
-                stars.forEach(function(star, index) {
-                    star.addEventListener('mouseover', function() {
+                stars.forEach(function (star, index) {
+                    star.addEventListener('mouseover', function () {
                         highlightStars(index);
                     });
-                    star.addEventListener('mouseout', function() {
+                    star.addEventListener('mouseout', function () {
                         const isAnyRatingSelected = document.querySelector(
                             '.mck-rating-box.selected'
                         );
-                        debugger;
-                        console.log("Selected Rating is ",selectedRating)
-                        if(isAnyRatingSelected == null){
+                        if (isAnyRatingSelected == null) {
                             removeHighlightFromStars();
-                        }
-                        else{
+                        } else {
                             highlightStars(selectedRating - 1);
                         }
                     });
-            
-                    star.addEventListener('click', function() {
+
+                    star.addEventListener('click', function () {
                         selectedRating = index + 1;
                         highlightStars(selectedRating - 1);
                     });
                 });
             };
-            
+
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
                 var $this = $applozic(this);
@@ -4041,7 +4040,7 @@ var userOverride = {
                                     triggerWelcomeForceFully;
                                 triggerWelcome && _this.triggerWelcomeEvent();
                                 typingService.IS_FIRST_BOT_MSG = true;
-                                typingService.FIRST_MESSAGE_KEY = "";
+                                typingService.FIRST_MESSAGE_KEY = '';
                             }
                         },
                         error: function (data) {
@@ -9942,30 +9941,41 @@ var userOverride = {
                                 '"' + userFeedback.comments.trim() + '"';
                         }
                         // 2 = CONVERSATION IS CLOSED OR RESOLVED
-                        var csatRatingLabel='';
-                        if(appOptions.appSettings.chatWidget.csatRatingBase == 5){
-                            csatRatingLabel = 'NEW_RATING_LABEL';
-                        }
-                        else{
+                        var csatRatingLabel = '';
+                        if (
+                            appOptions.appSettings.chatWidget.csatRatingBase ==
+                            5
+                        ) {
+                            csatRatingLabel = 'NEW_RATING_EMPTY_LABEL';
+                        } else {
                             csatRatingLabel =
-                            CURRENT_GROUP_DATA.conversationStatus == 2
-                                ? 'RESOLVED_CONVERSATION_RATED'
-                                : 'CONVERSATION_RATED';
+                                CURRENT_GROUP_DATA.conversationStatus == 2
+                                    ? 'RESOLVED_CONVERSATION_RATED'
+                                    : 'CONVERSATION_RATED';
                         }
                         var resolutionStatusClass = '';
                         if (!KommunicateUI.isConversationResolvedFromZendesk) {
                             resolutionStatusClass = 'n-vis';
                         }
                         var ratingTitle = '';
-                        if(appOptions.appSettings.chatWidget.csatRatingBase !== 5){
+                        if (
+                            appOptions.appSettings.chatWidget.csatRatingBase !==
+                            5
+                        ) {
                             ratingTitle =
-                            KommunicateConstants.RATING_TITLE[
-                                userFeedback.rating
-                            ];
+                                KommunicateConstants.RATING_TITLE[
+                                    userFeedback.rating
+                                ];
                         }
                         var ratingData = [
                             {
-                                ratingSmileSVG: appOptions.appSettings.chatWidget.csatRatingBase == 5 ?kommunicateCommons.generateStarSvgs(userFeedback.rating):ratingSmileSVG,
+                                ratingSmileSVG:
+                                    appOptions.appSettings.chatWidget
+                                        .csatRatingBase == 5
+                                        ? kommunicateCommons.generateStarSvgs(
+                                              userFeedback.rating
+                                          )
+                                        : ratingSmileSVG,
                                 ratingComment: ratingComment,
                                 resolutionStatusClass: resolutionStatusClass,
                                 ratingTitle: ratingTitle,
@@ -10397,11 +10407,9 @@ var userOverride = {
                         .addClass('vis');
                 }
                 if (scroll) {
-                    const firstMsgOfMsgsGroup = document
-
-                        .querySelector(
-                            `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
-                        );
+                    const firstMsgOfMsgsGroup = document.querySelector(
+                        `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
+                    );
                     let customScroll = true;
                     switch (true) {
                         case !appOptions.showMsgFromStart:
@@ -10418,7 +10426,7 @@ var userOverride = {
                     }
                     typingService.scrollToView(customScroll, msg.key);
                 }
-               
+
                 if ($mck_tab_message_option.hasClass('n-vis')) {
                     if (msg.groupId) {
                         var group = mckGroupUtils.getGroup(msg.groupId);

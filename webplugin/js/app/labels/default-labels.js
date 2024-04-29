@@ -145,7 +145,7 @@ class KMLabel {
                 SUBMIT_RATING: 'Submit your rating',
                 CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk,
                 CONVERSATION_RATING_HEADING:
-                    'How satisfied you are with the conversation?',
+                    'How satisfied are you with the conversation?',
                 RATE_ERROR_MSG: 'Please rate the conversation',
             },
             'page.title.on.new.message': 'New message from ',
