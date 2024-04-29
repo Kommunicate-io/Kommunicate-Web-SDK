@@ -2815,8 +2815,8 @@ var userOverride = {
                         .addClass('vis');
                 }
                 _this.setEmojiHoverText();
-                _this.configureStarsElement();
-                _this.configureRatingElements();
+                _this.configureStarsOrRatingElement();
+                // _this.configureRatingElements();
                 mckMessageLayout.setHeaderPrimaryCTA();
             };
 
@@ -2994,123 +2994,123 @@ var userOverride = {
                             ));
                 });
             };
-            _this.configureRatingElements = function () {
-                var ratingSmilies = document.getElementsByClassName(
-                    'mck-rating-box'
-                );
-                var sendFeedbackComment = document.getElementById(
-                    'mck-submit-comment'
-                );
-                var restartConversation = document.getElementById(
-                    'mck-restart-conversation'
-                );
-                var ratingErrorMsgContainer = document.getElementById(
-                    'mck-rate-error-wrapper'
-                );
-                var feedbackObject = {
-                    groupId: 0,
-                    comments: [],
-                    rating: 0,
-                };
+            // _this.configureRatingElements = function () {
+            //     var ratingSmilies = document.getElementsByClassName(
+            //         'mck-rating-box'
+            //     );
+            //     var sendFeedbackComment = document.getElementById(
+            //         'mck-submit-comment'
+            //     );
+            //     var restartConversation = document.getElementById(
+            //         'mck-restart-conversation'
+            //     );
+            //     var ratingErrorMsgContainer = document.getElementById(
+            //         'mck-rate-error-wrapper'
+            //     );
+            //     var feedbackObject = {
+            //         groupId: 0,
+            //         comments: [],
+            //         rating: 0,
+            //     };
 
-                restartConversation.addEventListener(
-                    'click',
-                    mckMessageService.restartConversation
-                );
-                sendFeedbackComment.addEventListener('click', function () {
-                    const isAnyRatingSelected = document.querySelector(
-                        '.mck-rating-box.selected'
-                    );
-                    if (!isAnyRatingSelected) {
-                        ratingErrorMsgContainer.classList.remove('n-vis');
-                        return;
-                    }
-                    kmWidgetEvents.eventTracking(
-                        eventMapping.onSubmitRatingClick
-                    );
-                    feedbackObject = {
-                        groupId: 0,
-                        comments: [],
-                        rating: 0,
-                    };
-                    var comment = document.getElementById(
-                        'mck-feedback-comment'
-                    );
-                    sendFeedbackComment.setAttribute('disabled', 'true');
-                    comment &&
-                        comment.value.trim() &&
-                        (feedbackObject.comments = [comment.value]);
-                    feedbackObject.rating = parseInt(
-                        document
-                            .querySelector('.mck-rating-box.selected')
-                            .getAttribute('data-rating')
-                    );
-                    feedbackObject.groupId =
-                        CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
-                    feedbackObject.supportAgentName =
-                        CURRENT_GROUP_DATA &&
-                        CURRENT_GROUP_DATA.conversationAssignee;
-                    feedbackObject.applicationId = MCK_APP_ID;
-                    feedbackObject.teamId =
-                        CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId;
-                    var LOGGED_IN_USER =
-                        alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
-                    feedbackObject.userInfo = {
-                        name: LOGGED_IN_USER.userName,
-                        userId: MCK_USER_ID,
-                        email: LOGGED_IN_USER.email,
-                    };
-                    _this.sendFeedback(feedbackObject);
-                });
-                for (var i = 0; i < ratingSmilies.length; i++) {
-                    ratingSmilies[i].addEventListener('click', function (e) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['csat-2'] },
-                            '',
-                            'n-vis'
-                        );
-                        kommunicateCommons.modifyClassList(
-                            { id: ['mck-rate-conversation'] },
-                            'n-vis',
-                            ''
-                        );
-                        kommunicateCommons.modifyClassList(
-                            { class: ['mck-rating-box'] },
-                            '',
-                            'selected'
-                        );
-                        kommunicateCommons.modifyClassList(
-                            { class: ['mck-feedback-text-wrapper'] },
-                            '',
-                            'n-vis'
-                        );
-                        e.currentTarget.classList.add('selected');
+            //     restartConversation.addEventListener(
+            //         'click',
+            //         mckMessageService.restartConversation
+            //     );
+            //     sendFeedbackComment.addEventListener('click', function () {
+            //         const isAnyRatingSelected = document.querySelector(
+            //             '.mck-rating-box.selected'
+            //         );
+            //         if (!isAnyRatingSelected) {
+            //             ratingErrorMsgContainer.classList.remove('n-vis');
+            //             return;
+            //         }
+            //         kmWidgetEvents.eventTracking(
+            //             eventMapping.onSubmitRatingClick
+            //         );
+            //         feedbackObject = {
+            //             groupId: 0,
+            //             comments: [],
+            //             rating: 0,
+            //         };
+            //         var comment = document.getElementById(
+            //             'mck-feedback-comment'
+            //         );
+            //         sendFeedbackComment.setAttribute('disabled', 'true');
+            //         comment &&
+            //             comment.value.trim() &&
+            //             (feedbackObject.comments = [comment.value]);
+            //         feedbackObject.rating = parseInt(
+            //             document
+            //                 .querySelector('.mck-rating-box.selected')
+            //                 .getAttribute('data-rating')
+            //         );
+            //         feedbackObject.groupId =
+            //             CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
+            //         feedbackObject.supportAgentName =
+            //             CURRENT_GROUP_DATA &&
+            //             CURRENT_GROUP_DATA.conversationAssignee;
+            //         feedbackObject.applicationId = MCK_APP_ID;
+            //         feedbackObject.teamId =
+            //             CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId;
+            //         var LOGGED_IN_USER =
+            //             alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
+            //         feedbackObject.userInfo = {
+            //             name: LOGGED_IN_USER.userName,
+            //             userId: MCK_USER_ID,
+            //             email: LOGGED_IN_USER.email,
+            //         };
+            //         _this.sendFeedback(feedbackObject);
+            //     });
+            //     for (var i = 0; i < ratingSmilies.length; i++) {
+            //         ratingSmilies[i].addEventListener('click', function (e) {
+            //             kommunicateCommons.modifyClassList(
+            //                 { id: ['csat-2'] },
+            //                 '',
+            //                 'n-vis'
+            //             );
+            //             kommunicateCommons.modifyClassList(
+            //                 { id: ['mck-rate-conversation'] },
+            //                 'n-vis',
+            //                 ''
+            //             );
+            //             kommunicateCommons.modifyClassList(
+            //                 { class: ['mck-rating-box'] },
+            //                 '',
+            //                 'selected'
+            //             );
+            //             kommunicateCommons.modifyClassList(
+            //                 { class: ['mck-feedback-text-wrapper'] },
+            //                 '',
+            //                 'n-vis'
+            //             );
+            //             e.currentTarget.classList.add('selected');
 
-                        // if rating error msg exist in UI then hide the error msg
-                        !ratingErrorMsgContainer.classList.contains('n-vis') &&
-                            ratingErrorMsgContainer.classList.add('n-vis');
+            //             // if rating error msg exist in UI then hide the error msg
+            //             !ratingErrorMsgContainer.classList.contains('n-vis') &&
+            //                 ratingErrorMsgContainer.classList.add('n-vis');
 
-                        if (e.currentTarget.classList[1] == 'selected') {
-                            var ratingValue = parseInt(
-                                e.currentTarget.dataset.rating
-                            );
-                            var ratingType =
-                                ratingValue == 1
-                                    ? 'CSAT Rate Poor'
-                                    : ratingValue == 5
-                                    ? 'CSAT Rate Average'
-                                    : ratingValue == 10
-                                    ? 'CSAT Rate Great'
-                                    : '';
-                            kmWidgetEvents.eventTracking(
-                                eventMapping.onRateConversationEmoticonsClick,
-                                ratingType,
-                                ratingValue
-                            );
-                        }
-                    });
-                }
-            };
+            //             if (e.currentTarget.classList[1] == 'selected') {
+            //                 var ratingValue = parseInt(
+            //                     e.currentTarget.dataset.rating
+            //                 );
+            //                 var ratingType =
+            //                     ratingValue == 1
+            //                         ? 'CSAT Rate Poor'
+            //                         : ratingValue == 5
+            //                         ? 'CSAT Rate Average'
+            //                         : ratingValue == 10
+            //                         ? 'CSAT Rate Great'
+            //                         : '';
+            //                 kmWidgetEvents.eventTracking(
+            //                     eventMapping.onRateConversationEmoticonsClick,
+            //                     ratingType,
+            //                     ratingValue
+            //                 );
+            //             }
+            //         });
+            //     }
+            // };
             _this.sendFeedback = function (feedbackData) {
                 mckUtils.ajax({
                     headers: {
@@ -3480,7 +3480,7 @@ var userOverride = {
                     }
                 }
             };
-            _this.configureStarsElement = function () {
+            _this.configureStarsOrRatingElement = function () {
                 var ratingStars = document.getElementsByClassName(
                     'mck-rating-box'
                 );
@@ -3573,67 +3573,94 @@ var userOverride = {
                         e.currentTarget.classList.add('selected');
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             ratingErrorMsgContainer.classList.add('n-vis');
-
-                        if (e.currentTarget.classList[2] == 'selected') {
-                            var ratingValue = parseInt(
-                                e.currentTarget.dataset.rating
-                            );
-                            var ratingType =
-                                ratingValue == 1
-                                    ? 'CSAT Rate Bad'
-                                    : ratingValue == 2
-                                    ? 'CSAT Rate Poor'
-                                    : ratingValue == 3
-                                    ? 'CSAT Rate Average'
-                                    : ratingValue == 4
-                                    ? 'CSAT Rate Good'
-                                    : ratingValue == 5
-                                    ? 'CSAT Rate Great'
-                                    : '';
-                            kmWidgetEvents.eventTracking(
-                                eventMapping.onRateConversationEmoticonsClick,
-                                ratingType,
-                                ratingValue
-                            );
-                        }
-                    });
-                }
-                const stars = document.querySelectorAll('.star-rating label');
-                let selectedRating = feedbackObject.rating;
-
-                function highlightStars(index) {
-                    for (let i = 0; i < stars.length; i++) {
-                        stars[i].querySelector('svg path').style.fill =
-                            i <= index ? '#FFC045' : '#B3B3B3';
-                    }
-                }
-                function removeHighlightFromStars() {
-                    for (let i = 0; i < stars.length; i++) {
-                        stars[i].querySelector('svg path').style.fill =
-                            '#B3B3B3';
-                    }
-                }
-                highlightStars(selectedRating - 1);
-                stars.forEach(function (star, index) {
-                    star.addEventListener('mouseover', function () {
-                        highlightStars(index);
-                    });
-                    star.addEventListener('mouseout', function () {
-                        const isAnyRatingSelected = document.querySelector(
-                            '.mck-rating-box.selected'
-                        );
-                        if (isAnyRatingSelected == null) {
-                            removeHighlightFromStars();
+                        if (
+                            appOptions.appSettings.chatWidget.csatRatingBase ==
+                            5
+                        ) {
+                            if (e.currentTarget.classList[2] == 'selected') {
+                                var ratingValue = parseInt(
+                                    e.currentTarget.dataset.rating
+                                );
+                                var ratingType =
+                                    ratingValue == 1
+                                        ? 'CSAT Rate Bad'
+                                        : ratingValue == 2
+                                        ? 'CSAT Rate Poor'
+                                        : ratingValue == 3
+                                        ? 'CSAT Rate Average'
+                                        : ratingValue == 4
+                                        ? 'CSAT Rate Good'
+                                        : ratingValue == 5
+                                        ? 'CSAT Rate Great'
+                                        : '';
+                                kmWidgetEvents.eventTracking(
+                                    eventMapping.onRateConversationEmoticonsClick,
+                                    ratingType,
+                                    ratingValue
+                                );
+                            }
                         } else {
-                            highlightStars(selectedRating - 1);
+                            if (e.currentTarget.classList[1] == 'selected') {
+                                var ratingValue = parseInt(
+                                    e.currentTarget.dataset.rating
+                                );
+                                var ratingType =
+                                    ratingValue == 1
+                                        ? 'CSAT Rate Poor'
+                                        : ratingValue == 5
+                                        ? 'CSAT Rate Average'
+                                        : ratingValue == 10
+                                        ? 'CSAT Rate Great'
+                                        : '';
+                                kmWidgetEvents.eventTracking(
+                                    eventMapping.onRateConversationEmoticonsClick,
+                                    ratingType,
+                                    ratingValue
+                                );
+                            }
                         }
                     });
+                }
+                if (appOptions.appSettings.chatWidget.csatRatingBase == 5) {
+                    const stars = document.querySelectorAll(
+                        '.star-rating label'
+                    );
+                    let selectedRating = feedbackObject.rating;
 
-                    star.addEventListener('click', function () {
-                        selectedRating = index + 1;
-                        highlightStars(selectedRating - 1);
+                    function highlightStars(index) {
+                        for (let i = 0; i < stars.length; i++) {
+                            stars[i].querySelector('svg path').style.fill =
+                                i <= index ? '#FFC045' : '#B3B3B3';
+                        }
+                    }
+                    function removeHighlightFromStars() {
+                        for (let i = 0; i < stars.length; i++) {
+                            stars[i].querySelector('svg path').style.fill =
+                                '#B3B3B3';
+                        }
+                    }
+                    highlightStars(selectedRating - 1);
+                    stars.forEach(function (star, index) {
+                        star.addEventListener('mouseover', function () {
+                            highlightStars(index);
+                        });
+                        star.addEventListener('mouseout', function () {
+                            const isAnyRatingSelected = document.querySelector(
+                                '.mck-rating-box.selected'
+                            );
+                            if (isAnyRatingSelected == null) {
+                                removeHighlightFromStars();
+                            } else {
+                                highlightStars(selectedRating - 1);
+                            }
+                        });
+
+                        star.addEventListener('click', function () {
+                            selectedRating = index + 1;
+                            highlightStars(selectedRating - 1);
+                        });
                     });
-                });
+                }
             };
 
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
