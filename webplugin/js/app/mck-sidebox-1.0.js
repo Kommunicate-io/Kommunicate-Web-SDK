@@ -2321,6 +2321,7 @@ var userOverride = {
                             event.preventDefault();
                             event.stopPropagation();
                             _this.closeLeadCollectionWindow();
+                            genAiService.enableTextArea(true);
                         });
                         for (
                             var i = 0;
@@ -5218,6 +5219,7 @@ var userOverride = {
                             ''
                         );
 
+                        genAiService.enableTextArea(true);
                         // To prevent conversation assignee details from being shown when in FAQ
                         var lastEvent =
                             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1];
@@ -5991,6 +5993,9 @@ var userOverride = {
                 var lastMessageBeforeSend = $applozic(
                     "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                 );
+
+                // GEN AI
+                genAiService.enableTextArea(false);
 
                 kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
@@ -7761,6 +7766,9 @@ var userOverride = {
                 data.imageLink &&
                     (updateConversationHeaderParams.imageUrl = data.imageLink);
                 CURRENT_GROUP_DATA.conversationAssignee = data && data.userId;
+                CURRENT_GROUP_DATA.isConversationAssigneeBot =
+                    data?.roleType ===
+                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
                 if (
                     data.roleType ===
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
@@ -7771,6 +7779,9 @@ var userOverride = {
                     updateConversationHeaderParams.availabilityStatus = data.connected
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
+
+                    genAiService.enableTextArea(true);
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
                 kmNavBar.hideAndShowTalkToHumanBtn(
                     data.roleType !==
@@ -9106,7 +9117,12 @@ var userOverride = {
                     conversationAssigneeDetails.roleType ==
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
-                        : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                        : (CURRENT_GROUP_DATA = {
+                              ...CURRENT_GROUP_DATA,
+                              CHAR_CHECK: false,
+                              TOKENIZE_RESPONSE: false,
+                              isConversationAssigneeBot: false,
+                          });
                     KommunicateUI.isFAQPrimaryCTA() &&
                         $applozic('#km-faq')
                             .removeClass('n-vis')
@@ -9241,7 +9257,8 @@ var userOverride = {
                                 isValidated,
                                 enableAttachment,
                                 null,
-                                allowReload
+                                allowReload,
+                                true
                             );
                             HIDE_POST_CTA && Kommunicate.hideMessageCTA(true);
 
@@ -9499,7 +9516,8 @@ var userOverride = {
                 appendContextMenu,
                 enableAttachment,
                 callback,
-                allowReload
+                allowReload,
+                msgThroughListAPI
             ) {
                 var metadatarepiledto = '';
                 var replymessage = '';
@@ -9515,7 +9533,7 @@ var userOverride = {
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
                 let isUserMsg = true;
-                if (!Kommunicate.visibleMessage(msg)) return;
+                if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;
 
                 if (
                     typeof msg.metadata === 'object' &&
@@ -9555,10 +9573,21 @@ var userOverride = {
                     }
                 }
 
-                if ($applozic('#mck-message-cell .' + msg.key).length > 0) {
+                if (
+                    $applozic('#mck-message-cell .' + msg.key).length > 0 &&
+                    !(CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && msg.type !== 5)
+                ) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
+
+                // GEN AI BOT
+                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msgThroughListAPI) { // message not from the sockets
+                    document
+                        .getElementById('mck-text-box')
+                        .setAttribute('contenteditable', false);
+                }
+
                 if (
                     msg.source ==
                     KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
@@ -9654,6 +9683,7 @@ var userOverride = {
                 if (floatWhere === 'mck-msg-right') {
                     isUserMsg = true;
                     typingService.cumulativeHeight = 0;
+                    genAiService.resetState();
                 }
                 var replyId = msg.key;
                 var replyMessageParameters =
@@ -9911,14 +9941,17 @@ var userOverride = {
                     },
                 ];
 
-                append
-                    ? $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .appendTo('#mck-message-cell .mck-message-inner')
-                    : $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .prependTo('#mck-message-cell .mck-message-inner');
-
+                if (!$applozic('#mck-message-cell .' + msg.key).length > 0) {
+                    append
+                        ? $applozic
+                              .tmpl('messageTemplate', msgList)
+                              .appendTo('#mck-message-cell .mck-message-inner')
+                        : $applozic
+                              .tmpl('messageTemplate', msgList)
+                              .prependTo(
+                                  '#mck-message-cell .mck-message-inner'
+                              );
+                }
                 if (
                     Kommunicate._globals.disableFormPostSubmit &&
                     msg.metadata
@@ -10382,29 +10415,41 @@ var userOverride = {
                     emoji_template.indexOf('emoji-inner') === -1 &&
                     msg.contentType === 0
                 ) {
-                    var $normalTextMsg = $applozic(
-                        "<div class='mck-text-msg-" +
-                            (floatWhere === 'mck-msg-right'
-                                ? 'right'
-                                : 'left') +
-                            "'/>"
-                    );
-                    var nodes = emoji_template.split('<br/>');
-                    for (var i = 0; i < nodes.length; i++) {
-                        var currentNode = nodes[i];
+                    const className = `mck-text-msg-${
+                        floatWhere === 'mck-msg-right' ? 'right' : 'left'
+                    }`;
+                    if (
+                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                        floatWhere !== 'mck-msg-right' &&
+                        !msgThroughListAPI
+                    ) {
+                        genAiService.addTokenizeMsg(
+                            msg,
+                            className,
+                            $textMessage
+                        );
+                    } else {
+                        const $normalTextMsg = $applozic(
+                            `<div class=${className} />`
+                        );
+                        const nodes = emoji_template.split('<br/>');
+                        for (let i = 0; i < nodes.length; i++) {
+                            const currentNode = nodes[i];
+                            let x;
 
-                        if (currentNode === '') {
-                            var x = d.createElement('BR');
-                        } else {
-                            var x = d.createElement('div');
-                            x.appendChild(d.createTextNode(currentNode));
-                            x = $applozic(x).linkify({
-                                target: '_blank',
-                            });
+                            if (currentNode === '') {
+                                x = d.createElement('BR');
+                            } else {
+                                x = d.createElement('div');
+                                x.appendChild(d.createTextNode(currentNode));
+                                x = $applozic(x).linkify({
+                                    target: '_blank',
+                                });
+                            }
+                            $normalTextMsg.append(x);
                         }
-                        $normalTextMsg.append(x);
+                        $textMessage.append($normalTextMsg);
                     }
-                    $textMessage.append($normalTextMsg);
                 } else {
                     $textMessage.html(emoji_template);
                     $textMessage.linkify({
@@ -12921,7 +12966,9 @@ var userOverride = {
                                         0) &&
                                     $applozic('.' + message.key).length ===
                                         0) ||
-                                message.contentType === 10
+                                message.contentType === 10 ||
+                                (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                                    message.contentType !== 5)
                             ) {
                                 if (
                                     typeof tabId !== 'undefined' &&
@@ -14176,6 +14223,9 @@ var userOverride = {
                             _this.removeWarningsFromTextBox();
                         CURRENT_GROUP_DATA.CHAR_CHECK &&
                             _this.disableSendButton(true);
+                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE =
+                            data.data[0]?.generativeResponse || false;
+                        CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
