@@ -113,11 +113,19 @@
     display: contents !important;
   }
   
-  .star-rating input[type="radio"] {
+.star-rating input[type="radio"] {
     display: none;
-  }
+}
   
-  .star-rating label svg {
+.star-rating label svg {
     cursor: pointer;
+}
+
+.star-rating label.filled svg path {
+    fill: #FFC045;
+}
+
+.star-rating label svg path {
+    fill: #B3B3B3;
 }
 

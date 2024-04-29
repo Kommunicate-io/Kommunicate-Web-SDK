@@ -14,11 +14,27 @@ class RatingService {
         }
     }
     starCsatHtmlEnable = () => {
-        $applozic('.mck-smilies-inner').removeClass('vis').addClass('n-vis');
-
-        $applozic('.mck-ratings-smilies').addClass('star-rating-extra');
-
-        $applozic('.star-rating').removeClass('n-vis').addClass('vis');
+        kommunicateCommons.modifyClassList(
+            {
+                class: ['mck-smilies-inner'],
+            },
+            'n-vis',
+            'vis'
+        );
+        kommunicateCommons.modifyClassList(
+            {
+                class: ['star-rating'],
+            },
+            'vis',
+            'n-vis'
+        );
+        kommunicateCommons.modifyClassList(
+            {
+                class: ['mck-ratings-smilies'],
+            },
+            'star-rating-extra',
+            ''
+        );
     };
 
     generateStarSvgs = function (rating) {
@@ -32,44 +48,40 @@ class RatingService {
     resetStarsColor = () => {
         const stars = document.querySelectorAll('.star-rating label');
         stars.forEach(function (star, index) {
-            star.querySelector('svg path').style.fill = '';
+            star.classList.remove('filled');
         });
     };
 
     setStarsEffect = (rating) => {
         const stars = document.querySelectorAll('.star-rating label');
-        let selectedRating = rating;
-
         function highlightStars(index) {
-            for (let i = 0; i < stars.length; i++) {
-                stars[i].querySelector('svg path').style.fill =
-                    i <= index ? '#FFC045' : '#B3B3B3';
-            }
-        }
-        function removeHighlightFromStars() {
-            for (let i = 0; i < stars.length; i++) {
-                stars[i].querySelector('svg path').style.fill = '#B3B3B3';
-            }
-        }
-        highlightStars(selectedRating - 1);
-        stars.forEach(function (star, index) {
-            star.addEventListener('mouseover', function () {
-                highlightStars(index);
+            stars.forEach((star, i) => {
+                star.classList.toggle('filled', i <= index);
             });
-            star.addEventListener('mouseout', function () {
+        }
+
+        function removeHighlightFromStars() {
+            document
+                .querySelectorAll('.star-rating label.filled')
+                .forEach((star) => star.classList.remove('filled'));
+        }
+
+        highlightStars(rating - 1);
+        stars.forEach((star, index) => {
+            star.addEventListener('mouseover', () => highlightStars(index));
+            star.addEventListener('mouseout', () => {
                 const isAnyRatingSelected = document.querySelector(
                     '.mck-rating-box.selected'
                 );
-                if (isAnyRatingSelected == null) {
+                if (!isAnyRatingSelected) {
                     removeHighlightFromStars();
                 } else {
-                    highlightStars(selectedRating - 1);
+                    highlightStars(rating - 1);
                 }
             });
-
-            star.addEventListener('click', function () {
-                selectedRating = index + 1;
-                highlightStars(selectedRating - 1);
+            star.addEventListener('click', () => {
+                rating = index + 1;
+                highlightStars(index);
             });
         });
     };
