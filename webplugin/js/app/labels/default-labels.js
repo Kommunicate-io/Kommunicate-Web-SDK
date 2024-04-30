@@ -139,7 +139,7 @@ class KMLabel {
                 NEW_RATING_EMPTY_LABEL: '',
                 CONVERSATION_RATED: 'You rated the conversation as',
                 RATE_CONVERSATION: 'Rate your conversation',
-                CONVERSATION_REVIEW_PLACEHOLDER: '(optional)',
+                CONVERSATION_REVIEW_PLACEHOLDER: 'Enter your feedback...',
                 OTHER_QUERIES: 'Have other queries? ',
                 RESTART_CONVERSATION: 'Restart the conversation',
                 SUBMIT_RATING: 'Submit your rating',
