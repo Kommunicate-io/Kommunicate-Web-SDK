@@ -3031,8 +3031,8 @@ var userOverride = {
                                 'mck-restart-conv-banner km-mid-conv-csat'
                             );
                             if (
-                                appOptions.appSettings.chatWidget
-                                    .csatRatingBase == 5
+                                appOptions?.appSettings?.chatWidget
+                                    ?.csatRatingBase == 5
                             ) {
                                 ratingService.resetStarsColor();
                             }
@@ -3457,7 +3457,7 @@ var userOverride = {
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             ratingErrorMsgContainer.classList.add('n-vis');
                         if (
-                            appOptions.appSettings.chatWidget.csatRatingBase ==
+                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
                             5
                         ) {
                             if (e.currentTarget.classList[2] == 'selected') {
@@ -3504,7 +3504,7 @@ var userOverride = {
                         }
                     });
                 }
-                if (appOptions.appSettings.chatWidget.csatRatingBase == 5) {
+                if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
                     ratingService.setStarsEffect(feedbackObject.rating);
                 }
             };
@@ -9852,7 +9852,7 @@ var userOverride = {
                         // 2 = CONVERSATION IS CLOSED OR RESOLVED
                         var csatRatingLabel = '';
                         if (
-                            appOptions.appSettings.chatWidget.csatRatingBase ==
+                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
                             5
                         ) {
                             csatRatingLabel = 'NEW_RATING_EMPTY_LABEL';
@@ -9868,7 +9868,7 @@ var userOverride = {
                         }
                         var ratingTitle = '';
                         if (
-                            appOptions.appSettings.chatWidget.csatRatingBase !==
+                            appOptions?.appSettings?.chatWidget?.csatRatingBase !==
                             5
                         ) {
                             ratingTitle =
@@ -9879,8 +9879,8 @@ var userOverride = {
                         var ratingData = [
                             {
                                 ratingSmileSVG:
-                                    appOptions.appSettings.chatWidget
-                                        .csatRatingBase == 5
+                                    appOptions?.appSettings?.chatWidget
+                                        ?.csatRatingBase == 5
                                         ? ratingService.generateStarSvgs(
                                               userFeedback.rating
                                           )

@@ -6,7 +6,7 @@ class RatingService {
     init(appOptions = {}) {
         const { widgetSettings = {} } = appOptions;
         this.appOptions = appOptions;
-        this.isCsatRatingBase = widgetSettings.csatRatingBase
+        this.isCsatRatingBase = widgetSettings?.csatRatingBase
             ? widgetSettings.csatRatingBase
             : 3;
         if (this.isCsatRatingBase == 5) {
