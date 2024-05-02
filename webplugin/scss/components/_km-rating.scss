@@ -51,9 +51,14 @@
     justify-content: space-between;
 }
 
+.star-rating-extra{
+    width: 80%;
+    margin: 15px 40px;
+}
+
 .mck-smilies-inner {
     width: 100%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: space-between;
     margin-top: 8px;
@@ -77,6 +82,7 @@
         font-size: 14px;
         display: flex;
         gap: 4px;
+        font-weight: 500;
     }
     svg {
         margin-top: 3px;
@@ -103,3 +109,23 @@
         @include errorText;
     }
 }
+.star-rating {
+    display: contents !important;
+  }
+  
+.star-rating input[type="radio"] {
+    display: none;
+}
+  
+.star-rating label svg {
+    cursor: pointer;
+}
+
+.star-rating label.filled svg path {
+    fill: #FFC045;
+}
+
+.star-rating label svg path {
+    fill: #B3B3B3;
+}
+
