@@ -9378,6 +9378,11 @@ var userOverride = {
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
                 let isUserMsg = true;
+
+                if (msg?.message) {
+                    msg.message = window.DOMPurify.sanitize(msg.message);
+                }
+
                 if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;
 
                 if (
@@ -9606,6 +9611,7 @@ var userOverride = {
                 var fileName = '';
                 var fileSize = '';
                 var frwdMsgExpr = msg.message;
+
                 if (typeof msg.fileMeta === 'object') {
                     fileName = msg.fileMeta.name;
                     fileSize = msg.fileMeta.size;

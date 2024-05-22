@@ -8,6 +8,7 @@ exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/mustache.js'),
     path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
     path.resolve(__dirname, 'lib/js/intl-tel-lib.js'),
+    path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js')
 ];
 
 exports.PLUGIN_JS_FILES = [
