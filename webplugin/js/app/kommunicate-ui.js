@@ -974,8 +974,12 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        !kommunicateCommons.checkIfDeviceIsHandheld() &&
+        if(kommunicate._globals.inputFocus) {
+            !kommunicateCommons.checkIfDeviceIsHandheld() && null
+        }else {
+            !kommunicateCommons.checkIfDeviceIsHandheld() && 
             $applozic('#mck-text-box').focus();
+        }
     },
     setAvailabilityStatus: function (status) {
         $applozic('.mck-agent-image-container')
