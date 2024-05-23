@@ -916,4 +916,31 @@ $applozic.extend(true, Kommunicate, {
             }
         }
     },
+    getUserLocation:async function (){
+        if (!("geolocation" in navigator)) {
+          console.error("Geolocation is not supported by this browser.");
+          return "Geolocation not supported";
+        }
+      
+        const getCurrentPosition = () => 
+          new Promise((resolve, reject) => 
+            navigator.geolocation.getCurrentPosition(resolve, reject)
+          );
+      
+        try {
+          const position = await getCurrentPosition();
+          const response = await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json&apiKey=8ce8e23a726b474cb13a056bd31dd070`);
+          const result = await response.json();
+      
+          
+          if (result && result.results.length) {
+            
+            return result.results[0].address_line2;
+          }
+          return "location not found";
+        } catch (error) {
+          console.error("Error fetching location", error);
+          return "permission denied";
+        }
+      }
 });
