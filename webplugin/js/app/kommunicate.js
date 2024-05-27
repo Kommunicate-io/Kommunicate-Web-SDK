@@ -916,26 +916,20 @@ $applozic.extend(true, Kommunicate, {
             }
         }
     },
-    getUserLocation:async function (){
-        if (!("geolocation" in navigator)) {
-          console.error("Geolocation is not supported by this browser.");
-          return "Geolocation not supported";
-        }
-      
+    getUserLocation: async function (api_key){
+      try {
         const getCurrentPosition = () => 
-          new Promise((resolve, reject) => 
-            navigator.geolocation.getCurrentPosition(resolve, reject)
-          );
-      
-        try {
-          const position = await getCurrentPosition();
-          const response = await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json&apiKey=8ce8e23a726b474cb13a056bd31dd070`);
+            new Promise((resolve, reject) => 
+              navigator.geolocation.getCurrentPosition(resolve, reject)
+            );
+
+          const position=await getCurrentPosition();
+          MCK_CURR_LATITIUDE=position.coords.latitude;
+          MCK_CURR_LONGITUDE=position.coords.longitude;
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${MCK_CURR_LATITIUDE},${MCK_CURR_LONGITUDE}&sensor=true&key=${api_key}`);
           const result = await response.json();
-      
-          
           if (result && result.results.length) {
-            
-            return result.results[0].address_line2;
+                return result.results[0].formatted_address;
           }
           return "location not found";
         } catch (error) {
