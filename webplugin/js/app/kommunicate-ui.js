@@ -974,7 +974,7 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        if(kommunicate._globals.inputFocus) {
+        if(kommunicate._globals.Focusontextarea) {
             !kommunicateCommons.checkIfDeviceIsHandheld() && null
         }else {
             !kommunicateCommons.checkIfDeviceIsHandheld() && 
