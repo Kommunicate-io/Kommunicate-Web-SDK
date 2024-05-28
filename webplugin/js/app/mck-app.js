@@ -431,6 +431,7 @@ function ApplozicSidebox() {
             options['collectFeedback'] = options.appSettings.collectFeedback;
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
+            options['googleApiKey']=options.appSettings.mapStaticAPIKey;
 
             var pseudoNameEnabled =
                 widgetSettings &&
