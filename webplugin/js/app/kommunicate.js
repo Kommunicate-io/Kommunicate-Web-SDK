@@ -938,19 +938,20 @@ $applozic.extend(true, Kommunicate, {
     getUserLocation: async function (){
       try {
         
-          const api_key='AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
-          const position=await this.getCurrentPosition();
-          MCK_CURR_LATITIUDE=position.coords.latitude;
-          MCK_CURR_LONGITUDE=position.coords.longitude;
+          const api_key = $applozic.fn.applozic.defaults.mapStaticAPIkey;
+          const position = await this.getCurrentPosition();
+          MCK_CURR_LATITIUDE = position.coords.latitude;
+          MCK_CURR_LONGITUDE = position.coords.longitude;
           const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${MCK_CURR_LATITIUDE},${MCK_CURR_LONGITUDE}&sensor=true&key=${api_key}`);
           const result = await response.json();
+          
           if (result && result.results.length) {
                 return result.results[0].formatted_address;
           }
-          return "location not found";
+          return "LOCATION_NOT_FOUND";
         } catch (error) {
           console.error("Error fetching location", error);
-          return "permission denied";
+          return "PERMISSION_DENIED";
         }
       }
 });
