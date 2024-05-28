@@ -931,4 +931,26 @@ $applozic.extend(true, Kommunicate, {
             }
         }
     },
+    getCurrentPosition:() => 
+        new Promise((resolve, reject) => 
+          navigator.geolocation.getCurrentPosition(resolve, reject)
+        ),
+    getUserLocation: async function (){
+      try {
+        
+          const api_key='AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
+          const position=await this.getCurrentPosition();
+          MCK_CURR_LATITIUDE=position.coords.latitude;
+          MCK_CURR_LONGITUDE=position.coords.longitude;
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${MCK_CURR_LATITIUDE},${MCK_CURR_LONGITUDE}&sensor=true&key=${api_key}`);
+          const result = await response.json();
+          if (result && result.results.length) {
+                return result.results[0].formatted_address;
+          }
+          return "location not found";
+        } catch (error) {
+          console.error("Error fetching location", error);
+          return "permission denied";
+        }
+      }
 });
