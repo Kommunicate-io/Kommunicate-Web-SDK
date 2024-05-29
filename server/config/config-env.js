@@ -77,7 +77,7 @@ const configEnv = {
         urls: {
             applozicBaseUrl: 'https://chat-release.kommunicate.io',
             kommunicateBaseUrl: 'https://api-release.kommunicate.io',
-            botPlatformApi: 'https://bots-test.kommunicate.io',
+            botPlatformApi: 'https://bots-release.kommunicate.io',
             hostUrl: 'https://widget-release.kommunicate.io',
             dashboardUrl: 'https://dashboard-release.kommunicate.io',
         },
