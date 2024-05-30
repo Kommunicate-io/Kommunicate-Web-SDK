@@ -9380,7 +9380,12 @@ var userOverride = {
                 let isUserMsg = true;
 
                 if (msg?.message) {
-                    msg.message = window.DOMPurify.sanitize(msg.message);
+                    msg.message = window.DOMPurify.sanitize(msg.message, {
+                        ALLOWED_TAGS: KM_ALLOWED_TAGS,
+                        WHOLE_DOCUMENT:
+                            msg.contentType ===
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML,
+                    });
                 }
 
                 if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;

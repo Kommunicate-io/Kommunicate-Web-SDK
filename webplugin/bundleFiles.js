@@ -15,6 +15,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'lib/js/Fr.voice.js'),
     path.resolve(__dirname, 'lib/js/recorder.js'),
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
+    path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
     path.resolve(__dirname, 'js/app/km-utils.js'),
     path.resolve(__dirname, 'js/app/applozic.jquery.js'),
     path.resolve(__dirname, 'knowledgebase/common.js'),
