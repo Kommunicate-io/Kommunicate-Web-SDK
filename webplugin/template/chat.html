@@ -21,7 +21,7 @@
         }
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
-        let isInputFocused = params.get('focused')
+        let isInputFocused = params.get('focused');
         let botIds = splitByComma(params.get('botIds'));
         let agentIds = splitByComma(params.get('agentIds'));
         let assignee = params.get('assignee');
@@ -51,7 +51,7 @@
                 }
 
                 var kommunicateSettings = {
-                    "isInputFocused" : isInputFocused == "false",
+                    "isInputFocused" : isInputFocused,
                     "appId": appId, // replace this with your application id
                     "onInit": function () {
                         if (JSON.stringify(defaultSettings) != '{}') {
