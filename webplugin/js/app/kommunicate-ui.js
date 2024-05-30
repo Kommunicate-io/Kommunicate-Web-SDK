@@ -974,9 +974,7 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        if(kommunicate._globals.FocusOnTextArea) {
-            !kommunicateCommons.checkIfDeviceIsHandheld()
-        }else {
+        if(!kommunicate._globals.textAreaNoFocus) {
             !kommunicateCommons.checkIfDeviceIsHandheld() && 
             $applozic('#mck-text-box').focus();
         }
