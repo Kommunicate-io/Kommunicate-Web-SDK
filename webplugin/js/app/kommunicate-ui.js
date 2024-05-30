@@ -974,10 +974,10 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        if(!kommunicate._globals.isInputFocused) {
-            !kommunicateCommons.checkIfDeviceIsHandheld() && 
-            $applozic('#mck-text-box').focus();
+        if (kommunicate._globals.isInputFocused || kommunicateCommons.checkIfDeviceIsHandheld()) {
+            return;
         }
+        $applozic('#mck-text-box').focus();
     },
     setAvailabilityStatus: function (status) {
         $applozic('.mck-agent-image-container')
