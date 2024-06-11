@@ -590,7 +590,7 @@ function ApplozicSidebox() {
             options.talkToHuman = isSettingEnable('talkToHuman');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
-            options.googleApiKey = isSettingEnable('googleApiKey') ?? 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
+            options.googleApiKey = isSettingEnable('googleApiKey') || 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
