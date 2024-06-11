@@ -86,9 +86,9 @@ $applozic.extend(true, Kommunicate, {
             (groupMetadata = params.conversationMetadata);
 
         var conversationDetail = {
-            groupName: groupName || "Conversations",
+            groupName: groupName || 'Conversations',
             type: 10,
-            agentId: params.agentId || "",
+            agentId: params.agentId || '',
             assignee: assignee,
             users: user,
             clientGroupId: params.clientGroupId,
@@ -756,7 +756,7 @@ $applozic.extend(true, Kommunicate, {
             : kommunicateIframe.classList.add('kommunicate-hide-custom-iframe');
     },
     // check if the message needs to be processed by addMessage
-    visibleMessage: function (msg) {
+    visibleMessage: function (msg, msgThroughListAPI) {
         if (!msg) return false;
         if (
             !msg.message &&
@@ -780,7 +780,8 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            msg.metadata &&  msg.metadata.KM_STATUS
+            msg.metadata &&
+            msg.metadata.KM_STATUS
             // (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)
         ) {
             return false;
@@ -794,11 +795,30 @@ $applozic.extend(true, Kommunicate, {
         ) {
             return false;
         }
+
+        // genai last message
+        if (!msgThroughListAPI) {
+            // Enable the msg area when we got the last token
+            if (msg.metadata?.lastToken === 'true') {
+                genAiService.resetState();
+                genAiService.enableTextArea(true);
+            }
+
+            if (
+                msg.metadata?.lastToken === 'true' ||
+                msg.metadata?.firstToken === 'true' ||
+                (msg.metadata?.hasOwnProperty('PLATFORM_MESSAGE_ID') &&
+                    !msg.message)
+            ) {
+                return false;
+            }
+        }
+
         return true;
     },
     isMessageClubbing: function (className) {
         var CLUBBING_CLASSES = ['km-clubbing-first', 'km-clubbing-last'];
-        return CLUBBING_CLASSES.some(function(clName) {
+        return CLUBBING_CLASSES.some(function (clName) {
             return className.classList.contains(clName);
         });
     },
@@ -817,11 +837,11 @@ $applozic.extend(true, Kommunicate, {
         );
 
         if (isCtaMultiContainerExist) {
-            quickReplyCtaPrevSibling.style.display="block";
+            quickReplyCtaPrevSibling.style.display = 'block';
             isCtaMultiContainerExist.classList.remove('vis');
             isCtaMultiContainerExist.classList.add('n-vis');
             return;
-        };
+        }
 
         while (
             quickReplyCtaPrevSibling.classList.contains(
@@ -831,9 +851,11 @@ $applozic.extend(true, Kommunicate, {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-        var isFirstGroupMessage = quickReplyCtaPrevSibling.previousElementSibling;
+        var isFirstGroupMessage =
+            quickReplyCtaPrevSibling.previousElementSibling;
         quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-        isFirstGroupMessage && quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
+        isFirstGroupMessage &&
+            quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
     },
     getAllSiblings: function (element) {
         var siblings = [];

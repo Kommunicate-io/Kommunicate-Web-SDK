@@ -275,7 +275,7 @@ function injectJquery() {
             kommunicateIframe.contentWindow.document;
         addableWindow = kommunicateIframe.contentWindow;
         addableDocument = iframeDocument;
-        addableDocument.body.setAttribute('dir',languageDirectionChangeAuto());
+        addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
     }
     var head = addableDocument.getElementsByTagName('head')[0];
     var script = addableDocument.createElement('script');

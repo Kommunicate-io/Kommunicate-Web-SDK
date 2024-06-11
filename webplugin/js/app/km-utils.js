@@ -68,6 +68,8 @@ KommunicateConstants = {
     },
     DEFAULT_AVATAR_IMAGE:
         '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#e9e9e9" d="M12,0A12,12,0,1,0,24,12,12.0044,12.0044,0,0,0,12,0Zm0,3.6A3.6,3.6,0,1,1,8.4,7.2,3.5952,3.5952,0,0,1,12,3.6Zm0,17.04a8.6406,8.6406,0,0,1-7.2-3.864c.036-2.388,4.8-3.696,7.2-3.696,2.388,0,7.164,1.308,7.2,3.696A8.6406,8.6406,0,0,1,12,20.64Z"/><path d="M0 0h24v24H0z" fill="none"/></svg>',
+    STAR_SVG:
+        '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="margin: 0 !important;" xmlns="http://www.w3.org/2000/svg"><path d="M9.00024 13.1393L12.1127 15.0218C12.6827 15.3668 13.3802 14.8568 13.2302 14.2118L12.4052 10.6718L15.1577 8.28684C15.6602 7.85184 15.3902 7.02684 14.7302 6.97434L11.1077 6.66684L9.69024 3.32184C9.43524 2.71434 8.56524 2.71434 8.31024 3.32184L6.89274 6.65934L3.27024 6.96684C2.61024 7.01934 2.34024 7.84434 2.84274 8.27934L5.59524 10.6643L4.77024 14.2043C4.62024 14.8493 5.31774 15.3593 5.88774 15.0143L9.00024 13.1393Z" fill="#FFC045"/></svg>',
     RICH_MESSAGE_ICON:
         '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 23 22"><g fill="none" fill-rule="evenodd" opacity=".539" transform="translate(1 1)"><circle cx="6.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M14.636 16h-1.045l-3.136 4-3.137-4H.763C.342 16 0 15.673 0 15.27V4.36a4.287 4.287 0 0 1 1.356-3.091A4.69 4.69 0 0 1 4.6-.001h15.546c.421 0 .763.328.763.731V16h-6.273z"/><circle cx="10.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/><circle cx="14.455" cy="9" r="1" fill="#000" fill-rule="nonzero"/></g></svg>',
     VIDEO_ICON:

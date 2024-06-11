@@ -24,7 +24,7 @@ function KommunicateCommons() {
         }
         return isTrialPlan;
     };
-    
+
     _this.isStartupPlan = function (data) {
         return (
             data &&
@@ -264,9 +264,10 @@ function KommunicateCommons() {
 
     _this.debounce = function (func, wait, immediate) {
         var timeout;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
+        return function () {
+            var context = this,
+                args = arguments;
+            var later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
             };

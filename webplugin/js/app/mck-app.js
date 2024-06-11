@@ -589,6 +589,7 @@ function ApplozicSidebox() {
             options.primaryCTA = isSettingEnable('primaryCTA');
             options.talkToHuman = isSettingEnable('talkToHuman');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
+            options.rtl = isSettingEnable('rtl');
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
@@ -647,6 +648,10 @@ function ApplozicSidebox() {
                 options.ojq = $original;
                 options.obsm = oModal;
                 $applozic.fn.applozic(options);
+            }
+            if (options.rtl === false) {
+                const iframeDocument = window.document;
+                iframeDocument.body.setAttribute('dir', "ltr");
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {

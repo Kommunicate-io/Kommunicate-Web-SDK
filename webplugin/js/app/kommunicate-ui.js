@@ -1056,6 +1056,7 @@ KommunicateUI = {
         }
     },
     triggerCSAT: function (triggeredByBot) {
+        ratingService.resetStarsColor();
         var isConvRated =
             document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {

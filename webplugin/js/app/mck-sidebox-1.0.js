@@ -608,6 +608,7 @@ var userOverride = {
             appOptions.askUserDetails
         );
         typingService.init(appOptions);
+        ratingService.init(appOptions);
         var QUICK_REPLIES = appOptions.quickReplies
             ? mckMessageService.checkArray(appOptions.quickReplies)
             : [];
@@ -2319,6 +2320,7 @@ var userOverride = {
                             event.preventDefault();
                             event.stopPropagation();
                             _this.closeLeadCollectionWindow();
+                            genAiService.enableTextArea(true);
                         });
                         for (
                             var i = 0;
@@ -2811,7 +2813,7 @@ var userOverride = {
                         .addClass('vis');
                 }
                 _this.setEmojiHoverText();
-                _this.configureRatingElements();
+                _this.configureStarsOrRatingElement();
                 mckMessageLayout.setHeaderPrimaryCTA();
             };
 
@@ -2989,123 +2991,6 @@ var userOverride = {
                             ));
                 });
             };
-            _this.configureRatingElements = function () {
-                var ratingSmilies = document.getElementsByClassName(
-                    'mck-rating-box'
-                );
-                var sendFeedbackComment = document.getElementById(
-                    'mck-submit-comment'
-                );
-                var restartConversation = document.getElementById(
-                    'mck-restart-conversation'
-                );
-                var ratingErrorMsgContainer = document.getElementById(
-                    'mck-rate-error-wrapper'
-                );
-                var feedbackObject = {
-                    groupId: 0,
-                    comments: [],
-                    rating: 0,
-                };
-
-                restartConversation.addEventListener(
-                    'click',
-                    mckMessageService.restartConversation
-                );
-                sendFeedbackComment.addEventListener('click', function () {
-                    const isAnyRatingSelected = document.querySelector(
-                        '.mck-rating-box.selected'
-                    );
-                    if (!isAnyRatingSelected) {
-                        ratingErrorMsgContainer.classList.remove('n-vis');
-                        return;
-                    }
-                    kmWidgetEvents.eventTracking(
-                        eventMapping.onSubmitRatingClick
-                    );
-                    feedbackObject = {
-                        groupId: 0,
-                        comments: [],
-                        rating: 0,
-                    };
-                    var comment = document.getElementById(
-                        'mck-feedback-comment'
-                    );
-                    sendFeedbackComment.setAttribute('disabled', 'true');
-                    comment &&
-                        comment.value.trim() &&
-                        (feedbackObject.comments = [comment.value]);
-                    feedbackObject.rating = parseInt(
-                        document
-                            .querySelector('.mck-rating-box.selected')
-                            .getAttribute('data-rating')
-                    );
-                    feedbackObject.groupId =
-                        CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
-                    feedbackObject.supportAgentName =
-                        CURRENT_GROUP_DATA &&
-                        CURRENT_GROUP_DATA.conversationAssignee;
-                    feedbackObject.applicationId = MCK_APP_ID;
-                    feedbackObject.teamId =
-                        CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId;
-                    var LOGGED_IN_USER =
-                        alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
-                    feedbackObject.userInfo = {
-                        name: LOGGED_IN_USER.userName,
-                        userId: MCK_USER_ID,
-                        email: LOGGED_IN_USER.email,
-                    };
-                    _this.sendFeedback(feedbackObject);
-                });
-                for (var i = 0; i < ratingSmilies.length; i++) {
-                    ratingSmilies[i].addEventListener('click', function (e) {
-                        kommunicateCommons.modifyClassList(
-                            { id: ['csat-2'] },
-                            '',
-                            'n-vis'
-                        );
-                        kommunicateCommons.modifyClassList(
-                            { id: ['mck-rate-conversation'] },
-                            'n-vis',
-                            ''
-                        );
-                        kommunicateCommons.modifyClassList(
-                            { class: ['mck-rating-box'] },
-                            '',
-                            'selected'
-                        );
-                        kommunicateCommons.modifyClassList(
-                            { class: ['mck-feedback-text-wrapper'] },
-                            '',
-                            'n-vis'
-                        );
-                        e.currentTarget.classList.add('selected');
-
-                        // if rating error msg exist in UI then hide the error msg
-                        !ratingErrorMsgContainer.classList.contains('n-vis') &&
-                            ratingErrorMsgContainer.classList.add('n-vis');
-
-                        if (e.currentTarget.classList[1] == 'selected') {
-                            var ratingValue = parseInt(
-                                e.currentTarget.dataset.rating
-                            );
-                            var ratingType =
-                                ratingValue == 1
-                                    ? 'CSAT Rate Poor'
-                                    : ratingValue == 5
-                                    ? 'CSAT Rate Average'
-                                    : ratingValue == 10
-                                    ? 'CSAT Rate Great'
-                                    : '';
-                            kmWidgetEvents.eventTracking(
-                                eventMapping.onRateConversationEmoticonsClick,
-                                ratingType,
-                                ratingValue
-                            );
-                        }
-                    });
-                }
-            };
             _this.sendFeedback = function (feedbackData) {
                 mckUtils.ajax({
                     headers: {
@@ -3142,6 +3027,13 @@ var userOverride = {
                             $applozic('#mck-sidebox-ft').removeClass(
                                 'mck-restart-conv-banner km-mid-conv-csat'
                             );
+                            if (
+                                appOptions?.appSettings?.chatWidget
+                                    ?.csatRatingBase == 5
+                            ) {
+                                ratingService.resetStarsColor();
+                            }
+
                             // kommunicateCommons.modifyClassList(
                             //     { class: ['mck-feedback-text-wrapper'] },
                             //     'n-vis',
@@ -3468,6 +3360,152 @@ var userOverride = {
                     }
                 }
             };
+            _this.configureStarsOrRatingElement = function () {
+                var ratingStars = document.getElementsByClassName(
+                    'mck-rating-box'
+                );
+                var sendFeedbackComment = document.getElementById(
+                    'mck-submit-comment'
+                );
+                var restartConversation = document.getElementById(
+                    'mck-restart-conversation'
+                );
+                var ratingErrorMsgContainer = document.getElementById(
+                    'mck-rate-error-wrapper'
+                );
+                var feedbackObject = {
+                    groupId: 0,
+                    comments: [],
+                    rating: 0,
+                };
+
+                restartConversation.addEventListener(
+                    'click',
+                    mckMessageService.restartConversation
+                );
+                sendFeedbackComment.addEventListener('click', function () {
+                    const isAnyRatingSelected = document.querySelector(
+                        '.mck-rating-box.selected'
+                    );
+                    if (!isAnyRatingSelected) {
+                        ratingErrorMsgContainer.classList.remove('n-vis');
+                        return;
+                    }
+                    kmWidgetEvents.eventTracking(
+                        eventMapping.onSubmitRatingClick
+                    );
+                    feedbackObject = {
+                        groupId: 0,
+                        comments: [],
+                        rating: 0,
+                    };
+                    var comment = document.getElementById(
+                        'mck-feedback-comment'
+                    );
+                    sendFeedbackComment.setAttribute('disabled', 'true');
+                    comment &&
+                        comment.value.trim() &&
+                        (feedbackObject.comments = [comment.value]);
+                    feedbackObject.rating = parseInt(
+                        document
+                            .querySelector('.mck-rating-box.selected')
+                            .getAttribute('data-rating')
+                    );
+                    feedbackObject.groupId =
+                        CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.tabId;
+                    feedbackObject.supportAgentName =
+                        CURRENT_GROUP_DATA &&
+                        CURRENT_GROUP_DATA.conversationAssignee;
+                    feedbackObject.applicationId = MCK_APP_ID;
+                    feedbackObject.teamId =
+                        CURRENT_GROUP_DATA && CURRENT_GROUP_DATA.teamId;
+                    var LOGGED_IN_USER =
+                        alUserService.MCK_USER_DETAIL_MAP[MCK_USER_ID];
+                    feedbackObject.userInfo = {
+                        name: LOGGED_IN_USER.userName,
+                        userId: MCK_USER_ID,
+                        email: LOGGED_IN_USER.email,
+                    };
+                    _this.sendFeedback(feedbackObject);
+                });
+                for (var i = 0; i < ratingStars.length; i++) {
+                    ratingStars[i].addEventListener('click', function (e) {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['csat-2'] },
+                            '',
+                            'n-vis'
+                        );
+                        kommunicateCommons.modifyClassList(
+                            { id: ['mck-rate-conversation'] },
+                            'n-vis',
+                            ''
+                        );
+                        kommunicateCommons.modifyClassList(
+                            { class: ['mck-rating-box'] },
+                            '',
+                            'selected'
+                        );
+                        kommunicateCommons.modifyClassList(
+                            { class: ['mck-feedback-text-wrapper'] },
+                            '',
+                            'n-vis'
+                        );
+                        e.currentTarget.classList.add('selected');
+                        !ratingErrorMsgContainer.classList.contains('n-vis') &&
+                            ratingErrorMsgContainer.classList.add('n-vis');
+                        if (
+                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
+                            5
+                        ) {
+                            if (e.currentTarget.classList[2] == 'selected') {
+                                var ratingValue = parseInt(
+                                    e.currentTarget.dataset.rating
+                                );
+                                var ratingType =
+                                    ratingValue == 1
+                                        ? 'CSAT Rate Bad'
+                                        : ratingValue == 2
+                                        ? 'CSAT Rate Poor'
+                                        : ratingValue == 3
+                                        ? 'CSAT Rate Average'
+                                        : ratingValue == 4
+                                        ? 'CSAT Rate Good'
+                                        : ratingValue == 5
+                                        ? 'CSAT Rate Great'
+                                        : '';
+                                kmWidgetEvents.eventTracking(
+                                    eventMapping.onRateConversationEmoticonsClick,
+                                    ratingType,
+                                    ratingValue
+                                );
+                            }
+                        } else {
+                            if (e.currentTarget.classList[1] == 'selected') {
+                                var ratingValue = parseInt(
+                                    e.currentTarget.dataset.rating
+                                );
+                                var ratingType =
+                                    ratingValue == 1
+                                        ? 'CSAT Rate Poor'
+                                        : ratingValue == 5
+                                        ? 'CSAT Rate Average'
+                                        : ratingValue == 10
+                                        ? 'CSAT Rate Great'
+                                        : '';
+                                kmWidgetEvents.eventTracking(
+                                    eventMapping.onRateConversationEmoticonsClick,
+                                    ratingType,
+                                    ratingValue
+                                );
+                            }
+                        }
+                    });
+                }
+                if (appOptions?.appSettings?.chatWidget?.csatRatingBase == 5) {
+                    ratingService.setStarsEffect(feedbackObject.rating);
+                }
+            };
+
             $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
                 e.preventDefault();
                 var $this = $applozic(this);
@@ -3872,7 +3910,7 @@ var userOverride = {
                                     triggerWelcomeForceFully;
                                 triggerWelcome && _this.triggerWelcomeEvent();
                                 typingService.IS_FIRST_BOT_MSG = true;
-                                typingService.FIRST_MESSAGE_KEY = "";
+                                typingService.FIRST_MESSAGE_KEY = '';
                             }
                         },
                         error: function (data) {
@@ -5023,6 +5061,7 @@ var userOverride = {
                             ''
                         );
 
+                        genAiService.enableTextArea(true);
                         // To prevent conversation assignee details from being shown when in FAQ
                         var lastEvent =
                             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1];
@@ -5796,6 +5835,9 @@ var userOverride = {
                 var lastMessageBeforeSend = $applozic(
                     "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                 );
+
+                // GEN AI
+                genAiService.enableTextArea(false);
 
                 kmWidgetEvents.eventTracking(eventMapping.onMessageSent);
                 if (
@@ -7554,6 +7596,9 @@ var userOverride = {
                 data.imageLink &&
                     (updateConversationHeaderParams.imageUrl = data.imageLink);
                 CURRENT_GROUP_DATA.conversationAssignee = data && data.userId;
+                CURRENT_GROUP_DATA.isConversationAssigneeBot =
+                    data?.roleType ===
+                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT;
                 if (
                     data.roleType ===
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
@@ -7564,6 +7609,9 @@ var userOverride = {
                     updateConversationHeaderParams.availabilityStatus = data.connected
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
+
+                    genAiService.enableTextArea(true);
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
                 kmNavBar.hideAndShowTalkToHumanBtn(
                     data.roleType !==
@@ -8882,7 +8930,12 @@ var userOverride = {
                     conversationAssigneeDetails.roleType ==
                     KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
                         ? mckGroupLayout.checkBotDetail(conversationAssignee)
-                        : (CURRENT_GROUP_DATA.CHAR_CHECK = false);
+                        : (CURRENT_GROUP_DATA = {
+                              ...CURRENT_GROUP_DATA,
+                              CHAR_CHECK: false,
+                              TOKENIZE_RESPONSE: false,
+                              isConversationAssigneeBot: false,
+                          });
                     KommunicateUI.isFAQPrimaryCTA() &&
                         $applozic('#km-faq')
                             .removeClass('n-vis')
@@ -9017,7 +9070,8 @@ var userOverride = {
                                 isValidated,
                                 enableAttachment,
                                 null,
-                                allowReload
+                                allowReload,
+                                true
                             );
                             HIDE_POST_CTA && Kommunicate.hideMessageCTA(true);
 
@@ -9275,7 +9329,8 @@ var userOverride = {
                 appendContextMenu,
                 enableAttachment,
                 callback,
-                allowReload
+                allowReload,
+                msgThroughListAPI
             ) {
                 var metadatarepiledto = '';
                 var replymessage = '';
@@ -9291,7 +9346,7 @@ var userOverride = {
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
                 let isUserMsg = true;
-                if (!Kommunicate.visibleMessage(msg)) return;
+                if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;
 
                 if (
                     typeof msg.metadata === 'object' &&
@@ -9331,10 +9386,25 @@ var userOverride = {
                     }
                 }
 
-                if ($applozic('#mck-message-cell .' + msg.key).length > 0) {
+                if (
+                    $applozic('#mck-message-cell .' + msg.key).length > 0 &&
+                    !(CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && msg.type !== 5)
+                ) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
+
+                // GEN AI BOT
+                if (
+                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    !msgThroughListAPI
+                ) {
+                    // message not from the sockets
+                    document
+                        .getElementById('mck-text-box')
+                        .setAttribute('contenteditable', false);
+                }
+
                 if (
                     msg.source ==
                     KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
@@ -9430,6 +9500,7 @@ var userOverride = {
                 if (floatWhere === 'mck-msg-right') {
                     isUserMsg = true;
                     typingService.cumulativeHeight = 0;
+                    genAiService.resetState();
                 }
                 var replyId = msg.key;
                 var replyMessageParameters =
@@ -9687,14 +9758,17 @@ var userOverride = {
                     },
                 ];
 
-                append
-                    ? $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .appendTo('#mck-message-cell .mck-message-inner')
-                    : $applozic
-                          .tmpl('messageTemplate', msgList)
-                          .prependTo('#mck-message-cell .mck-message-inner');
-
+                if (!$applozic('#mck-message-cell .' + msg.key).length > 0) {
+                    append
+                        ? $applozic
+                              .tmpl('messageTemplate', msgList)
+                              .appendTo('#mck-message-cell .mck-message-inner')
+                        : $applozic
+                              .tmpl('messageTemplate', msgList)
+                              .prependTo(
+                                  '#mck-message-cell .mck-message-inner'
+                              );
+                }
                 if (
                     Kommunicate._globals.disableFormPostSubmit &&
                     msg.metadata
@@ -9744,22 +9818,41 @@ var userOverride = {
                                 '"' + userFeedback.comments.trim() + '"';
                         }
                         // 2 = CONVERSATION IS CLOSED OR RESOLVED
-                        var csatRatingLabel =
-                            CURRENT_GROUP_DATA.conversationStatus == 2
-                                ? 'RESOLVED_CONVERSATION_RATED'
-                                : 'CONVERSATION_RATED';
+                        var csatRatingLabel = '';
+                        if (
+                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
+                            5
+                        ) {
+                            csatRatingLabel = 'NEW_RATING_EMPTY_LABEL';
+                        } else {
+                            csatRatingLabel =
+                                CURRENT_GROUP_DATA.conversationStatus == 2
+                                    ? 'RESOLVED_CONVERSATION_RATED'
+                                    : 'CONVERSATION_RATED';
+                        }
                         var resolutionStatusClass = '';
                         if (!KommunicateUI.isConversationResolvedFromZendesk) {
                             resolutionStatusClass = 'n-vis';
                         }
-
-                        var ratingTitle =
-                            KommunicateConstants.RATING_TITLE[
-                                userFeedback.rating
-                            ];
+                        var ratingTitle = '';
+                        if (
+                            appOptions?.appSettings?.chatWidget?.csatRatingBase !==
+                            5
+                        ) {
+                            ratingTitle =
+                                KommunicateConstants.RATING_TITLE[
+                                    userFeedback.rating
+                                ];
+                        }
                         var ratingData = [
                             {
-                                ratingSmileSVG: ratingSmileSVG,
+                                ratingSmileSVG:
+                                    appOptions?.appSettings?.chatWidget
+                                        ?.csatRatingBase == 5
+                                        ? ratingService.generateStarSvgs(
+                                              userFeedback.rating
+                                          )
+                                        : ratingSmileSVG,
                                 ratingComment: ratingComment,
                                 resolutionStatusClass: resolutionStatusClass,
                                 ratingTitle: ratingTitle,
@@ -10139,29 +10232,41 @@ var userOverride = {
                     emoji_template.indexOf('emoji-inner') === -1 &&
                     msg.contentType === 0
                 ) {
-                    var $normalTextMsg = $applozic(
-                        "<div class='mck-text-msg-" +
-                            (floatWhere === 'mck-msg-right'
-                                ? 'right'
-                                : 'left') +
-                            "'/>"
-                    );
-                    var nodes = emoji_template.split('<br/>');
-                    for (var i = 0; i < nodes.length; i++) {
-                        var currentNode = nodes[i];
+                    const className = `mck-text-msg-${
+                        floatWhere === 'mck-msg-right' ? 'right' : 'left'
+                    }`;
+                    if (
+                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                        floatWhere !== 'mck-msg-right' &&
+                        !msgThroughListAPI
+                    ) {
+                        genAiService.addTokenizeMsg(
+                            msg,
+                            className,
+                            $textMessage
+                        );
+                    } else {
+                        const $normalTextMsg = $applozic(
+                            `<div class=${className} />`
+                        );
+                        const nodes = emoji_template.split('<br/>');
+                        for (let i = 0; i < nodes.length; i++) {
+                            const currentNode = nodes[i];
+                            let x;
 
-                        if (currentNode === '') {
-                            var x = d.createElement('BR');
-                        } else {
-                            var x = d.createElement('div');
-                            x.appendChild(d.createTextNode(currentNode));
-                            x = $applozic(x).linkify({
-                                target: '_blank',
-                            });
+                            if (currentNode === '') {
+                                x = d.createElement('BR');
+                            } else {
+                                x = d.createElement('div');
+                                x.appendChild(d.createTextNode(currentNode));
+                                x = $applozic(x).linkify({
+                                    target: '_blank',
+                                });
+                            }
+                            $normalTextMsg.append(x);
                         }
-                        $normalTextMsg.append(x);
+                        $textMessage.append($normalTextMsg);
                     }
-                    $textMessage.append($normalTextMsg);
                 } else {
                     $textMessage.html(emoji_template);
                     $textMessage.linkify({
@@ -10191,11 +10296,9 @@ var userOverride = {
                         .addClass('vis');
                 }
                 if (scroll) {
-                    const firstMsgOfMsgsGroup = document
-
-                        .querySelector(
-                            `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
-                        );
+                    const firstMsgOfMsgsGroup = document.querySelector(
+                        `div[data-msgkey="${typingService.FIRST_MESSAGE_KEY}"]`
+                    );
                     let customScroll = true;
                     switch (true) {
                         case !appOptions.showMsgFromStart:
@@ -10212,7 +10315,7 @@ var userOverride = {
                     }
                     typingService.scrollToView(customScroll, msg.key);
                 }
-               
+
                 if ($mck_tab_message_option.hasClass('n-vis')) {
                     if (msg.groupId) {
                         var group = mckGroupUtils.getGroup(msg.groupId);
@@ -12679,7 +12782,9 @@ var userOverride = {
                                         0) &&
                                     $applozic('.' + message.key).length ===
                                         0) ||
-                                message.contentType === 10
+                                message.contentType === 10 ||
+                                (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                                    message.contentType !== 5)
                             ) {
                                 if (
                                     typeof tabId !== 'undefined' &&
@@ -13934,6 +14039,9 @@ var userOverride = {
                             _this.removeWarningsFromTextBox();
                         CURRENT_GROUP_DATA.CHAR_CHECK &&
                             _this.disableSendButton(true);
+                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE =
+                            data.data[0]?.generativeResponse || false;
+                        CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
