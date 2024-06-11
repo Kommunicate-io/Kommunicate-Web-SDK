@@ -28,13 +28,14 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.4.min.js',
+            url:
+                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.4.min.js',
             alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.4.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
             name: 'maps',
-            url: 'https://maps.google.com/maps/api/js?libraries=places',
+            url: 'https://maps.googleapis.com/maps/api/js?libraries=places',
             googleApiKey:
                 typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
@@ -109,7 +110,8 @@ function ApplozicSidebox() {
                 script.src =
                     externalFileDetails.url +
                     '&key=' +
-                    externalFileDetails.googleApiKey + '&callback=Function.prototype';
+                    externalFileDetails.googleApiKey +
+                    '&callback=Function.prototype';
             } else {
                 script.src = externalFileDetails.url;
             }
@@ -176,8 +178,12 @@ function ApplozicSidebox() {
                     var body = document.getElementsByTagName('body')[0];
                     body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
-                    var kmScript  = window.parent && window.parent.document.getElementById('km-widget-script');
-                    if(kmScript && kmScript.nonce){
+                    var kmScript =
+                        window.parent &&
+                        window.parent.document.getElementById(
+                            'km-widget-script'
+                        );
+                    if (kmScript && kmScript.nonce) {
                         scriptContent.nonce = kmScript.nonce;
                     }
                     body.appendChild(scriptContent);
@@ -378,7 +384,7 @@ function ApplozicSidebox() {
                     hostname == domain ||
                     (hostname.length > domain.length &&
                         hostname.substr(hostname.length - domain.length - 1) ==
-                        '.' + domain)
+                            '.' + domain)
                 );
             };
             function isSettingEnable(key) {
@@ -388,6 +394,28 @@ function ApplozicSidebox() {
             }
             // replace cookies in old format with cookies in new format
             KommunicateUtils.replaceOldCookies();
+
+            //to check if the customer has been churned then show the churn banner
+            if (data.currentActivatedPlan == 'churn') {
+                var kommunicateIframe = parent.document.getElementById(
+                    'kommunicate-widget-iframe'
+                );
+                var utmSourceUrl = kommunicateIframe
+                    ? kommunicateIframe.getAttribute('data-url') ||
+                      parent.window.location.href
+                    : w.location.href;
+                var poweredByUrl =
+                    'https://www.kommunicate.io/poweredby?utm_source=' +
+                    utmSourceUrl +
+                    '&utm_medium=webplugin&utm_campaign=deactivation';
+                var linkForChurn = document.getElementById('deactivate-link');
+                var churnCust = document.getElementById('km-churn-customer');
+                if (churnCust) {
+                    linkForChurn &&
+                        linkForChurn.setAttribute('href', poweredByUrl);
+                    churnCust.classList.remove('n-vis');
+                }
+            }
 
             // Remove scripts if chatwidget is restricted by domains
             var isCurrentDomainDisabled =
@@ -414,7 +442,8 @@ function ApplozicSidebox() {
                 (sentryConfig.enabled = false);
             sentryConfig.enabled && loadErrorTracking(randomUserId);
 
-            var sessionTimeout = options.sessionTimeout != null
+            var sessionTimeout =
+                options.sessionTimeout != null
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
             options['appSettings'] = $applozic.extend(
@@ -434,7 +463,7 @@ function ApplozicSidebox() {
 
             var pseudoNameEnabled =
                 widgetSettings &&
-                    typeof widgetSettings.pseudonymsEnabled !== 'undefined'
+                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata =
@@ -446,7 +475,41 @@ function ApplozicSidebox() {
                 options.connectSocketOnWidgetClick != null
                     ? options.connectSocketOnWidgetClick
                     : widgetSettings &&
-                    widgetSettings.connectSocketOnWidgetClick;
+                      widgetSettings.connectSocketOnWidgetClick;
+            options.voiceInput =
+                options.voiceInput != null
+                    ? options.voiceInput
+                    : widgetSettings && widgetSettings.voiceInput;
+            options.voiceOutput =
+                options.voiceOutput != null
+                    ? options.voiceOutput
+                    : widgetSettings && widgetSettings.voiceOutput;
+            options.attachment =
+                options.attachment != null
+                    ? options.attachment
+                    : widgetSettings && widgetSettings.attachment;
+            options.hidePostCTA =
+                options.hidePostCTA != null
+                    ? options.hidePostCTA
+                    : widgetSettings && widgetSettings.hidePostCTA;
+
+            KommunicateUtils.deleteDataFromKmSession('settings');
+
+            var pseudoNameEnabled =
+                widgetSettings &&
+                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
+                    ? widgetSettings.pseudonymsEnabled
+                    : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            options.metadata =
+                typeof options.metadata == 'object' ? options.metadata : {};
+            options.fileUpload =
+                options.fileUpload ||
+                (widgetSettings && widgetSettings.fileUpload);
+            options.connectSocketOnWidgetClick =
+                options.connectSocketOnWidgetClick != null
+                    ? options.connectSocketOnWidgetClick
+                    : widgetSettings &&
+                      widgetSettings.connectSocketOnWidgetClick;
             options.voiceInput =
                 options.voiceInput != null
                     ? options.voiceInput
@@ -480,31 +543,39 @@ function ApplozicSidebox() {
                     ? options.hidePostFormSubmit
                     : widgetSettings && widgetSettings.hidePostFormSubmit;
             options.disableFormPostSubmit =
-                options.disableFormPostSubmit || 
-                    (widgetSettings && widgetSettings.disableFormPostSubmit);
+                options.disableFormPostSubmit ||
+                (widgetSettings && widgetSettings.disableFormPostSubmit);
             options.timeFormat24Hours =
                 options.timeFormat24Hours != null
                     ? options.timeFormat24Hours
-                    : widgetSettings && widgetSettings.timeFormat24Hours;         
+                    : widgetSettings && widgetSettings.timeFormat24Hours;
             options.voiceNote =
                 options.voiceNote != null
                     ? options.voiceNote
                     : widgetSettings && widgetSettings.voiceNote;
-            options.attachmentHandler = options.attachmentHandler != null 
-                    ? options.attachmentHandler 
-                    : function (file) { return file; };
-            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride;
+            options.attachmentHandler =
+                options.attachmentHandler != null
+                    ? options.attachmentHandler
+                    : function (file) {
+                          return file;
+                      };
+            options.defaultUploadOverride =
+                widgetSettings && widgetSettings.defaultUploadOverride;
 
-            options.maxAttachmentSize = (options.maxAttachmentSize != null 
-                    ? options.maxAttachmentSize 
-                    : widgetSettings && widgetSettings.maxAttachmentSize);
-            options.maxAttachmentSizeErrorMsg = options.maxAttachmentSizeErrorMsg != null 
-                    ? options.maxAttachmentSizeErrorMsg 
-                    : widgetSettings && widgetSettings.maxAttachmentSizeErrorMsg;
-            
-            
-            options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
-            
+            options.maxAttachmentSize =
+                options.maxAttachmentSize != null
+                    ? options.maxAttachmentSize
+                    : widgetSettings && widgetSettings.maxAttachmentSize;
+            options.maxAttachmentSizeErrorMsg =
+                options.maxAttachmentSizeErrorMsg != null
+                    ? options.maxAttachmentSizeErrorMsg
+                    : widgetSettings &&
+                      widgetSettings.maxAttachmentSizeErrorMsg;
+
+            options.checkboxAsMultipleButton =
+                options.checkboxAsMultipleButton ||
+                (widgetSettings && widgetSettings.checkboxAsMultipleButton);
+
             // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
             options.staticTopMessage =
                 options.staticTopMessage != null
@@ -638,18 +709,25 @@ function ApplozicSidebox() {
     function getApplicationSettings(userId) {
         var data = {};
         applozic._globals.appId && (data.appId = applozic._globals.appId);
-        applozic._globals.widgetPlatformUrl && (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
+        applozic._globals.widgetPlatformUrl &&
+            (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            '/users/v3/chat/plugin/settings' + KommunicateUtils.formatParams(data);
+            '/users/v3/chat/plugin/settings' +
+            KommunicateUtils.formatParams(data);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var responseData = JSON.parse(this.responseText);
                 // if only the url of the shop was provided then set the appId
-                if (!data.appId && data.widgetPlatformUrl && responseData.response) {
-                    applozic._globals.appId = responseData.response.applicationId;
+                if (
+                    !data.appId &&
+                    data.widgetPlatformUrl &&
+                    responseData.response
+                ) {
+                    applozic._globals.appId =
+                        responseData.response.applicationId;
                 }
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
@@ -682,7 +760,7 @@ function ApplozicSidebox() {
                 });
             });
         } catch (error) {
-            console.log("Error in initializing sentry", error);
+            console.log('Error in initializing sentry', error);
         }
     }
     function saveUserCookies(kommunicateSettings) {
@@ -731,12 +809,12 @@ function ApplozicSidebox() {
                 applozic._globals.appId
             ));
         var endTime = widgetSettings && widgetSettings.sessionEndTime;
-        var startTime = widgetSettings && widgetSettings.sessionStartTime
+        var startTime = widgetSettings && widgetSettings.sessionStartTime;
         var timeStampDifference = endTime - startTime;
-        
-        // // timeStampDiff is NaN when endTime is not set 
+
+        // // timeStampDiff is NaN when endTime is not set
         // // this happens when the user opens the widget for the first time
-        if(Number.isNaN(timeStampDifference)){
+        if (Number.isNaN(timeStampDifference)) {
             timeStampDifference = 0;
         }
 

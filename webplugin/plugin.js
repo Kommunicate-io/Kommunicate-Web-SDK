@@ -105,7 +105,9 @@ var kmCustomIframe =
     '   display: none!important' +
     '} \n';
 
-isV1Script() ? injectJquery() : appendIframe();
+if(window.location.href.indexOf('https://judgments.vakilsearch.com') === -1){
+    isV1Script() ? injectJquery() : appendIframe();
+}
 
 function removeKommunicateScripts() {
     window.KommunicateGlobal = null;

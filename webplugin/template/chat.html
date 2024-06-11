@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>Kommunicate plugin</title>
 </head>
 
@@ -20,6 +21,7 @@
         }
         let params = new URLSearchParams(window.location.search);
         let appId = params.get('appId');
+        let noFocus = params.get('noFocus');
         let botIds = splitByComma(params.get('botIds'));
         let agentIds = splitByComma(params.get('agentIds'));
         let assignee = params.get('assignee');
@@ -47,8 +49,9 @@
                 if (skipRouting){
                     defaultSettings["skipRouting"] = !!skipRouting;
                 }
-                
+
                 var kommunicateSettings = {
+                    "noFocus" : noFocus === "true", // params will be string and we need noFocus value as boolean
                     "appId": appId, // replace this with your application id
                     "onInit": function () {
                         if (JSON.stringify(defaultSettings) != '{}') {
