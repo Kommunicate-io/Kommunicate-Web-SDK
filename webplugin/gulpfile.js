@@ -20,6 +20,7 @@ const {
     PLUGIN_BUNDLE_FILES,
     PLUGIN_JS_FILES,
     THIRD_PARTY_SCRIPTS,
+    SENTRY_SCRIPT
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -86,8 +87,17 @@ const generateResourceFolder = () => {
 };
 
 const generateThirdPartyJSFiles = () => {
+
+    console.log("sentry.enabled: " + MCK_THIRD_PARTY_INTEGRATION.sentry.enabled);
+
+    let inputScripts = THIRD_PARTY_SCRIPTS;
+    if (MCK_THIRD_PARTY_INTEGRATION.sentry.enabled) {
+        console.log("adding sentry script")
+        inputScripts = [...inputScripts, ...SENTRY_SCRIPT];
+    }
+
     return gulp
-        .src(THIRD_PARTY_SCRIPTS)
+        .src(inputScripts)
         .pipe(concat(`kommunicateThirdParty.min.js`))
         .pipe(terser(TERSER_CONFIG))
         .pipe(gulp.dest(`${buildDir}`))
