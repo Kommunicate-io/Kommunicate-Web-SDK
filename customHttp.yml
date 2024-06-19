@@ -17,7 +17,9 @@ customHeaders:
   - pattern: "resources/**/*"
     headers: *common_headers
 
-  - pattern: "resources/third-party-scripts/**/*"
+  - pattern: "resources/third-party-scripts/**/*.js"
+    headers: *common_headers
+  - pattern: "resources/third-party-scripts/mck-emojis.min.js"
     headers: *common_headers
 
   - pattern: "resources/**/*.html"
