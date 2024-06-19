@@ -1,3 +1,7 @@
+common_headers: &common_headers
+  - key: "Cache-Control"
+    value: "public, max-age=31536000"
+
 customHeaders:
   - pattern: "**"
     headers:
@@ -11,10 +15,10 @@ customHeaders:
         value: "public, max-age=300"
   # 30 days
   - pattern: "resources/**/*"
+    headers: *common_headers
+
   - pattern: "/resources/third-party-scripts/**/*.*"
-    headers:
-      - key: "Cache-Control"
-        value: "public, max-age=31536000"
+    headers: *common_headers
 
   - pattern: "resources/**/*.html"
     headers:
