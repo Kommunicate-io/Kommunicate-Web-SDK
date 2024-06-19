@@ -17,8 +17,8 @@ customHeaders:
   - pattern: "resources/**/*"
     headers: *common_headers
 
-  # - pattern: "/resources/third-party-scripts/**/*"
-  #   headers: *common_headers
+  - pattern: "/resources/third-party-scripts/"
+    headers: *common_headers
 
   # - pattern: "resources/**/*.html"
   #   headers: *common_headers
