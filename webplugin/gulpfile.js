@@ -8,13 +8,6 @@ const sass = require('gulp-sass')(require('sass'));
 const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const fs = require('fs');
-const argv = require('minimist')(process.argv.slice(2));
-const version = require('child_process')
-    .execSync('git rev-parse --short HEAD', {
-        cwd: __dirname,
-    })
-    .toString()
-    .trim();
 const {
     PLUGIN_CSS_FILES,
     PLUGIN_BUNDLE_FILES,
@@ -23,14 +16,15 @@ const {
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
-const pluginClient = require('../server/src/pluginClient');
 const TERSER_CONFIG = require('./terser.config');
+
+const version = new Date().getTime();
 const MCK_CONTEXT_PATH = config.urls.hostUrl;
 const MCK_STATIC_PATH = MCK_CONTEXT_PATH + '/plugin';
 const PLUGIN_SETTING = config.pluginProperties;
 const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
-const CDN_HOST_URL = MCK_THIRD_PARTY_INTEGRATION.aws.cdnUrl;
 const pluginVersions = ['v1', 'v2'];
+
 PLUGIN_SETTING.kommunicateApiUrl =
     PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl;
 PLUGIN_SETTING.botPlatformApi =
@@ -39,11 +33,8 @@ PLUGIN_SETTING.applozicBaseUrl =
     PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl;
 PLUGIN_SETTING.dashboardUrl =
     PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl;
-let PLUGIN_FILE_DATA = new Object();
-let isAwsUploadEnabled = argv.upload;
-let BUILD_URL = isAwsUploadEnabled
-    ? CDN_HOST_URL + '/' + version
-    : MCK_STATIC_PATH + '/build';
+
+const BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let env = config.getEnvId() !== 'development';
 
@@ -137,12 +128,6 @@ const combineJsFiles = async () => {
             paths.forEach((value) => {
                 deleteFilesUsingPath(value);
             });
-
-            if (isAwsUploadEnabled) {
-                uploadFilesToCdn(buildDir, version);
-            } else {
-                console.log('Files not uploaded to CDN');
-            }
         });
 };
 
@@ -283,7 +268,6 @@ const generateFilesByVersion = (location) => {
                         }
                     );
                 }
-                PLUGIN_FILE_DATA[pluginVersions[i]] = data;
             }
             console.log('plugin files generated for all versions successfully');
         } catch (error) {
@@ -301,18 +285,6 @@ const deleteFilesUsingPath = (path) => {
     }
 };
 
-const uploadFilesToCdn = async (buildDir, version) => {
-    try {
-        await pluginClient.upload(buildDir, version);
-        console.log('Uploaded all files to CDN');
-    } catch (error) {
-        console.log(
-            'The server has stopped due to some error, please check server logs for better understanding.',
-            error
-        );
-        process.kill(process.pid);
-    }
-};
 const copyFileToBuild = (src, dest) => {
     // console.log(`Copying file from ${src} to ${dest}`);
     fs.copyFile(path.join(__dirname, src), dest, (err) => {
@@ -363,6 +335,3 @@ gulp.task(
         'generateBuildFiles'
     )
 );
-
-exports.pluginVersion = version;
-exports.pluginVersionData = PLUGIN_FILE_DATA;

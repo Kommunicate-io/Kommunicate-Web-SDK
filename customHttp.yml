@@ -12,7 +12,7 @@ customHeaders:
       - key: "Content-Type"
         value: "text/javascript"
       - key: "Cache-Control"
-        value: "public, max-age=300"
+        value: "public, max-age=100"
   # 30 days
   - pattern: "resources/**/*"
     headers: *common_headers
@@ -23,4 +23,4 @@ customHeaders:
   - pattern: "resources/**/*.html"
     headers:
       - key: "Cache-Control"
-        value: "public, max-age=300"
+        value: "public, max-age=100"
