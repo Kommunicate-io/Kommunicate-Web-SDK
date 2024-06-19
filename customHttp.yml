@@ -15,7 +15,7 @@ customHeaders:
       - key: "Content-Type"
         value: "text/javascript"
       - key: "Cache-Control"
-        value: "public, max-age=300"
+        value: "public, max-age=180"
   # 365 days
   # - pattern: "**/*min.js"
   #   headers: *common_headers
