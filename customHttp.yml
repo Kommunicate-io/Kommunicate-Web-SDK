@@ -10,7 +10,7 @@ customHeaders:
       - key: 'Cache-Control'
         value: 'public, max-age=300'
   # 30 days
-  - pattern: 'resources/**'
+  - pattern: 'resources/**/*'
     headers:
       - key: 'Cache-Control'
         value: 'public, max-age=2592000'
