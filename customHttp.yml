@@ -13,11 +13,11 @@ customHeaders:
         value: "text/javascript"
       - key: "Cache-Control"
         value: "public, max-age=100"
-  # 30 days
+  # 365 days
   - pattern: "resources/**/*"
     headers: *common_headers
 
-  - pattern: "/resources/third-party-scripts/**/*.*"
+  - pattern: "/resources/third-party-scripts/**/*"
     headers: *common_headers
 
   - pattern: "resources/**/*.html"
