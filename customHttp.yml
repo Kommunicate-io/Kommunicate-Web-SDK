@@ -14,12 +14,7 @@ customHeaders:
       - key: "Cache-Control"
         value: "public, max-age=300"
   # 365 days
-  - pattern: "resources/**/*"
-    headers: *common_headers
-
-  - pattern: "resources/third-party-scripts/**/*.js"
-    headers: *common_headers
-  - pattern: "resources/third-party-scripts/mck-emojis.min.js"
+  - pattern: "**/*min.js"
     headers: *common_headers
 
   - pattern: "resources/**/*.html"
