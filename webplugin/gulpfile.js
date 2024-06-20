@@ -142,6 +142,17 @@ const minifyHtml = (paths, outputDir, fileName) => {
         });
 };
 
+const minifyJS = (path, dir, fileName) => {
+    gulp.src(path)
+        .pipe(babel()) // Run Babel
+        .pipe(concat(fileName))
+        .pipe(terser(TERSER_CONFIG))
+        .pipe(gulp.dest(`${dir}`)) // Destination directory
+        .on('end', () => {
+            console.log(`${fileName} generated successfully`);
+        });
+};
+
 const generateBuildFiles = () => {
     if (env) {
         // Generate index.html for home route
@@ -160,6 +171,11 @@ const generateBuildFiles = () => {
         copyFileToBuild(
             'lib/js/mck-emojis.min.js',
             `${resourceLocation}/third-party-scripts/mck-emojis.min.js`
+        );
+        minifyJS(
+            [path.join(__dirname, 'js/app/zendesk-chat-service.js')],
+            `${resourceLocation}/third-party-scripts`,
+            `zendesk-chat-service-${version}.min.js`
         );
     }
     // Generate chat.html for /chat route

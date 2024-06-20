@@ -15,7 +15,7 @@ customHeaders:
       - key: "Cache-Control"
         value: "public, max-age=180"
   # 365 days
-  - pattern: "**/*min.js"
+  - pattern: "**/*.js"
     headers: *common_headers
 
   - pattern: "**/*min.css"
