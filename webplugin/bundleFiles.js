@@ -1,5 +1,7 @@
 const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
+const version = new Date().getTime();
+exports.version = version;
 
 exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
@@ -7,13 +9,13 @@ exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/tiny-slider-2.9.2.js'),
     path.resolve(__dirname, 'lib/js/mustache.js'),
     path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
-    path.resolve(__dirname, 'lib/js/intl-tel-lib.js'),
-    path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js')
+    // path.resolve(__dirname, 'lib/js/intl-tel-lib.js'),
+    path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js'),
 ];
 
 exports.PLUGIN_JS_FILES = [
-    path.resolve(__dirname, 'lib/js/Fr.voice.js'),
-    path.resolve(__dirname, 'lib/js/recorder.js'),
+    // path.resolve(__dirname, 'lib/js/Fr.voice.js'),
+    // path.resolve(__dirname, 'lib/js/recorder.js'),
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
     path.resolve(__dirname, 'js/app/km-utils.js'),
@@ -30,7 +32,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/km-event-listner.js'),
     path.resolve(__dirname, 'js/app/km-widget-custom-events.js'),
     path.resolve(__dirname, 'js/app/km-attachment-service.js'),
-    path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
+    // path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
     path.resolve(__dirname, 'js/app/km-nav-bar.js'),
     path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/components/rating-service.js'),
@@ -57,7 +59,7 @@ exports.PLUGIN_CSS_FILES = [
     // path.resolve(__dirname, 'css/app/km-login-model.css'),
     path.resolve(__dirname, 'lib/css/tiny-slider-2.9.2.css'),
     path.resolve(__dirname, 'css/app/km-sidebox.css'),
-    path.resolve(__dirname, 'lib/css/intl-tel-lib.css'),
+    // path.resolve(__dirname, 'lib/css/intl-tel-lib.css'),
     path.resolve(__dirname, 'css/app/style/style.css'),
 ];
 
@@ -65,4 +67,41 @@ exports.PLUGIN_BUNDLE_FILES = [
     path.resolve(__dirname, `${buildDir}/mck-app.js`),
     path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
     path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
+];
+
+exports.THIRD_PARTY_FILE_INFO = [
+    {
+        source: path.join(__dirname, 'js/app/zendesk-chat-service.js'),
+        outputName: `zendesk-chat-service-${version}.min.js`, // code is our and it can be changed that's why added the versioning
+        type: 'js',
+        shouldMinify: true,
+    },
+    {
+        source: path.join(__dirname, 'lib/js/intl-tel-lib.js'),
+        outputName: `intl-tel-lib.min.js`,
+        type: 'js',
+    },
+    {
+        source: path.join(__dirname, 'lib/css/intl-tel-lib.css'),
+        outputName: `intl-tel-lib-${version}.min.css`,
+        type: 'css',
+        shouldMinify: true,
+    },
+    {
+        source: path.join(__dirname, 'lib/js/Fr.voice.js'),
+        outputName: `fr-voice.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    },
+    {
+        source: path.join(__dirname, 'lib/js/recorder.js'),
+        outputName: `recorder.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    },
+    {
+        source: path.join(__dirname, 'lib/js/crypto-js.4.0.min.js'),
+        outputName: `crypto.min.js`,
+        type: 'js',
+    },
 ];

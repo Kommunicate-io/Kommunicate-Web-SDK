@@ -594,7 +594,8 @@ var userOverride = {
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
-        var zendeskChatService = new ZendeskChatService();
+        var zendeskChatService =
+            (appOptions.zendeskChatSdkKey && new ZendeskChatService()) || {};
         var kmNavBar = new KmNavBar(mckMessageLayout);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
@@ -3457,8 +3458,8 @@ var userOverride = {
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             ratingErrorMsgContainer.classList.add('n-vis');
                         if (
-                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
-                            5
+                            appOptions?.appSettings?.chatWidget
+                                ?.csatRatingBase == 5
                         ) {
                             if (e.currentTarget.classList[2] == 'selected') {
                                 var ratingValue = parseInt(
@@ -9863,8 +9864,8 @@ var userOverride = {
                         // 2 = CONVERSATION IS CLOSED OR RESOLVED
                         var csatRatingLabel = '';
                         if (
-                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
-                            5
+                            appOptions?.appSettings?.chatWidget
+                                ?.csatRatingBase == 5
                         ) {
                             csatRatingLabel = 'NEW_RATING_EMPTY_LABEL';
                         } else {
@@ -9879,8 +9880,8 @@ var userOverride = {
                         }
                         var ratingTitle = '';
                         if (
-                            appOptions?.appSettings?.chatWidget?.csatRatingBase !==
-                            5
+                            appOptions?.appSettings?.chatWidget
+                                ?.csatRatingBase !== 5
                         ) {
                             ratingTitle =
                                 KommunicateConstants.RATING_TITLE[

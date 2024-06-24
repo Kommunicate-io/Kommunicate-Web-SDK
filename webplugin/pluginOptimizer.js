@@ -6,17 +6,14 @@ const cleanCSS = require('@node-minify/clean-css');
 const path = require('path');
 const fs = require('fs');
 const argv = require('minimist')(process.argv.slice(2));
-const version = require('child_process')
-    .execSync('git rev-parse --short HEAD', {
-        cwd: __dirname,
-    })
-    .toString()
-    .trim();
+
 const {
     PLUGIN_CSS_FILES,
     PLUGIN_BUNDLE_FILES,
     PLUGIN_JS_FILES,
     THIRD_PARTY_SCRIPTS,
+    version,
+    THIRD_PARTY_FILE_INFO,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -243,6 +240,10 @@ const generateBuildFiles = () => {
         `${buildDir}/applozic.chat-6.2.4.min.js`
     );
 
+    THIRD_PARTY_FILE_INFO.forEach((fileData) => {
+        copyFileToBuild(fileData.source, `${buildDir}/${fileData.outputName}`);
+    });
+
     // Generate mck-sidebox.html file for build folder.
     fs.copyFile(
         path.join(__dirname, 'template/mck-sidebox.html'),
@@ -268,7 +269,6 @@ const generateBuildFiles = () => {
                 // dest is diff for dev and build
                 `"${pathToResource}/kommunicate.${version}.min.js"`
             );
-
             fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
                 if (err) {
                     console.log('plugin.js generation error');
@@ -309,6 +309,28 @@ const generateFilesByVersion = (location) => {
         if (err) {
             console.log('error while generating plugin.js', err);
         }
+
+        const thirdPartyScripts = JSON.stringify({
+            zendesk: {
+                js: `${pathToResource}/zendesk-chat-service-${version}.min.js`,
+            },
+            intlForPreChat: {
+                js: `${pathToResource}/intl-tel-lib.min.js`,
+                css: `${pathToResource}/intl-tel-lib-${version}.min.css`,
+            },
+            // for voice note
+            frVoice: {
+                js: `${pathToResource}/fr-voice.min.js`,
+            },
+            recorder: {
+                js: `${pathToResource}/recorder.min.js`,
+            },
+            crypto: {
+                js: `${pathToResource}/crypto.min.js`,
+            },
+            // for voice note
+        });
+
         try {
             var plugin = data
                 .replace(':MCK_CONTEXTPATH', MCK_CONTEXT_PATH)
@@ -318,7 +340,9 @@ const generateFilesByVersion = (location) => {
                 )
                 .replace(':MCK_STATICPATH', MCK_STATIC_PATH)
                 .replace(':PRODUCT_ID', 'kommunicate')
-                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING));
+                .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
+                .replace(':KM_RELEASE_HASH', version)
+                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts);
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(
