@@ -88,14 +88,11 @@ exports.THIRD_PARTY_FILE_INFO = [
         shouldMinify: true,
     },
     {
-        source: path.join(__dirname, 'lib/js/Fr.voice.js'),
-        outputName: `fr-voice.min.js`,
-        type: 'js',
-        shouldMinify: true,
-    },
-    {
-        source: path.join(__dirname, 'lib/js/recorder.js'),
-        outputName: `recorder.min.js`,
+        source: [
+            path.join(__dirname, 'lib/js/Fr.voice.js'),
+            path.join(__dirname, 'lib/js/recorder.js'),
+        ],
+        outputName: `voice-note.min.js`,
         type: 'js',
         shouldMinify: true,
     },

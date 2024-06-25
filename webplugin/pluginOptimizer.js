@@ -241,6 +241,15 @@ const generateBuildFiles = () => {
     );
 
     THIRD_PARTY_FILE_INFO.forEach((fileData) => {
+        if (Array.isArray(fileData.source)) {
+            fileData.source.forEach((source) => {
+                copyFileToBuild(
+                    source,
+                    `${resourceLocation}/${fileData.outputName}`
+                );
+            });
+            return;
+        }
         copyFileToBuild(fileData.source, `${buildDir}/${fileData.outputName}`);
     });
 
@@ -319,11 +328,8 @@ const generateFilesByVersion = (location) => {
                 css: `${pathToResource}/intl-tel-lib-${version}.min.css`,
             },
             // for voice note
-            frVoice: {
-                js: `${pathToResource}/fr-voice.min.js`,
-            },
-            recorder: {
-                js: `${pathToResource}/recorder.min.js`,
+            voiceNote: {
+                js: `${pathToResource}/voice-note.min.js`,
             },
             crypto: {
                 js: `${pathToResource}/crypto.min.js`,

@@ -376,10 +376,7 @@ function ApplozicSidebox() {
 
             if (options.voiceNote) {
                 promises.push(
-                    loadResourceAsync(THIRD_PARTY_SCRIPTS.recorder.js)
-                );
-                promises.push(
-                    loadResourceAsync(THIRD_PARTY_SCRIPTS.frVoice.js)
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js)
                 );
             }
 

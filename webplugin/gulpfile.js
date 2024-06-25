@@ -152,7 +152,7 @@ const minifyJS = (path, dir, fileName, shouldMinify) => {
         .pipe(stripComments())
         .pipe(gulpif(shouldMinify, babel()))
         .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
-        .pipe(rename(fileName))
+        .pipe(concat(fileName))
         .pipe(gulp.dest(`${dir}`)) // Destination directory
         .on('end', () => {
             console.log(`${fileName} generated successfully`);
@@ -199,12 +199,10 @@ const generateBuildFiles = () => {
             const des = `${resourceLocation}/third-party-scripts`;
 
             if (file.type === 'js') {
-                minifyJS(
-                    [file.source],
-                    des,
-                    file.outputName,
-                    file.shouldMinify
-                );
+                const source = Array.isArray(file.source)
+                    ? file.source
+                    : [file.source];
+                minifyJS(source, des, file.outputName, file.shouldMinify);
             } else if (file.type === 'css') {
                 minifyCss([file.source], des, file.outputName);
             }
@@ -289,11 +287,8 @@ const getThirdPartyScripts = () => {
             js: `${pathToResource}/third-party-scripts/intl-tel-lib.min.js`,
             css: `${pathToResource}/third-party-scripts/intl-tel-lib-${version}.min.css`,
         },
-        frVoice: {
-            js: `${pathToResource}/third-party-scripts/fr-voice.min.js`,
-        },
-        recorder: {
-            js: `${pathToResource}/third-party-scripts/recorder.min.js`,
+        voiceNote: {
+            js: `${pathToResource}/third-party-scripts/voice-note.min.js`,
         },
         crypto: {
             js: `${pathToResource}/third-party-scripts/crypto.min.js`,
