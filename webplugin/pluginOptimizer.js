@@ -240,8 +240,8 @@ const generateBuildFiles = () => {
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild(
-        'js/app/applozic.chat-6.2.4.min.js',
-        `${buildDir}/applozic.chat-6.2.4.min.js`
+        'js/app/applozic.chat-6.2.5.min.js',
+        `${buildDir}/applozic.chat-6.2.5.min.js`
     );
 
     THIRD_PARTY_FILE_INFO.forEach((fileData) => {
