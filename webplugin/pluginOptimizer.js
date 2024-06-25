@@ -222,6 +222,9 @@ const generateBuildFiles = () => {
         // config file for serve
         copyFileToBuild('template/serve.json', `${buildDir}/serve.json`);
 
+         // favicon
+         copyFileToBuild('template/favicon.ico', `${buildDir}/favicon.ico`);
+
         // third party script for location picker
         copyFileToBuild(
             'lib/js/locationpicker.jquery.min.js',

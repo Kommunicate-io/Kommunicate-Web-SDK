@@ -47,14 +47,14 @@ const configEnv = {
             },
         },
     },
-    staging: {
+    release: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-staging.kommunicate.io',
-            botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'https://widget-staging.kommunicate.io',
-            dashboardUrl: 'https://dashboard-staging.kommunicate.io',
+            applozicBaseUrl: 'https://chat-release.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-release.kommunicate.io',
+            botPlatformApi: 'https://bots-release.kommunicate.io',
+            hostUrl: 'https://widget-release.kommunicate.io',
+            dashboardUrl: 'https://dashboard-master.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -169,32 +169,32 @@ const configEnv = {
             },
         },
     },
-    prod_ire: {
+    
+    prod_eu: {
         port: '3030',
         urls: {
-            applozicBaseUrl: 'https://chat-ire.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-ire.kommunicate.io',
-            hostUrl: 'https://widget-ire.kommunicate.io',
-            dashboardUrl: 'https://dashboard-ire.kommunicate.io',
+            applozicBaseUrl: 'https://chat-eu.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-eu.kommunicate.io',
+            botPlatformApi: 'https://bots-eu.kommunicate.io',
+            hostUrl: 'https://widget-eu.kommunicate.io',
+            dashboardUrl: 'https://dashboard-eu.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
         },
         thirdPartyIntegration: {
             sentry: {
-                plugin: {
-                    dsn:
-                        'https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243',
-                    enable: false,
-                },
-                server: {
-                    dsn:
-                        'https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823',
-                    enable: true,
-                },
+                dsn:
+                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                enabled: false,
+            },
+            aws: {
+                cdnUrl: 'https://cdn.kommunicate.io',
+                bucket: 'kom-prod-cdn',
             },
         },
     },
+    
     prod_enterprise: {
         port: '3033',
         urls: {
@@ -226,7 +226,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget-beta.kommunicate.io',
-            dashboardUrl: 'https://dashboard-beta.kommunicate.io',
+            dashboardUrl: 'https://beta.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
