@@ -64,7 +64,7 @@ exports.PLUGIN_CSS_FILES = [
 ];
 
 exports.PLUGIN_BUNDLE_FILES = [
-    path.resolve(__dirname, `${buildDir}/mck-app.js`),
+    path.resolve(__dirname, `${buildDir}/mck-app.min.js`),
     path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
     path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
 ];

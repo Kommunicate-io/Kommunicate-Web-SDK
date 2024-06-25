@@ -126,13 +126,13 @@ const combineJsFiles = async () => {
 
     gulp.src(paths)
         .pipe(concat(`kommunicate.${version}.min.js`))
-        .pipe(terser(TERSER_CONFIG))
         .pipe(gulp.dest(resourceLocation))
         .on('end', () => {
             console.log(`kommunicate.${version}.js combined successfully`);
             paths.forEach((value) => {
                 deleteFilesUsingPath(value);
             });
+            deleteFilesUsingPath(`${buildDir}/mck-app.js`);
         });
 };
 
@@ -147,8 +147,9 @@ const minifyHtml = (paths, outputDir, fileName) => {
         });
 };
 
-const minifyJS = (path, dir, fileName, shouldMinify) => {
-    gulp.src(path)
+const minifyJS = (path, dir, fileName, shouldMinify, callback) => {
+    return gulp
+        .src(path)
         .pipe(stripComments())
         .pipe(gulpif(shouldMinify, babel()))
         .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
@@ -156,6 +157,7 @@ const minifyJS = (path, dir, fileName, shouldMinify) => {
         .pipe(gulp.dest(`${dir}`)) // Destination directory
         .on('end', () => {
             console.log(`${fileName} generated successfully`);
+            callback && callback();
         });
 };
 
@@ -271,7 +273,14 @@ const generateBuildFiles = () => {
                     if (err) {
                         console.log('mck-file generation error');
                     }
-                    combineJsFiles();
+                    minifyJS(
+                        `${buildDir}/mck-app.js`,
+                        buildDir,
+                        `mck-app.min.js`,
+                        true,
+                        combineJsFiles
+                    );
+                    // combineJsFiles();
                 }
             );
         }
