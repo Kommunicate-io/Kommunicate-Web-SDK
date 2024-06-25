@@ -2391,13 +2391,16 @@ var userOverride = {
             _this.initialize = function (userPxy) {
                 window.Applozic.ALApiService.login({
                     data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
-                    success: function (result) {
+                    success: async function (result) {
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             //$applozic("#km-chat-login-modal").removeClass('vis').addClass('n-vis');
                             $applozic('#km-chat-login-modal').css(
                                 'display',
                                 'none'
                             );
+                        }
+                        if(result?.encryptionKey && result?.encryptionType){
+                          await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js)
                         }
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();

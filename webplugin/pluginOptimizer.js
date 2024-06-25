@@ -202,13 +202,17 @@ const combineJsFiles = () => {
     });
 };
 
-const copyFileToBuild = (src, dest) => {
-    fs.copyFile(path.join(__dirname, src), dest, (err) => {
-        if (err) {
-            console.log(`error while generating ${dest}`, err);
+const copyFileToBuild = (src, dest, isFullPathExist) => {
+    fs.copyFile(
+        isFullPathExist ? src : path.join(__dirname, src),
+        dest,
+        (err) => {
+            if (err) {
+                console.log(`error while generating ${dest}`, err);
+            }
+            console.log(`${dest} generated successfully`);
         }
-        console.log(`${dest} generated successfully`);
-    });
+    );
 };
 const generateBuildFiles = () => {
     if (env) {
@@ -241,16 +245,22 @@ const generateBuildFiles = () => {
     );
 
     THIRD_PARTY_FILE_INFO.forEach((fileData) => {
+        console.table(fileData);
         if (Array.isArray(fileData.source)) {
             fileData.source.forEach((source) => {
                 copyFileToBuild(
                     source,
-                    `${resourceLocation}/${fileData.outputName}`
+                    `${resourceLocation}/${fileData.outputName}`,
+                    true
                 );
             });
             return;
         }
-        copyFileToBuild(fileData.source, `${buildDir}/${fileData.outputName}`);
+        copyFileToBuild(
+            fileData.source,
+            `${buildDir}/${fileData.outputName}`,
+            true
+        );
     });
 
     // Generate mck-sidebox.html file for build folder.
@@ -307,7 +317,16 @@ const generateBuildFiles = () => {
                 if (err) {
                     console.log('mck-file generation error');
                 }
-                combineJsFiles();
+                const oldPath = `${buildDir}/mck-app.js`;
+                const newPath = `${buildDir}/mck-app.min.js`;
+                fs.rename(oldPath, newPath, function (renameErr) {
+                    if (renameErr) {
+                        console.log('Error renaming mck-file');
+                    } else {
+                        console.log('File renamed successfully');
+                        combineJsFiles();
+                    }
+                });
             });
         }
     );

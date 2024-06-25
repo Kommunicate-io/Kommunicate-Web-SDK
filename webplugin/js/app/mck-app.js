@@ -90,6 +90,9 @@ function ApplozicSidebox() {
             return false;
         }
     };
+
+    this.loadResourceAsync = loadResourceAsync;
+
     function loadExternalFiles(externalFileDetails) {
         try {
             if (
@@ -378,10 +381,6 @@ function ApplozicSidebox() {
                 promises.push(
                     loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js)
                 );
-            }
-
-            if (apiData.encryptionEnabled) {
-                promises.push(THIRD_PARTY_SCRIPTS.crypto.js);
             }
 
             await Promise.all(promises);
