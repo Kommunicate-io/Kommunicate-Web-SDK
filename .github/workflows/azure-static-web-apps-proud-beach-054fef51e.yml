@@ -50,4 +50,4 @@ jobs:
           app_location: "/" # Location of your application source code
           api_location: "" # Set this to the path of your API if you have one
           output_location: "webplugin/build" # The build output directory
-          app_build_command: "npm run build" # Specify the build command here if necessary
+          app_build_command: "npm run test" # Specify the build command here if necessary
