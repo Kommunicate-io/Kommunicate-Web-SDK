@@ -1,7 +1,7 @@
 class KMLabel {
     getLabels() {
         return {
-            'input.message': 'Type your message...',
+            'input.message': 'Message type karo...',
             'conversations.title': 'Conversations',
             'start.new': 'Start New Conversation',
             'search.contacts': 'Contacts',
