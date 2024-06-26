@@ -28,18 +28,7 @@ jobs:
 
       - name: Build based on environment
         run: |
-          case "${{ secrets.BUILD_ENV }}" in
-            "test") npm run build-test ;;
-            "release") npm run build-release ;;
-            "staging") npm run build-staging ;;
-            "prod-beta") npm run build-beta ;;
-            "prod") npm run build-prod ;;
-            "prod-enterprise") npm run build-prod-enterprise ;;
-            "prod-in") npm run build-prod-in ;;
-            "prod-eu") npm run build-prod-eu ;;
-            "prod-cn") npm run build-prod-cn ;;
-            *) npm run build-test ;; # Default to build-test if no environment is specified
-          esac
+          npm run build-test ;;
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
