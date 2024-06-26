@@ -28,7 +28,7 @@ jobs:
 
       - name: Build based on environment
         run: |
-          npm run build-test ;;
+          npm run build-test
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
