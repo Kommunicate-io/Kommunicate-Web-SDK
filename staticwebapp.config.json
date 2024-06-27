@@ -12,17 +12,17 @@
         "headers": {
           "Cache-Control": "public, max-age=3600"
         }
-      },
-      {
-        "route": "/resources/*/*.html",
-        "headers": {
-          "Cache-Control": "public, max-age=3600"
-        }
-      },
+      },,
       {
         "route": "/resources/*",
         "headers": {
           "Cache-Control": "public, max-age=2592000"
+        }
+      },
+      {
+        "route": "/*",
+        "headers": {
+          "Access-Control-Allow-Origin": "*"
         }
       }
     ]
