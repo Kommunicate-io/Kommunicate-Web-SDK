@@ -1,0 +1,29 @@
+{
+  "routes": [
+    {
+      "route": "/*",
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
+      "route": "/v2/kommunicate.app",
+      "headers": {
+        "Content-Type": "text/javascript",
+        "Cache-Control": "public, max-age=300"
+      }
+    },
+    {
+      "route": "/resources/*",
+      "headers": {
+        "Cache-Control": "public, max-age=2592000"
+      }
+    },
+    {
+      "route": "/resources/**/*.html",
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
+      }
+    }
+  ]
+}
