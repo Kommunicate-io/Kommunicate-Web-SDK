@@ -1,29 +1,36 @@
 {
-  "routes": [
-    {
-      "route": "/v2/kommunicate.app",
-      "headers": {
-        "Content-Type": "text/javascript",
-        "Cache-Control": "public, max-age=300"
-      }
-    },
-    {
-      "route": "/resources/**/*.html",
-      "headers": {
-        "Cache-Control": "public, max-age=3600"
-      }
-    },
-    {
-      "route": "/resources/*",
-      "headers": {
-        "Cache-Control": "public, max-age=2592000"
-      }
-    },
-    {
+    "routes": [
+      {
+        "route": "/v2/kommunicate.app",
+        "headers": {
+          "Content-Type": "text/javascript",
+          "Cache-Control": "public, max-age=300"
+        }
+      },
+      {
+        "route": "/resources/*.html",
+        "headers": {
+          "Cache-Control": "public, max-age=3600"
+        }
+      },
+      {
+        "route": "/resources/*/*.html",
+        "headers": {
+          "Cache-Control": "public, max-age=3600"
+        }
+      },
+      {
+        "route": "/resources/*",
+        "headers": {
+          "Cache-Control": "public, max-age=2592000"
+        }
+      },
+      {
         "route": "/*",
         "headers": {
           "Access-Control-Allow-Origin": "*"
         }
-    }
-  ]
-}
+      }
+    ]
+  }
+  
