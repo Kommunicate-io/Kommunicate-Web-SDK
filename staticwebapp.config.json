@@ -24,12 +24,6 @@
         "headers": {
           "Cache-Control": "public, max-age=2592000"
         }
-      },
-      {
-        "route": "/*",
-        "headers": {
-          "Access-Control-Allow-Origin": "*"
-        }
       }
     ]
   }
