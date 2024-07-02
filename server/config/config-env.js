@@ -39,7 +39,7 @@ const configEnv = {
             sentry: {
                 dsn:
                     'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
-                enabled: true,
+                enabled: false,
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
