@@ -28,8 +28,9 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.4.min.js',
-            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.4.min.js',
+            url:
+                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.5.min.js',
+            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.5.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
@@ -89,6 +90,9 @@ function ApplozicSidebox() {
             return false;
         }
     };
+
+    this.loadResourceAsync = loadResourceAsync;
+
     function loadExternalFiles(externalFileDetails) {
         try {
             if (
@@ -109,7 +113,8 @@ function ApplozicSidebox() {
                 script.src =
                     externalFileDetails.url +
                     '&key=' +
-                    externalFileDetails.googleApiKey + '&callback=Function.prototype';
+                    externalFileDetails.googleApiKey +
+                    '&callback=Function.prototype';
             } else {
                 script.src = externalFileDetails.url;
             }
@@ -176,8 +181,12 @@ function ApplozicSidebox() {
                     var body = document.getElementsByTagName('body')[0];
                     body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
-                    var kmScript  = window.parent && window.parent.document.getElementById('km-widget-script');
-                    if(kmScript && kmScript.nonce){
+                    var kmScript =
+                        window.parent &&
+                        window.parent.document.getElementById(
+                            'km-widget-script'
+                        );
+                    if (kmScript && kmScript.nonce) {
                         scriptContent.nonce = kmScript.nonce;
                     }
                     body.appendChild(scriptContent);
@@ -311,6 +320,75 @@ function ApplozicSidebox() {
             return false;
         }
     }
+
+    function loadResourceAsync(src) {
+        return new Promise((resolve, reject) => {
+            let element;
+
+            if (src.endsWith('.js')) {
+                element = document.createElement('script');
+                element.src = src;
+                element.type = 'text/javascript';
+            } else if (src.endsWith('.css')) {
+                element = document.createElement('link');
+                element.href = src;
+                element.type = 'text/css';
+                element.rel = 'stylesheet';
+            } else {
+                reject(new Error('Unsupported resource type'));
+                return;
+            }
+
+            element.onload = () => resolve();
+            element.onerror = () =>
+                reject(new Error(`Resource load error for ${src}`));
+
+            document.head.appendChild(element);
+        });
+    }
+
+    async function loadFileBasedOnProp(apiData, options) {
+        try {
+            const promises = [];
+
+            if (options.zendeskChatSdkKey) {
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.zendesk.js)
+                );
+            }
+
+            if (
+                Array.isArray(options.preLeadCollection) ||
+                (apiData.collectLead && apiData.leadCollection)
+            ) {
+                const leadCollection =
+                    options.preLeadCollection || apiData.leadCollection;
+
+                const shouldLoadIntl = leadCollection?.some(
+                    (obj) => obj.enableCountryCode
+                );
+
+                if (shouldLoadIntl) {
+                    Object.values(THIRD_PARTY_SCRIPTS.intlForPreChat).forEach(
+                        async (file) => {
+                            promises.push(loadResourceAsync(file));
+                        }
+                    );
+                }
+            }
+
+            if (options.voiceNote) {
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js)
+                );
+            }
+
+            await Promise.all(promises);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     function mckLoadAppScript() {
         // var cookiePrefix = KommunicateUtils.getCookiePrefix();
         // var mapCookies = [{
@@ -356,11 +434,11 @@ function ApplozicSidebox() {
         }
     }
 
-    function mckInitSidebox(data, randomUserId) {
+    async function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
-            if (options.labels && options.labels["lead.collection"]?.heading) {
-                options["headingFromWidget"] = true;
+            if (options.labels && options.labels['lead.collection']?.heading) {
+                options['headingFromWidget'] = true;
             }
             var widgetSettings = data.chatWidget;
             var disableChatWidget =
@@ -378,7 +456,7 @@ function ApplozicSidebox() {
                     hostname == domain ||
                     (hostname.length > domain.length &&
                         hostname.substr(hostname.length - domain.length - 1) ==
-                        '.' + domain)
+                            '.' + domain)
                 );
             };
             function isSettingEnable(key) {
@@ -414,7 +492,8 @@ function ApplozicSidebox() {
                 (sentryConfig.enabled = false);
             sentryConfig.enabled && loadErrorTracking(randomUserId);
 
-            var sessionTimeout = options.sessionTimeout != null
+            var sessionTimeout =
+                options.sessionTimeout != null
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
             options['appSettings'] = $applozic.extend(
@@ -434,7 +513,7 @@ function ApplozicSidebox() {
 
             var pseudoNameEnabled =
                 widgetSettings &&
-                    typeof widgetSettings.pseudonymsEnabled !== 'undefined'
+                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata =
@@ -446,7 +525,7 @@ function ApplozicSidebox() {
                 options.connectSocketOnWidgetClick != null
                     ? options.connectSocketOnWidgetClick
                     : widgetSettings &&
-                    widgetSettings.connectSocketOnWidgetClick;
+                      widgetSettings.connectSocketOnWidgetClick;
             options.voiceInput =
                 options.voiceInput != null
                     ? options.voiceInput
@@ -480,31 +559,39 @@ function ApplozicSidebox() {
                     ? options.hidePostFormSubmit
                     : widgetSettings && widgetSettings.hidePostFormSubmit;
             options.disableFormPostSubmit =
-                options.disableFormPostSubmit || 
-                    (widgetSettings && widgetSettings.disableFormPostSubmit);
+                options.disableFormPostSubmit ||
+                (widgetSettings && widgetSettings.disableFormPostSubmit);
             options.timeFormat24Hours =
                 options.timeFormat24Hours != null
                     ? options.timeFormat24Hours
-                    : widgetSettings && widgetSettings.timeFormat24Hours;         
+                    : widgetSettings && widgetSettings.timeFormat24Hours;
             options.voiceNote =
                 options.voiceNote != null
                     ? options.voiceNote
                     : widgetSettings && widgetSettings.voiceNote;
-            options.attachmentHandler = options.attachmentHandler != null 
-                    ? options.attachmentHandler 
-                    : function (file) { return file; };
-            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride;
+            options.attachmentHandler =
+                options.attachmentHandler != null
+                    ? options.attachmentHandler
+                    : function (file) {
+                          return file;
+                      };
+            options.defaultUploadOverride =
+                widgetSettings && widgetSettings.defaultUploadOverride;
 
-            options.maxAttachmentSize = (options.maxAttachmentSize != null 
-                    ? options.maxAttachmentSize 
-                    : widgetSettings && widgetSettings.maxAttachmentSize);
-            options.maxAttachmentSizeErrorMsg = options.maxAttachmentSizeErrorMsg != null 
-                    ? options.maxAttachmentSizeErrorMsg 
-                    : widgetSettings && widgetSettings.maxAttachmentSizeErrorMsg;
-            
-            
-            options.checkboxAsMultipleButton = options.checkboxAsMultipleButton || (widgetSettings && widgetSettings.checkboxAsMultipleButton);
-            
+            options.maxAttachmentSize =
+                options.maxAttachmentSize != null
+                    ? options.maxAttachmentSize
+                    : widgetSettings && widgetSettings.maxAttachmentSize;
+            options.maxAttachmentSizeErrorMsg =
+                options.maxAttachmentSizeErrorMsg != null
+                    ? options.maxAttachmentSizeErrorMsg
+                    : widgetSettings &&
+                      widgetSettings.maxAttachmentSizeErrorMsg;
+
+            options.checkboxAsMultipleButton =
+                options.checkboxAsMultipleButton ||
+                (widgetSettings && widgetSettings.checkboxAsMultipleButton);
+
             // staticTopMessage and staticTopIcon keys are used in mobile SDKs therefore using same.
             options.staticTopMessage =
                 options.staticTopMessage != null
@@ -519,7 +606,9 @@ function ApplozicSidebox() {
             options.talkToHuman = isSettingEnable('talkToHuman');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
-            options.googleApiKey = isSettingEnable('googleApiKey') ?? 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
+            options.googleApiKey =
+                isSettingEnable('googleApiKey') ??
+                'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
@@ -574,6 +663,7 @@ function ApplozicSidebox() {
                 //save user cookies
                 saveUserCookies(options);
             }
+            await loadFileBasedOnProp(data, options);
             if (typeof options !== 'undefined') {
                 options.ojq = $original;
                 options.obsm = oModal;
@@ -581,7 +671,7 @@ function ApplozicSidebox() {
             }
             if (options.rtl === false) {
                 const iframeDocument = window.document;
-                iframeDocument.body.setAttribute('dir', "ltr");
+                iframeDocument.body.setAttribute('dir', 'ltr');
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
@@ -639,18 +729,25 @@ function ApplozicSidebox() {
     function getApplicationSettings(userId) {
         var data = {};
         applozic._globals.appId && (data.appId = applozic._globals.appId);
-        applozic._globals.widgetPlatformUrl && (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
+        applozic._globals.widgetPlatformUrl &&
+            (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
-            '/users/v3/chat/plugin/settings' + KommunicateUtils.formatParams(data);
+            '/users/v3/chat/plugin/settings' +
+            KommunicateUtils.formatParams(data);
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var responseData = JSON.parse(this.responseText);
                 // if only the url of the shop was provided then set the appId
-                if (!data.appId && data.widgetPlatformUrl && responseData.response) {
-                    applozic._globals.appId = responseData.response.applicationId;
+                if (
+                    !data.appId &&
+                    data.widgetPlatformUrl &&
+                    responseData.response
+                ) {
+                    applozic._globals.appId =
+                        responseData.response.applicationId;
                 }
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
@@ -683,7 +780,7 @@ function ApplozicSidebox() {
                 });
             });
         } catch (error) {
-            console.log("Error in initializing sentry", error);
+            console.log('Error in initializing sentry', error);
         }
     }
     function saveUserCookies(kommunicateSettings) {
@@ -732,12 +829,12 @@ function ApplozicSidebox() {
                 applozic._globals.appId
             ));
         var endTime = widgetSettings && widgetSettings.sessionEndTime;
-        var startTime = widgetSettings && widgetSettings.sessionStartTime
+        var startTime = widgetSettings && widgetSettings.sessionStartTime;
         var timeStampDifference = endTime - startTime;
-        
-        // // timeStampDiff is NaN when endTime is not set 
+
+        // // timeStampDiff is NaN when endTime is not set
         // // this happens when the user opens the widget for the first time
-        if(Number.isNaN(timeStampDifference)){
+        if (Number.isNaN(timeStampDifference)) {
             timeStampDifference = 0;
         }
 
