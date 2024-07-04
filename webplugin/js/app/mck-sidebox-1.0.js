@@ -9346,6 +9346,16 @@ var userOverride = {
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
                 let isUserMsg = true;
+
+                if (msg?.message) {
+                    msg.message = window.DOMPurify.sanitize(msg.message, {
+                        ALLOWED_TAGS: KM_ALLOWED_TAGS,
+                        WHOLE_DOCUMENT:
+                            msg.contentType ===
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML,
+                    });
+                }
+
                 if (!Kommunicate.visibleMessage(msg, msgThroughListAPI)) return;
 
                 if (
@@ -9574,6 +9584,7 @@ var userOverride = {
                 var fileName = '';
                 var fileSize = '';
                 var frwdMsgExpr = msg.message;
+
                 if (typeof msg.fileMeta === 'object') {
                     fileName = msg.fileMeta.name;
                     fileSize = msg.fileMeta.size;
