@@ -29,8 +29,8 @@ function ApplozicSidebox() {
         {
             name: 'applozic-min-js',
             url:
-                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.4.min.js',
-            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.4.min.js',
+                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.5.min.js',
+            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.5.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
@@ -90,6 +90,9 @@ function ApplozicSidebox() {
             return false;
         }
     };
+
+    this.loadResourceAsync = loadResourceAsync;
+
     function loadExternalFiles(externalFileDetails) {
         try {
             if (
@@ -317,6 +320,75 @@ function ApplozicSidebox() {
             return false;
         }
     }
+
+    function loadResourceAsync(src) {
+        return new Promise((resolve, reject) => {
+            let element;
+
+            if (src.endsWith('.js')) {
+                element = document.createElement('script');
+                element.src = src;
+                element.type = 'text/javascript';
+            } else if (src.endsWith('.css')) {
+                element = document.createElement('link');
+                element.href = src;
+                element.type = 'text/css';
+                element.rel = 'stylesheet';
+            } else {
+                reject(new Error('Unsupported resource type'));
+                return;
+            }
+
+            element.onload = () => resolve();
+            element.onerror = () =>
+                reject(new Error(`Resource load error for ${src}`));
+
+            document.head.appendChild(element);
+        });
+    }
+
+    async function loadFileBasedOnProp(apiData, options) {
+        try {
+            const promises = [];
+
+            if (options.zendeskChatSdkKey) {
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.zendesk.js)
+                );
+            }
+
+            if (
+                Array.isArray(options.preLeadCollection) ||
+                (apiData.collectLead && apiData.leadCollection)
+            ) {
+                const leadCollection =
+                    options.preLeadCollection || apiData.leadCollection;
+
+                const shouldLoadIntl = leadCollection?.some(
+                    (obj) => obj.enableCountryCode
+                );
+
+                if (shouldLoadIntl) {
+                    Object.values(THIRD_PARTY_SCRIPTS.intlForPreChat).forEach(
+                        async (file) => {
+                            promises.push(loadResourceAsync(file));
+                        }
+                    );
+                }
+            }
+
+            if (options.voiceNote) {
+                promises.push(
+                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js)
+                );
+            }
+
+            await Promise.all(promises);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     function mckLoadAppScript() {
         // var cookiePrefix = KommunicateUtils.getCookiePrefix();
         // var mapCookies = [{
@@ -362,11 +434,11 @@ function ApplozicSidebox() {
         }
     }
 
-    function mckInitSidebox(data, randomUserId) {
+    async function mckInitSidebox(data, randomUserId) {
         try {
             var options = applozic._globals;
-            if (options.labels && options.labels["lead.collection"]?.heading) {
-                options["headingFromWidget"] = true;
+            if (options.labels && options.labels['lead.collection']?.heading) {
+                options['headingFromWidget'] = true;
             }
             var widgetSettings = data.chatWidget;
             var disableChatWidget =
@@ -492,40 +564,6 @@ function ApplozicSidebox() {
                 options.hidePostCTA != null
                     ? options.hidePostCTA
                     : widgetSettings && widgetSettings.hidePostCTA;
-
-            KommunicateUtils.deleteDataFromKmSession('settings');
-
-            var pseudoNameEnabled =
-                widgetSettings &&
-                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
-                    ? widgetSettings.pseudonymsEnabled
-                    : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
-            options.metadata =
-                typeof options.metadata == 'object' ? options.metadata : {};
-            options.fileUpload =
-                options.fileUpload ||
-                (widgetSettings && widgetSettings.fileUpload);
-            options.connectSocketOnWidgetClick =
-                options.connectSocketOnWidgetClick != null
-                    ? options.connectSocketOnWidgetClick
-                    : widgetSettings &&
-                      widgetSettings.connectSocketOnWidgetClick;
-            options.voiceInput =
-                options.voiceInput != null
-                    ? options.voiceInput
-                    : widgetSettings && widgetSettings.voiceInput;
-            options.voiceOutput =
-                options.voiceOutput != null
-                    ? options.voiceOutput
-                    : widgetSettings && widgetSettings.voiceOutput;
-            options.attachment =
-                options.attachment != null
-                    ? options.attachment
-                    : widgetSettings && widgetSettings.attachment;
-            options.hidePostCTA =
-                options.hidePostCTA != null
-                    ? options.hidePostCTA
-                    : widgetSettings && widgetSettings.hidePostCTA;
             options.zendeskChatSdkKey =
                 options.zendeskChatSdkKey != null
                     ? options.zendeskChatSdkKey
@@ -590,7 +628,9 @@ function ApplozicSidebox() {
             options.talkToHuman = isSettingEnable('talkToHuman');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
-            options.googleApiKey = isSettingEnable('googleApiKey') || 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
+            options.googleApiKey =
+                isSettingEnable('googleApiKey') ??
+                'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
@@ -645,6 +685,7 @@ function ApplozicSidebox() {
                 //save user cookies
                 saveUserCookies(options);
             }
+            await loadFileBasedOnProp(data, options);
             if (typeof options !== 'undefined') {
                 options.ojq = $original;
                 options.obsm = oModal;
@@ -652,7 +693,7 @@ function ApplozicSidebox() {
             }
             if (options.rtl === false) {
                 const iframeDocument = window.document;
-                iframeDocument.body.setAttribute('dir', "ltr");
+                iframeDocument.body.setAttribute('dir', 'ltr');
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {

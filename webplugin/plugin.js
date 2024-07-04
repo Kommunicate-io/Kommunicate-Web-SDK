@@ -5,6 +5,8 @@ var KM_PLUGIN_SETTINGS = JSON.parse(':PLUGIN_SETTINGS');
 var MCK_PLUGIN_VERSION = ':MCK_PLUGIN_VERSION';
 var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ':PRODUCT_ID';
+var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
+var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
 
 var kmCustomElements = {
     iframe: {
@@ -149,9 +151,23 @@ function createCustomClasses(classSettings) {
 
 // Set language and direction based on browser's language
 function languageDirectionChangeAuto() {
-    const rtlLanguages = ['ar', 'he', 'fa', 'ur', 'ps', 'sd', 'prs', 'yi', 'ku', 'ms', 'ug', 'syr', 'lrc'];
+    const rtlLanguages = [
+        'ar',
+        'he',
+        'fa',
+        'ur',
+        'ps',
+        'sd',
+        'prs',
+        'yi',
+        'ku',
+        'ms',
+        'ug',
+        'syr',
+        'lrc',
+    ];
     const lang = navigator.language.toLowerCase();
-    return (rtlLanguages.includes(lang)) ? 'rtl' : 'ltr';
+    return rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
 }
 
 // Create element iframe for kommunicate widget
@@ -176,7 +192,7 @@ function createKommunicateIframe() {
         kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
-    iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto())
+    iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto());
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities
@@ -220,6 +236,9 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
     addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
     addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
+    addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
+    addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
+
     var options = {};
     var options = addableWindow.applozic._globals;
     options.isAnonymousChat = options.isAnonymousChat;
