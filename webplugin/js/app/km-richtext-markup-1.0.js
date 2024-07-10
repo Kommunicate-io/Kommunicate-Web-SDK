@@ -387,7 +387,9 @@ Kommunicate.markup = {
         return `<div>
     {{#payload}}
     <div class="km-image-template">
-       <img class="km-template-img" src="{{url}}"></img>
+        <a href="#" target="_self" role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="image/png" data-url="{{url}}" data-name="{{caption}}">
+          <img class="km-template-img" src="{{url}}"></img>
+          </a>
        <div class="km-template-image-caption-wrapper {{^caption}}n-vis{{/caption}}">
            <p class="km-template-img-caption">{{caption}}</p>
        </div>
