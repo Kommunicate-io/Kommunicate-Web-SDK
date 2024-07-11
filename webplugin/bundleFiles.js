@@ -5,7 +5,7 @@ exports.version = version;
 
 exports.SENTRY_SCRIPT = [
     path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
-]
+];
 
 exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
@@ -106,3 +106,23 @@ exports.THIRD_PARTY_FILE_INFO = [
         type: 'js',
     },
 ];
+
+exports.getDynamicLoadFiles = function (dir) {
+    return JSON.stringify({
+        zendesk: {
+            js: `${dir}/zendesk-chat-service-${version}.min.js`,
+        },
+        intlForPreChat: {
+            js: `${dir}/intl-tel-lib.min.js`,
+            css: `${dir}/intl-tel-lib-${version}.min.css`,
+        },
+        // for voice note
+        voiceNote: {
+            js: `${dir}/voice-note.min.js`,
+        },
+        crypto: {
+            js: `${dir}/crypto.min.js`,
+        },
+        // for voice note
+    });
+};

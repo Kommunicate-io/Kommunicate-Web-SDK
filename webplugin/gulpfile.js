@@ -19,7 +19,8 @@ const {
     THIRD_PARTY_SCRIPTS,
     SENTRY_SCRIPT,
     version,
-    THIRD_PARTY_FILE_INFO
+    THIRD_PARTY_FILE_INFO,
+    getDynamicLoadFiles,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -83,12 +84,13 @@ const generateResourceFolder = () => {
 };
 
 const generateThirdPartyJSFiles = () => {
-
-    console.log("sentry.enabled: " + MCK_THIRD_PARTY_INTEGRATION.sentry.enabled);
+    console.log(
+        'sentry.enabled: ' + MCK_THIRD_PARTY_INTEGRATION.sentry.enabled
+    );
 
     let inputScripts = THIRD_PARTY_SCRIPTS;
     if (MCK_THIRD_PARTY_INTEGRATION.sentry.enabled) {
-        console.log("adding sentry script")
+        console.log('adding sentry script');
         inputScripts = [...inputScripts, ...SENTRY_SCRIPT];
     }
 
@@ -226,8 +228,8 @@ const generateBuildFiles = () => {
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild(
-        'js/app/applozic.chat-6.2.5.min.js',
-        `${buildDir}/applozic.chat-6.2.5.min.js`
+        'js/app/applozic.chat-6.2.6.min.js',
+        `${buildDir}/applozic.chat-6.2.6.min.js`
     );
 
     // Generate mck-sidebox.html file for build folder.
@@ -297,31 +299,15 @@ const generateBuildFiles = () => {
     );
 };
 
-const getThirdPartyScripts = () => {
-    return JSON.stringify({
-        zendesk: {
-            js: `${pathToResource}/third-party-scripts/zendesk-chat-service-${version}.min.js`,
-        },
-        intlForPreChat: {
-            js: `${pathToResource}/third-party-scripts/intl-tel-lib.min.js`,
-            css: `${pathToResource}/third-party-scripts/intl-tel-lib-${version}.min.css`,
-        },
-        voiceNote: {
-            js: `${pathToResource}/third-party-scripts/voice-note.min.js`,
-        },
-        crypto: {
-            js: `${pathToResource}/third-party-scripts/crypto.min.js`,
-        },
-    });
-};
-
 const generateFilesByVersion = (location) => {
     fs.readFile(path.join(__dirname, location), 'utf8', function (err, data) {
         if (err) {
             console.log('error while generating plugin.js', err);
         }
 
-        const thirdPartyScripts = getThirdPartyScripts();
+        const thirdPartyScripts = getDynamicLoadFiles(
+            `${pathToResource}/third-party-scripts`
+        );
 
         try {
             var plugin = data
