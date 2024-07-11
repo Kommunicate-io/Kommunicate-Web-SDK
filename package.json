@@ -29,6 +29,7 @@
     "build-prod-eu": "export NODE_ENV=prod_eu && npm-run-all build-server gulp-build",
     "build-prod-cn": "export NODE_ENV=prod_cn && npm-run-all build-server gulp-build",
     "build-staging": "export NODE_ENV=staging && npm-run-all build-server gulp-build",
+    "build-beta":"export NODE_ENV=beta && npm-run-all build-server gulp-build",
     "serve-build": "serve -C -l 3030 webplugin/build",
     "run-danger-local": "danger local",
     "run-danger-test": "danger ci",
