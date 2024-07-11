@@ -95,7 +95,7 @@ const generateThirdPartyJSFiles = () => {
     return gulp
         .src(inputScripts)
         .pipe(concat(`kommunicateThirdParty.min.js`))
-        .pipe(terser(TERSER_CONFIG))
+        // .pipe(terser(TERSER_CONFIG))
         .pipe(gulp.dest(`${buildDir}`))
         .on('end', () => {
             console.log(`kommunicateThirdParty.min.js combined successfully`);
@@ -122,9 +122,9 @@ const generateCSSFiles = () => {
 const generatePluginJSFiles = () => {
     return gulp
         .src(PLUGIN_JS_FILES)
-        .pipe(babel()) // Run Babel
+        // .pipe(babel()) // Run Babel
         .pipe(concat(`kommunicate-plugin.min.js`))
-        .pipe(terser(TERSER_CONFIG))
+        // .pipe(terser(TERSER_CONFIG))
         .pipe(gulp.dest(`${buildDir}`)) // Destination directory
         .on('end', () => {
             console.log(`kommunicate-plugin.min.js combined successfully`);
@@ -161,8 +161,8 @@ const minifyJS = (path, dir, fileName, shouldMinify, callback) => {
     return gulp
         .src(path)
         .pipe(stripComments())
-        .pipe(gulpif(shouldMinify, babel()))
-        .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
+        // .pipe(gulpif(shouldMinify, babel()))
+        // .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
         .pipe(concat(fileName))
         .pipe(gulp.dest(`${dir}`)) // Destination directory
         .on('end', () => {
