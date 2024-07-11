@@ -226,7 +226,7 @@ const generateBuildFiles = () => {
 
     // copy applozic.chat.{version}.min.js to build
     copyFileToBuild(
-        'js/app/applozic.chat-6.2.5.min.js',
+        'js/app/applozic.chat.js',
         `${buildDir}/applozic.chat-6.2.5.min.js`
     );
 
