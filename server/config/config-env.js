@@ -71,7 +71,7 @@ const configEnv = {
             },
         },
     },
-
+    
     release: {
         port: '3031',
         urls: {
@@ -96,7 +96,7 @@ const configEnv = {
             },
         },
     },
-
+    
     prod: {
         port: '3030',
         urls: {
@@ -169,7 +169,7 @@ const configEnv = {
             },
         },
     },
-
+    
     prod_eu: {
         port: '3030',
         urls: {
@@ -194,7 +194,7 @@ const configEnv = {
             },
         },
     },
-
+    
     prod_enterprise: {
         port: '3033',
         urls: {
@@ -234,7 +234,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
+                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: true,
             },
             aws: {
