@@ -310,22 +310,26 @@ KommunicateUtils = {
     getCookie: function (cname, skipPrefix, isOld) {
         var cookiePrefix = this.getCookiePrefix();
         var name = skipPrefix ? cname : cookiePrefix + cname;
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        var appId = applozic._globals.appId;
-        if (!isOld) {
-            name += '-' + appId + '=';
-        } else {
-            name += '=';
-        }
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
+        try {
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            var appId = applozic._globals.appId;
+            if (!isOld) {
+                name += '-' + appId + '=';
+            } else {
+                name += '=';
             }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
             }
+        } catch (err) {
+            console.error('Kommunicate => not able to decode cookie', err);
         }
         return '';
     },
