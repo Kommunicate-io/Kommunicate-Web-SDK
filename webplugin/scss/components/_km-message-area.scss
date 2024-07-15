@@ -19,7 +19,7 @@
 .mck-msg-right {
     & .mck-msg-box.mck-msg-source {
         padding: 0;
-        max-width: 90%;
+        max-width: 80%;
 
         > div {
             &.mck-msg-content,
@@ -30,6 +30,11 @@
     }
 }
 
+.mck-msg-source-heading{
+    margin:0 0 7px;
+    font-weight: 600;
+}
+
 .mck-msg-source-container {
     border-top: 1px solid #dcdcdc;
     padding: 0;
@@ -37,13 +42,19 @@
         list-style: none;
         padding: 0;
         margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
         li {
             display: flex;
             align-items: center;
             justify-content: space-between;
 
             a {
-                text-decoration: underline;
+                width: 90%;
+                word-break: break-all;
+                text-decoration: underline !important;
+                color: $text-tertiary-color !important;
             }
             div {
                 cursor: pointer;
