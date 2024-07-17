@@ -1,8 +1,7 @@
 class KmStorage {
     constructor() {
         this.appId = applozic._globals.appId;
-        this.sessionKey = KommunicateConstants.KOMMUNICATE_SESSION_KEY;
-        this.userSessionKey = `${this.sessionKey}-${appId}`;
+        this.userSessionKey = `${KommunicateConstants.KOMMUNICATE_SESSION_KEY}-${this.appId}`;
     }
 
     isSessionStorageAvailable = function () {
@@ -22,10 +21,15 @@ class KmStorage {
 
     migrateKmSession = () => {
         // a session with old key exists then migrate to new format
-        var oldData = sessionStorage.getItem(this.sessionKey);
+        const oldData = sessionStorage.getItem(
+            KommunicateConstants.KOMMUNICATE_SESSION_KEY
+        );
+
         if (oldData) {
             sessionStorage.setItem(this.userSessionKey, oldData);
-            sessionStorage.removeItem(this.sessionKey);
+            sessionStorage.removeItem(
+                KommunicateConstants.KOMMUNICATE_SESSION_KEY
+            );
         }
     };
 
@@ -48,4 +52,4 @@ class KmStorage {
     }
 }
 
-new KmStorage();
+const kmStorage = new KmStorage();
