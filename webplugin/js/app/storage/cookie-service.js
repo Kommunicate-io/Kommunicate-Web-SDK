@@ -4,7 +4,7 @@ class KmCookieStorage extends KmStorage {
     }
 
     getCookie = (cname, skipPrefix, isOld) => {
-        const cookiePrefix = this.getCookiePrefix();
+        let cookiePrefix = this.getCookiePrefix();
         const ca = document.cookie.split(';');
         let name = skipPrefix ? cname : cookiePrefix + cname;
 
@@ -57,7 +57,7 @@ class KmCookieStorage extends KmStorage {
         const appOptions =
             kmSessionStorage.getDataFromKmSession('appOptions') ||
             applozic._globals;
-        const cookiePrefix = KommunicateUtils.getSubDomain();
+        let cookiePrefix = KommunicateUtils.getSubDomain();
         if (appOptions && appOptions.domainKey) {
             cookiePrefix = appOptions.domainKey;
         }
@@ -74,7 +74,7 @@ class KmCookieStorage extends KmStorage {
         });
 
     getCookieParams = (cookie, isDelete = false) => {
-        const cookiePrefix = this.getCookiePrefix();
+        let cookiePrefix = this.getCookiePrefix();
         let name =
             cookie && cookie.skipPrefix
                 ? cookie.name
