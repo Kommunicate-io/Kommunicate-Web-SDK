@@ -87,7 +87,7 @@ var userOverride = {
         $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
-            KommunicateUtils.storeDataIntoKmSession('appOptions', appOptions);
+            kmSessionStorage.storeDataIntoKmSession('appOptions', appOptions);
             appOptions = $applozic.extend(
                 true,
                 {},
@@ -949,7 +949,7 @@ var userOverride = {
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
-            KommunicateUtils.storeDataIntoKmSession('appOptions', optns);
+            kmSessionStorage.storeDataIntoKmSession('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
                 appOptions.conversationTitle =
@@ -1346,7 +1346,7 @@ var userOverride = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
-                KommunicateUtils.removeKmSession();
+                kmSessionStorage.removeKmSession();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
@@ -2206,12 +2206,12 @@ var userOverride = {
                 window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
                 if (
-                    KommunicateUtils.getCookie(
+                    kmCookieStorage.getCookie(
                         KommunicateConstants.COOKIES
                             .IS_USER_ID_FOR_LEAD_COLLECTION
                     ) &&
                     !JSON.parse(
-                        KommunicateUtils.getCookie(
+                        kmCookieStorage.getCookie(
                             KommunicateConstants.COOKIES
                                 .IS_USER_ID_FOR_LEAD_COLLECTION
                         )
@@ -2232,22 +2232,22 @@ var userOverride = {
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
                         if (
-                            KommunicateUtils.getCookie(
+                            kmCookieStorage.getCookie(
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID
                             ) &&
-                            KommunicateUtils.getCookie(
+                            kmCookieStorage.getCookie(
                                 KommunicateConstants.COOKIES
                                     .IS_USER_ID_FOR_LEAD_COLLECTION
                             ) &&
                             JSON.parse(
-                                KommunicateUtils.getCookie(
+                                kmCookieStorage.getCookie(
                                     KommunicateConstants.COOKIES
                                         .IS_USER_ID_FOR_LEAD_COLLECTION
                                 )
                             )
                         ) {
-                            var userId = KommunicateUtils.getCookie(
+                            var userId = kmCookieStorage.getCookie(
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID
                             );
@@ -2399,8 +2399,10 @@ var userOverride = {
                                 'none'
                             );
                         }
-                        if(result?.encryptionKey && result?.encryptionType){
-                          await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js)
+                        if (result?.encryptionKey && result?.encryptionType) {
+                            await applozicSideBox.loadResourceAsync(
+                                THIRD_PARTY_SCRIPTS.crypto.js
+                            );
                         }
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
@@ -2712,7 +2714,7 @@ var userOverride = {
                 }
 
                 Kommunicate.initilizeEventListners();
-                var activeConversationInfo = KommunicateUtils.getItemFromLocalStorage(
+                var activeConversationInfo = kmLocalStorage.getItemFromLocalStorage(
                     'mckActiveConversationInfo'
                 );
 
@@ -2753,7 +2755,7 @@ var userOverride = {
                         activeConversationInfo,
                         data
                     ) &&
-                    KommunicateUtils.removeItemFromLocalStorage(
+                    kmLocalStorage.removeItemFromLocalStorage(
                         'mckActiveConversationInfo'
                     );
 
@@ -3844,7 +3846,7 @@ var userOverride = {
                 defaultSettings: if there is any custome event is configured by the user
             */
             (_this.triggerWelcomeEvent = function () {
-                var customEvent = KommunicateUtils.getDataFromKmSession(
+                var customEvent = kmSessionStorage.getDataFromKmSession(
                     'settings'
                 );
                 var eventToTrigger =
@@ -4987,7 +4989,7 @@ var userOverride = {
                     }
                     if (email) {
                         userId = email;
-                        KommunicateUtils.setCookie({
+                        kmCookieStorage.setCookie({
                             name:
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID,
@@ -4995,7 +4997,7 @@ var userOverride = {
                             expiresInDays: 30,
                             domain: MCK_COOKIE_DOMAIN,
                         });
-                        KommunicateUtils.setCookie({
+                        kmCookieStorage.setCookie({
                             name:
                                 KommunicateConstants.COOKIES
                                     .IS_USER_ID_FOR_LEAD_COLLECTION,
@@ -5720,7 +5722,7 @@ var userOverride = {
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                    KommunicateUtils.removeItemFromLocalStorage(
+                    kmLocalStorage.removeItemFromLocalStorage(
                         'mckActiveConversationInfo'
                     );
                 KommunicateUI.hideAwayMessage();
@@ -7477,7 +7479,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.getKmSession();
+                var userSession = kmSessionStorage.getKmSession();
                 var languageCode =
                     userSession &&
                     userSession.settings &&
@@ -8660,10 +8662,10 @@ var userOverride = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
-                var userId = KommunicateUtils.getCookie(
+                var userId = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
-                (KommunicateUtils.getItemFromLocalStorage(
+                (kmLocalStorage.getItemFromLocalStorage(
                     'mckActiveConversationInfo',
                     { groupId: params.tabId }
                 ) ||
@@ -8673,7 +8675,7 @@ var userOverride = {
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     params.isGroup &&
                     params.tabId &&
-                    KommunicateUtils.setItemToLocalStorage(
+                    kmLocalStorage.setItemToLocalStorage(
                         'mckActiveConversationInfo',
                         {
                             groupId: params.tabId,
@@ -14045,7 +14047,7 @@ var userOverride = {
             };
 
             _this.createGroupDefaultSettings = function () {
-                var defaultSettings = KommunicateUtils.getDataFromKmSession(
+                var defaultSettings = kmSessionStorage.getDataFromKmSession(
                     'settings'
                 );
                 var conversationDetail = {

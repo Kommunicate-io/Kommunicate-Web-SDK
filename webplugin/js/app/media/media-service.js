@@ -2,7 +2,7 @@ Kommunicate.mediaService = {
     browserLocale:
         window.navigator.language || window.navigator.userLanguage || 'en-US',
     appOptions:
-        KommunicateUtils.getDataFromKmSession('appOptions') ||
+        kmSessionStorage.getDataFromKmSession('appOptions') ||
         applozic._globals,
     userInActiveSec: 0,
     isAppleDevice: function () {
@@ -112,7 +112,7 @@ Kommunicate.mediaService = {
         //Text to Speech
 
         if ('speechSynthesis' in window) {
-            var speechSynth= window.speechSynthesis;
+            var speechSynth = window.speechSynthesis;
 
             if (offSpeech) {
                 speechSynth.cancel();
@@ -120,7 +120,9 @@ Kommunicate.mediaService = {
             }
 
             // get appOptions from widget script
-            var appOptions = KommunicateUtils.getDataFromKmSession('appOptions') || applozic._globals;
+            var appOptions =
+                kmSessionStorage.getDataFromKmSession('appOptions') ||
+                applozic._globals;
 
             // If the message isn't part of the UI, it's not included in voice output either
             if (!appOptions || !Kommunicate.visibleMessage(message)) return;

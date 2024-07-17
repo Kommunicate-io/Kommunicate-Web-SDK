@@ -3,6 +3,13 @@ const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
 exports.version = version;
 
+const STORAGE_FILES = [
+    path.resolve(__dirname, 'js/app/storage/storage-service.js'),
+    path.resolve(__dirname, 'js/app/storage/cookie-service.js'),
+    path.resolve(__dirname, 'js/app/storage/session-service.js'),
+    path.resolve(__dirname, 'js/app/storage/local-service.js'),
+];
+
 exports.SENTRY_SCRIPT = [
     path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
 ];
@@ -23,6 +30,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
     path.resolve(__dirname, 'js/app/km-utils.js'),
+    ...STORAGE_FILES,
     path.resolve(__dirname, 'js/app/applozic.jquery.js'),
     path.resolve(__dirname, 'knowledgebase/common.js'),
     path.resolve(__dirname, 'knowledgebase/kb.js'),

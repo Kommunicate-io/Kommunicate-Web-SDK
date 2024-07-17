@@ -8,7 +8,10 @@ class KmSessionStorage extends KmStorage {
 
     getKmSession = () => this.getStorageData(sessionStorage);
 
-    getDataFromKmSession = (key) => this.getStorageData(sessionStorage);
+    getDataFromKmSession = (key) => {
+        const session = this.getStorageData(sessionStorage);
+        return session[key] || '';
+    };
 
     storeDataIntoKmSession = (key, data) => {
         const session = this.getStorageData(sessionStorage);

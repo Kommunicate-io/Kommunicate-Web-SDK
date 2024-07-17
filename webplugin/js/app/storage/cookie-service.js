@@ -105,6 +105,12 @@ class KmCookieStorage extends KmStorage {
             (secure ? ';secure' : '') +
             (domain ? ';domain=' + domain : '');
     };
+
+    deleteUserCookiesOnLogout = function () {
+        Object.values(KommunicateConstants.COOKIES).forEach((cookie) => {
+            this.deleteCookie({ name: cookie, domain: MCK_COOKIE_DOMAIN });
+        });
+    };
 }
 
 const kmCookieStorage = new KmCookieStorage();

@@ -1,7 +1,7 @@
 function KmNavBar(mckMsgLayout) {
     var _this = this;
     var appOptions =
-        KommunicateUtils.getDataFromKmSession('appOptions') ||
+        kmSessionStorage.getDataFromKmSession('appOptions') ||
         applozic._globals;
 
     // Handle UI visibility based on conversation assignment
