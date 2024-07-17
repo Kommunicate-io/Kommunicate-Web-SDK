@@ -9386,6 +9386,7 @@ var userOverride = {
                 if (msg?.message) {
                     msg.message = window.DOMPurify.sanitize(msg.message, {
                         ALLOWED_TAGS: KM_ALLOWED_TAGS,
+                        ALLOWED_ATTR: KM_ALLOWED_ATTR,
                         WHOLE_DOCUMENT:
                             msg.contentType ===
                             KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML,
