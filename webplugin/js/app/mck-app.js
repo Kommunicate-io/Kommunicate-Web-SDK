@@ -610,7 +610,7 @@ function ApplozicSidebox() {
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
 
-                kmSessionStorage.deleteDataFromKmSession('settings');
+            kmSessionStorage.deleteDataFromKmSession('settings');
 
             if (
                 sessionTimeout != null &&
@@ -618,7 +618,7 @@ function ApplozicSidebox() {
             ) {
                 logoutAfterSessionExpiry(sessionTimeout);
                 var details =
-                kmLocalStorage.getItemFromLocalStorage(
+                    kmLocalStorage.getItemFromLocalStorage(
                         applozic._globals.appId
                     ) || {};
                 !details.sessionStartTime &&
@@ -763,7 +763,7 @@ function ApplozicSidebox() {
             ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
-        kmCookieStorage.getCookie(
+            kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
         try {
@@ -845,9 +845,7 @@ function ApplozicSidebox() {
         ) {
             kmCookieStorage.deleteUserCookiesOnLogout();
             kmSessionStorage.removeKmSession();
-            kmLocalStorage.removeItemFromLocalStorage(
-                applozic._globals.appId
-            );
+            kmLocalStorage.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
             kmLocalStorage.removeItemFromLocalStorage(
                 'mckActiveConversationInfo'
@@ -857,7 +855,7 @@ function ApplozicSidebox() {
         window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
             var details =
-            kmLocalStorage.getItemFromLocalStorage(
+                kmLocalStorage.getItemFromLocalStorage(
                     applozic._globals.appId
                 ) || {};
             details.sessionEndTime = new Date().getTime();
