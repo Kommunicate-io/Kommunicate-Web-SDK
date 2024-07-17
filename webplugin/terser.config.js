@@ -2,9 +2,12 @@ const isTestEnv = ['development', 'test', 'release'].includes(
     process.env.NODE_ENV
 );
 
+console.log('isTestEnv: ', isTestEnv);
+
 module.exports = {
     compress: {
-        drop_console: !isTestEnv,
+        drop_console: !isTestEnv && ['log', 'warn', 'info'], // drop all console.* calls
+        drop_debugger: !isTestEnv,
         dead_code: true,
         keep_fnames: true,
     },
