@@ -1351,13 +1351,13 @@ var userOverride = {
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                KommunicateUtils.deleteCookie({
+                kmCookieStorage.deleteCookie({
                     name:
                         KommunicateConstants.COOKIES
                             .KOMMUNICATE_LOGGED_IN_USERNAME,
                     domain: MCK_COOKIE_DOMAIN,
                 });
-                KommunicateUtils.deleteCookie({
+                kmCookieStorage.deleteCookie({
                     name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                     domain: MCK_COOKIE_DOMAIN,
                 });
@@ -2157,7 +2157,7 @@ var userOverride = {
                 }
             };
 
-            _this.initializeApp = function (optns, isReInit) {
+            _this.initializeApp = async function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
                 var userPxy = {
                     applicationId: optns.appId,
@@ -2223,7 +2223,7 @@ var userOverride = {
                     ALStorage.clearMckContactNameArray();
                     ALStorage.clearAppHeaders();
                 }
-                var isValidated = _this.validateAppSession(userPxy);
+                var isValidated = await _this.validateAppSession(userPxy);
                 if (!isValidated) {
                     if (
                         (Array.isArray(KM_ASK_USER_DETAILS) &&
@@ -2399,11 +2399,7 @@ var userOverride = {
                                 'none'
                             );
                         }
-                        if (result?.encryptionKey && result?.encryptionType) {
-                            await applozicSideBox.loadResourceAsync(
-                                THIRD_PARTY_SCRIPTS.crypto.js
-                            );
-                        }
+                        await KommunicateUtils.loadCryptoJS(result);
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
@@ -2826,16 +2822,20 @@ var userOverride = {
                 mckMessageLayout.setHeaderPrimaryCTA();
             };
 
-            _this.validateAppSession = function (userPxy) {
+            _this.validateAppSession = async function (userPxy) {
                 mckGroupLayout.init();
                 mckMessageLayout.init();
-                var appHeaders = ALStorage.getAppHeaders();
+                const appHeaders = new KmSessionStorage("chatheaders").getAppHeaders();
+
                 if (appHeaders && appHeaders.userId) {
                     if (
                         userPxy.applicationId === appHeaders.appId &&
                         userPxy.userId === appHeaders.userId &&
                         userPxy.password === MCK_ACCESS_TOKEN
                     ) {
+                        // If session is exist then we don't make the initialize api call .
+                        await KommunicateUtils.loadCryptoJS(appHeaders);
+
                         PRE_CHAT_LEAD_COLLECTION_POPUP_ON = !(
                             KM_ASK_USER_DETAILS !== 0
                         );
