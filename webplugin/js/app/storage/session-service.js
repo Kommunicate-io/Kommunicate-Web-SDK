@@ -18,6 +18,7 @@ class KmSessionStorage extends KmStorage {
                     : {};
             case `${KommunicateConstants.SESSION_KEYS.LATEST_MESSAGE}-${this.appId}`:
                 const sessionData = this.getStorageData(sessionStorage);
+                console.log('get the latest message', sessionData);
                 return JSON.stringify(sessionData) !== '{}'
                     ? sessionData
                     : null;
@@ -45,6 +46,7 @@ class KmSessionStorage extends KmStorage {
 
             case `${KommunicateConstants.SESSION_KEYS.LATEST_MESSAGE}-${this.appId}`:
                 let mckLocalMessageArray = this.getSessionData();
+                console.log('adding the latest message', mckLocalMessageArray);
 
                 if (mckLocalMessageArray !== null) {
                     mckLocalMessageArray = mckLocalMessageArray.concat(data);
@@ -80,8 +82,10 @@ class KmSessionStorage extends KmStorage {
     };
 
     // delete the session key from session storage
-    deleteSessionData = (key) =>
+    deleteSessionData = (key) => {
+        console.log('deleteSessionData', this.storageKey);
         sessionStorage.removeItem(key || this.storageKey);
+    };
 }
 
 const appOptionInstance = new KmSessionStorage();
