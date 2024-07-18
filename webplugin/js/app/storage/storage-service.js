@@ -1,7 +1,7 @@
 class KmStorage {
     constructor(key) {
         this.appId = applozic._globals.appId;
-        this.userSessionKey = `${
+        this.storageKey = `${
             key || KommunicateConstants.KOMMUNICATE_SESSION_KEY
         }-${this.appId}`;
     }
@@ -15,9 +15,9 @@ class KmStorage {
     };
 
     getStorageData = (storage, notParse) => {
-        this.migrateKmSession();
+        // this.migrateKmSession();
 
-        const session = storage.getItem(this.userSessionKey);
+        const session = storage.getItem(this.storageKey);
         if (notParse) return session || {};
 
         return session ? JSON.parse(session) : {};
@@ -30,7 +30,7 @@ class KmStorage {
         );
 
         if (oldData) {
-            sessionStorage.setItem(this.userSessionKey, oldData);
+            sessionStorage.setItem(this.storageKey, oldData);
             sessionStorage.removeItem(
                 KommunicateConstants.KOMMUNICATE_SESSION_KEY
             );

@@ -4,39 +4,91 @@ class KmSessionStorage extends KmStorage {
         return this.addProxy.call(this);
     }
 
-    removeKmSession = () => sessionStorage.removeItem(this.userSessionKey);
+    getSessionData = () => {
+        switch (this.storageKey) {
+            case `${KommunicateConstants.SESSION_KEYS.CHAT_HEADERS}-${this.appId}`:
+                const data = this.getStorageData(sessionStorage, true);
 
-    getKmSession = () => this.getStorageData(sessionStorage);
+                return JSON.stringify(data) !== '{}'
+                    ? JSON.parse(
+                          mckUtils.checkIfB64Encoded(data)
+                              ? mckUtils.b64DecodeUnicode(data)
+                              : data
+                      )
+                    : {};
+            case `${KommunicateConstants.SESSION_KEYS.LATEST_MESSAGE}-${this.appId}`:
+                const sessionData = this.getStorageData(sessionStorage);
+                return JSON.stringify(sessionData) !== '{}'
+                    ? sessionData
+                    : null;
 
-    getDataFromKmSession = (key) => {
+            default:
+                return this.getStorageData(sessionStorage);
+        }
+    };
+
+    // Retrieve a specific property from session data
+    getPropertyDataFromSession = (key) => {
         const session = this.getStorageData(sessionStorage);
         return session[key] || '';
     };
 
-    storeDataIntoKmSession = (key, data) => {
+    setSessionData = (data) => {
+        switch (this.storageKey) {
+            case `${KommunicateConstants.SESSION_KEYS.CHAT_HEADERS}-${this.appId}`:
+                const encryptData = mckUtils.b64EncodeUnicode(
+                    JSON.stringify(data)
+                );
+
+                sessionStorage.setItem(this.storageKey, encryptData);
+                return;
+
+            case `${KommunicateConstants.SESSION_KEYS.LATEST_MESSAGE}-${this.appId}`:
+                debugger;
+                let mckLocalMessageArray = this.getSessionData();
+
+                if (mckLocalMessageArray !== null) {
+                    mckLocalMessageArray = mckLocalMessageArray.concat(data);
+                } else {
+                    mckLocalMessageArray = data;
+                }
+
+                sessionStorage.setItem(
+                    this.storageKey,
+                    JSON.stringify(mckLocalMessageArray)
+                );
+                return;
+
+            default:
+                sessionStorage.setItem(this.storageKey, JSON.stringify(data));
+        }
+    };
+
+    setPropertyDataIntoSession = (key, data) => {
         const session = this.getStorageData(sessionStorage);
         session[key] = data;
 
-        sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
+        sessionStorage.setItem(this.storageKey, JSON.stringify(session));
     };
 
-    deleteDataFromKmSession = (key) => {
+    // delete the data from session value(Object)
+    deletePropertyDataFromSession = (key) => {
         const session = this.getStorageData(sessionStorage);
         delete session[key];
 
-        sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
+        typeof sessionStorage !== 'undefined' &&
+            sessionStorage.setItem(this.storageKey, JSON.stringify(session));
     };
 
-    getAppHeaders = () => {
-        const data = this.getStorageData(sessionStorage, true);
-        return data
-            ? JSON.parse(
-                  mckUtils.checkIfB64Encoded(data)
-                      ? mckUtils.b64DecodeUnicode(data)
-                      : data
-              )
-            : {};
-    };
+    // delete the session key from session storage
+    deleteSessionData = (key) =>
+        sessionStorage.removeItem(key || this.storageKey);
 }
 
-const kmSessionStorage = new KmSessionStorage();
+const appOptionInstance = new KmSessionStorage();
+const chatHeaderInstance = new KmSessionStorage(
+    KommunicateConstants.SESSION_KEYS.CHAT_HEADERS
+);
+const latestMessageInstance = new KmSessionStorage(
+    KommunicateConstants.SESSION_KEYS.LATEST_MESSAGE
+);

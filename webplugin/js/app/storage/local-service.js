@@ -13,14 +13,14 @@ class KmLocalStorage extends KmStorage {
         const session = this.getStorageData(localStorage);
 
         delete session[key];
-        localStorage.setItem(this.userSessionKey, JSON.stringify(session));
+        localStorage.setItem(this.storageKey, JSON.stringify(session));
     };
 
     setItemToLocalStorage = (key, data) => {
         const session = this.getStorageData(localStorage);
 
         session[key] = data;
-        localStorage.setItem(this.userSessionKey, JSON.stringify(session));
+        localStorage.setItem(this.storageKey, JSON.stringify(session));
     };
 }
 

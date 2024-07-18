@@ -2,7 +2,7 @@ Kommunicate.mediaService = {
     browserLocale:
         window.navigator.language || window.navigator.userLanguage || 'en-US',
     appOptions:
-        kmSessionStorage.getDataFromKmSession('appOptions') ||
+        appOptionInstance.getPropertyDataFromSession('appOptions') ||
         applozic._globals,
     userInActiveSec: 0,
     isAppleDevice: function () {
@@ -121,7 +121,7 @@ Kommunicate.mediaService = {
 
             // get appOptions from widget script
             var appOptions =
-                kmSessionStorage.getDataFromKmSession('appOptions') ||
+                appOptionInstance.getPropertyDataFromSession('appOptions') ||
                 applozic._globals;
 
             // If the message isn't part of the UI, it's not included in voice output either

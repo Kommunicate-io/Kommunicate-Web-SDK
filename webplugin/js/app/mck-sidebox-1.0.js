@@ -87,7 +87,10 @@ var userOverride = {
         $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
-            kmSessionStorage.storeDataIntoKmSession('appOptions', appOptions);
+            appOptionInstance.setPropertyDataIntoSession(
+                'appOptions',
+                appOptions
+            );
             appOptions = $applozic.extend(
                 true,
                 {},
@@ -949,7 +952,7 @@ var userOverride = {
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
-            kmSessionStorage.storeDataIntoKmSession('appOptions', optns);
+            appOptionInstance.setPropertyDataIntoSession('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
                 appOptions.conversationTitle =
@@ -1346,10 +1349,9 @@ var userOverride = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
-                kmSessionStorage.removeKmSession();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
-                ALStorage.clearSessionStorageElements();
+                KommunicateUtils.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
                 kmCookieStorage.deleteCookie({
                     name:
@@ -2219,9 +2221,10 @@ var userOverride = {
                     KM_ASK_USER_DETAILS &&
                     KM_ASK_USER_DETAILS.length !== 0
                 ) {
-                    ALStorage.clearMckMessageArray();
-                    ALStorage.clearMckContactNameArray();
-                    ALStorage.clearAppHeaders();
+                    // ALStorage.clearMckMessageArray();
+                    // ALStorage.clearMckContactNameArray();
+                    latestMessageInstance.deleteSessionData();
+                    chatHeaderInstance.deleteSessionData();
                 }
                 var isValidated = await _this.validateAppSession(userPxy);
                 if (!isValidated) {
@@ -2400,8 +2403,9 @@ var userOverride = {
                             );
                         }
                         await KommunicateUtils.loadCryptoJS(result);
-                        ALStorage.clearMckMessageArray();
-                        ALStorage.clearMckContactNameArray();
+                        latestMessageInstance.deleteSessionData();
+                        // ALStorage.clearMckMessageArray();
+                        // ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
                             var kmChatLoginModal = document.getElementById(
                                 'km-chat-login-modal'
@@ -2483,7 +2487,8 @@ var userOverride = {
                         }
                     },
                     error: function () {
-                        ALStorage.clearMckMessageArray();
+                        latestMessageInstance.deleteSessionData();
+                        // ALStorage.clearMckMessageArray();
                         Kommunicate.displayKommunicateWidget(false);
                         if (typeof MCK_ON_PLUGIN_INIT === 'function') {
                             MCK_ON_PLUGIN_INIT({
@@ -2635,6 +2640,7 @@ var userOverride = {
                     }
                 });
 
+                // TODO: Need to verify this code becuase we are not setting it storage
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (
                     mckContactNameArray !== null &&
@@ -2647,6 +2653,7 @@ var userOverride = {
                         }
                     }
                 }
+                //
                 mckUserUtils.checkUserConnectedStatus();
                 mckInit.tabFocused();
                 w.addEventListener('online', function () {
@@ -2681,7 +2688,7 @@ var userOverride = {
                 }
                 alFileService.init(data);
                 alNotificationService.subscribeToServiceWorker();
-                ALStorage.setAppHeaders(data);
+                chatHeaderInstance.setSessionData(data);
 
                 if (
                     (KM_ASK_USER_DETAILS && KM_ASK_USER_DETAILS.length !== 0) ||
@@ -2825,7 +2832,8 @@ var userOverride = {
             _this.validateAppSession = async function (userPxy) {
                 mckGroupLayout.init();
                 mckMessageLayout.init();
-                const appHeaders = new KmSessionStorage("chatheaders").getAppHeaders();
+                debugger;
+                const appHeaders = chatHeaderInstance.getSessionData();
 
                 if (appHeaders && appHeaders.userId) {
                     if (
@@ -2842,7 +2850,7 @@ var userOverride = {
                         _this.onInitApp(appHeaders);
                         return true;
                     }
-                    ALStorage.clearAppHeaders();
+                    chatHeaderInstance.deleteSessionData();
                     return false;
                 } else {
                     return false;
@@ -3846,7 +3854,7 @@ var userOverride = {
                 defaultSettings: if there is any custome event is configured by the user
             */
             (_this.triggerWelcomeEvent = function () {
-                var customEvent = kmSessionStorage.getDataFromKmSession(
+                var customEvent = appOptionInstance.getPropertyDataFromSession(
                     'settings'
                 );
                 var eventToTrigger =
@@ -4129,9 +4137,9 @@ var userOverride = {
                                 callback
                             );
                         } else {
-                            if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
-                                ALStorage.clearMckMessageArray();
-                            }
+                            // if (MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT > 0) {
+                            //     ALStorage.clearMckMessageArray();
+                            // }
                             if (kommunicate._globals.zendeskChatSdkKey) {
                                 var groupId =
                                     result.response[result.response.length - 1]
@@ -4212,7 +4220,8 @@ var userOverride = {
                 var mck_text_box = document.getElementById('mck-text-box');
 
                 $applozic.template('oflTemplate', offlineblk);
-                ALStorage.clearMckMessageArray();
+                // ALStorage.clearMckMessageArray();
+                latestMessageInstance.deleteSessionData();
                 $applozic(d).on('click', '.' + MCK_LAUNCHER, function () {
                     if ($applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).hide();
@@ -6587,7 +6596,8 @@ var userOverride = {
                                             .addClass('n-vis');
                                     }
                                 }
-                                ALStorage.clearMckMessageArray();
+                                latestMessageInstance.deleteSessionData();
+                                // ALStorage.clearMckMessageArray();
                             } else {
                                 w.console.log(
                                     'Unable to delete message. Please reload page.'
@@ -7346,23 +7356,23 @@ var userOverride = {
                                         if (!params.startTime) {
                                             params.isReload = true;
                                             if (!individual) {
-                                                ALStorage.setLatestMessageArray(
+                                                latestMessageInstance.setSessionData(
                                                     data.message
                                                 );
                                             }
                                         } else if (params.startTime) {
                                             params.isReload = false;
                                             if (!individual) {
-                                                ALStorage.updateLatestMessageArray(
+                                                latestMessageInstance.setSessionData(
                                                     data.message
                                                 );
                                             }
                                         }
-                                        if (individual) {
-                                            ALStorage.updateMckMessageArray(
-                                                data.message
-                                            );
-                                        }
+                                        // if (individual) {
+                                        //     ALStorage.updateMckMessageArray(
+                                        //         data.message
+                                        //     );
+                                        // }
                                         mckMessageLayout.addContactsFromMessageList(
                                             data,
                                             params
@@ -7479,7 +7489,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = kmSessionStorage.getKmSession();
+                var userSession = appOptionInstance.getSessionData();
                 var languageCode =
                     userSession &&
                     userSession.settings &&
@@ -8927,16 +8937,16 @@ var userOverride = {
                         .addClass('n-vis');
                     $mck_msg_to.val('');
 
-                    var mckMessageArray = ALStorage.getLatestMessageArray();
+                    var mckLatestMessageArray = latestMessageInstance.getSessionData();
                     window.Applozic.ALSocket.unsubscibeToTypingChannel();
                     if (
-                        mckMessageArray !== null &&
-                        mckMessageArray.length > 0
+                        mckLatestMessageArray !== null &&
+                        mckLatestMessageArray.length > 0
                     ) {
                         params.isReload = true;
                         mckMessageLayout.addContactsFromMessageList(
                             {
-                                message: mckMessageArray,
+                                message: mckLatestMessageArray,
                             },
                             params
                         );
@@ -9058,9 +9068,9 @@ var userOverride = {
                         (data.message = data.message.reverse());
                 }
                 if (typeof data.message.length === 'undefined') {
-                    var messageArray = [];
-                    messageArray.push(data.message);
-                    ALStorage.updateMckMessageArray(messageArray);
+                    // var messageArray = [];
+                    // messageArray.push(data.message);
+                    // ALStorage.updateMckMessageArray(messageArray);
                     _this.addMessage(
                         data.message,
                         contact,
@@ -9070,7 +9080,7 @@ var userOverride = {
                     );
                     showMoreDateTime = data.createdAtTime;
                 } else {
-                    ALStorage.updateMckMessageArray(data.message);
+                    // ALStorage.updateMckMessageArray(data.message);
                     $applozic.each(data.message, function (i, message) {
                         if (
                             message &&
@@ -12256,7 +12266,8 @@ var userOverride = {
                 $mck_offline_message_box.removeClass('vis').addClass('n-vis');
             };
             _this.removeConversationThread = function (tabId, isGroup) {
-                ALStorage.clearMckMessageArray();
+                // ALStorage.clearMckMessageArray();
+                latestMessageInstance.deleteSessionData();
                 var contact = isGroup
                     ? mckGroupUtils.getGroup(tabId)
                     : mckMessageLayout.getContact(tabId);
@@ -12288,7 +12299,8 @@ var userOverride = {
                 }
             };
             _this.removedDeletedMessage = function (key, tabId, isGroup) {
-                ALStorage.clearMckMessageArray();
+                // ALStorage.clearMckMessageArray();
+                latestMessageInstance.deleteSessionData();
                 var $divMessage = $applozic('.' + key);
                 if ($divMessage.length > 0) {
                     $divMessage.remove();
@@ -14047,7 +14059,7 @@ var userOverride = {
             };
 
             _this.createGroupDefaultSettings = function () {
-                var defaultSettings = kmSessionStorage.getDataFromKmSession(
+                var defaultSettings = appOptionInstance.getPropertyDataFromSession(
                     'settings'
                 );
                 var conversationDetail = {
@@ -16499,7 +16511,8 @@ var userOverride = {
                         var latestMessageReceivedTime =
                             $mck_msg_inner.data('last-message-received-time') +
                             1;
-                        ALStorage.clearMckMessageArray();
+                        latestMessageInstance.deleteSessionData();
+                        // ALStorage.clearMckMessageArray();
                         mckMessageService.loadMessageList({
                             tabId: currTabId,
                             isGroup: isGroup,
@@ -16510,7 +16523,8 @@ var userOverride = {
                         });
                     } else {
                         // Below code will update the all conversation list
-                        ALStorage.clearMckMessageArray();
+                        // ALStorage.clearMckMessageArray();
+                        latestMessageInstance.deleteSessionData();
                         IS_SOCKET_INITIALIZED &&
                             mckMessageLayout.loadTab({
                                 tabId: '',
@@ -16649,7 +16663,7 @@ var userOverride = {
                     // mckContactService.getContactDisplayName(userIdArray);
                     // mckMessageLayout.openConversation();
                     if (messageType === 'APPLOZIC_03') {
-                        ALStorage.updateLatestMessage(message);
+                        KommunicateUtils.updateLatestMessage(message);
                         if (message.type !== 0 && message.type !== 4) {
                             $applozic(
                                 '.' + message.key + ' .mck-message-status'
@@ -16667,7 +16681,7 @@ var userOverride = {
                         messageType === 'APPLOZIC_02' ||
                         messageType === 'MESSAGE_RECEIVED'
                     ) {
-                        ALStorage.updateLatestMessage(message);
+                        KommunicateUtils.updateLatestMessage(message);
                         var contact = message.groupId
                             ? mckGroupUtils.getGroup(message.groupId)
                             : mckMessageLayout.getContact(message.to);
@@ -17116,7 +17130,7 @@ var userOverride = {
                     // mckContactService.getContactDisplayName(userIdArray);
                     // mckMessageLayout.openConversation();
                     if (messageType === 'APPLOZIC_03') {
-                        ALStorage.updateLatestMessage(message);
+                        KommunicateUtils.updateLatestMessage(message);
                         if (message.type !== 0 && message.type !== 4) {
                             $applozic(
                                 '.' + message.key + ' .mck-message-status'
@@ -17133,7 +17147,7 @@ var userOverride = {
                         messageType === 'APPLOZIC_02' ||
                         messageType === 'MESSAGE_RECEIVED'
                     ) {
-                        ALStorage.updateLatestMessage(message);
+                        KommunicateUtils.updateLatestMessage(message);
                         var contact = message.groupId
                             ? mckGroupUtils.getGroup(message.groupId)
                             : mckMessageLayout.getContact(message.to);

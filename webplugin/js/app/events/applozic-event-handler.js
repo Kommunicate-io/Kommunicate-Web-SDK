@@ -25,7 +25,7 @@ Kommunicate.KmEventHandler = {
     },
     notificationEvent: function (message) {
         if (
-            kmSessionStorage.getDataFromKmSession('appOptions')
+            appOptionInstance.getPropertyDataFromSession('appOptions')
                 ?.openConversationOnNewMessage
         ) {
             Kommunicate.KmEventHandler.openChatOnNotification(message);

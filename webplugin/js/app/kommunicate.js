@@ -41,7 +41,7 @@ $applozic.extend(true, Kommunicate, {
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =
-            kmSessionStorage.getDataFromKmSession('appOptions') ||
+                appOptionInstance.getPropertyDataFromSession('appOptions') ||
                 applozic._globals;
             params.agentId = appOptions.agentId;
         }
@@ -167,7 +167,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = kmSessionStorage.getDataFromKmSession(
+        var kommunicateSettings = appOptionInstance.getPropertyDataFromSession(
             'settings'
         );
         if (
@@ -215,7 +215,7 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.hideFaq();
     },
     reloadWidget: function () {
-        ALStorage.clearAppHeaders();
+        chatHeaderInstance.deleteSessionData();
         window.$applozic.fn.applozic('reInitialize', {
             userId: kommunicate._globals.userId,
             appId: kommunicate._globals.appId,
@@ -644,13 +644,13 @@ $applozic.extend(true, Kommunicate, {
         if (type != 'object') {
             throw new error('update settings expects an object, found ' + type);
         }
-        var settings = kmSessionStorage.getDataFromKmSession('settings');
+        var settings = appOptionInstance.getPropertyDataFromSession('settings');
         settings = settings ? settings : {};
 
         for (var key in options) {
             settings[key] = options[key];
         }
-        kmSessionStorage.storeDataIntoKmSession('settings', settings);
+        appOptionInstance.setPropertyDataIntoSession('settings', settings);
     },
     getSettings: function (setting) {
         return KommunicateUtils.getSettings(setting);

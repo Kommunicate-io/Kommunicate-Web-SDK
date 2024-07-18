@@ -1542,14 +1542,14 @@ KommunicateUI = {
         var kommunicateIframe = parent.document.getElementById(
             'kommunicate-widget-iframe'
         );
-        var playPopupTone = kmSessionStorage.getDataFromKmSession(
+        var playPopupTone = appOptionInstance.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
         if (showTemplate && !kommunicateCommons.isWidgetOpen()) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone &&
                     mckChatPopupNotificationTone.play();
-                    kmSessionStorage.storeDataIntoKmSession(
+                    appOptionInstance.setPropertyDataIntoSession(
                     'playPopupNotificationTone',
                     false
                 );
