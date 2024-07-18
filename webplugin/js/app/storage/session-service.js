@@ -1,6 +1,6 @@
 class KmSessionStorage extends KmStorage {
-    constructor() {
-        super();
+    constructor(sessionKey) {
+        super(sessionKey);
         return this.addProxy.call(this);
     }
 
@@ -25,6 +25,17 @@ class KmSessionStorage extends KmStorage {
         delete session[key];
 
         sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
+    };
+
+    getAppHeaders = () => {
+        const data = this.getStorageData(sessionStorage, true);
+        return data
+            ? JSON.parse(
+                  mckUtils.checkIfB64Encoded(data)
+                      ? mckUtils.b64DecodeUnicode(data)
+                      : data
+              )
+            : {};
     };
 }
 

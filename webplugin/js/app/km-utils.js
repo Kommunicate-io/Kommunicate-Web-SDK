@@ -494,4 +494,12 @@ KommunicateUtils = {
         }
         return false;
     },
+    loadCryptoJS: async function (options = {}) {
+        if (!(options.encryptionKey && options.encryptionType)) {
+            console.log("Encryption not enabled, can't load crypto-js");
+            return;
+        }
+
+        await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
+    },
 };
