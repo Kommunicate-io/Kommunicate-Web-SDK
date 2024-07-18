@@ -675,7 +675,6 @@ function ApplozicSidebox() {
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
-            console.log(e);
             console.error('Plugin loading error. Refresh page.', e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');

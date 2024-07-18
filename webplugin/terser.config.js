@@ -6,7 +6,7 @@ console.log('isTestEnv: ', isTestEnv);
 
 module.exports = {
     compress: {
-        drop_console: !isTestEnv && ['log', 'warn', 'info'], // drop all console.* calls
+        drop_console: !isTestEnv && ['log', 'warn', 'info'],
         drop_debugger: !isTestEnv,
         dead_code: true,
         keep_fnames: true,
