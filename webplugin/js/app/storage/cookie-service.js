@@ -3,6 +3,7 @@ class KmCookieStorage extends KmStorage {
         super();
     }
 
+    /* There is no need to decode the cookie because we are not encoding the cookie */
     getCookie = (cname, skipPrefix, isOld) => {
         let cookiePrefix = this.getCookiePrefix();
         const ca = document.cookie.split(';');
