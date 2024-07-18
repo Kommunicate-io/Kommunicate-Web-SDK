@@ -28,8 +28,8 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url:
-                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.6.min.js',
+            url: MCK_CONTEXTPATH + '/applozic.chat-6.2.7.min.js',
+            // 'http://localhost:2299/applozic.chat.min.js',
             alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.6.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
@@ -845,7 +845,7 @@ function ApplozicSidebox() {
             kmCookieStorage.deleteUserCookiesOnLogout();
             appOptionInstance.deleteSessionData();
             kmLocalStorage.removeItemFromLocalStorage(applozic._globals.appId);
-            ALStorage.clearSessionStorageElements();
+            KommunicateUtils.clearSessionStorageElements();
             kmLocalStorage.removeItemFromLocalStorage(
                 'mckActiveConversationInfo'
             );
