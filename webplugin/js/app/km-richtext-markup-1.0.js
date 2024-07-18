@@ -905,7 +905,8 @@ Kommunicate.markup.getImageContainer = function (options) {
                 ? JSON.parse(options.payload)
                 : {};
         options.payload = payload;
-        options.type = payload[0]?.url?.split(".").pop().toLowerCase();
+        options = JSON.parse(JSON.stringify(options))
+        payload.forEach((payload) => { payload.type = payload?.url?.split(".").pop().toLowerCase()});
         return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
     }
     return '';
