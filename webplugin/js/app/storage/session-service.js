@@ -44,7 +44,6 @@ class KmSessionStorage extends KmStorage {
                 return;
 
             case `${KommunicateConstants.SESSION_KEYS.LATEST_MESSAGE}-${this.appId}`:
-                debugger;
                 let mckLocalMessageArray = this.getSessionData();
 
                 if (mckLocalMessageArray !== null) {

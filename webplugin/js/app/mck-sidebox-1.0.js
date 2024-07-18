@@ -1200,7 +1200,7 @@ var userOverride = {
             }
         };
         _this.reset = function (optns) {
-            ALStorage.clearSessionStorageElements();
+            KommunicateUtils.clearSessionStorageElements();
             MCK_TOKEN = '';
             USER_ENCRYPTION_KEY = '';
             AUTH_CODE = '';
@@ -1349,6 +1349,7 @@ var userOverride = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
+                appOptionInstance.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 KommunicateUtils.clearSessionStorageElements();
@@ -2641,18 +2642,18 @@ var userOverride = {
                 });
 
                 // TODO: Need to verify this code becuase we are not setting it storage
-                var mckContactNameArray = ALStorage.getMckContactNameArray();
-                if (
-                    mckContactNameArray !== null &&
-                    mckContactNameArray.length > 0
-                ) {
-                    for (var i = 0; i < mckContactNameArray.length; i++) {
-                        var nameMap = mckContactNameArray[i];
-                        if (nameMap !== null) {
-                            MCK_CONTACT_NAME_MAP[nameMap[0]] = nameMap[1];
-                        }
-                    }
-                }
+                // var mckContactNameArray = ALStorage.getMckContactNameArray();
+                // if (
+                //     mckContactNameArray !== null &&
+                //     mckContactNameArray.length > 0
+                // ) {
+                //     for (var i = 0; i < mckContactNameArray.length; i++) {
+                //         var nameMap = mckContactNameArray[i];
+                //         if (nameMap !== null) {
+                //             MCK_CONTACT_NAME_MAP[nameMap[0]] = nameMap[1];
+                //         }
+                //     }
+                // }
                 //
                 mckUserUtils.checkUserConnectedStatus();
                 mckInit.tabFocused();
@@ -2832,7 +2833,6 @@ var userOverride = {
             _this.validateAppSession = async function (userPxy) {
                 mckGroupLayout.init();
                 mckMessageLayout.init();
-                debugger;
                 const appHeaders = chatHeaderInstance.getSessionData();
 
                 if (appHeaders && appHeaders.userId) {
@@ -7470,7 +7470,7 @@ var userOverride = {
                     },
                     error: function (xhr, desc, err) {
                         if (xhr.status === 401) {
-                            ALStorage.clearSessionStorageElements();
+                            KommunicateUtils.clearSessionStorageElements();
                             console.log('Please reload page.');
                         }
                         CONTACT_SYNCING = false;

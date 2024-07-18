@@ -512,7 +512,6 @@ KommunicateUtils = {
         latestMessageInstance.setSessionData(messageArray)
     },
     clearSessionStorageElements: function () {
-        appOptionInstance.deleteSessionData();
         latestMessageInstance.deleteSessionData()
         chatHeaderInstance.deleteSessionData();
     },
