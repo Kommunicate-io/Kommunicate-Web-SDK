@@ -383,11 +383,11 @@ Kommunicate.markup = {
      </div>
  </div>`;
     },
-    getImageTemplate: function () {
+    getImageTemplate: function () { 
         return `<div>
     {{#payload}}
     <div class="km-image-template">
-        <a href="#" target="_self" role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="image/png" data-url="{{url}}" data-name="{{caption}}">
+        <a href="#" target="_self" role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="image/{{type}}" data-url="{{url}}" data-name="{{caption}}">
             <img class="km-template-img" src="{{url}}"></img>
        </a>
        <div class="km-template-image-caption-wrapper {{^caption}}n-vis{{/caption}}">
@@ -907,6 +907,7 @@ Kommunicate.markup.getImageContainer = function (options) {
                 ? JSON.parse(options.payload)
                 : {};
         options.payload = payload;
+        options.type = payload[0]?.url?.split(".").pop().toLowerCase();
         return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
     }
     return '';
