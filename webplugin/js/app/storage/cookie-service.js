@@ -56,7 +56,7 @@ class KmCookieStorage extends KmStorage {
 
     getCookiePrefix = () => {
         const appOptions =
-            kmSessionStorage.getDataFromKmSession('appOptions') ||
+            appOptionSession.getPropertyDataFromSession('appOptions') ||
             applozic._globals;
         let cookiePrefix = KommunicateUtils.getSubDomain();
         if (appOptions && appOptions.domainKey) {

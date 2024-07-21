@@ -4,39 +4,31 @@ class KmSessionStorage extends KmStorage {
         return this.addProxy.call(this);
     }
 
-    removeKmSession = () => sessionStorage.removeItem(this.userSessionKey);
+    getSessionData = () => {
+        return this.getStorageData(sessionStorage);
+    };
 
-    getKmSession = () => this.getStorageData(sessionStorage);
-
-    getDataFromKmSession = (key) => {
+    // Retrieve a specific property from session data
+    getPropertyDataFromSession = (key) => {
         const session = this.getStorageData(sessionStorage);
         return session[key] || '';
     };
 
-    storeDataIntoKmSession = (key, data) => {
+    setSessionData = (key, data) => {
         const session = this.getStorageData(sessionStorage);
         session[key] = data;
 
         sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
     };
 
-    deleteDataFromKmSession = (key) => {
+    deleteSessionData = () => sessionStorage.removeItem(this.userSessionKey);
+
+    deletePropertyDataFromSession  = (key) => {
         const session = this.getStorageData(sessionStorage);
         delete session[key];
 
         sessionStorage.setItem(this.userSessionKey, JSON.stringify(session));
     };
-
-    getAppHeaders = () => {
-        const data = this.getStorageData(sessionStorage, true);
-        return data
-            ? JSON.parse(
-                  mckUtils.checkIfB64Encoded(data)
-                      ? mckUtils.b64DecodeUnicode(data)
-                      : data
-              )
-            : {};
-    };
 }
 
-const kmSessionStorage = new KmSessionStorage();
+const appOptionSession = new KmSessionStorage();

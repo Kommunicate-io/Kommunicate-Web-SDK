@@ -349,7 +349,7 @@ KommunicateUtils = {
         }
     },
     getSettings: function (key) {
-        var settings = kmSessionStorage.getDataFromKmSession('settings');
+        var settings = appOptionSession.getPropertyDataFromSession('settings');
         settings = settings ? settings : null;
         return key && settings ? settings[key] : settings ? settings : '';
     },

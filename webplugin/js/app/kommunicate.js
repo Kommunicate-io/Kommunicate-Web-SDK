@@ -41,7 +41,7 @@ $applozic.extend(true, Kommunicate, {
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =
-            kmSessionStorage.getDataFromKmSession('appOptions') ||
+            appOptionSession.getPropertyDataFromSession('appOptions') ||
                 applozic._globals;
             params.agentId = appOptions.agentId;
         }
@@ -167,7 +167,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = kmSessionStorage.getDataFromKmSession(
+        var kommunicateSettings = appOptionSession.getPropertyDataFromSession(
             'settings'
         );
         if (
@@ -644,13 +644,13 @@ $applozic.extend(true, Kommunicate, {
         if (type != 'object') {
             throw new error('update settings expects an object, found ' + type);
         }
-        var settings = kmSessionStorage.getDataFromKmSession('settings');
+        var settings = appOptionSession.getPropertyDataFromSession('settings');
         settings = settings ? settings : {};
 
         for (var key in options) {
             settings[key] = options[key];
         }
-        kmSessionStorage.storeDataIntoKmSession('settings', settings);
+        appOptionSession.setSessionData('settings', settings);
     },
     getSettings: function (setting) {
         return KommunicateUtils.getSettings(setting);

@@ -87,7 +87,7 @@ var userOverride = {
         $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
-            kmSessionStorage.storeDataIntoKmSession('appOptions', appOptions);
+            appOptionSession.setSessionData('appOptions', appOptions);
             appOptions = $applozic.extend(
                 true,
                 {},
@@ -949,7 +949,7 @@ var userOverride = {
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
-            kmSessionStorage.storeDataIntoKmSession('appOptions', optns);
+            appOptionSession.setSessionData('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
                 appOptions.conversationTitle =
@@ -1346,7 +1346,7 @@ var userOverride = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
-                kmSessionStorage.removeKmSession();
+                appOptionSession.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
@@ -2825,7 +2825,8 @@ var userOverride = {
             _this.validateAppSession = async function (userPxy) {
                 mckGroupLayout.init();
                 mckMessageLayout.init();
-                const appHeaders = new KmSessionStorage("chatheaders").getAppHeaders();
+                // TODO: Generate this code through the sesion class
+                var appHeaders = ALStorage.getAppHeaders();
 
                 if (appHeaders && appHeaders.userId) {
                     if (
@@ -3846,7 +3847,7 @@ var userOverride = {
                 defaultSettings: if there is any custome event is configured by the user
             */
             (_this.triggerWelcomeEvent = function () {
-                var customEvent = kmSessionStorage.getDataFromKmSession(
+                var customEvent = appOptionSession.getPropertyDataFromSession(
                     'settings'
                 );
                 var eventToTrigger =
@@ -7479,7 +7480,7 @@ var userOverride = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = kmSessionStorage.getKmSession();
+                var userSession = appOptionSession.getSessionData();
                 var languageCode =
                     userSession &&
                     userSession.settings &&
@@ -14048,7 +14049,7 @@ var userOverride = {
             };
 
             _this.createGroupDefaultSettings = function () {
-                var defaultSettings = kmSessionStorage.getDataFromKmSession(
+                var defaultSettings = appOptionSession.getPropertyDataFromSession(
                     'settings'
                 );
                 var conversationDetail = {

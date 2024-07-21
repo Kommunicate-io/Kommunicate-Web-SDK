@@ -610,7 +610,7 @@ function ApplozicSidebox() {
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
 
-            kmSessionStorage.deleteDataFromKmSession('settings');
+            appOptionSession.deletePropertyDataFromSession('settings');
 
             if (
                 sessionTimeout != null &&
@@ -843,7 +843,7 @@ function ApplozicSidebox() {
             timeStampDifference >= sessionTimeout
         ) {
             kmCookieStorage.deleteUserCookiesOnLogout();
-            kmSessionStorage.removeKmSession();
+            appOptionSession.deleteSessionData();
             kmLocalStorage.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
             kmLocalStorage.removeItemFromLocalStorage(

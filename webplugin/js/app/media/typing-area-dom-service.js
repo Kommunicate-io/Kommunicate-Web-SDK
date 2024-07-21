@@ -1,5 +1,5 @@
 var appOption =
-kmSessionStorage.getDataFromKmSession('appOptions') ||
+appOptionSession.getPropertyDataFromSession('appOptions') ||
     applozic._globals;
 
 Kommunicate.typingAreaService = {
