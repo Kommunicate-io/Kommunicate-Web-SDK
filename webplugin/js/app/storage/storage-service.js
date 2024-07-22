@@ -15,7 +15,8 @@ class KmStorage {
     };
 
     getStorageData = (storage, notParse) => {
-        this.migrateKmSession();
+        // Enable this line when we change the session || local storage format
+        // this.migrateKmSession();
 
         const session = storage.getItem(this.userSessionKey);
         if (notParse) return session || {};
