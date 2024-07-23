@@ -10077,6 +10077,7 @@ const firstVisibleMsg = {
                     $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
                     !firstVisibleMsg.containsField &&
+                        floatWhere !== 'mck-msg-right' &&
                         mckMessageService.resetCustomRichMessageFields(true);
                     // hide the auto suggestion box and show the text box
                     mckMessageService.hideAutoSuggestionBoxEnableTxtBox();
