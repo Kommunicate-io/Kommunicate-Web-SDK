@@ -9592,6 +9592,7 @@ const firstVisibleMsg = {
                 var messageStatusAriaTag = '';
                 var conversationTransferred = '';
 
+                const fieldsAlreadyProcessd = firstVisibleMsg.processed;
                 alUserService.loadUserProfile(msg.to);
 
                 // only for the custom input payload
@@ -9850,6 +9851,10 @@ const firstVisibleMsg = {
                                   '#mck-message-cell .mck-message-inner'
                               );
                 }
+                const hasObsolete =
+                    msg.metadata.obsolete && msg.metadata.obsolete == 'true';
+                const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
+
                 if (
                     Kommunicate._globals.disableFormPostSubmit &&
                     msg.metadata
@@ -10018,10 +10023,9 @@ const firstVisibleMsg = {
                         );
                     }
                 } else if (
-                    !(
-                        msg.metadata.obsolete && msg.metadata.obsolete == 'true'
-                    ) &&
-                    msg.metadata.KM_FIELD
+                    msgThroughListAPI
+                        ? hasCustomFields && !fieldsAlreadyProcessd
+                        : hasCustomFields
                 ) {
                     var fieldMetadata = {};
                     var fieldReplyMetadata = {};
