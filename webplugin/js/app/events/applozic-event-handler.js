@@ -25,9 +25,8 @@ Kommunicate.KmEventHandler = {
     },
     notificationEvent: function (message) {
         if (
-            KommunicateUtils.getDataFromKmSession('appOptions') &&
-            KommunicateUtils.getDataFromKmSession('appOptions')
-                .openConversationOnNewMessage
+            appOptionSession.getPropertyDataFromSession('appOptions')
+                ?.openConversationOnNewMessage
         ) {
             Kommunicate.KmEventHandler.openChatOnNotification(message);
         } else if (
@@ -46,9 +45,12 @@ Kommunicate.KmEventHandler = {
     onMessageReceived: function (message, toggleSound) {
         //message received
 
-        // turn off the speech 
-        if(toggleSound){
-            Kommunicate.mediaService.voiceOutputIncomingMessage(message, toggleSound);
+        // turn off the speech
+        if (toggleSound) {
+            Kommunicate.mediaService.voiceOutputIncomingMessage(
+                message,
+                toggleSound
+            );
             return;
         }
         var validMessageMetadata =

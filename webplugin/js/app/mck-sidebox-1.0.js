@@ -96,7 +96,7 @@ const firstVisibleMsg = {
         $applozic.extend(kommunicate, Kommunicate);
         if ($applozic.type(appOptions) === 'object') {
             // storing custom appOptions into session Storage.
-            KommunicateUtils.storeDataIntoKmSession('appOptions', appOptions);
+            appOptionSession.setSessionData('appOptions', appOptions);
             appOptions = $applozic.extend(
                 true,
                 {},
@@ -958,7 +958,7 @@ const firstVisibleMsg = {
         };
         _this.reInit = function (optns) {
             // storing custum appOptions into session Storage.
-            KommunicateUtils.storeDataIntoKmSession('appOptions', optns);
+            appOptionSession.setSessionData('appOptions', optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
                 appOptions.conversationTitle =
@@ -1355,18 +1355,18 @@ const firstVisibleMsg = {
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
                 window.Applozic.ALSocket.disconnect();
-                KommunicateUtils.removeKmSession();
+                appOptionSession.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
                 // Below function will clearMckMessageArray, clearAppHeaders, clearMckContactNameArray, removeEncryptionKey
                 ALStorage.clearSessionStorageElements();
                 $applozic.fn.applozic('reset', appOptions);
-                KommunicateUtils.deleteCookie({
+                kmCookieStorage.deleteCookie({
                     name:
                         KommunicateConstants.COOKIES
                             .KOMMUNICATE_LOGGED_IN_USERNAME,
                     domain: MCK_COOKIE_DOMAIN,
                 });
-                KommunicateUtils.deleteCookie({
+                kmCookieStorage.deleteCookie({
                     name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                     domain: MCK_COOKIE_DOMAIN,
                 });
@@ -2166,7 +2166,7 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.initializeApp = function (optns, isReInit) {
+            _this.initializeApp = async function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
                 var userPxy = {
                     applicationId: optns.appId,
@@ -2215,12 +2215,12 @@ const firstVisibleMsg = {
                 window.Applozic.ALApiService.AUTH_TOKEN = null;
                 USER_DEVICE_KEY = '';
                 if (
-                    KommunicateUtils.getCookie(
+                    kmCookieStorage.getCookie(
                         KommunicateConstants.COOKIES
                             .IS_USER_ID_FOR_LEAD_COLLECTION
                     ) &&
                     !JSON.parse(
-                        KommunicateUtils.getCookie(
+                        kmCookieStorage.getCookie(
                             KommunicateConstants.COOKIES
                                 .IS_USER_ID_FOR_LEAD_COLLECTION
                         )
@@ -2232,7 +2232,7 @@ const firstVisibleMsg = {
                     ALStorage.clearMckContactNameArray();
                     ALStorage.clearAppHeaders();
                 }
-                var isValidated = _this.validateAppSession(userPxy);
+                var isValidated = await _this.validateAppSession(userPxy);
                 if (!isValidated) {
                     if (
                         (Array.isArray(KM_ASK_USER_DETAILS) &&
@@ -2241,22 +2241,22 @@ const firstVisibleMsg = {
                     ) {
                         $applozic('#km-userId').val(MCK_USER_ID);
                         if (
-                            KommunicateUtils.getCookie(
+                            kmCookieStorage.getCookie(
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID
                             ) &&
-                            KommunicateUtils.getCookie(
+                            kmCookieStorage.getCookie(
                                 KommunicateConstants.COOKIES
                                     .IS_USER_ID_FOR_LEAD_COLLECTION
                             ) &&
                             JSON.parse(
-                                KommunicateUtils.getCookie(
+                                kmCookieStorage.getCookie(
                                     KommunicateConstants.COOKIES
                                         .IS_USER_ID_FOR_LEAD_COLLECTION
                                 )
                             )
                         ) {
-                            var userId = KommunicateUtils.getCookie(
+                            var userId = kmCookieStorage.getCookie(
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID
                             );
@@ -2409,11 +2409,7 @@ const firstVisibleMsg = {
                                 'none'
                             );
                         }
-                        if (result?.encryptionKey && result?.encryptionType) {
-                            await applozicSideBox.loadResourceAsync(
-                                THIRD_PARTY_SCRIPTS.crypto.js
-                            );
-                        }
+                        await KommunicateUtils.loadCryptoJS(result);
                         ALStorage.clearMckMessageArray();
                         ALStorage.clearMckContactNameArray();
                         if (result === 'INVALID_PASSWORD') {
@@ -2724,7 +2720,7 @@ const firstVisibleMsg = {
                 }
 
                 Kommunicate.initilizeEventListners();
-                var activeConversationInfo = KommunicateUtils.getItemFromLocalStorage(
+                var activeConversationInfo = kmLocalStorage.getItemFromLocalStorage(
                     'mckActiveConversationInfo'
                 );
 
@@ -2765,7 +2761,7 @@ const firstVisibleMsg = {
                         activeConversationInfo,
                         data
                     ) &&
-                    KommunicateUtils.removeItemFromLocalStorage(
+                    kmLocalStorage.removeItemFromLocalStorage(
                         'mckActiveConversationInfo'
                     );
 
@@ -2836,16 +2832,21 @@ const firstVisibleMsg = {
                 mckMessageLayout.setHeaderPrimaryCTA();
             };
 
-            _this.validateAppSession = function (userPxy) {
+            _this.validateAppSession = async function (userPxy) {
                 mckGroupLayout.init();
                 mckMessageLayout.init();
+                // TODO: Generate this code through the sesion class
                 var appHeaders = ALStorage.getAppHeaders();
+
                 if (appHeaders && appHeaders.userId) {
                     if (
                         userPxy.applicationId === appHeaders.appId &&
                         userPxy.userId === appHeaders.userId &&
                         userPxy.password === MCK_ACCESS_TOKEN
                     ) {
+                        // If session is exist then we don't make the initialize api call .
+                        await KommunicateUtils.loadCryptoJS(appHeaders);
+
                         PRE_CHAT_LEAD_COLLECTION_POPUP_ON = !(
                             KM_ASK_USER_DETAILS !== 0
                         );
@@ -3857,7 +3858,7 @@ const firstVisibleMsg = {
                 defaultSettings: if there is any custome event is configured by the user
             */
             (_this.triggerWelcomeEvent = function () {
-                var customEvent = KommunicateUtils.getDataFromKmSession(
+                var customEvent = appOptionSession.getPropertyDataFromSession(
                     'settings'
                 );
                 var eventToTrigger =
@@ -5020,7 +5021,7 @@ const firstVisibleMsg = {
                     }
                     if (email) {
                         userId = email;
-                        KommunicateUtils.setCookie({
+                        kmCookieStorage.setCookie({
                             name:
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID,
@@ -5028,7 +5029,7 @@ const firstVisibleMsg = {
                             expiresInDays: 30,
                             domain: MCK_COOKIE_DOMAIN,
                         });
-                        KommunicateUtils.setCookie({
+                        kmCookieStorage.setCookie({
                             name:
                                 KommunicateConstants.COOKIES
                                     .IS_USER_ID_FOR_LEAD_COLLECTION,
@@ -5731,7 +5732,7 @@ const firstVisibleMsg = {
             _this.closeSideBox = function () {
                 kommunicateCommons.setWidgetStateOpen(false);
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                    KommunicateUtils.removeItemFromLocalStorage(
+                    kmLocalStorage.removeItemFromLocalStorage(
                         'mckActiveConversationInfo'
                     );
                 KommunicateUI.hideAwayMessage();
@@ -7488,7 +7489,7 @@ const firstVisibleMsg = {
                 roleType,
                 isAgentOffline
             ) {
-                var userSession = KommunicateUtils.getKmSession();
+                var userSession = appOptionSession.getSessionData();
                 var languageCode =
                     userSession &&
                     userSession.settings &&
@@ -8671,10 +8672,10 @@ const firstVisibleMsg = {
 
             _this.loadTab = function (params, callback) {
                 mckMessageService.resetMessageSentToHumanAgent();
-                var userId = KommunicateUtils.getCookie(
+                var userId = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
-                (KommunicateUtils.getItemFromLocalStorage(
+                (kmLocalStorage.getItemFromLocalStorage(
                     'mckActiveConversationInfo',
                     { groupId: params.tabId }
                 ) ||
@@ -8684,7 +8685,7 @@ const firstVisibleMsg = {
                 MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
                     params.isGroup &&
                     params.tabId &&
-                    KommunicateUtils.setItemToLocalStorage(
+                    kmLocalStorage.setItemToLocalStorage(
                         'mckActiveConversationInfo',
                         {
                             groupId: params.tabId,
@@ -14086,7 +14087,7 @@ const firstVisibleMsg = {
             };
 
             _this.createGroupDefaultSettings = function () {
-                var defaultSettings = KommunicateUtils.getDataFromKmSession(
+                var defaultSettings = appOptionSession.getPropertyDataFromSession(
                     'settings'
                 );
                 var conversationDetail = {

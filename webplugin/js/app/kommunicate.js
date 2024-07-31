@@ -41,7 +41,7 @@ $applozic.extend(true, Kommunicate, {
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =
-                KommunicateUtils.getDataFromKmSession('appOptions') ||
+            appOptionSession.getPropertyDataFromSession('appOptions') ||
                 applozic._globals;
             params.agentId = appOptions.agentId;
         }
@@ -167,7 +167,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = KommunicateUtils.getDataFromKmSession(
+        var kommunicateSettings = appOptionSession.getPropertyDataFromSession(
             'settings'
         );
         if (
@@ -255,7 +255,7 @@ $applozic.extend(true, Kommunicate, {
         // default bot is not included in client groupId generation
         var loggedInUserName =
             kommunicate._globals.userId ||
-            KommunicateUtils.getCookie(
+            kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             );
         var agentsNameStr = agentList.join('_');
@@ -391,10 +391,10 @@ $applozic.extend(true, Kommunicate, {
         ) {
             window.$applozic.fn.applozic('logout');
         }
-        KommunicateUtils.removeItemFromLocalStorage(
+        kmLocalStorage.removeItemFromLocalStorage(
             'mckActiveConversationInfo'
         );
-        KommunicateUtils.deleteUserCookiesOnLogout();
+        kmCookieStorage.deleteUserCookiesOnLogout();
         parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
@@ -448,7 +448,7 @@ $applozic.extend(true, Kommunicate, {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId,
             callback: function (response) {
-                KommunicateUtils.setCookie({
+                kmCookieStorage.setCookie({
                     name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                     value: newUserId,
                     expiresInDays: 30,
@@ -644,13 +644,13 @@ $applozic.extend(true, Kommunicate, {
         if (type != 'object') {
             throw new error('update settings expects an object, found ' + type);
         }
-        var settings = KommunicateUtils.getDataFromKmSession('settings');
+        var settings = appOptionSession.getPropertyDataFromSession('settings');
         settings = settings ? settings : {};
 
         for (var key in options) {
             settings[key] = options[key];
         }
-        KommunicateUtils.storeDataIntoKmSession('settings', settings);
+        appOptionSession.setSessionData('settings', settings);
     },
     getSettings: function (setting) {
         return KommunicateUtils.getSettings(setting);

@@ -29,8 +29,8 @@ function ApplozicSidebox() {
         {
             name: 'applozic-min-js',
             url:
-                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.5.min.js',
-            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.5.min.js',
+                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.6.min.js',
+            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.6.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
@@ -610,7 +610,7 @@ function ApplozicSidebox() {
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
 
-            KommunicateUtils.deleteDataFromKmSession('settings');
+            appOptionSession.deletePropertyDataFromSession('settings');
 
             if (
                 sessionTimeout != null &&
@@ -618,26 +618,26 @@ function ApplozicSidebox() {
             ) {
                 logoutAfterSessionExpiry(sessionTimeout);
                 var details =
-                    KommunicateUtils.getItemFromLocalStorage(
+                    kmLocalStorage.getItemFromLocalStorage(
                         applozic._globals.appId
                     ) || {};
                 !details.sessionStartTime &&
                     (details.sessionStartTime = new Date().getTime());
                 details.sessionTimeout = sessionTimeout;
-                KommunicateUtils.setItemToLocalStorage(
+                kmLocalStorage.setItemToLocalStorage(
                     applozic._globals.appId,
                     details
                 );
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
-                var accessTokenFromCookie = KommunicateUtils.getCookie(
+                var accessTokenFromCookie = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.ACCESS_TOKEN
                 );
-                var userIdFromCookie = KommunicateUtils.getCookie(
+                var userIdFromCookie = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
                 );
-                var displayNameFromCookie = KommunicateUtils.getCookie(
+                var displayNameFromCookie = kmCookieStorage.getCookie(
                     KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME
                 );
                 var isAnonymousUser = !options.userId;
@@ -675,7 +675,6 @@ function ApplozicSidebox() {
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
-            console.log(e);
             console.error('Plugin loading error. Refresh page.', e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
@@ -763,7 +762,7 @@ function ApplozicSidebox() {
             ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
-            KommunicateUtils.getCookie(
+            kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
         try {
@@ -784,13 +783,13 @@ function ApplozicSidebox() {
         }
     }
     function saveUserCookies(kommunicateSettings) {
-        KommunicateUtils.setCookie({
+        kmCookieStorage.setCookie({
             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
             value: kommunicateSettings.userId,
             expiresInDays: 30,
             domain: MCK_COOKIE_DOMAIN,
         });
-        KommunicateUtils.setCookie({
+        kmCookieStorage.setCookie({
             name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_USERNAME,
             value: kommunicateSettings.userName || '',
             expiresInDays: 30,
@@ -803,7 +802,7 @@ function ApplozicSidebox() {
                 kommunicateSettings.askUserDetails
             )
         ) {
-            KommunicateUtils.setCookie({
+            kmCookieStorage.setCookie({
                 name:
                     KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
                 value: false,
@@ -813,7 +812,7 @@ function ApplozicSidebox() {
         }
         if (kommunicateSettings.accessToken) {
             var encodedToken = window.btoa(kommunicateSettings.accessToken);
-            KommunicateUtils.setCookie({
+            kmCookieStorage.setCookie({
                 name: KommunicateConstants.COOKIES.ACCESS_TOKEN,
                 value: encodedToken || '',
                 expiresInDays: 30,
@@ -825,7 +824,7 @@ function ApplozicSidebox() {
     function logoutAfterSessionExpiry(sessionTimeout) {
         var widgetSettings, timeStampDifference;
         applozic._globals.appId &&
-            (widgetSettings = KommunicateUtils.getItemFromLocalStorage(
+            (widgetSettings = kmLocalStorage.getItemFromLocalStorage(
                 applozic._globals.appId
             ));
         var endTime = widgetSettings && widgetSettings.sessionEndTime;
@@ -843,13 +842,11 @@ function ApplozicSidebox() {
             sessionTimeout != null &&
             timeStampDifference >= sessionTimeout
         ) {
-            KommunicateUtils.deleteUserCookiesOnLogout();
-            KommunicateUtils.removeKmSession();
-            KommunicateUtils.removeItemFromLocalStorage(
-                applozic._globals.appId
-            );
+            kmCookieStorage.deleteUserCookiesOnLogout();
+            appOptionSession.deleteSessionData();
+            kmLocalStorage.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
-            KommunicateUtils.removeItemFromLocalStorage(
+            kmLocalStorage.removeItemFromLocalStorage(
                 'mckActiveConversationInfo'
             );
         }
@@ -857,11 +854,11 @@ function ApplozicSidebox() {
         window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
             var details =
-                KommunicateUtils.getItemFromLocalStorage(
+                kmLocalStorage.getItemFromLocalStorage(
                     applozic._globals.appId
                 ) || {};
             details.sessionEndTime = new Date().getTime();
-            KommunicateUtils.setItemToLocalStorage(
+            kmLocalStorage.setItemToLocalStorage(
                 applozic._globals.appId,
                 details
             );
