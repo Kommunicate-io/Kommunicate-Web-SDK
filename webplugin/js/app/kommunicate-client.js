@@ -48,6 +48,9 @@ Kommunicate.client = {
      * @param {Boolean} conversationDetail.isInternal
      */
     createConversation: function (conversationDetail, callback) {
+        var kommunicateSettings = KommunicateUtils.getDataFromKmSession(
+            'settings'
+        );
         var chatContext = $applozic.extend(
             Kommunicate.getSettings('KM_CHAT_CONTEXT'),
             conversationDetail.metadata
@@ -87,7 +90,9 @@ Kommunicate.client = {
             GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
             conversationMetadata:JSON.stringify(conversationDetail.metadata),
         };
-    
+        if (kommunicateSettings.KM_TEST_PAGE) {
+            groupMetadata.KM_TEST_PAGE = true;
+        }
         typeof conversationDetail.teamId != 'undefined' &&
             (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
         conversationDetail.metadata.KM_ORIGINAL_TITLE &&
