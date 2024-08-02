@@ -90,7 +90,7 @@ Kommunicate.client = {
             GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
             conversationMetadata:JSON.stringify(conversationDetail.metadata),
         };
-        if (kommunicateSettings.KM_TEST_PAGE) {
+        if (kommunicateSettings?.KM_TEST_PAGE) {
             groupMetadata.KM_TEST_PAGE = true;
         }
         typeof conversationDetail.teamId != 'undefined' &&
