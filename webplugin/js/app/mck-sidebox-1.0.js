@@ -3181,7 +3181,7 @@ const firstVisibleMsg = {
                     return kmChatInputDiv;
                 });
             _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase();
+                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(" ","-");
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(
                     preLeadCollection,
@@ -3226,7 +3226,7 @@ const firstVisibleMsg = {
                     );
                     kmChatInput.setAttribute(
                         'aria-label',
-                        preLeadCollection.field
+                        preLeadCollection.field.replace(" ","-")
                     );
                     if (preLeadCollection.type == 'email') {
                         kmChatInput.setAttribute(
@@ -4077,7 +4077,7 @@ const firstVisibleMsg = {
                 var metadata = {};
                 var field = '';
                 KM_PRELEAD_COLLECTION.map(function (element) {
-                    field = element.field && element.field.toLowerCase();
+                    field = element.field && element.field.toLowerCase().replace(" ","-");
                     if (KM_USER_DETAIL.indexOf(field) === -1) {
                         metadata[element.field] = $applozic(
                             '#km-' + field
