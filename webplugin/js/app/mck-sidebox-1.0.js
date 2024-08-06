@@ -18,6 +18,15 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 var userOverride = {
     voiceOutput: true,
 };
+const firstVisibleMsg = {
+    processed: false,
+    containsField: false,
+    reset: function () {
+        this.processed = false;
+        this.containsField = false;
+    },
+}; // only for the custom field https://docs.kommunicate.io/docs/message-types#custom-input-field
+
 (function ($applozic, w, d) {
     'use strict';
     if (!w.applozic) {
@@ -594,7 +603,8 @@ var userOverride = {
         var mckNotificationUtils = new MckNotificationUtils();
         var alNotificationService = new AlNotificationService();
         var alUserService = new AlUserService();
-        var zendeskChatService = new ZendeskChatService();
+        var zendeskChatService =
+            (appOptions.zendeskChatSdkKey && new ZendeskChatService()) || {};
         var kmNavBar = new KmNavBar(mckMessageLayout);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
@@ -2321,6 +2331,7 @@ var userOverride = {
                             event.stopPropagation();
                             _this.closeLeadCollectionWindow();
                             genAiService.enableTextArea(true);
+                            firstVisibleMsg.reset();
                         });
                         for (
                             var i = 0;
@@ -2389,12 +2400,17 @@ var userOverride = {
             _this.initialize = function (userPxy) {
                 window.Applozic.ALApiService.login({
                     data: { alUser: userPxy, baseUrl: MCK_BASE_URL },
-                    success: function (result) {
+                    success: async function (result) {
                         if (window.applozic.PRODUCT_ID == 'kommunicate') {
                             //$applozic("#km-chat-login-modal").removeClass('vis').addClass('n-vis');
                             $applozic('#km-chat-login-modal').css(
                                 'display',
                                 'none'
+                            );
+                        }
+                        if (result?.encryptionKey && result?.encryptionType) {
+                            await applozicSideBox.loadResourceAsync(
+                                THIRD_PARTY_SCRIPTS.crypto.js
                             );
                         }
                         ALStorage.clearMckMessageArray();
@@ -2935,6 +2951,7 @@ var userOverride = {
                         ''
                     );
                     KommunicateUI.flushFaqsEvents();
+                    firstVisibleMsg.reset();
                 }
                 closeButton.addEventListener('click', closeChatBox);
                 popUpcloseButton.addEventListener('click', function (e) {
@@ -3454,8 +3471,8 @@ var userOverride = {
                         !ratingErrorMsgContainer.classList.contains('n-vis') &&
                             ratingErrorMsgContainer.classList.add('n-vis');
                         if (
-                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
-                            5
+                            appOptions?.appSettings?.chatWidget
+                                ?.csatRatingBase == 5
                         ) {
                             if (e.currentTarget.classList[2] == 'selected') {
                                 var ratingValue = parseInt(
@@ -4199,6 +4216,26 @@ var userOverride = {
                 }
             });
 
+            _this.resetCustomRichMessageFields = (clearNextTrigger) => {
+                //reset fields
+
+                // Reset the placeholder text to default text
+                $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
+                // Reset the data attributes
+                $mck_text_box.data('updateUserDetails', null);
+                $mck_text_box.data('field', null);
+                $mck_text_box.data('fieldType', null);
+                $mck_text_box.data('validation', null);
+                $mck_text_box.data('errorMessage', null);
+                if ($mck_text_box.data('trigger') && !clearNextTrigger) {
+                    $mck_text_box.data(
+                        'triggerNextIntent',
+                        $mck_text_box.data('trigger')
+                    );
+                } else {
+                    $mck_text_box.data('triggerNextIntent', null);
+                }
+            };
             _this.init = function () {
                 var mck_text_box = document.getElementById('mck-text-box');
 
@@ -5060,7 +5097,7 @@ var userOverride = {
                             'n-vis',
                             ''
                         );
-
+                        firstVisibleMsg.reset();
                         genAiService.enableTextArea(true);
                         // To prevent conversation assignee details from being shown when in FAQ
                         var lastEvent =
@@ -5528,44 +5565,22 @@ var userOverride = {
                             mckContactService.updateUser({
                                 data: updateData,
                                 success: function () {
-                                    resetFields();
+                                    _this.resetCustomRichMessageFields();
                                     continueMessageProcess();
                                 },
                                 error: function () {
-                                    resetFields();
+                                    _this.resetCustomRichMessageFields();
                                     continueMessageProcess();
                                 },
                             });
                         } else {
-                            resetFields();
+                            _this.resetCustomRichMessageFields();
                             continueMessageProcess();
                         }
                     } else {
                         continueMessageProcess();
                     }
 
-                    //reset fields
-                    function resetFields() {
-                        // Reset the placeholder text to default text
-                        $mck_text_box.attr(
-                            'data-text',
-                            MCK_LABELS['input.message']
-                        );
-                        // Reset the data attributes
-                        $mck_text_box.data('updateUserDetails', null);
-                        $mck_text_box.data('field', null);
-                        $mck_text_box.data('fieldType', null);
-                        $mck_text_box.data('validation', null);
-                        $mck_text_box.data('errorMessage', null);
-                        if ($mck_text_box.data('trigger')) {
-                            $mck_text_box.data(
-                                'triggerNextIntent',
-                                $mck_text_box.data('trigger')
-                            );
-                        } else {
-                            $mck_text_box.data('triggerNextIntent', null);
-                        }
-                    }
                     //This function is basically delays the execution of the below send request until the updateUser function gives back a success/error response
                     function continueMessageProcess() {
                         if (
@@ -8989,6 +9004,16 @@ var userOverride = {
                     fileMeta.name.indexOf('AWS-ENCRYPTED') !== -1
                 );
             };
+
+            _this.containsHtmlFields = function (message, realTimeMsg) {
+                if (message?.metadata?.KM_FIELD) {
+                    console.log('Message containing html fields');
+                    firstVisibleMsg.containsField = true;
+                } else if (realTimeMsg) {
+                    firstVisibleMsg.containsField = false;
+                }
+            };
+
             _this.processMessageList = function (
                 data,
                 scroll,
@@ -9350,6 +9375,7 @@ var userOverride = {
                 if (msg?.message) {
                     msg.message = window.DOMPurify.sanitize(msg.message, {
                         ALLOWED_TAGS: KM_ALLOWED_TAGS,
+                        ALLOWED_ATTR: KM_ALLOWED_ATTR,
                         WHOLE_DOCUMENT:
                             msg.contentType ===
                             KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML,
@@ -9534,7 +9560,20 @@ var userOverride = {
                 var messageStatusAriaTag = '';
                 var conversationTransferred = '';
 
+                const fieldsAlreadyProcessd = firstVisibleMsg.processed;
                 alUserService.loadUserProfile(msg.to);
+
+                // only for the custom input payload
+                if (msgThroughListAPI && !firstVisibleMsg.processed) {
+                    firstVisibleMsg.processed = true;
+                    _this.containsHtmlFields(msg);
+                } else {
+                    // socket messages -> Remove the email field also if new msg came
+                    !msgThroughListAPI &&
+                        ((firstVisibleMsg.processed = false),
+                        _this.containsHtmlFields(msg, true));
+                }
+                // only for the custom input payload
 
                 if (
                     msg.groupId &&
@@ -9780,6 +9819,10 @@ var userOverride = {
                                   '#mck-message-cell .mck-message-inner'
                               );
                 }
+                const hasObsolete =
+                    msg.metadata.obsolete && msg.metadata.obsolete == 'true';
+                const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
+
                 if (
                     Kommunicate._globals.disableFormPostSubmit &&
                     msg.metadata
@@ -9831,8 +9874,8 @@ var userOverride = {
                         // 2 = CONVERSATION IS CLOSED OR RESOLVED
                         var csatRatingLabel = '';
                         if (
-                            appOptions?.appSettings?.chatWidget?.csatRatingBase ==
-                            5
+                            appOptions?.appSettings?.chatWidget
+                                ?.csatRatingBase == 5
                         ) {
                             csatRatingLabel = 'NEW_RATING_EMPTY_LABEL';
                         } else {
@@ -9847,8 +9890,8 @@ var userOverride = {
                         }
                         var ratingTitle = '';
                         if (
-                            appOptions?.appSettings?.chatWidget?.csatRatingBase !==
-                            5
+                            appOptions?.appSettings?.chatWidget
+                                ?.csatRatingBase !== 5
                         ) {
                             ratingTitle =
                                 KommunicateConstants.RATING_TITLE[
@@ -9948,10 +9991,9 @@ var userOverride = {
                         );
                     }
                 } else if (
-                    !(
-                        msg.metadata.obsolete && msg.metadata.obsolete == 'true'
-                    ) &&
-                    msg.metadata.KM_FIELD
+                    msgThroughListAPI
+                        ? hasCustomFields && !fieldsAlreadyProcessd
+                        : hasCustomFields
                 ) {
                     var fieldMetadata = {};
                     var fieldReplyMetadata = {};
@@ -10006,6 +10048,9 @@ var userOverride = {
                     $mck_text_box.data('fieldType', fieldType);
                     $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
+                    !firstVisibleMsg.containsField &&
+                        floatWhere !== 'mck-msg-right' &&
+                        mckMessageService.resetCustomRichMessageFields(true);
                     // hide the auto suggestion box and show the text box
                     mckMessageService.hideAutoSuggestionBoxEnableTxtBox();
                 }
