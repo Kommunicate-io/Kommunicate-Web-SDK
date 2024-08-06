@@ -3,9 +3,16 @@ const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
 exports.version = version;
 
+const STORAGE_FILES = [
+    path.resolve(__dirname, 'js/app/storage/storage-service.js'),
+    path.resolve(__dirname, 'js/app/storage/cookie-service.js'),
+    path.resolve(__dirname, 'js/app/storage/session-service.js'),
+    path.resolve(__dirname, 'js/app/storage/local-service.js'),
+];
+
 exports.SENTRY_SCRIPT = [
     path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
-]
+];
 
 exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),
@@ -23,6 +30,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
     path.resolve(__dirname, 'js/app/km-utils.js'),
+    ...STORAGE_FILES,
     path.resolve(__dirname, 'js/app/applozic.jquery.js'),
     path.resolve(__dirname, 'knowledgebase/common.js'),
     path.resolve(__dirname, 'knowledgebase/kb.js'),
@@ -106,3 +114,23 @@ exports.THIRD_PARTY_FILE_INFO = [
         type: 'js',
     },
 ];
+
+exports.getDynamicLoadFiles = function (dir) {
+    return JSON.stringify({
+        zendesk: {
+            js: `${dir}/zendesk-chat-service-${version}.min.js`,
+        },
+        intlForPreChat: {
+            js: `${dir}/intl-tel-lib.min.js`,
+            css: `${dir}/intl-tel-lib-${version}.min.css`,
+        },
+        // for voice note
+        voiceNote: {
+            js: `${dir}/voice-note.min.js`,
+        },
+        crypto: {
+            js: `${dir}/crypto.min.js`,
+        },
+        // for voice note
+    });
+};
