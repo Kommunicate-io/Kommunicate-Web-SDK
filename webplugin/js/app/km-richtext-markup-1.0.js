@@ -203,7 +203,9 @@ Kommunicate.markup = {
     getLinkPreviewTemplate: function (extractedData, isMckRightMsg) {
         var data = extractedData.data;
         if (data && data.title) {
-            var mckRightLinkClass = isMckRightMsg ? "km-custom-widget-background-color" : "";
+            var mckRightLinkClass = isMckRightMsg
+                ? 'km-custom-widget-background-color'
+                : '';
             var title = data.siteName || data.title;
             var description = data.description || data.title;
 
@@ -926,7 +928,6 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
     var action = {};
     var data = {};
     var isActionObject = false;
-    
     if (options && options.payload) {
         var payload =
             typeof options.payload == 'string'
@@ -946,8 +947,13 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 return data;
             });
         }
-        options.checkboxClass = Kommunicate._globals.checkboxAsMultipleButton ? "checkbox-as-button" : "checkbox-container";
-        options.checkboxContainerClass = Kommunicate._globals.checkboxAsMultipleButton ? "mck-form-checkbox-as-button-wrapper" : "mck-form-checkbox-wrapper"
+        options.checkboxClass = Kommunicate._globals.checkboxAsMultipleButton
+            ? 'checkbox-as-button'
+            : 'checkbox-container';
+        options.checkboxContainerClass = Kommunicate._globals
+            .checkboxAsMultipleButton
+            ? 'mck-form-checkbox-as-button-wrapper'
+            : 'mck-form-checkbox-wrapper';
         options.payload.forEach(function (item, index) {
             if (item.type == 'submit') {
                 isActionObject = kommunicateCommons.isObject(item.action);
@@ -970,7 +976,8 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                 options.payload[index].className = 'km-cta-button';
                 options.buttons.push(item);
                 options.payload.splice(index, 1);
-                options.hidePostFormSubmit = Kommunicate._globals.hidePostFormSubmit;
+                options.hidePostFormSubmit =
+                    Kommunicate._globals.hidePostFormSubmit;
             } else {
                 options.payload[index].supported =
                     KommunicateConstants.FORM_SUPPORTED_FIELDS.indexOf(
@@ -1102,7 +1109,8 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
                 : 'n-vis';
             cardHtml['carouselHeaderClass'] = carouselHeaderClass;
             cardHtml['carouselInfoWrapperClass'] = carouselInfoWrapperClass;
-            cardHtml['containerClass'] = cards.length > 1 ? "": "km-single-card";
+            cardHtml['containerClass'] =
+                cards.length > 1 ? '' : 'km-single-card';
             item.header &&
                 (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
             cardHtml.info = Kommunicate.markup.cardInfo(item);

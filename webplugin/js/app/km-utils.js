@@ -10,7 +10,7 @@ HEADER_CTA = {
 };
 
 KommunicateConstants = {
-    KM_WIDGET_RELEASE_VERSION: '6.2',
+    KM_WIDGET_RELEASE_VERSION: '6.3',
     EVENT_IDS: {
         WELCOME_MESSAGE: '3',
         AWAY_MESSAGE: {
