@@ -466,6 +466,10 @@ function ApplozicSidebox() {
                 typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            options.conversationMetadata =
+                typeof options.conversationMetadata == 'object'
+                    ? options.conversationMetadata
+                    : {};
             options.metadata =
                 typeof options.metadata == 'object' ? options.metadata : {};
             options.fileUpload =
