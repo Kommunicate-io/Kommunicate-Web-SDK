@@ -75,7 +75,7 @@ const configEnv = {
     release: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://chat-release.kommunicate.io',
+            applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-release.kommunicate.io',
             botPlatformApi: 'https://bots-release.kommunicate.io',
             hostUrl: 'https://widget-release.kommunicate.io',
