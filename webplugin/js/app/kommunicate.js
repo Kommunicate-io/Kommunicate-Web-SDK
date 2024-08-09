@@ -41,7 +41,7 @@ $applozic.extend(true, Kommunicate, {
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =
-            appOptionSession.getPropertyDataFromSession('appOptions') ||
+                appOptionSession.getPropertyDataFromSession('appOptions') ||
                 applozic._globals;
             params.agentId = appOptions.agentId;
         }
@@ -163,6 +163,34 @@ $applozic.extend(true, Kommunicate, {
         } else {
             throw new Error(
                 'updateConversationMetadata expect an object but got null'
+            );
+        }
+    },
+    updateDefaultConversationMetadata: function (options = {}) {
+        if (
+            typeof options !== 'object' ||
+            options === null ||
+            Array.isArray(options)
+        ) {
+            throw new TypeError(
+                'updateDefaultConversationMetadata expects an object as an argument'
+            );
+        }
+
+        try {
+            // Sanitize and parse the object
+            const sanitizedString = window.DOMPurify.sanitize(
+                JSON.stringify(options)
+            );
+            options = JSON.parse(sanitizedString);
+
+            if (kommunicate._globals.defaultConversationMetadata) {
+                kommunicate._globals.defaultConversationMetadata = options;
+            }
+        } catch (error) {
+            console.error(
+                'An error occurred while sanitizing or updating the conversation metadata:',
+                error
             );
         }
     },
@@ -939,19 +967,19 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     getCurrentPosition:() => 
-        new Promise((resolve, reject) => 
-          navigator.geolocation.getCurrentPosition(resolve, reject)
+        new Promise((resolve, reject) =>
+            navigator.geolocation.getCurrentPosition(resolve, reject)
         ),
     getUserLocation: async function (){
-      try {
+        try {
         
-          const api_key = kommunicate._globals.googleApiKey;
-          const position = await this.getCurrentPosition();
+            const api_key = kommunicate._globals.googleApiKey;
+            const position = await this.getCurrentPosition();
           const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true&key=${api_key}`);
-          const result = await response.json();
-           
-          return result?.results.length
-                    ? result.results[0].formatted_address
+            const result = await response.json();
+
+            return result?.results.length
+                ? result.results[0].formatted_address
                     : "LOCATION_NOT_FOUND";
         } catch (error) {
           console.error("Error fetching location", error);
