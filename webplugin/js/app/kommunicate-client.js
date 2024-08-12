@@ -54,6 +54,10 @@ Kommunicate.client = {
                 ? conversationDetail.metadata['KM_CHAT_CONTEXT']
                 : {}
         );
+        conversationDetail.metadata = {
+            ...conversationDetail.metadata,
+            ...kommunicate._globals.defaultConversationMetadata,
+        };
 
         var userLocale = kommunicate._globals.userLocale;
         var currentLanguage = {
