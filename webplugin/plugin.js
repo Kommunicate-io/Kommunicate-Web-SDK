@@ -107,7 +107,7 @@ var kmCustomIframe =
     '   display: none!important' +
     '} \n';
 
-isV1Script() ? injectJquery() : appendIframe();
+isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
 
 function removeKommunicateScripts() {
     window.KommunicateGlobal = null;
@@ -129,6 +129,28 @@ function removeElementFromHtmlById(elementIdArray) {
         element && element.parentNode.removeChild(element);
     }
 }
+
+function appendIframeAfterBodyLoaded() {
+    if (document.body) {
+        appendIframe();
+    } else if ('readyState' in window.parent.document) {
+        appendIframeAfterLoadedBody();
+    } else {
+        window.onload = function () {
+            appendIframe();
+        };
+    }
+
+    function appendIframeAfterLoadedBody() {
+        let timer = setInterval(function () {
+            if (document.readyState === 'complete') {
+                clearInterval(timer);
+                appendIframe();
+            }
+        }, 1000);
+    }
+}
+
 function appendIframe() {
     createKommunicateIframe();
     createCustomClasses(kmCustomIframe); // Add class to document
