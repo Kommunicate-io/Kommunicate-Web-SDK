@@ -134,14 +134,14 @@ function appendIframeAfterBodyLoaded() {
     if (document.body) {
         appendIframe();
     } else if ('readyState' in window.parent.document) {
-        appendIframeAfterLoadedBody();
+        checkIfDocumentIsReady();
     } else {
         window.onload = function () {
             appendIframe();
         };
     }
 
-    function appendIframeAfterLoadedBody() {
+    function checkIfDocumentIsReady() {
         let timer = setInterval(function () {
             if (document.readyState === 'complete') {
                 clearInterval(timer);
