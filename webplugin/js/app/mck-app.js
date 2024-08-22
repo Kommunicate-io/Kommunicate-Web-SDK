@@ -540,6 +540,10 @@ function ApplozicSidebox() {
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata =
                 typeof options.metadata == 'object' ? options.metadata : {};
+            options.conversationMetadata =
+                typeof options.defaultConversationMetadata == 'object'
+                    ? options.defaultConversationMetadata
+                    : {};
             options.fileUpload =
                 options.fileUpload ||
                 (widgetSettings && widgetSettings.fileUpload);
