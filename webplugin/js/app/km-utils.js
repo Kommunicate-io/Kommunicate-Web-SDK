@@ -496,7 +496,7 @@ KommunicateUtils = {
     },
     loadCryptoJS: async function (options = {}) {
         if (!(options.encryptionKey && options.encryptionType)) {
-            console.log("Encryption not enabled, can't load crypto-js");
+            console.debug("Encryption not enabled, can't load crypto-js");
             return;
         }
 
