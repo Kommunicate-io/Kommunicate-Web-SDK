@@ -375,7 +375,7 @@ KommunicateUI = {
                 kommunicate._globals.faqCategory;
             kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                KommunicateUtils.removeItemFromLocalStorage(
+                kmLocalStorage.removeItemFromLocalStorage(
                     'mckActiveConversationInfo'
                 );
             KommunicateUI.showHeader();
@@ -481,7 +481,7 @@ KommunicateUI = {
                 .removeClass('vis')
                 .addClass('n-vis');
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                KommunicateUtils.removeItemFromLocalStorage(
+                kmLocalStorage.removeItemFromLocalStorage(
                     'mckActiveConversationInfo'
                 );
             KommunicateUI.awayMessageScroll = true;
@@ -1572,14 +1572,14 @@ KommunicateUI = {
         var kommunicateIframe = parent.document.getElementById(
             'kommunicate-widget-iframe'
         );
-        var playPopupTone = KommunicateUtils.getDataFromKmSession(
+        var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
         if (showTemplate && !kommunicateCommons.isWidgetOpen()) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone &&
                     mckChatPopupNotificationTone.play();
-                KommunicateUtils.storeDataIntoKmSession(
+                    appOptionSession.setSessionData(
                     'playPopupNotificationTone',
                     false
                 );

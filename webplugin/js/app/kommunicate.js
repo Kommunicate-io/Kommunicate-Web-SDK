@@ -41,7 +41,7 @@ $applozic.extend(true, Kommunicate, {
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =
-                KommunicateUtils.getDataFromKmSession('appOptions') ||
+                appOptionSession.getPropertyDataFromSession('appOptions') ||
                 applozic._globals;
             params.agentId = appOptions.agentId;
         }
@@ -166,8 +166,36 @@ $applozic.extend(true, Kommunicate, {
             );
         }
     },
+    updateDefaultConversationMetadata: function (options = {}) {
+        if (
+            typeof options !== 'object' ||
+            options === null ||
+            Array.isArray(options)
+        ) {
+            throw new TypeError(
+                'updateDefaultConversationMetadata expects an object as an argument'
+            );
+        }
+
+        try {
+            // Sanitize and parse the object
+            const sanitizedString = window.DOMPurify.sanitize(
+                JSON.stringify(options)
+            );
+            options = JSON.parse(sanitizedString);
+
+            if (kommunicate._globals.defaultConversationMetadata) {
+                kommunicate._globals.defaultConversationMetadata = options;
+            }
+        } catch (error) {
+            console.error(
+                'An error occurred while sanitizing or updating the conversation metadata:',
+                error
+            );
+        }
+    },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = KommunicateUtils.getDataFromKmSession(
+        var kommunicateSettings = appOptionSession.getPropertyDataFromSession(
             'settings'
         );
         if (
@@ -262,7 +290,7 @@ $applozic.extend(true, Kommunicate, {
         // default bot is not included in client groupId generation
         var loggedInUserName =
             kommunicate._globals.userId ||
-            KommunicateUtils.getCookie(
+            kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             );
         var agentsNameStr = agentList.join('_');
@@ -398,10 +426,10 @@ $applozic.extend(true, Kommunicate, {
         ) {
             window.$applozic.fn.applozic('logout');
         }
-        KommunicateUtils.removeItemFromLocalStorage(
+        kmLocalStorage.removeItemFromLocalStorage(
             'mckActiveConversationInfo'
         );
-        KommunicateUtils.deleteUserCookiesOnLogout();
+        kmCookieStorage.deleteUserCookiesOnLogout();
         parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
@@ -455,7 +483,7 @@ $applozic.extend(true, Kommunicate, {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId,
             callback: function (response) {
-                KommunicateUtils.setCookie({
+                kmCookieStorage.setCookie({
                     name: KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID,
                     value: newUserId,
                     expiresInDays: 30,
@@ -651,13 +679,13 @@ $applozic.extend(true, Kommunicate, {
         if (type != 'object') {
             throw new error('update settings expects an object, found ' + type);
         }
-        var settings = KommunicateUtils.getDataFromKmSession('settings');
+        var settings = appOptionSession.getPropertyDataFromSession('settings');
         settings = settings ? settings : {};
 
         for (var key in options) {
             settings[key] = options[key];
         }
-        KommunicateUtils.storeDataIntoKmSession('settings', settings);
+        appOptionSession.setSessionData('settings', settings);
     },
     getSettings: function (setting) {
         return KommunicateUtils.getSettings(setting);
@@ -939,19 +967,19 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     getCurrentPosition:() => 
-        new Promise((resolve, reject) => 
-          navigator.geolocation.getCurrentPosition(resolve, reject)
+        new Promise((resolve, reject) =>
+            navigator.geolocation.getCurrentPosition(resolve, reject)
         ),
     getUserLocation: async function (){
-      try {
+        try {
         
-          const api_key = kommunicate._globals.googleApiKey;
-          const position = await this.getCurrentPosition();
+            const api_key = kommunicate._globals.googleApiKey;
+            const position = await this.getCurrentPosition();
           const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true&key=${api_key}`);
-          const result = await response.json();
-           
-          return result?.results.length
-                    ? result.results[0].formatted_address
+            const result = await response.json();
+
+            return result?.results.length
+                ? result.results[0].formatted_address
                     : "LOCATION_NOT_FOUND";
         } catch (error) {
           console.error("Error fetching location", error);
