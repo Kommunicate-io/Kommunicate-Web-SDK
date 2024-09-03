@@ -107,8 +107,8 @@ var kmCustomIframe =
     '   display: none!important' +
     '} \n';
 
-if(window.location.href.indexOf('https://judgments.vakilsearch.com') === -1){
-    isV1Script() ? injectJquery() : appendIframe();
+if (window.location.href.indexOf('https://judgments.vakilsearch.com') === -1) {
+    isV1Script() ? injectJquery() : appendIframeAfterBodyLoaded();
 }
 
 function removeKommunicateScripts() {
@@ -131,6 +131,28 @@ function removeElementFromHtmlById(elementIdArray) {
         element && element.parentNode.removeChild(element);
     }
 }
+
+function appendIframeAfterBodyLoaded() {
+    if (document.body) {
+        appendIframe();
+    } else if ('readyState' in window.parent.document) {
+        checkIfDocumentIsReady();
+    } else {
+        window.onload = function () {
+            appendIframe();
+        };
+    }
+
+    function checkIfDocumentIsReady() {
+        let timer = setInterval(function () {
+            if (document.readyState === 'complete') {
+                clearInterval(timer);
+                appendIframe();
+            }
+        }, 1000);
+    }
+}
+
 function appendIframe() {
     createKommunicateIframe();
     createCustomClasses(kmCustomIframe); // Add class to document
