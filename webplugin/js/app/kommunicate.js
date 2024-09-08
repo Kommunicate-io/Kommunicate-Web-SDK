@@ -419,9 +419,7 @@ $applozic.extend(true, Kommunicate, {
         ) {
             window.$applozic.fn.applozic('logout');
         }
-        kmLocalStorage.removeItemFromLocalStorage(
-            'mckActiveConversationInfo'
-        );
+        kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         kmCookieStorage.deleteUserCookiesOnLogout();
         parent.window && parent.window.removeKommunicateScripts();
     },
@@ -865,18 +863,20 @@ $applozic.extend(true, Kommunicate, {
         }
 
         while (
-            quickReplyCtaPrevSibling.classList.contains(
+            quickReplyCtaPrevSibling?.classList.contains(
                 'contains-quick-replies-only'
             )
         ) {
             quickReplyCtaPrevSibling =
                 quickReplyCtaPrevSibling.previousElementSibling;
         }
-        var isFirstGroupMessage =
-            quickReplyCtaPrevSibling.previousElementSibling;
-        quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-        isFirstGroupMessage &&
-            quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
+        if (quickReplyCtaPrevSibling) {
+            var isFirstGroupMessage =
+                quickReplyCtaPrevSibling.previousElementSibling;
+            quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
+            isFirstGroupMessage &&
+                quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
+        }
     },
     getAllSiblings: function (element) {
         var siblings = [];
@@ -959,24 +959,25 @@ $applozic.extend(true, Kommunicate, {
             }
         }
     },
-    getCurrentPosition:() => 
+    getCurrentPosition: () =>
         new Promise((resolve, reject) =>
             navigator.geolocation.getCurrentPosition(resolve, reject)
         ),
-    getUserLocation: async function (){
+    getUserLocation: async function () {
         try {
-        
             const api_key = kommunicate._globals.googleApiKey;
             const position = await this.getCurrentPosition();
-          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true&key=${api_key}`);
+            const response = await fetch(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true&key=${api_key}`
+            );
             const result = await response.json();
 
             return result?.results.length
                 ? result.results[0].formatted_address
-                    : "LOCATION_NOT_FOUND";
+                : 'LOCATION_NOT_FOUND';
         } catch (error) {
-          console.error("Error fetching location", error);
-          return "PERMISSION_DENIED";
+            console.error('Error fetching location', error);
+            return 'PERMISSION_DENIED';
         }
-      }
+    },
 });
