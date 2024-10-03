@@ -32,6 +32,14 @@
     color: #886026;
 }
 
+#km-business-hour-box {
+    background-color: #5f46f8;
+    color: #fff;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
 @keyframes km-typing-anim {
     0% {
         background: rgb(221, 221, 221);
