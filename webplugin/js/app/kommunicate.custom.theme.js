@@ -98,6 +98,10 @@ function KmCustomTheme() {
     _this.changeColorTheme = function () {
         // #0A090C
         var messageBoxTop = document.getElementsByClassName('mck-box-top');
+        const businessHourBox = document.getElementById("km-business-hour-box");
+        if (businessHourBox) {
+            businessHourBox.style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+        }
         for (var i = 0; i < messageBoxTop.length; i++) {
             messageBoxTop[i].style.backgroundColor =
                 WIDGET_SETTINGS.primaryColor;
