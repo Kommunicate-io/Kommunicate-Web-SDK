@@ -104,6 +104,7 @@ class KMLabel {
                 'Uh oh! No internet connection. Please check your network settings and try again.',
             'socket-disconnect.msg':
                 'Error while syncing messages. Check your firewall settings or try again after some time.',
+            'business-hour.msg': 'You have reached us outside of our business hours. Our Bot will handle your queries till the team is back online',
             'group.metadata': {
                 CREATE_GROUP_MESSAGE: ':adminName created group :groupName',
                 REMOVE_MEMBER_MESSAGE: ':adminName removed :userName',

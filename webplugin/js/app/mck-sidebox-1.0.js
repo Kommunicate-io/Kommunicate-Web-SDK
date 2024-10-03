@@ -3862,6 +3862,7 @@ const firstVisibleMsg = {
             var warningText = document.getElementById('mck-char-warning-text');
             var CHANGE_ASSIGNEE = '/rest/ws/group/assignee/change';
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
+            const BUSINESS_HOURS_URL = '/rest/ws/team/business-settings';
             _this.resetMessageSentToHumanAgent = function () {
                 // used in loadTab()
                 messageSentToHumanAgent = 0;
@@ -4128,7 +4129,103 @@ const firstVisibleMsg = {
                 }
                 $mck_msg_to.focus();
             };
+
+            _this.isWithinBusinessHours = function (team) {
+                if (!team || !team.businessHourMap) {
+                    return false;
+                }
+                const convertToMinutes = (timeStr) => {
+                    const hours = parseInt(timeStr.slice(0, 2), 10);
+                    const minutes = parseInt(timeStr.slice(2), 10);
+                    return hours * 60 + minutes;
+                };
+
+                const parseTimezoneOffset = (timezone) => {
+                    try {
+                        const match = timezone.match(/[+-]\d+:\d+/);
+                        const [hours, minutes] = match[0]
+                            .split(':')
+                            .map(Number);
+                        const totalMinutes =
+                            hours * 60 + Math.sign(hours) * minutes;
+                        return totalMinutes;
+                    } catch (e) {
+                        console.debug('Timezone not avaiable in team settings');
+                        return 0;
+                    }
+                };
+
+                const now = new Date();
+                const currentDay = now.getDay();
+                const offset = now.getTimezoneOffset();
+                const gmtTime = new Date(now.getTime() + offset * 60000);
+                const timezoneOffset = parseTimezoneOffset(team.timezone);
+                const adjustedTime = new Date(
+                    gmtTime.getTime() + timezoneOffset * 60000
+                );
+                const businessHours = team.businessHourMap[currentDay];
+                if (!businessHours) {
+                    // No business hours for the current day, return false
+                    return false;
+                }
+                const [start, end] = businessHours
+                    .split('-')
+                    .map((time) => convertToMinutes(time));
+                const currentTimeInMinutes =
+                    adjustedTime.getHours() * 60 + adjustedTime.getMinutes();
+                // Check if the current time is within the business hours range
+                if (start <= end) {
+                    return (
+                        currentTimeInMinutes >= start &&
+                        currentTimeInMinutes <= end
+                    );
+                } else {
+                    // Handle case where the business hours wrap around midnight (e.g., 2200-0400)
+                    return (
+                        currentTimeInMinutes >= start ||
+                        currentTimeInMinutes <= end
+                    );
+                }
+            };
+
             _this.loadConversationWithAgents = function (params, callback) {
+                var defaultSettings = appOptionSession.getPropertyDataFromSession(
+                    'appOptions'
+                );
+                window.Applozic.ALApiService.ajax({
+                    type: 'GET',
+                    url: MCK_BASE_URL + BUSINESS_HOURS_URL,
+                    global: false,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        let teamSettings = {};
+                        const response = data?.response;
+                        if (!defaultSettings.teamId) {
+                            teamSettings = response.find(
+                                (team) => team.teamName === 'Default Team'
+                            );
+                        } else {
+                            teamSettings = response.find(
+                                (team) => team.teamId === defaultSettings.teamId
+                            );
+                        }
+                        if (!_this.isWithinBusinessHours(teamSettings)) {
+                            const businessHourBox = document.getElementById(
+                                'km-business-hour-box'
+                            );
+
+                            if (businessHourBox) {
+                                businessHourBox.innerText =
+                                    teamSettings.message || MCK_LABELS['business-hour.msg'];
+                                businessHourBox.classList.remove('n-vis');
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    },
+                });
+
                 _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == 'kommunicate') {
                     $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
@@ -6309,6 +6406,14 @@ const firstVisibleMsg = {
                         userStatus: 4,
                     });
                 }
+
+                const businessHourBox = document.getElementById(
+                    'km-business-hour-box'
+                );
+                if (businessHourBox) {
+                    businessHourBox.classList.add('n-vis');
+                }
+
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (
                     typeof msgKeys !== 'undefined' &&
