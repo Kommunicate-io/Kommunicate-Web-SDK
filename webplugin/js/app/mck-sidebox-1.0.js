@@ -3569,6 +3569,14 @@ const firstVisibleMsg = {
                 ).style.display = 'none';
             };
 
+            window.onkeyup= function(event){
+              if(event.keyCode==27) {
+                parent.document.getElementById(
+                    'km-fullscreen-image-modal'
+                ).style.display = 'none';
+              }
+            }
+
             $applozic(w).on('resize', function () {
                 if ($mck_file_menu.css('display') === 'block') {
                     mckMapLayout.fileMenuReposition();
