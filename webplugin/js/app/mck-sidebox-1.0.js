@@ -4103,8 +4103,9 @@ const firstVisibleMsg = {
             };
 
             _this.isWithinBusinessHours = function (team) {
-                if (!team || !team.businessHourMap) {
-                    return false;
+                // don't show message if business hour setting are not set
+                if (!team || !team.businessHourMap || !team.timezone) {
+                    return true;
                 }
                 const convertToMinutes = (timeStr) => {
                     const hours = parseInt(timeStr.slice(0, 2), 10);
@@ -4160,10 +4161,8 @@ const firstVisibleMsg = {
                 }
             };
 
-            _this.loadConversationWithAgents = function (params, callback) {
-                var defaultSettings = appOptionSession.getPropertyDataFromSession(
-                    'appOptions'
-                );
+            _this.handleBusinessHours = function () {
+                var currentGroupData = CURRENT_GROUP_DATA || {};
                 window.Applozic.ALApiService.ajax({
                     type: 'GET',
                     url: MCK_BASE_URL + BUSINESS_HOURS_URL,
@@ -4172,23 +4171,30 @@ const firstVisibleMsg = {
                     success: function (data) {
                         let teamSettings = {};
                         const response = data?.response;
-                        if (!defaultSettings.teamId) {
+                        if (!currentGroupData.teamId) {
                             teamSettings = response.find(
                                 (team) => team.teamName === 'Default Team'
                             );
                         } else {
                             teamSettings = response.find(
-                                (team) => team.teamId === defaultSettings.teamId
+                                (team) =>
+                                    String(team.teamId) ===
+                                    String(currentGroupData.teamId)
                             );
                         }
-                        if (!_this.isWithinBusinessHours(teamSettings)) {
+                        console.log('teamSettings', teamSettings);
+                        if (
+                            teamSettings &&
+                            !_this.isWithinBusinessHours(teamSettings)
+                        ) {
                             const businessHourBox = document.getElementById(
                                 'km-business-hour-box'
                             );
 
                             if (businessHourBox) {
                                 businessHourBox.innerText =
-                                    teamSettings.message || MCK_LABELS['business-hour.msg'];
+                                    teamSettings.message ||
+                                    MCK_LABELS['business-hour.msg'];
                                 businessHourBox.classList.remove('n-vis');
                             }
                         }
@@ -4197,7 +4203,9 @@ const firstVisibleMsg = {
                         console.error(data);
                     },
                 });
+            };
 
+            _this.loadConversationWithAgents = function (params, callback) {
                 _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == 'kommunicate') {
                     $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
@@ -8983,6 +8991,7 @@ const firstVisibleMsg = {
                             tabId: params.tabId,
                             isGroup: params.isGroup,
                         });
+                        mckMessageService.handleBusinessHours();
                     }
                 } else {
                     params.tabId = '';
