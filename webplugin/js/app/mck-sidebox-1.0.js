@@ -4217,7 +4217,6 @@ const firstVisibleMsg = {
                                     String(currentGroupData.teamId)
                             );
                         }
-                        console.log('teamSettings', teamSettings);
                         if (
                             teamSettings &&
                             !_this.isWithinBusinessHours(teamSettings)
