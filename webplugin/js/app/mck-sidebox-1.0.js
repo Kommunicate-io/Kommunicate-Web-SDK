@@ -5195,6 +5195,12 @@ const firstVisibleMsg = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        const businessHourBox = document.getElementById(
+                            'km-business-hour-box'
+                        );
+                        if (businessHourBox) {
+                            businessHourBox.classList.add('n-vis');
+                        }
                         kommunicateCommons.modifyClassList(
                             {
                                 id: ['km-widget-options'],
