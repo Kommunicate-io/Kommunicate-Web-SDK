@@ -4151,6 +4151,7 @@ const firstVisibleMsg = {
                             hours * 60 + Math.sign(hours) * minutes;
                         return totalMinutes;
                     } catch (e) {
+                        // if there is any error in parsing the timezone offset return GMT offset
                         console.debug('Timezone not avaiable in team settings');
                         return 0;
                     }
@@ -4166,26 +4167,32 @@ const firstVisibleMsg = {
                 );
                 const businessHours = team.businessHourMap[currentDay];
                 if (!businessHours) {
-                    // No business hours for the current day, return false
+                    // No business hours for the current day
                     return false;
                 }
-                const [start, end] = businessHours
-                    .split('-')
-                    .map((time) => convertToMinutes(time));
-                const currentTimeInMinutes =
-                    adjustedTime.getHours() * 60 + adjustedTime.getMinutes();
-                // Check if the current time is within the business hours range
-                if (start <= end) {
-                    return (
-                        currentTimeInMinutes >= start &&
-                        currentTimeInMinutes <= end
-                    );
-                } else {
-                    // Handle case where the business hours wrap around midnight (e.g., 2200-0400)
-                    return (
-                        currentTimeInMinutes >= start ||
-                        currentTimeInMinutes <= end
-                    );
+                try {
+                    const [start, end] = businessHours
+                        .split('-')
+                        .map((time) => convertToMinutes(time));
+                    const currentTimeInMinutes =
+                        adjustedTime.getHours() * 60 + adjustedTime.getMinutes();
+                    // Check if the current time is within the business hours range
+                    if (start <= end) {
+                        return (
+                            currentTimeInMinutes >= start &&
+                            currentTimeInMinutes <= end
+                        );
+                    } else {
+                        // Handle case where the business hours wrap around midnight (e.g., 2200-0400)
+                        return (
+                            currentTimeInMinutes >= start ||
+                            currentTimeInMinutes <= end
+                        );
+                    }
+                } catch(e) {
+                    // if there is any error in formatting the business hours allow the user to chat
+                    console.error('Error while checking business hours', e);
+                    return true;
                 }
             };
 
