@@ -4182,10 +4182,7 @@ const firstVisibleMsg = {
                         const response = data?.response;
                         if (!CURRENT_GROUP_DATA.teamId) {
                             teamSettings = response.find((team) =>
-                                DEFAULT_TEAM_NAME.some(
-                                    (defaultTeamName) =>
-                                        team.teamName === defaultTeamName
-                                )
+                                DEFAULT_TEAM_NAME.includes(team.teamName)
                             );
                         } else {
                             teamSettings = response.find(
