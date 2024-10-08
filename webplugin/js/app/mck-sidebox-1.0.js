@@ -15,8 +15,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
-const DEFAULT_TEAM_NAME= 'Default Team';
-const SECONDARY_TEAM_NAME= 'Default';
+const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 var userOverride = {
     voiceOutput: true,
 };
@@ -4210,9 +4209,11 @@ const firstVisibleMsg = {
                         let teamSettings = {};
                         const response = data?.response;
                         if (!CURRENT_GROUP_DATA.teamId) {
-                            teamSettings = response.find(
-                                team => team.teamName === DEFAULT_TEAM_NAME ||
-                                    team.teamName === SECONDARY_TEAM_NAME
+                            teamSettings = response.find((team) =>
+                                DEFAULT_TEAM_NAME.some(
+                                    (defaultTeamName) =>
+                                        team.teamName === defaultTeamName
+                                )
                             );
                         } else {
                             teamSettings = response.find(
