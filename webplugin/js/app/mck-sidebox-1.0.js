@@ -15,6 +15,8 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+const DEFAULT_TEAM_NAME= 'Default Team';
+const SECONDARY_TEAM_NAME= 'Default';
 var userOverride = {
     voiceOutput: true,
 };
@@ -3806,6 +3808,7 @@ const firstVisibleMsg = {
                 '#mck-group-member-search-list'
             );
             var $mck_no_gsm_text = $applozic('#mck-no-gsm-text');
+            const $mck_business_hours_box = $applozic('#km-business-hour-box');
             var MESSAGE_SEND_URL = '/rest/ws/message/send';
             var UPDATE_MESSAGE_METADATA = '/rest/ws/message/update/metadata';
             var GROUP_CREATE_URL = '/rest/ws/group/v2.1/create';
@@ -4147,7 +4150,8 @@ const firstVisibleMsg = {
                         .split('-')
                         .map((time) => convertToMinutes(time));
                     const currentTimeInMinutes =
-                        adjustedTime.getHours() * 60 + adjustedTime.getMinutes();
+                        adjustedTime.getHours() * 60 +
+                        adjustedTime.getMinutes();
                     // Check if the current time is within the business hours range
                     if (start <= end) {
                         return (
@@ -4161,7 +4165,7 @@ const firstVisibleMsg = {
                             currentTimeInMinutes <= end
                         );
                     }
-                } catch(e) {
+                } catch (e) {
                     // if there is any error in formatting the business hours allow the user to chat
                     console.error('Error while checking business hours', e);
                     return true;
@@ -4169,7 +4173,6 @@ const firstVisibleMsg = {
             };
 
             _this.handleBusinessHours = function () {
-                var currentGroupData = CURRENT_GROUP_DATA || {};
                 window.Applozic.ALApiService.ajax({
                     type: 'GET',
                     url: MCK_BASE_URL + BUSINESS_HOURS_URL,
@@ -4178,31 +4181,27 @@ const firstVisibleMsg = {
                     success: function (data) {
                         let teamSettings = {};
                         const response = data?.response;
-                        if (!currentGroupData.teamId) {
+                        if (!CURRENT_GROUP_DATA.teamId) {
                             teamSettings = response.find(
-                                (team) => team.teamName === 'Default Team'
+                                team => team.teamName === DEFAULT_TEAM_NAME ||
+                                    team.teamName === SECONDARY_TEAM_NAME
                             );
                         } else {
                             teamSettings = response.find(
                                 (team) =>
                                     String(team.teamId) ===
-                                    String(currentGroupData.teamId)
+                                    String(CURRENT_GROUP_DATA.teamId)
                             );
                         }
                         if (
                             teamSettings &&
                             !_this.isWithinBusinessHours(teamSettings)
                         ) {
-                            const businessHourBox = document.getElementById(
-                                'km-business-hour-box'
+                            $mck_business_hours_box.removeClass('n-vis');
+                            $mck_business_hours_box.text(
+                                teamSettings.message ||
+                                    MCK_LABELS['business-hour.msg']
                             );
-
-                            if (businessHourBox) {
-                                businessHourBox.innerText =
-                                    teamSettings.message ||
-                                    MCK_LABELS['business-hour.msg'];
-                                businessHourBox.classList.remove('n-vis');
-                            }
                         }
                     },
                     error: function (data) {
@@ -5201,12 +5200,7 @@ const firstVisibleMsg = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
-                        const businessHourBox = document.getElementById(
-                            'km-business-hour-box'
-                        );
-                        if (businessHourBox) {
-                            businessHourBox.classList.add('n-vis');
-                        }
+                        $mck_business_hours_box.addClass('n-vis')
                         kommunicateCommons.modifyClassList(
                             {
                                 id: ['km-widget-options'],
@@ -6399,12 +6393,7 @@ const firstVisibleMsg = {
                     });
                 }
 
-                const businessHourBox = document.getElementById(
-                    'km-business-hour-box'
-                );
-                if (businessHourBox) {
-                    businessHourBox.classList.add('n-vis');
-                }
+                $mck_business_hours_box.addClass('n-vis')
 
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (
