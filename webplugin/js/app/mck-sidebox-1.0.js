@@ -4163,10 +4163,8 @@ const firstVisibleMsg = {
                 const currentDay = now.getDay();
                 const offset = now.getTimezoneOffset();
                 const gmtTime = new Date(now.getTime() + offset * 60000);
-                const timezoneOffset = parseTimezoneOffset(team.timezone);
-                const adjustedTime = new Date(
-                    gmtTime.getTime() + timezoneOffset * 60000
-                );
+                // const timezoneOffset = parseTimezoneOffset(team.timezone);
+                const adjustedTime = new Date(gmtTime.getTime());
                 const businessHours = team.businessHourMap[currentDay];
                 if (!businessHours) {
                     // No business hours for the current day
