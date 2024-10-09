@@ -3559,7 +3559,7 @@ const firstVisibleMsg = {
 
                 modal.style.display = 'block';
                 captionText.innerHTML = title ? title : '';
-                document.addEventListener("keydown", closeWindowOnEscape);
+                document.addEventListener("keyup", closeWindowOnEscape);
             });
 
             parent.document.getElementById(
@@ -3577,7 +3577,7 @@ const firstVisibleMsg = {
                         'km-fullscreen-image-modal'
                     ).style.display = 'none';
                 }
-                  document.removeEventListener("keydown", closeWindowOnEscape);
+                  document.removeEventListener("keyup", closeWindowOnEscape);
                 }
 
             $applozic(w).on('resize', function () {
