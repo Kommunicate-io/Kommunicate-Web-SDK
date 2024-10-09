@@ -1803,7 +1803,11 @@ KommunicateUI = {
             group &&
             group.conversationStatus ==
                 Kommunicate.conversationHelper.status.WAITING;
-        let waitingListEndpoint = `/rest/ws/group/waiting/list?teamId=${CURRENT_GROUP_DATA.teamId}`;
+                let waitingListEndpoint = `/rest/ws/group/waiting/list${
+                    CURRENT_GROUP_DATA.teamId
+                        ? `?teamId=${CURRENT_GROUP_DATA.teamId}`
+                        : ''
+                }`;
         window.Applozic.ALApiService.ajax({
             type: 'GET',
             url: MCK_BASE_URL + waitingListEndpoint,
