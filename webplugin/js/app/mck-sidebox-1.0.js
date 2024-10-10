@@ -705,6 +705,13 @@ const firstVisibleMsg = {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
         };
 
+        _this.churnCustomerWidgetChanges = function (){
+            mckMessageService.openChatbox();
+            $applozic('.mck-box-form').removeClass('n-vis');
+            $applozic('#mck-contact-loading').addClass('n-vis');
+            $applozic('#mck-contacts-content').addClass('n-vis');
+        }
+
         _this.mckLaunchSideboxChat = function () {
             kommunicateCommons.setWidgetStateOpen(true);
             !POPUP_WIDGET &&
@@ -715,6 +722,9 @@ const firstVisibleMsg = {
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             KommunicateUI.showChat();
             $applozic('#mck-away-msg-box').removeClass('vis').addClass('n-vis');
+            if(appOptions.appSettings.currentActivatedPlan == "churn"){
+                return _this.churnCustomerWidgetChanges();
+            }
             mckMessageService.loadConversationWithAgents(
                 {
                     groupName: DEFAULT_GROUP_NAME,
@@ -2481,6 +2491,8 @@ const firstVisibleMsg = {
                                 result.authToken;
                             _this.onInitApp(result);
                             // mckUtils.manageIdleTime();
+                        } else if (result == 'CHURNED_CUSTOMER') {
+                            _this.onInitApp({});
                         } else {
                             Kommunicate.displayKommunicateWidget(false);
                             if (typeof MCK_ON_PLUGIN_INIT === 'function') {
