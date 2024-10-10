@@ -21,7 +21,7 @@ var kmWidgetEvents = {
                 window.top.gtag('event', eventObject.data.eventAction, {
                     category: eventObject.data.eventCategory,
                     label: eventObject.data.eventLabel,
-                    value: eventObject.data.eventValue || "",
+                    value: eventObject.data.eventValue || '',
                 });
             }
         } catch (error) {
@@ -212,6 +212,22 @@ var eventMapping = {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_received',
             eventLabel: 'Message Received',
+        },
+        eventFunction: null,
+    },
+    onHelpFulClick: {
+        data: {
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_helpful_click',
+            eventLabel: 'Helpful Clicked',
+        },
+        eventFunction: null,
+    },
+    onNotHelpFulClick: {
+        data: {
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_not_helpful_click',
+            eventLabel: 'Not-Helpful Clicked',
         },
         eventFunction: null,
     },
