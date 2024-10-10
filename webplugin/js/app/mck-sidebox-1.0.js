@@ -3559,6 +3559,7 @@ const firstVisibleMsg = {
 
                 modal.style.display = 'block';
                 captionText.innerHTML = title ? title : '';
+                document.addEventListener("keyup", closeWindowOnEscape);
             });
 
             parent.document.getElementById(
@@ -3567,7 +3568,17 @@ const firstVisibleMsg = {
                 parent.document.getElementById(
                     'km-fullscreen-image-modal'
                 ).style.display = 'none';
+                document.removeEventListener("click", closeWindowOnEscape);
             };
+
+            function closeWindowOnEscape(event) {
+                if(event.keyCode == 27) {
+                    parent.document.getElementById(
+                        'km-fullscreen-image-modal'
+                    ).style.display = 'none';
+                }
+                  document.removeEventListener("keyup", closeWindowOnEscape);
+                }
 
             $applozic(w).on('resize', function () {
                 if ($mck_file_menu.css('display') === 'block') {
