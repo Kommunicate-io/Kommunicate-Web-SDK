@@ -1,18 +1,48 @@
 class AnswerFeedback {
     constructor(options) {
+        /**
+         * end user widget configuration options.
+         * @type {Object.<string, Object>}
+         */
+
         this.options = options;
+
+        /**
+         * Map to store messages for traversing to the end user message.
+         * @type {Object.<string, {
+         *   msg: Object,
+         *   floatWhere: string,
+         *   previousSibling: (Object|null)
+         * }>}
+         */
+
         this.msgMap = {};
+
+        /**
+         * Array to maintain the order of message keys.
+         * @type {Array.<string>}
+         */
         this.msgKeyMap = [];
     }
 
     /**
-     * @param {{ key: string | number; }} data
+     * @param {Object} data - The message data to set.
+     * @param {Object} data.msg - The message object.
+     * @param {string} data.msg.key - The unique key for the message.
+     * @returns {void}
      */
+
     set msgMapData(data) {
+        if (!CURRENT_GROUP_DATA.isConversationAssigneeBot) {
+            return;
+        }
         const msgKey = data.msg.key;
+        const alreadyPresent = this.msgMap[msgKey];
 
         this.msgMap[msgKey] = data;
-        this.msgKeyMap.push(msgKey);
+
+        // msg Key will be not changed that's why we are not updating the msgKeyMap
+        !alreadyPresent && this.msgKeyMap.push(msgKey);
     }
 
     handleOnFeedbackClick = (feedback, data) => {
@@ -27,10 +57,13 @@ class AnswerFeedback {
             data: JSON.stringify({ payload }),
             global: false,
             contentType: 'application/json',
-            success: function (result) {
-                console.log(result);
-                if (result.status == 'success') {
+            success: (result) => {
+                if (result.code == 'SUCCESS') {
+                    const msgMeta =
+                        this.msgMap[data.msg.key]?.msg?.metadata || {};
+                    msgMeta.KM_ANSWER_FEEDBACK = feedback;
                 } else {
+                    console.error('Failed to submit feedback');
                 }
             },
             error: function (data) {
@@ -59,18 +92,22 @@ class AnswerFeedback {
         const answerText = answer.msg.message;
         const questionText = question.msg.message;
 
-        return {
-            payload: {
-                source: metadata.KM_ANSWER_SOURC || 'intent',
+        const payload = { feedback, messageKey: key };
+
+        if (!metadata.KM_ANSWER_FEEDBACK) {
+            Object.assign(payload, {
+                source: metadata.KM_ANSWER_SOURCE || 'intent',
                 botKey: assigneeKey,
                 applicationKey: this.options.appId,
                 answer: answerText,
                 question: metadata.KM_CONTEXT_QUESTION || questionText,
-                feedback,
-                messageKey: key,
                 groupId: CURRENT_GROUP_DATA.tabId,
                 userKey: this.options.userId,
-            },
+            });
+        }
+
+        return {
+            payload,
             method: metadata.KM_ANSWER_FEEDBACK ? 'PATCH' : 'POST',
         };
     };
@@ -78,7 +115,7 @@ class AnswerFeedback {
     getActiveClass = (msg, feedback) => {
         const { KM_ANSWER_FEEDBACK } = msg.metadata;
 
-        return KM_ANSWER_FEEDBACK === feedback ? 'active-feedback' : '';
+        return KM_ANSWER_FEEDBACK == feedback ? 'active-feedback' : '';
     };
 
     helpFullOnClick = (data) => {
@@ -103,12 +140,24 @@ class AnswerFeedback {
         );
     };
 
-    handleFeedbackBtnVisible = (msg, floatWhere) => {
+    handleFeedbackBtnVisible = (msg, floatWhere, group) => {
+        // only visible if the message is from the bot
+        let currentUser = group.users.contact(group.removedMembersId);
+        currentUser = currentUser[msg.to];
+
+        if (!currentUser) return false;
+
+        if (
+            currentUser.role !==
+            KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT
+        ) {
+            return false;
+        }
+
         return (
             floatWhere === 'mck-msg-left' &&
             !msg.metadata.obsolete &&
-            !msg.metadata.WELCOME_EVENT &&
-            CURRENT_GROUP_DATA.isConversationAssigneeBot
+            !msg.metadata.WELCOME_EVENT
         );
     };
 
@@ -137,6 +186,7 @@ class AnswerFeedback {
             this.notHelpFullOnClick(data);
         });
     };
+
     getFeedbackTemplate = (data) => {
         const { msg } = data;
 

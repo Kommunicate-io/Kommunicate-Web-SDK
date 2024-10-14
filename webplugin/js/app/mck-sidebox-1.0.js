@@ -9797,7 +9797,8 @@ const firstVisibleMsg = {
 
                 const showHelpfulFeedback = answerFeedbackService.handleFeedbackBtnVisible(
                     msg,
-                    floatWhere
+                    floatWhere,
+                    contact
                 );
 
                 var msgList = [
