@@ -12459,6 +12459,10 @@ const firstVisibleMsg = {
                 message,
                 contact
             ) {
+                if (message?.metadata?.KM_SUMMARY === 'true') {
+                    return;
+                }
+                
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
