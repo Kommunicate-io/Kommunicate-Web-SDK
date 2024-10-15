@@ -142,7 +142,7 @@ class AnswerFeedback {
 
     handleFeedbackBtnVisible = (msg, floatWhere, group) => {
         // only visible if the message is from the bot
-        let currentUser = group.users.contact(group.removedMembersId);
+        let currentUser = group.users.contact(group.removedUsers || []);
         currentUser = currentUser[msg.to];
 
         if (!currentUser) return false;
