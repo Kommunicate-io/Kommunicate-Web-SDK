@@ -12392,6 +12392,10 @@ const firstVisibleMsg = {
                 message,
                 contact
             ) {
+                if (message?.metadata?.category === "HIDDEN") {
+                    return;
+                }
+                
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
