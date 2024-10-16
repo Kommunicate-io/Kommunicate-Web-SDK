@@ -827,8 +827,7 @@ const firstVisibleMsg = {
             onTypingStatus: function (resp) {
                 mckInitializeChannel.onTypingStatus(resp);
             },
-            onHelpFulClick: function (resp) {},
-            onNotHelpFulClick: function (resp) {},
+            onFeedbackClick: function (resp) {},
         };
 
         _this.loadConversationWithAgent = function (params) {

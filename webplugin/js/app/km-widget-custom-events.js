@@ -215,19 +215,11 @@ var eventMapping = {
         },
         eventFunction: null,
     },
-    onHelpFulClick: {
+    onFeedbackClick: {
         data: {
             eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_helpful_click',
-            eventLabel: 'Helpful Clicked',
-        },
-        eventFunction: null,
-    },
-    onNotHelpFulClick: {
-        data: {
-            eventCategory: 'Kommunicate_widget',
-            eventAction: 'km_widget_not_helpful_click',
-            eventLabel: 'Not-Helpful Clicked',
+            eventAction: 'km_widget_feedback_click',
+            eventLabel: 'Feedback Clicked',
         },
         eventFunction: null,
     },

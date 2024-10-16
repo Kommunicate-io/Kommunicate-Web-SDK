@@ -47,6 +47,12 @@ class AnswerFeedback {
 
     handleOnFeedbackClick = (feedback, data) => {
         const { payload, method = 'POST' } = this.getPayload(feedback, data);
+        kmWidgetEvents.eventTracking(eventMapping.onFeedbackClick);
+
+        window.Applozic.ALSocket.events.onFeedbackClick({
+            message: data.msg,
+            feedback: feedback,
+        });
 
         mckUtils.ajax({
             type: method,
@@ -94,7 +100,11 @@ class AnswerFeedback {
 
         const payload = { feedback, messageKey: key };
 
-        if (!metadata.KM_ANSWER_FEEDBACK) {
+        const isFeedbackAlreadyGiven = metadata.hasOwnProperty(
+            'KM_ANSWER_FEEDBACK'
+        );
+
+        if (!isFeedbackAlreadyGiven) {
             Object.assign(payload, {
                 source: metadata.KM_ANSWER_SOURCE || 'intent',
                 botKey: assigneeKey,
@@ -108,7 +118,7 @@ class AnswerFeedback {
 
         return {
             payload,
-            method: metadata.KM_ANSWER_FEEDBACK ? 'PATCH' : 'POST',
+            method: isFeedbackAlreadyGiven ? 'PATCH' : 'POST',
         };
     };
 
@@ -118,31 +128,22 @@ class AnswerFeedback {
         return KM_ANSWER_FEEDBACK == feedback ? 'active-feedback' : '';
     };
 
-    helpFullOnClick = (data) => {
-        kmWidgetEvents.eventTracking(eventMapping.onHelpFulClick);
-        window.Applozic.ALSocket.events.onHelpFulClick({ message: data.msg });
-
+    helpFulOnClick = (data) =>
         this.handleOnFeedbackClick(
             KommunicateConstants.ANSWER_FEEDBACK.HELPFUL,
             data
         );
-    };
 
-    notHelpFullOnClick = (data, btn) => {
-        kmWidgetEvents.eventTracking(eventMapping.onNotHelpFulClick);
-        window.Applozic.ALSocket.events.onNotHelpFulClick({
-            message: data.msg,
-        });
-
+    notHelpFulOnClick = (data) =>
         this.handleOnFeedbackClick(
             KommunicateConstants.ANSWER_FEEDBACK.NOT_HELPFUL,
             data
         );
-    };
 
     handleFeedbackBtnVisible = (msg, floatWhere, group) => {
         // only visible if the message is from the bot
-        let currentUser = group.users.contact(group.removedUsers || []);
+        // needed later contact(group.removedUsers || [])
+        let currentUser = group.users;
         currentUser = currentUser[msg.to];
 
         if (!currentUser) return false;
@@ -175,16 +176,21 @@ class AnswerFeedback {
             '.answer-feedback-not-helpful'
         );
 
-        helpfulButton.addEventListener('click', () => {
-            helpfulButton.classList.add('active-feedback');
-            notHelpfulButton.classList.remove('active-feedback');
-            this.helpFullOnClick(data);
-        });
-        notHelpfulButton.addEventListener('click', () => {
-            helpfulButton.classList.remove('active-feedback');
-            notHelpfulButton.classList.add('active-feedback');
-            this.notHelpFullOnClick(data);
-        });
+        const setFeedback = (isHelpful) => {
+            helpfulButton.classList.toggle('active-feedback', isHelpful);
+            notHelpfulButton.classList.toggle('active-feedback', !isHelpful);
+
+            isHelpful
+                ? this.helpFulOnClick(data)
+                : this.notHelpFulOnClick(data);
+        };
+
+        helpfulButton.addEventListener('click', setFeedback.bind(null, true));
+
+        notHelpfulButton.addEventListener(
+            'click',
+            setFeedback.bind(null, false)
+        );
     };
 
     getFeedbackTemplate = (data) => {
