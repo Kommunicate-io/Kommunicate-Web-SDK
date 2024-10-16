@@ -12459,7 +12459,7 @@ const firstVisibleMsg = {
                 message,
                 contact
             ) {
-                if (message?.metadata?.KM_SUMMARY === 'true') {
+                if (message?.metadata?.category === 'HIDDEN') {
                     return;
                 }
                 
