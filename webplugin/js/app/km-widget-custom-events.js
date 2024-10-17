@@ -21,7 +21,7 @@ var kmWidgetEvents = {
                 window.top.gtag('event', eventObject.data.eventAction, {
                     category: eventObject.data.eventCategory,
                     label: eventObject.data.eventLabel,
-                    value: eventObject.data.eventValue || "",
+                    value: eventObject.data.eventValue || '',
                 });
             }
         } catch (error) {
@@ -212,6 +212,14 @@ var eventMapping = {
             eventCategory: 'Kommunicate_widget',
             eventAction: 'km_widget_message_received',
             eventLabel: 'Message Received',
+        },
+        eventFunction: null,
+    },
+    onFeedbackClick: {
+        data: {
+            eventCategory: 'Kommunicate_widget',
+            eventAction: 'km_widget_feedback_click',
+            eventLabel: 'Feedback Clicked',
         },
         eventFunction: null,
     },
