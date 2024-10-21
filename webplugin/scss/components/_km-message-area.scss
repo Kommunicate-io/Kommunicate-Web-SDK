@@ -14,6 +14,11 @@
     border-radius: $msg-box-border-radius;
     max-width: 70%;
     @include prefix(max-width, calc(85% - 58px), moz);
+
+    & ~ .km-answer-feedback {
+        max-width: 70%;
+        @include prefix(max-width, calc(85% - 58px), moz);
+    }
 }
 
 .mck-msg-box {
@@ -26,12 +31,33 @@
     border: 0px solid $input-border-color;
 }
 
+.km-answer-feedback {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+
+    & svg {
+        cursor: pointer;
+        width: 16px;
+        height: 16px;
+    }
+}
+
 .mck-rich-msg-box {
     width: $rich-msg-width;
     max-width: unset !important;
     border: 1px solid $input-border-color;
     border-radius: $msg-box-border-radius;
 
+    & ~ .km-answer-feedback {
+        width: $rich-msg-width;
+
+        @media (max-width: 330px) {
+            width: 90%;
+        }
+    }
     @media (max-width: 330px) {
         width: 90%;
     }
