@@ -20,7 +20,7 @@ Kommunicate has a powerful human + chatbot hybrid platform, where you can integr
 
 [Kompose](https://dashboard.kommunicate.io/bots/bot-builder) is a Kommunicate’s bot builder that help you in building your own bot, a techie, non-techie, or a person who doesn’t have any idea about chatbots can also build the bot. Anyone can create a chatbot with the Kompose without any assistance.
 
-<img src="./custom-bot-server-code-sample/images/botInteg.gif" alt="Kompose-build">
+<img src="./custom-bot-server-code-sample/images/botIntegration.gif" alt="Kompose-build">
 
 
 
