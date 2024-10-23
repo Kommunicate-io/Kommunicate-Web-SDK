@@ -20,6 +20,12 @@ steps:
         chmod +x ./firebase-deploy.sh
         ./firebase-deploy.sh
 
+
+
+  # Step 4: Deploy to Firebase Hosting
+  - name: 'gcr.io/cloud-builders/firebase'
+    args: ['deploy', '--only', 'hosting']
+
 # Optionally, set environment variables if needed
 timeout: '900s'
 
