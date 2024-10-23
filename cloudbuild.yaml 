@@ -26,6 +26,10 @@ steps:
   - name: 'gcr.io/cloud-builders/firebase'
     args: ['deploy', '--only', 'hosting:sample-firebase-ai-app-6925f-a0870']
 
+
+  options:
+  logging: NONE  # Disable logging
+
 # Optionally, set environment variables if needed
 timeout: '900s'
 
