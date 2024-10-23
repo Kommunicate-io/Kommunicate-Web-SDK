@@ -1,0 +1,28 @@
+steps:
+  # Install Firebase CLI
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install', '-g', 'firebase-tools']
+
+  # Login to Firebase using the service account key (ensure the service account has the necessary roles for Firebase)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo $FIREBASE_TOKEN | firebase login:ci --no-localhost
+
+  # Give execute permission to the script and run firebase-deploy.sh
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        chmod +x ./firebase-deploy.sh
+        ./firebase-deploy.sh
+
+# Optionally, set environment variables if needed
+timeout: '900s'
+
+# Substitutions for environment variables
+substitutions:
+  _BUILD_ENV: 'test'  # Default environment, change this or configure it via the build trigger
