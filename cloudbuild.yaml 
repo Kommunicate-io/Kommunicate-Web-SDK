@@ -1,9 +1,9 @@
 steps:
-  # Install Firebase CLI
+  # Step 1: Install Firebase CLI
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install', '-g', 'firebase-tools']
 
-  # Login to Firebase using the service account key (ensure the service account has the necessary roles for Firebase)
+  # Step 2: Login to Firebase using the service account key (ensure the service account has the necessary roles for Firebase)
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
@@ -11,7 +11,7 @@ steps:
       - |
         echo $_FIREBASE_TOKEN | firebase login:ci --no-localhost
 
-  # Give execute permission to the script and run firebase-deploy.sh
+  # Step 3: Give execute permission to the script and run firebase-deploy.sh
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
@@ -20,14 +20,11 @@ steps:
         chmod +x ./firebase-deploy.sh
         ./firebase-deploy.sh
 
-
-
   # Step 4: Deploy to Firebase Hosting
   - name: 'gcr.io/cloud-builders/firebase'
     args: ['deploy', '--only', 'hosting:sample-firebase-ai-app-6925f-a0870']
 
-
-  options:
+options:
   logging: NONE  # Disable logging
 
 # Optionally, set environment variables if needed
