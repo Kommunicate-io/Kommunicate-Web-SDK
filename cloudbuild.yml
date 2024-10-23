@@ -24,7 +24,7 @@ steps:
 
   # Step 4: Deploy to Firebase Hosting
   - name: 'gcr.io/cloud-builders/firebase'
-    args: ['deploy', '--only', 'hosting']
+    args: ['deploy', '--only', 'hosting:sample-firebase-ai-app-6925f-a0870']
 
 # Optionally, set environment variables if needed
 timeout: '900s'
