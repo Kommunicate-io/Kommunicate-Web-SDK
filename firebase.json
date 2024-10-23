@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "sample-firebase-ai-app-6925f-a0870",
     "public": "webplugin/build",
     "ignore": [
       "firebase.json",
