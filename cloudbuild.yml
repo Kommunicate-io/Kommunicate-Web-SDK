@@ -9,7 +9,7 @@ steps:
     args:
       - '-c'
       - |
-        echo $FIREBASE_TOKEN | firebase login:ci --no-localhost
+        echo $_FIREBASE_TOKEN | firebase login:ci --no-localhost
 
   # Give execute permission to the script and run firebase-deploy.sh
   - name: 'gcr.io/cloud-builders/gcloud'
