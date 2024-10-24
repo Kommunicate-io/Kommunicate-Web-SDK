@@ -1,0 +1,42 @@
+# cloudbuild working fine script 
+
+options:
+  logging: CLOUD_LOGGING_ONLY  # This will send logs to Cloud Logging instead of a bucket.
+
+substitutions:
+  _BUILD_ENV: "test"  # Customize this value as needed
+
+steps:
+  # Step 1: Install dependencies
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
+  # Step 2: Conditionally run different builds based on _BUILD_ENV
+  - name: 'gcr.io/cloud-builders/npm'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Build env:" ${_BUILD_ENV}
+        if [ "${_BUILD_ENV}" = "test" ]; then npm run build-test;
+        elif [ "${_BUILD_ENV}" = "release" ]; then npm run build-release;
+        elif [ "${_BUILD_ENV}" = "staging" ]; then npm run build-staging;
+        elif [ "${_BUILD_ENV}" = "prod" ]; then npm run build-prod;
+        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then npm run build-prod-enterprise;
+        elif [ "${_BUILD_ENV}" = "prod-in" ]; then npm run build-prod-in;
+        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then npm run build-prod-eu;
+        elif [ "${_BUILD_ENV}" = "prod-cn" ]; then npm run build-prod-cn;
+        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then npm run build-beta;
+        else npm run build-test;
+        fi
+
+  # Step 3: Deploy to Firebase Hosting
+  - name: 'gcr.io/$PROJECT_ID/firebase'
+    args:
+      - 'deploy'
+      - '--only'
+      - 'hosting:km-dev-434106-9a3b8'
+      - '--token'
+      - '${_FIREBASE_TOKEN}'
+      - '--project'
+      - 'km-dev-434106'
