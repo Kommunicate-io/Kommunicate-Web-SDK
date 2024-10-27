@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "km-dev-434106"
+    "default": "${_FIREBASE_PROJECT_ID}"
   }
 }
