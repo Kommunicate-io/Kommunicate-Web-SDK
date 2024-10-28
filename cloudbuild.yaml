@@ -2,17 +2,16 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BUILD_ENV: "test"  # Can customize this based on the environment
-  # _FIREBASE_PROJECT_ID will be set dynamically in the build trigger
+  _BUILD_ENV: "test"  # Can be set per environment (test, release)
+  _FIREBASE_PROJECT_ID: "your-project-id"  # Will be set dynamically in the build trigger
+  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Firebase site ID for the environment
 
 steps:
   # Step 1: Install dependencies
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
 
- 
-
-  # Step 2: Conditionally run different builds based on _BUILD_ENV
+  # Step 2: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
     entrypoint: 'bash'
     args:
@@ -21,23 +20,18 @@ steps:
         echo "Build env:" ${_BUILD_ENV}
         if [ "${_BUILD_ENV}" = "test" ]; then npm run build-test;
         elif [ "${_BUILD_ENV}" = "release" ]; then npm run build-release;
-        elif [ "${_BUILD_ENV}" = "staging" ]; then npm run build-staging;
-        elif [ "${_BUILD_ENV}" = "prod" ]; then npm run build-prod;
-        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then npm run build-prod-enterprise;
-        elif [ "${_BUILD_ENV}" = "prod-in" ]; then npm run build-prod-in;
-        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then npm run build-prod-eu;
-        elif [ "${_BUILD_ENV}" = "prod-cn" ]; then npm run build-prod-cn;
-        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then npm run build-beta;
         else npm run build-test;
         fi
 
-  # Step 3: Deploy to Firebase Hosting
+  # Step 3: Deploy to Firebase Hosting with dynamic site ID
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args:
       - 'deploy'
       - '--only'
-      - 'hosting:${_FIREBASE_PROJECT_ID}'
-      - '--token'
-      - '${_FIREBASE_TOKEN}'
+      - 'hosting'
       - '--project'
       - '${_FIREBASE_PROJECT_ID}'
+      - '--token'
+      - '${_FIREBASE_TOKEN}'
+    env:
+      - "FIREBASE_SITE_ID=${_FIREBASE_SITE_ID}"  # Dynamic site ID as an environment variable
