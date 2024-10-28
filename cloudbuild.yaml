@@ -24,8 +24,8 @@ steps:
         fi
 
   # Step 3: Generate firebase.json dynamically
-  - name: 'gcr.io/cloud-builders/bash'
-    entrypoint: 'bash'
+  - name: 'alpine'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
@@ -94,8 +94,8 @@ steps:
         }" > firebase.json
 
   # Step 4: Debugging step to check the site ID
-  - name: 'gcr.io/cloud-builders/bash'
-    entrypoint: 'bash'
+  - name: 'alpine'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
