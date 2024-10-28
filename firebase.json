@@ -1,62 +1,68 @@
 {
-    "hosting": {
-      "site": "${FIREBASE_SITE_ID}",  
-      "public": "webplugin/build",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
-      "headers": [
-        {
-          "source": "**",
-          "headers": [
-            {
-              "key": "Access-Control-Allow-Origin",
-              "value": "*"
-            }
-          ]
-        },
-        {
-          "source": "/v2/kommunicate.app",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "text/javascript"
-            },
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=180"
-            }
-          ]
-        },
-        {
-          "source": "**/*.js",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31536000"
-            }
-          ]
-        },
-        {
-          "source": "**/*min.css",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31536000"
-            }
-          ]
-        },
-        {
-          "source": "resources/**/*.html",
-          "headers": [
-            {
-              "key": "Cache-Control",
-              "value": "public, max-age=31536000"
-            }
-          ]
-        }
-      ]
-    }
+  "hosting": {
+    "site": "${FIREBASE_SITE_ID}",
+    "public": "webplugin/build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      },
+      {
+        "source": "/v2/kommunicate.app",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "text/javascript"
+          },
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=180"
+          }
+        ]
+      },
+      {
+        "source": "**/*.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "**/*min.css",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
+          }
+        ]
+      },
+      {
+        "source": "resources/**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/v2/kommunicate.app",
+        "destination": "/index.html"
+      }
+    ]
   }
+}
