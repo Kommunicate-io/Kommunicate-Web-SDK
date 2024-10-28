@@ -1,0 +1,113 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _BUILD_ENV: "test"  # Can be set per environment (test, release)
+  _FIREBASE_PROJECT_ID: "your-project-id"  # Will be set dynamically in the build trigger
+  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
+
+steps:
+  # Step 1: Install dependencies
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
+  # Step 2: Conditionally run builds based on _BUILD_ENV
+  - name: 'gcr.io/cloud-builders/npm'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Build env:" ${_BUILD_ENV}
+        if [ "${_BUILD_ENV}" = "test" ]; then npm run build-test;
+        elif [ "${_BUILD_ENV}" = "release" ]; then npm run build-release;
+        else npm run build-test;
+        fi
+
+  # Step 3: Generate firebase.json dynamically
+  - name: 'alpine'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Generating firebase.json"
+        echo "{
+          \"hosting\": {
+            \"site\": \"${_FIREBASE_SITE_ID}\",
+            \"public\": \"webplugin/template\",
+            \"ignore\": [
+              \"firebase.json\",
+              \"**/.*\",
+              \"**/node_modules/**\"
+            ],
+            \"headers\": [
+              {
+                \"source\": \"**\",
+                \"headers\": [
+                  {
+                    \"key\": \"Access-Control-Allow-Origin\",
+                    \"value\": \"*\"
+                  }
+                ]
+              },
+              {
+                \"source\": \"/v2/kommunicate.app\",
+                \"headers\": [
+                  {
+                    \"key\": \"Content-Type\",
+                    \"value\": \"text/javascript\"
+                  },
+                  {
+                    \"key\": \"Cache-Control\",
+                    \"value\": \"public, max-age=180\"
+                  }
+                ]
+              },
+              {
+                \"source\": \"**/*.js\",
+                \"headers\": [
+                  {
+                    \"key\": \"Cache-Control\",
+                    \"value\": \"public, max-age=31536000\"
+                  }
+                ]
+              },
+              {
+                \"source\": \"**/*min.css\",
+                \"headers\": [
+                  {
+                    \"key\": \"Cache-Control\",
+                    \"value\": \"public, max-age=31536000\"
+                  }
+                ]
+              },
+              {
+                \"source\": \"resources/**/*.html\",
+                \"headers\": [
+                  {
+                    \"key\": \"Cache-Control\",
+                    \"value\": \"public, max-age=31536000\"
+                  }
+                ]
+              }
+            ]
+          }
+        }" > firebase.json
+
+  # Step 4: Debugging step to check the site ID
+  - name: 'alpine'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Deploying to Firebase site: ${_FIREBASE_SITE_ID}"
+
+  # Step 5: Deploy to Firebase Hosting with dynamic site ID
+  - name: 'gcr.io/$PROJECT_ID/firebase'
+    args:
+      - 'deploy'
+      - '--only'
+      - 'hosting:${_FIREBASE_SITE_ID}'  # Ensure this references the site ID correctly
+      - '--project'
+      - '${_FIREBASE_PROJECT_ID}'
+      - '--token'
+      - '${_FIREBASE_TOKEN}'
