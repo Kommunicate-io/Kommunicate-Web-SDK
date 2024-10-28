@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "webplugin/build",
+    "site": "${FIREBASE_SITE_ID}",  
+    "public": "webplugin/template",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -59,6 +60,3 @@
     ]
   }
 }
-
-
-
