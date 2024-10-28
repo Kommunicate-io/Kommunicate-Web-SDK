@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "${FIREBASE_SITE_ID}",  
-    "public": "webplugin/template",
+    "public": "webplugin/build",
     "ignore": [
       "firebase.json",
       "**/.*",
