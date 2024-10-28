@@ -15,6 +15,7 @@ var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
+const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 var userOverride = {
     voiceOutput: true,
 };
@@ -641,7 +642,6 @@ const firstVisibleMsg = {
                 : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
-        var DISABLE_TEXT_AREA = appOptions.disableTextArea;
         w.MCK_OL_MAP = new Array();
         var VOICE_INPUT_ENABLED = appOptions.voiceInput;
         var VOICE_OUTPUT_ENABLED = appOptions.voiceOutput;
@@ -2808,9 +2808,7 @@ const firstVisibleMsg = {
             _this.loadDataPostInitialization = function () {
                 IS_PLUGIN_INITIALIZATION_PROCESS_COMPLETED = true;
                 var data = INIT_APP_DATA;
-
                 // calling Kommunicate for post initialization processing. error first style.
-
                 Kommunicate.postPluginInitialization(null, data);
                 mckMessageLayout.createContactWithDetail({
                     userId: MCK_USER_ID,
@@ -3199,7 +3197,7 @@ const firstVisibleMsg = {
                     return kmChatInputDiv;
                 });
             _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase();
+                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(" ","-");
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(
                     preLeadCollection,
@@ -3244,7 +3242,7 @@ const firstVisibleMsg = {
                     );
                     kmChatInput.setAttribute(
                         'aria-label',
-                        preLeadCollection.field
+                        preLeadCollection.field.replace(" ","-")
                     );
                     if (preLeadCollection.type == 'email') {
                         kmChatInput.setAttribute(
@@ -3834,6 +3832,7 @@ const firstVisibleMsg = {
                 '#mck-group-member-search-list'
             );
             var $mck_no_gsm_text = $applozic('#mck-no-gsm-text');
+            const $mck_business_hours_box = $applozic('#km-business-hour-box');
             var MESSAGE_SEND_URL = '/rest/ws/message/send';
             var UPDATE_MESSAGE_METADATA = '/rest/ws/message/update/metadata';
             var GROUP_CREATE_URL = '/rest/ws/group/v2.1/create';
@@ -3862,6 +3861,7 @@ const firstVisibleMsg = {
             var warningText = document.getElementById('mck-char-warning-text');
             var CHANGE_ASSIGNEE = '/rest/ws/group/assignee/change';
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
+            const BUSINESS_HOURS_URL = '/rest/ws/team/business-settings';
             _this.resetMessageSentToHumanAgent = function () {
                 // used in loadTab()
                 messageSentToHumanAgent = 0;
@@ -4106,7 +4106,7 @@ const firstVisibleMsg = {
                 var metadata = {};
                 var field = '';
                 KM_PRELEAD_COLLECTION.map(function (element) {
-                    field = element.field && element.field.toLowerCase();
+                    field = element.field && element.field.toLowerCase().replace(" ","-");
                     if (KM_USER_DETAIL.indexOf(field) === -1) {
                         metadata[element.field] = $applozic(
                             '#km-' + field
@@ -4128,6 +4128,109 @@ const firstVisibleMsg = {
                 }
                 $mck_msg_to.focus();
             };
+
+            _this.isWithinBusinessHours = function (team) {
+                // don't show message if business hour setting are not set
+                if (!team || !team.businessHourMap || !team.timezone) {
+                    return true;
+                }
+                const convertToMinutes = (timeStr) => {
+                    const hours = parseInt(timeStr.slice(0, 2), 10);
+                    const minutes = parseInt(timeStr.slice(2), 10);
+                    return hours * 60 + minutes;
+                };
+
+                const parseTimezoneOffset = (timezone) => {
+                    try {
+                        const match = timezone.match(/[+-]\d+:\d+/);
+                        const [hours, minutes] = match[0]
+                            .split(':')
+                            .map(Number);
+                        const totalMinutes =
+                            hours * 60 + Math.sign(hours) * minutes;
+                        return totalMinutes;
+                    } catch (e) {
+                        // if there is any error in parsing the timezone offset return GMT offset
+                        console.debug('Timezone not avaiable in team settings');
+                        return 0;
+                    }
+                };
+
+                const now = new Date();
+                const currentDay = now.getDay();
+                const offset = now.getTimezoneOffset();
+                const gmtTime = new Date(now.getTime() + offset * 60000);
+                // const timezoneOffset = parseTimezoneOffset(team.timezone);
+                const adjustedTime = new Date(gmtTime.getTime());
+                const businessHours = team.businessHourMap[currentDay];
+                if (!businessHours) {
+                    // No business hours for the current day
+                    return false;
+                }
+                try {
+                    const [start, end] = businessHours
+                        .split('-')
+                        .map((time) => convertToMinutes(time));
+                    const currentTimeInMinutes =
+                        adjustedTime.getHours() * 60 +
+                        adjustedTime.getMinutes();
+                    // Check if the current time is within the business hours range
+                    if (start <= end) {
+                        return (
+                            currentTimeInMinutes >= start &&
+                            currentTimeInMinutes <= end
+                        );
+                    } else {
+                        // Handle case where the business hours wrap around midnight (e.g., 2200-0400)
+                        return (
+                            currentTimeInMinutes >= start ||
+                            currentTimeInMinutes <= end
+                        );
+                    }
+                } catch (e) {
+                    // if there is any error in formatting the business hours allow the user to chat
+                    console.error('Error while checking business hours', e);
+                    return true;
+                }
+            };
+
+            _this.handleBusinessHours = function () {
+                window.Applozic.ALApiService.ajax({
+                    type: 'GET',
+                    url: MCK_BASE_URL + BUSINESS_HOURS_URL,
+                    global: false,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        let teamSettings = {};
+                        const response = data?.response;
+                        if (!CURRENT_GROUP_DATA.teamId) {
+                            teamSettings = response.find((team) =>
+                                DEFAULT_TEAM_NAME.includes(team.teamName)
+                            );
+                        } else {
+                            teamSettings = response.find(
+                                (team) =>
+                                    String(team.teamId) ===
+                                    String(CURRENT_GROUP_DATA.teamId)
+                            );
+                        }
+                        if (
+                            teamSettings &&
+                            !_this.isWithinBusinessHours(teamSettings)
+                        ) {
+                            $mck_business_hours_box.removeClass('n-vis');
+                            $mck_business_hours_box.text(
+                                teamSettings.message ||
+                                    MCK_LABELS['business-hour.msg']
+                            );
+                        }
+                    },
+                    error: function (data) {
+                        console.error(data);
+                    },
+                });
+            };
+
             _this.loadConversationWithAgents = function (params, callback) {
                 _this.openChatbox();
                 if (window.applozic.PRODUCT_ID == 'kommunicate') {
@@ -5118,6 +5221,7 @@ const firstVisibleMsg = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        $mck_business_hours_box.addClass('n-vis')
                         kommunicateCommons.modifyClassList(
                             {
                                 id: ['km-widget-options'],
@@ -6309,6 +6413,9 @@ const firstVisibleMsg = {
                         userStatus: 4,
                     });
                 }
+
+                $mck_business_hours_box.addClass('n-vis')
+
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (
                     typeof msgKeys !== 'undefined' &&
@@ -6794,18 +6901,6 @@ const firstVisibleMsg = {
                             data.groupFeeds[0].metadata.KM_TEAM_ID;
                         params.isWaitingQueue &&
                             KommunicateUI.handleWaitingQueueMessage();
-
-                        const assignee =
-                            data.groupFeeds[0] &&
-                            data.groupFeeds[0].metadata &&
-                            data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                        const groupUsers = data.userDetails;
-                        assignee &&
-                            groupUsers &&
-                            KommunicateUI.toggleVisibilityOfTextArea(
-                                assignee,
-                                groupUsers
-                            );
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
@@ -8057,22 +8152,7 @@ const firstVisibleMsg = {
                                         }
                                     );
                                 }
-                                kommunicateCommons.modifyClassList(
-                                    {
-                                        class: ['mck-box-form'],
-                                    },
-                                    'n-vis'
-                                );
-                                const assignee =
-                                    groupPxy.metadata &&
-                                    groupPxy.metadata.CONVERSATION_ASSIGNEE;
-                                const groupUsers = groupPxy.groupUsers;
-                                assignee &&
-                                    groupUsers &&
-                                    KommunicateUI.toggleVisibilityOfTextArea(
-                                        assignee,
-                                        groupUsers
-                                    );
+
                                 CURRENT_GROUP_DATA.tabId =
                                     groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
@@ -8080,7 +8160,6 @@ const firstVisibleMsg = {
                                 CURRENT_GROUP_DATA.groupMembers =
                                     groupPxy.groupUsers;
                                 console.log('groupPxy now checking', groupPxy);
-
                                 CURRENT_GROUP_DATA.createdAt =
                                     groupPxy.createdAtTime;
                                 CURRENT_GROUP_DATA.teamId =
@@ -8934,8 +9013,8 @@ const firstVisibleMsg = {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
                             isGroup: params.isGroup,
-                            data: params,
                         });
+                        mckMessageService.handleBusinessHours();
                     }
                 } else {
                     params.tabId = '';
@@ -10776,7 +10855,6 @@ const firstVisibleMsg = {
                 }
                 return '';
             };
-
             _this.getMessageCreatedAtTime = function (createdAtTime) {
                 if (TIME_FORMAT_24_HOURS) {
                     var messageTime = new Date(createdAtTime);

@@ -12,6 +12,48 @@
     padding: 12px 16px;
     font-size: 14px;
 }
+.km-churn-banner{
+    color:#886026;
+    position: relative;
+    z-index: 999;
+    background:#fbd683;
+    -webkit-box-align: center;
+    padding: 12px 16px;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+}
+
+#km-churn-customer .km-churn-heading {
+    padding-left: 5px;
+}
+
+#deactivate-link {
+    color: #886026;
+}
+
+#km-business-hour-box {
+    background-color: #5f46f8;
+    color: #fff;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+@keyframes km-typing-anim {
+    0% {
+        background: rgb(221, 221, 221);
+        transform: scale(1);
+    }
+    50% {
+        background: black;
+        transform: scale(1.4);
+    }
+    100% {
+        background: rgb(221, 221, 221);
+        transform: scale(1);
+    }
+}
 
 /* FAQ CSS STYLES STARTS HERE*/
 /* Below styles are added to make sure whatever data entered by the user using WYSIWYG editor in FAQ section is reflected with exactly the same styles in the sidebox.  */

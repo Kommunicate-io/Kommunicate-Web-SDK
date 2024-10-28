@@ -231,9 +231,16 @@ $applozic.extend(true, Kommunicate, {
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
-    openConversation: function (groupId) {
+    openConversation: function (groupId, groupDetail) {
         kommunicateCommons.setWidgetStateOpen(true);
-        window.$applozic.fn.applozic('loadGroupTab', groupId);
+        if (groupId) {
+            window.$applozic.fn.applozic('loadGroupTab', groupId);
+        } else if (groupDetail && groupDetail.clientGroupId) {
+            window.$applozic.fn.applozic(
+                'loadGroupTabByClientGroupId',
+                groupDetail
+            );
+        } 
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
