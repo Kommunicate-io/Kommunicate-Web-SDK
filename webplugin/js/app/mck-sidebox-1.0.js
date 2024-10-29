@@ -45,7 +45,7 @@ const firstVisibleMsg = {
             'https://googleupload.applozic.com/files/url?key={key}', // generate viewable link for a file incase of file upload on google cloud
         notificationIconLink: '',
         notificationSoundLink: '',
-        mapStaticAPIkey: 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk',
+        mapStaticAPIkey: 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         launcher: 'applozic-launcher',
         emojilibrary: false,
         userId: null,
