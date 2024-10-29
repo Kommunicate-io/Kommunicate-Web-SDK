@@ -1,7 +1,7 @@
 {
   "hosting": {
-    "site": "${FIREBASE_SITE_ID}",  
-    "public": "webplugin/template",
+    "site": "${_FIREBASE_SITE_ID}",  
+    "public": "webplugin/build",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -56,6 +56,45 @@
             "value": "public, max-age=31536000"
           }
         ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/<*>",
+        "destination": "/index.html",
+        "type": "404"
+      },
+      {
+        "source": "/chat",
+        "destination": "/chat.html",
+        "type": "200"
+      },
+      {
+        "source": "/v2/kommunicate.app",
+        "destination": "/index.html",
+        "type": "200"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/kommunicate.app",
+        "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
+        "type": "301"
+      },
+      {
+        "source": "/v1/kommunicate.app",
+        "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
+        "type": "301"
+      },
+      {
+        "source": "/plugin/lib/js/locationpicker.jquery.min.js",
+        "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js",
+        "type": "301"
+      },
+      {
+        "source": "/plugin/lib/js/mck-emojis.min.js",
+        "destination": "/resources/third-party-scripts/mck-emojis.min.js",
+        "type": "301"
       }
     ]
   }
