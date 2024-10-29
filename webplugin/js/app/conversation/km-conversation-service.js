@@ -20,11 +20,18 @@ Kommunicate.conversation = {
             );
             return;
         }
+
         var conversationDetail = data && data.groupFeeds[0];
+        const isConversationRated = kmLocalStorage.getItemFromLocalStorage(
+            conversationDetail.id
+        );
+
         KommunicateUI.showClosedConversationBanner(
-            Kommunicate.conversationHelper.isConversationClosed(
-                conversationDetail
-            )
+            isConversationRated.isConversationClosed
+                ? false
+                : Kommunicate.conversationHelper.isConversationClosed(
+                      conversationDetail
+                  )
         );
     },
 };
