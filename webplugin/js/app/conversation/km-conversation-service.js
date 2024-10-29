@@ -27,7 +27,7 @@ Kommunicate.conversation = {
         );
 
         KommunicateUI.showClosedConversationBanner(
-            isConversationRated.isCSATmodelClosed
+            isConversationRated.isCSATModelClosed
                 ? false
                 : Kommunicate.conversationHelper.isConversationClosed(
                       conversationDetail
