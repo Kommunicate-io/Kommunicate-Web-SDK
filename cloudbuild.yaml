@@ -2,9 +2,9 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BUILD_ENV: "test"  # Environment (e.g., test, release, prod)
-  _FIREBASE_PROJECT_ID: "your-project-id"  # Your Firebase project ID
-  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Site ID based on _BUILD_ENV
+  _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
+  _FIREBASE_PROJECT_ID: "your-project-id"  # Replace with your dynamic project ID
+  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
   # Step 1: Install dependencies
@@ -17,38 +17,51 @@ steps:
     args:
       - '-c'
       - |
-        echo "Build environment:" ${_BUILD_ENV}
-        if [ "${_BUILD_ENV}" = "test" ]; then npm run build-test;
-        elif [ "${_BUILD_ENV}" = "release" ]; then npm run build-release;
-        elif [ "${_BUILD_ENV}" = "staging" ]; then npm run build-staging;
-        elif [ "${_BUILD_ENV}" = "prod" ]; then npm run build-prod;
-        else npm run build-test;
+        echo "Build env:" ${_BUILD_ENV}
+        if [ "${_BUILD_ENV}" = "test" ]; then 
+          npm run build-test;
+        elif [ "${_BUILD_ENV}" = "release" ]; then 
+          npm run build-release;
+        elif [ "${_BUILD_ENV}" = "staging" ]; then 
+          npm run build-staging;
+        elif [ "${_BUILD_ENV}" = "prod" ]; then 
+          npm run build-prod;
+        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then 
+          npm run build-prod-enterprise;
+        elif [ "${_BUILD_ENV}" = "prod-in" ]; then 
+          npm run build-prod-in;
+        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then 
+          npm run build-prod-eu;
+        elif [ "${_BUILD_ENV}" = "prod-cn" ]; then 
+          npm run build-prod-cn;
+        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then 
+          npm run build-beta;
+        else 
+          npm run build-test;
         fi
 
-  # Step 3: Use envsubst to replace placeholders in firebase.json
+  # Step 3: Update firebase.json dynamically
   - name: 'alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        echo "Replacing placeholders in firebase.json with envsubst..."
-        export SITE_ID=${_FIREBASE_SITE_ID} PROJECT_ID=${_FIREBASE_PROJECT_ID}
-        envsubst < firebase.json > firebase_temp.json && mv firebase_temp.json firebase.json
-        echo "Updated firebase.json contents:"
-        cat firebase.json  # Print contents for debugging
+        echo "Updating firebase.json with site ID..."
+        # Update the site ID dynamically
+        sed -i 's/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/' firebase.json
 
-  # Step 4: Validate build output
+  # Step 4: Validate the build directory contains index.html
   - name: 'alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        echo "Checking if build output contains index.html..."
+        echo "Checking if webplugin/build contains index.html..."
         if [ ! -f "webplugin/build/index.html" ]; then
-          echo "Error: index.html not found in webplugin/build. Build process may have failed."
+          echo "Error: index.html not found in webplugin/build. Build process might have failed."
           exit 1
         fi
-        echo "firebase.json exists, validating its structure..."
+        echo "firebase.json exists, now validating its structure..."
         if [ ! -f "firebase.json" ]; then
           echo "Error: firebase.json file does not exist."
           exit 1
