@@ -99,7 +99,9 @@ steps:
             ],
             \"rewrites\": [
               {
-                \"source\": \"/<*>\",\n                \"destination\": \"/index.html\",\n                \"type\": 404
+                \"source\": \"/<*>\",
+                \"destination\": \"/index.html\",
+                \"type\": 404
               },
               {
                 \"source\": \"/chat\",
