@@ -14200,8 +14200,7 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE =
                             res?.generativeResponse || false;
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
-                        CURRENT_GROUP_DATA.answerFeedback = true;
-                        // res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
