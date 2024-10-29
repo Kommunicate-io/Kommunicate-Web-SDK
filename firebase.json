@@ -79,22 +79,22 @@
       {
         "source": "/kommunicate.app",
         "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
-        "type": 301
+        "type": 301  
       },
       {
         "source": "/v1/kommunicate.app",
         "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
-        "type": 301
+        "type": 301  
       },
       {
         "source": "/plugin/lib/js/locationpicker.jquery.min.js",
         "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js",
-        "type": 200
+        "type": 302  
       },
       {
         "source": "/plugin/lib/js/mck-emojis.min.js",
         "destination": "/resources/third-party-scripts/mck-emojis.min.js",
-        "type": 200
+        "type": 302  
       }
     ]
   }
