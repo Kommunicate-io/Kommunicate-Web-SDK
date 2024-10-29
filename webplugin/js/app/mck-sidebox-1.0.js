@@ -5049,7 +5049,7 @@ const firstVisibleMsg = {
                 ).onclick = function (e) {
                     e.preventDefault();
                     kmLocalStorage.setItemToLocalStorage(
-                        CHAT_GROUP_ID, { isCSATmodelClosed : true }
+                        CHAT_GROUP_ID, { isCSATModelClosed : true }
                     )
 
                     KommunicateUI.showClosedConversationBanner(false);
@@ -6454,7 +6454,7 @@ const firstVisibleMsg = {
                         const {groupId} = messagePxy;
 
                         kmLocalStorage.setItemToLocalStorage(
-                            groupId, { isCSATmodelClosed :false }
+                            groupId, { isCSATModelClosed :false }
                         )
                         if (kommunicate._globals.zendeskChatSdkKey) {
                             zendeskChatService.handleUserMessage(messagePxy);
