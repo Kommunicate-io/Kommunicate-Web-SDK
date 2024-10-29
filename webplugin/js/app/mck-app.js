@@ -40,7 +40,7 @@ function ApplozicSidebox() {
                 typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
-                    : 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk',
+                    : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
     ];
     var mck_style_loader = [
@@ -634,7 +634,7 @@ function ApplozicSidebox() {
             options.rtl = isSettingEnable('rtl');
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ??
-                'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
+                'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
 
             appOptionSession.deletePropertyDataFromSession('settings');
 
