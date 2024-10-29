@@ -3,7 +3,7 @@ options:
 
 substitutions:
   _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
-  _FIREBASE_PROJECT_ID: "your-project-id"  # Replace with your dynamic project ID
+  _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
@@ -18,130 +18,39 @@ steps:
       - '-c'
       - |
         echo "Build env:" ${_BUILD_ENV}
-        if [ "${_BUILD_ENV}" = "test" ]; then npm run build-test;
-        elif [ "${_BUILD_ENV}" = "release" ]; then npm run build-release;
-        elif [ "${_BUILD_ENV}" = "staging" ]; then npm run build-staging;
-        elif [ "${_BUILD_ENV}" = "prod" ]; then npm run build-prod;
-        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then npm run build-prod-enterprise;
-        elif [ "${_BUILD_ENV}" = "prod-in" ]; then npm run build-prod-in;
-        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then npm run build-prod-eu;
-        elif [ "${_BUILD_ENV}" = "prod-cn" ]; then npm run build-prod-cn;
-        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then npm run build-beta;
-        else npm run build-test;
+        if [ "${_BUILD_ENV}" = "test" ]; then 
+          npm run build-test;
+        elif [ "${_BUILD_ENV}" = "release" ]; then 
+          npm run build-release;
+        elif [ "${_BUILD_ENV}" = "staging" ]; then 
+          npm run build-staging;
+        elif [ "${_BUILD_ENV}" = "prod" ]; then 
+          npm run build-prod;
+        elif [ "${_BUILD_ENV}" = "prod-enterprise" ]; then 
+          npm run build-prod-enterprise;
+        elif [ "${_BUILD_ENV}" = "prod-in" ]; then 
+          npm run build-prod-in;
+        elif [ "${_BUILD_ENV}" = "prod-eu" ]; then 
+          npm run build-prod-eu;
+        elif [ "${_BUILD_ENV}" = "prod-cn" ]; then 
+          npm run build-prod-cn;
+        elif [ "${_BUILD_ENV}" = "prod_beta" ]; then 
+          npm run build-beta;
+        else 
+          npm run build-test;
         fi
 
-  # Step 3: Generate firebase.json dynamically
+  # Step 3: Updated firebase.json dynamically
   - name: 'alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        echo "Generating firebase.json"
-        echo '{
-          "hosting": {
-            "site": "'"${_FIREBASE_SITE_ID}"'",
-            "public": "webplugin/build",
-            "ignore": [
-              "firebase.json",
-              "**/.*",
-              "**/node_modules/**"
-            ],
-            "headers": [
-              {
-                "source": "**",
-                "headers": [
-                  {
-                    "key": "Access-Control-Allow-Origin",
-                    "value": "*"
-                  }
-                ]
-              },
-              {
-                "source": "/v2/kommunicate.app",
-                "headers": [
-                  {
-                    "key": "Content-Type",
-                    "value": "text/javascript"
-                  },
-                  {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=180"
-                  }
-                ]
-              },
-              {
-                "source": "**/*.js",
-                "headers": [
-                  {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=31536000"
-                  }
-                ]
-              },
-              {
-                "source": "**/*min.css",
-                "headers": [
-                  {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=31536000"
-                  }
-                ]
-              },
-              {
-                "source": "resources/**/*.html",
-                "headers": [
-                  {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=31536000"
-                  }
-                ]
-              }
-            ],
-            "rewrites": [
-              {
-                "source": "/<*>",
-                "destination": "/index.html",
-                "type": "404"
-              },
-              {
-                "source": "/chat",
-                "destination": "/chat.html",
-                "type": "200"
-              },
-              {
-                "source": "/v2/kommunicate.app",
-                "destination": "/index.html",
-                "type": "200"
-              }
-            ],
-            "redirects": [
-              {
-                "source": "/kommunicate.app",
-                "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
-                "type": "301"
-              },
-              {
-                "source": "/v1/kommunicate.app",
-                "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
-                "type": "301"
-              },
-              {
-                "source": "/plugin/lib/js/locationpicker.jquery.min.js",
-                "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js",
-                "type": "301"
-              },
-              {
-                "source": "/plugin/lib/js/mck-emojis.min.js",
-                "destination": "/resources/third-party-scripts/mck-emojis.min.js",
-                "type": "301"
-              }
-            ]
-          }
-        }' > firebase.json
-        echo "Contents of firebase.json:"
-        cat firebase.json  # Print the contents for debugging
+        echo "Updating firebase.json with site ID..."
+        # Update the site ID dynamically
+        sed -i 's/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/' firebase.json
 
-  # Step 4: Validate the build directory contains index.html
+  # Step 4: Validating the build directory contains index.html
   - name: 'alpine'
     entrypoint: 'sh'
     args:

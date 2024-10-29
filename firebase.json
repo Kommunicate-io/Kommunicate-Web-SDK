@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "${_FIREBASE_SITE_ID}",
+    "site": "${_FIREBASE_SITE_ID}",  
     "public": "webplugin/build",
     "ignore": [
       "firebase.json",
