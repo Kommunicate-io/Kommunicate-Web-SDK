@@ -101,43 +101,45 @@ steps:
               {
                 "source": "/<*>",
                 "destination": "/index.html",
-                "type": 404
+                "type": "404"
               },
               {
                 "source": "/chat",
                 "destination": "/chat.html",
-                "type": 200
+                "type": "200"
               },
               {
                 "source": "/v2/kommunicate.app",
                 "destination": "/index.html",
-                "type": 200
+                "type": "200"
               }
             ],
             "redirects": [
               {
                 "source": "/kommunicate.app",
                 "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
-                "type": 301
+                "type": "301"
               },
               {
                 "source": "/v1/kommunicate.app",
                 "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
-                "type": 301
+                "type": "301"
               },
               {
                 "source": "/plugin/lib/js/locationpicker.jquery.min.js",
                 "destination": "/resources/third-party-scripts/locationpicker.jquery.min.js",
-                "type": 302  # Updated to a valid redirect status code
+                "type": "200"
               },
               {
                 "source": "/plugin/lib/js/mck-emojis.min.js",
                 "destination": "/resources/third-party-scripts/mck-emojis.min.js",
-                "type": 302  # Updated to a valid redirect status code
+                "type": "200"
               }
             ]
           }
         }' > firebase.json
+        echo "Contents of firebase.json:"
+        cat firebase.json  # Print the contents for debugging
 
   # Step 4: Validate the build directory contains index.html
   - name: 'alpine'
@@ -148,6 +150,11 @@ steps:
         echo "Checking if webplugin/build contains index.html..."
         if [ ! -f "webplugin/build/index.html" ]; then
           echo "Error: index.html not found in webplugin/build. Build process might have failed."
+          exit 1
+        fi
+        echo "firebase.json exists, now validating its structure..."
+        if [ ! -f "firebase.json" ]; then
+          echo "Error: firebase.json file does not exist."
           exit 1
         fi
 
