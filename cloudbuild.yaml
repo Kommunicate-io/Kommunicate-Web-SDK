@@ -2,9 +2,9 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 substitutions:
-  _BUILD_ENV: "test"  # Target environment (test, release, etc.)
-  _FIREBASE_PROJECT_ID: "your-project-id"  # Set dynamically to your Firebase project ID
-  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Set dynamically based on _BUILD_ENV
+  _BUILD_ENV: "test"  # Environment (e.g., test, release, prod)
+  _FIREBASE_PROJECT_ID: "your-project-id"  # Your Firebase project ID
+  _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Site ID based on _BUILD_ENV
 
 steps:
   # Step 1: Install dependencies
@@ -25,17 +25,17 @@ steps:
         else npm run build-test;
         fi
 
-  # Step 3: Dynamically update firebase.json with environment-specific values
+  # Step 3: Use envsubst to replace placeholders in firebase.json
   - name: 'alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        echo "Updating firebase.json with dynamic values..."
-        sed -i "s/\${_FIREBASE_SITE_ID}/${_FIREBASE_SITE_ID}/g" firebase.json
-        sed -i "s/\${_FIREBASE_PROJECT_ID}/${_FIREBASE_PROJECT_ID}/g" firebase.json
+        echo "Replacing placeholders in firebase.json with envsubst..."
+        export SITE_ID=${_FIREBASE_SITE_ID} PROJECT_ID=${_FIREBASE_PROJECT_ID}
+        envsubst < firebase.json > firebase_temp.json && mv firebase_temp.json firebase.json
         echo "Updated firebase.json contents:"
-        cat firebase.json  # For debugging
+        cat firebase.json  # Print contents for debugging
 
   # Step 4: Validate build output
   - name: 'alpine'
