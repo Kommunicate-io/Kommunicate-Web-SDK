@@ -16,7 +16,6 @@ var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
-var CHAT_GROUP_ID = "";
 var userOverride = {
     voiceOutput: true,
 };
@@ -415,7 +414,6 @@ const firstVisibleMsg = {
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = function (event) {
             console.log('In on_tab_clicked', event);
-            CHAT_GROUP_ID = event && event.tabId;
             const details = event && event.data && event.data.groupDetails;
             if (details) {
                 const assignee =
@@ -5049,7 +5047,7 @@ const firstVisibleMsg = {
                 ).onclick = function (e) {
                     e.preventDefault();
                     kmLocalStorage.setItemToLocalStorage(
-                        CHAT_GROUP_ID, { isCSATModelClosed : true }
+                        [CURRENT_GROUP_DATA.tabId], true
                     )
 
                     KommunicateUI.showClosedConversationBanner(false);
@@ -6454,7 +6452,7 @@ const firstVisibleMsg = {
                         const {groupId} = messagePxy;
 
                         kmLocalStorage.setItemToLocalStorage(
-                            groupId, { isCSATModelClosed :false }
+                            [CURRENT_GROUP_DATA.tabId], false
                         )
                         if (kommunicate._globals.zendeskChatSdkKey) {
                             zendeskChatService.handleUserMessage(messagePxy);
