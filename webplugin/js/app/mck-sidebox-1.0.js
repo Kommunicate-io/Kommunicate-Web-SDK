@@ -6450,7 +6450,6 @@ const firstVisibleMsg = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        const {groupId} = messagePxy;
 
                         kmLocalStorage.setItemToLocalStorage(
                             [CURRENT_GROUP_DATA.tabId], false
