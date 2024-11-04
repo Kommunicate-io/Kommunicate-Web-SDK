@@ -1367,6 +1367,7 @@ const firstVisibleMsg = {
         };
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
+                kmLocalStorage.removeItemFromLocalStorage([CURRENT_GROUP_DATA.tabId]);
                 window.Applozic.ALSocket.disconnect();
                 appOptionSession.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
