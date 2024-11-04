@@ -75,11 +75,11 @@ const configEnv = {
     release: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://chat-test.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-test.kommunicate.io',
-            botPlatformApi: 'https://bots-test.kommunicate.io',
+            applozicBaseUrl: 'https://chat-release.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-release.kommunicate.io',
+            botPlatformApi: 'https://bots-release.kommunicate.io',
             hostUrl: 'https://widget-release.kommunicate.io',
-            dashboardUrl: 'https://dashboard-test.kommunicate.io',
+            dashboardUrl: 'https://dashboard-release.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
