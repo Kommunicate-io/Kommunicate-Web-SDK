@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "${_FIREBASE_SITE_ID}",  
+    "site": "${_FIREBASE_SITE_ID}",
     "public": "webplugin/build",
     "ignore": [
       "firebase.json",
@@ -26,34 +26,25 @@
           },
           {
             "key": "Cache-Control",
-            "value": "public, max-age=180"
+            "value": "public, max-age=300"
           }
         ]
       },
       {
-        "source": "**/*.js",
+        "source": "**/*.html",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "public, max-age=31536000"
+            "value": "public, max-age=300"
           }
         ]
       },
       {
-        "source": "**/*min.css",
+        "source": "resources/**/*",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "public, max-age=31536000"
-          }
-        ]
-      },
-      {
-        "source": "resources/**/*.html",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "public, max-age=31536000"
+            "value": "public, max-age=86400"
           }
         ]
       }
@@ -62,7 +53,7 @@
       {
         "source": "/<*>",
         "destination": "/index.html",
-        "type": "404"
+        "type": "200"
       },
       {
         "source": "/chat",
