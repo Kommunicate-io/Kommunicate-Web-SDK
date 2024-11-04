@@ -22,9 +22,9 @@ Kommunicate.conversation = {
         }
 
         var conversationDetail = data && data.groupFeeds[0];
-        const isConversationRated = kmLocalStorage.getItemFromLocalStorage(
-            conversationDetail.id
-        );
+
+        const feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
+        const isConversationRated = feedbackGroups[conversationDetail.id];
 
         KommunicateUI.showClosedConversationBanner(
             isConversationRated
