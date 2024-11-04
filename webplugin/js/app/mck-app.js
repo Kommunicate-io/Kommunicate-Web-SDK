@@ -12,15 +12,15 @@ if (typeof jQuery !== 'undefined') {
         jQuery.fn.modal = oModal;
     }
 }
-(function (window) {
-    if (typeof Applozic !== 'undefined') {
-        throw new Error(
+// (function (window) {
+//     if (typeof Applozic !== 'undefined') {
+//         throw new Error(
             
-            " Kommunicate script is already loaded, please check if you're loading it more than once."
-        );
-        return;
-    }
-})(window);
+//             " Kommunicate script is already loaded, please check if you're loading it more than once."
+//         );
+//         return;
+//     }
+// })(window);
 
 var applozicSideBox = new ApplozicSidebox();
 var scriptCounter = 0;
