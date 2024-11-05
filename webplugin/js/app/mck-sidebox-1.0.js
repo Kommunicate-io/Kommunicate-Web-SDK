@@ -9558,6 +9558,14 @@ const firstVisibleMsg = {
                 }
 
                 if (
+                    msg &&
+                    msg.metadata &&
+                    msg.metadata.hasOwnProperty('KM_SUMMARY')
+                ) {
+                    return;
+                }
+
+                if (
                     $applozic('#mck-message-cell .' + msg.key).length > 0 &&
                     !(CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && msg.type !== 5)
                 ) {
