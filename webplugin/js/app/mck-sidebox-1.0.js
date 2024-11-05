@@ -12453,7 +12453,10 @@ const firstVisibleMsg = {
                 message,
                 contact
             ) {
-                if (message?.metadata?.category === "HIDDEN") {
+                if (
+                    message?.metadata?.category === 'HIDDEN' ||
+                    message?.metadata?.hasOwnProperty('KM_SUMMARY')
+                ) {
                     return;
                 }
                 
