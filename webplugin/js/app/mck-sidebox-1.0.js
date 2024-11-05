@@ -9416,6 +9416,14 @@ const firstVisibleMsg = {
                 allowReload,
                 msgThroughListAPI
             ) {
+                if (
+                    msg &&
+                    msg.metadata &&
+                    msg.metadata.hasOwnProperty('KM_SUMMARY')
+                ) {
+                    return;
+                }
+
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -9479,14 +9487,6 @@ const firstVisibleMsg = {
                             msgReplyToVisible = 'n-vis';
                         }
                     }
-                }
-
-                if (
-                    msg &&
-                    msg.metadata &&
-                    msg.metadata.hasOwnProperty('KM_SUMMARY')
-                ) {
-                    return;
                 }
 
                 if (
