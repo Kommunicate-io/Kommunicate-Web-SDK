@@ -9492,6 +9492,14 @@ const firstVisibleMsg = {
                 allowReload,
                 msgThroughListAPI
             ) {
+                if (
+                    msg &&
+                    msg.metadata &&
+                    msg.metadata.hasOwnProperty('KM_SUMMARY')
+                ) {
+                    return;
+                }
+
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -12482,7 +12490,10 @@ const firstVisibleMsg = {
                 message,
                 contact
             ) {
-                if (message?.metadata?.category === "HIDDEN") {
+                if (
+                    message?.metadata?.category === 'HIDDEN' ||
+                    message?.metadata?.hasOwnProperty('KM_SUMMARY')
+                ) {
                     return;
                 }
                 
