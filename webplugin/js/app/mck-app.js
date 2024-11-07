@@ -40,7 +40,7 @@ function ApplozicSidebox() {
                 typeof applozic._globals !== 'undefined' &&
                 applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
-                    : 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk',
+                    : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
     ];
     var mck_style_loader = [
@@ -590,7 +590,7 @@ function ApplozicSidebox() {
             options.talkToHuman = isSettingEnable('talkToHuman');
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
-            options.googleApiKey = isSettingEnable('googleApiKey') || 'AIzaSyAGVIsWxU7lkCuoodgI6FGXmDN5J11VJFk';
+            options.googleApiKey = isSettingEnable('googleApiKey') || 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
 
             KommunicateUtils.deleteDataFromKmSession('settings');
 
