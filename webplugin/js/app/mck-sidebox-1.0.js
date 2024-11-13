@@ -10429,9 +10429,23 @@ const firstVisibleMsg = {
                         $textMessage.append($normalTextMsg);
                     }
                 } else {
-                    $textMessage.html(emoji_template);
+                    let htmlRichMessage = false;
+
+                    if (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                        const kmElement = document.createElement(
+                            "mck-html-rich-message"
+                        );
+                        kmElement._shadow.innerHTML = emoji_template;
+                        $textMessage.append(kmElement);
+
+                        htmlRichMessage = true;
+                    } else {
+                        $textMessage.html(emoji_template);
+                    }
+
                     $textMessage.linkify({
                         target: '_blank',
+                        htmlRichMessage
                     });
                 }
                 if (richText) {

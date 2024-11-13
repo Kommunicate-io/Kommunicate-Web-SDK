@@ -60,18 +60,28 @@ function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
                     }
                 }
             }
-            $this.html(
-                $.map(
-                    $this.contents(),
-                    function (n, i) {
-                        if (n.nodeType == 3) {
-                            return linkify(n.data, buildHashtagUrl, includeW3, target, noFollow);
-                        } else {
-                            return n.outerHTML;
-                        }
-                    }
-                ).join("")
-            );
+
+            function convertTextToLink(node) {
+                if (node.nodeType == 3) {
+                    return linkify(node.data, buildHashtagUrl, includeW3, target, noFollow);
+                } else {
+                    return node.outerHTML;
+                }
+            }
+
+            if (opts.htmlRichMessage) {
+                const processedContent = Array.from(this.children[0]._shadow?.childNodes)
+                    .map(n => convertTextToLink(n))
+                    .join("");
+
+                this.children[0]._shadow.innerHTML = processedContent;
+            } else {
+                $this.html(
+                    $.map($this.contents(), function (n, i) {
+                        return convertTextToLink(n);
+                    }).join("")
+                );
+            }
         });
     }
 })(jQuery);
