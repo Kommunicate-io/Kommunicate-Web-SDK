@@ -69,7 +69,7 @@ function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
                 }
             }
 
-            if (opts.htmlRichMessage) {
+            if (opts.htmlRichMessage && this.children[0] && this.children[0]._shadow) {
                 const processedContent = Array.from(this.children[0]._shadow?.childNodes)
                     .map(n => convertTextToLink(n))
                     .join("");

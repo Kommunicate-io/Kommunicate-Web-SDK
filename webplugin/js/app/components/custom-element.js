@@ -6,6 +6,11 @@ class ShadowDomComponent extends HTMLElement {
 }
 
 // Define the custom element
-if (!window.customElements.get("mck-html-rich-message")) {
-    window.customElements.define("mck-html-rich-message", ShadowDomComponent);
+if ('customElements' in window) {
+    if (!window.customElements.get('mck-html-rich-message')) {
+        window.customElements.define(
+            'mck-html-rich-message',
+            ShadowDomComponent
+        );
+    }
 }

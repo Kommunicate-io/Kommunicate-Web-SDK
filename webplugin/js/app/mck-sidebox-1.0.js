@@ -10431,9 +10431,14 @@ const firstVisibleMsg = {
                 } else {
                     let htmlRichMessage = false;
 
-                    if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                    if (
+                        msg.contentType ==
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE
+                                .TEXT_HTML &&
+                        kmUtils.customElementSupported() 
+                    ) {
                         const kmElement = document.createElement(
-                            "mck-html-rich-message"
+                            'mck-html-rich-message'
                         );
                         kmElement._shadow.innerHTML = emoji_template;
                         $textMessage.append(kmElement);
