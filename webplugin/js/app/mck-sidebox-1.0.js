@@ -10431,7 +10431,7 @@ const firstVisibleMsg = {
                 } else {
                     let htmlRichMessage = false;
 
-                    if (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                    if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
                         const kmElement = document.createElement(
                             "mck-html-rich-message"
                         );
