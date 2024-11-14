@@ -31,7 +31,7 @@ steps:
         elif [ "${_BUILD_ENV}" = "prod-in" ]; then 
           npm run build-prod-in;
         elif [ "${_BUILD_ENV}" = "prod_eu" ]; then 
-          npm run build-prod_eu;
+          npm run build-prod-eu;
         elif [ "${_BUILD_ENV}" = "prod_cn" ]; then 
           npm run build-prod-cn;
         elif [ "${_BUILD_ENV}" = "prod_beta" ]; then 
