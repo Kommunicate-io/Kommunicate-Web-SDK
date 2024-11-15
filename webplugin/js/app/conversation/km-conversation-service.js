@@ -23,6 +23,8 @@ Kommunicate.conversation = {
 
         var conversationDetail = data && data.groupFeeds[0];
 
+        console.log("SWaraj");
+
         const feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
         const isConversationRated = feedbackGroups[conversationDetail.id];
 

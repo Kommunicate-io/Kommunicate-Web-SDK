@@ -6455,6 +6455,8 @@ const firstVisibleMsg = {
                         feedbackGroups[CURRENT_GROUP_DATA.tabId] = false; 
                         kmLocalStorage.setItemToLocalStorage("feedbackGroups", feedbackGroups);
 
+                        console.log("feedbackGroups ->>>>");
+
                         if (kommunicate._globals.zendeskChatSdkKey) {
                             zendeskChatService.handleUserMessage(messagePxy);
                         }
