@@ -42,6 +42,11 @@ function ApplozicSidebox() {
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
+        {
+            name: 'sentry',
+            url:
+                'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
+        },
     ];
     var mck_style_loader = [
         {
@@ -679,7 +684,9 @@ function ApplozicSidebox() {
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
+            debugger;
             console.error('Plugin loading error. Refresh page.', e);
+            Sentry.captureException(error);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
             }
@@ -772,7 +779,20 @@ function ApplozicSidebox() {
         try {
             Sentry.init({
                 dsn: sentryConfig.dsn,
-                release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
+                release: KM_RELEASE_BRANCH,
+                integrations: [
+                    Sentry.browserTracingIntegration(),
+                    // Sentry.browserProfilingIntegration(),
+                    Sentry.replayIntegration({
+                        // Additional SDK configuration goes in here, for example:
+                        maskAllText: false,
+                        blockAllMedia: false,
+                        maskAllInputs: true,
+                    }),
+                ],
+                tracesSampleRate: 1.0,
+                replaysSessionSampleRate: 0.1,
+                replaysOnErrorSampleRate: 1.0,
             });
             Sentry.configureScope(function (scope) {
                 scope.setTag('applicationId', applozic._globals.appId);
@@ -784,6 +804,7 @@ function ApplozicSidebox() {
             });
         } catch (error) {
             console.log('Error in initializing sentry', error);
+            Sentry.captureException(error);
         }
     }
     function saveUserCookies(kommunicateSettings) {

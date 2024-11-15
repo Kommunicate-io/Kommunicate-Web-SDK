@@ -14,8 +14,8 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
-                enabled: false,
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
+                enabled: true,
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
@@ -29,7 +29,7 @@ const configEnv = {
             applozicBaseUrl: 'https://chat-test.kommunicate.io',
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
-            hostUrl: 'https://widget-test.kommunicate.io',
+            hostUrl: 'http://localhost:3030',
             dashboardUrl: 'https://dashboard-test.kommunicate.io',
         },
         pluginProperties: {
@@ -38,7 +38,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
                 enabled: true,
             },
             aws: {
@@ -71,7 +71,7 @@ const configEnv = {
             },
         },
     },
-    
+
     release: {
         port: '3031',
         urls: {
@@ -96,7 +96,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod: {
         port: '3030',
         urls: {

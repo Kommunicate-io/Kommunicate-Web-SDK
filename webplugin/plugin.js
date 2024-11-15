@@ -7,6 +7,7 @@ var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
+var KM_RELEASE_BRANCH = ':KM_RELEASE_BRANCH';
 
 var kmCustomElements = {
     iframe: {
@@ -258,6 +259,7 @@ function addKommunicatePluginToIframe() {
     addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
+    addableWindow.KM_RELEASE_BRANCH = KM_RELEASE_HASH;
 
     var options = {};
     var options = addableWindow.applozic._globals;
