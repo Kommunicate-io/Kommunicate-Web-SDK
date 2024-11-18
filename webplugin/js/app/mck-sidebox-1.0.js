@@ -706,12 +706,12 @@ const firstVisibleMsg = {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
         };
 
-        _this.churnCustomerWidgetChanges = function (){
+        _this.churnCustomerWidgetChanges = function () {
             mckMessageService.openChatbox();
             $applozic('.mck-box-form').removeClass('n-vis');
             $applozic('#mck-contact-loading').addClass('n-vis');
             $applozic('#mck-contacts-content').addClass('n-vis');
-        }
+        };
 
         _this.mckLaunchSideboxChat = function () {
             kommunicateCommons.setWidgetStateOpen(true);
@@ -723,7 +723,7 @@ const firstVisibleMsg = {
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             KommunicateUI.showChat();
             $applozic('#mck-away-msg-box').removeClass('vis').addClass('n-vis');
-            if(appOptions.appSettings.currentActivatedPlan == "churn"){
+            if (appOptions.appSettings.currentActivatedPlan == 'churn') {
                 return _this.churnCustomerWidgetChanges();
             }
             mckMessageService.loadConversationWithAgents(
@@ -3573,7 +3573,7 @@ const firstVisibleMsg = {
 
                 modal.style.display = 'block';
                 captionText.innerHTML = title ? title : '';
-                document.addEventListener("keyup", closeWindowOnEscape);
+                document.addEventListener('keyup', closeWindowOnEscape);
             });
 
             parent.document.getElementById(
@@ -3582,17 +3582,17 @@ const firstVisibleMsg = {
                 parent.document.getElementById(
                     'km-fullscreen-image-modal'
                 ).style.display = 'none';
-                document.removeEventListener("click", closeWindowOnEscape);
+                document.removeEventListener('click', closeWindowOnEscape);
             };
 
             function closeWindowOnEscape(event) {
-                if(event.keyCode == 27) {
+                if (event.keyCode == 27) {
                     parent.document.getElementById(
                         'km-fullscreen-image-modal'
                     ).style.display = 'none';
                 }
-                  document.removeEventListener("keyup", closeWindowOnEscape);
-                }
+                document.removeEventListener('keyup', closeWindowOnEscape);
+            }
 
             $applozic(w).on('resize', function () {
                 if ($mck_file_menu.css('display') === 'block') {
@@ -10435,7 +10435,7 @@ const firstVisibleMsg = {
                         msg.contentType ==
                             KommunicateConstants.MESSAGE_CONTENT_TYPE
                                 .TEXT_HTML &&
-                        kmUtils.customElementSupported() 
+                        KommunicateUtils.customElementSupported()
                     ) {
                         const kmElement = document.createElement(
                             'mck-html-rich-message'
@@ -10450,7 +10450,7 @@ const firstVisibleMsg = {
 
                     $textMessage.linkify({
                         target: '_blank',
-                        htmlRichMessage
+                        htmlRichMessage,
                     });
                 }
                 if (richText) {
@@ -12478,7 +12478,7 @@ const firstVisibleMsg = {
                 ) {
                     return;
                 }
-                
+
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
@@ -14230,7 +14230,8 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE =
                             res?.generativeResponse || false;
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
-                        CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.answerFeedback =
+                            res?.answerFeedback || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
