@@ -495,7 +495,7 @@ function ApplozicSidebox() {
             (navigator.userAgent.indexOf('MSIE') !== -1 ||
                 navigator.appVersion.indexOf('Trident/') > 0) &&
                 (sentryConfig.enabled = false);
-            sentryConfig.enabled && loadErrorTracking(randomUserId);
+            sentryConfig.enabled && loadErrorTracking(randomUserId, data);
 
             var sessionTimeout =
                 options.sessionTimeout != null
@@ -765,7 +765,7 @@ function ApplozicSidebox() {
         xhr.open('GET', url, true);
         xhr.send(data);
     }
-    function loadErrorTracking(userId) {
+    function loadErrorTracking(userId, options) {
         var kommunicateIframe = parent.document.getElementById(
             'kommunicate-widget-iframe'
         );
@@ -777,30 +777,12 @@ function ApplozicSidebox() {
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
         try {
-            // Sentry.init({
-            //     dsn: sentryConfig.dsn,
-            //     release: KM_RELEASE_BRANCH,
-            // integrations: [
-            //     Sentry.browserTracingIntegration(),
-            //     // Sentry.browserProfilingIntegration(),
-            //     Sentry.replayIntegration({
-            //         // Additional SDK configuration goes in here, for example:
-            //         maskAllText: false,
-            //         blockAllMedia: false,
-            //         maskAllInputs: true,
-            //     }),
-            // ],
-            // tracesSampleRate: 1.0,
-            // replaysSessionSampleRate: 0.1,
-            // replaysOnErrorSampleRate: 1.0,
-            // });
-            Sentry.configureScope(function (scope) {
-                scope.setTag('applicationId', applozic._globals.appId);
-                scope.setTag('userId', userId);
-                scope.setTag('url', url);
-                scope.setUser({
-                    id: applozic._globals.appId,
-                });
+            Sentry.getGlobalScope().setTags({
+                url,
+                applicationId: applozic._globals.appId,
+                userId: userId,
+                plan: options.currentActivatedPlan,
+                release: KM_RELEASE_BRANCH
             });
         } catch (error) {
             console.log('Error in initializing sentry', error);

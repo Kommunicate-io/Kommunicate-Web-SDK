@@ -11,7 +11,7 @@ function KmNavBar(mckMsgLayout) {
             if (typeof conversationAssignedToHuman !== 'boolean') {
                 conversationAssignedToHuman = !KommunicateUtils.isCurrentAssigneeBot();
             }
-            _this.updateHeaderCTAVisibilit();
+            _this.updateHeaderCTAVisibility();
             mckMsgLayout.loadDropdownOptions(conversationAssignedToHuman);
 
             if (!appOptions.talkToHuman) return;
@@ -19,7 +19,6 @@ function KmNavBar(mckMsgLayout) {
             _this.modifyTalkToHumanVisibility(conversationAssignedToHuman);
         } catch (error) {
             console.error('Error =>', error);
-            Sentry.captureException(error);
         }
     };
 
