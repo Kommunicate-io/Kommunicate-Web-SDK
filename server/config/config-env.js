@@ -40,6 +40,10 @@ const configEnv = {
                 dsn:
                     'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
                 enabled: true,
+                PROJECT: 'test-widget',
+                ORG: 'km-test',
+                AUTH_TOKEN:
+                    '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',
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',

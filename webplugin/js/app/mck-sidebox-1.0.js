@@ -464,7 +464,7 @@ const firstVisibleMsg = {
         var MCK_NOTIFICATION_TONE_LINK =
             WIDGET_SETTINGS && WIDGET_SETTINGS.notificationTone
                 ? KommunicateConstants.NOTIFICATION_RINGTONES[
-                      WIDGET_SETTINGS.notificationTone
+                      WIDGET_SETTING.notificationTone
                   ]
                 : KommunicateConstants.NOTIFICATION_RINGTONES['subtle'];
         var MCK_CHAT_POPUP_NOTIFICATION_TONE_LINK = appOptions.chatPopupSoundNotificationLink
