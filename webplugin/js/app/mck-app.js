@@ -42,11 +42,11 @@ function ApplozicSidebox() {
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
-        {
-            name: 'sentry',
-            url:
-                'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
-        },
+        // {
+        //     name: 'sentry',
+        //     url:
+        //         'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
+        // },
     ];
     var mck_style_loader = [
         {
@@ -495,7 +495,7 @@ function ApplozicSidebox() {
             (navigator.userAgent.indexOf('MSIE') !== -1 ||
                 navigator.appVersion.indexOf('Trident/') > 0) &&
                 (sentryConfig.enabled = false);
-            sentryConfig.enabled && loadErrorTracking(randomUserId);
+            // sentryConfig.enabled && loadErrorTracking(randomUserId);
 
             var sessionTimeout =
                 options.sessionTimeout != null
@@ -686,7 +686,7 @@ function ApplozicSidebox() {
         } catch (e) {
             debugger;
             console.error('Plugin loading error. Refresh page.', e);
-            Sentry.captureException(error);
+            Sentry.captureException(e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
             }
@@ -780,19 +780,19 @@ function ApplozicSidebox() {
             Sentry.init({
                 dsn: sentryConfig.dsn,
                 release: KM_RELEASE_BRANCH,
-                integrations: [
-                    Sentry.browserTracingIntegration(),
-                    // Sentry.browserProfilingIntegration(),
-                    Sentry.replayIntegration({
-                        // Additional SDK configuration goes in here, for example:
-                        maskAllText: false,
-                        blockAllMedia: false,
-                        maskAllInputs: true,
-                    }),
-                ],
-                tracesSampleRate: 1.0,
-                replaysSessionSampleRate: 0.1,
-                replaysOnErrorSampleRate: 1.0,
+                // integrations: [
+                //     Sentry.browserTracingIntegration(),
+                //     // Sentry.browserProfilingIntegration(),
+                //     Sentry.replayIntegration({
+                //         // Additional SDK configuration goes in here, for example:
+                //         maskAllText: false,
+                //         blockAllMedia: false,
+                //         maskAllInputs: true,
+                //     }),
+                // ],
+                // tracesSampleRate: 1.0,
+                // replaysSessionSampleRate: 0.1,
+                // replaysOnErrorSampleRate: 1.0,
             });
             Sentry.configureScope(function (scope) {
                 scope.setTag('applicationId', applozic._globals.appId);

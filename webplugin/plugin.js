@@ -259,7 +259,7 @@ function addKommunicatePluginToIframe() {
     addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
-    addableWindow.KM_RELEASE_BRANCH = KM_RELEASE_HASH;
+    addableWindow.KM_RELEASE_BRANCH = KM_RELEASE_BRANCH;
 
     var options = {};
     var options = addableWindow.applozic._globals;
@@ -268,32 +268,50 @@ function addKommunicatePluginToIframe() {
     if (typeof options !== 'undefined') {
         addableWindow.MCK_ONINIT = options.onInit;
     }
-    addableWindow.addEventListener(
-        'error',
-        function (e) {
-            MCK_THIRD_PARTY_INTEGRATION.sentry.enabled &&
-                typeof KommunicateGlobal != 'undefined' &&
-                KommunicateGlobal != null &&
-                KommunicateGlobal.Sentry != null &&
-                KommunicateGlobal.Sentry.withScope(function (scope) {
-                    scope.setTag('applicationId', options.appId);
-                    scope.setTag('userId', options.userId);
-                    scope.setUser({
-                        id: options.appId,
-                    });
-                    KommunicateGlobal.Sentry.captureException(e);
-                });
-            if (
-                typeof e.target.src !== 'undefined' &&
-                e.target.src.indexOf('sidebox') !== -1 &&
-                typeof MCK_ONINIT === 'function'
-            ) {
-                console.log('Plugin loading error. Refresh page.');
-                MCK_ONINIT('error');
-            }
-        },
-        true
-    );
+    // sentryLoader(
+    //     (addableWindow,
+    //     addableDocument,
+    //     'error',
+    //     'unhandledrejection',
+    //     'Sentry',
+    //     '0494b01c401dbac92222bf85f41e26a0',
+    //     'https://browser.sentry-cdn.com/8.38.0/bundle.tracing.replay.debug.min.js',
+    //     {
+    //         dsn:
+    //             'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
+    //         debug: true,
+    //         tracesSampleRate: 1,
+    //         replaysSessionSampleRate: 0.1,
+    //         replaysOnErrorSampleRate: 1,
+    //     },
+    //     false)
+    // );
+    // addableWindow.addEventListener(
+    //     'error',
+    //     function (e) {
+    //         MCK_THIRD_PARTY_INTEGRATION.sentry.enabled &&
+    //             typeof KommunicateGlobal != 'undefined' &&
+    //             KommunicateGlobal != null &&
+    //             KommunicateGlobal.Sentry != null &&
+    //             KommunicateGlobal.Sentry.withScope(function (scope) {
+    //                 scope.setTag('applicationId', options.appId);
+    //                 scope.setTag('userId', options.userId);
+    //                 scope.setUser({
+    //                     id: options.appId,
+    //                 });
+    //                 KommunicateGlobal.Sentry.captureException(e);
+    //             });
+    //         if (
+    //             typeof e.target.src !== 'undefined' &&
+    //             e.target.src.indexOf('sidebox') !== -1 &&
+    //             typeof MCK_ONINIT === 'function'
+    //         ) {
+    //             console.log('Plugin loading error. Refresh page.');
+    //             MCK_ONINIT('error');
+    //         }
+    //     },
+    //     true
+    // );
     var imported = addableDocument.createElement('script');
     imported.async = false;
     imported.type = 'text/javascript';
@@ -303,8 +321,7 @@ function addKommunicatePluginToIframe() {
 }
 
 function scriptLoader(_document, url, cb) {
-    var head = _document.getElementsByTagName('head')[0];
-    var script = _document.createElement('script');
+    const script = _document.createElement('script');
     script.async = false;
     script.type = 'text/javascript';
     script.src = url;
@@ -384,6 +401,7 @@ function injectJquery() {
     };
     head.appendChild(script);
 }
+
 
 /*
                             <!-- ======================================= -->
