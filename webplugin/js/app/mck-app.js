@@ -495,7 +495,7 @@ function ApplozicSidebox() {
             (navigator.userAgent.indexOf('MSIE') !== -1 ||
                 navigator.appVersion.indexOf('Trident/') > 0) &&
                 (sentryConfig.enabled = false);
-            // sentryConfig.enabled && loadErrorTracking(randomUserId);
+            sentryConfig.enabled && loadErrorTracking(randomUserId);
 
             var sessionTimeout =
                 options.sessionTimeout != null
@@ -686,7 +686,7 @@ function ApplozicSidebox() {
         } catch (e) {
             debugger;
             console.error('Plugin loading error. Refresh page.', e);
-            Sentry.captureException(e);
+            KommunicateUtils.sendErrorToSentry(e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
             }
@@ -777,23 +777,23 @@ function ApplozicSidebox() {
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
         try {
-            Sentry.init({
-                dsn: sentryConfig.dsn,
-                release: KM_RELEASE_BRANCH,
-                // integrations: [
-                //     Sentry.browserTracingIntegration(),
-                //     // Sentry.browserProfilingIntegration(),
-                //     Sentry.replayIntegration({
-                //         // Additional SDK configuration goes in here, for example:
-                //         maskAllText: false,
-                //         blockAllMedia: false,
-                //         maskAllInputs: true,
-                //     }),
-                // ],
-                // tracesSampleRate: 1.0,
-                // replaysSessionSampleRate: 0.1,
-                // replaysOnErrorSampleRate: 1.0,
-            });
+            // Sentry.init({
+            //     dsn: sentryConfig.dsn,
+            //     release: KM_RELEASE_BRANCH,
+            // integrations: [
+            //     Sentry.browserTracingIntegration(),
+            //     // Sentry.browserProfilingIntegration(),
+            //     Sentry.replayIntegration({
+            //         // Additional SDK configuration goes in here, for example:
+            //         maskAllText: false,
+            //         blockAllMedia: false,
+            //         maskAllInputs: true,
+            //     }),
+            // ],
+            // tracesSampleRate: 1.0,
+            // replaysSessionSampleRate: 0.1,
+            // replaysOnErrorSampleRate: 1.0,
+            // });
             Sentry.configureScope(function (scope) {
                 scope.setTag('applicationId', applozic._globals.appId);
                 scope.setTag('userId', userId);
@@ -804,7 +804,7 @@ function ApplozicSidebox() {
             });
         } catch (error) {
             console.log('Error in initializing sentry', error);
-            Sentry.captureException(error);
+            KommunicateUtils.sendErrorToSentry(error);
         }
     }
     function saveUserCookies(kommunicateSettings) {

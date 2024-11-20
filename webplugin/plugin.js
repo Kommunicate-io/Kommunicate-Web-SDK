@@ -7,7 +7,7 @@ var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
-var KM_RELEASE_BRANCH = ":KM_RELEASE_BRANCH";
+var KM_RELEASE_BRANCH = ':KM_RELEASE_BRANCH';
 
 var kmCustomElements = {
     iframe: {
@@ -320,11 +320,17 @@ function addKommunicatePluginToIframe() {
     addFullviewImageModal();
 }
 
-function scriptLoader(_document, url, cb) {
-    const script = _document.createElement('script');
+// Use this generic function to load any script
+function scriptLoader(options) {
+    if (!options.enabled) {
+        options.next && options.next();
+        return;
+    }
+
+    const script = options._document.createElement('script');
     script.async = false;
     script.type = 'text/javascript';
-    script.src = url;
+    script.src = options.url;
     if (script.readyState) {
         // IE
         script.onreadystatechange = function () {
@@ -332,19 +338,23 @@ function scriptLoader(_document, url, cb) {
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                cb();
+                // load next script
+                options.next && options.next();
             }
         };
     } else {
         // Others
         script.onload = function () {
-            cb();
+            options.next && options.next();
         };
     }
     script.onerror = function (error) {
-        throw new Error('Error while loading file.', url);
+        if (!options.ignoreIfError) {
+            throw new Error('Error while loading file.', url);
+        }
+        options.next && options.next();
     };
-    _document.head.append(script);
+    options._document.head.append(script);
 }
 
 function injectJquery() {
@@ -375,25 +385,31 @@ function injectJquery() {
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                scriptLoader(
-                    addableDocument,
-                    'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
-                    function () {
+                scriptLoader({
+                    _document: addableDocument,
+                    url:
+                        'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
+                    enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
+                    next: function () {
                         addKommunicatePluginToIframe();
-                    }
-                );
+                    },
+                    ignoreIfError: true,
+                });
             }
         };
     } else {
         // Others
         script.onload = function () {
-            scriptLoader(
-                addableDocument,
-                'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
-                function () {
+            scriptLoader({
+                _document: addableDocument,
+                url:
+                    'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
+                enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
+                next: function () {
                     addKommunicatePluginToIframe();
-                }
-            );
+                },
+                ignoreIfError: true,
+            });
         };
     }
     script.onerror = function (error) {
@@ -401,7 +417,6 @@ function injectJquery() {
     };
     head.appendChild(script);
 }
-
 
 /*
                             <!-- ======================================= -->

@@ -291,7 +291,7 @@ KommunicateConstants = {
     ANSWER_FEEDBACK: {
         HELPFUL: 1,
         NOT_HELPFUL: 0,
-    } 
+    },
 };
 
 /**
@@ -505,5 +505,9 @@ KommunicateUtils = {
         }
 
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
+    },
+    sendErrorToSentry: function (error) {
+        MCK_THIRD_PARTY_INTEGRATION.sentry.enabled &&
+            Sentry?.captureException(error);
     },
 };

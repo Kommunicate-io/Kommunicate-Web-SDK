@@ -9,11 +9,10 @@ const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const rename = require('gulp-rename');
 const gulpif = require('gulp-if');
-const SentryCli = require('@sentry/cli');
 const stripComments = require('gulp-strip-comments');
 const sourcemaps = require('gulp-sourcemaps');
 const SentryCli = require('@sentry/cli');
-console.log(SentryCli.getVersion());
+
 const fs = require('fs');
 const {
     PLUGIN_CSS_FILES,
