@@ -506,4 +506,10 @@ KommunicateUtils = {
 
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
     },
+    customElementSupported: function () {
+        return (
+            'customElements' in window &&
+            window.customElements.get('mck-html-rich-message')
+        );
+    },
 };
