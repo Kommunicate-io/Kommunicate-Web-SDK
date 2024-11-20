@@ -9,6 +9,7 @@ const htmlmin = require('gulp-htmlmin');
 const path = require('path');
 const rename = require('gulp-rename');
 const gulpif = require('gulp-if');
+const SentryCli = require('@sentry/cli');
 const stripComments = require('gulp-strip-comments');
 const sourcemaps = require('gulp-sourcemaps');
 const SentryCli = require('@sentry/cli');
@@ -23,6 +24,7 @@ const {
     version,
     THIRD_PARTY_FILE_INFO,
     getDynamicLoadFiles,
+    KM_RELEASE_BRANCH,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -46,7 +48,12 @@ PLUGIN_SETTING.dashboardUrl =
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let env = config.getEnvId() !== 'development';
-const cli = new SentryCli('.sentryclirc');
+const cli = new SentryCli(null, {
+    authToken: MCK_THIRD_PARTY_INTEGRATION.sentry.AUTH_TOKEN,
+    org: MCK_THIRD_PARTY_INTEGRATION.sentry.ORG,
+    project: MCK_THIRD_PARTY_INTEGRATION.sentry.PROJECT,
+    // url: MCK_THIRD_PARTY_INTEGRATION.sentry.SENTRY_URL, // Optional, defaults to https://sentry.io/
+});
 
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env
@@ -70,28 +77,6 @@ const removeExistingFile = function (dirPath) {
             });
     }
 };
-
-function getCurrentBranch() {
-    try {
-        // Execute git command to get the current branch name
-        if (process.env.AWS_BRANCH) {
-            return process.env.AWS_BRANCH;
-        }
-        const branch = require('child_process')
-            .execSync('git rev-parse --abbrev-ref HEAD', {
-                cwd: __dirname,
-                encoding: 'utf8',
-            })
-            .toString()
-            .trim();
-
-        return branch;
-    } catch (error) {
-        console.error('Error getting current branch:', error);
-
-        return 'release'; // Fallback if there's an error
-    }
-}
 
 const generateResourceFolder = () => {
     if (env) {
@@ -351,7 +336,7 @@ const generateFilesByVersion = (location) => {
                 .replace(':PRODUCT_ID', 'kommunicate')
                 .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
                 .replace(':KM_RELEASE_HASH', version)
-                .replace(':KM_RELEASE_BRANCH', getCurrentBranch())
+                .replace(':KM_RELEASE_BRANCH', KM_RELEASE_BRANCH)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts);
 
             for (var i = 0; i < pluginVersions.length; i++) {
@@ -432,16 +417,16 @@ gulp.task('generateBuildFiles', function (done) {
 async function uploadSourceMaps(done) {
     try {
         // Initialize a new release in Sentry
-        await cli.releases.new(version);
+        await cli.releases.new(KM_RELEASE_BRANCH);
 
         // Upload source maps to the release
-        await cli.releases.uploadSourceMaps(version, {
+        await cli.releases.uploadSourceMaps(KM_RELEASE_BRANCH, {
             include: [buildDir],
             rewrite: true,
         });
 
         // Finalize the release
-        await cli.releases.finalize(version);
+        await cli.releases.finalize(KM_RELEASE_BRANCH);
 
         console.log('Source maps successfully uploaded to Sentry.');
         done();

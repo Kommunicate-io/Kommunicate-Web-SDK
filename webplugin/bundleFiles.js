@@ -2,6 +2,7 @@ const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
 exports.version = version;
+exports.KM_RELEASE_BRANCH = getCurrentBranch();
 
 const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/storage-service.js'),
@@ -136,3 +137,25 @@ exports.getDynamicLoadFiles = function (dir) {
         // for voice note
     });
 };
+
+function getCurrentBranch() {
+    try {
+        // Execute git command to get the current branch name
+        if (process.env.AWS_BRANCH) {
+            return process.env.AWS_BRANCH;
+        }
+        const branch = require('child_process')
+            .execSync('git rev-parse --abbrev-ref HEAD', {
+                cwd: __dirname,
+                encoding: 'utf8',
+            })
+            .toString()
+            .trim();
+
+        return branch;
+    } catch (error) {
+        console.error('Error getting current branch:', error);
+
+        return version; // Fallback if there's an error
+    }
+}

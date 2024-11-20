@@ -7,7 +7,7 @@ var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
-var KM_RELEASE_BRANCH = ':KM_RELEASE_BRANCH';
+var KM_RELEASE_BRANCH = ":KM_RELEASE_BRANCH";
 
 var kmCustomElements = {
     iframe: {
@@ -302,6 +302,34 @@ function addKommunicatePluginToIframe() {
     addFullviewImageModal();
 }
 
+function scriptLoader(_document, url, cb) {
+    var head = _document.getElementsByTagName('head')[0];
+    var script = _document.createElement('script');
+    script.async = false;
+    script.type = 'text/javascript';
+    script.src = url;
+    if (script.readyState) {
+        // IE
+        script.onreadystatechange = function () {
+            if (
+                script.readyState === 'loaded' ||
+                script.readyState === 'complete'
+            ) {
+                cb();
+            }
+        };
+    } else {
+        // Others
+        script.onload = function () {
+            cb();
+        };
+    }
+    script.onerror = function (error) {
+        throw new Error('Error while loading file.', url);
+    };
+    _document.head.append(script);
+}
+
 function injectJquery() {
     var addableWindow, addableDocument;
     if (isV1Script()) {
@@ -330,13 +358,25 @@ function injectJquery() {
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                addKommunicatePluginToIframe();
+                scriptLoader(
+                    addableDocument,
+                    'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
+                    function () {
+                        addKommunicatePluginToIframe();
+                    }
+                );
             }
         };
     } else {
         // Others
         script.onload = function () {
-            addKommunicatePluginToIframe();
+            scriptLoader(
+                addableDocument,
+                'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
+                function () {
+                    addKommunicatePluginToIframe();
+                }
+            );
         };
     }
     script.onerror = function (error) {

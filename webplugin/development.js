@@ -11,6 +11,7 @@ const {
     version,
     THIRD_PARTY_FILE_INFO,
     getDynamicLoadFiles,
+    KM_RELEASE_BRANCH,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -259,7 +260,8 @@ const generateFilesByVersion = (location) => {
                 .replace(':PRODUCT_ID', 'kommunicate')
                 .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
                 .replace(':KM_RELEASE_HASH', version)
-                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts);
+                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
+                .replace(':KM_RELEASE_BRANCH', KM_RELEASE_BRANCH);
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(
