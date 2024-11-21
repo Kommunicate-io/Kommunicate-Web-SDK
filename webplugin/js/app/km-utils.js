@@ -507,7 +507,21 @@ KommunicateUtils = {
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
     },
     sendErrorToSentry: function (error) {
-        MCK_THIRD_PARTY_INTEGRATION.sentry.enabled &&
-            window.Sentry?.captureException(error);
+        if (!window.Sentry) return;
+        Sentry.captureException(error);
+    },
+    lazyLoadSentryIntegration: async function (integration) {
+        if(!window.Sentry) {
+            console.debug('Sentry not available');
+            return;
+        }
+        try {
+            const integrationToAdd = await Sentry.lazyLoadIntegration(
+                integration
+            );
+            Sentry.addIntegration(integrationToAdd());
+        } catch (err) {
+            console.error('Error while loading sentry integration', err);
+        }
     },
 };
