@@ -116,6 +116,12 @@ exports.THIRD_PARTY_FILE_INFO = [
         outputName: `crypto.min.js`,
         type: 'js',
     },
+    {
+        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
+        outputName: `sentry-${version}.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    },
 ];
 
 exports.getDynamicLoadFiles = function (dir) {
@@ -134,7 +140,9 @@ exports.getDynamicLoadFiles = function (dir) {
         crypto: {
             js: `${dir}/crypto.min.js`,
         },
-        // for voice note
+        sentry: {
+            js: `${dir}/sentry-${version}.min.js`,
+        },
     });
 };
 

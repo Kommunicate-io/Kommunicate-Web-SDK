@@ -508,6 +508,6 @@ KommunicateUtils = {
     },
     sendErrorToSentry: function (error) {
         MCK_THIRD_PARTY_INTEGRATION.sentry.enabled &&
-            Sentry?.captureException(error);
+            window.Sentry?.captureException(error);
     },
 };

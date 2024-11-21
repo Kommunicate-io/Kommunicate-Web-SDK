@@ -7,7 +7,7 @@ var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
-var KM_RELEASE_BRANCH = ':KM_RELEASE_BRANCH';
+var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
 
 var kmCustomElements = {
     iframe: {
@@ -255,11 +255,10 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = '';
     addableWindow.KM_PLUGIN_SETTINGS = KM_PLUGIN_SETTINGS;
     addableWindow.MCK_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
-    addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
+
     addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
-    addableWindow.KM_RELEASE_BRANCH = KM_RELEASE_BRANCH;
 
     var options = {};
     var options = addableWindow.applozic._globals;
@@ -322,39 +321,43 @@ function addKommunicatePluginToIframe() {
 
 // Use this generic function to load any script
 function scriptLoader(options) {
-    if (!options.enabled) {
-        options.next && options.next();
-        return;
-    }
-
-    const script = options._document.createElement('script');
-    script.async = false;
-    script.type = 'text/javascript';
-    script.src = options.url;
-    if (script.readyState) {
-        // IE
-        script.onreadystatechange = function () {
-            if (
-                script.readyState === 'loaded' ||
-                script.readyState === 'complete'
-            ) {
-                // load next script
-                options.next && options.next();
-            }
-        };
-    } else {
-        // Others
-        script.onload = function () {
-            options.next && options.next();
-        };
-    }
-    script.onerror = function (error) {
-        if (!options.ignoreIfError) {
-            throw new Error('Error while loading file.', url);
+    return new Promise(function (resolve, reject) {
+        if (!options.enabled) {
+            // options.next && options.next();
+            resolve();
+            return;
         }
-        options.next && options.next();
-    };
-    options._document.head.append(script);
+
+        const script = options._document.createElement('script');
+        script.async = false;
+        script.type = 'text/javascript';
+        script.src = options.url;
+        if (script.readyState) {
+            // IE
+            script.onreadystatechange = function () {
+                if (
+                    script.readyState === 'loaded' ||
+                    script.readyState === 'complete'
+                ) {
+                    resolve();
+                }
+            };
+        } else {
+            // Others
+            script.onload = function () {
+                resolve();
+            };
+        }
+        script.onerror = function (error) {
+            if (!options.ignoreIfError) {
+                console.error('Error while loading file.', options.url);
+                reject('ERROR_TO_LOAD_FILE');
+                // throw new Error('Error while loading file.', url);
+            }
+            resolve();
+        };
+        options._document.head.append(script);
+    });
 }
 
 function injectJquery() {
@@ -373,11 +376,23 @@ function injectJquery() {
         addableDocument = iframeDocument;
         addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
     }
+
+    addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
+    addableWindow.MCK_ENV_DETAILS = MCK_ENV_DETAILS;
+
     var head = addableDocument.getElementsByTagName('head')[0];
     var script = addableDocument.createElement('script');
     script.async = false;
     script.type = 'text/javascript';
     script.src = 'https://cdn.kommunicate.io/kommunicate/jquery-3.5.1.min.js';
+
+    var sentryScriptToLoad = {
+        _document: addableDocument,
+        url: THIRD_PARTY_SCRIPTS.sentry.js,
+        enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
+        ignoreIfError: true,
+    };
+
     if (script.readyState) {
         // IE
         script.onreadystatechange = function () {
@@ -385,31 +400,15 @@ function injectJquery() {
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                scriptLoader({
-                    _document: addableDocument,
-                    url:
-                        'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
-                    enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
-                    next: function () {
-                        addKommunicatePluginToIframe();
-                    },
-                    ignoreIfError: true,
-                });
+                scriptLoader(sentryScriptToLoad).then(
+                    addKommunicatePluginToIframe
+                );
             }
         };
     } else {
         // Others
         script.onload = function () {
-            scriptLoader({
-                _document: addableDocument,
-                url:
-                    'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
-                enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
-                next: function () {
-                    addKommunicatePluginToIframe();
-                },
-                ignoreIfError: true,
-            });
+            scriptLoader(sentryScriptToLoad).then(addKommunicatePluginToIframe);
         };
     }
     script.onerror = function (error) {

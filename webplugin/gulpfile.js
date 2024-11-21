@@ -335,8 +335,14 @@ const generateFilesByVersion = (location) => {
                 .replace(':PRODUCT_ID', 'kommunicate')
                 .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
                 .replace(':KM_RELEASE_HASH', version)
-                .replace(':KM_RELEASE_BRANCH', KM_RELEASE_BRANCH)
-                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts);
+                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
+                .replace(
+                    ':MCK_ENV_DETAILS',
+                    JSON.stringify({
+                        BRANCH: KM_RELEASE_BRANCH,
+                        ENVIRONMENT: process.env.NODE_ENV,
+                    })
+                );
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(

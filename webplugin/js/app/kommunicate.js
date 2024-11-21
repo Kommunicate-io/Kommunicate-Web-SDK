@@ -421,6 +421,7 @@ $applozic.extend(true, Kommunicate, {
         }
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         kmCookieStorage.deleteUserCookiesOnLogout();
+        Sentry && Sentry.close()
         parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {

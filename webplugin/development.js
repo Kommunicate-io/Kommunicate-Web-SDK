@@ -261,7 +261,13 @@ const generateFilesByVersion = (location) => {
                 .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
                 .replace(':KM_RELEASE_HASH', version)
                 .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
-                .replace(':KM_RELEASE_BRANCH', KM_RELEASE_BRANCH);
+                .replace(
+                    ':MCK_ENV_DETAILS',
+                    JSON.stringify({
+                        BRANCH: KM_RELEASE_BRANCH,
+                        ENVIRONMENT: process.env.NODE_ENV || 'development',
+                    })
+                );
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(

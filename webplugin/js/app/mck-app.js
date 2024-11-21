@@ -684,7 +684,6 @@ function ApplozicSidebox() {
             }
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
-            debugger;
             console.error('Plugin loading error. Refresh page.', e);
             KommunicateUtils.sendErrorToSentry(e);
             if (typeof MCK_ONINIT === 'function') {
@@ -766,6 +765,10 @@ function ApplozicSidebox() {
         xhr.send(data);
     }
     function loadErrorTracking(userId, options) {
+        if (!window.Sentry) {
+            return;
+        }
+
         var kommunicateIframe = parent.document.getElementById(
             'kommunicate-widget-iframe'
         );
@@ -776,13 +779,19 @@ function ApplozicSidebox() {
             kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
             ) || userId;
+
         try {
-            Sentry.getGlobalScope().setTags({
-                url,
-                applicationId: applozic._globals.appId,
+            const sentryGlobalScope = Sentry.getGlobalScope();
+
+            sentryGlobalScope.setTags({
+                url: url,
                 userId: userId,
                 plan: options.currentActivatedPlan,
-                release: KM_RELEASE_BRANCH
+            });
+
+            sentryGlobalScope.setUser({
+                id: applozic._globals.appId || 'NA',
+                username: userId,
             });
         } catch (error) {
             console.log('Error in initializing sentry', error);
