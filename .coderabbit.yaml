@@ -19,3 +19,4 @@ reviews:
             - "release/*"
 chat:
     auto_reply: true
+    
