@@ -25,6 +25,7 @@ const {
     THIRD_PARTY_FILE_INFO,
     getDynamicLoadFiles,
     KM_RELEASE_BRANCH,
+    SOURCE_MAP_FILES,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -56,7 +57,6 @@ const cli = new SentryCli(null, {
         rewrite: true,
         ignore_file: ['node_modules'],
     },
-    // url: MCK_THIRD_PARTY_INTEGRATION.sentry.SENTRY_URL, // Optional, defaults to https://sentry.io/
 });
 
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
@@ -85,10 +85,6 @@ const generateThirdPartyJSFiles = () => {
     );
 
     let inputScripts = THIRD_PARTY_SCRIPTS;
-    // if (MCK_THIRD_PARTY_INTEGRATION.sentry.enabled) {
-    //     console.log('adding sentry script');
-    //     inputScripts = [...inputScripts, ...SENTRY_SCRIPT];
-    // }
 
     return gulp
         .src(inputScripts)
@@ -125,82 +121,61 @@ const generateCSSFiles = () => {
 
 const generatePluginJSFiles = () => {
     const RELATIVE_PATHS = [];
-    return (
-        gulp
-            .src(PLUGIN_JS_FILES)
-            .pipe(sourcemaps.init({ loadMaps: true }))
-            .pipe(
-                tap(function (file) {
-                    const relativePath = file.path.replace(
-                        process.cwd() + path.sep,
-                        ''
-                    );
+    return gulp
+        .src(PLUGIN_JS_FILES)
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(
+            tap(function (file) {
+                const relativePath = file.path.replace(
+                    process.cwd() + path.sep,
+                    ''
+                );
 
-                    RELATIVE_PATHS.push(relativePath);
-                })
-            )
-            .pipe(babel()) // Run Babel
-            .pipe(concat(`kommunicate-plugin.min.js`))
-            .pipe(terser(TERSER_CONFIG))
-            .pipe(
-                sourcemaps.write('.', {
-                    // sourceMappingURL: function (file) {
-                    //     return path.basename(file.path) + '.map';
-                    // },
-                    // includeContent: true,
-                    // sourceRoot: 'map-files/app',
-                    debug: true,
-                    includeContent: true, // Include the file content in the map
-                    sourceRoot: '/', // Logical root path for your sources
-                    mapSources: (sourcePath) => {
-                        console.log(sourcePath, '@@ anuj');
-                        const actualRelativePath = RELATIVE_PATHS.find(
-                            (path) => {
-                                return path.includes(sourcePath);
-                            }
-                        );
-                        if (!actualRelativePath) {
-                            return null;
-                        }
-
-                        // Convert absolute paths to relative paths
-                        return '/' + actualRelativePath;
-                    },
-                })
-            )
-            // .pipe(
-            //     sourcemaps.write("./resources", { debug: true })
-            //      {
-            //     sourceRoot: (file) => {
-            //         console.log(file.path);
-            //         // Set the source root dynamically if needed
-            //         const relativePath = path.relative(
-            //             path.dirname(file.path),
-            //             './webplugin/js'
-            //         );
-            //         return relativePath;
-            //     },
-            //     // sourceRoot: '../webplugin', // Important for correct mapping
-            //     includeContent: false, // Recommended for Sentry
-            //     addComment: true, // Ensure source map comment is added
-            //     debug: true, // Enable debug information
-            //     // sourceMappingURL: (file) => {
-            //     //     return `${outputFileName}.map`;
-            //     //   }
-            // })
-            // )
-            .pipe(gulp.dest(`${buildDir}`)) // Destination directory
-            .on('end', () => {
-                console.log(`kommunicate-plugin.min.js combined successfully`);
+                RELATIVE_PATHS.push(relativePath);
             })
-    );
+        )
+        .pipe(babel()) // Run Babel
+        .pipe(concat(`kommunicate-plugin.min.js`))
+        .pipe(terser(TERSER_CONFIG))
+        .pipe(
+            sourcemaps.write('./', {
+                includeContent: true,
+                debug: true,
+                includeContent: true, // Include the file content in the map
+
+                mapSources: (sourcePath) => {
+                    console.log(sourcePath, '@@ anuj');
+                    const actualRelativePath = RELATIVE_PATHS.find((path) => {
+                        return path.includes(sourcePath);
+                    });
+
+                    // Convert absolute paths to relative paths
+                    return actualRelativePath ? '/' + actualRelativePath : '';
+                },
+            })
+        )
+
+        .pipe(gulp.dest(`${buildDir}`)) // Destination directory
+        .on('end', () => {
+            console.log(`kommunicate-plugin.min.js combined successfully`);
+        });
 };
 
 const combineJsFiles = async () => {
     var paths = PLUGIN_BUNDLE_FILES;
 
     gulp.src(paths)
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(concat(`kommunicate.${version}.min.js`))
+        .pipe(
+            sourcemaps.write('./', {
+                sourceRoot: function (file) {
+                    console.log(file.path)
+                    return path.relative(path.dirname(file.path), "/js");
+                },
+                includeContent: true,
+            })
+        )
         .pipe(gulp.dest(resourceLocation))
         .on('end', () => {
             console.log(`kommunicate.${version}.js combined successfully`);
@@ -231,18 +206,7 @@ const minifyJS = (path, dir, fileName, shouldMinify, callback) => {
         .pipe(gulpif(shouldMinify, babel()))
         .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
         .pipe(concat(fileName))
-        .pipe(
-            sourcemaps.write('.')
-            //     , {
-            //     sourceRoot: '/', // Important for correct mapping
-            //     includeContent: false, // Recommended for Sentry
-            //     addComment: true, // Ensure source map comment is added
-            //     debug: true, // Enable debug information
-            //     // sourceMappingURL: (file) => {
-            //     //     return `${outputFileName}.map`;
-            //     // },
-            // })
-        )
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(`${dir}`)) // Destination directory
         .on('end', () => {
             console.log(`${fileName} generated successfully`);
