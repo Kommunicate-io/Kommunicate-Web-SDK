@@ -12,7 +12,8 @@ const gulpif = require('gulp-if');
 const stripComments = require('gulp-strip-comments');
 const sourcemaps = require('gulp-sourcemaps');
 const SentryCli = require('@sentry/cli');
-
+const clean = require('gulp-clean');
+const tap = require('gulp-tap');
 const fs = require('fs');
 const {
     PLUGIN_CSS_FILES,
@@ -51,6 +52,10 @@ const cli = new SentryCli(null, {
     authToken: MCK_THIRD_PARTY_INTEGRATION.sentry.AUTH_TOKEN,
     org: MCK_THIRD_PARTY_INTEGRATION.sentry.ORG,
     project: MCK_THIRD_PARTY_INTEGRATION.sentry.PROJECT,
+    sourcemaps: {
+        rewrite: true,
+        ignore_file: ['node_modules'],
+    },
     // url: MCK_THIRD_PARTY_INTEGRATION.sentry.SENTRY_URL, // Optional, defaults to https://sentry.io/
 });
 
@@ -58,24 +63,6 @@ let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env
     ? path.resolve(__dirname, 'build/resources')
     : buildDir;
-
-const removeExistingFile = function (dirPath) {
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath);
-    } else {
-        try {
-            var files = fs.readdirSync(dirPath);
-        } catch (e) {
-            return;
-        }
-        files &&
-            files.map((file) => {
-                if (fs.statSync(dirPath + '/' + file).isFile()) {
-                    fs.unlinkSync(dirPath + '/' + file);
-                }
-            });
-    }
-};
 
 const generateResourceFolder = () => {
     if (env) {
@@ -114,36 +101,99 @@ const generateThirdPartyJSFiles = () => {
 };
 
 const generateCSSFiles = () => {
-    return gulp
-        .src(PLUGIN_CSS_FILES)
-        .pipe(sourcemaps.init())
-        .pipe(
-            cleanCss({
-                advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
-                aggressiveMerging: true, // set to false to disable aggressive merging of properties.
-                compatibility: 'ie9', // To add vendor prefixes for IE8+
+    return (
+        gulp
+            .src(PLUGIN_CSS_FILES)
+            // .pipe(sourcemaps.init())
+            .pipe(
+                cleanCss({
+                    advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
+                    aggressiveMerging: true, // set to false to disable aggressive merging of properties.
+                    compatibility: 'ie9', // To add vendor prefixes for IE8+
+                })
+            ) // Minify and optimize CSS
+            .pipe(concat(`kommunicate.${version}.min.css`))
+            // .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest(resourceLocation))
+            .on('end', () => {
+                console.log(
+                    `kommunicate.${version}.min.css combined successfully`
+                );
             })
-        ) // Minify and optimize CSS
-        .pipe(concat(`kommunicate.${version}.min.css`))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(resourceLocation))
-        .on('end', () => {
-            console.log(`kommunicate.${version}.min.css combined successfully`);
-        });
+    );
 };
 
 const generatePluginJSFiles = () => {
-    return gulp
-        .src(PLUGIN_JS_FILES)
-        .pipe(sourcemaps.init())
-        .pipe(babel()) // Run Babel
-        .pipe(concat(`kommunicate-plugin.min.js`))
-        .pipe(terser(TERSER_CONFIG))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(`${buildDir}`)) // Destination directory
-        .on('end', () => {
-            console.log(`kommunicate-plugin.min.js combined successfully`);
-        });
+    const RELATIVE_PATHS = [];
+    return (
+        gulp
+            .src(PLUGIN_JS_FILES)
+            .pipe(sourcemaps.init({ loadMaps: true }))
+            .pipe(
+                tap(function (file) {
+                    const relativePath = file.path.replace(
+                        process.cwd() + path.sep,
+                        ''
+                    );
+
+                    RELATIVE_PATHS.push(relativePath);
+                })
+            )
+            .pipe(babel()) // Run Babel
+            .pipe(concat(`kommunicate-plugin.min.js`))
+            .pipe(terser(TERSER_CONFIG))
+            .pipe(
+                sourcemaps.write('.', {
+                    // sourceMappingURL: function (file) {
+                    //     return path.basename(file.path) + '.map';
+                    // },
+                    // includeContent: true,
+                    // sourceRoot: 'map-files/app',
+                    debug: true,
+                    includeContent: true, // Include the file content in the map
+                    sourceRoot: '/', // Logical root path for your sources
+                    mapSources: (sourcePath) => {
+                        console.log(sourcePath, '@@ anuj');
+                        const actualRelativePath = RELATIVE_PATHS.find(
+                            (path) => {
+                                return path.includes(sourcePath);
+                            }
+                        );
+                        if (!actualRelativePath) {
+                            return null;
+                        }
+
+                        // Convert absolute paths to relative paths
+                        return '/' + actualRelativePath;
+                    },
+                })
+            )
+            // .pipe(
+            //     sourcemaps.write("./resources", { debug: true })
+            //      {
+            //     sourceRoot: (file) => {
+            //         console.log(file.path);
+            //         // Set the source root dynamically if needed
+            //         const relativePath = path.relative(
+            //             path.dirname(file.path),
+            //             './webplugin/js'
+            //         );
+            //         return relativePath;
+            //     },
+            //     // sourceRoot: '../webplugin', // Important for correct mapping
+            //     includeContent: false, // Recommended for Sentry
+            //     addComment: true, // Ensure source map comment is added
+            //     debug: true, // Enable debug information
+            //     // sourceMappingURL: (file) => {
+            //     //     return `${outputFileName}.map`;
+            //     //   }
+            // })
+            // )
+            .pipe(gulp.dest(`${buildDir}`)) // Destination directory
+            .on('end', () => {
+                console.log(`kommunicate-plugin.min.js combined successfully`);
+            })
+    );
 };
 
 const combineJsFiles = async () => {
@@ -173,14 +223,26 @@ const minifyHtml = (paths, outputDir, fileName) => {
 };
 
 const minifyJS = (path, dir, fileName, shouldMinify, callback) => {
+    console.log(path, dir);
     return gulp
         .src(path)
         .pipe(stripComments())
-        .pipe(sourcemaps.init())
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(gulpif(shouldMinify, babel()))
         .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
         .pipe(concat(fileName))
-        .pipe(sourcemaps.write('./'))
+        .pipe(
+            sourcemaps.write('.')
+            //     , {
+            //     sourceRoot: '/', // Important for correct mapping
+            //     includeContent: false, // Recommended for Sentry
+            //     addComment: true, // Ensure source map comment is added
+            //     debug: true, // Enable debug information
+            //     // sourceMappingURL: (file) => {
+            //     //     return `${outputFileName}.map`;
+            //     // },
+            // })
+        )
         .pipe(gulp.dest(`${dir}`)) // Destination directory
         .on('end', () => {
             console.log(`${fileName} generated successfully`);
@@ -391,11 +453,6 @@ const copyFileToBuild = (src, dest) => {
     });
 };
 
-gulp.task('removeExistingFile', function (done) {
-    removeExistingFile(buildDir);
-    done && done();
-});
-
 gulp.task('generateResourceFolder', function (done) {
     generateResourceFolder();
     done();
@@ -428,6 +485,12 @@ async function uploadSourceMaps(done) {
         await cli.releases.uploadSourceMaps(KM_RELEASE_BRANCH, {
             include: [buildDir],
             rewrite: true,
+            sourceMapPath: buildDir,
+            ext: ['.js', '.map'], // Explicitly specify file extensions
+            stripPrefix: [buildDir], // Remove build directory prefix
+            stripCommonPrefix: true,
+            validate: true, // Validate source maps
+            debug: true, // Add verbose Sentry CLI logging
         });
 
         // Finalize the release
@@ -445,30 +508,30 @@ gulp.task('upload-sourcemaps', function (done) {
         await uploadSourceMaps(done);
         resolve();
     });
-    // Specify the directory where the source maps and minified files are located
-    // const distDir = path.join(__dirname, buildDir);
+});
 
-    // Use Sentry CLI to upload source maps
-    // cli.releases
-    //     .new(version) // Create a new release in Sentry
-    //     .then(() => {
-    //         return cli.releases.uploadSourceMaps([buildDir]);
-    //     })
-    //     .then(() => {
-    //         console.log('Source maps uploaded to Sentry!');
-    //         done();
-    //     })
-    //     .catch((err) => {
-    //         console.error('Error uploading source maps:', err);
-    //         done(err);
-    //     });
+gulp.task('cleanFolder', function () {
+    if (!fs.existsSync(buildDir)) {
+        console.log('No build folder exist, creating the build folder');
+
+        fs.mkdirSync(buildDir);
+    }
+
+    console.log('cleaning build folder');
+
+    return gulp
+        .src(buildDir + '/*', { read: false })
+        .pipe(clean())
+        .on('end', () => {
+            console.log('cleaned build folder');
+        });
 });
 
 gulp.task(
     'default',
     gulp.series(
+        'cleanFolder',
         'sass',
-        'removeExistingFile',
         'generateResourceFolder',
         'generateThirdPartyJSFiles',
         'generateCSSFiles',
