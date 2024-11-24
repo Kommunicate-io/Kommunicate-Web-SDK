@@ -148,6 +148,7 @@ exports.getDynamicLoadFiles = function (dir) {
 
 function getCurrentBranch() {
     try {
+        console.log('branch name', JSON.stringify(process.env), process.env);
         // Execute git command to get the current branch name
         if (process.env.AWS_BRANCH) {
             return process.env.AWS_BRANCH;
