@@ -20,12 +20,10 @@ const {
     PLUGIN_BUNDLE_FILES,
     PLUGIN_JS_FILES,
     THIRD_PARTY_SCRIPTS,
-    SENTRY_SCRIPT,
     version,
     THIRD_PARTY_FILE_INFO,
     getDynamicLoadFiles,
     KM_RELEASE_BRANCH,
-    SOURCE_MAP_FILES,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -49,6 +47,8 @@ PLUGIN_SETTING.dashboardUrl =
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let env = config.getEnvId() !== 'development';
+const SENTRY_ENABLED = MCK_THIRD_PARTY_INTEGRATION.sentry.enabled;
+
 const cli = new SentryCli(null, {
     authToken: MCK_THIRD_PARTY_INTEGRATION.sentry.AUTH_TOKEN,
     org: MCK_THIRD_PARTY_INTEGRATION.sentry.ORG,
@@ -437,6 +437,11 @@ gulp.task('generateBuildFiles', function (done) {
 });
 
 async function uploadSourceMaps(done) {
+    if (!SENTRY_ENABLED) {
+        done();
+        return;
+    }
+
     try {
         // Initialize a new release in Sentry
         await cli.releases.new(KM_RELEASE_BRANCH);
