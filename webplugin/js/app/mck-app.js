@@ -87,6 +87,7 @@ function ApplozicSidebox() {
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
             }
+            KommunicateUtils.sendErrorToSentry(e);
             return false;
         }
     };

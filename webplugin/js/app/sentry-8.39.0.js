@@ -2,7 +2,7 @@ const KM_SENTRY_CONFIG = {
     dsn: MCK_THIRD_PARTY_INTEGRATION.sentry.dsn,
     debug: true,
     tracesSampleRate: 1,
-    //   replaysSessionSampleRate: 0.1,
+    replaysSessionSampleRate: 0.0,
     replaysOnErrorSampleRate: 1,
     release: MCK_ENV_DETAILS.BRANCH,
     environment: MCK_ENV_DETAILS.ENVIRONMENT,
