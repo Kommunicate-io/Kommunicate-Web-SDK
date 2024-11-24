@@ -11,7 +11,7 @@
     "postpublish": "pinst --enable",
     "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.js'",
     "prettify-commit": "pretty-quick --staged --pattern '**/*.js'",
-    "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style && npm run sentry:sourcemaps && npm run sentry:sourcemaps",
+    "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style && npm run sentry:sourcemaps",
     "build:dev": "nodemon ./server/app.js",
     "dev": "npm-run-all -p build:dev build-dev:scss-to-css setup-git-hooks",
     "build-test": "export NODE_ENV=test && npm-run-all build-server gulp-build",
@@ -29,9 +29,8 @@
     "setup-git-hooks": "node setup-git-hooks.js",
     "gulp-build": "cd ./webplugin && gulp",
     "build-server": "node ./server/build.js",
-    "run-dev-server": "node ./server/app.js",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org km-test --project test-widget ./webplugin/build && sentry-cli sourcemaps upload --org km-test --project test-widget ./webplugin/build"
-  },
+    "run-dev-server": "node ./server/app.js"
+    },
   "dependencies": {
     "@node-minify/clean-css": "6.0.0",
     "@node-minify/core": "6.0.0",

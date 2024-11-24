@@ -42,11 +42,6 @@ function ApplozicSidebox() {
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
-        // {
-        //     name: 'sentry',
-        //     url:
-        //         'https://js.sentry-cdn.com/0494b01c401dbac92222bf85f41e26a0.min.js',
-        // },
     ];
     var mck_style_loader = [
         {
