@@ -139,18 +139,12 @@ const generatePluginJSFiles = () => {
         .pipe(terser(TERSER_CONFIG))
         .pipe(
             sourcemaps.write('./', {
+                sourceRoot: '',
                 includeContent: true,
                 debug: true,
-                includeContent: true, // Include the file content in the map
-
-                mapSources: (sourcePath) => {
-                    console.log(sourcePath, '@@ anuj');
-                    const actualRelativePath = RELATIVE_PATHS.find((path) => {
-                        return path.includes(sourcePath);
-                    });
-
-                    // Convert absolute paths to relative paths
-                    return actualRelativePath ? '/' + actualRelativePath : '';
+                sourceMappingURLPrefix: '.',
+                mapFile: function (mapFilePath) {
+                    return mapFilePath.replace('.js.map', '.map');
                 },
             })
         )
@@ -169,11 +163,13 @@ const combineJsFiles = async () => {
         .pipe(concat(`kommunicate.${version}.min.js`))
         .pipe(
             sourcemaps.write('./', {
-                sourceRoot: function (file) {
-                    console.log(file.path)
-                    return path.relative(path.dirname(file.path), "/js");
-                },
+                sourceRoot: '',
                 includeContent: true,
+                debug: true,
+                sourceMappingURLPrefix: '.',
+                mapFile: function (mapFilePath) {
+                    return mapFilePath.replace('.js.map', '.map');
+                },
             })
         )
         .pipe(gulp.dest(resourceLocation))
