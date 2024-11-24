@@ -5,28 +5,17 @@ substitutions:
   _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
-  _BRANCH_NAME: "development"  # Placeholder for branch name
 
 steps:
   # Step 1: Install dependencies
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
 
-  - name: 'ubuntu'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        echo "Branch name: $_BRANCH_NAME"
-    env:
-      - BRANCH_NAME=$_BRANCH_NAME
-
   # Step 2: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
     entrypoint: 'bash'
     args:
       - '-c'
-      - 'env | grep BRANCH_NAME || echo "BRANCH_NAME is not set"'
       - |
         echo "Build env:" ${_BUILD_ENV}
         if [ "${_BUILD_ENV}" = "test" ]; then 
