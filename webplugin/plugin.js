@@ -358,15 +358,21 @@ function injectJquery() {
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                scriptLoader(sentryScriptToLoad).then(
-                    addKommunicatePluginToIframe
-                );
+                scriptLoader(sentryScriptToLoad)
+                    .then(addKommunicatePluginToIframe)
+                    .catch(function (error) {
+                        console.error(error);
+                    });
             }
         };
     } else {
         // Others
         script.onload = function () {
-            scriptLoader(sentryScriptToLoad).then(addKommunicatePluginToIframe);
+            scriptLoader(sentryScriptToLoad)
+                .then(addKommunicatePluginToIframe)
+                .catch(function (error) {
+                    console.error(error);
+                });
         };
     }
     script.onerror = function (error) {
