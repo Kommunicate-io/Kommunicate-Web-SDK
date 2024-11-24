@@ -344,12 +344,18 @@ function injectJquery() {
     script.type = 'text/javascript';
     script.src = 'https://cdn.kommunicate.io/kommunicate/jquery-3.5.1.min.js';
 
-    var sentryScriptToLoad = {
-        _document: addableDocument,
-        url: THIRD_PARTY_SCRIPTS.sentry.js,
-        enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
-        ignoreIfError: true,
-    };
+    function loadSentry() {
+        return scriptLoader({
+            _document: addableDocument,
+            url: THIRD_PARTY_SCRIPTS.sentry.js,
+            enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
+            ignoreIfError: true,
+        })
+            .then(addKommunicatePluginToIframe)
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
 
     if (script.readyState) {
         // IE
@@ -358,21 +364,13 @@ function injectJquery() {
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                scriptLoader(sentryScriptToLoad)
-                    .then(addKommunicatePluginToIframe)
-                    .catch(function (error) {
-                        console.error(error);
-                    });
+                loadSentry();
             }
         };
     } else {
         // Others
         script.onload = function () {
-            scriptLoader(sentryScriptToLoad)
-                .then(addKommunicatePluginToIframe)
-                .catch(function (error) {
-                    console.error(error);
-                });
+            loadSentry();
         };
     }
     script.onerror = function (error) {
