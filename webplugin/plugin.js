@@ -310,10 +310,11 @@ function scriptLoader(options) {
                 console.error('Error while loading file.', options.url);
                 reject('ERROR_TO_LOAD_FILE');
                 // throw new Error('Error while loading file.', url);
+            } else {
+                resolve();
             }
-            resolve();
         };
-        options._document.head.append(script);
+        options._document.head.appendChild(script);
     });
 }
 

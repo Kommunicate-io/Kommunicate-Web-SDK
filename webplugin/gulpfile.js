@@ -465,14 +465,18 @@ async function uploadSourceMaps(done) {
         done();
     } catch (error) {
         console.error('Failed to upload source maps:', error);
+        done(error);
     }
 }
 // Task to upload source maps to Sentry
-gulp.task('upload-sourcemaps', function (done) {
-    return new Promise(async (resolve, reject) => {
+gulp.task('upload-sourcemaps', async function (done) {
+    try {
         await uploadSourceMaps(done);
-        resolve();
-    });
+        done();
+    } catch (error) {
+        console.error('Failed to upload source maps:', error);
+        done(error);
+    }
 });
 
 gulp.task('cleanFolder', function () {
