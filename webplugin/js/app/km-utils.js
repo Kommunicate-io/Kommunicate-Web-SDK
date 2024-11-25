@@ -524,4 +524,10 @@ KommunicateUtils = {
             console.error('Error while loading sentry integration', err);
         }
     },
+    customElementSupported: function () {
+        return (
+            'customElements' in window &&
+            window.customElements.get('mck-html-rich-message')
+        );
+    },
 };
