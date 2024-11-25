@@ -494,7 +494,7 @@ function ApplozicSidebox() {
             sentryConfig.enabled && loadErrorTracking(randomUserId, data);
 
             var sessionTimeout =
-                options.sessionTimeout != null
+                otions.sessionTimeout != null
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
             options['appSettings'] = $applozic.extend(
