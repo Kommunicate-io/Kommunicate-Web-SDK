@@ -348,7 +348,7 @@ function injectJquery() {
      * Note: If Sentry is not enabled, it will not load the script and directly load the Kommunicate plugin script (addKommunicatePluginToIframe).
      * If there is any error while loading the Sentry script, it will not block the Kommunicate plugin script.
      *
-     * 
+     *
      * Logic Flow:
      *
      * Start
@@ -370,7 +370,7 @@ function injectJquery() {
      *
      */
 
-    function loadSentry() {
+    function loadKommunicateWithSentry() {
         return scriptLoader({
             _document: addableDocument, // kommunicate iframe document
             url: THIRD_PARTY_SCRIPTS.sentry.js, // kommunicate modified version of sentry
@@ -391,13 +391,13 @@ function injectJquery() {
             ) {
                 // Once jQuery is ready, initialize Sentry error tracking
                 // check the function declaration above to know more about the function
-                loadSentry();
+                loadKommunicateWithSentry();
             }
         };
     } else {
         // Others
         script.onload = function () {
-            loadSentry(); // Once jQuery is ready, initialize Sentry error tracking
+            loadKommunicateWithSentry(); // Once jQuery is ready, initialize Sentry error tracking
         };
     }
     script.onerror = function (error) {
