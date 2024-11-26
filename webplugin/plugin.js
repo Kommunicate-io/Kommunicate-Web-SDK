@@ -267,6 +267,21 @@ function addKommunicatePluginToIframe() {
     if (typeof options !== 'undefined') {
         addableWindow.MCK_ONINIT = options.onInit;
     }
+    
+    addableWindow.addEventListener(
+        'error',
+        function (e) {
+            if (
+                typeof e.target.src !== 'undefined' &&
+                e.target.src.indexOf('sidebox') !== -1 &&
+                typeof MCK_ONINIT === 'function'
+            ) {
+                console.error('Plugin loading error. Refresh page.', e);
+                MCK_ONINIT('error');
+            }
+        },
+        true
+    );
 
     var imported = addableDocument.createElement('script');
     imported.async = false;
