@@ -2,6 +2,7 @@ const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
 exports.version = version;
+exports.KM_RELEASE_BRANCH = getCurrentBranch();
 
 const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/storage-service.js'),
@@ -115,6 +116,12 @@ exports.THIRD_PARTY_FILE_INFO = [
         outputName: `crypto.min.js`,
         type: 'js',
     },
+    {
+        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
+        outputName: `sentry-${version}.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    },
 ];
 
 exports.getDynamicLoadFiles = function (dir) {
@@ -133,6 +140,33 @@ exports.getDynamicLoadFiles = function (dir) {
         crypto: {
             js: `${dir}/crypto.min.js`,
         },
-        // for voice note
+        sentry: {
+            js: `${dir}/sentry-${version}.min.js`,
+        },
     });
 };
+
+function getCurrentBranch() {
+    try {
+        if (process.env.AWS_BRANCH) {
+            return process.env.AWS_BRANCH;
+        }
+
+        if (process.env.NODE_ENV != 'development') {
+            return version;
+        }
+        const branch = require('child_process')
+            .execSync('git rev-parse --abbrev-ref HEAD', {
+                cwd: __dirname,
+                encoding: 'utf8',
+            })
+            .toString()
+            .trim();
+
+        return branch;
+    } catch (error) {
+        console.error('Error getting current branch:', error);
+
+        return version; // Fallback if there's an error
+    }
+}

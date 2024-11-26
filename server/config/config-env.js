@@ -13,8 +13,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '0494b01c401dbac92222bf85f41e26a0',
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
+                PROJECT: 'test-widget',
+                ORG: 'kommunicateio',
+                PROJECT: 'widget-test',
+                AUTH_TOKEN:
+                    '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',
                 enabled: false,
             },
             aws: {
@@ -37,9 +43,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '0494b01c401dbac92222bf85f41e26a0',
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
                 enabled: true,
+                PROJECT: 'test-widget',
+                ORG: 'km-test',
+                AUTH_TOKEN:
+                    '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',
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
@@ -61,9 +72,15 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '0494b01c401dbac92222bf85f41e26a0',
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
-                enabled: true,
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
+                PROJECT: 'test-widget',
+                ORG: 'kommunicateio',
+                PROJECT: 'widget-test',
+                AUTH_TOKEN:
+                    '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',
+                enabled: false,
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
@@ -71,7 +88,7 @@ const configEnv = {
             },
         },
     },
-    
+
     release: {
         port: '3031',
         urls: {
@@ -86,9 +103,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '0494b01c401dbac92222bf85f41e26a0',
                 dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
-                enabled: true,
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
+                PROJECT: 'widget-test',
+                ORG: 'kommunicateio',
+                AUTH_TOKEN:
+                    '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',
+                enabled: false,
             },
             aws: {
                 cdnUrl: 'https://cdn-test.kommunicate.io',
@@ -96,7 +118,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod: {
         port: '3030',
         urls: {
@@ -111,9 +133,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
             },
             aws: {
                 cdnUrl: 'https://cdn.kommunicate.io',
@@ -134,9 +161,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: false,
+                enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
             },
             aws: {
                 cdnUrl: 'https://cdn.kommunicate.io',
@@ -159,9 +191,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: false,
+                enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
             },
             aws: {
                 cdnUrl: 'https://cdn.kommunicate.io',
@@ -183,9 +220,14 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 plugin: {
+                    nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                     dsn:
-                        'https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243',
-                    enable: false,
+                        'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                    enabled: true,
+                    AUTH_TOKEN:
+                        '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',
+                    PROJECT: 'chat-widget',
+                    ORG: 'applozic',
                 },
                 server: {
                     dsn:
@@ -209,9 +251,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: false,
+                enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
             },
             aws: {
                 cdnUrl: 'https://cdn.kommunicate.io',
@@ -233,9 +280,14 @@ const configEnv = {
         },
         thirdPartyIntegration: {
             sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: false,
+                enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
             },
             aws: {
                 cdnUrl: 'https://cdn.kommunicate.io',

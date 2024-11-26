@@ -7,6 +7,7 @@ var MCK_THIRD_PARTY_INTEGRATION = JSON.parse(':MCK_THIRD_PARTY_INTEGRATION');
 var PRODUCT_ID = ':PRODUCT_ID';
 var KM_RELEASE_HASH = ':KM_RELEASE_HASH';
 var THIRD_PARTY_SCRIPTS = JSON.parse(':THIRD_PARTY_SCRIPTS');
+var MCK_ENV_DETAILS = JSON.parse(':MCK_ENV_DETAILS');
 
 var kmCustomElements = {
     iframe: {
@@ -254,7 +255,7 @@ function addKommunicatePluginToIframe() {
     addableWindow.MCK_ONINIT = '';
     addableWindow.KM_PLUGIN_SETTINGS = KM_PLUGIN_SETTINGS;
     addableWindow.MCK_PLUGIN_VERSION = MCK_PLUGIN_VERSION;
-    addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
+
     addableWindow.applozic.PRODUCT_ID = PRODUCT_ID;
     addableWindow.KM_RELEASE_HASH = KM_RELEASE_HASH;
     addableWindow.THIRD_PARTY_SCRIPTS = THIRD_PARTY_SCRIPTS;
@@ -266,38 +267,69 @@ function addKommunicatePluginToIframe() {
     if (typeof options !== 'undefined') {
         addableWindow.MCK_ONINIT = options.onInit;
     }
+    
     addableWindow.addEventListener(
         'error',
         function (e) {
-            MCK_THIRD_PARTY_INTEGRATION.sentry.enabled &&
-                typeof KommunicateGlobal != 'undefined' &&
-                KommunicateGlobal != null &&
-                KommunicateGlobal.Sentry != null &&
-                KommunicateGlobal.Sentry.withScope(function (scope) {
-                    scope.setTag('applicationId', options.appId);
-                    scope.setTag('userId', options.userId);
-                    scope.setUser({
-                        id: options.appId,
-                    });
-                    KommunicateGlobal.Sentry.captureException(e);
-                });
             if (
                 typeof e.target.src !== 'undefined' &&
                 e.target.src.indexOf('sidebox') !== -1 &&
                 typeof MCK_ONINIT === 'function'
             ) {
-                console.log('Plugin loading error. Refresh page.');
+                console.error('Plugin loading error. Refresh page.', e);
                 MCK_ONINIT('error');
             }
         },
         true
     );
+
     var imported = addableDocument.createElement('script');
     imported.async = false;
     imported.type = 'text/javascript';
     imported.src = KOMMUNICATE_MIN_JS;
     addableDocument.head.appendChild(imported);
     addFullviewImageModal();
+}
+
+// Use this generic function to load any script
+function scriptLoader(options) {
+    return new Promise(function (resolve, reject) {
+        if (!options.enabled) {
+            resolve();
+            return;
+        }
+
+        const script = options._document.createElement('script');
+        script.async = false;
+        script.type = 'text/javascript';
+        script.src = options.url;
+        if (script.readyState) {
+            // IE
+            script.onreadystatechange = function () {
+                if (
+                    script.readyState === 'loaded' ||
+                    script.readyState === 'complete'
+                ) {
+                    resolve();
+                }
+            };
+        } else {
+            // Others
+            script.onload = function () {
+                resolve();
+            };
+        }
+        script.onerror = function (error) {
+            if (!options.ignoreIfError) {
+                console.error('Error while loading file.', options.url);
+                reject('ERROR_TO_LOAD_FILE');
+                // throw new Error('Error while loading file.', url);
+            } else {
+                resolve();
+            }
+        };
+        options._document.head.appendChild(script);
+    });
 }
 
 function injectJquery() {
@@ -316,25 +348,71 @@ function injectJquery() {
         addableDocument = iframeDocument;
         addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
     }
+
+    addableWindow.MCK_THIRD_PARTY_INTEGRATION = MCK_THIRD_PARTY_INTEGRATION;
+    addableWindow.MCK_ENV_DETAILS = MCK_ENV_DETAILS;
+
     var head = addableDocument.getElementsByTagName('head')[0];
     var script = addableDocument.createElement('script');
     script.async = false;
     script.type = 'text/javascript';
     script.src = 'https://cdn.kommunicate.io/kommunicate/jquery-3.5.1.min.js';
+
+    /**
+     * Loads the Sentry error tracking script after jQuery has loaded.
+     * Note: If Sentry is not enabled, it will not load the script and directly load the Kommunicate plugin script (addKommunicatePluginToIframe).
+     * If there is any error while loading the Sentry script, it will not block the Kommunicate plugin script.
+     *
+     *
+     * Logic Flow:
+     *
+     * Start
+     *   |
+     *   v
+     * Check if jQuery is loaded
+     *   |
+     *   |-- No -> Terminate (jQuery not loaded)
+     *   |
+     *   |-- Yes -> Check if Sentry is enabled
+     *                |
+     *                |-- No -> Load Kommunicate Script directly
+     *                |
+     *                |-- Yes -> Load Sentry Script
+     *                             |
+     *                             |-- Success -> Load Kommunicate Script
+     *                             |
+     *                             |-- Fail -> Load Kommunicate Script
+     *
+     */
+
+    function loadKommunicateWithSentry() {
+        return scriptLoader({
+            _document: addableDocument, // kommunicate iframe document
+            url: THIRD_PARTY_SCRIPTS.sentry.js, // kommunicate modified version of sentry
+            enabled: MCK_THIRD_PARTY_INTEGRATION.sentry.enabled,
+            ignoreIfError: true, // ignore if error occurs while loading sentry script load km plugin script
+        })
+            .then(addKommunicatePluginToIframe)
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
     if (script.readyState) {
-        // IE
         script.onreadystatechange = function () {
             if (
                 script.readyState === 'loaded' ||
                 script.readyState === 'complete'
             ) {
-                addKommunicatePluginToIframe();
+                // Once jQuery is ready, initialize Sentry error tracking
+                // check the function declaration above to know more about the function
+                loadKommunicateWithSentry();
             }
         };
     } else {
         // Others
         script.onload = function () {
-            addKommunicatePluginToIframe();
+            loadKommunicateWithSentry(); // Once jQuery is ready, initialize Sentry error tracking
         };
     }
     script.onerror = function (error) {

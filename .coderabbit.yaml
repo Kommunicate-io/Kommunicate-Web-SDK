@@ -1,7 +1,7 @@
 language: "en-US"
 early_access: false
 reviews:
-    profile: assertive
+    profile: chill
     request_changes_workflow: false
     high_level_summary: true
     poem: false
@@ -14,9 +14,6 @@ reviews:
             - "WIP"
             - "DO NOT MERGE"
         base_branches:
-            - "master"
-            - "development"
-            - "release/*"
+            - ".*"
 chat:
     auto_reply: true
-    

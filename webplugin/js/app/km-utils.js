@@ -291,7 +291,7 @@ KommunicateConstants = {
     ANSWER_FEEDBACK: {
         HELPFUL: 1,
         NOT_HELPFUL: 0,
-    } 
+    },
 };
 
 /**
@@ -505,6 +505,24 @@ KommunicateUtils = {
         }
 
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
+    },
+    sendErrorToSentry: function (error) {
+        if (!window.Sentry) return;
+        Sentry.captureException(error);
+    },
+    lazyLoadSentryIntegration: async function (integration) {
+        if(!window.Sentry) {
+            console.debug('Sentry not available');
+            return;
+        }
+        try {
+            const integrationToAdd = await Sentry.lazyLoadIntegration(
+                integration
+            );
+            Sentry.addIntegration(integrationToAdd());
+        } catch (err) {
+            console.error('Error while loading sentry integration', err);
+        }
     },
     customElementSupported: function () {
         return (
