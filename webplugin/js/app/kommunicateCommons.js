@@ -32,6 +32,17 @@ function KommunicateCommons() {
             data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP
         );
     };
+    _this.isEnterprisePlan = function (data) {
+        try {
+            const isExpired = _this.isKommunicatePlanExpired(data);
+            const currentPlan =
+                Kommunicate._globals?.appSettings?.currentActivatedPlan;
+            return !isExpired && currentPlan?.includes('enterprise');
+        } catch (error) {
+            console.debug('Error in finding plan: ', error);
+        }
+    };
+
 
     _this.isKommunicatePlanExpired = function (data) {
         return _this.getDaysCount() > 31 && _this.isStartupPlan(data);
