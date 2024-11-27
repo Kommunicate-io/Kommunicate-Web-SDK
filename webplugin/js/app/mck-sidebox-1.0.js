@@ -4139,13 +4139,11 @@ const firstVisibleMsg = {
                     ) {
                         return true;
                     }
-                    const userTimezone = Intl.DateTimeFormat().resolvedOptions()
-                        .timeZone;
                     const userTimestamp = new Date().toISOString().slice(0, 19);
 
                     // Convert user's message time to the agent's timezone
                     const userMessageTimeInAgentTz = moment
-                        .tz(userTimestamp, userTimezone)
+                        .tz(userTimestamp, 'UTC')
                         .tz(team.timezone);
 
                     const agentDay = userMessageTimeInAgentTz.day();
