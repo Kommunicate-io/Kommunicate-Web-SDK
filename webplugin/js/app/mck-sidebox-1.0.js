@@ -4136,7 +4136,7 @@ const firstVisibleMsg = {
                     if (
                         !team ||
                         !team.businessHourMap ||
-                        Object.keys(team.businessHourMap || {}) === 0 ||
+                        Object.keys(team.businessHourMap || {}).length === 0 ||
                         !team.timezone
                     ) {
                         return true;
