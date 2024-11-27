@@ -4162,6 +4162,11 @@ const firstVisibleMsg = {
                                 `${time.substring(0, 2)}:${time.substring(2)}`
                         );
 
+                    // if start and end time are same, then it is a 24 hour business
+                    if (start === end) {
+                        return true;
+                    }
+
                     const startOfDay = moment.tz(
                         `${userMessageTimeInAgentTz.format(
                             'YYYY-MM-DD'
