@@ -4131,65 +4131,60 @@ const firstVisibleMsg = {
                 }
                 $mck_msg_to.focus();
             };
-
             _this.isWithinBusinessHours = function (team) {
-                // don't show message if business hour setting are not set
-                if (!team || !team.businessHourMap || !team.timezone) {
-                    return true;
-                }
-                const convertToMinutes = (timeStr) => {
-                    const hours = parseInt(timeStr.slice(0, 2), 10);
-                    const minutes = parseInt(timeStr.slice(2), 10);
-                    return hours * 60 + minutes;
-                };
-
-                const parseTimezoneOffset = (timezone) => {
-                    try {
-                        const match = timezone.match(/[+-]\d+:\d+/);
-                        const [hours, minutes] = match[0]
-                            .split(':')
-                            .map(Number);
-                        const totalMinutes =
-                            hours * 60 + Math.sign(hours) * minutes;
-                        return totalMinutes;
-                    } catch (e) {
-                        // if there is any error in parsing the timezone offset return GMT offset
-                        console.debug('Timezone not avaiable in team settings');
-                        return 0;
-                    }
-                };
-
-                const now = new Date();
-                const currentDay = now.getDay();
-                const offset = now.getTimezoneOffset();
-                const gmtTime = new Date(now.getTime() + offset * 60000);
-                // const timezoneOffset = parseTimezoneOffset(team.timezone);
-                const adjustedTime = new Date(gmtTime.getTime());
-                const businessHours = team.businessHourMap[currentDay];
-                if (!businessHours) {
-                    // No business hours for the current day
-                    return false;
-                }
                 try {
-                    const [start, end] = businessHours
-                        .split('-')
-                        .map((time) => convertToMinutes(time));
-                    const currentTimeInMinutes =
-                        adjustedTime.getHours() * 60 +
-                        adjustedTime.getMinutes();
-                    // Check if the current time is within the business hours range
-                    if (start <= end) {
-                        return (
-                            currentTimeInMinutes >= start &&
-                            currentTimeInMinutes <= end
-                        );
-                    } else {
-                        // Handle case where the business hours wrap around midnight (e.g., 2200-0400)
-                        return (
-                            currentTimeInMinutes >= start ||
-                            currentTimeInMinutes <= end
-                        );
+                    if (
+                        !team ||
+                        !team.businessHourMap ||
+                        Object.keys(team.businessHourMap || {}) === 0 ||
+                        !team.timezone
+                    ) {
+                        return true;
                     }
+                    const userTimezone = Intl.DateTimeFormat().resolvedOptions()
+                        .timeZone;
+                    const userTimestamp = new Date().toISOString().slice(0, 19);
+
+                    // Convert user's message time to the agent's timezone
+                    const userMessageTimeInAgentTz = moment
+                        .tz(userTimestamp, userTimezone)
+                        .tz(team.timezone);
+
+                    const agentDay = userMessageTimeInAgentTz.day();
+
+                    // Check if business hours exist for this day
+                    if (!team.businessHourMap.hasOwnProperty(agentDay)) {
+                        return false;
+                    }
+
+                    const [start, end] = team.businessHourMap[agentDay]
+                        .split('-')
+                        .map(
+                            (time) =>
+                                `${time.substring(0, 2)}:${time.substring(2)}`
+                        );
+
+                    const startOfDay = moment.tz(
+                        `${userMessageTimeInAgentTz.format(
+                            'YYYY-MM-DD'
+                        )} ${start}`,
+                        'YYYY-MM-DD HH:mm',
+                        team.timezone
+                    );
+                    const endOfDay = moment.tz(
+                        `${userMessageTimeInAgentTz.format(
+                            'YYYY-MM-DD'
+                        )} ${end}`,
+                        'YYYY-MM-DD HH:mm',
+                        team.timezone
+                    );
+
+                    return userMessageTimeInAgentTz.isBetween(
+                        startOfDay,
+                        endOfDay,
+                        'minute',
+                        '[]'
+                    );
                 } catch (e) {
                     // if there is any error in formatting the business hours allow the user to chat
                     console.error('Error while checking business hours', e);
@@ -4217,7 +4212,12 @@ const firstVisibleMsg = {
                                     String(CURRENT_GROUP_DATA.teamId)
                             );
                         }
+                        const isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
+                            INIT_APP_DATA
+                        );
+
                         if (
+                            isBusinessHourAvailable &&
                             teamSettings &&
                             !_this.isWithinBusinessHours(teamSettings)
                         ) {
