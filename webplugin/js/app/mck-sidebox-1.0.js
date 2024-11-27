@@ -1367,6 +1367,7 @@ const firstVisibleMsg = {
         };
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
+                kmLocalStorage.removeItemFromLocalStorage("feedbackGroups");
                 window.Applozic.ALSocket.disconnect();
                 appOptionSession.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
@@ -5062,6 +5063,11 @@ const firstVisibleMsg = {
                     'km-csat-close-button'
                 ).onclick = function (e) {
                     e.preventDefault();
+
+                    let feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
+                    feedbackGroups[CURRENT_GROUP_DATA.tabId] = true; 
+                    kmLocalStorage.setItemToLocalStorage("feedbackGroups", feedbackGroups);
+
                     KommunicateUI.showClosedConversationBanner(false);
                 };
 
@@ -6461,6 +6467,10 @@ const firstVisibleMsg = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
+                        let feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
+                        feedbackGroups[CURRENT_GROUP_DATA.tabId] = false; 
+                        kmLocalStorage.setItemToLocalStorage("feedbackGroups", feedbackGroups);
+
                         if (kommunicate._globals.zendeskChatSdkKey) {
                             zendeskChatService.handleUserMessage(messagePxy);
                         }
