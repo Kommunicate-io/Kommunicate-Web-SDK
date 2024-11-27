@@ -23,7 +23,7 @@ exports.THIRD_PARTY_SCRIPTS = [
     // path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
     // path.resolve(__dirname, 'lib/js/intl-tel-lib.js'),
     path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js'),
-    path.resolve(__dirname, 'lib/js/moment-js.min.2.10.6.js'),
+    path.resolve(__dirname, 'lib/js/moment-js.2.29.4.min.js'),
     path.resolve(__dirname, 'lib/js/moment-timezone.0.5.23.min.js'),
 ];
 
