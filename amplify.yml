@@ -17,8 +17,6 @@ frontend:
                 - if [ "${BUILD_ENV}" = "release" ]; then npm run build-release; fi
                 # Kommunicate Staging
                 - if [ "${BUILD_ENV}" = "staging" ]; then npm run build-staging; fi
-                # Kommunicate Prod-beta
-                - if [ "${BUILD_ENV}" = "prod-beta" ]; then npm run build-beta; fi
                 # Kommunicate Prod
                 - if [ "${BUILD_ENV}" = "prod" ]; then npm run build-prod; fi
                  # Kommunicate Enterprise
