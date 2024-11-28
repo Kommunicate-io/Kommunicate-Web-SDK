@@ -1,9 +1,8 @@
-
-.km-offline-msg{
-    color: #1243A3;
+.km-offline-msg {
+    color: #1243a3;
     position: relative;
     z-index: 999;
-    background: #D6E4FF;
+    background: #d6e4ff;
     -webkit-box-align: center;
     align-items: center;
     -webkit-box-pack: center;
@@ -12,11 +11,11 @@
     padding: 12px 16px;
     font-size: 14px;
 }
-.km-churn-banner{
-    color:#886026;
+.km-churn-banner {
+    color: #886026;
     position: relative;
     z-index: 999;
-    background:#fbd683;
+    background: #fbd683;
     -webkit-box-align: center;
     padding: 12px 16px;
     font-size: 14px;
@@ -90,8 +89,8 @@
 .ql-editor h4,
 .ql-editor h5,
 .ql-editor h6 {
-	margin: 0;
-	margin-bottom: 10px;
+    margin: 0;
+    margin-bottom: 10px;
     padding: 0;
     counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8
         list-9;
@@ -105,27 +104,27 @@
     list-style-type: none;
 }
 .ql-editor ul > li::before {
-    content: "\2022";
+    content: '\2022';
 }
-.ql-editor ul[data-checked="true"],
-.ql-editor ul[data-checked="false"] {
+.ql-editor ul[data-checked='true'],
+.ql-editor ul[data-checked='false'] {
     pointer-events: none;
 }
-.ql-editor ul[data-checked="true"] > li *,
-.ql-editor ul[data-checked="false"] > li * {
+.ql-editor ul[data-checked='true'] > li *,
+.ql-editor ul[data-checked='false'] > li * {
     pointer-events: all;
 }
-.ql-editor ul[data-checked="true"] > li::before,
-.ql-editor ul[data-checked="false"] > li::before {
+.ql-editor ul[data-checked='true'] > li::before,
+.ql-editor ul[data-checked='false'] > li::before {
     color: #777;
     cursor: pointer;
     pointer-events: all;
 }
-.ql-editor ul[data-checked="true"] > li::before {
-    content: "\2611";
+.ql-editor ul[data-checked='true'] > li::before {
+    content: '\2611';
 }
-.ql-editor ul[data-checked="false"] > li::before {
-    content: "\2610";
+.ql-editor ul[data-checked='false'] > li::before {
+    content: '\2610';
 }
 .ql-editor li::before {
     display: inline-block;
@@ -149,13 +148,13 @@
     counter-increment: list-num;
 }
 .ql-editor ol li:before {
-    content: counter(list-num, decimal) ". ";
+    content: counter(list-num, decimal) '. ';
 }
 .ql-editor ol li.ql-indent-1 {
     counter-increment: list-1;
 }
 .ql-editor ol li.ql-indent-1:before {
-    content: counter(list-1, lower-alpha) ". ";
+    content: counter(list-1, lower-alpha) '. ';
 }
 .ql-editor ol li.ql-indent-1 {
     counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
@@ -164,7 +163,7 @@
     counter-increment: list-2;
 }
 .ql-editor ol li.ql-indent-2:before {
-    content: counter(list-2, lower-roman) ". ";
+    content: counter(list-2, lower-roman) '. ';
 }
 .ql-editor ol li.ql-indent-2 {
     counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
@@ -173,7 +172,7 @@
     counter-increment: list-3;
 }
 .ql-editor ol li.ql-indent-3:before {
-    content: counter(list-3, decimal) ". ";
+    content: counter(list-3, decimal) '. ';
 }
 .ql-editor ol li.ql-indent-3 {
     counter-reset: list-4 list-5 list-6 list-7 list-8 list-9;
@@ -182,7 +181,7 @@
     counter-increment: list-4;
 }
 .ql-editor ol li.ql-indent-4:before {
-    content: counter(list-4, lower-alpha) ". ";
+    content: counter(list-4, lower-alpha) '. ';
 }
 .ql-editor ol li.ql-indent-4 {
     counter-reset: list-5 list-6 list-7 list-8 list-9;
@@ -191,7 +190,7 @@
     counter-increment: list-5;
 }
 .ql-editor ol li.ql-indent-5:before {
-    content: counter(list-5, lower-roman) ". ";
+    content: counter(list-5, lower-roman) '. ';
 }
 .ql-editor ol li.ql-indent-5 {
     counter-reset: list-6 list-7 list-8 list-9;
@@ -200,7 +199,7 @@
     counter-increment: list-6;
 }
 .ql-editor ol li.ql-indent-6:before {
-    content: counter(list-6, decimal) ". ";
+    content: counter(list-6, decimal) '. ';
 }
 .ql-editor ol li.ql-indent-6 {
     counter-reset: list-7 list-8 list-9;
@@ -209,7 +208,7 @@
     counter-increment: list-7;
 }
 .ql-editor ol li.ql-indent-7:before {
-    content: counter(list-7, lower-alpha) ". ";
+    content: counter(list-7, lower-alpha) '. ';
 }
 .ql-editor ol li.ql-indent-7 {
     counter-reset: list-8 list-9;
@@ -218,7 +217,7 @@
     counter-increment: list-8;
 }
 .ql-editor ol li.ql-indent-8:before {
-    content: counter(list-8, lower-roman) ". ";
+    content: counter(list-8, lower-roman) '. ';
 }
 .ql-editor ol li.ql-indent-8 {
     counter-reset: list-9;
@@ -227,7 +226,7 @@
     counter-increment: list-9;
 }
 .ql-editor ol li.ql-indent-9:before {
-    content: counter(list-9, decimal) ". ";
+    content: counter(list-9, decimal) '. ';
 }
 .ql-editor .ql-indent-1:not(.ql-direction-rtl) {
     padding-left: 3em;
@@ -408,7 +407,7 @@
 }
 .ql-snow .ql-editor code:before,
 .ql-snow .ql-editor code:after {
-    content: "\A0";
+    content: '\A0';
     letter-spacing: -2px;
 }
 .ql-snow .ql-editor pre.ql-syntax {
@@ -428,7 +427,8 @@
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
-    background-color: transparent;    background-color: #fff;
+    background-color: transparent;
+    background-color: #fff;
     border: 1px solid #dee2e6;
 }
 

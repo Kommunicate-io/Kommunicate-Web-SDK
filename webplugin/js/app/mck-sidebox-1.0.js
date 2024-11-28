@@ -607,6 +607,7 @@ const firstVisibleMsg = {
         var zendeskChatService =
             (appOptions.zendeskChatSdkKey && new ZendeskChatService()) || {};
         var kmNavBar = new KmNavBar(mckMessageLayout);
+        const answerFeedbackService = new AnswerFeedback(appOptions);
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckNotificationTone = null;
         var mckChatPopupNotificationTone = null;
@@ -705,12 +706,12 @@ const firstVisibleMsg = {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
         };
 
-        _this.churnCustomerWidgetChanges = function (){
+        _this.churnCustomerWidgetChanges = function () {
             mckMessageService.openChatbox();
             $applozic('.mck-box-form').removeClass('n-vis');
             $applozic('#mck-contact-loading').addClass('n-vis');
             $applozic('#mck-contacts-content').addClass('n-vis');
-        }
+        };
 
         _this.mckLaunchSideboxChat = function () {
             kommunicateCommons.setWidgetStateOpen(true);
@@ -722,7 +723,7 @@ const firstVisibleMsg = {
                 Kommunicate.setDefaultIframeConfigForOpenChat(POPUP_WIDGET);
             KommunicateUI.showChat();
             $applozic('#mck-away-msg-box').removeClass('vis').addClass('n-vis');
-            if(appOptions.appSettings.currentActivatedPlan == "churn"){
+            if (appOptions.appSettings.currentActivatedPlan == 'churn') {
                 return _this.churnCustomerWidgetChanges();
             }
             mckMessageService.loadConversationWithAgents(
@@ -836,6 +837,7 @@ const firstVisibleMsg = {
             onTypingStatus: function (resp) {
                 mckInitializeChannel.onTypingStatus(resp);
             },
+            onFeedbackClick: function (resp) {},
         };
 
         _this.loadConversationWithAgent = function (params) {
@@ -3570,7 +3572,7 @@ const firstVisibleMsg = {
 
                 modal.style.display = 'block';
                 captionText.innerHTML = title ? title : '';
-                document.addEventListener("keyup", closeWindowOnEscape);
+                document.addEventListener('keyup', closeWindowOnEscape);
             });
 
             parent.document.getElementById(
@@ -3579,17 +3581,17 @@ const firstVisibleMsg = {
                 parent.document.getElementById(
                     'km-fullscreen-image-modal'
                 ).style.display = 'none';
-                document.removeEventListener("click", closeWindowOnEscape);
+                document.removeEventListener('click', closeWindowOnEscape);
             };
 
             function closeWindowOnEscape(event) {
-                if(event.keyCode == 27) {
+                if (event.keyCode == 27) {
                     parent.document.getElementById(
                         'km-fullscreen-image-modal'
                     ).style.display = 'none';
                 }
-                  document.removeEventListener("keyup", closeWindowOnEscape);
-                }
+                document.removeEventListener('keyup', closeWindowOnEscape);
+            }
 
             $applozic(w).on('resize', function () {
                 if ($mck_file_menu.css('display') === 'block') {
@@ -8410,6 +8412,7 @@ const firstVisibleMsg = {
                 '<div class="mck-msg-box-rich-text-container notranslate ${kmRichTextMarkupVisibility} ${containerType}">' +
                 '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>' +
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><span class="mck-created-at-time notranslate">${createdAtTimeExpr}</span> <span class="mck-message-status notranslate" aria-hidden="${msgStatusAriaTag}"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status notranslate" focusable="false" aria-hidden="true" ><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed</p></span></div>' +
+                '<div class="km-answer-feedback" data-feedbackMsgKey="${replyIdExpr}" data-assigneeKey="${groupAssigneeKey}">{{html feedbackMsgExpr}}</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
@@ -9716,6 +9719,22 @@ const firstVisibleMsg = {
                 const fieldsAlreadyProcessd = firstVisibleMsg.processed;
                 alUserService.loadUserProfile(msg.to);
 
+                if (
+                    floatWhere === 'mck-msg-right' ||
+                    floatWhere === 'mck-msg-left'
+                ) {
+                    const msgKeyMapLength =
+                        answerFeedbackService.msgKeyMap.length - 1;
+
+                    answerFeedbackService.msgMapData = {
+                        msg,
+                        floatWhere,
+                        previousSibling:
+                            answerFeedbackService.msgMap[
+                                answerFeedbackService.msgKeyMap[msgKeyMapLength]
+                            ] || null,
+                    };
+                }
                 // only for the custom input payload
                 if (msgThroughListAPI && !firstVisibleMsg.processed) {
                     firstVisibleMsg.processed = true;
@@ -9892,6 +9911,15 @@ const firstVisibleMsg = {
                 //     return ;
                 // }
 
+                const groupAssigneeKey =
+                    contact.metadata.CONVERSATION_ASSIGNEE_KEY;
+
+                const showHelpfulFeedback = answerFeedbackService.handleFeedbackBtnVisible(
+                    msg,
+                    floatWhere,
+                    contact
+                );
+
                 var msgList = [
                     {
                         kmAttchMsg: kmAttchMsg,
@@ -9958,6 +9986,14 @@ const firstVisibleMsg = {
                         progressMeter: progressMeter,
                         botMsgDelayExpr: botMessageDelayClass,
                         conversationTransferred: conversationTransferred,
+                        groupAssigneeKey,
+                        feedbackClass: showHelpfulFeedback ? 'vis' : 'n-vis',
+                        feedbackMsgExpr: showHelpfulFeedback
+                            ? answerFeedbackService.getFeedbackTemplate({
+                                  msg,
+                                  assigneeKey: groupAssigneeKey,
+                              })
+                            : null,
                     },
                 ];
 
@@ -9976,6 +10012,11 @@ const firstVisibleMsg = {
                     msg.metadata.obsolete && msg.metadata.obsolete == 'true';
                 const hasCustomFields = msg.metadata.KM_FIELD && !hasObsolete;
 
+                showHelpfulFeedback &&
+                    answerFeedbackService.attachEventListeners({
+                        msg,
+                        assigneeKey: groupAssigneeKey,
+                    });
                 if (
                     Kommunicate._globals.disableFormPostSubmit &&
                     msg.metadata
@@ -10477,9 +10518,28 @@ const firstVisibleMsg = {
                         $textMessage.append($normalTextMsg);
                     }
                 } else {
-                    $textMessage.html(emoji_template);
+                    let htmlRichMessage = false;
+
+                    if (
+                        msg.contentType ==
+                            KommunicateConstants.MESSAGE_CONTENT_TYPE
+                                .TEXT_HTML &&
+                        KommunicateUtils.customElementSupported()
+                    ) {
+                        const kmElement = document.createElement(
+                            'mck-html-rich-message'
+                        );
+                        kmElement._shadow.innerHTML = emoji_template;
+                        $textMessage.append(kmElement);
+
+                        htmlRichMessage = true;
+                    } else {
+                        $textMessage.html(emoji_template);
+                    }
+
                     $textMessage.linkify({
                         target: '_blank',
+                        htmlRichMessage,
                     });
                 }
                 if (richText) {
@@ -12506,7 +12566,7 @@ const firstVisibleMsg = {
                 ) {
                     return;
                 }
-                
+
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
@@ -14247,17 +14307,19 @@ const firstVisibleMsg = {
                             Auto human handoff check is removed from the below code if something breaks regarding the same, 
                             please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
                         */
+                        const res = data.data[0];
                         CURRENT_GROUP_DATA.CHAR_CHECK =
-                            data.data[0] &&
-                            data.data[0].aiPlatform ==
-                                KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
+                            res?.aiPlatform ==
+                            KommunicateConstants.BOT_PLATFORM.DIALOGFLOW;
                         !CURRENT_GROUP_DATA.CHAR_CHECK &&
                             _this.removeWarningsFromTextBox();
                         CURRENT_GROUP_DATA.CHAR_CHECK &&
                             _this.disableSendButton(true);
                         CURRENT_GROUP_DATA.TOKENIZE_RESPONSE =
-                            data.data[0]?.generativeResponse || false;
+                            res?.generativeResponse || false;
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
+                        CURRENT_GROUP_DATA.answerFeedback =
+                            res?.answerFeedback || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;

@@ -288,6 +288,10 @@ KommunicateConstants = {
     },
     MINIMIZE_ICON:
         '<svg width="10" height="7" viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.77083 1L5.00417 4.23333L8.2375 1C8.5625 0.675 9.0875 0.675 9.4125 1C9.7375 1.325 9.7375 1.85 9.4125 2.175L5.5875 6C5.2625 6.325 4.7375 6.325 4.4125 6L0.5875 2.175C0.2625 1.85 0.2625 1.325 0.5875 1C0.9125 0.683334 1.44583 0.675 1.77083 1Z" fill="white"/></svg>',
+    ANSWER_FEEDBACK: {
+        HELPFUL: 1,
+        NOT_HELPFUL: 0,
+    },
 };
 
 /**
@@ -501,5 +505,29 @@ KommunicateUtils = {
         }
 
         await applozicSideBox.loadResourceAsync(THIRD_PARTY_SCRIPTS.crypto.js);
+    },
+    sendErrorToSentry: function (error) {
+        if (!window.Sentry) return;
+        Sentry.captureException(error);
+    },
+    lazyLoadSentryIntegration: async function (integration) {
+        if(!window.Sentry) {
+            console.debug('Sentry not available');
+            return;
+        }
+        try {
+            const integrationToAdd = await Sentry.lazyLoadIntegration(
+                integration
+            );
+            Sentry.addIntegration(integrationToAdd());
+        } catch (err) {
+            console.error('Error while loading sentry integration', err);
+        }
+    },
+    customElementSupported: function () {
+        return (
+            'customElements' in window &&
+            window.customElements.get('mck-html-rich-message')
+        );
     },
 };

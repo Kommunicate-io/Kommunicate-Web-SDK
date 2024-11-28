@@ -220,6 +220,10 @@ class KMLabel {
                 },
                 TALK_TO_HUMAN: 'Talk to human',
             },
+            'answerFeedback': {
+                helpful: 'Helpful',
+                notHelpful: 'Not Helpful',
+            },
         };
     }
     setLabels(MCK_LABELS = {}) {

@@ -428,6 +428,7 @@ $applozic.extend(true, Kommunicate, {
         }
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         kmCookieStorage.deleteUserCookiesOnLogout();
+        window.Sentry && window.Sentry.close()
         parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
@@ -983,7 +984,7 @@ $applozic.extend(true, Kommunicate, {
                 ? result.results[0].formatted_address
                 : 'LOCATION_NOT_FOUND';
         } catch (error) {
-            console.error('Error fetching location', error);
+            console.debug('Error while fetching location', error);
             return 'PERMISSION_DENIED';
         }
     },

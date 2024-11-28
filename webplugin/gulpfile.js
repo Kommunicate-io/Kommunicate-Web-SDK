@@ -10,17 +10,20 @@ const path = require('path');
 const rename = require('gulp-rename');
 const gulpif = require('gulp-if');
 const stripComments = require('gulp-strip-comments');
-
+const sourcemaps = require('gulp-sourcemaps');
+const SentryCli = require('@sentry/cli');
+const clean = require('gulp-clean');
+const tap = require('gulp-tap');
 const fs = require('fs');
 const {
     PLUGIN_CSS_FILES,
     PLUGIN_BUNDLE_FILES,
     PLUGIN_JS_FILES,
     THIRD_PARTY_SCRIPTS,
-    SENTRY_SCRIPT,
     version,
     THIRD_PARTY_FILE_INFO,
     getDynamicLoadFiles,
+    KM_RELEASE_BRANCH,
 } = require('./bundleFiles');
 const buildDir = path.resolve(__dirname, 'build');
 const config = require('../server/config/config-env');
@@ -44,29 +47,22 @@ PLUGIN_SETTING.dashboardUrl =
 const BUILD_URL = MCK_STATIC_PATH + '/build';
 
 let env = config.getEnvId() !== 'development';
+const SENTRY_ENABLED = MCK_THIRD_PARTY_INTEGRATION.sentry.enabled;
+
+const cli = new SentryCli(null, {
+    authToken: MCK_THIRD_PARTY_INTEGRATION.sentry.AUTH_TOKEN,
+    org: MCK_THIRD_PARTY_INTEGRATION.sentry.ORG,
+    project: MCK_THIRD_PARTY_INTEGRATION.sentry.PROJECT,
+    sourcemaps: {
+        rewrite: true,
+        ignore_file: ['node_modules'],
+    },
+});
 
 let pathToResource = !env ? BUILD_URL : MCK_CONTEXT_PATH + '/resources';
 let resourceLocation = env
     ? path.resolve(__dirname, 'build/resources')
     : buildDir;
-
-const removeExistingFile = function (dirPath) {
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath);
-    } else {
-        try {
-            var files = fs.readdirSync(dirPath);
-        } catch (e) {
-            return;
-        }
-        files &&
-            files.map((file) => {
-                if (fs.statSync(dirPath + '/' + file).isFile()) {
-                    fs.unlinkSync(dirPath + '/' + file);
-                }
-            });
-    }
-};
 
 const generateResourceFolder = () => {
     if (env) {
@@ -89,10 +85,6 @@ const generateThirdPartyJSFiles = () => {
     );
 
     let inputScripts = THIRD_PARTY_SCRIPTS;
-    if (MCK_THIRD_PARTY_INTEGRATION.sentry.enabled) {
-        console.log('adding sentry script');
-        inputScripts = [...inputScripts, ...SENTRY_SCRIPT];
-    }
 
     return gulp
         .src(inputScripts)
@@ -105,28 +97,58 @@ const generateThirdPartyJSFiles = () => {
 };
 
 const generateCSSFiles = () => {
-    return gulp
-        .src(PLUGIN_CSS_FILES)
-        .pipe(
-            cleanCss({
-                advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
-                aggressiveMerging: true, // set to false to disable aggressive merging of properties.
-                compatibility: 'ie9', // To add vendor prefixes for IE8+
+    return (
+        gulp
+            .src(PLUGIN_CSS_FILES)
+            // .pipe(sourcemaps.init())
+            .pipe(
+                cleanCss({
+                    advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
+                    aggressiveMerging: true, // set to false to disable aggressive merging of properties.
+                    compatibility: 'ie9', // To add vendor prefixes for IE8+
+                })
+            ) // Minify and optimize CSS
+            .pipe(concat(`kommunicate.${version}.min.css`))
+            // .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest(resourceLocation))
+            .on('end', () => {
+                console.log(
+                    `kommunicate.${version}.min.css combined successfully`
+                );
             })
-        ) // Minify and optimize CSS
-        .pipe(concat(`kommunicate.${version}.min.css`))
-        .pipe(gulp.dest(resourceLocation))
-        .on('end', () => {
-            console.log(`kommunicate.${version}.min.css combined successfully`);
-        });
+    );
 };
 
 const generatePluginJSFiles = () => {
+    const RELATIVE_PATHS = [];
     return gulp
         .src(PLUGIN_JS_FILES)
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(
+            tap(function (file) {
+                const relativePath = file.path.replace(
+                    process.cwd() + path.sep,
+                    ''
+                );
+
+                RELATIVE_PATHS.push(relativePath);
+            })
+        )
         .pipe(babel()) // Run Babel
         .pipe(concat(`kommunicate-plugin.min.js`))
         .pipe(terser(TERSER_CONFIG))
+        .pipe(
+            sourcemaps.write('./', {
+                sourceRoot: '',
+                includeContent: true,
+                debug: true,
+                sourceMappingURLPrefix: '.',
+                mapFile: function (mapFilePath) {
+                    return mapFilePath.replace('.js.map', '.map');
+                },
+            })
+        )
+
         .pipe(gulp.dest(`${buildDir}`)) // Destination directory
         .on('end', () => {
             console.log(`kommunicate-plugin.min.js combined successfully`);
@@ -137,7 +159,19 @@ const combineJsFiles = async () => {
     var paths = PLUGIN_BUNDLE_FILES;
 
     gulp.src(paths)
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(concat(`kommunicate.${version}.min.js`))
+        .pipe(
+            sourcemaps.write('./', {
+                sourceRoot: '',
+                includeContent: true,
+                debug: true,
+                sourceMappingURLPrefix: '.',
+                mapFile: function (mapFilePath) {
+                    return mapFilePath.replace('.js.map', '.map');
+                },
+            })
+        )
         .pipe(gulp.dest(resourceLocation))
         .on('end', () => {
             console.log(`kommunicate.${version}.js combined successfully`);
@@ -160,12 +194,15 @@ const minifyHtml = (paths, outputDir, fileName) => {
 };
 
 const minifyJS = (path, dir, fileName, shouldMinify, callback) => {
+    console.log(path, dir);
     return gulp
         .src(path)
         .pipe(stripComments())
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(gulpif(shouldMinify, babel()))
         .pipe(gulpif(shouldMinify, terser(TERSER_CONFIG)))
         .pipe(concat(fileName))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(`${dir}`)) // Destination directory
         .on('end', () => {
             console.log(`${fileName} generated successfully`);
@@ -320,7 +357,14 @@ const generateFilesByVersion = (location) => {
                 .replace(':PRODUCT_ID', 'kommunicate')
                 .replace(':PLUGIN_SETTINGS', JSON.stringify(PLUGIN_SETTING))
                 .replace(':KM_RELEASE_HASH', version)
-                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts);
+                .replace(':THIRD_PARTY_SCRIPTS', thirdPartyScripts)
+                .replace(
+                    ':MCK_ENV_DETAILS',
+                    JSON.stringify({
+                        BRANCH: KM_RELEASE_BRANCH,
+                        ENVIRONMENT: process.env.NODE_ENV,
+                    })
+                );
 
             for (var i = 0; i < pluginVersions.length; i++) {
                 var data = plugin.replace(
@@ -369,11 +413,6 @@ const copyFileToBuild = (src, dest) => {
     });
 };
 
-gulp.task('removeExistingFile', function (done) {
-    removeExistingFile(buildDir);
-    done && done();
-});
-
 gulp.task('generateResourceFolder', function (done) {
     generateResourceFolder();
     done();
@@ -397,15 +436,76 @@ gulp.task('generateBuildFiles', function (done) {
     done();
 });
 
+async function uploadSourceMaps(done) {
+    if (!SENTRY_ENABLED) {
+        done();
+        return;
+    }
+
+    try {
+        // Initialize a new release in Sentry
+        await cli.releases.new(KM_RELEASE_BRANCH);
+
+        // Upload source maps to the release
+        await cli.releases.uploadSourceMaps(KM_RELEASE_BRANCH, {
+            include: [buildDir],
+            rewrite: true,
+            sourceMapPath: buildDir,
+            ext: ['.js', '.map'], // Explicitly specify file extensions
+            stripPrefix: [buildDir], // Remove build directory prefix
+            stripCommonPrefix: true,
+            validate: true, // Validate source maps
+            debug: true, // Add verbose Sentry CLI logging
+        });
+
+        // Finalize the release
+        await cli.releases.finalize(KM_RELEASE_BRANCH);
+
+        console.log('Source maps successfully uploaded to Sentry.');
+        done();
+    } catch (error) {
+        console.error('Failed to upload source maps:', error);
+        done(error);
+    }
+}
+// Task to upload source maps to Sentry
+gulp.task('upload-sourcemaps', async function (done) {
+    try {
+        await uploadSourceMaps(done);
+        done();
+    } catch (error) {
+        console.error('Failed to upload source maps:', error);
+        done(error);
+    }
+});
+
+gulp.task('cleanFolder', function () {
+    if (!fs.existsSync(buildDir)) {
+        console.log('No build folder exist, creating the build folder');
+
+        fs.mkdirSync(buildDir);
+    }
+
+    console.log('cleaning build folder');
+
+    return gulp
+        .src(buildDir + '/*', { read: false })
+        .pipe(clean())
+        .on('end', () => {
+            console.log('cleaned build folder');
+        });
+});
+
 gulp.task(
     'default',
     gulp.series(
+        'cleanFolder',
         'sass',
-        'removeExistingFile',
         'generateResourceFolder',
         'generateThirdPartyJSFiles',
         'generateCSSFiles',
         'generatePluginJSFiles',
-        'generateBuildFiles'
+        'generateBuildFiles',
+        'upload-sourcemaps'
     )
 );
