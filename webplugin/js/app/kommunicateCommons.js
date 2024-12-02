@@ -39,14 +39,9 @@ function KommunicateCommons() {
                 return false;
             }
 
-            const enterprisePlans = [
-                KommunicateConstants.PRICING_PACKAGE.BUSINESS_MONTHLY_V7,
-                KommunicateConstants.PRICING_PACKAGE.BUSINESS_YEARLY_V7,
-                KommunicateConstants.PRICING_PACKAGE.BUSINESS_MONTHLY_V8,
-                KommunicateConstants.PRICING_PACKAGE.BUSINESS_YEARLY_V8,
-            ];
-
-            return enterprisePlans.includes(data.pricingPackage);
+            return KommunicateConstants.BUSINESS_HOURS_PLANS.has(
+                Kommunicate._globals.appSettings.currentActivatedPlan
+            );
         } catch (error) {
             console.debug('Error in finding plan: ', error);
         }

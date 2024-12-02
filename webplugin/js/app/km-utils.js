@@ -29,10 +29,6 @@ KommunicateConstants = {
         EARLY_BIRD_MONTHLY: 107,
         EARLY_BIRD_YEARLY: 108,
         TRIAL: 111,
-        BUSINESS_MONTHLY_V7: 124,
-        BUSINESS_YEARLY_V7: 125,
-        BUSINESS_MONTHLY_V8: 130,
-        BUSINESS_YEARLY_V8: 131,
     },
     BOT_PLATFORM: {
         DIALOGFLOW: 'dialogflow',
@@ -296,6 +292,16 @@ KommunicateConstants = {
         HELPFUL: 1,
         NOT_HELPFUL: 0,
     },
+    BUSINESS_HOURS_PLANS: new Set([
+        'business_monthly_v7',
+        'business_yearly_v7',
+        'business_monthly_v7_inr',
+        'business_yearly_v7_inr',
+        'business_monthly_v8',
+        'business_yearly_v8',
+        'business_monthly_v8_inr',
+        'business_yearly_v8_inr',
+    ]),
 };
 
 /**
