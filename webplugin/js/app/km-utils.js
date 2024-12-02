@@ -293,6 +293,7 @@ KommunicateConstants = {
         NOT_HELPFUL: 0,
     },
     BUSINESS_HOURS_PLANS: new Set([
+        'trial',
         'business_monthly_v7',
         'business_yearly_v7',
         'business_monthly_v7_inr',
