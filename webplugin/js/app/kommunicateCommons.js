@@ -32,6 +32,20 @@ function KommunicateCommons() {
             data.pricingPackage === KommunicateConstants.PRICING_PACKAGE.STARTUP
         );
     };
+    _this.isEnterprisePlan = function (data) {
+        try {
+            const isExpired = _this.isKommunicatePlanExpired(data);
+            if (isExpired) {
+                return false;
+            }
+
+            return KommunicateConstants.BUSINESS_HOURS_PLANS.has(
+                Kommunicate._globals.appSettings.currentActivatedPlan
+            );
+        } catch (error) {
+            console.debug('Error in finding plan: ', error);
+        }
+    };
 
     _this.isKommunicatePlanExpired = function (data) {
         return _this.getDaysCount() > 31 && _this.isStartupPlan(data);
