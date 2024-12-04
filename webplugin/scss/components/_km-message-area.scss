@@ -15,10 +15,10 @@
     max-width: 70%;
     @include prefix(max-width, calc(85% - 58px), moz);
 
-    & ~ .km-answer-feedback {
-        max-width: 70%;
-        @include prefix(max-width, calc(85% - 58px), moz);
-    }
+    // & ~ .km-answer-feedback {
+    //     max-width: 70%;
+    //     @include prefix(max-width, calc(85% - 58px), moz);
+    // }
 }
 
 .mck-msg-box {
@@ -36,6 +36,9 @@
     height: 14px;
 }
 .km-answer-feedback {
+    position: absolute;
+    bottom: 0;
+    right: 25%;
     display: flex !important;
     justify-content: flex-end;
     align-items: center;
