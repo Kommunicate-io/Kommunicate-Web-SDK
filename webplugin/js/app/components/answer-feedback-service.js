@@ -148,11 +148,17 @@ class AnswerFeedback {
 
         if (!currentUser) return false;
 
+        // If valid(0 | 1) feedback is already given then don't show the feedback buttons
+        const validFeedback =
+            msg.metadata.hasOwnProperty('KM_ANSWER_FEEDBACK') &&
+            msg.metadata.KM_ANSWER_FEEDBACK !=
+                KommunicateConstants.ANSWER_FEEDBACK.DISCARD;
+
         if (
             currentUser.role !==
                 KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT ||
-            msg.metadata.hasOwnProperty('KM_ANSWER_FEEDBACK') ||
-            !msg.metadata.hasOwnProperty('KM_ANSWER_SOURCE')
+            validFeedback ||
+            !msg.metadata.hasOwnProperty('KM_ANSWER_SOURCE') // From where bot fetched the answer like the webpages, document urls
         ) {
             return false;
         }
@@ -171,12 +177,11 @@ class AnswerFeedback {
     attachEventListeners = (data) => {
         const { msg } = data;
 
+        const feedbackContainerSelector = `[data-msgKey="${msg.key}"] .km-answer-feedback`;
+        const stickyStickerSelector = `[data-msgKey="${msg.key}"] .mck-msg-feedback-sticker`;
+
         const msgContainer = document.querySelector(
             `[data-msgKey='${msg.key}']`
-        );
-
-        const feedbackContainer = msgContainer.querySelector(
-            '.km-answer-feedback'
         );
 
         const stickySticker = msgContainer.querySelector(
@@ -195,9 +200,23 @@ class AnswerFeedback {
 
             this.putIconInsideSticker(stickySticker, iconToAdd);
 
-            feedbackContainer.classList.add('n-vis');
-            stickySticker.classList.add('vis');
-            stickySticker.classList.remove('n-vis');
+            kommunicateCommons.modifyClassList(
+                {
+                    class: [feedbackContainerSelector],
+                },
+                'n-vis',
+                'vis',
+                true
+            );
+
+            kommunicateCommons.modifyClassList(
+                {
+                    class: [stickyStickerSelector],
+                },
+                'vis',
+                'n-vis',
+                true
+            );
 
             feedback ? this.helpFulOnClick(data) : this.notHelpFulOnClick(data);
         };
@@ -207,10 +226,28 @@ class AnswerFeedback {
         notHelpfulButton.addEventListener('click', setFeedback.bind(null, 0));
 
         stickySticker.addEventListener('click', (e) => {
-            feedbackContainer.classList.add('vis');
-            feedbackContainer.classList.remove('n-vis');
-            e.target.classList.add('n-vis');
-            stickySticker.classList.add('n-vis');
+            kommunicateCommons.modifyClassList(
+                {
+                    class: [feedbackContainerSelector],
+                },
+                'vis',
+                'n-vis',
+                true
+            );
+
+            kommunicateCommons.modifyClassList(
+                {
+                    class: [stickyStickerSelector],
+                },
+                'n-vis',
+                'vis',
+                true
+            );
+
+            this.handleOnFeedbackClick(
+                KommunicateConstants.ANSWER_FEEDBACK.DISCARD,
+                data
+            );
         });
     };
 

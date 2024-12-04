@@ -9964,14 +9964,16 @@ const firstVisibleMsg = {
                 const groupAssigneeKey =
                     contact.metadata.CONVERSATION_ASSIGNEE_KEY;
 
-                const showHelpfulFeedback = answerFeedbackService.handleFeedbackBtnVisible(
+                const showHelpfulButtons = answerFeedbackService.handleFeedbackBtnVisible(
                     msg,
                     floatWhere,
                     contact
                 );
-                const alreadyGivenFeedback = msg.metadata.hasOwnProperty(
-                    'KM_ANSWER_FEEDBACK'
-                );
+                const alreadyGivenFeedback =
+                    msg.metadata.hasOwnProperty('KM_ANSWER_FEEDBACK') &&
+                    msg.metadata.KM_ANSWER_FEEDBACK !=
+                        KommunicateConstants.ANSWER_FEEDBACK.DISCARD;
+
                 const feedbackSvg = alreadyGivenFeedback
                     ? KommunicateConstants.ANSWER_FEEDBACK_ICONS[
                           msg.metadata.KM_ANSWER_FEEDBACK
@@ -10045,7 +10047,7 @@ const firstVisibleMsg = {
                         botMsgDelayExpr: botMessageDelayClass,
                         conversationTransferred: conversationTransferred,
                         groupAssigneeKey,
-                        feedbackClass: showHelpfulFeedback ? 'vis' : 'n-vis',
+                        feedbackClass: showHelpfulButtons ? 'vis' : 'n-vis',
                         showFeedbackSticker: alreadyGivenFeedback
                             ? 'vis'
                             : 'n-vis',
