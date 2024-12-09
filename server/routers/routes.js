@@ -1,6 +1,5 @@
 const app = require('./../app');
 const express = require('express');
-const path = require('path');
 const webpluginController = require('../../webplugin/controller');
 //router declaration
 const home = express.Router();
@@ -23,9 +22,3 @@ home.get('/kommunicate.app', function (req, res) {
 home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 
 home.get('/chat', webpluginController.getPluginHTML)
-
-home.get('/robots.txt', function (req, res) {
-    console.log('req received at robots routes');
-    res.type('text/plain')
-    res.sendFile(path.join(__dirname, '../../robots.txt'));
-});
