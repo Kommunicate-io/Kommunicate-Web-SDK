@@ -228,8 +228,8 @@ const minifyCss = (path, dir, fileName) => {
 
 const generateBuildFiles = () => {
     if (env) {
-        // // generate robots.txt for build dir
-        // copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
+        // generate robots.txt for build dir
+        copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
 
         // Generate index.html for home route
         copyFileToBuild('template/index.html', `${buildDir}/index.html`);
