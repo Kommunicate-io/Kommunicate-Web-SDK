@@ -271,8 +271,6 @@ const generateBuildFiles = () => {
         'js/app/applozic.chat-6.2.6.min.js',
         `${buildDir}/applozic.chat-6.2.6.min.js`
     );
-    // generate robots.txt for build dir
-    copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
 
     // Generate mck-sidebox.html file for build folder.
     minifyHtml(
