@@ -228,6 +228,9 @@ const minifyCss = (path, dir, fileName) => {
 
 const generateBuildFiles = () => {
     if (env) {
+        // generate robots.txt for build dir
+        copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
+
         // Generate index.html for home route
         copyFileToBuild('template/index.html', `${buildDir}/index.html`);
 
@@ -268,6 +271,8 @@ const generateBuildFiles = () => {
         'js/app/applozic.chat-6.2.6.min.js',
         `${buildDir}/applozic.chat-6.2.6.min.js`
     );
+    // generate robots.txt for build dir
+    copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
 
     // Generate mck-sidebox.html file for build folder.
     minifyHtml(

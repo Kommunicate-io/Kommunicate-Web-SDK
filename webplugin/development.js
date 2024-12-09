@@ -156,6 +156,9 @@ const generateBuildFiles = () => {
         `${buildDir}/applozic.chat-6.2.6.min.js`
     );
 
+    // generate robots.txt for build dir
+    copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
+
     THIRD_PARTY_FILE_INFO.forEach((fileData) => {
         if (Array.isArray(fileData.source)) {
             generateFiles({
