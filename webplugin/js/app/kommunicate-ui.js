@@ -1767,11 +1767,9 @@ KommunicateUI = {
             group &&
             group.conversationStatus ==
                 Kommunicate.conversationHelper.status.WAITING;
-                let waitingListEndpoint = `/rest/ws/group/waiting/list${
-                    CURRENT_GROUP_DATA.teamId
-                        ? `?teamId=${CURRENT_GROUP_DATA.teamId}`
-                        : ''
-                }`;
+        const teamId = CURRENT_GROUP_DATA?.teamId;
+        if (!teamId) return;
+        let waitingListEndpoint = `/rest/ws/group/waiting/list?teamId=${teamId}`;
         window.Applozic.ALApiService.ajax({
             type: 'GET',
             url: MCK_BASE_URL + waitingListEndpoint,
@@ -1833,7 +1831,6 @@ KommunicateUI = {
                             'vis'
                         );
 
-                        
                         headerTabTitle = document.getElementById(
                             'mck-tab-title'
                         );
