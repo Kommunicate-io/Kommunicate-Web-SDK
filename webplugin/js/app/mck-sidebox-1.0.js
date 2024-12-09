@@ -16990,6 +16990,10 @@ const firstVisibleMsg = {
                         resp.message.createdAtTime
                     );
                 var messageType = resp.type;
+                const updatedTeamId = resp?.message?.metadata?.KM_ASSIGN_TEAM;
+                if (updatedTeamId) {
+                    CURRENT_GROUP_DATA.teamId = updatedTeamId;
+                }
                 if (
                     messageType === 'APPLOZIC_04' ||
                     messageType === 'MESSAGE_DELIVERED'
@@ -17340,8 +17344,6 @@ const firstVisibleMsg = {
                         mckMessageLayout.showPrevMsgPicAfterDeleteMsg();
                         // events.onMessageDeleted(eventResponse);
                     }
-                } else if(resp?.message?.metadata?.KM_ASSIGN_TEAM) {
-                        CURRENT_GROUP_DATA.teamId = resp.message.metadata.KM_ASSIGN_TEAM;
                 } else {
                     var message = resp.message;
                     // var userIdArray =
