@@ -4143,7 +4143,6 @@ const firstVisibleMsg = {
                         return true;
                     }
                     const userTimestamp = new Date().toISOString().slice(0, 19);
-
                     // Convert user's message time to the agent's timezone
                     const userMessageTimeInAgentTz = moment
                         .tz(userTimestamp, 'UTC')
@@ -4175,13 +4174,70 @@ const firstVisibleMsg = {
                         'YYYY-MM-DD HH:mm',
                         team.timezone
                     );
-                    const endOfDay = moment.tz(
+                    let endOfDay = moment.tz(
                         `${userMessageTimeInAgentTz.format(
                             'YYYY-MM-DD'
                         )} ${end}`,
                         'YYYY-MM-DD HH:mm',
                         team.timezone
                     );
+
+                    if (startOfDay.isAfter(endOfDay)) {
+                        // Move endOfDay to the next day
+                        endOfDay = endOfDay.clone().add(1, 'day');
+                    }
+
+                    // If the user's time is before the start of the current day's business hours
+                    if (userMessageTimeInAgentTz.isBefore(startOfDay)) {
+                        const previousDay = (agentDay - 1 + 7) % 7; // Get the previous day
+                        if (team.businessHourMap.hasOwnProperty(previousDay)) {
+                            const [prevStart, prevEnd] = team.businessHourMap[
+                                previousDay
+                            ]
+                                .split('-')
+                                .map(
+                                    (time) =>
+                                        `${time.substring(
+                                            0,
+                                            2
+                                        )}:${time.substring(2)}`
+                                );
+
+                            const prevStartOfDay = moment.tz(
+                                `${userMessageTimeInAgentTz
+                                    .clone()
+                                    .subtract(1, 'day')
+                                    .format('YYYY-MM-DD')} ${prevStart}`,
+                                'YYYY-MM-DD HH:mm',
+                                team.timezone
+                            );
+                            let prevEndOfDay = moment.tz(
+                                `${userMessageTimeInAgentTz
+                                    .clone()
+                                    .subtract(1, 'day')
+                                    .format('YYYY-MM-DD')} ${prevEnd}`,
+                                'YYYY-MM-DD HH:mm',
+                                team.timezone
+                            );
+
+                            if (prevStartOfDay.isAfter(prevEndOfDay)) {
+                                prevEndOfDay = prevEndOfDay
+                                    .clone()
+                                    .add(1, 'day');
+                            }
+
+                            if (
+                                userMessageTimeInAgentTz.isBetween(
+                                    prevStartOfDay,
+                                    prevEndOfDay,
+                                    'minute',
+                                    '[]'
+                                )
+                            ) {
+                                return true;
+                            }
+                        }
+                    }
 
                     return userMessageTimeInAgentTz.isBetween(
                         startOfDay,
@@ -5067,9 +5123,15 @@ const firstVisibleMsg = {
                 ).onclick = function (e) {
                     e.preventDefault();
 
-                    let feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
-                    feedbackGroups[CURRENT_GROUP_DATA.tabId] = true; 
-                    kmLocalStorage.setItemToLocalStorage("feedbackGroups", feedbackGroups);
+                    let feedbackGroups =
+                        kmLocalStorage.getItemFromLocalStorage(
+                            'feedbackGroups'
+                        ) || {};
+                    feedbackGroups[CURRENT_GROUP_DATA.tabId] = true;
+                    kmLocalStorage.setItemToLocalStorage(
+                        'feedbackGroups',
+                        feedbackGroups
+                    );
 
                     KommunicateUI.showClosedConversationBanner(false);
                 };
@@ -5233,7 +5295,7 @@ const firstVisibleMsg = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
-                        $mck_business_hours_box.addClass('n-vis')
+                        $mck_business_hours_box.addClass('n-vis');
                         kommunicateCommons.modifyClassList(
                             {
                                 id: ['km-widget-options'],
@@ -6426,7 +6488,7 @@ const firstVisibleMsg = {
                     });
                 }
 
-                $mck_business_hours_box.addClass('n-vis')
+                $mck_business_hours_box.addClass('n-vis');
 
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (
@@ -6470,9 +6532,15 @@ const firstVisibleMsg = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        let feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
-                        feedbackGroups[CURRENT_GROUP_DATA.tabId] = false; 
-                        kmLocalStorage.setItemToLocalStorage("feedbackGroups", feedbackGroups);
+                        let feedbackGroups =
+                            kmLocalStorage.getItemFromLocalStorage(
+                                'feedbackGroups'
+                            ) || {};
+                        feedbackGroups[CURRENT_GROUP_DATA.tabId] = false;
+                        kmLocalStorage.setItemToLocalStorage(
+                            'feedbackGroups',
+                            feedbackGroups
+                        );
 
                         if (kommunicate._globals.zendeskChatSdkKey) {
                             zendeskChatService.handleUserMessage(messagePxy);
