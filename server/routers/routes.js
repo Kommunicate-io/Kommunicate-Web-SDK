@@ -25,16 +25,12 @@ home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 home.get('/chat', webpluginController.getPluginHTML)
 
 home.get('/robots.txt', (req, res) => {
-    const allowedHosts = ['widget-cn.kommunicate.io', 'widget.kommunicate.io'];
-    const robotsPath = path.resolve(__dirname, '../../robots.txt');
-    if (allowedHosts.includes(req.hostname)) {
+    if (req.hostname === 'widget-cn.kommunicate.io') {
         res.type('text/plain');
-        res.sendFile(robotsPath, err => {
-            if (err) {
-                console.error('[robots.txt] Error serving file:', err);
-                res.status(404).send('Not found');
-            }            
-        });
+        res.sendFile(path.join(__dirname, '../../robots.txt'));
+    } else if (req.hostname === 'widget.kommunicate.io') {
+        res.type('text/plain');
+        res.sendFile(path.join(__dirname, '../../robots.txt'));
     } else {
         res.status(404).send('Not Found');
     }
