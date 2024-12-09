@@ -228,8 +228,8 @@ const minifyCss = (path, dir, fileName) => {
 
 const generateBuildFiles = () => {
     if (env) {
-        // generate robots.txt for build dir
-        copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
+        // // generate robots.txt for build dir
+        // copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
 
         // Generate index.html for home route
         copyFileToBuild('template/index.html', `${buildDir}/index.html`);
@@ -262,6 +262,8 @@ const generateBuildFiles = () => {
             }
         });
     }
+    // generate robots.txt for build dir
+    copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
     // Generate chat.html for /chat route
     // rewrite added in serve.json for local testing and on amplify
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
