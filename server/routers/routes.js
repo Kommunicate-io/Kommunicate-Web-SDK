@@ -25,10 +25,9 @@ home.get('/:version/kommunicate.app', webpluginController.getPlugin);
 home.get('/chat', webpluginController.getPluginHTML)
 
 home.get('/robots.txt', (req, res) => {
-    const sanitizedHost = req.hostname.toLowerCase().trim();
     const allowedHosts = ['widget-cn.kommunicate.io', 'widget.kommunicate.io'];
     const robotsPath = path.resolve(__dirname, '../../robots.txt');
-    if (allowedHosts.includes(sanitizedHost)) {
+    if (allowedHosts.includes(req.hostname)) {
         res.type('text/plain');
         res.sendFile(robotsPath, err => {
             if (err) {
