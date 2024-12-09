@@ -17373,6 +17373,11 @@ const firstVisibleMsg = {
                         mckMessageLayout.showPrevMsgPicAfterDeleteMsg();
                         // events.onMessageDeleted(eventResponse);
                     }
+                } else if(messageType === 'APPLOZIC_42') {
+                    const updatedTeamId = resp?.message?.metadata?.KM_ASSIGN_TEAM;
+                    if(updatedTeamId) {
+                        CURRENT_GROUP_DATA.teamId = updatedTeamId;
+                    }
                 } else {
                     var message = resp.message;
                     // var userIdArray =
