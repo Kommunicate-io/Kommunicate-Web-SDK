@@ -4148,11 +4148,12 @@ const firstVisibleMsg = {
                     const agentDay = userMessageTimeInAgentTz.day();
 
                     // Check if business hours exist for this day
+                    let isCurrentDayMappingPresent = true;
                     if (!team.businessHourMap.hasOwnProperty(agentDay)) {
-                        return false;
+                        isCurrentDayMappingPresent = false;
                     }
 
-                    const [start, end] = team.businessHourMap[agentDay]
+                    const [start, end] = (team.businessHourMap[agentDay] || '')
                         .split('-')
                         .map(
                             (time) =>
@@ -4160,7 +4161,7 @@ const firstVisibleMsg = {
                         );
 
                     // if start and end time are same, then it is a 24 hour business
-                    if (start === end) {
+                    if (isCurrentDayMappingPresent && start === end) {
                         return true;
                     }
 
@@ -4179,13 +4180,19 @@ const firstVisibleMsg = {
                         team.timezone
                     );
 
-                    if (startOfDay.isAfter(endOfDay)) {
+                    if (
+                        isCurrentDayMappingPresent &&
+                        startOfDay.isAfter(endOfDay)
+                    ) {
                         // Move endOfDay to the next day
                         endOfDay = endOfDay.clone().add(1, 'day');
                     }
 
                     // If the user's time is before the start of the current day's business hours
-                    if (userMessageTimeInAgentTz.isBefore(startOfDay)) {
+                    if (
+                        !isCurrentDayMappingPresent ||
+                        userMessageTimeInAgentTz.isBefore(startOfDay)
+                    ) {
                         const previousDay = (agentDay - 1 + 7) % 7; // Get the previous day
                         if (team.businessHourMap.hasOwnProperty(previousDay)) {
                             const [prevStart, prevEnd] = team.businessHourMap[
@@ -4234,6 +4241,10 @@ const firstVisibleMsg = {
                                 return true;
                             }
                         }
+                    }
+
+                    if (!isCurrentDayMappingPresent) {
+                        return false;
                     }
 
                     return userMessageTimeInAgentTz.isBetween(
