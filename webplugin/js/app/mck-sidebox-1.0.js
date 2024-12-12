@@ -2450,6 +2450,10 @@ const firstVisibleMsg = {
                                     errorMessage: 'INVALID PASSWORD',
                                 });
                             }
+                            // if there is error then removing LeadCollection from cookies
+                            kmCookieStorage.deleteCookie({
+                                name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+                            });
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
