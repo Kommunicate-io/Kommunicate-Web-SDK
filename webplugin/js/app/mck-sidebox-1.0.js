@@ -2450,25 +2450,9 @@ const firstVisibleMsg = {
                                     errorMessage: 'INVALID PASSWORD',
                                 });
                             }
-                            // if there is error then removing LeadCollection from cookies
-                            kmCookieStorage.deleteCookie({
-                                name:
-                                    KommunicateConstants.COOKIES
-                                        .IS_USER_ID_FOR_LEAD_COLLECTION,
-                                domain: MCK_COOKIE_DOMAIN,
-                            });
-                            kmCookieStorage.deleteCookie({
-                                name:
-                                    KommunicateConstants.COOKIES
-                                        .KOMMUNICATE_LOGGED_IN_USERNAME,
-                                domain: MCK_COOKIE_DOMAIN,
-                            });
-                            kmCookieStorage.deleteCookie({
-                                name:
-                                    KommunicateConstants.COOKIES
-                                        .KOMMUNICATE_LOGGED_IN_ID,
-                                domain: MCK_COOKIE_DOMAIN,
-                            });
+                            // if password invalid then clear cookies
+                            kmCookieStorage.deleteUserCookiesOnLogout();
+                            
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
