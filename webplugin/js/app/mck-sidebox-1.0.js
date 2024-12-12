@@ -5224,7 +5224,7 @@ const firstVisibleMsg = {
                             // get number in international format as a string
                             contactNumber = INTL_TEL_INSTANCE.getNumber();
                         }
-                        if (!appOptions.uniqueUserIdForPreChatLead) {
+                        if (!appOptions.anonymousUserIdForPreChatLead) {
                             userId = contactNumber;
                         }
 
@@ -5237,7 +5237,7 @@ const firstVisibleMsg = {
                             );
                     }
                     if (email) {
-                        const userIdForCookie = appOptions.uniqueUserIdForPreChatLead
+                        const userIdForCookie = appOptions.anonymousUserIdForPreChatLead
                             ? userId
                             : email;
 

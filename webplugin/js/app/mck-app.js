@@ -636,7 +636,10 @@ function ApplozicSidebox() {
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
-            options.uniqueUserIdForPreChatLead = isSettingEnable('uniqueUserIdForPreChatLead');
+                
+            options.anonymousUserIdForPreChatLead = isSettingEnable(
+                'anonymousUserIdForPreChatLead'
+            );
 
             appOptionSession.deletePropertyDataFromSession('settings');
 
