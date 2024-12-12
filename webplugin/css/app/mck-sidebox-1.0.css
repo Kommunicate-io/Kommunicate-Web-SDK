@@ -2048,6 +2048,11 @@ ul.mck-intent-menu>li:hover {
 	float: left;
 	padding-left: 19px;
 }
+/* .mck-box .vis .mck-msg-left-muted{
+    display: flex;
+	max-width: calc(85% - 40px);
+	justify-content: space-between;
+} */
 
 .mck-msg-avator-bubble .mck-msg-left-muted {
     margin-left: 0;
