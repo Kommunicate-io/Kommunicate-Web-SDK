@@ -5216,6 +5216,8 @@ const firstVisibleMsg = {
                     var userName = $applozic('#km-name').val();
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
+                    const anonymousUserIdForPreChatLead =
+                        appOptions.anonymousUserIdForPreChatLead;
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
@@ -5224,7 +5226,7 @@ const firstVisibleMsg = {
                             // get number in international format as a string
                             contactNumber = INTL_TEL_INSTANCE.getNumber();
                         }
-                        if (!appOptions.anonymousUserIdForPreChatLead) {
+                        if (!anonymousUserIdForPreChatLead) {
                             userId = contactNumber;
                         }
 
@@ -5237,9 +5239,11 @@ const firstVisibleMsg = {
                             );
                     }
                     if (email) {
-                        const userIdForCookie = appOptions.anonymousUserIdForPreChatLead
+                        const userIdForCookie = anonymousUserIdForPreChatLead
                             ? userId
                             : email;
+
+                        userId = userIdForCookie;
 
                         kmCookieStorage.setCookie({
                             name:
