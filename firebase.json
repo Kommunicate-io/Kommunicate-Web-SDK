@@ -73,6 +73,11 @@
         "source": "/v2/kommunicate.app",
         "destination": "/index.html",
         "type": "200"
+      },
+      {
+        "source": "/robots.txt",
+        "destination": "/robots.txt", 
+        "type": "200"
       }
     ],
     "redirects": [
