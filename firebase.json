@@ -60,14 +60,14 @@
     ],
     "rewrites": [
       {
-        "source": "/robots.txt",
-        "destination": "/robots.txt", 
-        "type": "200"
-      },
-      {
         "source": "/<*>",
         "destination": "/index.html",
         "type": "404"
+      },
+      {
+        "source": "/robots.txt",
+        "destination": "/robots.txt", 
+        "type": "200"
       },
       {
         "source": "/chat",
