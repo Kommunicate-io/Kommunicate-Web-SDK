@@ -1366,7 +1366,7 @@ const firstVisibleMsg = {
         };
         _this.logout = function () {
             if (typeof window.Applozic.ALSocket !== 'undefined') {
-                kmLocalStorage.removeItemFromLocalStorage("feedbackGroups");
+                kmLocalStorage.removeItemFromLocalStorage('feedbackGroups');
                 window.Applozic.ALSocket.disconnect();
                 appOptionSession.deleteSessionData();
                 window.Applozic.ALApiService.setAjaxHeaders('', '', '', '', '');
@@ -3198,7 +3198,9 @@ const firstVisibleMsg = {
                     return kmChatInputDiv;
                 });
             _this.createInputField = function (preLeadCollection) {
-                var inputId = 'km-' + preLeadCollection.field.toLowerCase().replace(" ","-");
+                var inputId =
+                    'km-' +
+                    preLeadCollection.field.toLowerCase().replace(' ', '-');
                 var kmChatInputDiv = _this.createInputContainer(inputId);
                 var kmLabelDiv = _this.createPreChatLabel(
                     preLeadCollection,
@@ -3243,7 +3245,7 @@ const firstVisibleMsg = {
                     );
                     kmChatInput.setAttribute(
                         'aria-label',
-                        preLeadCollection.field.replace(" ","-")
+                        preLeadCollection.field.replace(' ', '-')
                     );
                     if (preLeadCollection.type == 'email') {
                         kmChatInput.setAttribute(
@@ -4107,7 +4109,9 @@ const firstVisibleMsg = {
                 var metadata = {};
                 var field = '';
                 KM_PRELEAD_COLLECTION.map(function (element) {
-                    field = element.field && element.field.toLowerCase().replace(" ","-");
+                    field =
+                        element.field &&
+                        element.field.toLowerCase().replace(' ', '-');
                     if (KM_USER_DETAIL.indexOf(field) === -1) {
                         metadata[element.field] = $applozic(
                             '#km-' + field
@@ -5212,6 +5216,8 @@ const firstVisibleMsg = {
                     var userName = $applozic('#km-name').val();
                     var contactNumber = $applozic('#km-phone').val();
                     var password = $applozic('#km-password').val();
+                    const anonymousUserIdForPreChatLead =
+                        appOptions.anonymousUserIdForPreChatLead;
                     if (password) {
                         MCK_ACCESS_TOKEN = password;
                     }
@@ -5220,7 +5226,10 @@ const firstVisibleMsg = {
                             // get number in international format as a string
                             contactNumber = INTL_TEL_INSTANCE.getNumber();
                         }
-                        userId = contactNumber;
+                        if (!anonymousUserIdForPreChatLead) {
+                            userId = contactNumber;
+                        }
+
                         // Remove listener from phone number
                         document
                             .getElementById('km-phone')
@@ -5230,12 +5239,17 @@ const firstVisibleMsg = {
                             );
                     }
                     if (email) {
-                        userId = email;
+                        const userIdForCookie = anonymousUserIdForPreChatLead
+                            ? userId
+                            : email;
+
+                        userId = userIdForCookie;
+
                         kmCookieStorage.setCookie({
                             name:
                                 KommunicateConstants.COOKIES
                                     .KOMMUNICATE_LOGGED_IN_ID,
-                            value: email,
+                            value: userIdForCookie,
                             expiresInDays: 30,
                             domain: MCK_COOKIE_DOMAIN,
                         });

@@ -636,6 +636,10 @@ function ApplozicSidebox() {
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
+                
+            options.anonymousUserIdForPreChatLead = isSettingEnable(
+                'anonymousUserIdForPreChatLead'
+            );
 
             appOptionSession.deletePropertyDataFromSession('settings');
 
@@ -794,9 +798,10 @@ function ApplozicSidebox() {
             ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
+            options.userId ||
             kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-            ) || userId;
+            );
 
         try {
             const sentryGlobalScope = Sentry.getGlobalScope();
