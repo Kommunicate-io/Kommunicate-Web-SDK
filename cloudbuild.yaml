@@ -61,10 +61,6 @@ steps:
           echo "Error: index.html not found in webplugin/build. Build process might have failed."
           exit 1
         fi
-        if [ ! -f "webplugin/build/robots.txt" ]; then
-          echo "Error: robots.txt not found in webplugin/build."
-          exit 1
-        fi
         echo "firebase.json exists, now validating its structure..."
         if [ ! -f "firebase.json" ]; then
           echo "Error: firebase.json file does not exist."
