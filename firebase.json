@@ -60,6 +60,11 @@
     ],
     "rewrites": [
       {
+        "source": "/robots.txt",
+        "destination": "/robots.txt", 
+        "type": "200"
+      },
+      {
         "source": "/<*>",
         "destination": "/index.html",
         "type": "404"
@@ -72,11 +77,6 @@
       {
         "source": "/v2/kommunicate.app",
         "destination": "/index.html",
-        "type": "200"
-      },
-      {
-        "source": "/robots.txt",
-        "destination": "/robots.txt", 
         "type": "200"
       }
     ],
