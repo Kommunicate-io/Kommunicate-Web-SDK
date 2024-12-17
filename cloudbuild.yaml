@@ -9,7 +9,7 @@ substitutions:
 steps:
   # Step 1: Install dependencies
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['install']
+    args: ['install', '--verbose']
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
