@@ -6,15 +6,15 @@ substitutions:
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
-
 steps:
   # Step 1: Install dependencies
-  - name: 'node:14'
-    args: ['install']
+  - name: 'node:14'  # Use Node.js 14.x Docker image
+    entrypoint: 'bash'
+    args: ['-c', 'npm install']
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'node:14'
-    entrypoint: 'npm'
+  - name: 'node:14'  # Use Node.js 14.x Docker image
+    entrypoint: 'bash'
     args:
       - '-c'
       - |
@@ -41,17 +41,17 @@ steps:
           npm run build-test;
         fi
 
-  # Step 3: Updated firebase.json dynamically
+  # Step 3: Update firebase.json dynamically with site ID
   - name: 'alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
         echo "Updating firebase.json with site ID..."
-        # Update the site ID dynamically
+        # Update the site ID dynamically in firebase.json
         sed -i 's/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/' firebase.json
 
-  # Step 4: Validating the build directory contains index.html
+  # Step 4: Validate the build directory contains index.html
   - name: 'alpine'
     entrypoint: 'sh'
     args:
@@ -69,7 +69,7 @@ steps:
         fi
 
   # Step 5: Deploy to Firebase Hosting
-  - name: 'gcr.io/$PROJECT_ID/firebase'
+  - name: 'gcr.io/${_FIREBASE_PROJECT_ID}/firebase'  # Use correct project ID for Firebase deployment
     args:
       - 'deploy'
       - '--only'
