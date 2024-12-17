@@ -8,12 +8,12 @@ substitutions:
 
 steps:
   # Step 1: Install dependencies
-  - name: 'node:14'  # Use Node.js 14.x Docker image
+  - name: 'node:14.0.1'  
     entrypoint: 'bash'
     args: ['-c', 'npm install']
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'node:14'  # Use Node.js 14.x Docker image
+  - name: 'node:14.0.1'  
     entrypoint: 'bash'
     args:
       - '-c'
