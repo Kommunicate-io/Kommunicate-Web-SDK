@@ -6,14 +6,14 @@ substitutions:
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
-
 steps:
-  # Step 1: Install dependencies
-  - name: 'node:14'
-    args: ['install']
+  # Step 1: Install the latest version of npm and project dependencies using Node.js 20
+  - name: 'node:20'
+    entrypoint: 'bash'
+    args: ['-c', 'npm install -g npm@latest && npm install --no-cache']
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'node:14'
+  - name: 'node:20'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -41,40 +41,16 @@ steps:
           npm run build-test;
         fi
 
-  # Step 3: Updated firebase.json dynamically
+  # Step 3: Update firebase.json dynamically
   - name: 'alpine'
     entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "Updating firebase.json with site ID..."
-        # Update the site ID dynamically
-        sed -i 's/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/' firebase.json
+    args: ['-c', 'echo "Updating firebase.json with site ID..." && sed -i \'s/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/\' firebase.json']
 
-  # Step 4: Validating the build directory contains index.html
+  # Step 4: Validate the build directory contains index.html
   - name: 'alpine'
     entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        echo "Checking if webplugin/build contains index.html..."
-        if [ ! -f "webplugin/build/index.html" ]; then
-          echo "Error: index.html not found in webplugin/build. Build process might have failed."
-          exit 1
-        fi
-        echo "firebase.json exists, now validating its structure..."
-        if [ ! -f "firebase.json" ]; then
-          echo "Error: firebase.json file does not exist."
-          exit 1
-        fi
+    args: ['-c', 'echo "Checking if webplugin/build contains index.html..." && [ -f "webplugin/build/index.html" ] || { echo "Error: index.html not found in webplugin/build"; exit 1; } && echo "firebase.json exists, now validating its structure..." && [ -f "firebase.json" ] || { echo "Error: firebase.json file does not exist."; exit 1; }']
 
   # Step 5: Deploy to Firebase Hosting
   - name: 'gcr.io/$PROJECT_ID/firebase'
-    args:
-      - 'deploy'
-      - '--only'
-      - 'hosting:${_FIREBASE_SITE_ID}'
-      - '--project'
-      - '${_FIREBASE_PROJECT_ID}'
-      - '--token'
-      - '${_FIREBASE_TOKEN}'
+    args: ['deploy', '--only', 'hosting:${_FIREBASE_SITE_ID}', '--project', '${_FIREBASE_PROJECT_ID}', '--token', '${_FIREBASE_TOKEN}']
