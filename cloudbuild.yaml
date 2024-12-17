@@ -6,6 +6,12 @@ substitutions:
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
+
+steps:
+  # Step 0: Clear the npm cache
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['cache', 'clean', '--force']
+    
 steps:
   # Step 1: Install dependencies
   - name: 'gcr.io/cloud-builders/npm'
