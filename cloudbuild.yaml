@@ -8,7 +8,7 @@ substitutions:
 
 steps:
   # Step 1: Clear npm cache and install dependencies
-  - name: 'node:20'  
+  - name: 'node:18.12.0'  
     entrypoint: 'sh'
     args:
       - '-c'
@@ -19,7 +19,7 @@ steps:
         npm install
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'node:20'  
+  - name: 'node:18.12.0'  
     entrypoint: 'sh'
     args:
       - '-c'
