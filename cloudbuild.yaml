@@ -8,16 +8,16 @@ substitutions:
 
 steps:
   # Step 1: Install Node.js dependencies
-  - name: 'node:14'
-    entrypoint: 'bash'
+  - name: 'node:14-alpine'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
         echo Installing source NPM dependencies...
         npm install
 
-  - name: 'node:14'
-    entrypoint: 'bash'
+  - name: 'node:14-alpine'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
