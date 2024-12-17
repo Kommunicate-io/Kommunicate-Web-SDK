@@ -13,7 +13,10 @@ steps:
     args:
       - '-c'
       - |
+        echo clean
         npm cache clean --force
+        echo remove
+        rm -rf node_modules package-lock.json
         echo Installing source NPM dependencies...
         npm install
 
