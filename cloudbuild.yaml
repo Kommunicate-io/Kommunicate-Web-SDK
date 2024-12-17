@@ -7,14 +7,19 @@ substitutions:
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
-  # Step 1: Set Node.js 19.0.0 as the version
-  - name: 'gcr.io/cloud-builders/npm'
-    entrypoint: 'sh'
+  # Step 1: Install Node.js 19.0.0 using NVM (Node Version Manager)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
     args:
       - '-c'
       - |
-        echo "Setting Node.js version to 19.0.0..."
-        export NODE_VERSION=19.0.0
+        echo "Installing Node.js 19.0.0 using NVM..."
+        curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+        source ~/.bashrc
+        nvm install 19.0.0
+        nvm use 19.0.0
+        node -v  # Verify the installed Node.js version
+        npm -v   # Verify npm version
         npm install --no-cache
 
   # Step 2: Install the latest version of npm (optional)
