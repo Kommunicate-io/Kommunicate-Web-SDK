@@ -9,11 +9,11 @@ substitutions:
 
 steps:
   # Step 1: Install dependencies
-  - name: 'node:14.0.1'
+  - name: 'node:14'
     args: ['install']
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'node:14.0.1'
+  - name: 'node:14'
     entrypoint: 'bash'
     args:
       - '-c'
