@@ -1,17 +1,30 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+  
 substitutions:
   _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
-     # Step 2: Install dependencies
+  # Step 1: Set Node.js 19.0.0 as the version
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['install', '--no-cache']
-  # Step 1: Install the latest version of npm
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Setting Node.js version to 19.0.0..."
+        export NODE_VERSION=19.0.0
+        npm install --no-cache
+
+  # Step 2: Install the latest version of npm (optional)
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['install']
-
-
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Installing the latest npm version..."
+        npm install -g npm@latest
 
   # Step 3: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
@@ -42,7 +55,7 @@ steps:
           npm run build-test;
         fi
 
-  # Step 3: Updated firebase.json dynamically
+  # Step 4: Update firebase.json dynamically
   - name: 'alpine'
     entrypoint: 'sh'
     args:
@@ -52,7 +65,7 @@ steps:
         # Update the site ID dynamically
         sed -i 's/"site": ".*"/"site": "'"${_FIREBASE_SITE_ID}"'"/' firebase.json
 
-  # Step 4: Validating the build directory contains index.html
+  # Step 5: Validating the build directory contains index.html
   - name: 'alpine'
     entrypoint: 'sh'
     args:
@@ -69,8 +82,8 @@ steps:
           exit 1
         fi
 
-  # Step 5: Deploy to Firebase Hosting
-  - name: 'gcr.io/$PROJECT_ID/firebase'
+  # Step 6: Deploy to Firebase Hosting
+  - name: 'gcr.io/${_FIREBASE_PROJECT_ID}/firebase'
     args:
       - 'deploy'
       - '--only'
@@ -79,6 +92,3 @@ steps:
       - '${_FIREBASE_PROJECT_ID}'
       - '--token'
       - '${_FIREBASE_TOKEN}'
-
-options:
-  logging: CLOUD_LOGGING_ONLY
