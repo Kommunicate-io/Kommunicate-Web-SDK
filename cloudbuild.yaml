@@ -8,17 +8,12 @@ substitutions:
 
 
 steps:
-  # Step 0: Clear the npm cache
-  - name: 'gcr.io/cloud-builders/npm'
-    args: ['cache', 'clean', '--force']
-    
-steps:
   # Step 1: Install dependencies
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:14.0.1'
     args: ['install']
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:14.0.1'
     entrypoint: 'bash'
     args:
       - '-c'
