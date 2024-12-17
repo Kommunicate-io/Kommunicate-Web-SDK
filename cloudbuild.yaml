@@ -1,19 +1,17 @@
-options:
-  logging: CLOUD_LOGGING_ONLY
-
 substitutions:
   _BUILD_ENV: "test"  # Set this to the target environment (test, release, etc.)
   _FIREBASE_PROJECT_ID: "your-project-id"  # Replacing with dynamic project ID
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
-  # Step 1: Install the latest version of npm
-  - name: 'gcr.io/cloud-builders/npm'
-    args: ['install', '-g', 'npm@latest']
-
-  # Step 2: Install dependencies
+     # Step 2: Install dependencies
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install', '--no-cache']
+  # Step 1: Install the latest version of npm
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+
+
 
   # Step 3: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
@@ -81,3 +79,6 @@ steps:
       - '${_FIREBASE_PROJECT_ID}'
       - '--token'
       - '${_FIREBASE_TOKEN}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
