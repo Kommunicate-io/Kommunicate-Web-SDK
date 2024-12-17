@@ -7,21 +7,25 @@ substitutions:
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
-  # Step 1: Install Node.js dependencies
+  # Step 1: Check Node and NPM versions and Install Dependencies
   - name: 'node:14-alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        echo Installing source NPM dependencies...
-        npm install
+        echo "Checking Node.js and NPM versions..."
+        node -v
+        npm -v
+        echo "Installing dependencies..."
+        npm install --no-cache --verbose  # Adding verbose to get detailed logs
 
+  # Step 2: Conditionally run builds based on _BUILD_ENV
   - name: 'node:14-alpine'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
-        echo "Build env:" ${_BUILD_ENV}
+        echo "Build env: ${_BUILD_ENV}"
         if [ "${_BUILD_ENV}" = "test" ]; then 
           npm run build-test;
         elif [ "${_BUILD_ENV}" = "release" ]; then 
