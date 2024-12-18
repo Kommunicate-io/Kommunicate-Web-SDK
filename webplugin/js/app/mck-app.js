@@ -817,8 +817,8 @@ function ApplozicSidebox() {
                 username: userId,
             });
         } catch (error) {
-            console.log('Error in initializing sentry', error);
-            KommunicateUtils.sendErrorToSentry(error);
+            console.error('Error in initializing sentry', error);
+            // KommunicateUtils.sendErrorToSentry(error);
         }
     }
     function saveUserCookies(kommunicateSettings) {
