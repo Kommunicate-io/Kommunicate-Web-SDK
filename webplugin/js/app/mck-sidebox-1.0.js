@@ -2450,6 +2450,9 @@ const firstVisibleMsg = {
                                     errorMessage: 'INVALID PASSWORD',
                                 });
                             }
+                            // if password invalid then clear cookies
+                            kmCookieStorage.deleteUserCookiesOnLogout();
+                            
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
