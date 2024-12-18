@@ -246,6 +246,9 @@ const generateBuildFiles = () => {
             `${resourceLocation}/third-party-scripts/mck-emojis.min.js`
         );
 
+        // generate robots.txt for build dir
+        copyFileToBuild('../robots.txt', `${buildDir}/robots.txt`);
+
         THIRD_PARTY_FILE_INFO.forEach((file) => {
             const des = `${resourceLocation}/third-party-scripts`;
 

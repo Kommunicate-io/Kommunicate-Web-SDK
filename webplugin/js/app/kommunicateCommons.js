@@ -95,22 +95,33 @@ function KommunicateCommons() {
        addClass and removeClass to be passed as strings in the case of no classes pass "" elem will always be passed as an object
        array of strings containing IDs or Classes on which the classes need to be manipulated infromt of respective object property*/
 
-    _this.modifyClassList = function (elem, addClass, removeClass) {
-        var idList = elem.id,
+    _this.modifyClassList = function (
+        elem,
+        addClass,
+        removeClass,
+        useQuerySelector = false
+    ) {
+        const idList = elem.id,
             classList = elem.class,
             list = [];
+
         idList &&
             idList.forEach(function (id) {
                 document.getElementById(id) &&
                     list.push(document.getElementById(id));
             });
+
         classList &&
             classList.forEach(function (className) {
-                var el = document.getElementsByClassName(className);
-                for (var i = 0; i <= el.length - 1; i++) {
+                const el = useQuerySelector
+                    ? document.querySelectorAll(className)
+                    : document.getElementsByClassName(className);
+
+                for (let i = 0; i <= el.length - 1; i++) {
                     el && list.push(el[i]);
                 }
             });
+
         list.forEach(function (node) {
             _this.classListChanger(node, addClass, removeClass);
         });
