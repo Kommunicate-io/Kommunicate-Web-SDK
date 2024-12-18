@@ -57,6 +57,9 @@ function KmCustomTheme() {
                 ' !important;} ' +
                 '.km-custom-widget-stroke { stroke: ' +
                 primaryColor +
+                ' !important;}' +
+                '.active-feedback svg path{ fill: '+
+                primaryColor +
                 ' !important;}';
             // Pass all classes you want to create in a single array.
             _this.createCustomClasses(kmCustomWidgetCustomCSS);

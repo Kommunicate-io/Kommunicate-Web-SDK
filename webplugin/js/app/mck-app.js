@@ -87,6 +87,7 @@ function ApplozicSidebox() {
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
             }
+            KommunicateUtils.sendErrorToSentry(e);
             return false;
         }
     };
@@ -512,7 +513,7 @@ function ApplozicSidebox() {
             (navigator.userAgent.indexOf('MSIE') !== -1 ||
                 navigator.appVersion.indexOf('Trident/') > 0) &&
                 (sentryConfig.enabled = false);
-            sentryConfig.enabled && loadErrorTracking(randomUserId);
+            sentryConfig.enabled && loadErrorTracking(randomUserId, data);
 
             var sessionTimeout =
                 options.sessionTimeout != null
@@ -635,6 +636,10 @@ function ApplozicSidebox() {
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
+                
+            options.anonymousUserIdForPreChatLead = isSettingEnable(
+                'anonymousUserIdForPreChatLead'
+            );
 
             appOptionSession.deletePropertyDataFromSession('settings');
 
@@ -702,6 +707,7 @@ function ApplozicSidebox() {
             preLoadLauncherIcon(widgetSettings);
         } catch (e) {
             console.error('Plugin loading error. Refresh page.', e);
+            KommunicateUtils.sendErrorToSentry(e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT('error');
             }
@@ -780,7 +786,11 @@ function ApplozicSidebox() {
         xhr.open('GET', url, true);
         xhr.send(data);
     }
-    function loadErrorTracking(userId) {
+    function loadErrorTracking(userId, options) {
+        if (!window.Sentry) {
+            return;
+        }
+
         var kommunicateIframe = parent.document.getElementById(
             'kommunicate-widget-iframe'
         );
@@ -788,24 +798,27 @@ function ApplozicSidebox() {
             ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
+            options.userId ||
             kmCookieStorage.getCookie(
                 KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-            ) || userId;
+            );
+
         try {
-            Sentry.init({
-                dsn: sentryConfig.dsn,
-                release: KommunicateConstants.KM_WIDGET_RELEASE_VERSION,
+            const sentryGlobalScope = Sentry.getGlobalScope();
+
+            sentryGlobalScope.setTags({
+                url: url,
+                userId: userId,
+                plan: options.currentActivatedPlan,
             });
-            Sentry.configureScope(function (scope) {
-                scope.setTag('applicationId', applozic._globals.appId);
-                scope.setTag('userId', userId);
-                scope.setTag('url', url);
-                scope.setUser({
-                    id: applozic._globals.appId,
-                });
+
+            sentryGlobalScope.setUser({
+                id: applozic._globals.appId || 'NA',
+                username: userId,
             });
         } catch (error) {
-            console.log('Error in initializing sentry', error);
+            console.error('Error in initializing sentry', error);
+            // KommunicateUtils.sendErrorToSentry(error);
         }
     }
     function saveUserCookies(kommunicateSettings) {

@@ -2,6 +2,7 @@ const path = require('path');
 const buildDir = path.resolve(__dirname, 'build');
 const version = new Date().getTime();
 exports.version = version;
+exports.KM_RELEASE_BRANCH = getCurrentBranch();
 
 const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/storage-service.js'),
@@ -22,11 +23,14 @@ exports.THIRD_PARTY_SCRIPTS = [
     // path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
     // path.resolve(__dirname, 'lib/js/intl-tel-lib.js'),
     path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js'),
+    path.resolve(__dirname, 'lib/js/moment-js.2.29.4.min.js'),
+    path.resolve(__dirname, 'lib/js/moment-timezone.0.5.23.min.js'),
 ];
 
 exports.PLUGIN_JS_FILES = [
     // path.resolve(__dirname, 'lib/js/Fr.voice.js'),
     // path.resolve(__dirname, 'lib/js/recorder.js'),
+    path.resolve(__dirname, 'js/app/components/custom-element.js'),
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
     path.resolve(__dirname, 'js/app/km-utils.js'),
@@ -46,6 +50,7 @@ exports.PLUGIN_JS_FILES = [
     path.resolve(__dirname, 'js/app/km-attachment-service.js'),
     // path.resolve(__dirname, 'js/app/zendesk-chat-service.js'),
     path.resolve(__dirname, 'js/app/km-nav-bar.js'),
+    path.resolve(__dirname, 'js/app/components/answer-feedback-service.js'),
     path.resolve(__dirname, 'js/app/components/typing-service.js'),
     path.resolve(__dirname, 'js/app/components/rating-service.js'),
     path.resolve(__dirname, 'js/app/conversation/gen-ai-service.js'),
@@ -113,6 +118,12 @@ exports.THIRD_PARTY_FILE_INFO = [
         outputName: `crypto.min.js`,
         type: 'js',
     },
+    {
+        source: path.join(__dirname, 'js/app/sentry-8.39.0.js'),
+        outputName: `sentry-${version}.min.js`,
+        type: 'js',
+        shouldMinify: true,
+    },
 ];
 
 exports.getDynamicLoadFiles = function (dir) {
@@ -131,6 +142,33 @@ exports.getDynamicLoadFiles = function (dir) {
         crypto: {
             js: `${dir}/crypto.min.js`,
         },
-        // for voice note
+        sentry: {
+            js: `${dir}/sentry-${version}.min.js`,
+        },
     });
 };
+
+function getCurrentBranch() {
+    try {
+        if (process.env.AWS_BRANCH) {
+            return process.env.AWS_BRANCH;
+        }
+
+        if (process.env.NODE_ENV != 'development') {
+            return version;
+        }
+        const branch = require('child_process')
+            .execSync('git rev-parse --abbrev-ref HEAD', {
+                cwd: __dirname,
+                encoding: 'utf8',
+            })
+            .toString()
+            .trim();
+
+        return branch;
+    } catch (error) {
+        console.error('Error getting current branch:', error);
+
+        return version; // Fallback if there's an error
+    }
+}

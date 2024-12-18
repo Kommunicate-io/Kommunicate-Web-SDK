@@ -11,3 +11,6 @@ webplugin/css/app/style/
 /playwright/.cache/
 # yarn.lock
 .sass-cache/*
+
+# Sentry Config File
+.sentryclirc
