@@ -107,7 +107,7 @@ const configEnv = {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -135,7 +135,7 @@ const configEnv = {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -165,7 +165,7 @@ const configEnv = {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -196,7 +196,7 @@ const configEnv = {
                     nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                     dsn:
                         'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                    enabled: true,
+                    enabled: false,
                     AUTH_TOKEN:
                         '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',
                     PROJECT: 'chat-widget',
@@ -228,7 +228,7 @@ const configEnv = {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
@@ -257,7 +257,7 @@ const configEnv = {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
                 dsn:
                     'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                enabled: true,
+                enabled: false,
                 AUTH_TOKEN:
                     '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',
                 PROJECT: 'chat-widget',
