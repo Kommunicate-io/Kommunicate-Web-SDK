@@ -69,12 +69,22 @@ function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
                 }
             }
 
-            if (opts.htmlRichMessage && this.children[0] && this.children[0]._shadow) {
-                const processedContent = Array.from(this.children[0]._shadow?.childNodes)
+            function convertChildNodes(child) {
+                return Array.from(child.childNodes)
                     .map(n => convertTextToLink(n))
                     .join("");
+            };
 
-                this.children[0]._shadow.innerHTML = processedContent;
+            if (opts.htmlRichMessage) {
+                Array.from(this.children).forEach((child) => {
+                    if (child.nodeName === 'MCK-HTML-RICH-MESSAGE') {
+                        child._shadow.innerHTML = convertChildNodes(
+                            child.shadowRoot || child._shadow
+                        );
+                    } else {
+                        child.innerHTML = convertChildNodes(child);
+                    }
+                });
             } else {
                 $this.html(
                     $.map($this.contents(), function (n, i) {
