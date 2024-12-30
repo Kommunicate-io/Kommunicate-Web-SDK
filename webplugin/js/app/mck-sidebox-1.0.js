@@ -5175,8 +5175,10 @@ const firstVisibleMsg = {
 
                 $applozic(d).on('click', '#km-talk-to-human', function (e) {
                     e.preventDefault();
-                    var $button = $applozic(this);
-                    $button.prop('disabled', true);
+                    
+                    //The this keyword refers to the button element in the context of the event handler.
+                    const button = this; 
+                    button.disabled = true;
 
                     window.Applozic.ALApiService.ajax({
                         type: 'PATCH',
@@ -5203,10 +5205,9 @@ const firstVisibleMsg = {
                                         );
                                 }
                             }
-                            $button.prop('disabled', false); // enable button
                         },
                         error: function (data) {
-                            $button.prop('disabled', false); // enable button
+                            button.disabled = false;
                             console.error(data);
                         },
                     });
