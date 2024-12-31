@@ -38,7 +38,6 @@ function KmNavBar(mckMsgLayout) {
             if (talkToHumanButton) {
                 talkToHumanButton.disabled = false;
             }
-            document.getElementById('km-talk-to-human')?.disabled = false;
             kommunicateCommons.modifyClassList(
                 {
                     id: ['km-talk-to-human'],
