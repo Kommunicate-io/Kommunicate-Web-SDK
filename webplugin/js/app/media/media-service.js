@@ -187,7 +187,7 @@ Kommunicate.mediaService = {
                     }
                     utterance.onerror = function (event) {
                         if (event.error === 'interrupted') {
-                            console.warn(
+                            console.debug(
                                 'Speech was interrupted. This is expected if speech is canceled or a new utterance is started.'
                             );
                         } else {
