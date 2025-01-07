@@ -425,22 +425,36 @@ function ApplozicSidebox() {
         // }];
         var userId = KommunicateUtils.getRandomId();
         try {
-
-            const km_app_settings_local_last_updated = kmLocalStorage.getItemFromLocalStorage("last_updated");
-            if(km_app_settings_local_last_updated ){
-                const currentTime = Date.now(); 
-                const differenceInMs = Math.abs(currentTime - km_app_settings_local_last_updated); 
-                
-                const differenceInMinutes = differenceInMs / (1000 * 60);
-                if(differenceInMinutes >= 5){
+            const APP_SETTINGS_CACHE_EXPIRY_MINUTES = 5;
+            const km_app_settings_local_last_updated = kmLocalStorage.getItemFromLocalStorage(
+                'last_updated'
+            );
+            if (km_app_settings_local_last_updated) {
+                const minutesSinceLastUpdate =
+                    (Date.now() - km_app_settings_local_last_updated) /
+                    (1000 * 60);
+                if (
+                    minutesSinceLastUpdate >= APP_SETTINGS_CACHE_EXPIRY_MINUTES
+                ) {
                     getApplicationSettings(userId);
-                }else{
-                    const appSettings = kmLocalStorage.getItemFromLocalStorage("appSettings");
-                    mckInitSidebox(JSON.parse(appSettings),userId);
+                } else {
+                    try {
+                        const appSettings = kmLocalStorage.getItemFromLocalStorage(
+                            'appSettings'
+                        );
+                        if (!appSettings) {
+                            getApplicationSettings(userId);
+                            return;
+                        }
+                        mckInitSidebox(JSON.parse(appSettings), userId);
+                    } catch (error) {
+                        console.error('Error parsing cached settings:', error);
+                        getApplicationSettings(userId);
+                    }
                 }
-            }else{
+            } else {
                 getApplicationSettings(userId);
-            }  
+            }
         } catch (e) {
             console.log('Plugin loading error. Refresh page.');
             if (typeof MCK_ONINIT === 'function') {
