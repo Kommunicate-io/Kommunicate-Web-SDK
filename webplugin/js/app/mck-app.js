@@ -425,7 +425,22 @@ function ApplozicSidebox() {
         // }];
         var userId = KommunicateUtils.getRandomId();
         try {
-            getApplicationSettings(userId);
+
+            const km_app_settings_local_last_updated = kmLocalStorage.getItemFromLocalStorage("last_updated");
+            if(km_app_settings_local_last_updated ){
+                const currentTime = Date.now(); 
+                const differenceInMs = Math.abs(currentTime - km_app_settings_local_last_updated); 
+                
+                const differenceInMinutes = differenceInMs / (1000 * 60);
+                if(differenceInMinutes >= 5){
+                    getApplicationSettings(userId);
+                }else{
+                    const appSettings = kmLocalStorage.getItemFromLocalStorage("appSettings");
+                    mckInitSidebox(JSON.parse(appSettings),userId);
+                }
+            }else{
+                getApplicationSettings(userId);
+            }  
         } catch (e) {
             console.log('Plugin loading error. Refresh page.');
             if (typeof MCK_ONINIT === 'function') {
@@ -758,6 +773,8 @@ function ApplozicSidebox() {
                     applozic._globals.appId =
                         responseData.response.applicationId;
                 }
+                kmLocalStorage.setItemFromLocalStorage("appSettings",JSON.stringify(responseData.response));
+                kmLocalStorage.setItemFromLocalStorage("last_updated",Date.now());
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
         };
