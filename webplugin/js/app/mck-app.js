@@ -787,8 +787,12 @@ function ApplozicSidebox() {
                     applozic._globals.appId =
                         responseData.response.applicationId;
                 }
-                kmLocalStorage.setItemFromLocalStorage("appSettings",JSON.stringify(responseData.response));
-                kmLocalStorage.setItemFromLocalStorage("last_updated",Date.now());
+                try {
+                    kmLocalStorage.setItemFromLocalStorage("appSettings", JSON.stringify(responseData.response));
+                    kmLocalStorage.setItemFromLocalStorage("last_updated", Date.now());
+                } catch (error) {
+                   console.error('Failed to cache application settings:', error);
+               }
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
         };
