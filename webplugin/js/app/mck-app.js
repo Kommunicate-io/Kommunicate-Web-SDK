@@ -788,8 +788,8 @@ function ApplozicSidebox() {
                         responseData.response.applicationId;
                 }
                 try {
-                    kmLocalStorage.setItemFromLocalStorage("appSettings", JSON.stringify(responseData.response));
-                    kmLocalStorage.setItemFromLocalStorage("last_updated", Date.now());
+                    kmLocalStorage.setItemToLocalStorage("appSettings", JSON.stringify(responseData.response));
+                    kmLocalStorage.setItemToLocalStorage("last_updated", Date.now());
                 } catch (error) {
                    console.error('Failed to cache application settings:', error);
                }
