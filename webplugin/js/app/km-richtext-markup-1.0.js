@@ -383,7 +383,7 @@ Kommunicate.markup = {
      </div>
  </div>`;
     },
-    getImageTemplate: function () { 
+    getImageTemplate: function () {
         return `<div>
     {{#payload}}
     <div class="km-image-template">
@@ -500,7 +500,7 @@ Kommunicate.markup = {
                                             {{/validation}}
                                               <label for="{{label}}" class="mck-form-label"><b>{{label}}</b></label>
                                             </div>
-                                            <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" data-error-text="{{validation.errorText}}">
+                                            <input type="{{type}}" placeholder="{{placeholder}}" name="{{label}}" data-regex="{{validation.regex}}" {{#readonly}}readonly{{/readonly}} data-error-text="{{validation.errorText}}">
                                             {{#validation}}
                                               <div class="mck-form-error-container mck-form-{{className}}-error-container n-vis">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 12 12" fill="none">
@@ -906,8 +906,10 @@ Kommunicate.markup.getImageContainer = function (options) {
             typeof options.payload == 'string'
                 ? JSON.parse(options.payload)
                 : {};
-        options.payload = JSON.parse(JSON.stringify(payload))
-        options.payload?.forEach((payload) => { payload.type = payload.url?.split(".").pop()?.toLowerCase()});
+        options.payload = JSON.parse(JSON.stringify(payload));
+        options.payload?.forEach((payload) => {
+            payload.type = payload.url?.split('.').pop()?.toLowerCase();
+        });
         return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
     }
     return '';
@@ -984,6 +986,11 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                         item.type
                     ) != -1;
                 options.payload[index][item.type] = true;
+
+                if (item.readonly) {
+                    options.payload[index].readonly = true; // Add readonly to the payload
+                }
+
                 try {
                     options.payload[index].className = (item.label || item.name)
                         .toLowerCase()
