@@ -4610,11 +4610,11 @@ const firstVisibleMsg = {
                         return;
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warningLength = 199;
-                        var maxLength = 256;
+                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? 450 : 199;
+                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? 500 : 256;
                         var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!document.getElementById('mck-char-count')) {
-                            warningText.innerHTML +=
+                            warningText.innerHTML = MCK_LABELS["char.limit.warn"].replace("LIMIT",maxLength) +
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
@@ -14464,6 +14464,7 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback =
                             res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
@@ -14492,7 +14493,7 @@ const firstVisibleMsg = {
             _this.disableSendButton = function (value) {
                 var textBox = document.getElementById('mck-text-box');
                 var str = mckUtils.textVal(textBox);
-                var maxLength = 256;
+                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? 500 : 256;
                 var sendButton = document.getElementById('mck-msg-sbmt');
                 var trimmedStr = str.trim();
                 var textLength = trimmedStr.length;
