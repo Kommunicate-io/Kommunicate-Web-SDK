@@ -16,6 +16,8 @@ var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
+const CHARACTER_LIMIT = {"ES": 256 , "CX": 500};
+const WARNING_LENGTH = {"ES": 199 , "CX": 450};
 var userOverride = {
     voiceOutput: true,
 };
@@ -4610,8 +4612,8 @@ const firstVisibleMsg = {
                         return;
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? 450 : 199;
-                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? 500 : 256;
+                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? WARNING_LENGTH["CX"]: WARNING_LENGTH["ES"];
+                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT["CX"] : CHARACTER_LIMIT["ES"];
                         var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!document.getElementById('mck-char-count')) {
                             warningText.innerHTML = MCK_LABELS["char.limit.warn"].replace("LIMIT",maxLength) +
@@ -14493,7 +14495,7 @@ const firstVisibleMsg = {
             _this.disableSendButton = function (value) {
                 var textBox = document.getElementById('mck-text-box');
                 var str = mckUtils.textVal(textBox);
-                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? 500 : 256;
+                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT['CX'] : CHARACTER_LIMIT['ES'];
                 var sendButton = document.getElementById('mck-msg-sbmt');
                 var trimmedStr = str.trim();
                 var textLength = trimmedStr.length;
