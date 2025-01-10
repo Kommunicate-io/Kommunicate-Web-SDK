@@ -61,11 +61,13 @@ const configEnv = {
     release: {
         port: '3031',
         urls: {
-            applozicBaseUrl: 'https://chat-release.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-release.kommunicate.io',
-            botPlatformApi: 'https://bots-release.kommunicate.io',
+            applozicBaseUrl: 'https://chat-gcp.kommunicate.io',
+            kommunicateBaseUrl:
+                'https://api-server-in-dot-km-prod-in.el.r.appspot.com',
+            botPlatformApi:
+                'https://bots-server-in-dot-km-prod-in.el.r.appspot.com',
             hostUrl: 'https://widget-release.kommunicate.io',
-            dashboardUrl: 'https://dashboard-master.kommunicate.io',
+            dashboardUrl: 'https://dashboard-release.kommunicate.io',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -88,8 +90,7 @@ const configEnv = {
             },
         },
     },
-    
-    
+
     prod: {
         port: '3030',
         urls: {
@@ -177,7 +178,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod_eu: {
         port: '3030',
         urls: {
@@ -210,7 +211,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod_enterprise: {
         port: '3033',
         urls: {
