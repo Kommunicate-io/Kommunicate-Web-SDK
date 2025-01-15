@@ -7,13 +7,22 @@ substitutions:
   _FIREBASE_SITE_ID: "${_BUILD_ENV}_site_id"  # Placeholder for Firebase site ID
 
 steps:
-  # Step 1: Install dependencies
+ # Step 1: Install Node.js dependencies
   - name: 'gcr.io/cloud-builders/npm'
-    args: ['install']
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo clean
+        npm cache clean --force
+        echo remove
+        rm -rf node_modules package-lock.json
+        echo Installing source NPM dependencies...
+        npm install
 
   # Step 2: Conditionally run builds based on _BUILD_ENV
   - name: 'gcr.io/cloud-builders/npm'
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |

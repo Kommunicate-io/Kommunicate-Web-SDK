@@ -48,7 +48,7 @@
     &-content {
         color: $text-primary-color;
         background-color: #ffffff;
-        width: 275px;
+        width: inherit;
         padding: $msg-box-padding;
         border-bottom-left-radius: $msg-box-border-radius;
         border-bottom-right-radius: $msg-box-border-radius;
