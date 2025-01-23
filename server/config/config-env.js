@@ -49,30 +49,30 @@ const configEnv = {
     },
 
     release: {
-            port: '3031',
-            urls: {
-                applozicBaseUrl: 'https://chat-gcp.kommunicate.io/',
-                kommunicateBaseUrl: 'https://api-server-prod-dot-km-prod-us.uk.r.appspot.com/',
-                botPlatformApi: 'https://bot-server-prod-dot-km-prod-us.uk.r.appspot.com/',
-                hostUrl: 'https://km-prod.web.app/',
-                dashboardUrl: 'https://dashboard-release.kommunicate.io',
+        port: '3031',
+        urls: {
+            applozicBaseUrl: 'https://chat-gcp.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-server-prod-dot-km-prod-us.uk.r.appspot.com',
+            botPlatformApi: 'https://bot-server-prod-dot-km-prod-us.uk.r.appspot.com',
+            hostUrl: 'https://km-prod.web.app',
+            dashboardUrl: 'https://dashboard-release.kommunicate.io',
+        },
+        pluginProperties: {
+            pseudoNameEnabled: true,
+        },
+        thirdPartyIntegration: {
+            sentry: {
+                dsn:
+                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                enabled: false,
             },
-            pluginProperties: {
-                pseudoNameEnabled: true,
-            },
-            thirdPartyIntegration: {
-                sentry: {
-                    dsn:
-                        'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
-                    enabled: false,
-                },
-                aws: {
-                    cdnUrl: 'https://cdn.kommunicate.io',
-                    bucket: 'kom-prod-cdn',
-                },
+            aws: {
+                cdnUrl: 'https://cdn.kommunicate.io',
+                bucket: 'kom-prod-cdn',
             },
         },
-    
+    },
+
     prod: {
         port: '3030',
         urls: {
@@ -145,7 +145,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod_eu: {
         port: '3030',
         urls: {
@@ -170,7 +170,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod_enterprise: {
         port: '3033',
         urls: {
