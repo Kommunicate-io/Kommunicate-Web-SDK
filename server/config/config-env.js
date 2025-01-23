@@ -47,31 +47,7 @@ const configEnv = {
             },
         },
     },
-    release: {
-        port: '3031',
-        urls: {
-            applozicBaseUrl: 'https://chat-release.kommunicate.io',
-            kommunicateBaseUrl: 'https://api-release.kommunicate.io',
-            botPlatformApi: 'https://bots-release.kommunicate.io',
-            hostUrl: 'https://widget-release.kommunicate.io',
-            dashboardUrl: 'https://dashboard-master.kommunicate.io',
-        },
-        pluginProperties: {
-            pseudoNameEnabled: true,
-        },
-        thirdPartyIntegration: {
-            sentry: {
-                dsn:
-                    'https://b1187d11fbdc4632b29259b258dd9053@o418176.ingest.sentry.io/5338197',
-                enabled: true,
-            },
-            aws: {
-                cdnUrl: 'https://cdn-test.kommunicate.io',
-                bucket: 'kom-test-cdn',
-            },
-        },
-    },
-    
+
     release: {
             port: '3031',
             urls: {
