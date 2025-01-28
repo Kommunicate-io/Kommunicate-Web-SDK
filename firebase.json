@@ -83,12 +83,12 @@
     "redirects": [
       {
         "source": "/kommunicate.app",
-        "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
+        "destination": "/v2/kommunicate.app",
         "type": "301"
       },
       {
         "source": "/v1/kommunicate.app",
-        "destination": "https://plugin-test.kommunicate.io/kommunicate.app/",
+        "destination": "/v2/kommunicate.app",
         "type": "301"
       },
       {
