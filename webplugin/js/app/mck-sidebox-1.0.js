@@ -4292,7 +4292,6 @@ const firstVisibleMsg = {
                         const isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
                             INIT_APP_DATA
                         );
-
                         if (
                             isBusinessHourAvailable &&
                             teamSettings &&
@@ -6519,8 +6518,8 @@ const firstVisibleMsg = {
                         userStatus: 4,
                     });
                 }
-
-                $mck_business_hours_box.addClass('n-vis');
+                // keeping for future reference 
+                // $mck_business_hours_box.addClass('n-vis');
 
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (
