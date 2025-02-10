@@ -139,15 +139,35 @@ KommunicateUI = {
             type: 'GET',
             global: false,
             success: function (result) {
+                const { title, description } = result.data;
+                // Check if the title contains Cloudflare or security challenge related words
+                if (
+                    title &&
+                    title.includes('Attention Required!')
+                ) {
+                    throw Error("Cloudflare or security block detected. No preview available.") // Skip rendering the preview or return a default message
+                }
+
+                // Check for other possible issues with the preview data (e.g., missing meta information)
+                if (!title || !description) {
+                    throw Error("Missing metadata for preview. No preview available.")
+                }
                 if (result) {
                     var images = result.data.images;
-                    result.data.images = images.length ? KommunicateUI.checkSvgHasChildren(images) : [];
+                    result.data.images = images.length
+                        ? KommunicateUI.checkSvgHasChildren(images)
+                        : [];
 
                     // this happens when the link gets redirected
-                    if (result.data.title === "ERROR: The request could not be satisfied") return;
+                    if (
+                        result.data.title ===
+                        'ERROR: The request could not be satisfied'
+                    )
+                        return;
 
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
-                        result, isMckRightMsg
+                        result,
+                        isMckRightMsg
                     );
                     callback(previewTemplate);
                 }
