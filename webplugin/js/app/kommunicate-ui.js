@@ -139,21 +139,22 @@ KommunicateUI = {
             type: 'GET',
             global: false,
             success: function (result) {
-                const { title, description } = result.data;
-                // Check if the title contains Cloudflare or security challenge related words
+                const { title, description } = result?.data ? result.data : {};
+
                 if (
                     title &&
                     title.includes('Attention Required!')
                 ) {
-                    throw Error("Cloudflare or security block detected. No preview available.") // Skip rendering the preview or return a default message
+                    console.error("Cloudflare or security block detected. No preview available.");
+                    return;
                 }
 
-                // Check for other possible issues with the preview data (e.g., missing meta information)
                 if (!title || !description) {
-                    throw Error("Missing metadata for preview. No preview available.")
+                    console.error("Missing metadata for preview. No preview available.")
+                    return;
                 }
                 if (result) {
-                    var images = result.data.images;
+                    var images = result?.data?.images || [];
                     result.data.images = images.length
                         ? KommunicateUI.checkSvgHasChildren(images)
                         : [];
