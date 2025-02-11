@@ -46,7 +46,7 @@ const configEnv = {
                 nameSpace: '0494b01c401dbac92222bf85f41e26a0',
                 dsn:
                     'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
-                enabled: true,
+                enabled: false,
                 PROJECT: 'test-widget',
                 ORG: 'km-test',
                 AUTH_TOKEN:
