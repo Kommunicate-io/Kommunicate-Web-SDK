@@ -16,8 +16,8 @@ var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
-const CHARACTER_LIMIT = {"ES": 256 , "CX": 500};
-const WARNING_LENGTH = {"ES": 199 , "CX": 450};
+const CHARACTER_LIMIT = { ES: 256, CX: 500 };
+const WARNING_LENGTH = { ES: 199, CX: 450 };
 var userOverride = {
     voiceOutput: true,
 };
@@ -2454,7 +2454,7 @@ const firstVisibleMsg = {
                             }
                             // if password invalid then clear cookies
                             kmCookieStorage.deleteUserCookiesOnLogout();
-                            
+
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
@@ -2710,7 +2710,7 @@ const firstVisibleMsg = {
                         isLaunch: true,
                     });
                 }
-                alFileService.init(data);
+                alFileService.init(data, appOptions);
                 alNotificationService.subscribeToServiceWorker();
                 ALStorage.setAppHeaders(data);
 
@@ -4611,11 +4611,19 @@ const firstVisibleMsg = {
                         return;
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? WARNING_LENGTH["CX"]: WARNING_LENGTH["ES"];
-                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT["CX"] : CHARACTER_LIMIT["ES"];
+                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                            ? WARNING_LENGTH['CX']
+                            : WARNING_LENGTH['ES'];
+                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                            ? CHARACTER_LIMIT['CX']
+                            : CHARACTER_LIMIT['ES'];
                         var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!document.getElementById('mck-char-count')) {
-                            warningText.innerHTML = MCK_LABELS["char.limit.warn"].replace("LIMIT",maxLength) +
+                            warningText.innerHTML =
+                                MCK_LABELS['char.limit.warn'].replace(
+                                    'LIMIT',
+                                    maxLength
+                                ) +
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
@@ -5176,9 +5184,9 @@ const firstVisibleMsg = {
 
                 $applozic(d).on('click', '#km-talk-to-human', function (e) {
                     e.preventDefault();
-                    
+
                     //The this keyword refers to the button element in the context of the event handler.
-                    const button = this; 
+                    const button = this;
                     button.disabled = true;
 
                     window.Applozic.ALApiService.ajax({
@@ -6507,7 +6515,7 @@ const firstVisibleMsg = {
                         userStatus: 4,
                     });
                 }
-                // keeping for future reference 
+                // keeping for future reference
                 // $mck_business_hours_box.addClass('n-vis');
 
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
@@ -6894,19 +6902,30 @@ const firstVisibleMsg = {
                 ) {
                     return;
                 }
+                console.log(
+                    'populateAwayStatusAndMessage',
+                    data,
+                    isAgentOffline,
+                    err,
+                    message
+                );
+
                 if (
                     message &&
                     message.code === 'AGENTS_ONLINE' &&
                     !isAgentOffline
                 ) {
+                    console.log('Set the widget status online');
                     KommunicateUI.setAvailabilityStatus('online');
                 } else if (
                     message &&
                     message.code === 'SUCCESS' &&
                     !isAgentOffline
                 ) {
+                    console.log('Set the widget status away');
                     KommunicateUI.setAvailabilityStatus('away');
                 }
+
                 KommunicateUI.populateAwayMessage(err, message);
                 KommunicateUI.updateLeadCollectionStatus(
                     err,
@@ -7731,6 +7750,15 @@ const firstVisibleMsg = {
                     userSession.settings &&
                     userSession.settings.KM_CHAT_CONTEXT &&
                     userSession.settings.KM_CHAT_CONTEXT.kmUserLanguageCode;
+
+                console.log(
+                    'Role is not bot',
+                    tabId &&
+                        typeof roleType !== 'undefined' &&
+                        roleType !==
+                            KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                );
+
                 if (
                     tabId &&
                     typeof roleType !== 'undefined' &&
@@ -7744,6 +7772,7 @@ const firstVisibleMsg = {
                             languageCode: languageCode || 'default',
                         },
                         function (err, message) {
+                            console.log('Calling getAwayMessage', err, message);
                             _this.populateAwayStatusAndMessage(
                                 data,
                                 isAgentOffline,
@@ -14465,7 +14494,8 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback =
                             res?.answerFeedback || false;
-                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot =
+                            res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
@@ -14494,7 +14524,9 @@ const firstVisibleMsg = {
             _this.disableSendButton = function (value) {
                 var textBox = document.getElementById('mck-text-box');
                 var str = mckUtils.textVal(textBox);
-                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT['CX'] : CHARACTER_LIMIT['ES'];
+                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                    ? CHARACTER_LIMIT['CX']
+                    : CHARACTER_LIMIT['ES'];
                 var sendButton = document.getElementById('mck-msg-sbmt');
                 var trimmedStr = str.trim();
                 var textLength = trimmedStr.length;
@@ -17454,16 +17486,28 @@ const firstVisibleMsg = {
                     var status = parseInt(resp.message.split(',')[1]);
                     var lastSeenAtTime = resp.message.split(',')[2];
                     if (CURRENT_GROUP_DATA.conversationAssignee != userId) {
+                        console.log('Current assignee not getting changed');
                         return;
                     }
+                    console.log('Getting user status:', status);
                     var statusToSet =
                         KommunicateConstants.APPLOZIC_USER_STATUS[status];
+                    console.log('Setting user status to: ', statusToSet);
+
                     var isAgentOffline =
                         statusToSet ==
                         KommunicateConstants.APPLOZIC_USER_STATUS[0];
+
+                    console.log('is agent offline: ', isAgentOffline);
+
                     var tabId = $mck_message_inner.data('mck-id');
                     var conversationAssigneeDetails =
                         alUserService.MCK_USER_DETAIL_MAP[userId];
+
+                    console.log(
+                        'Conversation assignee ',
+                        conversationAssigneeDetails
+                    );
                     KommunicateUI.setAvailabilityStatus(statusToSet);
                     mckMessageService.getAndSetAwayMessage(
                         {},

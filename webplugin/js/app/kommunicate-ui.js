@@ -71,6 +71,7 @@ KommunicateUI = {
         var closedConversation = $applozic(
             '#mck-conversation-status-box'
         ).hasClass('vis');
+        console.log('populateAwayMessage', err, message);
         if (
             !err &&
             message.code == 'SUCCESS' &&
@@ -79,6 +80,7 @@ KommunicateUI = {
             !closedConversation
         ) {
             awayMessage = message.data.messageList[0].message;
+            console.log("awayMessage", awayMessage);
             awayMessage = kommunicateCommons.formatHtmlTag(awayMessage);
             $applozic('#mck-away-msg').html(awayMessage);
             $applozic('#mck-away-msg').linkify({
@@ -86,6 +88,7 @@ KommunicateUI = {
             });
             $applozic('#mck-away-msg-box').removeClass('n-vis').addClass('vis');
         } else {
+            console.log("Hide away message");
             $applozic('#mck-away-msg-box').removeClass('vis').addClass('n-vis');
         }
         var messageBody = document.querySelectorAll(
@@ -950,6 +953,8 @@ KommunicateUI = {
             $applozic('#mck-text-box').focus();
     },
     setAvailabilityStatus: function (status) {
+        console.log("setting label", MCK_LABELS[status]);
+
         $applozic('.mck-agent-image-container')
             .removeClass('n-vis')
             .addClass('vis');
