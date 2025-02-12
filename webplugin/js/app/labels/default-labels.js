@@ -7,7 +7,7 @@ class KMLabel {
             'search.contacts': 'Contacts',
             'search.groups': 'Groups',
             'char.limit.warn':
-                'Keep your message within 256 characters to help the bot understand easily',
+                'Keep your message within LIMIT characters to help the bot understand easily',
             'limit.remove': 'Remove',
             'limit.characters': 'characters',
             'limit.remaining': 'remaining',

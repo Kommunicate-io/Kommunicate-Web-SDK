@@ -30,7 +30,7 @@ function ApplozicSidebox() {
             name: 'applozic-min-js',
             url:
                 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.6.min.js',
-            alternateUrl: MCK_STATICPATH + '/applozic.chat-6.2.6.min.js',
+            alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.6.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
@@ -636,7 +636,7 @@ function ApplozicSidebox() {
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ??
                 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
-                
+
             options.anonymousUserIdForPreChatLead = isSettingEnable(
                 'anonymousUserIdForPreChatLead'
             );
@@ -763,8 +763,10 @@ function ApplozicSidebox() {
         applozic._globals.widgetPlatformUrl &&
             (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        if (!data.appId || data.appId === "" || data.appId === "APP_ID") {
-            console.error("Please replace 'APP_ID' with your App ID in the Kommunicate plugin settings.");
+        if (!data.appId || data.appId === '' || data.appId === 'APP_ID') {
+            console.error(
+                "Please replace 'APP_ID' with your App ID in the Kommunicate plugin settings."
+            );
             return;
         }
         var url =

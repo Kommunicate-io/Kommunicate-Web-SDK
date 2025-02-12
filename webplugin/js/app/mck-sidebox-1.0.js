@@ -16,6 +16,8 @@ var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
+const CHARACTER_LIMIT = {"ES": 256 , "CX": 500};
+const WARNING_LENGTH = {"ES": 199 , "CX": 450};
 var userOverride = {
     voiceOutput: true,
 };
@@ -4290,7 +4292,6 @@ const firstVisibleMsg = {
                         const isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
                             INIT_APP_DATA
                         );
-
                         if (
                             isBusinessHourAvailable &&
                             teamSettings &&
@@ -4611,11 +4612,11 @@ const firstVisibleMsg = {
                         return;
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warningLength = 199;
-                        var maxLength = 256;
+                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? WARNING_LENGTH["CX"]: WARNING_LENGTH["ES"];
+                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT["CX"] : CHARACTER_LIMIT["ES"];
                         var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!document.getElementById('mck-char-count')) {
-                            warningText.innerHTML +=
+                            warningText.innerHTML = MCK_LABELS["char.limit.warn"].replace("LIMIT",maxLength) +
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
@@ -5176,6 +5177,10 @@ const firstVisibleMsg = {
 
                 $applozic(d).on('click', '#km-talk-to-human', function (e) {
                     e.preventDefault();
+                    
+                    //The this keyword refers to the button element in the context of the event handler.
+                    const button = this; 
+                    button.disabled = true;
 
                     window.Applozic.ALApiService.ajax({
                         type: 'PATCH',
@@ -5204,6 +5209,7 @@ const firstVisibleMsg = {
                             }
                         },
                         error: function (data) {
+                            button.disabled = false;
                             console.error(data);
                         },
                     });
@@ -6512,8 +6518,8 @@ const firstVisibleMsg = {
                         userStatus: 4,
                     });
                 }
-
-                $mck_business_hours_box.addClass('n-vis');
+                // keeping for future reference 
+                // $mck_business_hours_box.addClass('n-vis');
 
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
                 if (
@@ -14440,6 +14446,7 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback =
                             res?.answerFeedback || false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
@@ -14468,7 +14475,7 @@ const firstVisibleMsg = {
             _this.disableSendButton = function (value) {
                 var textBox = document.getElementById('mck-text-box');
                 var str = mckUtils.textVal(textBox);
-                var maxLength = 256;
+                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT['CX'] : CHARACTER_LIMIT['ES'];
                 var sendButton = document.getElementById('mck-msg-sbmt');
                 var trimmedStr = str.trim();
                 var textLength = trimmedStr.length;
