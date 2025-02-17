@@ -7885,7 +7885,7 @@ const firstVisibleMsg = {
                     // connected == false ? offline : availabilityStatus == 1 ? online :away
 
                     updateConversationHeaderParams.availabilityStatus =
-                        data.conntected == false
+                        data.connected == false
                             ? KommunicateConstants.AVAILABILITY_STATUS.OFFLINE
                             : data.availabilityStatus ==
                               KommunicateConstants.AGENT_STATUS.online
