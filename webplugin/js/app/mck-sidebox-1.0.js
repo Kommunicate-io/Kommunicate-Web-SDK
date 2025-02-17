@@ -2710,7 +2710,7 @@ const firstVisibleMsg = {
                         isLaunch: true,
                     });
                 }
-                alFileService.init(data);
+                alFileService.init(data, appOptions);
                 alNotificationService.subscribeToServiceWorker();
                 ALStorage.setAppHeaders(data);
 
