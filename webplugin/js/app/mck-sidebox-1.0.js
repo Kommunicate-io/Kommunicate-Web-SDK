@@ -17460,7 +17460,12 @@ const firstVisibleMsg = {
                         KommunicateConstants.APPLOZIC_USER_STATUS[status];
                     var isAgentOffline =
                         statusToSet ==
-                        KommunicateConstants.APPLOZIC_USER_STATUS[0];
+                            KommunicateConstants.APPLOZIC_USER_STATUS[0] ||
+                        statusToSet ==
+                            KommunicateConstants.APPLOZIC_USER_STATUS[2];
+
+                    console.log('Agent is offline/away: ', isAgentOffline);
+
                     var tabId = $mck_message_inner.data('mck-id');
                     var conversationAssigneeDetails =
                         alUserService.MCK_USER_DETAIL_MAP[userId];
