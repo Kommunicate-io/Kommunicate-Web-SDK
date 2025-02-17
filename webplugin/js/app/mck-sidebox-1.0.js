@@ -7884,14 +7884,18 @@ const firstVisibleMsg = {
                     // availabilityStatus = 0 | 1;
                     // connected == false ? offline : availabilityStatus == 1 ? online :away
 
-                    updateConversationHeaderParams.availabilityStatus =
-                        data.connected == false
-                            ? KommunicateConstants.AVAILABILITY_STATUS.OFFLINE
-                            : data.availabilityStatus ==
-                              KommunicateConstants.AGENT_STATUS.online
-                            ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
-                            : KommunicateConstants.AVAILABILITY_STATUS.AWAY;
+                    updateConversationHeaderParams.availabilityStatus = data.connected
+                        ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
+                        : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
 
+                    if (
+                        data.availabilityStatus ==
+                        KommunicateConstants.AGENT_STATUS.away
+                    ) {
+                        updateConversationHeaderParams.availabilityStatus =
+                            KommunicateConstants.AVAILABILITY_STATUS.AWAY;
+                    }
+                    
                     genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
