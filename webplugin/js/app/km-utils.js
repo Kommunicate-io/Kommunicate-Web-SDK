@@ -197,6 +197,7 @@ KommunicateConstants = {
     AVAILABILITY_STATUS: {
         ONLINE: 'online',
         OFFLINE: 'offline',
+        AWAY: 'away',
     },
     POST_BACK_TO_BOT_PLATFORM: 'postBackToBotPlatform',
     CHAT_POPUP_TEMPLATE: {
@@ -233,6 +234,10 @@ KommunicateConstants = {
         1: 'online',
         2: 'away',
         3: 'online', // NOT_AWAY
+    },
+    AGENT_STATUS: {
+        offline: 0,
+        online: 1,
     },
     HEADER_PRIMARY_CTA: {
         [HEADER_CTA.FAQ]: {

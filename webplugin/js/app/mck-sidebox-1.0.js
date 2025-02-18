@@ -16,8 +16,8 @@ var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
-const CHARACTER_LIMIT = {"ES": 256 , "CX": 500};
-const WARNING_LENGTH = {"ES": 199 , "CX": 450};
+const CHARACTER_LIMIT = { ES: 256, CX: 500 };
+const WARNING_LENGTH = { ES: 199, CX: 450 };
 var userOverride = {
     voiceOutput: true,
 };
@@ -2453,7 +2453,7 @@ const firstVisibleMsg = {
                             }
                             // if password invalid then clear cookies
                             kmCookieStorage.deleteUserCookiesOnLogout();
-                            
+
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
@@ -3844,7 +3844,7 @@ const firstVisibleMsg = {
             var MESSAGE_SEND_URL = '/rest/ws/message/send';
             var UPDATE_MESSAGE_METADATA = '/rest/ws/message/update/metadata';
             var GROUP_CREATE_URL = '/rest/ws/group/v2.1/create';
-            var MESSAGE_LIST_URL = '/rest/ws/message/list';
+            var MESSAGE_LIST_URL = '/rest/ws/message/v3/list';
             var UPDATE_REPLY_MAP = '/rest/ws/message/detail';
             var TOPIC_ID_URL = '/rest/ws/conversation/topicId';
             var MESSAGE_DELETE_URL = '/rest/ws/message/delete';
@@ -4612,11 +4612,19 @@ const firstVisibleMsg = {
                         return;
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? WARNING_LENGTH["CX"]: WARNING_LENGTH["ES"];
-                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT["CX"] : CHARACTER_LIMIT["ES"];
+                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                            ? WARNING_LENGTH['CX']
+                            : WARNING_LENGTH['ES'];
+                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                            ? CHARACTER_LIMIT['CX']
+                            : CHARACTER_LIMIT['ES'];
                         var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!document.getElementById('mck-char-count')) {
-                            warningText.innerHTML = MCK_LABELS["char.limit.warn"].replace("LIMIT",maxLength) +
+                            warningText.innerHTML =
+                                MCK_LABELS['char.limit.warn'].replace(
+                                    'LIMIT',
+                                    maxLength
+                                ) +
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
@@ -5177,9 +5185,9 @@ const firstVisibleMsg = {
 
                 $applozic(d).on('click', '#km-talk-to-human', function (e) {
                     e.preventDefault();
-                    
+
                     //The this keyword refers to the button element in the context of the event handler.
-                    const button = this; 
+                    const button = this;
                     button.disabled = true;
 
                     window.Applozic.ALApiService.ajax({
@@ -6518,7 +6526,7 @@ const firstVisibleMsg = {
                         userStatus: 4,
                     });
                 }
-                // keeping for future reference 
+                // keeping for future reference
                 // $mck_business_hours_box.addClass('n-vis');
 
                 var msgKeys = $applozic('#mck-text-box').data('AL_REPLY');
@@ -7872,10 +7880,21 @@ const firstVisibleMsg = {
                     updateConversationHeaderParams.availabilityStatus =
                         KommunicateConstants.AVAILABILITY_STATUS.ONLINE;
                 } else {
+                    // availabilityStatus = 0 | 1;
+                    // connected == false ? offline : availabilityStatus == 1 ? online :away
+
                     updateConversationHeaderParams.availabilityStatus = data.connected
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
 
+                    if (
+                        data.availabilityStatus ==
+                        KommunicateConstants.AGENT_STATUS.away
+                    ) {
+                        updateConversationHeaderParams.availabilityStatus =
+                            KommunicateConstants.AVAILABILITY_STATUS.AWAY;
+                    }
+                    
                     genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
@@ -14444,7 +14463,8 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback =
                             res?.answerFeedback || false;
-                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot =
+                            res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
@@ -14473,7 +14493,9 @@ const firstVisibleMsg = {
             _this.disableSendButton = function (value) {
                 var textBox = document.getElementById('mck-text-box');
                 var str = mckUtils.textVal(textBox);
-                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT['CX'] : CHARACTER_LIMIT['ES'];
+                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                    ? CHARACTER_LIMIT['CX']
+                    : CHARACTER_LIMIT['ES'];
                 var sendButton = document.getElementById('mck-msg-sbmt');
                 var trimmedStr = str.trim();
                 var textLength = trimmedStr.length;
@@ -17439,7 +17461,12 @@ const firstVisibleMsg = {
                         KommunicateConstants.APPLOZIC_USER_STATUS[status];
                     var isAgentOffline =
                         statusToSet ==
-                        KommunicateConstants.APPLOZIC_USER_STATUS[0];
+                            KommunicateConstants.APPLOZIC_USER_STATUS[0] ||
+                        statusToSet ==
+                            KommunicateConstants.APPLOZIC_USER_STATUS[2];
+
+                    console.log('Agent is offline/away: ', isAgentOffline);
+
                     var tabId = $mck_message_inner.data('mck-id');
                     var conversationAssigneeDetails =
                         alUserService.MCK_USER_DETAIL_MAP[userId];
