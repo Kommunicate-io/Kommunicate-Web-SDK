@@ -4326,7 +4326,6 @@ const firstVisibleMsg = {
                 }
                 let isBusinessHour = _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
                 let hasAnyClass = !!($mck_business_hours_box.attr('class')?.trim());
-                let hasNVisClass = $mck_business_hours_box.hasClass('n-vis');
 
                 // Show/hide banner based on business hours
                 if (isBusinessHour) {
@@ -4348,10 +4347,8 @@ const firstVisibleMsg = {
             };
 
             _this.startBusinessHoursTimer = function () {
-                // Check if timer is not already set
                 if (!_this.businessHoursTimer) {
                     _this.businessHoursTimer = setInterval(() => {
-                            console.debug("setinterval called");
                         // Check if business hour banner update required
                         if (isBusinessHourAvailable) {
                             mckMessageService.handleBusinessHoursBannerShow();
@@ -4361,14 +4358,11 @@ const firstVisibleMsg = {
             };
 
             _this.stopBusinessHoursTimer = function () {
-                console.debug("stop timer");
                 if (_this.businessHoursTimer) {
                     clearInterval(_this.businessHoursTimer);
                     _this.businessHoursTimer = null;
                 }
             };
-
-            // _this.startBusinessHoursTimer();
 
             _this.loadConversationWithAgents = function (params, callback) {
                 _this.openChatbox();
@@ -5159,6 +5153,7 @@ const firstVisibleMsg = {
                         e.preventDefault();
                         $mck_business_hours_box.addClass('n-vis');
                         $applozic(
+                            '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
                         )
                             .addClass('vis-table')
                             .removeClass('n-vis');
@@ -7775,7 +7770,7 @@ const firstVisibleMsg = {
                         }
                     },
                     error: function (xhr, desc, err) {
-                        if (xhr?.status === 401) {
+                        if (xhr.status === 401) {
                             ALStorage.clearSessionStorageElements();
                             console.log('Please reload page.');
                         }
@@ -7957,6 +7952,7 @@ const firstVisibleMsg = {
                         updateConversationHeaderParams.availabilityStatus =
                             KommunicateConstants.AVAILABILITY_STATUS.AWAY;
                     }
+
                     genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
@@ -9060,7 +9056,6 @@ const firstVisibleMsg = {
                 $mck_msg_inner.html('');
                 $mck_msg_error.removeClass('mck-no-mb');
                 $mck_contacts_content.removeClass('n-vis').addClass('vis');
-                // $mck_business_hours_box.addClass('n-vis');
                 $modal_footer_content.removeClass('vis').addClass('n-vis');
                 $applozic('#mck-sidebox-ft')
                     .removeClass('vis')
@@ -9232,8 +9227,8 @@ const firstVisibleMsg = {
                             isGroup: params.isGroup,
                             data: params,
                         });
-                            mckMessageService.handleBusinessHours();
-                            mckMessageService.startBusinessHoursTimer();
+                        mckMessageService.handleBusinessHours();
+                        mckMessageService.startBusinessHoursTimer();
                     }
                 } else {
                     params.tabId = '';
