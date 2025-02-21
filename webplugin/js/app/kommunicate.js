@@ -820,6 +820,7 @@ $applozic.extend(true, Kommunicate, {
         if (!msgThroughListAPI) {
             // Enable the msg area when we got the last token
             if (msg.metadata?.lastToken === 'true') {
+                debugger;
                 genAiService.resetState();
                 genAiService.enableTextArea(true);
             }

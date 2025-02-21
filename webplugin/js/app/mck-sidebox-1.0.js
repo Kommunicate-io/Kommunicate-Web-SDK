@@ -7220,7 +7220,7 @@ const firstVisibleMsg = {
                                             params.tabId
                                         );
                                     }
-                                    if (data.conversationPxys.length > 0) {
+                                    if (data.conversationPxys?.length > 0) {
                                         var tabConvArray = new Array();
                                         $applozic.each(
                                             data.conversationPxys,
@@ -7561,7 +7561,7 @@ const firstVisibleMsg = {
                                             }
                                         );
                                     }
-                                    if (data.conversationPxys.length > 0) {
+                                    if (data.conversationPxys?.length > 0) {
                                         $applozic.each(
                                             data.conversationPxys,
                                             function (i, conversationPxy) {
@@ -7878,7 +7878,7 @@ const firstVisibleMsg = {
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
 
-                    genAiService.enableTextArea(true);
+                    // genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
                 kmNavBar.hideAndShowTalkToHumanBtn(
@@ -9707,15 +9707,16 @@ const firstVisibleMsg = {
 
                 if (
                     $applozic('#mck-message-cell .' + msg.key).length > 0 &&
-                    !(CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && msg.type !== 5)
+                    !(msg.tokenMessage && msg.type !== 5)
                 ) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
 
                 // GEN AI BOT
+                // debugger;
                 if (
-                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    msg.tokenMessage &&
                     !msgThroughListAPI
                 ) {
                     // message not from the sockets
@@ -10630,14 +10631,15 @@ const firstVisibleMsg = {
                     const className = `mck-text-msg-${
                         floatWhere === 'mck-msg-right' ? 'right' : 'left'
                     }`;
+
                     if (
-                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                        msg.tokenMessage &&
                         floatWhere !== 'mck-msg-right' &&
                         !msgThroughListAPI
                     ) {
                         genAiService.addTokenizeMsg(
                             msg,
-                            className,
+                            `mck-text-msg-left`,
                             $textMessage
                         );
                     } else {
@@ -13196,6 +13198,10 @@ const firstVisibleMsg = {
                         messageType === 'APPLOZIC_01' ||
                         messageType === 'MESSAGE_RECEIVED'
                     ) {
+
+                        console.debug("inside applozic 1 message",messageType,"message :",contact);
+                
+            
                         if (typeof contact !== 'undefined') {
                             var isGroupTab = $mck_msg_inner.data('isgroup');
                             if (
@@ -13205,7 +13211,7 @@ const firstVisibleMsg = {
                                     $applozic('.' + message.key).length ===
                                         0) ||
                                 message.contentType === 10 ||
-                                (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                                (message.tokenMessage &&
                                     message.contentType !== 5)
                             ) {
                                 if (
@@ -17017,6 +17023,7 @@ const firstVisibleMsg = {
                     ) !== -1
                 ) {
                     var resp = JSON.parse(obj.body);
+                    console.debig("respo: ",resp);
                     var messageType = resp.type;
                     var message = resp.message;
                     // var userIdArray =
@@ -17127,6 +17134,8 @@ const firstVisibleMsg = {
             };
 
             _this.onMessage = function (resp) {
+                console.log("on message :,",resp)
+                // if(resp.message.tokenMessage== false) return;
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == 'object' &&
                     $mck_msg_inner.data(
