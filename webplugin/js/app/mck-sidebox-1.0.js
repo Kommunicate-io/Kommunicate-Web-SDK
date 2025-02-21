@@ -2354,7 +2354,7 @@ const firstVisibleMsg = {
                             genAiService.enableTextArea(true);
                             firstVisibleMsg.reset();
                             mckMessageService.stopBusinessHoursTimer();
-                            BUSINESS_HOUR_SETTING =  null;
+                            BUSINESS_HOUR_SETTING = null;
                         });
                         for (
                             var i = 0;
@@ -4298,7 +4298,7 @@ const firstVisibleMsg = {
                         isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
                             INIT_APP_DATA
                         );
-                        BUSINESS_HOUR_SETTING = teamSettings;               
+                        BUSINESS_HOUR_SETTING = teamSettings;
                         if (
                             isBusinessHourAvailable &&
                             teamSettings &&
@@ -4312,6 +4312,7 @@ const firstVisibleMsg = {
                         } else {
                             $mck_business_hours_box.addClass('n-vis');
                         }
+                        isBusinessHourAvailable && mckMessageService.startBusinessHoursTimer();
                     },
                     error: function (data) {
                         console.error(data);
@@ -4319,13 +4320,20 @@ const firstVisibleMsg = {
                 });
             };
 
-            _this.handleBusinessHoursBannerShow = function() {
+            _this.handleBusinessHoursBannerShow = function () {
                 // Return if business hours box element doesn't exist
-                if (!$mck_business_hours_box || !$mck_business_hours_box.length) {
+                if (
+                    !$mck_business_hours_box ||
+                    !$mck_business_hours_box.length
+                ) {
                     return;
                 }
-                let isBusinessHour = _this.isWithinBusinessHours(BUSINESS_HOUR_SETTING);
-                let hasAnyClass = !!($mck_business_hours_box.attr('class')?.trim());
+                let isBusinessHour = _this.isWithinBusinessHours(
+                    BUSINESS_HOUR_SETTING
+                );
+                let hasAnyClass = !!$mck_business_hours_box
+                    .attr('class')
+                    ?.trim();
 
                 // Show/hide banner based on business hours
                 if (isBusinessHour) {
@@ -4337,19 +4345,20 @@ const firstVisibleMsg = {
                 function showBanner() {
                     $mck_business_hours_box
                         .removeClass('n-vis')
-                        .text(BUSINESS_HOUR_SETTING.message || MCK_LABELS['business-hour.msg']);
+                        .text(
+                            BUSINESS_HOUR_SETTING.message ||
+                                MCK_LABELS['business-hour.msg']
+                        );
                 }
 
                 function hideBanner() {
-                    $mck_business_hours_box
-                        .addClass('n-vis');
+                    $mck_business_hours_box.addClass('n-vis');
                 }
             };
 
             _this.startBusinessHoursTimer = function () {
                 if (!_this.businessHoursTimer) {
                     _this.businessHoursTimer = setInterval(() => {
-                        // Check if business hour banner update required
                         if (isBusinessHourAvailable) {
                             mckMessageService.handleBusinessHoursBannerShow();
                         }
@@ -9228,7 +9237,6 @@ const firstVisibleMsg = {
                             data: params,
                         });
                         mckMessageService.handleBusinessHours();
-                        mckMessageService.startBusinessHoursTimer();
                     }
                 } else {
                     params.tabId = '';
