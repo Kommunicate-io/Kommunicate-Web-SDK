@@ -9673,13 +9673,11 @@ const firstVisibleMsg = {
                 var kmAttchMsg = '';
                 let isUserMsg = true;
 
-                if (msg?.message) {
+                if (msg?.message && msg.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
                     msg.message = window.DOMPurify.sanitize(msg.message, {
                         ALLOWED_TAGS: KM_ALLOWED_TAGS,
                         ALLOWED_ATTR: KM_ALLOWED_ATTR,
-                        WHOLE_DOCUMENT:
-                            msg.contentType ===
-                            KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML,
+                        WHOLE_DOCUMENT: true
                     });
                 }
 
