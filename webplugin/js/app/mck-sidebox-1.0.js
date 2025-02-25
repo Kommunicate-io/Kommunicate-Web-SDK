@@ -5899,6 +5899,8 @@ const firstVisibleMsg = {
                                 messagePxy.message
                             );
                             if (!isValid) {
+                                mckMessageService.resetMessageSentToHumanAgent();
+                                $mck_msg_sbmt.attr('disabled', false);
                                 return false;
                             }
                         }
