@@ -17668,6 +17668,7 @@ const firstVisibleMsg = {
                             resp &&
                                 resp.message &&
                                 KommunicateUI.handleWaitingQueueMessage();
+                                mckMessageService.handleBusinessHours();
                         }
                         if (
                             kommunicateCommons.isObject(resp.message) &&
