@@ -19,6 +19,15 @@ function getFaqClearButton() {
 function getBottomTabsManager() {
     return bottomTabsManagerRef;
 }
+function isIndividualConversationActive() {
+    var sideboxContent = document.getElementById('mck-sidebox-content');
+    return (
+        sideboxContent &&
+        sideboxContent.classList &&
+        sideboxContent.classList.contains('active-tab-conversations') &&
+        sideboxContent.classList.contains('active-subsection-conversation-individual')
+    );
+}
 function setActiveSubsectionState(subsection) {
     var sideboxContent =
         typeof document !== 'undefined' &&
@@ -112,13 +121,13 @@ KommunicateUI = {
         }
     },
     populateAwayMessage: function (err, message) {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var isIndividualConversation = isIndividualConversationActive();
         var closedConversation = $applozic('#mck-conversation-status-box').hasClass('vis');
         if (
             !err &&
             message.code == 'SUCCESS' &&
             message.data.messageList.length > 0 &&
-            !conversationWindowNotActive &&
+            isIndividualConversation &&
             !closedConversation
         ) {
             awayMessage = message.data.messageList[0].message;
@@ -185,11 +194,23 @@ KommunicateUI = {
             }
             return;
         }
+        var sanitizedUrl =
+            typeof url === 'string'
+                ? url.trim().replace(/,+$/, '')
+                : url
+                ? String(url).trim().replace(/,+$/, '')
+                : '';
+        if (!sanitizedUrl) {
+            return;
+        }
         mckUtils.ajax({
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
-            url: kommunicate.getBaseUrl() + '/rest/ws/extractlink?linkToExtract=' + url,
+            url:
+                kommunicate.getBaseUrl() +
+                '/rest/ws/extractlink?linkToExtract=' +
+                encodeURIComponent(sanitizedUrl),
             type: 'GET',
             global: false,
             success: function (result) {
@@ -226,11 +247,11 @@ KommunicateUI = {
         });
     },
     showAwayMessage: function () {
-        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var isIndividualConversation = isIndividualConversationActive();
         if (
             KommunicateUI.awayMessageInfo &&
             KommunicateUI.awayMessageInfo.isEnabled &&
-            !conversationWindowNotActive
+            isIndividualConversation
         ) {
             kommunicateCommons.hide('#mck-email-collection-box');
             kommunicateCommons.show('#mck-away-msg-box');
@@ -1472,7 +1493,7 @@ KommunicateUI = {
                 : true;
         var isPopupEnabled =
             kommunicateCommons.isObject(chatWidget) &&
-            chatWidget.popup &&
+            (chatWidget.popup === true || chatWidget.popup === 'true') &&
             (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
         var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey =
@@ -1505,11 +1526,9 @@ KommunicateUI = {
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
-        console.log('togglePopupChatTemplate called', {
-            templateKey: popupTemplateKey,
-            showTemplate,
-            widgetOpen: kommunicateCommons.isWidgetOpen(),
-        });
+        if (showTemplate && kommunicateCommons.isWidgetOpen()) {
+            return;
+        }
         if (showTemplate) {
             if (playPopupTone == null || playPopupTone) {
                 mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
@@ -1519,8 +1538,12 @@ KommunicateUI = {
                 KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
 
             kommunicateIframe.classList.add(popupTemplateClass.replace('-container-', ''));
-            kommunicateIframe.style.height = '';
-            kommunicateIframe.style.minHeight = '';
+            var isVerticalPopupTemplate =
+                popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.VERTICAL;
+            if (!isVerticalPopupTemplate) {
+                kommunicateIframe.style.height = '';
+                kommunicateIframe.style.minHeight = '';
+            }
 
             popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL &&
                 kommunicateCommons.modifyClassList(
@@ -1538,6 +1561,30 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
+            var el = document.querySelector('.chat-popup-widget-text-wrapper');
+            if (el && window.parent && window.parent !== window) {
+                if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL) {
+                    var textEl = el.querySelector('.chat-popup-widget-text');
+                    var width = el.getBoundingClientRect().width;
+
+                    if (textEl) {
+                        var textRect = textEl.getBoundingClientRect();
+                        width = textRect.width;
+                    }
+
+                    var closeBtnAllowance = 70;
+                    window.parent.postMessage(
+                        { type: 'km_popup_resize', width: Math.ceil(width + closeBtnAllowance) },
+                        '*'
+                    );
+                } else if (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.VERTICAL) {
+                    var wrapperRect = el.getBoundingClientRect();
+                    window.parent.postMessage(
+                        { type: 'km_popup_resize', height: Math.ceil(wrapperRect.height + 35) },
+                        '*'
+                    );
+                }
+            }
             var greetingMessageContainer = document.getElementById('chat-popup-widget-container');
             greetingMessageContainer &&
                 greetingMessageContainer.firstChild &&
@@ -1578,6 +1625,11 @@ KommunicateUI = {
             kommunicateIframe && kommunicateIframe.classList.remove('chat-popup-widget-horizontal');
             kommunicateIframe && kommunicateIframe.classList.remove('chat-popup-widget-vertical');
             kommunicateIframe && kommunicateIframe.classList.remove('chat-popup-widget-actionable');
+            if (kommunicateIframe) {
+                kommunicateIframe.style.height = '';
+                kommunicateIframe.style.width = '';
+                kommunicateIframe.style.minHeight = '';
+            }
             kommunicateCommons.modifyClassList(
                 { id: ['chat-popup-widget-container'] },
                 'n-vis',

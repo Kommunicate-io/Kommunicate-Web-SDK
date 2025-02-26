@@ -198,5 +198,17 @@
   "form.error.invalidValue": "Hai inserito un valore non valido",
   "location.coordinates.lat": "Latitudine:",
   "location.coordinates.lon": "Longitudine:",
-  "whatsnew.empty": "Novità in arrivo presto."
+  "whatsnew.empty": "Novità in arrivo presto.",
+  "file.error.invalid": "File non valido.",
+  "file.error.tooLarge": "La dimensione del file supera il limite consentito.",
+  "file.error.mimeMismatch": "Il tipo di file non corrisponde al contenuto.",
+  "file.error.typeNotAllowed": "Tipo di file non consentito.",
+  "file.error.malicious": "Rilevato contenuto dannoso nel file.",
+  "file.error.unauthorized": "È richiesta una sessione utente.",
+  "file.error.emptyFile": "Nessun file fornito.",
+  "file.error.read": "Impossibile leggere il file.",
+  "file.error.notFound": "File non trovato per la chiave specificata.",
+  "file.error.validationFailed": "Convalida del file non riuscita.",
+  "file.error.uploadFailed": "Caricamento del file non riuscito.",
+  "file.error.default": "Caricamento del file non riuscito."
 }
