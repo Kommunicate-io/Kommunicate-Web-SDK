@@ -5204,7 +5204,7 @@ const firstVisibleMsg = {
                         source: 1,
                     };
                     _this.sendMessage(messagePxy);
-                    var lastMessageBeforeSend = $applozic(
+                    const lastMessageBeforeSend = $applozic(
                         "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                     );
                     if (HIDE_POST_CTA) {
@@ -13111,17 +13111,6 @@ const firstVisibleMsg = {
                 // if (!_this.isMessageSentByBot(message, contact)) {
                 //     typingService.hideTypingIndicator();
                 // }
-                if (messageType === 'APPLOZIC_01') {
-                    let talkToHumanButton = document.getElementById(
-                        'km-talk-to-human'
-                    );
-                    if (
-                        talkToHumanButton?.disabled &&
-                        message?.metadata?.KM_ASSIGN_TO === ''
-                    ) {
-                        talkToHumanButton.disabled = false;
-                    }
-                }
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isValidMeta = mckMessageLayout.isValidMetaData(message);
                 if (typeof tabId === 'undefined' || tabId === '') {
@@ -17724,6 +17713,15 @@ const firstVisibleMsg = {
                             Kommunicate.KmEventHandler.onMessageReceived(
                                 messageCopy
                             );
+                            const talkToHumanButton = document.getElementById(
+                                'km-talk-to-human'
+                            );
+                            if (
+                                talkToHumanButton?.disabled &&
+                                message?.metadata?.KM_ASSIGN_TO === ''
+                            ) {
+                                talkToHumanButton.disabled = false;
+                            }
                         } else if (messageType === 'APPLOZIC_02') {
                             Kommunicate.KmEventHandler.onMessageSent(message);
                         }
