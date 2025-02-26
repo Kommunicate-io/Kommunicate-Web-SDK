@@ -5196,13 +5196,11 @@ const firstVisibleMsg = {
                         key: mckUtils.randomId(),
                         metadata: {
                             TALK_TO_HUMAN: true,
-                            KM_CHAT_CONTEXT: JSON.stringify(
-                                _this.getChatContext(messagePxy)
-                            ),
                         },
                         groupId: CURRENT_GROUP_DATA.tabId,
                         source: 1,
                     };
+                    messagePxy.metadata.KM_CHAT_CONTEXT = JSON.stringify(_this.getChatContext(messagePxy));
                     _this.sendMessage(messagePxy);
                     const lastMessageBeforeSend = $applozic(
                         "#mck-message-cell .mck-message-inner div[name='message']:last-child"
