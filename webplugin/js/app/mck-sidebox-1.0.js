@@ -18,6 +18,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
+const TALK_TO_HUMAN = "Talk to human"
 var userOverride = {
     voiceOutput: true,
 };
@@ -5188,38 +5189,29 @@ const firstVisibleMsg = {
                     //The this keyword refers to the button element in the context of the event handler.
                     const button = this;
                     button.disabled = true;
-
-                    window.Applozic.ALApiService.ajax({
-                        type: 'PATCH',
-                        url:
-                            MCK_BASE_URL +
-                            CHANGE_ASSIGNEE +
-                            '?groupId=' +
-                            encodeURIComponent(CURRENT_GROUP_DATA.tabId) +
-                            '&switchAssignee=' +
-                            encodeURIComponent(true),
-                        global: false,
-                        contentType: 'text/plain',
-                        success: function (data) {
-                            if (data.status === 'success') {
-                                var lastMessageBeforeSend = $applozic(
-                                    "#mck-message-cell .mck-message-inner div[name='message']:last-child"
-                                );
-                                if (HIDE_POST_CTA) {
-                                    Kommunicate.hideMessageCTA();
-
-                                    lastMessageBeforeSend &&
-                                        Kommunicate.hideMessage(
-                                            lastMessageBeforeSend
-                                        );
-                                }
-                            }
+                    var messagePxy = {
+                        type: 5,
+                        contentType: 0,
+                        message: TALK_TO_HUMAN,
+                        key: mckUtils.randomId(),
+                        metadata: {
+                            TALK_TO_HUMAN: true,
+                            KM_CHAT_CONTEXT: JSON.stringify(
+                                _this.getChatContext(messagePxy)
+                            ),
                         },
-                        error: function (data) {
-                            button.disabled = false;
-                            console.error(data);
-                        },
-                    });
+                        groupId: CURRENT_GROUP_DATA.tabId,
+                        source: 1,
+                    };
+                    _this.sendMessage(messagePxy);
+                    var lastMessageBeforeSend = $applozic(
+                        "#mck-message-cell .mck-message-inner div[name='message']:last-child"
+                    );
+                    if (HIDE_POST_CTA) {
+                        Kommunicate.hideMessageCTA();
+                        lastMessageBeforeSend &&
+                            Kommunicate.hideMessage(lastMessageBeforeSend);
+                    }
                 });
 
                 //----------------------------------------------------------------
@@ -7897,7 +7889,7 @@ const firstVisibleMsg = {
                         updateConversationHeaderParams.availabilityStatus =
                             KommunicateConstants.AVAILABILITY_STATUS.AWAY;
                     }
-                    
+
                     genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
@@ -9674,12 +9666,15 @@ const firstVisibleMsg = {
                 var attachmentBox = 'n-vis';
                 var kmAttchMsg = '';
                 let isUserMsg = true;
-
-                if (msg?.message && msg.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML) {
+                if (
+                    msg?.message &&
+                    msg.contentType ===
+                        KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML
+                ) {
                     msg.message = window.DOMPurify.sanitize(msg.message, {
                         ALLOWED_TAGS: KM_ALLOWED_TAGS,
                         ALLOWED_ATTR: KM_ALLOWED_ATTR,
-                        WHOLE_DOCUMENT: true
+                        WHOLE_DOCUMENT: true,
                     });
                 }
 
@@ -13116,6 +13111,17 @@ const firstVisibleMsg = {
                 // if (!_this.isMessageSentByBot(message, contact)) {
                 //     typingService.hideTypingIndicator();
                 // }
+                if (messageType === 'APPLOZIC_01') {
+                    let talkToHumanButton = document.getElementById(
+                        'km-talk-to-human'
+                    );
+                    if (
+                        talkToHumanButton?.disabled &&
+                        message?.metadata?.KM_ASSIGN_TO === ''
+                    ) {
+                        talkToHumanButton.disabled = false;
+                    }
+                }
                 var tabId = $mck_msg_inner.data('mck-id');
                 var isValidMeta = mckMessageLayout.isValidMetaData(message);
                 if (typeof tabId === 'undefined' || tabId === '') {
