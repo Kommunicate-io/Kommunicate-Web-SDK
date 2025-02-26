@@ -5202,7 +5202,7 @@ const firstVisibleMsg = {
                     };
                     messagePxy.metadata.KM_CHAT_CONTEXT = JSON.stringify(_this.getChatContext(messagePxy));
                     _this.sendMessage(messagePxy);
-                    const lastMessageBeforeSend = $applozic(
+                    const lastMessageBeforeSend = document.querySelector(
                         "#mck-message-cell .mck-message-inner div[name='message']:last-child"
                     );
                     if (HIDE_POST_CTA) {
