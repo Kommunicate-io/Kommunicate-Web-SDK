@@ -9802,7 +9802,10 @@ const firstVisibleMsg = {
                 }
 
                 // GEN AI BOT
-                if (msg.tokenMessage && !msgThroughListAPI) {
+                if (
+                    msg.tokenMessage &&
+                    !msgThroughListAPI
+                ) {
                     // message not from the sockets
                     document
                         .getElementById('mck-text-box')
@@ -13284,6 +13287,7 @@ const firstVisibleMsg = {
                         messageType === 'APPLOZIC_01' ||
                         messageType === 'MESSAGE_RECEIVED'
                     ) {
+            
                         if (typeof contact !== 'undefined') {
                             var isGroupTab = $mck_msg_inner.data('isgroup');
                             if (
@@ -17219,6 +17223,7 @@ const firstVisibleMsg = {
             };
 
             _this.onMessage = function (resp) {
+
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == 'object' &&
                     $mck_msg_inner.data(
