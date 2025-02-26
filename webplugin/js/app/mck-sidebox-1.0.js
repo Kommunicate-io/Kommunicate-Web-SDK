@@ -9714,7 +9714,6 @@ const firstVisibleMsg = {
                 }
 
                 // GEN AI BOT
-                // debugger;
                 if (
                     msg.tokenMessage &&
                     !msgThroughListAPI
@@ -13198,9 +13197,6 @@ const firstVisibleMsg = {
                         messageType === 'APPLOZIC_01' ||
                         messageType === 'MESSAGE_RECEIVED'
                     ) {
-
-                        console.debug("inside applozic 1 message",messageType,"message :",contact);
-                
             
                         if (typeof contact !== 'undefined') {
                             var isGroupTab = $mck_msg_inner.data('isgroup');
@@ -17023,7 +17019,6 @@ const firstVisibleMsg = {
                     ) !== -1
                 ) {
                     var resp = JSON.parse(obj.body);
-                    console.debig("respo: ",resp);
                     var messageType = resp.type;
                     var message = resp.message;
                     // var userIdArray =
@@ -17134,8 +17129,7 @@ const firstVisibleMsg = {
             };
 
             _this.onMessage = function (resp) {
-                console.log("on message :,",resp)
-                // if(resp.message.tokenMessage== false) return;
+
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == 'object' &&
                     $mck_msg_inner.data(
