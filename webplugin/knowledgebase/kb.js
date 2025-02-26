@@ -125,9 +125,9 @@
         KommunicateKB.getFaqs = function (options) {
             var url = KM_API_URL + KB_SEARCH_URL.replace(':appId', options.data.appId);
             if (options.data.query) {
-                url = url + '&query=' + options.data.query;
+                url = url + '&query=' + encodeURIComponent(options.data.categoryName);
             }else if (options.data.categoryName){
-                url = KM_API_URL + KB_URL.replace(':appId', options.data.appId).replace(':categoryName', options.data.categoryName);
+                url = KM_API_URL + KB_URL.replace(':appId', options.data.appId).replace(':categoryName', encodeURIComponent(options.data.categoryName));
             }
 
             //Todo: if query is present then call machine learning server to get answer ids.
