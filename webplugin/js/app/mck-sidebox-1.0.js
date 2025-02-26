@@ -7878,7 +7878,7 @@ const firstVisibleMsg = {
                         ? KommunicateConstants.AVAILABILITY_STATUS.ONLINE
                         : KommunicateConstants.AVAILABILITY_STATUS.OFFLINE;
 
-                    // genAiService.enableTextArea(true);
+                    genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
                 kmNavBar.hideAndShowTalkToHumanBtn(
@@ -9722,7 +9722,7 @@ const firstVisibleMsg = {
                     // message not from the sockets
                     document
                         .getElementById('mck-text-box')
-                        .setAttribute('contenteditable', false);
+                        .setAttribute('contenteditable', true);
                 }
 
                 if (

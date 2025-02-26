@@ -7,9 +7,6 @@ class GenAiService {
 
     addTokenizeMsg = (...args) => {
         const [msg, className, $textMessage] = args;
-        if(msg.tokenMessage == false){
-            this.originMessage = msg.message;
-        }
         this.currentElement = null;
         if(msg.metadata.lastToken ){
             const element = document.querySelector(`div[data-msgkey="${msg.key}"]`);
