@@ -22,9 +22,6 @@ var userOverride = {
     voiceOutput: true,
 };
 
-let BUSINESS_HOUR_SETTING;
-let isBusinessHourAvailable;
-
 const firstVisibleMsg = {
     processed: false,
     containsField: false,
@@ -379,6 +376,8 @@ const firstVisibleMsg = {
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        let BUSINESS_HOUR_SETTING; 
+        let isBusinessHourAvailable;
         var CUSTOMER_CREATED_AT = appOptions.customerCreatedAt;
         var OPEN_CONVERSATION_ON_NEW_MESSAGE =
             appOptions.openConversationOnNewMessage;
