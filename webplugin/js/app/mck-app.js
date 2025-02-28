@@ -737,10 +737,11 @@ function ApplozicSidebox() {
         applozic._globals.widgetPlatformUrl &&
             (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        if (!data.appId || data.appId === "" || data.appId === "APP_ID") {
+        if (!data.widgetPlatformUrl && (!data.appId || data.appId === "APP_ID" || data.appId === "")) {
             console.error("Please replace 'APP_ID' with your App ID in the Kommunicate plugin settings.");
             return;
         }
+        
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
             '/users/v3/chat/plugin/settings' +
