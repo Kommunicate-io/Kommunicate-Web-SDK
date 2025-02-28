@@ -21,6 +21,7 @@ const WARNING_LENGTH = { ES: 199, CX: 450 };
 var userOverride = {
     voiceOutput: true,
 };
+
 const firstVisibleMsg = {
     processed: false,
     containsField: false,
@@ -375,6 +376,8 @@ const firstVisibleMsg = {
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        let BUSINESS_HOUR_SETTING; 
+        let isBusinessHourAvailable;
         var CUSTOMER_CREATED_AT = appOptions.customerCreatedAt;
         var OPEN_CONVERSATION_ON_NEW_MESSAGE =
             appOptions.openConversationOnNewMessage;
@@ -2349,6 +2352,8 @@ const firstVisibleMsg = {
                             _this.closeLeadCollectionWindow();
                             genAiService.enableTextArea(true);
                             firstVisibleMsg.reset();
+                            mckMessageService.stopBusinessHoursTimer();
+                            BUSINESS_HOUR_SETTING = null;
                         });
                         for (
                             var i = 0;
@@ -2983,6 +2988,7 @@ const firstVisibleMsg = {
                     e.preventDefault();
                     e.stopPropagation();
                     closeChatBox();
+                    mckMessageService.stopBusinessHoursTimer();
                 });
 
                 var iframeMedia = parent.window.matchMedia(
@@ -4288,9 +4294,10 @@ const firstVisibleMsg = {
                                     String(CURRENT_GROUP_DATA.teamId)
                             );
                         }
-                        const isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
+                        isBusinessHourAvailable = kommunicateCommons.isEnterprisePlan(
                             INIT_APP_DATA
                         );
+                        BUSINESS_HOUR_SETTING = teamSettings;
                         if (
                             isBusinessHourAvailable &&
                             teamSettings &&
@@ -4301,12 +4308,68 @@ const firstVisibleMsg = {
                                 teamSettings.message ||
                                     MCK_LABELS['business-hour.msg']
                             );
+                        } else {
+                            $mck_business_hours_box.addClass('n-vis');
                         }
+                        isBusinessHourAvailable && mckMessageService.startBusinessHoursTimer();
                     },
                     error: function (data) {
                         console.error(data);
                     },
                 });
+            };
+
+            _this.handleBusinessHoursBannerShow = function () {
+                // Return if business hours box element doesn't exist
+                if (
+                    !$mck_business_hours_box ||
+                    !$mck_business_hours_box.length
+                ) {
+                    return;
+                }
+                let isBusinessHour = _this.isWithinBusinessHours(
+                    BUSINESS_HOUR_SETTING
+                );
+                let hasAnyClass = !!$mck_business_hours_box
+                    .attr('class')
+                    ?.trim();
+
+                // Show/hide banner based on business hours
+                if (isBusinessHour) {
+                    !hasAnyClass && hideBanner();
+                } else {
+                    hasAnyClass && showBanner();
+                }
+
+                function showBanner() {
+                    $mck_business_hours_box
+                        .removeClass('n-vis')
+                        .text(
+                            BUSINESS_HOUR_SETTING.message ||
+                                MCK_LABELS['business-hour.msg']
+                        );
+                }
+
+                function hideBanner() {
+                    $mck_business_hours_box.addClass('n-vis');
+                }
+            };
+
+            _this.startBusinessHoursTimer = function () {
+                if (!_this.businessHoursTimer) {
+                    _this.businessHoursTimer = setInterval(() => {
+                        if (isBusinessHourAvailable) {
+                            mckMessageService.handleBusinessHoursBannerShow();
+                        }
+                    }, 1000);
+                }
+            };
+
+            _this.stopBusinessHoursTimer = function () {
+                if (_this.businessHoursTimer) {
+                    clearInterval(_this.businessHoursTimer);
+                    _this.businessHoursTimer = null;
+                }
             };
 
             _this.loadConversationWithAgents = function (params, callback) {
@@ -5096,6 +5159,7 @@ const firstVisibleMsg = {
                     '.' + MCK_LAUNCHER + ', .mck-contact-list .' + MCK_LAUNCHER,
                     function (e) {
                         e.preventDefault();
+                        $mck_business_hours_box.addClass('n-vis');
                         $applozic(
                             '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
                         )
@@ -5323,6 +5387,7 @@ const firstVisibleMsg = {
                     '#mck-conversation-back-btn',
                     function (e) {
                         e.preventDefault();
+                        mckMessageService.stopBusinessHoursTimer();
                         $mck_business_hours_box.addClass('n-vis');
                         kommunicateCommons.modifyClassList(
                             {
@@ -7897,7 +7962,7 @@ const firstVisibleMsg = {
                         updateConversationHeaderParams.availabilityStatus =
                             KommunicateConstants.AVAILABILITY_STATUS.AWAY;
                     }
-                    
+
                     genAiService.enableTextArea(true);
                     CURRENT_GROUP_DATA.TOKENIZE_RESPONSE = false; // when assigned to agent
                 }
@@ -8471,6 +8536,7 @@ const firstVisibleMsg = {
                 '#mck-contact-search-list'
             );
             var $mck_contacts_content = $applozic('#mck-contacts-content');
+            const $mck_business_hours_box = $applozic('#km-business-hour-box');
             var $mck_contact_search_tab = $applozic('#mck-contact-search-tab');
             var $mck_contact_search_tabview = $applozic(
                 '#mck-contact-search-tabview'
@@ -10277,6 +10343,7 @@ const firstVisibleMsg = {
                                 msg.metadata.LOCALIZATION_VALUE ||
                                 msg.metadata.KM_ASSIGN,
                         };
+                        mckMessageService.handleBusinessHours();
                         _this.getAssineeAndCsatTemplate(
                             replyId,
                             'assigneeModule',
@@ -17600,6 +17667,7 @@ const firstVisibleMsg = {
                             resp &&
                                 resp.message &&
                                 KommunicateUI.handleWaitingQueueMessage();
+                                mckMessageService.handleBusinessHours();
                         }
                         if (
                             kommunicateCommons.isObject(resp.message) &&
