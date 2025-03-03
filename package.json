@@ -96,8 +96,5 @@
       "server",
       "webplugin"
     ]
-  },
-  "directories": {
-    "example": "example"
   }
 }
