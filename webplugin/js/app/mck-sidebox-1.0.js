@@ -7220,7 +7220,7 @@ const firstVisibleMsg = {
                                             params.tabId
                                         );
                                     }
-                                    if (data.conversationPxys?.length > 0) {
+                                    if (data.conversationPxys.length > 0) {
                                         var tabConvArray = new Array();
                                         $applozic.each(
                                             data.conversationPxys,
@@ -7561,7 +7561,7 @@ const firstVisibleMsg = {
                                             }
                                         );
                                     }
-                                    if (data.conversationPxys?.length > 0) {
+                                    if (data.conversationPxys.length > 0) {
                                         $applozic.each(
                                             data.conversationPxys,
                                             function (i, conversationPxy) {
