@@ -21,7 +21,11 @@ class TypingService {
     }
 
     processMessageInQueue = (message) => {
-       if(message?.key === "tokenized_response" && this.MCK_BOT_MESSAGE_QUEUE.indexOf(message.key) >= 0) return;
+        if (
+            message?.key === 'tokenized_response' &&
+            this.MCK_BOT_MESSAGE_QUEUE.indexOf(message.key) >= 0
+        )
+            return;
         message?.key && this.MCK_BOT_MESSAGE_QUEUE.push(message.key);
         this.MCK_BOT_MESSAGE_QUEUE.length == 1 &&
             this.processMessageTimerDelay();
@@ -126,7 +130,7 @@ class TypingService {
 
         if (currentMessage?.scrollHeight) {
             this.cumulativeHeight += currentMessage.scrollHeight;
-        }    
+        }
 
         if (showMsgFromStart) {
             // custom case
