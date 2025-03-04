@@ -20,6 +20,93 @@ Step 4: To run the Kommunicate-Web-SDK in local you need to run this command in 
 
 Step-5: Open your web browser and enter http://localhost:3030 to run the demo.
 
+---
+## Code Formatting Guide
+
+### Prerequisites
+
+#### Minimum Node Version Requirement
+Ensure you are using **Node.js v14.16.0 or higher** for automatic code formatting to work correctly.
+
+To check your Node.js version, run:
+```sh
+node -v
+```
+If your version is lower than **14.16.0**, upgrade Node.js:
+```sh
+nvm install 14.16.0
+nvm use 14.16.0
+```
+Alternatively, your project supports **Node.js v14.13.1 or >=16.0.0** as defined in `package.json`:
+```json
+"engines": {
+  "node": "^14.13.1 || >=16.0.0"
+}
+```
+
+#### Required Dependencies
+Ensure the following dependencies are installed:
+```sh
+npm install --save-dev prettier husky lint-staged
+```
+
+
+
+## Troubleshooting
+
+#### **1. No Valid Configuration Found**
+**Error:**
+```
+✖ No valid configuration found.
+husky - pre-commit hook exited with code 1 (error)
+```
+**Fix:**
+- Ensure `lint-staged` is configured in `package.json`.
+- Run `npm install` to ensure dependencies are installed.
+
+#### **2. npx Not Found Error**
+If `npx` is not found, follow these approaches:
+- Ensure Node.js and npm are installed (`node -v` and `npm -v`).
+- Reinstall npm globally:
+  ```sh
+  npm install -g npm
+  ```
+- Clear npm cache:
+  ```sh
+  npm cache clean --force
+  ```
+- Try using `npm exec` instead of `npx`:
+  ```sh
+  npm exec -- prettier --write
+  ```
+- Reinstall Husky and lint-staged:
+  ```sh
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
+
+#### **3. Pre-Commit Hook Not Running**
+**Fix:**
+- Ensure Husky is installed: `npx husky install`.
+- Manually check `.husky/pre-commit` file contains:
+  ```sh
+  #!/bin/sh
+  . "$(dirname "$0")/_/husky.sh"
+  npx lint-staged
+  ```
+
+#### **4. Formatting Not Applied**
+**Fix:**
+- Ensure files are staged before committing:
+  ```sh
+  git add .
+  git commit -m "<Your commit message>"
+  ```
+- Run Prettier manually:
+  ```sh
+  npx prettier --write .
+  ```
+---
 ## How to debug the Production Kommunicate-Web-SDK in localhost.
 
 > Note -> These steps will be applicable for all environments like -> test, release, prod_in, prod etc. Please ensure that you update only the environment key and hostUrl
