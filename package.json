@@ -99,7 +99,7 @@
     ]
   },
   "lint-staged": {
-    "**/*.{js,scss,css,html,md}": [
+    "**/*.{js,scss,css,json,html,md}": [
       "prettier --write"
     ]
   }
