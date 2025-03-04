@@ -102,6 +102,3 @@ Kommunicate.typingAreaService = {
         document.querySelector('#km-voice-recorder').classList.add('n-vis');
     },
 };
-/*eslint @stylistic/js/max-len: ["error", { "code": 80 }]*/
-
-var foo = { bar: 'This is a bar.', baz: { qux: 'This is a qux' }, difficult: 'to read' };
