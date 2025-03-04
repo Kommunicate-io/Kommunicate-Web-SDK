@@ -2,10 +2,12 @@ class GenAiService {
     constructor() {
         this.currentElement = null;
         this.textMsgDiv = null;
+        this.currentIndex = -1;
     }
 
     addTokenizeMsg = (...args) => {
         const [msg, className, $textMessage] = args;
+        this.currentElement = null;
 
         if (!this.currentElement) {
             this.currentElement = document
@@ -17,8 +19,12 @@ class GenAiService {
             divElement.setAttribute('class', className);
             this.textMsgDiv = divElement;
         }
-
-        const textNode = document.createTextNode(msg.message);
+        if (this.currentIndex != msg.index - 1) {
+            // if any token is missed then  stop there
+            return;
+        }
+        this.currentIndex = this.currentIndex + 1;
+        const textNode = document.createTextNode(`${msg.message} `);
         const targetElement = this.currentElement || this.textMsgDiv;
         targetElement.appendChild(textNode);
 
@@ -30,6 +36,7 @@ class GenAiService {
     resetState = () => {
         this.currentElement = null;
         this.textMsgDiv = null;
+        this.currentIndex = -1;
     };
 
     enableTextArea = (bool) => {

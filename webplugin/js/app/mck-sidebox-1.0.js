@@ -19,6 +19,7 @@ const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
 const TALK_TO_HUMAN = "Talk to human"
+
 var userOverride = {
     voiceOutput: true,
 };
@@ -9715,7 +9716,6 @@ const firstVisibleMsg = {
                 ) {
                     return;
                 }
-
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -9784,21 +9784,29 @@ const firstVisibleMsg = {
 
                 if (
                     $applozic('#mck-message-cell .' + msg.key).length > 0 &&
-                    !(CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && msg.type !== 5)
+                    !(msg.tokenMessage && msg.type !== 5)
                 ) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
+                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage) {
+                    // deleting tokenized message after receiving complete message from chat server
+                    const element = document.querySelector(
+                        `div[data-msgkey="tokenized_response"]`
+                    );
+                    if (element) {
+                        console.log('deleted');
+                        element.remove();
+                        genAiService.resetState();
+                    }
+                }
 
                 // GEN AI BOT
-                if (
-                    CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
-                    !msgThroughListAPI
-                ) {
+                if (msg.tokenMessage && !msgThroughListAPI) {
                     // message not from the sockets
                     document
                         .getElementById('mck-text-box')
-                        .setAttribute('contenteditable', false);
+                        .setAttribute('contenteditable', true);
                 }
 
                 if (
@@ -10708,14 +10716,15 @@ const firstVisibleMsg = {
                     const className = `mck-text-msg-${
                         floatWhere === 'mck-msg-right' ? 'right' : 'left'
                     }`;
+
                     if (
-                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                        msg.tokenMessage &&
                         floatWhere !== 'mck-msg-right' &&
                         !msgThroughListAPI
                     ) {
                         genAiService.addTokenizeMsg(
                             msg,
-                            className,
+                            `mck-text-msg-left`,
                             $textMessage
                         );
                     } else {
@@ -13283,7 +13292,7 @@ const firstVisibleMsg = {
                                     $applozic('.' + message.key).length ===
                                         0) ||
                                 message.contentType === 10 ||
-                                (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                                (message.tokenMessage &&
                                     message.contentType !== 5)
                             ) {
                                 if (
