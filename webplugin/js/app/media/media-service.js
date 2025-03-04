@@ -92,7 +92,7 @@ Kommunicate.mediaService = {
                 window.$applozic.fn.applozic('toggleMediaOptions');
             };
             recognition.onerror = function (event) {
-                console.log('error while speech recognition:', event.error);
+                console.error('error while speech recognition:', event.error);
                 recognition.abort();
             };
 
