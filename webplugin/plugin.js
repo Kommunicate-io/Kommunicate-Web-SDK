@@ -209,17 +209,14 @@ function createKommunicateIframe() {
     kommunicateIframe.setAttribute('data-url', window.location.href);
     document.body.appendChild(kommunicateIframe);
     var iframeDocument =
-        kommunicateIframe.contentDocument ||
-        kommunicateIframe.contentWindow.document;
+        kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
     kommunicateIframe.contentWindow.kommunicate = window.kommunicate;
 
     iframeDocument.body.setAttribute('dir', languageDirectionChangeAuto());
 
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         // Do Firefox-related activities
-        var testClick = window.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+        var testClick = window.document.getElementById('kommunicate-widget-iframe');
         testClick.onload = function () {
             injectJquery();
         };
@@ -237,19 +234,15 @@ function addKommunicatePluginToIframe() {
         addableWindow = window;
         addableDocument = document;
     } else {
-        var kommunicateIframe = window.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+        var kommunicateIframe = window.document.getElementById('kommunicate-widget-iframe');
         var iframeDocument =
-            kommunicateIframe.contentDocument ||
-            kommunicateIframe.contentWindow.document;
+            kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
         addableWindow = kommunicateIframe.contentWindow;
         addableDocument = iframeDocument;
     }
     addableWindow.applozic =
-        (isV1Script()
-            ? addableWindow.kommunicate
-            : kommunicateIframe.contentWindow.kommunicate) || {};
+        (isV1Script() ? addableWindow.kommunicate : kommunicateIframe.contentWindow.kommunicate) ||
+        {};
     addableWindow.MCK_CONTEXTPATH = MCK_CONTEXTPATH;
     addableWindow.MCK_STATICPATH = MCK_STATICPATH;
     addableWindow.MCK_ONINIT = '';
@@ -267,7 +260,7 @@ function addKommunicatePluginToIframe() {
     if (typeof options !== 'undefined') {
         addableWindow.MCK_ONINIT = options.onInit;
     }
-    
+
     addableWindow.addEventListener(
         'error',
         function (e) {
@@ -306,10 +299,7 @@ function scriptLoader(options) {
         if (script.readyState) {
             // IE
             script.onreadystatechange = function () {
-                if (
-                    script.readyState === 'loaded' ||
-                    script.readyState === 'complete'
-                ) {
+                if (script.readyState === 'loaded' || script.readyState === 'complete') {
                     resolve();
                 }
             };
@@ -338,12 +328,9 @@ function injectJquery() {
         addableWindow = window;
         addableDocument = document;
     } else {
-        var kommunicateIframe = window.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+        var kommunicateIframe = window.document.getElementById('kommunicate-widget-iframe');
         var iframeDocument =
-            kommunicateIframe.contentDocument ||
-            kommunicateIframe.contentWindow.document;
+            kommunicateIframe.contentDocument || kommunicateIframe.contentWindow.document;
         addableWindow = kommunicateIframe.contentWindow;
         addableDocument = iframeDocument;
         addableDocument.body.setAttribute('dir', languageDirectionChangeAuto());
@@ -400,10 +387,7 @@ function injectJquery() {
 
     if (script.readyState) {
         script.onreadystatechange = function () {
-            if (
-                script.readyState === 'loaded' ||
-                script.readyState === 'complete'
-            ) {
+            if (script.readyState === 'loaded' || script.readyState === 'complete') {
                 // Once jQuery is ready, initialize Sentry error tracking
                 // check the function declaration above to know more about the function
                 loadKommunicateWithSentry();

@@ -1,21 +1,11 @@
 Kommunicate.KmEventHandler = {
     openChatOnNotification: function (message) {
-        if (
-            !(document.getElementById('mck-sidebox').style.display === 'block')
-        ) {
+        if (!(document.getElementById('mck-sidebox').style.display === 'block')) {
             if (message && message.groupId) {
-                document
-                    .getElementById('launcher-agent-img-container')
-                    .classList.remove('vis');
-                document
-                    .getElementById('launcher-agent-img-container')
-                    .classList.add('n-vis');
-                document
-                    .getElementById('launcher-svg-container')
-                    .classList.remove('n-vis');
-                document
-                    .getElementById('launcher-svg-container')
-                    .classList.add('vis');
+                document.getElementById('launcher-agent-img-container').classList.remove('vis');
+                document.getElementById('launcher-agent-img-container').classList.add('n-vis');
+                document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                document.getElementById('launcher-svg-container').classList.add('vis');
                 window.Kommunicate.openConversation(message.groupId);
             } else {
                 window.Kommunicate.openDirectConversation(message.to);
@@ -25,14 +15,11 @@ Kommunicate.KmEventHandler = {
     },
     notificationEvent: function (message) {
         if (
-            appOptionSession.getPropertyDataFromSession('appOptions')
-                ?.openConversationOnNewMessage
+            appOptionSession.getPropertyDataFromSession('appOptions')?.openConversationOnNewMessage
         ) {
             Kommunicate.KmEventHandler.openChatOnNotification(message);
         } else if (
-            document
-                .getElementById('launcher-agent-img-container')
-                .classList.contains('vis')
+            document.getElementById('launcher-agent-img-container').classList.contains('vis')
         ) {
             document
                 .querySelector('#mck-sidebox-launcher #launcher-svg-container')
@@ -47,10 +34,7 @@ Kommunicate.KmEventHandler = {
 
         // turn off the speech
         if (toggleSound) {
-            Kommunicate.mediaService.voiceOutputIncomingMessage(
-                message,
-                toggleSound
-            );
+            Kommunicate.mediaService.voiceOutputIncomingMessage(message, toggleSound);
             return;
         }
         var validMessageMetadata =

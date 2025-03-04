@@ -43,12 +43,8 @@
     float: right;
 }
 
-.km-room-person-selector-container
-    .km-room-selector
-    .km-room-number-field:disabled,
-.km-room-person-selector-container
-    .km-person-selector
-    .km-person-number-field:disabled {
+.km-room-person-selector-container .km-room-selector .km-room-number-field:disabled,
+.km-room-person-selector-container .km-person-selector .km-person-number-field:disabled {
     background-color: transparent;
     border: none;
     color: #000;
@@ -135,8 +131,8 @@
     margin-bottom: 10px;
     border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2),
-        0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14),
+        0px 3px 3px 0px rgba(0, 0, 0, 0.12);
 }
 .km-single-card-message:focus {
     outline: none;
@@ -348,7 +344,6 @@
     display: none;
 }
 
-
 .km-quick-rpy-btn {
     width: auto;
     padding: 5px 10px;
@@ -357,7 +352,6 @@
     font-size: 14px;
     letter-spacing: normal;
 }
-
 
 /********** Guest Details Form Starts Here ***********/
 
@@ -603,7 +597,7 @@
     font-size: 14px;
     font-weight: normal;
     letter-spacing: 0.4px;
-    color: #D64242;
+    color: #d64242;
 }
 #mck-form-field-error-alert-box {
     text-align: center;
@@ -614,11 +608,7 @@
     border: none;
     margin-top: 0px;
     margin-bottom: 10px;
-    background-image: linear-gradient(
-        to right,
-        #dddddd 40%,
-        rgba(255, 255, 255, 0) 0%
-    );
+    background-image: linear-gradient(to right, #dddddd 40%, rgba(255, 255, 255, 0) 0%);
     background-position: left;
     background-size: 14px 1px;
     background-repeat: repeat-x;
@@ -727,7 +717,6 @@
     background-color: #f1a5a5;
 }
 
-
 .mck-msg-box-rich-text-container .email-message-indicator,
 .km-msg-box .email-message-indicator {
     margin-bottom: 15px;
@@ -770,7 +759,7 @@
 .mck-msg-preview-visual-indicator-container .mck-close-btn,
 .chat-popup-widget-container .chat-popup-widget-close-btn {
     border-radius: 100px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     width: 40px;
     height: 40px;
     display: flex;
@@ -787,11 +776,6 @@
     margin-left: 10px;
 }
 
-
-
 .km-slider-multiple-cards-container {
     margin-left: -65px;
 }
-
-
-

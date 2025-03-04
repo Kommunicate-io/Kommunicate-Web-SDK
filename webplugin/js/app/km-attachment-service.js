@@ -37,11 +37,7 @@ Kommunicate.attachmentService = {
         };
         reader.readAsDataURL(file);
     },
-    uploadAttachment: function (
-        params,
-        messagePxy,
-        MCK_CUSTOM_UPLOAD_SETTINGS
-    ) {
+    uploadAttachment: function (params, messagePxy, MCK_CUSTOM_UPLOAD_SETTINGS) {
         data = { params: params, messagePxy: messagePxy };
         $applozic.fn.applozic('uploadAttachemnt', data);
     },

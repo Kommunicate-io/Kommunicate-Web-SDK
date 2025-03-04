@@ -55,10 +55,7 @@ const KM_REPLAY_CONFIG = {
         if (document.scripts[i].src.indexOf(_publicKey) > -1) {
             // If lazy was set to true above, we need to check if the user has set data-lazy="no"
             // to confirm that we should lazy load the CDN bundle
-            if (
-                lazy &&
-                document.scripts[i].getAttribute('data-lazy') === 'no'
-            ) {
+            if (lazy && document.scripts[i].getAttribute('data-lazy') === 'no') {
                 lazy = false;
             }
             break;
@@ -83,8 +80,7 @@ const KM_REPLAY_CONFIG = {
             (queueIsError(item) ||
                 queueIsPromiseRejection(item) ||
                 (queueIsFunction(item) && item.f.indexOf('capture') > -1) ||
-                (queueIsFunction(item) &&
-                    item.f.indexOf('showReportDialog') > -1))
+                (queueIsFunction(item) && item.f.indexOf('showReportDialog') > -1))
         ) {
             // We only want to lazy inject/load the sdk bundle if
             // an error or promise rejection occured
@@ -115,10 +111,7 @@ const KM_REPLAY_CONFIG = {
                 // Remove the lazy mode error event listeners that we previously registered
                 // Once we call init, we can assume that Sentry has added it's own global error listeners
                 _window.removeEventListener(_errorEvent, onError);
-                _window.removeEventListener(
-                    _unhandledrejectionEvent,
-                    onUnhandledRejection
-                );
+                _window.removeEventListener(_unhandledrejectionEvent, onUnhandledRejection);
                 var mergedInitOptions = _loaderInitConfig;
                 for (var key in options) {
                     if (Object.prototype.hasOwnProperty.call(options, key)) {
@@ -160,10 +153,7 @@ const KM_REPLAY_CONFIG = {
             once: true,
             passive: true,
         });
-        firstScriptTagInDom.parentNode.insertBefore(
-            cdnScriptTag,
-            firstScriptTagInDom
-        );
+        firstScriptTagInDom.parentNode.insertBefore(cdnScriptTag, firstScriptTagInDom);
     }
     // We want to ensure to only add default integrations if they haven't been added by the user.
     function setupDefaultIntegrations(config, SDK) {
@@ -176,23 +166,17 @@ const KM_REPLAY_CONFIG = {
             return integration.name;
         });
         // Add necessary integrations based on config
-        if (
-            config.tracesSampleRate &&
-            integrationNames.indexOf('BrowserTracing') === -1
-        ) {
+        if (config.tracesSampleRate && integrationNames.indexOf('BrowserTracing') === -1) {
             if (SDK.browserTracingIntegration) {
                 // (Post-)v8 version of the BrowserTracing integration
-                integrations.push(
-                    SDK.browserTracingIntegration({ enableInp: true })
-                );
+                integrations.push(SDK.browserTracingIntegration({ enableInp: true }));
             } else if (SDK.BrowserTracing) {
                 // Pre v8 version of the BrowserTracing integration
                 integrations.push(new SDK.BrowserTracing());
             }
         }
         if (
-            (config.replaysSessionSampleRate ||
-                config.replaysOnErrorSampleRate) &&
+            (config.replaysSessionSampleRate || config.replaysOnErrorSampleRate) &&
             integrationNames.indexOf('Replay') === -1
         ) {
             if (SDK.replayIntegration) {
@@ -213,11 +197,7 @@ const KM_REPLAY_CONFIG = {
             return !!__sentry[version];
         }
         // If there is a global __SENTRY__ that means that in any of the callbacks init() was already invoked
-        return !!(
-            !(typeof __sentry === 'undefined') &&
-            __sentry.hub &&
-            __sentry.hub.getClient()
-        );
+        return !!(!(typeof __sentry === 'undefined') && __sentry.hub && __sentry.hub.getClient());
     }
     function setupSDK(SDK) {
         try {
@@ -256,8 +236,7 @@ const KM_REPLAY_CONFIG = {
             // Because we installed the SDK, at this point we can assume that the global handlers have been patched
             // which can take care of browser differences (eg. missing exception argument in onerror)
             var sentryPatchedErrorHandler = _window.onerror;
-            var sentryPatchedUnhandledRejectionHandler =
-                _window.onunhandledrejection;
+            var sentryPatchedUnhandledRejectionHandler = _window.onunhandledrejection;
             for (var i = 0; i < queue.length; i++) {
                 var item = queue[i];
                 if (queueIsFunction(item)) {
@@ -272,9 +251,7 @@ const KM_REPLAY_CONFIG = {
                     queueIsPromiseRejection(item) &&
                     sentryPatchedUnhandledRejectionHandler
                 ) {
-                    sentryPatchedUnhandledRejectionHandler.apply(_window, [
-                        item.p,
-                    ]);
+                    sentryPatchedUnhandledRejectionHandler.apply(_window, [item.p]);
                 }
             }
         } catch (o_O) {

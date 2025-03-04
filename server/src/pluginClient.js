@@ -26,14 +26,9 @@ const FILE_UPLOAD_PATH = argv && argv.path;
 */
 exports.upload = async (buildDir, version) => {
     try {
-        let buildFolder = fs.readdirSync(
-            path.resolve(__dirname, '../../webplugin/build')
-        );
+        let buildFolder = fs.readdirSync(path.resolve(__dirname, '../../webplugin/build'));
         for (let file of buildFolder) {
-            var filePath = path.resolve(
-                __dirname,
-                (buildDir + '/' + file).toString()
-            );
+            var filePath = path.resolve(__dirname, (buildDir + '/' + file).toString());
             console.log(filePath);
             await uploadFileToS3(filePath, version);
         }

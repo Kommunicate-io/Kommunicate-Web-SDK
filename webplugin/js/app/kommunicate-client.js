@@ -50,9 +50,7 @@ Kommunicate.client = {
     createConversation: function (conversationDetail, callback) {
         var chatContext = $applozic.extend(
             Kommunicate.getSettings('KM_CHAT_CONTEXT'),
-            conversationDetail.metadata
-                ? conversationDetail.metadata['KM_CHAT_CONTEXT']
-                : {}
+            conversationDetail.metadata ? conversationDetail.metadata['KM_CHAT_CONTEXT'] : {}
         );
         conversationDetail.metadata = {
             ...conversationDetail.metadata,
@@ -63,9 +61,7 @@ Kommunicate.client = {
         var currentLanguage = {
             kmUserLocale: userLocale
                 ? userLocale.split('-')[0]
-                : (
-                      window.navigator.language || window.navigator.userLanguage
-                  ).split('-')[0],
+                : (window.navigator.language || window.navigator.userLanguage).split('-')[0],
         };
         chatContext = $applozic.extend(chatContext, currentLanguage);
 
@@ -84,29 +80,26 @@ Kommunicate.client = {
             KM_CONVERSATION_TITLE: conversationDetail.groupName,
             //ALERT: "false",
             HIDE: 'true',
-            SKIP_ROUTING: conversationDetail.skipRouting
-                ? conversationDetail.skipRouting
-                : false,
+            SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : false,
             KM_CHAT_CONTEXT: JSON.stringify(chatContext),
-            GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL : parent.location.href,
-            conversationMetadata:JSON.stringify(conversationDetail.metadata),
+            GROUP_CREATION_URL: window.kommunicate.IFRAME_OVERRIDES
+                ? window.kommunicate.IFRAME_OVERRIDES.GROUP_CREATION_URL
+                : parent.location.href,
+            conversationMetadata: JSON.stringify(conversationDetail.metadata),
         };
-    
+
         typeof conversationDetail.teamId != 'undefined' &&
             (groupMetadata.KM_TEAM_ID = conversationDetail.teamId);
-        conversationDetail.metadata.KM_ORIGINAL_TITLE &&
-            (groupMetadata.KM_ORIGINAL_TITLE = true);
+        conversationDetail.metadata.KM_ORIGINAL_TITLE && (groupMetadata.KM_ORIGINAL_TITLE = true);
         conversationDetail.skipBotEvent &&
             (groupMetadata.SKIP_BOT_EVENT = conversationDetail.skipBotEvent);
         conversationDetail.customWelcomeEvent &&
-            (groupMetadata.CUSTOM_WELCOME_EVENT =
-                conversationDetail.customWelcomeEvent);
+            (groupMetadata.CUSTOM_WELCOME_EVENT = conversationDetail.customWelcomeEvent);
 
         // Add welcome message in group metadata only if some value for it is coming in conversationDetails parameter.
         conversationDetail.metadata &&
             conversationDetail.metadata.WELCOME_MESSAGE &&
-            (groupMetadata.WELCOME_MESSAGE =
-                conversationDetail.metadata.WELCOME_MESSAGE);
+            (groupMetadata.WELCOME_MESSAGE = conversationDetail.metadata.WELCOME_MESSAGE);
 
         if (conversationDetail.assignee || conversationDetail.agentId) {
             groupMetadata.CONVERSATION_ASSIGNEE =
@@ -122,13 +115,9 @@ Kommunicate.client = {
             isMessage: conversationDetail.isMessage,
             isInternal: conversationDetail.isInternal,
             metadata: groupMetadata,
-            allowMessagesViaSocket:
-                conversationDetail.allowMessagesViaSocket || false,
+            allowMessagesViaSocket: conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
-                if (
-                    response.status === 'success' &&
-                    response.data.clientGroupId
-                ) {
+                if (response.status === 'success' && response.data.clientGroupId) {
                     if (typeof callback == 'function') {
                         callback(response.data.value);
                     }
@@ -187,20 +176,23 @@ Kommunicate.client = {
         });
     },
 
-    /**get the entire chatListDetails by groupId 
-     * @param {Object} options 
+    /**get the entire chatListDetails by groupId
+     * @param {Object} options
      * @param {Number} options.groupId
-     * @param {function} callback 
+     * @param {function} callback
      */
     getChatListByGroupId: function (options, callback) {
         $applozic.ajax({
-            url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/message/list?startIndex=0&groupId=" + options.groupId,
+            url:
+                KM_PLUGIN_SETTINGS.applozicBaseUrl +
+                '/rest/ws/message/list?startIndex=0&groupId=' +
+                options.groupId,
             type: 'get',
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
             success: function (result) {
-                callback(null, result)
+                callback(null, result);
             },
             error: function (err) {
                 callback(err);
@@ -210,17 +202,21 @@ Kommunicate.client = {
 
     resolveConversation: function (options, callback) {
         $applozic.ajax({
-            url: KM_PLUGIN_SETTINGS.applozicBaseUrl + "/rest/ws/group/status/change?groupId=" + options.groupId + "&status=2",
+            url:
+                KM_PLUGIN_SETTINGS.applozicBaseUrl +
+                '/rest/ws/group/status/change?groupId=' +
+                options.groupId +
+                '&status=2',
             type: 'patch',
             headers: {
-                'Application-Key': kommunicate._globals.appId
+                'Application-Key': kommunicate._globals.appId,
             },
             success: function (result) {
-                callback(null, result)
+                callback(null, result);
             },
             error: function (err) {
                 callback(err);
             },
         });
-    }
+    },
 };
