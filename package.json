@@ -7,7 +7,7 @@
   "license": "ISC",
   "scripts": {
     "postinstall": "husky install",
-    "prettify-commit": "lint-staged",
+    "prettify-commit": "lint-staged --allow-empty",
     "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style",
     "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.{js,css,scss,json}' --ignore-unknown",
     "build:dev": "nodemon ./server/app.js",
