@@ -5,5 +5,5 @@
     "quoteProps": "consistent",
     "singleQuote": true,
     "insertPragma": false,
-    "requirePragma": false,
+    "requirePragma": false
 }
