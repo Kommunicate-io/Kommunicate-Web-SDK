@@ -18,7 +18,7 @@ var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
-const TALK_TO_HUMAN = "Talk to human"
+const TALK_TO_HUMAN = 'Talk to human';
 var userOverride = {
     voiceOutput: true,
 };
@@ -89,7 +89,8 @@ const firstVisibleMsg = {
         voiceOutput: false,
         capturePhoto: false,
         captureVideo: false,
-        maxAttachmentSize: 25, // default size is 25MB
+        maxAttachmentSize: 25, // default size is 25MB,
+        new: 'test',
     };
     var message_default_options = {
         messageType: 5,
@@ -377,7 +378,7 @@ const firstVisibleMsg = {
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
-        let BUSINESS_HOUR_SETTING; 
+        let BUSINESS_HOUR_SETTING;
         let isBusinessHourAvailable;
         var CUSTOMER_CREATED_AT = appOptions.customerCreatedAt;
         var OPEN_CONVERSATION_ON_NEW_MESSAGE =
@@ -4312,7 +4313,8 @@ const firstVisibleMsg = {
                         } else {
                             $mck_business_hours_box.addClass('n-vis');
                         }
-                        isBusinessHourAvailable && mckMessageService.startBusinessHoursTimer();
+                        isBusinessHourAvailable &&
+                            mckMessageService.startBusinessHoursTimer();
                     },
                     error: function (data) {
                         console.error(data);
@@ -5264,7 +5266,9 @@ const firstVisibleMsg = {
                         groupId: CURRENT_GROUP_DATA.tabId,
                         source: 1,
                     };
-                    messagePxy.metadata.KM_CHAT_CONTEXT = JSON.stringify(_this.getChatContext(messagePxy));
+                    messagePxy.metadata.KM_CHAT_CONTEXT = JSON.stringify(
+                        _this.getChatContext(messagePxy)
+                    );
                     _this.sendMessage(messagePxy);
                     const lastMessageBeforeSend = document.querySelector(
                         "#mck-message-cell .mck-message-inner div[name='message']:last-child"
@@ -17660,7 +17664,7 @@ const firstVisibleMsg = {
                             resp &&
                                 resp.message &&
                                 KommunicateUI.handleWaitingQueueMessage();
-                                mckMessageService.handleBusinessHours();
+                            mckMessageService.handleBusinessHours();
                         }
                         if (
                             kommunicateCommons.isObject(resp.message) &&
