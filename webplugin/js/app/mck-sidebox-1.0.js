@@ -16,8 +16,8 @@ var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
 const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
-const CHARACTER_LIMIT = {"ES": 256 , "CX": 500};
-const WARNING_LENGTH = {"ES": 199 , "CX": 450};
+const CHARACTER_LIMIT = { ES: 256, CX: 500 };
+const WARNING_LENGTH = { ES: 199, CX: 450 };
 var userOverride = {
     voiceOutput: true,
 };
@@ -2454,7 +2454,7 @@ const firstVisibleMsg = {
                             }
                             // if password invalid then clear cookies
                             kmCookieStorage.deleteUserCookiesOnLogout();
-                            
+
                             throw new Error('INVALID_PASSWORD');
                         } else if (result === 'INVALID_APPID') {
                             Kommunicate.displayKommunicateWidget(false);
@@ -4612,11 +4612,19 @@ const firstVisibleMsg = {
                         return;
                     }
                     if (CURRENT_GROUP_DATA.CHAR_CHECK) {
-                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? WARNING_LENGTH["CX"]: WARNING_LENGTH["ES"];
-                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT["CX"] : CHARACTER_LIMIT["ES"];
+                        var warningLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                            ? WARNING_LENGTH['CX']
+                            : WARNING_LENGTH['ES'];
+                        var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                            ? CHARACTER_LIMIT['CX']
+                            : CHARACTER_LIMIT['ES'];
                         var textBox = $mck_text_box[0]; //using separate selector for vanilla JS functions
                         if (!document.getElementById('mck-char-count')) {
-                            warningText.innerHTML = MCK_LABELS["char.limit.warn"].replace("LIMIT",maxLength) +
+                            warningText.innerHTML =
+                                MCK_LABELS['char.limit.warn'].replace(
+                                    'LIMIT',
+                                    maxLength
+                                ) +
                                 '<span> | </span><span id="mck-char-count"></span>';
                         }
                         var remtxt;
@@ -5177,9 +5185,9 @@ const firstVisibleMsg = {
 
                 $applozic(d).on('click', '#km-talk-to-human', function (e) {
                     e.preventDefault();
-                    
+
                     //The this keyword refers to the button element in the context of the event handler.
-                    const button = this; 
+                    const button = this;
                     button.disabled = true;
 
                     window.Applozic.ALApiService.ajax({
@@ -9639,7 +9647,6 @@ const firstVisibleMsg = {
                 ) {
                     return;
                 }
-
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -9712,12 +9719,20 @@ const firstVisibleMsg = {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
+                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage) {
+                    // deleting tokenized message after receiving complete message from chat server
+                    const element = document.querySelector(
+                        `div[data-msgkey="tokenized_response"]`
+                    );
+                    if (element) {
+                        console.log('deleted');
+                        element.remove();
+                        genAiService.resetState();
+                    }
+                }
 
                 // GEN AI BOT
-                if (
-                    msg.tokenMessage &&
-                    !msgThroughListAPI
-                ) {
+                if (msg.tokenMessage && !msgThroughListAPI) {
                     // message not from the sockets
                     document
                         .getElementById('mck-text-box')
@@ -13197,7 +13212,6 @@ const firstVisibleMsg = {
                         messageType === 'APPLOZIC_01' ||
                         messageType === 'MESSAGE_RECEIVED'
                     ) {
-            
                         if (typeof contact !== 'undefined') {
                             var isGroupTab = $mck_msg_inner.data('isgroup');
                             if (
@@ -14468,7 +14482,8 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback =
                             res?.answerFeedback || false;
-                        CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
+                        CURRENT_GROUP_DATA.isDialogflowCXBot =
+                            res?.dialogflowCXBot || false;
                     },
                     error: function () {
                         CURRENT_GROUP_DATA.CHAR_CHECK = false;
@@ -14497,7 +14512,9 @@ const firstVisibleMsg = {
             _this.disableSendButton = function (value) {
                 var textBox = document.getElementById('mck-text-box');
                 var str = mckUtils.textVal(textBox);
-                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot ? CHARACTER_LIMIT['CX'] : CHARACTER_LIMIT['ES'];
+                var maxLength = CURRENT_GROUP_DATA.isDialogflowCXBot
+                    ? CHARACTER_LIMIT['CX']
+                    : CHARACTER_LIMIT['ES'];
                 var sendButton = document.getElementById('mck-msg-sbmt');
                 var trimmedStr = str.trim();
                 var textLength = trimmedStr.length;
@@ -17129,7 +17146,6 @@ const firstVisibleMsg = {
             };
 
             _this.onMessage = function (resp) {
-
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == 'object' &&
                     $mck_msg_inner.data(

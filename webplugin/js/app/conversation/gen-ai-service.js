@@ -8,16 +8,6 @@ class GenAiService {
     addTokenizeMsg = (...args) => {
         const [msg, className, $textMessage] = args;
         this.currentElement = null;
-        if(msg.metadata.lastToken ){
-            const element = document.querySelector(`div[data-msgkey="${msg.key}"]`);
-            if (element) {
-             setTimeout(()=>{
-                element.remove();
-                this.resetState();
-             },1000);
-            }
-          
-        }
 
         if (!this.currentElement) {
             this.currentElement = document
@@ -29,10 +19,11 @@ class GenAiService {
             divElement.setAttribute('class', className);
             this.textMsgDiv = divElement;
         }
-        if(this.currentIndex != msg.index-1){ // if any token is missed then  stop there
-          return;
+        if (this.currentIndex != msg.index - 1) {
+            // if any token is missed then  stop there
+            return;
         }
-        this.currentIndex = this.currentIndex+1;
+        this.currentIndex = this.currentIndex + 1;
         const textNode = document.createTextNode(`${msg.message} `);
         const targetElement = this.currentElement || this.textMsgDiv;
         targetElement.appendChild(textNode);
