@@ -16,8 +16,8 @@ Kommunicate.typingAreaService = {
                 typeof window.getSelection != 'undefined' &&
                 typeof document.createRange != 'undefined'
             ) {
-                var range = document.createRange();
-                range.selectNodeContents(el);
+            var range = document.createRange();
+            range.selectNodeContents(el);
                 range.collapse(false);
                 var sel = window.getSelection();
                 sel.removeAllRanges();
