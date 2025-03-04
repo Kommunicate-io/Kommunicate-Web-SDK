@@ -71,3 +71,4 @@ Step 5: After changing the config variable open the terminal and run this comman
 > **Note**: Do not update any other parameter in config-env file other than hostUrl for all environments. 
  
 
+
