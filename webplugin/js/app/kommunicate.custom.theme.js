@@ -34,9 +34,7 @@ function KmCustomTheme() {
                     ? WIDGET_SETTINGS.secondaryColor
                     : DEFAULT_SECONDARY_BACKGROUND_COLOR;
             var squareIcon =
-                kommunicate._globals.iconShape == 'square'
-                    ? 'km-square-chat-icon'
-                    : null;
+                kommunicate._globals.iconShape == 'square' ? 'km-square-chat-icon' : null;
             // .km-custom-color-widget is className
             // background : '#fffff' is class style attribute
             var kmCustomWidgetCustomCSS =
@@ -58,7 +56,7 @@ function KmCustomTheme() {
                 '.km-custom-widget-stroke { stroke: ' +
                 primaryColor +
                 ' !important;}' +
-                '.active-feedback svg path{ fill: '+
+                '.active-feedback svg path{ fill: ' +
                 primaryColor +
                 ' !important;}';
             // Pass all classes you want to create in a single array.
@@ -81,17 +79,12 @@ function KmCustomTheme() {
     };
 
     _this.returnCustomWidget = function () {
-        if (
-            kommunicateCommons.isObject(WIDGET_SETTINGS) &&
-            WIDGET_SETTINGS.iconIndex
-        ) {
+        if (kommunicateCommons.isObject(WIDGET_SETTINGS) && WIDGET_SETTINGS.iconIndex) {
             if (WIDGET_SETTINGS.iconIndex === 'image') {
                 return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);
             } else {
                 // NOTE : We're sending icondIndex as integer value from kommunicate
-                return KommunicateConstants.CUSTOM_WIDGETS_SVG[
-                    WIDGET_SETTINGS.iconIndex
-                ];
+                return KommunicateConstants.CUSTOM_WIDGETS_SVG[WIDGET_SETTINGS.iconIndex];
             }
         } else {
             return KommunicateConstants.CUSTOM_WIDGETS_SVG[1]; // DEFAULT ICON
@@ -101,13 +94,12 @@ function KmCustomTheme() {
     _this.changeColorTheme = function () {
         // #0A090C
         var messageBoxTop = document.getElementsByClassName('mck-box-top');
-        const businessHourBox = document.getElementById("km-business-hour-box");
+        const businessHourBox = document.getElementById('km-business-hour-box');
         if (businessHourBox) {
             businessHourBox.style.backgroundColor = WIDGET_SETTINGS.primaryColor;
         }
         for (var i = 0; i < messageBoxTop.length; i++) {
-            messageBoxTop[i].style.backgroundColor =
-                WIDGET_SETTINGS.primaryColor;
+            messageBoxTop[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
         }
     };
 }

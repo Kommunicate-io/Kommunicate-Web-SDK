@@ -1,74 +1,74 @@
 /* ----------------- VoiceNote feature ------------- */
-#km-voice-note-mike-btn-container{
+#km-voice-note-mike-btn-container {
     width: auto;
     height: 30px;
     float: right;
     cursor: pointer;
     display: block;
 }
-#km-voice-recorder{
+#km-voice-recorder {
     display: flex;
     padding: 3px 3px 3px 8px;
 }
-#km-voice-recorder > div{
+#km-voice-recorder > div {
     padding: 3px;
     width: 20px;
 }
-#km-voice-recorder div.recorder-control{
+#km-voice-recorder div.recorder-control {
     cursor: pointer;
 }
-#km-voice-recorder div.recorder-control.delete-btn:hover svg path{
-    fill: #ED495C;
+#km-voice-recorder div.recorder-control.delete-btn:hover svg path {
+    fill: #ed495c;
 }
-#km-voice-recorder > #recorder-body{
+#km-voice-recorder > #recorder-body {
     width: 100%;
-    border-left: 1px solid #D9DEEB;
-    border-right: 1px solid #D9DEEB;
+    border-left: 1px solid #d9deeb;
+    border-right: 1px solid #d9deeb;
     flex-grow: 1;
 }
 
-#km-voice-recorder > #recorder-right-btn{
+#km-voice-recorder > #recorder-right-btn {
     margin-left: auto;
 }
-#km-voice-recorder > #recorder-body > div.recorder-control{
+#km-voice-recorder > #recorder-body > div.recorder-control {
     float: left;
 }
-#km-voice-recorder div.recorder-control.disabled svg path{
-    fill: #BCC7DB!important;
+#km-voice-recorder div.recorder-control.disabled svg path {
+    fill: #bcc7db !important;
 }
-#km-voice-recorder > #recorder-body > #km-audio-player{
+#km-voice-recorder > #recorder-body > #km-audio-player {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-#km-voice-recorder > div{
+#km-voice-recorder > div {
     width: 35px;
 }
-.km-audio-player-timer{
+.km-audio-player-timer {
     font-size: 14px;
-    color: #919EAD;
+    color: #919ead;
 }
 
 #progressbar {
-    border: 1px solid #919EAD;
+    border: 1px solid #919ead;
     border-radius: 13px;
     margin: 0 5px;
     flex-grow: 1;
-  }
-  
-  #progressbar>div#wave-front-progressBar {
+}
+
+#progressbar > div#wave-front-progressBar {
     width: 0px; /* Adjust with JavaScript */
     height: 5px;
     border-radius: 10px;
-  }
+}
 
-#mck-mic-options-dropup.mck-dropup-menu .menu-item{
+#mck-mic-options-dropup.mck-dropup-menu .menu-item {
     padding: 5px 10px;
     color: #333;
     white-space: nowrap;
     display: flex;
 }
 #mck-mic-options-dropup.mck-dropup-menu .menu-item:hover {
-    background: #F5F5F5;
+    background: #f5f5f5;
     cursor: pointer;
 }

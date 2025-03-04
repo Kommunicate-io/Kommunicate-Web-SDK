@@ -44,15 +44,13 @@ window['APPLOZIC'] ||
             var MCK_USER_NAME = options.userName;
             var apzUserUtils = new ApzUserUtils();
             var apzMessageUtils = new ApzMessageUtils();
-            var INIT_CALLBACK =
-                typeof options.onInit === 'function' ? options.onInit : '';
+            var INIT_CALLBACK = typeof options.onInit === 'function' ? options.onInit : '';
             var USER_DETAIL_URL = '/rest/ws/user/detail';
             var INITIALIZE_APP_URL = '/tab/initialize.page';
             var MESSAGE_SEND_URL = '/rest/ws/message/send';
             var MESSAGE_LIST_URL = '/rest/ws/message/list';
             var MESSAGE_DELETE_URL = '/rest/ws/message/delete';
-            var CONVERSATION_DELETE_URL =
-                '/rest/ws/message/delete/conversation';
+            var CONVERSATION_DELETE_URL = '/rest/ws/message/delete/conversation';
             _this.events = {
                 onConnectFailed: function () {
                     w.console.log();
@@ -112,11 +110,7 @@ window['APPLOZIC'] ||
                         INIT_CALLBACK('INVALID_REQUEST');
                     }
                 }
-                var data =
-                    'applicationId=' +
-                    APPLICATION_ID +
-                    '&userId=' +
-                    MCK_USER_ID;
+                var data = 'applicationId=' + APPLICATION_ID + '&userId=' + MCK_USER_ID;
                 if (MCK_USER_NAME !== null) {
                     data += '&userName=' + MCK_USER_NAME;
                 }
@@ -137,24 +131,16 @@ window['APPLOZIC'] ||
                             MCK_COUNTRY_CODE = result.countryCode;
                             MCK_WEBSOCKET_URL = result.websocketUrl;
                             MCK_TIMEZONEOFFSET = result.timeZoneOffset;
-                            AUTH_CODE = btoa(
-                                result.userId + ':' + result.deviceKey
-                            );
+                            AUTH_CODE = btoa(result.userId + ':' + result.deviceKey);
                             $.ajaxPrefilter(function (options) {
                                 if (!options.beforeSend) {
                                     options.beforeSend = function (jqXHR) {
-                                        jqXHR.setRequestHeader(
-                                            'UserId-Enabled',
-                                            true
-                                        );
+                                        jqXHR.setRequestHeader('UserId-Enabled', true);
                                         jqXHR.setRequestHeader(
                                             'Authorization',
                                             'Basic ' + AUTH_CODE
                                         );
-                                        jqXHR.setRequestHeader(
-                                            'Application-Key',
-                                            APPLICATION_ID
-                                        );
+                                        jqXHR.setRequestHeader('Application-Key', APPLICATION_ID);
                                     };
                                 }
                             });
@@ -175,10 +161,7 @@ window['APPLOZIC'] ||
                 });
             };
             _this.sendMessage = function (message, optns) {
-                if (
-                    $.type(message) !== 'object' ||
-                    (!message.to && !message.groupId)
-                ) {
+                if ($.type(message) !== 'object' || (!message.to && !message.groupId)) {
                     optns.callback('INVALID_REQUEST');
                     return;
                 }
@@ -244,9 +227,7 @@ window['APPLOZIC'] ||
                             resp.status = 'success';
                             if (data.length > 0) {
                                 $.each(data, function (i, userDetail) {
-                                    MCK_USER_DETAIL_MAP[
-                                        userDetail.userId
-                                    ] = userDetail;
+                                    MCK_USER_DETAIL_MAP[userDetail.userId] = userDetail;
                                     resp.response = userDetail;
                                 });
                             }
@@ -290,17 +271,14 @@ window['APPLOZIC'] ||
                     id: params.id,
                 };
                 if (typeof params.id !== 'undefined') {
-                    var data = params.isGroup
-                        ? 'groupId=' + params.id
-                        : 'userId=' + params.id;
+                    var data = params.isGroup ? 'groupId=' + params.id : 'userId=' + params.id;
                     $.ajax({
                         type: 'get',
                         url: MCK_BASE_URL + CONVERSATION_DELETE_URL,
                         global: false,
                         data: data,
                         success: function (data) {
-                            resp.status =
-                                data === 'success' ? 'success' : 'error';
+                            resp.status = data === 'success' ? 'success' : 'error';
                             if (typeof callback === 'function') {
                                 callback(resp);
                             }
@@ -324,13 +302,9 @@ window['APPLOZIC'] ||
                 if (typeof optns.callback !== 'function') {
                     return;
                 }
-                var data = params.pageSize
-                    ? '&pageSize=' + params.pageSize
-                    : '&pageSize=200';
+                var data = params.pageSize ? '&pageSize=' + params.pageSize : '&pageSize=200';
                 if (typeof tabId !== 'undefined' && tabId !== '') {
-                    data = params.isGroup
-                        ? '&groupId=' + tabId
-                        : '&userId=' + tabId;
+                    data = params.isGroup ? '&groupId=' + tabId : '&userId=' + tabId;
                     if (params.startTime) {
                         data += '&endTime=' + params.startTime;
                     }
@@ -339,11 +313,7 @@ window['APPLOZIC'] ||
                     id: tabId,
                 };
                 $.ajax({
-                    url:
-                        MCK_BASE_URL +
-                        MESSAGE_LIST_URL +
-                        '?startIndex=0' +
-                        data,
+                    url: MCK_BASE_URL + MESSAGE_LIST_URL + '?startIndex=0' + data,
                     type: 'get',
                     global: false,
                     success: function (data) {
@@ -374,14 +344,9 @@ window['APPLOZIC'] ||
                                     });
                                 }
                                 if (data.userDetails.length > 0) {
-                                    $.each(
-                                        data.userDetails,
-                                        function (i, userDetail) {
-                                            MCK_USER_DETAIL_MAP[
-                                                userDetail.userId
-                                            ] = userDetail;
-                                        }
-                                    );
+                                    $.each(data.userDetails, function (i, userDetail) {
+                                        MCK_USER_DETAIL_MAP[userDetail.userId] = userDetail;
+                                    });
                                 }
                                 resp.messages = messageFeeds;
                             }
@@ -406,10 +371,8 @@ window['APPLOZIC'] ||
                     messageFeed.key = message.key;
                     messageFeed.timeStamp = message.createdAtTime;
                     messageFeed.message = message.message;
-                    messageFeed.from =
-                        message.type === 4 ? message.to : MCK_USER_ID;
-                    messageFeed.to =
-                        message.type === 5 ? message.to : MCK_USER_ID;
+                    messageFeed.from = message.type === 4 ? message.to : MCK_USER_ID;
+                    messageFeed.to = message.type === 5 ? message.to : MCK_USER_ID;
                     messageFeed.status = 'read';
                     messageFeed.type = message.type === 4 ? 'inbox' : 'outbox';
                     if (message.type === 5) {
@@ -421,9 +384,7 @@ window['APPLOZIC'] ||
                     }
                     if (typeof message.fileMeta === 'object') {
                         message.fileMeta.url =
-                            MCK_FILE_URL +
-                            '/rest/ws/aws/file/' +
-                            message.fileMeta.blobKey;
+                            MCK_FILE_URL + '/rest/ws/aws/file/' + message.fileMeta.blobKey;
                         delete message.fileMeta.blobKey;
                         messageFeed.file = message.fileMeta;
                     }
@@ -435,9 +396,7 @@ window['APPLOZIC'] ||
             function ApzUserUtils() {
                 var _this = this;
                 _this.updateUserStatus = function (params) {
-                    if (
-                        typeof MCK_USER_DETAIL_MAP[params.userId] === 'object'
-                    ) {
+                    if (typeof MCK_USER_DETAIL_MAP[params.userId] === 'object') {
                         var userDetail = MCK_USER_DETAIL_MAP[params.userId];
                         if (params.status === 0) {
                             userDetail.connected = false;
@@ -461,21 +420,14 @@ window['APPLOZIC'] ||
                 var _this = this;
                 if (typeof $this.events === 'object') {
                     var stompClient = null;
-                    var port = !MCK_WEBSOCKET_URL.startsWith('https')
-                        ? '15674'
-                        : '15675';
+                    var port = !MCK_WEBSOCKET_URL.startsWith('https') ? '15674' : '15675';
                     var events = $this.events;
                     _this.on_error = function (err) {
-                        w.console.log(
-                            'Error in channel notification. ' + err.body
-                        );
+                        w.console.log('Error in channel notification. ' + err.body);
                         events.onConnectFailed();
                     };
                     _this.subscibeToUserId = function () {
-                        stompClient.subscribe(
-                            '/topic/user-' + MCK_USER_ID,
-                            _this.onCustomMessage
-                        );
+                        stompClient.subscribe('/topic/user-' + MCK_USER_ID, _this.onCustomMessage);
                     };
                     _this.onCustomMessage = function (message) {
                         var resp = $.parseJSON(message.body);
@@ -494,10 +446,7 @@ window['APPLOZIC'] ||
                         );
                     };
                     _this.on_connect = function () {
-                        stompClient.subscribe(
-                            '/topic/' + MCK_TOKEN,
-                            _this.on_message
-                        );
+                        stompClient.subscribe('/topic/' + MCK_TOKEN, _this.on_message);
                         _this.send_status(1);
                         _this.subscibeToUserId();
                         events.onConnect();
@@ -539,10 +488,7 @@ window['APPLOZIC'] ||
                     _this.on_message = function (message) {
                         var resp = $.parseJSON(message.body);
                         var messageType = resp.type;
-                        if (
-                            messageType === 'APPLOZIC_04' ||
-                            messageType === 'MESSAGE_DELIVERED'
-                        ) {
+                        if (messageType === 'APPLOZIC_04' || messageType === 'MESSAGE_DELIVERED') {
                             events.onMessageDelivered({
                                 messageKey: resp.message.split(',')[0],
                             });
@@ -592,9 +538,7 @@ window['APPLOZIC'] ||
                                 userId: resp.message,
                             });
                         } else if (messageType === 'APPLOZIC_03') {
-                            var messageFeed = apzMessageUtils.getMessageFeed(
-                                resp.message
-                            );
+                            var messageFeed = apzMessageUtils.getMessageFeed(resp.message);
                             events.onMessageSentUpdate({
                                 messageKey: messageFeed.key,
                             });
@@ -602,25 +546,19 @@ window['APPLOZIC'] ||
                             messageType === 'APPLOZIC_01' ||
                             messageType === 'MESSAGE_RECEIVED'
                         ) {
-                            var messageFeed = apzMessageUtils.getMessageFeed(
-                                resp.message
-                            );
+                            var messageFeed = apzMessageUtils.getMessageFeed(resp.message);
                             events.onMessageReceived({
                                 message: messageFeed,
                             });
                         } else if (messageType === 'APPLOZIC_02') {
-                            var messageFeed = apzMessageUtils.getMessageFeed(
-                                resp.message
-                            );
+                            var messageFeed = apzMessageUtils.getMessageFeed(resp.message);
                             events.onMessageSent({
                                 message: messageFeed,
                             });
                         }
                     };
                     _this.init = function () {
-                        var socket = new SockJS(
-                            MCK_WEBSOCKET_URL + ':' + port + '/stomp'
-                        );
+                        var socket = new SockJS(MCK_WEBSOCKET_URL + ':' + port + '/stomp');
                         stompClient = w.Stomp.over(socket);
                         stompClient.heartbeat.outgoing = 0;
                         stompClient.heartbeat.incoming = 0;

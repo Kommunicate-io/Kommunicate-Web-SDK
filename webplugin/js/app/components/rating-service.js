@@ -6,9 +6,7 @@ class RatingService {
     init(appOptions = {}) {
         const { widgetSettings = {} } = appOptions;
         this.appOptions = appOptions;
-        this.isCsatRatingBase = widgetSettings?.csatRatingBase
-            ? widgetSettings.csatRatingBase
-            : 3;
+        this.isCsatRatingBase = widgetSettings?.csatRatingBase ? widgetSettings.csatRatingBase : 3;
         if (this.isCsatRatingBase == 5) {
             this.starCsatHtmlEnable();
         }
@@ -38,10 +36,7 @@ class RatingService {
     };
 
     generateStarSvgs = function (rating) {
-        const ratingSVGs = Array.from(
-            { length: rating },
-            () => KommunicateConstants.STAR_SVG
-        );
+        const ratingSVGs = Array.from({ length: rating }, () => KommunicateConstants.STAR_SVG);
         return ratingSVGs.join('');
     };
 
@@ -70,9 +65,7 @@ class RatingService {
         stars.forEach((star, index) => {
             star.addEventListener('mouseover', () => highlightStars(index));
             star.addEventListener('mouseout', () => {
-                const isAnyRatingSelected = document.querySelector(
-                    '.mck-rating-box.selected'
-                );
+                const isAnyRatingSelected = document.querySelector('.mck-rating-box.selected');
                 if (!isAnyRatingSelected) {
                     removeHighlightFromStars();
                 } else {

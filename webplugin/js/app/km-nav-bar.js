@@ -1,8 +1,6 @@
 function KmNavBar(mckMsgLayout) {
     var _this = this;
-    var appOptions =
-        appOptionSession.getPropertyDataFromSession('appOptions') ||
-        applozic._globals;
+    var appOptions = appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
 
     // Handle UI visibility based on conversation assignment
     _this.hideAndShowTalkToHumanBtn = function (conversationAssignedToHuman) {
@@ -24,8 +22,7 @@ function KmNavBar(mckMsgLayout) {
 
     _this.updateHeaderCTAVisibility = function () {
         const shouldShowHeaderCTA =
-            !KommunicateUI.isFAQPrimaryCTA() &&
-            !KommunicateUI.isShowRestartConversation();
+            !KommunicateUI.isFAQPrimaryCTA() && !KommunicateUI.isShowRestartConversation();
 
         if (shouldShowHeaderCTA) {
             $applozic('.km-header-cta').addClass('vis').removeClass('n-vis');
@@ -47,11 +44,7 @@ function KmNavBar(mckMsgLayout) {
                 'vis'
             );
         } else if (HEADER_CTA.TALK_TO_HUMAN === appOptions.primaryCTA) {
-            kommunicateCommons.modifyClassList(
-                { id: ['km-talk-to-human'] },
-                'vis',
-                'n-vis'
-            );
+            kommunicateCommons.modifyClassList({ id: ['km-talk-to-human'] }, 'vis', 'n-vis');
         }
     };
 }

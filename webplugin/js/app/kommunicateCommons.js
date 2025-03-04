@@ -9,8 +9,7 @@ function KommunicateCommons() {
     KommunicateCommons.IS_WIDGET_OPEN = false;
     _this.init = function (optns) {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
-        USE_BRANDING =
-            typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
+        USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
         KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK =
             optns.connectSocketOnWidgetClick || false;
@@ -76,10 +75,8 @@ function KommunicateCommons() {
         } else if (
             data &&
             data.pricingPackage &&
-            (data.pricingPackage ==
-                KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY ||
-                data.pricingPackage ==
-                    KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY)
+            (data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY ||
+                data.pricingPackage == KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY)
         ) {
             return false;
         } else {
@@ -95,20 +92,14 @@ function KommunicateCommons() {
        addClass and removeClass to be passed as strings in the case of no classes pass "" elem will always be passed as an object
        array of strings containing IDs or Classes on which the classes need to be manipulated infromt of respective object property*/
 
-    _this.modifyClassList = function (
-        elem,
-        addClass,
-        removeClass,
-        useQuerySelector = false
-    ) {
+    _this.modifyClassList = function (elem, addClass, removeClass, useQuerySelector = false) {
         const idList = elem.id,
             classList = elem.class,
             list = [];
 
         idList &&
             idList.forEach(function (id) {
-                document.getElementById(id) &&
-                    list.push(document.getElementById(id));
+                document.getElementById(id) && list.push(document.getElementById(id));
             });
 
         classList &&
@@ -154,10 +145,7 @@ function KommunicateCommons() {
         var timeStampLabels = MCK_LABELS['time.stamp'];
         var timeStamp = new Date(createdAtTime);
         var currentTime = new Date(),
-            secondsPast = Math.max(
-                0,
-                (currentTime.getTime() - timeStamp.getTime()) / 1000
-            );
+            secondsPast = Math.max(0, (currentTime.getTime() - timeStamp.getTime()) / 1000);
         if (secondsPast < 60) {
             return (
                 parseInt(secondsPast) +
@@ -236,27 +224,18 @@ function KommunicateCommons() {
     _this.removeHtmlTag = function (html) {
         var temporalDivElement = document.createElement('div');
         temporalDivElement.innerHTML = html;
-        return (
-            temporalDivElement.textContent || temporalDivElement.innerText || ''
-        );
+        return temporalDivElement.textContent || temporalDivElement.innerText || '';
     };
     _this.formatHtmlTag = function (html) {
         return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     };
     _this.isConversationClosedByBot = function () {
-        if (
-            CURRENT_GROUP_DATA.groupMembers &&
-            Array.isArray(CURRENT_GROUP_DATA.groupMembers)
-        ) {
-            var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (
-                member
-            ) {
+        if (CURRENT_GROUP_DATA.groupMembers && Array.isArray(CURRENT_GROUP_DATA.groupMembers)) {
+            var filtered = CURRENT_GROUP_DATA.groupMembers.filter(function (member) {
                 return member.userId == CURRENT_GROUP_DATA.lastMessagingMember;
             });
             return (
-                filtered[0] &&
-                filtered[0].role ==
-                    KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
+                filtered[0] && filtered[0].role == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT
             );
         } else {
             return false;

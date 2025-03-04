@@ -14,7 +14,9 @@ Kommunicate.messageTemplate = {
     getAttachmentContanier: function (data, fileExpr, isUserMsg, fileUrl) {
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
-        data.previewContainerClass = isUserMsg ? "km-custom-widget-background-color" : "km-attach-preview-container" 
+        data.previewContainerClass = isUserMsg
+            ? 'km-custom-widget-background-color'
+            : 'km-attach-preview-container';
         data.fileMeta = data.fileMeta || {};
         data.fileMeta.contentType = data.fileMeta.contentType || '';
         data.attachmentDownloadClass = 'n-vis';
@@ -28,17 +30,13 @@ Kommunicate.messageTemplate = {
         switch (true) {
             case data.fileMeta.contentType.indexOf('image') != -1:
                 data.attachmentDownloadClass = 'vis';
-                data.attachmentClass += " km-img-template-container";
-                return Mustache.to_html(
-                    Kommunicate.messageTemplate.getAttachmentTemplate(),
-                    data
-                );
+                data.attachmentClass += ' km-img-template-container';
+                return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
                 break;
             case data.fileMeta.contentType.indexOf('application') != -1:
             case data.fileMeta.contentType.indexOf('text') != -1:
             case data.fileMeta.contentType == '' &&
-                data.contentType !=
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION:
+                data.contentType != KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION:
                 data.attachmentClass = 'km-application-attachment-wrapper';
                 if (!Kommunicate.internetStatus) {
                     data.uploadIconClass = 'vis';
@@ -52,104 +50,100 @@ Kommunicate.messageTemplate = {
                     data.attachmentClass = '';
                 } else {
                     data.uploadIconClass = 'n-vis';
-                    data.downloadIconClass =
-                        data.sent || data.delivered ? 'vis' : 'n-vis';
-                    data.cancelIconClass =
-                        data.sent || data.delivered ? 'n-vis' : 'vis';
-                    data.progressBarClass =
-                        data.sent || data.delivered ? 'n-vis' : 'vis';
+                    data.downloadIconClass = data.sent || data.delivered ? 'vis' : 'n-vis';
+                    data.cancelIconClass = data.sent || data.delivered ? 'n-vis' : 'vis';
+                    data.progressBarClass = data.sent || data.delivered ? 'n-vis' : 'vis';
                 }
                 // url will be present in media which is not encrypted
                 // thumbnailUrl will be present in media which is just uploaded
                 data.fileMeta.url =
                     (data.fileMeta && data.fileMeta.url) ||
-                    data.fileMeta.thumbnailUrl || data.fileUrl ||
+                    data.fileMeta.thumbnailUrl ||
+                    data.fileUrl ||
                     'javascript:void(0)';
-                data.fileNameToShow = data.fileMeta.name
-                if( data.fileNameToShow.indexOf('AWS-ENCRYPTED') !== -1){
+                data.fileNameToShow = data.fileMeta.name;
+                if (data.fileNameToShow.indexOf('AWS-ENCRYPTED') !== -1) {
                     data.fileEncClass = 'file-enc';
-                    data.fileNameToShow = data.fileMeta.name.replace("AWS-ENCRYPTED-", "");
+                    data.fileNameToShow = data.fileMeta.name.replace('AWS-ENCRYPTED-', '');
                     data.blobKey = data.fileMeta.blobKey;
                 }
                 return Mustache.to_html(
-                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(
-                        data
-                    ),
+                    Kommunicate.messageTemplate.getAttachmentApplicationTemplate(data),
                     data
                 );
                 break;
             default:
                 data.attachmentDownloadClass = 'vis';
                 // data.downloadMediaUrlExpr = mediaUrlExpr;
-                if( data.downloadMediaUrlExpr && data.downloadMediaUrlExpr.indexOf('AWS-ENCRYPTED') !== -1){
-                    data.downloadMediaUrlExpr = data.downloadMediaUrlExpr.replace("AWS-ENCRYPTED-", "");
-                    data.downloadMediaUrlExpr = data.downloadMediaUrlExpr.replace('<a href=""', '<a href="javascript:void(0)"');
+                if (
+                    data.downloadMediaUrlExpr &&
+                    data.downloadMediaUrlExpr.indexOf('AWS-ENCRYPTED') !== -1
+                ) {
+                    data.downloadMediaUrlExpr = data.downloadMediaUrlExpr.replace(
+                        'AWS-ENCRYPTED-',
+                        ''
+                    );
+                    data.downloadMediaUrlExpr = data.downloadMediaUrlExpr.replace(
+                        '<a href=""',
+                        '<a href="javascript:void(0)"'
+                    );
                 }
-                return Mustache.to_html(
-                    Kommunicate.messageTemplate.getAttachmentTemplate(),
-                    data
-                );
+                return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
         }
     },
     getProgressMeterContanier: function (key) {
         var data = { key: key };
-        return Mustache.to_html(
-            Kommunicate.messageTemplate.getProgressMeter(),
-            data
-        );
+        return Mustache.to_html(Kommunicate.messageTemplate.getProgressMeter(), data);
     },
 };
 
 Kommunicate.popupChatTemplate = {
-    getPopupChatTemplate: function (
-        popupWidgetContent,
-        chatWidget,
-        isAnonymousChat
-    ) {
-        var isPopupEnabled =
-            kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
+    getPopupChatTemplate: function (popupWidgetContent, chatWidget, isAnonymousChat) {
+        var isPopupEnabled = kommunicateCommons.isObject(chatWidget) && chatWidget.popup;
         var chatPopupTemplateMarkup = '';
         var popupMessageContent =
-            popupWidgetContent &&
-            popupWidgetContent.length &&
-            popupWidgetContent[0].message;
-        var buttonDetails = popupWidgetContent &&
-            popupWidgetContent.length &&
-            popupWidgetContent[0].buttons;
+            popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].message;
+        var buttonDetails =
+            popupWidgetContent && popupWidgetContent.length && popupWidgetContent[0].buttons;
         var templateKey =
             (popupWidgetContent &&
                 popupWidgetContent.length &&
                 popupWidgetContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
-        var alignLeft = KommunicateConstants.POSITION.LEFT === chatWidget.position ? "align-left" : "align-right";
+        var alignLeft =
+            KommunicateConstants.POSITION.LEFT === chatWidget.position
+                ? 'align-left'
+                : 'align-right';
 
-        if(Array.isArray(popupMessageContent)){
+        if (Array.isArray(popupMessageContent)) {
             var len = popupMessageContent.length;
-            if (!len) { popupMessageContent = ""; }
+            if (!len) {
+                popupMessageContent = '';
+            }
             var randomIndex = Math.floor(Math.random() * len); // index in range [0, len)
             popupMessageContent = popupMessageContent[randomIndex];
         }
 
         var actionButton = {
             0: {
-                label: "",
-                onClickAction: function(){},
+                label: '',
+                onClickAction: function () {},
             },
             1: {
-                label: "",
-                onClickAction: function(){},
-            }
-        }
-        Kommunicate['chatPopupActions'] = {}
+                label: '',
+                onClickAction: function () {},
+            },
+        };
+        Kommunicate['chatPopupActions'] = {};
 
         if (Array.isArray(buttonDetails) && buttonDetails.length) {
             for (var i = 0; i < buttonDetails.length; i++) {
                 if (i <= 1) {
-                    actionButton[i].label = buttonDetails[i].label
-                    if(typeof buttonDetails[i].onClickAction == 'function'){
-                        Kommunicate['chatPopupActions'][i] = buttonDetails[i].onClickAction
+                    actionButton[i].label = buttonDetails[i].label;
+                    if (typeof buttonDetails[i].onClickAction == 'function') {
+                        Kommunicate['chatPopupActions'][i] = buttonDetails[i].onClickAction;
                     } else {
-                        Kommunicate['chatPopupActions'][i] = actionButton[i].onClickAction    
+                        Kommunicate['chatPopupActions'][i] = actionButton[i].onClickAction;
                     }
                 } else {
                     break;
@@ -157,41 +151,43 @@ Kommunicate.popupChatTemplate = {
             }
         }
 
-        var actionableButtonTemplateMarkup = '<div id="chat-popup-actionable-btn-container">' +
-            (actionButton[0].label && '<button id="chat-popup-actionable-btn-1" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[0]()">' + actionButton[0].label + '</button>') +
-            (actionButton[1].label && '<button id="chat-popup-actionable-btn-2" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[1]()">' + actionButton[1].label + '</button></div>');
-        
-            
+        var actionableButtonTemplateMarkup =
+            '<div id="chat-popup-actionable-btn-container">' +
+            (actionButton[0].label &&
+                '<button id="chat-popup-actionable-btn-1" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[0]()">' +
+                    actionButton[0].label +
+                    '</button>') +
+            (actionButton[1].label &&
+                '<button id="chat-popup-actionable-btn-2" class="km-custom-widget-text-color km-custom-widget-border-color" onclick="window.kommunicate.chatPopupActions[1]()">' +
+                    actionButton[1].label +
+                    '</button></div>');
+
         if (isPopupEnabled) {
             var launcherClass = isAnonymousChat
                 ? 'km-anonymous-chat-launcher'
                 : 'applozic-launcher';
-            var templateCss =
-                KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[templateKey];
-            
-                chatPopupTemplateMarkup =
+            var templateCss = KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[templateKey];
+
+            chatPopupTemplateMarkup =
                 '<div id="chat-popup-widget-container" class="chat-popup-widget-container ' +
-                templateCss + ' '+ alignLeft +
+                templateCss +
+                ' ' +
+                alignLeft +
                 ' n-vis"><div class="chat-popup-widget-text-wrapper ' +
                 launcherClass +
                 '"><p class="chat-popup-widget-text">' +
-                (popupMessageContent &&
-                    kommunicateCommons.formatHtmlTag(popupMessageContent)) +
+                (popupMessageContent && kommunicateCommons.formatHtmlTag(popupMessageContent)) +
                 '</p></div>' +
                 '<div class="chat-popup-widget-close-btn-container"><div class="chat-popup-widget-close-btn"><span class="chat-popup-widget-close-icon-svg"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.6667 4.27337L11.7267 3.33337L8.00001 7.06004L4.27334 3.33337L3.33334 4.27337L7.06001 8.00004L3.33334 11.7267L4.27334 12.6667L8.00001 8.94004L11.7267 12.6667L12.6667 11.7267L8.94001 8.00004L12.6667 4.27337Z" fill="#1C1C1C"/></svg></span></div></div>' +
-                (templateKey == KommunicateConstants.CHAT_POPUP_TEMPLATE.ACTIONABLE ?
-                    actionableButtonTemplateMarkup : "") +
+                (templateKey == KommunicateConstants.CHAT_POPUP_TEMPLATE.ACTIONABLE
+                    ? actionableButtonTemplateMarkup
+                    : '') +
                 '</div>';
         }
 
         if (isAnonymousChat) {
-            var anonymousLauncherContainer = document.getElementById(
-                'km-anonymous-chat-launcher'
-            );
-            anonymousLauncherContainer.insertAdjacentHTML(
-                'afterEnd',
-                chatPopupTemplateMarkup
-            );
+            var anonymousLauncherContainer = document.getElementById('km-anonymous-chat-launcher');
+            anonymousLauncherContainer.insertAdjacentHTML('afterEnd', chatPopupTemplateMarkup);
         } else {
             return chatPopupTemplateMarkup;
         }

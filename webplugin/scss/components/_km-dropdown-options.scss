@@ -14,11 +14,7 @@
     background-color: #fff;
     font-family: $font-family-primary !important;
     @include prefix(background-clip, padding-box, webkit);
-    @include prefix(
-        box-shadow,
-        0px 0px 12px 0px rgba(17, 34, 34, 0.24) !important,
-        webkit
-    );
+    @include prefix(box-shadow, 0px 0px 12px 0px rgba(17, 34, 34, 0.24) !important, webkit);
 }
 
 #km-widget-options {

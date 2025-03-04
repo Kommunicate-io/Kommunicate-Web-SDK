@@ -51,7 +51,7 @@
     justify-content: space-between;
 }
 
-.star-rating-extra{
+.star-rating-extra {
     width: 80%;
     margin: 15px 40px;
 }
@@ -101,8 +101,8 @@
     display: flex;
     gap: 3px;
     margin-top: 8px;
-    svg{
-        margin-top: 2px
+    svg {
+        margin-top: 2px;
     }
 
     .mck-rate-error {
@@ -111,21 +111,20 @@
 }
 .star-rating {
     display: contents !important;
-  }
-  
-.star-rating input[type="radio"] {
+}
+
+.star-rating input[type='radio'] {
     display: none;
 }
-  
+
 .star-rating label svg {
     cursor: pointer;
 }
 
 .star-rating label.filled svg path {
-    fill: #FFC045;
+    fill: #ffc045;
 }
 
 .star-rating label svg path {
-    fill: #B3B3B3;
+    fill: #b3b3b3;
 }
-

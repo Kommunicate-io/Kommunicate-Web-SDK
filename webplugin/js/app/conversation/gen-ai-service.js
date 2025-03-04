@@ -34,9 +34,7 @@ class GenAiService {
 
     enableTextArea = (bool) => {
         if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE) {
-            document
-                .getElementById('mck-text-box')
-                .setAttribute('contenteditable', bool);
+            document.getElementById('mck-text-box').setAttribute('contenteditable', bool);
         }
     };
 }

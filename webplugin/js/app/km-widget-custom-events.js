@@ -14,10 +14,7 @@ var kmWidgetEvents = {
     },
     sendEventToGoogleAnalytics: function (eventObject) {
         try {
-            if (
-                kmWidgetEvents.gaTrackingId() &&
-                typeof window.top.gtag !== 'undefined'
-            ) {
+            if (kmWidgetEvents.gaTrackingId() && typeof window.top.gtag !== 'undefined') {
                 window.top.gtag('event', eventObject.data.eventAction, {
                     category: eventObject.data.eventCategory,
                     label: eventObject.data.eventLabel,
@@ -37,8 +34,7 @@ var kmWidgetEvents = {
             if (customValue) {
                 eventObject.data.eventValue = customValue;
             }
-            kmWidgetEvents.gaTrackingId() &&
-                kmWidgetEvents.sendEventToGoogleAnalytics(eventObject);
+            kmWidgetEvents.gaTrackingId() && kmWidgetEvents.sendEventToGoogleAnalytics(eventObject);
             if (eventObject.eventFunction !== null) {
                 // checks if there is any errors in user provided function
                 try {
@@ -48,9 +44,7 @@ var kmWidgetEvents = {
                 }
             }
         } else {
-            console.error(
-                'eventTracking expect an object but got ' + typeof eventObject
-            );
+            console.error('eventTracking expect an object but got ' + typeof eventObject);
         }
     },
 };

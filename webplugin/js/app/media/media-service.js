@@ -1,15 +1,10 @@
 Kommunicate.mediaService = {
-    browserLocale:
-        window.navigator.language || window.navigator.userLanguage || 'en-US',
-    appOptions:
-        appOptionSession.getPropertyDataFromSession('appOptions') ||
-        applozic._globals,
+    browserLocale: window.navigator.language || window.navigator.userLanguage || 'en-US',
+    appOptions: appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals,
     userInActiveSec: 0,
     isAppleDevice: function () {
         var isIOSDevice = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-        var isMacSafari = /^((?!chrome|android).)*safari/i.test(
-            navigator.userAgent
-        );
+        var isMacSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         return isIOSDevice || isMacSafari;
     },
     endSttExplicitly: function (params) {
@@ -24,10 +19,7 @@ Kommunicate.mediaService = {
                 return ++that.userInActiveSec === voiceInputTimeOut;
             }
             //else acc to condition we return true/false
-            return (
-                (currentTime - params.lastListeningEventTime) / 1000 >=
-                voiceInputTimeOut
-            );
+            return (currentTime - params.lastListeningEventTime) / 1000 >= voiceInputTimeOut;
         };
         if (isUserSilent()) {
             params.lastListeningEventTime = 0;
@@ -56,8 +48,7 @@ Kommunicate.mediaService = {
             var recognition = new webkitSpeechRecognition();
             recognition.continuous = isAppleProduct; // DO NOT CHANGE, ELSE WILL BREAK IN SAFARI
             recognition.interimResults = true; // The default value for interimResults is false, meaning that the only results returned by the recognizer are final and will not change. Set it to true so we get early, interim results that may change.
-            recognition.lang =
-                appOptions.language || Kommunicate.mediaService.browserLocale;
+            recognition.lang = appOptions.language || Kommunicate.mediaService.browserLocale;
 
             recognition.start();
             recognition.onstart = function (event) {
@@ -121,8 +112,7 @@ Kommunicate.mediaService = {
 
             // get appOptions from widget script
             var appOptions =
-                appOptionSession.getPropertyDataFromSession('appOptions') ||
-                applozic._globals;
+                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
 
             // If the message isn't part of the UI, it's not included in voice output either
             if (!appOptions || !Kommunicate.visibleMessage(message)) return;
@@ -135,21 +125,17 @@ Kommunicate.mediaService = {
                     textToSpeak += MCK_LABELS['voice.output'].attachment;
                     textToSpeak += message.fileMeta.name;
                 } else if (
-                    message.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                    message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
                 ) {
                     coord = JSON.parse(message.message);
                     textToSpeak += MCK_LABELS['voice.output'].location.init;
                     textToSpeak +=
-                        MCK_LABELS['voice.output'].location.lat +
-                        Math.round(coord.lat * 100) / 100;
+                        MCK_LABELS['voice.output'].location.lat + Math.round(coord.lat * 100) / 100;
                     textToSpeak +=
-                        MCK_LABELS['voice.output'].location.lon +
-                        Math.round(coord.lon * 100) / 100;
+                        MCK_LABELS['voice.output'].location.lon + Math.round(coord.lon * 100) / 100;
                 } else if (
                     message.message &&
-                    message.contentType ==
-                        KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
+                    message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT
                 ) {
                     textToSpeak += message.message;
                 }
@@ -171,16 +157,12 @@ Kommunicate.mediaService = {
                             if (skipForEach) return;
 
                             if (Array.isArray(appOptions.voiceName)) {
-                                appOptions.voiceName.forEach(function (
-                                    voiceName
-                                ) {
+                                appOptions.voiceName.forEach(function (voiceName) {
                                     if (voice.name === voiceName.trim()) {
                                         updateVoiceName(voice);
                                     }
                                 });
-                            } else if (
-                                voice.name === appOptions.voiceName.trim()
-                            ) {
+                            } else if (voice.name === appOptions.voiceName.trim()) {
                                 updateVoiceName(voice);
                             }
                         });
@@ -229,27 +211,18 @@ Kommunicate.mediaService = {
             if (wavAudioDuration) {
                 playPauseInterval = setInterval(function () {
                     if (playPausetimerState == TIMER_STATE.RUNNING) {
-                        var timeElapsed =
-                            (new Date().getTime() - START_TIME) / 1000;
+                        var timeElapsed = (new Date().getTime() - START_TIME) / 1000;
                         var percent =
-                            (Math.floor(timeElapsed) /
-                                Math.floor(wavAudioDuration)) *
-                            100;
-                        REMAINING_TIME = Math.floor(
-                            wavAudioDuration - timeElapsed
-                        );
+                            (Math.floor(timeElapsed) / Math.floor(wavAudioDuration)) * 100;
+                        REMAINING_TIME = Math.floor(wavAudioDuration - timeElapsed);
                         var secondsElapsed = Math.floor(timeElapsed % 60);
-                        var minutesElapsed = Math.floor(
-                            (timeElapsed / 60) % 60
-                        );
+                        var minutesElapsed = Math.floor((timeElapsed / 60) % 60);
                         timeRemainingTimer.text(
                             ('0' + minutesElapsed).slice(-2) +
                                 ':' +
                                 ('0' + secondsElapsed).slice(-2)
                         );
-                        $applozic('#wave-front-progressBar').width(
-                            percent + '%'
-                        );
+                        $applozic('#wave-front-progressBar').width(percent + '%');
                         if (REMAINING_TIME <= 0) {
                             clearTimeout(playPauseInterval);
                             playPausetimerState = TIMER_STATE.EXPIRED;
@@ -308,21 +281,13 @@ Kommunicate.mediaService = {
                 var percent = (timeElapsed / MAX_RECORD_TIME) * 100;
                 var secondsElapsed = Math.floor((timeElapsed / 1000) % 60);
                 var secondsRemaining = Math.floor((timeRemaining / 1000) % 60);
-                var minutesElapsed = Math.floor(
-                    (timeElapsed / (1000 * 60)) % 60
-                );
-                var minutesRemaining = Math.floor(
-                    (timeRemaining / (1000 * 60)) % 60
-                );
+                var minutesElapsed = Math.floor((timeElapsed / (1000 * 60)) % 60);
+                var minutesRemaining = Math.floor((timeRemaining / (1000 * 60)) % 60);
                 timeElapsedTimer.text(
-                    ('0' + minutesElapsed).slice(-2) +
-                        ':' +
-                        ('0' + secondsElapsed).slice(-2)
+                    ('0' + minutesElapsed).slice(-2) + ':' + ('0' + secondsElapsed).slice(-2)
                 );
                 timeRemainingTimer.text(
-                    ('0' + minutesRemaining).slice(-2) +
-                        ':' +
-                        ('0' + secondsRemaining).slice(-2)
+                    ('0' + minutesRemaining).slice(-2) + ':' + ('0' + secondsRemaining).slice(-2)
                 );
                 $applozic('#wave-front-progressBar').width(percent + '%');
                 if (timeRemaining <= 0) {
@@ -334,12 +299,7 @@ Kommunicate.mediaService = {
             // show
             kommunicateCommons.modifyClassList(
                 {
-                    id: [
-                        'delete-recording',
-                        'play-btn',
-                        'send-btn',
-                        'time-remaining',
-                    ],
+                    id: ['delete-recording', 'play-btn', 'send-btn', 'time-remaining'],
                 },
                 '',
                 'n-vis'
@@ -361,9 +321,7 @@ Kommunicate.mediaService = {
                 blob.name = 'voiceRecord-' + new Date().getTime() + '.wav';
                 params.file = blob;
                 params.callback = function () {
-                    document
-                        .querySelector('#send-btn')
-                        .classList.remove('disabled');
+                    document.querySelector('#send-btn').classList.remove('disabled');
                 };
                 audioBlob = blob;
                 $applozic.fn.applozic('audioAttach', params);
@@ -392,10 +350,7 @@ Kommunicate.mediaService = {
             $applozic('#mck-conversation-back-btn').off('click', resetRecorder);
             $applozic('#km-faq').off('click', resetRecorder);
             $applozic('#km-popup-close-button').off('click', resetRecorder);
-            $applozic('#km-chat-widget-close-button').off(
-                'click',
-                resetRecorder
-            );
+            $applozic('#km-chat-widget-close-button').off('click', resetRecorder);
         }
         function onPlayBtnClick(e) {
             var prevStateOfTimer = playPausetimerState;
@@ -412,19 +367,14 @@ Kommunicate.mediaService = {
             playBtn.removeClass('n-vis');
         }
 
-        document.querySelector(
-            '.mck-mic-animation-container .voiceNote'
-        ).onclick = function () {
+        document.querySelector('.mck-mic-animation-container .voiceNote').onclick = function () {
             startRecording();
 
             // on click of back button, close btn, and faq btn recording should end
             $applozic('#mck-conversation-back-btn').on('click', resetRecorder);
             $applozic('#km-faq').on('click', resetRecorder);
             $applozic('#km-popup-close-button').on('click', resetRecorder);
-            $applozic('#km-chat-widget-close-button').on(
-                'click',
-                resetRecorder
-            );
+            $applozic('#km-chat-widget-close-button').on('click', resetRecorder);
         };
         document.getElementById('mck-stop-recording').onclick = stopRecording;
         document.getElementById('play-btn').onclick = onPlayBtnClick;
@@ -435,11 +385,7 @@ Kommunicate.mediaService = {
                 document.querySelector('.mck-remove-file').click();
         };
         document.querySelector('#send-btn').onclick = function (e) {
-            if (
-                document
-                    .querySelector('#send-btn')
-                    .classList.contains('disabled')
-            ) {
+            if (document.querySelector('#send-btn').classList.contains('disabled')) {
                 return;
             }
             resetRecorder(e);
