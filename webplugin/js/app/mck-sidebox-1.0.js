@@ -10016,6 +10016,7 @@ const firstVisibleMsg = {
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
                     !allowReload &&
                     mckMessageLayout.isMessageSentByBot(msg, contact)
+                    && !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
@@ -13323,6 +13324,7 @@ const firstVisibleMsg = {
                                                     message,
                                                     contact
                                                 )
+                                                && !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                                             ) {
                                                 mckMessageLayout.addMessage(
                                                     message,
@@ -17613,6 +17615,7 @@ const firstVisibleMsg = {
                                         resp.message,
                                         contact
                                     )
+                                    && !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                                 ) {
                                     setTimeout(function () {
                                         KommunicateUI.showClosedConversationBanner(
