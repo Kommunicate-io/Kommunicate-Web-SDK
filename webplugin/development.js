@@ -23,11 +23,9 @@ const MCK_THIRD_PARTY_INTEGRATION = config.thirdPartyIntegration;
 const pluginVersions = ['v1', 'v2'];
 
 Object.assign(PLUGIN_SETTING, {
-    kommunicateApiUrl:
-        PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl,
+    kommunicateApiUrl: PLUGIN_SETTING.kommunicateApiUrl || config.urls.kommunicateBaseUrl,
     botPlatformApi: PLUGIN_SETTING.botPlatformApi || config.urls.botPlatformApi,
-    applozicBaseUrl:
-        PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl,
+    applozicBaseUrl: PLUGIN_SETTING.applozicBaseUrl || config.urls.applozicBaseUrl,
     dashboardUrl: PLUGIN_SETTING.dashboardUrl || config.urls.dashboardUrl,
 });
 
@@ -88,24 +86,15 @@ const generateMinFiles = () => {
     const FILES_INFO = {
         'kommunicateThirdParty.min.js': {
             source: THIRD_PARTY_SCRIPTS,
-            output: path.resolve(
-                __dirname,
-                `${buildDir}/kommunicateThirdParty.min.js`
-            ),
+            output: path.resolve(__dirname, `${buildDir}/kommunicateThirdParty.min.js`),
         },
         [`kommunicate.${version}.min.css`]: {
             source: PLUGIN_CSS_FILES,
-            output: path.resolve(
-                __dirname,
-                `${resourceLocation}/kommunicate.${version}.min.css`
-            ),
+            output: path.resolve(__dirname, `${resourceLocation}/kommunicate.${version}.min.css`),
         },
         'kommunicate-plugin.min.js': {
             source: PLUGIN_JS_FILES,
-            output: path.resolve(
-                __dirname,
-                `${buildDir}/kommunicate-plugin.min.js`
-            ),
+            output: path.resolve(__dirname, `${buildDir}/kommunicate-plugin.min.js`),
         },
     };
 
@@ -120,10 +109,7 @@ const combineJsFiles = async () => {
     const resp = await generateFiles({
         fileName: `kommunicate.${version}.min.js`,
         source: paths,
-        output: path.resolve(
-            __dirname,
-            `${resourceLocation}/kommunicate.${version}.min.js`
-        ),
+        output: path.resolve(__dirname, `${resourceLocation}/kommunicate.${version}.min.js`),
     });
 
     if (resp !== 'failed') {
@@ -134,16 +120,12 @@ const combineJsFiles = async () => {
 };
 
 const copyFileToBuild = (src, dest, isFullPathExist) => {
-    fs.copyFile(
-        isFullPathExist ? src : path.join(__dirname, src),
-        dest,
-        (err) => {
-            if (err) {
-                console.log(`error while generating ${dest}`, err);
-            }
-            console.log(`${dest} generated successfully`);
+    fs.copyFile(isFullPathExist ? src : path.join(__dirname, src), dest, (err) => {
+        if (err) {
+            console.log(`error while generating ${dest}`, err);
         }
-    );
+        console.log(`${dest} generated successfully`);
+    });
 };
 const generateBuildFiles = () => {
     // Generate chat.html for /chat route
@@ -151,10 +133,7 @@ const generateBuildFiles = () => {
     copyFileToBuild('template/chat.html', `${buildDir}/chat.html`);
 
     // copy applozic.chat.{version}.min.js to build
-    copyFileToBuild(
-        'js/app/applozic.chat-6.2.6.min.js',
-        `${buildDir}/applozic.chat-6.2.6.min.js`
-    );
+    copyFileToBuild('js/app/applozic.chat-6.2.6.min.js', `${buildDir}/applozic.chat-6.2.6.min.js`);
 
     THIRD_PARTY_FILE_INFO.forEach((fileData) => {
         if (Array.isArray(fileData.source)) {
@@ -165,11 +144,7 @@ const generateBuildFiles = () => {
             });
             return;
         }
-        copyFileToBuild(
-            fileData.source,
-            `${buildDir}/${fileData.outputName}`,
-            true
-        );
+        copyFileToBuild(fileData.source, `${buildDir}/${fileData.outputName}`, true);
     });
 
     // Generate mck-sidebox.html file for build folder.
@@ -185,60 +160,46 @@ const generateBuildFiles = () => {
     );
 
     // Generate plugin.js file for build folder.
-    fs.readFile(
-        path.join(__dirname, 'plugin.js'),
-        'utf8',
-        function (err, data) {
-            if (err) {
-                console.log('error while generating plugin.js', err);
-            }
-            var mckApp = data.replace(
-                'KOMMUNICATE_MIN_JS',
-                // dest is diff for dev and build
-                `"${pathToResource}/kommunicate.${version}.min.js"`
-            );
-            fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
-                if (err) {
-                    console.log('plugin.js generation error');
-                }
-                generateFilesByVersion('build/plugin.js');
-            });
+    fs.readFile(path.join(__dirname, 'plugin.js'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating plugin.js', err);
         }
-    );
+        var mckApp = data.replace(
+            'KOMMUNICATE_MIN_JS',
+            // dest is diff for dev and build
+            `"${pathToResource}/kommunicate.${version}.min.js"`
+        );
+        fs.writeFile(`${buildDir}/plugin.js`, mckApp, function (err) {
+            if (err) {
+                console.log('plugin.js generation error');
+            }
+            generateFilesByVersion('build/plugin.js');
+        });
+    });
     // Generate mck-app.js file for build folder.
-    fs.readFile(
-        path.join(__dirname, 'js/app/mck-app.js'),
-        'utf8',
-        function (err, data) {
-            if (err) {
-                console.log('error while generating mck app', err);
-            }
-            var mckApp = data
-                .replace(
-                    'KOMMUNICATE_MIN_CSS',
-                    `"${pathToResource}/kommunicate.${version}.min.css"`
-                )
-                .replace(
-                    'MCK_SIDEBOX_HTML',
-                    `"${pathToResource}/mck-sidebox.${version}.html"`
-                );
-            fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
-                if (err) {
-                    console.log('mck-file generation error');
-                }
-                const oldPath = `${buildDir}/mck-app.js`;
-                const newPath = `${buildDir}/mck-app.min.js`;
-                fs.rename(oldPath, newPath, function (renameErr) {
-                    if (renameErr) {
-                        console.log('Error renaming mck-file');
-                    } else {
-                        console.log('File renamed successfully');
-                        combineJsFiles();
-                    }
-                });
-            });
+    fs.readFile(path.join(__dirname, 'js/app/mck-app.js'), 'utf8', function (err, data) {
+        if (err) {
+            console.log('error while generating mck app', err);
         }
-    );
+        var mckApp = data
+            .replace('KOMMUNICATE_MIN_CSS', `"${pathToResource}/kommunicate.${version}.min.css"`)
+            .replace('MCK_SIDEBOX_HTML', `"${pathToResource}/mck-sidebox.${version}.html"`);
+        fs.writeFile(`${buildDir}/mck-app.js`, mckApp, function (err) {
+            if (err) {
+                console.log('mck-file generation error');
+            }
+            const oldPath = `${buildDir}/mck-app.js`;
+            const newPath = `${buildDir}/mck-app.min.js`;
+            fs.rename(oldPath, newPath, function (renameErr) {
+                if (renameErr) {
+                    console.log('Error renaming mck-file');
+                } else {
+                    console.log('File renamed successfully');
+                    combineJsFiles();
+                }
+            });
+        });
+    });
 };
 
 const generateFilesByVersion = (location) => {
@@ -270,10 +231,7 @@ const generateFilesByVersion = (location) => {
                 );
 
             for (var i = 0; i < pluginVersions.length; i++) {
-                var data = plugin.replace(
-                    ':MCK_PLUGIN_VERSION',
-                    pluginVersions[i]
-                );
+                var data = plugin.replace(':MCK_PLUGIN_VERSION', pluginVersions[i]);
 
                 PLUGIN_FILE_DATA[pluginVersions[i]] = data;
             }

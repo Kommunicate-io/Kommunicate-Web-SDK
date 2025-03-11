@@ -11,9 +11,7 @@ const STORAGE_FILES = [
     path.resolve(__dirname, 'js/app/storage/local-service.js'),
 ];
 
-exports.SENTRY_SCRIPT = [
-    path.resolve(__dirname, 'lib/js/sentry-error-tracker.js'),
-];
+exports.SENTRY_SCRIPT = [path.resolve(__dirname, 'lib/js/sentry-error-tracker.js')];
 
 exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/mck-ui-widget.min.js'),

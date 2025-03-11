@@ -23,7 +23,7 @@ class KmSessionStorage extends KmStorage {
 
     deleteSessionData = () => sessionStorage.removeItem(this.userSessionKey);
 
-    deletePropertyDataFromSession  = (key) => {
+    deletePropertyDataFromSession = (key) => {
         const session = this.getStorageData(sessionStorage);
         delete session[key];
 

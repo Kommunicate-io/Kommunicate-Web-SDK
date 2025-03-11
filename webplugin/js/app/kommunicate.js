@@ -21,10 +21,7 @@ $applozic.extend(true, Kommunicate, {
             );
         }
         $applozic.ajax({
-            url:
-                Kommunicate.getBaseUrl() +
-                '/conversations/participent/' +
-                options.userId,
+            url: Kommunicate.getBaseUrl() + '/conversations/participent/' + options.userId,
             type: 'get',
             success: function (result) {
                 callback(null, result);
@@ -41,8 +38,7 @@ $applozic.extend(true, Kommunicate, {
         params = Kommunicate.updateConversationDetail(params);
         if (!params.agentId && !params.agentIds && !params.teamId) {
             var appOptions =
-                appOptionSession.getPropertyDataFromSession('appOptions') ||
-                applozic._globals;
+                appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
             params.agentId = appOptions.agentId;
         }
         var user = [];
@@ -69,18 +65,15 @@ $applozic.extend(true, Kommunicate, {
             kommunicate._globals.conversationTitle ||
             kommunicate._globals.groupName ||
             kommunicate._globals.agentId;
-        var assignee =
-            params.defaultAssignee || params.assignee || params.agentId;
+        var assignee = params.defaultAssignee || params.assignee || params.agentId;
 
         var groupMetadata = {};
         params.defaultGroupName && (groupMetadata.KM_ORIGINAL_TITLE = true);
         typeof params.metadata == 'object' &&
             typeof params.metadata['KM_CHAT_CONTEXT'] == 'object' &&
-            (groupMetadata.KM_CHAT_CONTEXT =
-                params.metadata['KM_CHAT_CONTEXT']);
+            (groupMetadata.KM_CHAT_CONTEXT = params.metadata['KM_CHAT_CONTEXT']);
 
-        params.WELCOME_MESSAGE &&
-            (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
+        params.WELCOME_MESSAGE && (groupMetadata.WELCOME_MESSAGE = params.WELCOME_MESSAGE);
         params.conversationMetadata &&
             typeof params.conversationMetadata == 'object' &&
             (groupMetadata = params.conversationMetadata);
@@ -108,20 +101,14 @@ $applozic.extend(true, Kommunicate, {
             var interval = setInterval(function () {
                 // socket connected check
                 if (IS_SOCKET_CONNECTED) {
-                    Kommunicate.client.createConversation(
-                        conversationDetail,
-                        callback
-                    );
+                    Kommunicate.client.createConversation(conversationDetail, callback);
                     clearInterval(interval);
                     timeout && clearTimeout(timeout);
                 }
             }, SET_INTERVAL_DURATION);
             var timeout = setTimeout(function () {
                 conversationDetail.allowMessagesViaSocket = true;
-                Kommunicate.client.createConversation(
-                    conversationDetail,
-                    callback
-                );
+                Kommunicate.client.createConversation(conversationDetail, callback);
                 clearInterval(interval);
             }, SET_TIMEOUT_DURATION);
         }
@@ -130,8 +117,7 @@ $applozic.extend(true, Kommunicate, {
     updateConversationMetadata: function (conversationMetadata) {
         if (conversationMetadata) {
             if (
-                Object.prototype.toString.call(conversationMetadata) ==
-                    '[object Object]' &&
+                Object.prototype.toString.call(conversationMetadata) == '[object Object]' &&
                 Object.prototype.toString.call(conversationMetadata.metadata) ==
                     '[object Object]' &&
                 conversationMetadata.groupId &&
@@ -142,9 +128,7 @@ $applozic.extend(true, Kommunicate, {
                     data: {
                         groupId: conversationMetadata.groupId,
                         metadata: {
-                            conversationMetadata: JSON.stringify(
-                                metadataToSend
-                            ),
+                            conversationMetadata: JSON.stringify(metadataToSend),
                         },
                     },
                     success: function (response) {
@@ -156,22 +140,14 @@ $applozic.extend(true, Kommunicate, {
                 });
                 return groupDataResponse;
             } else {
-                throw new TypeError(
-                    'updateConversationMetadata expects an object as an argument'
-                );
+                throw new TypeError('updateConversationMetadata expects an object as an argument');
             }
         } else {
-            throw new Error(
-                'updateConversationMetadata expect an object but got null'
-            );
+            throw new Error('updateConversationMetadata expect an object but got null');
         }
     },
     updateDefaultConversationMetadata: function (options = {}) {
-        if (
-            typeof options !== 'object' ||
-            options === null ||
-            Array.isArray(options)
-        ) {
+        if (typeof options !== 'object' || options === null || Array.isArray(options)) {
             throw new TypeError(
                 'updateDefaultConversationMetadata expects an object as an argument'
             );
@@ -179,9 +155,7 @@ $applozic.extend(true, Kommunicate, {
 
         try {
             // Sanitize and parse the object
-            const sanitizedString = window.DOMPurify.sanitize(
-                JSON.stringify(options)
-            );
+            const sanitizedString = window.DOMPurify.sanitize(JSON.stringify(options));
             options = JSON.parse(sanitizedString);
 
             if (kommunicate._globals.defaultConversationMetadata) {
@@ -195,34 +169,25 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     updateConversationDetail: function (conversationDetail) {
-        var kommunicateSettings = appOptionSession.getPropertyDataFromSession(
-            'settings'
-        );
-        if (
-            typeof kommunicateSettings === 'undefined' ||
-            kommunicateSettings === null
-        ) {
+        var kommunicateSettings = appOptionSession.getPropertyDataFromSession('settings');
+        if (typeof kommunicateSettings === 'undefined' || kommunicateSettings === null) {
             return conversationDetail;
         }
         // Update welcome message only if some value for it is coming in conversationDetails parameter or kommunicateSettings.
         conversationDetail.WELCOME_MESSAGE =
-            conversationDetail.WELCOME_MESSAGE ||
-            kommunicateSettings.WELCOME_MESSAGE;
+            conversationDetail.WELCOME_MESSAGE || kommunicateSettings.WELCOME_MESSAGE;
         conversationDetail.defaultAssignee =
             conversationDetail.assignee || kommunicateSettings.defaultAssignee;
         conversationDetail.agentIds =
             conversationDetail.agentIds || kommunicateSettings.defaultAgentIds;
-        conversationDetail.botIds =
-            conversationDetail.botIds || kommunicateSettings.defaultBotIds;
+        conversationDetail.botIds = conversationDetail.botIds || kommunicateSettings.defaultBotIds;
         conversationDetail.skipRouting =
             conversationDetail.skipRouting || kommunicateSettings.skipRouting;
         conversationDetail.skipBotEvent =
             conversationDetail.skipBotEvent || kommunicateSettings.skipBotEvent;
         conversationDetail.customWelcomeEvent =
-            conversationDetail.customWelcomeEvent ||
-            kommunicateSettings.customWelcomeEvent;
-        conversationDetail.teamId =
-            conversationDetail.teamId || kommunicateSettings.teamId;
+            conversationDetail.customWelcomeEvent || kommunicateSettings.customWelcomeEvent;
+        conversationDetail.teamId = conversationDetail.teamId || kommunicateSettings.teamId;
         return conversationDetail;
     },
     openConversationList: function () {
@@ -236,11 +201,8 @@ $applozic.extend(true, Kommunicate, {
         if (groupId) {
             window.$applozic.fn.applozic('loadGroupTab', groupId);
         } else if (groupDetail && groupDetail.clientGroupId) {
-            window.$applozic.fn.applozic(
-                'loadGroupTabByClientGroupId',
-                groupDetail
-            );
-        } 
+            window.$applozic.fn.applozic('loadGroupTabByClientGroupId', groupDetail);
+        }
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
@@ -266,10 +228,7 @@ $applozic.extend(true, Kommunicate, {
      * @param {Array} conversationDetail.botIds  optional parameter
      */
     loadConversation: function (conversationDetail, callback) {
-        var agentList = (conversationDetail.agentIds || []).sort(function (
-            a,
-            b
-        ) {
+        var agentList = (conversationDetail.agentIds || []).sort(function (a, b) {
             if (a.toLowerCase() < b.toLowerCase()) return -1;
             if (a.toLowerCase() > b.toLowerCase()) return 1;
             return 0;
@@ -290,9 +249,7 @@ $applozic.extend(true, Kommunicate, {
         // default bot is not included in client groupId generation
         var loggedInUserName =
             kommunicate._globals.userId ||
-            kmCookieStorage.getCookie(
-                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-            );
+            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
         var agentsNameStr = agentList.join('_');
 
         var botsNameStr = botList.join('_');
@@ -335,14 +292,11 @@ $applozic.extend(true, Kommunicate, {
                         users: users,
                         clientGroupId: decodeURIComponent(clientGroupId),
                     };
-                    Kommunicate.client.createConversation(
-                        conversationDetail,
-                        function (result) {
-                            if (callback) {
-                                return callback(null, result);
-                            }
+                    Kommunicate.client.createConversation(conversationDetail, function (result) {
+                        if (callback) {
+                            return callback(null, result);
                         }
-                    );
+                    });
                 } else if (result.status == 'success') {
                     // group exist with clientGroupId
                     var groupId = result.data.id;
@@ -379,10 +333,7 @@ $applozic.extend(true, Kommunicate, {
                 Kommunicate.openConversation(response.data.groups[0].id);
             } else {
                 console.log('new user');
-                Kommunicate.startConversation(
-                    conversationDetail,
-                    function (response) {}
-                );
+                Kommunicate.startConversation(conversationDetail, function (response) {});
             }
         };
         window.$applozic.fn.applozic('getGroupListByFilter', groupDetail);
@@ -428,7 +379,7 @@ $applozic.extend(true, Kommunicate, {
         }
         kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         kmCookieStorage.deleteUserCookiesOnLogout();
-        window.Sentry && window.Sentry.close()
+        window.Sentry && window.Sentry.close();
         parent.window && parent.window.removeKommunicateScripts();
     },
     launchConversation: function () {
@@ -436,8 +387,7 @@ $applozic.extend(true, Kommunicate, {
     },
     triggerEvent: function (event, options) {
         $applozic.ajax({
-            url:
-                Kommunicate.getBaseUrl() + '/applications/events?type=' + event,
+            url: Kommunicate.getBaseUrl() + '/applications/events?type=' + event,
             type: 'post',
             data: JSON.stringify({
                 conversationId: options.groupId,
@@ -499,16 +449,10 @@ $applozic.extend(true, Kommunicate, {
     isRichTextMessage: function (metadata) {
         // contentType should be 300 for rich text message in metadata
         // contentType 300 is removed from rich message payload since Jan-2020 and old payload this may getting used.
-        return (
-            metadata &&
-            (metadata.hasOwnProperty('templateId') ||
-                metadata.contentType == 300)
-        );
+        return metadata && (metadata.hasOwnProperty('templateId') || metadata.contentType == 300);
     },
     appendEmailToIframe: function (message) {
-        var richText =
-            Kommunicate.isRichTextMessage(message.metadata) ||
-            message.contentType == 3;
+        var richText = Kommunicate.isRichTextMessage(message.metadata) || message.contentType == 3;
         if (richText && message.source === 7 && message.message) {
             var iframeID = 'km-iframe-' + message.groupId;
             var iframe = document.getElementById(iframeID);
@@ -525,20 +469,16 @@ $applozic.extend(true, Kommunicate, {
     isAttachment: function (msg) {
         return (
             (typeof msg.fileMeta === 'object' &&
-                msg.contentType ==
-                    KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
-            msg.contentType ==
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
-            msg.contentType ==
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
+                msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) ||
+            msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO ||
+            msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION
         );
     },
     getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
         var metadata = message.metadata;
         var sliderClass = 'km-slick-container ';
-        metadata.templateId ==
-            KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL &&
+        metadata.templateId == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL &&
             metadata.payload &&
             metadata.payload.length > 1 &&
             (sliderClass += 'km-slider-multiple-cards-container');
@@ -546,12 +486,9 @@ $applozic.extend(true, Kommunicate, {
             switch (metadata.templateId) {
                 // add template Id to enable slick effect
                 // 2 for get room pax info template
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .HOTEL_BOOKING_CARD:
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .ROOM_DETAIL:
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .CARD_CAROUSEL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return sliderClass;
                     break;
                 case '6':
@@ -563,10 +500,8 @@ $applozic.extend(true, Kommunicate, {
                     break;
             }
         } else if (
-            message.contentType ==
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
-            message.source ==
-                KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
+            message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+            message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
         ) {
             return 'km-fixed-container';
         }
@@ -587,58 +522,47 @@ $applozic.extend(true, Kommunicate, {
         if (metadata.templateId) {
             switch (metadata.templateId) {
                 // 1 for get room pax info template
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .ROOM_COUNT:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_COUNT:
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
                     break;
                 //2 for hotel card template
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .HOTEL_BOOKING_CARD:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.HOTEL_BOOKING_CARD:
                     return Kommunicate.markup.getHotelCardContainerTemplate(
                         JSON.parse(metadata.hotelList || '[]'),
                         metadata.sessionId
                     );
                     break;
                 // 3 for button container
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .LINK_BUTTON:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LINK_BUTTON:
                     return Kommunicate.markup.buttonContainerTemplate(metadata);
                     break;
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .PASSENGER_DETAIL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.PASSENGER_DETAIL:
                     return Kommunicate.markup.getPassangerDetail(metadata);
                     break;
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .ROOM_DETAIL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.ROOM_DETAIL:
                     return Kommunicate.markup.getRoomDetailsContainerTemplate(
                         JSON.parse(metadata.hotelRoomDetail || '[]'),
                         metadata.sessionId
                     );
                     break;
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .QUICK_REPLY:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY:
                     return Kommunicate.markup.quickRepliesContainerTemplate(
                         metadata,
-                        KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                            .QUICK_REPLY
+                        KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY
                     );
                     break;
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.LIST:
                     return Kommunicate.markup.getListContainerMarkup(metadata);
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .DIALOG_BOX:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.DIALOG_BOX:
                     return Kommunicate.markup.getDialogboxContainer(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.IMAGE:
                     return Kommunicate.markup.getImageContainer(metadata);
                     break;
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .CARD_CAROUSEL:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
                     return Kommunicate.markup.getCarouselMarkup(metadata);
                     break;
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .GENERIC_BUTTONS:
-                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                    .GENERIC_BUTTONS_V2:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS:
+                case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.GENERIC_BUTTONS_V2:
                     return Kommunicate.markup.getGenericButtonMarkup(metadata);
                 case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.FORM:
                     metadata['msgKey'] = message.key;
@@ -652,10 +576,8 @@ $applozic.extend(true, Kommunicate, {
                     break;
             }
         } else if (
-            message.contentType ==
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
-            message.source ==
-                KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
+            message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+            message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
         ) {
             return Kommunicate.markup.getHtmlMessageMarkups(message);
         } else {
@@ -692,9 +614,7 @@ $applozic.extend(true, Kommunicate, {
     updateChatContext: function (options) {
         if (typeof options == 'object') {
             var chatContext =
-                KommunicateUtils.getSettings(
-                    KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT
-                ) || {};
+                KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
             for (var key in options) {
                 chatContext[key] = options[key];
             }
@@ -708,40 +628,24 @@ $applozic.extend(true, Kommunicate, {
     },
     updateUserLanguage: function (languageCode) {
         var chatContext =
-            KommunicateUtils.getSettings(
-                KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT
-            ) || {};
-        chatContext[
-            KommunicateConstants.SETTINGS.KM_USER_LANGUAGE_CODE
-        ] = languageCode;
+            KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
+        chatContext[KommunicateConstants.SETTINGS.KM_USER_LANGUAGE_CODE] = languageCode;
         Kommunicate.updateChatContext(chatContext);
     },
     setDefaultIframeConfigForOpenChat: function (isPopupEnabled) {
         !kommunicateCommons.checkIfDeviceIsHandheld() &&
-            kommunicateCommons.modifyClassList(
-                { id: ['mck-sidebox'] },
-                'popup-enabled',
-                ''
-            );
-        var kommunicateIframe = parent.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+            kommunicateCommons.modifyClassList({ id: ['mck-sidebox'] }, 'popup-enabled', '');
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
-        var popUpCloseButton = kommunicateIframeDocument.getElementById(
-            'km-popup-close-button'
-        );
+        var popUpCloseButton = kommunicateIframeDocument.getElementById('km-popup-close-button');
         kommunicateIframe.style.width = '';
         kommunicateIframe.classList.remove('km-iframe-notification');
         kommunicateIframe.classList.remove('km-iframe-closed');
         isPopupEnabled
-            ? (kommunicateIframe.classList.add(
-                  'km-iframe-dimension-with-popup'
-              ),
+            ? (kommunicateIframe.classList.add('km-iframe-dimension-with-popup'),
               popUpCloseButton && (popUpCloseButton.style.display = 'flex'))
             : kommunicateIframe.classList.add('km-iframe-dimension-no-popup');
-        kommunicateIframe.classList.add(
-            'kommunicate-iframe-enable-media-query'
-        );
+        kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
     // add css to style component in window
     customizeWidgetCss: function (classSettings) {
@@ -760,12 +664,8 @@ $applozic.extend(true, Kommunicate, {
     updateUserTimezone: function (timezone) {
         if (KommunicateUtils.isValidTimeZone(timezone)) {
             var chatContext =
-                KommunicateUtils.getSettings(
-                    KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT
-                ) || {};
-            chatContext[
-                KommunicateConstants.SETTINGS.KM_USER_TIMEZONE
-            ] = timezone;
+                KommunicateUtils.getSettings(KommunicateConstants.SETTINGS.KM_CHAT_CONTEXT) || {};
+            chatContext[KommunicateConstants.SETTINGS.KM_USER_TIMEZONE] = timezone;
             Kommunicate.updateChatContext(chatContext);
         }
     },
@@ -773,13 +673,9 @@ $applozic.extend(true, Kommunicate, {
      * @param {Boolean} display
      */
     displayKommunicateWidget: function (display) {
-        var kommunicateIframe = parent.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         display
-            ? kommunicateIframe.classList.remove(
-                  'kommunicate-hide-custom-iframe'
-              )
+            ? kommunicateIframe.classList.remove('kommunicate-hide-custom-iframe')
             : kommunicateIframe.classList.add('kommunicate-hide-custom-iframe');
     },
     // check if the message needs to be processed by addMessage
@@ -801,8 +697,7 @@ $applozic.extend(true, Kommunicate, {
         }
         if (
             (msg.metadata && msg.metadata.category === 'HIDDEN') ||
-            msg.contentType ===
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
+            msg.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.AUDIO_VIDEO_CALL
         ) {
             return false;
         }
@@ -814,11 +709,9 @@ $applozic.extend(true, Kommunicate, {
             return false;
         }
         if (
-            msg.contentType ===
-                KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE &&
+            msg.contentType === KommunicateConstants.MESSAGE_CONTENT_TYPE.NOTIFY_MESSAGE &&
             msg.metadata &&
-            (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') ||
-                msg.metadata.hide === 'true')
+            (msg.metadata.hasOwnProperty('KM_TRIGGER_EVENT') || msg.metadata.hide === 'true')
         ) {
             return false;
         }
@@ -834,8 +727,7 @@ $applozic.extend(true, Kommunicate, {
             if (
                 msg.metadata?.lastToken === 'true' ||
                 msg.metadata?.firstToken === 'true' ||
-                (msg.metadata?.hasOwnProperty('PLATFORM_MESSAGE_ID') &&
-                    !msg.message)
+                (msg.metadata?.hasOwnProperty('PLATFORM_MESSAGE_ID') && !msg.message)
             ) {
                 return false;
             }
@@ -870,20 +762,13 @@ $applozic.extend(true, Kommunicate, {
             return;
         }
 
-        while (
-            quickReplyCtaPrevSibling?.classList.contains(
-                'contains-quick-replies-only'
-            )
-        ) {
-            quickReplyCtaPrevSibling =
-                quickReplyCtaPrevSibling.previousElementSibling;
+        while (quickReplyCtaPrevSibling?.classList.contains('contains-quick-replies-only')) {
+            quickReplyCtaPrevSibling = quickReplyCtaPrevSibling.previousElementSibling;
         }
         if (quickReplyCtaPrevSibling) {
-            var isFirstGroupMessage =
-                quickReplyCtaPrevSibling.previousElementSibling;
+            var isFirstGroupMessage = quickReplyCtaPrevSibling.previousElementSibling;
             quickReplyCtaPrevSibling.classList.remove('km-clubbing-first');
-            isFirstGroupMessage &&
-                quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
+            isFirstGroupMessage && quickReplyCtaPrevSibling.classList.add('km-clubbing-last');
         }
     },
     getAllSiblings: function (element) {
@@ -901,65 +786,47 @@ $applozic.extend(true, Kommunicate, {
         return siblings;
     },
     openWidgetPreview: function () {
-        var isPreChatForm = document.getElementById(
-            'km-anonymous-chat-launcher'
-        );
+        var isPreChatForm = document.getElementById('km-anonymous-chat-launcher');
 
-        isPreChatForm
-            ? isPreChatForm.click()
-            : Kommunicate.launchConversation();
+        isPreChatForm ? isPreChatForm.click() : Kommunicate.launchConversation();
     },
     closeWidgetPreview: function () {
         var closeBtn = document.getElementById('km-popup-close-button');
         closeBtn && closeBtn.click();
     },
     hideMessageCTA: function (processAllMsg) {
-        var allMessages = $applozic(
-            '#mck-message-cell .mck-message-inner div[name="message"]'
-        );
+        var allMessages = $applozic('#mck-message-cell .mck-message-inner div[name="message"]');
         var lastMessage = allMessages.length - 1;
 
         for (var i = lastMessage; i >= 0; i--) {
             var currentMsg = allMessages[i];
 
-            if (
-                !processAllMsg &&
-                currentMsg.classList.contains('mck-msg-right')
-            ) {
+            if (!processAllMsg && currentMsg.classList.contains('mck-msg-right')) {
                 break;
             }
 
             if (
                 processAllMsg &&
-                currentMsg.dataset.msgkey ==
-                    allMessages[lastMessage].dataset.msgkey
+                currentMsg.dataset.msgkey == allMessages[lastMessage].dataset.msgkey
             ) {
                 // console.log("don't process the hide post cta last msg");
             } else if (
                 currentMsg.querySelector('.km-cta-multi-button-container') // checking if button container is exist in the message div
             ) {
-                var allCTAButtons = currentMsg.querySelectorAll(
-                    '.km-quick-replies'
-                );
+                var allCTAButtons = currentMsg.querySelectorAll('.km-quick-replies');
 
                 allCTAButtons.forEach(function (cta) {
                     cta.setAttribute('data-hidden', true);
                 });
 
                 allCTAButtons.length &&
-                    currentMsg.classList.contains(
-                        'contains-quick-replies-only'
-                    ) &&
+                    currentMsg.classList.contains('contains-quick-replies-only') &&
                     currentMsg.classList.add('km-hide-message');
             } else if (
                 // ONLY FOR LIST RICH MESSAGE
-                currentMsg.querySelector(
-                    '.km-faq-list--footer_button-container'
-                )
+                currentMsg.querySelector('.km-faq-list--footer_button-container')
             ) {
-                var allCTAButtons = currentMsg.querySelectorAll(
-                    '[data-hidepostcta="true"]'
-                );
+                var allCTAButtons = currentMsg.querySelectorAll('[data-hidepostcta="true"]');
                 allCTAButtons.length &&
                     allCTAButtons.forEach(function (cta) {
                         cta.setAttribute('data-hidden', true);
@@ -968,9 +835,7 @@ $applozic.extend(true, Kommunicate, {
         }
     },
     getCurrentPosition: () =>
-        new Promise((resolve, reject) =>
-            navigator.geolocation.getCurrentPosition(resolve, reject)
-        ),
+        new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject)),
     getUserLocation: async function () {
         try {
             const api_key = kommunicate._globals.googleApiKey;

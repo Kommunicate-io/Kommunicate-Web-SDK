@@ -22,11 +22,11 @@ function RingToneService() {
             greetingMsgVolumeOption && greetingMsgVolumeOption.volume != null
                 ? greetingMsgVolumeOption.volume
                 : MAX_VOLUME;
-        
+
         var userAgent = window.navigator.userAgent;
         if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i)) {
             // For iOS safari mobile device ie. ipad and iphone.
-            data.volume = data.volume ? 0 : 1; 
+            data.volume = data.volume ? 0 : 1;
         }
         return new Howl(data);
     };
