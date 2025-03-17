@@ -95,7 +95,7 @@ const configEnv = {
             applozicBaseUrl: 'https://chat.kommunicate.io',
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
-            hostUrl: 'https://widget.kommunicate.io',
+            hostUrl: 'https://widget-gcp.kommunicate.io',
             dashboardUrl: 'https://dashboard.kommunicate.io',
         },
         pluginProperties: {
