@@ -27,8 +27,7 @@ class TypingService {
         )
             return;
         message?.key && this.MCK_BOT_MESSAGE_QUEUE.push(message.key);
-        this.MCK_BOT_MESSAGE_QUEUE.length == 1 &&
-            this.processMessageTimerDelay();
+        this.MCK_BOT_MESSAGE_QUEUE.length == 1 && this.processMessageTimerDelay();
     };
 
     clearTimeoutIds = () => {
@@ -58,9 +57,7 @@ class TypingService {
     showTypingIndicator = () => {
         this.clearTimeoutIds(); // remove old timers if those are active.
         if (!document.querySelector('.km-typing-wrapper')) {
-            const $mck_msg_inner = $applozic(
-                '#mck-message-cell .mck-message-inner'
-            );
+            const $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             this.typingIndicatorStartTime = new Date();
             $mck_msg_inner.append(
                 '<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>'
@@ -91,14 +88,10 @@ class TypingService {
             this.hideTypingIndicator();
 
             if (message) {
-                this.scrollToTheCurrentMsg(
-                    message,
-                    this.MCK_BOT_MESSAGE_QUEUE[0]
-                );
+                this.scrollToTheCurrentMsg(message, this.MCK_BOT_MESSAGE_QUEUE[0]);
             }
             this.MCK_BOT_MESSAGE_QUEUE.shift();
-            this.MCK_BOT_MESSAGE_QUEUE.length != 0 &&
-                this.processMessageTimerDelay();
+            this.MCK_BOT_MESSAGE_QUEUE.length != 0 && this.processMessageTimerDelay();
         };
         let messageContainer = document.getElementById('mck-message-cell');
 
@@ -117,12 +110,8 @@ class TypingService {
     };
 
     scrollToView = (showMsgFromStart, msgKey) => {
-        const $mck_msg_inner = $applozic(
-            '#mck-message-cell .mck-message-inner'
-        );
-        const currentMessage = document.querySelector(
-            `div[data-msgkey="${msgKey}"]`
-        );
+        const $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        const currentMessage = document.querySelector(`div[data-msgkey="${msgKey}"]`);
         const container = document.querySelector('.mck-box-body');
         const firstMsg = document
             .querySelector('#mck-message-cell')

@@ -6,10 +6,7 @@
 
         //Helpdocs.getArticles({data: {helpdocsAccessKey: '', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
         Helpdocs.getArticles = function (options) {
-            var url =
-                HELPDOCS_URL +
-                '/v1/article?key=' +
-                options.data.helpdocsAccessKey;
+            var url = HELPDOCS_URL + '/v1/article?key=' + options.data.helpdocsAccessKey;
             if (options.data.query) {
                 url =
                     HELPDOCS_URL +
@@ -22,8 +19,7 @@
             var response = new Object();
             KMCommonUtils.ajax({
                 url: url,
-                async:
-                    typeof options.async !== 'undefined' ? options.async : true,
+                async: typeof options.async !== 'undefined' ? options.async : true,
                 type: 'get',
                 success: function (data) {
                     response.status = 'success';
@@ -52,8 +48,7 @@
                     options.data.articleId +
                     '?key=' +
                     options.data.helpdocsAccessKey,
-                async:
-                    typeof options.async !== 'undefined' ? options.async : true,
+                async: typeof options.async !== 'undefined' ? options.async : true,
                 type: 'get',
                 success: function (data) {
                     response.status = 'success';

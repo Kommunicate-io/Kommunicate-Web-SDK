@@ -1,6 +1,4 @@
-const isTestEnv = ['development', 'test', 'release'].includes(
-    process.env.NODE_ENV
-);
+const isTestEnv = ['development', 'test', 'release'].includes(process.env.NODE_ENV);
 
 console.log('isTestEnv: ', isTestEnv);
 

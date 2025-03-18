@@ -28,24 +28,16 @@ KommunicateUI = {
     },
     updateLeadCollectionStatus: function (err, message, data) {
         KommunicateUI.awayMessageInfo = {};
-        if (
-            !err &&
-            (message.code == 'SUCCESS' || message.code == 'AGENTS_ONLINE')
-        ) {
+        if (!err && (message.code == 'SUCCESS' || message.code == 'AGENTS_ONLINE')) {
             KommunicateUI.leadCollectionEnabledOnAwayMessage =
                 message.data.collectEmailOnAwayMessage;
-            if (
-                message.code != 'AGENTS_ONLINE' &&
-                message.data.messageList.length > 0
-            ) {
-                KommunicateUI.awayMessageInfo['eventId'] =
-                    message.data.messageList[0].eventId;
+            if (message.code != 'AGENTS_ONLINE' && message.data.messageList.length > 0) {
+                KommunicateUI.awayMessageInfo['eventId'] = message.data.messageList[0].eventId;
                 KommunicateUI.awayMessageInfo['isEnabled'] = true;
             }
             KommunicateUI.leadCollectionEnabledOnWelcomeMessage =
                 message.data.collectEmailOnWelcomeMessage;
-            KommunicateUI.welcomeMessageEnabled =
-                message.data.welcomeMessageEnabled;
+            KommunicateUI.welcomeMessageEnabled = message.data.welcomeMessageEnabled;
             KommunicateUI.anonymousUser = message.data.anonymousUser;
             KommunicateUI.displayLeadCollectionTemplate(data);
         }
@@ -65,12 +57,8 @@ KommunicateUI = {
         }
     },
     populateAwayMessage: function (err, message) {
-        var conversationWindowNotActive = $applozic(
-            '#mck-tab-individual'
-        ).hasClass('n-vis');
-        var closedConversation = $applozic(
-            '#mck-conversation-status-box'
-        ).hasClass('vis');
+        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
+        var closedConversation = $applozic('#mck-conversation-status-box').hasClass('vis');
         if (
             !err &&
             message.code == 'SUCCESS' &&
@@ -88,15 +76,13 @@ KommunicateUI = {
         } else {
             $applozic('#mck-away-msg-box').removeClass('vis').addClass('n-vis');
         }
-        var messageBody = document.querySelectorAll(
-            '.mck-message-inner.mck-group-inner'
-        )[0];
+        var messageBody = document.querySelectorAll('.mck-message-inner.mck-group-inner')[0];
         if (KommunicateUI.awayMessageScroll && messageBody) {
             KommunicateUI.updateScroll(messageBody);
             KommunicateUI.awayMessageScroll = false;
         }
     },
-    
+
     checkSvgHasChildren: function (images) {
         var dataPrefix = 'data:image/svg+xml;base64,';
         var newImages = [];
@@ -110,10 +96,7 @@ KommunicateUI = {
                 try {
                     var decodedData = atob(base64Data);
                     var parser = new DOMParser();
-                    var svgDocument = parser.parseFromString(
-                        decodedData,
-                        'image/svg+xml'
-                    );
+                    var svgDocument = parser.parseFromString(decodedData, 'image/svg+xml');
                     var svg = svgDocument && svgDocument.documentElement;
                     if (svg && svg.children.length > 0) {
                         newImages.push(image);
@@ -132,25 +115,19 @@ KommunicateUI = {
             headers: {
                 'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
             },
-            url:
-                kommunicate.getBaseUrl() +
-                '/rest/ws/extractlink?linkToExtract=' +
-                url,
+            url: kommunicate.getBaseUrl() + '/rest/ws/extractlink?linkToExtract=' + url,
             type: 'GET',
             global: false,
             success: function (result) {
                 const { title, description } = result?.data ? result.data : {};
 
-                if (
-                    title &&
-                    title.includes('Attention Required!')
-                ) {
-                    console.error("Cloudflare or security block detected. No preview available.");
+                if (title && title.includes('Attention Required!')) {
+                    console.error('Cloudflare or security block detected. No preview available.');
                     return;
                 }
 
                 if (!title || !description) {
-                    console.error("Missing metadata for preview. No preview available.")
+                    console.error('Missing metadata for preview. No preview available.');
                     return;
                 }
                 if (result) {
@@ -160,11 +137,7 @@ KommunicateUI = {
                         : [];
 
                     // this happens when the link gets redirected
-                    if (
-                        result.data.title ===
-                        'ERROR: The request could not be satisfied'
-                    )
-                        return;
+                    if (result.data.title === 'ERROR: The request could not be satisfied') return;
 
                     var previewTemplate = kommunicate.markup.getLinkPreviewTemplate(
                         result,
@@ -179,17 +152,13 @@ KommunicateUI = {
         });
     },
     showAwayMessage: function () {
-        var conversationWindowNotActive = $applozic(
-            '#mck-tab-individual'
-        ).hasClass('n-vis');
+        var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
         if (
             KommunicateUI.awayMessageInfo &&
             KommunicateUI.awayMessageInfo.isEnabled &&
             !conversationWindowNotActive
         ) {
-            $applozic('#mck-email-collection-box')
-                .removeClass('vis')
-                .addClass('n-vis');
+            $applozic('#mck-email-collection-box').removeClass('vis').addClass('n-vis');
             $applozic('#mck-away-msg-box').removeClass('n-vis').addClass('vis');
         }
     },
@@ -238,9 +207,7 @@ KommunicateUI = {
             .next()
             .removeClass('n-vis')
             .addClass('vis');
-        $applozic('.mck-attachment-' + key + ' .mck-image-download').addClass(
-            'n-vis'
-        );
+        $applozic('.mck-attachment-' + key + ' .mck-image-download').addClass('n-vis');
     },
     deleteProgressMeter: function (key, uploadStatus) {
         $applozic('.progress-meter-' + key).remove();
@@ -266,8 +233,7 @@ KommunicateUI = {
     },
     updateImageAttachmentPreview: function (fileMeta, key) {
         var template = $applozic('.mck-attachment-' + key)[0];
-        var thumbnailUrl =
-            template && template.dataset && template.dataset.thumbnailurl;
+        var thumbnailUrl = template && template.dataset && template.dataset.thumbnailurl;
         thumbnailUrl &&
             $applozic('.mck-attachment-' + key + ' .file-preview-link').attr(
                 'data-url',
@@ -292,79 +258,50 @@ KommunicateUI = {
     },
     updateAttachmentTemplate: function (file_meta, key) {
         var attachment;
-        var template = document.querySelector(
-            '.mck-message-inner.mck-group-inner'
-        );
-        template &&
-            key &&
-            (attachment = template.querySelector('.mck-attachment-' + key));
+        var template = document.querySelector('.mck-message-inner.mck-group-inner');
+        template && key && (attachment = template.querySelector('.mck-attachment-' + key));
         if (attachment) {
-            file_meta.blobKey &&
-                attachment.setAttribute('data-filemetakey', file_meta.blobKey);
-            file_meta.name &&
-                attachment.setAttribute('data-filename', file_meta.name);
-            attachment.setAttribute(
-                'data-fileurl',
-                file_meta.thumbnailUrl || file_meta.url
-            );
-            file_meta.size &&
-                attachment.setAttribute('data-filesize', file_meta.size);
+            file_meta.blobKey && attachment.setAttribute('data-filemetakey', file_meta.blobKey);
+            file_meta.name && attachment.setAttribute('data-filename', file_meta.name);
+            attachment.setAttribute('data-fileurl', file_meta.thumbnailUrl || file_meta.url);
+            file_meta.size && attachment.setAttribute('data-filesize', file_meta.size);
             attachment.setAttribute(
                 'data-filetype',
                 file_meta.contentType || file_meta.fileMeta.contentType
             );
-            // need to update blobkey if media is encrypted. 
+            // need to update blobkey if media is encrypted.
             // Note: All the attachements sent from widget are encrypted
             file_meta.blobKey &&
-                $applozic('.km-attachment-preview-href-' + key).attr(
-                    'blobkey',
-                    file_meta.blobKey
-                );
+                $applozic('.km-attachment-preview-href-' + key).attr('blobkey', file_meta.blobKey);
         }
     },
     updateAttachmentStopUploadStatus: function (key, status) {
-        var template = document.querySelector(
-            '.mck-message-inner.mck-group-inner'
-        );
-        var attachment =
-            template && template.querySelector('.mck-attachment-' + key);
+        var template = document.querySelector('.mck-message-inner.mck-group-inner');
+        var attachment = template && template.querySelector('.mck-attachment-' + key);
         attachment && attachment.setAttribute('data-stopupload', status);
     },
     getAttachmentStopUploadStatus: function (key) {
-        var stopUpload = $applozic('.mck-attachment-' + key).attr(
-            'data-stopupload'
-        );
+        var stopUpload = $applozic('.mck-attachment-' + key).attr('data-stopupload');
         stopUpload = stopUpload == 'true' ? true : false;
         return stopUpload;
     },
     populateLeadCollectionTemplate: function () {
         KommunicateUI.hideAwayMessage();
-        $applozic('#mck-email-collection-box')
-            .removeClass('n-vis')
-            .addClass('vis');
+        $applozic('#mck-email-collection-box').removeClass('n-vis').addClass('vis');
         $applozic('#mck-btn-attach-box').removeClass('vis').addClass('n-vis');
         $applozic('#mck-text-box').blur();
         $applozic('#mck-text-box').attr('data-text', 'Your email ID');
     },
     hideLeadCollectionTemplate: function () {
-        $applozic('#mck-email-collection-box')
-            .removeClass('vis')
-            .addClass('n-vis');
-        $applozic('#mck-email-error-alert-box')
-            .removeClass('vis')
-            .addClass('n-vis');
+        $applozic('#mck-email-collection-box').removeClass('vis').addClass('n-vis');
+        $applozic('#mck-email-error-alert-box').removeClass('vis').addClass('n-vis');
         $applozic('#mck-btn-attach-box').removeClass('n-vis').addClass('vis');
-        $applozic('#mck-text-box').attr(
-            'data-text',
-            MCK_LABELS['input.message']
-        );
+        $applozic('#mck-text-box').attr('data-text', MCK_LABELS['input.message']);
     },
     validateEmail: function (sendMsg) {
         var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
         if (sendMsg.match(mailformat)) {
-            $applozic('#mck-email-error-alert-box')
-                .removeClass('vis')
-                .addClass('n-vis');
+            $applozic('#mck-email-error-alert-box').removeClass('vis').addClass('n-vis');
             this.hideLeadCollectionTemplate();
             window.$applozic.fn.applozic('updateUser', {
                 data: { email: sendMsg },
@@ -372,39 +309,31 @@ KommunicateUI = {
             // KommunicateUI.showAwayMessage();  lead collection feature improvement- [WIP]
             return true;
         } else {
-            $applozic('#mck-email-error-alert-box')
-                .removeClass('n-vis')
-                .addClass('vis');
-            $applozic('#mck-email-collection-box')
-                .removeClass('vis')
-                .addClass('n-vis');
+            $applozic('#mck-email-error-alert-box').removeClass('n-vis').addClass('vis');
+            $applozic('#mck-email-collection-box').removeClass('vis').addClass('n-vis');
             return false;
         }
     },
 
-    initFaq : function() {
-        var data = {}
-            data.appId = kommunicate._globals.appId;
+    initFaq: function () {
+        var data = {};
+        data.appId = kommunicate._globals.appId;
 
         // On Click of FAQ button the FAQ category List will open.
         $applozic(d).on('click', '#km-faq', function () {
             var isFaqCategoryPresent =
-                kommunicate &&
-                kommunicate._globals &&
-                kommunicate._globals.faqCategory;
+                kommunicate && kommunicate._globals && kommunicate._globals.faqCategory;
             kmWidgetEvents.eventTracking(eventMapping.onFaqClick);
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                kmLocalStorage.removeItemFromLocalStorage(
-                    'mckActiveConversationInfo'
-                );
+                kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
             KommunicateUI.showHeader();
             KommunicateUI.awayMessageScroll = true;
-            if(isFaqCategoryPresent){ 
+            if (isFaqCategoryPresent) {
                 MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
-                MCK_EVENT_HISTORY.push('km-faq-list');
-            }else{
+                    MCK_EVENT_HISTORY.push('km-faq-list');
+            } else {
                 MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-category-list' &&
-                MCK_EVENT_HISTORY.push('km-faq-category-list');
+                    MCK_EVENT_HISTORY.push('km-faq-category-list');
             }
 
             typingService.resetState();
@@ -412,11 +341,17 @@ KommunicateUI = {
             // remove n-vis
             kommunicateCommons.modifyClassList(
                 {
-                    id: ['km-contact-search-input-box', 'faq-common', 'km-faqdiv', 'mck-tab-title', 'km-faq-category-list-container'],
-                    class: ['mck-conversation-back-btn', 'km-contact-input-container']
+                    id: [
+                        'km-contact-search-input-box',
+                        'faq-common',
+                        'km-faqdiv',
+                        'mck-tab-title',
+                        'km-faq-category-list-container',
+                    ],
+                    class: ['mck-conversation-back-btn', 'km-contact-input-container'],
                 },
-                "vis",
-                "n-vis"
+                'vis',
+                'n-vis'
             );
 
             // add n-vis
@@ -434,30 +369,26 @@ KommunicateUI = {
                         'mck-conversation',
                         'mck-agent-image-container',
                         'mck-agent-status-text',
-                        'km-header-cta'
+                        'km-header-cta',
                     ],
                 },
-                "n-vis",
-                "vis"
+                'n-vis',
+                'vis'
             );
 
             isFaqCategoryPresent
                 ? $applozic('#km-faq-category-list-container').addClass('n-vis')
                 : $applozic('#km-faq-list-container').addClass('n-vis') &&
-                  $applozic('#km-faq-category-list-container').removeClass(
-                      'n-vis'
-                  );
+                  $applozic('#km-faq-category-list-container').removeClass('n-vis');
 
             $applozic('#mck-tab-title').html(MCK_LABELS['faq']);
             $applozic('#mck-msg-new').attr('disabled', false);
-            $applozic(
-                '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
-            )
+            $applozic('#mck-tab-individual .mck-tab-link.mck-back-btn-container')
                 .removeClass('n-vis')
                 .addClass('vis-table');
-            $applozic(
-                '#mck-tab-individual .mck-name-status-container.mck-box-title'
-            ).removeClass('padding');
+            $applozic('#mck-tab-individual .mck-name-status-container.mck-box-title').removeClass(
+                'padding'
+            );
             KommunicateUI.checkSingleThreadedConversationSettings(true);
         });
 
@@ -467,7 +398,8 @@ KommunicateUI = {
                 {
                     id: ['km-faq-category-list-container'],
                 },
-                'n-vis', 'vis'
+                'n-vis',
+                'vis'
             );
             kommunicateCommons.modifyClassList(
                 {
@@ -479,20 +411,15 @@ KommunicateUI = {
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-list');
             var categoryName = this.getAttribute('data-category-name');
-            document.querySelector('#km-faq-list-container').innerHTML = ''
-            Kommunicate.getFaqList(data, categoryName)
-            
-        })
+            document.querySelector('#km-faq-list-container').innerHTML = '';
+            Kommunicate.getFaqList(data, categoryName);
+        });
 
         // on click of back button previous window should open
         $applozic(d).on('click', '#mck-conversation-back-btn', function (e) {
-            $applozic('.km-contact-input-container')
-                .removeClass('vis')
-                .addClass('n-vis');
+            $applozic('.km-contact-input-container').removeClass('vis').addClass('n-vis');
             MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE &&
-                kmLocalStorage.removeItemFromLocalStorage(
-                    'mckActiveConversationInfo'
-                );
+                kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
             KommunicateUI.awayMessageScroll = true;
             KommunicateUI.hideAwayMessage();
             KommunicateUI.hideLeadCollectionTemplate();
@@ -504,10 +431,7 @@ KommunicateUI = {
             );
             typingService.resetState();
             if (MCK_EVENT_HISTORY.length >= 2) {
-                if (
-                    MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] ==
-                    'km-faq-category-list'
-                ) {
+                if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'km-faq-category-list') {
                     KommunicateUI.showHeader();
 
                     // remove n-vis
@@ -537,10 +461,7 @@ KommunicateUI = {
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     return;
-                } else if (
-                    MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] ==
-                    'km-faq-list'
-                ) {
+                } else if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'km-faq-list') {
                     KommunicateUI.showHeader();
 
                     // remove n-vis
@@ -566,10 +487,7 @@ KommunicateUI = {
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     return;
-                } else if (
-                    typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] ==
-                    'object'
-                ) {
+                } else if (typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == 'object') {
                     // remove n-vis
                     kommunicateCommons.modifyClassList(
                         {
@@ -588,10 +506,7 @@ KommunicateUI = {
                     kommunicateCommons.modifyClassList(
                         {
                             id: ['faq-common'],
-                            class: [
-                                'km-no-results-found-container',
-                                'km-talk-to-human-div',
-                            ],
+                            class: ['km-no-results-found-container', 'km-talk-to-human-div'],
                         },
                         'n-vis',
                         'vis'
@@ -603,7 +518,8 @@ KommunicateUI = {
                     KommunicateUI.activateTypingField();
                     return;
                 } else {
-                    KommunicateUI.isFAQPrimaryCTA() && $applozic('#km-faq').removeClass('n-vis').addClass('vis');
+                    KommunicateUI.isFAQPrimaryCTA() &&
+                        $applozic('#km-faq').removeClass('n-vis').addClass('vis');
                     $applozic('#mck-msg-new').attr('disabled', false);
                     MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                     MCK_EVENT_HISTORY.length = 0;
@@ -611,7 +527,7 @@ KommunicateUI = {
                 }
             } else {
                 // remove n-vis
-               
+
                 KommunicateUI.isFAQPrimaryCTA()
                     ? $applozic('#km-faq').addClass('vis')
                     : $applozic('#km-faq').addClass('n-vis');
@@ -628,7 +544,12 @@ KommunicateUI = {
                 // add n-vis
                 kommunicateCommons.modifyClassList(
                     {
-                        id: ['faq-common','km-faqdiv','km-faq-category-list-container','km-contact-search-input-box'],
+                        id: [
+                            'faq-common',
+                            'km-faqdiv',
+                            'km-faq-category-list-container',
+                            'km-contact-search-input-box',
+                        ],
                         class: [
                             'km-no-results-found-container',
                             'km-talk-to-human-div',
@@ -641,19 +562,15 @@ KommunicateUI = {
                     'vis'
                 );
 
-                kommunicateCommons.modifyClassList(
-                    { class: ['mck-rating-box'] },
-                    '',
-                    'selected'
-                );
+                kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
                 document.getElementById('mck-tab-title').textContent = '';
                 MCK_EVENT_HISTORY.length = 0;
                 KommunicateUI.handleConversationBanner();
-                document.querySelector('#km-faq-search-input').value && 
-                document.querySelector('.km-clear-faq-search-icon').click()
+                document.querySelector('#km-faq-search-input').value &&
+                    document.querySelector('.km-clear-faq-search-icon').click();
                 return;
             }
-        })
+        });
 
         $applozic(d).on(
             'click',
@@ -663,9 +580,8 @@ KommunicateUI = {
             }
         );
 
-         
         // On Click of Individual List Items their respective answers will show.
-        $applozic(d).on('click', '.km-faq-list', function () {      
+        $applozic(d).on('click', '.km-faq-list', function () {
             $applozic('#km-faqanswer').empty();
             MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-answer-list' &&
                 MCK_EVENT_HISTORY.push('km-faq-answer-list');
@@ -679,14 +595,9 @@ KommunicateUI = {
                 },
                 success: function (response) {
                     var faqDetails = response && response.data;
-                    if (
-                        faqDetails &&
-                        $applozic('#km-faqanswer .km-faqanswer-list').length ==
-                            0
-                    ) {
+                    if (faqDetails && $applozic('#km-faqanswer .km-faqanswer-list').length == 0) {
                         var faqTitle =
-                            faqDetails.title &&
-                            kommunicateCommons.formatHtmlTag(faqDetails.title);
+                            faqDetails.title && kommunicateCommons.formatHtmlTag(faqDetails.title);
                         // FAQ description is already coming in formatted way from the dashboard FAQ editor.
                         $applozic('#km-faqanswer').append(
                             '<div class="km-faqanswer-list ql-snow"><div class="km-faqquestion">' +
@@ -698,21 +609,11 @@ KommunicateUI = {
                         $applozic('#km-contact-search-input-box')
                             .removeClass('vis')
                             .addClass('n-vis');
-                        $applozic('#km-faqdiv')
-                            .removeClass('vis')
-                            .addClass('n-vis');
-                        $applozic('#km-faqanswer')
-                            .removeClass('n-vis')
-                            .addClass('vis');
-                        $applozic('#mck-tab-individual')
-                            .removeClass('n-vis')
-                            .addClass('vis');
-                        $applozic('#mck-tab-conversation')
-                            .removeClass('vis')
-                            .addClass('n-vis');
-                        $applozic('#mck-no-conversations')
-                            .removeClass('vis')
-                            .addClass('n-vis');
+                        $applozic('#km-faqdiv').removeClass('vis').addClass('n-vis');
+                        $applozic('#km-faqanswer').removeClass('n-vis').addClass('vis');
+                        $applozic('#mck-tab-individual').removeClass('n-vis').addClass('vis');
+                        $applozic('#mck-tab-conversation').removeClass('vis').addClass('n-vis');
+                        $applozic('#mck-no-conversations').removeClass('vis').addClass('n-vis');
                         $applozic('#km-faqanswer .km-faqanswer').linkify({
                             target: '_blank',
                         });
@@ -722,111 +623,89 @@ KommunicateUI = {
                     throw new Error('Error while fetching faq details', error);
                 },
             });
-            $applozic('.km-contact-input-container')
-                .removeClass('vis')
-                .addClass('n-vis');
+            $applozic('.km-contact-input-container').removeClass('vis').addClass('n-vis');
         });
-
-       
 
         $applozic(d).on('click', '#km-faqanswer a', function (e) {
             e.preventDefault();
             window.open(e.target.href);
         });
 
-        $applozic('#km-faq-search-input').keyup(kommunicateCommons.debounce(function (e) {
-            var searchQuery = e.target.value;
-            
-            if (searchQuery.length > 0) {
-                $applozic('.km-clear-faq-search-icon')
-                    .addClass('vis')
-                    .removeClass('n-vis');
-            } else {
-                $applozic('.km-clear-faq-search-icon')
-                    .addClass('n-vis')
-                    .removeClass('vis');
-            }
-            if(!document.querySelector('#km-faq-category-list-container.n-vis')){
-                MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
-                MCK_EVENT_HISTORY.push('km-faq-list');
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: [
-                                'km-faq-category-list-container', 
-                            ],
-                    },
-                    "n-vis", "vis"
-                );
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: [
-                                
-                                'km-faq-list-container', 
-                            ],
-                    },
-                    "vis", "n-vis"
-                );
-            }
-            if (e.which == 32 || e.which == 13) {
+        $applozic('#km-faq-search-input').keyup(
+            kommunicateCommons.debounce(function (e) {
+                var searchQuery = e.target.value;
+
+                if (searchQuery.length > 0) {
+                    $applozic('.km-clear-faq-search-icon').addClass('vis').removeClass('n-vis');
+                } else {
+                    $applozic('.km-clear-faq-search-icon').addClass('n-vis').removeClass('vis');
+                }
+                if (!document.querySelector('#km-faq-category-list-container.n-vis')) {
+                    MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1] !== 'km-faq-list' &&
+                        MCK_EVENT_HISTORY.push('km-faq-list');
+                    kommunicateCommons.modifyClassList(
+                        {
+                            id: ['km-faq-category-list-container'],
+                        },
+                        'n-vis',
+                        'vis'
+                    );
+                    kommunicateCommons.modifyClassList(
+                        {
+                            id: ['km-faq-list-container'],
+                        },
+                        'vis',
+                        'n-vis'
+                    );
+                }
+                if (e.which == 32 || e.which == 13) {
+                    KommunicateUI.searchFaqs(data);
+                    return;
+                }
                 KommunicateUI.searchFaqs(data);
-                return;
-            }
-            KommunicateUI.searchFaqs(data)
-        },500));
+            }, 500)
+        );
 
         $applozic(d).on('click', '.km-clear-faq-search-icon', function () {
             $applozic('#km-faq-search-input').val('');
-            $applozic('.km-clear-faq-search-icon')
-                .addClass('n-vis')
-                .removeClass('vis');
+            $applozic('.km-clear-faq-search-icon').addClass('n-vis').removeClass('vis');
             // this is being used to simulate an Enter Key Press on the search input.
             var e = jQuery.Event('keyup');
             e.which = 13;
             $applozic('#km-faq-search-input').trigger(e);
         });
     },
-    faqEmptyState: function() {
+    faqEmptyState: function () {
         kommunicateCommons.modifyClassList(
             {
-                class: [
-                    'km-no-results-found-container',
-                    'km-talk-to-human-div',
-                ],
+                class: ['km-no-results-found-container', 'km-talk-to-human-div'],
             },
             'vis',
             'n-vis'
         );
-        document.querySelector('.km-talk-to-human-div p').innerHTML =
-            MCK_LABELS['no-faq-found'];
-        document.querySelector('.km-no-results-found p').innerHTML =
-            MCK_LABELS['faq-empty-state'];
+        document.querySelector('.km-talk-to-human-div p').innerHTML = MCK_LABELS['no-faq-found'];
+        document.querySelector('.km-no-results-found p').innerHTML = MCK_LABELS['faq-empty-state'];
     },
-    flushFaqsEvents: function() {
-        var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1];
+    flushFaqsEvents: function () {
+        var lastEvent = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 1];
         var backBtn = $applozic('#mck-conversation-back-btn')[0];
-        if(lastEvent && typeof lastEvent == "string" && lastEvent.includes('faq')){
+        if (lastEvent && typeof lastEvent == 'string' && lastEvent.includes('faq')) {
             backBtn && backBtn.click();
             KommunicateUI.flushFaqsEvents();
         }
     },
     searchFaqUI: function (response) {
-        if (
-            response.data &&
-            response.data.length === 0 
-        ) {
+        if (response.data && response.data.length === 0) {
             kommunicateCommons.modifyClassList(
                 {
-                    class: [
-                        'km-no-results-found-container',
-                        'km-talk-to-human-div',
-                    ],
+                    class: ['km-no-results-found-container', 'km-talk-to-human-div'],
                 },
                 'vis',
                 'n-vis'
             );
             document.querySelector('.km-talk-to-human-div p').innerHTML =
                 MCK_LABELS['no-faq-found'];
-            document.querySelector('.km-no-results-found p').innerHTML = 'NO RESULTS FOUND'
+            document.querySelector('.km-no-results-found p').innerHTML = 'NO RESULTS FOUND';
         } else {
             kommunicateCommons.modifyClassList(
                 {
@@ -864,8 +743,8 @@ KommunicateUI = {
         var searchFilter = {
             appId: data && data.appId,
             query: document.getElementById('km-faq-search-input').value,
-        }
-        if(kommunicate && kommunicate._globals && kommunicate._globals.faqCategory){
+        };
+        if (kommunicate && kommunicate._globals && kommunicate._globals.faqCategory) {
             searchFilter.categoryName = kommunicate._globals.faqCategory;
         }
         if (!document.getElementById('km-faq-search-input').value) {
@@ -891,42 +770,37 @@ KommunicateUI = {
         }
     },
     hideFaq: function () {
-        $applozic('#km-contact-search-input-box')
-            .removeClass('vis')
-            .addClass('n-vis');
+        $applozic('#km-contact-search-input-box').removeClass('vis').addClass('n-vis');
         $applozic('#km-faqdiv').removeClass('vis').addClass('n-vis');
         $applozic('#mck-msg-new').attr('disabled', false);
         KommunicateUI.flushFaqsEvents();
     },
     hideMessagePreview: function () {
-        $applozic('#mck-msg-preview-visual-indicator')
-            .removeClass('vis')
-            .addClass('n-vis');
-        $applozic(
-            '#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text'
-        ).html('');
+        $applozic('#mck-msg-preview-visual-indicator').removeClass('vis').addClass('n-vis');
+        $applozic('#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text').html(
+            ''
+        );
     },
 
     showChat: function () {
         kommunicateCommons.setWidgetStateOpen(true);
         $applozic('#faq-common').removeClass('vis').addClass('n-vis');
         $applozic('.mck-conversation').removeClass('n-vis').addClass('vis');
-        KommunicateUI.isFAQPrimaryCTA() && $applozic('#km-faq').removeClass('n-vis').addClass('vis');
+        KommunicateUI.isFAQPrimaryCTA() &&
+            $applozic('#km-faq').removeClass('n-vis').addClass('vis');
         $applozic('#mck-msg-new').attr('disabled', false);
         if (
-            $applozic(
-                "#mck-message-cell .mck-message-inner div[name='message']"
-            ).length === 0 &&
+            $applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 &&
             isFirstLaunch == true
         ) {
             isFirstLaunch = false;
         } else {
-            $applozic(
-                '#mck-tab-individual .mck-tab-link.mck-back-btn-container'
-            ).removeClass('n-vis');
-            $applozic(
-                '#mck-tab-individual .mck-name-status-container.mck-box-title'
-            ).removeClass('padding');
+            $applozic('#mck-tab-individual .mck-tab-link.mck-back-btn-container').removeClass(
+                'n-vis'
+            );
+            $applozic('#mck-tab-individual .mck-name-status-container.mck-box-title').removeClass(
+                'padding'
+            );
         }
     },
     showHeader: function () {
@@ -967,13 +841,10 @@ KommunicateUI = {
         }
     },
     activateTypingField: function () {
-        !kommunicateCommons.checkIfDeviceIsHandheld() &&
-            $applozic('#mck-text-box').focus();
+        !kommunicateCommons.checkIfDeviceIsHandheld() && $applozic('#mck-text-box').focus();
     },
     setAvailabilityStatus: function (status) {
-        $applozic('.mck-agent-image-container')
-            .removeClass('n-vis')
-            .addClass('vis');
+        $applozic('.mck-agent-image-container').removeClass('n-vis').addClass('vis');
         $applozic('.mck-agent-image-container .mck-agent-status-indicator')
             .removeClass('mck-status--online')
             .removeClass('mck-status--offline')
@@ -996,12 +867,8 @@ KommunicateUI = {
                 '',
                 'n-vis'
             );
-            document.getElementById(
-                'user-overide-voice-output-text'
-            ).innerText =
-                MCK_LABELS[
-                    'conversation.header.dropdown'
-                ].USER_OVERIDE_VOICE_OUTPUT_OFF;
+            document.getElementById('user-overide-voice-output-text').innerText =
+                MCK_LABELS['conversation.header.dropdown'].USER_OVERIDE_VOICE_OUTPUT_OFF;
         } else {
             kommunicateCommons.modifyClassList(
                 { id: ['user-overide-voice-output-svg-on'] },
@@ -1012,35 +879,21 @@ KommunicateUI = {
                 '',
                 'n-vis'
             );
-            document.getElementById(
-                'user-overide-voice-output-text'
-            ).innerText =
-                MCK_LABELS[
-                    'conversation.header.dropdown'
-                ].USER_OVERIDE_VOICE_OUTPUT_ON;
+            document.getElementById('user-overide-voice-output-text').innerText =
+                MCK_LABELS['conversation.header.dropdown'].USER_OVERIDE_VOICE_OUTPUT_ON;
         }
     },
     loadQuickReplies: function (quickReplies) {
         var intentList = document.getElementById('mck-intent-options');
-        if (
-            quickReplies.length > 0 &&
-            intentList &&
-            intentList.childElementCount < 1
-        ) {
-            kommunicateCommons.modifyClassList(
-                { id: ['mck-quick-replies-box'] },
-                'vis',
-                'n-vis'
-            );
+        if (quickReplies.length > 0 && intentList && intentList.childElementCount < 1) {
+            kommunicateCommons.modifyClassList({ id: ['mck-quick-replies-box'] }, 'vis', 'n-vis');
             for (var i = 0; i <= quickReplies.length - 1; i++) {
                 var li = document.createElement('li');
                 li.innerText = quickReplies[i];
                 intentList.appendChild(li);
                 li.onclick = function (e) {
                     e.preventDefault();
-                    document.getElementById(
-                        'mck-text-box'
-                    ).innerText = this.innerText;
+                    document.getElementById('mck-text-box').innerText = this.innerText;
                     document.getElementById('mck-msg-sbmt').click();
                 };
             }
@@ -1048,8 +901,7 @@ KommunicateUI = {
     },
     triggerCSAT: function (triggeredByBot) {
         ratingService.resetStarsColor();
-        var isConvRated =
-            document.getElementsByClassName('mck-rated').length > 0;
+        var isConvRated = document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
             if (isConvRated && CURRENT_GROUP_DATA.tabId) {
                 KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] =
@@ -1059,16 +911,11 @@ KommunicateUI = {
                     KommunicateConstants.FEEDBACK_API_STATUS.RATED ||
                 !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId]
             ) {
-                kommunicateCommons.getFeedback(
-                    CURRENT_GROUP_DATA.tabId,
-                    function (params) {
-                        KommunicateUI.convRatedTabIds[
-                            CURRENT_GROUP_DATA.tabId
-                        ] = params.data
-                            ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
-                            : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
-                    }
-                );
+                kommunicateCommons.getFeedback(CURRENT_GROUP_DATA.tabId, function (params) {
+                    KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] = params.data
+                        ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                        : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
+                });
             }
         }
 
@@ -1082,16 +929,10 @@ KommunicateUI = {
         if (!KommunicateUI.isConvJustResolved) {
             KommunicateUI.isCSATtriggeredByUser = true;
         }
-        var messageBody = document.querySelector(
-            '.mck-message-inner.mck-group-inner'
-        );
+        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         if (isCSATenabled || triggeredByBot) {
             document.getElementById('mck-submit-comment').disabled = false;
-            kommunicateCommons.modifyClassList(
-                { class: ['mck-rating-box'] },
-                '',
-                'selected'
-            );
+            kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
             kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-box-form'],
@@ -1105,14 +946,14 @@ KommunicateUI = {
                 },
                 'km-mid-conv-csat'
             );
-           
+
             kommunicateCommons.modifyClassList(
                 {
-                    id: ["csat-1", "csat-2", "mck-feedback-text-wrapper"],
+                    id: ['csat-1', 'csat-2', 'mck-feedback-text-wrapper'],
                 },
                 'vis',
                 'n-vis'
-            )
+            );
             KommunicateUI.isConvJustResolved = false;
             KommunicateUI.updateScroll(messageBody);
         } else if (
@@ -1121,11 +962,8 @@ KommunicateUI = {
             kommunicate._globals.oneTimeRating
         ) {
             var messageText = MCK_LABELS['closed.conversation.message'];
-            var conversationStatusDiv = document.getElementById(
-                'mck-conversation-status-box'
-            );
-            conversationStatusDiv &&
-                (conversationStatusDiv.innerHTML = messageText);
+            var conversationStatusDiv = document.getElementById('mck-conversation-status-box');
+            conversationStatusDiv && (conversationStatusDiv.innerHTML = messageText);
             kommunicateCommons.modifyClassList(
                 {
                     id: ['mck-sidebox-ft'],
@@ -1163,19 +1001,17 @@ KommunicateUI = {
             );
             kommunicateCommons.modifyClassList(
                 {
-                    id: [ 'mck-sidebox-ft' ]
-
+                    id: ['mck-sidebox-ft'],
                 },
-               'mck-restart-conv-banner'
-            )
+                'mck-restart-conv-banner'
+            );
         }
     },
     askCSAT: function (triggeredByBot) {
         KommunicateUI.triggerCSAT(triggeredByBot);
     },
     showClosedConversationBanner: function (isConversationClosed) {
-        var isConvRated =
-            document.getElementsByClassName('mck-rated').length > 0;
+        var isConvRated = document.getElementsByClassName('mck-rated').length > 0;
         if (kommunicate._globals.oneTimeRating) {
             if (isConvRated && CURRENT_GROUP_DATA.tabId) {
                 KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] =
@@ -1185,26 +1021,19 @@ KommunicateUI = {
                     KommunicateConstants.FEEDBACK_API_STATUS.RATED ||
                 !KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId]
             ) {
-                kommunicateCommons.getFeedback(
-                    CURRENT_GROUP_DATA.tabId,
-                    function (params) {
-                        KommunicateUI.convRatedTabIds[
-                            CURRENT_GROUP_DATA.tabId
-                        ] = params.data
-                            ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
-                            : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
-                    }
-                );
+                kommunicateCommons.getFeedback(CURRENT_GROUP_DATA.tabId, function (params) {
+                    KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] = params.data
+                        ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                        : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
+                });
             }
         }
-        var ratingTitleElement = document.querySelector(".mck-csat-title");
+        var ratingTitleElement = document.querySelector('.mck-csat-title');
         var messageText = MCK_LABELS['closed.conversation.message'];
         var ratingTitle = MCK_LABELS['csat.rating'].CONVERSATION_RATING_HEADING;
 
         ratingTitleElement && (ratingTitleElement.innerHTML = ratingTitle);
-        var conversationStatusDiv = document.getElementById(
-            'mck-conversation-status-box'
-        );
+        var conversationStatusDiv = document.getElementById('mck-conversation-status-box');
         var isCSATtriggeredByUser = KommunicateUI.isCSATtriggeredByUser;
         var isConvJustResolved = KommunicateUI.isConvJustResolved;
         var isCSATenabled = kommunicate._globals.oneTimeRating
@@ -1212,9 +1041,7 @@ KommunicateUI = {
               KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
                   KommunicateConstants.FEEDBACK_API_STATUS.RATED
             : kommunicate._globals.collectFeedback;
-        var messageBody = document.querySelector(
-            '.mck-message-inner.mck-group-inner'
-        );
+        var messageBody = document.querySelector('.mck-message-inner.mck-group-inner');
         isConversationClosed &&
             kommunicateCommons.modifyClassList(
                 {
@@ -1233,9 +1060,7 @@ KommunicateUI = {
             //         'n-vis'
             //     );
             // }
-            document.getElementById('mck-submit-comment').onclick = function (
-                e
-            ) {
+            document.getElementById('mck-submit-comment').onclick = function (e) {
                 kommunicateCommons.modifyClassList(
                     {
                         class: ['mck-ratings-smilies'],
@@ -1248,12 +1073,12 @@ KommunicateUI = {
                     },
                     'n-vis'
                 );
-            }
+            };
             var isCSATenabled = kommunicate._globals.oneTimeRating
-            ? kommunicate._globals.collectFeedback &&
-              KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
-                  KommunicateConstants.FEEDBACK_API_STATUS.RATED
-            : kommunicate._globals.collectFeedback;
+                ? kommunicate._globals.collectFeedback &&
+                  KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] !=
+                      KommunicateConstants.FEEDBACK_API_STATUS.RATED
+                : kommunicate._globals.collectFeedback;
             if (!isCSATenabled) {
                 kommunicateCommons.modifyClassList(
                     {
@@ -1261,15 +1086,11 @@ KommunicateUI = {
                     },
                     'n-vis',
                     'vis'
-                );   
+                );
             }
-           
+
             document.getElementById('mck-submit-comment').disabled = false;
-            kommunicateCommons.modifyClassList(
-                { class: ['mck-rating-box'] },
-                '',
-                'selected'
-            );
+            kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
             kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-box-form'],
@@ -1299,15 +1120,10 @@ KommunicateUI = {
             !isCSATtriggeredByUser &&
             !isConvJustResolved
         ) {
-            kommunicateCommons.getFeedback(
-                CURRENT_GROUP_DATA.tabId,
-                feedbackResponseCallback
-            );
+            kommunicateCommons.getFeedback(CURRENT_GROUP_DATA.tabId, feedbackResponseCallback);
             function feedbackResponseCallback(data) {
                 var feedback = data.data;
-                KommunicateUI.convRatedTabIds[
-                    CURRENT_GROUP_DATA.tabId
-                ] = feedback
+                KommunicateUI.convRatedTabIds[CURRENT_GROUP_DATA.tabId] = feedback
                     ? KommunicateConstants.FEEDBACK_API_STATUS.RATED
                     : KommunicateConstants.FEEDBACK_API_STATUS.INIT;
                 CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
@@ -1363,16 +1179,11 @@ KommunicateUI = {
                         'km-mid-conv-csat',
                         'mck-restart-conv-banner'
                     );
-                    document.getElementById(
-                        'mck-submit-comment'
-                    ).disabled = false;
+                    document.getElementById('mck-submit-comment').disabled = false;
                 }
                 KommunicateUI.updateScroll(messageBody);
             }
-        } else if (
-            isConversationClosed &&
-            KommunicateUI.isCSATtriggeredByUser
-        ) {
+        } else if (isConversationClosed && KommunicateUI.isCSATtriggeredByUser) {
             KommunicateUI.isCSATtriggeredByUser = false;
             kommunicateCommons.modifyClassList(
                 {
@@ -1411,8 +1222,7 @@ KommunicateUI = {
         } else if (isConversationClosed && KommunicateUI.isConvJustResolved) {
             KommunicateUI.askCSAT(false);
         } else if (isConversationClosed) {
-            conversationStatusDiv &&
-                (conversationStatusDiv.innerHTML = messageText);
+            conversationStatusDiv && (conversationStatusDiv.innerHTML = messageText);
             kommunicateCommons.modifyClassList(
                 {
                     id: ['mck-sidebox-ft'],
@@ -1461,14 +1271,15 @@ KommunicateUI = {
                 },
                 'n-vis',
                 'vis'
-            );  
-            !KM_GLOBAL.disableTextArea && kommunicateCommons.modifyClassList(
-                {
-                    class: ['mck-box-form'],
-                },
-                '',
-                'n-vis'
             );
+            !KM_GLOBAL.disableTextArea &&
+                kommunicateCommons.modifyClassList(
+                    {
+                        class: ['mck-box-form'],
+                    },
+                    '',
+                    'n-vis'
+                );
             kommunicateCommons.modifyClassList(
                 {
                     class: ['mck-csat-text-1'],
@@ -1477,11 +1288,7 @@ KommunicateUI = {
             );
         }
     },
-    handleAttachmentIconVisibility: function (
-        enableAttachment,
-        msg,
-        groupReloaded
-    ) {
+    handleAttachmentIconVisibility: function (enableAttachment, msg, groupReloaded) {
         if (
             !groupReloaded &&
             typeof msg.metadata === 'object' &&
@@ -1527,17 +1334,10 @@ KommunicateUI = {
         var isPopupEnabled =
             kommunicateCommons.isObject(chatWidget) &&
             chatWidget.popup &&
-            (kommunicateCommons.checkIfDeviceIsHandheld()
-                ? enableGreetingMessage
-                : true);
-        var delay =
-            popupChatContent && popupChatContent.length
-                ? popupChatContent[0].delay
-                : -1;
+            (kommunicateCommons.checkIfDeviceIsHandheld() ? enableGreetingMessage : true);
+        var delay = popupChatContent && popupChatContent.length ? popupChatContent[0].delay : -1;
         var popupTemplateKey =
-            (popupChatContent &&
-                popupChatContent.length &&
-                popupChatContent[0].templateKey) ||
+            (popupChatContent && popupChatContent.length && popupChatContent[0].templateKey) ||
             KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL;
         if (isPopupEnabled && delay > -1) {
             MCK_CHAT_POPUP_TEMPLATE_TIMER = setTimeout(function () {
@@ -1551,36 +1351,28 @@ KommunicateUI = {
     },
     captureGreetingMessageClick: function (e) {
         e.preventDefault();
-        kmWidgetEvents.eventTracking(
-            eventMapping.onGreetingMessageNotificationClick
-        );
+        kmWidgetEvents.eventTracking(eventMapping.onGreetingMessageNotificationClick);
     },
     togglePopupChatTemplate: function (
         popupTemplateKey,
         showTemplate,
         mckChatPopupNotificationTone
     ) {
-        var kommunicateIframe = parent.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         var playPopupTone = appOptionSession.getPropertyDataFromSession(
             'playPopupNotificationTone'
         );
         if (showTemplate && !kommunicateCommons.isWidgetOpen()) {
             if (playPopupTone == null || playPopupTone) {
-                mckChatPopupNotificationTone &&
-                    mckChatPopupNotificationTone.play();
-                    appOptionSession.setSessionData(
-                    'playPopupNotificationTone',
-                    false
-                );
+                mckChatPopupNotificationTone && mckChatPopupNotificationTone.play();
+                appOptionSession.setSessionData('playPopupNotificationTone', false);
             }
-            var popupTemplateClass = 
-                KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey]; 
-                
-            kommunicateIframe.classList.add(popupTemplateClass.replace('-container-',''));
-            
-            (popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL) &&
+            var popupTemplateClass =
+                KommunicateConstants.CHAT_POPUP_TEMPLATE_CLASS[popupTemplateKey];
+
+            kommunicateIframe.classList.add(popupTemplateClass.replace('-container-', ''));
+
+            popupTemplateKey === KommunicateConstants.CHAT_POPUP_TEMPLATE.HORIZONTAL &&
                 kommunicateCommons.modifyClassList(
                     { id: ['mck-sidebox-launcher', 'launcher-svg-container'] },
                     'km-no-box-shadow',
@@ -1596,9 +1388,7 @@ KommunicateUI = {
                 'km-animate',
                 'n-vis'
             );
-            var greetingMessageContainer = document.getElementById(
-                'chat-popup-widget-container'
-            );
+            var greetingMessageContainer = document.getElementById('chat-popup-widget-container');
             greetingMessageContainer &&
                 greetingMessageContainer.firstChild &&
                 greetingMessageContainer.firstChild.addEventListener(
@@ -1635,18 +1425,9 @@ KommunicateUI = {
                 '',
                 'km-animate'
             );
-            kommunicateIframe &&
-                kommunicateIframe.classList.remove(
-                    'chat-popup-widget-horizontal'
-                );
-            kommunicateIframe &&
-                kommunicateIframe.classList.remove(
-                    'chat-popup-widget-vertical'
-                );
-            kommunicateIframe &&
-                kommunicateIframe.classList.remove(
-                    'chat-popup-widget-actionable'
-                );
+            kommunicateIframe && kommunicateIframe.classList.remove('chat-popup-widget-horizontal');
+            kommunicateIframe && kommunicateIframe.classList.remove('chat-popup-widget-vertical');
+            kommunicateIframe && kommunicateIframe.classList.remove('chat-popup-widget-actionable');
             kommunicateCommons.modifyClassList(
                 { id: ['chat-popup-widget-container'] },
                 'n-vis',
@@ -1663,22 +1444,15 @@ KommunicateUI = {
                 MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS,
                 '</span><span id="mck-conversation-banner-action" onclick="KommunicateUI.toggleShowResolvedConversationsStatus(),KommunicateUI.handleResolvedConversationsList()">'
             )
-            .concat(
-                MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED,
-                '</span></div>'
-            );
+            .concat(MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED, '</span></div>');
         var resolvedConversations =
             document.getElementsByClassName('mck-conversation-resolved') &&
             document.getElementsByClassName('mck-conversation-resolved').length;
         var openConversations =
             document.getElementsByClassName('mck-conversation-open') &&
             document.getElementsByClassName('mck-conversation-open').length;
-        var bannerParent = document.querySelector(
-            '.mck-conversation.vis .mck-message-inner'
-        );
-        var conversationFilterBanner = document.getElementById(
-            'mck-conversation-filter'
-        );
+        var bannerParent = document.querySelector('.mck-conversation.vis .mck-message-inner');
+        var conversationFilterBanner = document.getElementById('mck-conversation-filter');
         if (
             totalConversations !== openConversations &&
             totalConversations !== resolvedConversations &&
@@ -1688,18 +1462,11 @@ KommunicateUI = {
             bannerParent.insertAdjacentHTML('afterbegin', showAllBannerHtml);
         } else if (totalConversations === resolvedConversations) {
             conversationFilterBanner &&
-                conversationFilterBanner.parentNode.removeChild(
-                    conversationFilterBanner
-                );
+                conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
             KommunicateUI.showResolvedConversations = true;
-        } else if (
+        } else if (conversationFilterBanner && totalConversations == openConversations) {
             conversationFilterBanner &&
-            totalConversations == openConversations
-        ) {
-            conversationFilterBanner &&
-                conversationFilterBanner.parentNode.removeChild(
-                    conversationFilterBanner
-                );
+                conversationFilterBanner.parentNode.removeChild(conversationFilterBanner);
             KommunicateUI.showResolvedConversations = false;
         }
         KommunicateUI.handleResolvedConversationsList();
@@ -1708,12 +1475,8 @@ KommunicateUI = {
         KommunicateUI.showResolvedConversations = !KommunicateUI.showResolvedConversations;
     },
     handleResolvedConversationsList: function () {
-        var bannerHeading = document.getElementById(
-            'mck-conversation-banner-heading'
-        );
-        var bannerAction = document.getElementById(
-            'mck-conversation-banner-action'
-        );
+        var bannerHeading = document.getElementById('mck-conversation-banner-heading');
+        var bannerAction = document.getElementById('mck-conversation-banner-action');
         if (KommunicateUI.showResolvedConversations) {
             kommunicateCommons.modifyClassList(
                 { class: ['mck-conversation-resolved'] },
@@ -1724,14 +1487,12 @@ KommunicateUI = {
                     MCK_LABELS['filter.conversation.list'].ALL_CONVERSATIONS);
             if (
                 bannerAction &&
-                bannerAction.innerText ==
-                    MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
+                bannerAction.innerText == MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED
             ) {
                 kmWidgetEvents.eventTracking(eventMapping.onShowResolvedClick);
             }
             bannerAction &&
-                (bannerAction.innerHTML =
-                    MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED);
+                (bannerAction.innerHTML = MCK_LABELS['filter.conversation.list'].HIDE_RESOLVED);
         } else {
             kommunicateCommons.modifyClassList(
                 { class: ['mck-conversation-resolved'] },
@@ -1740,40 +1501,31 @@ KommunicateUI = {
             );
             bannerHeading &&
                 (bannerHeading.innerHTML =
-                    MCK_LABELS[
-                        'filter.conversation.list'
-                    ].ACTIVE_CONVERSATIONS);
+                    MCK_LABELS['filter.conversation.list'].ACTIVE_CONVERSATIONS);
             bannerAction &&
-                (bannerAction.innerHTML =
-                    MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED);
+                (bannerAction.innerHTML = MCK_LABELS['filter.conversation.list'].SHOW_RESOLVED);
         }
     },
     adjustConversationTitleHeadingWidth: function (isPopupWidgetEnabled) {
         var titleClassName = 'mck-title-width-wo-faq-with-close-btn';
         var mckTabTitle = document.getElementById('mck-tab-title');
         mckTabTitle.classList.remove(titleClassName);
-        if (
-            document.querySelector('.km-kb-container').classList.contains('vis')
-        ) {
+        if (document.querySelector('.km-kb-container').classList.contains('vis')) {
             titleClassName = isPopupWidgetEnabled
                 ? 'mck-title-width-with-faq'
                 : 'mck-title-width-with-faq-close-btn';
         }
         mckTabTitle.classList.add(titleClassName);
     },
-    setFAQButtonText: function(){
-        document.querySelector("#km-faq").textContent = MCK_LABELS['faq'];
+    setFAQButtonText: function () {
+        document.querySelector('#km-faq').textContent = MCK_LABELS['faq'];
     },
-    checkSingleThreadedConversationSettings: function (
-        hasMultipleConversations
-    ) {
+    checkSingleThreadedConversationSettings: function (hasMultipleConversations) {
         if (
             kommunicateCommons.isObject(kommunicate._globals.widgetSettings) &&
             kommunicate._globals.widgetSettings.isSingleThreaded
         ) {
-            var startConversationButton = document.getElementById(
-                'mck-contacts-content'
-            );
+            var startConversationButton = document.getElementById('mck-contacts-content');
             var backButton = document.querySelector('.mck-back-btn-container');
             startConversationButton.classList.add('force-n-vis');
             hasMultipleConversations
@@ -1785,9 +1537,7 @@ KommunicateUI = {
         var group = CURRENT_GROUP_DATA;
         var groupId = group && group.tabId;
         var waitingStatus =
-            group &&
-            group.conversationStatus ==
-                Kommunicate.conversationHelper.status.WAITING;
+            group && group.conversationStatus == Kommunicate.conversationHelper.status.WAITING;
         const teamId = CURRENT_GROUP_DATA?.teamId;
         if (!teamId) return;
         let waitingListEndpoint = `/rest/ws/group/waiting/list?teamId=${teamId}`;
@@ -1801,12 +1551,8 @@ KommunicateUI = {
                     WAITING_QUEUE = res.response;
                     var isGroupPresentInWaitingQueue =
                         WAITING_QUEUE.indexOf(parseInt(groupId)) > -1;
-                    var waitingQueueNumber = document.getElementById(
-                        'waiting-queue-number'
-                    );
-                    var headerTabTitle = document.getElementById(
-                        'mck-tab-title'
-                    );
+                    var waitingQueueNumber = document.getElementById('waiting-queue-number');
+                    var headerTabTitle = document.getElementById('mck-tab-title');
                     if (
                         waitingQueueNumber &&
                         waitingStatus &&
@@ -1814,10 +1560,7 @@ KommunicateUI = {
                         WAITING_QUEUE.length
                     ) {
                         waitingQueueNumber.innerHTML =
-                            '#' +
-                            parseInt(
-                                WAITING_QUEUE.indexOf(parseInt(groupId)) + 1
-                            );
+                            '#' + parseInt(WAITING_QUEUE.indexOf(parseInt(groupId)) + 1);
                         kommunicateCommons.modifyClassList(
                             {
                                 id: ['mck-waiting-queue'],
@@ -1827,10 +1570,7 @@ KommunicateUI = {
                         );
                         kommunicateCommons.modifyClassList(
                             {
-                                class: [
-                                    'mck-agent-image-container',
-                                    'mck-agent-status-text',
-                                ],
+                                class: ['mck-agent-image-container', 'mck-agent-status-text'],
                             },
                             'n-vis',
                             'vis'
@@ -1852,28 +1592,16 @@ KommunicateUI = {
                             'vis'
                         );
 
-                        headerTabTitle = document.getElementById(
-                            'mck-tab-title'
-                        );
-                        headerTabTitle.innerHTML = headerTabTitle.getAttribute(
-                            'title'
-                        );
+                        headerTabTitle = document.getElementById('mck-tab-title');
+                        headerTabTitle.innerHTML = headerTabTitle.getAttribute('title');
 
                         var updateClasses = {
-                            class: [
-                                'mck-agent-image-container',
-                                'mck-agent-status-text',
-                            ],
+                            class: ['mck-agent-image-container', 'mck-agent-status-text'],
                         };
 
-                        KommunicateUI.isFAQPrimaryCTA() &&
-                            (updateClasses.id = ['km-faq']);
+                        KommunicateUI.isFAQPrimaryCTA() && (updateClasses.id = ['km-faq']);
 
-                        kommunicateCommons.modifyClassList(
-                            updateClasses,
-                            'vis',
-                            'n-vis'
-                        );
+                        kommunicateCommons.modifyClassList(updateClasses, 'vis', 'n-vis');
                     }
                 }
             },
@@ -1894,7 +1622,7 @@ KommunicateUI = {
             error: function (err) {
                 callback(err);
             },
-            skipEncryption: true
+            skipEncryption: true,
         });
     },
     isInView: function (element, targetElement) {
@@ -1909,71 +1637,61 @@ KommunicateUI = {
     },
     processLazyImage: function (imageElement, thumbnailBlobKey) {
         imageElement.classList.remove('file-enc');
-        KommunicateUI.getUrlFromBlobKey(
-            thumbnailBlobKey,
-            function (err, thumbnailUrl) {
-                if (err) {
-                    throw err;
-                }
-                thumbnailUrl && (imageElement.src = thumbnailUrl);
-                setTimeout(function () {
-                    imageElement.classList.add('file-enc');
-                }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        KommunicateUI.getUrlFromBlobKey(thumbnailBlobKey, function (err, thumbnailUrl) {
+            if (err) {
+                throw err;
             }
-        );
+            thumbnailUrl && (imageElement.src = thumbnailUrl);
+            setTimeout(function () {
+                imageElement.classList.add('file-enc');
+            }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        });
     },
     processEncMedia: function (mediaElement, blobKey) {
         mediaElement.classList.remove('file-enc');
-        KommunicateUI.getUrlFromBlobKey(
-            blobKey,
-            function (err, url) {
-                if (err) {
-                    throw err;
-                }else if(url){
-                    var sourceElement = mediaElement.querySelectorAll('source');
-                    sourceElement[0].src = url;
-                    sourceElement[1].src = url;
-                    mediaElement.load();
-                    var attachmentWrapper = $applozic(mediaElement).closest('div.mck-file-text.mck-attachment')[0];
-                    var mediaURL = attachmentWrapper && attachmentWrapper.querySelector("a.file-preview-link")
-                    mediaURL && (mediaURL.href = url)
-                }
-                setTimeout(function () {
-                    mediaElement.classList.add('file-enc');
-                }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        KommunicateUI.getUrlFromBlobKey(blobKey, function (err, url) {
+            if (err) {
+                throw err;
+            } else if (url) {
+                var sourceElement = mediaElement.querySelectorAll('source');
+                sourceElement[0].src = url;
+                sourceElement[1].src = url;
+                mediaElement.load();
+                var attachmentWrapper = $applozic(mediaElement).closest(
+                    'div.mck-file-text.mck-attachment'
+                )[0];
+                var mediaURL =
+                    attachmentWrapper && attachmentWrapper.querySelector('a.file-preview-link');
+                mediaURL && (mediaURL.href = url);
             }
-        );
+            setTimeout(function () {
+                mediaElement.classList.add('file-enc');
+            }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        });
     },
     processEncFile: function (anchorTag, blobKey) {
         anchorTag.classList.remove('file-enc');
-        KommunicateUI.getUrlFromBlobKey(
-            blobKey,
-            function (err, url) {
-                if (err) {
-                    throw err;
-                }else if(url){
-                    anchorTag.href = url;
-                }
-                setTimeout(function () {
-                    anchorTag.classList.add('file-enc');
-                }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        KommunicateUI.getUrlFromBlobKey(blobKey, function (err, url) {
+            if (err) {
+                throw err;
+            } else if (url) {
+                anchorTag.href = url;
             }
-        );
+            setTimeout(function () {
+                anchorTag.classList.add('file-enc');
+            }, KommunicateConstants.AWS_IMAGE_URL_EXPIRY_TIME);
+        });
     },
-    toggleVisibilityOfTextArea: function (assignee,groupMembers) {
+    toggleVisibilityOfTextArea: function (assignee, groupMembers) {
         var isDisableTextAreaEnabled =
-        kommunicate &&
-        kommunicate._globals &&
-        kommunicate._globals.disableTextArea;
+            kommunicate && kommunicate._globals && kommunicate._globals.disableTextArea;
         if (isDisableTextAreaEnabled && assignee && groupMembers) {
             for (var i = 0; i < groupMembers.length; i++) {
                 if (
                     groupMembers[i] &&
                     groupMembers[i].userId === assignee &&
-                    (groupMembers[i].roleType ==
-                        KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT ||
-                        groupMembers[i].role ==
-                            KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT)
+                    (groupMembers[i].roleType == KommunicateConstants.APPLOZIC_USER_ROLE_TYPE.BOT ||
+                        groupMembers[i].role == KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT)
                 ) {
                     kommunicateCommons.modifyClassList(
                         {
@@ -1994,7 +1712,6 @@ KommunicateUI = {
                 }
             }
         }
-
     },
     getHeaderCurrentCTAData: function () {
         var currentCTAKey;

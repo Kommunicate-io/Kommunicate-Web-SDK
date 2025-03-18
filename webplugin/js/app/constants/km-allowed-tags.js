@@ -237,5 +237,5 @@ const KM_ALLOWED_ATTR = freeze([
     'wrap',
     'xmlns',
     'slot',
-    "target",
+    'target',
 ]);

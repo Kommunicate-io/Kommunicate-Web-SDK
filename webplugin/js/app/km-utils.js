@@ -37,8 +37,7 @@ KommunicateConstants = {
         RASA: 'rasa',
         CUSTOM: 'custom',
     },
-    KM_NOTIFICATION_TONE_URL:
-        'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3',
+    KM_NOTIFICATION_TONE_URL: 'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3',
     NOTIFICATION_RINGTONES: {
         default: 'https://cdn.kommunicate.io/kommunicate/notification_tone.mp3', // renamed to eventually
         choose_me: 'https://cdn.kommunicate.io/kommunicate/choose_me.mp3', // renamed to subtle
@@ -154,14 +153,7 @@ KommunicateConstants = {
         GENERIC_BUTTONS_V2: '13',
         VIDEO: '14',
     },
-    FORM_SUPPORTED_FIELDS: [
-        'text',
-        'hidden',
-        'radio',
-        'checkbox',
-        'dropdown',
-        'textarea',
-    ],
+    FORM_SUPPORTED_FIELDS: ['text', 'hidden', 'radio', 'checkbox', 'dropdown', 'textarea'],
     FORM_POST_BACK_MESSAGE_UNSUPPORTED_FIELDS: ['password', 'hidden'],
     COOKIES: {
         KOMMUNICATE_LOGGED_IN_ID: 'km_id',
@@ -222,8 +214,7 @@ KommunicateConstants = {
     },
     KOMMUNICATE_DOMAINS: ['kommunicate.io'],
     AWS_IMAGE_URL_EXPIRY_TIME: 15 * 60 * 1000,
-    IMAGE_PLACEHOLDER_URL:
-        'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
+    IMAGE_PLACEHOLDER_URL: 'https://cdn.kommunicate.io/kommunicate/image-placeholder.png',
     MAX_UPLOAD_SIZE: 25000000,
     FEEDBACK_API_STATUS: {
         INIT: 1,
@@ -334,12 +325,9 @@ KommunicateUI = {};
 KommunicateUtils = {
     getRandomId: function () {
         var text = '';
-        var possible =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         for (var i = 0; i < 32; i++)
-            text += possible.charAt(
-                Math.floor(Math.random() * possible.length)
-            );
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
     },
     triggerCustomEvent: function (eventName, options, kmPluginVersion) {
@@ -361,8 +349,7 @@ KommunicateUtils = {
                 ? window.parent.document.dispatchEvent(evt)
                 : window.dispatchEvent(evt);
         } else {
-            var parentWindow =
-                kmPluginVersion === 'v2' ? window.parent.document : window;
+            var parentWindow = kmPluginVersion === 'v2' ? window.parent.document : window;
             //Custom event trigger
             parentWindow.dispatchEvent(
                 new CustomEvent(eventName, {
@@ -384,21 +371,14 @@ KommunicateUtils = {
         var parts = domain.split('.');
         var value = 'km_' + new Date().getTime();
         //check value is added in cookie else continue the iteration
-        while (
-            i < parts.length - 1 &&
-            document.cookie.indexOf(value + '=' + value) == -1
-        ) {
+        while (i < parts.length - 1 && document.cookie.indexOf(value + '=' + value) == -1) {
             //join the parts of domain
             domain = parts.slice(-1 - ++i).join('.');
             //set value in cookie
             document.cookie = value + '=' + value + ';domain=' + domain + ';';
         }
         //delete value from cookie
-        document.cookie =
-            value +
-            '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=' +
-            domain +
-            ';';
+        document.cookie = value + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=' + domain + ';';
         return domain;
     },
     getSubDomain: function () {
@@ -446,10 +426,7 @@ KommunicateUtils = {
             return false;
         }
     },
-    isActiveConversationNeedsToBeOpened: function (
-        activeConversationInfo,
-        data
-    ) {
+    isActiveConversationNeedsToBeOpened: function (activeConversationInfo, data) {
         var userId = kmCookieStorage.getCookie(
             KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
         );
@@ -488,10 +465,7 @@ KommunicateUtils = {
      * @returns boolean
      */
     isCurrentAssigneeBot: function () {
-        if (
-            CURRENT_GROUP_DATA.groupMembers &&
-            CURRENT_GROUP_DATA.groupMembers.length
-        ) {
+        if (CURRENT_GROUP_DATA.groupMembers && CURRENT_GROUP_DATA.groupMembers.length) {
             var currentConversationAssignee = {};
             for (var i = 0; i <= CURRENT_GROUP_DATA.groupMembers.length; i++) {
                 if (
@@ -499,8 +473,7 @@ KommunicateUtils = {
                     CURRENT_GROUP_DATA.groupMembers[i].userId ==
                         CURRENT_GROUP_DATA.conversationAssignee
                 ) {
-                    currentConversationAssignee =
-                        CURRENT_GROUP_DATA.groupMembers[i];
+                    currentConversationAssignee = CURRENT_GROUP_DATA.groupMembers[i];
                     break;
                 }
             }
@@ -537,18 +510,13 @@ KommunicateUtils = {
             return;
         }
         try {
-            const integrationToAdd = await Sentry.lazyLoadIntegration(
-                integration
-            );
+            const integrationToAdd = await Sentry.lazyLoadIntegration(integration);
             Sentry.addIntegration(integrationToAdd());
         } catch (err) {
             console.error('Error while loading sentry integration', err);
         }
     },
     customElementSupported: function () {
-        return (
-            'customElements' in window &&
-            window.customElements.get('mck-html-rich-message')
-        );
+        return 'customElements' in window && window.customElements.get('mck-html-rich-message');
     },
 };

@@ -1,6 +1,4 @@
-var appOption =
-appOptionSession.getPropertyDataFromSession('appOptions') ||
-    applozic._globals;
+var appOption = appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
 
 Kommunicate.typingAreaService = {
     populateText: function (text) {
@@ -38,7 +36,9 @@ Kommunicate.typingAreaService = {
                 console.log('browser does not support media recording');
                 this.hideMicButton();
             } else {
-                document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('voiceNote');
+                document
+                    .querySelector('.mck-mic-animation-container svg#mck-mic-btn')
+                    .classList.add('voiceNote');
                 Kommunicate.mediaService.initRecorder();
                 this.showMicButton();
             }
@@ -47,29 +47,36 @@ Kommunicate.typingAreaService = {
                 console.log('browser do not support speech recognition');
                 this.hideMicButton();
             } else {
-                document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('voiceInput');
+                document
+                    .querySelector('.mck-mic-animation-container svg#mck-mic-btn')
+                    .classList.add('voiceInput');
                 this.showMicButton();
             }
         } else if (appOption && appOption.voiceInput && appOption.voiceNote) {
-            if (!window.hasOwnProperty('webkitSpeechRecognition') || !window.hasOwnProperty('MediaRecorder')) {
+            if (
+                !window.hasOwnProperty('webkitSpeechRecognition') ||
+                !window.hasOwnProperty('MediaRecorder')
+            ) {
                 console.log('browser do not support speech recognition or media recording');
                 this.hideMicButton();
             } else {
-                document.querySelector('#mck-mic-animation-container').classList.add('mck-dropdown');
-                document.querySelector('#mck-mic-btn-container').classList.add('mck-dropdown-toggle');
+                document
+                    .querySelector('#mck-mic-animation-container')
+                    .classList.add('mck-dropdown');
+                document
+                    .querySelector('#mck-mic-btn-container')
+                    .classList.add('mck-dropdown-toggle');
                 document.querySelector('#mck-mic-options-dropup').classList.remove('n-vis');
-                document.querySelector('.mck-mic-animation-container svg#mck-mic-btn').classList.add('availableOptions');
+                document
+                    .querySelector('.mck-mic-animation-container svg#mck-mic-btn')
+                    .classList.add('availableOptions');
                 Kommunicate.mediaService.initRecorder();
                 this.showMicButton();
             }
         }
     },
     hideMicButton: function () {
-        kommunicateCommons.modifyClassList(
-            { id: ['mck-mic-animation-container'] },
-            'n-vis',
-            'vis'
-        );
+        kommunicateCommons.modifyClassList({ id: ['mck-mic-animation-container'] }, 'n-vis', 'vis');
     },
     showMicButton: function () {
         if (appOption && (appOption.voiceInput || appOption.voiceNote)) {
@@ -81,25 +88,17 @@ Kommunicate.typingAreaService = {
         }
     },
     hideMiceRecordingAnimation: function () {
-        kommunicateCommons.modifyClassList(
-            { id: ['mck-animation-outer'] },
-            'n-vis',
-            'vis'
-        );
+        kommunicateCommons.modifyClassList({ id: ['mck-animation-outer'] }, 'n-vis', 'vis');
     },
     showMicRcordingAnimation: function () {
-        kommunicateCommons.modifyClassList(
-            { id: ['mck-animation-outer'] },
-            'vis',
-            'n-vis'
-        );
+        kommunicateCommons.modifyClassList({ id: ['mck-animation-outer'] }, 'vis', 'n-vis');
     },
-    showRecorder: function(){
+    showRecorder: function () {
         document.querySelector('#mck-textbox-container').classList.add('n-vis');
         document.querySelector('#km-voice-recorder').classList.remove('n-vis');
     },
-    hideRecorder: function(){
+    hideRecorder: function () {
         document.querySelector('#mck-textbox-container').classList.remove('n-vis');
         document.querySelector('#km-voice-recorder').classList.add('n-vis');
-    }
+    },
 };

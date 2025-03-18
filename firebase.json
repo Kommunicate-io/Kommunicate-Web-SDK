@@ -1,12 +1,8 @@
 {
   "hosting": {
-    "site": "${_FIREBASE_SITE_ID}",  
+    "site": "${_FIREBASE_SITE_ID}",
     "public": "webplugin/build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
         "source": "**",
@@ -66,7 +62,7 @@
       },
       {
         "source": "/robots.txt",
-        "destination": "/robots.txt", 
+        "destination": "/robots.txt",
         "type": "200"
       },
       {

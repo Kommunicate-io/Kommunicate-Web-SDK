@@ -7,11 +7,9 @@
   "license": "ISC",
   "scripts": {
     "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable",
-    "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.js'",
-    "prettify-commit": "pretty-quick --staged --pattern '**/*.js'",
+    "prettify-commit": "lint-staged --allow-empty",
     "build-dev:scss-to-css": "sass --watch ./webplugin/scss:./webplugin/css/app/style",
+    "prettier": "prettier --ignore-path './.prettierignore' --write './**/*.{js,css,scss,json}' --ignore-unknown",
     "build:dev": "nodemon ./server/app.js",
     "dev": "npm-run-all -p build:dev build-dev:scss-to-css setup-git-hooks",
     "build-test": "export NODE_ENV=test && npm-run-all build-server gulp-build",
@@ -77,7 +75,8 @@
     "danger-plugin-no-console": "1.1.2",
     "gulp": "^4.0.2",
     "gulp-sourcemaps": "^3.0.0",
-    "husky": "5.0.9",
+    "husky": "^7.0.0",
+    "lint-staged": "^13.0.0",
     "nodemon": "2.0.7",
     "pinst": "2.1.4",
     "prettier": "2.2.1",
@@ -95,6 +94,11 @@
     "watch": [
       "server",
       "webplugin"
+    ]
+  },
+  "lint-staged": {
+    "**/*.{js,scss,css,json,html,md}": [
+      "prettier --write"
     ]
   }
 }
