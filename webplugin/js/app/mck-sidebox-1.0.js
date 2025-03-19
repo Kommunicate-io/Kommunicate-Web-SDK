@@ -19,6 +19,7 @@ const DEFAULT_TEAM_NAME = ['Default Team', 'Default'];
 const CHARACTER_LIMIT = { ES: 256, CX: 500 };
 const WARNING_LENGTH = { ES: 199, CX: 450 };
 const TALK_TO_HUMAN = 'Talk to human';
+
 var userOverride = {
     voiceOutput: true,
 };
@@ -7920,7 +7921,6 @@ const firstVisibleMsg = {
                 if (msg && msg.metadata && msg.metadata.hasOwnProperty('KM_SUMMARY')) {
                     return;
                 }
-
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -7977,16 +7977,34 @@ const firstVisibleMsg = {
 
                 if (
                     $applozic('#mck-message-cell .' + msg.key).length > 0 &&
-                    !(CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && msg.type !== 5)
+                    !(msg.tokenMessage && msg.type !== 5)
                 ) {
                     // if message with same key already rendered  skiping rendering it again.
                     return;
                 }
+                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msg.tokenMessage) {
+                    // deleting tokenized message after receiving complete message from chat server
+                    const element = document.querySelector(
+                        `div[data-msgkey="tokenized_response"]`
+                    );
+                    if (element) {
+                        console.log('deleted');
+                        element.remove();
+                        genAiService.resetState();
+                    }
+                }
 
                 // GEN AI BOT
-                if (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && !msgThroughListAPI) {
+
+                if (
+                    msg.tokenMessage &&
+                    !msgThroughListAPI
+                ) {
                     // message not from the sockets
-                    document.getElementById('mck-text-box').setAttribute('contenteditable', false);
+                    document
+                        .getElementById('mck-text-box')
+                        .setAttribute('contenteditable', true);
+
                 }
 
                 if (msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
@@ -8201,6 +8219,7 @@ const firstVisibleMsg = {
                     MCK_BOT_MESSAGE_DELAY !== 0 &&
                     !allowReload &&
                     mckMessageLayout.isMessageSentByBot(msg, contact)
+                    && !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                 ) {
                     botMessageDelayClass = 'n-vis';
                 }
@@ -8696,12 +8715,19 @@ const firstVisibleMsg = {
                     const className = `mck-text-msg-${
                         floatWhere === 'mck-msg-right' ? 'right' : 'left'
                     }`;
+
                     if (
-                        CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                        msg.tokenMessage &&
                         floatWhere !== 'mck-msg-right' &&
                         !msgThroughListAPI
                     ) {
-                        genAiService.addTokenizeMsg(msg, className, $textMessage);
+
+                        genAiService.addTokenizeMsg(
+                            msg,
+                            `mck-text-msg-left`,
+                            $textMessage
+                        );
+
                     } else {
                         const $normalTextMsg = $applozic(`<div class=${className} />`);
                         const nodes = emoji_template.split('<br/>');
@@ -10808,7 +10834,13 @@ const firstVisibleMsg = {
                             ? mckGroupUtils.createGroup(message.groupId)
                             : mckMessageLayout.createContact(message.to);
                     }
-                    if (messageType === 'APPLOZIC_01' || messageType === 'MESSAGE_RECEIVED') {
+
+                    if (
+                        messageType === 'APPLOZIC_01' ||
+                        messageType === 'MESSAGE_RECEIVED'
+                    ) {
+            
+
                         if (typeof contact !== 'undefined') {
                             var isGroupTab = $mck_msg_inner.data('isgroup');
                             if (
@@ -10816,7 +10848,10 @@ const firstVisibleMsg = {
                                     $applozic('.' + message.oldKey).length === 0) &&
                                     $applozic('.' + message.key).length === 0) ||
                                 message.contentType === 10 ||
-                                (CURRENT_GROUP_DATA.TOKENIZE_RESPONSE && message.contentType !== 5)
+
+                                (message.tokenMessage &&
+                                    message.contentType !== 5)
+
                             ) {
                                 if (
                                     typeof tabId !== 'undefined' &&
@@ -10896,7 +10931,12 @@ const firstVisibleMsg = {
                                         ) {
                                             if (
                                                 MCK_BOT_MESSAGE_DELAY !== 0 &&
-                                                _this.isMessageSentByBot(message, contact)
+                                                _this.isMessageSentByBot(
+                                                    message,
+                                                    contact
+                                                )
+                                                && !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
+
                                             ) {
                                                 mckMessageLayout.addMessage(
                                                     message,
@@ -13886,6 +13926,7 @@ const firstVisibleMsg = {
             };
 
             _this.onMessage = function (resp) {
+
                 // In case of encryption enabled, response is comming after getting decrypted from the parent function.
                 typeof resp.message == 'object' &&
                     $mck_msg_inner.data('last-message-received-time', resp.message.createdAtTime);
@@ -14260,7 +14301,11 @@ const firstVisibleMsg = {
                             ) {
                                 if (
                                     MCK_BOT_MESSAGE_DELAY !== 0 &&
-                                    mckMessageLayout.isMessageSentByBot(resp.message, contact)
+                                    mckMessageLayout.isMessageSentByBot(
+                                        resp.message,
+                                        contact
+                                    )
+                                    && !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
                                 ) {
                                     setTimeout(function () {
                                         KommunicateUI.showClosedConversationBanner(true);
