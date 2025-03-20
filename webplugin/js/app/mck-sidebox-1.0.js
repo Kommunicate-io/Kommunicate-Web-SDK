@@ -2851,6 +2851,7 @@ const firstVisibleMsg = {
             _this.addPhoneNumberValidation = function (enableCountryCode) {
                 var phoneField = document.getElementById('km-phone');
                 if (phoneField !== null) {
+                    phoneField.setAttribute('type', 'tel');
                     if (enableCountryCode) {
                         INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
                             customContainer: 'km-intl-container',
