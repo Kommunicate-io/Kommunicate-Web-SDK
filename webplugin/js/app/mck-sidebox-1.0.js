@@ -8757,6 +8757,27 @@ const firstVisibleMsg = {
                     ) {
                         const kmElement = document.createElement('mck-html-rich-message');
                         kmElement._shadow.innerHTML = emoji_template;
+                        if (kmElement && kmElement.shadowRoot) {
+                            const style = document.createElement('style');
+                            style.textContent = `
+                            table {
+                                border-collapse: separate;
+                                border-spacing: 0;
+                                background-color: #EFEFEF;
+                                overflow: hidden;
+                                border: 1px solid #D0D5DD;
+                                border-radius: 15px;
+                                font-weight: 300;
+                                color: #535862;
+                            }
+                            td {
+                                padding: 15px;
+                                border: 1px solid #D0D5DD;
+                                text-align: center;
+                            }
+                        `;
+                            kmElement.shadowRoot.appendChild(style);
+                        }
                         $textMessage.append(kmElement);
 
                         htmlRichMessage = true;

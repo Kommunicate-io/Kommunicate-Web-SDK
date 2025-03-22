@@ -109,6 +109,9 @@
         float: left;
         color: $text-primary-color;
         min-height: 20px;
+        overflow-x: auto; 
+        white-space: nowrap; 
+        clip-path: inset(0px round 24px);
         -ms-flex-item-align: end;
         @include prefix(align-self, flex-end, webkit);
         @include prefix(animation-name, slideFromRight, webkit);
