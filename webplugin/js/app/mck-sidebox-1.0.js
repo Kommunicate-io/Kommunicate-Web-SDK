@@ -2853,14 +2853,18 @@ const firstVisibleMsg = {
                 if (phoneField !== null) {
                     if (enableCountryCode) {
                         phoneField.setAttribute('type', 'tel');
-                        INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
-                            customContainer: 'km-intl-container',
-                            separateDialCode: true,
-                            initialCountry: 'auto',
-                            geoIpLookup: _this.geoIpLookupFunction,
-                            utilsScript:
-                                'https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js',
-                        });
+                        try{
+                            INTL_TEL_INSTANCE = window.intlTelInput(phoneField, {
+                                customContainer: 'km-intl-container',
+                                separateDialCode: true,
+                                initialCountry: 'auto',
+                                geoIpLookup: _this.geoIpLookupFunction,
+                                utilsScript:
+                                    'https://cdn.kommunicate.io/kommunicate/intl-tel-lib/utils.js',
+                            });
+                        }catch(err){
+                            console.error('Error initializing intl-tel-input:', error);
+                        }
 
                         phoneField.addEventListener('keydown', _this.phoneNumberValidation);
                     }
@@ -2871,9 +2875,11 @@ const firstVisibleMsg = {
                 mckUtils.ajax({
                     url: 'https://ipapi.co/json',
                     success: function (data) {
+                        console.log('GeoIP Lookup Data:', data);
                         callback(data.country_code);
                     },
-                    error: function () {
+                    error: function (err) {
+                        console.error('GeoIP Lookup failed, defaulting to US', err, err?.message);
                         callback('us');
                     },
                 });
