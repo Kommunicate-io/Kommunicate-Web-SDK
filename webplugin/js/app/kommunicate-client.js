@@ -65,6 +65,7 @@ Kommunicate.client = {
         };
         chatContext = $applozic.extend(chatContext, currentLanguage);
 
+        CURRENT_GROUP_DATA.isWaitingQueue = false; // for showing the loader in screen
         var groupMetadata = {
             CREATE_GROUP_MESSAGE: '',
             REMOVE_MEMBER_MESSAGE: '',

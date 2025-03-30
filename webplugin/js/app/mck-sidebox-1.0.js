@@ -671,7 +671,8 @@ const firstVisibleMsg = {
                     console.log('conversation created successfully');
                     kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
                     KommunicateUI.activateTypingField();
-                    kmNavBar.hideAndShowTalkToHumanBtn();
+
+                    !data?.groupFeeds.length && kmNavBar.hideAndShowTalkToHumanBtn();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -7172,13 +7173,15 @@ const firstVisibleMsg = {
 
             _this.setHeaderPrimaryCTA = function () {
                 if (!appOptions.primaryCTA || appOptions.primaryCTA === 'FAQ') return;
+                if (document.querySelector('#mck-contact-list')) return;
+
                 var data = KommunicateUI.getHeaderCurrentCTAData();
                 var nestedKey;
                 var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
 
                 if (data.currentCTA) {
                     kommunicateCommons.modifyClassList({ id: ['km-faq'] }, 'n-vis');
-                    kommunicateCommons.modifyClassList({ id: ['km-header-cta'] }, '', 'n-vis');
+                    // kommunicateCommons.modifyClassList({ id: ['km-header-cta'] }, '', 'n-vis');
 
                     switch (true) {
                         case appOptions.primaryCTA === ctaData.TTS.name:
