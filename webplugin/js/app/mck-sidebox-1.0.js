@@ -671,7 +671,8 @@ const firstVisibleMsg = {
                     console.log('conversation created successfully');
                     kmWidgetEvents.eventTracking(eventMapping.onStartNewConversation);
                     KommunicateUI.activateTypingField();
-                    kmNavBar.hideAndShowTalkToHumanBtn();
+
+                    !data?.groupFeeds.length && kmNavBar.hideAndShowTalkToHumanBtn();
                 }
             );
             $applozic('#mck-msg-preview-visual-indicator').hasClass('vis')
@@ -4536,6 +4537,7 @@ const firstVisibleMsg = {
                         'n-vis',
                         ''
                     );
+                    CURRENT_GROUP_DATA.isWaitingQueue = false;
                     firstVisibleMsg.reset();
                     genAiService.enableTextArea(true);
                     // To prevent conversation assignee details from being shown when in FAQ
@@ -5119,6 +5121,7 @@ const firstVisibleMsg = {
                 KommunicateUI.checkSingleThreadedConversationSettings(
                     Object.keys(MCK_GROUP_MAP).length > 1
                 );
+                CURRENT_GROUP_DATA.isWaitingQueue = false;
                 if (topicId && !conversationId) {
                     var topicStatus = $applozic(elem).data('mck-topic-status');
                     if (topicStatus) {
@@ -5605,6 +5608,10 @@ const firstVisibleMsg = {
                                 if (validated) {
                                     mckMessageLayout.messageContextMenu(messageKey);
                                 }
+                                if (messagePxy.metadata.hasOwnProperty('TALK_TO_HUMAN')) {
+                                    typingService.setTalkToHumanMsg(true);
+                                }
+
                                 if (KommunicateUtils.isCurrentAssigneeBot()) {
                                     typingService.showTypingIndicator();
                                 }
@@ -6858,6 +6865,7 @@ const firstVisibleMsg = {
                                 CURRENT_GROUP_DATA.tabId = groupPxy.clientGroupId;
                                 CURRENT_GROUP_DATA.conversationStatus =
                                     groupPxy.metadata.CONVERSATION_STATUS;
+                                CURRENT_GROUP_DATA.isWaitingQueue = false;
                                 CURRENT_GROUP_DATA.groupMembers = groupPxy.groupUsers;
                                 console.log('groupPxy now checking', groupPxy);
 
@@ -7165,13 +7173,15 @@ const firstVisibleMsg = {
 
             _this.setHeaderPrimaryCTA = function () {
                 if (!appOptions.primaryCTA || appOptions.primaryCTA === 'FAQ') return;
+                if (document.querySelector('#mck-contact-list')) return;
+
                 var data = KommunicateUI.getHeaderCurrentCTAData();
                 var nestedKey;
                 var ctaData = KommunicateConstants.HEADER_PRIMARY_CTA;
 
                 if (data.currentCTA) {
                     kommunicateCommons.modifyClassList({ id: ['km-faq'] }, 'n-vis');
-                    kommunicateCommons.modifyClassList({ id: ['km-header-cta'] }, '', 'n-vis');
+                    // kommunicateCommons.modifyClassList({ id: ['km-header-cta'] }, '', 'n-vis');
 
                     switch (true) {
                         case appOptions.primaryCTA === ctaData.TTS.name:
@@ -7918,6 +7928,7 @@ const firstVisibleMsg = {
                 allowReload,
                 msgThroughListAPI
             ) {
+                typingService.setTalkToHumanMsg(false);
                 if (msg && msg.metadata && msg.metadata.hasOwnProperty('KM_SUMMARY')) {
                     return;
                 }

@@ -9,6 +9,7 @@ class TypingService {
         this.IS_FIRST_BOT_MSG = true;
         this.alreadyScrolledFirstMsg = false;
         this.cumulativeHeight = 0;
+        this.isKmTalkToHumanMsg = false;
     }
 
     init(appOptions = {}) {
@@ -19,6 +20,10 @@ class TypingService {
             ? widgetSettings.botMessageDelayInterval
             : 0;
     }
+
+    setTalkToHumanMsg = (bool) => {
+        this.isKmTalkToHumanMsg = bool;
+    };
 
     processMessageInQueue = (message) => {
         if (
@@ -56,6 +61,8 @@ class TypingService {
     };
     showTypingIndicator = () => {
         this.clearTimeoutIds(); // remove old timers if those are active.
+        if (this.isKmTalkToHumanMsg || CURRENT_GROUP_DATA.isWaitingQueue) return; // don't show loader when user clicking on the talk to human button
+
         if (!document.querySelector('.km-typing-wrapper')) {
             const $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             this.typingIndicatorStartTime = new Date();
