@@ -3363,6 +3363,7 @@ const firstVisibleMsg = {
                                 metadata: {
                                     category: 'HIDDEN',
                                     KM_TRIGGER_EVENT: eventToTrigger,
+                                    KM_CHAT_CONTEXT: JSON.stringify({kmUserLocale: kommunicate._globals.userLocale})
                                 },
                                 source: 1,
                             },
