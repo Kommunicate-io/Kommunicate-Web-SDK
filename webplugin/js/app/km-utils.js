@@ -112,6 +112,7 @@ KommunicateConstants = {
         BLOCK_NOTIFY_MESSAGE: 13,
         AUDIO_VIDEO_CALL: 102,
         MISSED_CALL: 103,
+        ELECTRONIC_MAIL: 104,
     },
     APPLOZIC_USER_ROLE_TYPE: {
         BOT: 1,
@@ -518,5 +519,21 @@ KommunicateUtils = {
     },
     customElementSupported: function () {
         return 'customElements' in window && window.customElements.get('mck-html-rich-message');
+    },
+    getAndParseEml: async function (emlUrl) {
+        try {
+            const response = await fetch(emlUrl, {
+                method: 'GET',
+                // headers: {
+                //     responseType: 'arraybuffer',
+                // },
+            });
+            const emlData = await response.arrayBuffer();
+
+            const data = await kmPostalMime.parse(emlData);
+            return data;
+        } catch (e) {
+            throw e;
+        }
     },
 };

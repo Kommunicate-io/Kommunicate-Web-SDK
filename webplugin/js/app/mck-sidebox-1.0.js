@@ -7725,7 +7725,6 @@ const firstVisibleMsg = {
                             );
                             HIDE_POST_CTA && Kommunicate.hideMessageCTA(true);
 
-                            Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
                             allowReload && !scroll && message.contentType != 10 && (scroll = true);
                         }
@@ -8020,10 +8019,15 @@ const firstVisibleMsg = {
                     attachmentBox = 'km-attach-msg-right';
                 } else {
                     messageClass =
-                        (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
-                            msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) ||
-                        (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT &&
-                            typeof msg.message != 'string')
+                        msg.contentType == 104
+                            ? 'n-vis'
+                            : (msg.contentType ==
+                                  KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                                  msg.source ==
+                                      KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) ||
+                              (msg.contentType ==
+                                  KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT &&
+                                  typeof msg.message != 'string')
                             ? 'n-vis'
                             : 'vis';
                 }
@@ -8171,7 +8175,10 @@ const firstVisibleMsg = {
                     olStatus = 'vis';
                 }
                 KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
-                var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+                var richText =
+                    Kommunicate.isRichTextMessage(msg.metadata) ||
+                    msg.contentType == 3 ||
+                    msg.contentType == 104;
                 var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : '';
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
@@ -8341,6 +8348,12 @@ const firstVisibleMsg = {
                     msg,
                     assigneeKey: groupAssigneeKey,
                 });
+
+                const emlMessage =
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ELECTRONIC_MAIL;
+
+                kmMailProcessor.processMail(msg, contact, emlMessage);
+
                 if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
                     var chatContext, submittedFormDetails, associatedFormKey;
                     if (msg.metadata['KM_CHAT_CONTEXT']) {
