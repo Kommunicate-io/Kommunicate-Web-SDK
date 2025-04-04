@@ -54,26 +54,23 @@ class EmailDOMService {
 
             kmEmailMainContainer.innerHTML = emlToHtml ? message.emlContent : message.message;
 
-            if (!emlToHtml) {
-                // const users = kmMailProcessor.getToUsersFromGroup(group, message.to);
-                // const fromAddress = group.members.find((mem) => mem.includes(message.to));
-                // const fromMarkup = EmailDOMService.getFromMarkup({
-                //     name: message.to,
-                //     address: fromAddress || '',
-                // });
-                // const toAndCcMarkup = EmailDOMService.getToAndCCMarkup(users);
-                // kmEmailMainContainer.insertAdjacentHTML('afterbegin', toAndCcMarkup);
-                // kmEmailMainContainer.insertAdjacentHTML('afterbegin', fromMarkup);
-            }
-
-            // const anchors = kmEmailMainContainer.querySelectorAll('a');
-
-            // anchors.forEach((anchor) => {
-            //     anchor.addEventListener('click', (event) => {
-            //         window.Aside.handleSanitizedExternalLink(event, event.target);
-            //     });
-            //     anchor.setAttribute('target', '_blank');
+            // if (!emlToHtml) {
+            // const users = kmMailProcessor.getToUsersFromGroup(group, message.to);
+            // const fromAddress = group.members.find((mem) => mem.includes(message.to));
+            // const fromMarkup = EmailDOMService.getFromMarkup({
+            //     name: message.to,
+            //     address: fromAddress || '',
             // });
+            // const toAndCcMarkup = EmailDOMService.getToAndCCMarkup(users);
+            // kmEmailMainContainer.insertAdjacentHTML('afterbegin', toAndCcMarkup);
+            // kmEmailMainContainer.insertAdjacentHTML('afterbegin', fromMarkup);
+            // }
+
+            const anchors = kmEmailMainContainer.querySelectorAll('a');
+
+            anchors.forEach((anchor) => {
+                anchor.setAttribute('target', '_blank');
+            });
         }
     }
 
