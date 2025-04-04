@@ -32,8 +32,8 @@ class EmailDOMService {
         const isCcUserVisible = ccUsers ? 'vis' : 'n-vis';
         const isBccUserVisible = bccUsers ? 'vis' : 'n-vis';
         return `<div class="km-email-to-cc-container">
-        <div class="km-email-to-heading" title="${toUsers}"><strong>${'to'}:</strong> <span>${toUsers} </span></div>
-       <div class="km-email-cc-heading ${isCcUserVisible}" title="${ccUsers}"><strong>${'cc'}:</strong> <span>${ccUsers}</span></div>
+        <div class="km-email-to-heading km-email-headers" title="${toUsers}"><strong>${'to'}:</strong> <span>${toUsers} </span></div>
+       <div class="km-email-cc-heading km-email-headers ${isCcUserVisible}" title="${ccUsers}"><strong>${'cc'}:</strong> <span>${ccUsers}</span></div>
        <div class="km-email-bcc-heading ${isBccUserVisible}" title="${bccUsers}"><strong>${'bcc'}:</strong> <span>${bccUsers}</span></div> 
         </div>`;
     }
@@ -55,20 +55,15 @@ class EmailDOMService {
             kmEmailMainContainer.innerHTML = emlToHtml ? message.emlContent : message.message;
 
             if (!emlToHtml) {
-                const users = kmMailProcessor.getToUsersFromGroup(group, message.to);
-
-                const fromAddress = group.members.find((mem) => mem.includes(message.to));
-
-                const fromMarkup = EmailDOMService.getFromMarkup({
-                    name: message.to,
-                    address: fromAddress || '',
-                });
-
-                const toAndCcMarkup = EmailDOMService.getToAndCCMarkup(users);
-
-                kmEmailMainContainer.insertAdjacentHTML('afterbegin', toAndCcMarkup);
-
-                kmEmailMainContainer.insertAdjacentHTML('afterbegin', fromMarkup);
+                // const users = kmMailProcessor.getToUsersFromGroup(group, message.to);
+                // const fromAddress = group.members.find((mem) => mem.includes(message.to));
+                // const fromMarkup = EmailDOMService.getFromMarkup({
+                //     name: message.to,
+                //     address: fromAddress || '',
+                // });
+                // const toAndCcMarkup = EmailDOMService.getToAndCCMarkup(users);
+                // kmEmailMainContainer.insertAdjacentHTML('afterbegin', toAndCcMarkup);
+                // kmEmailMainContainer.insertAdjacentHTML('afterbegin', fromMarkup);
             }
 
             // const anchors = kmEmailMainContainer.querySelectorAll('a');
@@ -83,7 +78,7 @@ class EmailDOMService {
     }
 
     static getLoadingSpinner() {
-        return `<div class="km-eml-loading"><img src="/applozic/images/ring.gif" alt="fetching email content"></div>`;
+        return `<div class="km-eml-loading">Loading...</div>`;
     }
 
     static getFromMarkup(from = {}) {

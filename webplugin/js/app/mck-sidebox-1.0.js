@@ -7999,8 +7999,8 @@ const firstVisibleMsg = {
                 }
 
                 if (msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
-                    emailMsgIndicator = 'vis';
-                    $applozic('.email-conversation-indicator').addClass('vis').removeClass('n-vis');
+                    // emailMsgIndicator = 'vis';
+                    // $applozic('.email-conversation-indicator').addClass('vis').removeClass('n-vis');
                     if (!msg.message) return; // If there is no message coming in case of source type 7 which is MAIL_INTERCEPTOR
                 }
 
@@ -8180,6 +8180,11 @@ const firstVisibleMsg = {
                     msg.contentType == 3 ||
                     msg.contentType == 104;
                 var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
+
+                if (msg.contentType == 104) {
+                    kmRichTextMarkupVisibility += ' mck-email-rich-msg';
+                }
+
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : '';
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);

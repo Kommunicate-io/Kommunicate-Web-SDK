@@ -23,8 +23,8 @@ kmMailProcessor.getEmailRichMsgStyle = function () {
               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
               background: white;
               border: 1px solid #E7EAF2;
-              border-radius: 0px 5px 5px 5px;
-              border-top: none;
+              border-radius: 5px; 
+            //   border-top: none;
               overflow: scroll;
             }
             .km-email-rich-msg-container.km-email-source-mail-interceptor{
@@ -46,7 +46,7 @@ kmMailProcessor.getEmailRichMsgStyle = function () {
                width: 100%;
             }
             .km-email-heading{
-               margin: 6px 0;
+               margin: 8px 0;
             }   
             .eml-container .mck-file-name{
               display: flex;
@@ -54,7 +54,10 @@ kmMailProcessor.getEmailRichMsgStyle = function () {
             }
             .km-email-to-cc-container{
                font-size: 14px;
-               margin-bottom: 16px;
+               margin-bottom: 0;
+               display: flex;
+               flex-direction: column;
+               gap: 6px;
             } 
             .km-email-show-more-container{
                display: flex;
