@@ -14,38 +14,39 @@ class MailProcessor {
     }
 
     async loadPostalMimeLib() {
-        const abController = new AbortController();
-
-        const url = 'https://cdn.kommunicate.io/kommunicate/eml/eml-parser-2.4.3.js';
-        const scriptTag = document.querySelector(`script[src="${url}"]`);
-
-        if (scriptTag?.getAttribute('loaded')) {
-            Promise.resolve('Postal mime lib already loaded');
-            return;
-        }
-
-        if (scriptTag) {
-            scriptTag.addEventListener(
-                'load',
-                () => {
-                    Promise.resolve('Postal Mime Lib Loaded');
-                    abController.abort();
-                },
-                { signal: abController.signal }
-            );
-            scriptTag.addEventListener(
-                'error',
-                () => {
-                    console.error('Failed to load Postal Mime Lib');
-                    Promise.reject();
-                    abController.abort();
-                },
-                { signal: abController.signal }
-            );
-            return;
-        }
-
         return new Promise((resolve, reject) => {
+            const abController = new AbortController();
+
+            const url = 'https://cdn.kommunicate.io/kommunicate/eml/eml-parser-2.4.3.js';
+            const scriptTag = document.querySelector(`script[src="${url}"]`);
+
+            if (scriptTag?.getAttribute('loaded')) {
+                resolve('Postal mime lib already loaded');
+                return;
+            }
+
+            // It's possible that the script is already in the DOM but not loaded yet
+            if (scriptTag) {
+                scriptTag.addEventListener(
+                    'load',
+                    () => {
+                        resolve('Postal Mime Lib Loaded');
+                        abController.abort();
+                    },
+                    { signal: abController.signal }
+                );
+                scriptTag.addEventListener(
+                    'error',
+                    () => {
+                        console.error('Failed to load Postal Mime Lib');
+                        reject();
+                        abController.abort();
+                    },
+                    { signal: abController.signal }
+                );
+                return;
+            }
+
             const sc = document.createElement('script');
             sc.src = url;
             sc.addEventListener(
