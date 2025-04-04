@@ -8170,6 +8170,8 @@ const firstVisibleMsg = {
                         downloadIconVisible = 'vis';
                     }
                 }
+                const emlMessage =
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ELECTRONIC_MAIL;
                 var olStatus = 'n-vis';
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
@@ -8178,10 +8180,10 @@ const firstVisibleMsg = {
                 var richText =
                     Kommunicate.isRichTextMessage(msg.metadata) ||
                     msg.contentType == 3 ||
-                    msg.contentType == 104;
+                    emlMessage;
                 var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
 
-                if (msg.contentType == 104) {
+                if (emlMessage) {
                     kmRichTextMarkupVisibility += ' mck-email-rich-msg';
                 }
 
@@ -8353,9 +8355,6 @@ const firstVisibleMsg = {
                     msg,
                     assigneeKey: groupAssigneeKey,
                 });
-
-                const emlMessage =
-                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ELECTRONIC_MAIL;
 
                 kmMailProcessor.processMail(msg, contact, emlMessage);
 
