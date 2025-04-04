@@ -3,12 +3,12 @@ kmMailProcessor.getEmailRichMsgStyle = function () {
             *::-webkit-scrollbar { 
                -webkit-appearance: none; 
             }  *::-webkit-scrollbar:vertical { 
-               width: 7px; 
+               width: 4px; 
             } *::-webkit-scrollbar:horizontal {
-               height: 9px; 
+               height: 4px; 
             } *::-webkit-scrollbar-thumb {
                background-color: rgba(0, 0, 0, 0.2);
-               border-radius: 4px; 
+               border-radius: 5px; 
             } *::-webkit-scrollbar-track {
                background: rgba(255, 255, 255, 0.08);
             } *::-webkit-scrollbar-corner {
