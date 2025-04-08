@@ -7736,7 +7736,6 @@ const firstVisibleMsg = {
                             );
                             HIDE_POST_CTA && Kommunicate.hideMessageCTA(true);
 
-                            Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
                             allowReload && !scroll && message.contentType != 10 && (scroll = true);
                         }
@@ -8012,8 +8011,8 @@ const firstVisibleMsg = {
                 }
 
                 if (msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
-                    emailMsgIndicator = 'vis';
-                    $applozic('.email-conversation-indicator').addClass('vis').removeClass('n-vis');
+                    // emailMsgIndicator = 'vis';
+                    // $applozic('.email-conversation-indicator').addClass('vis').removeClass('n-vis');
                     if (!msg.message) return; // If there is no message coming in case of source type 7 which is MAIL_INTERCEPTOR
                 }
 
@@ -8032,10 +8031,15 @@ const firstVisibleMsg = {
                     attachmentBox = 'km-attach-msg-right';
                 } else {
                     messageClass =
-                        (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
-                            msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) ||
-                        (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT &&
-                            typeof msg.message != 'string')
+                        msg.contentType == 104
+                            ? 'n-vis'
+                            : (msg.contentType ==
+                                  KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                                  msg.source ==
+                                      KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) ||
+                              (msg.contentType ==
+                                  KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT &&
+                                  typeof msg.message != 'string')
                             ? 'n-vis'
                             : 'vis';
                 }
@@ -8178,13 +8182,23 @@ const firstVisibleMsg = {
                         downloadIconVisible = 'vis';
                     }
                 }
+                const emlMessage =
+                    msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ELECTRONIC_MAIL;
                 var olStatus = 'n-vis';
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
                 }
                 KommunicateUI.handleAttachmentIconVisibility(enableAttachment, msg, !append);
-                var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+                var richText =
+                    Kommunicate.isRichTextMessage(msg.metadata) ||
+                    msg.contentType == 3 ||
+                    emlMessage;
                 var kmRichTextMarkupVisibility = richText ? 'vis' : 'n-vis';
+
+                if (emlMessage) {
+                    kmRichTextMarkupVisibility += ' mck-email-rich-msg';
+                }
+
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : '';
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
@@ -8353,6 +8367,9 @@ const firstVisibleMsg = {
                     msg,
                     assigneeKey: groupAssigneeKey,
                 });
+
+                kmMailProcessor.processMail(msg, contact, emlMessage);
+
                 if (Kommunicate._globals.disableFormPostSubmit && msg.metadata) {
                     var chatContext, submittedFormDetails, associatedFormKey;
                     if (msg.metadata['KM_CHAT_CONTEXT']) {

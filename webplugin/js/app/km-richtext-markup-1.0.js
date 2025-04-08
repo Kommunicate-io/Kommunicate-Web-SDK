@@ -858,8 +858,8 @@ Kommunicate.markup.getImageContainer = function (options) {
 };
 Kommunicate.markup.getHtmlMessageMarkups = function (message) {
     if (message && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
-        var uniqueId = 'km-iframe-' + message.groupId;
-        return "<iframe class='km-mail-fixed-view' id=" + uniqueId + ' ></iframe>';
+        var uniqueId = 'km-email-' + message.groupId + '-' + message.key;
+        return `<mck-email-rich-message class='km-mail-fixed-view ${uniqueId} mck-eml-container' id='${uniqueId}' ></mck-email-rich-message>`;
     }
     return '';
 };
