@@ -3360,7 +3360,9 @@ const firstVisibleMsg = {
                                 metadata: {
                                     category: 'HIDDEN',
                                     KM_TRIGGER_EVENT: eventToTrigger,
-                                    KM_CHAT_CONTEXT: JSON.stringify({kmUserLocale: kommunicate._globals.userLocale})
+                                    KM_CHAT_CONTEXT: JSON.stringify({
+                                        kmUserLocale: kommunicate._globals.userLocale,
+                                    }),
                                 },
                                 source: 1,
                             },
@@ -8770,8 +8772,7 @@ const firstVisibleMsg = {
                         KommunicateUtils.customElementSupported()
                     ) {
                         const kmElement = document.createElement('mck-html-rich-message');
-                        kmElement._shadow.innerHTML += emoji_template;
-
+                        kmElement._shadow.innerHTML = emoji_template;
                         $textMessage.append(kmElement);
 
                         htmlRichMessage = true;
