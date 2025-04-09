@@ -576,8 +576,9 @@ $applozic.extend(true, Kommunicate, {
                     break;
             }
         } else if (
-            message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
-            message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
+            (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
+                message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) ||
+            message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ELECTRONIC_MAIL
         ) {
             return Kommunicate.markup.getHtmlMessageMarkups(message);
         } else {
@@ -719,11 +720,10 @@ $applozic.extend(true, Kommunicate, {
         // genai last message
         if (!msgThroughListAPI) {
             // Enable the msg area when we got the last token
-            if (msg.metadata?.lastToken === 'true') {
+            if (msg.metadata?.lastToken === 'true' || !msg.tokenMessage) {
                 genAiService.resetState();
                 genAiService.enableTextArea(true);
             }
-
             if (
                 msg.metadata?.lastToken === 'true' ||
                 msg.metadata?.firstToken === 'true' ||
