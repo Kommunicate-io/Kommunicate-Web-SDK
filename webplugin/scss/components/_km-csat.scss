@@ -72,11 +72,7 @@ span#mck-resolved-text {
     letter-spacing: 0.3px;
     color: $text-primary-color;
     font-size: 14px;
-    background-image: linear-gradient(
-        to right,
-        #bcbd96 33%,
-        rgba(255, 255, 255, 0) 0%
-    );
+    background-image: linear-gradient(to right, #bcbd96 33%, rgba(255, 255, 255, 0) 0%);
     background-position: top;
     background-size: 12px 1px;
     background-repeat: repeat-x;

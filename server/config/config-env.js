@@ -88,8 +88,7 @@ const configEnv = {
             },
         },
     },
-    
-    
+
     prod: {
         port: '3030',
         urls: {
@@ -105,8 +104,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
-                dsn:
-                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: false,
                 AUTH_TOKEN:
                     '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',
@@ -133,8 +131,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
-                dsn:
-                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: false,
                 AUTH_TOKEN:
                     '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',
@@ -163,8 +160,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
-                dsn:
-                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: false,
                 AUTH_TOKEN:
                     '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',
@@ -177,7 +173,7 @@ const configEnv = {
             },
         },
     },
-    
+
     prod_eu: {
         port: '3030',
         urls: {
@@ -194,8 +190,7 @@ const configEnv = {
             sentry: {
                 plugin: {
                     nameSpace: '9f71614ef8184d0cab00074555dad9a7',
-                    dsn:
-                        'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                    dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                     enabled: false,
                     AUTH_TOKEN:
                         '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',
@@ -203,14 +198,13 @@ const configEnv = {
                     ORG: 'applozic',
                 },
                 server: {
-                    dsn:
-                        'https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823',
+                    dsn: 'https://93e611ec9efc4ce396769bdbbff587d2@sentry.io/1325823',
                     enable: true,
                 },
             },
         },
     },
-    
+
     prod_enterprise: {
         port: '3033',
         urls: {
@@ -226,8 +220,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
-                dsn:
-                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: false,
                 AUTH_TOKEN:
                     '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',
@@ -255,8 +248,7 @@ const configEnv = {
         thirdPartyIntegration: {
             sentry: {
                 nameSpace: '9f71614ef8184d0cab00074555dad9a7',
-                dsn:
-                    'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
                 enabled: false,
                 AUTH_TOKEN:
                     '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',

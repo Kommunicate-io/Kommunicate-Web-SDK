@@ -32,8 +32,7 @@ const checkDangerJS = async () => {
         return warn(PR_REVIEWS_CHECKS.WARNS.WIP);
 
     //Accept PR only for development branch and warn
-    if (danger.github.pr.head.ref == 'master')
-        warn(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
+    if (danger.github.pr.head.ref == 'master') warn(PR_REVIEWS_CHECKS.WARNS.ONLY_DEV_BRANCH);
 
     //checks for description
     const isDesAdded = danger.github.pr.body.length <= 10;
@@ -46,8 +45,7 @@ const checkDangerJS = async () => {
     // check PR is changes Threshold
     const removedLines = danger.github.pr.deletions,
         totalChanges =
-            danger.github.pr.additions + removedLines >
-            PR_REVIEWS_CHECKS.BIG_PR_THRESHOLD;
+            danger.github.pr.additions + removedLines > PR_REVIEWS_CHECKS.BIG_PR_THRESHOLD;
     totalChanges && warn(PR_REVIEWS_CHECKS.WARNS.EXCEED_THRESHOLD);
 
     // check PR delete lines status
@@ -63,11 +61,8 @@ const checkDangerJS = async () => {
     // Check if package.json is modified but package-lock.json is modified or not
     // ideally both should be modified
     const packageChanged = danger.git.modified_files.includes('package.json'),
-        lockfileChanged = danger.git.modified_files.includes(
-            'package-lock.json'
-        );
-    if (packageChanged && !lockfileChanged)
-        fail(PR_REVIEWS_CHECKS.WARNS.PACKAGE_JSON_ERR);
+        lockfileChanged = danger.git.modified_files.includes('package-lock.json');
+    if (packageChanged && !lockfileChanged) fail(PR_REVIEWS_CHECKS.WARNS.PACKAGE_JSON_ERR);
 
     //checks for console.log in PR
     // schedule(noConsole({ whitelist: ['error', 'warn'] }))

@@ -45,10 +45,7 @@ class KmCookieStorage extends KmStorage {
     };
 
     deleteCookie = (cookie, isOld) => {
-        const { name, path, secure, domain } = this.getCookieParams(
-            cookie,
-            isOld
-        );
+        const { name, path, secure, domain } = this.getCookieParams(cookie, isOld);
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=${path}${
             secure ? ';secure' : ''
         }${domain ? `;domain=${domain}` : ''}`;
@@ -56,8 +53,7 @@ class KmCookieStorage extends KmStorage {
 
     getCookiePrefix = () => {
         const appOptions =
-            appOptionSession.getPropertyDataFromSession('appOptions') ||
-            applozic._globals;
+            appOptionSession.getPropertyDataFromSession('appOptions') || applozic._globals;
         let cookiePrefix = KommunicateUtils.getSubDomain();
         if (appOptions && appOptions.domainKey) {
             cookiePrefix = appOptions.domainKey;
@@ -76,10 +72,7 @@ class KmCookieStorage extends KmStorage {
 
     getCookieParams = (cookie, isDelete = false) => {
         let cookiePrefix = this.getCookiePrefix();
-        let name =
-            cookie && cookie.skipPrefix
-                ? cookie.name
-                : cookiePrefix + cookie.name;
+        let name = cookie && cookie.skipPrefix ? cookie.name : cookiePrefix + cookie.name;
 
         if (!isDelete) {
             name += '-' + this.appId;
@@ -87,9 +80,7 @@ class KmCookieStorage extends KmStorage {
 
         const path = cookie.path || '/';
         const secure =
-            typeof cookie.secure === 'undefined'
-                ? this.isHttpsEnabledConnection()
-                : cookie.secure;
+            typeof cookie.secure === 'undefined' ? this.isHttpsEnabledConnection() : cookie.secure;
         const domain = cookie.domain;
 
         return { name, path, secure, domain };

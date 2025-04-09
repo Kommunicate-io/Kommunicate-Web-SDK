@@ -42,9 +42,7 @@ Kommunicate.markup = {
         }
         //Note: Setting price as 8%, modify it to change price calculation logic.
         var price =
-            (options.Price.CurrencyCode == 'INR'
-                ? '&#x20B9;'
-                : options.Price.CurrencyCode) +
+            (options.Price.CurrencyCode == 'INR' ? '&#x20B9;' : options.Price.CurrencyCode) +
             ' ' +
             Math.ceil(options.Price.OfferedPrice * 1);
         return (
@@ -131,9 +129,7 @@ Kommunicate.markup = {
 
     getRoomDetailTemplate: function (options, sessionId) {
         var guest = options.NoOfGuest == 'undefined' ? 1 : options.NoOfGuest;
-        var dayRates = options.DayRates.Amount
-            ? options.DayRates.Amount
-            : options.Price.RoomPrice;
+        var dayRates = options.DayRates.Amount ? options.DayRates.Amount : options.Price.RoomPrice;
 
         return (
             `<div class="km-single-card-message">
@@ -159,9 +155,7 @@ Kommunicate.markup = {
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
 
                                 <span>` +
-            (options.Price.CurrencyCode == 'INR'
-                ? '&#x20B9;'
-                : options.Price.CurrencyCode) +
+            (options.Price.CurrencyCode == 'INR' ? '&#x20B9;' : options.Price.CurrencyCode) +
             ' ' +
             Math.ceil(dayRates) +
             `</span>
@@ -172,9 +166,7 @@ Kommunicate.markup = {
             options.NoOfNights +
             ` Nights)</span></p>
                                 <span> ` +
-            (options.Price.CurrencyCode == 'INR'
-                ? '&#x20B9;'
-                : options.Price.CurrencyCode) +
+            (options.Price.CurrencyCode == 'INR' ? '&#x20B9;' : options.Price.CurrencyCode) +
             ' ' +
             Math.ceil(options.Price.RoomPrice) +
             ` </span>
@@ -203,9 +195,7 @@ Kommunicate.markup = {
     getLinkPreviewTemplate: function (extractedData, isMckRightMsg) {
         var data = extractedData.data;
         if (data && data.title) {
-            var mckRightLinkClass = isMckRightMsg
-                ? 'km-custom-widget-background-color'
-                : '';
+            var mckRightLinkClass = isMckRightMsg ? 'km-custom-widget-background-color' : '';
             var title = data.siteName || data.title;
             var description = data.description || data.title;
 
@@ -255,13 +245,9 @@ Kommunicate.markup = {
         } else {
             return (
                 '<button aria-label="' +
-                (options.replyText ||
-                    (options.action && options.action.message) ||
-                    options.name) +
+                (options.replyText || (options.action && options.action.message) || options.name) +
                 '" title= "' +
-                (options.replyText ||
-                    (options.action && options.action.message) ||
-                    options.name) +
+                (options.replyText || (options.action && options.action.message) || options.name) +
                 '" data-metadata="' +
                 options.replyMetadata +
                 '" data-buttontype="submit" data-requesttype= "' +
@@ -624,8 +610,7 @@ Kommunicate.markup = {
         var element = '';
         Object.keys(data).forEach(function (key) {
             var value = data[key];
-            value &&
-                (element += '<span>' + key + ' : ' + value + '</span><br>');
+            value && (element += '<span>' + key + ' : ' + value + '</span><br>');
         });
         return element;
     },
@@ -664,13 +649,9 @@ Kommunicate.markup.buttonContainerTemplate = function (options) {
 };
 Kommunicate.markup.getFormMarkup = function (options) {
     var payload =
-        typeof options.payload == 'string'
-            ? JSON.parse(options.payload)
-            : options.payload;
+        typeof options.payload == 'string' ? JSON.parse(options.payload) : options.payload;
     var formData =
-        payload && options.formData
-            ? JSON.parse(options.formData || '{}')
-            : payload.formData || '';
+        payload && options.formData ? JSON.parse(options.formData || '{}') : payload.formData || '';
     var formMarkup = '';
     if (formData) {
         formMarkup +=
@@ -680,21 +661,14 @@ Kommunicate.markup.getFormMarkup = function (options) {
         for (var key in formData) {
             if (formData.hasOwnProperty(key)) {
                 formMarkup +=
-                    '<input type="hidden" name ="' +
-                    key +
-                    '" value="' +
-                    formData[key] +
-                    '" />';
+                    '<input type="hidden" name ="' + key + '" value="' + formData[key] + '" />';
             }
         }
         formMarkup += '</form>';
         return formMarkup;
     }
 };
-Kommunicate.markup.quickRepliesContainerTemplate = function (
-    options,
-    template
-) {
+Kommunicate.markup.quickRepliesContainerTemplate = function (options, template) {
     var payload = JSON.parse(options.payload);
     var buttonClass;
     var hidePostCTA = kommunicate._globals.hidePostCTA;
@@ -703,8 +677,7 @@ Kommunicate.markup.quickRepliesContainerTemplate = function (
             buttonClass = 'km-quick-rpy-btn km-custom-widget-border-color ';
             break;
         case KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL:
-            buttonClass =
-                'km-carousel-card-button km-carousel-card-quick-rpy-button ';
+            buttonClass = 'km-carousel-card-button km-carousel-card-quick-rpy-button ';
             break;
     }
     template == KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.QUICK_REPLY &&
@@ -743,39 +716,23 @@ Kommunicate.markup.getHotelRoomPaxInfoTemplate = function (roomCount) {
     );
 };
 
-Kommunicate.markup.getHotelCardContainerTemplate = function (
-    hotelList,
-    sessionId
-) {
+Kommunicate.markup.getHotelCardContainerTemplate = function (hotelList, sessionId) {
     var hotelListMarkup = '';
     for (var i = 0; i < hotelList.length; i++) {
         hotelListMarkup =
-            hotelListMarkup +
-            Kommunicate.markup.getHotelCardTemplate(hotelList[i], sessionId);
+            hotelListMarkup + Kommunicate.markup.getHotelCardTemplate(hotelList[i], sessionId);
     }
-    return (
-        `<div class="km-card-message-container  km-div-slider">` +
-        hotelListMarkup +
-        `</div>`
-    );
+    return `<div class="km-card-message-container  km-div-slider">` + hotelListMarkup + `</div>`;
 };
 
-Kommunicate.markup.getRoomDetailsContainerTemplate = function (
-    roomList,
-    sessionId
-) {
+Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, sessionId) {
     var roomDetails = roomList.HotelRoomsDetails;
     var roomListMarkup = '';
     for (var i = 0; i < roomDetails.length; i++) {
         roomListMarkup =
-            roomListMarkup +
-            Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
+            roomListMarkup + Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
     }
-    return (
-        `<div class="km-card-room-detail-container  km-div-slider">` +
-        roomListMarkup +
-        `</div>`
-    );
+    return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`;
 };
 Kommunicate.markup.getListContainerMarkup = function (metadata) {
     const buttonClass = { link: 'km-link-button', submit: '' };
@@ -788,10 +745,7 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                 '"  alt = "image" /></div>';
         }
         if (json.headerText) {
-            json.headerText =
-                '<p class="km-faq-list--header_text">' +
-                json.headerText +
-                '</p>';
+            json.headerText = '<p class="km-faq-list--header_text">' + json.headerText + '</p>';
         }
         if (json.elements && json.elements.length) {
             json.elementClass = 'vis';
@@ -801,9 +755,7 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                     item.imgSrc = '<img src ="' + item.imgSrc + '" />';
                 }
                 item.description &&
-                    (item.description = kommunicateCommons.removeHtmlTag(
-                        item.description
-                    ));
+                    (item.description = kommunicateCommons.removeHtmlTag(item.description));
                 if (item.action && item.action.replyMetadata) {
                     item.replyMetadata =
                         typeof item.action.replyMetadata == 'object'
@@ -820,8 +772,7 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                 } else {
                     item.href = 'javascript:void(0)';
                     item.target = '';
-                    item.action &&
-                        (item.updateLanguage = item.action.updateLanguage);
+                    item.action && (item.updateLanguage = item.action.updateLanguage);
                     item.hidePostCTA = kommunicate._globals.hidePostCTA;
                 }
                 item.handlerClass = 'km-list-item-handler';
@@ -847,8 +798,7 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                             ? JSON.stringify(button.action.replyMetadata)
                             : button.action.replyMetadata;
                 }
-                button.action &&
-                    (button.updateLanguage = button.action.updateLanguage);
+                button.action && (button.updateLanguage = button.action.updateLanguage);
                 if (
                     !button.action ||
                     button.action.type == 'quick_reply' ||
@@ -869,9 +819,7 @@ Kommunicate.markup.getListContainerMarkup = function (metadata) {
                 button.dataType = button.action ? button.action.type : '';
 
                 button.dataReply =
-                    button.action && button.action.text
-                        ? button.action.text
-                        : button.name || '';
+                    button.action && button.action.text ? button.action.text : button.name || '';
                 // TODO : add post url in data.
                 return button;
             });
@@ -893,19 +841,13 @@ Kommunicate.markup.getDialogboxContainer = function (metadata) {
                         ? JSON.stringify(element.replyMetadata)
                         : element.replyMetadata;
             });
-        return Mustache.to_html(
-            Kommunicate.markup.getDialogboxTemplate(),
-            json
-        );
+        return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
     }
     return '';
 };
 Kommunicate.markup.getImageContainer = function (options) {
     if (options && options.payload) {
-        var payload =
-            typeof options.payload == 'string'
-                ? JSON.parse(options.payload)
-                : {};
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = JSON.parse(JSON.stringify(payload));
         options.payload?.forEach((payload) => {
             payload.type = payload.url?.split('.').pop()?.toLowerCase();
@@ -915,14 +857,9 @@ Kommunicate.markup.getImageContainer = function (options) {
     return '';
 };
 Kommunicate.markup.getHtmlMessageMarkups = function (message) {
-    if (
-        message &&
-        message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR
-    ) {
+    if (message && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
         var uniqueId = 'km-iframe-' + message.groupId;
-        return (
-            "<iframe class='km-mail-fixed-view' id=" + uniqueId + ' ></iframe>'
-        );
+        return "<iframe class='km-mail-fixed-view' id=" + uniqueId + ' ></iframe>';
     }
     return '';
 };
@@ -931,10 +868,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
     var data = {};
     var isActionObject = false;
     if (options && options.payload) {
-        var payload =
-            typeof options.payload == 'string'
-                ? JSON.parse(options.payload)
-                : {};
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = payload;
         options.buttons = [];
         if (kommunicateCommons.isObject(options.payload[0].data)) {
@@ -952,8 +886,7 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
         options.checkboxClass = Kommunicate._globals.checkboxAsMultipleButton
             ? 'checkbox-as-button'
             : 'checkbox-container';
-        options.checkboxContainerClass = Kommunicate._globals
-            .checkboxAsMultipleButton
+        options.checkboxContainerClass = Kommunicate._globals.checkboxAsMultipleButton
             ? 'mck-form-checkbox-as-button-wrapper'
             : 'mck-form-checkbox-wrapper';
         options.payload.forEach(function (item, index) {
@@ -964,27 +897,20 @@ Kommunicate.markup.getActionableFormMarkup = function (options) {
                     (isActionObject && item.action.formAction) ||
                     'javascript:void(0);';
                 options.requestType =
-                    item.requestType ||
-                    (isActionObject && item.action.requestType);
+                    item.requestType || (isActionObject && item.action.requestType);
                 options.postBackToKommunicate =
-                    (isActionObject && item.action.postBackToKommunicate) ||
-                    false;
+                    (isActionObject && item.action.postBackToKommunicate) || false;
                 options.postFormDataAsMessage =
-                    (isActionObject && item.action.postFormDataAsMessage) ||
-                    false;
+                    (isActionObject && item.action.postFormDataAsMessage) || false;
                 options.label = item.name || item.label;
-                options.message =
-                    item.message || (isActionObject && item.action.message);
+                options.message = item.message || (isActionObject && item.action.message);
                 options.payload[index].className = 'km-cta-button';
                 options.buttons.push(item);
                 options.payload.splice(index, 1);
-                options.hidePostFormSubmit =
-                    Kommunicate._globals.hidePostFormSubmit;
+                options.hidePostFormSubmit = Kommunicate._globals.hidePostFormSubmit;
             } else {
                 options.payload[index].supported =
-                    KommunicateConstants.FORM_SUPPORTED_FIELDS.indexOf(
-                        item.type
-                    ) != -1;
+                    KommunicateConstants.FORM_SUPPORTED_FIELDS.indexOf(item.type) != -1;
                 options.payload[index][item.type] = true;
 
                 if (item.readonly) {
@@ -1014,10 +940,7 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
     var image = true;
     var footer, header, info;
     var buttonClass;
-    var headerOverlayTextClass,
-        headerImageClass,
-        carouselHeaderClass,
-        carouselInfoWrapperClass;
+    var headerOverlayTextClass, headerImageClass, carouselHeaderClass, carouselInfoWrapperClass;
     var createCardFooter = function (buttons) {
         var cardFooter = '';
         var requestType;
@@ -1025,20 +948,14 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
             if (buttons[i].action.type == 'quickReply') {
                 buttons[i].action.payload.title =
                     buttons[i].action.payload.title || buttons[i].name;
-                buttons[i].action.payload = JSON.stringify([
-                    buttons[i].action.payload,
-                ]);
+                buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
                 cardFooter = cardFooter.concat(
                     Kommunicate.markup.quickRepliesContainerTemplate(
                         buttons[i].action,
-                        KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE
-                            .CARD_CAROUSEL
+                        KommunicateConstants.ACTIONABLE_MESSAGE_TEMPLATE.CARD_CAROUSEL
                     )
                 );
-            } else if (
-                buttons[i].action.type == 'link' ||
-                buttons[i].action.type == 'submit'
-            ) {
+            } else if (buttons[i].action.type == 'link' || buttons[i].action.type == 'submit') {
                 buttons[i].action.type == 'link' &&
                     (buttons[i].action.payload['openLinkInNewTab'] =
                         typeof buttons[i].action.openLinkInNewTab == 'undefined'
@@ -1048,8 +965,7 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
                     ? buttons[i].action.payload.requestType
                     : '';
                 buttons[i].action.payload['type'] = buttons[i].action.type;
-                buttons[i].action.payload['buttonClass'] =
-                    'km-carousel-card-button';
+                buttons[i].action.payload['buttonClass'] = 'km-carousel-card-button';
                 buttons[i].action.payload['name'] = buttons[i].name;
                 cardFooter = cardFooter.concat(
                     Kommunicate.markup.getButtonTemplate(
@@ -1060,13 +976,9 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
                 );
                 var formData = buttons[i].action.payload.formData;
                 buttons[i].action.payload.formAction &&
-                    (buttons[i].action['formAction'] =
-                        buttons[i].action.payload.formAction);
-                buttons[i].action.payload = JSON.stringify([
-                    buttons[i].action.payload,
-                ]);
-                formData &&
-                    (buttons[i].action['formData'] = JSON.stringify(formData));
+                    (buttons[i].action['formAction'] = buttons[i].action.payload.formAction);
+                buttons[i].action.payload = JSON.stringify([buttons[i].action.payload]);
+                formData && (buttons[i].action['formData'] = JSON.stringify(formData));
                 formData &&
                     (cardFooter = cardFooter.concat(
                         Kommunicate.markup.getFormMarkup(buttons[i].action)
@@ -1076,10 +988,7 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
         return cardFooter;
     };
     if (options && options.payload) {
-        var cards =
-            typeof options.payload == 'string'
-                ? JSON.parse(options.payload)
-                : [];
+        var cards = typeof options.payload == 'string' ? JSON.parse(options.payload) : [];
         options.payload = cards;
         for (var i = 0; i < cards.length; i++) {
             var item = cards[i];
@@ -1098,28 +1007,19 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
                 ? ''
                 : 'km-carousel-card-info-wrapper-without-header';
             carouselInfoWrapperClass = item.buttons
-                ? carouselInfoWrapperClass.concat(
-                      ' km-carousel-card-info-wrapper-with-buttons'
-                  )
+                ? carouselInfoWrapperClass.concat(' km-carousel-card-info-wrapper-with-buttons')
                 : '';
             item.header &&
-                (headerImageClass = item.header.imgSrc
-                    ? 'km-carousel-card-img'
-                    : 'n-vis');
-            item.header &&
-                (item.header[
-                    'headerOverlayTextClass'
-                ] = headerOverlayTextClass);
+                (headerImageClass = item.header.imgSrc ? 'km-carousel-card-img' : 'n-vis');
+            item.header && (item.header['headerOverlayTextClass'] = headerOverlayTextClass);
             item.header && (item.header['headerImageClass'] = headerImageClass);
             item['cardDescriptionClass'] = item.description
                 ? 'km-carousel-card-description-wrapper'
                 : 'n-vis';
             cardHtml['carouselHeaderClass'] = carouselHeaderClass;
             cardHtml['carouselInfoWrapperClass'] = carouselInfoWrapperClass;
-            cardHtml['containerClass'] =
-                cards.length > 1 ? '' : 'km-single-card';
-            item.header &&
-                (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
+            cardHtml['containerClass'] = cards.length > 1 ? '' : 'km-single-card';
+            item.header && (cardHtml.header = Kommunicate.markup.cardHeader(item.header));
             cardHtml.info = Kommunicate.markup.cardInfo(item);
             item.buttons && (cardHtml.footer = createCardFooter(item.buttons));
             cardList[i] = $applozic.extend([], cardHtml);
@@ -1128,10 +1028,7 @@ Kommunicate.markup.getCarouselMarkup = function (options) {
     }
     var cardCarousel = { payload: cardList };
 
-    return Mustache.to_html(
-        Kommunicate.markup.getCarouselTemplate(),
-        cardCarousel
-    );
+    return Mustache.to_html(Kommunicate.markup.getCarouselTemplate(), cardCarousel);
 };
 Kommunicate.markup.cardHeader = function (item) {
     return Mustache.to_html(Kommunicate.markup.getCardHeaderTemplate(), item);
@@ -1141,17 +1038,14 @@ Kommunicate.markup.cardInfo = function (item) {
 };
 Kommunicate.markup.getLinkTarget = function (buttonInfo) {
     buttonInfo.openLinkInNewTab =
-        typeof buttonInfo.openLinkInNewTab != 'undefined' &&
-        !buttonInfo.openLinkInNewTab
+        typeof buttonInfo.openLinkInNewTab != 'undefined' && !buttonInfo.openLinkInNewTab
             ? buttonInfo.openLinkInNewTab
             : true;
     return buttonInfo.openLinkInNewTab ? '_blank' : '_parent';
 };
 
 Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
-    var buttonPayloadList = metadata.payload
-        ? JSON.parse(metadata.payload)
-        : [];
+    var buttonPayloadList = metadata.payload ? JSON.parse(metadata.payload) : [];
     var buttonContainerHtml = '<div class="km-cta-multi-button-container">';
     var buttonClass =
         ' km-custom-widget-border-color ' +
@@ -1163,9 +1057,7 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
     for (var i = 0; i < buttonPayloadList.length; i++) {
         var singlePayload = buttonPayloadList[i];
         typeof (singlePayload.replyMetadata == 'object') &&
-            (singlePayload.replyMetadata = JSON.stringify(
-                singlePayload.replyMetadata
-            ));
+            (singlePayload.replyMetadata = JSON.stringify(singlePayload.replyMetadata));
         !singlePayload.type &&
             singlePayload.action &&
             (singlePayload.type = singlePayload.action.type);
@@ -1173,16 +1065,12 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
             singlePayload.action &&
             singlePayload.action.replyMetadata &&
             kommunicateCommons.isObject(singlePayload.action.replyMetadata) &&
-            (singlePayload.replyMetadata = JSON.stringify(
-                singlePayload.action.replyMetadata
-            ));
+            (singlePayload.replyMetadata = JSON.stringify(singlePayload.action.replyMetadata));
         singlePayload.hidePostCTA = false;
         if (singlePayload.type == 'link' || singlePayload.type == 'submit') {
             singlePayload.url =
-                buttonPayloadList[i].action.url ||
-                buttonPayloadList[i].action.formAction;
-            singlePayload.openLinkInNewTab =
-                buttonPayloadList[i].action.openLinkInNewTab;
+                buttonPayloadList[i].action.url || buttonPayloadList[i].action.formAction;
+            singlePayload.openLinkInNewTab = buttonPayloadList[i].action.openLinkInNewTab;
             buttonClass += buttonClass + ' km-add-more-rooms';
             buttonContainerHtml += Kommunicate.markup.getButtonTemplate(
                 singlePayload,
@@ -1193,33 +1081,23 @@ Kommunicate.markup.getGenericButtonMarkup = function (metadata) {
                 (buttonContainerHtml += Kommunicate.markup.getFormMarkup({
                     payload: singlePayload.action,
                 }));
-        } else if (
-            singlePayload.type == 'quickReply' ||
-            singlePayload.type == 'suggestedReply'
-        ) {
+        } else if (singlePayload.type == 'quickReply' || singlePayload.type == 'suggestedReply') {
             singlePayload.buttonClass = 'km-quick-rpy-btn ' + buttonClass;
-            singlePayload.message =
-                singlePayload.action.message || singlePayload.name;
+            singlePayload.message = singlePayload.action.message || singlePayload.name;
             singlePayload.type == 'quickReply' &&
                 (singlePayload.hidePostCTA = kommunicate._globals.hidePostCTA);
             buttonContainerHtml += Mustache.to_html(
                 Kommunicate.markup.getGenericSuggestedReplyButton(),
                 singlePayload
             );
-        } else if (
-            singlePayload.action &&
-            singlePayload.action.type == 'submit'
-        ) {
+        } else if (singlePayload.action && singlePayload.action.type == 'submit') {
         }
     }
     return buttonContainerHtml + '</div>';
 };
 Kommunicate.markup.getVideoMarkup = function (options) {
     if (options && options.payload) {
-        var payload =
-            typeof options.payload == 'string'
-                ? JSON.parse(options.payload)
-                : {};
+        var payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         for (var i = 0; i < payload.length; i++) {
             var video = payload[i];
             video.width = video.width || '100%';

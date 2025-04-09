@@ -105,11 +105,7 @@ $popupClass: '.chat-popup-widget-container';
     &--vertical.km-animate .chat-popup-widget-text,
     &--actionable.km-animate .chat-popup-widget-text {
         opacity: 0;
-        @include prefix(
-            animation,
-            km-slide-in-animation 0.5s ease 0.5s 1 forwards,
-            webkit moz o
-        );
+        @include prefix(animation, km-slide-in-animation 0.5s ease 0.5s 1 forwards, webkit moz o);
     }
 
     & .chat-popup-widget-text-wrapper {
@@ -166,11 +162,7 @@ $popupClass: '.chat-popup-widget-container';
 
 #launcher-svg-container.km-animate {
     @include prefix(transform, scale(1), webkit moz o ms);
-    @include prefix(
-        animation,
-        km-scale-animation 0.5s ease-in-out 1 forwards,
-        webkit moz o ms
-    );
+    @include prefix(animation, km-scale-animation 0.5s ease-in-out 1 forwards, webkit moz o ms);
 }
 
 @-webkit-keyframes km-reveal-animation-horizontal {
@@ -426,9 +418,7 @@ $popupClass: '.chat-popup-widget-container';
         }
     }
 
-    .mck-sidebox.fade.in
-        .mck-name-status-container
-        #mck-tab-title.mck-title-width-with-faq {
+    .mck-sidebox.fade.in .mck-name-status-container #mck-tab-title.mck-title-width-with-faq {
         width: 88px !important;
     }
 }

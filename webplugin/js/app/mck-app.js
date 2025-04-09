@@ -28,17 +28,15 @@ function ApplozicSidebox() {
     var mck_external_scripts = [
         {
             name: 'applozic-min-js',
-            url:
-                'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.6.min.js',
-            alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.6.min.js',
+            url: 'https://cdn.kommunicate.io/applozic/applozic.chat-6.2.8.min.js',
+            alternateUrl: MCK_CONTEXTPATH + '/applozic.chat-6.2.8.min.js',
             // if updating applozic.chat{version}.min.js, update the same in pluginOptimizer.js too
         },
         {
             name: 'maps',
             url: 'https://maps.googleapis.com/maps/api/js?libraries=places',
             googleApiKey:
-                typeof applozic._globals !== 'undefined' &&
-                applozic._globals.googleApiKey
+                typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey
                     ? applozic._globals.googleApiKey
                     : 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M',
         },
@@ -68,14 +66,9 @@ function ApplozicSidebox() {
                     throw new Error('locShare should be a boolean value');
                 }
                 if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
-                    applozic._globals.excludeGoogleMap = !applozic._globals
-                        .locShare;
-                } else if (
-                    typeof applozic._globals.excludeGoogleMap === 'string'
-                ) {
-                    throw new Error(
-                        'excludeGoogleMap should be a boolean value'
-                    );
+                    applozic._globals.excludeGoogleMap = !applozic._globals.locShare;
+                } else if (typeof applozic._globals.excludeGoogleMap === 'string') {
+                    throw new Error('excludeGoogleMap should be a boolean value');
                 }
             }
             for (var index in mck_external_scripts) {
@@ -96,10 +89,7 @@ function ApplozicSidebox() {
 
     function loadExternalFiles(externalFileDetails) {
         try {
-            if (
-                applozic._globals.excludeGoogleMap &&
-                externalFileDetails.name === 'maps'
-            ) {
+            if (applozic._globals.excludeGoogleMap && externalFileDetails.name === 'maps') {
                 ++scriptCounter;
                 return;
             }
@@ -122,22 +112,17 @@ function ApplozicSidebox() {
             if (script.readyState) {
                 // IE
                 script.onreadystatechange = function () {
-                    if (
-                        script.readyState === 'loaded' ||
-                        script.readyState === 'complete'
-                    ) {
+                    if (script.readyState === 'loaded' || script.readyState === 'complete') {
                         script.onreadystatechange = null;
                         ++scriptCounter;
-                        scriptCounter >= mck_external_scripts.length &&
-                            mckinitPlugin();
+                        scriptCounter >= mck_external_scripts.length && mckinitPlugin();
                     }
                 };
             } else {
                 // Others
                 script.onload = function () {
                     ++scriptCounter;
-                    scriptCounter >= mck_external_scripts.length &&
-                        mckinitPlugin();
+                    scriptCounter >= mck_external_scripts.length && mckinitPlugin();
                 };
             }
             script.onerror = function (error) {
@@ -172,8 +157,7 @@ function ApplozicSidebox() {
         }
         try {
             for (var index in mck_style_loader) {
-                mck_style_loader[index] &&
-                    mckLoadStyle(mck_style_loader[index].url);
+                mck_style_loader[index] && mckLoadStyle(mck_style_loader[index].url);
             }
             var url = MCK_SIDEBOX_HTML;
             var xhr = new XMLHttpRequest();
@@ -183,10 +167,7 @@ function ApplozicSidebox() {
                     body.insertAdjacentHTML('beforeend', this.responseText);
                     var scriptContent = addScriptInsideHtml();
                     var kmScript =
-                        window.parent &&
-                        window.parent.document.getElementById(
-                            'km-widget-script'
-                        );
+                        window.parent && window.parent.document.getElementById('km-widget-script');
                     if (kmScript && kmScript.nonce) {
                         scriptContent.nonce = kmScript.nonce;
                     }
@@ -211,9 +192,7 @@ function ApplozicSidebox() {
                 mckSidebox.style.visibility = 'visible';
                 var mckLocBox = document.getElementById('mck-loc-box');
                 mckLocBox.style.visibility = 'visible';
-                var mckGmSearchBox = document.getElementById(
-                    'mck-gm-search-box'
-                );
+                var mckGmSearchBox = document.getElementById('mck-gm-search-box');
                 mckGmSearchBox.style.visibility = 'visible';
             }
             if (
@@ -222,9 +201,7 @@ function ApplozicSidebox() {
             ) {
                 showAfterLoad();
             } else {
-                var isScriptV2 = !!parent.document.getElementById(
-                    'kommunicate-widget-iframe'
-                );
+                var isScriptV2 = !!parent.document.getElementById('kommunicate-widget-iframe');
                 if (isScriptV2) {
                     window.parent.document.addEventListener(
                         'kmInitilized',
@@ -271,10 +248,7 @@ function ApplozicSidebox() {
                 if (script.readyState) {
                     // IE
                     script.onreadystatechange = function () {
-                        if (
-                            script.readyState === 'loaded' ||
-                            script.readyState === 'complete'
-                        ) {
+                        if (script.readyState === 'loaded' || script.readyState === 'complete') {
                             script.onreadystatechange = null;
                             callback();
                         }
@@ -298,9 +272,7 @@ function ApplozicSidebox() {
     function mckInitPluginScript() {
         try {
             var options = applozic._globals;
-            MCK_COOKIE_DOMAIN = KommunicateUtils.findCookieDomain(
-                document.domain
-            );
+            MCK_COOKIE_DOMAIN = KommunicateUtils.findCookieDomain(document.domain);
             for (var index in mck_third_party_scripts) {
                 var data = mck_third_party_scripts[index];
                 if (data.name === 'locationPicker') {
@@ -341,8 +313,7 @@ function ApplozicSidebox() {
             }
 
             element.onload = () => resolve();
-            element.onerror = () =>
-                reject(new Error(`Resource load error for ${src}`));
+            element.onerror = () => reject(new Error(`Resource load error for ${src}`));
 
             document.head.appendChild(element);
         });
@@ -353,35 +324,26 @@ function ApplozicSidebox() {
             const promises = [];
 
             if (options.zendeskChatSdkKey) {
-                promises.push(
-                    loadResourceAsync(THIRD_PARTY_SCRIPTS.zendesk.js)
-                );
+                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.zendesk.js));
             }
 
             if (
                 Array.isArray(options.preLeadCollection) ||
                 (apiData.collectLead && apiData.leadCollection)
             ) {
-                const leadCollection =
-                    options.preLeadCollection || apiData.leadCollection;
+                const leadCollection = options.preLeadCollection || apiData.leadCollection;
 
-                const shouldLoadIntl = leadCollection?.some(
-                    (obj) => obj.enableCountryCode
-                );
+                const shouldLoadIntl = leadCollection?.some((obj) => obj.enableCountryCode);
 
                 if (shouldLoadIntl) {
-                    Object.values(THIRD_PARTY_SCRIPTS.intlForPreChat).forEach(
-                        async (file) => {
-                            promises.push(loadResourceAsync(file));
-                        }
-                    );
+                    Object.values(THIRD_PARTY_SCRIPTS.intlForPreChat).forEach(async (file) => {
+                        promises.push(loadResourceAsync(file));
+                    });
                 }
             }
 
             if (options.voiceNote) {
-                promises.push(
-                    loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js)
-                );
+                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js));
             }
 
             await Promise.all(promises);
@@ -456,26 +418,20 @@ function ApplozicSidebox() {
                 return (
                     hostname == domain ||
                     (hostname.length > domain.length &&
-                        hostname.substr(hostname.length - domain.length - 1) ==
-                            '.' + domain)
+                        hostname.substr(hostname.length - domain.length - 1) == '.' + domain)
                 );
             };
             function isSettingEnable(key) {
-                return options[key] != null
-                    ? options[key]
-                    : widgetSettings && widgetSettings[key];
+                return options[key] != null ? options[key] : widgetSettings && widgetSettings[key];
             }
             // replace cookies in old format with cookies in new format
             KommunicateUtils.replaceOldCookies();
 
             //to check if the customer has been churned then show the churn banner
             if (data.currentActivatedPlan == 'churn') {
-                var kommunicateIframe = parent.document.getElementById(
-                    'kommunicate-widget-iframe'
-                );
+                var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
                 var utmSourceUrl = kommunicateIframe
-                    ? kommunicateIframe.getAttribute('data-url') ||
-                      parent.window.location.href
+                    ? kommunicateIframe.getAttribute('data-url') || parent.window.location.href
                     : w.location.href;
                 var poweredByUrl =
                     'https://www.kommunicate.io/poweredby?utm_source=' +
@@ -484,8 +440,7 @@ function ApplozicSidebox() {
                 var linkForChurn = document.getElementById('deactivate-link');
                 var churnCust = document.getElementById('km-churn-customer');
                 if (churnCust) {
-                    linkForChurn &&
-                        linkForChurn.setAttribute('href', poweredByUrl);
+                    linkForChurn && linkForChurn.setAttribute('href', poweredByUrl);
                     churnCust.classList.remove('n-vis');
                 }
             }
@@ -502,10 +457,7 @@ function ApplozicSidebox() {
             );
             // Remove scripts if disableChatWidget property is enabled
             // or domain restrictions are enabled
-            if (
-                (disableChatWidget || isCurrentDomainDisabled) &&
-                !isCurrentDomainKommunicate
-            ) {
+            if ((disableChatWidget || isCurrentDomainDisabled) && !isCurrentDomainKommunicate) {
                 parent.window && parent.window.removeKommunicateScripts();
                 return false;
             }
@@ -519,40 +471,31 @@ function ApplozicSidebox() {
                 options.sessionTimeout != null
                     ? options.sessionTimeout
                     : widgetSettings && widgetSettings.sessionTimeout;
-            options['appSettings'] = $applozic.extend(
-                true,
-                data,
-                options.appSettings
-            );
+            options['appSettings'] = $applozic.extend(true, data, options.appSettings);
 
             options['agentId'] = options.appSettings.agentId;
             options['agentName'] = options.appSettings.agentName;
             options['widgetSettings'] = widgetSettings;
-            options['customerCreatedAt'] =
-                options.appSettings.customerCreatedAt;
+            options['customerCreatedAt'] = options.appSettings.customerCreatedAt;
             options['collectFeedback'] = options.appSettings.collectFeedback;
             options['isCsatAvailable'] = options.appSettings.isCsatAvailable;
             options['chatPopupMessage'] = options.appSettings.chatPopupMessage;
 
             var pseudoNameEnabled =
-                widgetSettings &&
-                typeof widgetSettings.pseudonymsEnabled !== 'undefined'
+                widgetSettings && typeof widgetSettings.pseudonymsEnabled !== 'undefined'
                     ? widgetSettings.pseudonymsEnabled
                     : KM_PLUGIN_SETTINGS.pseudoNameEnabled;
-            options.metadata =
-                typeof options.metadata == 'object' ? options.metadata : {};
+            options.metadata = typeof options.metadata == 'object' ? options.metadata : {};
             options.conversationMetadata =
                 typeof options.defaultConversationMetadata == 'object'
                     ? options.defaultConversationMetadata
                     : {};
             options.fileUpload =
-                options.fileUpload ||
-                (widgetSettings && widgetSettings.fileUpload);
+                options.fileUpload || (widgetSettings && widgetSettings.fileUpload);
             options.connectSocketOnWidgetClick =
                 options.connectSocketOnWidgetClick != null
                     ? options.connectSocketOnWidgetClick
-                    : widgetSettings &&
-                      widgetSettings.connectSocketOnWidgetClick;
+                    : widgetSettings && widgetSettings.connectSocketOnWidgetClick;
             options.voiceInput =
                 options.voiceInput != null
                     ? options.voiceInput
@@ -602,8 +545,7 @@ function ApplozicSidebox() {
                     : function (file) {
                           return file;
                       };
-            options.defaultUploadOverride =
-                widgetSettings && widgetSettings.defaultUploadOverride;
+            options.defaultUploadOverride = widgetSettings && widgetSettings.defaultUploadOverride;
 
             options.maxAttachmentSize =
                 options.maxAttachmentSize != null
@@ -612,8 +554,7 @@ function ApplozicSidebox() {
             options.maxAttachmentSizeErrorMsg =
                 options.maxAttachmentSizeErrorMsg != null
                     ? options.maxAttachmentSizeErrorMsg
-                    : widgetSettings &&
-                      widgetSettings.maxAttachmentSizeErrorMsg;
+                    : widgetSettings && widgetSettings.maxAttachmentSizeErrorMsg;
 
             options.checkboxAsMultipleButton =
                 options.checkboxAsMultipleButton ||
@@ -634,8 +575,7 @@ function ApplozicSidebox() {
             options.showMsgFromStart = isSettingEnable('showMsgFromStart');
             options.rtl = isSettingEnable('rtl');
             options.googleApiKey =
-                isSettingEnable('googleApiKey') ??
-                'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
+                isSettingEnable('googleApiKey') ?? 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
 
             options.anonymousUserIdForPreChatLead = isSettingEnable(
                 'anonymousUserIdForPreChatLead'
@@ -643,22 +583,12 @@ function ApplozicSidebox() {
 
             appOptionSession.deletePropertyDataFromSession('settings');
 
-            if (
-                sessionTimeout != null &&
-                !(options.preLeadCollection || options.askUserDetails)
-            ) {
+            if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
                 logoutAfterSessionExpiry(sessionTimeout);
-                var details =
-                    kmLocalStorage.getItemFromLocalStorage(
-                        applozic._globals.appId
-                    ) || {};
-                !details.sessionStartTime &&
-                    (details.sessionStartTime = new Date().getTime());
+                var details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
+                !details.sessionStartTime && (details.sessionStartTime = new Date().getTime());
                 details.sessionTimeout = sessionTimeout;
-                kmLocalStorage.setItemToLocalStorage(
-                    applozic._globals.appId,
-                    details
-                );
+                kmLocalStorage.setItemToLocalStorage(applozic._globals.appId, details);
             }
 
             if (applozic.PRODUCT_ID == 'kommunicate') {
@@ -731,9 +661,7 @@ function ApplozicSidebox() {
     function preLoadLauncherIconInterval() {
         var launcherInterval = setInterval(function () {
             if (document.getElementById('mck-sidebox-launcher')) {
-                document
-                    .getElementById('mck-sidebox-launcher')
-                    .classList.remove('n-vis');
+                document.getElementById('mck-sidebox-launcher').classList.remove('n-vis');
                 document
                     .getElementById('mck-sidebox-launcher')
                     .classList.add('km-launcher-animation');
@@ -763,11 +691,16 @@ function ApplozicSidebox() {
         applozic._globals.widgetPlatformUrl &&
             (data.widgetPlatformUrl = applozic._globals.widgetPlatformUrl);
         // NOTE: Don't pass applozic._globals as it is in data field of ajax call, pass only the fields which are required for this API call.
-        if (!data.widgetPlatformUrl && (!data.appId || data.appId === "APP_ID" || data.appId === "")) {
-            console.error("Please replace 'APP_ID' with your App ID in the Kommunicate plugin settings.");
+        if (
+            !data.widgetPlatformUrl &&
+            (!data.appId || data.appId === 'APP_ID' || data.appId === '')
+        ) {
+            console.error(
+                "Please replace 'APP_ID' with your App ID in the Kommunicate plugin settings."
+            );
             return;
         }
-        
+
         var url =
             KM_PLUGIN_SETTINGS.kommunicateApiUrl +
             '/users/v3/chat/plugin/settings' +
@@ -777,13 +710,8 @@ function ApplozicSidebox() {
             if (this.readyState == 4 && this.status == 200) {
                 var responseData = JSON.parse(this.responseText);
                 // if only the url of the shop was provided then set the appId
-                if (
-                    !data.appId &&
-                    data.widgetPlatformUrl &&
-                    responseData.response
-                ) {
-                    applozic._globals.appId =
-                        responseData.response.applicationId;
+                if (!data.appId && data.widgetPlatformUrl && responseData.response) {
+                    applozic._globals.appId = responseData.response.applicationId;
                 }
                 mckInitSidebox(responseData.response, userId); // This function will initialize the Sidebox code.
             }
@@ -796,17 +724,13 @@ function ApplozicSidebox() {
             return;
         }
 
-        var kommunicateIframe = parent.document.getElementById(
-            'kommunicate-widget-iframe'
-        );
+        var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         var url = kommunicateIframe
             ? kommunicateIframe.getAttribute('data-url')
             : parent.window.location.href;
         userId =
             options.userId ||
-            kmCookieStorage.getCookie(
-                KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID
-            );
+            kmCookieStorage.getCookie(KommunicateConstants.COOKIES.KOMMUNICATE_LOGGED_IN_ID);
 
         try {
             const sentryGlobalScope = Sentry.getGlobalScope();
@@ -847,8 +771,7 @@ function ApplozicSidebox() {
             )
         ) {
             kmCookieStorage.setCookie({
-                name:
-                    KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
+                name: KommunicateConstants.COOKIES.IS_USER_ID_FOR_LEAD_COLLECTION,
                 value: false,
                 expiresInDays: 30,
                 domain: MCK_COOKIE_DOMAIN,
@@ -868,9 +791,7 @@ function ApplozicSidebox() {
     function logoutAfterSessionExpiry(sessionTimeout) {
         var widgetSettings, timeStampDifference;
         applozic._globals.appId &&
-            (widgetSettings = kmLocalStorage.getItemFromLocalStorage(
-                applozic._globals.appId
-            ));
+            (widgetSettings = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId));
         var endTime = widgetSettings && widgetSettings.sessionEndTime;
         var startTime = widgetSettings && widgetSettings.sessionStartTime;
         var timeStampDifference = endTime - startTime;
@@ -881,31 +802,19 @@ function ApplozicSidebox() {
             timeStampDifference = 0;
         }
 
-        if (
-            widgetSettings &&
-            sessionTimeout != null &&
-            timeStampDifference >= sessionTimeout
-        ) {
+        if (widgetSettings && sessionTimeout != null && timeStampDifference >= sessionTimeout) {
             kmCookieStorage.deleteUserCookiesOnLogout();
             appOptionSession.deleteSessionData();
             kmLocalStorage.removeItemFromLocalStorage(applozic._globals.appId);
             ALStorage.clearSessionStorageElements();
-            kmLocalStorage.removeItemFromLocalStorage(
-                'mckActiveConversationInfo'
-            );
+            kmLocalStorage.removeItemFromLocalStorage('mckActiveConversationInfo');
         }
         // TODO: Handle case where internet disconnects and sessionEndTime is not updated.
         window.addEventListener('beforeunload', function (event) {
             // Cancel the event as stated by the standard.
-            var details =
-                kmLocalStorage.getItemFromLocalStorage(
-                    applozic._globals.appId
-                ) || {};
+            var details = kmLocalStorage.getItemFromLocalStorage(applozic._globals.appId) || {};
             details.sessionEndTime = new Date().getTime();
-            kmLocalStorage.setItemToLocalStorage(
-                applozic._globals.appId,
-                details
-            );
+            kmLocalStorage.setItemToLocalStorage(applozic._globals.appId, details);
         });
     }
 }

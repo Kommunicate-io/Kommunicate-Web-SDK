@@ -12,8 +12,7 @@ class KMLabel {
             'limit.characters': 'characters',
             'limit.remaining': 'remaining',
             'file.uploading.wait': 'Please wait file is uploading.',
-            'file.size.limit.exceeded':
-                'File size cannot be more than $maxAttachmentSize MB',
+            'file.size.limit.exceeded': 'File size cannot be more than $maxAttachmentSize MB',
             'empty.groups': 'No groups yet!',
             'empty.contacts': 'No contacts yet!',
             'empty.messages': 'No messages yet!',
@@ -40,10 +39,8 @@ class KMLabel {
             'block.user.alert': 'Are you sure you want to block this user?',
             'unblock.user.alert': 'Are you sure you want to unblock this user?',
             'exit.group.alert': 'Are you sure you want to exit this group?',
-            'remove.member.alert':
-                'Are you sure you want to remove this member?',
-            'clear.messages.alert':
-                'Are you sure you want to delete all the conversation?',
+            'remove.member.alert': 'Are you sure you want to remove this member?',
+            'clear.messages.alert': 'Are you sure you want to delete all the conversation?',
             'typing': 'typing...',
             'is.typing': 'is typing...',
             'online': 'Online',
@@ -104,7 +101,8 @@ class KMLabel {
                 'Uh oh! No internet connection. Please check your network settings and try again.',
             'socket-disconnect.msg':
                 'Error while syncing messages. Check your firewall settings or try again after some time.',
-            'business-hour.msg': 'You have reached us outside our business hours. Our bot will handle your queries until the team is back online.',
+            'business-hour.msg':
+                'You have reached us outside our business hours. Our bot will handle your queries until the team is back online.',
             'group.metadata': {
                 CREATE_GROUP_MESSAGE: ':adminName created group :groupName',
                 REMOVE_MEMBER_MESSAGE: ':adminName removed :userName',
@@ -131,12 +129,10 @@ class KMLabel {
                 password: 'Password',
                 errorText: 'Please enter your account password',
                 errorEmail: 'Please enter a valid email address',
-                commonErrorMsg:
-                    'The input you have provided is either invalid or incorrect.',
+                commonErrorMsg: 'The input you have provided is either invalid or incorrect.',
             },
             'csat.rating': {
-                RESOLVED_CONVERSATION_RATED:
-                    'Conversation resolved and you rated it as',
+                RESOLVED_CONVERSATION_RATED: 'Conversation resolved and you rated it as',
                 NEW_RATING_EMPTY_LABEL: '',
                 CONVERSATION_RATED: 'You rated the conversation as',
                 RATE_CONVERSATION: 'Rate your conversation',
@@ -145,8 +141,7 @@ class KMLabel {
                 RESTART_CONVERSATION: 'Restart the conversation',
                 SUBMIT_RATING: 'Submit your rating',
                 CONVERSATION_RESOLVED: 'This conversation was resolved', //if conversation resolved through zendesk,
-                CONVERSATION_RATING_HEADING:
-                    'How satisfied are you with the conversation?',
+                CONVERSATION_RATING_HEADING: 'How satisfied are you with the conversation?',
                 RATE_ERROR_MSG: 'Please rate the conversation',
             },
             'page.title.on.new.message': 'New message from ',
@@ -192,8 +187,7 @@ class KMLabel {
                 'header.text': 'In queue...',
                 'first.Part': 'You are currently',
                 'waiting.queue.number': '5',
-                'last.part':
-                    ' in the waiting queue, our agents will get back you shortly.',
+                'last.part': ' in the waiting queue, our agents will get back you shortly.',
             },
             'conversation.header.dropdown': {
                 CSAT_RATING_TEXT: 'Rate this conversation',
@@ -242,19 +236,14 @@ class KMLabel {
         $applozic(
             '#mck-contact-search-input, #mck-group-search-input, #mck-group-member-search'
         ).attr('placeholder', MCK_LABELS['search.placeholder']);
-        $applozic('#mck-loc-address').attr(
-            'placeholder',
-            MCK_LABELS['location.placeholder']
-        );
+        $applozic('#mck-loc-address').attr('placeholder', MCK_LABELS['location.placeholder']);
         // $applozic('#mck-no-conversations').html(MCK_LABELS['empty.conversations']);
         // $applozic('#mck-no-messages').html(MCK_LABELS['empty.messages']);
         // $applozic('#mck-no-more-conversations').html(MCK_LABELS['no.more.conversations']);
         // $applozic('#mck-no-more-messages').html(MCK_LABELS['no.more.messages']);
         $applozic('#mck-no-search-contacts').html(MCK_LABELS['empty.contacts']);
         $applozic('#mck-no-search-groups').html(MCK_LABELS['empty.groups']);
-        $applozic(
-            '#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create'
-        )
+        $applozic('#mck-new-group, #mck-group-create-tab .mck-box-title, #mck-btn-group-create')
             .html(MCK_LABELS['create.group.title'])
             .attr('title', MCK_LABELS['create.group.title']);
         $applozic('#mck-gc-overlay-label').html(MCK_LABELS['add.group.icon']);
@@ -264,15 +253,11 @@ class KMLabel {
         $applozic('#mck-group-info-btn, #mck-group-info-tab .mck-box-title')
             .html(MCK_LABELS['group.info.title'])
             .attr('title', MCK_LABELS['group.info.title']);
-        $applozic('#mck-gi-overlay-label').html(
-            MCK_LABELS['change.group.icon']
-        );
+        $applozic('#mck-gi-overlay-label').html(MCK_LABELS['change.group.icon']);
         $applozic('#mck-group-member-title')
             .html(MCK_LABELS['members.title'])
             .attr('title', MCK_LABELS['members.title']);
-        $applozic(
-            '#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title'
-        )
+        $applozic('#mck-group-add-member .blk-lg-9, #mck-gm-search-box .mck-box-title')
             .html(MCK_LABELS['add.members.title'])
             .attr('title', MCK_LABELS['add.members.title']);
         $applozic('#mck-btn-group-update')
@@ -291,47 +276,34 @@ class KMLabel {
         $applozic('#mck-loc-box .mck-box-title, #mck-share-loc-label')
             .html(MCK_LABELS['location.share.title'])
             .attr('title', MCK_LABELS['location.share.title']);
-        $applozic('#mck-btn-loc').attr(
-            'title',
-            MCK_LABELS['location.share.title']
-        );
+        $applozic('#mck-btn-loc').attr('title', MCK_LABELS['location.share.title']);
         $applozic('#mck-file-up-label').html(MCK_LABELS['file.attachment']);
         $applozic('#mck-file-up').attr('title', MCK_LABELS['file.attachment']);
-        $applozic('.mck-file-attach-label').attr(
-            'title',
-            MCK_LABELS['file.attach.title']
-        );
+        $applozic('.mck-file-attach-label').attr('title', MCK_LABELS['file.attach.title']);
         $applozic('#mck-my-loc')
             .html(MCK_LABELS['my.location'])
             .attr('title', MCK_LABELS['my.location']);
         $applozic('#mck-btn-close-loc-box')
             .html(MCK_LABELS['close'])
             .attr('title', MCK_LABELS['close']);
-        $applozic('#mck-loc-submit')
-            .html(MCK_LABELS['send'])
-            .attr('title', MCK_LABELS['send']);
+        $applozic('#mck-loc-submit').html(MCK_LABELS['send']).attr('title', MCK_LABELS['send']);
         $applozic('#mck-msg-sbmt').attr('title', MCK_LABELS['send.message']);
         $applozic('#mck-btn-smiley').attr('title', MCK_LABELS['smiley']);
         $applozic('#mck-group-name-save').attr('title', MCK_LABELS['save']);
         $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
         $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
-        document.getElementById('mck-text-box').dataset.text =
-            MCK_LABELS['input.message'];
-        document.getElementById('mck-char-warning-text').innerHTML =
-            MCK_LABELS['char.limit.warn'];
+        document.getElementById('mck-text-box').dataset.text = MCK_LABELS['input.message'];
+        document.getElementById('mck-char-warning-text').innerHTML = MCK_LABELS['char.limit.warn'];
         document
             .getElementById('km-faq-search-input')
             .setAttribute('placeholder', MCK_LABELS['search.faq']);
         document.getElementById('mck-no-faq-found').innerHTML =
             MCK_LABELS['looking.for.something.else'];
-        document.getElementById('km-internet-disconnect-msg').innerHTML =
-            MCK_LABELS['offline.msg'];
+        document.getElementById('km-internet-disconnect-msg').innerHTML = MCK_LABELS['offline.msg'];
         document.getElementById('km-socket-disconnect-msg').innerHTML =
             MCK_LABELS['socket-disconnect.msg'];
-        document.getElementById('talk-to-human-link').innerHTML =
-            MCK_LABELS['talk.to.agent'];
-        document.getElementById('mck-collect-email').innerHTML =
-            MCK_LABELS['how.to.reachout'];
+        document.getElementById('talk-to-human-link').innerHTML = MCK_LABELS['talk.to.agent'];
+        document.getElementById('mck-collect-email').innerHTML = MCK_LABELS['how.to.reachout'];
         document.getElementById('mck-email-error-alert').innerHTML =
             MCK_LABELS['email.error.alert'];
         document.getElementById('mck-resolved-text').innerHTML =
@@ -346,10 +318,7 @@ class KMLabel {
             MCK_LABELS['csat.rating'].RESTART_CONVERSATION;
         document
             .getElementById('mck-feedback-comment')
-            .setAttribute(
-                'placeholder',
-                MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER
-            );
+            .setAttribute('placeholder', MCK_LABELS['csat.rating'].CONVERSATION_REVIEW_PLACEHOLDER);
         document.getElementById('mck-submit-comment').innerHTML =
             MCK_LABELS['csat.rating'].SUBMIT_RATING;
         document.getElementById('wq-msg-first-Part').innerHTML =

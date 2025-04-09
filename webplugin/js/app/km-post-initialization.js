@@ -32,27 +32,18 @@ Kommunicate.getFaqList = function (data, categoryName) {
                 response.data.length > 0 &&
                 $applozic('.km-kb-container').hasClass('n-vis')
             ) {
-                $applozic('.km-kb-container')
-                    .removeClass('n-vis')
-                    .addClass('vis');
-                KommunicateUI.adjustConversationTitleHeadingWidth(
-                    kommunicate._globals.popupWidget
-                );
+                $applozic('.km-kb-container').removeClass('n-vis').addClass('vis');
+                KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
             }
 
             // hide the dropdown faq button if no articles there
             if (response.data.length === 0) {
-                $applozic('.km-option-faq')
-                    .removeClass('vis')
-                    .addClass('n-vis');
+                $applozic('.km-option-faq').removeClass('vis').addClass('n-vis');
             }
 
             response.data.length
                 ? $applozic.each(response.data, function (i, faq) {
-                      var title =
-                          faq &&
-                          faq.title &&
-                          kommunicateCommons.formatHtmlTag(faq.title);
+                      var title = faq && faq.title && kommunicateCommons.formatHtmlTag(faq.title);
                       $applozic('#km-faq-list-container').append(
                           '<li class="km-faq-list" aria-disabled="false" role="button" tabindex="0" data-source="' +
                               faq.source +
@@ -113,16 +104,9 @@ Kommunicate.getFaqCategories = function (data) {
                 );
             });
 
-            if (
-                $applozic('.km-kb-container').hasClass('n-vis') &&
-                initializeFAQ
-            ) {
-                $applozic('.km-kb-container')
-                    .removeClass('n-vis')
-                    .addClass('vis');
-                KommunicateUI.adjustConversationTitleHeadingWidth(
-                    kommunicate._globals.popupWidget
-                );
+            if ($applozic('.km-kb-container').hasClass('n-vis') && initializeFAQ) {
+                $applozic('.km-kb-container').removeClass('n-vis').addClass('vis');
+                KommunicateUI.adjustConversationTitleHeadingWidth(kommunicate._globals.popupWidget);
                 KommunicateUI.setFAQButtonText();
             }
             initializeFAQ && KommunicateUI.initFaq();

@@ -1,7 +1,9 @@
 //USED WHEN THE DIRECTION/DIR IS LTR(RIGHT TO LEFT)
 
 [dir='rtl'] {
-    .mck-sidebox.fade.in.popup-enabled .mck-name-status-container #mck-tab-title.mck-title-width-with-faq ,
+    .mck-sidebox.fade.in.popup-enabled
+        .mck-name-status-container
+        #mck-tab-title.mck-title-width-with-faq,
     .mck-dropup-menu li > a,
     div#mck-agent-status-text,
     p,
@@ -11,7 +13,7 @@
     .mck-box-title {
         text-align: right !important;
     }
-    .mck-box{
+    .mck-box {
         text-align: right;
     }
     .mck-box .mck-nav-tabs {
@@ -193,7 +195,7 @@
         right: auto;
         left: 25px;
     }
-    a.km-learn-more{
+    a.km-learn-more {
         text-align: center;
     }
 }

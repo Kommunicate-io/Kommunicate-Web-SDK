@@ -65,8 +65,7 @@ class AnswerFeedback {
             contentType: 'application/json',
             success: (result) => {
                 if (result.code == 'SUCCESS') {
-                    const msgMeta =
-                        this.msgMap[data.msg.key]?.msg?.metadata || {};
+                    const msgMeta = this.msgMap[data.msg.key]?.msg?.metadata || {};
                     msgMeta.KM_ANSWER_FEEDBACK = feedback;
                 } else {
                     console.error('Failed to submit feedback');
@@ -88,10 +87,7 @@ class AnswerFeedback {
         let question = answer;
 
         // find the user message
-        while (
-            !metadata.KM_CONTEXT_QUESTION &&
-            question?.floatWhere !== 'mck-msg-right'
-        ) {
+        while (!metadata.KM_CONTEXT_QUESTION && question?.floatWhere !== 'mck-msg-right') {
             question = question.previousSibling;
         }
 
@@ -100,9 +96,7 @@ class AnswerFeedback {
 
         const payload = { feedback, messageKey: key };
 
-        const isFeedbackAlreadyGiven = metadata.hasOwnProperty(
-            'KM_ANSWER_FEEDBACK'
-        );
+        const isFeedbackAlreadyGiven = metadata.hasOwnProperty('KM_ANSWER_FEEDBACK');
 
         if (!isFeedbackAlreadyGiven) {
             Object.assign(payload, {
@@ -129,16 +123,10 @@ class AnswerFeedback {
     };
 
     helpFulOnClick = (data) =>
-        this.handleOnFeedbackClick(
-            KommunicateConstants.ANSWER_FEEDBACK.HELPFUL,
-            data
-        );
+        this.handleOnFeedbackClick(KommunicateConstants.ANSWER_FEEDBACK.HELPFUL, data);
 
     notHelpFulOnClick = (data) =>
-        this.handleOnFeedbackClick(
-            KommunicateConstants.ANSWER_FEEDBACK.NOT_HELPFUL,
-            data
-        );
+        this.handleOnFeedbackClick(KommunicateConstants.ANSWER_FEEDBACK.NOT_HELPFUL, data);
 
     handleFeedbackBtnVisible = (msg, floatWhere, group) => {
         if (!CURRENT_GROUP_DATA.answerFeedback) return false;
@@ -152,12 +140,10 @@ class AnswerFeedback {
         // If valid(0 | 1) feedback is already given then don't show the feedback buttons
         const validFeedback =
             msg.metadata.hasOwnProperty('KM_ANSWER_FEEDBACK') &&
-            msg.metadata.KM_ANSWER_FEEDBACK !=
-                KommunicateConstants.ANSWER_FEEDBACK.DISCARD;
+            msg.metadata.KM_ANSWER_FEEDBACK != KommunicateConstants.ANSWER_FEEDBACK.DISCARD;
 
         if (
-            currentUser.role !==
-                KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT ||
+            currentUser.role !== KommunicateConstants.GROUP_ROLE.MODERATOR_OR_BOT ||
             validFeedback ||
             !msg.metadata.hasOwnProperty('KM_ANSWER_SOURCE') // From where bot fetched the answer like the webpages, document urls
         ) {
@@ -165,9 +151,7 @@ class AnswerFeedback {
         }
 
         return (
-            floatWhere === 'mck-msg-left' &&
-            !msg.metadata.obsolete &&
-            !msg.metadata.WELCOME_EVENT
+            floatWhere === 'mck-msg-left' && !msg.metadata.obsolete && !msg.metadata.WELCOME_EVENT
         );
     };
 
@@ -181,23 +165,14 @@ class AnswerFeedback {
         const feedbackContainerSelector = `[data-msgKey="${msg.key}"] .km-answer-feedback`;
         const stickyStickerSelector = `[data-msgKey="${msg.key}"] .mck-msg-feedback-sticker`;
 
-        const msgContainer = document.querySelector(
-            `[data-msgKey='${msg.key}']`
-        );
+        const msgContainer = document.querySelector(`[data-msgKey='${msg.key}']`);
 
-        const stickySticker = msgContainer.querySelector(
-            '.mck-msg-feedback-sticker'
-        );
-        const helpfulButton = msgContainer.querySelector(
-            '.answer-feedback-helpful'
-        );
-        const notHelpfulButton = msgContainer.querySelector(
-            '.answer-feedback-not-helpful'
-        );
+        const stickySticker = msgContainer.querySelector('.mck-msg-feedback-sticker');
+        const helpfulButton = msgContainer.querySelector('.answer-feedback-helpful');
+        const notHelpfulButton = msgContainer.querySelector('.answer-feedback-not-helpful');
 
         const setFeedback = (feedback) => {
-            const iconToAdd =
-                KommunicateConstants.ANSWER_FEEDBACK_ICONS[feedback];
+            const iconToAdd = KommunicateConstants.ANSWER_FEEDBACK_ICONS[feedback];
 
             this.putIconInsideSticker(stickySticker, iconToAdd);
 
@@ -245,10 +220,7 @@ class AnswerFeedback {
                 true
             );
 
-            this.handleOnFeedbackClick(
-                KommunicateConstants.ANSWER_FEEDBACK.DISCARD,
-                data
-            );
+            this.handleOnFeedbackClick(KommunicateConstants.ANSWER_FEEDBACK.DISCARD, data);
         });
     };
 

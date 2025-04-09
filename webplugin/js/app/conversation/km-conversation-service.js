@@ -14,24 +14,19 @@ Kommunicate.conversation = {
      */
     processConversationOpenedFromList: function (data, error) {
         if (error) {
-            console.log(
-                'Error received. can not post process the conversation ',
-                error
-            );
+            console.log('Error received. can not post process the conversation ', error);
             return;
         }
 
         var conversationDetail = data && data.groupFeeds[0];
 
-        const feedbackGroups = kmLocalStorage.getItemFromLocalStorage("feedbackGroups") || {};
+        const feedbackGroups = kmLocalStorage.getItemFromLocalStorage('feedbackGroups') || {};
         const isConversationRated = feedbackGroups[conversationDetail.id];
 
         KommunicateUI.showClosedConversationBanner(
             isConversationRated
                 ? false
-                : Kommunicate.conversationHelper.isConversationClosed(
-                      conversationDetail
-                  )
+                : Kommunicate.conversationHelper.isConversationClosed(conversationDetail)
         );
     },
 };

@@ -1,3 +1,5 @@
-webplugin/lib/js/*
+webplugin/lib/*
 webplugin/build/*
 *.min.js
+*.min.css
+package-lock.json
