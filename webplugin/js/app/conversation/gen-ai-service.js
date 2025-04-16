@@ -24,7 +24,7 @@ class GenAiService {
             return;
         }
         this.currentIndex = this.currentIndex + 1;
-        const textNode = document.createTextNode(`${msg.message} `);
+        const textNode = document.createTextNode(`${msg.message}`);
         const targetElement = this.currentElement || this.textMsgDiv;
         targetElement.appendChild(textNode);
 
