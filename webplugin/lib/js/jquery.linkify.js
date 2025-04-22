@@ -75,32 +75,11 @@ function linkify(string, buildHashtagUrl, includeW3, target, noFollow) {
                     .join("");
             };
 
-            function processNodes(element) {
-                var processedContent = $.map($(element).contents(), function (node) {
-                    const cssPattern = /(?:[^{]+\s*\{[^}]*\})+/g;
-
-                    // text node and not style node 
-                    if (node.nodeType === 3 && cssPattern.test(node.nodeValue.trim())) {
-                        return `<style>${node.nodeValue}</style>`; // Wrap it properly
-                    }
-                    
-                    // Preserve actual <style> tags
-                    if (node.nodeType === 1 && node.nodeName.toLowerCase() === "style") {
-                        return node.outerHTML;
-                    }
-
-                    return convertTextToLink(node);
-                }).join("");
-
-                return processedContent;
-            };
-   
-
             if (opts.htmlRichMessage) {
                 Array.from(this.children).forEach((child) => {
                     if (child.nodeName === 'MCK-HTML-RICH-MESSAGE') {
-                        child._shadow.innerHTML = processNodes(
-                            (child.shadowRoot || child._shadow).innerHTML
+                        child._shadow.innerHTML = convertChildNodes(
+                            child.shadowRoot || child._shadow
                         );
                     } else {
                         child.innerHTML = convertChildNodes(child);
