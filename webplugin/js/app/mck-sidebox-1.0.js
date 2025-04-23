@@ -3907,7 +3907,7 @@ const firstVisibleMsg = {
                     mckMessageLayout.addGroupsToGroupSearchList();
                 });
 
-                mck_text_box.addEventListener('keyup', function () {
+                mck_text_box.addEventListener('input', function () {
                     _this.toggleMediaOptions(this);
                 });
                 _this.cursorPosition = function (element) {
