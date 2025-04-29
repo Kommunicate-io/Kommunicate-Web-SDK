@@ -29,6 +29,35 @@ const configEnv = {
             },
         },
     },
+    test_agenticfirst: {
+        port: '3030',
+        urls: {
+            applozicBaseUrl: 'https://chat-test.kommunicate.io',
+            kommunicateBaseUrl: 'https://api-test.kommunicate.io',
+            botPlatformApi: 'https://bots-test.kommunicate.io',
+            hostUrl: 'https://widget-test.agenticfirst.ai',
+            dashboardUrl: 'https://app-test.agenticfirst.ai',
+        },
+        pluginProperties: {
+            pseudoNameEnabled: true,
+        },
+        thirdPartyIntegration: {
+            sentry: {
+                nameSpace: '0494b01c401dbac92222bf85f41e26a0',
+                dsn:
+                    'https://0494b01c401dbac92222bf85f41e26a0@o4508295387480064.ingest.us.sentry.io/4508295388790784',
+                enabled: true,
+                PROJECT: 'test-widget',
+                ORG: 'km-test',
+                AUTH_TOKEN:
+                    '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',
+            },
+            aws: {
+                cdnUrl: 'https://cdn-test.kommunicate.io',
+                bucket: 'kom-test-cdn',
+            },
+        },
+    },
     test: {
         port: '3030',
         urls: {
@@ -127,6 +156,34 @@ const configEnv = {
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget.kommunicate.io',
             dashboardUrl: 'https://dashboard.kommunicate.io',
+        },
+        pluginProperties: {
+            pseudoNameEnabled: true,
+        },
+        thirdPartyIntegration: {
+            sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
+            },
+            aws: {
+                cdnUrl: 'https://cdn.kommunicate.io',
+                bucket: 'kom-prod-cdn',
+            },
+        },
+    },
+    prod_agenticfirst: {
+        port: '3030',
+        urls: {
+            applozicBaseUrl: 'https://chat.kommunicate.io',
+            kommunicateBaseUrl: 'https://api.kommunicate.io',
+            botPlatformApi: 'https://bots.kommunicate.io',
+            hostUrl: 'https://widget.agenticfirst.ai',
+            dashboardUrl: 'https://app.agenticfirst.ai',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
