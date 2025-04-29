@@ -36,7 +36,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api-test.kommunicate.io',
             botPlatformApi: 'https://bots-test.kommunicate.io',
             hostUrl: 'https://widget-test.agenticfirst.ai',
-            dashboardUrl: 'https://dashboard-test.kommunicate.io',
+            dashboardUrl: 'https://app-test.agenticfirst.ai',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
@@ -183,7 +183,7 @@ const configEnv = {
             kommunicateBaseUrl: 'https://api.kommunicate.io',
             botPlatformApi: 'https://bots.kommunicate.io',
             hostUrl: 'https://widget.agenticfirst.ai',
-            dashboardUrl: 'https://dashboard.kommunicate.io',
+            dashboardUrl: 'https://app.agenticfirst.ai',
         },
         pluginProperties: {
             pseudoNameEnabled: true,
