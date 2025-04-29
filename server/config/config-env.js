@@ -147,6 +147,34 @@ const configEnv = {
             },
         },
     },
+    prod_agenticfirst: {
+        port: '3030',
+        urls: {
+            applozicBaseUrl: 'https://chat.kommunicate.io',
+            kommunicateBaseUrl: 'https://api.kommunicate.io',
+            botPlatformApi: 'https://bots.kommunicate.io',
+            hostUrl: 'https://widget.agenticfirst.ai',
+            dashboardUrl: 'https://dashboard.kommunicate.io',
+        },
+        pluginProperties: {
+            pseudoNameEnabled: true,
+        },
+        thirdPartyIntegration: {
+            sentry: {
+                nameSpace: '9f71614ef8184d0cab00074555dad9a7',
+                dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911',
+                enabled: true,
+                AUTH_TOKEN:
+                    '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',
+                PROJECT: 'chat-widget',
+                ORG: 'applozic',
+            },
+            aws: {
+                cdnUrl: 'https://cdn.kommunicate.io',
+                bucket: 'kom-prod-cdn',
+            },
+        },
+    },
     prod_cn: {
         port: '3030',
         urls: {
