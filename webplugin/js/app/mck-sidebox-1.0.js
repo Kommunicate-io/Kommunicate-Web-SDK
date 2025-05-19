@@ -2607,6 +2607,28 @@ const firstVisibleMsg = {
                     firstVisibleMsg.reset();
                 }
                 closeButton.addEventListener('click', closeChatBox);
+
+                mckVoice.addEventListeners();
+                document
+                    .querySelector('.mck-voice-interface-back-btn')
+                    .addEventListener('click', function () {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['mck-voice-interface'] },
+                            'n-vis',
+                            'vis'
+                        );
+
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: ['mck-sidebox-ft'],
+                                class: ['mck-box-body', 'mck-box-top'],
+                            },
+                            'vis',
+                            'n-vis'
+                        );
+                        window.Kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
+                    });
+
                 popUpcloseButton.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -6519,6 +6541,10 @@ const firstVisibleMsg = {
                     src: imageUrl,
                     alt: profileImage,
                 });
+                $applozic('.mck-voice-image-container .mck-voice-image').attr({
+                    src: imageUrl,
+                    alt: profileImage,
+                });
                 if (MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId] && params.name) {
                     MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].displayName = params.name;
                     MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].imageUrl = imageUrl;
@@ -8086,9 +8112,7 @@ const firstVisibleMsg = {
                     typingService.cumulativeHeight = 0;
                     genAiService.resetState();
                 }
-                floatWhere != 'mck-msg-right' &&
-                    msg.message &&
-                    kmVoices.processMessagesAsAudio(msg);
+                floatWhere != 'mck-msg-right' && msg.message && kmVoice.processMessagesAsAudio(msg);
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +

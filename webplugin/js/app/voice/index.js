@@ -1,6 +1,6 @@
 class Voice {
-    #VOICE_PLATFORM_API_URL = 'https://api.sws.speechify.com';
-    #VOICE_PLATFORM_API_KEY = 'FTKfDBJNs57Oe1pGL67xJR-_m0YVs70BAP7QP-zWSm4=';
+    #VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
+    #VOICE_PLATFORM_API_KEY = 'sk_5ab9876ffccf3428b7c453a51b7fda95d8d564b8f0b8820f';
     constructor() {
         this.voices = [];
         this.hasMoreVoices = true;
@@ -49,9 +49,12 @@ class Voice {
         this.streamTextToSpeech(msg.message);
     }
     streamTextToSpeech(text = '') {
-        const apiUrl = `${this.#VOICE_PLATFORM_API_URL}/v1/audio/stream`;
+        const apiUrl = `${
+            this.#VOICE_PLATFORM_API_URL
+        }/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
+
         const headers = {
-            'Authorization': `Bearer ${this.#VOICE_PLATFORM_API_KEY}`,
+            'xi-api-key': `${this.#VOICE_PLATFORM_API_KEY}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
@@ -60,8 +63,8 @@ class Voice {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
-                input: text,
-                voice_id: 'lisa',
+                text: text,
+                // voice_id: 'lisa',
             }),
         })
             .then((response) => {
@@ -138,6 +141,41 @@ class Voice {
                 console.error('There was a problem with the fetch operation:', error);
             });
     }
+
+    speechToText(audioBlob) {
+        const apiUrl = `${this.#VOICE_PLATFORM_API_URL}/v1/speech-to-text`;
+
+        const headers = {
+            'xi-api-key': `${this.#VOICE_PLATFORM_API_KEY}`,
+            // 'Accept': 'application/json',
+            // 'Content-Type': 'application/json',
+        };
+
+        const formdata = new FormData();
+        formdata.append('model_id', 'scribe_v1');
+        formdata.append('file', audioBlob, 'file');
+
+        const requestOptions = {
+            method: 'POST',
+            body: formdata,
+            redirect: 'follow',
+            headers: headers,
+        };
+
+        return fetch(apiUrl, requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                return data;
+            })
+            .catch((error) => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
 }
 
-const kmVoices = new Voice();
+const kmVoice = new Voice();

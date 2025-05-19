@@ -36,6 +36,7 @@ exports.PLUGIN_JS_FILES = [
     // path.resolve(__dirname, 'lib/js/Fr.voice.js'),
     // path.resolve(__dirname, 'lib/js/recorder.js'),
     path.resolve(__dirname, 'js/app/voice/index.js'),
+    path.resolve(__dirname, 'js/app/voice/mck-voice.js'),
     path.resolve(__dirname, 'js/app/components/custom-element.js'),
     path.resolve(__dirname, 'lib/js/jquery.linkify.js'),
     path.resolve(__dirname, 'js/app/constants/km-allowed-tags.js'),
