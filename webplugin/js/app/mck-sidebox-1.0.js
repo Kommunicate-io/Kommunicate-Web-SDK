@@ -8086,6 +8086,9 @@ const firstVisibleMsg = {
                     typingService.cumulativeHeight = 0;
                     genAiService.resetState();
                 }
+                floatWhere != 'mck-msg-right' &&
+                    msg.message &&
+                    kmVoices.processMessagesAsAudio(msg);
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +

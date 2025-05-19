@@ -176,3 +176,19 @@
 .mck-conversation-transferred {
     margin: 12px 0;
 }
+
+.mck-box-form-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mck-voice-web {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    background: blue;
+    min-width: 53px;
+    justify-content: center;
+    border-radius: 4px;
+}
