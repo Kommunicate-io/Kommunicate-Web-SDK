@@ -41,13 +41,6 @@ class Voice {
             });
     }
 
-    processMessagesAsAudio(msg) {
-        this.audioQueue.push(msg);
-        if (this.audioQueue.length > 1) {
-            return;
-        }
-        this.streamTextToSpeech(msg.message);
-    }
     streamTextToSpeech(text = '') {
         const apiUrl = `${
             this.#VOICE_PLATFORM_API_URL
@@ -59,12 +52,11 @@ class Voice {
             'Content-Type': 'application/json',
         };
 
-        fetch(apiUrl, {
+        return fetch(apiUrl, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
                 text: text,
-                // voice_id: 'lisa',
             }),
         })
             .then((response) => {
@@ -73,43 +65,10 @@ class Voice {
                 }
 
                 return response;
-                // return response.json();
-            })
-            .then((response) => {
-                this.processAudio(response);
             })
             .catch((error) => {
                 console.error('There was a problem with the fetch operation:', error);
             });
-    }
-
-    async processAudio(response) {
-        try {
-            const audioBlob = await response.blob();
-            const audioBlobUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioBlobUrl);
-
-            console.log('Audio length =>', audio.duration);
-            console.log('Audio is muted =>', audio.muted);
-            await audio.play();
-
-            audio.onplay = () => {
-                console.log('Playback started');
-            };
-            audio.onerror = (err) => {
-                console.error('Playback failed', err);
-            };
-            audio.onended = () => {
-                URL.revokeObjectURL(audioBlobUrl);
-                console.log('Playback ended');
-                this.audioQueue.shift();
-                if (this.audioQueue.length > 0) {
-                    this.streamTextToSpeech(this.audioQueue[0].message);
-                }
-            };
-        } catch (error) {
-            console.error('Playback failed:', error);
-        }
     }
 
     textToSpeech(text = '', voiceId = 'kristy') {

@@ -4,14 +4,47 @@ class MckVoice {
 
     constructor() {
         this.mediaRecorder = null;
-        this.audioChunks = [];
+        this.audioChunks = []; // recorded audio chunks
         this.isRecording = false;
         this.stream = null;
     }
 
+    async processMessagesAsAudio(msg) {
+        try {
+            const response = await kmVoice.streamTextToSpeech(msg.message);
+            this.playAudio(response);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async playAudio(response) {
+        try {
+            const audioBlob = await response.blob();
+            const audioBlobUrl = URL.createObjectURL(audioBlob);
+            const audio = new Audio(audioBlobUrl);
+
+            console.log('Audio length =>', audio.duration);
+            console.log('Audio is muted =>', audio.muted);
+            await audio.play();
+
+            audio.onplay = () => {
+                console.log('Playback started');
+            };
+            audio.onerror = (err) => {
+                console.error('Playback failed', err);
+            };
+            audio.onended = () => {
+                URL.revokeObjectURL(audioBlobUrl);
+                console.log('Playback ended');
+            };
+        } catch (error) {
+            console.error('Playback failed:', error);
+        }
+    }
+
     addEventListeners() {
-        const self = this;
-        document.querySelector('.mck-voice-web').addEventListener('click', function () {
+        document.querySelector('.mck-voice-web').addEventListener('click', () => {
             kommunicateCommons.modifyClassList(
                 {
                     id: ['mck-sidebox-ft'],
@@ -24,7 +57,26 @@ class MckVoice {
             kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'vis', 'n-vis');
 
             // Call the audio recording function
-            self.requestAudioRecording();
+            this.requestAudioRecording();
+        });
+
+        document.querySelector('#mck-voice-chat-btn').addEventListener('click', () => {
+            this.stopRecording(true);
+
+            kommunicateCommons.modifyClassList(
+                {
+                    id: ['mck-sidebox-ft'],
+                    class: ['mck-box-body', 'mck-box-top'],
+                },
+                'vis',
+                'n-vis'
+            );
+
+            kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'n-vis', 'vis');
+        });
+
+        document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
+            this.requestAudioRecording();
         });
     }
 
@@ -77,19 +129,21 @@ class MckVoice {
         this.mediaRecorder.onstop = async () => {
             try {
                 // Create blob from recorded chunks
-                const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                if (this.isRecording) {
+                    const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
 
-                const data = await kmVoice.speechToText(audioBlob);
+                    const data = await kmVoice.speechToText(audioBlob);
 
-                const userMsg = data.text;
+                    const userMsg = data.text;
 
-                kommunicate.sendMessage({
-                    contentType: 10,
-                    source: 1,
-                    type: 5,
-                    message: userMsg,
-                    groupId: CURRENT_GROUP_DATA.tabId,
-                });
+                    kommunicate.sendMessage({
+                        contentType: 10,
+                        source: 1,
+                        type: 5,
+                        message: userMsg,
+                        groupId: CURRENT_GROUP_DATA.tabId,
+                    });
+                }
                 // Clean up the stream tracks
                 this.stream.getTracks().forEach((track) => track.stop());
                 this.stream = null;
@@ -178,32 +232,12 @@ class MckVoice {
         };
     }
 
-    stopRecording() {
+    stopRecording(forceStop = false) {
         if (this.mediaRecorder && this.isRecording) {
             this.mediaRecorder.stop();
+            forceStop && (this.isRecording = false);
             console.log('Recording stopped');
         }
-    }
-
-    playRecordedAudio(audioUrl) {
-        // const audio = new Audio(audioUrl);
-        // audio.play();
-    }
-
-    // Example method to send audio to server
-    sendAudioToServer(audioBlob) {
-        // Create FormData
-        const formData = new FormData();
-        formData.append('audio', audioBlob, 'recording.wav');
-
-        // Send to server (replace with your actual endpoint)
-        // fetch('/your-api-endpoint', {
-        //     method: 'POST',
-        //     body: formData
-        // })
-        // .then(response => response.json())
-        // .then(data => console.log('Success:', data))
-        // .catch(error => console.error('Error:', error));
     }
 }
 

@@ -7063,6 +7063,7 @@ const firstVisibleMsg = {
             var $mck_btn_clear_messages = $applozic('#mck-btn-clear-messages');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+            const voiceInterface = document.querySelector('#mck-voice-interface');
 
             var $mck_msg_new = $applozic('#mck-msg-new');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
@@ -8112,7 +8113,13 @@ const firstVisibleMsg = {
                     typingService.cumulativeHeight = 0;
                     genAiService.resetState();
                 }
-                floatWhere != 'mck-msg-right' && msg.message && kmVoice.processMessagesAsAudio(msg);
+                const isVoiceInterfaceActive = !(
+                    voiceInterface && voiceInterface.classList.contains('n-vis')
+                );
+
+                if (isVoiceInterfaceActive && floatWhere != 'mck-msg-right' && msg.message) {
+                    mckVoice.processMessagesAsAudio(msg);
+                }
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +
