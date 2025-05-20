@@ -16,6 +16,16 @@
     .mck-voice-interface-body {
         align-self: center;
         margin-top: auto;
+
+        #mck-voice-repeat-last-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            gap: 8px;
+            margin-top: 14px;
+        }
     }
 
     .mck-voice-interface-footer {
@@ -24,6 +34,12 @@
         gap: 14px;
         margin-top: auto;
         margin-bottom: 20px;
+
+        .last-message-text {
+            color: #ffffff;
+            padding-left: 14px;
+            text-align: center;
+        }
     }
     .mck-voice-interface-footer-buttons {
         display: flex;
@@ -95,4 +111,13 @@
         display: block;
         margin: auto;
     }
+
+    .ring.mck-ring-remove-animation {
+        animation: none;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.mck-hidden {
+    visibility: hidden;
 }

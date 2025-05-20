@@ -1521,7 +1521,10 @@
                             </form>
                         </div>
                     </div>
-                    <div class="mck-voice-web km-custom-widget-background-color">
+                    <div
+                        id="mck-voice-web"
+                        class="mck-voice-web n-vis km-custom-widget-background-color"
+                    >
                         <svg
                             focusable="false"
                             aria-hidden="true"
@@ -1577,14 +1580,31 @@
                 </div>
                 <div class="mck-voice-interface-body">
                     <div class="mck-voice-image-container">
-                        <div class="ring"></div>
-                        <div class="ring"></div>
-                        <div class="ring"></div>
+                        <div class="ring ring-1"></div>
+                        <div class="ring ring-2"></div>
+                        <div class="ring ring-3"></div>
                         <img class="mck-voice-image" src="" />
+                    </div>
+                    <div
+                        id="mck-voice-repeat-last-msg"
+                        class="mck-voice-repeat-last-msg mck-hidden"
+                    >
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M13.6415 2.35292C12.0115 0.722922 9.70148 -0.217078 7.16148 0.0429219C3.49148 0.412922 0.471476 3.39292 0.0614764 7.06292C-0.488524 11.9129 3.26148 16.0029 7.99148 16.0029C11.1815 16.0029 13.9215 14.1329 15.2015 11.4429C15.5215 10.7729 15.0415 10.0029 14.3015 10.0029C13.9315 10.0029 13.5815 10.2029 13.4215 10.5329C12.2915 12.9629 9.58148 14.5029 6.62148 13.8429C4.40148 13.3529 2.61148 11.5429 2.14148 9.32292C1.30148 5.44292 4.25148 2.00292 7.99148 2.00292C9.65148 2.00292 11.1315 2.69292 12.2115 3.78292L10.7015 5.29292C10.0715 5.92292 10.5115 7.00292 11.4015 7.00292H14.9915C15.5415 7.00292 15.9915 6.55292 15.9915 6.00292V2.41292C15.9915 1.52292 14.9115 1.07292 14.2815 1.70292L13.6415 2.35292Z"
+                                fill="#D0D5DD"
+                            />
+                        </svg>
                     </div>
                 </div>
                 <div class="mck-voice-interface-footer">
-                    <div class="last-message-text"></div>
+                    <div class="last-message-text mck-hidden"></div>
                     <div class="mck-voice-interface-footer-buttons">
                         <button
                             id="mck-voice-speak-btn"

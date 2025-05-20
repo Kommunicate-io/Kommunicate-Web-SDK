@@ -222,6 +222,7 @@ class KMLabel {
                 speak: 'Click to Speak',
                 chat: 'Click to Chat',
                 back: 'Back',
+                repeatLastMsg: 'Hear response again',
             },
         };
     }
@@ -353,6 +354,8 @@ class KMLabel {
             MCK_LABELS['voiceInterface'].chat;
         document.getElementById('mck-voice-interface-back-btn').innerHTML +=
             MCK_LABELS['voiceInterface'].back;
+        document.getElementById('mck-voice-repeat-last-msg').innerHTML +=
+            MCK_LABELS['voiceInterface'].repeatLastMsg;
     }
 }
 

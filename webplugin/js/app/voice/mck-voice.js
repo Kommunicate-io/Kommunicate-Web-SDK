@@ -1,31 +1,45 @@
 class MckVoice {
     #SILENCE_THRESHOLD = 0.05; // Adjust this threshold as needed
-    #SILENCE_DURATION = 3000; // 10 seconds of silence
+    #SILENCE_DURATION = 3000; // 3 seconds of silence
 
     constructor() {
         this.mediaRecorder = null;
         this.audioChunks = []; // recorded audio chunks
         this.isRecording = false;
         this.stream = null;
+        this.agentOrBotName = '';
+        this.agentOrBotLastMsg = '';
+        this.agentOrBotLastMsgAudio = null;
     }
 
-    async processMessagesAsAudio(msg) {
+    async processMessagesAsAudio(msg, displayName) {
         try {
+            this.agentOrBotName = displayName;
+            this.agentOrBotLastMsg = msg.message;
+
             const response = await kmVoice.streamTextToSpeech(msg.message);
+
+            //add the animation again
+            // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
+            // document.querySelector('.ring-1').classList.remove('mck-ring-remove-animation');
+
             this.playAudio(response);
         } catch (err) {
             console.error(err);
         }
     }
 
-    async playAudio(response) {
+    async playAudio(response, isAudioBlob = false) {
         try {
-            const audioBlob = await response.blob();
-            const audioBlobUrl = URL.createObjectURL(audioBlob);
+            let audioBlobUrl = isAudioBlob ? response : null;
+
+            if (!isAudioBlob) {
+                const audioBlob = await response.blob();
+                audioBlobUrl = URL.createObjectURL(audioBlob);
+            }
+
             const audio = new Audio(audioBlobUrl);
 
-            console.log('Audio length =>', audio.duration);
-            console.log('Audio is muted =>', audio.muted);
             await audio.play();
 
             audio.onplay = () => {
@@ -35,7 +49,25 @@ class MckVoice {
                 console.error('Playback failed', err);
             };
             audio.onended = () => {
-                URL.revokeObjectURL(audioBlobUrl);
+                const lastMsgElement = document.querySelector('.last-message-text');
+
+                lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
+                    this.agentOrBotLastMsg.slice(0, 100) +
+                    (this.agentOrBotLastMsg.length > 100 ? '...' : '')
+                }`;
+
+                lastMsgElement.classList.remove('mck-hidden');
+
+                if (!isAudioBlob) {
+                    this.agentOrBotLastMsgAudio && URL.revokeObjectURL(this.agentOrBotLastMsgAudio); // revoke the previous audio blob url
+                }
+                this.agentOrBotLastMsgAudio = audioBlobUrl;
+
+                document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
+
+                kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis');
+
+                document.querySelector('.ring-1').classList.add('mck-ring-remove-animation');
                 console.log('Playback ended');
             };
         } catch (error) {
@@ -44,6 +76,7 @@ class MckVoice {
     }
 
     addEventListeners() {
+        const self = this;
         document.querySelector('.mck-voice-web').addEventListener('click', () => {
             kommunicateCommons.modifyClassList(
                 {
@@ -55,7 +88,12 @@ class MckVoice {
             );
 
             kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'vis', 'n-vis');
-
+            kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
+            kommunicateCommons.modifyClassList(
+                { class: ['ring-1'] },
+                '',
+                'mck-ring-remove-animation'
+            );
             // Call the audio recording function
             this.requestAudioRecording();
         });
@@ -76,7 +114,25 @@ class MckVoice {
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
+            this.lastMsgElement.classList.add('mck-hidden');
+
+            kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
+            kommunicateCommons.modifyClassList(
+                { class: ['ring-1'] },
+                '',
+                'mck-ring-remove-animation'
+            );
+
             this.requestAudioRecording();
+        });
+
+        document.getElementById('mck-voice-repeat-last-msg').addEventListener('click', function () {
+            this.classList.toggle('mck-hidden');
+
+            kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
+            document.querySelector('.ring-1').classList.remove('mck-ring-remove-animation');
+
+            self.playAudio(self.agentOrBotLastMsgAudio, true);
         });
     }
 
@@ -114,6 +170,8 @@ class MckVoice {
         this.silenceTimer = null;
         this.lastAudioLevel = 0;
         this.silenceStart = null;
+        this.agentOrBotLastMsgAudio = null;
+        this.agentOrBotLastMsg = '';
 
         // Create MediaRecorder instance
         this.mediaRecorder = new MediaRecorder(stream);
@@ -144,6 +202,9 @@ class MckVoice {
                         groupId: CURRENT_GROUP_DATA.tabId,
                     });
                 }
+            } catch (error) {
+                console.error(error);
+            } finally {
                 // Clean up the stream tracks
                 this.stream.getTracks().forEach((track) => track.stop());
                 this.stream = null;
@@ -154,8 +215,6 @@ class MckVoice {
                     clearInterval(this.silenceTimer);
                     this.silenceTimer = null;
                 }
-            } catch (error) {
-                console.error(error);
             }
         };
 
@@ -202,7 +261,7 @@ class MckVoice {
                 } else {
                     const silenceDuration = Date.now() - this.silenceStart;
                     if (silenceDuration >= this.#SILENCE_DURATION) {
-                        console.debug('User silent for 10 seconds, stopping recording');
+                        console.debug('User silent for 3 seconds, stopping recording');
                         this.stopRecording();
                     }
                 }
@@ -237,6 +296,10 @@ class MckVoice {
             this.mediaRecorder.stop();
             forceStop && (this.isRecording = false);
             console.log('Recording stopped');
+
+            // hide the ring animation
+            // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis', '');
+            // document.querySelector('.ring-1').classList.add('mck-ring-remove-animation');
         }
     }
 }
