@@ -159,6 +159,20 @@ class AnswerFeedback {
         stickySticker.innerHTML = iconToPut;
     };
 
+    handleFeedbackPositioning = (msgKey) => {
+        const msgContainer = document.querySelector(`[data-msgKey='${msgKey}']`);
+        if (!msgContainer) return;
+
+        const msgBox = msgContainer.querySelector('.mck-msg-box');
+        const feedbackElement = msgContainer.querySelector('.km-answer-feedback');
+
+        if (!msgBox || !feedbackElement) return;
+        const msgBoxWidth = msgBox.offsetWidth;
+
+        const feedbackWidth = msgBoxWidth + 40;
+        feedbackElement.style.left = `${feedbackWidth > 120 ? feedbackWidth : 120}px`;
+    };
+
     attachEventListeners = (data) => {
         const { msg } = data;
 
@@ -170,6 +184,11 @@ class AnswerFeedback {
         const stickySticker = msgContainer.querySelector('.mck-msg-feedback-sticker');
         const helpfulButton = msgContainer.querySelector('.answer-feedback-helpful');
         const notHelpfulButton = msgContainer.querySelector('.answer-feedback-not-helpful');
+
+        // Handle feedback positioning after the element is rendered
+        setTimeout(() => {
+            this.handleFeedbackPositioning(msg.key);
+        }, 0);
 
         const setFeedback = (feedback) => {
             const iconToAdd = KommunicateConstants.ANSWER_FEEDBACK_ICONS[feedback];
@@ -198,7 +217,6 @@ class AnswerFeedback {
         };
 
         helpfulButton.addEventListener('click', setFeedback.bind(null, 1));
-
         notHelpfulButton.addEventListener('click', setFeedback.bind(null, 0));
 
         stickySticker.addEventListener('click', (e) => {

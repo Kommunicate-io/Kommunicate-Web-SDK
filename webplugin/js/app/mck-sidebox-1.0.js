@@ -3847,6 +3847,11 @@ const firstVisibleMsg = {
             };
             _this.init = function () {
                 var mck_text_box = document.getElementById('mck-text-box');
+                mck_text_box.addEventListener('paste', function (e) {
+                    e.preventDefault();
+                    const text = (e.clipboardData || window.clipboardData).getData('text');
+                    document.execCommand('insertText', false, text);
+                });
 
                 $applozic.template('oflTemplate', offlineblk);
                 ALStorage.clearMckMessageArray();
