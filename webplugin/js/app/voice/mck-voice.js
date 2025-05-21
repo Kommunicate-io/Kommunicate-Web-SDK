@@ -14,18 +14,130 @@ class MckVoice {
 
     async processMessagesAsAudio(msg, displayName) {
         try {
-            this.agentOrBotName = displayName;
-            this.agentOrBotLastMsg = msg.message;
+            const messageWithoutSource = msg.message.replace(
+                /\n*Sources:.*(?:\nhttps?:\/\/\S+)+/g,
+                ''
+            );
 
-            const response = await kmVoice.streamTextToSpeech(msg.message);
+            this.agentOrBotName = displayName;
+            this.agentOrBotLastMsg = messageWithoutSource;
+
+            const response = await kmVoice.streamTextToSpeech(messageWithoutSource);
 
             //add the animation again
             // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
             // document.querySelector('.ring-1').classList.remove('mck-ring-remove-animation');
 
-            this.playAudio(response);
+            this.playAudioWithMediaSource(response);
         } catch (err) {
             console.error(err);
+        }
+    }
+
+    async playAudioWithMediaSource(response) {
+        const audio = new Audio();
+        const mediaSource = new MediaSource();
+        audio.src = URL.createObjectURL(mediaSource);
+        const fullChunks = [];
+
+        try {
+            const sourceOpenPromise = new Promise((resolve) => {
+                mediaSource.addEventListener('sourceopen', resolve, { once: true });
+            });
+
+            await sourceOpenPromise;
+
+            const sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
+            const bufferQueue = [];
+            let isStreamEnded = false;
+            let hasPlaybackStarted = false;
+
+            sourceBuffer.addEventListener('updateend', () => {
+                if (bufferQueue.length > 0 && !sourceBuffer.updating) {
+                    const chunk = bufferQueue.shift();
+                    try {
+                        sourceBuffer.appendBuffer(chunk);
+                    } catch (error) {
+                        bufferQueue.unshift(chunk);
+                    }
+                } else if (isStreamEnded && bufferQueue.length === 0 && !sourceBuffer.updating) {
+                    try {
+                        if (mediaSource.readyState === 'open') {
+                            mediaSource.endOfStream();
+                        }
+                    } catch (error) {}
+                }
+            });
+
+            const reader = response.body.getReader();
+
+            audio.addEventListener(
+                'canplay',
+                () => {
+                    if (!hasPlaybackStarted) {
+                        audio.play().catch(console.error);
+                        hasPlaybackStarted = true;
+                    }
+                },
+                { once: true }
+            );
+
+            audio.addEventListener('ended', () => {
+                const lastMsgElement = document.querySelector('.last-message-text');
+
+                lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
+                    this.agentOrBotLastMsg.slice(0, 100) +
+                    (this.agentOrBotLastMsg.length > 100 ? '...' : '')
+                }`;
+
+                lastMsgElement.classList.remove('mck-hidden');
+                const finalBlob = new Blob(fullChunks, { type: 'audio/mpeg' });
+                const blobUrl = URL.createObjectURL(finalBlob);
+
+                this.agentOrBotLastMsgAudio = blobUrl;
+
+                document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
+
+                kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis');
+
+                document.querySelector('.ring-1').classList.add('mck-ring-remove-animation');
+                console.log('Playback ended');
+            });
+
+            async function processStream() {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        isStreamEnded = true;
+                        if (bufferQueue.length === 0 && !sourceBuffer.updating) {
+                            if (mediaSource.readyState === 'open') {
+                                mediaSource.endOfStream();
+                            }
+                        }
+                        return;
+                    }
+
+                    fullChunks.push(value);
+                    if (sourceBuffer.updating || bufferQueue.length > 0) {
+                        bufferQueue.push(value);
+                    } else {
+                        try {
+                            sourceBuffer.appendBuffer(value);
+                        } catch (error) {
+                            bufferQueue.push(value);
+                        }
+                    }
+                }
+            }
+
+            processStream();
+        } catch (err) {
+            console.error(err);
+            if (mediaSource.readyState === 'open') {
+                try {
+                    mediaSource.endOfStream();
+                } catch (e) {}
+            }
         }
     }
 
@@ -114,7 +226,9 @@ class MckVoice {
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
-            this.lastMsgElement.classList.add('mck-hidden');
+            document.querySelector('.last-message-text').classList.add('mck-hidden');
+
+            document.getElementById('mck-voice-repeat-last-msg').classList.add('mck-hidden');
 
             kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
             kommunicateCommons.modifyClassList(

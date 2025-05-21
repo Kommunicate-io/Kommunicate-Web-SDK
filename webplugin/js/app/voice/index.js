@@ -1,6 +1,6 @@
 class Voice {
     #VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
-    #VOICE_PLATFORM_API_KEY = 'sk_5ab9876ffccf3428b7c453a51b7fda95d8d564b8f0b8820f';
+    #VOICE_PLATFORM_API_KEY = 'sk_37e629048a120cd2d08b41f928ffe69a13662138a8a28009';
     constructor() {
         this.voices = [];
         this.hasMoreVoices = true;
