@@ -4980,7 +4980,7 @@ button {
 .km-mail-fixed-view {
     background-color: white;
     border-radius: 5px;
-    padding: 10px 14px 12px;
+    /* padding: 10px 14px 12px; */
     width: 100%;
     border: none;
     height: 60vh;

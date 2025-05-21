@@ -1579,6 +1579,15 @@ KommunicateUI = {
                             'n-vis',
                             'vis'
                         );
+                        kommunicateCommons.modifyClassList(
+                            {
+                                class: ['km-option-talk-to-human'],
+                                id: ['km-talk-to-human', 'km-restart-conversation'],
+                            },
+                            'n-vis',
+                            'vis'
+                        );
+                        CURRENT_GROUP_DATA.isWaitingQueue = true;
                         headerTabTitle.innerHTML =
                             MCK_LABELS['waiting.queue.message']['header.text'];
                         var messageBody = document.querySelector(
