@@ -218,6 +218,12 @@ class KMLabel {
                 helpful: 'Helpful',
                 notHelpful: 'Not Helpful',
             },
+            'voiceInterface': {
+                speak: 'Click to Speak',
+                chat: 'Click to Chat',
+                back: 'Back',
+                repeatLastMsg: 'Hear response again',
+            },
         };
     }
     setLabels(MCK_LABELS = {}) {
@@ -341,6 +347,15 @@ class KMLabel {
             MCK_LABELS['conversation.header.dropdown'].HANDOFF;
         document.getElementById('km-option-faq-text').innerHTML =
             MCK_LABELS['conversation.header.dropdown'].FAQ;
+
+        document.getElementById('mck-voice-speak-btn').innerHTML +=
+            MCK_LABELS['voiceInterface'].speak;
+        document.getElementById('mck-voice-chat-btn').innerHTML +=
+            MCK_LABELS['voiceInterface'].chat;
+        document.getElementById('mck-voice-interface-back-btn').innerHTML +=
+            MCK_LABELS['voiceInterface'].back;
+        document.getElementById('mck-voice-repeat-last-msg').innerHTML +=
+            MCK_LABELS['voiceInterface'].repeatLastMsg;
     }
 }
 
