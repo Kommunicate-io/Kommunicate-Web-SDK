@@ -206,6 +206,13 @@ class MckVoice {
                 '',
                 'mck-ring-remove-animation'
             );
+
+            kommunicateCommons.modifyClassList(
+                {
+                    class: ['mck-voice-repeat-last-msg', 'last-message-text'],
+                },
+                'mck-hidden'
+            );
             // Call the audio recording function
             this.requestAudioRecording();
         });
@@ -222,13 +229,19 @@ class MckVoice {
                 'n-vis'
             );
 
+            kommunicateCommons.modifyClassList(
+                { class: ['mck-voice-repeat-last-msg', 'last-message-text'] },
+                'mck-hidden'
+            );
+
             kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'n-vis', 'vis');
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
-            document.querySelector('.last-message-text').classList.add('mck-hidden');
-
-            document.getElementById('mck-voice-repeat-last-msg').classList.add('mck-hidden');
+            kommunicateCommons.modifyClassList(
+                { class: ['mck-voice-repeat-last-msg', 'last-message-text'] },
+                'mck-hidden'
+            );
 
             kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
             kommunicateCommons.modifyClassList(
