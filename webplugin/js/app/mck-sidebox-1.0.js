@@ -8768,13 +8768,56 @@ const firstVisibleMsg = {
                     }
                 } else {
                     let htmlRichMessage = false;
-
+                    if (!customElements.get('mck-html-rich-message')) {
+                        class MckHtmlRichMessage extends HTMLElement {
+                            constructor() {
+                                super();
+                                this._shadow = this.attachShadow({ mode: 'open' });
+                            }
+                        }
+                        customElements.define('mck-html-rich-message', MckHtmlRichMessage);
+                    }
                     if (
                         msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
                         KommunicateUtils.customElementSupported()
                     ) {
                         const kmElement = document.createElement('mck-html-rich-message');
-                        kmElement._shadow.innerHTML = emoji_template;
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                table-layout: fixed; 
+                            }
+
+                            thead {
+                                background-color:rgb(206, 206, 206);
+                                font-weight: bold;
+                                border-radius: 5px 5px 0 0;
+                            }
+
+                            th, td {
+                                padding: 12px;
+                                border-bottom: 1px solid #333;
+                                text-align: left;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                font-size:12px;
+                                text-overflow: ellipsis;
+                            }
+                            thead tr {
+                            border-radius:5px}
+                            tbody tr:last-child td {
+                                border-bottom: none; 
+                            }
+                   
+                        `;
+
+                        // Get shadow root from the element
+                        const shadow = kmElement.shadowRoot;
+                        shadow.appendChild(style);
+                        shadow.innerHTML += emoji_template;
+
                         $textMessage.append(kmElement);
 
                         htmlRichMessage = true;
