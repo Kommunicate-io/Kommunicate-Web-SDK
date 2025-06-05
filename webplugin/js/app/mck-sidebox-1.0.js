@@ -8665,6 +8665,7 @@ const firstVisibleMsg = {
 
                 var emoji_template = '';
                 if (msg.message) {
+                    msg.message = mckMessageLayout.getScriptMessagePreview(msg, msg.message);
                     var msg_text = msg.message;
                     if (w.emoji !== null && typeof w.emoji !== 'undefined') {
                         emoji_template = w.emoji.replace_unified(msg_text);
@@ -8819,6 +8820,23 @@ const firstVisibleMsg = {
 
                         const shadow = kmElement.shadowRoot;
                         shadow.appendChild(style);
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(emoji_template, 'text/html');
+                        const table = doc.querySelector('table');
+                        if (table) {
+                            const downloadBtn = document.createElement('div');
+                            downloadBtn.style.cssText = `position:relative; width:100%; top:0px; right:10px; padding:5px; text-align:right; `;
+                            downloadBtn.innerHTML = `<svg width="14" height="17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.59 6H10V1c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v5H2.41c-.89 0-1.34 1.08-.71 1.71l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.63-.63.19-1.71-.7-1.71ZM0 16c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H1c-.55 0-1 .45-1 1Z" fill="#bebaba"></path></svg>`;
+                            downloadBtn.addEventListener('click', (e) => {
+                                console.debug('clicked');
+                                e.preventDefault();
+                                e.stopPropagation();
+                                e.stopImmediatePropagation();
+                                KommunicateUtils.downloadTableAsCSV(emoji_template);
+                            });
+                            $textMessage.append(downloadBtn);
+                        }
+
                         shadow.innerHTML += emoji_template;
 
                         $textMessage.append(kmElement);
@@ -8844,7 +8862,6 @@ const firstVisibleMsg = {
                                 tableContainer.innerHTML = '';
                                 modal.style.display = 'none';
                             });
-                            KommunicateUtils.downloadTableAsCSV(emoji_template);
                         });
 
                         htmlRichMessage = true;
