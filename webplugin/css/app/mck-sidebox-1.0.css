@@ -2121,7 +2121,6 @@ ul.mck-intent-menu > li:hover {
 }
 
 .mck-msg-text {
-    white-space: pre-wrap;
     word-wrap: break-word;
     position: relative;
 }
