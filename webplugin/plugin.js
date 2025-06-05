@@ -441,10 +441,12 @@ function addFullviewImageModal() {
         ' width: 80%;' +
         ' max-width: 700px;' +
         '}  \n ' +
-        '#table-fullscreen-view {' +
-        'width:auto;' +
-        'max-width: 80%;' +
+        '#table-fullscreen-view table{' +
+        'width:80%;' +
+        'max-width: 100%;' +
         ' margin: auto;' +
+        'overflow: hidden;' +
+        ' text-overflow: ellipsis;' +
         'table-layout:fixed;' +
         'border-collapse: collapse;' +
         'background-color:white;' +

@@ -8840,29 +8840,35 @@ const firstVisibleMsg = {
                         shadow.innerHTML += emoji_template;
 
                         $textMessage.append(kmElement);
-                        kmElement.addEventListener('click', (e) => {
-                            const modal = parent.document.getElementById(
-                                'km-fullscreen-image-modal'
-                            );
-                            const imageContainer = parent.document.getElementById(
-                                'km-fullscreen-image-modal-content'
-                            );
-                            const tableContainer = parent.document.getElementById(
-                                'table-fullscreen-view'
-                            );
+                        table &&
+                            kmElement.addEventListener('click', (e) => {
+                                const modal = parent.document.getElementById(
+                                    'km-fullscreen-image-modal'
+                                );
+                                const imageContainer = parent.document.getElementById(
+                                    'km-fullscreen-image-modal-content'
+                                );
+                                const tableContainer = parent.document.getElementById(
+                                    'table-fullscreen-view'
+                                );
 
-                            imageContainer.style.display = 'none';
-                            modal.style.display = 'block';
+                                if (!modal || !imageContainer || !tableContainer) {
+                                    console.debug('Required modal elements not found');
+                                    return;
+                                }
 
-                            tableContainer.innerHTML = emoji_template;
+                                imageContainer.style.display = 'none';
+                                modal.style.display = 'block';
 
-                            modal.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                imageContainer.style.display = 'block';
-                                tableContainer.innerHTML = '';
-                                modal.style.display = 'none';
+                                tableContainer.innerHTML = emoji_template;
+
+                                modal.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    imageContainer.style.display = 'block';
+                                    tableContainer.innerHTML = '';
+                                    modal.style.display = 'none';
+                                });
                             });
-                        });
 
                         htmlRichMessage = true;
                     } else {
