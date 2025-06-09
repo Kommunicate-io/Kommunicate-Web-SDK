@@ -157,9 +157,6 @@ exports.getDynamicLoadFiles = function (dir) {
         sentry: {
             js: `${dir}/sentry-${version}.min.js`,
         },
-        marked: {
-            js: `${dir}/marked.min.js`,
-        },
     });
 };
 
