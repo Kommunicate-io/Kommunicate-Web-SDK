@@ -8825,7 +8825,7 @@ const firstVisibleMsg = {
                         const table = doc.querySelector('table');
                         if (table) {
                             const downloadBtn = document.createElement('div');
-                            downloadBtn.style.cssText = `position:relative; width:100%; top:0px; right:10px; padding:5px; text-align:right; `;
+                            downloadBtn.style.cssText = `position:relative; width:fit-content; top:0px; left:calc(100% - 16px); padding:5px; text-align:right; cursor:pointer`;
                             downloadBtn.innerHTML = `<svg width="14" height="17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.59 6H10V1c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v5H2.41c-.89 0-1.34 1.08-.71 1.71l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.63-.63.19-1.71-.7-1.71ZM0 16c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H1c-.55 0-1 .45-1 1Z" fill="#bebaba"></path></svg>`;
                             downloadBtn.addEventListener('click', (e) => {
                                 console.debug('clicked');
