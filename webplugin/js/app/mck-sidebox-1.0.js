@@ -8765,6 +8765,8 @@ const firstVisibleMsg = {
                         const $normalTextMsg = $applozic(`<div class="${className}" />`);
                         $normalTextMsg[0].innerHTML = emoji_template;
                         $textMessage.append($normalTextMsg);
+                        // Ensure all links open in a new tab
+                        $normalTextMsg.find('a').attr('target', '_blank');
                     }
                 } else {
                     let htmlRichMessage = false;
