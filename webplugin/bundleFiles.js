@@ -30,6 +30,7 @@ exports.THIRD_PARTY_SCRIPTS = [
     path.resolve(__dirname, 'lib/js/dom-purify-3.1.4.min.js'),
     path.resolve(__dirname, 'lib/js/moment-js.2.29.4.min.js'),
     path.resolve(__dirname, 'lib/js/moment-timezone.0.5.23.min.js'),
+    path.resolve(__dirname, 'lib/js/marked.min.js'),
 ];
 
 exports.PLUGIN_JS_FILES = [
@@ -129,6 +130,11 @@ exports.THIRD_PARTY_FILE_INFO = [
         outputName: `sentry-${version}.min.js`,
         type: 'js',
         shouldMinify: true,
+    },
+    {
+        source: path.join(__dirname, 'lib/js/marked.min.js'),
+        outputName: `marked.min.js`,
+        type: 'js',
     },
 ];
 

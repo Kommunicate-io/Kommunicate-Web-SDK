@@ -8666,7 +8666,7 @@ const firstVisibleMsg = {
                 var emoji_template = '';
                 if (msg.message) {
                     msg.message = mckMessageLayout.getScriptMessagePreview(msg, msg.message);
-                    var msg_text = msg.message.replace(/\n/g, '<br/>');
+                    var msg_text = msg.message;
                     if (w.emoji !== null && typeof w.emoji !== 'undefined') {
                         emoji_template = w.emoji.replace_unified(msg_text);
                         emoji_template = w.emoji.replace_colons(emoji_template);
@@ -8747,35 +8747,130 @@ const firstVisibleMsg = {
                     if (msg.tokenMessage && floatWhere !== 'mck-msg-right' && !msgThroughListAPI) {
                         genAiService.addTokenizeMsg(msg, `mck-text-msg-left`, $textMessage);
                     } else {
-                        const $normalTextMsg = $applozic(`<div class=${className} />`);
-                        const nodes = emoji_template.split('<br/>');
-                        for (let i = 0; i < nodes.length; i++) {
-                            const currentNode = nodes[i];
-                            let x;
-
-                            if (currentNode === '') {
-                                x = d.createElement('BR');
-                            } else {
-                                x = d.createElement('div');
-                                x.appendChild(d.createTextNode(currentNode));
-                                x = $applozic(x).linkify({
-                                    target: '_blank',
-                                });
-                            }
-                            $normalTextMsg.append(x);
+                        if (KommunicateUtils.containsRawHTML(emoji_template)) {
+                            const tempDiv = document.createElement('div');
+                            tempDiv.textContent = emoji_template.trim();
+                            emoji_template = tempDiv.innerHTML;
+                        } else {
+                            const normalized = KommunicateUtils.normalizeMarkdown(emoji_template);
+                            emoji_template = window.DOMPurify.sanitize(
+                                marked.parse(normalized.trim()),
+                                {
+                                    ALLOWED_TAGS: KM_ALLOWED_TAGS,
+                                    ALLOWED_ATTR: KM_ALLOWED_ATTR,
+                                    WHOLE_DOCUMENT: true,
+                                }
+                            );
                         }
+                        const $normalTextMsg = $applozic(`<div class="${className}" />`);
+                        $normalTextMsg[0].innerHTML = emoji_template;
                         $textMessage.append($normalTextMsg);
+                        // Ensure all links open in a new tab
+                        $normalTextMsg.find('a').attr('target', '_blank');
                     }
                 } else {
                     let htmlRichMessage = false;
-
+                    if (!customElements.get('mck-html-rich-message')) {
+                        class MckHtmlRichMessage extends HTMLElement {
+                            constructor() {
+                                super();
+                                this._shadow = this.attachShadow({ mode: 'open' });
+                            }
+                        }
+                        customElements.define('mck-html-rich-message', MckHtmlRichMessage);
+                    }
                     if (
                         msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML &&
                         KommunicateUtils.customElementSupported()
                     ) {
                         const kmElement = document.createElement('mck-html-rich-message');
-                        kmElement._shadow.innerHTML = emoji_template;
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                table-layout: fixed; 
+                            }
+
+                            thead {
+                                background-color:rgb(206, 206, 206);
+                                font-weight: bold;
+                                border-radius: 5px 5px 0 0;
+                            }
+
+                            th, td {
+                                padding: 12px;
+                                border-bottom: 1px solid rgb(189, 187, 187);
+                                text-align: left;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                font-size: 12px;
+                                text-overflow: ellipsis;
+                            }
+                            thead tr {
+                                 border-radius: 5px;
+                                 }
+                            tbody tr:last-child td {
+                                border-bottom: none; 
+                            }
+                            table:hover {
+                                cursor: pointer;
+                            }
+                        
+                   
+                        `;
+
+                        const shadow = kmElement.shadowRoot;
+                        shadow.appendChild(style);
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(emoji_template, 'text/html');
+                        const table = doc.querySelector('table');
+                        if (table) {
+                            const downloadBtn = document.createElement('div');
+                            downloadBtn.style.cssText = `position:relative; width:fit-content; top:0px; left:calc(100% - 16px); padding:5px; text-align:right; cursor:pointer`;
+                            downloadBtn.innerHTML = `<svg width="14" height="17" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.59 6H10V1c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v5H2.41c-.89 0-1.34 1.08-.71 1.71l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.63-.63.19-1.71-.7-1.71ZM0 16c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H1c-.55 0-1 .45-1 1Z" fill="#bebaba"></path></svg>`;
+                            downloadBtn.addEventListener('click', (e) => {
+                                console.debug('clicked');
+                                e.preventDefault();
+                                e.stopPropagation();
+                                e.stopImmediatePropagation();
+                                KommunicateUtils.downloadTableAsCSV(emoji_template);
+                            });
+                            $textMessage.append(downloadBtn);
+                        }
+
+                        shadow.innerHTML += emoji_template;
+
                         $textMessage.append(kmElement);
+                        table &&
+                            kmElement.addEventListener('click', (e) => {
+                                const modal = parent.document.getElementById(
+                                    'km-fullscreen-image-modal'
+                                );
+                                const imageContainer = parent.document.getElementById(
+                                    'km-fullscreen-image-modal-content'
+                                );
+                                const tableContainer = parent.document.getElementById(
+                                    'table-fullscreen-view'
+                                );
+
+                                if (!modal || !imageContainer || !tableContainer) {
+                                    console.debug('Required modal elements not found');
+                                    return;
+                                }
+
+                                imageContainer.style.display = 'none';
+                                modal.style.display = 'block';
+
+                                tableContainer.innerHTML = emoji_template;
+
+                                modal.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    imageContainer.style.display = 'block';
+                                    tableContainer.innerHTML = '';
+                                    modal.style.display = 'none';
+                                });
+                            });
 
                         htmlRichMessage = true;
                     } else {
