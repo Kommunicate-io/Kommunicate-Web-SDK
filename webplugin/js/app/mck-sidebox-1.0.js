@@ -603,7 +603,7 @@ const firstVisibleMsg = {
                 : KommunicateConstants.POSITION.RIGHT;
         var SOCKET_RECONNECT_FAIL_COUNT = 0;
         window.Applozic.SOCKET_DISCONNECT_PROCEDURE = {
-            SOCKET_DISCONNECT_TIMER_VALUE: 120000, // 2 minutes : 120000 milliSeconds
+            SOCKET_DISCONNECT_TIMER_VALUE: 60000, // 1 minutes : 60000 milliSeconds
             DISCONNECTED: false,
             start: function () {
                 this.SOCKET_DISCONNECT_TIMEOUT = setTimeout(function () {
@@ -615,20 +615,25 @@ const firstVisibleMsg = {
                         null,
                         function (err, checkIfUserHasConversations) {
                             err && console.log(err);
-                            if (!checkIfUserHasConversations) {
+                            if (
+                                !checkIfUserHasConversations ||
+                                !KommunicateCommons.IS_WIDGET_OPEN
+                            ) {
                                 window.Applozic.ALSocket.disconnect();
                                 window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED = true;
                                 IS_SOCKET_CONNECTED = false;
+                                console.debug('disconnected');
                             }
                         }
                     );
                 }, this.SOCKET_DISCONNECT_TIMER_VALUE);
             },
             stop: function () {
+                console.debug('disconnection stopped');
                 clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
             },
         };
-        var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick;
+        var CONNECT_SOCKET_ON_WIDGET_CLICK = true;
         var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
@@ -714,6 +719,7 @@ const firstVisibleMsg = {
             },
             onConnect: function (resp) {
                 IS_SOCKET_CONNECTED = true;
+                console.debug('connected..');
                 kommunicateCommons.modifyClassList(
                     { id: ['km-local-file-system-warning'] },
                     'n-vis',
@@ -1871,7 +1877,7 @@ const firstVisibleMsg = {
                 ? window.Applozic.ALSocket.reconnect()
                 : window.Applozic.ALSocket.init(MCK_APP_ID, INIT_APP_DATA, EVENTS);
             // Disconnect open sockets if user has no conversations.
-            !CONNECT_SOCKET_ON_WIDGET_CLICK &&
+            CONNECT_SOCKET_ON_WIDGET_CLICK &&
                 !MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT &&
                 window.Applozic.SOCKET_DISCONNECT_PROCEDURE.start();
         };
@@ -2279,10 +2285,7 @@ const firstVisibleMsg = {
                 MCK_FILE_URL = data.fileBaseUrl;
                 IS_MCK_USER_DEACTIVATED = data.deactivated;
                 // For trial plan connect to socket only when someone opens the chat or have some existing chat thread
-                CONNECT_SOCKET_ON_WIDGET_CLICK == null &&
-                    (CONNECT_SOCKET_ON_WIDGET_CLICK = kommunicateCommons.isTrialPlan(
-                        data.pricingPackage
-                    ));
+                CONNECT_SOCKET_ON_WIDGET_CLICK == null && (CONNECT_SOCKET_ON_WIDGET_CLICK = true);
                 AUTH_CODE = btoa(data.userId + ':' + data.deviceKey);
                 window.Applozic.ALApiService.AUTH_TOKEN = data.authToken;
                 window.Applozic.ALApiService.setAjaxHeaders(
