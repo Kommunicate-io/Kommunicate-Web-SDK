@@ -2607,6 +2607,28 @@ const firstVisibleMsg = {
                     firstVisibleMsg.reset();
                 }
                 closeButton.addEventListener('click', closeChatBox);
+
+                mckVoice.addEventListeners();
+                document
+                    .querySelector('.mck-voice-interface-back-btn')
+                    .addEventListener('click', function () {
+                        kommunicateCommons.modifyClassList(
+                            { id: ['mck-voice-interface'] },
+                            'n-vis',
+                            'vis'
+                        );
+
+                        kommunicateCommons.modifyClassList(
+                            {
+                                id: ['mck-sidebox-ft'],
+                                class: ['mck-box-body', 'mck-box-top'],
+                            },
+                            'vis',
+                            'n-vis'
+                        );
+                        window.Kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
+                    });
+
                 popUpcloseButton.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -6524,6 +6546,10 @@ const firstVisibleMsg = {
                     src: imageUrl,
                     alt: profileImage,
                 });
+                $applozic('.mck-voice-image-container .mck-voice-image').attr({
+                    src: imageUrl,
+                    alt: profileImage,
+                });
                 if (MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId] && params.name) {
                     MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].displayName = params.name;
                     MCK_GROUP_MAP[CURRENT_GROUP_DATA.tabId].imageUrl = imageUrl;
@@ -7042,6 +7068,7 @@ const firstVisibleMsg = {
             var $mck_btn_clear_messages = $applozic('#mck-btn-clear-messages');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+            const voiceInterface = document.querySelector('#mck-voice-interface');
 
             var $mck_msg_new = $applozic('#mck-msg-new');
             var FILE_PREVIEW_URL = '/rest/ws/aws/file/';
@@ -7449,6 +7476,7 @@ const firstVisibleMsg = {
                 $mck_contacts_content.removeClass('n-vis').addClass('vis');
                 $modal_footer_content.removeClass('vis').addClass('n-vis');
                 $applozic('#mck-sidebox-ft').removeClass('vis').addClass('n-vis');
+                kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, 'n-vis');
                 // render quick replies
                 QUICK_REPLIES && KommunicateUI.loadQuickReplies(QUICK_REPLIES);
                 $mck_sidebox_search.removeClass('vis').addClass('n-vis');
@@ -7479,6 +7507,7 @@ const firstVisibleMsg = {
                     $mck_contacts_content.removeClass('vis').addClass('n-vis');
                     $modal_footer_content.removeClass('n-vis').addClass('vis');
                     $applozic('#mck-sidebox-ft').removeClass('n-vis').addClass('vis');
+                    kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
                     $mck_btn_clear_messages.removeClass('n-vis').addClass('vis');
                     $mck_group_menu_options.removeClass('vis').addClass('n-vis');
                     kommunicateCommons.modifyClassList(
@@ -8091,6 +8120,7 @@ const firstVisibleMsg = {
                     typingService.cumulativeHeight = 0;
                     genAiService.resetState();
                 }
+
                 var replyId = msg.key;
                 var replyMessageParameters =
                     "'" +
@@ -8169,6 +8199,19 @@ const firstVisibleMsg = {
                     displayName = '';
                     imgsrctag = '';
                     nameTextExpr = '';
+                }
+
+                const isVoiceInterfaceActive = !(
+                    voiceInterface && voiceInterface.classList.contains('n-vis')
+                );
+
+                if (
+                    isVoiceInterfaceActive &&
+                    floatWhere != 'mck-msg-right' &&
+                    msg.message &&
+                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
+                ) {
+                    mckVoice.processMessagesAsAudio(msg, displayName);
                 }
                 var downloadIconVisible = 'n-vis';
                 var msgFeatExpr = 'n-vis';
