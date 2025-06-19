@@ -114,6 +114,7 @@ class Voice {
         const formdata = new FormData();
         formdata.append('model_id', 'scribe_v1');
         formdata.append('file', audioBlob, 'file');
+        formdata.append('tag_audio_events', false);
 
         const requestOptions = {
             method: 'POST',

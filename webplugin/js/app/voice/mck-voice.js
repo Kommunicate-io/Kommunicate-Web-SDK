@@ -10,9 +10,21 @@ class MckVoice {
         this.agentOrBotName = '';
         this.agentOrBotLastMsg = '';
         this.agentOrBotLastMsgAudio = null;
+        this.messagesQueue = [];
     }
 
     async processMessagesAsAudio(msg, displayName) {
+        try {
+            this.messagesQueue.push({ msg, displayName });
+            if (this.messagesQueue.length === 1) {
+                this.processNextMessage(msg, displayName);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async processNextMessage(msg, displayName) {
         try {
             const messageWithoutSource = msg.message.replace(
                 /\n*Sources:.*(?:\nhttps?:\/\/\S+)+/g,
@@ -83,6 +95,14 @@ class MckVoice {
             );
 
             audio.addEventListener('ended', () => {
+                this.messagesQueue.shift();
+
+                if (this.messagesQueue.length > 0) {
+                    const nextMsg = this.messagesQueue[0];
+                    this.processNextMessage(nextMsg.msg, nextMsg.displayName);
+                    return;
+                }
+
                 const lastMsgElement = document.querySelector('.last-message-text');
 
                 lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
