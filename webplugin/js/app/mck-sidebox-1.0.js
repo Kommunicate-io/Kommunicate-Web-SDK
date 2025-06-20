@@ -105,6 +105,7 @@ const firstVisibleMsg = {
             // updating groupName to conversationTitle, supporting groupName for backward compatibility
             appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
             appOptions.accessToken = appOptions.password || appOptions.accessToken;
+            appOptions.connectSocketOnWidgetClick = true;
         }
         var oInstance = undefined;
         if (typeof $mck_sidebox.data('applozic_instance') !== 'undefined') {
@@ -633,7 +634,7 @@ const firstVisibleMsg = {
                 clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
             },
         };
-        var CONNECT_SOCKET_ON_WIDGET_CLICK = true;
+        var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick || false;
         var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
