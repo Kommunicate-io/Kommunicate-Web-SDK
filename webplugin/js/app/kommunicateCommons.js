@@ -11,8 +11,7 @@ function KommunicateCommons() {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
         USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
-        KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK =
-            optns.connectSocketOnWidgetClick || false;
+        KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
     };
 
     _this.isTrialPlan = function (pricingPackage) {
@@ -190,7 +189,7 @@ function KommunicateCommons() {
     _this.setWidgetStateOpen = function (isWidgetOpen) {
         if (KommunicateCommons.IS_WIDGET_OPEN === isWidgetOpen) return; // return if same value is already assigned to IS_WIDGET_OPEN.
         KommunicateCommons.IS_WIDGET_OPEN = isWidgetOpen;
-        if (IS_SOCKET_CONNECTED) {
+        if (IS_SOCKET_CONNECTED && isWidgetOpen) {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
             KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK
