@@ -536,4 +536,49 @@ KommunicateUtils = {
             throw e;
         }
     },
+    downloadTableAsCSV: function (htmlString, filename = 'data.csv') {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        const table = doc.querySelector('table');
+
+        if (!table) {
+            return;
+        }
+
+        // Extract rows
+        const rows = table.querySelectorAll('tr');
+        const csv = [];
+
+        rows.forEach((row) => {
+            const cols = row.querySelectorAll('td, th');
+            const rowData = Array.from(cols).map((col) => `"${col.textContent.trim()}"`);
+            csv.push(rowData.join(','));
+        });
+
+        // Convert array to Blob and trigger download
+        const csvContent = csv.join('\n');
+        const blob = new Blob([csvContent], {
+            type: 'text/csv;charset=utf-8;',
+        });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    },
+    normalizeMarkdown: function (text) {
+        return text
+            .replace(/\r\n/g, '\n') // Normalize line endings
+            .split('\n')
+            .map((line) => line.replace(/^\s*-\s*/, '- ').trimEnd()) // Trim right-side spaces
+            .filter((line) => line !== '') // Remove empty lines
+            .join('\n');
+    },
+
+    containsRawHTML: function (text) {
+        return /<\/?[a-z][\s\S]*>/i.test(text);
+    },
 };
