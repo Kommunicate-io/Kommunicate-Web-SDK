@@ -4573,6 +4573,10 @@ textarea::placeholder {
     height: auto;
     width: 225px;
 }
+.mck-sidebox.fade.in.popup-enabled {
+    height: calc(100% - 100px);
+    box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
+}
 .mck-sidebox.fade.in.popup-enabled
     .mck-name-status-container
     #mck-tab-title.mck-title-width-wo-faq-with-close-btn,
