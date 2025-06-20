@@ -630,8 +630,9 @@ $applozic.extend(true, Kommunicate, {
         Kommunicate.updateChatContext(chatContext);
     },
     setDefaultIframeConfigForOpenChat: function (isPopupEnabled) {
-        !kommunicateCommons.checkIfDeviceIsHandheld() &&
+        if (!kommunicateCommons.checkIfDeviceIsHandheld() && isPopupEnabled) {
             kommunicateCommons.modifyClassList({ id: ['mck-sidebox'] }, 'popup-enabled', '');
+        }
         var kommunicateIframe = parent.document.getElementById('kommunicate-widget-iframe');
         var kommunicateIframeDocument = kommunicateIframe.contentDocument;
         var popUpCloseButton = kommunicateIframeDocument.getElementById('km-popup-close-button');

@@ -2535,12 +2535,14 @@ const firstVisibleMsg = {
             };
 
             _this.configurePopupWidget = function () {
-                !kommunicateCommons.checkIfDeviceIsHandheld() &&
+                if (!kommunicateCommons.checkIfDeviceIsHandheld()) {
+                    document.getElementById('km-chat-widget-close-button')?.classList.add('n-vis');
                     kommunicateCommons.modifyClassList(
                         { id: ['mck-sidebox'] },
                         'popup-enabled',
                         ''
                     );
+                }
             };
 
             _this.configureIframe = function () {
