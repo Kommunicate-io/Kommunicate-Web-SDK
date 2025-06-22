@@ -2612,6 +2612,8 @@ const firstVisibleMsg = {
                 document
                     .querySelector('.mck-voice-interface-back-btn')
                     .addEventListener('click', function () {
+                        mckVoice.stopRecording(true);
+
                         kommunicateCommons.modifyClassList(
                             { id: ['mck-voice-interface'] },
                             'n-vis',
@@ -7504,7 +7506,8 @@ const firstVisibleMsg = {
                     $mck_contacts_content.removeClass('vis').addClass('n-vis');
                     $modal_footer_content.removeClass('n-vis');
                     $applozic('#mck-sidebox-ft').removeClass('n-vis').addClass('vis');
-                    kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
+
+                    mckVoice.showMic(appOptions);
                     $mck_btn_clear_messages.removeClass('n-vis').addClass('vis');
                     $mck_group_menu_options.removeClass('vis').addClass('n-vis');
                     kommunicateCommons.modifyClassList(
@@ -8206,7 +8209,8 @@ const firstVisibleMsg = {
                     isVoiceInterfaceActive &&
                     floatWhere != 'mck-msg-right' &&
                     msg.message &&
-                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE
+                    !CURRENT_GROUP_DATA.TOKENIZE_RESPONSE &&
+                    appOptions.voiceChat
                 ) {
                     mckVoice.processMessagesAsAudio(msg, displayName);
                 }

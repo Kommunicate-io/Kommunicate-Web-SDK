@@ -1,6 +1,11 @@
 class MckVoice {
     #SILENCE_THRESHOLD = 0.05; // Adjust this threshold as needed
     #SILENCE_DURATION = 3000; // 3 seconds of silence
+    #NOISE_THRESHOLD = 130; //  silence threshold of audio
+
+    // animation scale for speaking
+    #MIN_SPEAK_ANIMATION_SCALE = 0.7;
+    #MAX_SPEAK_ANIMATION_SCALE = 1.0;
 
     constructor() {
         this.mediaRecorder = null;
@@ -16,6 +21,8 @@ class MckVoice {
         this.hasSoundDetected = false;
         this.soundSamples = 0;
         this.totalSamples = 0;
+
+        this.audioElement = null;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -52,6 +59,8 @@ class MckVoice {
 
     async playAudioWithMediaSource(response) {
         const audio = new Audio();
+        this.audioElement = audio;
+
         const mediaSource = new MediaSource();
         audio.src = URL.createObjectURL(mediaSource);
         const fullChunks = [];
@@ -86,6 +95,11 @@ class MckVoice {
             });
 
             const reader = response.body.getReader();
+
+            audio.onerror = (e) => {
+                console.error(e, 'media source play error');
+                this.audioElement = null;
+            };
 
             audio.addEventListener(
                 'canplay',
@@ -156,6 +170,7 @@ class MckVoice {
                     ring1.classList.remove('ring-recede');
                     this.removeAllAnimation();
                 }, 800); // Match this to animation duration in CSS
+                this.audioElement = null;
             });
 
             async function processStream() {
@@ -201,6 +216,8 @@ class MckVoice {
             let audioBlobUrl = blobUrl;
 
             const audio = new Audio(audioBlobUrl);
+            this.audioElement = audio;
+
             this.visualizerCleanup = this.createAudioVisualizer(audio);
 
             await audio.play().catch(console.error);
@@ -210,6 +227,7 @@ class MckVoice {
             };
             audio.onerror = (err) => {
                 console.error('Playback failed', err);
+                this.audioElement = null;
             };
             audio.onended = () => {
                 const lastMsgElement = document.querySelector('.last-message-text');
@@ -247,6 +265,7 @@ class MckVoice {
                 setTimeout(() => {
                     ring1.classList.remove('ring-recede');
                 }, 1500); // Match this to animation duration in CSS
+                this.audioElement = null;
             };
         } catch (error) {
             console.error('Playback failed:', error);
@@ -309,6 +328,7 @@ class MckVoice {
         });
 
         document.querySelector('#mck-voice-speak-btn').addEventListener('click', () => {
+            this.stopRecording(true);
             kommunicateCommons.modifyClassList(
                 { class: ['mck-voice-repeat-last-msg', 'last-message-text'] },
                 'mck-hidden'
@@ -547,8 +567,7 @@ class MckVoice {
             console.debug('Audio visualizer created, ready to animate ring');
 
             // Keep track of previous scale for smooth transitions
-            let lastScale = 0.7; // Initialize with minimum scale (matching minScale)
-            const NOISE_THRESHOLD = 130; // Increased threshold to better detect actual sound vs silence
+            let lastScale = this.#MIN_SPEAK_ANIMATION_SCALE; // Initialize with minimum scale (matching minScale)
 
             // Animation function with improved response to sound
             const visualize = () => {
@@ -583,28 +602,25 @@ class MckVoice {
                     }
                 }
 
-                const average = sum / bufferLength;
-
-                // Scale settings
-                const minScale = 0.7;
-                const maxScale = 1.0;
-
                 // Only change scale if sound is above the noise threshold
                 let targetScale;
-                if (peakValue > NOISE_THRESHOLD) {
+                if (peakValue > this.#NOISE_THRESHOLD) {
                     // Map peak value to scale range, with emphasis on voice frequencies
-                    targetScale = minScale + (peakValue / 255) * (maxScale - minScale);
+                    targetScale =
+                        this.#MIN_SPEAK_ANIMATION_SCALE +
+                        (peakValue / 255) *
+                            (this.#MAX_SPEAK_ANIMATION_SCALE - this.#MIN_SPEAK_ANIMATION_SCALE);
                 } else {
                     // If no significant sound, maintain minimum scale
-                    targetScale = minScale;
+                    targetScale = this.#MIN_SPEAK_ANIMATION_SCALE;
                 }
 
                 // Force exact minimum scale during silence to avoid lingering at 0.85
-                if (peakValue <= NOISE_THRESHOLD) {
+                if (peakValue <= this.#NOISE_THRESHOLD) {
                     // When silent, ensure it gets very close to minimum or just set it directly
-                    if (Math.abs(lastScale - minScale) < 0.05) {
+                    if (Math.abs(lastScale - this.#MIN_SPEAK_ANIMATION_SCALE) < 0.05) {
                         // If already very close to minimum, just set it exactly
-                        lastScale = minScale;
+                        lastScale = this.#MIN_SPEAK_ANIMATION_SCALE;
                     } else {
                         // Otherwise use a very aggressive smoothing for quick return
                         lastScale = lastScale + (targetScale - lastScale) * 0.5;
@@ -718,6 +734,22 @@ class MckVoice {
             // hide the ring animation
             // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis', '');
             // document.querySelector('.ring-1').classList.add('mck-ring-remove-animation');
+        }
+        forceStop && this.stopAudio();
+    }
+
+    stopAudio() {
+        if (this.audioElement) {
+            this.audioElement.pause();
+            this.audioElement.currentTime = 0;
+        }
+
+        this.audioElement = null;
+    }
+
+    showMic(appOptions) {
+        if (appOptions.voiceChat) {
+            kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
         }
     }
 }

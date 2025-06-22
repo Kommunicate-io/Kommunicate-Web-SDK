@@ -346,6 +346,10 @@ function ApplozicSidebox() {
                 promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceNote.js));
             }
 
+            if (options.voiceChat) {
+                promises.push(loadResourceAsync(THIRD_PARTY_SCRIPTS.voiceChat.js));
+            }
+
             await Promise.all(promises);
         } catch (err) {
             console.error(err);
@@ -559,6 +563,7 @@ function ApplozicSidebox() {
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ?? 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
 
+            options.voiceChat = isSettingEnable('voiceChat');
             appOptionSession.deletePropertyDataFromSession('settings');
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {
