@@ -1,11 +1,12 @@
 class MckVoice {
-    #SILENCE_THRESHOLD = 0.05; // Adjust this threshold as needed
-    #SILENCE_DURATION = 3000; // 3 seconds of silence
-    #NOISE_THRESHOLD = 130; //  silence threshold of audio
+    // Using underscore prefix instead of # for compatibility with build tools
+    _SILENCE_THRESHOLD = 0.05; // Adjust this threshold as needed
+    _SILENCE_DURATION = 3000; // 3 seconds of silence
+    _NOISE_THRESHOLD = 130; //  silence threshold of audio
 
     // animation scale for speaking
-    #MIN_SPEAK_ANIMATION_SCALE = 0.7;
-    #MAX_SPEAK_ANIMATION_SCALE = 1.0;
+    _MIN_SPEAK_ANIMATION_SCALE = 0.7;
+    _MAX_SPEAK_ANIMATION_SCALE = 1.0;
 
     constructor() {
         this.mediaRecorder = null;
@@ -567,7 +568,7 @@ class MckVoice {
             console.debug('Audio visualizer created, ready to animate ring');
 
             // Keep track of previous scale for smooth transitions
-            let lastScale = this.#MIN_SPEAK_ANIMATION_SCALE; // Initialize with minimum scale (matching minScale)
+            let lastScale = this._MIN_SPEAK_ANIMATION_SCALE; // Initialize with minimum scale (matching minScale)
 
             // Animation function with improved response to sound
             const visualize = () => {
@@ -604,23 +605,23 @@ class MckVoice {
 
                 // Only change scale if sound is above the noise threshold
                 let targetScale;
-                if (peakValue > this.#NOISE_THRESHOLD) {
+                if (peakValue > this._NOISE_THRESHOLD) {
                     // Map peak value to scale range, with emphasis on voice frequencies
                     targetScale =
-                        this.#MIN_SPEAK_ANIMATION_SCALE +
+                        this._MIN_SPEAK_ANIMATION_SCALE +
                         (peakValue / 255) *
-                            (this.#MAX_SPEAK_ANIMATION_SCALE - this.#MIN_SPEAK_ANIMATION_SCALE);
+                            (this._MAX_SPEAK_ANIMATION_SCALE - this._MIN_SPEAK_ANIMATION_SCALE);
                 } else {
                     // If no significant sound, maintain minimum scale
-                    targetScale = this.#MIN_SPEAK_ANIMATION_SCALE;
+                    targetScale = this._MIN_SPEAK_ANIMATION_SCALE;
                 }
 
                 // Force exact minimum scale during silence to avoid lingering at 0.85
-                if (peakValue <= this.#NOISE_THRESHOLD) {
+                if (peakValue <= this._NOISE_THRESHOLD) {
                     // When silent, ensure it gets very close to minimum or just set it directly
-                    if (Math.abs(lastScale - this.#MIN_SPEAK_ANIMATION_SCALE) < 0.05) {
+                    if (Math.abs(lastScale - this._MIN_SPEAK_ANIMATION_SCALE) < 0.05) {
                         // If already very close to minimum, just set it exactly
-                        lastScale = this.#MIN_SPEAK_ANIMATION_SCALE;
+                        lastScale = this._MIN_SPEAK_ANIMATION_SCALE;
                     } else {
                         // Otherwise use a very aggressive smoothing for quick return
                         lastScale = lastScale + (targetScale - lastScale) * 0.5;
@@ -689,7 +690,7 @@ class MckVoice {
 
             // Check if the current volume is below the silence threshold
 
-            if (volume > this.#SILENCE_THRESHOLD) {
+            if (volume > this._SILENCE_THRESHOLD) {
                 this.hasSoundDetected = true;
                 this.soundSamples++;
                 this.silenceStart = null;
@@ -699,7 +700,7 @@ class MckVoice {
                     console.debug('Silence detected, starting timer');
                 } else {
                     const silenceDuration = Date.now() - this.silenceStart;
-                    if (silenceDuration >= this.#SILENCE_DURATION) {
+                    if (silenceDuration >= this._SILENCE_DURATION) {
                         console.debug('User silent for 3 seconds, stopping recording');
                         this.stopRecording();
                         this.addThinkingAnimation();

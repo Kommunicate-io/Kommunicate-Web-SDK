@@ -1,6 +1,7 @@
 class Voice {
-    #VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
-    #VOICE_PLATFORM_API_KEY = 'sk_7ba045de9adb822a311d047def576415659d9465f26e6b73';
+    // Using _ instead of # for compatibility with build tools
+    _VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
+    _VOICE_PLATFORM_API_KEY = 'sk_7ba045de9adb822a311d047def576415659d9465f26e6b73';
     constructor() {
         this.voices = [];
         this.hasMoreVoices = true;
@@ -12,9 +13,9 @@ class Voice {
             this.hasMoreVoices = true;
         }
 
-        const apiURL = `${this.#VOICE_PLATFORM_API_URL}/v2/voices`;
+        const apiURL = `${this._VOICE_PLATFORM_API_URL}/v2/voices`;
         const headers = {
-            'xi-api-key': `${this.#VOICE_PLATFORM_API_KEY}`,
+            'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
@@ -42,12 +43,10 @@ class Voice {
     }
 
     streamTextToSpeech(text = '') {
-        const apiUrl = `${
-            this.#VOICE_PLATFORM_API_URL
-        }/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
+        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
 
         const headers = {
-            'xi-api-key': `${this.#VOICE_PLATFORM_API_KEY}`,
+            'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
@@ -73,9 +72,9 @@ class Voice {
     }
 
     textToSpeech(text = '', voiceId = 'kristy') {
-        const apiUrl = `${this.#VOICE_PLATFORM_API_URL}/v1/audio/speech`;
+        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/audio/speech`;
         const headers = {
-            'Authorization': `Bearer ${this.#VOICE_PLATFORM_API_KEY}`,
+            'Authorization': `Bearer ${this._VOICE_PLATFORM_API_KEY}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
@@ -103,10 +102,10 @@ class Voice {
     }
 
     speechToText(audioBlob) {
-        const apiUrl = `${this.#VOICE_PLATFORM_API_URL}/v1/speech-to-text`;
+        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/speech-to-text`;
 
         const headers = {
-            'xi-api-key': `${this.#VOICE_PLATFORM_API_KEY}`,
+            'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
             // 'Accept': 'application/json',
             // 'Content-Type': 'application/json',
         };
