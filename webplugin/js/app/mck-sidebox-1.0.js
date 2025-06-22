@@ -645,7 +645,7 @@ const firstVisibleMsg = {
 
         _this.churnCustomerWidgetChanges = function () {
             mckMessageService.openChatbox();
-            $applozic('.mck-box-form').removeClass('n-vis');
+            $applozic('.mck-box-form-container').removeClass('n-vis');
             $applozic('#mck-contact-loading').addClass('n-vis');
             $applozic('#mck-contacts-content').addClass('n-vis');
         };
@@ -2621,11 +2621,13 @@ const firstVisibleMsg = {
                         kommunicateCommons.modifyClassList(
                             {
                                 id: ['mck-sidebox-ft'],
-                                class: ['mck-box-body', 'mck-box-top'],
+                                class: ['mck-box-body'],
                             },
                             'vis',
                             'n-vis'
                         );
+
+                        document.querySelector('.mck-box-top').classList.remove('n-vis');
                         window.Kommunicate.openConversation(CURRENT_GROUP_DATA.tabId);
                     });
 
@@ -6881,7 +6883,7 @@ const firstVisibleMsg = {
                                 }
                                 kommunicateCommons.modifyClassList(
                                     {
-                                        class: ['mck-box-form'],
+                                        class: ['mck-box-form-container'],
                                     },
                                     'n-vis'
                                 );
@@ -7059,7 +7061,7 @@ const firstVisibleMsg = {
             var $mck_conversation_list = $applozic('#mck-conversation-list');
 
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
-            var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form');
+            var $modal_footer_content = $applozic('.mck-box-ft .mck-box-form-container');
             var $mck_btn_clear_messages = $applozic('#mck-btn-clear-messages');
             var $mck_offline_message_box = $applozic('#mck-offline-message-box');
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
@@ -7500,7 +7502,7 @@ const firstVisibleMsg = {
                     $mck_tab_option_panel.data('tabId', params.tabId);
                     $mck_tab_option_panel.removeClass('n-vis').addClass('vis');
                     $mck_contacts_content.removeClass('vis').addClass('n-vis');
-                    $modal_footer_content.removeClass('n-vis').addClass('vis');
+                    $modal_footer_content.removeClass('n-vis');
                     $applozic('#mck-sidebox-ft').removeClass('n-vis').addClass('vis');
                     kommunicateCommons.modifyClassList({ id: ['mck-voice-web'] }, '', 'n-vis');
                     $mck_btn_clear_messages.removeClass('n-vis').addClass('vis');
@@ -9853,7 +9855,7 @@ const firstVisibleMsg = {
                             tabId: contact.contactId,
                             isGroup: contact.isGroup,
                         });
-                        $modal_footer_content.removeClass('n-vis').addClass('vis');
+                        $modal_footer_content.removeClass('n-vis');
                         $applozic('#mck-sidebox-ft').removeClass('n-vis').addClass('n-vis');
                     } else {
                         mckGroupLayout.addGroupMemberFromSearch(contact.contactId);
@@ -9895,7 +9897,7 @@ const firstVisibleMsg = {
                                             isGroup: false,
                                             isSearch: true,
                                         });
-                                        $modal_footer_content.removeClass('n-vis').addClass('vis');
+                                        $modal_footer_content.removeClass('n-vis');
                                     }
                                 }
                             }
@@ -9924,7 +9926,7 @@ const firstVisibleMsg = {
                                     isGroup: false,
                                     isSearch: true,
                                 });
-                                $modal_footer_content.removeClass('n-vis').addClass('vis');
+                                $modal_footer_content.removeClass('n-vis');
                                 $applozic('#mck-sidebox-ft').removeClass('n-vis').addClass('vis');
                             }
                         }

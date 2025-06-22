@@ -11,6 +11,11 @@ class MckVoice {
         this.agentOrBotLastMsg = '';
         this.agentOrBotLastMsgAudio = null;
         this.messagesQueue = [];
+
+        // to check if audio is empty before sending to server
+        this.hasSoundDetected = false;
+        this.soundSamples = 0;
+        this.totalSamples = 0;
     }
 
     async processMessagesAsAudio(msg, displayName) {
@@ -35,7 +40,6 @@ class MckVoice {
             this.agentOrBotLastMsg = messageWithoutSource;
 
             const response = await kmVoice.streamTextToSpeech(messageWithoutSource);
-
             //add the animation again
             // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
             // document.querySelector('.ring-1').classList.remove('mck-ring-remove-animation');
@@ -87,6 +91,7 @@ class MckVoice {
                 'canplay',
                 () => {
                     if (!hasPlaybackStarted) {
+                        this.addSpeakingAnimation();
                         audio.play().catch(console.error);
                         hasPlaybackStarted = true;
                     }
@@ -118,9 +123,7 @@ class MckVoice {
 
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
 
-                kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis');
-
-                document.querySelector('.ring-1').classList.add('mck-ring-remove-animation');
+                this.removeAllAnimation();
                 console.log('Playback ended');
             });
 
@@ -163,6 +166,7 @@ class MckVoice {
 
     async playAudio(response, isAudioBlob = false) {
         try {
+            this.addSpeakingAnimation();
             let audioBlobUrl = isAudioBlob ? response : null;
 
             if (!isAudioBlob) {
@@ -197,9 +201,12 @@ class MckVoice {
 
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
 
-                kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, 'n-vis');
+                kommunicateCommons.modifyClassList(
+                    { class: ['voice-ring-2', 'voice-ring-3'] },
+                    'n-vis'
+                );
 
-                document.querySelector('.ring-1').classList.add('mck-ring-remove-animation');
+                document.querySelector('.voice-ring-1').classList.add('mck-ring-remove-animation');
                 console.log('Playback ended');
             };
         } catch (error) {
@@ -215,14 +222,17 @@ class MckVoice {
                     id: ['mck-sidebox-ft'],
                     class: ['mck-box-body', 'mck-box-top'],
                 },
-                'n-vis',
-                'vis'
+                'n-vis'
             );
 
             kommunicateCommons.modifyClassList({ id: ['mck-voice-interface'] }, 'vis', 'n-vis');
-            kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
             kommunicateCommons.modifyClassList(
-                { class: ['ring-1'] },
+                { class: ['voice-ring-2', 'voice-ring-3'] },
+                '',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                { class: ['voice-ring-1'] },
                 '',
                 'mck-ring-remove-animation'
             );
@@ -243,11 +253,13 @@ class MckVoice {
             kommunicateCommons.modifyClassList(
                 {
                     id: ['mck-sidebox-ft'],
-                    class: ['mck-box-body', 'mck-box-top'],
+                    class: ['mck-box-body'],
                 },
                 'vis',
                 'n-vis'
             );
+
+            document.querySelector('.mck-box-top').classList.remove('n-vis');
 
             kommunicateCommons.modifyClassList(
                 { class: ['mck-voice-repeat-last-msg', 'last-message-text'] },
@@ -263,9 +275,13 @@ class MckVoice {
                 'mck-hidden'
             );
 
-            kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
             kommunicateCommons.modifyClassList(
-                { class: ['ring-1'] },
+                { class: ['voice-ring-2', 'voice-ring-3'] },
+                '',
+                'n-vis'
+            );
+            kommunicateCommons.modifyClassList(
+                { class: ['voice-ring-1'] },
                 '',
                 'mck-ring-remove-animation'
             );
@@ -276,8 +292,12 @@ class MckVoice {
         document.getElementById('mck-voice-repeat-last-msg').addEventListener('click', function () {
             this.classList.toggle('mck-hidden');
 
-            kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
-            document.querySelector('.ring-1').classList.remove('mck-ring-remove-animation');
+            kommunicateCommons.modifyClassList(
+                { class: ['voice-ring-2', 'voice-ring-3'] },
+                '',
+                'n-vis'
+            );
+            document.querySelector('.voice-ring-1').classList.remove('mck-ring-remove-animation');
 
             self.playAudio(self.agentOrBotLastMsgAudio, true);
         });
@@ -311,6 +331,7 @@ class MckVoice {
     }
 
     startRecording(stream) {
+        this.addListeningAnimation();
         this.stream = stream;
         this.audioChunks = [];
         this.isRecording = true;
@@ -336,6 +357,23 @@ class MckVoice {
                 // Create blob from recorded chunks
                 if (this.isRecording) {
                     const audioBlob = new Blob(this.audioChunks, { type: 'audio/wav' });
+
+                    const soundPercentage =
+                        this.totalSamples > 0 ? (this.soundSamples / this.totalSamples) * 100 : 0;
+
+                    if (!this.hasSoundDetected || soundPercentage < 5) {
+                        console.debug('Recording was empty or nearly empty');
+
+                        this.hasSoundDetected = false;
+                        this.soundSamples = 0;
+                        this.totalSamples = 0;
+                        this.removeAllAnimation();
+                        return false; // Indicate empty recording
+                    }
+
+                    this.hasSoundDetected = false;
+                    this.soundSamples = 0;
+                    this.totalSamples = 0;
 
                     const data = await kmVoice.speechToText(audioBlob);
 
@@ -373,6 +411,54 @@ class MckVoice {
         this.setupSilenceDetection(stream);
     }
 
+    addThinkingAnimation() {
+        document.querySelectorAll('.voice-ring').forEach((ring, i) => {
+            ring.classList.remove(
+                `listening-ring`,
+                `listening-ring-${i + 1}`,
+                `speaking-voice-ring`,
+                `speaking-voice-ring-${i + 1}`
+            );
+            ring.classList.add(`thinking-voice-ring`, `thinking-voice-ring-${i + 1}`);
+        });
+    }
+
+    addSpeakingAnimation() {
+        document.querySelectorAll('.voice-ring').forEach((ring, i) => {
+            ring.classList.remove(
+                `thinking-voice-ring`,
+                `thinking-voice-ring-${i + 1}`,
+                `listening-ring`,
+                `listening-ring-${i + 1}`
+            );
+            i == 0 && ring.classList.add(`speaking-voice-ring`);
+        });
+    }
+
+    addListeningAnimation() {
+        document.querySelectorAll('.voice-ring').forEach((ring, i) => {
+            ring.classList.remove(
+                `speaking-voice-ring`,
+                `speaking-voice-ring-${i + 1}`,
+                `thinking-voice-ring`,
+                `thinking-voice-ring-${i + 1}`
+            );
+            ring.classList.add(`listening-ring`, `listening-ring-${i + 1}`);
+        });
+    }
+
+    removeAllAnimation() {
+        document.querySelectorAll('.voice-ring').forEach((ring, i) => {
+            ring.classList.remove(
+                `speaking-voice-ring`,
+                `speaking-voice-ring-${i + 1}`,
+                `listening-ring`,
+                `listening-ring-${i + 1}`,
+                `thinking-voice-ring`,
+                `thinking-voice-ring-${i + 1}`
+            );
+        });
+    }
     setupSilenceDetection(stream) {
         // Create audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -399,9 +485,17 @@ class MckVoice {
 
             const average = values / length;
             const volume = average / 255; // Convert to a value between 0 and 1
+            this.totalSamples++;
 
             // Check if the current volume is below the silence threshold
-            if (volume < this.#SILENCE_THRESHOLD) {
+
+            if (volume > this.#SILENCE_THRESHOLD) {
+                this.hasSoundDetected = true;
+                this.soundSamples++;
+                this.silenceStart = null;
+
+                console.debug('Sound detected, resetting silence timer');
+            } else {
                 if (this.silenceStart === null) {
                     this.silenceStart = Date.now();
                     console.debug('Silence detected, starting timer');
@@ -410,13 +504,8 @@ class MckVoice {
                     if (silenceDuration >= this.#SILENCE_DURATION) {
                         console.debug('User silent for 3 seconds, stopping recording');
                         this.stopRecording();
+                        this.addThinkingAnimation();
                     }
-                }
-            } else {
-                // Reset silence timer if sound is detected
-                if (this.silenceStart !== null) {
-                    console.debug('Sound detected, resetting silence timer');
-                    this.silenceStart = null;
                 }
             }
         };
