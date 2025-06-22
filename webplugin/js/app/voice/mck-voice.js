@@ -93,6 +93,8 @@ class MckVoice {
                     if (!hasPlaybackStarted) {
                         this.addSpeakingAnimation();
                         audio.play().catch(console.error);
+                        // Initialize audio visualizer for dynamic animation
+                        this.visualizerCleanup = this.createAudioVisualizer(audio);
                         hasPlaybackStarted = true;
                     }
                 },
@@ -104,6 +106,13 @@ class MckVoice {
 
                 if (this.messagesQueue.length > 0) {
                     const nextMsg = this.messagesQueue[0];
+
+                    // Clean up visualizer before starting next message
+                    if (this.visualizerCleanup) {
+                        this.visualizerCleanup();
+                        this.visualizerCleanup = null;
+                    }
+
                     this.processNextMessage(nextMsg.msg, nextMsg.displayName);
                     return;
                 }
@@ -123,8 +132,30 @@ class MckVoice {
 
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
 
-                this.removeAllAnimation();
-                console.log('Playback ended');
+                // Clean up visualizer but don't remove animation yet
+                if (this.visualizerCleanup) {
+                    this.visualizerCleanup();
+                    this.visualizerCleanup = null;
+                }
+
+                // Hide other rings
+                kommunicateCommons.modifyClassList(
+                    { class: ['voice-ring-2', 'voice-ring-3'] },
+                    'n-vis'
+                );
+
+                // Apply receding animation to the first ring
+                const ring1 = document.querySelector('.voice-ring-1');
+                ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+                ring1.classList.add('ring-recede');
+
+                console.log('Playback ended, starting recede animation');
+
+                // Wait for animation to complete before removing all classes
+                setTimeout(() => {
+                    ring1.classList.remove('ring-recede');
+                    this.removeAllAnimation();
+                }, 800); // Match this to animation duration in CSS
             });
 
             async function processStream() {
@@ -164,19 +195,15 @@ class MckVoice {
         }
     }
 
-    async playAudio(response, isAudioBlob = false) {
+    async repeatLastMsgAudio(blobUrl) {
         try {
             this.addSpeakingAnimation();
-            let audioBlobUrl = isAudioBlob ? response : null;
-
-            if (!isAudioBlob) {
-                const audioBlob = await response.blob();
-                audioBlobUrl = URL.createObjectURL(audioBlob);
-            }
+            let audioBlobUrl = blobUrl;
 
             const audio = new Audio(audioBlobUrl);
+            this.visualizerCleanup = this.createAudioVisualizer(audio);
 
-            await audio.play();
+            await audio.play().catch(console.error);
 
             audio.onplay = () => {
                 console.log('Playback started');
@@ -187,27 +214,39 @@ class MckVoice {
             audio.onended = () => {
                 const lastMsgElement = document.querySelector('.last-message-text');
 
+                // Clean up visualizer but don't remove animation yet
+                if (this.visualizerCleanup) {
+                    this.visualizerCleanup();
+                    this.visualizerCleanup = null;
+                }
+
                 lastMsgElement.innerHTML = `<strong>${this.agentOrBotName}</strong>: ${
                     this.agentOrBotLastMsg.slice(0, 100) +
                     (this.agentOrBotLastMsg.length > 100 ? '...' : '')
                 }`;
 
                 lastMsgElement.classList.remove('mck-hidden');
-
-                if (!isAudioBlob) {
-                    this.agentOrBotLastMsgAudio && URL.revokeObjectURL(this.agentOrBotLastMsgAudio); // revoke the previous audio blob url
-                }
                 this.agentOrBotLastMsgAudio = audioBlobUrl;
 
                 document.getElementById('mck-voice-repeat-last-msg').classList.remove('mck-hidden');
 
+                // Hide other rings
                 kommunicateCommons.modifyClassList(
                     { class: ['voice-ring-2', 'voice-ring-3'] },
                     'n-vis'
                 );
 
-                document.querySelector('.voice-ring-1').classList.add('mck-ring-remove-animation');
-                console.log('Playback ended');
+                // Apply receding animation to the first ring
+                const ring1 = document.querySelector('.voice-ring-1');
+                ring1.classList.remove('speaking-voice-ring', 'speaking-voice-ring-1');
+                ring1.classList.add('ring-recede');
+
+                console.log('Playback ended, starting recede animation');
+
+                // Remove ring-recede class after animation completes
+                setTimeout(() => {
+                    ring1.classList.remove('ring-recede');
+                }, 1500); // Match this to animation duration in CSS
             };
         } catch (error) {
             console.error('Playback failed:', error);
@@ -297,9 +336,10 @@ class MckVoice {
                 '',
                 'n-vis'
             );
-            document.querySelector('.voice-ring-1').classList.remove('mck-ring-remove-animation');
+            const ring1 = document.querySelector('.voice-ring-1');
+            ring1.classList.remove('mck-ring-remove-animation');
 
-            self.playAudio(self.agentOrBotLastMsgAudio, true);
+            self.repeatLastMsgAudio(self.agentOrBotLastMsgAudio);
         });
     }
 
@@ -429,9 +469,21 @@ class MckVoice {
                 `thinking-voice-ring`,
                 `thinking-voice-ring-${i + 1}`,
                 `listening-ring`,
-                `listening-ring-${i + 1}`
+                `listening-ring-${i + 1}`,
+                `speaking-voice-ring`,
+                `speaking-voice-ring-${i + 1}`
             );
-            i == 0 && ring.classList.add(`speaking-voice-ring`);
+
+            // Only use the first ring for speaking animation
+            if (i === 0) {
+                ring.classList.add('speaking-voice-ring', 'speaking-voice-ring-1');
+                // Reset any inline styles that might be left from visualization
+                ring.style.transform = '';
+                ring.style.opacity = '';
+            } else {
+                // Hide other rings
+                ring.classList.add('n-vis');
+            }
         });
     }
 
@@ -455,9 +507,141 @@ class MckVoice {
                 `listening-ring`,
                 `listening-ring-${i + 1}`,
                 `thinking-voice-ring`,
-                `thinking-voice-ring-${i + 1}`
+                `thinking-voice-ring-${i + 1}`,
+                'ring-recede'
             );
+
+            // Clean up any inline styles that might have been applied
+            ring.style.transform = '';
+            ring.style.opacity = '';
+            ring.style.zIndex = '';
         });
+    }
+
+    createAudioVisualizer(audioElement) {
+        try {
+            // Create audio context and analyzer
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyzer = audioContext.createAnalyser();
+            analyzer.fftSize = 512; // Increased for better frequency resolution
+
+            // Connect the audio element to the analyzer
+            const source = audioContext.createMediaElementSource(audioElement);
+            source.connect(analyzer);
+            analyzer.connect(audioContext.destination);
+
+            // Get the main ring element for animation
+            const ring = document.querySelector('.speaking-voice-ring-1');
+            if (!ring) {
+                console.error('Speaking ring element not found');
+                return () => {};
+            }
+
+            // Make sure the ring is visible
+            ring.classList.remove('n-vis');
+
+            // Create buffer for frequency data
+            const bufferLength = analyzer.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+
+            console.debug('Audio visualizer created, ready to animate ring');
+
+            // Keep track of previous scale for smooth transitions
+            let lastScale = 0.7; // Initialize with minimum scale (matching minScale)
+            const NOISE_THRESHOLD = 130; // Increased threshold to better detect actual sound vs silence
+
+            // Animation function with improved response to sound
+            const visualize = () => {
+                if (!ring || !audioElement || audioElement.paused) {
+                    console.debug('Animation stopped: ring or audio not available');
+                    return;
+                }
+
+                // Get current audio data
+                analyzer.getByteFrequencyData(dataArray);
+
+                // Calculate sound levels with focus on voice frequencies
+                let sum = 0;
+                let peakValue = 0;
+
+                // Focus on frequencies most relevant to human voice (100-900 Hz)
+                const voiceStartBin = Math.floor(
+                    (100 * bufferLength) / (audioContext.sampleRate / 2)
+                );
+                const voiceEndBin = Math.floor(
+                    (900 * bufferLength) / (audioContext.sampleRate / 2)
+                );
+
+                for (let i = 0; i < bufferLength; i++) {
+                    // Give more weight to voice frequencies
+                    const value = dataArray[i];
+                    sum += value;
+
+                    // Track peak value for better response
+                    if (i >= voiceStartBin && i <= voiceEndBin && value > peakValue) {
+                        peakValue = value;
+                    }
+                }
+
+                const average = sum / bufferLength;
+
+                // Scale settings
+                const minScale = 0.7;
+                const maxScale = 1.0;
+
+                // Only change scale if sound is above the noise threshold
+                let targetScale;
+                if (peakValue > NOISE_THRESHOLD) {
+                    // Map peak value to scale range, with emphasis on voice frequencies
+                    targetScale = minScale + (peakValue / 255) * (maxScale - minScale);
+                } else {
+                    // If no significant sound, maintain minimum scale
+                    targetScale = minScale;
+                }
+
+                // Force exact minimum scale during silence to avoid lingering at 0.85
+                if (peakValue <= NOISE_THRESHOLD) {
+                    // When silent, ensure it gets very close to minimum or just set it directly
+                    if (Math.abs(lastScale - minScale) < 0.05) {
+                        // If already very close to minimum, just set it exactly
+                        lastScale = minScale;
+                    } else {
+                        // Otherwise use a very aggressive smoothing for quick return
+                        lastScale = lastScale + (targetScale - lastScale) * 0.5;
+                    }
+                } else {
+                    // Normal smoothing for sound presence
+                    lastScale = lastScale + (targetScale - lastScale) * 0.15;
+                }
+
+                // Apply changes with smoother animation
+                ring.style.transform = `translate(-50%, -50%) scale(${lastScale})`;
+
+                this.animationFrame = requestAnimationFrame(visualize);
+            };
+
+            // Start the animation loop with a single request
+            this.animationFrame = requestAnimationFrame(visualize);
+            console.debug('Audio visualization started');
+
+            // Return cleanup function
+            return () => {
+                console.debug('Cleaning up audio visualizer');
+                if (this.animationFrame) {
+                    cancelAnimationFrame(this.animationFrame);
+                    this.animationFrame = null;
+                }
+                try {
+                    source.disconnect();
+                    analyzer.disconnect();
+                } catch (e) {
+                    console.error('Error disconnecting audio nodes:', e);
+                }
+            };
+        } catch (error) {
+            console.error('Error creating audio visualizer:', error);
+            return () => {};
+        }
     }
     setupSilenceDetection(stream) {
         // Create audio context
@@ -493,8 +677,6 @@ class MckVoice {
                 this.hasSoundDetected = true;
                 this.soundSamples++;
                 this.silenceStart = null;
-
-                console.debug('Sound detected, resetting silence timer');
             } else {
                 if (this.silenceStart === null) {
                     this.silenceStart = Date.now();

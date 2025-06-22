@@ -112,7 +112,28 @@
 
     .speaking-voice-ring {
         background-color: #ffffff;
-        animation: speak-pulse-collapse 2s infinite ease-in-out;
+        opacity: 0.2;
+        transition: transform ease-in-out;
+        width: 105%;
+        height: 105%;
+        // animation: speak-pulse-collapse 2s infinite ease-in-out;
+    }
+
+    .ring-recede {
+        animation: ring-recede-animation 0.8s forwards ease-out;
+    }
+
+    @keyframes ring-recede-animation {
+        0% {
+            transform: translate(-50%, -50%) scale(0.7);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            z-index: -1;
+        }
     }
 
     @keyframes speak-pulse-collapse {
