@@ -563,7 +563,7 @@ function ApplozicSidebox() {
             options.googleApiKey =
                 isSettingEnable('googleApiKey') ?? 'AIzaSyCcC8PixPO1yzz35TnjWYIhQvCljTPSU7M';
 
-            options.voiceChat = isSettingEnable('voiceChat');
+            options.voiceChat = isSettingEnable('voiceChat') || KommunicateUtils.isAgenticFirst();
             appOptionSession.deletePropertyDataFromSession('settings');
 
             if (sessionTimeout != null && !(options.preLeadCollection || options.askUserDetails)) {

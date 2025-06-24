@@ -323,6 +323,7 @@ const generateFilesByVersion = (location) => {
                     JSON.stringify({
                         BRANCH: KM_RELEASE_BRANCH,
                         ENVIRONMENT: process.env.NODE_ENV,
+                        PRODUCT: process.env.PRODUCT || 'kommunicate',
                     })
                 );
 
