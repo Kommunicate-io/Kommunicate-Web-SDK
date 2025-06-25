@@ -1,6 +1,6 @@
 class Voice {
     _VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
-    _VOICE_PLATFORM_API_KEY = 'sk_5af5c862dd8c87860ece549378c67628233440a018ac2e12';
+    _VOICE_PLATFORM_API_KEY = kommunicate._globals.voiceChatApiKey;
 
     textToSpeechStream(text = '') {
         const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
