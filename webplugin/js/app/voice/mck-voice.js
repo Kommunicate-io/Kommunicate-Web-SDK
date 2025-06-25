@@ -63,7 +63,9 @@ class MckVoice {
         this.audioElement = audio;
 
         const mediaSource = new MediaSource();
-        audio.src = URL.createObjectURL(mediaSource);
+        const mediaSourceUrl = URL.createObjectURL(mediaSource);
+
+        audio.src = mediaSourceUrl;
         const fullChunks = [];
 
         try {
@@ -91,7 +93,9 @@ class MckVoice {
                         if (mediaSource.readyState === 'open') {
                             mediaSource.endOfStream();
                         }
-                    } catch (error) {}
+                    } catch (error) {
+                        console.error(error);
+                    }
                 }
             });
 
@@ -450,6 +454,8 @@ class MckVoice {
                 }
             } catch (error) {
                 console.error(error);
+                this.removeAllAnimation();
+                confirm('Failed to process the audio please try again after some time');
             } finally {
                 // Clean up the stream tracks
                 this.stream.getTracks().forEach((track) => track.stop());
@@ -651,6 +657,7 @@ class MckVoice {
                 try {
                     source.disconnect();
                     analyzer.disconnect();
+                    audioContext.close();
                 } catch (e) {
                     console.error('Error disconnecting audio nodes:', e);
                 }
