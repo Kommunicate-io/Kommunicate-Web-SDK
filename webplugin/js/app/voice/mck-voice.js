@@ -47,10 +47,7 @@ class MckVoice {
             this.agentOrBotName = displayName;
             this.agentOrBotLastMsg = messageWithoutSource;
 
-            const response = await kmVoice.streamTextToSpeech(messageWithoutSource);
-            //add the animation again
-            // kommunicateCommons.modifyClassList({ class: ['ring-2', 'ring-3'] }, '', 'n-vis');
-            // document.querySelector('.ring-1').classList.remove('mck-ring-remove-animation');
+            const response = await kmVoice.textToSpeechStream(messageWithoutSource);
 
             this.playAudioWithMediaSource(response);
         } catch (err) {

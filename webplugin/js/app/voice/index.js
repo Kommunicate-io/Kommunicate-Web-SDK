@@ -1,48 +1,8 @@
 class Voice {
-    // Using _ instead of # for compatibility with build tools
     _VOICE_PLATFORM_API_URL = 'https://api.elevenlabs.io';
     _VOICE_PLATFORM_API_KEY = 'sk_5af5c862dd8c87860ece549378c67628233440a018ac2e12';
-    constructor() {
-        this.voices = [];
-        this.hasMoreVoices = true;
-        this.audioQueue = [];
-    }
 
-    getVoices(resetVoicePagination = false) {
-        if (resetVoicePagination) {
-            this.hasMoreVoices = true;
-        }
-
-        const apiURL = `${this._VOICE_PLATFORM_API_URL}/v2/voices`;
-        const headers = {
-            'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        };
-
-        fetch(apiURL, {
-            method: 'GET',
-            headers: headers,
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                resetVoicePagination
-                    ? (this.voices = data.voices)
-                    : this.voices.push(...data.voices);
-                this.hasMoreVoices = data.has_more;
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }
-
-    streamTextToSpeech(text = '') {
+    textToSpeechStream(text = '') {
         const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/text-to-speech/pMsXgVXv3BLzUgSXRplE/stream`;
 
         const headers = {
@@ -71,43 +31,11 @@ class Voice {
             });
     }
 
-    textToSpeech(text = '', voiceId = 'kristy') {
-        const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/audio/speech`;
-        const headers = {
-            'Authorization': `Bearer ${this._VOICE_PLATFORM_API_KEY}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        };
-
-        fetch(apiUrl, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                input: text,
-                voice_id: voiceId,
-            }),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log(data);
-            })
-            .catch((error) => {
-                console.error('There was a problem with the fetch operation:', error);
-            });
-    }
-
     speechToText(audioBlob) {
         const apiUrl = `${this._VOICE_PLATFORM_API_URL}/v1/speech-to-text`;
 
         const headers = {
             'xi-api-key': `${this._VOICE_PLATFORM_API_KEY}`,
-            // 'Accept': 'application/json',
-            // 'Content-Type': 'application/json',
         };
 
         const formdata = new FormData();
