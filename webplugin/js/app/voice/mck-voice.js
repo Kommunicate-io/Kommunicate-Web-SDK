@@ -40,7 +40,7 @@ class MckVoice {
     async processNextMessage(msg, displayName) {
         try {
             const messageWithoutSource = msg.message.replace(
-                /\n*Sources:.*(?:\nhttps?:\/\/\S+)+/g,
+                /[\n\r]*Sources:.*?(https?:\/\/\S+)/g,
                 ''
             );
 
