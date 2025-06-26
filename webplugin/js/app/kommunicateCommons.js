@@ -192,7 +192,7 @@ function KommunicateCommons() {
         if (IS_SOCKET_CONNECTED && isWidgetOpen) {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
-            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK
+            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK && isWidgetOpen
                 ? $applozic.fn.applozic('initializeSocketConnection', false)
                 : window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED &&
                   window.Applozic.ALSocket.checkConnected(true);

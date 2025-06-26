@@ -634,7 +634,7 @@ const firstVisibleMsg = {
                 clearTimeout(this.SOCKET_DISCONNECT_TIMEOUT);
             },
         };
-        var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick || false;
+        var CONNECT_SOCKET_ON_WIDGET_CLICK = appOptions.connectSocketOnWidgetClick || true;
         var SUBSCRIBE_TO_EVENTS_BACKUP = [];
         var DEFAULT_ENCRYPTED_APP_VERSION = 111; // Update it to 112 to enable encryption for socket messages.
         kommunicateCommons.checkIfDeviceIsHandheld() &&
@@ -1748,6 +1748,7 @@ const firstVisibleMsg = {
          */
         _this.subscribeToEvents = function (events, callback, isEventArray) {
             if (!IS_SOCKET_CONNECTED) {
+                debugger;
                 SUBSCRIBE_TO_EVENTS_BACKUP.push(events);
                 return;
             }
@@ -2328,6 +2329,7 @@ const firstVisibleMsg = {
                             function (err, checkIfUserHasConversations) {
                                 err && console.log(err);
                                 checkIfUserHasConversations &&
+                                    KommunicateCommons.IS_WIDGET_OPEN &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
                                         IS_REINITIALIZE
