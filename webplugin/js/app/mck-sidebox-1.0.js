@@ -1748,7 +1748,6 @@ const firstVisibleMsg = {
          */
         _this.subscribeToEvents = function (events, callback, isEventArray) {
             if (!IS_SOCKET_CONNECTED) {
-                debugger;
                 SUBSCRIBE_TO_EVENTS_BACKUP.push(events);
                 return;
             }
