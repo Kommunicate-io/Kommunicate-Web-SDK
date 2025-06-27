@@ -189,12 +189,13 @@ function KommunicateCommons() {
     _this.setWidgetStateOpen = function (isWidgetOpen) {
         if (KommunicateCommons.IS_WIDGET_OPEN === isWidgetOpen) return; // return if same value is already assigned to IS_WIDGET_OPEN.
         KommunicateCommons.IS_WIDGET_OPEN = isWidgetOpen;
-        if (IS_SOCKET_CONNECTED && isWidgetOpen) {
+        if (IS_SOCKET_CONNECTED) {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
             KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK && isWidgetOpen
                 ? $applozic.fn.applozic('initializeSocketConnection', false)
                 : window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED &&
+                  isWidgetOpen &&
                   window.Applozic.ALSocket.checkConnected(true);
         }
     };
