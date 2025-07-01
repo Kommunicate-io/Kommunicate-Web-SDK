@@ -339,7 +339,7 @@ KommunicateUtils = {
         return MCK_ENV_DETAILS.PRODUCT;
     },
     isAgenticFirst: function () {
-        return this.getProduct() == KommunicateConstants.PRODUCT.AGENTICFIRST;
+        return this.getProduct() == KommunicateConstants.PRODUCTS.AGENTICFIRST;
     },
     triggerCustomEvent: function (eventName, options, kmPluginVersion) {
         options = typeof options == 'object' ? options : {};
