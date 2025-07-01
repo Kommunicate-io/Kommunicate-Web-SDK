@@ -11,8 +11,7 @@ function KommunicateCommons() {
         CUSTOMER_CREATED_AT = optns.customerCreatedAt;
         USE_BRANDING = typeof optns.useBranding == 'boolean' ? optns.useBranding : true;
         WIDGET_SETTINGS = optns.widgetSettings;
-        KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK =
-            optns.connectSocketOnWidgetClick || false;
+        KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK = true;
     };
 
     _this.isTrialPlan = function (pricingPackage) {
@@ -193,9 +192,10 @@ function KommunicateCommons() {
         if (IS_SOCKET_CONNECTED) {
             window.Applozic.SOCKET_DISCONNECT_PROCEDURE.stop();
         } else {
-            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK
+            KommunicateCommons.CONNECT_SOCKET_ON_WIDGET_CLICK && isWidgetOpen
                 ? $applozic.fn.applozic('initializeSocketConnection', false)
                 : window.Applozic.SOCKET_DISCONNECT_PROCEDURE.DISCONNECTED &&
+                  isWidgetOpen &&
                   window.Applozic.ALSocket.checkConnected(true);
         }
     };
