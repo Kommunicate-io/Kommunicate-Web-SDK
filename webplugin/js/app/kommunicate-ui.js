@@ -938,7 +938,7 @@ KommunicateUI = {
             kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['mck-box-form'],
+                    class: ['mck-box-form-container'],
                 },
                 'n-vis',
                 'vis'
@@ -982,7 +982,7 @@ KommunicateUI = {
             );
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['mck-box-form'],
+                    class: ['mck-box-form-container'],
                 },
                 '',
                 'n-vis'
@@ -1048,7 +1048,7 @@ KommunicateUI = {
         isConversationClosed &&
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['mck-box-form'],
+                    class: ['mck-box-form-container'],
                 },
                 'n-vis'
             );
@@ -1096,7 +1096,7 @@ KommunicateUI = {
             kommunicateCommons.modifyClassList({ class: ['mck-rating-box'] }, '', 'selected');
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['mck-box-form'],
+                    class: ['mck-box-form-container'],
                 },
                 'n-vis',
                 'vis'
@@ -1132,7 +1132,7 @@ KommunicateUI = {
                 CURRENT_GROUP_DATA.currentGroupFeedback = feedback;
                 kommunicateCommons.modifyClassList(
                     {
-                        class: ['mck-box-form'],
+                        class: ['mck-box-form-container'],
                     },
                     'n-vis'
                 );
@@ -1211,7 +1211,7 @@ KommunicateUI = {
             );
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['mck-box-form'],
+                    class: ['mck-box-form-container'],
                 },
                 '',
                 'n-vis'
@@ -1241,7 +1241,7 @@ KommunicateUI = {
             );
             kommunicateCommons.modifyClassList(
                 {
-                    class: ['mck-box-form'],
+                    class: ['mck-box-form-container'],
                 },
                 '',
                 'n-vis'
@@ -1278,7 +1278,7 @@ KommunicateUI = {
             !KM_GLOBAL.disableTextArea &&
                 kommunicateCommons.modifyClassList(
                     {
-                        class: ['mck-box-form'],
+                        class: ['mck-box-form-container'],
                     },
                     '',
                     'n-vis'
@@ -1708,7 +1708,7 @@ KommunicateUI = {
                 ) {
                     kommunicateCommons.modifyClassList(
                         {
-                            class: ['mck-box-form'],
+                            class: ['mck-box-form-container'],
                         },
                         'n-vis',
                         'vis'
@@ -1717,9 +1717,8 @@ KommunicateUI = {
                 } else {
                     kommunicateCommons.modifyClassList(
                         {
-                            class: ['mck-box-form'],
+                            class: ['mck-box-form-container'],
                         },
-                        'vis',
                         'n-vis'
                     );
                 }

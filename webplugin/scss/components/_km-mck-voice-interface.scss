@@ -1,0 +1,204 @@
+#mck-voice-interface {
+    height: 100%;
+    display: flex;
+    flex-flow: column wrap;
+
+    .mck-voice-image-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        display: flex;
+    }
+    .mck-voice-interface-header {
+        align-self: flex-start;
+        padding: 14px;
+    }
+    .mck-voice-interface-body {
+        align-self: center;
+        margin-top: auto;
+
+        #mck-voice-repeat-last-msg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            gap: 8px;
+            margin-top: 14px;
+        }
+    }
+
+    .mck-voice-interface-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: auto;
+        margin-bottom: 20px;
+
+        .last-message-text {
+            color: #ffffff;
+            padding-left: 14px;
+            text-align: center;
+        }
+    }
+    .mck-voice-interface-footer-buttons {
+        display: flex;
+        gap: 14px;
+        margin: auto;
+        > button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 8px 16px;
+            border: none;
+            background: #ffffff;
+            gap: 4px;
+        }
+    }
+
+    .mck-voice-interface-back-btn {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ffffff;
+        border-radius: 8px;
+        background: transparent;
+        color: #ffffff;
+        padding: 4px 16px 4px 0px;
+    }
+    .voice-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .thinking-voice-ring {
+        border: 2px solid transparent;
+        width: 90%;
+        height: 90%;
+    }
+
+    .thinking-voice-ring-1 {
+        border-top-color: rgb(255 255 255);
+        opacity: 0.9;
+        animation: thinking-rotate 2s linear infinite;
+    }
+
+    .thinking-voice-ring-2 {
+        border-right-color: rgb(255 255 255);
+        opacity: 0.6;
+        animation: thinking-rotate 2s linear infinite reverse 0.1s;
+    }
+
+    .thinking-voice-ring-3 {
+        border-bottom-color: rgb(255 255 255);
+        opacity: 0.3;
+        animation: thinking-rotate 2s linear infinite 0.2s;
+    }
+
+    @keyframes thinking-rotate {
+        0% {
+            transform: translate(-50%, -50%) rotate(0);
+        }
+
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    .speaking-voice-ring {
+        background-color: #ffffff;
+        opacity: 0.2;
+        transition: transform ease-in-out;
+        width: 105%;
+        height: 105%;
+        // animation: speak-pulse-collapse 2s infinite ease-in-out;
+    }
+
+    .ring-recede {
+        animation: ring-recede-animation 0.8s forwards ease-out;
+    }
+
+    @keyframes ring-recede-animation {
+        0% {
+            transform: translate(-50%, -50%) scale(0.7);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            z-index: -1;
+        }
+    }
+
+    @keyframes speak-pulse-collapse {
+        0%,
+        100% {
+            transform: translate(-50%, -50%) scale(0.7);
+            opacity: 0.4;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.2;
+        }
+    }
+
+    .listening-ring {
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle,
+            transparent 69%,
+            #ffffff 70%,
+            #a97aff 100%,
+            transparent 72%
+        );
+        opacity: 0;
+        animation: inward-ripple 3s infinite ease-out;
+    }
+
+    .listening-ring-2 {
+        animation-delay: 1s;
+    }
+
+    .listening-ring-3 {
+        animation-delay: 2s;
+    }
+
+    @keyframes inward-ripple {
+        0% {
+            transform: translate(-50%, -50%) scale(1.3);
+            opacity: 0;
+        }
+        50% {
+            opacity: 0.7;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+        }
+    }
+    .mck-voice-image {
+        position: relative;
+        z-index: 1;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: block;
+        margin: auto;
+    }
+
+    .voice-ring.mck-ring-remove-animation {
+        animation: none;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.mck-hidden {
+    visibility: hidden;
+}
