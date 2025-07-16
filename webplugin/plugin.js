@@ -417,6 +417,7 @@ function injectJquery() {
 function addFullviewImageModal() {
     var modalHtml =
         '<span id="km-fullscreen-image-modal-close" class="km-fullscreen-image-modal-close">&times;</span>' +
+        '<div id ="table-fullscreen-view"></div>' +
         '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content" alt="View attachment in full screen">' +
         '<div id="km-fullscreen-image-modal-caption"></div>';
 
@@ -442,6 +443,26 @@ function addFullviewImageModal() {
         ' width: 80%;' +
         ' max-width: 700px;' +
         '}  \n ' +
+        '#table-fullscreen-view table{' +
+        'width:80%;' +
+        'max-width: 100%;' +
+        ' margin: auto;' +
+        'overflow: hidden;' +
+        ' text-overflow: ellipsis;' +
+        'table-layout:fixed;' +
+        'border-collapse: collapse;' +
+        'background-color:white;' +
+        '} \n' +
+        '#table-fullscreen-view th, #table-fullscreen-view td {' +
+        'padding: 12px;' +
+        'border-bottom: 1px solid rgb(189, 187, 187);' +
+        'text-align: left;' +
+        'white-space: nowrap;' +
+        'min-width:50px;' +
+        'overflow: hidden;' +
+        'font-size:12px;' +
+        'text-overflow: ellipsis;' +
+        '} \n' +
         /* Caption of Modal Image */
         '#km-fullscreen-image-modal-caption {' +
         ' margin: auto;' +
