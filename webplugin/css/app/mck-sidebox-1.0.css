@@ -5073,7 +5073,8 @@ button {
     display: none;
 }
 
-.mck-sending-failed {
+.mck-sending-failed,
+.mck-malicious-error {
     display: none;
     position: absolute;
     right: 18px;
