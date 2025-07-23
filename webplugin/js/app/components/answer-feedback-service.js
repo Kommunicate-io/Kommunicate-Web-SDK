@@ -54,27 +54,28 @@ class AnswerFeedback {
             feedback: feedback,
         });
 
-        mckUtils.ajax({
-            type: method,
-            url: `${Kommunicate.getBaseUrl()}/rest/ws/answer-feedback`,
-            headers: {
-                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+        kommunicateCommons.apiRequest(
+            {
+                type: method,
+                url: '/rest/ws/answer-feedback',
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
+                data: JSON.stringify({ payload }),
             },
-            data: JSON.stringify({ payload }),
-            global: false,
-            contentType: 'application/json',
-            success: (result) => {
+            (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
                 if (result.code == 'SUCCESS') {
                     const msgMeta = this.msgMap[data.msg.key]?.msg?.metadata || {};
                     msgMeta.KM_ANSWER_FEEDBACK = feedback;
                 } else {
                     console.error('Failed to submit feedback');
                 }
-            },
-            error: function (data) {
-                console.error(data);
-            },
-        });
+            }
+        );
     };
 
     getPayload = (feedback, data) => {

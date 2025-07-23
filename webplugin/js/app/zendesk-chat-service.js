@@ -61,24 +61,26 @@ function ZendeskChatService() {
                         };
 
                         //To do: see if jwt is present first, then only call this api. otherwise this api is always getting called currently
-                        mckUtils.ajax({
-                            url: Kommunicate.getBaseUrl() + '/rest/ws/zendesk/jwt',
-                            type: 'post',
-                            contentType: 'application/json',
-                            data: JSON.stringify(userPxy),
-                            headers: {
-                                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                        kommunicateCommons.apiRequest(
+                            {
+                                url: '/rest/ws/zendesk/jwt',
+                                type: 'post',
+                                contentType: 'application/json',
+                                data: JSON.stringify(userPxy),
+                                headers: {
+                                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                                },
                             },
-                            success: function (result) {
+                            function (err, result) {
+                                if (err) {
+                                    console.log('err while getting user details in zendesk service');
+                                    return;
+                                }
                                 userJWT = result.data.jwt;
                                 console.log('result: ', result);
                                 callback(result.data.jwt);
-                            },
-                            error: function (err) {
-                                console.log('err while getting user details in zendesk service');
-                                return;
-                            },
-                        });
+                            }
+                        );
                     },
                 };
             }
@@ -284,22 +286,25 @@ function ZendeskChatService() {
             messageDeduplicationKey: agentId + '-' + msgTimestamp,
         };
 
-        return mckUtils.ajax({
-            url: Kommunicate.getBaseUrl() + '/rest/ws/zendesk/message/send',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(messagePxy),
-            headers: {
-                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+        return kommunicateCommons.apiRequest(
+            {
+                url: '/rest/ws/zendesk/message/send',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(messagePxy),
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
             },
-            success: function (result) {
+            function (err, result) {
+                if (err) {
+                    console.log('err while getting user details in zendesk service');
+                    return;
+                }
                 console.log('result zendesk chat get user details ', result);
                 typeof callback == 'function' && callback(agentUserName);
-            },
-            error: function (err) {
-                console.log('err while getting user details in zendesk service');
-            },
-        });
+            }
+        );
     };
 
     _this.handleZendeskAgentFileSendEvent = function (event) {
@@ -325,22 +330,25 @@ function ZendeskChatService() {
             messageDeduplicationKey: agentId + '-' + msgTimestamp,
         };
 
-        return mckUtils.ajax({
-            url: Kommunicate.getBaseUrl() + '/rest/ws/zendesk/file/send',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(messagePxy),
-            headers: {
-                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+        return kommunicateCommons.apiRequest(
+            {
+                url: '/rest/ws/zendesk/file/send',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(messagePxy),
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
             },
-            success: function (result) {
+            function (err, result) {
+                if (err) {
+                    console.log('err while sending File message data to the server');
+                    return;
+                }
                 console.log('Sent File message data to the server ', result);
                 typeof callback == 'function' && callback(agentUserName);
-            },
-            error: function (err) {
-                console.log('err while sending File message data to the server');
-            },
-        });
+            }
+        );
     };
 
     _this.handleZendeskAgentLeaveEvent = function (event) {

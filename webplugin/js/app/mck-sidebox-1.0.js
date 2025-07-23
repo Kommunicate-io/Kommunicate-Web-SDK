@@ -2638,16 +2638,21 @@ const firstVisibleMsg = {
                 });
             };
             _this.sendFeedback = function (feedbackData) {
-                mckUtils.ajax({
-                    headers: {
-                        'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                kommunicateCommons.apiRequest(
+                    {
+                        headers: {
+                            'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                        },
+                        type: 'POST',
+                        url: FEEDBACK_UPDATE_URL + '?sendAsMessage=true',
+                        data: JSON.stringify(feedbackData),
                     },
-                    type: 'POST',
-                    url: Kommunicate.getBaseUrl() + FEEDBACK_UPDATE_URL + '?sendAsMessage=true',
-                    global: false,
-                    data: JSON.stringify(feedbackData),
-                    contentType: 'application/json',
-                    success: function (result) {
+                    function (err, result) {
+                        if (err) {
+                            console.log('Error submitting feedback', err);
+                            return;
+                        }
+                        if (result && result.data) {
                         if (result && result.data) {
                             var lastMessageBeforeSend = $applozic(
                                 "#mck-message-cell .mck-message-inner div[name='message']:last-child"
@@ -2679,11 +2684,8 @@ const firstVisibleMsg = {
                             //     'km-mid-conv-csat'
                             // );
                         }
-                    },
-                    error: function () {
-                        console.log('Error submitting feedback');
-                    },
-                });
+                    }
+                );
             };
             _this.getPreLeadDataForAskUserDetail = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
@@ -2858,15 +2860,18 @@ const firstVisibleMsg = {
             };
 
             _this.geoIpLookupFunction = function (callback) {
-                mckUtils.ajax({
-                    url: 'https://ipapi.co/json',
-                    success: function (data) {
-                        callback(data.country_code);
+                kommunicateCommons.apiRequest(
+                    {
+                        url: 'https://ipapi.co/json',
                     },
-                    error: function () {
-                        callback('us');
-                    },
-                });
+                    function (err, data) {
+                        if (err) {
+                            callback('us');
+                        } else {
+                            callback(data.country_code);
+                        }
+                    }
+                );
             };
 
             _this.phoneNumberValidation = function (e) {
@@ -3440,8 +3445,9 @@ const firstVisibleMsg = {
                 EMOJI_LIBRARY && icons.push('mck-btn-smiley-box');
                 IS_CAPTURE_PHOTO && icons.push('mck-img-file-up');
                 IS_CAPTURE_VIDEO && icons.push('mck-vid-file-up');
-                icons.length &&
-                    kommunicateCommons.modifyClassList({ id: icons }, 'n-vis', 'vis');
+                if (icons.length) {
+                    kommunicateCommons.setVisibility({ id: icons }, true);
+                }
             };
 
             _this.hideSendButton = function () {
@@ -3452,15 +3458,12 @@ const firstVisibleMsg = {
                 icons.push(!IS_MCK_LOCSHARE ? 'mck-file-up2' : 'mck-btn-loc');
                 IS_CAPTURE_PHOTO && icons.push('mck-img-file-up');
                 IS_CAPTURE_VIDEO && icons.push('mck-vid-file-up');
-                icons.length &&
-                    kommunicateCommons.modifyClassList({ id: icons }, 'vis', 'n-vis');
+                if (icons.length) {
+                    kommunicateCommons.setVisibility({ id: icons }, false);
+                }
 
                 if (EMOJI_LIBRARY) {
-                    kommunicateCommons.modifyClassList(
-                        { id: ['mck-btn-smiley-box'] },
-                        'vis',
-                        'n-vis'
-                    );
+                    kommunicateCommons.setVisibility({ id: ['mck-btn-smiley-box'] }, false);
                 }
             };
             _this.toggleMediaOptions = function (el) {
@@ -9724,15 +9727,20 @@ const firstVisibleMsg = {
                         params && params.source
                             ? _this.processAutosuggestData(params.source)
                             : function (query, process) {
-                                  mckUtils.ajax({
+                              kommunicateCommons.apiRequest(
+                                  {
                                       url: params.sourceUrl + query,
                                       type: params.method,
-                                      header: params.headers,
-                                      success: function (data) {
-                                          var items = _this.processAutosuggestData(data.data);
-                                          process(items);
-                                      },
-                                  });
+                                      headers: params.headers,
+                                  },
+                                  function (err, data) {
+                                      if (err) {
+                                          return;
+                                      }
+                                      var items = _this.processAutosuggestData(data.data);
+                                      process(items);
+                                  }
+                              );
                               },
                     items: 8,
                     highlight: true,
@@ -11887,15 +11895,21 @@ const firstVisibleMsg = {
                 return conversationDetail;
             };
             _this.checkBotDetail = function (userId) {
-                mckUtils.ajax({
-                    url: Kommunicate.getBaseUrl() + '/rest/ws/botdetails/' + userId,
-                    type: 'get',
-                    headers: {
-                        'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                kommunicateCommons.apiRequest(
+                    {
+                        url: '/rest/ws/botdetails/' + userId,
+                        type: 'get',
+                        headers: {
+                            'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                        },
+                        skipEncryption: true,
                     },
-                    skipEncryption: true,
-                    global: false,
-                    success: function (data) {
+                    function (err, data) {
+                        if (err) {
+                            CURRENT_GROUP_DATA.CHAR_CHECK = false;
+                            _this.removeWarningsFromTextBox();
+                            return;
+                        }
                         /* 
                             Auto human handoff check is removed from the below code if something breaks regarding the same, 
                             please add this condition to the below check like this :  && !(data.data[0].autoHumanHandoff)
@@ -11909,12 +11923,8 @@ const firstVisibleMsg = {
                         CURRENT_GROUP_DATA.isConversationAssigneeBot = true;
                         CURRENT_GROUP_DATA.answerFeedback = res?.answerFeedback || false;
                         CURRENT_GROUP_DATA.isDialogflowCXBot = res?.dialogflowCXBot || false;
-                    },
-                    error: function () {
-                        CURRENT_GROUP_DATA.CHAR_CHECK = false;
-                        _this.removeWarningsFromTextBox();
-                    },
-                });
+                    }
+                );
             };
             _this.removeWarningsFromTextBox = function () {
                 kommunicateCommons.modifyClassList({ id: ['mck-char-warning'] }, 'n-vis', '');

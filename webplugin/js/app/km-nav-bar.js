@@ -35,16 +35,18 @@ function KmNavBar(mckMsgLayout) {
             if (talkToHumanButton) {
                 talkToHumanButton.disabled = false;
             }
-            kommunicateCommons.modifyClassList(
+            kommunicateCommons.setVisibility(
                 {
                     id: ['km-talk-to-human'],
                     class: ['km-option-talk-to-human'],
                 },
-                'n-vis',
-                'vis'
+                false
             );
         } else if (HEADER_CTA.TALK_TO_HUMAN === appOptions.primaryCTA) {
-            kommunicateCommons.setVisibility({ id: ['km-talk-to-human'] }, true);
+            kommunicateCommons.setVisibility(
+                { id: ['km-talk-to-human'], class: ['km-option-talk-to-human'] },
+                true
+            );
         }
     };
 }

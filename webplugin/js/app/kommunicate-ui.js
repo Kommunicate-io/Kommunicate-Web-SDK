@@ -111,14 +111,19 @@ KommunicateUI = {
     },
 
     getLinkDataToPreview: function (url, callback, isMckRightMsg) {
-        mckUtils.ajax({
-            headers: {
-                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+        kommunicateCommons.apiRequest(
+            {
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
+                url: '/rest/ws/extractlink?linkToExtract=' + url,
+                type: 'GET',
             },
-            url: kommunicate.getBaseUrl() + '/rest/ws/extractlink?linkToExtract=' + url,
-            type: 'GET',
-            global: false,
-            success: function (result) {
+            function (err, result) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
                 const { title, description } = result?.data ? result.data : {};
 
                 if (title && title.includes('Attention Required!')) {
@@ -145,11 +150,8 @@ KommunicateUI = {
                     );
                     callback(previewTemplate);
                 }
-            },
-            error: function (err) {
-                console.error(err);
-            },
-        });
+            }
+        );
     },
     showAwayMessage: function () {
         var conversationWindowNotActive = $applozic('#mck-tab-individual').hasClass('n-vis');
