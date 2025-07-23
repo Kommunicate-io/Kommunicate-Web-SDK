@@ -8489,14 +8489,13 @@ const firstVisibleMsg = {
                         $mck_text_box.data('updateUserDetails', null);
                     }
                     // if field validation is true then set the data attributes for validation and errorMessage
-                    if (fieldValidation) {
-                        var errorMessage = fieldMetadata.validation.errorText;
-                        $mck_text_box.data('validation', fieldValidation);
-                        $mck_text_box.data('errorMessage', errorMessage);
-                    } else {
-                        $mck_text_box.data('validation', null);
-                        $mck_text_box.data('errorMessage', null);
-                    }
+                    var errorMessage = fieldValidation
+                        ? fieldMetadata.validation.errorText
+                        : null;
+                    $mck_text_box.data({
+                        validation: fieldValidation || null,
+                        errorMessage: errorMessage,
+                    });
                     $mck_text_box.data('field', field);
                     $mck_text_box.data('fieldType', fieldType);
                     $mck_text_box.attr('data-text', fieldMetadata.placeholder);
