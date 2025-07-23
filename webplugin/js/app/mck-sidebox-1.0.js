@@ -2326,8 +2326,8 @@ const firstVisibleMsg = {
                             null,
                             function (err, checkIfUserHasConversations) {
                                 err && console.log(err);
-                                checkIfUserHasConversations &&
-                                    KommunicateCommons.IS_WIDGET_OPEN &&
+                                (checkIfUserHasConversations ||
+                                    KommunicateCommons.IS_WIDGET_OPEN) &&
                                     $applozic.fn.applozic(
                                         'initializeSocketConnection',
                                         IS_REINITIALIZE
