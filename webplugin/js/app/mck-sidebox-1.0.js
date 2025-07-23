@@ -3794,16 +3794,19 @@ const firstVisibleMsg = {
                 // Reset the placeholder text to default text
                 $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
                 // Reset the data attributes
-                $mck_text_box.data('updateUserDetails', null);
-                $mck_text_box.data('field', null);
-                $mck_text_box.data('fieldType', null);
-                $mck_text_box.data('validation', null);
-                $mck_text_box.data('errorMessage', null);
-                if ($mck_text_box.data('trigger') && !clearNextTrigger) {
-                    $mck_text_box.data('triggerNextIntent', $mck_text_box.data('trigger'));
-                } else {
-                    $mck_text_box.data('triggerNextIntent', null);
-                }
+                $mck_text_box.data({
+                    updateUserDetails: null,
+                    field: null,
+                    fieldType: null,
+                    validation: null,
+                    errorMessage: null,
+                });
+                $mck_text_box.data(
+                    'triggerNextIntent',
+                    $mck_text_box.data('trigger') && !clearNextTrigger
+                        ? $mck_text_box.data('trigger')
+                        : null
+                );
             };
             _this.init = function () {
                 var mck_text_box = document.getElementById('mck-text-box');
@@ -6888,12 +6891,14 @@ const firstVisibleMsg = {
                         }
                     },
                 });
-                $mck_text_box.data('updateUserDetails', null);
-                $mck_text_box.data('field', null);
-                $mck_text_box.data('fieldType', null);
-                $mck_text_box.data('validation', null);
-                $mck_text_box.data('errorMessage', null);
-                $mck_text_box.data('triggerNextIntent', null);
+                $mck_text_box.data({
+                    updateUserDetails: null,
+                    field: null,
+                    fieldType: null,
+                    validation: null,
+                    errorMessage: null,
+                    triggerNextIntent: null,
+                });
                 $mck_text_box.attr('data-text', MCK_LABELS['input.message']);
             };
 
@@ -8476,28 +8481,18 @@ const firstVisibleMsg = {
                         var triggerNextIntent = false;
                     }
                     $mck_text_box.addClass('mck-text-box').removeClass('n-vis');
-                    // if trigger next event is true then set the data attribute for triggerNextEvent
-                    if (triggerNextIntent) {
-                        $mck_text_box.data('trigger', triggerNextIntent);
-                    } else {
-                        $mck_text_box.data('trigger', null);
-                    }
-                    //if update user details is true then set the data attribute for updateuserdetails
-                    if (updateUserDetails) {
-                        $mck_text_box.data('updateUserDetails', updateUserDetails);
-                    } else {
-                        $mck_text_box.data('updateUserDetails', null);
-                    }
-                    // if field validation is true then set the data attributes for validation and errorMessage
+                    // store field metadata for rich message inputs
                     var errorMessage = fieldValidation
                         ? fieldMetadata.validation.errorText
                         : null;
                     $mck_text_box.data({
+                        trigger: triggerNextIntent || null,
+                        updateUserDetails: updateUserDetails || null,
                         validation: fieldValidation || null,
                         errorMessage: errorMessage,
+                        field: field,
+                        fieldType: fieldType,
                     });
-                    $mck_text_box.data('field', field);
-                    $mck_text_box.data('fieldType', fieldType);
                     $mck_text_box.attr('data-text', fieldMetadata.placeholder);
                 } else {
                     !firstVisibleMsg.containsField &&
