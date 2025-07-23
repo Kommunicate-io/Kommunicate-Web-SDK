@@ -629,10 +629,6 @@ const firstVisibleMsg = {
         kommunicateCommons.checkIfDeviceIsHandheld() &&
             (MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = false);
 
-        _this.toggleMediaOptions = function () {
-            var mckTypingBox = document.getElementById('mck-text-box');
-            mckMessageService.toggleMediaOptions(mckTypingBox);
-        };
 
         _this.submitMessage = function (params) {
             mckMessageService.submitMessage(params.messagePxy, params.optns);
