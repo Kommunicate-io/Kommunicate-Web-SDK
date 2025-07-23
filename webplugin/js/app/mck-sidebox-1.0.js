@@ -3458,22 +3458,22 @@ const firstVisibleMsg = {
 
             _this.hideSendButton = function () {
                 kommunicateCommons.setVisibility({ id: ['send-button-wrapper'] }, false);
-                MCK_ATTACHMENT &&
-                    kommunicateCommons.setVisibility({ id: ['mck-file-up'] }, true);
-                !IS_MCK_LOCSHARE
-                    ? kommunicateCommons.setVisibility({ id: ['mck-file-up2'] }, true)
-                    : kommunicateCommons.setVisibility({ id: ['mck-btn-loc'] }, true);
-                IS_CAPTURE_PHOTO &&
-                    kommunicateCommons.modifyClassList({ id: ['mck-img-file-up'] }, '', 'n-vis');
-                IS_CAPTURE_VIDEO &&
-                    kommunicateCommons.modifyClassList({ id: ['mck-vid-file-up'] }, '', 'n-vis');
-                !EMOJI_LIBRARY
-                    ? ''
-                    : kommunicateCommons.modifyClassList(
-                          { id: ['mck-btn-smiley-box'] },
-                          'vis',
-                          'n-vis'
-                      );
+
+                var icons = [];
+                if (MCK_ATTACHMENT) icons.push('mck-file-up');
+                icons.push(!IS_MCK_LOCSHARE ? 'mck-file-up2' : 'mck-btn-loc');
+                IS_CAPTURE_PHOTO && icons.push('mck-img-file-up');
+                IS_CAPTURE_VIDEO && icons.push('mck-vid-file-up');
+                icons.length &&
+                    kommunicateCommons.modifyClassList({ id: icons }, 'vis', 'n-vis');
+
+                if (EMOJI_LIBRARY) {
+                    kommunicateCommons.modifyClassList(
+                        { id: ['mck-btn-smiley-box'] },
+                        'vis',
+                        'n-vis'
+                    );
+                }
             };
             _this.toggleMediaOptions = function (el) {
                 var text = '';
