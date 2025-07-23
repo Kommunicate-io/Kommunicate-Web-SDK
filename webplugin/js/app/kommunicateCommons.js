@@ -266,6 +266,16 @@ function KommunicateCommons() {
         });
     };
 
+    _this.assignMessageTarget = function (messagePxy) {
+        var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
+        var $mck_msg_to = $applozic('#mck-msg-to');
+        if ($mck_msg_inner.data('isgroup') === true) {
+            messagePxy.groupId = $mck_msg_to.val();
+        } else {
+            messagePxy.to = $mck_msg_to.val();
+        }
+    };
+
     _this.debounce = function (func, wait, immediate) {
         var timeout;
         return function () {
