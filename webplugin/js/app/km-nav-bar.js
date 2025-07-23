@@ -44,7 +44,7 @@ function KmNavBar(mckMsgLayout) {
                 'vis'
             );
         } else if (HEADER_CTA.TALK_TO_HUMAN === appOptions.primaryCTA) {
-            kommunicateCommons.modifyClassList({ id: ['km-talk-to-human'] }, 'vis', 'n-vis');
+            kommunicateCommons.setVisibility({ id: ['km-talk-to-human'] }, true);
         }
     };
 }

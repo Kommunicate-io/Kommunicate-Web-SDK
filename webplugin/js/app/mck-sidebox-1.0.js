@@ -3432,7 +3432,7 @@ const firstVisibleMsg = {
                 }
             };
             _this.showSendButton = function () {
-                kommunicateCommons.modifyClassList({ id: ['send-button-wrapper'] }, 'vis', 'n-vis');
+                kommunicateCommons.setVisibility({ id: ['send-button-wrapper'] }, true);
                 kommunicateCommons.modifyClassList(
                     {
                         id: [
@@ -3448,7 +3448,7 @@ const firstVisibleMsg = {
                 );
                 IS_MCK_LOCSHARE
                     ? ''
-                    : kommunicateCommons.modifyClassList({ id: ['mck-file-up2'] }, 'n-vis', 'vis');
+                    : kommunicateCommons.setVisibility({ id: ['mck-file-up2'] }, false);
 
                 !IS_CAPTURE_PHOTO &&
                     kommunicateCommons.modifyClassList({ id: ['mck-img-file-up'] }, 'n-vis', '');
@@ -3457,12 +3457,12 @@ const firstVisibleMsg = {
             };
 
             _this.hideSendButton = function () {
-                kommunicateCommons.modifyClassList({ id: ['send-button-wrapper'] }, 'n-vis', 'vis');
+                kommunicateCommons.setVisibility({ id: ['send-button-wrapper'] }, false);
                 MCK_ATTACHMENT &&
-                    kommunicateCommons.modifyClassList({ id: ['mck-file-up'] }, 'vis', 'n-vis');
+                    kommunicateCommons.setVisibility({ id: ['mck-file-up'] }, true);
                 !IS_MCK_LOCSHARE
-                    ? kommunicateCommons.modifyClassList({ id: ['mck-file-up2'] }, 'vis', 'n-vis')
-                    : kommunicateCommons.modifyClassList({ id: ['mck-btn-loc'] }, 'vis', 'n-vis');
+                    ? kommunicateCommons.setVisibility({ id: ['mck-file-up2'] }, true)
+                    : kommunicateCommons.setVisibility({ id: ['mck-btn-loc'] }, true);
                 IS_CAPTURE_PHOTO &&
                     kommunicateCommons.modifyClassList({ id: ['mck-img-file-up'] }, '', 'n-vis');
                 IS_CAPTURE_VIDEO &&

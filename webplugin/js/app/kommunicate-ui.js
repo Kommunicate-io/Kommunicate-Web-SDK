@@ -889,7 +889,7 @@ KommunicateUI = {
     loadQuickReplies: function (quickReplies) {
         var intentList = document.getElementById('mck-intent-options');
         if (quickReplies.length > 0 && intentList && intentList.childElementCount < 1) {
-            kommunicateCommons.modifyClassList({ id: ['mck-quick-replies-box'] }, 'vis', 'n-vis');
+            kommunicateCommons.setVisibility({ id: ['mck-quick-replies-box'] }, true);
             for (var i = 0; i <= quickReplies.length - 1; i++) {
                 var li = document.createElement('li');
                 li.innerText = quickReplies[i];
@@ -1614,7 +1614,7 @@ KommunicateUI = {
 
                         KommunicateUI.isFAQPrimaryCTA() && (updateClasses.id = ['km-faq']);
 
-                        kommunicateCommons.modifyClassList(updateClasses, 'vis', 'n-vis');
+                        kommunicateCommons.setVisibility(updateClasses, true);
                     }
                 }
             },

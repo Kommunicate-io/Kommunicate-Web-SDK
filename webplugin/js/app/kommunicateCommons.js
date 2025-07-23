@@ -118,6 +118,12 @@ function KommunicateCommons() {
         });
     };
 
+    _this.setVisibility = function (elem, show, useQuerySelector = false) {
+        var add = show ? 'vis' : 'n-vis';
+        var remove = show ? 'n-vis' : 'vis';
+        _this.modifyClassList(elem, add, remove, useQuerySelector);
+    };
+
     /* Reason behind adding this is that typeof o == 'object' returns true incase of array also, by using this we can find out that value
      value passed is just a object or not. */
     _this.isObject = function (object) {
