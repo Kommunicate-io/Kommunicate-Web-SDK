@@ -22,10 +22,7 @@ $applozic.extend(true, Kommunicate, {
         }
         kommunicateCommons.apiRequest(
             {
-                url:
-                    Kommunicate.getBaseUrl() +
-                    '/conversations/participent/' +
-                    options.userId,
+                url: '/conversations/participent/' + options.userId,
                 type: 'get',
             },
             callback
@@ -356,7 +353,7 @@ $applozic.extend(true, Kommunicate, {
         };
         kommunicateCommons.apiRequest(
             {
-                url: Kommunicate.getBaseUrl() + '/conversations',
+                url: '/conversations',
                 type: 'post',
                 data: JSON.stringify(data),
             },
@@ -412,7 +409,6 @@ $applozic.extend(true, Kommunicate, {
         kommunicateCommons.apiRequest(
             {
                 url:
-                    Kommunicate.getBaseUrl() +
                     '/applications/' +
                     options.applicationId +
                     '/awaymessage?conversationId=' +

@@ -169,7 +169,6 @@ Kommunicate.client = {
         kommunicateCommons.apiRequest(
             {
                 url:
-                    Kommunicate.getBaseUrl() +
                     '/integration/settings/' +
                     options.appId +
                     '?type=' +

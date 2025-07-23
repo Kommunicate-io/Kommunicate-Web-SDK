@@ -270,10 +270,17 @@ function KommunicateCommons() {
         if (typeof callback !== 'function') {
             callback = function () {};
         }
+        var url = options.url || '';
+        if (!/^https?:\/\//.test(url)) {
+            url =
+                Kommunicate.getBaseUrl() +
+                (url.charAt(0) === '/' ? '' : '/') +
+                url;
+        }
         mckUtils.ajax({
             headers: options.headers || {},
             type: options.type || 'GET',
-            url: options.url,
+            url: url,
             data: options.data,
             global: false,
             contentType: 'application/json',
