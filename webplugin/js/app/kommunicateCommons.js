@@ -294,9 +294,15 @@ function KommunicateCommons() {
     };
 
     _this.assignMessageTarget = function (messagePxy) {
+        if (!messagePxy || typeof messagePxy !== 'object') {
+            return;
+        }
         var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
         var $mck_msg_to = $applozic('#mck-msg-to');
-        if ($mck_msg_inner.data('isgroup') === true) {
+        if (!$mck_msg_inner.length || !$mck_msg_to.length) {
+            return;
+        }
+        if ($mck_msg_inner.data('isgroup') === 'true') {
             messagePxy.groupId = $mck_msg_to.val();
         } else {
             messagePxy.to = $mck_msg_to.val();
