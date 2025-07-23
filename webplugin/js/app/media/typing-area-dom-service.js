@@ -90,11 +90,11 @@ Kommunicate.typingAreaService = {
         kommunicateCommons.setVisibility({ id: ['mck-animation-outer'] }, true);
     },
     showRecorder: function () {
-        document.querySelector('#mck-textbox-container').classList.add('n-vis');
-        document.querySelector('#km-voice-recorder').classList.remove('n-vis');
+        kommunicateCommons.setVisibility({ id: ['mck-textbox-container'] }, false);
+        kommunicateCommons.setVisibility({ id: ['km-voice-recorder'] }, true);
     },
     hideRecorder: function () {
-        document.querySelector('#mck-textbox-container').classList.remove('n-vis');
-        document.querySelector('#km-voice-recorder').classList.add('n-vis');
+        kommunicateCommons.setVisibility({ id: ['mck-textbox-container'] }, true);
+        kommunicateCommons.setVisibility({ id: ['km-voice-recorder'] }, false);
     },
 };
