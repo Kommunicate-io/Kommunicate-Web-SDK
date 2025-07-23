@@ -110,155 +110,160 @@ const firstVisibleMsg = {
         if (typeof $mck_sidebox.data('applozic_instance') !== 'undefined') {
             oInstance = $mck_sidebox.data('applozic_instance');
             if ($applozic.type(appOptions) === 'string') {
-                switch (appOptions) {
-                    case 'reInitialize':
+                var actionMap = {
+                    reInitialize: function () {
                         return oInstance.reInit(params);
-                        break;
-                    case 'loadConvTab':
+                    },
+                    loadConvTab: function () {
                         oInstance.loadConvTab(params);
-                        break;
-                    case 'loadTab':
+                    },
+                    loadTab: function () {
                         oInstance.loadTab(params, callback);
-                        break;
-                    case 'uploadFile':
+                    },
+                    uploadFile: function () {
                         oInstance.uploadFile(params);
-                        break;
-                    case 'uploadAttachemnt':
+                    },
+                    uploadAttachemnt: function () {
                         oInstance.uploadAttachemnt(params);
-                        break;
-                    case 'loadTabView':
+                    },
+                    loadTabView: function () {
                         oInstance.loadTabView(params);
-                        break;
-                    case 'loadChat':
+                    },
+                    loadChat: function () {
                         oInstance.loadChat(params);
-                        break;
-                    case 'loadContextualTab':
+                    },
+                    loadContextualTab: function () {
                         return oInstance.loadTabWithTopic(params);
-                        break;
-                    case 'audioAttach':
+                    },
+                    audioAttach: function () {
                         oInstance.audioAttach(params);
-                        break;
-                    case 'addWelcomeMessage':
+                    },
+                    addWelcomeMessage: function () {
                         oInstance.addWelcomeMessage(params);
-                        break;
-                    case 'loadContacts':
+                    },
+                    loadContacts: function () {
                         oInstance.loadContacts(params);
-                        break;
-                    case 'sendMessage':
+                    },
+                    sendMessage: function () {
                         return oInstance.sendMessage(params);
-                        break;
-                    case 'sendGroupMessage':
+                    },
+                    sendGroupMessage: function () {
                         return oInstance.sendGroupMessage(params);
-                        break;
-                    case 'createGroup':
+                    },
+                    createGroup: function () {
                         return oInstance.createGroup(params);
-                        break;
-                    case 'loadBroadcastTab':
+                    },
+                    loadBroadcastTab: function () {
                         params.groupName = params.groupName ? params.groupName : 'Broadcast';
                         params.type = 5;
                         return oInstance.initGroupTab(params);
-                        break;
-                    case 'initBroadcastTab':
+                    },
+                    initBroadcastTab: function () {
                         params.groupName = params.groupName ? params.groupName : 'Broadcast';
                         params.type = 5;
                         return oInstance.initGroupTab(params);
-                        break;
-                    case 'initGroupTab':
+                    },
+                    initGroupTab: function () {
                         return oInstance.initGroupTab(params);
-                        break;
-                    case 'loadGroupTab':
+                    },
+                    loadGroupTab: function () {
                         return oInstance.loadGroupTab(params, callback);
-                        break;
-                    case 'loadGroupTabByClientGroupId':
+                    },
+                    loadGroupTabByClientGroupId: function () {
                         return oInstance.loadGroupTabByClientGroupId(params);
-                        break;
-                    case 'setOffline':
+                    },
+                    setOffline: function () {
                         oInstance.setOffline();
                         return 'success';
-                        break;
-                    case 'setOnline':
+                    },
+                    setOnline: function () {
                         oInstance.setOnline();
                         return 'success';
-                        break;
-                    case 'logout':
+                    },
+                    logout: function () {
                         oInstance.logout();
                         return 'success';
-                        break;
-                    case 'reset':
+                    },
+                    reset: function () {
                         oInstance.reset(params);
-                        break;
-                    case 'getUserDetail':
+                    },
+                    getUserDetail: function () {
                         oInstance.getUserStatus(params);
                         return 'success';
-                        break;
-                    case 'getGroupList':
+                    },
+                    getGroupList: function () {
                         oInstance.getGroupList(params);
                         return 'success';
-                        break;
-                    case 'leaveGroup':
+                    },
+                    leaveGroup: function () {
                         return oInstance.leaveGroup(params);
-                        break;
-                    case 'addGroupMember':
+                    },
+                    addGroupMember: function () {
                         return oInstance.addGroupMember(params);
-                        break;
-                    case 'removeGroupMember':
+                    },
+                    removeGroupMember: function () {
                         return oInstance.removeGroupMember(params);
-                        break;
-                    case 'updateGroupInfo':
+                    },
+                    updateGroupInfo: function () {
                         return oInstance.updateGroupInfo(params);
-                        break;
-                    case 'getMessages':
+                    },
+                    getMessages: function () {
                         oInstance.getMessages(params);
-                        break;
-                    case 'messageList':
+                    },
+                    messageList: function () {
                         return oInstance.getMessageList(params);
-                        break;
-                    case 'getMessageListByTopicId':
+                    },
+                    getMessageListByTopicId: function () {
                         return oInstance.getMessageListByTopicId(params);
-                        break;
-                    case 'getTotalUnreadCount':
+                    },
+                    getTotalUnreadCount: function () {
                         return oInstance.getTotalUnreadCount();
-                        break;
-                    case 'subscribeToEvents':
+                    },
+                    subscribeToEvents: function () {
                         return oInstance.subscribeToEvents(params);
-                        break;
-                    case 'getConversation':
+                    },
+                    getConversation: function () {
                         return oInstance.getConversation(params);
-                        break;
-                    case 'loadConversationWithAgent':
+                    },
+                    loadConversationWithAgent: function () {
                         return oInstance.loadConversationWithAgent(params);
-                        break;
-                    case 'updateUserIdentity':
+                    },
+                    updateUserIdentity: function () {
                         return oInstance.updateUserIdentity(params);
-                        break;
-                    case 'updateUser':
+                    },
+                    updateUser: function () {
                         return oInstance.updateUser(params);
-                        break;
-                    case 'getGroupListByFilter':
+                    },
+                    getGroupListByFilter: function () {
                         return oInstance.getGroupListByFilter(params);
-                        break;
-                    case 'updateMessageMetadata':
+                    },
+                    updateMessageMetadata: function () {
                         return oInstance.updateMessageMetadata(params);
-                        break;
-                    case 'mckLaunchSideboxChat':
+                    },
+                    mckLaunchSideboxChat: function () {
                         return oInstance.mckLaunchSideboxChat();
-                        break;
-                    case 'triggerMsgNotification':
+                    },
+                    triggerMsgNotification: function () {
                         return oInstance.triggerMsgNotification();
-                        break;
-                    case 'openChat':
+                    },
+                    openChat: function () {
                         return oInstance.openChat(params);
-                        break;
-                    case 'submitMessage':
+                    },
+                    submitMessage: function () {
                         return oInstance.submitMessage(params);
-                        break;
-                    case 'toggleMediaOptions':
+                    },
+                    toggleMediaOptions: function () {
                         return oInstance.toggleMediaOptions();
-                        break;
-                    case 'initializeSocketConnection':
+                    },
+                    initializeSocketConnection: function () {
                         return oInstance.initializeSocketConnection(params);
-                    case 'restartCurrentConversation':
+                    },
+                    restartCurrentConversation: function () {
                         return oInstance.restartCurrentConversation();
+                    },
+                };
+                if (actionMap[appOptions]) {
+                    return actionMap[appOptions]();
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
