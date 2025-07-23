@@ -20,16 +20,16 @@ $applozic.extend(true, Kommunicate, {
                 'invalid callback! expected: Kommunicate.startNewConversation(options, callback) '
             );
         }
-        $applozic.ajax({
-            url: Kommunicate.getBaseUrl() + '/conversations/participent/' + options.userId,
-            type: 'get',
-            success: function (result) {
-                callback(null, result);
+        kommunicateCommons.apiRequest(
+            {
+                url:
+                    Kommunicate.getBaseUrl() +
+                    '/conversations/participent/' +
+                    options.userId,
+                type: 'get',
             },
-            error: function (err) {
-                callback(err);
-            },
-        });
+            callback
+        );
     },
     startConversation: function (params, callback) {
         kommunicateCommons.setWidgetStateOpen(true);
@@ -354,20 +354,22 @@ $applozic.extend(true, Kommunicate, {
             defaultAgentId: options.defaultAgentId,
             applicationId: options.applicationId,
         };
-        $applozic.ajax({
-            url: Kommunicate.getBaseUrl() + '/conversations',
-            type: 'post',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            success: function (result) {
-                console.log('conversation started successfully');
-                callback(null, result);
+        kommunicateCommons.apiRequest(
+            {
+                url: Kommunicate.getBaseUrl() + '/conversations',
+                type: 'post',
+                data: JSON.stringify(data),
             },
-            error: function (err) {
-                console.log('err while starting Conversation');
-                callback(err);
-            },
-        });
+            function (err, result) {
+                if (err) {
+                    console.log('err while starting Conversation');
+                    callback(err);
+                } else {
+                    console.log('conversation started successfully');
+                    callback(null, result);
+                }
+            }
+        );
     },
     logout: function () {
         if (
@@ -407,26 +409,27 @@ $applozic.extend(true, Kommunicate, {
         window.$applozic.fn.applozic('updateUser', data);
     },
     getAwayMessage: function (options, callback) {
-        $applozic.ajax({
-            url:
-                Kommunicate.getBaseUrl() +
-                '/applications/' +
-                options.applicationId +
-                '/awaymessage?conversationId=' +
-                options.conversationId +
-                '&languageCode=' +
-                options.languageCode,
-            type: 'get',
-            contentType: 'application/json',
-            success: function (result) {
-                // console.log("got away message data");
-                typeof callback == 'function' ? callback(null, result) : '';
+        kommunicateCommons.apiRequest(
+            {
+                url:
+                    Kommunicate.getBaseUrl() +
+                    '/applications/' +
+                    options.applicationId +
+                    '/awaymessage?conversationId=' +
+                    options.conversationId +
+                    '&languageCode=' +
+                    options.languageCode,
+                type: 'get',
             },
-            error: function (err) {
-                console.log('err while fetching away message');
-                typeof callback == 'function' ? callback(err) : '';
-            },
-        });
+            function (err, result) {
+                if (err) {
+                    console.log('err while fetching away message');
+                    typeof callback == 'function' ? callback(err) : '';
+                } else {
+                    typeof callback == 'function' ? callback(null, result) : '';
+                }
+            }
+        );
     },
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {

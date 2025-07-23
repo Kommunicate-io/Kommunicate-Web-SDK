@@ -266,6 +266,26 @@ function KommunicateCommons() {
         });
     };
 
+    _this.apiRequest = function (options, callback) {
+        if (typeof callback !== 'function') {
+            callback = function () {};
+        }
+        mckUtils.ajax({
+            headers: options.headers || {},
+            type: options.type || 'GET',
+            url: options.url,
+            data: options.data,
+            global: false,
+            contentType: 'application/json',
+            success: function (result) {
+                callback(null, result);
+            },
+            error: function (err) {
+                callback(err);
+            },
+        });
+    };
+
     _this.assignMessageTarget = function (messagePxy) {
         var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
         var $mck_msg_to = $applozic('#mck-msg-to');

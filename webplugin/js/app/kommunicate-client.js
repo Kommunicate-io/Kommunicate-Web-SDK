@@ -22,18 +22,14 @@ Kommunicate.client = {
             options.startIndex +
             '&limit=' +
             options.limit;
-        window.Applozic.ALApiService.ajax({
-            url: MCK_BASE_URL + '/rest/ws/group/bytype',
-            type: 'get',
-            data: formData,
-            contentType: 'application/json',
-            success: function (result) {
-                callback(null, result);
+        kommunicateCommons.apiRequest(
+            {
+                url: MCK_BASE_URL + '/rest/ws/group/bytype',
+                type: 'get',
+                data: formData,
             },
-            error: function (err) {
-                callback(err);
-            },
-        });
+            callback
+        );
     },
 
     /**
@@ -170,22 +166,18 @@ Kommunicate.client = {
      * @param {function} callback
      */
     getThirdPartySettings: function (options, callback) {
-        $applozic.ajax({
-            url:
-                Kommunicate.getBaseUrl() +
-                '/integration/settings/' +
-                options.appId +
-                '?type=' +
-                options.type,
-            type: 'get',
-            contentType: 'application/json',
-            success: function (result) {
-                callback(null, result);
+        kommunicateCommons.apiRequest(
+            {
+                url:
+                    Kommunicate.getBaseUrl() +
+                    '/integration/settings/' +
+                    options.appId +
+                    '?type=' +
+                    options.type,
+                type: 'get',
             },
-            error: function (err) {
-                callback(err);
-            },
-        });
+            callback
+        );
     },
 
     /**get the entire chatListDetails by groupId
@@ -194,21 +186,18 @@ Kommunicate.client = {
      * @param {function} callback
      */
     getChatListByGroupId: function (options, callback) {
-        $applozic.ajax({
-            url:
-                KM_PLUGIN_SETTINGS.applozicBaseUrl +
-                '/rest/ws/message/list?startIndex=0&groupId=' +
-                options.groupId,
-            type: 'get',
-            headers: {
-                'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+        kommunicateCommons.apiRequest(
+            {
+                url:
+                    KM_PLUGIN_SETTINGS.applozicBaseUrl +
+                    '/rest/ws/message/list?startIndex=0&groupId=' +
+                    options.groupId,
+                type: 'get',
+                headers: {
+                    'x-authorization': window.Applozic.ALApiService.AUTH_TOKEN,
+                },
             },
-            success: function (result) {
-                callback(null, result);
-            },
-            error: function (err) {
-                callback(err);
-            },
-        });
+            callback
+        );
     },
 };
