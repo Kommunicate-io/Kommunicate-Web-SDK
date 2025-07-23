@@ -93,6 +93,10 @@ const firstVisibleMsg = {
         messageType: 5,
         type: 0,
     };
+    function getBooleanOption(obj, key, def) {
+        return obj && typeof obj[key] === 'boolean' ? obj[key] : def;
+    }
+
     $applozic.fn.applozic = function (appOptions, params, callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         // every time this line will overwrite the kommunicate object properties
@@ -453,73 +457,69 @@ const firstVisibleMsg = {
         var MCK_USER_ID = IS_MCK_VISITOR ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = IS_MCK_LOCSHARE ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = typeof appOptions.source === 'undefined' ? 1 : appOptions.source;
-        var IS_MCK_TOPIC_BOX =
-            typeof appOptions.topicBox === 'boolean' ? appOptions.topicBox : false;
-        var IS_MCK_OL_STATUS =
-            typeof appOptions.olStatus === 'boolean' ? appOptions.olStatus : false;
-        var MESSAGE_BUBBLE_AVATOR_ENABLED =
-            typeof appOptions.messageBubbleAvator === 'boolean'
-                ? appOptions.messageBubbleAvator
-                : true;
-        var IS_OFFLINE_MESSAGE_ENABLED =
-            typeof appOptions.showOfflineMessage === 'boolean'
-                ? appOptions.showOfflineMessage
-                : false;
-        var IS_GROUP_SUBTITLE_HIDDEN =
-            typeof appOptions.hideGroupSubtitle === 'boolean'
-                ? appOptions.hideGroupSubtitle
-                : false;
+        var IS_MCK_TOPIC_BOX = getBooleanOption(appOptions, 'topicBox', false);
+        var IS_MCK_OL_STATUS = getBooleanOption(appOptions, 'olStatus', false);
+        var MESSAGE_BUBBLE_AVATOR_ENABLED = getBooleanOption(
+            appOptions,
+            'messageBubbleAvator',
+            true
+        );
+        var IS_OFFLINE_MESSAGE_ENABLED = getBooleanOption(
+            appOptions,
+            'showOfflineMessage',
+            false
+        );
+        var IS_GROUP_SUBTITLE_HIDDEN = getBooleanOption(
+            appOptions,
+            'hideGroupSubtitle',
+            false
+        );
         var MCK_DEFAULT_MESSAGE_METADATA =
             typeof appOptions.defaultMessageMetaData === 'undefined'
                 ? {}
                 : appOptions.defaultMessageMetaData;
-        var IS_MCK_GROUPUSERCOUNT =
-            typeof appOptions.groupUserCount === 'boolean' ? appOptions.groupUserCount : false;
-        var MCK_CHECK_USER_BUSY_STATUS =
-            typeof appOptions.checkUserBusyWithStatus === 'boolean'
-                ? appOptions.checkUserBusyWithStatus
-                : false;
-        var IS_RESET_USER_STATUS =
-            typeof appOptions.resetUserStatus === 'boolean' ? appOptions.resetUserStatus : false;
-        var IS_MCK_TOPIC_HEADER =
-            typeof appOptions.topicHeader === 'boolean' ? appOptions.topicHeader : false;
+        var IS_MCK_GROUPUSERCOUNT = getBooleanOption(appOptions, 'groupUserCount', false);
+        var MCK_CHECK_USER_BUSY_STATUS = getBooleanOption(
+            appOptions,
+            'checkUserBusyWithStatus',
+            false
+        );
+        var IS_RESET_USER_STATUS = getBooleanOption(appOptions, 'resetUserStatus', false);
+        var IS_MCK_TOPIC_HEADER = getBooleanOption(appOptions, 'topicHeader', false);
         var MCK_SUPPORT_ID_DATA_ATTR = appOptions.supportId
             ? 'data-mck-id="' + appOptions.supportId + '"'
             : '';
-        var IS_MCK_OWN_CONTACTS =
-            typeof appOptions.loadOwnContacts === 'boolean' ? appOptions.loadOwnContacts : false;
-        var IS_MCK_NOTIFICATION =
-            typeof appOptions.desktopNotification === 'boolean'
-                ? appOptions.desktopNotification
-                : true;
-        var IS_NOTIFICATION_ENABLED =
-            typeof appOptions.notification === 'boolean' ? appOptions.notification : true;
-        var IS_SW_NOTIFICATION_ENABLED =
-            typeof appOptions.swNotification === 'boolean' ? appOptions.swNotification : false;
-        var IS_AUTO_TYPE_SEARCH_ENABLED =
-            typeof appOptions.autoTypeSearchEnabled === 'boolean'
-                ? appOptions.autoTypeSearchEnabled
-                : true;
-        var IS_LAUNCH_TAB_ON_NEW_MESSAGE =
-            typeof appOptions.launchOnNewMessage === 'boolean'
-                ? appOptions.launchOnNewMessage
-                : false;
-        var IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED =
-            typeof appOptions.launchOnUnreadMessage === 'boolean'
-                ? appOptions.launchOnUnreadMessage
-                : false;
+        var IS_MCK_OWN_CONTACTS = getBooleanOption(appOptions, 'loadOwnContacts', false);
+        var IS_MCK_NOTIFICATION = getBooleanOption(appOptions, 'desktopNotification', true);
+        var IS_NOTIFICATION_ENABLED = getBooleanOption(appOptions, 'notification', true);
+        var IS_SW_NOTIFICATION_ENABLED = getBooleanOption(appOptions, 'swNotification', false);
+        var IS_AUTO_TYPE_SEARCH_ENABLED = getBooleanOption(
+            appOptions,
+            'autoTypeSearchEnabled',
+            true
+        );
+        var IS_LAUNCH_TAB_ON_NEW_MESSAGE = getBooleanOption(
+            appOptions,
+            'launchOnNewMessage',
+            false
+        );
+        var IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = getBooleanOption(
+            appOptions,
+            'launchOnUnreadMessage',
+            false
+        );
         var USER_TYPE_ID =
             typeof appOptions.userTypeId === 'number' ? appOptions.userTypeId : false;
         var CONVERSATION_STATUS_MAP = ['DEFAULT', 'NEW', 'OPEN'];
         var BLOCK_STATUS_MAP = ['BLOCKED_TO', 'BLOCKED_BY', 'UNBLOCKED_TO', 'UNBLOCKED_BY'];
         var MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT =
             typeof appOptions.msgTriggerTimeout === 'number' ? appOptions.msgTriggerTimeout : 0;
-        MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE =
-            typeof appOptions.automaticChatOpenOnNavigation === 'boolean'
-                ? appOptions.automaticChatOpenOnNavigation
-                : false;
-        var MCK_ATTACHMENT =
-            typeof appOptions.attachment === 'boolean' ? appOptions.attachment : true;
+        MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE = getBooleanOption(
+            appOptions,
+            'automaticChatOpenOnNavigation',
+            false
+        );
+        var MCK_ATTACHMENT = getBooleanOption(appOptions, 'attachment', true);
         var CURRENT_PAGE_TITLE = parent.document.title;
         var FLASH_PAGE_TITLE;
         var MCK_POPUP_WIDGET_CONTENT = appOptions.chatPopupMessage;
@@ -1181,51 +1181,41 @@ const firstVisibleMsg = {
             MCK_AUTHENTICATION_TYPE_ID = optns.authenticationTypeId;
             MCK_USER_ID = IS_MCK_VISITOR ? 'guest' : $applozic.trim(optns.userId);
             MCK_GOOGLE_API_KEY = IS_MCK_LOCSHARE ? optns.googleApiKey : 'NO_ACCESS';
-            IS_MCK_OL_STATUS = typeof optns.olStatus === 'boolean' ? optns.olStatus : false;
-            IS_MCK_TOPIC_BOX = typeof optns.topicBox === 'boolean' ? optns.topicBox : false;
-            IS_OFFLINE_MESSAGE_ENABLED =
-                typeof optns.showOfflineMessage === 'boolean' ? optns.showOfflineMessage : false;
-            IS_MCK_TOPIC_HEADER =
-                typeof optns.topicHeader === 'boolean' ? optns.topicHeader : false;
-            IS_NOTIFICATION_ENABLED =
-                typeof optns.notification === 'boolean' ? optns.notification : true;
-            IS_SW_NOTIFICATION_ENABLED =
-                typeof optns.swNotification === 'boolean' ? optns.swNotification : false;
+            IS_MCK_OL_STATUS = getBooleanOption(optns, 'olStatus', false);
+            IS_MCK_TOPIC_BOX = getBooleanOption(optns, 'topicBox', false);
+            IS_OFFLINE_MESSAGE_ENABLED = getBooleanOption(optns, 'showOfflineMessage', false);
+            IS_MCK_TOPIC_HEADER = getBooleanOption(optns, 'topicHeader', false);
+            IS_NOTIFICATION_ENABLED = getBooleanOption(optns, 'notification', true);
+            IS_SW_NOTIFICATION_ENABLED = getBooleanOption(optns, 'swNotification', false);
             MCK_SUPPORT_ID_DATA_ATTR = optns.supportId
                 ? 'data-mck-id="' + optns.supportId + '"'
                 : '';
-            IS_GROUP_SUBTITLE_HIDDEN =
-                typeof optns.hideGroupSubtitle === 'boolean' ? optns.hideGroupSubtitle : false;
+            IS_GROUP_SUBTITLE_HIDDEN = getBooleanOption(optns, 'hideGroupSubtitle', false);
             MCK_DEFAULT_MESSAGE_METADATA =
                 typeof optns.defaultMessageMetaData === 'undefined'
                     ? {}
                     : optns.defaultMessageMetaData;
-            IS_MCK_GROUPUSERCOUNT =
-                typeof optns.groupUserCount === 'boolean' ? optns.groupUserCount : false;
-            IS_MCK_NOTIFICATION =
-                typeof optns.desktopNotification === 'boolean' ? optns.desktopNotification : false;
-            IS_MCK_OWN_CONTACTS =
-                typeof optns.loadOwnContacts === 'boolean' ? optns.loadOwnContacts : false;
-            MESSAGE_BUBBLE_AVATOR_ENABLED =
-                typeof optns.messageBubbleAvator === 'boolean' ? optns.messageBubbleAvator : true;
-            IS_RESET_USER_STATUS =
-                typeof appOptions.resetUserStatus === 'boolean'
-                    ? appOptions.resetUserStatus
-                    : false;
-            IS_LAUNCH_TAB_ON_NEW_MESSAGE =
-                typeof optns.launchOnNewMessage === 'boolean' ? optns.launchOnNewMessage : false;
-            IS_AUTO_TYPE_SEARCH_ENABLED =
-                typeof optns.autoTypeSearchEnabled === 'boolean'
-                    ? optns.autoTypeSearchEnabled
-                    : true;
-            MCK_CHECK_USER_BUSY_STATUS =
-                typeof optns.checkUserBusyWithStatus === 'boolean'
-                    ? optns.checkUserBusyWithStatus
-                    : false;
-            IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED =
-                typeof optns.launchOnUnreadMessage === 'boolean'
-                    ? optns.launchOnUnreadMessage
-                    : false;
+            IS_MCK_GROUPUSERCOUNT = getBooleanOption(optns, 'groupUserCount', false);
+            IS_MCK_NOTIFICATION = getBooleanOption(optns, 'desktopNotification', false);
+            IS_MCK_OWN_CONTACTS = getBooleanOption(optns, 'loadOwnContacts', false);
+            MESSAGE_BUBBLE_AVATOR_ENABLED = getBooleanOption(
+                optns,
+                'messageBubbleAvator',
+                true
+            );
+            IS_RESET_USER_STATUS = getBooleanOption(appOptions, 'resetUserStatus', false);
+            IS_LAUNCH_TAB_ON_NEW_MESSAGE = getBooleanOption(optns, 'launchOnNewMessage', false);
+            IS_AUTO_TYPE_SEARCH_ENABLED = getBooleanOption(optns, 'autoTypeSearchEnabled', true);
+            MCK_CHECK_USER_BUSY_STATUS = getBooleanOption(
+                optns,
+                'checkUserBusyWithStatus',
+                false
+            );
+            IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = getBooleanOption(
+                optns,
+                'launchOnUnreadMessage',
+                false
+            );
             KM_ASK_USER_DETAILS = appOptions.askUserDetails;
         };
         _this.logout = function () {
