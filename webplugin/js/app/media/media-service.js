@@ -243,21 +243,15 @@ Kommunicate.mediaService = {
         function startRecording() {
             Kommunicate.typingAreaService.showRecorder();
             // show
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['delete-recording', 'mck-stop-recording', 'audiodiv'],
-                },
-                '',
-                'n-vis'
+            kommunicateCommons.setVisibility(
+                { id: ['delete-recording', 'mck-stop-recording', 'audiodiv'] },
+                true
             );
 
             // hide
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['play-btn', 'pause-btn', 'send-btn'],
-                },
-                'n-vis',
-                ''
+            kommunicateCommons.setVisibility(
+                { id: ['play-btn', 'pause-btn', 'send-btn'] },
+                false
             );
             timeElapsedTimer.removeClass('n-vis');
             timeRemainingTimer.removeClass('n-vis');
@@ -301,21 +295,15 @@ Kommunicate.mediaService = {
         }
         function stopRecording(e) {
             // show
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['delete-recording', 'play-btn', 'send-btn', 'time-remaining'],
-                },
-                '',
-                'n-vis'
+            kommunicateCommons.setVisibility(
+                { id: ['delete-recording', 'play-btn', 'send-btn', 'time-remaining'] },
+                true
             );
 
             // hide
-            kommunicateCommons.modifyClassList(
-                {
-                    id: ['pause-btn', 'mck-stop-recording', 'time-elapsed'],
-                },
-                'n-vis',
-                ''
+            kommunicateCommons.setVisibility(
+                { id: ['pause-btn', 'mck-stop-recording', 'time-elapsed'] },
+                false
             );
             clearInterval(recorderInterval);
             $applozic('#wave-front-progressBar').width('0%');

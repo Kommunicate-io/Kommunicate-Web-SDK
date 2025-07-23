@@ -3433,27 +3433,15 @@ const firstVisibleMsg = {
             };
             _this.showSendButton = function () {
                 kommunicateCommons.setVisibility({ id: ['send-button-wrapper'] }, true);
-                kommunicateCommons.modifyClassList(
-                    {
-                        id: [
-                            'mck-file-up',
-                            'mck-btn-loc',
-                            'mck-btn-smiley-box',
-                            'mck-img-file-up',
-                            'mck-vid-file-up',
-                        ],
-                    },
-                    'n-vis',
-                    'vis'
-                );
-                IS_MCK_LOCSHARE
-                    ? ''
-                    : kommunicateCommons.setVisibility({ id: ['mck-file-up2'] }, false);
 
-                !IS_CAPTURE_PHOTO &&
-                    kommunicateCommons.modifyClassList({ id: ['mck-img-file-up'] }, 'n-vis', '');
-                !IS_CAPTURE_VIDEO &&
-                    kommunicateCommons.modifyClassList({ id: ['mck-vid-file-up'] }, 'n-vis', '');
+                var icons = [];
+                if (MCK_ATTACHMENT) icons.push('mck-file-up');
+                icons.push(!IS_MCK_LOCSHARE ? 'mck-file-up2' : 'mck-btn-loc');
+                EMOJI_LIBRARY && icons.push('mck-btn-smiley-box');
+                IS_CAPTURE_PHOTO && icons.push('mck-img-file-up');
+                IS_CAPTURE_VIDEO && icons.push('mck-vid-file-up');
+                icons.length &&
+                    kommunicateCommons.modifyClassList({ id: icons }, 'n-vis', 'vis');
             };
 
             _this.hideSendButton = function () {
