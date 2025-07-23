@@ -1831,7 +1831,7 @@ const firstVisibleMsg = {
                         }
                     }
                 });
-                typeof callback == 'function' && callback();
+                kommunicateCommons.safeCallback(callback);
             }
         };
 
@@ -5349,9 +5349,7 @@ const firstVisibleMsg = {
                             FILE_META[0].contentType.indexOf('image/') != -1 &&
                                 KommunicateUI.displayProgressMeter(messagePxy.key);
                             KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
-                            if (typeof callback == 'function') {
-                                callback(messagePxy);
-                            }
+                            kommunicateCommons.safeCallback(callback, messagePxy);
                         } else {
                             _this.submitMessage(messagePxy, optns);
                         }
@@ -6357,7 +6355,7 @@ const firstVisibleMsg = {
                             mckMessageService.sendForwardMessage(forwardMessageKey);
                             $mck_msg_new.data('forwardMessageKey', '');
                         }
-                        typeof callback == 'function' && callback(data);
+                        kommunicateCommons.safeCallback(callback, data);
 
                         mckMessageLayout.messageClubbing(true);
                         for (var key in data.userDetails) {
@@ -6385,7 +6383,7 @@ const firstVisibleMsg = {
                         CONTACT_SYNCING = false;
                         $mck_loading.removeClass('vis').addClass('n-vis');
                         w.console.log('Unable to load messages. Please reload page.');
-                        typeof callback == 'function' && callback(null, err);
+                        kommunicateCommons.safeCallback(callback, null, err);
                     },
                 });
             };
@@ -6438,7 +6436,7 @@ const firstVisibleMsg = {
                         data.isAgentOffline = true;
                     }
                 }
-                typeof callback == 'function' && callback(data);
+                kommunicateCommons.safeCallback(callback, data);
             };
             _this.isFaqTabOpen = function () {
                 return (
@@ -8906,9 +8904,7 @@ const firstVisibleMsg = {
                     });
                 }
 
-                if (typeof callback == 'function') {
-                    callback();
-                }
+                kommunicateCommons.safeCallback(callback);
             };
             _this.addContactForSearchList = function (contact, $listId) {
                 var groupUserCount = contact.userCount;

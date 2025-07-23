@@ -238,9 +238,11 @@ $applozic.extend(true, Kommunicate, {
                 code: 'INVALID_PARAMETERS',
                 message: 'required parameter agentIds is missing.',
             };
-            return typeof callback == 'function'
-                ? callback(error)
-                : console.log('required parameter agentIds is missing.');
+            if (typeof callback === 'function') {
+                return callback(error);
+            }
+            console.log('required parameter agentIds is missing.');
+            return;
         }
         // max length of clientGroupId is 256 in db.
         // default bot is not included in client groupId generation
@@ -260,10 +262,11 @@ $applozic.extend(true, Kommunicate, {
                 code: 'MEMBER_LIMIT_EXCEEDS',
                 message: 'try adding fewer members',
             };
-
-            return typeof callback == 'function'
-                ? callback(error)
-                : console.log('member limit exceeds. try adding fewer members');
+            if (typeof callback === 'function') {
+                return callback(error);
+            }
+            console.log('member limit exceeds. try adding fewer members');
+            return;
         }
         mckGroupService.getGroupFeed({
             clientGroupId: clientGroupId,
@@ -385,21 +388,21 @@ $applozic.extend(true, Kommunicate, {
         window.$applozic.fn.applozic('mckLaunchSideboxChat');
     },
     triggerEvent: function (event, options) {
-        $applozic.ajax({
-            url: Kommunicate.getBaseUrl() + '/applications/events?type=' + event,
-            type: 'post',
-            data: JSON.stringify({
-                conversationId: options.groupId,
-                applicationId: options.applicationId,
-            }),
-            contentType: 'application/json',
-            success: function (result) {
-                console.log('conversation triggering event');
+        kommunicateCommons.apiRequest(
+            {
+                url: '/applications/events?type=' + event,
+                type: 'post',
+                data: JSON.stringify({
+                    conversationId: options.groupId,
+                    applicationId: options.applicationId,
+                }),
             },
-            error: function (err) {
-                console.log('err while starting Conversation');
-            },
-        });
+            function (err) {
+                if (err) {
+                    console.log('err while starting Conversation');
+                }
+            }
+        );
     },
     updateUser: function (options) {
         var data = { data: options };
@@ -420,9 +423,9 @@ $applozic.extend(true, Kommunicate, {
             function (err, result) {
                 if (err) {
                     console.log('err while fetching away message');
-                    typeof callback == 'function' ? callback(err) : '';
+                    kommunicateCommons.safeCallback(callback, err);
                 } else {
-                    typeof callback == 'function' ? callback(null, result) : '';
+                    kommunicateCommons.safeCallback(callback, null, result);
                 }
             }
         );

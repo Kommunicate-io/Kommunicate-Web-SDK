@@ -302,7 +302,7 @@ function ZendeskChatService() {
                     return;
                 }
                 console.log('result zendesk chat get user details ', result);
-                typeof callback == 'function' && callback(agentUserName);
+                kommunicateCommons.safeCallback(callback, agentUserName);
             }
         );
     };
@@ -346,7 +346,7 @@ function ZendeskChatService() {
                     return;
                 }
                 console.log('Sent File message data to the server ', result);
-                typeof callback == 'function' && callback(agentUserName);
+                kommunicateCommons.safeCallback(callback, agentUserName);
             }
         );
     };

@@ -286,7 +286,7 @@ function KommunicateCommons() {
                 (url.charAt(0) === '/' ? '' : '/') +
                 url;
         }
-        mckUtils.ajax({
+        var ajaxOptions = {
             headers: options.headers || {},
             type: options.type || 'GET',
             url: url,
@@ -299,7 +299,11 @@ function KommunicateCommons() {
             error: function (err) {
                 callback(err);
             },
-        });
+        };
+        if (options.skipEncryption) {
+            ajaxOptions.skipEncryption = true;
+        }
+        mckUtils.ajax(ajaxOptions);
     };
 
     _this.assignMessageTarget = function (messagePxy) {
@@ -316,6 +320,14 @@ function KommunicateCommons() {
         } else {
             messagePxy.to = $mck_msg_to.val();
         }
+    };
+
+    _this.safeCallback = function (cb) {
+        if (typeof cb !== 'function') {
+            return;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        cb.apply(null, args);
     };
 
     _this.debounce = function (func, wait, immediate) {

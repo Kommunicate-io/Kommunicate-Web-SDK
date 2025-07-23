@@ -115,9 +115,7 @@ Kommunicate.client = {
             allowMessagesViaSocket: conversationDetail.allowMessagesViaSocket || false,
             callback: function (response) {
                 if (response.status === 'success' && response.data.clientGroupId) {
-                    if (typeof callback == 'function') {
-                        callback(response.data.value);
-                    }
+                    kommunicateCommons.safeCallback(callback, response.data.value);
                     KommunicateUI.hideFaq();
                     KommunicateUI.showClosedConversationBanner(false);
                     /* conversation table migrated to Applozic
@@ -140,9 +138,7 @@ Kommunicate.client = {
                     Kommunicate.openConversation(null, {
                         clientGroupId: conversationDetail.clientGroupId,
                     });
-                    if (typeof callback == 'function') {
-                        callback(response);
-                    }
+                    kommunicateCommons.safeCallback(callback, response);
                 }
             },
         };

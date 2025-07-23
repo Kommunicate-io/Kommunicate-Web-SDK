@@ -30,10 +30,8 @@ Kommunicate.attachmentService = {
                 stopUpload: false,
                 name: file.name,
             });
-            if (typeof callback == 'function') {
-                callback(FILE_META, messagePxy, file);
-                return;
-            }
+            kommunicateCommons.safeCallback(callback, FILE_META, messagePxy, file);
+            return;
         };
         reader.readAsDataURL(file);
     },

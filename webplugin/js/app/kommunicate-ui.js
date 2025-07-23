@@ -1547,12 +1547,15 @@ KommunicateUI = {
         const teamId = CURRENT_GROUP_DATA?.teamId;
         if (!teamId) return;
         let waitingListEndpoint = `/rest/ws/group/waiting/list?teamId=${teamId}`;
-        window.Applozic.ALApiService.ajax({
-            type: 'GET',
-            url: MCK_BASE_URL + waitingListEndpoint,
-            global: false,
-            contentType: 'application/json',
-            success: function (res) {
+        kommunicateCommons.apiRequest(
+            {
+                type: 'GET',
+                url: waitingListEndpoint,
+            },
+            function (err, res) {
+                if (err) {
+                    throw new Error('Error while fetching waiting list', err);
+                }
                 if (res.status === 'success') {
                     WAITING_QUEUE = res.response;
                     var isGroupPresentInWaitingQueue =
@@ -1619,26 +1622,25 @@ KommunicateUI = {
                         kommunicateCommons.setVisibility(updateClasses, true);
                     }
                 }
-            },
-            error: function (err) {
-                throw new Error('Error while fetching waiting list', err);
-            },
-        });
+            }
+        );
     },
     getUrlFromBlobKey: function (blobKey, callback) {
         var params = '?key=' + blobKey;
-        window.Applozic.ALApiService.ajax({
-            type: 'GET',
-            global: false,
-            url: MCK_BASE_URL + '/rest/ws/file/url' + params,
-            success: function (res) {
-                callback(null, res);
+        kommunicateCommons.apiRequest(
+            {
+                type: 'GET',
+                url: '/rest/ws/file/url' + params,
+                skipEncryption: true,
             },
-            error: function (err) {
-                callback(err);
-            },
-            skipEncryption: true,
-        });
+            function (err, res) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, res);
+                }
+            }
+        );
     },
     isInView: function (element, targetElement) {
         const rect = element.getBoundingClientRect();
