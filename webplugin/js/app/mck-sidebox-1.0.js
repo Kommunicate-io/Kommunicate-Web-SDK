@@ -1,8 +1,6 @@
 var MCK_GROUP_MAP = [];
-var MCK_CLIENT_GROUP_MAP = [];
 var MCK_EVENT_HISTORY = [];
-var KM_PROGRESS_METER_RADIUS = 54;
-var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * KM_PROGRESS_METER_RADIUS;
+var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * 54;
 var count = 0;
 var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
@@ -11,7 +9,6 @@ var MCK_MAINTAIN_ACTIVE_CONVERSATION_STATE;
 var CURRENT_GROUP_DATA = {};
 var MCK_CHAT_POPUP_TEMPLATE_TIMER;
 var IS_SOCKET_CONNECTED = false;
-var MCK_BOT_MESSAGE_QUEUE = [];
 var WAITING_QUEUE = [];
 var AVAILABLE_VOICES_FOR_TTS = new Array();
 var KM_ATTACHMENT_V2_SUPPORTED_MIME_TYPES = ['application', 'text', 'image'];
@@ -353,7 +350,6 @@ const firstVisibleMsg = {
         var IS_LOGGED_IN = true;
         var MCK_CONTACT_MAP = [];
         var MCK_TYPING_STATUS = 0;
-        MCK_CLIENT_GROUP_MAP = [];
         var CONTACT_SYNCING = false;
         var MCK_USER_TIMEZONEOFFSET;
         var MCK_BLOCKED_TO_MAP = [];
@@ -1139,7 +1135,6 @@ const firstVisibleMsg = {
             MCK_LAST_SEEN_AT_MAP = [];
             MCK_CONVERSATION_MAP = [];
             MCK_TOPIC_DETAIL_MAP = [];
-            MCK_CLIENT_GROUP_MAP = [];
             IS_MCK_TAB_FOCUSED = true;
             MCK_LABELS = optns.labels;
             MCK_TOTAL_UNREAD_COUNT = 0;
