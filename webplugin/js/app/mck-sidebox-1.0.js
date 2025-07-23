@@ -351,7 +351,6 @@ const firstVisibleMsg = {
         var MCK_WEBSOCKET_PORT;
         var IS_LOGGED_IN = true;
         var MCK_CONTACT_MAP = [];
-        var MCK_TYPING_STATUS = 0;
         var CONTACT_SYNCING = false;
         var MCK_USER_TIMEZONEOFFSET;
         var MCK_BLOCKED_TO_MAP = [];
@@ -365,7 +364,6 @@ const firstVisibleMsg = {
         var MCK_TOTAL_UNREAD_COUNT = 0;
         let BUSINESS_HOUR_SETTING;
         let isBusinessHourAvailable;
-        var CUSTOMER_CREATED_AT = appOptions.customerCreatedAt;
         var OPEN_CONVERSATION_ON_NEW_MESSAGE = appOptions.openConversationOnNewMessage;
         var KOMMUNICATE_VERSION = appOptions.KM_VER ? appOptions.KM_VER : '';
         KOMMUNICATE_VERSION === 'v2' && (parent.KommunicateGlobal = window);
@@ -561,9 +559,7 @@ const firstVisibleMsg = {
         var mckChatPopupNotificationTone = null;
         var notificationToneOption = {};
         var ringToneService;
-        var lastFetchTime;
         var isUserDeleted = false;
-        var mckVideoCallringTone = null;
         var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
         typingService.init(appOptions);
         ratingService.init(appOptions);
@@ -578,9 +574,6 @@ const firstVisibleMsg = {
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
-        var DEFAULT_AGENT_NAME = appOptions.agentName;
-        var USE_BRANDING =
-            typeof appOptions.useBranding == 'boolean' ? appOptions.useBranding : true;
         var POPUP_WIDGET = appOptions.popupWidget;
         var TIME_FORMAT_24_HOURS = appOptions.timeFormat24Hours;
         w.MCK_OL_MAP = new Array();
@@ -1889,7 +1882,6 @@ const firstVisibleMsg = {
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var $mck_tab_individual = $applozic('#mck-tab-individual');
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
-            var INITIALIZE_APP_URL = '/v2/tab/initialize.page';
             var FEEDBACK_UPDATE_URL = '/rest/ws/feedback/v2/v2';
             _this.getLauncherHtml = function (isAnonymousChat) {
                 var defaultHtml = kmCustomTheme.customSideboxWidget();
@@ -2632,7 +2624,6 @@ const firstVisibleMsg = {
                 var sideboxLauncher = document.getElementById('mck-sidebox-launcher');
                 var sideboxCloseButton = document.getElementById('km-chat-widget-close-button');
                 var parentBody = parent && parent.document.body;
-                var parentHead = parent && parent.document.head;
                 var parentHtmlTag = parent && parent.document.getElementsByTagName('html')[0];
 
                 sideboxLauncher.addEventListener('click', function () {
@@ -3303,18 +3294,8 @@ const firstVisibleMsg = {
             var UPDATE_MESSAGE_METADATA = '/rest/ws/message/update/metadata';
             var GROUP_CREATE_URL = '/rest/ws/group/v2.1/create';
             var MESSAGE_LIST_URL = '/rest/ws/message/v3/list';
-            var UPDATE_REPLY_MAP = '/rest/ws/message/detail';
-            var TOPIC_ID_URL = '/rest/ws/conversation/topicId';
             var MESSAGE_DELETE_URL = '/rest/ws/message/delete';
-            var CONVERSATION_ID_URL = '/rest/ws/conversation/id';
-            var MESSAGE_READ_UPDATE_URL = '/rest/ws/message/read';
-            var CONVERSATION_FETCH_URL = '/rest/ws/conversation/get';
             var MESSAGE_ADD_INBOX_URL = '/rest/ws/message/add/inbox';
-            var MESSAGE_DELIVERY_UPDATE_URL = '/rest/ws/message/delivered';
-            var CONVERSATION_CLOSE_UPDATE_URL = '/rest/ws/conversation/close';
-            var CONVERSATION_DELETE_URL = '/rest/ws/message/delete/conversation';
-            var CONVERSATION_READ_UPDATE_URL = '/rest/ws/message/read/conversation';
-            var FEEDBACK_UPDATE_URL = '/feedback/v2';
             var CHANGE_BOT = '/rest/ws/group/assignee/change';
             var offlineblk =
                 '<div id="mck-ofl-blk" class="mck-m-b"><div class="mck-clear"><div class="blk-lg-12 mck-text-light mck-text-muted mck-test-center">${userIdExpr} is offline now</div></div></div>';
@@ -3323,7 +3304,6 @@ const firstVisibleMsg = {
             var $secondsLabel = $applozic('#mck-seconds');
             var warningBox = document.getElementById('mck-char-warning');
             var warningText = document.getElementById('mck-char-warning-text');
-            var CHANGE_ASSIGNEE = '/rest/ws/group/assignee/change';
             var messageSentToHumanAgent = 0; // count of messages sent by an user when the assignee was not a bot
             const BUSINESS_HOURS_URL = '/rest/ws/team/business-settings';
             _this.resetMessageSentToHumanAgent = function () {
@@ -7046,7 +7026,6 @@ const firstVisibleMsg = {
             var CLOUD_HOST_URL = 'www.googleapis.com';
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
-            var typingIndicatorStartTime = null;
             var markup =
                 '<div tabindex="-1" name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}"' +
                 'data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr} ${botMsgDelayExpr} ${conversationTransferred}">' +
@@ -7937,7 +7916,6 @@ const firstVisibleMsg = {
                     return;
                 }
                 var metadatarepiledto = '';
-                var replymessage = '';
                 var replyMsg = '';
                 var msgpreview = '';
                 var textreply = 'vis';
@@ -11452,14 +11430,8 @@ const firstVisibleMsg = {
             var $mck_msg_inner = $applozic('#mck-message-cell .mck-message-inner');
             var $mck_tab_message_option = $applozic('.mck-tab-message-option');
             var $mck_loading = $applozic('#mck-contact-loading');
-            var USER_BLOCK_URL = '/rest/ws/user/block';
-            var CONTACT_NAME_URL = '/rest/ws/user/info';
-            var USER_DETAIL_URL = '/rest/ws/user/v2/detail';
-            var CONTACT_LIST_URL = '/rest/ws/user/filter';
-            var USER_STATUS_URL = '/rest/ws/user/chat/status';
             var USER_DISPLAY_NAME_UPDATE = '/rest/ws/user/name';
             var USER_IDENTITY_UPDATE_URL = '/rest/ws/user/change/identifier';
-            var FRIEND_LIST_URL = '/rest/ws/group/';
             _this.getContactDisplayName = function (userIdArray) {
                 var mckContactNameArray = [];
                 window.Applozic.ALApiService.getContactDisplayName({
@@ -12788,7 +12760,6 @@ const firstVisibleMsg = {
 
         function MckFileService() {
             var _this = this;
-            var ONE_KB = 1024;
             var ONE_MB = 1048576;
             var UPLOAD_VIA = ['CREATE', 'UPDATE'];
             var $file_box = $applozic('#mck-file-box');
@@ -12817,8 +12788,6 @@ const firstVisibleMsg = {
             var FILE_PREVIEW_URL = '/rest/ws/aws/file';
             var FILE_UPLOAD_URL = '/rest/ws/aws/file/url';
             var FILE_AWS_UPLOAD_URL = '/rest/ws/upload/file';
-            var FILE_DELETE_URL = '/rest/ws/aws/file/delete';
-            var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
             var ATTACHMENT_UPLOAD_URL = '/rest/ws/upload/image';
             var mck_filebox_tmpl =
                 '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' +
@@ -13437,13 +13406,11 @@ const firstVisibleMsg = {
             var $mck_preview_icon;
             var $mck_preview_name;
             var $mck_group_info_tab;
-            var MCK_SW_SUBSCRIPTION;
             var $mck_sidebox_launcher;
             var $mck_preview_msg_content;
             var $mck_preview_file_content;
             var $mck_msg_preview_visual_indicator;
             var $mck_msg_preview_visual_indicator_text;
-            var MCK_SW_REGISTER_URL = '/rest/ws/plugin/update/sw/id';
             _this.init = function () {
                 $mck_sidebox = $applozic('#mck-sidebox');
                 // $mck_msg_preview = $applozic("#mck-msg-preview");
