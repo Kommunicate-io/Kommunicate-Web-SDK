@@ -245,6 +245,4 @@ You can copy the below script and replace the required parameters manually. Note
 
 Please check out the detailed [documentation](https://docs.kommunicate.io/docs/web-installation.html) for more features, implementation and customizations.
 
-## Development Notes
 
-Unused Fancybox styles and images were removed. No remaining files reference `fancybox_loading.gif`, so keeping the asset is unnecessary.
