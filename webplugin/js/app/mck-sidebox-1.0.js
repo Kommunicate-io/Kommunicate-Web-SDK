@@ -10173,24 +10173,16 @@ const firstVisibleMsg = {
                 }
             };
             _this.toggleSearchView = function (showContact) {
-                var showIds = showContact
-                        ? [
-                              'mck-contact-search-list',
-                              'mck-contact-search-input-box',
-                          ]
-                        : [
-                              'mck-group-search-list',
-                              'mck-group-search-input-box',
-                          ],
-                    hideIds = showContact
-                        ? [
-                              'mck-group-search-list',
-                              'mck-group-search-input-box',
-                          ]
-                        : [
-                              'mck-contact-search-list',
-                              'mck-contact-search-input-box',
-                          ];
+                var contactIds = [
+                        'mck-contact-search-list',
+                        'mck-contact-search-input-box',
+                    ],
+                    groupIds = [
+                        'mck-group-search-list',
+                        'mck-group-search-input-box',
+                    ],
+                    showIds = showContact ? contactIds : groupIds,
+                    hideIds = showContact ? groupIds : contactIds;
                 kommunicateCommons.setVisibility({ id: hideIds }, false);
                 kommunicateCommons.setVisibility({ id: showIds }, true);
                 if (showContact) {
