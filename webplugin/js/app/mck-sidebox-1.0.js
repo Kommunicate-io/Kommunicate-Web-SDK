@@ -11792,11 +11792,16 @@ const firstVisibleMsg = {
                     }
                 }
             });
-            $applozic('#mck-group-info-icon-box .mck-overlay').on('click', function (e) {
-                $mck_group_icon_change.trigger('click');
-            });
-            $applozic('#mck-group-create-icon-box .mck-overlay').on('click', function (e) {
-                $mck_group_icon_upload.trigger('click');
+            $applozic(
+                '#mck-group-info-icon-box .mck-overlay, #mck-group-create-icon-box .mck-overlay'
+            ).on('click', function () {
+                if (
+                    $applozic(this).closest('#mck-group-create-icon-box').length
+                ) {
+                    $mck_group_icon_upload.trigger('click');
+                } else {
+                    $mck_group_icon_change.trigger('click');
+                }
             });
             $applozic(d)
                 .on('mouseenter', '.mck-group-create-icon-box.mck-hover-on', function () {
